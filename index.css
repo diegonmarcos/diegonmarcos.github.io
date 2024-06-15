@@ -1,0 +1,61 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+p, ul {
+  text-align: justify;
+}
+
+.mt-6 {
+  margin-top: 4.5rem;
+}
+
+.pt-6 {
+  padding-top: 4.5rem;
+}
+
+.pb-6 {
+  padding-bottom: 4.5rem;
+}
+
+.devicon-facebook-plain {
+  color: #3b5998;
+}
+
+.devicon-linkedin-plain {
+  color: #007eb1;
+}
+
+.devicon-github-plain {
+  color: #333333;
+}
+
+#about .devicon-docker-plain {
+  color: #0db7ed;
+}
+
+.img-me {
+  border: 1px solid #f5f5f5;
+}
+
+@media (min-width: 576px) {
+  #coursera .card h6 {
+    min-height: 2.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-left: 15rem;
+  }
+
+  .navbar {
+    width: 15rem;
+    height: 100%;
+  }
+}

@@ -13,13 +13,38 @@
     <div id="app"></div>
     <script>
       window.$docsify = {
-        repo: 'your-username/your-repo-name', // Replace with your GitHub repo
-        loadSidebar: true, // Load sidebar from _sidebar.md
-        subMaxLevel: 3 // How many levels of subheadings to show in the sidebar
-        // ... other options
+        basePath: '/doc/',
+        loadSidebar: true,
+        subMaxLevel: 3,
+
+        // 1. Search
+        search: {
+          maxAge: 86400000, // Expiration time, the default is one day
+          paths: 'auto',
+          placeholder: 'Search',
+          noData: 'No Results!',
+          depth: 3, // Search headings up to h3
+          hideOtherSidebarContent: false // Whether to hide other sidebar content
+        },
+
+        // 2. Pagination
+        pagination: {
+          crossChapter: true, // Display pagination even across chapters
+          perPage: 8 // Number of items per page
+        },
+
+        // 3. Auto-Header Anchors
+        autoHeader: true, // Add anchors to headings for easy linking
+
+        // 4. Name
+        name: 'My Awesome Docs', // Set the name of your documentation site
+
+        // 5. Theme
+        themeColor: '#42b983' // Customize the theme color
       };
     </script>
     <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-    <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script> 
+    <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
   </body>
 </html>

@@ -1,6 +1,4 @@
 - [Home](doc/README.md)
-- 0.Notes
-  - [42 Locker](doc/0.Notes/42%20Locker.md) 
 - C0_Tools
   - 0.General
     - [General](doc/C0_Tools/0.General/General.md)

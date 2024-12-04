@@ -6,7 +6,7 @@
 **References**
 - [Subject](https://github.com/diegonmarcos/L-ecole-42/blob/main/1.Projects/C1_ft_printf/1.Roadmap/en.subject.pdf)
 
-**a) Mandatory**
+#### a) Mandatory
 
 - Must recode `printf()` function from libc.
 - Prototype must be `int ft_printf(const char *, ...);`.
@@ -17,7 +17,7 @@
 - `libftprintf.a` has to be created at the root of the repository.
 - Implement the conversions as described for `c`, `s`, `p`, `d`, `i`, `u`, `x`, `X`, and `%`.
 
-**b) Forbidden Functions and Limitations**
+#### b) Forbidden Functions and Limitations**
 **b1) Limitations**
 
 **b2) Norminette**
@@ -34,7 +34,7 @@
 * [42 Header](https://github.com/42Paris/42header) - 42 header for Vim. `GitHub`
 
 
-**c) Edge Cases and Error Handling**
+#### **c) Edge Cases and Error Handling**
 
 - **Invalid format specifiers:** Handle cases where the format string contains invalid or unsupported specifiers.
 - **Null pointers:** Handle cases where a `%s` specifier corresponds to a null pointer.

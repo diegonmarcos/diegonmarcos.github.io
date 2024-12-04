@@ -7,6 +7,12 @@
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css"
     />
+	<link 
+	rel="stylesheet" 
+	href="//cdn.jsdelivr.net/npm/docsify@5/dist/themes/addons/core-dark.min.css"   
+
+	media="(prefers-color-scheme: dark)" 
+  />
   </head>
   <body>
     <div id="app"></div>
@@ -40,38 +46,39 @@
 
         // 5. Theme
         themeColor: '#42b983', // Customize the theme color
-		/ Repo link: (If your docs are in a Git repo)
+		
+		// 6. Repo link: (If your docs are in a Git repo)
         repo: 'https://github.com/your-username/your-repo', 
 
-        // 6. Markdown options:
+        // 7. Markdown options:
         markdown: {
           smartypants: true, // Enable smart quotes and other typographic niceties
           breaks: true, // Enable line breaks with a single newline
         },
 
-        // 7. External link target:
+        // 8. External link target:
         externalLinkTarget: '_blank', // Open external links in a new tab
 
         // --- Plugins and Extensions ---
 
-        // 8. Copy code plugin:
+        // 9. Copy code plugin:
         copyCode: {
           buttonText: 'Copy to clipboard',
           errorText: 'Error',
           successText: 'Copied'
         },
 
-        // 9. Image zoom plugin:
+        // 10. Image zoom plugin:
         zoomImage: {
           maxLevel: 6, // Maximum zoom level
         },
 
         // ---  Appearance and Navigation ---
 
-        // 10. Cover page: (If you have a _coverpage.md file)
+        // 11. Cover page: (If you have a _coverpage.md file)
         coverpage: true, 
 
-        // 11. Navigation:
+        // 12. Navigation:
         auto2top: true, // Scroll to top when navigating between pages
         maxLevel: 6, // Max heading level in sidebar (already set)
         subMaxLevel: 6, // Max heading level in sidebar (already set)

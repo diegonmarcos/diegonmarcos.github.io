@@ -7,7 +7,7 @@
     <a href="readme.md" class="button">Get Started</a>
   </div>
   <div class="cover-logo">
-    <img src="my-logo.png" /> 
+    <img src="https://github.com/diegonmarcos/diegonmarcos/raw/main/penguin_ducks.png" /> 
   </div>
 </div>
 

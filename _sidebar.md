@@ -1,62 +1,36 @@
 - [Home](README.md)
 - #####
 - ALGO
+	- C3_Push_Swap
 - SYS
+	- C3_Pipex
 - GRAPHIC
+	- C3_fdf
 - MYLIBC
 - TOOLS
 - #####
 - C0_Tools
-  - 0.General
-    - [General](doc/C0_Tools/0.General/General.md)
-    - [index1](doc/C0_Tools/0.General/index1.md)
-    - [index](doc/C0_Tools/0.General/index.md)
   - 42School
-    - [Exams](doc/C0_Tools/42School/Exams.md)
-    - [ProjectsDescriptions](doc/C0_Tools/42School/ProjectsDescriptions.md)
-  - Cloud
-    - [rclone](doc/C0_Tools/Cloud/rclone.md)
-  - Docker
-    - [Docker_c](doc/C0_Tools/Docker/Docker_c.md)
-  - Git
-    - [Commands](doc/C0_Tools/Git/Commands.md)
-    - [GCL Bash](doc/C0_Tools/Git/GCL%20Bash.md)
-    - [p.gitignore](doc/C0_Tools/Git/p.gitignore.md)
-    - [p.gitmodules](doc/C0_Tools/Git/p.gitmodules.md)
-    - [Resources](doc/C0_Tools/Git/Resources.md)
-    - [Sources](doc/C0_Tools/Git/Sources.md)
-  - Jupyter
-    - [Setup](doc/C0_Tools/Jupyter/Setup.md)
-    - [Unit Tester](doc/C0_Tools/Jupyter/Unit%20Tester.md)
-  - LinuxSys
-    - [LINUX_Commands](doc/C0_Tools/LinuxSys/LINUX_Commands.md)
-    - [Linux](doc/C0_Tools/LinuxSys/Linux.md)
-    - [Login.sh](doc/C0_Tools/LinuxSys/Login.sh.md)
-    - [p.zshrc](doc/C0_Tools/LinuxSys/p.zshrc.md)
-    - [Scripts](doc/C0_Tools/LinuxSys/Scripts.md)
-  - Shell
-    - [ohmyzsh](doc/C0_Tools/Shell/ohmyzsh.md)
-  - UnitTesters_Debuggers
-    - [CodeQuality](doc/C0_Tools/UnitTesters_Debuggers/CodeQuality.md)
-    - [Debugger](doc/C0_Tools/UnitTesters_Debuggers/Debugger.md)
-    - [UnitTesters](doc/C0_Tools/UnitTesters_Debuggers/UnitTesters.md)
-  - VIM
-    - [Install](doc/C0_Tools/VIM/Install.md)
-    - [p.vimrc_42Header](doc/C0_Tools/VIM/p.vimrc_42Header.md)
-    - [p.vimrc](doc/C0_Tools/VIM/p.vimrc.md)
-    - [Vim-Cheat-Sheet](doc/C0_Tools/VIM/Vim-Cheat-Sheet.md)
-  - VPN
-    - [Options](doc/C0_Tools/VPN/Options.md)
-    - [Proton](doc/C0_Tools/VPN/Proton.md)
-- C1_Libft
-  - 0.Include
+  - Unix
+  	- Cloud
+  	- Docker
+  	- Git
+	- VPN
+  - Coding
+	- Editors
+	- Static Analysis
+	- Leaks Analysis
+	- Debuging
+	- Unit Testing
+	- Documentation
+- C1_Mylibc
   - 1.IOPrinters
   - 2.StringClassification
   - 3.StringFormatting
   - 4.StringSearchCompareSubs
   - 5.MemoryCopyMoveSplit
   - 6.StructLinkedLists
-- C2_GnL
-  - [RoadMap_Backlog](doc/C2_GnL/RoadMap_Backlog.md)
-- C2_Printf
-  - [RoadMap_Backlog](doc/C2_Printf/RoadMap_Backlog.md)
+	- C2_GnL
+	- C2_Printf
+
+- C4_

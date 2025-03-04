@@ -21,7 +21,7 @@
 	- Coding
 - ___
 - ___
-- Tools
+- TOOLS
   - 42School
   - Unix
 	- OS
@@ -35,7 +35,7 @@
 	- Unit Testing
 	- Documentation
 - ____________
-- Mylibc
+- MYLIBC
 	- Memory
 	- Data
 		- Array

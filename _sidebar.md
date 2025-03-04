@@ -4,7 +4,7 @@
 	- Backtracking
 - .
 - SYS
-	- Multithreading Orchestrating and Shell Build
+	- Multithreading Orchestrating and Shell Implementation
 	- WebServer
 - .
 - GRAPHIC

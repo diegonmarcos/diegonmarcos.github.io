@@ -1,21 +1,25 @@
 - [Home](README.md)
 - #####
 - ALGO
-	- C3_Push_Swap
+	- Backtracking
 - SYS
-	- C3_Pipex
+	- Multithreading Orcheastring and Shell Build
+	- WebServer
 - GRAPHIC
-	- C3_fdf
+	- 2D/3D Games
+	- Wireframe and Bresenham's line algorithm
 - MYLIBC
+	- Memory
+	- Data
+	- IO
 - TOOLS
 - #####
-- C0_Tools
+- Tools
   - 42School
   - Unix
-  	- Cloud
+	- OS
+  	- Git and  Cloud
   	- Docker
-  	- Git
-	- VPN
   - Coding
 	- Editors
 	- Static Analysis
@@ -23,14 +27,23 @@
 	- Debuging
 	- Unit Testing
 	- Documentation
-- C1_Mylibc
-  - 1.IOPrinters
-  - 2.StringClassification
-  - 3.StringFormatting
-  - 4.StringSearchCompareSubs
-  - 5.MemoryCopyMoveSplit
-  - 6.StructLinkedLists
-	- C2_GnL
-	- C2_Printf
-
-- C4_
+- #####
+- Mylibc
+	- Memory
+	- Data
+		- Array
+		- Single Linked Lists
+		- Doubly Linked Lists
+		- Binary Trees
+	- IOPrinters
+		- GnL
+		- Printf
+- #####
+- ALGO
+	- Push_Swap
+- #####
+- SYS
+	- Pipex
+- #####
+- GRAPHIC
+	- fdf (Fil de Fer)

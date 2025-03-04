@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # frontpage
-git clone git@github.com:diegonmarcos/profile.git
+git clone git@github.com:diegonmarcos/diegonmarcos.git profile
 # dev
 git clone git@github.com:diegonmarcos/dev.git
 # sys

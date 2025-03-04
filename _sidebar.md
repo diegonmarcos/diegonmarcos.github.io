@@ -2,20 +2,20 @@
 - ____________
 - ALGO
 	- Backtracking
-- 
+- .
 - SYS
 	- Multithreading Orcheastring and Shell Build
 	- WebServer
-- 
+- .
 - GRAPHIC
 	- 2D/3D Games
 	- Wireframe and Bresenham's line algorithm
-- 
+- .
 - MYLIBC
 	- Memory
 	- Data
 	- IO
-- 
+- .
 - TOOLS
 	- Unix
 	- Coding

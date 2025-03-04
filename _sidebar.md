@@ -13,7 +13,7 @@
 	- Data
 	- IO
 - TOOLS
-- ____________
+- ____________.
 - Tools
   - 42School
   - Unix
@@ -27,7 +27,7 @@
 	- Debuging
 	- Unit Testing
 	- Documentation
-- ____________
+- ____________.
 - Mylibc
 	- Memory
 	- Data

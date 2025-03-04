@@ -15,4 +15,4 @@ git clone git@github.com:diegonmarcos/mylib.git
 # front
 git clone git@github.com:diegonmarcos/front.git
 # website
-git clone git@github.com:diegonmarcos/website.git
+git clone git@github.com:diegonmarcos/diegonmarcos.github.io.git website

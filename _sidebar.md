@@ -9,12 +9,12 @@
 - .
 - GRAPHIC
 	- 2D/3D Games
-	- Wireframe and Bresenham's line algorithm
+	- Wireframe Render and Bresenham's line algorithm
 - .
 - MYLIBC
-	- Memory
-	- Data
+	- Memory Management
 	- IO
+	- Data Manipulation
 - .
 - TOOLS
 	- Unix

@@ -2,18 +2,25 @@
 - ____________
 - ALGO
 	- Backtracking
+- 
 - SYS
 	- Multithreading Orcheastring and Shell Build
 	- WebServer
+- 
 - GRAPHIC
 	- 2D/3D Games
 	- Wireframe and Bresenham's line algorithm
+- 
 - MYLIBC
 	- Memory
 	- Data
 	- IO
+- 
 - TOOLS
-- ____________.
+	- Unix
+	- Coding
+- ___
+- ___
 - Tools
   - 42School
   - Unix
@@ -27,7 +34,7 @@
 	- Debuging
 	- Unit Testing
 	- Documentation
-- ____________.
+- ____________
 - Mylibc
 	- Memory
 	- Data

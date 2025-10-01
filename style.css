@@ -1,5 +1,5 @@
 /*
-    Custom Color Palette
+    Custom Color Palette (Unchanged but included for context)
 */
 :root {
     --color-highlight-blue: #004c99; 
@@ -19,7 +19,7 @@ body {
     color: var(--color-text-dark); 
 }
 
-/* **Color Highlights** */
+/* Color Highlights (Unchanged) */
 .highlight-blue {
     color: var(--color-highlight-blue) !important; 
     font-weight: bold;
@@ -30,7 +30,7 @@ strong {
     font-weight: bold;
 }
 
-/* Container to mimic A4 paper size and margin/padding */
+/* Container to mimic A4 paper size (FIXED) */
 .cv-page {
     width: 210mm; 
     min-height: 297mm; 
@@ -39,12 +39,10 @@ strong {
     background: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; 
-    display: flex; /* Flex the content to place header above grid */
-    flex-direction: column;
+    /* REMOVED: display: flex and flex-direction: column from here */
 }
 
-/* 2. Header and Main Titles */
-
+/* 2. Header and Main Titles (Unchanged) */
 .header {
     display: flex;
     justify-content: space-between;
@@ -52,54 +50,35 @@ strong {
     margin-bottom: 20px;
 }
 
-.header .name {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: var(--color-highlight-blue); 
-    border-bottom: none;
-    margin: 0;
-}
+/* (Other header styles remain...) */
+.header .name { font-size: 1.8em; font-weight: bold; color: var(--color-highlight-blue); border-bottom: none; margin: 0; }
+.contact-info p { text-align: right; color: var(--color-text-medium); font-size: 0.8em; }
+h1 { font-size: 1.2em; text-transform: uppercase; border-bottom: 2px solid var(--color-text-dark); padding-bottom: 3px; margin-bottom: 10px; }
+h2 { font-size: 0.95em; text-transform: uppercase; font-weight: bold; margin-top: 15px; margin-bottom: 5px; color: var(--color-text-dark); border-bottom: 1px solid var(--color-separator); }
 
-.contact-info p {
-    text-align: right;
-    color: var(--color-text-medium); 
-    font-size: 0.8em; 
-}
+/* 3. Page 1 Main Content Layout (FIXED FLEXBOX) */
 
-h1 {
-    font-size: 1.2em;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--color-text-dark); 
-    padding-bottom: 3px;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 0.95em; 
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: var(--color-text-dark);
-    border-bottom: 1px solid var(--color-separator);
-}
-
-
-/* 3. Page 1 Main Content Layout (FIXED) */
-
-/* The new container for the full-length columns */
+/* The container for the full-length columns */
 .main-content-grid {
     display: flex;
-    flex-grow: 1; /* Allows the content to expand */
+    /* Use align-items: stretch to force the columns to match height */
+    align-items: stretch;
     gap: 15mm; 
+    /* Set a minimum height to force the columns down the page */
+    min-height: 220mm; 
 }
 
 /* Left column (sidebar) */
 .column-left {
     flex: 0 0 27%; 
-    display: flex; /* Allows content within the column to stack and push the last item down */
+    /* This setup ensures the column itself stretches */
+    display: flex; 
     flex-direction: column;
     height: 100%;
+    /* Add a visual right separator to emphasize the sidebar */
+    border-right: 1px solid var(--color-separator);
+    padding-right: 15mm; /* Compensate for the gap on the right */
+    margin-right: -15mm; /* Pull the element back into the gap space */
 }
 
 /* Right column (main content) */
@@ -110,110 +89,30 @@ h2 {
 /* Ensures the WWW@ links section is pushed to the bottom of the column */
 .column-left .links {
     margin-top: auto; 
+    padding-top: 15px; /* Add some space above the links */
+    border-top: 1px solid var(--color-separator); /* Add a separator line above WWW@ */
 }
 
-/* Resetting the Education layout (moved inside the right column) */
-.education-section {
-    display: block; /* Overrides previous flex if needed */
-}
+/* 4. Content Detail Styling (Unchanged) */
+/* (All other styling for p, li, job-entry, education-section, etc. remains the same) */
+p, li { font-size: 0.85em; margin: 3px 0; color: var(--color-text-dark); }
+ul { padding-left: 20px; margin: 5px 0 10px 0; }
+.job-entry .date, .edu-entry .date, .rel-entry .date { color: var(--color-text-medium); }
+.job-description, .edu-description, .rel-description { font-size: 0.8em; margin-left: 10px; color: var(--color-text-dark); }
+.links li { list-style: none; font-weight: bold; color: var(--color-highlight-blue); font-size: 0.85em; }
+.education-section { display: block; }
 
-/* 4. Content Detail Styling */
 
-p, li {
-    font-size: 0.85em; 
-    margin: 3px 0;
-    color: var(--color-text-dark); 
-}
+/* 5. Page 2 (Track Record) Specific Styling (Unchanged) */
+.track-record h2 { background-color: var(--color-bg-page2-h2); padding: 5px; margin-top: 15px; }
+.detailed-track li { font-size: 0.8em; margin-bottom: 3px; padding-left: 10px; text-indent: -10px; }
 
-ul {
-    padding-left: 20px;
-    margin: 5px 0 10px 0;
-}
-
-.job-entry .date, 
-.edu-entry .date, 
-.rel-entry .date {
-    color: var(--color-text-medium); 
-}
-
-.job-description, .edu-description, .rel-description {
-    font-size: 0.8em; 
-    margin-left: 10px;
-    color: var(--color-text-dark);
-}
-
-.links li {
-    list-style: none; 
-    font-weight: bold;
-    color: var(--color-highlight-blue);
-    font-size: 0.85em;
-}
-
-/* 5. Page 2 (Track Record) Specific Styling */
-
-.track-record h2 {
-    background-color: var(--color-bg-page2-h2); 
-    padding: 5px;
-    margin-top: 15px;
-}
-
-.detailed-track li {
-    font-size: 0.8em; 
-    margin-bottom: 3px;
-    padding-left: 10px;
-    text-indent: -10px; 
-}
-
-/* 6. Skills Section Layout (Table/Grid Visuals) */
-
-.roles-columns, .skills-columns, .tech-columns {
-    display: flex;
-    flex-wrap: wrap; 
-    margin-top: 10px;
-    margin-bottom: 15px;
-    border-top: 1px solid var(--color-separator);
-}
-
-.role-list, .skill-list {
-    flex: 0 0 25%; 
-    box-sizing: border-box;
-    padding: 5px 10px;
-    border-right: 1px solid var(--color-separator); 
-    border-bottom: 1px solid var(--color-separator); 
-    min-height: 100px;
-}
-
-.tech-list {
-    flex: 0 0 50%; 
-    box-sizing: border-box;
-    padding: 5px 10px;
-    border-right: 1px solid var(--color-separator);
-    border-bottom: 1px solid var(--color-separator);
-}
-
-.role-list:nth-child(4n), .skill-list:nth-child(4n), .tech-list:nth-child(2n) {
-    border-right: none;
-}
-
-.role-list h4, .skill-list h4, .tech-list h4 {
-    margin-top: 0;
-    margin-bottom: 5px;
-    font-size: 0.9em;
-    text-decoration: underline; 
-}
-
-.role-list ul, .skill-list ul, .tech-list ul {
-    list-style-type: none; 
-    padding-left: 0;
-}
-
-.soft-skills ul {
-    columns: 2; 
-    -webkit-columns: 2;
-    -moz-columns: 2;
-    margin-top: 10px;
-}
-
-.soft-skills li {
-    list-style-type: disc;
-}
+/* 6. Skills Section Layout (Table/Grid Visuals) (Unchanged) */
+.roles-columns, .skills-columns, .tech-columns { display: flex; flex-wrap: wrap; margin-top: 10px; margin-bottom: 15px; border-top: 1px solid var(--color-separator); }
+.role-list, .skill-list { flex: 0 0 25%; box-sizing: border-box; padding: 5px 10px; border-right: 1px solid var(--color-separator); border-bottom: 1px solid var(--color-separator); min-height: 100px; }
+.tech-list { flex: 0 0 50%; box-sizing: border-box; padding: 5px 10px; border-right: 1px solid var(--color-separator); border-bottom: 1px solid var(--color-separator); }
+.role-list:nth-child(4n), .skill-list:nth-child(4n), .tech-list:nth-child(2n) { border-right: none; }
+.role-list h4, .skill-list h4, .tech-list h4 { margin-top: 0; margin-bottom: 5px; font-size: 0.9em; text-decoration: underline; }
+.role-list ul, .skill-list ul, .tech-list ul { list-style-type: none; padding-left: 0; }
+.soft-skills ul { columns: 2; -webkit-columns: 2; -moz-columns: 2; margin-top: 10px; }
+.soft-skills li { list-style-type: disc; }

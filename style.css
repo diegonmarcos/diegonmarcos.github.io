@@ -1,0 +1,249 @@
+/*
+    Global and Base Styles
+    - Ensures clean slate and sets document font/size (using International units)
+*/
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Container for each page to mimic the PDF structure and size */
+.cv-page {
+    /* A4-ish page width - used 210mm as a standard A4 width */
+    width: 210mm; 
+    min-height: 297mm; /* A4 height */
+    margin: 20px auto;
+    padding: 20mm 15mm; /* Padding to mimic margins */
+    background: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+h1 {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    border-bottom: 2px solid #000;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+h2 {
+    font-size: 1em;
+    text-transform: uppercase;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #333;
+    border-bottom: 1px solid #ccc; /* Subtle line under section headers */
+}
+
+h3 {
+    font-size: 0.9em;
+    text-transform: uppercase;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+p, li {
+    font-size: 0.9em;
+    margin: 3px 0;
+}
+
+ul {
+    padding-left: 20px;
+    margin: 5px 0 10px 0;
+}
+
+/* --- Page 1 Specific Layout --- */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.header .name {
+    font-size: 1.8em;
+    border-bottom: none;
+    margin: 0;
+}
+
+.contact-info {
+    text-align: right;
+}
+
+.bio-section {
+    display: flex;
+    gap: 15mm; /* Space between the two columns on page 1 */
+}
+
+.column-left {
+    flex: 0 0 30%; /* Fixed width for the left column (TLDR, Skills) */
+}
+
+.column-right {
+    flex: 1; /* Takes up the remaining space for the Summary */
+}
+
+.tldr p {
+    font-weight: bold;
+}
+
+/* Experience and Education sections on Page 1 */
+.experience, .education-section {
+    margin-top: 20px;
+}
+
+.experience h2 {
+    margin-bottom: 15px;
+}
+
+.job-entry, .edu-entry {
+    margin-bottom: 10px;
+}
+
+.job-title-date, .edu-title-date {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.job-description, .edu-description {
+    font-size: 0.85em;
+    margin-left: 10px;
+}
+
+.education-section {
+    display: flex;
+    gap: 15mm;
+}
+
+.education-column, .relevant-column {
+    flex: 1;
+}
+
+.links h2 {
+    margin-top: 30px;
+}
+
+.links li {
+    list-style: none; /* Remove bullet points for links */
+    padding-left: 0;
+    font-weight: bold;
+}
+
+
+/* --- Page 2 Specific Layout (Track Record & Skills) --- */
+
+.page-2 h1 {
+    font-size: 1.4em;
+    text-align: center;
+}
+
+.track-record h2 {
+    /* Custom style for the main section headers on page 2 */
+    background-color: #eee;
+    padding: 5px;
+    border: none;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.track-record h3 {
+    font-weight: bold;
+    text-decoration: underline;
+    margin-left: 10px;
+}
+
+.track-record h4 {
+    font-weight: bold;
+    margin-left: 20px;
+    font-size: 0.85em;
+}
+
+.detailed-track ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 10px;
+}
+
+.detailed-track li {
+    font-size: 0.85em;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    text-indent: -10px; /* Aligns the i), ii), etc. */
+}
+
+/* Skills section on Page 3 (mimicking three columns/sections) */
+.skills-page-3 h2 {
+    margin-top: 25px;
+}
+
+.roles-columns, .skills-columns, .tech-columns {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    margin-bottom: 15px;
+}
+
+.role-list, .skill-list, .tech-list {
+    flex: 0 0 23%; /* Approx four columns */
+    padding-right: 1%;
+    box-sizing: border-box;
+}
+
+.soft-skills ul {
+    columns: 2; /* Two-column layout for soft skills */
+    -webkit-columns: 2;
+    -moz-columns: 2;
+}
+
+.soft-skills li {
+    list-style-type: disc;
+}
+
+/* Responsive adjustments for smaller screens (e.g., viewing without fixed A4 width) */
+@media (max-width: 900px) {
+    .cv-page {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contact-info {
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .bio-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .column-left, .column-right {
+        flex: auto;
+    }
+
+    .education-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .roles-columns, .skills-columns, .tech-columns {
+        flex-direction: column;
+    }
+
+    .role-list, .skill-list, .tech-list {
+        flex: auto;
+        padding-right: 0;
+        margin-bottom: 10px;
+    }
+}

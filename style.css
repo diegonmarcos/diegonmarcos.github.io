@@ -1,26 +1,30 @@
 /*
-    Custom Color Palette (ADJUSTMENT 2)
+    Custom Color Palette (Final Refinement)
 */
 :root {
-    --color-primary-blue: #0056b3; /* Dark professional blue for the main title and highlighted text */
-    --color-text-dark: #333;       /* Main body text (dark gray) */
-    --color-text-medium: #666;     /* Details/Date text (medium gray) */
-    --color-text-light: #999;      /* Lightest gray for separators */
-    --color-separator: #ccc;       /* Light gray for dividing lines */
-    --color-bg-page2-h2: #eee;
+    /* Deep Navy Blue for Titles, Names, and Key Highlights */
+    --color-highlight-blue: #004c99; 
+    /* Main body text color (Deep, soft gray) */
+    --color-text-dark: #333333;       
+    /* Details, Dates, and secondary information (Medium gray) */
+    --color-text-medium: #666666;     
+    /* Light gray for dividing lines */
+    --color-separator: #cccccc;       
+    /* Light gray background for page 2 section headers */
+    --color-bg-page2-h2: #eeeeee;
 }
 
-/* Global and Base Styles */
+/* 1. Global and Base Styles */
 body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
+    font-family: Arial, Helvetica, sans-serif; /* Adjusted to be more common */
+    line-height: 1.4; /* Tighter line height for the dense PDF look */
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    color: var(--color-text-dark); /* Set main text color to dark gray */
+    color: var(--color-text-dark); 
 }
 
-/* Container for each page to mimic the PDF structure and size */
+/* Container to mimic A4 paper size and margin/padding */
 .cv-page {
     width: 210mm; 
     min-height: 297mm; 
@@ -31,35 +35,11 @@ body {
     box-sizing: border-box; 
 }
 
-/* Titles and Headers */
-h1 {
-    font-size: 1.2em;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--color-separator);
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 1em;
-    text-transform: uppercase;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: var(--color-text-dark);
-    border-bottom: 1px solid var(--color-separator);
-}
-
-h3 {
-    font-size: 0.9em;
-    text-transform: uppercase;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
+/* Default font size for most content (p, li) is set here */
 p, li {
-    font-size: 0.9em;
+    font-size: 0.85em; /* Small, tight font size to match PDF density */
     margin: 3px 0;
-    color: var(--color-text-dark); /* Ensure all standard text is dark gray */
+    color: var(--color-text-dark); 
 }
 
 ul {
@@ -67,146 +47,133 @@ ul {
     margin: 5px 0 10px 0;
 }
 
-/* --- Page 1 Specific Layout --- */
+/* 2. Header and Main Titles */
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 20px;
-}
-
-/* ADJUSTMENT: Apply blue to the main name */
+/* Main Name (Largest Font, Highlight Blue) */
 .header .name {
     font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-highlight-blue); 
     border-bottom: none;
     margin: 0;
-    color: var(--color-primary-blue); 
 }
 
-/* ADJUSTMENT: Apply lighter gray to contact details */
+/* Contact Info (Small and Medium Gray) */
 .contact-info p {
     text-align: right;
     color: var(--color-text-medium);
-    font-size: 0.85em;
+    font-size: 0.8em; 
 }
 .contact-info strong {
-    color: var(--color-text-dark); /* Keep the "CONTACT" label dark */
+    color: var(--color-text-dark); 
+    font-size: 0.9em;
 }
 
-.bio-section {
-    display: flex;
-    gap: 15mm; 
-}
-
-.column-left {
-    flex: 0 0 30%; 
-}
-
-.column-right {
-    flex: 1; 
-}
-
-/* ADJUSTMENT: Apply blue to key role highlights in TL;DR */
-.tldr strong {
-    font-weight: bold;
-    color: var(--color-primary-blue); 
-}
-
-/* ADJUSTMENT: Apply lighter gray to dates and key information in job entries */
-.job-entry, .edu-entry {
+/* H1 Titles (Section Headers on Page 1) */
+h1 {
+    font-size: 1.2em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--color-text-dark); 
+    padding-bottom: 3px;
     margin-bottom: 10px;
 }
 
-.job-title-date, .edu-title-date {
+/* H2 Titles (Sub-Sections on Page 1) */
+h2 {
+    font-size: 0.95em; /* Slightly smaller than H1 */
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: var(--color-text-dark);
+    border-bottom: 1px solid var(--color-separator);
+}
+
+
+/* 3. Section Content and Colors */
+
+/* TL;DR and Summary Text */
+.tldr strong, 
+.summary strong {
+    color: var(--color-highlight-blue); /* Highlight Blue for key concepts */
+    font-weight: bold; 
+}
+
+/* Experience and Education Blocks */
+.job-entry, .edu-entry, .rel-entry {
+    margin-bottom: 8px; /* Tighter spacing */
+}
+
+.job-title-date, .edu-title-date, .rel-title-date {
     display: flex;
     justify-content: space-between;
+    font-size: 0.85em; 
     font-weight: bold;
-    font-size: 0.9em;
-    color: var(--color-text-dark); /* Keep job title/degree dark */
 }
 
-.job-entry .date, .edu-entry .date, .rel-entry .date {
-    color: var(--color-text-medium);
+/* Dates (Medium Gray) */
+.job-entry .date, 
+.edu-entry .date, 
+.rel-entry .date {
+    color: var(--color-text-medium); 
 }
 
+/* Descriptions (Slightly Smaller, Medium Gray Text) */
 .job-description, .edu-description, .rel-description {
-    font-size: 0.85em;
+    font-size: 0.8em; 
     margin-left: 10px;
-}
-
-.education-section {
-    display: flex;
-    gap: 15mm;
-}
-
-.education-column, .relevant-column {
-    flex: 1;
-}
-
-.links h2 {
-    margin-top: 30px;
-}
-
-.links li {
-    list-style: none; 
-    padding-left: 0;
-    font-weight: bold;
     color: var(--color-text-dark);
 }
 
+/* WWW@ Links (Highlight Blue) */
+.links li {
+    list-style: none; 
+    font-weight: bold;
+    color: var(--color-highlight-blue);
+    font-size: 0.85em;
+}
 
-/* --- Page 2 Specific Layout (Track Record & Skills) --- */
+/* 4. Page 2 (Track Record) Specific Styling */
 
+/* Main Track Record Title */
 .page-2 h1 {
     font-size: 1.4em;
     text-align: center;
-    color: var(--color-text-dark); /* Keep main heading dark, but a strong contrast */
+    color: var(--color-text-dark);
 }
 
+/* H2/Summary Headers (Light Gray Background Block) */
 .track-record h2 {
-    /* Custom style for the main section headers on page 2 */
-    background-color: var(--color-bg-page2-h2); /* Light gray background */
+    background-color: var(--color-bg-page2-h2); 
     padding: 5px;
-    border: none;
-    margin-top: 20px;
+    margin-top: 15px;
+}
+
+/* Strong emphasis within the Track Record Lists (Highlight Blue) */
+.professional-summary strong, 
+.relevant-summary strong, 
+.academic-summary strong {
+    color: var(--color-highlight-blue);
     font-weight: bold;
 }
 
-.track-record h3 {
-    font-weight: bold;
-    text-decoration: underline;
-    margin-left: 10px;
+/* Detailed Track Record Item Lists */
+.detailed-track li {
+    font-size: 0.8em; /* Very small text for dense lists */
+    margin-bottom: 3px;
+    padding-left: 10px;
+    text-indent: -10px; 
 }
 
+/* H4 Titles (System, Data, Graph) */
 .track-record h4 {
     font-weight: bold;
     margin-left: 20px;
     font-size: 0.85em;
 }
 
-/* ADJUSTMENT: Apply blue to the strong titles in the summary lists */
-.professional-summary strong, .relevant-summary strong, .academic-summary strong {
-    color: var(--color-primary-blue);
-    font-weight: bold;
-}
 
-.detailed-track ul {
-    list-style-type: none; 
-    padding-left: 10px;
-}
-
-.detailed-track li {
-    font-size: 0.85em;
-    margin-bottom: 5px;
-    padding-left: 10px;
-    text-indent: -10px; 
-}
-
-/* Skills section on Page 3 (mimicking three columns/sections) */
-.skills-page-3 h2 {
-    margin-top: 25px;
-}
+/* 5. Skills Section (4 Columns) */
 
 .roles-columns, .skills-columns, .tech-columns {
     display: flex;
@@ -221,6 +188,7 @@ ul {
     box-sizing: border-box;
 }
 
+/* Soft Skills list in two columns */
 .soft-skills ul {
     columns: 2; 
     -webkit-columns: 2;

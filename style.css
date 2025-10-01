@@ -1,5 +1,5 @@
 /*
-    Custom Color Palette (Final Refinement)
+    Custom Color Palette
 */
 :root {
     /* Deep Navy Blue for Titles, Names, and Key Highlights */
@@ -24,10 +24,9 @@ body {
     color: var(--color-text-dark); /* Default body text color */
 }
 
-/* **DEBUGGED RULE: HIGH SPECIFICITY FOR BLUE HIGHLIGHT** */
-/* This ensures the blue color and bold font are applied correctly everywhere. */
+/* **Color Highlights (Debugged)** */
 .highlight-blue {
-    color: var(--color-highlight-blue) !important; /* Added !important as a last resort to guarantee override */
+    color: var(--color-highlight-blue) !important; 
     font-weight: bold;
 }
 
@@ -99,7 +98,24 @@ h2 {
 }
 
 
-/* 3. Section Content and Colors */
+/* 3. Page 1 Column Layout (ADJUSTED WIDTHS) */
+
+.bio-section {
+    display: flex;
+    gap: 15mm; 
+}
+
+/* ADJUSTED: Left column is set to 27% of the available width */
+.column-left {
+    flex: 0 0 27%; 
+}
+
+/* ADJUSTED: Right column takes the remaining 73%, making it significantly wider */
+.column-right {
+    flex: 1; 
+}
+
+/* 4. Content Detail Styling */
 
 /* Dates/Time (Medium Gray) */
 .job-entry .date, 
@@ -123,7 +139,7 @@ h2 {
     font-size: 0.85em;
 }
 
-/* 4. Page 2 (Track Record) Specific Styling */
+/* 5. Page 2 (Track Record) Specific Styling */
 
 /* H2/Summary Headers (Light Gray Background Block) */
 .track-record h2 {
@@ -148,25 +164,7 @@ h2 {
 }
 
 
-/* 5. Layout (No Color Changes Here) */
-
-.bio-section {
-    display: flex;
-    gap: 15mm; 
-}
-
-.column-left {
-    flex: 0 0 30%; 
-}
-
-.column-right {
-    flex: 1; 
-}
-
-.education-section {
-    display: flex;
-    gap: 15mm;
-}
+/* 6. Skills Section Layout */
 
 .roles-columns, .skills-columns, .tech-columns {
     display: flex;

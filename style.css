@@ -24,15 +24,16 @@ body {
     color: var(--color-text-dark); /* Default body text color */
 }
 
-/* Universal rule for all bold text: Dark Gray/Black */
-strong {
-    color: var(--color-text-dark);
+/* **DEBUGGED RULE: HIGH SPECIFICITY FOR BLUE HIGHLIGHT** */
+/* This ensures the blue color and bold font are applied correctly everywhere. */
+.highlight-blue {
+    color: var(--color-highlight-blue) !important; /* Added !important as a last resort to guarantee override */
     font-weight: bold;
 }
 
-/* NEW RULE: Override for text that should be Blue Bold */
-.highlight-blue {
-    color: var(--color-highlight-blue);
+/* Universal rule for all other bold text: Dark Gray/Black */
+strong {
+    color: var(--color-text-dark);
     font-weight: bold;
 }
 
@@ -73,7 +74,7 @@ ul {
 /* Contact Info (Small and Medium Gray) */
 .contact-info p {
     text-align: right;
-    color: var(--color-text-medium); /* Light Gray */
+    color: var(--color-text-medium); 
     font-size: 0.8em; 
 }
 

@@ -1,31 +1,41 @@
 /*
-    Global and Base Styles
-    - Ensures clean slate and sets document font/size (using International units)
+    Custom Color Palette (ADJUSTMENT 2)
 */
+:root {
+    --color-primary-blue: #0056b3; /* Dark professional blue for the main title and highlighted text */
+    --color-text-dark: #333;       /* Main body text (dark gray) */
+    --color-text-medium: #666;     /* Details/Date text (medium gray) */
+    --color-text-light: #999;      /* Lightest gray for separators */
+    --color-separator: #ccc;       /* Light gray for dividing lines */
+    --color-bg-page2-h2: #eee;
+}
+
+/* Global and Base Styles */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    color: var(--color-text-dark); /* Set main text color to dark gray */
 }
 
 /* Container for each page to mimic the PDF structure and size */
 .cv-page {
-    /* A4-ish page width - used 210mm as a standard A4 width */
     width: 210mm; 
-    min-height: 297mm; /* A4 height */
+    min-height: 297mm; 
     margin: 20px auto;
-    padding: 20mm 15mm; /* Padding to mimic margins */
+    padding: 20mm 15mm; 
     background: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    box-sizing: border-box; 
 }
 
+/* Titles and Headers */
 h1 {
     font-size: 1.2em;
     text-transform: uppercase;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--color-separator);
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
@@ -35,8 +45,8 @@ h2 {
     text-transform: uppercase;
     margin-top: 15px;
     margin-bottom: 5px;
-    color: #333;
-    border-bottom: 1px solid #ccc; /* Subtle line under section headers */
+    color: var(--color-text-dark);
+    border-bottom: 1px solid var(--color-separator);
 }
 
 h3 {
@@ -49,6 +59,7 @@ h3 {
 p, li {
     font-size: 0.9em;
     margin: 3px 0;
+    color: var(--color-text-dark); /* Ensure all standard text is dark gray */
 }
 
 ul {
@@ -65,42 +76,44 @@ ul {
     margin-bottom: 20px;
 }
 
+/* ADJUSTMENT: Apply blue to the main name */
 .header .name {
     font-size: 1.8em;
     border-bottom: none;
     margin: 0;
+    color: var(--color-primary-blue); 
 }
 
-.contact-info {
+/* ADJUSTMENT: Apply lighter gray to contact details */
+.contact-info p {
     text-align: right;
+    color: var(--color-text-medium);
+    font-size: 0.85em;
+}
+.contact-info strong {
+    color: var(--color-text-dark); /* Keep the "CONTACT" label dark */
 }
 
 .bio-section {
     display: flex;
-    gap: 15mm; /* Space between the two columns on page 1 */
+    gap: 15mm; 
 }
 
 .column-left {
-    flex: 0 0 30%; /* Fixed width for the left column (TLDR, Skills) */
+    flex: 0 0 30%; 
 }
 
 .column-right {
-    flex: 1; /* Takes up the remaining space for the Summary */
+    flex: 1; 
 }
 
-.tldr p {
+/* ADJUSTMENT: Apply blue to key role highlights in TL;DR */
+.tldr strong {
     font-weight: bold;
+    color: var(--color-primary-blue); 
 }
 
-/* Experience and Education sections on Page 1 */
-.experience, .education-section {
-    margin-top: 20px;
-}
-
-.experience h2 {
-    margin-bottom: 15px;
-}
-
+/* ADJUSTMENT: Apply lighter gray to dates and key information in job entries */
 .job-entry, .edu-entry {
     margin-bottom: 10px;
 }
@@ -110,9 +123,14 @@ ul {
     justify-content: space-between;
     font-weight: bold;
     font-size: 0.9em;
+    color: var(--color-text-dark); /* Keep job title/degree dark */
 }
 
-.job-description, .edu-description {
+.job-entry .date, .edu-entry .date, .rel-entry .date {
+    color: var(--color-text-medium);
+}
+
+.job-description, .edu-description, .rel-description {
     font-size: 0.85em;
     margin-left: 10px;
 }
@@ -131,9 +149,10 @@ ul {
 }
 
 .links li {
-    list-style: none; /* Remove bullet points for links */
+    list-style: none; 
     padding-left: 0;
     font-weight: bold;
+    color: var(--color-text-dark);
 }
 
 
@@ -142,11 +161,12 @@ ul {
 .page-2 h1 {
     font-size: 1.4em;
     text-align: center;
+    color: var(--color-text-dark); /* Keep main heading dark, but a strong contrast */
 }
 
 .track-record h2 {
     /* Custom style for the main section headers on page 2 */
-    background-color: #eee;
+    background-color: var(--color-bg-page2-h2); /* Light gray background */
     padding: 5px;
     border: none;
     margin-top: 20px;
@@ -165,8 +185,14 @@ ul {
     font-size: 0.85em;
 }
 
+/* ADJUSTMENT: Apply blue to the strong titles in the summary lists */
+.professional-summary strong, .relevant-summary strong, .academic-summary strong {
+    color: var(--color-primary-blue);
+    font-weight: bold;
+}
+
 .detailed-track ul {
-    list-style-type: none; /* Remove default bullets */
+    list-style-type: none; 
     padding-left: 10px;
 }
 
@@ -174,7 +200,7 @@ ul {
     font-size: 0.85em;
     margin-bottom: 5px;
     padding-left: 10px;
-    text-indent: -10px; /* Aligns the i), ii), etc. */
+    text-indent: -10px; 
 }
 
 /* Skills section on Page 3 (mimicking three columns/sections) */
@@ -185,65 +211,22 @@ ul {
 .roles-columns, .skills-columns, .tech-columns {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    flex-wrap: wrap; 
     margin-bottom: 15px;
 }
 
 .role-list, .skill-list, .tech-list {
-    flex: 0 0 23%; /* Approx four columns */
+    flex: 0 0 23%; 
     padding-right: 1%;
     box-sizing: border-box;
 }
 
 .soft-skills ul {
-    columns: 2; /* Two-column layout for soft skills */
+    columns: 2; 
     -webkit-columns: 2;
     -moz-columns: 2;
 }
 
 .soft-skills li {
     list-style-type: disc;
-}
-
-/* Responsive adjustments for smaller screens (e.g., viewing without fixed A4 width) */
-@media (max-width: 900px) {
-    .cv-page {
-        width: 100%;
-        min-height: auto;
-        padding: 20px;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .contact-info {
-        text-align: left;
-        margin-top: 10px;
-    }
-
-    .bio-section {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .column-left, .column-right {
-        flex: auto;
-    }
-
-    .education-section {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .roles-columns, .skills-columns, .tech-columns {
-        flex-direction: column;
-    }
-
-    .role-list, .skill-list, .tech-list {
-        flex: auto;
-        padding-right: 0;
-        margin-bottom: 10px;
-    }
 }

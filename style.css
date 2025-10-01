@@ -104,7 +104,7 @@ h2 {
 }
 
 
-/* 4. Page 2 Summary Layout (NEW FIX) */
+/* 4. Page 2 Summary Layout (TWO-COLUMN FIX) */
 .page-2-summary-grid {
     display: flex;
     justify-content: space-between;
@@ -113,11 +113,11 @@ h2 {
 }
 
 .page-2-summary-left {
-    flex: 1; /* Takes one half */
+    flex: 1; 
 }
 
 .page-2-summary-right {
-    flex: 1; /* Takes the other half */
+    flex: 1; 
 }
 
 /* 5. Content Detail Styling */
@@ -132,6 +132,7 @@ ul { padding-left: 20px; margin: 5px 0 10px 0; }
 .detailed-track li { font-size: 0.8em; margin-bottom: 3px; padding-left: 10px; text-indent: -10px; }
 
 /* 7. Skills Section Layout (Table/Grid Visuals) */
+/* This applies to the new Page 3 content */
 .roles-columns, .skills-columns, .tech-columns { display: flex; flex-wrap: wrap; margin-top: 10px; margin-bottom: 15px; border-top: 1px solid var(--color-separator); }
 .role-list, .skill-list { flex: 0 0 25%; box-sizing: border-box; padding: 5px 10px; border-right: 1px solid var(--color-separator); border-bottom: 1px solid var(--color-separator); min-height: 100px; }
 .tech-list { flex: 0 0 50%; box-sizing: border-box; padding: 5px 10px; border-right: 1px solid var(--color-separator); border-bottom: 1px solid var(--color-separator); }

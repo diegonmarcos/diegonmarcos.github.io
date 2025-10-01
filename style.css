@@ -1,5 +1,5 @@
 /*
-    Custom Color Palette (Unchanged)
+    Custom Color Palette (Unchanged but included for context)
 */
 :root {
     --color-highlight-blue: #004c99; 
@@ -19,7 +19,7 @@ body {
     color: var(--color-text-dark); 
 }
 
-/* Color Highlights */
+/* Color Highlights (Unchanged) */
 .highlight-blue {
     color: var(--color-highlight-blue) !important; 
     font-weight: bold;
@@ -39,7 +39,7 @@ strong {
     background: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box; 
-    /* The header is now separate from the grid, so we remove the page-level flex */
+    /* REMOVED: display: flex and flex-direction: column from here */
 }
 
 /* 2. Header and Main Titles (Unchanged) */
@@ -49,29 +49,14 @@ strong {
     align-items: flex-end;
     margin-bottom: 20px;
 }
+
+/* (Other header styles remain...) */
 .header .name { font-size: 1.8em; font-weight: bold; color: var(--color-highlight-blue); border-bottom: none; margin: 0; }
 .contact-info p { text-align: right; color: var(--color-text-medium); font-size: 0.8em; }
+h1 { font-size: 1.2em; text-transform: uppercase; border-bottom: 2px solid var(--color-text-dark); padding-bottom: 3px; margin-bottom: 10px; }
+h2 { font-size: 0.95em; text-transform: uppercase; font-weight: bold; margin-top: 15px; margin-bottom: 5px; color: var(--color-text-dark); border-bottom: 1px solid var(--color-separator); }
 
-h1 {
-    font-size: 1.2em;
-    text-transform: uppercase;
-    border-bottom: 2px solid var(--color-text-dark); 
-    padding-bottom: 3px;
-    margin-bottom: 10px;
-}
-
-h2 {
-    font-size: 0.95em; 
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 5px;
-    color: var(--color-text-dark);
-    border-bottom: 1px solid var(--color-separator);
-}
-
-
-/* 3. Page 1 Main Content Layout (FIXED AND STRETCHED) */
+/* 3. Page 1 Main Content Layout (FIXED FLEXBOX) */
 
 /* The container for the full-length columns */
 .main-content-grid {
@@ -86,7 +71,7 @@ h2 {
 /* Left column (sidebar) */
 .column-left {
     flex: 0 0 27%; 
-    /* Enables content to stack and push the last item to the bottom */
+    /* This setup ensures the column itself stretches */
     display: flex; 
     flex-direction: column;
     height: 100%;
@@ -104,21 +89,19 @@ h2 {
 /* Ensures the WWW@ links section is pushed to the bottom of the column */
 .column-left .links {
     margin-top: auto; 
-    padding-top: 15px; 
-    border-top: 1px solid var(--color-separator); 
-}
-
-/* Education section on the right side should stack vertically */
-.education-section {
-    display: block; 
+    padding-top: 15px; /* Add some space above the links */
+    border-top: 1px solid var(--color-separator); /* Add a separator line above WWW@ */
 }
 
 /* 4. Content Detail Styling (Unchanged) */
+/* (All other styling for p, li, job-entry, education-section, etc. remains the same) */
 p, li { font-size: 0.85em; margin: 3px 0; color: var(--color-text-dark); }
 ul { padding-left: 20px; margin: 5px 0 10px 0; }
 .job-entry .date, .edu-entry .date, .rel-entry .date { color: var(--color-text-medium); }
 .job-description, .edu-description, .rel-description { font-size: 0.8em; margin-left: 10px; color: var(--color-text-dark); }
 .links li { list-style: none; font-weight: bold; color: var(--color-highlight-blue); font-size: 0.85em; }
+.education-section { display: block; }
+
 
 /* 5. Page 2 (Track Record) Specific Styling (Unchanged) */
 .track-record h2 { background-color: var(--color-bg-page2-h2); padding: 5px; margin-top: 15px; }

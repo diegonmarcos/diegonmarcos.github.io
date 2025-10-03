@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diego Nepomuceno Marcos - Profile</title>
+    <style>
+        /* Base Styles & Mobile First */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            background-color: #0d1117; /* Dark background similar to the screenshot */
+            color: #c9d1d9; /* Light text color */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* --- Main Index Page (index.html) Style --- */
+        .container {
+            max-width: 450px; /* Constrain for a mobile-like view */
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .header-bg {
+            /* Placeholder for the dynamic background image */
+            background: url('underwater_placeholder.jpg') no-repeat center center/cover; 
+            background-color: #011627;
+            padding: 40px 0 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .title-area {
+            font-size: 1.2rem;
+            font-weight: 300;
+            padding: 10px;
+            color: #ffffff;
+        }
+
+        .title-area p {
+            margin: 5px 0;
+            opacity: 0.8;
+        }
+        
+        .main-title {
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .link-button {
+            display: block;
+            background: rgba(4, 54, 85, 0.6); /* Slightly transparent blue/dark background */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 15px 20px;
+            margin: 15px 0;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: background 0.3s, border-color 0.3s;
+            text-transform: uppercase;
+        }
+
+        .link-button:hover {
+            background: rgba(4, 54, 85, 0.8);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Social/Contact Icons Placeholder */
+        .social-links {
+            padding: 10px 0;
+        }
+        .social-links a {
+            color: #c9d1d9;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 1.5rem;
+        }
+        .social-links a:hover {
+            color: #58a6ff;
+        }
+        
+        .section-header {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 30px;
+            color: #8b949e;
+        }
+
+        /* --- Content Pages (About, Experience, Personal) Style --- */
+        .content-page {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #30363d;
+        }
+
+        .content-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .close-btn {
+            text-decoration: none;
+            color: #c9d1d9;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .content-section h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            color: #58a6ff; /* Highlight for section titles */
+        }
+        
+        /* Specific list style for cleaner presentation */
+        .content-section ul, .content-section p, .content-section div {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .content-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .content-section ul li {
+            position: relative;
+            margin-bottom: 10px;
+            padding-left: 15px;
+        }
+        
+        .content-section ul li:before {
+            content: '-'; /* Mimics the list style in the image */
+            position: absolute;
+            left: 0;
+            color: #58a6ff;
+            font-weight: bold;
+        }
+        
+        .emoji {
+            font-size: 1.1em;
+            margin-right: 5px;
+        }
+        
+        .tl-dr-box {
+            background-color: #161b22;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #58a6ff;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-bg">
+    <div class="container">
+        <div class="main-title">Diego Nepomuceno Marcos</div>
+        <div class="title-area">
+            <p>Product & Software Eng Std | Venture Capital Analyst</p>
+            <p>Civil Structural Engineer B.Sc.</p>
+        </div>
+        <div class="social-links">
+            <a href="#"><span class="emoji">🔗</span></a>
+            <a href="#"><span class="emoji">📧</span></a>
+            <a href="#"><span class="emoji">✈️</span></a>
+        </div>
+        
+        <a href="#about" class="link-button">A.bout</a>
+        <a href="#experience" class="link-button">E.xperience</a>
+        <a href="#personal" class="link-button">P.ersonal</a>
+        
+        <a href="#contact" class="link-button">Contact</a>
+        <a href="#telegram" class="link-button">Telegram</a>
+    </div>
+</div>
+
+<div class="content-page" id="about">
+    <div class="content-header">
+        <div class="content-title">A.bout</div>
+        <a href="#" class="close-btn">&times;</a>
+    </div>
+    <div class="content-section">
+        <p>
+            <strong>Diego Nepomuceno Marcos</strong>
+        </p>
+        <p>
+            <span class="emoji">✍️</span> Product n' Software Eng Std | <span class="emoji">🎩</span> Venture Capital n' Portfolio Manager Analyst | <span class="emoji">🏗️</span> Civil Engineer B.Sc. | <span class="emoji">🇩🇪</span> @BERlin.de <span class="emoji">💻</span>
+        </p>
+        <div class="tl-dr-box">
+            <h2>@tl;dr</h2>
+            <p>
+                - Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 35+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="content-page" id="experience">
+    <div class="content-header">
+        <div class="content-title">E.xperience</div>
+        <a href="#" class="close-btn">&times;</a>
+    </div>
+    <div class="content-section">
+        <h2>- COMPUTER SCIENCE:</h2>
+        <div>In a two-years Software Engineering course pursuing a career shift.</div>
+
+        <h2>- CAPITAL MARKETS:</h2>
+        <div>For 10 years in Capital Markets, played roles as Investment Banker, Venture Capitalist, Portfolio Manager in WM and RE Private Equity Analyst.</div>
+
+        <h2>- CORPORATE BUSINESS:</h2>
+        <div>For 4 years in Real Estate Development played roles in: Construction, FP&A and Investor Relations.</div>
+
+        <h2>- INTERNATIONAL EXPERIENCE:</h2>
+        <div>For 5 years, travelled to 170+ cities over 35+ countries across 5 continents; lived in 5 European cities, born and raised in São Paulo.</div>
+
+        <h2>- NGO:</h2>
+        <div>For 2 years in Socioeconomic Development worked at an NGO on social development and poverty alleviation.</div>
+
+        <h2>- ARMY:</h2>
+        <div>For 1 year studied as cadet in Army Reserve Officers' Training Corps. Graded as 2nd Lieutenant for the logistics battalion.</div>
+
+        <h2>- CS&PM:</h2>
+        <div>Softw. Eng. (2y), PM (1m).</div>
+
+        <h2>- CM:</h2>
+        <div>IB, PE, PM (1y).</div>
+
+        <h2>- ENGINEERING:</h2>
+        <div>Five-year B.Sc in Civil Structural Engineering.</div>
+
+        <h2>- LANGUAGES:</h2>
+        <div><span class="emoji">🇧🇷</span> (Native), <span class="emoji">🇪🇸</span> (C1), <span class="emoji">🇬🇧</span> (B1), <span class="emoji">🇩🇪</span> (A1), Spanish/Brazilian citizenship.</div>
+    </div>
+</div>
+
+<div class="content-page" id="personal">
+    <div class="content-header">
+        <div class="content-title">P.ersonal</div>
+        <a href="#" class="close-btn">&times;</a>
+    </div>
+    <div class="content-section">
+        <h2>@about</h2>
+        <div>Culture <span class="emoji">🇨🇳</span>, Heritage <span class="emoji">🇪🇸</span> | Born <span class="emoji">🇧🇷</span>, Based <span class="emoji">🇩🇪</span></div>
+        <div>Engineer <span class="emoji">🏗️</span>, Venture Capital <span class="emoji">🎩</span>, Coding <span class="emoji">👾</span></div>
+        
+        <h2>@Interests</h2>
+        <ul>
+            <li>Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.</li>
+        </ul>
+
+        <h2>- Played:</h2>
+        <ul>
+            <li>Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y).</li>
+        </ul>
+
+        <h2>- Pursuing:</h2>
+        <ul>
+            <li>Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

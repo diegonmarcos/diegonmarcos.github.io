@@ -28,30 +28,15 @@
 
         .header-bg {
             /* Placeholder for the dynamic background image */
-            /* You would replace 'underwater_placeholder.jpg' with an actual image URL */
             background: url('underwater_placeholder.jpg') no-repeat center center/cover; 
             background-color: #011627;
-            padding: 40px 0 20px 0;
-            margin-bottom: 20px;
+            /* Adjusted padding to center the new, smaller content block */
+            padding: 100px 0 100px 0; 
             border-bottom: 1px solid #30363d;
-        }
-
-        .title-area {
-            font-size: 1.2rem;
-            font-weight: 300;
-            padding: 10px;
-            color: #ffffff;
-        }
-
-        .title-area p {
-            margin: 5px 0;
-            opacity: 0.8;
-        }
-        
-        .main-title {
-            font-weight: 600;
-            font-size: 1.5rem;
-            margin-bottom: 5px;
+            height: 100vh; /* Make the background fill the screen if content is small */
+            display: flex;
+            align-items: center; /* Center content vertically */
+            justify-content: center;
         }
 
         .link-button {
@@ -73,27 +58,16 @@
             background: rgba(4, 54, 85, 0.8);
             border-color: rgba(255, 255, 255, 0.4);
         }
-
-        /* Social/Contact Icons Placeholder */
-        .social-links {
-            padding: 10px 0;
-        }
-        .social-links a {
-            color: #c9d1d9;
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 1.5rem;
-        }
-        .social-links a:hover {
-            color: #58a6ff;
-        }
         
-        .section-header {
-            text-transform: uppercase;
-            font-size: 0.9rem;
-            font-weight: 500;
+        /* New style for the "Back" button to differentiate it slightly */
+        .link-button.back-btn {
             margin-top: 30px;
-            color: #8b949e;
+            background: rgba(100, 100, 100, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+        .link-button.back-btn:hover {
+            background: rgba(100, 100, 100, 0.5);
         }
 
         /* --- Content Pages (About, Experience, Personal) Style --- */
@@ -135,10 +109,12 @@
             z-index: 10; /* Keep it above the content */
             max-width: 450px; /* Match the content width to center the header */
             margin: 0 auto;
+            padding: 10px 20px 10px 20px;
+            box-sizing: border-box;
         }
         
         /* Adjustments for content on the targeted page to align correctly with the fixed header */
-        .content-page:target > .content-page-wrapper {
+        .content-page-wrapper {
             max-width: 450px;
             margin: 0 auto;
             padding: 0 20px;
@@ -212,25 +188,13 @@
 
 <div class="header-bg">
     <div class="container">
-        <div class="main-title">Diego Nepomuceno Marcos</div>
-        <div class="title-area">
-            <p>Product & Software Eng Std | Venture Capital Analyst</p>
-            <p>Civil Structural Engineer B.Sc.</p>
-        </div>
-        <div class="social-links">
-            <a href="#"><span class="emoji">🔗</span></a>
-            <a href="#"><span class="emoji">📧</span></a>
-            <a href="#"><span class="emoji">✈️</span></a>
-        </div>
         
         <a href="#about" class="link-button">A.bout</a>
         <a href="#experience" class="link-button">E.xperience</a>
         <a href="#personal" class="link-button">P.ersonal</a>
         
-        <a href="#contact" class="link-button">Contact</a>
-        <a href="#telegram" class="link-button">Telegram</a>
+        <a href="https://linktr.ee/diegonmarcos" class="link-button back-btn" target="_blank">Back</a>
         
-        <div class="section-header">PROFESSIONAL</div>
     </div>
 </div>
 

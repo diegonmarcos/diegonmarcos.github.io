@@ -5,31 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Nepomuceno Marcos - Profile</title>
     <style>
-/* Add this to the <style> block if you want the single-page app style navigation */
-.content-page {
-    /* ... other styles ... */
-    display: none; /* Hide content pages by default */
-}
-
-/* Show the content page when its anchor is targeted in the URL (e.g., index.html#about) */
-.content-page:target {
-    display: block; 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0d1117; /* Ensure background covers the page */
-    z-index: 1000;
-    overflow-y: auto;
-}
-.header-bg:has(> .container:not(:target)) {
-    /* Hide the main page content when a target is active. This line is complex 
-       and might not work in all browsers. A simpler approach is usually better. 
-       For this demo, just focus on the content display. */
-}
-
-
         /* Base Styles & Mobile First */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -38,6 +13,9 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            /* Ensure the body itself is contained for correct target view */
+            min-height: 100vh;
+            width: 100vw;
         }
 
         /* --- Main Index Page (index.html) Style --- */
@@ -50,6 +28,7 @@
 
         .header-bg {
             /* Placeholder for the dynamic background image */
+            /* You would replace 'underwater_placeholder.jpg' with an actual image URL */
             background: url('underwater_placeholder.jpg') no-repeat center center/cover; 
             background-color: #011627;
             padding: 40px 0 20px 0;
@@ -119,18 +98,50 @@
 
         /* --- Content Pages (About, Experience, Personal) Style --- */
         .content-page {
+            /* Set initial state for SPA-style navigation */
+            display: none; /* Hidden by default */
             max-width: 450px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px 20px 20px; /* Padding for the content inside */
+            box-sizing: border-box;
+        }
+
+        /* When a content page is targeted, make it a fixed full-screen overlay */
+        .content-page:target {
+            display: block; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Viewport Width */
+            height: 100vh; /* Viewport Height */
+            background-color: #0d1117; 
+            z-index: 1000;
+            /* CRUCIAL FIX: Allow scrolling ONLY within this element */
+            overflow-y: auto; 
+            padding-top: 20px; /* General top spacing for the title */
         }
 
         .content-header {
+            /* FIX: Make the header sticky so the close button is always visible */
+            position: sticky;
+            top: 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px 0;
             margin-bottom: 20px;
             border-bottom: 1px solid #30363d;
+            background-color: #0d1117; /* Important: ensures content doesn't scroll over it */
+            z-index: 10; /* Keep it above the content */
+            max-width: 450px; /* Match the content width to center the header */
+            margin: 0 auto;
+        }
+        
+        /* Adjustments for content on the targeted page to align correctly with the fixed header */
+        .content-page:target > .content-page-wrapper {
+            max-width: 450px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         .content-title {
@@ -146,6 +157,8 @@
             font-size: 1.5rem;
             font-weight: bold;
             line-height: 1;
+            padding: 10px; /* Make it easier to tap on mobile */
+            margin-right: -10px; /* Adjust for padding on tap target */
         }
 
         .content-section h2 {
@@ -216,6 +229,8 @@
         
         <a href="#contact" class="link-button">Contact</a>
         <a href="#telegram" class="link-button">Telegram</a>
+        
+        <div class="section-header">PROFESSIONAL</div>
     </div>
 </div>
 
@@ -224,18 +239,20 @@
         <div class="content-title">A.bout</div>
         <a href="#" class="close-btn">&times;</a>
     </div>
-    <div class="content-section">
-        <p>
-            <strong>Diego Nepomuceno Marcos</strong>
-        </p>
-        <p>
-            <span class="emoji">✍️</span> Product n' Software Eng Std | <span class="emoji">🎩</span> Venture Capital n' Portfolio Manager Analyst | <span class="emoji">🏗️</span> Civil Engineer B.Sc. | <span class="emoji">🇩🇪</span> @BERlin.de <span class="emoji">💻</span>
-        </p>
-        <div class="tl-dr-box">
-            <h2>@tl;dr</h2>
+    <div class="content-page-wrapper">
+        <div class="content-section">
             <p>
-                - Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 35+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany.
+                <strong>Diego Nepomuceno Marcos</strong>
             </p>
+            <p>
+                <span class="emoji">✍️</span> Product n' Software Eng Std | <span class="emoji">🎩</span> Venture Capital n' Portfolio Manager Analyst | <span class="emoji">🏗️</span> Civil Engineer B.Sc. | <span class="emoji">🇩🇪</span> @BERlin.de <span class="emoji">💻</span>
+            </p>
+            <div class="tl-dr-box">
+                <h2>@tl;dr</h2>
+                <p>
+                    - Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 35+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany.
+                </p>
+            </div>
         </div>
     </div>
 </div>
@@ -245,36 +262,38 @@
         <div class="content-title">E.xperience</div>
         <a href="#" class="close-btn">&times;</a>
     </div>
-    <div class="content-section">
-        <h2>- COMPUTER SCIENCE:</h2>
-        <div>In a two-years Software Engineering course pursuing a career shift.</div>
+    <div class="content-page-wrapper">
+        <div class="content-section">
+            <h2>- COMPUTER SCIENCE:</h2>
+            <div>In a two-years Software Engineering course pursuing a career shift.</div>
 
-        <h2>- CAPITAL MARKETS:</h2>
-        <div>For 10 years in Capital Markets, played roles as Investment Banker, Venture Capitalist, Portfolio Manager in WM and RE Private Equity Analyst.</div>
+            <h2>- CAPITAL MARKETS:</h2>
+            <div>For 10 years in Capital Markets, played roles as Investment Banker, Venture Capitalist, Portfolio Manager in WM and RE Private Equity Analyst.</div>
 
-        <h2>- CORPORATE BUSINESS:</h2>
-        <div>For 4 years in Real Estate Development played roles in: Construction, FP&A and Investor Relations.</div>
+            <h2>- CORPORATE BUSINESS:</h2>
+            <div>For 4 years in Real Estate Development played roles in: Construction, FP&A and Investor Relations.</div>
 
-        <h2>- INTERNATIONAL EXPERIENCE:</h2>
-        <div>For 5 years, travelled to 170+ cities over 35+ countries across 5 continents; lived in 5 European cities, born and raised in São Paulo.</div>
+            <h2>- INTERNATIONAL EXPERIENCE:</h2>
+            <div>For 5 years, travelled to 170+ cities over 35+ countries across 5 continents; lived in 5 European cities, born and raised in São Paulo.</div>
 
-        <h2>- NGO:</h2>
-        <div>For 2 years in Socioeconomic Development worked at an NGO on social development and poverty alleviation.</div>
+            <h2>- NGO:</h2>
+            <div>For 2 years in Socioeconomic Development worked at an NGO on social development and poverty alleviation.</div>
 
-        <h2>- ARMY:</h2>
-        <div>For 1 year studied as cadet in Army Reserve Officers' Training Corps. Graded as 2nd Lieutenant for the logistics battalion.</div>
+            <h2>- ARMY:</h2>
+            <div>For 1 year studied as cadet in Army Reserve Officers' Training Corps. Graded as 2nd Lieutenant for the logistics battalion.</div>
 
-        <h2>- CS&PM:</h2>
-        <div>Softw. Eng. (2y), PM (1m).</div>
+            <h2>- CS&PM:</h2>
+            <div>Softw. Eng. (2y), PM (1m).</div>
 
-        <h2>- CM:</h2>
-        <div>IB, PE, PM (1y).</div>
+            <h2>- CM:</h2>
+            <div>IB, PE, PM (1y).</div>
 
-        <h2>- ENGINEERING:</h2>
-        <div>Five-year B.Sc in Civil Structural Engineering.</div>
+            <h2>- ENGINEERING:</h2>
+            <div>Five-year B.Sc in Civil Structural Engineering.</div>
 
-        <h2>- LANGUAGES:</h2>
-        <div><span class="emoji">🇧🇷</span> (Native), <span class="emoji">🇪🇸</span> (C1), <span class="emoji">🇬🇧</span> (B1), <span class="emoji">🇩🇪</span> (A1), Spanish/Brazilian citizenship.</div>
+            <h2>- LANGUAGES:</h2>
+            <div><span class="emoji">🇧🇷</span> (Native), <span class="emoji">🇪🇸</span> (C1), <span class="emoji">🇬🇧</span> (B1), <span class="emoji">🇩🇪</span> (A1), Spanish/Brazilian citizenship.</div>
+        </div>
     </div>
 </div>
 
@@ -283,25 +302,27 @@
         <div class="content-title">P.ersonal</div>
         <a href="#" class="close-btn">&times;</a>
     </div>
-    <div class="content-section">
-        <h2>@about</h2>
-        <div>Culture <span class="emoji">🇨🇳</span>, Heritage <span class="emoji">🇪🇸</span> | Born <span class="emoji">🇧🇷</span>, Based <span class="emoji">🇩🇪</span></div>
-        <div>Engineer <span class="emoji">🏗️</span>, Venture Capital <span class="emoji">🎩</span>, Coding <span class="emoji">👾</span></div>
-        
-        <h2>@Interests</h2>
-        <ul>
-            <li>Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.</li>
-        </ul>
+    <div class="content-page-wrapper">
+        <div class="content-section">
+            <h2>@about</h2>
+            <div>Culture <span class="emoji">🇨🇳</span>, Heritage <span class="emoji">🇪🇸</span> | Born <span class="emoji">🇧🇷</span>, Based <span class="emoji">🇩🇪</span></div>
+            <div>Engineer <span class="emoji">🏗️</span>, Venture Capital <span class="emoji">🎩</span>, Coding <span class="emoji">👾</span></div>
+            
+            <h2>@Interests</h2>
+            <ul>
+                <li>Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.</li>
+            </ul>
 
-        <h2>- Played:</h2>
-        <ul>
-            <li>Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y).</li>
-        </ul>
+            <h2>- Played:</h2>
+            <ul>
+                <li>Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y).</li>
+            </ul>
 
-        <h2>- Pursuing:</h2>
-        <ul>
-            <li>Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.</li>
-        </ul>
+            <h2>- Pursuing:</h2>
+            <ul>
+                <li>Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.</li>
+            </ul>
+        </div>
     </div>
 </div>
 

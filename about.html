@@ -5,6 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diego Nepomuceno Marcos - Profile</title>
     <style>
+/* Add this to the <style> block if you want the single-page app style navigation */
+.content-page {
+    /* ... other styles ... */
+    display: none; /* Hide content pages by default */
+}
+
+/* Show the content page when its anchor is targeted in the URL (e.g., index.html#about) */
+.content-page:target {
+    display: block; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0d1117; /* Ensure background covers the page */
+    z-index: 1000;
+    overflow-y: auto;
+}
+.header-bg:has(> .container:not(:target)) {
+    /* Hide the main page content when a target is active. This line is complex 
+       and might not work in all browsers. A simpler approach is usually better. 
+       For this demo, just focus on the content display. */
+}
+
+
         /* Base Styles & Mobile First */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";

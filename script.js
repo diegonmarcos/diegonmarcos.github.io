@@ -1,13 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Smooth scrolling for anchor links
+    // 1. Smooth scrolling for anchor links (A11y Optimized)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            
-            const url = new URL(this.href);
-            if (url.pathname !== window.location.pathname) {
-                return;
-            }
-
             e.preventDefault();
             
             const targetId = this.getAttribute('href').substring(1);
@@ -17,22 +11,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetElement.scrollIntoView({
                     behavior: 'smooth'
                 });
-
+                // Ensure target element is focusable for accessibility
+                targetElement.setAttribute('tabindex', '-1'); 
                 targetElement.focus();
-                if (targetElement.tagName.toLowerCase() !== 'section') {
-                    targetElement.setAttribute('tabindex', '-1'); 
-                }
             }
         });
     });
 
-    // Minimal form handling (prevent default submission)
+    // 2. Modal/Overlay Logic (OVERLAYS & MODALS)
     const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
+    const modal = document.getElementById('contactModal');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    if (contactForm && modal && closeModalBtn) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            alert('Form submission simulated! Replace this with a real backend integration.');
+            // Show the modal
+            modal.style.display = 'flex';
+            // Set focus to the close button for accessibility
+            closeModalBtn.focus();
             contactForm.reset();
+        });
+
+        const closeModal = () => {
+            modal.style.display = 'none';
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+        
+        // Close modal when pressing ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
         });
     }
 });

@@ -2,10 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            // Check if the link is a full URL that just happens to have a hash
+            
             const url = new URL(this.href);
             if (url.pathname !== window.location.pathname) {
-                return; // Let default behavior handle links to other pages
+                return;
             }
 
             e.preventDefault();
@@ -18,10 +18,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     behavior: 'smooth'
                 });
 
-                // Focus the target element for accessibility
                 targetElement.focus();
                 if (targetElement.tagName.toLowerCase() !== 'section') {
-                    // For non-section elements, make them tabbable if they aren't already
                     targetElement.setAttribute('tabindex', '-1'); 
                 }
             }

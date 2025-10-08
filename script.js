@@ -1,65 +1,86 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. Dynamic Text Splitting and Styling (Core Framer Effect) ---
+    // --- 1. Dynamic Text Splitting and Styling (Simulates Framer Effect) ---
     const heroTitle = document.querySelector('.dynamic-split-text');
-    const fullText = heroTitle.textContent.trim();
-    heroTitle.textContent = ''; // Clear original text
+    if (heroTitle) {
+        const fullText = heroTitle.textContent.trim();
+        heroTitle.textContent = ''; // Clear original text
+        const wordStyleAttr = heroTitle.getAttribute('data-word-style');
+        const boldWordIndexes = wordStyleAttr ? wordStyleAttr.split(',').map(Number) : [];
 
-    const words = fullText.split(' ');
-    
-    // Define which words should be styled light vs bold (simulating framer splitting logic)
-    // Indexes 0, 3, 6, 8 (0-indexed) are typically bold in the Palmer pattern
-    const boldWordIndexes = [0, 3, 6, 8, 9]; 
-
-    words.forEach((wordText, wordIndex) => {
-        const wordSpan = document.createElement('span');
-        wordSpan.classList.add('word');
+        const words = fullText.split(' ');
         
-        const isBold = boldWordIndexes.includes(wordIndex);
-        const styleClass = isBold ? 'styled-bold' : 'styled-light';
+        words.forEach((wordText, wordIndex) => {
+            const wordSpan = document.createElement('span');
+            wordSpan.classList.add('word');
+            
+            // Check if word index is explicitly marked for bold styling
+            const styleClass = boldWordIndexes.includes(wordIndex) ? 'styled-bold' : 'styled-light';
 
-        // Split each word into letters for finer animation control
-        wordText.split('').forEach((letterText, letterIndex) => {
-            const letterSpan = document.createElement('span');
-            letterSpan.classList.add('letter', styleClass);
-            letterSpan.textContent = letterText;
-            wordSpan.appendChild(letterSpan);
+            // Split each word into letters
+            wordText.split('').forEach((letterText) => {
+                const letterSpan = document.createElement('span');
+                letterSpan.classList.add('letter', styleClass);
+                letterSpan.textContent = letterText;
+                wordSpan.appendChild(letterSpan);
+            });
+
+            heroTitle.appendChild(wordSpan);
         });
 
-        heroTitle.appendChild(wordSpan);
+        // Animate the dynamically split letters (stagger fade-in)
+        document.querySelectorAll('.dynamic-split-text .letter').forEach((letter, index) => {
+            letter.style.transition = `opacity 0.05s ease ${index * 0.02}s, transform 0.05s ease ${index * 0.02}s`;
+            setTimeout(() => {
+                letter.style.opacity = '1';
+                letter.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    }
+
+
+    // --- 2. Menu Collapse/Expand on Scroll (Crucial Animation) ---
+    let lastScrollY = window.scrollY;
+    const body = document.body;
+
+    window.addEventListener('scroll', () => {
+        const currentScrollY = window.scrollY;
+
+        // Determine scroll direction
+        if (currentScrollY > lastScrollY && currentScrollY > 100) {
+            // Scrolling Down (Hide header)
+            body.setAttribute('data-scroll-state', 'down');
+        } else if (currentScrollY < lastScrollY) {
+            // Scrolling Up (Show header)
+            body.setAttribute('data-scroll-state', 'up');
+        } else if (currentScrollY <= 100) {
+            // At the very top
+             body.setAttribute('data-scroll-state', 'up');
+        }
+        
+        lastScrollY = currentScrollY;
     });
 
-    // Animate the dynamically split letters (simple stagger fade-in)
-    document.querySelectorAll('.dynamic-split-text .letter').forEach((letter, index) => {
-        letter.style.transition = `opacity 0.05s ease ${index * 0.02}s, transform 0.05s ease ${index * 0.02}s`;
-        setTimeout(() => {
-            letter.style.opacity = '1';
-            letter.style.transform = 'translateY(0)';
-        }, 100);
-    });
 
-
-    // --- 2. Scroll-Triggered Animations (for project cards) ---
+    // --- 3. Scroll-Triggered Animations (for project cards) ---
     const targets = document.querySelectorAll('[data-anim-target]');
-
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target); // Stop observing once animated
+                observer.unobserve(entry.target); 
             }
         });
     }, {
         rootMargin: '0px',
-        threshold: 0.1 // Trigger when 10% of the element is visible
+        threshold: 0.1 
     });
-
     targets.forEach(target => {
         observer.observe(target);
     });
 
     
-    // --- 3. Modal and Smooth Scrolling (Previous Functionality) ---
+    // --- 4. Modal and Smooth Scrolling ---
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();

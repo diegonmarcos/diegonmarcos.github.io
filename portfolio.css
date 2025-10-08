@@ -8,6 +8,7 @@
     --spacing-large: 10rem; /* 100px */
     --spacing-medium: 4rem; /* 40px */
     --max-width: 140rem; /* 1400px */
+    --header-height: 8rem; /* 80px */
 }
 
 /* Global Reset and Dynamic Setup */
@@ -30,7 +31,8 @@ body {
     color: var(--color-text-light);
     line-height: 1.6;
     font-size: 1.8rem;
-    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+    overflow-x: hidden;
+    padding-top: var(--header-height); /* Space for fixed header */
 }
 
 a {
@@ -43,25 +45,29 @@ strong {
     font-weight: 700;
 }
 
-/* 0. Header (Sticky Scrolling and Right Alignment) */
-.header {
-    position: sticky;
+/* 0. Fixed Mini Header (Always Visible) */
+.mini-header {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 100;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(5px);
+    height: var(--header-height);
+    z-index: 1000;
+    background: var(--color-primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--spacing-medium);
     border-bottom: 1px solid #1a1a1a;
+    transition: transform 0.3s ease-out;
 }
 
-.header-content {
-    max-width: var(--max-width);
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between; /* Logo Left, Nav Right */
-    align-items: center;
-    padding: 2.5rem var(--spacing-medium);
+/* Menu Collapse/Expand on Scroll (JS controlled) */
+body[data-scroll-state="down"] .mini-header {
+    transform: translateY(-100%);
+}
+body[data-scroll-state="up"] .mini-header {
+    transform: translateY(0);
 }
 
 .header-logo {
@@ -73,60 +79,64 @@ strong {
     margin-left: 3rem; 
     font-size: 1.6rem;
     font-weight: 400;
-    position: relative;
-    /* Framer-like Hover Effect */
     opacity: 0.7;
-    transition: opacity 0.2s ease;
 }
 
 .header-nav a:hover {
     opacity: 1;
 }
 
+/* Section Styling */
+.section {
+    padding: var(--spacing-large) var(--spacing-medium);
+    max-width: var(--max-width);
+    margin: 0 auto;
+    min-height: 80vh; /* Reduced minimum height */
+}
+
+.section-title {
+    font-size: 1.4rem;
+    font-weight: 400;
+    letter-spacing: 0.2rem;
+    margin-bottom: 5rem;
+    color: var(--color-text-grey);
+}
+
 /* 01. Hero Section (Dynamic Typography Styles) */
 .hero-section {
-    padding-top: 5rem;
     min-height: 100vh;
-    display: block; 
+    padding-top: 10rem;
+    padding-bottom: var(--spacing-large);
 }
 
-.hero-header-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5rem;
-}
-
-.hero-label-top {
-    font-size: 2.4rem;
-    font-weight: 700;
-}
-
-.quick-links a {
-    color: var(--color-text-grey);
-    margin-left: 1.5rem;
-    font-size: 1.6rem;
-}
-
-/* STYLED HERO TITLE */
 .hero-title {
     font-size: 16rem; 
     line-height: 1.1;
     margin-bottom: 5rem;
-    padding-top: 5rem;
     text-transform: uppercase;
-    overflow: hidden; /* Important for splitting animation */
+    overflow: hidden; 
 }
 
 /* Styling for the dynamically split words/letters */
-.dynamic-split-text .word,
-.dynamic-split-text .letter {
-    display: inline-block;
-    opacity: 0.001; /* Start invisible for JS animation */
+.dynamic-split-text .word {
+    display: block; /* Force each word to a new line by default */
+    margin-right: 2rem;
+    /* Framer-like word distribution - we'll rely on media queries to fix this */
 }
 
-.dynamic-split-text .word {
-    margin-right: 2rem;
+@media (min-width: 100rem) {
+    .dynamic-split-text .word {
+        display: inline-block; /* Make words flow horizontally on large screens */
+    }
+    .dynamic-split-text .word:nth-child(2), 
+    .dynamic-split-text .word:nth-child(5) {
+        display: block; /* Explicitly break the line after words 2 and 5 */
+    }
+}
+
+.dynamic-split-text .letter {
+    display: inline-block;
+    opacity: 0.001; 
 }
 
 .dynamic-split-text .styled-light {
@@ -139,34 +149,86 @@ strong {
     font-weight: 900;
 }
 
-/* STYLED SUBTITLES */
-.styled-subtitle {
-    font-size: 4.8rem;
-    font-weight: 900;
-    margin-bottom: 3rem;
-    line-height: 1.2;
-    color: var(--color-secondary);
+.hero-dynamic-media-container {
+    margin: 0 auto 5rem auto;
 }
 
-/* 03. Project Card 3D Transform Effect (ANIMATIONS & EFFECTS, 3D TRANSFORMS) */
+.video-placeholder {
+    width: 100%;
+    height: 40vh;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+}
+
+.hero-footer-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 2rem;
+    font-size: 1.4rem;
+    color: var(--color-text-grey);
+    margin-top: 5rem;
+}
+
+/* 02. Profile Section (Editorial Style) */
+.profile-section {
+    min-height: auto;
+    padding-bottom: var(--spacing-large);
+}
+
+.profile-intro-block {
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.profile-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--spacing-medium);
+}
+
+.intro-bold-text {
+    font-size: 4.8rem; /* LARGE EDITORIAL TEXT */
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.intro-light-text {
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #cccccc;
+    margin-bottom: var(--spacing-medium);
+}
+
+.stats-bar {
+    border-top: 1px solid #1a1a1a;
+    padding-top: 3rem;
+    margin-top: 6rem;
+    font-size: 1.6rem;
+    color: var(--color-text-grey);
+}
+
+/* 03. Project Card 3D Transform Effect (3D TRANSFORMS, ANIMATIONS) */
 .project-card {
-    display: block;
-    padding: 4rem;
-    border: 1px solid #1a1a1a;
-    height: 45rem;
-    position: relative;
-    overflow: hidden;
     /* 3D Transform Setup */
     transform-style: preserve-3d;
     transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s, opacity 0.8s;
     /* Initial state for Scroll Animation */
     opacity: 0;
-    transform: translateY(3rem);
+    transform: translateY(3rem) rotateX(5deg);
 }
 
 .project-card.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) rotateX(0deg);
 }
 
 .project-card:hover {
@@ -174,46 +236,76 @@ strong {
     border-color: var(--color-secondary);
 }
 
-/* 05. Skills Section */
-.skills-section {
+/* 04. Capabilities Section (Template Match) */
+.capabilities-section {
     min-height: auto;
-    padding-bottom: var(--spacing-large);
 }
 
-.skills-grid {
+.capability-item {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-large);
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-medium);
+    padding: 3rem 0;
+    border-bottom: 1px solid #1a1a1a;
 }
 
-.skills-column ul {
-    list-style: none;
-    margin-top: 2rem;
+.capability-title {
+    font-size: 3.2rem; /* Subtitles with style */
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.capability-description {
     font-size: 2rem;
+    line-height: 1.6;
+    color: #cccccc;
 }
 
-.skills-column li {
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed #1a1a1a;
-    transition: color 0.2s;
+/* 05. Experience and Education Sections (Timeline) */
+.timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: var(--spacing-medium);
 }
 
-.skills-column li:hover {
-    color: var(--color-text-grey);
+.timeline-item {
+    padding-top: 2rem;
+    border-top: 1px solid #333333;
 }
 
-/* Responsive adjustments */
+/* Responsive Design */
 @media (max-width: 120rem) {
     .hero-title {
-        font-size: 10rem;
+        font-size: 12rem;
+    }
+}
+
+@media (max-width: 100rem) {
+    .profile-content-grid {
+        grid-template-columns: 1fr;
+    }
+    .intro-bold-text {
+        font-size: 3.2rem;
     }
 }
 
 @media (max-width: 76.8rem) {
     .hero-title {
-        font-size: 6rem;
+        font-size: 5rem;
     }
-    .skills-grid {
+    .mini-header {
+        height: 6rem;
+    }
+    .header-nav {
+        display: none; 
+    }
+    .profile-content-grid {
+        grid-template-columns: 1fr;
+    }
+    .capability-item {
+        grid-template-columns: 1fr;
+    }
+    .work-grid, .timeline {
         grid-template-columns: 1fr;
     }
 }

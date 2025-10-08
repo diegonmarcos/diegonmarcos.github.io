@@ -15,7 +15,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    /* Basic setup for 3D transforms */
     perspective: 1000px;
 }
 
@@ -46,9 +45,9 @@ strong {
     font-weight: 700;
 }
 
-/* 0. Header (Sticky Scrolling and Alignment Fix) */
+/* 0. Header (Sticky Scrolling) */
 .header {
-    position: sticky; /* Implements STICKY SCROLLING */
+    position: sticky; /* STICKY SCROLLING */
     top: 0;
     left: 0;
     width: 100%;
@@ -62,7 +61,7 @@ strong {
     max-width: var(--max-width);
     margin: 0 auto;
     display: flex;
-    justify-content: flex-start; /* Menu LEFT ALIGNMENT */
+    justify-content: space-between; /* Adjusted for menu on the right */
     align-items: center;
     padding: 2.5rem var(--spacing-medium);
 }
@@ -70,14 +69,12 @@ strong {
 .header-logo {
     font-size: 2.4rem;
     font-weight: 700;
-    margin-right: 5rem;
 }
 
 .header-nav a {
-    margin-right: 3rem;
+    margin-left: 3rem; /* Aligns menu items to the right */
     font-size: 1.6rem;
     font-weight: 400;
-    /* Hover Effect */
     position: relative;
 }
 
@@ -128,15 +125,9 @@ strong {
 }
 
 .quick-links {
+    /* Right Aligned Quick Links */
     font-size: 1.6rem;
     font-weight: 400;
-    color: var(--color-text-grey);
-    display: flex;
-    align-items: center;
-}
-
-.quick-links p {
-    margin-right: 0.5rem;
     color: var(--color-text-grey);
 }
 
@@ -154,20 +145,180 @@ strong {
     text-transform: uppercase;
 }
 
-/* Project Card 3D Transform Effect (ANIMATIONS & EFFECTS, 3D TRANSFORMS) */
+.hero-title .bold-text {
+    font-weight: 900;
+    display: block;
+}
+
+.hero-title .light-text {
+    font-weight: 400;
+    display: block;
+    color: var(--color-text-light);
+}
+
+.video-placeholder {
+    width: 100%;
+    height: 45vh;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #666;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+}
+
+.hero-footer-labels {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 2rem;
+    font-size: 1.4rem;
+    color: var(--color-text-grey);
+    margin-top: 10rem;
+}
+
+/* 02. Profile Section */
+.profile-section {
+    min-height: auto;
+    padding-bottom: var(--spacing-large);
+}
+
+.profile-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-large);
+    align-items: start;
+}
+
+.profile-image-placeholder {
+    height: 40rem;
+    background-color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.6rem;
+    color: #666;
+}
+
+.profile-text h3 {
+    font-size: 4.8rem;
+    font-weight: 900;
+    margin-bottom: 3rem;
+}
+
+.profile-text p {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-text .stats {
+    font-style: italic;
+    color: var(--color-text-grey);
+}
+
+/* 03. Featured Track Record Section */
+.work-section {
+    min-height: auto;
+}
+
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-medium);
+}
+
 .project-card {
     display: block;
+    padding: 4rem;
+    border: 1px solid #1a1a1a;
+    height: 45rem;
+    position: relative;
+    overflow: hidden;
+    /* 3D Transform Setup */
     transform-style: preserve-3d;
-    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth animation curve */
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), border-color 0.3s; 
 }
 
 .project-card:hover {
-    /* Subtle 3D tilt and slight scale */
-    transform: rotateX(2deg) scale(1.01);
+    transform: rotateX(2deg) scale(1.01); /* 3D TRANSFORMS */
     border-color: var(--color-secondary);
 }
 
-/* Modal Styling (OVERLAYS & MODALS) */
+.work-number {
+    position: absolute;
+    top: 4rem;
+    right: 4rem;
+    font-size: 1.6rem;
+    color: var(--color-text-grey);
+}
+
+.work-category {
+    font-size: 1.4rem;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    color: var(--color-text-grey);
+    margin-top: 5rem;
+}
+
+.work-title {
+    font-size: 4.8rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.work-summary {
+    font-size: 1.8rem;
+    color: #cccccc;
+}
+
+/* 04. Experience and Education Sections (Timeline) */
+.timeline {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: var(--spacing-medium);
+}
+
+.timeline-item {
+    border-top: 1px solid #333333;
+    padding-top: 2rem;
+}
+
+.timeline-item .year {
+    font-size: 1.6rem;
+    color: var(--color-text-grey);
+    margin-bottom: 0.5rem;
+}
+
+.timeline-item .role {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-item .company {
+    font-size: 1.8rem;
+    color: #cccccc;
+}
+
+/* 06. Contact Section */
+.contact-section {
+    text-align: center;
+    align-items: center;
+}
+
+.contact-email {
+    font-size: 8rem;
+    font-weight: 900;
+    display: block;
+    margin-bottom: 5rem;
+    text-decoration: underline;
+}
+
+/* Modal Styling */
 .modal {
     position: fixed;
     top: 0;
@@ -187,9 +338,10 @@ strong {
     padding: 5rem;
     text-align: center;
     max-width: 40rem;
-    transform: translateY(-2rem); /* Initial subtle drop effect */
+    transform: translateY(-2rem);
     transition: transform 0.3s ease-out;
 }
+
 
 /* Responsive Design */
 @media (max-width: 120rem) {
@@ -198,12 +350,18 @@ strong {
     }
 }
 
+@media (max-width: 100rem) {
+    .profile-content {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 76.8rem) {
     .header-content {
         justify-content: space-between;
     }
     .header-nav {
-        display: none; /* Hide navigation on mobile */
+        display: none; 
     }
     .hero-labels {
         flex-direction: column;
@@ -217,5 +375,15 @@ strong {
     }
     .work-grid {
         grid-template-columns: 1fr;
+    }
+    .timeline {
+        grid-template-columns: 1fr;
+    }
+    .contact-email {
+        font-size: 4rem;
+    }
+    .footer {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

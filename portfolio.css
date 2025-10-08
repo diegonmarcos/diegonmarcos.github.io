@@ -219,3 +219,58 @@ footer {
     border-top: 1px solid var(--border-color);
     margin-top: 2rem;
 }
+
+
+/* --- Styles for the Index Page (index.html) --- */
+
+.format-list {
+    padding-left: 0;
+    margin-top: 1.5rem;
+}
+
+.format-list li {
+    list-style: none;
+    padding: 0.5rem 0;
+}
+
+.cv-link {
+    display: block;
+    color: var(--text-color); /* White/light gray text */
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    background-color: #111; /* Slightly lighter black background */
+    border-left: 5px solid var(--accent-color-light); /* Accent line on the left */
+    transition: background-color 0.3s ease;
+}
+
+.cv-link:hover {
+    background-color: #1a1a1a;
+    color: var(--accent-color-light);
+}
+
+.cv-link i {
+    margin-right: 10px;
+    color: var(--main-title-color); /* Use white for the icons */
+}
+
+.contact-links {
+    list-style: none;
+    padding-left: 0;
+}
+
+.contact-links li {
+    padding: 0.2rem 0;
+}
+
+.contact-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: var(--font-size-base);
+}
+
+.contact-links a:hover {
+    color: var(--accent-color-light);
+}
+

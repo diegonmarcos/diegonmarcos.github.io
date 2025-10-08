@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 targetElement.scrollIntoView({
                     behavior: 'smooth'
                 });
-                // Ensure target element is focusable for accessibility
                 targetElement.setAttribute('tabindex', '-1'); 
                 targetElement.focus();
             }
@@ -26,9 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm && modal && closeModalBtn) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            // Show the modal
             modal.style.display = 'flex';
-            // Set focus to the close button for accessibility
             closeModalBtn.focus();
             contactForm.reset();
         });
@@ -39,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         closeModalBtn.addEventListener('click', closeModal);
         
-        // Close modal when pressing ESC key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && modal.style.display === 'flex') {
                 closeModal();

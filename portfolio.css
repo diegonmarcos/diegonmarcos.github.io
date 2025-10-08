@@ -221,6 +221,9 @@ footer {
 }
 
 
+
+
+
 /* --- Styles for the Index Page (index.html) --- */
 
 .format-list {
@@ -235,25 +238,37 @@ footer {
 
 .cv-link {
     display: block;
-    color: var(--text-color); /* White/light gray text */
+    color: var(--text-color); /* White/light gray text for links */
     text-decoration: none;
     font-size: 1.2rem;
     padding: 0.75rem 1rem;
     border: 1px solid var(--border-color);
     background-color: #111; /* Slightly lighter black background */
     border-left: 5px solid var(--accent-color-light); /* Accent line on the left */
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.cv-link:hover {
+/* Ensure link colors are consistent regardless of visited status */
+.cv-link:link, .cv-link:visited {
+    color: var(--text-color); /* Maintain white/light gray */
+}
+
+/* Highlight style on hover/focus (using the pink/purple accent) */
+.cv-link:hover, .cv-link:focus {
     background-color: #1a1a1a;
-    color: var(--accent-color-light);
+    color: var(--accent-color-light); /* Highlight text with the accent color */
 }
 
 .cv-link i {
     margin-right: 10px;
     color: var(--main-title-color); /* Use white for the icons */
+    transition: color 0.3s ease;
 }
+
+.cv-link:hover i {
+    color: var(--accent-color-light); /* Change icon color on hover as well */
+}
+
 
 .contact-links {
     list-style: none;
@@ -265,12 +280,17 @@ footer {
 }
 
 .contact-links a {
-    color: var(--text-color);
+    color: var(--text-color); /* White/light gray text for contact links */
     text-decoration: none;
     font-size: var(--font-size-base);
+    transition: color 0.3s ease;
 }
 
-.contact-links a:hover {
-    color: var(--accent-color-light);
+.contact-links a:link, .contact-links a:visited {
+    color: var(--text-color); /* Maintain white/light gray */
+}
+
+.contact-links a:hover, .contact-links a:focus {
+    color: var(--accent-color-light); /* Highlight contact links with the accent color */
 }
 

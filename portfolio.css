@@ -3,7 +3,8 @@
     --color-primary: #000000;
     --color-secondary: #ffffff;
     --color-text-light: #f5f5f5;
-    --color-text-grey: #555555; /* Darker grey for light contrast */
+    --color-text-grey-light: #555555; /* Used for light text in Hero */
+    --color-text-grey-dark: #888888; /* Used for subtitles/details */
     --font-family-main: 'Inter', sans-serif;
     --spacing-large: 10rem; /* 100px */
     --spacing-medium: 4rem; /* 40px */
@@ -45,7 +46,7 @@ strong {
     font-weight: 700;
 }
 
-/* 0. Fixed Mini Header (Always Visible) */
+/* 0. Fixed Mini Header (STATICALLY VISIBLE) */
 .mini-header {
     position: fixed;
     top: 0;
@@ -59,15 +60,6 @@ strong {
     align-items: center;
     padding: 0 var(--spacing-medium);
     border-bottom: 1px solid #1a1a1a;
-    transition: transform 0.3s ease-out;
-}
-
-/* Menu Collapse/Expand on Scroll (JS controlled) */
-body[data-scroll-state="down"] .mini-header {
-    transform: translateY(-100%);
-}
-body[data-scroll-state="up"] .mini-header {
-    transform: translateY(0);
 }
 
 .header-logo {
@@ -80,6 +72,7 @@ body[data-scroll-state="up"] .mini-header {
     font-size: 1.6rem;
     font-weight: 400;
     opacity: 0.7;
+    transition: opacity 0.2s;
 }
 
 .header-nav a:hover {
@@ -91,7 +84,7 @@ body[data-scroll-state="up"] .mini-header {
     padding: var(--spacing-large) var(--spacing-medium);
     max-width: var(--max-width);
     margin: 0 auto;
-    min-height: 80vh; /* Reduced minimum height */
+    min-height: 80vh;
 }
 
 .section-title {
@@ -99,10 +92,10 @@ body[data-scroll-state="up"] .mini-header {
     font-weight: 400;
     letter-spacing: 0.2rem;
     margin-bottom: 5rem;
-    color: var(--color-text-grey);
+    color: var(--color-text-grey-dark);
 }
 
-/* 01. Hero Section (Dynamic Typography Styles) */
+/* 01. Hero Section (STATICALLY STYLED) */
 .hero-section {
     min-height: 100vh;
     padding-top: 10rem;
@@ -114,80 +107,23 @@ body[data-scroll-state="up"] .mini-header {
     line-height: 1.1;
     margin-bottom: 5rem;
     text-transform: uppercase;
-    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
 }
 
-/* Styling for the dynamically split words/letters */
-.dynamic-split-text .word {
-    display: block; /* Force each word to a new line by default */
-    margin-right: 2rem;
-    /* Framer-like word distribution - we'll rely on media queries to fix this */
-}
-
-@media (min-width: 100rem) {
-    .dynamic-split-text .word {
-        display: inline-block; /* Make words flow horizontally on large screens */
-    }
-    .dynamic-split-text .word:nth-child(2), 
-    .dynamic-split-text .word:nth-child(5) {
-        display: block; /* Explicitly break the line after words 2 and 5 */
-    }
-}
-
-.dynamic-split-text .letter {
-    display: inline-block;
-    opacity: 0.001; 
-}
-
-.dynamic-split-text .styled-light {
-    color: var(--color-text-grey);
-    font-weight: 400;
-}
-
-.dynamic-split-text .styled-bold {
-    color: var(--color-text-light);
+.hero-title strong {
     font-weight: 900;
+    color: var(--color-secondary);
+    display: block;
 }
 
-.hero-dynamic-media-container {
-    margin: 0 auto 5rem auto;
-}
-
-.video-placeholder {
-    width: 100%;
-    height: 40vh;
-    background-color: #1a1a1a;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #666;
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 0.2rem;
-}
-
-.hero-footer-labels {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #1a1a1a;
-    padding-top: 2rem;
-    font-size: 1.4rem;
-    color: var(--color-text-grey);
-    margin-top: 5rem;
+.hero-title .styled-light {
+    font-weight: 400;
+    color: var(--color-text-grey-light);
+    display: block;
 }
 
 /* 02. Profile Section (Editorial Style) */
-.profile-section {
-    min-height: auto;
-    padding-bottom: var(--spacing-large);
-}
-
-.profile-intro-block {
-    max-width: 120rem;
-    margin: 0 auto;
-}
-
 .profile-content-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -206,14 +142,6 @@ body[data-scroll-state="up"] .mini-header {
     line-height: 1.6;
     color: #cccccc;
     margin-bottom: var(--spacing-medium);
-}
-
-.stats-bar {
-    border-top: 1px solid #1a1a1a;
-    padding-top: 3rem;
-    margin-top: 6rem;
-    font-size: 1.6rem;
-    color: var(--color-text-grey);
 }
 
 /* 03. Project Card 3D Transform Effect (3D TRANSFORMS, ANIMATIONS) */
@@ -250,7 +178,7 @@ body[data-scroll-state="up"] .mini-header {
 }
 
 .capability-title {
-    font-size: 3.2rem; /* Subtitles with style */
+    font-size: 3.2rem; 
     font-weight: 700;
     color: var(--color-secondary);
 }
@@ -261,7 +189,7 @@ body[data-scroll-state="up"] .mini-header {
     color: #cccccc;
 }
 
-/* 05. Experience and Education Sections (Timeline) */
+/* 05. Timeline */
 .timeline {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
@@ -273,6 +201,7 @@ body[data-scroll-state="up"] .mini-header {
     border-top: 1px solid #333333;
 }
 
+
 /* Responsive Design */
 @media (max-width: 120rem) {
     .hero-title {
@@ -283,9 +212,6 @@ body[data-scroll-state="up"] .mini-header {
 @media (max-width: 100rem) {
     .profile-content-grid {
         grid-template-columns: 1fr;
-    }
-    .intro-bold-text {
-        font-size: 3.2rem;
     }
 }
 

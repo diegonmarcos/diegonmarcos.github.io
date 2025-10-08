@@ -6,10 +6,11 @@
 :root {
     --bg-color: #000;
     --text-color: #eee;
-    --accent-color: #6a0dad; /* A deep purple/violet for highlights */
-    --secondary-accent: #ffb700; /* Yellow/Orange for section titles */
+    --accent-color-light: #ff77ff; /* Lighter pink/purple accent for bullets */
+    --main-title-color: #fff; /* White for H2 titles */
     --border-color: #333;
     --padding-unit: 1rem;
+    --font-size-base: 0.9rem;
 }
 
 /* Global Styles */
@@ -17,9 +18,10 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.5; /* Reduced line-height for a more condensed look */
     margin: 0;
     padding: 0;
+    font-size: var(--font-size-base); /* Reduced base font size */
 }
 
 main {
@@ -30,10 +32,11 @@ main {
 
 header h1 {
     text-align: center;
-    color: var(--secondary-accent);
-    padding: 20px 0;
+    color: var(--main-title-color);
+    padding: 15px 0;
     margin-bottom: 0;
     border-bottom: 2px solid var(--border-color);
+    font-size: 1.7rem;
 }
 
 /* Section and Header Styles */
@@ -47,53 +50,66 @@ header h1 {
 }
 
 h2, h3 {
-    margin-top: var(--padding-unit);
+    margin-top: 1rem;
     margin-bottom: 0.5rem;
-    cursor: pointer; /* Indicate collapsibility */
+    cursor: pointer;
+    user-select: none;
 }
 
 h2 {
-    color: var(--secondary-accent);
-    font-size: 1.8rem;
+    color: var(--main-title-color);
+    font-size: 1.4rem; /* Reduced H2 font size */
     border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.5rem;
-    user-select: none; /* Prevent text selection on click */
+    padding-bottom: 0.3rem;
+    position: relative;
+    padding-left: 2rem; /* Make space for the collapsible marker */
 }
+
+/* H2 Collapsible Marker Styling */
+h2:before {
+    content: '▶';
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    color: var(--accent-color-light);
+    transition: transform 0.3s ease;
+}
+
+h2.open:before {
+    transform: rotate(90deg);
+}
+
 
 h3 {
     color: var(--text-color);
-    font-size: 1.3rem;
+    font-size: 1.1rem; /* Reduced H3 font size */
     margin-left: 1rem;
     padding-left: 0.5rem;
-    border-left: 3px solid var(--accent-color);
+    border-left: 3px solid var(--accent-color-light);
 }
 
 /* Collapsible Content */
 .content {
     padding-left: 1rem;
+    overflow: hidden; /* Important for smooth collapse */
+    transition: max-height 0.3s ease-out;
 }
 
-.content.collapsed, .item-content.collapsed {
-    display: none;
+.content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
-/* List/Bullet Styles - Essential for the CV look */
+/* List/Bullet Styles */
 ul {
     list-style: none;
     padding-left: 0;
 }
 
 .collapsible-list > li {
-    padding: 0.2rem 0;
+    padding: 0.1rem 0;
     position: relative;
-}
-
-.collapsible-list > li:before {
-    content: '▶'; /* Custom bullet point to match image */
-    color: var(--accent-color);
-    position: absolute;
-    left: 0;
-    margin-left: 0.5rem;
 }
 
 .collapsible-item {
@@ -103,24 +119,58 @@ ul {
     color: var(--text-color);
     font-weight: bold;
     user-select: none;
+    position: relative;
+}
+
+/* List Item Indentation/Icon Marker */
+.collapsible-item:before {
+    content: '>'; /* The desired indentation mark */
+    color: var(--accent-color-light);
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    font-weight: normal;
+    transition: transform 0.3s ease;
+}
+
+.collapsible-item.open:before {
+    transform: rotate(90deg);
 }
 
 .item-content {
     margin-left: 2.5rem;
     padding-left: 0.5rem;
     border-left: 1px solid var(--border-color);
+    overflow: hidden;
+    max-height: 500px; /* Placeholder for JS transition */
+    transition: max-height 0.3s ease-out;
+}
+
+.item-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 /* Inner list (for achievements) */
 .item-content ul {
-    list-style: disc; /* Use a default disc for nested lists */
-    padding-left: 1.5rem;
+    list-style: none; /* Removed inner list disc, using > for continuity */
+    padding-left: 0;
     font-weight: normal;
     margin-top: 0.5rem;
 }
 
 .item-content ul li {
     padding: 0.1rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.item-content ul li:before {
+    content: '>'; /* Use > for inner list items too */
+    color: var(--accent-color-light);
+    position: absolute;
+    left: 0;
 }
 
 /* TLDR Section */
@@ -128,7 +178,7 @@ ul {
     color: #aaa;
     margin-left: 1rem;
     font-style: italic;
-    border-left: 3px solid var(--secondary-accent);
+    border-left: 3px solid var(--main-title-color);
     padding-left: 1rem;
 }
 
@@ -138,44 +188,28 @@ ul {
     border-collapse: collapse;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    font-size: var(--font-size-base);
 }
 
 .skills-table th, .skills-table td, .contact-table td {
     border: 1px solid var(--border-color);
-    padding: 0.75rem;
+    padding: 0.5rem;
     text-align: left;
 }
 
 .skills-table th {
     background-color: #1a1a1a;
-    color: var(--secondary-accent);
+    color: var(--main-title-color);
 }
 
 .skills-table tr:nth-child(even) {
     background-color: #0d0d0d;
 }
 
-/* Collapsible Icons */
-.section-toggle, .item-toggle {
-    margin-right: 0.5rem;
-    transition: transform 0.3s ease;
-    color: var(--accent-color);
+.contact-table td:first-child {
+    font-weight: bold;
+    width: 25%;
 }
-
-/* Rotation for open state */
-h2.open .section-toggle {
-    transform: rotate(90deg);
-}
-
-.collapsible-list .collapsible-item .item-toggle {
-    color: var(--accent-color);
-    transition: transform 0.3s ease;
-}
-
-.collapsible-list .collapsible-item.open .item-toggle {
-    transform: rotate(90deg);
-}
-
 
 /* Footer */
 footer {

@@ -305,20 +305,6 @@ footer {
 
 
 
-/* --- CSS for Mobile MERAMAID GANTT Responsiveness --- */
-
-/* 1. The container that will handle the scrolling */
-.mermaid-container {
-    width: 100%; /* Make the container take up the full screen width */
-    overflow-x: auto; /* This enables horizontal scrolling ONLY if needed */
-    padding-bottom: 10px; /* Optional: adds a little space below the scrollbar */
-}
-
-/* 2. Force the Mermaid diagram itself to be wide */
-.mermaid {
-    min-width: 750px; /* Adjust this value to what looks best for your chart! */
-}
-
 
 /*
 =================================================

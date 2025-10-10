@@ -1,64 +1,17 @@
 <svg width="950" height="750" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <style>
-    /* --- THEME DEFINITION --- */
-    svg {
-      background-color: #1e1e2e; /* Base dark color */
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    /* --- General Text & Titles --- */
-    .title-text {
-      font-size: 24px;
-      font-weight: bold;
-      fill: #cdd6f4; /* Main text color */
-      text-anchor: middle;
-    }
-    .task-text, .section-text, .tick text {
-      font-size: 14px;
-      fill: #bac2de; /* Subtler text color */
-    }
-    .section-text {
-      font-weight: bold;
-      fill: #f5c2e7; /* Pink for section titles */
-    }
-
-    /* --- Gantt Bars --- */
-    .task-rect {
-      stroke: #45475a;
-      stroke-width: 1;
-      transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
-    }
-    .task-rect.done { fill: #89b4fa; } /* Blue for done */
-    .task-rect.active { fill: #a6e3a1; } /* Green for active */
-    
-    .task-rect:hover {
-      opacity: 0.8;
-      filter: brightness(1.2);
-      cursor: pointer;
-    }
-
-    /* --- Grid & Axis --- */
-    .grid-line, .domain {
-      stroke: #45475a; /* Grid line color */
-      stroke-width: 1;
-    }
-    .tick line {
-      stroke: #585b70;
-    }
-
-    /* --- Tooltip --- */
-    .tooltip-bg {
-      fill: #313244;
-      stroke: #f5c2e7;
-      stroke-width: 1px;
-      rx: 5; /* Rounded corners */
-      opacity: 0.95;
-    }
-    .tooltip-text {
-      fill: #cdd6f4;
-      font-size: 12px;
-      font-weight: bold;
-    }
+    /* CSS is the same as above */
+    svg { background-color: #1e1e2e; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    .title-text { font-size: 24px; font-weight: bold; fill: #cdd6f4; text-anchor: middle; }
+    .task-text, .section-text, .tick text { font-size: 14px; fill: #bac2de; }
+    .section-text { font-weight: bold; fill: #f5c2e7; }
+    .task-rect { stroke: #45475a; stroke-width: 1; transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out; }
+    .task-rect.done { fill: #89b4fa; } .task-rect.active { fill: #a6e3a1; }
+    .task-rect:hover { opacity: 0.8; filter: brightness(1.2); cursor: pointer; }
+    .grid-line, .domain { stroke: #45475a; stroke-width: 1; }
+    .tick line { stroke: #585b70; }
+    .tooltip-bg { fill: #313244; stroke: #f5c2e7; stroke-width: 1px; rx: 5; opacity: 0.95; }
+    .tooltip-text { fill: #cdd6f4; font-size: 12px; font-weight: bold; }
   </style>
 
   <g id="gantt-chart">
@@ -96,12 +49,12 @@
         <text x="10" y="95" class="task-text">Real Estate Private Equity</text>
         <rect x="532" y="80" width="38" height="30" class="task-rect done"></rect>
       </g>
-      <g class="task-group" data-name="Portfolio Manager &amp; Credit Analyst" data-start="2018-06-01" data-end="2020-01-31">
-        <text x="10" y="135" class="task-text">Portfolio Manager &amp;amp; Credit Analyst</text>
+      <g class="task-group" data-name="Portfolio Manager and Credit Analyst" data-start="2018-06-01" data-end="2020-01-31">
+        <text x="10" y="135" class="task-text">Portfolio Manager and Credit Analyst</text>
         <rect x="472" y="120" width="62" height="30" class="task-rect done"></rect>
       </g>
-      <g class="task-group" data-name="Corporate VC &amp; Wealth Management" data-start="2015-12-01" data-end="2018-06-30">
-        <text x="10" y="175" class="task-text">Corporate VC &amp;amp; Wealth Management</text>
+      <g class="task-group" data-name="Corporate VC and Wealth Management" data-start="2015-12-01" data-end="2018-06-30">
+        <text x="10" y="175" class="task-text">Corporate VC and Wealth Management</text>
         <rect x="375" y="160" width="99" height="30" class="task-rect done"></rect>
       </g>
       <g class="task-group" data-name="NGO (Financial, Social, Eng.)" data-start="2014-04-01" data-end="2016-04-30">
@@ -121,4 +74,16 @@
         <rect x="113" y="320" width="60" height="30" class="task-rect done"></rect>
       </g>
 
-      <text x="10" y
+      <text x="10" y="380" class="section-text">🌐 Relevant Experience</text>
+      <text x="10" y="535" class="section-text">🎓 Education</text>
+      <g class="task-group" data-name="IB, PE and Asset Mgmt. Spec." data-start="2016-01-01" data-end="2016-12-31">
+        <text x="10" y="645" class="task-text">IB, PE and Asset Mgmt. Spec.</text>
+        <rect x="378" y="630" width="38" height="30" class="task-rect done"></rect>
+      </g>
+      </g>
+  </g>
+
+  <g id="tooltip" style="visibility: hidden;"><rect id="tooltip-bg" class="tooltip-bg" width="200" height="40" /><text id="tooltip-text-1" class="tooltip-text" x="10" y="18">Task Name</text><text id="tooltip-text-2" class="tooltip-text" x="10" y="34">Date Range</text></g><script type="text/javascript"><![CDATA[
+    const svg = document.querySelector('svg');const tooltip = document.getElementById('tooltip');const tooltipBg = document.getElementById('tooltip-bg');const tooltipText1 = document.getElementById('tooltip-text-1');const tooltipText2 = document.getElementById('tooltip-text-2');const taskGroups = document.querySelectorAll('.task-group');taskGroups.forEach(group => {group.addEventListener('mousemove', (event) => {const taskName = group.getAttribute('data-name');const startDate = group.getAttribute('data-start');const endDate = group.getAttribute('data-end');tooltipText1.textContent = taskName;tooltipText2.textContent = `${startDate} to ${endDate}`;const textLength = Math.max(tooltipText1.getComputedTextLength(), tooltipText2.getComputedTextLength());tooltipBg.setAttribute('width', textLength + 20);const CTM = svg.getScreenCTM();const mouseX = (event.clientX - CTM.e) / CTM.a;const mouseY = (event.clientY - CTM.f) / CTM.d;tooltip.setAttribute('transform', `translate(${mouseX + 15}, ${mouseY + 15})`);tooltip.style.visibility = 'visible';});group.addEventListener('mouseleave', () => {tooltip.style.visibility = 'hidden';});});
+  ]]></script>
+</svg>

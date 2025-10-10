@@ -376,3 +376,15 @@ footer {
     min-width: 750px; /* Adjust this value as needed */
 }
 
+
+/*
+Timeline
+*/
+
+.timeline-container {
+max-width: 1000px;
+margin: 40px auto;
+padding: 20px;
+background-color: white;
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

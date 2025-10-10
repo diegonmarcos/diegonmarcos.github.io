@@ -1,226 +1,204 @@
-<svg width="1400" height="1050" viewBox="0 0 1400 1050" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
-
-  <defs>
-    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
-    </filter>
-  </defs>
-
+<svg width="950" height="750" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <style>
-    .background { fill: #121212; } /* Very dark background */
-    .text-main { font-size: 14px; fill: #e0e0e0; }
-    .text-light { font-size: 12px; fill: #b0b0b0; }
-    .text-header { font-size: 16px; font-weight: 500; fill: #fff; }
-    .text-year { font-size: 12px; font-weight: 500; fill: #888; }
-    .axis-line { stroke: #444; stroke-width: 1; }
-    .today-line { stroke: #00bcd4; stroke-width: 1.5; stroke-dasharray: 5 3; } /* Cyan accent for today */
-    .future-area { fill: #fff; opacity: 0.03; }
-    .event-block { stroke-width: 0; filter: url(#shadow); rx: 4; }
-    .event-block-ongoing { stroke: #00bcd4; stroke-width: 2; }
-    .event-text { font-size: 13px; font-weight: 500; fill: #fff; }
-    .event-subtext { font-size: 11px; fill: #eee; opacity: 0.9; }
-    
-    /* New Color Palette */
-    .professional-lane-bg { fill: #1a237e; } /* Dark Indigo/Blue */
-    .professional-lane-event { fill: #3f51b5; }
-    .relevant-lane-bg { fill: #4a148c; } /* Dark Purple/Wine */
-    .relevant-lane-event { fill: #8e24aa; }
-    .education-lane-bg { fill: #b71c1c; } /* Dark Red */
-    .education-lane-event { fill: #d32f2f; }
-    .personal-lane-bg { fill: #004d40; } /* Dark Teal */
-    .personal-lane-event { fill: #00796b; }
+    /* --- THEME DEFINITION --- */
+    svg {
+      background-color: #1e1e2e; /* Base dark color */
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-    /* Interactive Elements */
-    .toggle-icon { cursor: pointer; fill: #fff; opacity: 0.8; }
-    .toggle-icon:hover { opacity: 1; }
-    .pin { cursor: pointer; stroke: #121212; stroke-width: 1.5; transition: transform 0.2s ease; }
-    .pin:hover { transform: scale(1.3); }
-    .tooltip-bg { fill: #222; stroke: #555; rx: 4; }
-    .tooltip-text { fill: #fff; font-size: 12px; }
+    /* --- General Text & Titles --- */
+    .title-text {
+      font-size: 24px;
+      font-weight: bold;
+      fill: #cdd6f4; /* Main text color */
+      text-anchor: middle;
+    }
+    .task-text, .section-text, .tick text {
+      font-size: 14px;
+      fill: #bac2de; /* Subtler text color */
+    }
+    .section-text {
+      font-weight: bold;
+      fill: #f5c2e7; /* Pink for section titles */
+    }
+
+    /* --- Gantt Bars --- */
+    .task-rect {
+      stroke: #45475a;
+      stroke-width: 1;
+      transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
+    }
+    .task-rect.done { fill: #89b4fa; } /* Blue for done */
+    .task-rect.active { fill: #a6e3a1; } /* Green for active */
+    
+    .task-rect:hover {
+      opacity: 0.8;
+      filter: brightness(1.2);
+      cursor: pointer;
+    }
+
+    /* --- Grid & Axis --- */
+    .grid-line, .domain {
+      stroke: #45475a; /* Grid line color */
+      stroke-width: 1;
+    }
+    .tick line {
+      stroke: #585b70;
+    }
+
+    /* --- Tooltip --- */
+    .tooltip-bg {
+      fill: #313244;
+      stroke: #f5c2e7;
+      stroke-width: 1px;
+      rx: 5; /* Rounded corners */
+      opacity: 0.95;
+    }
+    .tooltip-text {
+      fill: #cdd6f4;
+      font-size: 12px;
+      font-weight: bold;
+    }
   </style>
 
-  <script type="text/javascript">
-    <![CDATA[
+  <g id="gantt-chart">
+    <text x="475" y="40" class="title-text">Career and Education Timeline</text>
     
-      // --- CONFIGURATION ---
-      const laneStates = {
-        'professional': { isCollapsed: false, height: 320 },
-        'relevant': { isCollapsed: false, height: 160 },
-        'education': { isCollapsed: false, height: 160 },
-        'personal': { isCollapsed: false, height: 120 }
-      };
+    <g class="x-axis" transform="translate(250, 80)">
+      <line class="domain" x1="0" x2="680" y1="0" y2="0"></line>
+      <g class="tick" transform="translate(0, 0)"><line y2="6"></line><text y="20" dy="0.71em">2006</text></g>
+      <g class="tick" transform="translate(75.5, 0)"><line y2="6"></line><text y="20" dy="0.71em">2008</text></g>
+      <g class="tick" transform="translate(151, 0)"><line y2="6"></line><text y="20" dy="0.71em">2010</text></g>
+      <g class="tick" transform="translate(226.5, 0)"><line y2="6"></line><text y="20" dy="0.71em">2012</text></g>
+      <g class="tick" transform="translate(302, 0)"><line y2="6"></line><text y="20" dy="0.71em">2014</text></g>
+      <g class="tick" transform="translate(377.5, 0)"><line y2="6"></line><text y="20" dy="0.71em">2016</text></g>
+      <g class="tick" transform="translate(453, 0)"><line y2="6"></line><text y="20" dy="0.71em">2018</text></g>
+      <g class="tick" transform="translate(528.5, 0)"><line y2="6"></line><text y="20" dy="0.71em">2020</text></g>
+      <g class="tick" transform="translate(604, 0)"><line y2="6"></line><text y="20" dy="0.71em">2022</text></g>
+      <g class="tick" transform="translate(679.5, 0)"><line y2="6"></line><text y="20" dy="0.71em">2024</text></g>
+    </g>
+
+    <g class="grid" transform="translate(250, 110)">
+      <line class="grid-line" y2="580" x1="0" x2="0"></line>
+      <line class="grid-line" y2="580" x1="151" x2="151"></line>
+      <line class="grid-line" y2="580" x1="302" x2="302"></line>
+      <line class="grid-line" y2="580" x1="453" x2="453"></line>
+      <line class="grid-line" y2="580" x1="604" x2="604"></line>
+    </g>
+
+    <g transform="translate(0, 120)">
+      <text x="10" y="25" class="section-text">💼 Professional Experience</text>
+      <g class="task-group" data-name="Capital Markets Advisor" data-start="2021-12-01" data-end="2023-12-31">
+        <text x="10" y="55" class="task-text">Capital Markets Advisor</text>
+        <rect x="639" y="40" width="75" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Real Estate Private Equity" data-start="2020-01-01" data-end="2020-12-31">
+        <text x="10" y="95" class="task-text">Real Estate Private Equity</text>
+        <rect x="532" y="80" width="38" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Portfolio Manager &amp; Credit Analyst" data-start="2018-06-01" data-end="2020-01-31">
+        <text x="10" y="135" class="task-text">Portfolio Manager &amp; Credit Analyst</text>
+        <rect x="472" y="120" width="62" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Corporate VC &amp; Wealth Management" data-start="2015-12-01" data-end="2018-06-30">
+        <text x="10" y="175" class="task-text">Corporate VC &amp; Wealth Management</text>
+        <rect x="375" y="160" width="99" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="NGO (Financial, Social, Eng.)" data-start="2014-04-01" data-end="2016-04-30">
+        <text x="10" y="215" class="task-text">NGO (Financial, Social, Eng.)</text>
+        <rect x="314" y="200" width="79" height="30" class="task-rect done"></rect>
+      </g>
+       <g class="task-group" data-name="Venture Capital Analyst" data-start="2013-12-01" data-end="2015-05-31">
+        <text x="10" y="255" class="task-text">Venture Capital Analyst</text>
+        <rect x="300" y="240" width="56" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Investor Relations / RE Bus. Dev." data-start="2011-01-01" data-end="2013-02-28">
+        <text x="10" y="295" class="task-text">Investor Relations / RE Bus. Dev.</text>
+        <rect x="189" y="280" width="82" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="RE Construction Intern" data-start="2009-01-01" data-end="2010-07-31">
+        <text x="10" y="335" class="task-text">RE Construction Intern</text>
+        <rect x="113" y="320" width="60" height="30" class="task-rect done"></rect>
+      </g>
+
+      <text x="10" y="380" class="section-text">🌐 Relevant Experience</text>
+      <g class="task-group" data-name="International Experience" data-start="2020-12-01" data-end="2025-10-10">
+        <text x="10" y="410" class="task-text">International Experience</text>
+        <rect x="566" y="395" width="186" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Volunteer Experience" data-start="2014-04-01" data-end="2016-04-30">
+        <text x="10" y="450" class="task-text">Volunteer Experience</text>
+        <rect x="314" y="435" width="79" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Army Service" data-start="2006-01-01" data-end="2006-12-31">
+        <text x="10" y="490" class="task-text">Army Service</text>
+        <rect x="250" y="475" width="38" height="30" class="task-rect done"></rect>
+      </g>
       
-      const timelineConfig = { startYear: 2006, endYear: 2026.5, todayDate: 2025.75, width: 1130 };
-
-      // --- CORE FUNCTIONS ---
-      function getX(dateStr) {
-        const { startYear, endYear, width } = timelineConfig;
-        const years = endYear - startYear;
-        const [month, year] = dateStr.split('/');
-        const monthMap = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
-        const decimalYear = parseInt(year) + ((monthMap[month] || 0) - 1) / 12;
-        return ((decimalYear - startYear) / years) * width;
-      }
-      function getXval(val) {
-        const { startYear, endYear, width } = timelineConfig;
-        return ((val - startYear) / (endYear - startYear)) * width;
-      }
-
-      function toggleLane(laneName) {
-        laneStates[laneName].isCollapsed = !laneStates[laneName].isCollapsed;
-        document.getElementById(`toggle-icon-${laneName}`).textContent = laneStates[laneName].isCollapsed ? '+' : '−';
-        document.querySelectorAll(`.lane-content-${laneName}`).forEach(el => {
-          el.style.display = laneStates[laneName].isCollapsed ? 'none' : 'block';
-        });
-        repositionLanes();
-      }
-      
-      function repositionLanes() {
-        let currentY = 190;
-        const laneOrder = ['professional', 'relevant', 'education', 'personal'];
-        laneOrder.forEach(laneName => {
-          document.getElementById(`lane-group-${laneName}`).setAttribute('transform', `translate(0, ${currentY})`);
-          currentY += laneStates[laneName].isCollapsed ? 50 : laneStates[laneName].height;
-        });
-      }
-
-      function showTooltip(evt, title, subtitle) {
-        const tooltip = document.getElementById('tooltip');
-        const bg = document.getElementById('tooltip-bg');
-        const titleEl = document.getElementById('tooltip-title');
-        const subtitleEl = document.getElementById('tooltip-subtitle');
-        
-        titleEl.textContent = title;
-        subtitleEl.textContent = subtitle;
-        tooltip.style.display = 'block';
-        
-        // Basic auto-sizing for the background
-        const padding = 10;
-        const titleWidth = titleEl.getComputedTextLength();
-        const subtitleWidth = subtitleEl.getComputedTextLength();
-        const boxWidth = Math.max(titleWidth, subtitleWidth) + padding * 2;
-        bg.setAttribute('width', boxWidth);
-
-        // Position tooltip near cursor
-        const CTM = document.documentElement.getScreenCTM().inverse();
-        const pos = { x: evt.clientX, y: evt.clientY };
-        const transformedPos = { x: pos.x * CTM.a + CTM.e, y: pos.y * CTM.d + CTM.f };
-        tooltip.setAttribute('transform', `translate(${transformedPos.x + 15}, ${transformedPos.y - 15})`);
-      }
-
-      function hideTooltip() {
-        document.getElementById('tooltip').style.display = 'none';
-      }
-
-      // --- DYNAMIC RENDERING ---
-      function drawTimelineAxis() { /* ... function content remains the same ... */ }
-      function processScriptAttributes() { /* ... function content remains the same ... */ }
-
-      // --- INITIALIZATION ---
-      window.addEventListener('load', () => {
-        // Redefined inline to ensure no scope issues
-        function drawTimelineAxis() {
-          const axisGroup = document.getElementById('timeline-axis');
-          if (!axisGroup) return;
-          for (let year = timelineConfig.startYear; year <= Math.floor(timelineConfig.endYear); year++) {
-            const xPos = getXval(year);
-            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-            line.setAttribute('class', 'axis-line'); line.setAttribute('x1', xPos); line.setAttribute('y1', -5); line.setAttribute('x2', xPos); line.setAttribute('y2', 950); axisGroup.appendChild(line);
-            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-            text.setAttribute('class', 'text-year'); text.setAttribute('x', xPos); text.setAttribute('y', -12); text.setAttribute('text-anchor', 'middle'); text.textContent = year; axisGroup.appendChild(text);
-          }
-          const todayX = getXval(timelineConfig.todayDate);
-          const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          todayLine.setAttribute('class', 'today-line'); todayLine.setAttribute('x1', todayX); todayLine.setAttribute('y1', -30); todayLine.setAttribute('x2', todayX); todayLine.setAttribute('y2', 980); axisGroup.appendChild(todayLine);
-        }
-        function processScriptAttributes() {
-            const allElements = document.getElementsByTagName('*');
-            for (let i = 0; i < allElements.length; i++) {
-                const el = allElements[i];
-                const xScript = el.getAttribute('x_script'); if (xScript) el.setAttribute('x', eval(xScript));
-                const widthScript = el.getAttribute('width_script'); if (widthScript) el.setAttribute('width', eval(widthScript));
-            }
-        }
-        
-        drawTimelineAxis();
-        processScriptAttributes();
-        repositionLanes();
-      });
-    ]]>
-  </script>
-
-  <rect class="background" width="1400" height="1050" />
-  <g id="timeline-axis" transform="translate(220, 70)">
-    <rect class="future-area" x_script="getXval(timelineConfig.todayDate)" y="-30" width_script="timelineConfig.width - getXval(timelineConfig.todayDate)" height="980" />
-    <line class="axis-line" x1="0" y1="0" x2_script="timelineConfig.width" y2="0" />
-  </g>
-  
-  <g id="consolidated-lane" transform="translate(220, 110)">
-    <text x="-15" y="15" class="text-main" font-weight="600" text-anchor="end">Consolidated</text>
-    <circle class="pin professional-lane-event" cx_script="getX('Dec/2021')" cy="10" r="6" onmousemove="showTooltip(evt, 'Capital Markets Advisor', 'DHGP / PHI / Engage Capital')" onmouseout="hideTooltip()"/>
-    <circle class="pin professional-lane-event" cx_script="getX('Jan/2020')" cy="10" r="6" onmousemove="showTooltip(evt, 'Real Estate Private Equity', 'R Capital Asset Management')" onmouseout="hideTooltip()"/>
-    <circle class="pin professional-lane-event" cx_script="getX('Jun/2018')" cy="10" r="6" onmousemove="showTooltip(evt, 'Portfolio Manager', 'Hectare Capital AM')" onmouseout="hideTooltip()"/>
-    <circle class="pin professional-lane-event" cx_script="getX('Dec/2015')" cy="10" r="6" onmousemove="showTooltip(evt, 'Corporate VC & Wealth Mgmt', 'RTSC Participações Group')" onmouseout="hideTooltip()"/>
-    <circle class="pin relevant-lane-event" cx_script="getX('Apr/2014')" cy="10" r="6" onmousemove="showTooltip(evt, 'Volunteer Experience', 'House Construction & Logistics')" onmouseout="hideTooltip()"/>
-    <circle class="pin relevant-lane-event" cx_script="getX('Jan/2006')" cy="10" r="6" onmousemove="showTooltip(evt, 'Army Reserve Officer', 'Logistics Brigade')" onmouseout="hideTooltip()"/>
-    <circle class="pin education-lane-event" cx_script="getX('Oct/2024')" cy="10" r="6" onmousemove="showTooltip(evt, 'Software Engineering', 'L’École 42 (Ongoing)')" onmouseout="hideTooltip()"/>
-    <circle class="pin education-lane-event" cx_script="getX('Sep/2023')" cy="10" r="6" onmousemove="showTooltip(evt, 'Product Management', 'Stanford School of Engineering')" onmouseout="hideTooltip()"/>
-    <circle class="pin education-lane-event" cx_script="getX('Jan/2008')" cy="10" r="6" onmousemove="showTooltip(evt, 'B.Sc. Civil Engineering', 'Mackenzie Presbyterian University')" onmouseout="hideTooltip()"/>
-  </g>
-  
-  <g id="swim-lanes" transform="translate(0, 50)">
-  
-    <g id="lane-group-professional">
-      <rect class="professional-lane-bg" x="0" y="0" width="200" height="40" />
-      <text class="text-header" x="15" y="25">Professional Experience</text>
-      <g class="toggle-icon" onclick="toggleLane('professional')"><rect y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.1"/><text id="toggle-icon-professional" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text></g>
-      <g class="lane-content-professional" transform="translate(220, 20)">
-        <rect class="professional-lane-event event-block" x_script="getX('Dec/2021')" y="0" width_script="getX('Dec/2023') - getX('Dec/2021')" height="50" /><text class="event-text" x_script="getX('Dec/2021') + 10" y="20">Capital Markets Advisor</text><text class="event-subtext" x_script="getX('Dec/2021') + 10" y="38">DHGP / PHI / Engage Capital</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Jan/2020')" y="60" width_script="getX('Dec/2020') - getX('Jan/2020')" height="50" /><text class="event-text" x_script="getX('Jan/2020') + 10" y="80">Real Estate Private Equity</text><text class="event-subtext" x_script="getX('Jan/2020') + 10" y="98">R Capital Asset Management</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Jun/2018')" y="0" width_script="getX('Jan/2020') - getX('Jun/2018')" height="50" /><text class="event-text" x_script="getX('Jun/2018') + 10" y="20">Portfolio Manager</text><text class="event-subtext" x_script="getX('Jun/2018') + 10" y="38">Hectare Capital AM</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Dec/2015')" y="60" width_script="getX('Jun/2018') - getX('Dec/2015')" height="50" /><text class="event-text" x_script="getX('Dec/2015') + 10" y="80">Corporate VC &amp;amp; Wealth Mgmt</text><text class="event-subtext" x_script="getX('Dec/2015') + 10" y="98">RTSC Participações Group</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Apr/2014')" y="120" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" /><text class="event-text" x_script="getX('Apr/2014') + 10" y="140">Financial, Social &amp;amp; Eng.</text><text class="event-subtext" x_script="getX('Apr/2014') + 10" y="158">TECHO NGO</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Dec/2013')" y="180" width_script="getX('May/2015') - getX('Dec/2013')" height="50" /><text class="event-text" x_script="getX('Dec/2013') + 10" y="200">Venture Capital Analyst</text><text class="event-subtext" x_script="getX('Dec/2013') + 10" y="218">KPTL Investments</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Jan/2011')" y="240" width_script="getX('Feb/2013') - getX('Jan/2011')" height="50" /><text class="event-text" x_script="getX('Jan/2011') + 10" y="260">Investor Relations / Biz Dev</text><text class="event-subtext" x_script="getX('Jan/2011') + 10" y="278">Tecnisa S.A</text>
-        <rect class="professional-lane-event event-block" x_script="getX('Jan/2009')" y="180" width_script="getX('Jul/2010') - getX('Jan/2009')" height="50" /><text class="event-text" x_script="getX('Jan/2009') + 10" y="200">Construction Field Intern</text><text class="event-subtext" x_script="getX('Jan/2009') + 10" y="218">Plan &amp;amp; Plan - Cyrela Group</text>
+      <text x="10" y="535" class="section-text">🎓 Education</text>
+      <g class="task-group" data-name="Software Engineering Course" data-start="2024-10-01" data-end="2025-10-10">
+        <text x="10" y="565" class="task-text">Software Engineering Course</text>
+        <rect x="716" y="550" width="38" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="Product Management Spec." data-start="2023-09-01" data-end="2023-11-30">
+        <text x="10" y="605" class="task-text">Product Management Spec.</text>
+        <rect x="699" y="590" width="9" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="IB, PE &amp; Asset Mgmt. Spec." data-start="2016-01-01" data-end="2016-12-31">
+        <text x="10" y="645" class="task-text">IB, PE &amp; Asset Mgmt. Spec.</text>
+        <rect x="378" y="630" width="38" height="30" class="task-rect done"></rect>
+      </g>
+      <g class="task-group" data-name="B.Sc. Structural Civil Eng." data-start="2008-01-01" data-end="2015-12-31">
+        <text x="10" y="685" class="task-text">B.Sc. Structural Civil Eng.</text>
+        <rect x="76" y="670" width="302" height="30" class="task-rect done"></rect>
       </g>
     </g>
-
-    <g id="lane-group-relevant">
-      <rect class="relevant-lane-bg" x="0" y="0" width="200" height="40" /><text class="text-header" x="15" y="25">Relevant Experience</text>
-      <g class="toggle-icon" onclick="toggleLane('relevant')"><rect y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.1"/><text id="toggle-icon-relevant" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text></g>
-      <g class="lane-content-relevant" transform="translate(220, 20)">
-        <rect class="relevant-lane-event event-block" x_script="getXval(2018)" y="0" width_script="getXval(timelineConfig.todayDate) - getXval(2018)" height="50" /><text class="event-text" x_script="getXval(2018) + 10" y="20">International Experience</text><text class="event-subtext" x_script="getXval(2018) + 10" y="38">Nomadic Project: 5 years, 40+ countries</text>
-        <rect class="relevant-lane-event event-block" x_script="getX('Apr/2014')" y="60" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" /><text class="event-text" x_script="getX('Apr/2014') + 10" y="80">Volunteer Experience</text><text class="event-subtext" x_script="getX('Apr/2014') + 10" y="98">House Construction &amp;amp; Logistics</text>
-        <rect class="relevant-lane-event event-block" x_script="getX('Jan/2006')" y="0" width_script="getX('Dec/2006') - getX('Jan/2006')" height="50" /><text class="event-text" x_script="getX('Jan/2006') + 10" y="20">Army Reserve Officer</text><text class="event-subtext" x_script="getX('Jan/2006') + 10" y="38">Logistics Brigade, 2nd Lieutenant</text>
-      </g>
-    </g>
-
-    <g id="lane-group-education">
-      <rect class="education-lane-bg" x="0" y="0" width="200" height="40" /><text class="text-header" x="15" y="25">Education</text>
-      <g class="toggle-icon" onclick="toggleLane('education')"><rect y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.1"/><text id="toggle-icon-education" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text></g>
-      <g class="lane-content-education" transform="translate(220, 20)">
-        <rect class="education-lane-event event-block event-block-ongoing" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="50" /><text class="event-text" x_script="getX('Oct/2024') + 10" y="20">Software Engineering</text><text class="event-subtext" x_script="getX('Oct/2024') + 10" y="38">L’École 42 | Oct/2024 - Present</text>
-        <rect class="education-lane-event event-block" x_script="getX('Sep/2023')" y="60" width_script="getX('Nov/2023') - getX('Sep/2023')" height="50" /><text class="event-text" x_script="getX('Sep/2023') + 10" y="80">Product Management</text><text class="event-subtext" x_script="getX('Sep/2023') + 10" y="98">Stanford School of Engineering</text>
-        <rect class="education-lane-event event-block" x_script="getX('Jan/2016')" y="0" width_script="getX('Dec/2016') - getX('Jan/2016')" height="50" /><text class="event-text" x_script="getX('Jan/2016') + 10" y="20">IB, PE &amp;amp; Asset Mgmt.</text><text class="event-subtext" x_script="getX('Jan/2016') + 10" y="38">Anbima</text>
-        <rect class="education-lane-event event-block" x_script="getX('Jan/2008')" y="60" width_script="getX('Dec/2015') - getX('Jan/2008')" height="50" /><text class="event-text" x_script="getX('Jan/2008') + 10" y="80">B.Sc. Structural Civil Engineering</text><text class="event-subtext" x_script="getX('Jan/2008') + 10" y="98">Mackenzie Presbyterian University</text>
-      </g>
-    </g>
-
-    <g id="lane-group-personal">
-      <rect class="personal-lane-bg" x="0" y="0" width="200" height="40" /><text class="text-header" x="15" y="25">Personal Pursuits</text>
-      <g class="toggle-icon" onclick="toggleLane('personal')"><rect y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.1"/><text id="toggle-icon-personal" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text></g>
-      <g class="lane-content-personal" transform="translate(220, 20)">
-        <rect class="personal-lane-event event-block" x_script="getXval(2018)" y="0" width_script="getXval(timelineConfig.todayDate) - getXval(2018)" height="50" /><text class="event-text" x_script="getXval(2018) + 10" y="20">Hobby: Landscape Photography</text><text class="event-subtext" x_script="getXval(2018) + 10" y="38">Ongoing since 2018</text>
-        <rect class="personal-lane-event event-block" x_script="getXval(2022)" y="60" width_script="getXval(2024) - getXval(2022)" height="50" /><text class="event-text" x_script="getXval(2022) + 10" y="80">Project: Open Source Contributor</text><text class="event-subtext" x_script="getXval(2022) + 10" y="98">Contributions to various projects</text>
-      </g>
-    </g>
-
   </g>
 
-  <g id="tooltip" style="display:none;">
+  <g id="tooltip" style="visibility: hidden;">
     <rect id="tooltip-bg" class="tooltip-bg" width="200" height="40" />
-    <text id="tooltip-title" class="tooltip-text" x="10" y="18" font-weight="bold">Title</text>
-    <text id="tooltip-subtitle" class="tooltip-text" x="10" y="32">Subtitle</text>
+    <text id="tooltip-text-1" class="tooltip-text" x="10" y="18">Task Name</text>
+    <text id="tooltip-text-2" class="tooltip-text" x="10" y="34">Date Range</text>
   </g>
+  
+  <script type="text/javascript">
+    // <![CDATA[
+    const svg = document.querySelector('svg');
+    const tooltip = document.getElementById('tooltip');
+    const tooltipBg = document.getElementById('tooltip-bg');
+    const tooltipText1 = document.getElementById('tooltip-text-1');
+    const tooltipText2 = document.getElementById('tooltip-text-2');
+    const taskGroups = document.querySelectorAll('.task-group');
+
+    taskGroups.forEach(group => {
+      group.addEventListener('mousemove', (event) => {
+        const taskName = group.getAttribute('data-name');
+        const startDate = group.getAttribute('data-start');
+        const endDate = group.getAttribute('data-end');
+        
+        // Update tooltip content
+        tooltipText1.textContent = taskName;
+        tooltipText2.textContent = `${startDate} to ${endDate}`;
+        
+        // Adjust tooltip background size
+        const textLength = Math.max(tooltipText1.getComputedTextLength(), tooltipText2.getComputedTextLength());
+        tooltipBg.setAttribute('width', textLength + 20);
+        
+        // Position tooltip near cursor
+        const CTM = svg.getScreenCTM();
+        const mouseX = (event.clientX - CTM.e) / CTM.a;
+        const mouseY = (event.clientY - CTM.f) / CTM.d;
+        tooltip.setAttribute('transform', `translate(${mouseX + 15}, ${mouseY + 15})`);
+        
+        // Make tooltip visible
+        tooltip.style.visibility = 'visible';
+      });
+
+      group.addEventListener('mouseleave', () => {
+        // Hide tooltip
+        tooltip.style.visibility = 'hidden';
+      });
+    });
+    // ]]>
+  </script>
 </svg>

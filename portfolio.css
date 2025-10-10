@@ -294,3 +294,12 @@ footer {
     color: var(--accent-color-light); /* Highlight contact links with the accent color */
 }
 
+
+/* --- Styles for the Index Page (index.html) --- */
+.svg-timeline-container {
+  width: 100%; /* Makes the timeline responsive to the container's width */
+  height: auto;  /* Maintains the aspect ratio */
+  border: none;  /* Removes any default border */
+}
+
+

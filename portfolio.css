@@ -323,9 +323,9 @@ footer {
 /* --- STYLING CODE for the Mermaid Chart --- */
 
 /* Fix for the text inside the box */
-.mermaid .taskTextInside {
+/*.mermaid .taskTextInside {
     fill: #000000 !important;
-}
+}*/
 
 /* Colour for tasks marked as ':done' */
 .mermaid .task.done .task-rect {

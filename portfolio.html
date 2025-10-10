@@ -487,11 +487,23 @@
 
     <script src="portfolio.js"></script>
     <script>
-     mermaid.initialize({ 
-     startOnLoad: true,
-     theme: 'dark' // This is the line you need to add!
-      });
-     </script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'dark',
+    // Add this themeVariables section
+    themeVariables: {
+      // This sets the text color for labels that go INSIDE the task bars
+      'taskTextDarkColor': '#000000', // Black text for high contrast
+
+      // --- Optional Adjustments ---
+      // You can also make the 'done' tasks a bit darker if you like
+      // 'ganttTaskDone': '#444444', 
+      
+      // Or change the main text color that appears outside the bars
+      // 'taskTextLightColor': '#FFFFFF' 
+    }
+  });
+</script>
 
 
 </body>

@@ -1,4 +1,4 @@
-<svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid meet">
+<svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
   <style>
     /* --- THEME DEFINITION --- */
     svg {
@@ -8,7 +8,7 @@
 
     /* --- General Text & Titles --- */
     .title-text {
-      font-size: 32px; /* Increased for better visibility */
+      font-size: 32px;
       font-weight: bold;
       fill: #cdd6f4; /* Main text color */
       text-anchor: middle;
@@ -35,13 +35,13 @@
     .task-rect {
       stroke: #45475a;
       stroke-width: 0.5;
-      rx: 3; /* Slightly rounded corners for bars */
+      rx: 3;
       transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
     }
-    .task-rect.done { fill: #89b4fa; } /* Blue for done */
-    .task-rect.active { fill: #a6e3a1; } /* Green for active */
+    .task-rect.done { fill: #89b4fa; }
+    .task-rect.active { fill: #a6e3a1; }
     
-    .task-rect:hover {
+    .task-row:hover .task-rect {
       opacity: 0.9;
       filter: brightness(1.1);
       cursor: pointer;
@@ -49,17 +49,13 @@
     
     /* --- Grid & Axis --- */
     .grid-line {
-      stroke: #45475a; /* Grid line color */
+      stroke: #45475a;
       stroke-width: 0.8;
-      stroke-dasharray: 2 2; /* Dashed lines for clarity */
+      stroke-dasharray: 2 2;
     }
     .axis-line {
       stroke: #45475a;
       stroke-width: 1;
-    }
-    .tick line {
-      stroke: #585b70;
-      stroke-width: 0.5;
     }
 
     /* --- Tooltip --- */
@@ -67,9 +63,9 @@
       fill: #313244;
       stroke: #f5c2e7;
       stroke-width: 1px;
-      rx: 5; /* Rounded corners */
+      rx: 5;
       opacity: 0.95;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); /* Subtle shadow */
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
     .tooltip-text {
       fill: #cdd6f4;
@@ -84,86 +80,26 @@
     <g id="axis-and-grid">
       <line class="axis-line" x1="250" y1="80" x2="950" y2="80" />
       <g class="ticks-and-grid">
-        <g transform="translate(250, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2006</text>
-        </g>
-        <g transform="translate(285, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2007</text>
-        </g>
-        <g transform="translate(320, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2008</text>
-        </g>
-        <g transform="translate(355, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2009</text>
-        </g>
-        <g transform="translate(390, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2010</text>
-        </g>
-        <g transform="translate(425, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2011</text>
-        </g>
-        <g transform="translate(460, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2012</text>
-        </g>
-        <g transform="translate(495, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2013</text>
-        </g>
-        <g transform="translate(530, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2014</text>
-        </g>
-        <g transform="translate(565, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2015</text>
-        </g>
-        <g transform="translate(600, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2016</text>
-        </g>
-        <g transform="translate(635, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2017</text>
-        </g>
-        <g transform="translate(670, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2018</text>
-        </g>
-        <g transform="translate(705, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2019</text>
-        </g>
-        <g transform="translate(740, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2020</text>
-        </g>
-        <g transform="translate(775, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2021</text>
-        </g>
-        <g transform="translate(810, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2022</text>
-        </g>
-        <g transform="translate(845, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2023</text>
-        </g>
-        <g transform="translate(880, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2024</text>
-        </g>
-        <g transform="translate(915, 0)">
-          <line class="grid-line" y1="80" y2="650"></line>
-          <text class="axis-label" y="95">2025</text>
-        </g>
+        <g transform="translate(250, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2006</text></g>
+        <g transform="translate(285, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2007</text></g>
+        <g transform="translate(320, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2008</text></g>
+        <g transform="translate(355, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2009</text></g>
+        <g transform="translate(390, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2010</text></g>
+        <g transform="translate(425, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2011</text></g>
+        <g transform="translate(460, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2012</text></g>
+        <g transform="translate(495, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2013</text></g>
+        <g transform="translate(530, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2014</text></g>
+        <g transform="translate(565, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2015</text></g>
+        <g transform="translate(600, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2016</text></g>
+        <g transform="translate(635, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2017</text></g>
+        <g transform="translate(670, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2018</text></g>
+        <g transform="translate(705, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2019</text></g>
+        <g transform="translate(740, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2020</text></g>
+        <g transform="translate(775, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2021</text></g>
+        <g transform="translate(810, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2022</text></g>
+        <g transform="translate(845, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2023</text></g>
+        <g transform="translate(880, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2024</text></g>
+        <g transform="translate(915, 0)"><line class="grid-line" y1="80" y2="650"></line><text class="axis-label" y="95">2025</text></g>
       </g>
     </g>
 
@@ -171,75 +107,74 @@
       <text x="10" y="0" class="section-text">💼 Professional Experience</text>
       <g class="task-row" transform="translate(0, 25)">
         <text x="10" y="0" class="task-text">Capital Markets Advisor</text>
-        <rect x="797" y="-10" width="112" height="20" class="task-rect done" data-name="Capital Markets Advisor" data-start="2021-12-01" data-end="2023-12-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Capital Markets Advisor" data-start="2021-12-01" data-end="2023-12-31"></rect>
       </g>
       <g class="task-row" transform="translate(0, 50)">
         <text x="10" y="0" class="task-text">Real Estate Private Equity</text>
-        <rect x="740" y="-10" width="35" height="20" class="task-rect done" data-name="Real Estate Private Equity" data-start="2020-01-01" data-end="2020-12-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Real Estate Private Equity" data-start="2020-01-01" data-end="2020-12-31"></rect>
       </g>
       <g class="task-row" transform="translate(0, 75)">
-        <text x="10" y="0" class="task-text">Portfolio Manager &amp; Credit Analyst</text>
-        <rect x="682" y="-10" width="60" height="20" class="task-rect done" data-name="Portfolio Manager &amp; Credit Analyst" data-start="2018-06-01" data-end="2020-01-31"></rect>
+        <text x="10" y="0" class="task-text">Portfolio Manager and Credit Analyst</text>
+        <rect y="-10" height="20" class="task-rect done" data-name="Portfolio Manager and Credit Analyst" data-start="2018-06-01" data-end="2020-01-31"></rect>
       </g>
       <g class="task-row" transform="translate(0, 100)">
-        <text x="10" y="0" class="task-text">Corporate VC &amp; Wealth Management</text>
-        <rect x="595" y="-10" width="90" height="20" class="task-rect done" data-name="Corporate VC &amp; Wealth Management" data-start="2015-12-01" data-end="2018-06-30"></rect>
+        <text x="10" y="0" class="task-text">Corporate VC and Wealth Management</text>
+        <rect y="-10" height="20" class="task-rect done" data-name="Corporate VC and Wealth Management" data-start="2015-12-01" data-end="2018-06-30"></rect>
       </g>
       <g class="task-row" transform="translate(0, 125)">
         <text x="10" y="0" class="task-text">NGO (Financial, Social, Eng.)</text>
-        <rect x="548" y="-10" width="70" height="20" class="task-rect done" data-name="NGO (Financial, Social, Eng.)" data-start="2014-04-01" data-end="2016-04-30"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="NGO (Financial, Social, Eng.)" data-start="2014-04-01" data-end="2016-04-30"></rect>
       </g>
       <g class="task-row" transform="translate(0, 150)">
         <text x="10" y="0" class="task-text">Venture Capital Analyst</text>
-        <rect x="522" y="-10" width="55" height="20" class="task-rect done" data-name="Venture Capital Analyst" data-start="2013-12-01" data-end="2015-05-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Venture Capital Analyst" data-start="2013-12-01" data-end="2015-05-31"></rect>
       </g>
       <g class="task-row" transform="translate(0, 175)">
         <text x="10" y="0" class="task-text">Investor Relations / RE Bus. Dev.</text>
-        <rect x="430" y="-10" width="75" height="20" class="task-rect done" data-name="Investor Relations / RE Bus. Dev." data-start="2011-01-01" data-end="2013-02-28"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Investor Relations / RE Bus. Dev." data-start="2011-01-01" data-end="2013-02-28"></rect>
       </g>
       <g class="task-row" transform="translate(0, 200)">
         <text x="10" y="0" class="task-text">RE Construction Intern</text>
-        <rect x="350" y="-10" width="60" height="20" class="task-rect done" data-name="RE Construction Intern" data-start="2009-01-01" data-end="2010-07-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="RE Construction Intern" data-start="2009-01-01" data-end="2010-07-31"></rect>
       </g>
 
       <text x="10" y="250" class="section-text">🌐 Relevant Experience</text>
       <g class="task-row" transform="translate(0, 275)">
         <text x="10" y="0" class="task-text">International Experience</text>
-        <rect x="740" y="-10" width="165" height="20" class="task-rect done" data-name="International Experience" data-start="2020-12-01" data-end="2025-10-10"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="International Experience" data-start="2020-12-01" data-end="2025-10-10"></rect>
       </g>
       <g class="task-row" transform="translate(0, 300)">
         <text x="10" y="0" class="task-text">Volunteer Experience</text>
-        <rect x="548" y="-10" width="70" height="20" class="task-rect done" data-name="Volunteer Experience" data-start="2014-04-01" data-end="2016-04-30"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Volunteer Experience" data-start="2014-04-01" data-end="2016-04-30"></rect>
       </g>
       <g class="task-row" transform="translate(0, 325)">
         <text x="10" y="0" class="task-text">Army Service</text>
-        <rect x="250" y="-10" width="35" height="20" class="task-rect done" data-name="Army Service" data-start="2006-01-01" data-end="2006-12-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Army Service" data-start="2006-01-01" data-end="2006-12-31"></rect>
       </g>
       
       <text x="10" y="375" class="section-text">🎓 Education</text>
       <g class="task-row" transform="translate(0, 400)">
         <text x="10" y="0" class="task-text">Software Engineering Course</text>
-        <rect x="880" y="-10" width="35" height="20" class="task-rect done" data-name="Software Engineering Course" data-start="2024-10-01" data-end="2025-10-10"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Software Engineering Course" data-start="2024-10-01" data-end="2025-10-10"></rect>
       </g>
       <g class="task-row" transform="translate(0, 425)">
         <text x="10" y="0" class="task-text">Product Management Spec.</text>
-        <rect x="870" y="-10" width="10" height="20" class="task-rect done" data-name="Product Management Spec." data-start="2023-09-01" data-end="2023-11-30"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Product Management Spec." data-start="2023-09-01" data-end="2023-11-30"></rect>
       </g>
       <g class="task-row" transform="translate(0, 450)">
-        <text x="10" y="0" class="task-text">IB, PE &amp; Asset Mgmt. Spec.</text>
-        <rect x="600" y="-10" width="35" height="20" class="task-rect done" data-name="IB, PE &amp; Asset Mgmt. Spec." data-start="2016-01-01" data-end="2016-12-31"></rect>
+        <text x="10" y="0" class="task-text">IB, PE and Asset Mgmt. Spec.</text>
+        <rect y="-10" height="20" class="task-rect done" data-name="IB, PE and Asset Mgmt. Spec." data-start="2016-01-01" data-end="2016-12-31"></rect>
       </g>
       <g class="task-row" transform="translate(0, 475)">
         <text x="10" y="0" class="task-text">B.Sc. Structural Civil Eng.</text>
-        <rect x="320" y="-10" width="280" height="20" class="task-rect done" data-name="B.Sc. Structural Civil Eng." data-start="2008-01-01" data-end="2015-12-31"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="B.Sc. Structural Civil Eng." data-start="2008-01-01" data-end="2015-12-31"></rect>
       </g>
 
       <text x="10" y="525" class="section-text">🎓 Personal Pursuits</text>
       <g class="task-row" transform="translate(0, 550)">
         <text x="10" y="0" class="task-text">Personal Pursuit Projects</text>
-        <rect x="880" y="-10" width="140" height="20" class="task-rect done" data-name="Personal Pursuit Projects" data-start="2025-10-01" data-end="2030-10-10"></rect>
+        <rect y="-10" height="20" class="task-rect done" data-name="Personal Pursuit Projects" data-start="2025-10-01" data-end="2030-10-10"></rect>
       </g>
-
     </g>
   </g>
 
@@ -256,27 +191,28 @@
     const tooltipBg = document.getElementById('tooltip-bg');
     const tooltipText1 = document.getElementById('tooltip-text-1');
     const tooltipText2 = document.getElementById('tooltip-text-2');
-    const taskRows = document.querySelectorAll('.task-row'); // Changed to task-row to target the group for event
+    const taskRows = document.querySelectorAll('.task-row');
 
-    // Constants for date calculations
     const START_YEAR = 2005; 
-    const PIXELS_PER_YEAR = 35; // Each year is 35 units wide
-    const X_OFFSET = 250; // X position where the gantt bars start
+    const PIXELS_PER_YEAR = 35;
+    const X_OFFSET = 250;
 
-    // Function to convert a date string (YYYY-MM-DD) to an X coordinate
     function dateToX(dateString) {
+      try {
         const date = new Date(dateString);
+        if (isNaN(date)) return X_OFFSET; // handle invalid dates
         const year = date.getFullYear();
-        const month = date.getMonth(); // 0-11
-        const day = date.getDate(); // 1-31
-
+        const month = date.getMonth();
+        const day = date.getDate();
         const totalDaysInYear = (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 366 : 365;
-        const daysPassedInYear = (Date.UTC(year, month, day) - Date.UTC(year, 0, 1)) / (1000 * 60 * 60 * 24);
-        
+        const startOfYear = new Date(year, 0, 1);
+        const daysPassedInYear = (date - startOfYear) / (1000 * 60 * 60 * 24);
         const yearFraction = daysPassedInYear / totalDaysInYear;
         const yearsSinceStart = (year - START_YEAR) + yearFraction;
-        
         return X_OFFSET + (yearsSinceStart * PIXELS_PER_YEAR);
+      } catch (e) {
+        return X_OFFSET;
+      }
     }
 
     taskRows.forEach(row => {
@@ -285,36 +221,28 @@
       const dataStart = taskRect.getAttribute('data-start');
       const dataEnd = taskRect.getAttribute('data-end');
 
-      // Calculate and set rect positions/widths based on dates
       const startX = dateToX(dataStart);
       const endX = dateToX(dataEnd);
       const width = endX - startX;
 
       taskRect.setAttribute('x', startX);
-      taskRect.setAttribute('width', width > 0 ? width : 1); // Ensure minimum width of 1 if start/end are same
+      taskRect.setAttribute('width', width > 1 ? width : 1);
 
       row.addEventListener('mousemove', (event) => {
-        // Update tooltip content
         tooltipText1.textContent = dataName;
         tooltipText2.textContent = `${dataStart} to ${dataEnd}`;
+        const textLength = Math.max(tooltipText1.getComputedTextLength(), tooltipText2.getComputedTextLength());
+        tooltipBg.setAttribute('width', textLength + 20);
         
-        // Adjust tooltip background size
-        const textLength1 = tooltipText1.getComputedTextLength();
-        const textLength2 = tooltipText2.getComputedTextLength();
-        tooltipBg.setAttribute('width', Math.max(textLength1, textLength2) + 20);
-        
-        // Position tooltip near cursor
         const CTM = svg.getScreenCTM();
+        if (!CTM) return;
         const mouseX = (event.clientX - CTM.e) / CTM.a;
         const mouseY = (event.clientY - CTM.f) / CTM.d;
         tooltip.setAttribute('transform', `translate(${mouseX + 15}, ${mouseY + 15})`);
-        
-        // Make tooltip visible
         tooltip.style.visibility = 'visible';
       });
 
       row.addEventListener('mouseleave', () => {
-        // Hide tooltip
         tooltip.style.visibility = 'hidden';
       });
     });

@@ -1,4 +1,3 @@
-
 <svg width="1400" height="950" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
 
   <defs>
@@ -31,11 +30,37 @@
 
   <script type="text/javascript">
     <![CDATA[
+    
+      // --- CONFIGURATION ---
       const laneStates = {
         'professional': { isCollapsed: false, height: 320 },
         'relevant': { isCollapsed: false, height: 160 },
         'education': { isCollapsed: false, height: 160 }
       };
+      
+      const timelineConfig = {
+        startYear: 2006,
+        endYear: 2026.5,
+        todayDate: 2025.75, // Approx Oct 2025
+        width: 1130
+      };
+
+      // --- CORE FUNCTIONS ---
+
+      function getX(dateStr) {
+        const { startYear, endYear, width } = timelineConfig;
+        const years = endYear - startYear;
+        const [month, year] = dateStr.split('/');
+        const monthMap = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
+        const decimalYear = parseInt(year) + ((monthMap[month] || 0) - 1) / 12;
+        return ((decimalYear - startYear) / years) * width;
+      }
+      
+      function getXval(val) {
+        const { startYear, endYear, width } = timelineConfig;
+        const years = endYear - startYear;
+        return ((val - startYear) / years) * width;
+      }
 
       function toggleLane(laneName) {
         laneStates[laneName].isCollapsed = !laneStates[laneName].isCollapsed;
@@ -59,70 +84,76 @@
           currentY += laneStates[laneName].isCollapsed ? 50 : laneStates[laneName].height;
         });
       }
+
+      function drawTimelineAxis() {
+        const axisGroup = document.getElementById('timeline-axis');
+        if (!axisGroup) return;
+
+        // Draw Year Markers and Lines
+        for (let year = timelineConfig.startYear; year <= Math.floor(timelineConfig.endYear); year++) {
+          const xPos = getXval(year);
+          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('class', 'axis-line');
+          line.setAttribute('x1', xPos); line.setAttribute('y1', -5);
+          line.setAttribute('x2', xPos); line.setAttribute('y2', 850);
+          line.style.opacity = '0.5';
+          axisGroup.appendChild(line);
+          
+          const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+          text.setAttribute('class', 'text-year');
+          text.setAttribute('x', xPos); text.setAttribute('y', -12);
+          text.setAttribute('text-anchor', 'middle');
+          text.textContent = year;
+          axisGroup.appendChild(text);
+        }
+
+        // Draw Today Line
+        const todayX = getXval(timelineConfig.todayDate);
+        const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        todayLine.setAttribute('class', 'today-line');
+        todayLine.setAttribute('x1', todayX); todayLine.setAttribute('y1', -30);
+        todayLine.setAttribute('x2', todayX); todayLine.setAttribute('y2', 880);
+        axisGroup.appendChild(todayLine);
+        
+        const todayText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        todayText.setAttribute('class', 'text-main');
+        todayText.setAttribute('x', todayX); todayText.setAttribute('y', -12);
+        todayText.setAttribute('text-anchor', 'middle');
+        todayText.setAttribute('font-weight', 'bold');
+        todayText.textContent = 'Today';
+        axisGroup.appendChild(todayText);
+      }
+      
+      function processScriptAttributes() {
+        const allElements = document.getElementsByTagName('*');
+        for (let i = 0; i < allElements.length; i++) {
+          const el = allElements[i];
+          const xScript = el.getAttribute('x_script');
+          if (xScript) el.setAttribute('x', eval(xScript));
+          const widthScript = el.getAttribute('width_script');
+          if (widthScript) el.setAttribute('width', eval(widthScript));
+        }
+      }
+
+      // --- INITIALIZATION ---
+      window.addEventListener('load', () => {
+        drawTimelineAxis();
+        processScriptAttributes();
+        repositionLanes();
+      });
+
     ]]>
   </script>
 
   <rect class="background" width="1400" height="950" />
   <g id="timeline-axis" transform="translate(220, 70)">
-    <script>
-      const startYear = 2006;
-      const endYear = 2026.5;
-      const todayDate = 2025.75; // Approx Oct 2025
-      const timelineWidth = 1130;
-      const years = endYear - startYear;
-
-      function getX(dateStr) {
-        const [month, year] = dateStr.split('/');
-        const monthMap = {Jan:1, Feb:2, Mar:3, Apr:4, May:5, Jun:6, Jul:7, Aug:8, Sep:9, Oct:10, Nov:11, Dec:12};
-        const numericYear = parseInt(year);
-        const numericMonth = monthMap[month];
-        const decimalYear = numericYear + (numericMonth - 1) / 12;
-        return ((decimalYear - startYear) / years) * timelineWidth;
-      }
-      
-      function getXval(val) {
-        return ((val - startYear) / years) * timelineWidth;
-      }
-    </script>
-    
-    <rect class="future-area" x_script="getXval(todayDate)" y="-30" width_script="timelineWidth - getXval(todayDate)" height="880" />
-    <line class="axis-line" x1="0" y1="0" x2_script="timelineWidth" y2="0" />
-    <script>
-      const axisGroup = document.getElementById('timeline-axis');
-      for (let year = startYear; year <= Math.floor(endYear); year++) {
-        const xPos = getXval(year);
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('class', 'axis-line');
-        line.setAttribute('x1', xPos); line.setAttribute('y1', -5);
-        line.setAttribute('x2', xPos); line.setAttribute('y2', 850);
-        line.style.opacity = '0.5';
-        axisGroup.appendChild(line);
-        
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('class', 'text-year');
-        text.setAttribute('x', xPos); text.setAttribute('y', -12);
-        text.setAttribute('text-anchor', 'middle');
-        text.textContent = year;
-        axisGroup.appendChild(text);
-      }
-      const todayLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      todayLine.setAttribute('class', 'today-line');
-      todayLine.setAttribute('x1', getXval(todayDate)); todayLine.setAttribute('y1', -30);
-      todayLine.setAttribute('x2', getXval(todayDate)); todayLine.setAttribute('y2', 880);
-      axisGroup.appendChild(todayLine);
-      
-      const todayText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-      todayText.setAttribute('class', 'text-main');
-      todayText.setAttribute('x', getXval(todayDate)); todayText.setAttribute('y', -12);
-      todayText.setAttribute('text-anchor', 'middle'); todayText.setAttribute('font-weight', 'bold');
-      todayText.textContent = 'Today';
-      axisGroup.appendChild(todayText);
-    </script>
+    <rect class="future-area" x_script="getXval(timelineConfig.todayDate)" y="-30" width_script="timelineConfig.width - getXval(timelineConfig.todayDate)" height="880" />
+    <line class="axis-line" x1="0" y1="0" x2_script="timelineConfig.width" y2="0" />
   </g>
   
   <g id="consolidated-lane" transform="translate(220, 100)">
     <text x="-15" y="15" class="text-main" font-weight="600" text-anchor="end">Consolidated</text>
-    <rect class="consolidated-lane" x_script="getX('Oct/2024')" y="0" width_script="getXval(todayDate) - getX('Oct/2024')" height="20" rx="3" />
+    <rect class="consolidated-lane" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="20" rx="3" />
     <rect class="consolidated-lane" x_script="getX('Dec/2015')" y="0" width_script="getX('Dec/2023') - getX('Dec/2015')" height="20" rx="3" />
     <rect class="consolidated-lane" x_script="getX('Jan/2008')" y="0" width_script="getX('Dec/2015') - getX('Jan/2008')" height="20" rx="3" />
   </g>
@@ -172,7 +203,7 @@
         <text id="toggle-icon-relevant" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text>
       </g>
       <g class="lane-content-relevant" transform="translate(220, 20)">
-        <rect class="relevant-lane event-past" x_script="getXval(2018)" y="0" width_script="getXval(todayDate) - getXval(2018)" height="50" rx="5" />
+        <rect class="relevant-lane event-past" x_script="getXval(2018)" y="0" width_script="getXval(timelineConfig.todayDate) - getXval(2018)" height="50" rx="5" />
         <text class="event-text" x_script="getXval(2018) + 10" y="20">International Experience</text>
         <text class="event-subtext" x_script="getXval(2018) + 10" y="38">Nomadic Project: 5 years, 40+ countries</text>
         <rect class="relevant-lane event-past" x_script="getX('Apr/2014')" y="60" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" rx="5"/>
@@ -192,7 +223,7 @@
         <text id="toggle-icon-education" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text>
       </g>
       <g class="lane-content-education" transform="translate(220, 20)">
-        <rect class="education-lane event-ongoing" x_script="getX('Oct/2024')" y="0" width_script="getXval(todayDate) - getX('Oct/2024')" height="50" rx="5"/>
+        <rect class="education-lane event-ongoing" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="50" rx="5"/>
         <text class="event-text" x_script="getX('Oct/2024') + 10" y="20">Software Engineering</text>
         <text class="event-subtext" x_script="getX('Oct/2024') + 10" y="38">L’École 42 | Oct/2024 - Present</text>
         <rect class="education-lane event-past" x_script="getX('Sep/2023')" y="60" width_script="getX('Nov/2023') - getX('Sep/2023')" height="50" rx="5"/>
@@ -208,23 +239,4 @@
     </g>
 
   </g>
-  
-  <script>
-    function processScriptAttributes() {
-      const allElements = document.getElementsByTagName('*');
-      for (let i = 0; i < allElements.length; i++) {
-        const el = allElements[i];
-        const xScript = el.getAttribute('x_script');
-        if (xScript) el.setAttribute('x', eval(xScript));
-        const widthScript = el.getAttribute('width_script');
-        if (widthScript) el.setAttribute('width', eval(widthScript));
-      }
-    }
-    window.addEventListener('load', () => {
-        processScriptAttributes();
-        repositionLanes();
-    });
-  </script>
-
 </svg>
-

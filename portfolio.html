@@ -501,5 +501,24 @@
 
 
 
+
+<script>
+  // Wait for the page to be fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // 1. Get the Markdown text from the hidden source div
+    const markdownInput = document.getElementById('markdown-source').innerText;
+
+    // 2. Convert the Markdown to HTML using the library
+    const htmlOutput = marked.parse(markdownInput);
+
+    // 3. Place the generated HTML into our visible container div
+    document.getElementById('content-output').innerHTML = htmlOutput;
+  });
+</script>
+
+
+
+
+
 </body>
 </html>

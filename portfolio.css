@@ -305,7 +305,7 @@ footer {
 
 
 
-/* --- CSS for Mobile Responsiveness --- */
+/* --- CSS for Mobile MERAMAID GANTT Responsiveness --- */
 
 /* 1. The container that will handle the scrolling */
 .mermaid-container {
@@ -320,20 +320,73 @@ footer {
 }
 
 
-/* --- STYLING CODE for the Mermaid Chart --- */
+/*
+=================================================
+  CUSTOM MERMAID GANTT CHART DARK THEME
+=================================================
+*/
 
-/* Fix for the text inside the box */
-/*.mermaid .taskTextInside {
-    fill: #000000 !important;
-}*/
+/* --- 1. General Text & Title Colours --- */
+
+/* Main title of the chart */
+.mermaid text.title {
+    fill: #FFFFFF !important; /* White */
+}
+
+/* Date labels on the axis (e.g., 2020, 2021) */
+.mermaid .tick text {
+     fill: #E0E0E0 !important; /* Light Grey */
+}
+
+/* Task labels that appear OUTSIDE the bars */
+.mermaid .taskText,
+.mermaid .taskTextOutside {
+    fill: #E0E0E0 !important; /* Light Grey */
+}
+
+
+/* --- 2. Task Bar Colours --- */
 
 /* Colour for tasks marked as ':done' */
 .mermaid .task.done .task-rect {
-    fill: #025078 !important;
+    fill: #025078 !important; /* Dark Blue */
 }
 
 /* Colour for tasks marked as ':active' */
 .mermaid .task.active .task-rect {
-    fill: #007078 !important;
+    fill: #007078 !important; /* Teal/Cyan */
+}
+
+
+/* --- 3. Text Readability Fix --- */
+
+/* Colour for task labels that appear INSIDE the bars */
+.mermaid .taskTextInside {
+    fill: #FFFFFF !important; /* White text for high contrast on dark bars */
+}
+
+
+/* --- 4. Grid Lines & Dividers --- */
+
+/* The vertical grid lines on the chart */
+.mermaid .grid .tick {
+    stroke: #444444 !important; /* Dark Grey */
+}
+
+
+/*
+=================================================
+  RESPONSIVE WRAPPER
+=================================================
+*/
+
+.mermaid-container {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.mermaid {
+    min-width: 750px; /* Adjust this value as needed */
 }
 

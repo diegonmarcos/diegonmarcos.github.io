@@ -490,20 +490,25 @@
   mermaid.initialize({
     startOnLoad: true,
     theme: 'dark',
-    // Add this themeVariables section
     themeVariables: {
-      // This sets the text color for labels that go INSIDE the task bars
-      'taskTextDarkColor': '#000000', // Black text for high contrast
+      // Fix for the text inside the box (from our last conversation)
+      'taskTextDarkColor': '#000000',
 
-      // --- Optional Adjustments ---
-      // You can also make the 'done' tasks a bit darker if you like
-      // 'ganttTaskDone': '#444444', 
-      
-      // Or change the main text color that appears outside the bars
-       'taskTextLightColor': '#FFFFFF' 
+      // --- NEW: Change the box fill colours here ---
+
+      // Colour for tasks marked as ':done'
+      'ganttTaskDone': '#025078', // Example: A nice dark blue
+
+      // Colour for tasks marked as ':active'
+      'ganttTaskActive': '#007078', // Example: A teal/cyan colour
+
+      // You can also set colours for other task types if you use them
+      // 'ganttTaskDefault': '#666666',
+      // 'ganttTaskCrit': '#990000'
     }
   });
 </script>
+
 
 
 </body>

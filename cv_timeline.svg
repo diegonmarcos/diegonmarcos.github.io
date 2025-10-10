@@ -1,31 +1,49 @@
-<svg width="1400" height="950" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
+<svg width="1400" height="950" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg" font-family="Roboto, 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
 
   <defs>
-    <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#f8f9fa;" />
-      <stop offset="100%" style="stop-color:#e9ecef;" />
-    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="1" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
   </defs>
 
   <style>
-    .background { fill: url(#backgroundGradient); }
-    .text-main { font-size: 14px; fill: #212529; }
-    .text-light { font-size: 12px; fill: #6c757d; }
-    .text-header { font-size: 16px; font-weight: 600; fill: #fff; }
-    .text-year { font-size: 12px; font-weight: 600; fill: #adb5bd; }
-    .axis-line { stroke: #ced4da; stroke-width: 2; }
-    .today-line { stroke: #007bff; stroke-width: 2.5; stroke-dasharray: 6 3; }
-    .future-area { fill: #007bff; opacity: 0.05; }
-    .event-past { stroke-width: 1; stroke-opacity: 0.5; }
-    .event-ongoing { stroke: #007bff; stroke-width: 1.5; }
+    /* Base Colors from Template */
+    .background { fill: #f0f2f5; } /* Light grey background */
+    .text-main { font-size: 14px; fill: #333; }
+    .text-light { font-size: 12px; fill: #666; }
+    .text-header { font-size: 16px; font-weight: 500; fill: #fff; } /* White for lane headers */
+    .text-year { font-size: 12px; font-weight: 500; fill: #888; } /* Darker grey for time axis */
+    
+    /* Timeline Axis */
+    .axis-line { stroke: #ccc; stroke-width: 1; } /* Lighter grid lines */
+    .today-line { stroke: #e0e0e0; stroke-width: 2; stroke-dasharray: 4 2; } /* Subtle today line */
+    .future-area { fill: #f7f7f7; opacity: 0.8; } /* Very light grey for future */
+
+    /* Event rectangles (consistent style, filter for shadow) */
+    .event-block { stroke-width: 0; fill-opacity: 0.9; filter: url(#shadow); rx: 4; }
+    .event-block-ongoing { stroke: #007bff; stroke-width: 2; } /* Blue border for ongoing */
     .event-text { font-size: 13px; font-weight: 500; fill: #fff; }
-    .event-subtext { font-size: 11px; fill: #fff; opacity: 0.85; }
-    .consolidated-lane { fill: #6c757d; stroke: #5a6268; }
-    .professional-lane { fill: #1971c2; stroke: #1864ab; }
-    .relevant-lane { fill: #2f9e44; stroke: #2b8a3e; }
-    .education-lane { fill: #e67700; stroke: #d97000; }
+    .event-subtext { font-size: 11px; fill: #eee; opacity: 0.9; }
+
+    /* Lane Specific Colors - Inspired by template's muted tones */
+    .consolidated-lane-bg { fill: #e0e0e0; } /* Lighter grey for consolidated header */
+    .consolidated-lane-event { fill: #888; stroke: #777; } /* Darker grey for consolidated events */
+    
+    .professional-lane-bg { fill: #0d47a1; } /* Darker blue header */
+    .professional-lane-event { fill: #2196f3; stroke: #1976d2; } /* Lighter blue events */
+    
+    .relevant-lane-bg { fill: #1b5e20; } /* Darker green header */
+    .relevant-lane-event { fill: #4caf50; stroke: #388e3c; } /* Lighter green events */
+    
+    .education-lane-bg { fill: #e65100; } /* Darker orange header */
+    .education-lane-event { fill: #ff9800; stroke: #f57c00; } /* Lighter orange events */
+
+    /* Toggle Icon */
     .toggle-icon { cursor: pointer; fill: #fff; opacity: 0.8; }
     .toggle-icon:hover { opacity: 1; }
+
+    /* Milestone Star */
+    .milestone-star { fill: #ffc107; /* Amber color */ filter: url(#shadow); }
   </style>
 
   <script type="text/javascript">
@@ -96,7 +114,6 @@
           line.setAttribute('class', 'axis-line');
           line.setAttribute('x1', xPos); line.setAttribute('y1', -5);
           line.setAttribute('x2', xPos); line.setAttribute('y2', 850);
-          line.style.opacity = '0.5';
           axisGroup.appendChild(line);
           
           const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
@@ -146,93 +163,122 @@
   </script>
 
   <rect class="background" width="1400" height="950" />
+  
   <g id="timeline-axis" transform="translate(220, 70)">
     <rect class="future-area" x_script="getXval(timelineConfig.todayDate)" y="-30" width_script="timelineConfig.width - getXval(timelineConfig.todayDate)" height="880" />
     <line class="axis-line" x1="0" y1="0" x2_script="timelineConfig.width" y2="0" />
   </g>
   
   <g id="consolidated-lane" transform="translate(220, 100)">
-    <text x="-15" y="15" class="text-main" font-weight="600" text-anchor="end">Consolidated</text>
-    <rect class="consolidated-lane" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="20" rx="3" />
-    <rect class="consolidated-lane" x_script="getX('Dec/2015')" y="0" width_script="getX('Dec/2023') - getX('Dec/2015')" height="20" rx="3" />
-    <rect class="consolidated-lane" x_script="getX('Jan/2008')" y="0" width_script="getX('Dec/2015') - getX('Jan/2008')" height="20" rx="3" />
+    <rect class="consolidated-lane-bg" x="-220" y="-30" width="200" height="50" />
+    <text x="-15" y="5" class="text-main" font-weight="600" text-anchor="end">Consolidated</text>
+    
+    <g class="consolidated-lane-event event-block" transform="translate_x_script='getX(\'Oct/2024\')'" >
+      <rect x="0" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="20" />
+      <text class="event-text" x="10" y="15" font-size="11">Software Engineering (Ongoing)</text>
+    </g>
+    <g class="consolidated-lane-event event-block" transform="translate_x_script='getX(\'Dec/2015\')'">
+      <rect x="0" y="0" width_script="getX('Dec/2023') - getX('Dec/2015')" height="20" />
+      <text class="event-text" x="10" y="15" font-size="11">Various Professional Roles</text>
+    </g>
+    <g class="consolidated-lane-event event-block" transform="translate_x_script='getX(\'Jan/2008\')'">
+      <rect x="0" y="0" width_script="getX('Dec/2015') - getX('Jan/2008')" height="20" />
+      <text class="event-text" x="10" y="15" font-size="11">Early Career &amp; Education</text>
+    </g>
+    
+    <polygon class="milestone-star" points="-8,0 0,-8 8,0 0,8" transform="translate_x_script='getX(\'Sep/2023\')' translate(0, 10) scale(1.2)" />
+    <polygon class="milestone-star" points="-8,0 0,-8 8,0 0,8" transform="translate_x_script='getX(\'Dec/2021\')' translate(0, 10) scale(1.2)" />
+    <polygon class="milestone-star" points="-8,0 0,-8 8,0 0,8" transform="translate_x_script='getX(\'Jun/2018\')' translate(0, 10) scale(1.2)" />
+
   </g>
   
   <g id="swim-lanes" transform="translate(0, 50)">
   
     <g id="lane-group-professional">
-      <rect class="professional-lane" x="0" y="0" width="200" height="40" />
+      <rect class="professional-lane-bg" x="0" y="0" width="200" height="40" />
       <text class="text-header" x="15" y="25">Professional Experience</text>
       <g class="toggle-icon" onclick="toggleLane('professional')">
         <rect id="toggle-bg-professional" y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.2"/>
         <text id="toggle-icon-professional" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text>
       </g>
       <g class="lane-content-professional" transform="translate(220, 20)">
-        <rect class="professional-lane event-past" x_script="getX('Dec/2021')" y="0" width_script="getX('Dec/2023') - getX('Dec/2021')" height="50" rx="5"/>
+        <rect class="professional-lane-event event-block" x_script="getX('Dec/2021')" y="0" width_script="getX('Dec/2023') - getX('Dec/2021')" height="50" />
         <text class="event-text" x_script="getX('Dec/2021') + 10" y="20">Capital Markets Advisor</text>
         <text class="event-subtext" x_script="getX('Dec/2021') + 10" y="38">DHGP / PHI / Engage Capital</text>
-        <rect class="professional-lane event-past" x_script="getX('Jan/2020')" y="60" width_script="getX('Dec/2020') - getX('Jan/2020')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Jan/2020')" y="60" width_script="getX('Dec/2020') - getX('Jan/2020')" height="50" />
         <text class="event-text" x_script="getX('Jan/2020') + 10" y="80">Real Estate Private Equity</text>
         <text class="event-subtext" x_script="getX('Jan/2020') + 10" y="98">R Capital Asset Management</text>
-        <rect class="professional-lane event-past" x_script="getX('Jun/2018')" y="0" width_script="getX('Jan/2020') - getX('Jun/2018')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Jun/2018')" y="0" width_script="getX('Jan/2020') - getX('Jun/2018')" height="50" />
         <text class="event-text" x_script="getX('Jun/2018') + 10" y="20">Portfolio Manager</text>
         <text class="event-subtext" x_script="getX('Jun/2018') + 10" y="38">Hectare Capital AM</text>
-        <rect class="professional-lane event-past" x_script="getX('Dec/2015')" y="60" width_script="getX('Jun/2018') - getX('Dec/2015')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Dec/2015')" y="60" width_script="getX('Jun/2018') - getX('Dec/2015')" height="50" />
         <text class="event-text" x_script="getX('Dec/2015') + 10" y="80">Corporate VC &amp;amp; Wealth Mgmt</text>
         <text class="event-subtext" x_script="getX('Dec/2015') + 10" y="98">RTSC Participações Group</text>
-        <rect class="professional-lane event-past" x_script="getX('Apr/2014')" y="120" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Apr/2014')" y="120" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" />
         <text class="event-text" x_script="getX('Apr/2014') + 10" y="140">Financial, Social &amp;amp; Eng.</text>
         <text class="event-subtext" x_script="getX('Apr/2014') + 10" y="158">TECHO NGO</text>
-        <rect class="professional-lane event-past" x_script="getX('Dec/2013')" y="180" width_script="getX('May/2015') - getX('Dec/2013')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Dec/2013')" y="180" width_script="getX('May/2015') - getX('Dec/2013')" height="50" />
         <text class="event-text" x_script="getX('Dec/2013') + 10" y="200">Venture Capital Analyst</text>
         <text class="event-subtext" x_script="getX('Dec/2013') + 10" y="218">KPTL Investments</text>
-        <rect class="professional-lane event-past" x_script="getX('Jan/2011')" y="240" width_script="getX('Feb/2013') - getX('Jan/2011')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Jan/2011')" y="240" width_script="getX('Feb/2013') - getX('Jan/2011')" height="50" />
         <text class="event-text" x_script="getX('Jan/2011') + 10" y="260">Investor Relations / Biz Dev</text>
         <text class="event-subtext" x_script="getX('Jan/2011') + 10" y="278">Tecnisa S.A</text>
-        <rect class="professional-lane event-past" x_script="getX('Jan/2009')" y="180" width_script="getX('Jul/2010') - getX('Jan/2009')" height="50" rx="5"/>
+        
+        <rect class="professional-lane-event event-block" x_script="getX('Jan/2009')" y="180" width_script="getX('Jul/2010') - getX('Jan/2009')" height="50" />
         <text class="event-text" x_script="getX('Jan/2009') + 10" y="200">Construction Field Intern</text>
         <text class="event-subtext" x_script="getX('Jan/2009') + 10" y="218">Plan &amp;amp; Plan - Cyrela Group</text>
       </g>
     </g>
 
     <g id="lane-group-relevant">
-      <rect class="relevant-lane" x="0" y="0" width="200" height="40" />
+      <rect class="relevant-lane-bg" x="0" y="0" width="200" height="40" />
       <text class="text-header" x="15" y="25">Relevant Experience</text>
       <g class="toggle-icon" onclick="toggleLane('relevant')">
         <rect id="toggle-bg-relevant" y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.2"/>
         <text id="toggle-icon-relevant" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text>
       </g>
       <g class="lane-content-relevant" transform="translate(220, 20)">
-        <rect class="relevant-lane event-past" x_script="getXval(2018)" y="0" width_script="getXval(timelineConfig.todayDate) - getXval(2018)" height="50" rx="5" />
+        <rect class="relevant-lane-event event-block" x_script="getXval(2018)" y="0" width_script="getXval(timelineConfig.todayDate) - getXval(2018)" height="50" />
         <text class="event-text" x_script="getXval(2018) + 10" y="20">International Experience</text>
         <text class="event-subtext" x_script="getXval(2018) + 10" y="38">Nomadic Project: 5 years, 40+ countries</text>
-        <rect class="relevant-lane event-past" x_script="getX('Apr/2014')" y="60" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" rx="5"/>
+        
+        <rect class="relevant-lane-event event-block" x_script="getX('Apr/2014')" y="60" width_script="getX('Apr/2016') - getX('Apr/2014')" height="50" />
         <text class="event-text" x_script="getX('Apr/2014') + 10" y="80">Volunteer Experience</text>
         <text class="event-subtext" x_script="getX('Apr/2014') + 10" y="98">House Construction &amp;amp; Logistics</text>
-        <rect class="relevant-lane event-past" x_script="getX('Jan/2006')" y="0" width_script="getX('Dec/2006') - getX('Jan/2006')" height="50" rx="5"/>
+        
+        <rect class="relevant-lane-event event-block" x_script="getX('Jan/2006')" y="0" width_script="getX('Dec/2006') - getX('Jan/2006')" height="50" />
         <text class="event-text" x_script="getX('Jan/2006') + 10" y="20">Army Reserve Officer</text>
         <text class="event-subtext" x_script="getX('Jan/2006') + 10" y="38">Logistics Brigade, 2nd Lieutenant</text>
       </g>
     </g>
 
     <g id="lane-group-education">
-      <rect class="education-lane" x="0" y="0" width="200" height="40" />
+      <rect class="education-lane-bg" x="0" y="0" width="200" height="40" />
       <text class="text-header" x="15" y="25">Education</text>
       <g class="toggle-icon" onclick="toggleLane('education')">
         <rect id="toggle-bg-education" y="10" x="170" width="20" height="20" rx="10" fill="white" opacity="0.2"/>
         <text id="toggle-icon-education" x="176" y="21" font-size="20" font-weight="bold" fill="white">−</text>
       </g>
       <g class="lane-content-education" transform="translate(220, 20)">
-        <rect class="education-lane event-ongoing" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="50" rx="5"/>
+        <rect class="education-lane-event event-block event-block-ongoing" x_script="getX('Oct/2024')" y="0" width_script="getXval(timelineConfig.todayDate) - getX('Oct/2024')" height="50" />
         <text class="event-text" x_script="getX('Oct/2024') + 10" y="20">Software Engineering</text>
         <text class="event-subtext" x_script="getX('Oct/2024') + 10" y="38">L’École 42 | Oct/2024 - Present</text>
-        <rect class="education-lane event-past" x_script="getX('Sep/2023')" y="60" width_script="getX('Nov/2023') - getX('Sep/2023')" height="50" rx="5"/>
+        
+        <rect class="education-lane-event event-block" x_script="getX('Sep/2023')" y="60" width_script="getX('Nov/2023') - getX('Sep/2023')" height="50" />
         <text class="event-text" x_script="getX('Sep/2023') + 10" y="80">Product Management</text>
         <text class="event-subtext" x_script="getX('Sep/2023') + 10" y="98">Stanford School of Engineering</text>
-        <rect class="education-lane event-past" x_script="getX('Jan/2016')" y="0" width_script="getX('Dec/2016') - getX('Jan/2016')" height="50" rx="5"/>
+        
+        <rect class="education-lane-event event-block" x_script="getX('Jan/2016')" y="0" width_script="getX('Dec/2016') - getX('Jan/2016')" height="50" />
         <text class="event-text" x_script="getX('Jan/2016') + 10" y="20">IB, PE &amp;amp; Asset Mgmt.</text>
         <text class="event-subtext" x_script="getX('Jan/2016') + 10" y="38">Anbima</text>
-        <rect class="education-lane event-past" x_script="getX('Jan/2008')" y="60" width_script="getX('Dec/2015') - getX('Jan/2008')" height="50" rx="5"/>
+        
+        <rect class="education-lane-event event-block" x_script="getX('Jan/2008')" y="60" width_script="getX('Dec/2015') - getX('Jan/2008')" height="50" />
         <text class="event-text" x_script="getX('Jan/2008') + 10" y="80">B.Sc. Structural Civil Engineering</text>
         <text class="event-subtext" x_script="getX('Jan/2008') + 10" y="98">Mackenzie Presbyterian University</text>
       </g>

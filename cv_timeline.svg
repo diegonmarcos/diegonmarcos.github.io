@@ -97,11 +97,11 @@
         <rect x="532" y="80" width="38" height="30" class="task-rect done"></rect>
       </g>
       <g class="task-group" data-name="Portfolio Manager &amp; Credit Analyst" data-start="2018-06-01" data-end="2020-01-31">
-        <text x="10" y="135" class="task-text">Portfolio Manager &amp; Credit Analyst</text>
+        <text x="10" y="135" class="task-text">Portfolio Manager &amp;amp; Credit Analyst</text>
         <rect x="472" y="120" width="62" height="30" class="task-rect done"></rect>
       </g>
       <g class="task-group" data-name="Corporate VC &amp; Wealth Management" data-start="2015-12-01" data-end="2018-06-30">
-        <text x="10" y="175" class="task-text">Corporate VC &amp; Wealth Management</text>
+        <text x="10" y="175" class="task-text">Corporate VC &amp;amp; Wealth Management</text>
         <rect x="375" y="160" width="99" height="30" class="task-rect done"></rect>
       </g>
       <g class="task-group" data-name="NGO (Financial, Social, Eng.)" data-start="2014-04-01" data-end="2016-04-30">
@@ -121,84 +121,4 @@
         <rect x="113" y="320" width="60" height="30" class="task-rect done"></rect>
       </g>
 
-      <text x="10" y="380" class="section-text">🌐 Relevant Experience</text>
-      <g class="task-group" data-name="International Experience" data-start="2020-12-01" data-end="2025-10-10">
-        <text x="10" y="410" class="task-text">International Experience</text>
-        <rect x="566" y="395" width="186" height="30" class="task-rect done"></rect>
-      </g>
-      <g class="task-group" data-name="Volunteer Experience" data-start="2014-04-01" data-end="2016-04-30">
-        <text x="10" y="450" class="task-text">Volunteer Experience</text>
-        <rect x="314" y="435" width="79" height="30" class="task-rect done"></rect>
-      </g>
-      <g class="task-group" data-name="Army Service" data-start="2006-01-01" data-end="2006-12-31">
-        <text x="10" y="490" class="task-text">Army Service</text>
-        <rect x="250" y="475" width="38" height="30" class="task-rect done"></rect>
-      </g>
-      
-      <text x="10" y="535" class="section-text">🎓 Education</text>
-      <g class="task-group" data-name="Software Engineering Course" data-start="2024-10-01" data-end="2025-10-10">
-        <text x="10" y="565" class="task-text">Software Engineering Course</text>
-        <rect x="716" y="550" width="38" height="30" class="task-rect done"></rect>
-      </g>
-      <g class="task-group" data-name="Product Management Spec." data-start="2023-09-01" data-end="2023-11-30">
-        <text x="10" y="605" class="task-text">Product Management Spec.</text>
-        <rect x="699" y="590" width="9" height="30" class="task-rect done"></rect>
-      </g>
-      <g class="task-group" data-name="IB, PE &amp; Asset Mgmt. Spec." data-start="2016-01-01" data-end="2016-12-31">
-        <text x="10" y="645" class="task-text">IB, PE &amp; Asset Mgmt. Spec.</text>
-        <rect x="378" y="630" width="38" height="30" class="task-rect done"></rect>
-      </g>
-      <g class="task-group" data-name="B.Sc. Structural Civil Eng." data-start="2008-01-01" data-end="2015-12-31">
-        <text x="10" y="685" class="task-text">B.Sc. Structural Civil Eng.</text>
-        <rect x="76" y="670" width="302" height="30" class="task-rect done"></rect>
-      </g>
-    </g>
-  </g>
-
-  <g id="tooltip" style="visibility: hidden;">
-    <rect id="tooltip-bg" class="tooltip-bg" width="200" height="40" />
-    <text id="tooltip-text-1" class="tooltip-text" x="10" y="18">Task Name</text>
-    <text id="tooltip-text-2" class="tooltip-text" x="10" y="34">Date Range</text>
-  </g>
-  
-  <script type="text/javascript">
-    // <![CDATA[
-    const svg = document.querySelector('svg');
-    const tooltip = document.getElementById('tooltip');
-    const tooltipBg = document.getElementById('tooltip-bg');
-    const tooltipText1 = document.getElementById('tooltip-text-1');
-    const tooltipText2 = document.getElementById('tooltip-text-2');
-    const taskGroups = document.querySelectorAll('.task-group');
-
-    taskGroups.forEach(group => {
-      group.addEventListener('mousemove', (event) => {
-        const taskName = group.getAttribute('data-name');
-        const startDate = group.getAttribute('data-start');
-        const endDate = group.getAttribute('data-end');
-        
-        // Update tooltip content
-        tooltipText1.textContent = taskName;
-        tooltipText2.textContent = `${startDate} to ${endDate}`;
-        
-        // Adjust tooltip background size
-        const textLength = Math.max(tooltipText1.getComputedTextLength(), tooltipText2.getComputedTextLength());
-        tooltipBg.setAttribute('width', textLength + 20);
-        
-        // Position tooltip near cursor
-        const CTM = svg.getScreenCTM();
-        const mouseX = (event.clientX - CTM.e) / CTM.a;
-        const mouseY = (event.clientY - CTM.f) / CTM.d;
-        tooltip.setAttribute('transform', `translate(${mouseX + 15}, ${mouseY + 15})`);
-        
-        // Make tooltip visible
-        tooltip.style.visibility = 'visible';
-      });
-
-      group.addEventListener('mouseleave', () => {
-        // Hide tooltip
-        tooltip.style.visibility = 'hidden';
-      });
-    });
-    // ]]>
-  </script>
-</svg>
+      <text x="10" y

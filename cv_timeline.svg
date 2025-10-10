@@ -1,17 +1,4 @@
-You are absolutely correct! My apologies, the code I generated had a classic and subtle bug. Thank you for spotting it and providing the exact error message—that is incredibly helpful.
-🐞 The Cause of the Error
-The error StartTag: invalid element name on line 91 is caused by the ampersand character (&).
-In SVG (which is a form of XML, just like HTML), the & character is a special character used to begin "entity references" (e.g., writing &lt; to display a < symbol). When the browser's parser encounters a lone & in your text like "Corporate VC & Wealth Mgmt", it gets confused because it expects a valid code to follow it.
-✅ The Solution
-The fix is to replace every & character that is meant to be displayed as text with its proper HTML entity: &amp;.
-I have gone through the code and corrected all instances of this error. The lines that needed fixing were:
- * Corporate VC & Wealth Mgmt
- * Financial, Social & Eng.
- * Plan & Plan - Cyrela Group
- * IB, PE & Asset Mgmt.
- * House Construction & Logistics
-The Corrected Code
-Here is the complete, corrected SVG code. Please replace the old code with this version, and it will render perfectly without any errors.
+
 <svg width="1400" height="950" viewBox="0 0 1400 950" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif">
 
   <defs>

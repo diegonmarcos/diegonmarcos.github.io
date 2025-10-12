@@ -414,6 +414,6 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .responsive-image {
-  width: 100%;
-  height: auto; /* This maintains the aspect ratio of the image */
+  width: auto;
+  height: 100%; /* This maintains the aspect ratio of the image */
 }

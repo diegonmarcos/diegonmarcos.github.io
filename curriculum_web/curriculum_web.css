@@ -407,13 +407,14 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 
 
 
-
 .image-container {
-  width: 80%; /* Adjust the width of the container as you like */
-  margin: 0 auto; /* This will center the container */
+  width: 80%; /* The container takes up 80% of the page width */
+  margin: 40px auto; /* Adds some space above/below and centers it */
+  border: 2px solid #ccc; /* Optional: adds a border so you can see the container */
 }
 
 .responsive-image {
-  width: auto;
-  height: auto; /* This maintains the aspect ratio of the image */
+  display: block; /* Removes any extra space below the image */
+  width: 100%; /* Makes the image fill 100% of its container */
+  height: auto; /* Maintains the aspect ratio */
 }

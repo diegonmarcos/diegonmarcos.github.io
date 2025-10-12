@@ -395,3 +395,25 @@ box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   height: auto;  /* Maintains the aspect ratio */
   border: none;  /* Removes any default border */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+.image-container {
+  width: 80%; /* Adjust the width of the container as you like */
+  margin: 0 auto; /* This will center the container */
+}
+
+.responsive-image {
+  width: 100%;
+  height: auto; /* This maintains the aspect ratio of the image */
+}

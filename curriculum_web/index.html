@@ -398,56 +398,9 @@
         </section>
     </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const collapsibles = document.querySelectorAll('.collapsible');
-            collapsibles.forEach(button => {
-                button.addEventListener('click', function() {
-                    this.classList.toggle('active');
-                    const content = this.nextElementSibling;
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                    }
-                });
-            });
-
-            const collapsibleItems = document.querySelectorAll('.collapsible-item');
-            collapsibleItems.forEach(item => {
-                item.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    this.classList.toggle('active');
-                    const content = this.nextElementSibling;
-                    if (content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                    } else {
-                        content.style.maxHeight = content.scrollHeight + "px";
-                        const parentContent = this.closest('.content');
-                        if (parentContent.style.maxHeight) {
-                           parentContent.style.maxHeight = parentContent.scrollHeight + content.scrollHeight + 'px';
-                        }
-                    }
-                });
-            });
-            
-            mermaid.initialize({ startOnLoad: true });
-
-            // This is just a placeholder for the markdown conversion logic
-            // that was in the original file. Since the content is now static HTML,
-            // this is not strictly necessary but kept for structural integrity if needed later.
-            const markdownSource = document.getElementById('markdown-source');
-            const contentOutput = document.getElementById('content-output');
-            if(markdownSource && contentOutput) {
-                contentOutput.innerHTML = marked.parse(markdownSource.innerHTML);
-            }
-        });
-    </script>
-
     <script src="curriculum_web.js"></script>
     <script>
-  mermaid.initialize({startOnLoad: true, theme: 'dark'});
+      mermaid.initialize({startOnLoad: true, theme: 'dark'});
     </script>
-
 </body>
 </html>

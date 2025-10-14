@@ -2,7 +2,7 @@
 :root {
     --color-background: #1e1e1e;      /* Dark theme background */
     --color-text: #f0f0f0;            /* Light text */
-    --color-accent-pink: #f50057;     /* Vibrant Pink for main titles/highlights */
+    --color-accent-pink: #d81b60;     /* Darker, Vibrant Pink */
     --color-border: #3c3c3c;          /* Subtle border/separator */
     --color-quote-border: #7f8c8d;   /* Grey for blockquotes */
 }
@@ -204,6 +204,28 @@ ul li::before {
     width: 1em;
     margin-right: 0.5em;
 }
+
+/* Nested lists for Linktree */
+.nested-list {
+    margin-top: 8px;
+    padding-left: 2em;
+}
+
+.nested-list li, .nested-list-items li {
+    padding-left: 1.2em;
+    text-indent: -1.2em;
+}
+
+.nested-list-items {
+    padding-left: 1.5em;
+    margin-top: 8px;
+}
+
+.nested-list li::before, .nested-list-items li::before {
+    content: '◦'; /* Different bullet for nested items */
+    color: var(--color-accent-pink);
+}
+
 
 a {
     color: var(--color-accent-pink);

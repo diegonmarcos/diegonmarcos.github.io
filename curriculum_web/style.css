@@ -1,11 +1,11 @@
 /* Color Palette */
 :root {
-    --color-background: #1e1e1e; /* Dark theme background */
-    --color-text: #f0f0f0;      /* Light text */
-    --color-accent-purple: #9b59b6; /* Purple for main titles/collapser */
-    --color-accent-yellow: #f1c40f; /* Yellow for highlights/links */
-    --color-border: #3c3c3c;    /* Subtle border/separator */
-    --color-quote-border: #7f8c8d; /* Grey for blockquotes */
+    --color-background: #1e1e1e;      /* Dark theme background */
+    --color-text: #f0f0f0;            /* Light text */
+    --color-accent-purple: #9b59b6;   /* Purple for main titles/collapser */
+    --color-accent-blue: #58a6ff;     /* Blue for highlights/links */
+    --color-border: #3c3c3c;          /* Subtle border/separator */
+    --color-quote-border: #7f8c8d;   /* Grey for blockquotes */
 }
 
 /* Global Styles */
@@ -14,17 +14,17 @@ body {
     background-color: var(--color-background);
     color: var(--color-text);
     margin: 0;
-    padding: 20px;
+    padding: 15px 20px;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 /* Typography and Header */
 h1 {
     color: var(--color-text);
-    font-size: 2.5em;
+    font-size: 2.2em;
     font-weight: 700;
     text-align: center;
     margin-bottom: 5px;
@@ -34,7 +34,7 @@ h1 {
     color: var(--color-text);
     font-weight: 300;
     text-align: center;
-    font-size: 1.1em;
+    font-size: 1.0em;
     margin-top: 0;
     margin-bottom: 20px;
 }
@@ -43,14 +43,14 @@ h1 {
     color: var(--color-accent-purple);
     text-align: center;
     font-style: italic;
-    font-size: 1em;
+    font-size: 0.9em;
     margin-bottom: 30px;
 }
 
 hr {
     border: none;
     border-top: 1px solid var(--color-border);
-    margin: 40px 0;
+    margin: 30px 0;
     opacity: 0.5;
 }
 
@@ -77,12 +77,12 @@ hr {
     background-color: #2c2c2c;
     padding: 15px;
     border-radius: 4px;
-    border-left: 5px solid var(--color-accent-yellow);
-    font-size: 1.1em;
+    border-left: 5px solid var(--color-accent-blue);
+    font-size: 1.0em;
 }
 
 .pdf-link {
-    color: var(--color-accent-yellow);
+    color: var(--color-accent-blue);
     text-decoration: none;
     font-weight: bold;
     display: block;
@@ -96,8 +96,8 @@ hr {
 /* Collapser Styles (Obsidian Look) */
 .collapser {
     cursor: pointer;
-    margin-top: 25px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 8px;
     padding: 5px 0;
     display: flex;
     align-items: center;
@@ -106,32 +106,32 @@ hr {
 
 .main-title {
     color: var(--color-accent-purple);
-    font-size: 1.8em;
+    font-size: 1.6em;
     border-bottom: 2px solid var(--color-accent-purple);
 }
 
 h3.collapser {
-    font-size: 1.3em;
+    font-size: 1.15em;
     color: var(--color-text);
     transition: color 0.2s ease-in-out;
 }
 h3.collapser:hover {
-    color: var(--color-accent-yellow);
+    color: var(--color-accent-blue);
 }
 
-/* Arrow/Indicator for Collapser */
+/* Arrow/Indicator for Collapser with Smooth Rotation */
 .collapser::before {
-    content: '▶'; /* Closed state */
+    content: '▶'; /* Always use the 'closed' icon */
     display: inline-block;
     width: 1em;
     margin-right: 8px;
-    color: var(--color-accent-yellow);
-    transition: transform 0.3s ease-in-out;
+    color: var(--color-accent-blue);
+    transition: transform 0.3s ease; /* Animate the transform property */
+    transform-origin: center; /* Rotate around the center of the icon */
 }
 
 .collapser.open::before {
-    content: '▼'; /* Open state */
-    transform: rotate(0deg);
+    transform: rotate(90deg); /* Rotate icon when open */
 }
 
 /* Specific styling for main titles to look like the screenshots' section headers */
@@ -140,10 +140,10 @@ h3.collapser:hover {
     color: var(--color-accent-purple);
     font-weight: bold;
     font-size: 1.2em;
+    transition: transform 0.3s ease;
 }
 .main-title.collapser.open::before {
-    content: '>';
-    transform: none; /* No rotation for main titles, keeps 'open' arrow style subtle */
+    transform: rotate(90deg); /* Apply rotation to main titles too */
 }
 
 
@@ -160,21 +160,21 @@ h3.collapser:hover {
 .collapsible-content.open {
     max-height: 5000px; /* Large enough value to contain content */
     opacity: 1;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
 }
 
 /* Professional Experience Articles */
 article {
     border-left: 2px solid var(--color-accent-purple);
     padding-left: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 article h4 {
-    color: var(--color-accent-yellow);
+    color: var(--color-accent-blue);
     margin-top: 0;
     margin-bottom: 5px;
-    font-size: 1.1em;
+    font-size: 1.0em;
 }
 
 .location-duration, .timeline-duration {
@@ -199,7 +199,7 @@ ul li {
 }
 ul li::before {
     content: '•'; /* Custom bullet point */
-    color: var(--color-accent-yellow);
+    color: var(--color-accent-blue);
     font-weight: bold;
     display: inline-block;
     width: 1em;
@@ -207,7 +207,7 @@ ul li::before {
 }
 
 a {
-    color: var(--color-accent-yellow);
+    color: var(--color-accent-blue);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
 }
@@ -237,15 +237,14 @@ a:hover {
 /* Mermaid Responsive Container */
 .mermaid-diagram {
     width: 100%; 
-    overflow-x: auto; /* Allows horizontal scroll on small screens if diagram is too wide */
+    overflow-x: auto; /* Allows horizontal scroll if diagram is too wide */
     margin: 20px 0;
-    padding: 10px;
-    border: 1px dashed var(--color-border);
-    border-radius: 4px;
+    display: flex;
+    justify-content: center;
 }
 
 .mermaid-diagram pre.mermaid {
-    /* Prevents the pre tag from overriding responsiveness, allowing Mermaid to handle SVG scaling */
+    /* Prevents the pre tag from overriding responsiveness */
     white-space: pre-wrap;
     word-break: break-word;
 }

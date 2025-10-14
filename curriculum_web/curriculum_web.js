@@ -73,4 +73,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
+
+    // 3. Collapsible H3 Sub-sections
+    const subSectionHeaders = document.querySelectorAll('h3.collapsible');
+
+    subSectionHeaders.forEach(header => {
+        const content = header.nextElementSibling;
+        
+        // Initial state: All h3 sections are collapsed
+        if (content) {
+            content.classList.add('collapsed');
+            content.style.maxHeight = '0';
+
+            // Add click listener
+            header.addEventListener('click', () => {
+                toggleCollapse(content, header);
+            });
+        }
+    });
 });

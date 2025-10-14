@@ -1,8 +1,8 @@
 /* Color Palette */
 :root {
-    --color-background: #1e1e1e;      /* Dark theme background */
+    --color-background: #000000;      /* True Black Background */
     --color-text: #f0f0f0;            /* Light text */
-    --color-accent-pink: #f02c96;     /* Vibrant Obsidian Pink */
+    --color-accent-purple: #9966cc;   /* Vibrant Obsidian Purple */
     --color-border: #3c3c3c;          /* Subtle border/separator */
     --color-quote-border: #7f8c8d;   /* Grey for blockquotes */
 }
@@ -29,13 +29,18 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Pushes content and arrow apart */
+    justify-content: space-between;
     align-items: center;
     text-align: center;
     box-sizing: border-box;
 }
 .header-content {
-    padding-top: 5vh; /* Pushes content down from the top */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 .arrow-wrapper {
     width: 100%;
@@ -43,7 +48,7 @@ body {
 }
 .scroll-down-arrow {
     font-size: 2.5rem;
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     text-decoration: none;
     animation: bounce 2s infinite;
 }
@@ -56,7 +61,7 @@ body {
 
 /* Typography and Header */
 h1 {
-    color: var(--color-text);
+    color: var(--color-accent-purple);
     font-size: 1.8em;
     font-weight: 700;
     text-align: center;
@@ -73,7 +78,7 @@ h1 {
 }
 
 .portfolio-title {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     text-align: center;
     font-style: italic;
     font-size: 0.8em;
@@ -88,14 +93,14 @@ hr {
 }
 
 .section-divider {
-    border-top: 2px double var(--color-accent-pink);
+    border-top: 2px double var(--color-accent-purple);
     opacity: 0.7;
     margin: 25px 0;
 }
 
 /* Quotes (Obsidian Style) */
 .quote {
-    border-left: 3px solid var(--color-quote-border);
+    border-left: 3px solid var(--color-accent-purple);
     padding-left: 12px;
     margin: 12px auto;
     font-style: italic;
@@ -112,12 +117,12 @@ hr {
     background-color: #2c2c2c;
     padding: 10px;
     border-radius: 4px;
-    border-left: 4px solid var(--color-accent-pink);
+    border-left: 4px solid var(--color-accent-purple);
     font-size: 1.0em;
 }
 
 .pdf-link {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     text-decoration: none;
     font-weight: bold;
     display: block;
@@ -128,7 +133,7 @@ hr {
 }
 
 
-/* Collapser Styles (Obsidian Look) */
+/* Collapser Styles */
 .collapser {
     cursor: pointer;
     margin-top: 15px;
@@ -138,46 +143,39 @@ hr {
     align-items: center;
     user-select: none;
 }
-
 .main-title {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     font-size: 1.4em;
-    border-bottom: 2px solid var(--color-accent-pink);
+    border-bottom: 2px solid var(--color-accent-purple);
 }
-
 h3.collapser {
     font-size: 1.0em;
     color: var(--color-text);
     transition: color 0.2s ease-in-out;
 }
 h3.collapser:hover {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
 }
 h5 {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     margin-top: 12px;
     margin-bottom: 4px;
 }
-
-/* Arrow/Indicator for Collapser */
 .collapser::before {
     content: '▶';
     display: inline-block;
     width: 1em;
     margin-right: 6px;
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     transition: transform 0.3s ease;
     transform-origin: center;
 }
 .collapser.open::before { transform: rotate(90deg); }
-
 .main-title.collapser::before {
     content: '>';
     font-weight: bold;
     font-size: 1.2em;
 }
-
-/* Collapsible Content */
 .collapsible-content {
     max-height: 0;
     overflow: hidden;
@@ -185,7 +183,6 @@ h5 {
     opacity: 0;
     padding-left: 12px;
 }
-
 .collapsible-content.open {
     max-height: 5000px;
     opacity: 1;
@@ -194,29 +191,24 @@ h5 {
 
 /* Professional Experience Articles */
 article {
-    border-left: 2px solid var(--color-accent-pink);
+    border-left: 2px solid var(--color-accent-purple);
     padding-left: 10px;
     margin-bottom: 15px;
 }
-
 article h4 {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     margin-top: 0;
     margin-bottom: 3px;
     font-size: 1.0em;
 }
-
 .location-duration, .timeline-duration {
     font-size: 0.85em;
     color: #bdc3c7;
     margin: 3px 0;
 }
+.description { margin-top: 6px; }
 
-.description {
-    margin-top: 6px;
-}
-
-/* Lists and Tables */
+/* Lists */
 ul {
     list-style: none;
     padding-left: 0;
@@ -228,14 +220,12 @@ ul li {
 }
 ul li::before {
     content: '•';
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     font-weight: bold;
     display: inline-block;
     width: 1em;
     margin-right: 0.3em;
 }
-
-/* Nested lists for Linktree */
 .nested-list {
     margin-top: 5px;
     padding-left: 1.5em;
@@ -251,9 +241,8 @@ ul li::before {
 .nested-list li::before, .nested-list-items li::before {
     content: '◦';
 }
-
 a {
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
 }
@@ -262,7 +251,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Contact Table */
+/* Tables */
 .contact-table {
     width: 100%;
     border-collapse: collapse;
@@ -274,11 +263,36 @@ a:hover {
 }
 .contact-table tr td:first-child {
     font-weight: bold;
-    color: var(--color-accent-pink);
+    color: var(--color-accent-purple);
     width: 30%;
 }
 
-/* Mermaid Responsive Container */
+/* Skills Tables */
+.skills-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    text-align: center;
+}
+.skills-table th, .skills-table td {
+    border: 1px solid var(--color-border);
+    padding: 4px;
+    vertical-align: middle;
+}
+.skills-table th {
+    font-size: 0.9em;
+    color: var(--color-accent-purple);
+}
+.skills-table img {
+    max-height: 28px;
+    margin: 0 auto;
+    display: block;
+}
+.skills-table .kde-icon {
+    max-height: 24px; /* KDE icon needs slight adjustment */
+}
+
+/* Mermaid Diagram */
 .mermaid-diagram {
     overflow-x: auto;
     margin: 15px 0;

@@ -11,6 +11,13 @@
             color: #e0e0e0; /* Light text */
             margin: 0;
             padding: 0;
+            padding-bottom: 80px; /* Add padding to bottom to avoid overlap with FAB */
+        }
+
+        /* General Link Styling */
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
         .header {
@@ -37,24 +44,57 @@
             display: flex;
             gap: 20px;
         }
+        
+        .sub-header {
+            padding: 10px 20px;
+            background-color: #121212;
+            border-bottom: 1px solid #333;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #333;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background-color: #444;
+        }
 
         .repo-list {
             padding: 20px;
+        }
+        
+        .repo-category-title {
+            font-size: 18px;
+            color: #bb86fc;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #333;
+        }
+
+        .repo-link {
+            display: block;
+            margin-bottom: 15px;
         }
 
         .repo-card {
             background-color: #1f1f1f;
             border-radius: 8px;
             padding: 15px 20px;
-            margin-bottom: 15px;
             display: flex;
             flex-direction: column;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease-in-out;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
 
-        .repo-card:hover {
+        .repo-link:hover .repo-card {
             transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .repo-card .repo-header {
@@ -97,8 +137,9 @@
         }
 
         /* Language specific colors */
-        .language-dot.c { background-color: #a8b9cc; } /* Example color for C */
-        .language-dot.html { background-color: #e34c26; } /* Example color for HTML */
+        .language-dot.c { background-color: #a8b9cc; }
+        .language-dot.html { background-color: #e34c26; }
+        .language-dot.markdown { background-color: #b0b0b0; }
 
         .footer-button {
             position: fixed;
@@ -122,87 +163,123 @@
 <body>
 
     <div class="header">
-        <span class="icon">&#8592;</span> <div class="title">README.md</div>
+        <a href="https://linktr.ee/diegonmarcos">
+            <span class="icon">&#8592;</span> 
+        </a>
+        <div class="title">README.md</div>
         <div class="action-icons">
-            <span class="icon">&#8634;</span> <span class="icon">&#8942;</span> </div>
+            <span class="icon">&#8634;</span> 
+            <span class="icon">&#8942;</span> 
+        </div>
     </div>
-
-    <div class="header">
-        <span class="title">Repos</span>
+    
+    <div class="sub-header">
+        <a href="https://linktr.ee/diegonmarcos" class="back-button">&#8592; Back</a>
     </div>
 
     <div class="repo-list">
-        <div class="repo-card">
-            <div class="repo-header">
-                <span class="repo-icon">&#128450;&#65039;</span> <div class="repo-name">mylibs</div>
-            </div>
-            <div class="repo-description">
-                "Every library has its first book, but not the last" --: MyLibC, MyLibC++, MyTools, for Memory Management and Data Manipulation.
-            </div>
-            <div class="repo-language">
-                <span class="language-dot c"></span> C
-            </div>
-        </div>
+        
+        <h3 class="repo-category-title">Low Level Repos</h3>
 
-        <div class="repo-card">
-            <div class="repo-header">
-                <span class="repo-icon">&#128450;&#65039;</span>
-                <div class="repo-name">algo</div>
+        <a href="https://github.com/diegonmarcos/mylib" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span> 
+                    <div class="repo-name">MyLib</div>
+                </div>
+                <div class="repo-description">
+                    "Every library has its first book, but not the last" --: MyLibC, MyLibC++, MyTools, for Memory Management and Data Manipulation.
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot c"></span> C
+                </div>
             </div>
-            <div class="repo-description">
-                where dead-ends are just recursive detours and you will try to overcome stack overflows with a 'ulimit -s unlimited'
-            </div>
-            <div class="repo-language">
-                <span class="language-dot c"></span> C
-            </div>
-        </div>
+        </a>
 
-        <div class="repo-card">
-            <div class="repo-header">
-                <span class="repo-icon">&#128450;&#65039;</span>
-                <div class="repo-name">system</div>
+        <a href="https://github.com/diegonmarcos/algo" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span>
+                    <div class="repo-name">Algos</div>
+                </div>
+                <div class="repo-description">
+                    where dead-ends are just recursive detours and you will try to overcome stack overflows with a 'ulimit -s unlimited'
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot c"></span> C
+                </div>
             </div>
-            <div class="repo-description">
-                The Unix Alchemist: Transmuting recursive pipes into web servers and containers into... well, more containers.
-            </div>
-            <div class="repo-language">
-                <span class="language-dot c"></span> C
-            </div>
-        </div>
+        </a>
 
-        <div class="repo-card">
-            <div class="repo-header">
-                <span class="repo-icon">&#128450;&#65039;</span>
-                <div class="repo-name">graphic</div>
+        <a href="https://github.com/diegonmarcos/system" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span>
+                    <div class="repo-name">System</div>
+                </div>
+                <div class="repo-description">
+                    The Unix Alchemist: Transmuting recursive pipes into web servers and containers into... well, more containers.
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot c"></span> C
+                </div>
             </div>
-            <div class="repo-description">
-                Filling Wireframes, rendering matrixes and applying ray tracing one pixel at a time, until the GPU begs for mercy.
-            </div>
-            <div class="repo-language">
-                <span class="language-dot c"></span> C
-            </div>
-        </div>
+        </a>
 
-        <div class="repo-card">
-            <div class="repo-header">
-                <span class="repo-icon">&#128450;&#65039;</span>
-                <div class="repo-name">diegonmarcos.github.io</div>
+        <a href="https://github.com/diegonmarcos/graphic" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span>
+                    <div class="repo-name">Graphic</div>
+                </div>
+                <div class="repo-description">
+                    Filling Wireframes, rendering matrixes and applying ray tracing one pixel at a time, until the GPU begs for mercy.
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot c"></span> C
+                </div>
             </div>
-            <div class="repo-description">
-                Front-end project for the deployment of the code documentation.
+        </a>
+        
+        <h3 class="repo-category-title">💾 Front Repos</h3>
+
+        <a href="https://github.com/diegonmarcos/diegonmarcos" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span>
+                    <div class="repo-name">Front_Git</div>
+                </div>
+                <div class="repo-description">
+                    Special repository for my GitHub profile README. A digital business card for developers.
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot markdown"></span> Markdown
+                </div>
             </div>
-            <div class="repo-language">
-                <span class="language-dot html"></span> HTML
+        </a>
+        
+        <a href="https://github.com/diegonmarcos/diegonmarcos.github.io" class="repo-link" target="_blank">
+            <div class="repo-card">
+                <div class="repo-header">
+                    <span class="repo-icon">&#128450;&#65039;</span>
+                    <div class="repo-name">Front_Web</div>
+                </div>
+                <div class="repo-description">
+                    Front-end project for the deployment of the code documentation.
+                </div>
+                <div class="repo-language">
+                    <span class="language-dot html"></span> HTML
+                </div>
             </div>
-        </div>
+        </a>
     </div>
 
     <button class="footer-button" onclick="alert('Floating button clicked!')">
-        &#128100; </button>
+        &#128100; 
+    </button>
 
     <script>
         // No specific JavaScript functionality requested beyond the alert for the button.
-        // You can add more interactive elements here if needed.
     </script>
 
 </body>

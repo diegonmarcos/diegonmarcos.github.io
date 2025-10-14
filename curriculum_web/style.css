@@ -2,8 +2,7 @@
 :root {
     --color-background: #1e1e1e;      /* Dark theme background */
     --color-text: #f0f0f0;            /* Light text */
-    --color-accent-purple: #9b59b6;   /* Purple for main titles/collapser */
-    --color-accent-blue: #58a6ff;     /* Blue for highlights/links */
+    --color-accent-pink: #f50057;     /* Vibrant Pink for main titles/highlights */
     --color-border: #3c3c3c;          /* Subtle border/separator */
     --color-quote-border: #7f8c8d;   /* Grey for blockquotes */
 }
@@ -40,7 +39,7 @@ h1 {
 }
 
 .portfolio-title {
-    color: var(--color-accent-purple);
+    color: var(--color-accent-pink);
     text-align: center;
     font-style: italic;
     font-size: 0.9em;
@@ -55,7 +54,7 @@ hr {
 }
 
 .section-divider {
-    border-top: 3px double var(--color-accent-purple);
+    border-top: 3px double var(--color-accent-pink);
     opacity: 0.7;
 }
 
@@ -77,12 +76,12 @@ hr {
     background-color: #2c2c2c;
     padding: 15px;
     border-radius: 4px;
-    border-left: 5px solid var(--color-accent-blue);
+    border-left: 5px solid var(--color-accent-pink);
     font-size: 1.0em;
 }
 
 .pdf-link {
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
     text-decoration: none;
     font-weight: bold;
     display: block;
@@ -105,9 +104,9 @@ hr {
 }
 
 .main-title {
-    color: var(--color-accent-purple);
+    color: var(--color-accent-pink);
     font-size: 1.6em;
-    border-bottom: 2px solid var(--color-accent-purple);
+    border-bottom: 2px solid var(--color-accent-pink);
 }
 
 h3.collapser {
@@ -116,7 +115,7 @@ h3.collapser {
     transition: color 0.2s ease-in-out;
 }
 h3.collapser:hover {
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
 }
 
 /* Arrow/Indicator for Collapser with Smooth Rotation */
@@ -125,7 +124,7 @@ h3.collapser:hover {
     display: inline-block;
     width: 1em;
     margin-right: 8px;
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
     transition: transform 0.3s ease; /* Animate the transform property */
     transform-origin: center; /* Rotate around the center of the icon */
 }
@@ -137,7 +136,7 @@ h3.collapser:hover {
 /* Specific styling for main titles to look like the screenshots' section headers */
 .main-title.collapser::before {
     content: '>'; /* Less prominent for main titles */
-    color: var(--color-accent-purple);
+    color: var(--color-accent-pink);
     font-weight: bold;
     font-size: 1.2em;
     transition: transform 0.3s ease;
@@ -165,13 +164,13 @@ h3.collapser:hover {
 
 /* Professional Experience Articles */
 article {
-    border-left: 2px solid var(--color-accent-purple);
+    border-left: 2px solid var(--color-accent-pink);
     padding-left: 15px;
     margin-bottom: 20px;
 }
 
 article h4 {
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
     margin-top: 0;
     margin-bottom: 5px;
     font-size: 1.0em;
@@ -199,7 +198,7 @@ ul li {
 }
 ul li::before {
     content: '•'; /* Custom bullet point */
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
     font-weight: bold;
     display: inline-block;
     width: 1em;
@@ -207,12 +206,12 @@ ul li::before {
 }
 
 a {
-    color: var(--color-accent-blue);
+    color: var(--color-accent-pink);
     text-decoration: none;
     transition: color 0.2s ease-in-out;
 }
 a:hover {
-    color: var(--color-accent-purple);
+    color: var(--color-text);
     text-decoration: underline;
 }
 
@@ -230,21 +229,18 @@ a:hover {
 
 .contact-table tr td:first-child {
     font-weight: bold;
-    color: var(--color-accent-purple);
+    color: var(--color-accent-pink);
     width: 30%;
 }
 
 /* Mermaid Responsive Container */
 .mermaid-diagram {
-    width: 100%; 
-    overflow-x: auto; /* Allows horizontal scroll if diagram is too wide */
+    overflow-x: auto; /* Allows horizontal scroll on small screens */
     margin: 20px 0;
-    display: flex;
-    justify-content: center;
+    text-align: center; /* Center the SVG within the container */
 }
 
 .mermaid-diagram pre.mermaid {
-    /* Prevents the pre tag from overriding responsiveness */
     white-space: pre-wrap;
     word-break: break-word;
 }

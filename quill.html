@@ -59,13 +59,13 @@
         <p>Paste your content from Google Docs or OpenOffice below. Quill will automatically clean the messy styling.</p>
 
         <div id="editor">
-            <p>You can start typing or paste your content here...</p>
+            <p></p>
         </div>
 
         <button onclick="extractHTML()">Get Clean HTML</button>
 
         <h2>Clean HTML Output</h2>
-        <p>Copy the code below and paste it into your GitHub-hosted file.</p>
+        <p></p>
         
         <textarea id="htmlOutput" readonly placeholder="Your clean HTML will appear here..."></textarea>
     </div>
@@ -94,6 +94,14 @@
 
         // 5. Function to Extract and Display the HTML
         function extractHTML() {
+			const rawHTML = quill.root.innerHTML;
+    
+    		// Use the beautify function from the added library
+    		// The 'html' mode ensures proper HTML indention
+    		const cleanAndIndentedHTML = html_beautify(rawHTML); 
+    
+   			 document.getElementById('htmlOutput').value = cleanAndIndentedHTML;
+
             // Get the HTML content from the editor's root element
             const cleanHTML = quill.root.innerHTML;
             

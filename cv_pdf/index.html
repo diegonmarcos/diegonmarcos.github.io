@@ -26,6 +26,7 @@
         }
         .page-container {
             margin-bottom: 1rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -54,7 +55,7 @@
         <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
             <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
             <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
-            <div id="viewer-content" class="flex flex-col items-center"></div>
+            <div id="viewer-content" class="w-full"></div>
         </main>
     </div>
 
@@ -79,18 +80,16 @@
 
         const renderPage = async (pageNum) => {
             const page = await pdfDoc.getPage(pageNum);
-            // Use devicePixelRatio for high-res screens
             const devicePixelRatio = window.devicePixelRatio || 1;
             const viewport = page.getViewport({ scale: scale * devicePixelRatio });
             const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
-            if (!container) return; // container might have been removed
+            if (!container) return; 
 
             const canvas = container.querySelector('canvas');
             const ctx = canvas.getContext('2d');
             
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            // Use CSS to scale the canvas down to the correct display size
             canvas.style.width = `${viewport.width / devicePixelRatio}px`;
             canvas.style.height = `${viewport.height / devicePixelRatio}px`;
 
@@ -121,7 +120,8 @@
             ui.viewerContent.innerHTML = '';
             for (let i = 1; i <= numPages; i++) {
                 const pageContainer = document.createElement('div');
-                pageContainer.className = 'page-container';
+                // This flex container is key to centering the canvas
+                pageContainer.className = 'page-container flex justify-center';
                 pageContainer.dataset.pageNumber = i;
                 pageContainer.innerHTML = `<canvas></canvas>`;
                 ui.viewerContent.appendChild(pageContainer);
@@ -129,13 +129,26 @@
         };
 
         const observer = new IntersectionObserver((entries) => {
+            let mostVisiblePage = null;
+            let maxVisibility = -1;
+
             entries.forEach(entry => {
+                // Always queue a page for rendering if it's intersecting
                 if (entry.isIntersecting) {
                     const pageNum = parseInt(entry.target.dataset.pageNumber, 10);
                     queueRender(pageNum);
-                    ui.pageNumSpan.textContent = pageNum;
+
+                    // But only update the page number display for the MOST visible page
+                    if (entry.intersectionRatio > maxVisibility) {
+                        maxVisibility = entry.intersectionRatio;
+                        mostVisiblePage = pageNum;
+                    }
                 }
             });
+
+            if (mostVisiblePage) {
+                ui.pageNumSpan.textContent = mostVisiblePage;
+            }
         }, { root: ui.container, threshold: 0.1 });
 
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {

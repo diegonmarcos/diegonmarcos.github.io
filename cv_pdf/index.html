@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF.js Scrolling Viewer</title>
+    <title>High-Quality PDF Scrolling Viewer</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PDF.js library from Mozilla CDN -->
@@ -19,19 +19,22 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        /* Make the main container scrollable */
+        /* Make the main container scrollable with a fixed height */
         #pdf-container {
-            height: calc(100vh - 160px); /* Adjust height based on header/footer */
+            height: calc(100vh - 100px); /* Adjust height based on header/footer */
             overflow-y: auto;
+        }
+        .page-container {
+            margin-bottom: 1rem;
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col h-screen">
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col h-screen overflow-hidden">
 
-    <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6">
+    <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6 h-full">
         <!-- Sticky Header and Navigation -->
-        <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-6 flex items-center justify-between flex-wrap gap-4 z-10 w-full">
+        <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex items-center justify-between flex-wrap gap-4 z-10 w-full shrink-0">
             <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">CV Viewer</h1>
             <div class="flex items-center justify-center flex-wrap gap-x-2 sm:gap-x-4">
                 <!-- Page Indicator -->
@@ -55,7 +58,7 @@
         </header>
 
         <!-- PDF Canvas Container -->
-        <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 flex-grow">
+        <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
             <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
             <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
             <div id="viewer-content" class="flex flex-col items-center"></div>
@@ -67,9 +70,10 @@
 
         const url = './CV.pdf';
         let pdfDoc = null;
-        let scale = 1.5;
+        let currentScale = 1.5;
         const zoomStep = 0.25, minZoom = 0.5, maxZoom = 3.0;
-        let renderedPages = []; // To keep track of rendered canvases
+        let pageRenderQueue = new Set();
+        let isRendering = false;
 
         const ui = {
             loader: document.getElementById('loader'),
@@ -85,88 +89,90 @@
         };
 
         const updateZoomUI = () => {
-            ui.zoomLevelSpan.textContent = `${Math.round(scale * 100)}%`;
-            ui.zoomOutBtn.disabled = scale <= minZoom;
-            ui.zoomInBtn.disabled = scale >= maxZoom;
+            ui.zoomLevelSpan.textContent = `${Math.round(currentScale * 100)}%`;
+            ui.zoomOutBtn.disabled = currentScale <= minZoom;
+            ui.zoomInBtn.disabled = currentScale >= maxZoom;
         };
 
-        const renderAllPages = async (pdfDoc, renderScale) => {
-            ui.loader.classList.remove('hidden');
-            ui.viewerContent.innerHTML = ''; // Clear previous renders
-            renderedPages = [];
+        const renderPage = async (pageNum) => {
+            const page = await pdfDoc.getPage(pageNum);
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            const viewport = page.getViewport({ scale: currentScale * devicePixelRatio });
+            const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+            if (!container) return; // container might have been removed
 
-            const promises = [];
-            for (let num = 1; num <= pdfDoc.numPages; num++) {
-                promises.push(pdfDoc.getPage(num).then(page => {
-                    const viewport = page.getViewport({ scale: renderScale });
-                    const canvas = document.createElement('canvas');
-                    const ctx = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
-                    canvas.classList.add('mb-4', 'shadow-lg'); // Add spacing between pages
+            const canvas = container.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.style.width = `${viewport.width / devicePixelRatio}px`;
+            canvas.style.height = `${viewport.height / devicePixelRatio}px`;
 
-                    const renderContext = { canvasContext: ctx, viewport };
-                    return page.render(renderContext).promise.then(() => ({ canvas, pageNum: num }));
-                }));
+            const renderContext = { canvasContext: ctx, viewport };
+            await page.render(renderContext).promise;
+            container.dataset.rendered = "true";
+        };
+
+        const processQueue = async () => {
+            if (isRendering || pageRenderQueue.size === 0) return;
+            isRendering = true;
+            const pageNum = pageRenderQueue.values().next().value;
+            pageRenderQueue.delete(pageNum);
+            await renderPage(pageNum);
+            isRendering = false;
+            processQueue();
+        };
+
+        const queueRender = (pageNum) => {
+            const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+            if (container && container.dataset.rendered !== "true") {
+                pageRenderQueue.add(pageNum);
+                processQueue();
             }
-
-            const pages = await Promise.all(promises);
-            pages.sort((a, b) => a.pageNum - b.pageNum); // Ensure pages are in order
-            pages.forEach(p => {
-                ui.viewerContent.appendChild(p.canvas);
-                renderedPages.push(p.canvas);
-            });
-            
-            ui.loader.classList.add('hidden');
         };
 
-        const updateCurrentPageOnScroll = () => {
-            let currentPage = 1;
-            const containerRect = ui.container.getBoundingClientRect();
-            
-            for (let i = 0; i < renderedPages.length; i++) {
-                const pageCanvas = renderedPages[i];
-                const pageRect = pageCanvas.getBoundingClientRect();
+        const setupViewer = (numPages) => {
+            ui.viewerContent.innerHTML = '';
+            for (let i = 1; i <= numPages; i++) {
+                const pageContainer = document.createElement('div');
+                pageContainer.className = 'page-container';
+                pageContainer.dataset.pageNumber = i;
+                pageContainer.innerHTML = `<canvas></canvas>`;
+                ui.viewerContent.appendChild(pageContainer);
+            }
+        };
 
-                // Check if the page is visible in the container
-                if (pageRect.top < containerRect.top + containerRect.height / 2 && pageRect.bottom > containerRect.top + containerRect.height / 2) {
-                    currentPage = i + 1;
-                    break;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const pageNum = parseInt(entry.target.dataset.pageNumber, 10);
+                    queueRender(pageNum);
+                    ui.pageNumSpan.textContent = pageNum;
                 }
-            }
-            ui.pageNumSpan.textContent = currentPage;
-        };
+            });
+        }, { root: ui.container, threshold: 0.1 });
 
-        // Throttle scroll events for performance
-        let scrollTimeout;
-        ui.container.addEventListener('scroll', () => {
-            if (scrollTimeout) clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateCurrentPageOnScroll, 100);
-        });
-
-        const zoomIn = () => {
-            if (scale >= maxZoom) return;
-            scale += zoomStep;
-            renderAllPages(pdfDoc, scale);
+        const changeZoom = (newScale) => {
+            currentScale = Math.max(minZoom, Math.min(maxZoom, newScale));
+            document.querySelectorAll('.page-container').forEach(p => p.dataset.rendered = "false");
+            pageRenderQueue.clear();
+            observer.takeRecords().forEach(entry => {
+                 if (entry.isIntersecting) queueRender(parseInt(entry.target.dataset.pageNumber, 10));
+            });
             updateZoomUI();
         };
 
-        const zoomOut = () => {
-            if (scale <= minZoom) return;
-            scale -= zoomStep;
-            renderAllPages(pdfDoc, scale);
-            updateZoomUI();
-        };
+        ui.zoomInBtn.addEventListener('click', () => changeZoom(currentScale + zoomStep));
+        ui.zoomOutBtn.addEventListener('click', () => changeZoom(currentScale - zoomStep));
 
-        ui.zoomInBtn.addEventListener('click', zoomIn);
-        ui.zoomOutBtn.addEventListener('click', zoomOut);
-
-        // Initial Load
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             ui.pageCountSpan.textContent = pdfDoc.numPages;
-            renderAllPages(pdfDoc, scale);
+            setupViewer(pdfDoc.numPages);
+            document.querySelectorAll('.page-container').forEach(el => observer.observe(el));
             updateZoomUI();
+            ui.loader.classList.add('hidden');
             ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             ui.downloadBtn.removeAttribute('aria-disabled');
         }).catch(err => {

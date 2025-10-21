@@ -27,6 +27,13 @@
         .page-container {
             margin-bottom: 1rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            /* This container will hold our canvas */
+            background-color: #fff; /* Give it a background to see the shadow */
+        }
+        .page-container canvas {
+            /* This is the key fix for centering */
+            display: block;
+            margin: 0 auto;
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -67,6 +74,7 @@
         const scale = 1.75; // A fixed high-quality scale
         let pageRenderQueue = new Set();
         let isRendering = false;
+        let pageContainers = [];
 
         const ui = {
             loader: document.getElementById('loader'),
@@ -109,6 +117,7 @@
         };
 
         const queueRender = (pageNum) => {
+            if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
             const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
             if (container && container.dataset.rendered !== "true") {
                 pageRenderQueue.add(pageNum);
@@ -118,47 +127,62 @@
 
         const setupViewer = (numPages) => {
             ui.viewerContent.innerHTML = '';
+            pageContainers = [];
             for (let i = 1; i <= numPages; i++) {
                 const pageContainer = document.createElement('div');
-                // This flex container is key to centering the canvas
-                pageContainer.className = 'page-container flex justify-center';
+                pageContainer.className = 'page-container';
                 pageContainer.dataset.pageNumber = i;
                 pageContainer.innerHTML = `<canvas></canvas>`;
                 ui.viewerContent.appendChild(pageContainer);
+                pageContainers.push(pageContainer);
             }
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            let mostVisiblePage = null;
-            let maxVisibility = -1;
+        // --- STABLE PAGE COUNT AND LAZY LOAD ---
+        let scrollTimeout;
+        const handleScroll = () => {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                let currentPage = 1;
+                const containerTop = ui.container.scrollTop;
+                const containerBottom = containerTop + ui.container.clientHeight;
 
-            entries.forEach(entry => {
-                // Always queue a page for rendering if it's intersecting
-                if (entry.isIntersecting) {
-                    const pageNum = parseInt(entry.target.dataset.pageNumber, 10);
-                    queueRender(pageNum);
+                for (let i = 0; i < pageContainers.length; i++) {
+                    const page = pageContainers[i];
+                    const pageTop = page.offsetTop - ui.container.offsetTop;
+                    const pageBottom = pageTop + page.offsetHeight;
 
-                    // But only update the page number display for the MOST visible page
-                    if (entry.intersectionRatio > maxVisibility) {
-                        maxVisibility = entry.intersectionRatio;
-                        mostVisiblePage = pageNum;
+                    // If the page is visible, queue it and its neighbors for rendering
+                    if (pageBottom > containerTop && pageTop < containerBottom) {
+                         const pageNum = i + 1;
+                         queueRender(pageNum);
+                         queueRender(pageNum - 1); // Pre-load previous
+                         queueRender(pageNum + 1); // Pre-load next
+                    }
+
+                    // Update current page number based on the one at the top of the viewport
+                    if (pageTop >= containerTop) {
+                        currentPage = i + 1;
+                        break;
+                    } else if (pageBottom > containerTop) {
+                         currentPage = i + 1;
                     }
                 }
-            });
+                ui.pageNumSpan.textContent = currentPage;
+            }, 100);
+        };
 
-            if (mostVisiblePage) {
-                ui.pageNumSpan.textContent = mostVisiblePage;
-            }
-        }, { root: ui.container, threshold: 0.1 });
+        ui.container.addEventListener('scroll', handleScroll);
 
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             ui.pageCountSpan.textContent = pdfDoc.numPages;
             setupViewer(pdfDoc.numPages);
-            document.querySelectorAll('.page-container').forEach(el => observer.observe(el));
             ui.loader.classList.add('hidden');
             ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             ui.downloadBtn.removeAttribute('aria-disabled');
+            // Initial render
+            handleScroll();
         }).catch(err => {
             ui.loader.classList.add('hidden');
             ui.errorMessage.classList.remove('hidden');

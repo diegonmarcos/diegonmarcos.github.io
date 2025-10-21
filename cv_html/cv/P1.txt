@@ -1,33 +1,44 @@
 # Prompt1
 
+
 ## Goal
-- Goal: Apply the efect of A4 page style over the borderless style of html files, mimic the PDF view into HTML
-- Act as: Act as an expert **HTML, CSS and JS.
-
-
-## The Prompt
-
-
-- There are two models(The header with Diego Nepomuceno Marcos indicate both starts) of CV both with two pages, what makes this a "PDF" of 4 pages.
-
-Make sure to not make any change on the style.
-
-- You will only apply the A4 page layout style mimicing the view of a pdf into the html web with
-
--You will find comments that indicates the pages breaks and you will make a page break like in a pdf
-
-
+### Goal
+- Apply the efect of A4 page style over the borderless style of html files, mimic the PDF view into HTML
+## You
+- Act as an expert in HTML, CSS and JS.
 
 
 
 ## Input Data
-
-- HTML to be Refactored: \DiegoNMarcos_curriculum_en.html
-- Input file is read only, no changes!
+### Sources
+- HTML input: \DiegoNMarcos_curriculum_en.html
 - Reference PDF:DiegoNMarcos_curriculum_en.pdf
+- Input file is read only, no changes!
+
+### Explanations
+- Input html: There are two models(The header with Diego Nepomuceno Marcos indicate both starts) of CV both with two pages, what makes this a "PDF" of 4 pages.
+- The PDF should be used as reference for the final appeanrance
 
 ## Output Format:**
 
-- Provide the complete, single-file HTML codein a new file,
-- Input file is read only, no changes!
+### Sources
+- [same name]_A4.html
+
+### Explanations
+- Provide the complete, single-file HTML code in a new file. make sure to have style and js ina single file.
+
+
+
+## The Prompt
+- You will only apply the A4 page layout style mimicing the view of a pdf into the html web.
+-You will find comments that indicates the pages breaks and you will make a page break like in a pdf.
+- Dont use the apporach of <div class="page"> wrappers
+- Modify the CSS to apply the A4 page styling directly to the <body> element.
+- Use <hr> tags  to create the page separation.
+
+
+- Make sure to not make any change on the style.
+- Make sure to use all data.
+
+- you will at the end previe the final work and compare with the pdf, if is not close to 90% similar you will repeat all the job with a new approach.
 

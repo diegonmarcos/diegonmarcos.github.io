@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>PDF.js CV Viewer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF.js Scrolling Viewer</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PDF.js library from Mozilla CDN -->
@@ -19,223 +19,160 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        /* Critical for custom gesture handling */
+        /* Make the main container scrollable */
         #pdf-container {
-            touch-action: none; /* Disables browser default gestures like pinch-zoom */
-            overflow: hidden;   /* We will handle panning manually */
-            cursor: grab;
-        }
-        #pdf-render {
-            /* Smooths out transformations */
-            transition: transform 0.1s ease-out;
+            height: calc(100vh - 160px); /* Adjust height based on header/footer */
+            overflow-y: auto;
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col h-screen">
 
-    <div class="min-h-screen flex flex-col items-center py-6 sm:py-12">
-        <div class="w-full max-w-4xl mx-auto">
-            <!-- Header and Navigation -->
-            <div class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-6 flex items-center justify-between flex-wrap gap-4">
-                <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">CV Viewer</h1>
-                <div class="flex items-center justify-center flex-wrap gap-x-2 sm:gap-x-4">
-                    <!-- Page Navigation -->
-                    <button id="prev-page" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">Prev</button>
-                    <div class="text-center font-medium">
-                        <span>Page: </span><span id="page-num"></span> / <span id="page-count"></span>
-                    </div>
-                    <button id="next-page" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">Next</button>
-                    
-                    <!-- Zoom Controls -->
-                    <div class="flex items-center border-l border-slate-300 dark:border-slate-600 ml-2 pl-2 sm:ml-4 sm:pl-4">
-                        <button id="zoom-out" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">-</button>
-                        <div id="zoom-level" class="text-center font-medium w-16"></div>
-                        <button id="zoom-in" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">+</button>
-                    </div>
-
-                    <!-- Download Button -->
-                    <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span class="hidden sm:inline">Download</span>
-                    </a>
+    <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6">
+        <!-- Sticky Header and Navigation -->
+        <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-6 flex items-center justify-between flex-wrap gap-4 z-10 w-full">
+            <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">CV Viewer</h1>
+            <div class="flex items-center justify-center flex-wrap gap-x-2 sm:gap-x-4">
+                <!-- Page Indicator -->
+                <div class="text-center font-medium">
+                    <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
                 </div>
-            </div>
+                
+                <!-- Zoom Controls -->
+                <div class="flex items-center border-l border-slate-300 dark:border-slate-600 ml-2 pl-2 sm:ml-4 sm:pl-4">
+                    <button id="zoom-out" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">-</button>
+                    <div id="zoom-level" class="text-center font-medium w-16">150%</div>
+                    <button id="zoom-in" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">+</button>
+                </div>
 
-            <!-- PDF Canvas Container -->
-            <div id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg flex justify-center items-center relative" style="min-height: 80vh;">
-                <div id="loader" class="text-center"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
-                <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
-                <canvas id="pdf-render" class="hidden shadow-md absolute"></canvas>
+                <!-- Download Button -->
+                <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    <span class="hidden sm:inline">Download</span>
+                </a>
             </div>
-             <div class="text-center mt-4 text-sm text-slate-500 dark:text-slate-400">
-                <p>Swipe to navigate, or pinch to zoom and pan.</p>
-            </div>
-        </div>
+        </header>
+
+        <!-- PDF Canvas Container -->
+        <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 flex-grow">
+            <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
+            <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
+            <div id="viewer-content" class="flex flex-col items-center"></div>
+        </main>
     </div>
 
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
 
-        const url = './CV.pdf'; 
-        let pdfDoc = null, pageNum = 1, pageIsRendering = false, pageNumIsPending = null;
-        
-        let state = {
-            scale: 1.5,
-            translateX: 0,
-            translateY: 0
-        };
+        const url = './CV.pdf';
+        let pdfDoc = null;
+        let scale = 1.5;
+        const zoomStep = 0.25, minZoom = 0.5, maxZoom = 3.0;
+        let renderedPages = []; // To keep track of rendered canvases
 
-        const zoomStep = 0.25, minZoom = 0.5, maxZoom = 4.0;
-        const canvas = document.getElementById('pdf-render'), ctx = canvas.getContext('2d');
         const ui = {
             loader: document.getElementById('loader'),
             errorMessage: document.getElementById('error-message'),
             container: document.getElementById('pdf-container'),
+            viewerContent: document.getElementById('viewer-content'),
             downloadBtn: document.getElementById('download-btn'),
             zoomOutBtn: document.getElementById('zoom-out'),
             zoomInBtn: document.getElementById('zoom-in'),
             zoomLevelSpan: document.getElementById('zoom-level'),
-            prevPageBtn: document.getElementById('prev-page'),
-            nextPageBtn: document.getElementById('next-page'),
             pageNumSpan: document.getElementById('page-num'),
             pageCountSpan: document.getElementById('page-count')
         };
-        
-        const updateUI = () => {
-            ui.pageNumSpan.textContent = pageNum;
-            ui.zoomLevelSpan.textContent = `${Math.round(state.scale * 100)}%`;
-            ui.zoomOutBtn.disabled = state.scale <= minZoom;
-            ui.zoomInBtn.disabled = state.scale >= maxZoom;
-            ui.prevPageBtn.disabled = pageNum <= 1;
-            ui.nextPageBtn.disabled = pageNum >= pdfDoc.numPages;
-            canvas.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.scale})`;
-        };
-        
-        const renderPage = (num, requestedScale) => {
-            pageIsRendering = true;
-            pdfDoc.getPage(num).then(page => {
-                const viewport = page.getViewport({ scale: requestedScale });
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
 
-                // Set canvas size for proper display scaling
-                canvas.style.width = `${viewport.width}px`;
-                canvas.style.height = `${viewport.height}px`;
-
-                const renderContext = { canvasContext: ctx, viewport };
-                page.render(renderContext).promise.then(() => {
-                    pageIsRendering = false;
-                    ui.loader.classList.add('hidden');
-                    canvas.classList.remove('hidden');
-                    if (pageNumIsPending !== null) {
-                        renderPage(pageNumIsPending, state.scale);
-                        pageNumIsPending = null;
-                    }
-                });
-            });
-            updateUI();
+        const updateZoomUI = () => {
+            ui.zoomLevelSpan.textContent = `${Math.round(scale * 100)}%`;
+            ui.zoomOutBtn.disabled = scale <= minZoom;
+            ui.zoomInBtn.disabled = scale >= maxZoom;
         };
 
-        const queueRenderPage = num => {
-            if (pageIsRendering) {
-                pageNumIsPending = num;
-            } else {
-                renderPage(num, state.scale);
+        const renderAllPages = async (pdfDoc, renderScale) => {
+            ui.loader.classList.remove('hidden');
+            ui.viewerContent.innerHTML = ''; // Clear previous renders
+            renderedPages = [];
+
+            const promises = [];
+            for (let num = 1; num <= pdfDoc.numPages; num++) {
+                promises.push(pdfDoc.getPage(num).then(page => {
+                    const viewport = page.getViewport({ scale: renderScale });
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    canvas.classList.add('mb-4', 'shadow-lg'); // Add spacing between pages
+
+                    const renderContext = { canvasContext: ctx, viewport };
+                    return page.render(renderContext).promise.then(() => ({ canvas, pageNum: num }));
+                }));
             }
+
+            const pages = await Promise.all(promises);
+            pages.sort((a, b) => a.pageNum - b.pageNum); // Ensure pages are in order
+            pages.forEach(p => {
+                ui.viewerContent.appendChild(p.canvas);
+                renderedPages.push(p.canvas);
+            });
+            
+            ui.loader.classList.add('hidden');
         };
 
-        const resetView = () => {
-            state.scale = 1.5;
-            state.translateX = 0;
-            state.translateY = 0;
+        const updateCurrentPageOnScroll = () => {
+            let currentPage = 1;
+            const containerRect = ui.container.getBoundingClientRect();
+            
+            for (let i = 0; i < renderedPages.length; i++) {
+                const pageCanvas = renderedPages[i];
+                const pageRect = pageCanvas.getBoundingClientRect();
+
+                // Check if the page is visible in the container
+                if (pageRect.top < containerRect.top + containerRect.height / 2 && pageRect.bottom > containerRect.top + containerRect.height / 2) {
+                    currentPage = i + 1;
+                    break;
+                }
+            }
+            ui.pageNumSpan.textContent = currentPage;
         };
 
-        const showPrevPage = () => { if (pageNum <= 1) return; pageNum--; resetView(); queueRenderPage(pageNum); };
-        const showNextPage = () => { if (pageNum >= pdfDoc.numPages) return; pageNum++; resetView(); queueRenderPage(pageNum); };
-        const zoomIn = () => { state.scale = Math.min(maxZoom, state.scale + zoomStep); queueRenderPage(pageNum); };
-        const zoomOut = () => { state.scale = Math.max(minZoom, state.scale - zoomStep); queueRenderPage(pageNum); };
-
-        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
-            pdfDoc = pdfDoc_;
-            ui.pageCountSpan.textContent = pdfDoc.numPages;
-            queueRenderPage(pageNum);
-            ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
-            ui.downloadBtn.removeAttribute('aria-disabled');
-        }).catch(err => {
-            ui.loader.classList.add('hidden'); ui.errorMessage.classList.remove('hidden'); console.error(err);
+        // Throttle scroll events for performance
+        let scrollTimeout;
+        ui.container.addEventListener('scroll', () => {
+            if (scrollTimeout) clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(updateCurrentPageOnScroll, 100);
         });
 
-        ui.prevPageBtn.addEventListener('click', showPrevPage);
-        ui.nextPageBtn.addEventListener('click', showNextPage);
+        const zoomIn = () => {
+            if (scale >= maxZoom) return;
+            scale += zoomStep;
+            renderAllPages(pdfDoc, scale);
+            updateZoomUI();
+        };
+
+        const zoomOut = () => {
+            if (scale <= minZoom) return;
+            scale -= zoomStep;
+            renderAllPages(pdfDoc, scale);
+            updateZoomUI();
+        };
+
         ui.zoomInBtn.addEventListener('click', zoomIn);
         ui.zoomOutBtn.addEventListener('click', zoomOut);
 
-        // --- ADVANCED GESTURE HANDLING ---
-        let isDragging = false, isPinching = false;
-        let start = { x: 0, y: 0 }, pinchStart = { dist: 0 };
-        const swipeThreshold = 50;
-
-        const getEvent = (e) => e.touches ? e.touches[0] : e;
-        const getPinchDistance = (e) => Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-
-        ui.container.addEventListener('touchstart', e => {
-            if (e.touches.length === 1) {
-                isDragging = true;
-                start.x = getEvent(e).clientX - state.translateX;
-                start.y = getEvent(e).clientY - state.translateY;
-            } else if (e.touches.length === 2) {
-                isPinching = true;
-                isDragging = false; // Prevent panning while pinching
-                pinchStart.dist = getPinchDistance(e);
-            }
-        });
-
-        ui.container.addEventListener('touchmove', e => {
-            if (isPinching && e.touches.length === 2) {
-                const newDist = getPinchDistance(e);
-                const scaleRatio = newDist / pinchStart.dist;
-                let newScale = state.scale * scaleRatio;
-                
-                // Temporarily apply CSS transform for smooth visual feedback
-                canvas.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${newScale})`;
-
-            } else if (isDragging && e.touches.length === 1) {
-                const evt = getEvent(e);
-                // Only pan if zoomed in enough
-                if (state.scale > 1) {
-                    ui.container.style.cursor = 'grabbing';
-                    state.translateX = evt.clientX - start.x;
-                    state.translateY = evt.clientY - start.y;
-                    canvas.style.transform = `translate(${state.translateX}px, ${state.translateY}px) scale(${state.scale})`;
-                }
-            }
-        });
-        
-        ui.container.addEventListener('touchend', e => {
-            if (isPinching) {
-                // Finalize the scale from the temp CSS transform
-                const matrix = new DOMMatrix(window.getComputedStyle(canvas).transform);
-                state.scale = matrix.a; // matrix.a is the scale value
-                if (state.scale < minZoom) state.scale = minZoom;
-                if (state.scale > maxZoom) state.scale = maxZoom;
-                
-                // Trigger a single high-quality re-render
-                queueRenderPage(pageNum);
-
-            } else if (isDragging) {
-                 const endX = getEvent(e).clientX;
-                 const dragDistance = endX - (start.x - state.translateX);
-                 // Check for swipe only if not zoomed
-                 if (state.scale <= 1 && Math.abs(dragDistance) > swipeThreshold) {
-                    if (dragDistance < 0) showNextPage();
-                    else showPrevPage();
-                 }
-            }
-            isDragging = false;
-            isPinching = false;
-            ui.container.style.cursor = 'grab';
+        // Initial Load
+        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+            pdfDoc = pdfDoc_;
+            ui.pageCountSpan.textContent = pdfDoc.numPages;
+            renderAllPages(pdfDoc, scale);
+            updateZoomUI();
+            ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
+            ui.downloadBtn.removeAttribute('aria-disabled');
+        }).catch(err => {
+            ui.loader.classList.add('hidden');
+            ui.errorMessage.classList.remove('hidden');
+            console.error("Error loading PDF:", err);
         });
     </script>
 </body>

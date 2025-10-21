@@ -36,21 +36,14 @@
         <!-- Sticky Header and Navigation -->
         <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex items-center justify-between flex-wrap gap-4 z-10 w-full shrink-0">
             <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">CV Viewer</h1>
-            <div class="flex items-center justify-center flex-wrap gap-x-2 sm:gap-x-4">
+            <div class="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6">
                 <!-- Page Indicator -->
                 <div class="text-center font-medium">
                     <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
                 </div>
-                
-                <!-- Zoom Controls -->
-                <div class="flex items-center border-l border-slate-300 dark:border-slate-600 ml-2 pl-2 sm:ml-4 sm:pl-4">
-                    <button id="zoom-out" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">-</button>
-                    <div id="zoom-level" class="text-center font-medium w-16">150%</div>
-                    <button id="zoom-in" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">+</button>
-                </div>
 
                 <!-- Download Button -->
-                <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed border-l border-slate-300 dark:border-slate-600 pl-4 ml-4" aria-disabled="true">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     <span class="hidden sm:inline">Download</span>
                 </a>
@@ -70,8 +63,7 @@
 
         const url = './CV.pdf';
         let pdfDoc = null;
-        let currentScale = 1.5;
-        const zoomStep = 0.25, minZoom = 0.5, maxZoom = 3.0;
+        const scale = 1.75; // A fixed high-quality scale
         let pageRenderQueue = new Set();
         let isRendering = false;
 
@@ -81,23 +73,15 @@
             container: document.getElementById('pdf-container'),
             viewerContent: document.getElementById('viewer-content'),
             downloadBtn: document.getElementById('download-btn'),
-            zoomOutBtn: document.getElementById('zoom-out'),
-            zoomInBtn: document.getElementById('zoom-in'),
-            zoomLevelSpan: document.getElementById('zoom-level'),
             pageNumSpan: document.getElementById('page-num'),
             pageCountSpan: document.getElementById('page-count')
         };
 
-        const updateZoomUI = () => {
-            ui.zoomLevelSpan.textContent = `${Math.round(currentScale * 100)}%`;
-            ui.zoomOutBtn.disabled = currentScale <= minZoom;
-            ui.zoomInBtn.disabled = currentScale >= maxZoom;
-        };
-
         const renderPage = async (pageNum) => {
             const page = await pdfDoc.getPage(pageNum);
+            // Use devicePixelRatio for high-res screens
             const devicePixelRatio = window.devicePixelRatio || 1;
-            const viewport = page.getViewport({ scale: currentScale * devicePixelRatio });
+            const viewport = page.getViewport({ scale: scale * devicePixelRatio });
             const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
             if (!container) return; // container might have been removed
 
@@ -106,6 +90,7 @@
             
             canvas.height = viewport.height;
             canvas.width = viewport.width;
+            // Use CSS to scale the canvas down to the correct display size
             canvas.style.width = `${viewport.width / devicePixelRatio}px`;
             canvas.style.height = `${viewport.height / devicePixelRatio}px`;
 
@@ -153,25 +138,11 @@
             });
         }, { root: ui.container, threshold: 0.1 });
 
-        const changeZoom = (newScale) => {
-            currentScale = Math.max(minZoom, Math.min(maxZoom, newScale));
-            document.querySelectorAll('.page-container').forEach(p => p.dataset.rendered = "false");
-            pageRenderQueue.clear();
-            observer.takeRecords().forEach(entry => {
-                 if (entry.isIntersecting) queueRender(parseInt(entry.target.dataset.pageNumber, 10));
-            });
-            updateZoomUI();
-        };
-
-        ui.zoomInBtn.addEventListener('click', () => changeZoom(currentScale + zoomStep));
-        ui.zoomOutBtn.addEventListener('click', () => changeZoom(currentScale - zoomStep));
-
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             ui.pageCountSpan.textContent = pdfDoc.numPages;
             setupViewer(pdfDoc.numPages);
             document.querySelectorAll('.page-container').forEach(el => observer.observe(el));
-            updateZoomUI();
             ui.loader.classList.add('hidden');
             ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             ui.downloadBtn.removeAttribute('aria-disabled');

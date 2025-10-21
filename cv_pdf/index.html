@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>PDF.js CV Viewer</title>
     <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -26,9 +26,9 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Ensure the canvas container is touch-friendly */
+        /* Prevent default browser gestures like pinch-zoom on the whole page */
         #pdf-container {
-            touch-action: pan-y; /* Allows vertical scroll but captures horizontal for our swipe */
+            touch-action: none;
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -39,29 +39,33 @@
         <div class="w-full max-w-4xl mx-auto">
             <!-- Header and Navigation -->
             <div class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-6 flex items-center justify-between flex-wrap gap-4">
-                <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200">CV Document Viewer</h1>
-                <div class="flex items-center space-x-2 sm:space-x-4">
-                    <button id="prev-page" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                        Prev
-                    </button>
-                    <div class="text-center">
-                        <span class="text-lg font-medium">Page: </span>
-                        <span id="page-num" class="text-lg font-medium"></span> / 
-                        <span id="page-count" class="text-lg font-medium"></span>
+                <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">CV Viewer</h1>
+                <div class="flex items-center justify-center flex-wrap gap-x-2 sm:gap-x-4">
+                    <!-- Page Navigation -->
+                    <button id="prev-page" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Prev</button>
+                    <div class="text-center font-medium">
+                        <span>Page: </span>
+                        <span id="page-num"></span> / <span id="page-count"></span>
                     </div>
-                    <button id="next-page" class="px-4 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
-                        Next
-                    </button>
+                    <button id="next-page" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-semibold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Next</button>
+                    
+                    <!-- Zoom Controls -->
+                    <div class="flex items-center border-l border-slate-300 dark:border-slate-600 ml-2 pl-2 sm:ml-4 sm:pl-4">
+                        <button id="zoom-out" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">-</button>
+                        <div id="zoom-level" class="text-center font-medium w-16"></div>
+                        <button id="zoom-in" class="px-3 py-2 bg-slate-200 dark:bg-slate-700 rounded-md font-bold hover:bg-slate-300 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors">+</button>
+                    </div>
+
                     <!-- Download Button -->
-                    <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-4 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                    <a href="./CV.pdf" download="CV.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span>Download</span>
+                        <span class="hidden sm:inline">Download</span>
                     </a>
                 </div>
             </div>
 
             <!-- PDF Canvas Container -->
-            <div id="pdf-container" class="bg-white dark:bg-slate-800 shadow-lg rounded-lg p-4 flex justify-center items-center relative" style="min-height: 80vh;">
+            <div id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 flex justify-center items-center relative overflow-auto" style="min-height: 80vh;">
                 <!-- Loader -->
                 <div id="loader" class="text-center">
                     <div class="loader mx-auto"></div>
@@ -76,64 +80,63 @@
                 <canvas id="pdf-render" class="hidden shadow-md"></canvas>
             </div>
              <div class="text-center mt-4 text-sm text-slate-500 dark:text-slate-400">
-                <p>Use buttons or swipe left/right on the document to navigate.</p>
+                <p>Use buttons, swipe to navigate, or pinch to zoom.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // Set the worker source for PDF.js
         pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
 
-        const url = './CV.pdf'; // The PDF file to render
+        const url = './CV.pdf'; 
 
         let pdfDoc = null,
             pageNum = 1,
             pageIsRendering = false,
-            pageNumIsPending = null;
+            pageNumIsPending = null,
+            scale = 1.5,
+            zoomStep = 0.25,
+            minZoom = 0.5,
+            maxZoom = 3.0;
 
-        const scale = 1.5,
-              canvas = document.getElementById('pdf-render'),
+        const canvas = document.getElementById('pdf-render'),
               ctx = canvas.getContext('2d'),
               loader = document.getElementById('loader'),
               errorMessage = document.getElementById('error-message'),
               pdfContainer = document.getElementById('pdf-container'),
-              downloadBtn = document.getElementById('download-btn');
+              downloadBtn = document.getElementById('download-btn'),
+              zoomOutBtn = document.getElementById('zoom-out'),
+              zoomInBtn = document.getElementById('zoom-in'),
+              zoomLevelSpan = document.getElementById('zoom-level');
 
-        // Function to render a specific page
+        const updateZoomDisplay = () => {
+            zoomLevelSpan.textContent = `${Math.round(scale * 100)}%`;
+            zoomOutBtn.disabled = scale <= minZoom;
+            zoomInBtn.disabled = scale >= maxZoom;
+        };
+        
         const renderPage = num => {
             pageIsRendering = true;
-
-            // Get page
             pdfDoc.getPage(num).then(page => {
-                // Set scale
                 const viewport = page.getViewport({ scale });
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-
-                const renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-
+                const renderContext = { canvasContext: ctx, viewport };
                 page.render(renderContext).promise.then(() => {
                     pageIsRendering = false;
-                    loader.classList.add('hidden'); // Hide loader after first render
-                    canvas.classList.remove('hidden'); // Show canvas
-
+                    loader.classList.add('hidden');
+                    canvas.classList.remove('hidden');
                     if (pageNumIsPending !== null) {
                         renderPage(pageNumIsPending);
                         pageNumIsPending = null;
                     }
                 });
-
-                // Update page counters
                 document.getElementById('page-num').textContent = num;
                 updateNavButtons();
             });
+            updateZoomDisplay();
         };
 
-        // Queue a render if another page is already rendering
         const queueRenderPage = num => {
             if (pageIsRendering) {
                 pageNumIsPending = num;
@@ -142,77 +145,76 @@
             }
         };
 
-        // Go to previous page
-        const showPrevPage = () => {
-            if (pageNum <= 1 || pageIsRendering) {
-                return;
-            }
-            pageNum--;
-            queueRenderPage(pageNum);
-        };
-
-        // Go to next page
-        const showNextPage = () => {
-            if (pageNum >= pdfDoc.numPages || pageIsRendering) {
-                return;
-            }
-            pageNum++;
-            queueRenderPage(pageNum);
-        };
-        
-        // Update Navigation Button States
+        const showPrevPage = () => { if (pageNum <= 1 || pageIsRendering) return; pageNum--; queueRenderPage(pageNum); };
+        const showNextPage = () => { if (pageNum >= pdfDoc.numPages || pageIsRendering) return; pageNum++; queueRenderPage(pageNum); };
         const updateNavButtons = () => {
             document.getElementById('prev-page').disabled = (pageNum <= 1);
             document.getElementById('next-page').disabled = (pageNum >= pdfDoc.numPages);
         };
+        const zoomIn = () => { if (scale >= maxZoom) return; scale = Math.min(maxZoom, scale + zoomStep); queueRenderPage(pageNum); };
+        const zoomOut = () => { if (scale <= minZoom) return; scale = Math.max(minZoom, scale - zoomStep); queueRenderPage(pageNum); };
 
-
-        // Get the document
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             document.getElementById('page-count').textContent = pdfDoc.numPages;
             renderPage(pageNum);
-            // Enable download button once PDF is loaded
             downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             downloadBtn.removeAttribute('aria-disabled');
-
         }).catch(err => {
-            // Display error
-            loader.classList.add('hidden');
-            errorMessage.classList.remove('hidden');
-            console.error(err);
+            loader.classList.add('hidden'); errorMessage.classList.remove('hidden'); console.error(err);
         });
 
-        // Button events
         document.getElementById('prev-page').addEventListener('click', showPrevPage);
         document.getElementById('next-page').addEventListener('click', showNextPage);
+        zoomInBtn.addEventListener('click', zoomIn);
+        zoomOutBtn.addEventListener('click', zoomOut);
 
-        // --- SWIPE GESTURE LOGIC ---
-        let touchstartX = 0;
-        let touchendX = 0;
-        const swipeThreshold = 50; // Minimum distance for a swipe
+        // --- GESTURE HANDLING LOGIC ---
+        let touchstartX = 0, touchendX = 0, initialPinchDistance = null, startScale = null;
+        const swipeThreshold = 50;
 
-        function handleGesture() {
-            const swipeDistance = touchendX - touchstartX;
-            if (swipeDistance < -swipeThreshold) {
-                // Swiped left
-                showNextPage();
-            }
-            if (swipeDistance > swipeThreshold) {
-                // Swiped right
-                showPrevPage();
-            }
-        }
+        const getDistance = (touches) => Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
 
         pdfContainer.addEventListener('touchstart', e => {
-            touchstartX = e.changedTouches[0].screenX;
-        }, { passive: true });
+            if (e.touches.length === 1) {
+                touchstartX = e.touches[0].clientX;
+            } else if (e.touches.length === 2) {
+                e.preventDefault(); // Prevent page zoom
+                initialPinchDistance = getDistance(e.touches);
+                startScale = scale;
+            }
+        }, { passive: false });
+
+        pdfContainer.addEventListener('touchmove', e => {
+            if (e.touches.length === 2) {
+                e.preventDefault(); // Prevent page zoom/scroll
+                if (!initialPinchDistance) return;
+                const newDistance = getDistance(e.touches);
+                const scaleRatio = newDistance / initialPinchDistance;
+                let newScale = startScale * scaleRatio;
+                // Clamp the scale to min/max zoom
+                scale = Math.max(minZoom, Math.min(maxZoom, newScale));
+                // Throttle re-rendering for performance
+                if (!pageIsRendering) {
+                     queueRenderPage(pageNum);
+                }
+            }
+        }, { passive: false });
 
         pdfContainer.addEventListener('touchend', e => {
-            touchendX = e.changedTouches[0].screenX;
-            handleGesture();
-        }, { passive: true });
-
+            if (e.touches.length === 0 && initialPinchDistance === null) { // Handle swipe
+                touchendX = e.changedTouches[0].clientX;
+                const swipeDistance = touchendX - touchstartX;
+                if (swipeDistance < -swipeThreshold) showNextPage();
+                if (swipeDistance > swipeThreshold) showPrevPage();
+            }
+            if (e.touches.length < 2) { // End of a pinch
+                initialPinchDistance = null;
+                startScale = null;
+                // Final high-quality render after pinch
+                queueRenderPage(pageNum);
+            }
+        });
     </script>
 </body>
 </html>

@@ -27,10 +27,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const linkIcons = document.querySelectorAll('.link .icon');
     const linkPreview = document.getElementById('link-preview');
+    const previewToggle = document.getElementById('preview-toggle');
+
+    let previewsEnabled = localStorage.getItem('previewsEnabled') === 'true';
+    previewToggle.checked = previewsEnabled;
+
+    const togglePreviews = () => {
+        previewsEnabled = previewToggle.checked;
+        localStorage.setItem('previewsEnabled', previewsEnabled);
+    };
+
+    previewToggle.addEventListener('change', togglePreviews);
 
     if (window.innerWidth > 768) {
         linkIcons.forEach(icon => {
             icon.addEventListener('mouseover', (e) => {
+                if (!previewsEnabled) return;
                 const link = e.target.parentElement;
                 const previewUrl = link.getAttribute('data-preview');
                 if (previewUrl) {
@@ -40,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             icon.addEventListener('mousemove', (e) => {
+                if (!previewsEnabled) return;
                 linkPreview.style.left = `${e.pageX + 10}px`;
                 linkPreview.style.top = `${e.pageY + 10}px`;
             });

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data for Value Proposition Cards ---
     const valuePropSections = [
         {
-            title: "Capital Markets & Venture Acumen 📈",
+            title: "Capital Markets & Venture Acumen",
             description: "I don't just analyze businesses; I've built, funded, and scaled them. My experience is rooted in tangible results and strategic growth.",
             points: [
                 "Successfully structured and managed deals in Investment Banking, including R$ 500Mi in MBS and R$ 100Mi in mezzanine debt.",
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            title: "Engineering & Problem-Solving Mindset 🛠️",
+            title: "Engineering & Problem-Solving Mindset",
             description: "My foundation in Civil Engineering trained me to deconstruct complex problems and build robust, lasting solutions from the ground up.",
             points: [
                 "Honed in critical thinking and problem-solving through a B.Sc. in Structural Civil Engineering.",
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            title: "The Pivot: Product & Software Engineering 🚀",
+            title: "The Pivot: Product & Software Engineering",
             description: "Driven by a passion for creative endeavors and innovation, I am channeling my experience into building the products of tomorrow.",
             points: [
                 "Currently honing skills in C/C++ programming, data structures, and UNIX at L’École 42, and Product Management from Stanford.",
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            title: "Global Perspective & Adaptability 🌍",
+            title: "Global Perspective & Adaptability",
             description: "My personal and professional life has been a nomadic project, providing me with unparalleled adaptability and cross-cultural communication skills.",
             points: [
                 "Lived in Berlin, Barcelona, London, Paris, and Valencia, while traveling to over 170 cities in 40+ countries.",

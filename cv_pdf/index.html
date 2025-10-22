@@ -50,47 +50,75 @@
             cursor: pointer;
             /* For debugging: outline: 1px solid red; */
         }
+        /* Toggle Switch CSS */
+        input:checked ~ .dot {
+            transform: translateX(100%);
+        }
+        input:checked ~ .block {
+            background-color: #48bb78;
+        }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
-<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col h-screen overflow-hidden">
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex h-screen overflow-hidden">
 
-    <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6 h-full">
-        <!-- Sticky Header and Navigation -->
-        <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex items-center justify-between flex-wrap gap-4 z-10 w-full shrink-0">
-            <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">Diego's CV</h1>
-            <div class="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6">
-                <!-- Page Indicator -->
-                <div class="text-center font-medium">
-                    <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
+    <div class="flex-grow w-0 flex flex-col"> <!-- Main content wrapper -->
+        <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6 h-full">
+            <!-- Sticky Header and Navigation -->
+            <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex items-center justify-between flex-wrap gap-4 z-10 w-full shrink-0">
+                <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">Diego's CV</h1>
+                <div class="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6">
+                    <!-- Page Indicator -->
+                    <div class="text-center font-medium">
+                        <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
+                    </div>
+
+                    <!-- Reset Zoom Button -->
+                    <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2 border-l border-slate-300 dark:border-slate-600 pl-4 ml-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
+                        <span class="hidden sm:inline">Reset</span>
+                    </button>
+
+                    <!-- Download Button -->
+                    <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">Download</span>
+                    </a>
                 </div>
+            </header>
 
-                <!-- Reset Zoom Button -->
-                <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2 border-l border-slate-300 dark:border-slate-600 pl-4 ml-4">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
-                    <span class="hidden sm:inline">Reset</span>
-                </button>
+            <!-- PDF Canvas Container -->
+            <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
+                <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
+                <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
+                <div id="zoom-wrapper">
+                    <div id="viewer-content" class="w-full"></div>
+                </div>
+            </main>
+        </div>
+    </div>
 
-                <!-- Download Button -->
-                <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span class="hidden sm:inline">Download</span>
-                </a>
+    <!-- Sidebar for Toggles -->
+    <div id="sidebar" class="bg-white dark:bg-slate-800 shadow-lg p-4 m-4 rounded-lg flex flex-col space-y-4 h-fit">
+        <h3 class="font-bold text-lg">Tools</h3>
+        <label for="preview-toggle" class="flex items-center justify-between cursor-pointer">
+            <span class="text-slate-700 dark:text-slate-200">Link Preview</span>
+            <div class="relative">
+                <input type="checkbox" id="preview-toggle" class="sr-only">
+                <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
             </div>
-        </header>
+        </label>
+    </div>
 
-        <!-- PDF Canvas Container -->
-        <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
-            <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
-            <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
-            <div id="zoom-wrapper">
-                <div id="viewer-content" class="w-full"></div>
-            </div>
-        </main>
+    <!-- Link Preview Popup -->
+    <div id="preview-popup" class="hidden fixed bg-white border border-slate-300 shadow-lg rounded-md p-2 z-50 w-64 h-48 pointer-events-none">
+        <img src="" alt="Link Preview" class="w-full h-full object-cover">
     </div>
 
     <script>
-        pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+        document.addEventListener('DOMContentLoaded', () => {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
 
         const url = './DiegoNMarcos_CurriculumVitae_en.pdf';
         let pdfDoc = null;
@@ -99,300 +127,325 @@
         let isRendering = false;
         let pageContainers = [];
 
-        const ui = {
-            loader: document.getElementById('loader'),
-            errorMessage: document.getElementById('error-message'),
-            container: document.getElementById('pdf-container'),
-            viewerContent: document.getElementById('viewer-content'),
-            zoomWrapper: document.getElementById('zoom-wrapper'), // The new wrapper for zooming
-            downloadBtn: document.getElementById('download-btn'),
-            resetZoomBtn: document.getElementById('reset-zoom-btn'), // The new reset button
-            pageNumSpan: document.getElementById('page-num'),
-            pageCountSpan: document.getElementById('page-count')
-        };
+            const ui = {
+                loader: document.getElementById('loader'),
+                errorMessage: document.getElementById('error-message'),
+                container: document.getElementById('pdf-container'),
+                viewerContent: document.getElementById('viewer-content'),
+                zoomWrapper: document.getElementById('zoom-wrapper'),
+                downloadBtn: document.getElementById('download-btn'),
+                resetZoomBtn: document.getElementById('reset-zoom-btn'),
+                previewToggle: document.getElementById('preview-toggle'),
+                previewPopup: document.getElementById('preview-popup'),
+                pageNumSpan: document.getElementById('page-num'),
+                pageCountSpan: document.getElementById('page-count')
+            };
 
-        const renderPage = async (pageNum) => {
-            const page = await pdfDoc.getPage(pageNum);
-            const devicePixelRatio = window.devicePixelRatio || 1;
-            const qualityFactor = 2;
+            let linkPreviewEnabled = false;
 
-            const containerWidth = ui.container.clientWidth - 30;
-            const unscaledViewport = page.getViewport({ scale: 1 });
-            const cssScale = containerWidth / unscaledViewport.width;
+            const renderPage = async (pageNum) => {
+                const page = await pdfDoc.getPage(pageNum);
+                const devicePixelRatio = window.devicePixelRatio || 1;
+                const qualityFactor = 2;
 
-            // Viewport for the high-res canvas
-            const canvasViewport = page.getViewport({ scale: cssScale * devicePixelRatio * qualityFactor });
-            // Viewport for the CSS-pixel-based link layer
-            const displayViewport = page.getViewport({ scale: cssScale });
+                const containerWidth = ui.container.clientWidth - 30;
+                const unscaledViewport = page.getViewport({ scale: 1 });
+                const cssScale = containerWidth / unscaledViewport.width;
 
-            const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
-            if (!container) return;
+                // Viewport for the high-res canvas
+                const canvasViewport = page.getViewport({ scale: cssScale * devicePixelRatio * qualityFactor });
+                // Viewport for the CSS-pixel-based link layer
+                const displayViewport = page.getViewport({ scale: cssScale });
 
-            const canvas = container.querySelector('canvas');
-            const ctx = canvas.getContext('2d');
+                const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+                if (!container) return;
 
-            canvas.height = canvasViewport.height;
-            canvas.width = canvasViewport.width;
-            canvas.style.width = `${displayViewport.width}px`;
-            canvas.style.height = `${displayViewport.height}px`;
+                const canvas = container.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
 
-            await page.render({ canvasContext: ctx, viewport: canvasViewport }).promise;
-            container.dataset.rendered = "true";
+                canvas.height = canvasViewport.height;
+                canvas.width = canvasViewport.width;
+                canvas.style.width = `${displayViewport.width}px`;
+                canvas.style.height = `${displayViewport.height}px`;
 
-            // --- LINK LAYER ---
-            const oldLinkLayer = container.querySelector('.link-layer');
-            if (oldLinkLayer) oldLinkLayer.remove();
+                await page.render({ canvasContext: ctx, viewport: canvasViewport }).promise;
+                container.dataset.rendered = "true";
 
-            const linkLayer = document.createElement('div');
-            linkLayer.className = 'link-layer';
-            linkLayer.style.width = `${displayViewport.width}px`;
-            linkLayer.style.height = `${displayViewport.height}px`;
-            container.appendChild(linkLayer);
+                // --- LINK LAYER ---
+                const oldLinkLayer = container.querySelector('.link-layer');
+                if (oldLinkLayer) oldLinkLayer.remove();
 
-            const annotations = await page.getAnnotations();
-            annotations
-                .filter(a => a.subtype === 'Link' && a.url)
-                .forEach(a => {
-                    const [left, bottom, right, top] = a.rect;
-                    const linkElement = document.createElement('a');
-                    linkElement.href = a.url;
-                    linkElement.target = '_blank';
-                    linkElement.title = a.url;
+                const linkLayer = document.createElement('div');
+                linkLayer.className = 'link-layer';
+                linkLayer.style.width = `${displayViewport.width}px`;
+                linkLayer.style.height = `${displayViewport.height}px`;
+                container.appendChild(linkLayer);
 
-                    linkElement.style.left = `${left * cssScale}px`;
-                    linkElement.style.top = `${displayViewport.height - top * cssScale}px`;
-                    linkElement.style.width = `${(right - left) * cssScale}px`;
-                    linkElement.style.height = `${(top - bottom) * cssScale}px`;
+                const annotations = await page.getAnnotations();
+                annotations
+                    .filter(a => a.subtype === 'Link' && a.url)
+                    .forEach(a => {
+                        const [left, bottom, right, top] = a.rect;
+                        const linkElement = document.createElement('a');
+                        linkElement.href = a.url;
+                        linkElement.target = '_blank';
+                        linkElement.title = a.url;
 
-                    linkLayer.appendChild(linkElement);
-                });
-        };
+                        linkElement.style.left = `${left * cssScale}px`;
+                        linkElement.style.top = `${displayViewport.height - top * cssScale}px`;
+                        linkElement.style.width = `${(right - left) * cssScale}px`;
+                        linkElement.style.height = `${(top - bottom) * cssScale}px`;
 
-        const processQueue = async () => {
-            if (isRendering || pageRenderQueue.size === 0) return;
-            isRendering = true;
-            const pageNum = pageRenderQueue.values().next().value;
-            pageRenderQueue.delete(pageNum);
-            await renderPage(pageNum);
-            isRendering = false;
-            processQueue();
-        };
+                        // Add preview events
+                        linkElement.addEventListener('mouseenter', (e) => {
+                            if (!linkPreviewEnabled) return;
+                            const previewImg = ui.previewPopup.querySelector('img');
+                            // Use a free screenshot service
+                            previewImg.src = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(a.url)}?w=256`;
+                            ui.previewPopup.style.left = `${e.pageX + 15}px`;
+                            ui.previewPopup.style.top = `${e.pageY + 15}px`;
+                            ui.previewPopup.classList.remove('hidden');
+                        });
 
-        const queueRender = (pageNum) => {
-            if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
-            const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
-            if (container && container.dataset.rendered !== "true") {
-                pageRenderQueue.add(pageNum);
+                        linkElement.addEventListener('mouseleave', () => {
+                            if (!linkPreviewEnabled) return;
+                            ui.previewPopup.classList.add('hidden');
+                        });
+
+                        linkLayer.appendChild(linkElement);
+                    });
+            };
+
+            const processQueue = async () => {
+                if (isRendering || pageRenderQueue.size === 0) return;
+                isRendering = true;
+                const pageNum = pageRenderQueue.values().next().value;
+                pageRenderQueue.delete(pageNum);
+                await renderPage(pageNum);
+                isRendering = false;
                 processQueue();
+            };
+
+            const queueRender = (pageNum) => {
+                if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
+                const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+                if (container && container.dataset.rendered !== "true") {
+                    pageRenderQueue.add(pageNum);
+                    processQueue();
+                }
+            };
+
+            const setupViewer = (numPages, placeholderHeight) => {
+                ui.viewerContent.innerHTML = '';
+                pageContainers = [];
+                for (let i = 1; i <= numPages; i++) {
+                    const pageContainer = document.createElement('div');
+                    pageContainer.className = 'page-container';
+                    pageContainer.dataset.pageNumber = i;
+                    pageContainer.style.minHeight = `${placeholderHeight}px`; // Set placeholder height
+                    pageContainer.innerHTML = `<canvas></canvas>`;
+                    ui.viewerContent.appendChild(pageContainer);
+                    pageContainers.push(pageContainer);
+                }
+            };
+
+            // --- UNIFIED INTERACTION ENGINE ---
+
+            // --- STATE & CORE FUNCTIONS ---
+            let scale = 1;
+            let panX = 0;
+            let panY = 0;
+            let isPanning = false;
+            let isAnimating = false; // For smooth page transition
+            let panStart = { x: 0, y: 0 };
+            const minScale = 1;
+            const maxScale = 4;
+            let uiUpdateTimeout;
+
+            function applyTransform() {
+                ui.zoomWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
             }
-        };
 
-        const setupViewer = (numPages, placeholderHeight) => {
-            ui.viewerContent.innerHTML = '';
-            pageContainers = [];
-            for (let i = 1; i <= numPages; i++) {
-                const pageContainer = document.createElement('div');
-                pageContainer.className = 'page-container';
-                pageContainer.dataset.pageNumber = i;
-                pageContainer.style.minHeight = `${placeholderHeight}px`; // Set placeholder height
-                pageContainer.innerHTML = `<canvas></canvas>`;
-                ui.viewerContent.appendChild(pageContainer);
-                pageContainers.push(pageContainer);
-            }
-        };
+            function animatePan(targetY, duration = 300) {
+                if (isAnimating) return;
+                isAnimating = true;
+                const startY = panY;
+                const distance = targetY - startY;
+                let startTime = null;
 
-        // --- UNIFIED INTERACTION ENGINE ---
+                function animationStep(timestamp) {
+                    if (!isAnimating) return; // Allow interruption
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percentage = Math.min(progress / duration, 1);
+                    const ease = 0.5 - 0.5 * Math.cos(percentage * Math.PI); // Ease-in-out
 
-        // --- STATE & CORE FUNCTIONS ---
-        let scale = 1;
-        let panX = 0;
-        let panY = 0;
-        let isPanning = false;
-        let isAnimating = false; // For smooth page transition
-        let panStart = { x: 0, y: 0 };
-        const minScale = 1;
-        const maxScale = 4;
-        let uiUpdateTimeout;
-
-        function applyTransform() {
-            ui.zoomWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
-        }
-
-        function animatePan(targetY, duration = 300) {
-            if (isAnimating) return;
-            isAnimating = true;
-            const startY = panY;
-            const distance = targetY - startY;
-            let startTime = null;
-
-            function animationStep(timestamp) {
-                if (!isAnimating) return; // Allow interruption
-                if (!startTime) startTime = timestamp;
-                const progress = timestamp - startTime;
-                const percentage = Math.min(progress / duration, 1);
-                const ease = 0.5 - 0.5 * Math.cos(percentage * Math.PI); // Ease-in-out
-
-                panY = startY + distance * ease;
-                applyTransform();
-                scheduleUIUpdate();
-
-                if (progress < duration) {
-                    requestAnimationFrame(animationStep);
-                } else {
-                    panY = targetY; // Ensure it ends perfectly
+                    panY = startY + distance * ease;
                     applyTransform();
                     scheduleUIUpdate();
-                    isAnimating = false;
-                }
-            }
-            requestAnimationFrame(animationStep);
-        }
 
-        // This is the core of the new engine. It runs all UI updates based on visual state.
-        function updateUI() {
-            const containerRect = ui.container.getBoundingClientRect();
-            let mostVisiblePageIndex = 0;
-            let maxVisibleHeight = 0;
-
-            for (let i = 0; i < pageContainers.length; i++) {
-                const page = pageContainers[i];
-                const pageRect = page.getBoundingClientRect();
-                const isVisible = pageRect.bottom > containerRect.top && pageRect.top < containerRect.bottom;
-
-                if (isVisible) {
-                    const pageNum = i + 1;
-                    queueRender(pageNum);
-                    queueRender(pageNum - 1);
-                    queueRender(pageNum + 1);
-
-                    const visibleHeight = Math.min(pageRect.bottom, containerRect.bottom) - Math.max(pageRect.top, containerRect.top);
-                    if (visibleHeight > maxVisibleHeight) {
-                        maxVisibleHeight = visibleHeight;
-                        mostVisiblePageIndex = i;
+                    if (progress < duration) {
+                        requestAnimationFrame(animationStep);
+                    } else {
+                        panY = targetY; // Ensure it ends perfectly
+                        applyTransform();
+                        scheduleUIUpdate();
+                        isAnimating = false;
                     }
                 }
+                requestAnimationFrame(animationStep);
             }
-            ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
-        }
 
-        function scheduleUIUpdate() {
-            if (uiUpdateTimeout) clearTimeout(uiUpdateTimeout);
-            uiUpdateTimeout = setTimeout(updateUI, 50);
-        }
+            // This is the core of the new engine. It runs all UI updates based on visual state.
+            function updateUI() {
+                const containerRect = ui.container.getBoundingClientRect();
+                let mostVisiblePageIndex = 0;
+                let maxVisibleHeight = 0;
 
-        // --- EVENT LISTENERS ---
-        ui.resetZoomBtn.addEventListener('click', () => {
-            isAnimating = false; // Stop any running animation
+                for (let i = 0; i < pageContainers.length; i++) {
+                    const page = pageContainers[i];
+                    const pageRect = page.getBoundingClientRect();
+                    const isVisible = pageRect.bottom > containerRect.top && pageRect.top < containerRect.bottom;
 
-            const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
-            const targetPage = pageContainers[currentPageIndex];
-            
-            // Calculate the required pan to keep the top of the current page in view after reset.
-            // offsetTop gives the static layout position, which is what we need when scale is 1.
-            const newPanY = -targetPage.offsetTop;
+                    if (isVisible) {
+                        const pageNum = i + 1;
+                        queueRender(pageNum);
+                        queueRender(pageNum - 1);
+                        queueRender(pageNum + 1);
 
-            scale = 1;
-            panX = 0;
-            panY = newPanY;
-            
-            applyTransform();
-            scheduleUIUpdate();
-        });
-
-        ui.container.addEventListener('wheel', e => {
-            isAnimating = false; // Stop animation on user input
-            e.preventDefault();
-            if (e.ctrlKey) { // Handle Zoom
-                const zoomAmount = e.deltaY * -0.005;
-                const newScale = Math.max(minScale, Math.min(scale + zoomAmount, maxScale));
-                if (newScale === scale) return;
-
-                const rect = ui.container.getBoundingClientRect();
-                const computedStyle = getComputedStyle(ui.container);
-                const paddingTop = parseFloat(computedStyle.paddingTop);
-                const paddingLeft = parseFloat(computedStyle.paddingLeft);
-                const mouseX = e.clientX - rect.left - paddingLeft;
-                const mouseY = e.clientY - rect.top - paddingTop;
-
-                panX = mouseX - (mouseX - panX) * (newScale / scale);
-                panY = mouseY - (mouseY - panY) * (newScale / scale);
-                scale = newScale;
-            } else { // Handle Pan
-                panX -= e.deltaX;
-                panY -= e.deltaY;
+                        const visibleHeight = Math.min(pageRect.bottom, containerRect.bottom) - Math.max(pageRect.top, containerRect.top);
+                        if (visibleHeight > maxVisibleHeight) {
+                            maxVisibleHeight = visibleHeight;
+                            mostVisiblePageIndex = i;
+                        }
+                    }
+                }
+                ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
             }
-            applyTransform();
-            scheduleUIUpdate();
-        }, { passive: false });
 
-        ui.container.addEventListener('mousedown', e => {
-            isAnimating = false; // Stop animation on user input
-            e.preventDefault();
-            isPanning = true;
-            panStart.x = e.clientX - panX;
-            panStart.y = e.clientY - panY;
-            ui.zoomWrapper.style.cursor = 'grabbing';
-        });
+            function scheduleUIUpdate() {
+                if (uiUpdateTimeout) clearTimeout(uiUpdateTimeout);
+                uiUpdateTimeout = setTimeout(updateUI, 50);
+            }
 
-        ui.container.addEventListener('mouseup', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
-        ui.container.addEventListener('mouseleave', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
+            // --- EVENT LISTENERS ---
+            ui.previewToggle.addEventListener('change', (e) => {
+                linkPreviewEnabled = e.target.checked;
+            });
 
-        ui.container.addEventListener('mousemove', e => {
-            if (isPanning) {
-                panX = e.clientX - panStart.x;
-                panY = e.clientY - panStart.y;
+            ui.resetZoomBtn.addEventListener('click', () => {
+                isAnimating = false; // Stop any running animation
+
+                const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
+                const targetPage = pageContainers[currentPageIndex];
+                
+                // Calculate the required pan to keep the top of the current page in view after reset.
+                // offsetTop gives the static layout position, which is what we need when scale is 1.
+                const newPanY = -targetPage.offsetTop;
+
+                scale = 1;
+                panX = 0;
+                panY = newPanY;
+                
                 applyTransform();
                 scheduleUIUpdate();
-            }
-        });
+            });
 
-        document.addEventListener('keydown', e => {
-            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' || isAnimating) return;
+            ui.container.addEventListener('wheel', e => {
+                isAnimating = false; // Stop animation on user input
+                e.preventDefault();
+                if (e.ctrlKey) { // Handle Zoom
+                    const zoomAmount = e.deltaY * -0.005;
+                    const newScale = Math.max(minScale, Math.min(scale + zoomAmount, maxScale));
+                    if (newScale === scale) return;
 
-            const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
-            let targetIndex = currentPageIndex;
+                    const rect = ui.container.getBoundingClientRect();
+                    const computedStyle = getComputedStyle(ui.container);
+                    const paddingTop = parseFloat(computedStyle.paddingTop);
+                    const paddingLeft = parseFloat(computedStyle.paddingLeft);
+                    const mouseX = e.clientX - rect.left - paddingLeft;
+                    const mouseY = e.clientY - rect.top - paddingTop;
 
-            if (e.key === 'ArrowLeft') {
-                targetIndex = Math.max(0, currentPageIndex - 1);
-            } else {
-                targetIndex = Math.min(pageContainers.length - 1, currentPageIndex + 1);
-            }
+                    panX = mouseX - (mouseX - panX) * (newScale / scale);
+                    panY = mouseY - (mouseY - panY) * (newScale / scale);
+                    scale = newScale;
+                } else { // Handle Pan
+                    panX -= e.deltaX;
+                    panY -= e.deltaY;
+                }
+                applyTransform();
+                scheduleUIUpdate();
+            }, { passive: false });
 
-            if (targetIndex !== currentPageIndex) {
-                const targetPage = pageContainers[targetIndex];
-                const targetRect = targetPage.getBoundingClientRect();
-                const containerRect = ui.container.getBoundingClientRect();
-                const panCorrection = (containerRect.top - targetRect.top) / scale;
+            ui.container.addEventListener('mousedown', e => {
+                isAnimating = false; // Stop animation on user input
+                e.preventDefault();
+                isPanning = true;
+                panStart.x = e.clientX - panX;
+                panStart.y = e.clientY - panY;
+                ui.zoomWrapper.style.cursor = 'grabbing';
+            });
+
+            ui.container.addEventListener('mouseup', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
+            ui.container.addEventListener('mouseleave', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
+
+            ui.container.addEventListener('mousemove', e => {
+                if (isPanning) {
+                    panX = e.clientX - panStart.x;
+                    panY = e.clientY - panStart.y;
+                    applyTransform();
+                    scheduleUIUpdate();
+                }
+            });
+
+            document.addEventListener('keydown', e => {
+                if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' || isAnimating) return;
+
+                const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
+                let targetIndex = currentPageIndex;
+
+                if (e.key === 'ArrowLeft') {
+                    targetIndex = Math.max(0, currentPageIndex - 1);
+                } else {
+                    targetIndex = Math.min(pageContainers.length - 1, currentPageIndex + 1);
+                }
+
+                if (targetIndex !== currentPageIndex) {
+                    const targetPage = pageContainers[targetIndex];
+                    const targetRect = targetPage.getBoundingClientRect();
+                    const containerRect = ui.container.getBoundingClientRect();
+                    const panCorrection = (containerRect.top - targetRect.top) / scale;
+                    
+                    animatePan(panY + panCorrection);
+                }
+            });
+
+            pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
+                pdfDoc = pdfDoc_;
+                ui.pageCountSpan.textContent = pdfDoc.numPages;
+                return pdfDoc.getPage(1);
+            }).then(page => {
+                const devicePixelRatio = window.devicePixelRatio || 1;
+                const qualityFactor = 2;
+                const containerWidth = ui.container.clientWidth - 30;
+                const unscaledViewport = page.getViewport({ scale: 1 });
+                const scale = containerWidth / unscaledViewport.width;
+                const viewport = page.getViewport({ scale: scale * devicePixelRatio * qualityFactor });
+                const placeholderHeight = viewport.height / (devicePixelRatio * qualityFactor);
+
+                setupViewer(pdfDoc.numPages, placeholderHeight);
+
+                ui.loader.classList.add('hidden');
+                ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
+                ui.downloadBtn.removeAttribute('aria-disabled');
                 
-                animatePan(panY + panCorrection);
-            }
-        });
-
-        pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
-            pdfDoc = pdfDoc_;
-            ui.pageCountSpan.textContent = pdfDoc.numPages;
-            return pdfDoc.getPage(1);
-        }).then(page => {
-            const devicePixelRatio = window.devicePixelRatio || 1;
-            const qualityFactor = 2;
-            const containerWidth = ui.container.clientWidth - 30;
-            const unscaledViewport = page.getViewport({ scale: 1 });
-            const scale = containerWidth / unscaledViewport.width;
-            const viewport = page.getViewport({ scale: scale * devicePixelRatio * qualityFactor });
-            const placeholderHeight = viewport.height / (devicePixelRatio * qualityFactor);
-
-            setupViewer(pdfDoc.numPages, placeholderHeight);
-
-            ui.loader.classList.add('hidden');
-            ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
-            ui.downloadBtn.removeAttribute('aria-disabled');
-            
-            // Initial Render
-            updateUI();
-        }).catch(err => {
-            ui.loader.classList.add('hidden');
-            ui.errorMessage.classList.remove('hidden');
-            console.error("Error loading PDF:", err);
+                // Initial Render
+                updateUI();
+            }).catch(err => {
+                ui.loader.classList.add('hidden');
+                ui.errorMessage.classList.remove('hidden');
+                console.error("Error loading PDF:", err);
+            });
         });
     </script>
 </body>

@@ -89,6 +89,223 @@
                     <!-- Page Indicator -->
                     <div class="text-center font-medium">
                         <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
+                    </div>
+
+                    <!-- Reset Zoom Button -->
+                    <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2 border-l border-slate-300 dark:border-slate-600 pl-4 ml-4">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
+                        <span class="hidden sm:inline">Reset</span>
+                    </button>
+
+                    <!-- Download Button -->
+                    <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">Download</span>
+                    </a>
+
+                    <!-- Link Preview Toggle -->
+                    <label for="preview-toggle" class="flex items-center cursor-pointer space-x-1.5 pl-4 ml-4 border-l border-slate-300 dark:border-slate-600">
+                        <span class="hidden sm:inline text-sm text-slate-700 dark:text-slate-200 font-semibold">Link Preview</span>
+                        <div class="relative">
+                            <input type="checkbox" id="preview-toggle" class="sr-only">
+                            <div class="block bg-gray-600 w-8 h-4 sm:w-10 sm:h-5 rounded-full"></div>
+                            <div class="dot absolute left-1 top-0.5 bg-white w-3 h-3 sm:w-4 sm:h-4 rounded-full transition"></div>
+                        </div>
+                    </label>
+                </div>
+            </header>
+
+            <!-- PDF Canvas Container -->
+            <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
+                <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
+                <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
+                <div id="zoom-wrapper">
+                    <div id="viewer-content" class="w-full"></div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Link Preview Popup -->
+    <div id="preview-popup" class="hidden fixed bg-white border border-slate-300 shadow-lg rounded-md p-2 z-50 w-64 h-48 pointer-events-none">
+        <img src="" alt="Link Preview" class="w-full h-full object-cover">
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
+
+        const url = './DiegoNMarcos_CurriculumVitae_en.pdf';
+        let pdfDoc = null;
+        // const scale = 1.75; // No longer needed, will be dynamic
+        let pageRenderQueue = new Set();
+        let isRendering = false;
+        let pageContainers = [];
+
+            const ui = {
+                loader: document.getElementById('loader'),
+                errorMessage: document.getElementById('error-message'),
+                container: document.getElementById('pdf-container'),
+                viewerContent: document.getElementById('viewer-content'),
+                zoomWrapper: document.getElementById('zoom-wrapper'),
+                downloadBtn: document.getElementById('download-btn'),
+                resetZoomBtn: document.getElementById('reset-zoom-btn'),
+                previewToggle: document.getElementById('preview-toggle'),
+                previewPopup: document.getElementById('preview-popup'),
+                pageNumSpan: document.getElementById('page-num'),
+                pageCountSpan: document.getElementById('page-count')
+            };
+
+            let linkPreviewEnabled = false;
+
+            const renderPage = async (pageNum) => {
+                const page = await pdfDoc.getPage(pageNum);
+                const devicePixelRatio = window.devicePixelRatio || 1;
+                const qualityFactor = 2;
+
+                const containerWidth = ui.container.clientWidth - 30;
+                const unscaledViewport = page.getViewport({ scale: 1 });
+                const cssScale = containerWidth / unscaledViewport.width;
+
+                // Viewport for the high-res canvas
+                const canvasViewport = page.getViewport({ scale: cssScale * devicePixelRatio * qualityFactor });
+                // Viewport for the CSS-pixel-based link layer
+                const displayViewport = page.getViewport({ scale: cssScale });
+
+                const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+                if (!container) return;
+
+                const canvas = container.querySelector('canvas');
+                const ctx = canvas.getContext('2d');
+
+                canvas.height = canvasViewport.height;
+                canvas.width = canvasViewport.width;
+                canvas.style.width = `${displayViewport.width}px`;
+                canvas.style.height = `${displayViewport.height}px`;
+
+                await page.render({ canvasContext: ctx, viewport: canvasViewport }).promise;
+                container.dataset.rendered = "true";
+
+                // --- LINK LAYER ---
+                const oldLinkLayer = container.querySelector('.link-layer');
+                if (oldLinkLayer) oldLinkLayer.remove();
+
+                const linkLayer = document.createElement('div');
+                linkLayer.className = 'link-layer';
+                linkLayer.style.width = `${displayViewport.width}px`;
+                linkLayer.style.height = `${displayViewport.height}px`;
+                container.appendChild(linkLayer);
+
+                const annotations = await page.getAnnotations();
+                annotations
+                    .filter(a => a.subtype === 'Link' && a.url)
+                    .forEach(a => {
+                        const [left, bottom, right, top] = a.rect;
+                        const linkElement = document.createElement('a');
+                        linkElement.href = a.url;
+                        linkElement.target = '_blank';
+                        linkElement.title = a.url;
+
+                        linkElement.style.left = `${left * cssScale}px`;
+                        linkElement.style.top = `${displayViewport.height - top * cssScale}px`;
+                        linkElement.style.width = `${(right - left) * cssScale}px`;
+                        linkElement.style.height = `${(top - bottom) * cssScale}px`;
+
+                        // Add preview events
+                        linkElement.addEventListener('mouseenter', (e) => {
+                            if (!linkPreviewEnabled) return;
+                            const previewImg = ui.previewPopup.querySelector('img');
+                            // Use a free screenshot service
+                            previewImg.src = `https://s.wordpress.com/mshots/v1/${encodeURIComponent(a.url)}?w=256`;
+                            ui.previewPopup.style.left = `${e.pageX + 15}px`;
+                            ui.previewPopup.style.top = `${e.pageY + 15}px`;
+                            ui.previewPopup.classList.remove('hidden');
+                        });
+
+                        linkElement.addEventListener('mouseleave', () => {
+                            if (!linkPreviewEnabled) return;
+                            ui.previewPopup.classList.add('hidden');
+                        });
+
+                        linkLayer.appendChild(linkElement);
+                    });
+            };
+
+            const processQueue = async () => {
+                if (isRendering || pageRenderQueue.size === 0) return;
+                isRendering = true;
+                const pageNum = pageRenderQueue.values().next().value;
+                pageRenderQueue.delete(pageNum);
+                await renderPage(pageNum);
+                isRendering = false;
+                processQueue();
+            };
+
+            const queueRender = (pageNum) => {
+                if (pageNum < 1 || pageNum > pdfDoc.numPages) return;
+                const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
+                if (container && container.dataset.rendered !== "true") {
+                    pageRenderQueue.add(pageNum);
+                    processQueue();
+                }
+            };
+
+            const setupViewer = (numPages, placeholderHeight) => {
+                ui.viewerContent.innerHTML = '';
+                pageContainers = [];
+                for (let i = 1; i <= numPages; i++) {
+                    const pageContainer = document.createElement('div');
+                    pageContainer.className = 'page-container';
+                    pageContainer.dataset.pageNumber = i;
+                    pageContainer.style.minHeight = `${placeholderHeight}px`; // Set placeholder height
+                    pageContainer.innerHTML = `<canvas></canvas>`;
+                    ui.viewerContent.appendChild(pageContainer);
+                    pageContainers.push(pageContainer);
+                }
+            };
+
+            // --- UNIFIED INTERACTION ENGINE ---
+
+            // --- STATE & CORE FUNCTIONS ---
+            let scale = 1;
+            let panX = 0;
+            let panY = 0;
+            let isPanning = false;
+            let isAnimating = false; // For smooth page transition
+            let panStart = { x: 0, y: 0 };
+            const minScale = 1;
+            const maxScale = 4;
+            let uiUpdateTimeout;
+
+            function applyTransform() {
+                ui.zoomWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+            }
+
+            function animatePan(targetY, duration = 300) {
+                if (isAnimating) return;
+                isAnimating = true;
+                const startY = panY;
+                const distance = targetY - startY;
+                let startTime = null;
+
+                function animationStep(timestamp) {
+                    if (!isAnimating) return; // Allow interruption
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const percentage = Math.min(progress / duration, 1);
+                    const ease = 0.5 - 0.5 * Math.cos(percentage * Math.PI); // Ease-in-out
+
+                    panY = startY + distance * ease;
+                    applyTransform();
+                    scheduleUIUpdate();
+
+                    if (progress < duration) {
+                        requestAnimationFrame(animationStep);
+                    } else {
+                        panY = targetY; // Ensure it ends perfectly
+                        applyTransform();
+                        scheduleUIUpdate();
+                        isAnimating = false;
                     }
                 }
                 requestAnimationFrame(animationStep);
@@ -252,5 +469,3 @@
     </script>
 </body>
 </html>
-
-

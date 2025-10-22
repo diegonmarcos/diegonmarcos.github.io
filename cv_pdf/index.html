@@ -22,8 +22,11 @@
         /* Make the main container scrollable with a fixed height */
         #pdf-container {
             height: calc(100vh - 100px); /* Adjust height based on header/footer */
-            overflow-y: scroll;
-            overflow-x: auto; /* Allow horizontal panning when zoomed */
+            overflow: hidden; /* We handle panning manually, so hide default scrollbars */
+        }
+        #zoom-wrapper {
+            transform-origin: 0 0;
+            cursor: grab;
         }
         .page-container {
             margin-bottom: 1rem;
@@ -51,8 +54,14 @@
                     <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
                 </div>
 
+                <!-- Reset Zoom Button -->
+                <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2 border-l border-slate-300 dark:border-slate-600 pl-4 ml-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
+                    <span class="hidden sm:inline">Reset</span>
+                </button>
+
                 <!-- Download Button -->
-                <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed border-l border-slate-300 dark:border-slate-600 pl-4 ml-4" aria-disabled="true">
+                <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                     <span class="hidden sm:inline">Download</span>
                 </a>
@@ -86,6 +95,7 @@
             viewerContent: document.getElementById('viewer-content'),
             zoomWrapper: document.getElementById('zoom-wrapper'), // The new wrapper for zooming
             downloadBtn: document.getElementById('download-btn'),
+            resetZoomBtn: document.getElementById('reset-zoom-btn'), // The new reset button
             pageNumSpan: document.getElementById('page-num'),
             pageCountSpan: document.getElementById('page-count')
         };
@@ -186,35 +196,115 @@
 
         ui.container.addEventListener('scroll', handleScroll);
 
-        // --- PINCH TO ZOOM (Desktop Trackpad) ---
+        // --- MAP-STYLE PINCH-ZOOM AND DRAG-PAN ---
         let scale = 1;
-        const minScale = 1; // Start at 100%
-        const maxScale = 4; // Allow up to 400% zoom
-        
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let panStart = { x: 0, y: 0 };
+
+        const minScale = 1;
+        const maxScale = 4;
+
+        function applyTransform() {
+            ui.zoomWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+        }
+
+        ui.resetZoomBtn.addEventListener('click', () => {
+            scale = minScale;
+            panX = 0;
+            panY = 0;
+            applyTransform();
+        });
+
         ui.container.addEventListener('wheel', e => {
-            // ctrlKey is the browser's signal for a pinch gesture on trackpad
-            if (e.ctrlKey) {
-                e.preventDefault();
+            e.preventDefault(); // Prevent default for both zoom and scroll-pan
 
-                // Determine the direction and amount of zoom
-                const zoomAmount = e.deltaY * -0.01;
-                const zoom = 1 + zoomAmount;
+            if (e.ctrlKey) { // Handle Zoom
+                const zoomAmount = e.deltaY * -0.005;
+                const newScale = Math.max(minScale, Math.min(scale + zoomAmount, maxScale));
+                
+                if (newScale === scale) return;
 
-                // Get cursor position relative to the viewer
-                const rect = ui.zoomWrapper.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+                const rect = ui.container.getBoundingClientRect();
+                // Get padding to correct mouse position relative to the zoom wrapper
+                const computedStyle = getComputedStyle(ui.container);
+                const paddingTop = parseFloat(computedStyle.paddingTop);
+                const paddingLeft = parseFloat(computedStyle.paddingLeft);
 
-                // Set the origin for the zoom to the cursor's position
-                ui.zoomWrapper.style.transformOrigin = `${x}px ${y}px`;
+                const mouseX = e.clientX - rect.left - paddingLeft;
+                const mouseY = e.clientY - rect.top - paddingTop;
 
-                // Update and clamp the scale
-                scale = Math.max(minScale, Math.min(scale * zoom, maxScale));
+                // Adjust pan to keep the point under the mouse stationary
+                panX = mouseX - (mouseX - panX) * (newScale / scale);
+                panY = mouseY - (mouseY - panY) * (newScale / scale);
+                scale = newScale;
 
-                // Apply the CSS transform
-                ui.zoomWrapper.style.transform = `scale(${scale})`;
+            } else { // Handle Pan with two-finger scroll
+                panX -= e.deltaX;
+                panY -= e.deltaY;
             }
-        }, { passive: false }); // 'passive: false' is required to allow preventDefault
+
+            applyTransform();
+        }, { passive: false });
+
+        ui.container.addEventListener('mousedown', e => {
+            e.preventDefault();
+            isPanning = true;
+            panStart.x = e.clientX - panX;
+            panStart.y = e.clientY - panY;
+            ui.zoomWrapper.style.cursor = 'grabbing';
+        });
+
+        ui.container.addEventListener('mouseup', () => {
+            isPanning = false;
+            ui.zoomWrapper.style.cursor = 'grab';
+        });
+        
+        ui.container.addEventListener('mouseleave', () => {
+            isPanning = false;
+            ui.zoomWrapper.style.cursor = 'grab';
+        });
+
+        ui.container.addEventListener('mousemove', e => {
+            if (isPanning) {
+                panX = e.clientX - panStart.x;
+                panY = e.clientY - panStart.y;
+                applyTransform();
+            }
+        });
+
+        // --- ARROW KEY PAGE NAVIGATION ---
+        document.addEventListener('keydown', e => {
+            if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+
+            const containerRect = ui.container.getBoundingClientRect();
+            let currentPageIndex = -1;
+
+            // Find what page is currently most visible
+            for (let i = 0; i < pageContainers.length; i++) {
+                const pageRect = pageContainers[i].getBoundingClientRect();
+                if (pageRect.top >= containerRect.top && pageRect.bottom <= containerRect.bottom) {
+                    currentPageIndex = i;
+                    break;
+                }
+            }
+            // Fallback if no page is fully visible
+            if (currentPageIndex === -1) {
+                 currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
+            }
+
+            let targetIndex = currentPageIndex;
+            if (e.key === 'ArrowLeft') {
+                targetIndex = Math.max(0, currentPageIndex - 1);
+            } else if (e.key === 'ArrowRight') {
+                targetIndex = Math.min(pageContainers.length - 1, currentPageIndex + 1);
+            }
+
+            if (targetIndex !== currentPageIndex) {
+                pageContainers[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
 
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;

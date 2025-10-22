@@ -161,94 +161,86 @@
             }
         };
 
-        // --- STABLE PAGE COUNT AND LAZY LOAD ---
-        let scrollTimeout;
-        const handleScroll = () => {
-            if (scrollTimeout) clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                const containerRect = ui.container.getBoundingClientRect();
-                let mostVisiblePageIndex = 0;
-                let maxVisibleHeight = 0;
+        // --- UNIFIED INTERACTION ENGINE ---
 
-                for (let i = 0; i < pageContainers.length; i++) {
-                    const page = pageContainers[i];
-                    const pageRect = page.getBoundingClientRect();
-
-                    // Check if the page is inside the visible area of the container
-                    const visible = pageRect.bottom > containerRect.top && pageRect.top < containerRect.bottom;
-
-                    if (visible) {
-                        // Queue this page and its neighbors for rendering
-                        const pageNum = i + 1;
-                        queueRender(pageNum);
-                        queueRender(pageNum - 1);
-                        queueRender(pageNum + 1);
-
-                        // Determine which page is the "current" one by finding the one with the most visible area
-                        const visibleHeight = Math.min(pageRect.bottom, containerRect.bottom) - Math.max(pageRect.top, containerRect.top);
-                        if (visibleHeight > maxVisibleHeight) {
-                            maxVisibleHeight = visibleHeight;
-                            mostVisiblePageIndex = i;
-                        }
-                    }
-                }
-                // Update the page number display
-                ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
-            }, 50); // Reduced timeout for more responsive feel
-        };
-
-        ui.container.addEventListener('scroll', handleScroll);
-
-        // --- MAP-STYLE PINCH-ZOOM AND DRAG-PAN ---
+        // --- STATE & CORE FUNCTIONS ---
         let scale = 1;
         let panX = 0;
         let panY = 0;
         let isPanning = false;
         let panStart = { x: 0, y: 0 };
-
         const minScale = 1;
         const maxScale = 4;
+        let uiUpdateTimeout;
 
         function applyTransform() {
             ui.zoomWrapper.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
         }
 
+        // This is the core of the new engine. It runs all UI updates based on visual state.
+        function updateUI() {
+            const containerRect = ui.container.getBoundingClientRect();
+            let mostVisiblePageIndex = 0;
+            let maxVisibleHeight = 0;
+
+            for (let i = 0; i < pageContainers.length; i++) {
+                const page = pageContainers[i];
+                const pageRect = page.getBoundingClientRect();
+                const isVisible = pageRect.bottom > containerRect.top && pageRect.top < containerRect.bottom;
+
+                if (isVisible) {
+                    const pageNum = i + 1;
+                    queueRender(pageNum);
+                    queueRender(pageNum - 1);
+                    queueRender(pageNum + 1);
+
+                    const visibleHeight = Math.min(pageRect.bottom, containerRect.bottom) - Math.max(pageRect.top, containerRect.top);
+                    if (visibleHeight > maxVisibleHeight) {
+                        maxVisibleHeight = visibleHeight;
+                        mostVisiblePageIndex = i;
+                    }
+                }
+            }
+            ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
+        }
+
+        function scheduleUIUpdate() {
+            if (uiUpdateTimeout) clearTimeout(uiUpdateTimeout);
+            uiUpdateTimeout = setTimeout(updateUI, 50);
+        }
+
+        // --- EVENT LISTENERS ---
         ui.resetZoomBtn.addEventListener('click', () => {
-            scale = minScale;
+            scale = 1;
             panX = 0;
             panY = 0;
             applyTransform();
+            scheduleUIUpdate();
         });
 
         ui.container.addEventListener('wheel', e => {
-            e.preventDefault(); // Prevent default for both zoom and scroll-pan
-
+            e.preventDefault();
             if (e.ctrlKey) { // Handle Zoom
                 const zoomAmount = e.deltaY * -0.005;
                 const newScale = Math.max(minScale, Math.min(scale + zoomAmount, maxScale));
-                
                 if (newScale === scale) return;
 
                 const rect = ui.container.getBoundingClientRect();
-                // Get padding to correct mouse position relative to the zoom wrapper
                 const computedStyle = getComputedStyle(ui.container);
                 const paddingTop = parseFloat(computedStyle.paddingTop);
                 const paddingLeft = parseFloat(computedStyle.paddingLeft);
-
                 const mouseX = e.clientX - rect.left - paddingLeft;
                 const mouseY = e.clientY - rect.top - paddingTop;
 
-                // Adjust pan to keep the point under the mouse stationary
                 panX = mouseX - (mouseX - panX) * (newScale / scale);
                 panY = mouseY - (mouseY - panY) * (newScale / scale);
                 scale = newScale;
-
-            } else { // Handle Pan with two-finger scroll
+            } else { // Handle Pan
                 panX -= e.deltaX;
                 panY -= e.deltaY;
             }
-
             applyTransform();
+            scheduleUIUpdate();
         }, { passive: false });
 
         ui.container.addEventListener('mousedown', e => {
@@ -259,60 +251,47 @@
             ui.zoomWrapper.style.cursor = 'grabbing';
         });
 
-        ui.container.addEventListener('mouseup', () => {
-            isPanning = false;
-            ui.zoomWrapper.style.cursor = 'grab';
-        });
-        
-        ui.container.addEventListener('mouseleave', () => {
-            isPanning = false;
-            ui.zoomWrapper.style.cursor = 'grab';
-        });
+        ui.container.addEventListener('mouseup', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
+        ui.container.addEventListener('mouseleave', () => { isPanning = false; ui.zoomWrapper.style.cursor = 'grab'; });
 
         ui.container.addEventListener('mousemove', e => {
             if (isPanning) {
                 panX = e.clientX - panStart.x;
                 panY = e.clientY - panStart.y;
                 applyTransform();
+                scheduleUIUpdate();
             }
         });
 
-        // --- ARROW KEY PAGE NAVIGATION ---
         document.addEventListener('keydown', e => {
             if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
 
-            const containerRect = ui.container.getBoundingClientRect();
-            let currentPageIndex = -1;
-
-            // Find what page is currently most visible
-            for (let i = 0; i < pageContainers.length; i++) {
-                const pageRect = pageContainers[i].getBoundingClientRect();
-                if (pageRect.top >= containerRect.top && pageRect.bottom <= containerRect.bottom) {
-                    currentPageIndex = i;
-                    break;
-                }
-            }
-            // Fallback if no page is fully visible
-            if (currentPageIndex === -1) {
-                 currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
-            }
-
+            const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
             let targetIndex = currentPageIndex;
+
             if (e.key === 'ArrowLeft') {
                 targetIndex = Math.max(0, currentPageIndex - 1);
-            } else if (e.key === 'ArrowRight') {
+            } else {
                 targetIndex = Math.min(pageContainers.length - 1, currentPageIndex + 1);
             }
 
             if (targetIndex !== currentPageIndex) {
-                pageContainers[targetIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const targetPage = pageContainers[targetIndex];
+                const targetRect = targetPage.getBoundingClientRect();
+                const containerRect = ui.container.getBoundingClientRect();
+                
+                // Calculate how much to pan to bring the top of the target page to the top of the container
+                const panCorrection = (containerRect.top - targetRect.top) / scale;
+                panY += panCorrection;
+                
+                applyTransform();
+                scheduleUIUpdate();
             }
         });
 
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             ui.pageCountSpan.textContent = pdfDoc.numPages;
-            // Get the first page to calculate a placeholder height for all pages
             return pdfDoc.getPage(1);
         }).then(page => {
             const devicePixelRatio = window.devicePixelRatio || 1;
@@ -328,8 +307,9 @@
             ui.loader.classList.add('hidden');
             ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             ui.downloadBtn.removeAttribute('aria-disabled');
-            // Initial render
-            handleScroll();
+            
+            // Initial Render
+            updateUI();
         }).catch(err => {
             ui.loader.classList.add('hidden');
             ui.errorMessage.classList.remove('hidden');

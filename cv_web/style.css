@@ -311,3 +311,28 @@ a:hover {
     white-space: pre-wrap;
     word-break: break-word;
 }
+
+/* Linktree Specific List Styles */
+.linktree-container ul li::before {
+    content: none; /* Remove bullet points */
+}
+.linktree-container ul li {
+    padding-left: 0.5em; /* Adjust indentation */
+    text-indent: 0;
+}
+.linktree-container .nested-list,
+.linktree-container .nested-list-items {
+    padding-left: 1.5em; /* Adjust nested indentation */
+}
+.linktree-container h5 {
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+.linktree-container h5 + ul {
+    margin-top: 0;
+}
+/* Style for li elements that act as headers */
+.linktree-container li:has(ul) {
+    color: var(--color-accent-purple);
+    font-weight: bold;
+}

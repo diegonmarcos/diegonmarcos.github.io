@@ -141,6 +141,7 @@ body {
 }
 
 .cta-button {
+    position: relative;
     display: block;
     background-color: var(--brand-purple);
     color: white;
@@ -150,6 +151,14 @@ body {
     border-radius: 8px;
     transition: all 0.3s ease;
     margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.cta-button i {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .cta-button:hover {

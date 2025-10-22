@@ -84,6 +84,16 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         <span class="hidden sm:inline">Download</span>
                     </a>
+
+                    <!-- Link Preview Toggle -->
+                    <label for="preview-toggle" class="flex items-center cursor-pointer space-x-2 pl-4 ml-4 border-l border-slate-300 dark:border-slate-600">
+                        <span class="text-slate-700 dark:text-slate-200 font-semibold">Link Preview</span>
+                        <div class="relative">
+                            <input type="checkbox" id="preview-toggle" class="sr-only">
+                            <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
+                            <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                        </div>
+                    </label>
                 </div>
             </header>
 
@@ -96,19 +106,6 @@
                 </div>
             </main>
         </div>
-    </div>
-
-    <!-- Sidebar for Toggles -->
-    <div id="sidebar" class="bg-white dark:bg-slate-800 shadow-lg p-4 m-4 rounded-lg flex flex-col space-y-4 h-fit">
-        <h3 class="font-bold text-lg">Tools</h3>
-        <label for="preview-toggle" class="flex items-center justify-between cursor-pointer">
-            <span class="text-slate-700 dark:text-slate-200">Link Preview</span>
-            <div class="relative">
-                <input type="checkbox" id="preview-toggle" class="sr-only">
-                <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
-                <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
-            </div>
-        </label>
     </div>
 
     <!-- Link Preview Popup -->

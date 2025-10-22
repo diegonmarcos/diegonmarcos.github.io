@@ -24,4 +24,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const linkIcons = document.querySelectorAll('.link .icon');
+    const linkPreview = document.getElementById('link-preview');
+
+    if (window.innerWidth > 768) {
+        linkIcons.forEach(icon => {
+            icon.addEventListener('mouseover', (e) => {
+                const link = e.target.parentElement;
+                const previewUrl = link.getAttribute('data-preview');
+                if (previewUrl) {
+                    linkPreview.style.backgroundImage = `url(${previewUrl})`;
+                    linkPreview.style.display = 'block';
+                }
+            });
+
+            icon.addEventListener('mousemove', (e) => {
+                linkPreview.style.left = `${e.pageX + 10}px`;
+                linkPreview.style.top = `${e.pageY + 10}px`;
+            });
+
+            icon.addEventListener('mouseout', () => {
+                linkPreview.style.display = 'none';
+            });
+        });
+    }
 });

@@ -135,3 +135,21 @@ hr {
     border-radius: 10px;
     margin-top: 1rem;
 }
+
+#link-preview {
+    display: none;
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    z-index: 100;
+}
+
+@media (max-width: 768px) {
+    #link-preview {
+        display: none !important;
+    }
+}

@@ -23,6 +23,7 @@
         #pdf-container {
             height: calc(100vh - 100px); /* Adjust height based on header/footer */
             overflow-y: scroll;
+            overflow-x: auto; /* Allow horizontal panning when zoomed */
         }
         .page-container {
             margin-bottom: 1rem;
@@ -181,6 +182,36 @@
         };
 
         ui.container.addEventListener('scroll', handleScroll);
+
+        // --- PINCH TO ZOOM (Desktop Trackpad) ---
+        let scale = 1;
+        const minScale = 1; // Start at 100%
+        const maxScale = 4; // Allow up to 400% zoom
+        
+        ui.container.addEventListener('wheel', e => {
+            // ctrlKey is the browser's signal for a pinch gesture on trackpad
+            if (e.ctrlKey) {
+                e.preventDefault();
+
+                // Determine the direction and amount of zoom
+                const zoomAmount = e.deltaY * -0.01;
+                const zoom = 1 + zoomAmount;
+
+                // Get cursor position relative to the viewer
+                const rect = ui.viewerContent.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                // Set the origin for the zoom to the cursor's position
+                ui.viewerContent.style.transformOrigin = `${x}px ${y}px`;
+
+                // Update and clamp the scale
+                scale = Math.max(minScale, Math.min(scale * zoom, maxScale));
+
+                // Apply the CSS transform
+                ui.viewerContent.style.transform = `scale(${scale})`;
+            }
+        }, { passive: false }); // 'passive: false' is required to allow preventDefault
 
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;

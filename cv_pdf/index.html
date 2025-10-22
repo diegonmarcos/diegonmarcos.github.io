@@ -31,13 +31,24 @@
         .page-container {
             margin-bottom: 1rem;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            /* This container will hold our canvas */
-            background-color: #fff; /* Give it a background to see the shadow */
+            background-color: #fff;
+            position: relative; /* Needed for link overlay positioning */
         }
         .page-container canvas {
-            /* This is the key fix for centering */
             display: block;
             margin: 0 auto;
+        }
+        .link-layer {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .link-layer a {
+            position: absolute;
+            display: block;
+            cursor: pointer;
+            /* For debugging: outline: 1px solid red; */
         }
     </style>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -103,29 +114,58 @@
         const renderPage = async (pageNum) => {
             const page = await pdfDoc.getPage(pageNum);
             const devicePixelRatio = window.devicePixelRatio || 1;
-            const qualityFactor = 2; // Render at 2x resolution for sharpness
-            
-            // Calculate the scale required to fit the page to the container's width
-            const containerWidth = ui.container.clientWidth - 30; // Subtract some padding
-            const unscaledViewport = page.getViewport({ scale: 1 });
-            const scale = containerWidth / unscaledViewport.width;
+            const qualityFactor = 2;
 
-            const viewport = page.getViewport({ scale: scale * devicePixelRatio * qualityFactor });
+            const containerWidth = ui.container.clientWidth - 30;
+            const unscaledViewport = page.getViewport({ scale: 1 });
+            const cssScale = containerWidth / unscaledViewport.width;
+
+            // Viewport for the high-res canvas
+            const canvasViewport = page.getViewport({ scale: cssScale * devicePixelRatio * qualityFactor });
+            // Viewport for the CSS-pixel-based link layer
+            const displayViewport = page.getViewport({ scale: cssScale });
+
             const container = document.querySelector(`.page-container[data-page-number="${pageNum}"]`);
-            if (!container) return; 
+            if (!container) return;
 
             const canvas = container.querySelector('canvas');
             const ctx = canvas.getContext('2d');
-            
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-            // Scale canvas down with CSS for sharp rendering, preserving layout size
-            canvas.style.width = `${viewport.width / (devicePixelRatio * qualityFactor)}px`;
-            canvas.style.height = `${viewport.height / (devicePixelRatio * qualityFactor)}px`;
 
-            const renderContext = { canvasContext: ctx, viewport };
-            await page.render(renderContext).promise;
+            canvas.height = canvasViewport.height;
+            canvas.width = canvasViewport.width;
+            canvas.style.width = `${displayViewport.width}px`;
+            canvas.style.height = `${displayViewport.height}px`;
+
+            await page.render({ canvasContext: ctx, viewport: canvasViewport }).promise;
             container.dataset.rendered = "true";
+
+            // --- LINK LAYER ---
+            const oldLinkLayer = container.querySelector('.link-layer');
+            if (oldLinkLayer) oldLinkLayer.remove();
+
+            const linkLayer = document.createElement('div');
+            linkLayer.className = 'link-layer';
+            linkLayer.style.width = `${displayViewport.width}px`;
+            linkLayer.style.height = `${displayViewport.height}px`;
+            container.appendChild(linkLayer);
+
+            const annotations = await page.getAnnotations();
+            annotations
+                .filter(a => a.subtype === 'Link' && a.url)
+                .forEach(a => {
+                    const [left, bottom, right, top] = a.rect;
+                    const linkElement = document.createElement('a');
+                    linkElement.href = a.url;
+                    linkElement.target = '_blank';
+                    linkElement.title = a.url;
+
+                    linkElement.style.left = `${left * cssScale}px`;
+                    linkElement.style.top = `${displayViewport.height - top * cssScale}px`;
+                    linkElement.style.width = `${(right - left) * cssScale}px`;
+                    linkElement.style.height = `${(top - bottom) * cssScale}px`;
+
+                    linkLayer.appendChild(linkElement);
+                });
         };
 
         const processQueue = async () => {

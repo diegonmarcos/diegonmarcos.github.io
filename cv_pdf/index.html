@@ -147,13 +147,14 @@
             }
         };
 
-        const setupViewer = (numPages) => {
+        const setupViewer = (numPages, placeholderHeight) => {
             ui.viewerContent.innerHTML = '';
             pageContainers = [];
             for (let i = 1; i <= numPages; i++) {
                 const pageContainer = document.createElement('div');
                 pageContainer.className = 'page-container';
                 pageContainer.dataset.pageNumber = i;
+                pageContainer.style.minHeight = `${placeholderHeight}px`; // Set placeholder height
                 pageContainer.innerHTML = `<canvas></canvas>`;
                 ui.viewerContent.appendChild(pageContainer);
                 pageContainers.push(pageContainer);
@@ -165,33 +166,35 @@
         const handleScroll = () => {
             if (scrollTimeout) clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(() => {
-                let currentPage = 1;
-                const containerTop = ui.container.scrollTop;
-                const containerBottom = containerTop + ui.container.clientHeight;
+                const containerRect = ui.container.getBoundingClientRect();
+                let mostVisiblePageIndex = 0;
+                let maxVisibleHeight = 0;
 
                 for (let i = 0; i < pageContainers.length; i++) {
                     const page = pageContainers[i];
-                    const pageTop = page.offsetTop - ui.container.offsetTop;
-                    const pageBottom = pageTop + page.offsetHeight;
+                    const pageRect = page.getBoundingClientRect();
 
-                    // If the page is visible, queue it and its neighbors for rendering
-                    if (pageBottom > containerTop && pageTop < containerBottom) {
-                         const pageNum = i + 1;
-                         queueRender(pageNum);
-                         queueRender(pageNum - 1); // Pre-load previous
-                         queueRender(pageNum + 1); // Pre-load next
-                    }
+                    // Check if the page is inside the visible area of the container
+                    const visible = pageRect.bottom > containerRect.top && pageRect.top < containerRect.bottom;
 
-                    // Update current page number based on the one at the top of the viewport
-                    if (pageTop >= containerTop) {
-                        currentPage = i + 1;
-                        break;
-                    } else if (pageBottom > containerTop) {
-                         currentPage = i + 1;
+                    if (visible) {
+                        // Queue this page and its neighbors for rendering
+                        const pageNum = i + 1;
+                        queueRender(pageNum);
+                        queueRender(pageNum - 1);
+                        queueRender(pageNum + 1);
+
+                        // Determine which page is the "current" one by finding the one with the most visible area
+                        const visibleHeight = Math.min(pageRect.bottom, containerRect.bottom) - Math.max(pageRect.top, containerRect.top);
+                        if (visibleHeight > maxVisibleHeight) {
+                            maxVisibleHeight = visibleHeight;
+                            mostVisiblePageIndex = i;
+                        }
                     }
                 }
-                ui.pageNumSpan.textContent = currentPage;
-            }, 100);
+                // Update the page number display
+                ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
+            }, 50); // Reduced timeout for more responsive feel
         };
 
         ui.container.addEventListener('scroll', handleScroll);
@@ -309,7 +312,19 @@
         pdfjsLib.getDocument(url).promise.then(pdfDoc_ => {
             pdfDoc = pdfDoc_;
             ui.pageCountSpan.textContent = pdfDoc.numPages;
-            setupViewer(pdfDoc.numPages);
+            // Get the first page to calculate a placeholder height for all pages
+            return pdfDoc.getPage(1);
+        }).then(page => {
+            const devicePixelRatio = window.devicePixelRatio || 1;
+            const qualityFactor = 2;
+            const containerWidth = ui.container.clientWidth - 30;
+            const unscaledViewport = page.getViewport({ scale: 1 });
+            const scale = containerWidth / unscaledViewport.width;
+            const viewport = page.getViewport({ scale: scale * devicePixelRatio * qualityFactor });
+            const placeholderHeight = viewport.height / (devicePixelRatio * qualityFactor);
+
+            setupViewer(pdfDoc.numPages, placeholderHeight);
+
             ui.loader.classList.add('hidden');
             ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
             ui.downloadBtn.removeAttribute('aria-disabled');

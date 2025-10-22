@@ -54,6 +54,12 @@
         input:checked ~ .dot {
             transform: translateX(100%);
         }
+        /* Custom responsive dot position */
+        @media (max-width: 639px) {
+            input:checked ~ .dot {
+                transform: translateX(175%);
+            }
+        }
         input:checked ~ .block {
             background-color: #48bb78;
         }

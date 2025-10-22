@@ -1,0 +1,56 @@
+- [Home](README.md)
+- ____________
+- ALGO
+	- Backtracking
+- .
+- SYS
+	- Multithreading Orchestrating and Shell Implementation
+	- WebServer
+- .
+- GRAPHIC
+	- 2D/3D Games
+	- Wireframe Render and Bresenham's line algorithm
+- .
+- MYLIBC
+	- Memory Management
+	- IO
+	- Data Manipulation
+- .
+- TOOLS
+	- Unix
+	- Coding
+- ___
+- ___
+- TOOLS
+  - 42School
+  - Unix
+	- OS
+  	- Git and  Cloud
+  	- Docker
+  - Coding
+	- Editors
+	- Static Analysis
+	- Leaks Analysis
+	- Debuging
+	- Unit Testing
+	- Documentation
+- ____________
+- MYLIBC
+	- Memory
+	- Data
+		- Array
+		- Single Linked Lists
+		- Doubly Linked Lists
+		- Binary Trees
+	- IOPrinters
+		- GnL
+		- Printf
+- ____________
+- ALGO
+	- Push_Swap
+- ____________
+- SYS
+	- Pipex
+- ____________
+- GRAPHIC
+	- fdf (Fil de Fer)

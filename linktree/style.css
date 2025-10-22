@@ -4,10 +4,18 @@ body {
     color: #fff;
     margin: 0;
     padding: 0;
-    background-image: url('assets/video-frame-desktop-5594287cf199a85e1e4b512f7762e6ef.webp');
+}
+
+#background-video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
     background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
 }
 
 .container {

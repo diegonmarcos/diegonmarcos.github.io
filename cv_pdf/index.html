@@ -243,9 +243,18 @@
         // --- EVENT LISTENERS ---
         ui.resetZoomBtn.addEventListener('click', () => {
             isAnimating = false; // Stop any running animation
+
+            const currentPageIndex = parseInt(ui.pageNumSpan.textContent) - 1;
+            const targetPage = pageContainers[currentPageIndex];
+            
+            // Calculate the required pan to keep the top of the current page in view after reset.
+            // offsetTop gives the static layout position, which is what we need when scale is 1.
+            const newPanY = -targetPage.offsetTop;
+
             scale = 1;
             panX = 0;
-            panY = 0;
+            panY = newPanY;
+            
             applyTransform();
             scheduleUIUpdate();
         });

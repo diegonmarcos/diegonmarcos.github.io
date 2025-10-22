@@ -63,7 +63,9 @@
         <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
             <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
             <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
-            <div id="viewer-content" class="w-full"></div>
+            <div id="zoom-wrapper">
+                <div id="viewer-content" class="w-full"></div>
+            </div>
         </main>
     </div>
 
@@ -82,6 +84,7 @@
             errorMessage: document.getElementById('error-message'),
             container: document.getElementById('pdf-container'),
             viewerContent: document.getElementById('viewer-content'),
+            zoomWrapper: document.getElementById('zoom-wrapper'), // The new wrapper for zooming
             downloadBtn: document.getElementById('download-btn'),
             pageNumSpan: document.getElementById('page-num'),
             pageCountSpan: document.getElementById('page-count')
@@ -198,18 +201,18 @@
                 const zoom = 1 + zoomAmount;
 
                 // Get cursor position relative to the viewer
-                const rect = ui.viewerContent.getBoundingClientRect();
+                const rect = ui.zoomWrapper.getBoundingClientRect();
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
 
                 // Set the origin for the zoom to the cursor's position
-                ui.viewerContent.style.transformOrigin = `${x}px ${y}px`;
+                ui.zoomWrapper.style.transformOrigin = `${x}px ${y}px`;
 
                 // Update and clamp the scale
                 scale = Math.max(minScale, Math.min(scale * zoom, maxScale));
 
                 // Apply the CSS transform
-                ui.viewerContent.style.transform = `scale(${scale})`;
+                ui.zoomWrapper.style.transform = `scale(${scale})`;
             }
         }, { passive: false }); // 'passive: false' is required to allow preventDefault
 

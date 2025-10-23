@@ -1,35 +1,80 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Dynamically generate the side navigation
+    const sideNav = document.getElementById('side-nav');
+    const headings = document.querySelectorAll('main h2, main h3');
+    let currentLists = [document.createElement('ul')];
+    sideNav.appendChild(currentLists[0]);
+
+    headings.forEach(heading => {
+        const level = parseInt(heading.tagName.substring(1)) - 2; // h2 -> 0, h3 -> 1
+        
+        if (!heading.id) {
+            heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+        }
+
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `#${heading.id}`;
+        if (heading.textContent === 'Intro') {
+            link.textContent = heading.textContent.toUpperCase();
+        } else {
+            link.textContent = heading.textContent;
+        }
+        listItem.appendChild(link);
+
+        while (level >= currentLists.length) {
+            const newList = document.createElement('ul');
+            const lastItem = currentLists[currentLists.length - 1].lastChild;
+            if (lastItem) {
+                lastItem.appendChild(newList);
+                currentLists.push(newList);
+            } else {
+                currentLists[currentLists.length - 1].appendChild(newList);
+            }
+        }
+        currentLists.length = level + 1;
+
+        currentLists[level].appendChild(listItem);
+    });
+
+    // Add collapsible functionality to the generated nav
+    sideNav.querySelectorAll('li > a').forEach(link => {
+        const sublist = link.nextElementSibling;
+        if (sublist && sublist.tagName === 'UL') {
+            link.classList.add('collapsible-nav');
+            sublist.style.display = 'block'; // Start expanded
+
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                sublist.style.display = sublist.style.display === 'none' ? 'block' : 'none';
+                link.classList.toggle('open');
+            });
+        }
+    });
+
     // Select all elements that can act as a collapser
     const collapsers = document.querySelectorAll('.collapser');
 
     collapsers.forEach(collapser => {
-        // Find the next sibling element with class 'collapsible-content'
         const content = collapser.nextElementSibling;
         
-        // Ensure the element to collapse/expand exists and is correct
         if (!content || !content.classList.contains('collapsible-content')) {
-            // console.warn('Collapser found without a corresponding .collapsible-content sibling:', collapser);
-            return; // Skip if structure is incorrect
+            return;
         }
 
-        // Initialize state based on HTML class: 'open' by default for some, 'closed' for others
         if (collapser.classList.contains('open')) {
-            // Content starts open (CSS max-height is active)
+            // Content starts open
         } else {
-            // Content starts closed
             collapser.classList.add('closed');
-            content.classList.remove('open'); // Ensure CSS 'open' state is off
+            content.classList.remove('open');
         }
 
-        // Add the click event listener
         collapser.addEventListener('click', () => {
             if (content.classList.contains('open')) {
-                // CLOSE
                 content.classList.remove('open');
                 collapser.classList.remove('open');
                 collapser.classList.add('closed');
             } else {
-                // OPEN
                 content.classList.add('open');
                 collapser.classList.add('open');
                 collapser.classList.remove('closed');
@@ -39,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Side Navigation Toggle
     const navToggle = document.getElementById('nav-toggle');
-    const sideNav = document.getElementById('side-nav');
     const mainContent = document.getElementById('main-content');
 
     navToggle.addEventListener('click', () => {

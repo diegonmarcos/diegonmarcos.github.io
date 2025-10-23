@@ -24,6 +24,10 @@ body {
     font-size: 0.85rem;
 }
 
+p {
+    line-height: 1.2;
+}
+
 /* Full-Page Header */
 .header-container {
     min-height: 100vh;
@@ -356,10 +360,14 @@ a:hover {
     padding-top: 60px;
 }
 
+.side-nav ul li::before {
+    content: none;
+}
+
 .side-nav a {
-    padding: 8px 8px 8px 32px;
+    padding: 4px 8px 4px 32px;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1.4em;
     color: #818181;
     display: block;
     transition: 0.3s;
@@ -393,4 +401,18 @@ a:hover {
 
 #main-content.nav-open {
     margin-left: 250px;
+}
+
+.side-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side-nav ul ul {
+    padding-left: 10px;
+}
+
+.side-nav ul ul a {
+    font-size: 1.0em;
 }

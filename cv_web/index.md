@@ -77,6 +77,257 @@ section ....
 ```
 
 ## ---------------------------------------------
+## PORTFOLIO
+>Capital Markets, Corporate Business, Civil Engineering, Relevant Experiences, Educational Projects.
+---
+
+### 🎩 Capital Markets
+>Structuring real estate deals in Investment Banking, managing substantial portfolios across mutual and structured funds, and handling the lifecycle of Private Equity and Venture Capital deals, with exposure to ESG and FinTech.
+
+"*Risk comes from not knowing what you're doing.*" 
+— Charlie Munger | Warren Buffett (The Oracle of Omaha)
+#### (+)
+- Investment Banking / Advisory (ECM/DCM)
+	* Structuring (Modeling and Due Diligence) of R$ 500Mi in MBS.
+	* Structuring Mezzanine debt of R$ 100Mi.
+	* Structuring BTS and Sales & Leaseback.
+	* Structuring and Private Placement of 5 companies in the Retail and Technology sector R$ 50Mi.
+	* Portfolio Manager / Private Equity / WM / Credit / Risk / Compliance
+* PM&PE (Constitution and Management):
+	 * 10 exclusive funds (FIM/FIDC/FIP) AuM of R$ 500Mi - Offers 476.
+	 * 2 MBS Funds with R$ 500Mi AuM - Offers 476/400.
+	 * 3 Funds Private Credit with AuM of R$ 350Mi.
+* PM&PE (Acquisitions):
+	 * MBS – R$ 350Mi.
+	 * Land for Real Estate Development - Sales R$ 200Mi.
+	 * LF /DEB – R$ 200Mi.
+ * PE (building):
+	* Structuring of the front, middle, compliance, and risk elaborating processes and analysis criteria of an asset management company.
+	* Management and Risk/Compliance Committees.
+- Venture Capital / Corporate Venture Capital
+	* Structuring companies: Asset, Mortgage Bank, and Credit Servicer.
+	* Acquisition of 4 Startups focused on ESG - AuM 200Mi.
+### 💼 Corporate and Business 
+> For 4 years in Real Estate Development working in the construction field, financial modeling, FP&A, and investor relations in a real estate developer company.
+
+"*We are what we repeatedly do. Excellence, then, is not an act, but a habit.*"
+— Aristotle (Frequently cited by Steve Jobs, Apple)" 
+#### (+)
+* Business Development / FP&A / Investor Relations / Project and Product Management
+	* Follow-on and MBS/Private Debit – R$ 350Mi.
+	* Launch of real estate developments – Sales R$ 750Mi.
+	* Land for real estate business development – Sales R$ 500Mi.
+	* Financial modeling, product & project management, and construction follow-ups.
+
+### 🏗️ Civil Engineering
+>Design, Plan, Management, and Development Residential towers and emergency houses for poverty alleviation.
+
+"*The important thing is not to stop questioning. Curiosity has its own reason for existing.*"
+— Albert Einstein (Physicist)"
+#### (+)
+* Construction Field
+	* Design, Plan, Management, and Development of 2 tower building.
+	* Construction of 8 houses for emergency housing acting directly on the building field of each house.
+* Educational Projects 
+	* Roads, bridges, water resources sites, Vertical Buildings.
+### 👾 Computer Science
+> Pursuing a career shift. A Software Engineer and a Full Stack Developer under development.
+
+"*Talk is cheap. Show me the code.*" 
+— Linus Torvalds (Creator of the Linux Kernel and Git)
+#### (+)
+
+ * Computer Science
+	* System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex.
+	* Data: Hashmap Techniques and Binary Trees.
+	* Graph and Gaming: Ray Casting Computer Graphics Algorithms.
+ * Product
+	* Product requirements, Positioning strategy, User discover.
+	* Product requirements document (PRD/Spec) and Product Roadmap.
+	* Manage a product lifecycle, and Run an Operational Sprint.
+### ✒️ Product Management and Design 
+> Pursuing a career shift.Passionate by innovation, creative coding, disruptive design and chaos patterns.
+
+"*Simplicity is the ultimate sophistication.*"
+— Leonardo da Vinci (Inventor, artist, engineer)
+
+#### (+)
+- item
+- item
+### ...
+### 🌐 International Experience 
+> For 5 years, travelled to 170+ cities over 40+ countries across 5 continents; lived in 5 European capitals.
+
+"*A ship in harbor is safer, but that is not what ships are built for.*" — John A. Shedd"
+#### (+)
+**Long Stays**
+* Studying and working remotely in 5 European cities: Berlin and Barcelona, London, Valencia, and Paris. 
+* Also took long stays in: Rio de Janeiro, Casablanca, and Chiang Mai. 
+* Born and raised in São Paulo, the 5th biggest city in the world.
+
+ **Short Stays**
+- Traveled over 170+ cities, 100+ NomadMania Regions, 40+ countries across 5 continents. 
+- Visited: World Heritage Sites (50+), New Seven Wonder+Pyramids (3/8) and The Seven Natural WW (1/7).
+
+**Languages **
+- Conversation Level: Portuguese, English and Spanish.
+- Intermediate Level: Galego. Beginner Level: Deutsche.
+- Basic Knowledge: Catalán, French and Italian.
+	``` mermaid
+	gantt
+    title International Experience Timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat %Y
+
+    🌏 Long Stay        :active, 2020-09-01, 2027-03-30
+    São Paulo/BRL        :done, 2020-09-01, 2020-09-30
+    Rio de Janeiro/BRL         :done, 2020-10-01, 2020-12-30
+    Chiang Mai/THAI         :done, 2021-04-01, 2021-07-30
+    Paris/FRA         :done, 2021-08-01, 2021-11-30
+    Casablanca/MAR         :done, 2022-04-01, 2022-05-30
+    London/UK         :done, 2022-06-01, 2022-10-30
+    Barcelona/ESP         :done, 2022-11-01, 2023-11-30
+    Valencia/ESP         :done, 2024-03-01, 2024-06-30
+    Berlin/GER         :done, 2024-07-01, 2025-05-30
+    Köln/GER         :done, 2026-03-01, 2027-03-30
+    
+    🌐 Short Stay        :active, 2020-09-01, 2027-03-30
+    USA Trip        :done, 2020-09-01, 2020-09-30
+    Brazil Trip        :done, 2020-10-01, 2020-10-30
+    Middle East Trip        :done, 2020-12-01, 2020-12-30
+    Thailand Trip       :done, 2021-01-01, 2021-01-30
+    France Trip        :done, 2021-11-01, 2021-11-30
+    Spain and Africa Trip         :done, 2022-06-01, 2022-06-30
+    UK Trip        :done, 2022-12-01, 2022-12-30
+    Scandinavian Trip        :done, 2023-01-01, 2023-01-30
+    Central EU Trip        :done, 2023-06-01, 2023-06-30
+    Mediterranean Trip        :done, 2025-08-01, 2025-08-30
+    Balkans Trip        :done, 2025-10-01, 2025-10-30
+    Asia1 Trip        :done, 2026-01-01, 2026-01-30
+    Asia2 Trip        :done, 2026-03-01, 2026-03-30
+    ```
+
+### 🫂NGO 
+> For 2 years in a NGO worked on projects related to social development and the construction of emergency houses for people in extreme poverty.
+
+"*To rank the effort above the prize may be called love.*" 
+— Confucius"
+#### (+)
+* Construction of 8 houses for emergency housing acting directly on the work of each house.
+- Logistics management for a construction event of 10 houses.
+- Development of projects to meet the infrastructure needs of the communities and improvements in the design of the model house.
+
+
+### 🎖️Army Service
+>Graded as Second Lieutenant of Logistics Brigade, from the Army Reserve Officers' Training Corps for the Brazilian Army (CPOR/SP).
+
+"*If you know the enemy and know yourself, you need not fear the result of a hundred battles."*"
+—Sun Tzu, *The Art Of War (1963)* 
+#### (+)
+- Curriculum:
+	- Lectures and courses on Command and Leadership Corps
+	- Analysis of all codes, laws and norms that permeate the Army
+	- Exercising logistics and control functions within the battalion
+	- Camps with total immersion, focusing on instruction for wilderness survival in combat
+	- Logistics designing, implementation and managing a maintenance workshop weapons and armored fighting
+	 - Theoretical and practical instructions for the graduation of an Army Officer (Leadership & Command, Military Strategy & Tactics, Physical & Mental Resilience, Ethics & Law, Logistics & Operations)
+	 - Specialization in Corps Ordnance (Maintenance, Logistics, Supply and Transportation)
+	 - (1 year | 2,016 hours | São Paulo/Brazil)
+	- https://instagram.com/cporsp_exercito
+
+
+### 🌱 Personal Pursuits 
+> Always seeking for a balanced variety of fulfilling experiences 
+
+"*It is not death that a man should fear, but he should fear never beginning to live.*"
+— Epictetus"
+#### (+) 
+
+>  Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.
+>  
+>> Interests: Modern Physics (Quantum and Particle), Global Macro, Mediterranean and Vegetarian Cooking, Backpacking, Jazzy Music, Wellness and Wellbeing.
+
+- Endurance Sports: Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump. 
+- Competition Sports: Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y). 
+- Mindfulness: Aikido, Yoga and Meditation.
+- Pursuing:  Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
+
+
+##### My Bucket Endurance
+ - 🪂 High Adrenaline Sports
+ - 🏂 Adrenaline Sports
+ - 🏔️ Nature Sports and Activities
+ - 🥋 Martial Arts
+ - ⚽️ Collective Sports
+ - 🏃 Individual Sports
+##### (+)
+High Adrenaline Sports:
+	- 🚵🏻‍♂️ Trail Moto | ☆☆
+	- 🪁 Kitesurfing | ☆
+	- 🪂 Skydiving | ☆
+	- 🧗🏻‍♂️ Rock Climbing | ☆☆
+	- 🏂🏻 Snowboarding | ☆
+	- Bung Jump |
+	- Wing Suit |
+- Adrenaline Sports:
+	- 🥾 Hiking | ☆☆☆
+	- 🪂 Paragliding | ☆☆
+	- 🏄🏻‍♂️ Wakeboard | ☆☆
+	- 🛹 Skating  | ☆
+	- Ocean Fishing |
+- Nature Sports and Activities:
+	- ☘️ Trekking  | 🔸
+	- 🏕️ Camping | ☆☆☆☆
+	- 🤿 Snorkeling | 🔸
+	- 🏄🏻‍♂️ Surfing | ☆
+	- 🎣 River Fishing  | ☆☆
+	- ⚓ Scuba Diving | ☆☆
+	- ⛵ Sailing  | ☆
+- Martial Arts
+	- 🥋 Aikido | ☆
+	- 🥊Taekwondo | ☆
+	- 🥷Kung Fu | 
+	- Boxing |
+- Collective Sports: 
+	- Competitions: 
+		- 🤾🏻‍♂️ Handball | ☆☆
+		- 🏐 Volleyball | ☆☆
+		- 🏉 Rugby | ☆☆
+		- 🤽🏻‍♂️ Waterpolo | ☆
+	- Hobby: 
+		- ⚽ Futebol | ☆☆☆☆
+- Individual Sports:
+	- Competition level: 
+		- 🎾 Tennis | ☆☆☆
+		- 🏊🏻‍♂️ Swimming | ☆☆☆
+		- 🚲 Cycling | ☆☆☆
+		- 🏃🏻‍♂️ Running| ☆☆☆
+		- 🚴🏻‍♂️🏊🏻‍♂️ Biathlon | ☆☆
+		- Marathon |
+		- Iron Man 70.3 |
+	- Hobby: 
+		- ⛳ Golf  | ☆
+		- ⛸️ Ice Lake Skying | ☆☆
+
+##### My Bucket 50 (things before 50)
+- Topics:
+	-  🌿 Personal Growth & Learning
+	- 🌐 Travel & Adventure
+	- 🌍 Health & Wellness
+	- 💼 Career and Finance
+	- ❤️ Relationship & Community
+	- ✨ Creativity & Fun
+- Age:
+	 - 🌱 (By 30): Foundational goals for exploration and habit-building
+	 - 🌳 (By 40): Deeper goals for mastery, reflection, and long-term planning
+	 - 🍁 (By 50): Legacy goals focused on wisdom, giving back, and deep fulfilment
+
+##### (+)
+ - item 1
+---
+
+
+## ----------------------------------------------
 ## CAREER
 > STUDIED: B.SC. in Civil Engineer and a path towards Economics.
 > WORKED: in Capital Markets dealing with complex deals.
@@ -171,7 +422,6 @@ gantt
 ### 💼 Professional Experience
 #### Capital Markets Advisor (Sr/Partner) 
 >Description: Structuring deals and distribution with investors focused on the middle market - ECM R$ 60Mi / DCM R$ 120Mi.
-
 ##### (+)
 * | DHGP Capital / PHI Capital / Engage Capital – São Paulo/Brazil
 * Timeline: Dec/2021 ~ Dec/2023
@@ -239,19 +489,19 @@ gantt
 * | L’École 42 (42 School) – Barcelona/Espanha | Berlin/Germany |
 * Timeline: October/2024 ~ Actual
 * | 1 year / 3 years (total), 200 hours coding done|
-##### Product Management (Course) 
+#### Product Management (Course) 
 > Focus / Description: Product requirements and positioning strategy, User Discovery, Product Requirements Document (PRD/spec) and Product Roadmap, Manage a Product Lifecycle, and Run an Operational Sprint.
 ##### (+)
 - | Stanford School of Engineering – California/USA (remote) |
 * Timeline: September/2023 ~ November/2023
 * Duration / Credits: 10 weeks (60 hours), 3 ECTS/1.5 UScred
-##### Capital Markets (Course) 
+#### Capital Markets (Course) 
 > Focus / Description: Macroeconomics, Market Research and Analysis, Financial and Business Analysis, Financial Modeling / Project Finance, Due Diligence, ECM / DCM structuring deals, Asset Pricing, Risk Management, and Portfolio Allocation.
 ##### (+)
 * | Anbima – São Paulo/Brazil (remote) |
 * Timeline: January/2016 ~ December/2016
 * Duration / Credits: 1 year (500 hours), 50 ECTS/25 UScred
-##### Civil Structural Engineering (B.Sc.) 
+#### Civil Structural Engineering (B.Sc.) 
 * Focus / Description: Civil Engineering Bachelor. Majors: Structural, Water and Transportation. Minors: Math and Physics.
 ##### (+)
 * | Mackenzie Presbyterian University – São Paulo/Brazil |
@@ -262,182 +512,8 @@ gantt
 - **Silicon Valley Workshop and Vegas Conferences **
 
 
-## ----------------------------------------------
-## PORTFOLIO
->Capital Markets, Corporate Business, Civil Engineering, Relevant Experiences, Educational Projects.
----
+## --------------------------------------------------
 
-### 🎩 Capital Markets
->Structuring real estate deals in Investment Banking, managing substantial portfolios across mutual and structured funds, and handling the lifecycle of Private Equity and Venture Capital deals, with exposure to ESG and FinTech.
-
-"*Risk comes from not knowing what you're doing.*" 
-— Charlie Munger | Warren Buffett (The Oracle of Omaha)
-
----
-#### (+)
-- Investment Banking / Advisory (ECM/DCM)
-	* Structuring (Modeling and Due Diligence) of R$ 500Mi in MBS.
-	* Structuring Mezzanine debt of R$ 100Mi.
-	* Structuring BTS and Sales & Leaseback.
-	* Structuring and Private Placement of 5 companies in the Retail and Technology sector R$ 50Mi.
-	* Portfolio Manager / Private Equity / WM / Credit / Risk / Compliance
-* PM&PE (Constitution and Management):
-	 * 10 exclusive funds (FIM/FIDC/FIP) AuM of R$ 500Mi - Offers 476.
-	 * 2 MBS Funds with R$ 500Mi AuM - Offers 476/400.
-	 * 3 Funds Private Credit with AuM of R$ 350Mi.
-* PM&PE (Acquisitions):
-	 * MBS – R$ 350Mi.
-	 * Land for Real Estate Development - Sales R$ 200Mi.
-	 * LF /DEB – R$ 200Mi.
- * PE (building):
-	* Structuring of the front, middle, compliance, and risk elaborating processes and analysis criteria of an asset management company.
-	* Management and Risk/Compliance Committees.
-- Venture Capital / Corporate Venture Capital
-	* Structuring companies: Asset, Mortgage Bank, and Credit Servicer.
-	* Acquisition of 4 Startups focused on ESG - AuM 200Mi.
-### 💼 Corporate and Business 
-> For 4 years in Real Estate Development working in the construction field, financial modeling, FP&A, and investor relations in a real estate developer company.
-
-"*We are what we repeatedly do. Excellence, then, is not an act, but a habit.*"
-— Aristotle (Frequently cited by Steve Jobs, Apple)" 
-
----
-#### (+)
-* Business Development / FP&A / Investor Relations / Project and Product Management
-	* Follow-on and MBS/Private Debit – R$ 350Mi.
-	* Launch of real estate developments – Sales R$ 750Mi.
-	* Land for real estate business development – Sales R$ 500Mi.
-	* Financial modeling, product & project management, and construction follow-ups.
-
-### 🏗️ Civil Engineering
->Design, Plan, Management, and Development Residential towers and emergency houses for poverty alleviation.
-
-"*The important thing is not to stop questioning. Curiosity has its own reason for existing.*"
-— Albert Einstein (Physicist)"
-
----
-#### (+)
-* Construction Field
-	* Design, Plan, Management, and Development of 2 tower building.
-	* Construction of 8 houses for emergency housing acting directly on the building field of each house.
-* Educational Projects 
-	* Roads, bridges, water resources sites, Vertical Buildings.
-### 👾 Computer Science
-> Pursuing a career shift. A Software Engineer and a Full Stack Developer under development.
-
-"*Talk is cheap. Show me the code.*" 
-— Linus Torvalds (Creator of the Linux Kernel and Git)
-
----
-#### (+)
-
- * Computer Science
-	* System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex.
-	* Data: Hashmap Techniques and Binary Trees.
-	* Graph and Gaming: Ray Casting Computer Graphics Algorithms.
- * Product
-	* Product requirements, Positioning strategy, User discover.
-	* Product requirements document (PRD/Spec) and Product Roadmap.
-	* Manage a product lifecycle, and Run an Operational Sprint.
-### ✒️ Product Management and Design 
-> Pursuing a career shift.Passionate by innovation, creative coding, disruptive design and chaos patterns.
-
-"*Simplicity is the ultimate sophistication.*"
-— Leonardo da Vinci (Inventor, artist, engineer)
-
-#### (+)
-- item
-- item
-### ...
-### 🌐 International Experience 
-> For 5 years, travelled to 170+ cities over 40+ countries across 5 continents; lived in 5 European capitals.
-
-"*A ship in harbor is safer, but that is not what ships are built for.*" — John A. Shedd"
-
----
-#### (+)
-**Long Stays**
-* Studying and working remotely in 5 European cities: Berlin and Barcelona, London, Valencia, and Paris. 
-* Also took long stays in: Rio de Janeiro, Casablanca, and Chiang Mai. 
-* Born and raised in São Paulo, the 5th biggest city in the world.
-
- **Short Stays**
-- Traveled over 170+ cities, 100+ NomadMania Regions, 40+ countries across 5 continents. 
-- Visited: World Heritage Sites (50+), New Seven Wonder+Pyramids (3/8) and The Seven Natural WW (1/7).
-
-**Languages **
-- Conversation Level: Portuguese, English and Spanish.
-- Intermediate Level: Galego. Beginner Level: Deutsche.
-- Basic Knowledge: Catalán, French and Italian.
-	``` mermaid
-	gantt
-    title International Experience Timeline
-    dateFormat  YYYY-MM-DD
-    axisFormat %Y
-
-    🌏 Long Stay        :active, 2020-09-01, 2027-03-30
-    São Paulo/BRL        :done, 2020-09-01, 2020-09-30
-    Rio de Janeiro/BRL         :done, 2020-10-01, 2020-12-30
-    Chiang Mai/THAI         :done, 2021-04-01, 2021-07-30
-    Paris/FRA         :done, 2021-08-01, 2021-11-30
-    Casablanca/MAR         :done, 2022-04-01, 2022-05-30
-    London/UK         :done, 2022-06-01, 2022-10-30
-    Barcelona/ESP         :done, 2022-11-01, 2023-11-30
-    Valencia/ESP         :done, 2024-03-01, 2024-06-30
-    Berlin/GER         :done, 2024-07-01, 2025-05-30
-    Köln/GER         :done, 2026-03-01, 2027-03-30
-    
-    🌐 Short Stay        :active, 2020-09-01, 2027-03-30
-    USA Trip        :done, 2020-09-01, 2020-09-30
-    Brazil Trip        :done, 2020-10-01, 2020-10-30
-    Middle East Trip        :done, 2020-12-01, 2020-12-30
-    Thailand Trip       :done, 2021-01-01, 2021-01-30
-    France Trip        :done, 2021-11-01, 2021-11-30
-    Spain and Africa Trip         :done, 2022-06-01, 2022-06-30
-    UK Trip        :done, 2022-12-01, 2022-12-30
-    Scandinavian Trip        :done, 2023-01-01, 2023-01-30
-    Central EU Trip        :done, 2023-06-01, 2023-06-30
-    Mediterranean Trip        :done, 2025-08-01, 2025-08-30
-    Balkans Trip        :done, 2025-10-01, 2025-10-30
-    Asia1 Trip        :done, 2026-01-01, 2026-01-30
-    Asia2 Trip        :done, 2026-03-01, 2026-03-30
-    ```
-
-### 🫂NGO 
-> For 2 years in a NGO worked on projects related to social development and the construction of emergency houses for people in extreme poverty.
-
-"*To rank the effort above the prize may be called love.*" 
-— Confucius"
-
----
-#### (+)
-* Construction of 8 houses for emergency housing acting directly on the work of each house.
-- Logistics management for a construction event of 10 houses.
-- Development of projects to meet the infrastructure needs of the communities and improvements in the design of the model house.
-
-
-### 🎖️Army Service
->Graded as Second Lieutenant of Logistics Brigade, from the Army Reserve Officers' Training Corps for the Brazilian Army (CPOR/SP).
-
-"*If you know the enemy and know yourself, you need not fear the result of a hundred battles."*"
-—Sun Tzu, *The Art Of War (1963)* 
-
----
-#### (+)
-- Curriculum:
-	- Lectures and courses on Command and Leadership Corps
-	- Analysis of all codes, laws and norms that permeate the Army
-	- Exercising logistics and control functions within the battalion
-	- Camps with total immersion, focusing on instruction for wilderness survival in combat
-	- Logistics designing, implementation and managing a maintenance workshop weapons and armored fighting
-	 - Theoretical and practical instructions for the graduation of an Army Officer (Leadership & Command, Military Strategy & Tactics, Physical & Mental Resilience, Ethics & Law, Logistics & Operations)
-	 - Specialization in Corps Ordnance (Maintenance, Logistics, Supply and Transportation)
-	 - (1 year | 2,016 hours | São Paulo/Brazil)
-	- https://instagram.com/cporsp_exercito
-
-
-
-### --------------------------------------------------
 ## SKILLS
 > Engineering, Tech Finance and Business.
 
@@ -882,99 +958,6 @@ Database
 	 * Spain (Work Visa)
 	 * EU (Spanish Citizenship)
 
----
-
-## ----------------------------------------------
-## 🌱 Personal Pursuits 
-> Always seeking for a balanced variety of fulfilling experiences 
-
-"*It is not death that a man should fear, but he should fear never beginning to live.*"
-— Epictetus"
-
----
-### (+) 
-
->  Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.
->  
->> Interests: Modern Physics (Quantum and Particle), Global Macro, Mediterranean and Vegetarian Cooking, Backpacking, Jazzy Music, Wellness and Wellbeing.
-
-- Endurance Sports: Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump. 
-- Competition Sports: Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y). 
-- Mindfulness: Aikido, Yoga and Meditation.
-- Pursuing:  Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
-
-
-#### My Bucket Endurance
- - 🪂 High Adrenaline Sports
- - 🏂 Adrenaline Sports
- - 🏔️ Nature Sports and Activities
- - 🥋 Martial Arts
- - ⚽️ Collective Sports
- - 🏃 Individual Sports
-##### (+)
-High Adrenaline Sports:
-	- 🚵🏻‍♂️ Trail Moto | ☆☆
-	- 🪁 Kitesurfing | ☆
-	- 🪂 Skydiving | ☆
-	- 🧗🏻‍♂️ Rock Climbing | ☆☆
-	- 🏂🏻 Snowboarding | ☆
-	- Bung Jump |
-	- Wing Suit |
-- Adrenaline Sports:
-	- 🥾 Hiking | ☆☆☆
-	- 🪂 Paragliding | ☆☆
-	- 🏄🏻‍♂️ Wakeboard | ☆☆
-	- 🛹 Skating  | ☆
-	- Ocean Fishing |
-- Nature Sports and Activities:
-	- ☘️ Trekking  | 🔸
-	- 🏕️ Camping | ☆☆☆☆
-	- 🤿 Snorkeling | 🔸
-	- 🏄🏻‍♂️ Surfing | ☆
-	- 🎣 River Fishing  | ☆☆
-	- ⚓ Scuba Diving | ☆☆
-	- ⛵ Sailing  | ☆
-- Martial Arts
-	- 🥋 Aikido | ☆
-	- 🥊Taekwondo | ☆
-	- 🥷Kung Fu | 
-	- Boxing |
-- Collective Sports: 
-	- Competitions: 
-		- 🤾🏻‍♂️ Handball | ☆☆
-		- 🏐 Volleyball | ☆☆
-		- 🏉 Rugby | ☆☆
-		- 🤽🏻‍♂️ Waterpolo | ☆
-	- Hobby: 
-		- ⚽ Futebol | ☆☆☆☆
-- Individual Sports:
-	- Competition level: 
-		- 🎾 Tennis | ☆☆☆
-		- 🏊🏻‍♂️ Swimming | ☆☆☆
-		- 🚲 Cycling | ☆☆☆
-		- 🏃🏻‍♂️ Running| ☆☆☆
-		- 🚴🏻‍♂️🏊🏻‍♂️ Biathlon | ☆☆
-		- Marathon |
-		- Iron Man 70.3 |
-	- Hobby: 
-		- ⛳ Golf  | ☆
-		- ⛸️ Ice Lake Skying | ☆☆
-
-#### My Bucket 50 (things before 50)
-- Topics:
-	-  🌿 Personal Growth & Learning
-	- 🌐 Travel & Adventure
-	- 🌍 Health & Wellness
-	- 💼 Career and Finance
-	- ❤️ Relationship & Community
-	- ✨ Creativity & Fun
-- Age:
-	 - 🌱 (By 30): Foundational goals for exploration and habit-building
-	 - 🌳 (By 40): Deeper goals for mastery, reflection, and long-term planning
-	 - 🍁 (By 50): Legacy goals focused on wisdom, giving back, and deep fulfilment
-
-##### (+)
- - item 1
 ---
 
 

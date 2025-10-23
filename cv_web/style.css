@@ -416,3 +416,9 @@ a:hover {
 .side-nav ul ul a {
     font-size: 1.0em;
 }
+
+@media screen and (max-width: 768px) {
+    #main-content.nav-open {
+        margin-left: 0;
+    }
+}

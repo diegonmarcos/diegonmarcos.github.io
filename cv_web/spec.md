@@ -26,7 +26,7 @@ The styling is handled by a single stylesheet, `style.css`.
 - **Framework:** No major CSS framework is used. The styling is custom.
 - **Colors:** The website uses a dark theme with a color palette that includes a dark background and accent colors like purple. Colors are defined using CSS variables (e.g., `var(--color-accent-purple)`).
 - **Layout:** The layout is a single-column, responsive design. The sections are separated by horizontal rules (`<hr class="section-divider">`).
-- **Side Navigation:** The side navigation menu is styled to be fixed on the left side of the page, with a transition for smooth showing and hiding. The styles support a multi-level, collapsible list with visual indicators (arrows) for expandable sections. An `.active` class is used to highlight the current section link.
+- **Side Navigation:** The side navigation menu is styled to be fixed on the left side of the page. On desktop, it pushes the main content to the right. On mobile screens (via a media query), it overlays the content to prevent page reflow. An `.active` class is used to highlight the current section link.
 - **Fonts:** The website uses the "Roboto" font from Google Fonts.
 - **Key Classes:**
     - `.header-container`, `.header-content`: For the header section.
@@ -70,6 +70,8 @@ The website uses JavaScript for interactivity and to enhance the user experience
         - **Collapsible Navigation Menu:**
             - It adds click event listeners to navigation links that have nested menus.
             - Clicking these links toggles the visibility of the nested menu and rotates an indicator arrow, without navigating to a new page.
+        - **Mobile Menu Auto-Close:**
+            - On mobile, when a link in the side navigation is clicked, the menu automatically closes.
 
 ## Other Comments
 

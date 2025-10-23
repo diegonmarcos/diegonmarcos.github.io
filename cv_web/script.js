@@ -128,4 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
         sideNav.classList.toggle('open');
         mainContent.classList.toggle('nav-open');
     });
+
+    // Auto-close on link click
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('nav-open');
+        });
+    });
 });

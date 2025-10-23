@@ -460,6 +460,10 @@ a:hover {
     z-index: 1;
 }
 
+.floating-menu.show {
+    display: block;
+}
+
 .floating-menu a {
     display: block;
     color: var(--color-text);

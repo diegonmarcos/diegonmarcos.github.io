@@ -142,10 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const floatingMenu = document.getElementById('floating-menu');
 
     floatingBtn.addEventListener('click', () => {
-        if (floatingMenu.style.display === 'block') {
-            floatingMenu.style.display = 'none';
-        } else {
-            floatingMenu.style.display = 'block';
-        }
+        floatingMenu.classList.toggle('show');
     });
 });

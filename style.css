@@ -45,7 +45,7 @@ body {
 
 .hero-title {
     font-size: clamp(2.5rem, 5vw, 3.75rem); /* Responsive font size */
-    font-weight: 900;
+    font-weight: 700;
     letter-spacing: -0.05em;
     margin-bottom: 1rem;
     background: linear-gradient(to right, var(--brand-light-purple), var(--brand-purple));
@@ -61,7 +61,7 @@ body {
 }
 
 .hero-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.80rem;
     color: var(--text-secondary);
     font-weight: 500;
     margin-bottom: 0;

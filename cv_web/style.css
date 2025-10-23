@@ -344,6 +344,9 @@ a:hover {
 .linktree-container h5 + ul {
     margin-top: 0;
 }
+.linktree-container .skills-table td {
+    width: 50%;
+}
 /* Style for li elements that act as headers */
 .linktree-container li:has(ul) {
     color: var(--color-accent-purple);

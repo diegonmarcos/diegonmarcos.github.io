@@ -503,29 +503,13 @@ Product Manager
 
 ---
 #### (+)
-##### 👾 My Stack 
+##### ⭐ Stack 
 
-- List
+| Topic                                                                                                                                                                                                                              | Ratings                                                                      | ... | Topic                                                                                                                                                                        | Ratings                                                             |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | :-: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| CS Concepts<br>     - Data Structures<br><br>Back-End<br>    - UNIX<br>	- Algorithms<br>	- Web Servers<br>	- Embedded Systems<br>	- Graphic and Gaming <br>	<br>Front-End<br>	- Html/CSS<br>	- Js.Vanila<br>	- Js.Vue<br>	- Pandas | ☆<br>☆<br><br>☆<br>☆☆☆<br>☆☆☆<br>~<br>~<br>☆<br>	<br>☆☆☆<br>☆<br>~<br>-<br>- |     | DevOps<br>	- GitHub Actions <br><br>Database<br>	- SQL<br>	- NonSQL<br><br><br>	<br><br>Data Science & ML & AI<br>	- Numpy/Scipy<br>	- TensorFlow/Pytorch<br>	- Langraph<br> | ☆<br><br><br>☆<br>☆☆☆<br>☆☆☆<br><br><br><br>	<br>☆☆☆<br>☆<br>~<br>~ |
 
-| Topic                                   | Rating  | //  | Topic                                   | Rating  |
-| :-------------------------------------- | :-----: | :-: | :-------------------------------------- | :-----: |
-| **CS Concepts**                         |  **☆**  |     | **DevOps**                              |  **☆**  |
-| &nbsp;&nbsp;&nbsp; - Data Structures    |    ☆    |     | &nbsp;&nbsp;&nbsp; - GitHub Actions     |         |
-| **Back-End**                            |  **☆**  |     | **Database**                            |  **☆**  |
-| &nbsp;&nbsp;&nbsp; - UNIX               |   ☆☆☆   |     | &nbsp;&nbsp;&nbsp; - SQL                |   ☆☆☆   |
-| &nbsp;&nbsp;&nbsp; - Algorithms         |   ☆☆☆   |     | &nbsp;&nbsp;&nbsp; - NonSQL             |   ☆☆☆   |
-| &nbsp;&nbsp;&nbsp; - Web Servers        |    ~    |     | **Data Science & ML & AI**              | **☆☆☆** |
-| &nbsp;&nbsp;&nbsp; - Embedded Systems   |    ~    |     | &nbsp;&nbsp;&nbsp; - Numpy/Scipy        |    ☆    |
-| &nbsp;&nbsp;&nbsp; - Graphic and Gaming |    ☆    |     | &nbsp;&nbsp;&nbsp; - TensorFlow/Pytorch |    ~    |
-| **Front-End**                           | **☆☆☆** |     | &nbsp;&nbsp;&nbsp; - Langraph           |    ~    |
-| &nbsp;&nbsp;&nbsp; - Html/CSS           |    ☆    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Js.Vanila          |    ~    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Js.Vue             |    -    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Pandas             |    -    | //  |                                         |         |
-
-
-
-- Icons
+##### 👾 My Stack
 ###### 🚀 DevOps
 
 | SCRIPT                                       |                                                                                                                  |                                                  | VC/CI                                            |                                                                 | CONT                                             | CLOUD                                               | MONIT                                                    |
@@ -571,16 +555,12 @@ Product Manager
 
 
 
-##### 🖥️ THE Stack
-
-- List
-
+##### 🖥️ List
 Software Engineering
 - PRINCIPLES: SOLID, DRY, KISS, YAGNI;
 - DESIGN: Design Patterns, System Design, Microservices, Event-Driven;
 - AGILE: Scrum, Kanban, XP, LeSS;
 - TESTING: Unit, Integration, E2E, TDD, BDD.
--  Frames: LAMP Stack: Linux (OS), Apache (Web Server), MySQL (Database), PHP (Programming Language).MERN Stack: MongoDB (Database), Express.js (Back-end Framework), React (Front-end Framework), Node.js (Back-end Environment).
 
 DevOps
 - VCS: Git, GitHub, GitLab, Bitbucket;
@@ -627,7 +607,38 @@ Data Science & ML
 - MLOPS: MLflow, Kubeflow, DVC, TFX, Weights & Biases.
 - AGENTIC: Langraph
 
-- icons 
+##### 💻 THE Tech Stack
+
+- Software Engineering: Principles
+
+| SOLID | DRY | KISS | YAGNI |
+|---|---|---|---|
+| SOLID | DRY | KISS | YAGNI |
+| - | - | - | - |
+
+- Software Engineering: Design
+
+| Design Patterns | System Design | Microservices | Event-Driven |
+|---|---|---|---|
+| Design Patterns | System Design | Microservices | Event-Driven |
+| - | - | - | - |
+
+-  Software Engineering: Agile
+
+| Scrum                                          | Kanban                                           | XP  | LeSS |
+| ---------------------------------------------- | ------------------------------------------------ | --- | ---- |
+| ![Scrum](https://skillicons.dev/icons?i=scrum) | ![Kanban](https://skillicons.dev/icons?i=trello) | XP  | LeSS |
+
+-  Software Engineering: Testing Concepts
+
+| Unit Testing | Integration Testing | E2E Testing | TDD | BDD |
+| ------------ | ------------------- | ----------- | --- | --- |
+| Unit Testing | Integration Testing | E2E Testing | TDD | BDD |
+- Frames
+LAMP Stack: Linux (OS), Apache (Web Server), MySQL (Database), PHP (Programming Language).
+
+MERN Stack: MongoDB (Database), Express.js (Back-end Framework), React (Front-end Framework), Node.js (Back-end Environment).
+***
 
 DevOps
 -  Version Control (VCS)

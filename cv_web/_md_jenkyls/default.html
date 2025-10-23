@@ -1,0 +1,64 @@
+---
+layout: default
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: "Diego Nepomuceno Marcos - Portfolio" }}</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VB9ENP6DZ0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VB9ENP6DZ0');
+    </script>
+    <link rel="stylesheet" href="{{ "/style.css" | relative_url }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎩</text></svg>">
+    
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+    <script>
+        // Mermaid configuration to handle default dark theme and responsiveness
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark', // Ensures it looks good on the dark background
+            securityLevel: 'loose', // Allows all features
+            flowchart: { useMaxWidth: true }, // For better flowcharts
+            gantt: { axisFormat: '%Y' } // Specific format for your Gantt charts
+        });
+    </script>
+</head>
+<body>
+
+    <header class="header-container">
+        <div class="header-content">
+            <h1>DIEGO NEPOMUCENO MARCOS</h1>
+            <p class="subtitle">
+                | Product n' Software Eng Std ✒️ | Venture Capital n' Portfolio Manager Analyst 🎩 | Civil Engineer B.Sc. 🏗️| @BERlin.de 🏛️ |
+            </p>
+            <p class="portfolio-title">*Curriculum & Portfolio*</p>
+            <hr>
+            <blockquote class="quote">
+                <p>"Cuando digo Diego, no digo 'digo', digo Diego"</p>
+                <cite>—El Chavo del Ocho, Quico, 1978</cite>
+            </blockquote>
+        </div>
+        <div class="arrow-wrapper">
+            <br><br><br><br><br>
+            <a href="#intro" class="scroll-down-arrow">🔻</a>
+            <br><br><br><br><br>
+        </div>
+    </header>
+
+    <main>
+        {{ content }}
+    </main>
+    <br><br><br><br><br><br>
+
+    <script src="{{ "/script.js" | relative_url }}"></script>
+</body>
+</html>

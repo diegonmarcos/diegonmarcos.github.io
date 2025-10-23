@@ -78,6 +78,13 @@ body {
     text-align: left;
 }
 
+.hero-divider {
+    border: 0;
+    border-top: 1px solid var(--card-border);
+    max-width: 50%;
+    margin: 2rem auto;
+}
+
 /* --- Value Proposition Section --- */
 .value-proposition {
     margin-bottom: 6rem;

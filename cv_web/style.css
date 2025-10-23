@@ -356,6 +356,7 @@ a:hover {
     left: -250px;
     background-color: #111;
     overflow-x: hidden;
+    overflow-y: auto;
     transition: 0.5s;
     padding-top: 60px;
 }
@@ -365,9 +366,9 @@ a:hover {
 }
 
 .side-nav a {
-    padding: 4px 8px 4px 32px;
+    padding: 2px 8px 2px 32px;
     text-decoration: none;
-    font-size: 1.4em;
+    font-size: 1.2em;
     color: #818181;
     display: block;
     transition: 0.3s;

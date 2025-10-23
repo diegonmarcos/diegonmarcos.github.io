@@ -136,4 +136,16 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContent.classList.remove('nav-open');
         });
     });
+
+    // Floating Action Button
+    const floatingBtn = document.getElementById('floating-btn');
+    const floatingMenu = document.getElementById('floating-menu');
+
+    floatingBtn.addEventListener('click', () => {
+        if (floatingMenu.style.display === 'block') {
+            floatingMenu.style.display = 'none';
+        } else {
+            floatingMenu.style.display = 'block';
+        }
+    });
 });

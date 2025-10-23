@@ -365,7 +365,7 @@ a:hover {
     overflow-x: hidden;
     overflow-y: auto;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 80px;
 }
 
 .side-nav ul li::before {

@@ -409,8 +409,8 @@ a:hover {
     margin: 0;
 }
 
-.side-nav ul ul {
-    padding-left: 10px;
+.side-nav ul ul a {
+    font-size: 1.0em;
 }
 
 .side-nav ul ul a {

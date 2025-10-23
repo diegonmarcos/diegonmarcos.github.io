@@ -15,7 +15,7 @@ The website is a single-page application built with semantic HTML5. The main com
     - **`<section id="personal-pursuits">`:**  Information about personal interests and goals.
     - **`<section id="contact">`:** Contact information and a "Linktree" section with links to various online profiles.
 - **Collapsible Sections:** The content is organized into collapsible sections using `<h2>`, `<h3>`, and `<h4>` tags with the `collapser` class and `<div>` elements with the `collapsible-content` class. This allows for a clean and organized presentation of a large amount of information.
-- **Side Navigation Menu:** An empty `<nav id="side-nav">` element is included. This element is dynamically populated by a script that generates a hierarchical, multi-level, collapsible list of anchor links corresponding to the `h2`, `h3`, and `h4` titles in the document. A toggle button (`<button id="nav-toggle">`) is provided to show and hide the menu.
+- **Side Navigation Menu:** An empty `<nav id="side-nav">` element is included. This element is dynamically populated by a script that generates a hierarchical, multi-level, collapsible list of anchor links corresponding to the `h2` and `h3` titles in the document. A "HOME" button is prepended to the list. A toggle button (`<button id="nav-toggle">`) is provided to show and hide the menu.
 - **Mermaid Diagrams:** The site uses Mermaid.js to render Gantt charts for timelines and a radar chart for soft skills.
 - **Font Awesome Icons:** The website uses Font Awesome to add icons to the links in the "Linktree" section. This enhances the visual appeal and provides a better user experience by making the links more recognizable.
 
@@ -48,8 +48,9 @@ The website uses JavaScript for interactivity and to enhance the user experience
     - **Scripts:
         - **`DOMContentLoaded` Event Listener:** The script waits for the HTML document to be completely loaded and parsed before running.
         - **Dynamic Side Navigation Generation:**
-            - The script scans the document for `h2`, `h3`, and `h4` elements within the `<main>` tag.
+            - The script scans the document for `h2` and `h3` elements within the `<main>` tag.
             - It dynamically generates a nested `<ul>` structure that mirrors the heading hierarchy.
+            - A "HOME" button is prepended to the list.
             - This generated HTML is then injected into the `<nav id="side-nav">` element.
         - **Collapser Functionality:**
             - It selects all elements with the class `collapser`.

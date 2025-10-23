@@ -5,6 +5,14 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLists = [document.createElement('ul')];
     sideNav.appendChild(currentLists[0]);
 
+    // Add HOME button
+    const homeListItem = document.createElement('li');
+    const homeLink = document.createElement('a');
+    homeLink.href = '#';
+    homeLink.textContent = 'HOME';
+    homeListItem.appendChild(homeLink);
+    currentLists[0].appendChild(homeListItem);
+
     headings.forEach(heading => {
         const level = parseInt(heading.tagName.substring(1)) - 2; // h2 -> 0, h3 -> 1
         

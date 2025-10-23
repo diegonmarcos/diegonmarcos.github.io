@@ -79,3 +79,21 @@ The website uses JavaScript for interactivity and to enhance the user experience
 - **Responsive Design:** The use of the `viewport` meta tag and a fluid layout suggests that the website is designed to be responsive and work well on different screen sizes.
 - **Favicon:** The website uses an SVG as a favicon.
 - **Content:** The content is very detailed and well-structured, providing a comprehensive overview of the person's professional and personal life.
+
+## Event Listeners
+
+The `script.js` file sets up the following event listeners to provide interactivity:
+
+- **`DOMContentLoaded` on `document`:** The main entry point for the script. All other event listeners are set up after this event fires.
+- **`click` on Side Navigation Links (`sideNav.querySelectorAll('li > a')`):**
+    - Toggles the display of nested sub-menus in the side navigation.
+    - Prevents the default link behavior to allow for collapsible sub-menus.
+- **`scroll` on `window`:**
+    - Implements the scroll-spy functionality, highlighting the active link in the side navigation based on the current scroll position.
+    - Automatically opens the side navigation menu once when the "Career" section is scrolled into view.
+- **`click` on Collapser Elements (`.collapser`):** Toggles the visibility of the collapsible content sections.
+- **`click` on the Navigation Toggle Button (`#nav-toggle`):** Toggles the visibility of the side navigation menu.
+- **`click` on Side Navigation Links (`navLinks`):** Closes the side navigation menu when a link is clicked.
+- **`click` on the Main Content Area (`#main-content`):** Closes the side navigation menu if it is open.
+- **`click` on the Floating Action Button (`#floating-btn`):** Toggles the visibility of the floating menu.
+- **`click` on `window`:** Closes the floating menu if a click occurs outside of the menu or the floating action button.

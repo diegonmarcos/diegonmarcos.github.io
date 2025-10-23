@@ -36,4 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Side Navigation Toggle
+    const navToggle = document.getElementById('nav-toggle');
+    const sideNav = document.getElementById('side-nav');
+    const mainContent = document.getElementById('main-content');
+
+    navToggle.addEventListener('click', () => {
+        sideNav.classList.toggle('open');
+        mainContent.classList.toggle('nav-open');
+    });
 });

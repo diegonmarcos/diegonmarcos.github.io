@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scroll-spy functionality
     const scrollSpyHeadings = document.querySelectorAll('main h2, main h3');
     const navLinks = sideNav.querySelectorAll('a');
+    const careerSection = document.getElementById('career');
+    let menuOpenedOnce = false;
 
     window.addEventListener('scroll', () => {
         let current = '';
@@ -79,6 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 link.classList.add('active');
             }
         });
+
+        // Auto-open menu at Career section
+        if (!menuOpenedOnce && window.pageYOffset >= careerSection.offsetTop - 60) {
+            sideNav.classList.add('open');
+            mainContent.classList.add('nav-open');
+            menuOpenedOnce = true;
+        }
     });
 
     // Select all elements that can act as a collapser

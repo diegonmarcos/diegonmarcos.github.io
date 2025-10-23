@@ -56,6 +56,9 @@ The website uses JavaScript for interactivity and to enhance the user experience
             - A scroll event listener is added to the window.
             - On scroll, it determines which `h2` or `h3` is currently in the viewport.
             - It adds an `.active` class to the corresponding link in the side navigation and removes it from others.
+        - **Automatic Menu Opening:**
+            - The scroll event listener also checks if the "Career" section is in the viewport.
+            - If it is, and the menu has not been automatically opened before, the side navigation menu is opened. This behavior is triggered only once.
         - **Collapser Functionality:**
             - It selects all elements with the class `collapser`.
             - For each `collapser` element, it finds the next sibling element with the class `collapsible-content`.

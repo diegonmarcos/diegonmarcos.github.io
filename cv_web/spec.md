@@ -26,7 +26,7 @@ The styling is handled by a single stylesheet, `style.css`.
 - **Framework:** No major CSS framework is used. The styling is custom.
 - **Colors:** The website uses a dark theme with a color palette that includes a dark background and accent colors like purple. Colors are defined using CSS variables (e.g., `var(--color-accent-purple)`).
 - **Layout:** The layout is a single-column, responsive design. The sections are separated by horizontal rules (`<hr class="section-divider">`).
-- **Side Navigation:** The side navigation menu is styled to be fixed on the left side of the page, with a transition for smooth showing and hiding. The styles support a multi-level, collapsible list with visual indicators (arrows) for expandable sections.
+- **Side Navigation:** The side navigation menu is styled to be fixed on the left side of the page, with a transition for smooth showing and hiding. The styles support a multi-level, collapsible list with visual indicators (arrows) for expandable sections. An `.active` class is used to highlight the current section link.
 - **Fonts:** The website uses the "Roboto" font from Google Fonts.
 - **Key Classes:**
     - `.header-container`, `.header-content`: For the header section.
@@ -34,7 +34,7 @@ The styling is handled by a single stylesheet, `style.css`.
     - `.skills-table`, `.contact-table`: For styling tables.
     - `.mermaid-diagram`: For styling the Mermaid.js diagrams.
     - `.quote`, `.small-quote`: For styling blockquotes.
-    - `.side-nav`, `.nav-toggle-button`, `.nested-nav`, `.collapsible-nav`: For the side navigation menu.
+    - `.side-nav`, `.nav-toggle-button`, `.nested-nav`, `.collapsible-nav`, `.active`: For the side navigation menu.
 
 ## JavaScript
 
@@ -52,6 +52,10 @@ The website uses JavaScript for interactivity and to enhance the user experience
             - It dynamically generates a nested `<ul>` structure that mirrors the heading hierarchy.
             - A "HOME" button is prepended to the list.
             - This generated HTML is then injected into the `<nav id="side-nav">` element.
+        - **Scroll-Spy Functionality:**
+            - A scroll event listener is added to the window.
+            - On scroll, it determines which `h2` or `h3` is currently in the viewport.
+            - It adds an `.active` class to the corresponding link in the side navigation and removes it from others.
         - **Collapser Functionality:**
             - It selects all elements with the class `collapser`.
             - For each `collapser` element, it finds the next sibling element with the class `collapsible-content`.

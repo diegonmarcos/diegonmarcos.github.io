@@ -60,6 +60,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Scroll-spy functionality
+    const scrollSpyHeadings = document.querySelectorAll('main h2, main h3');
+    const navLinks = sideNav.querySelectorAll('a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        scrollSpyHeadings.forEach(heading => {
+            const headingTop = heading.offsetTop;
+            if (pageYOffset >= headingTop - 60) {
+                current = heading.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href').substring(1) === current) {
+                link.classList.add('active');
+            }
+        });
+    });
+
     // Select all elements that can act as a collapser
     const collapsers = document.querySelectorAll('.collapser');
 

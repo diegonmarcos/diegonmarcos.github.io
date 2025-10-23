@@ -310,6 +310,10 @@ a:hover {
     padding-left: 10px; /* Add some padding for better look */
 }
 
+.table-container {
+    overflow-x: auto;
+}
+
 /* Mermaid Diagram */
 .mermaid-diagram {
     overflow-x: auto;

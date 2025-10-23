@@ -145,6 +145,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    mainContent.addEventListener('touchend', () => {
+        if (sideNav.classList.contains('open')) {
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('nav-open');
+        }
+    });
+
 
     // Floating Action Button
     const floatingBtn = document.getElementById('floating-btn');

@@ -904,30 +904,77 @@ Database
 - Pursuing:  Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
 
 
-
-**My Bucket Endurance** 
+#### My Bucket Endurance
  - 🪂 High Adrenaline Sports
  - 🏂 Adrenaline Sports
  - 🏔️ Nature Sports and Activities
  - 🥋 Martial Arts
  - ⚽️ Collective Sports
  - 🏃 Individual Sports
+##### (+)
+High Adrenaline Sports:
+	- 🚵🏻‍♂️ Trail Moto | ☆☆
+	- 🪁 Kitesurfing | ☆
+	- 🪂 Skydiving | ☆
+	- 🧗🏻‍♂️ Rock Climbing | ☆☆
+	- 🏂🏻 Snowboarding | ☆
+	- Bung Jump |
+	- Wing Suit |
+- Adrenaline Sports:
+	- 🥾 Hiking | ☆☆☆
+	- 🪂 Paragliding | ☆☆
+	- 🏄🏻‍♂️ Wakeboard | ☆☆
+	- 🛹 Skating  | ☆
+	- Ocean Fishing |
+- Nature Sports and Activities:
+	- ☘️ Trekking  | 🔸
+	- 🏕️ Camping | ☆☆☆☆
+	- 🤿 Snorkeling | 🔸
+	- 🏄🏻‍♂️ Surfing | ☆
+	- 🎣 River Fishing  | ☆☆
+	- ⚓ Scuba Diving | ☆☆
+	- ⛵ Sailing  | ☆
+- Martial Arts
+	- 🥋 Aikido | ☆
+	- 🥊Taekwondo | ☆
+	- 🥷Kung Fu | 
+	- Boxing |
+- Collective Sports: 
+	- Competitions: 
+		- 🤾🏻‍♂️ Handball | ☆☆
+		- 🏐 Volleyball | ☆☆
+		- 🏉 Rugby | ☆☆
+		- 🤽🏻‍♂️ Waterpolo | ☆
+	- Hobby: 
+		- ⚽ Futebol | ☆☆☆☆
+- Individual Sports:
+	- Competition level: 
+		- 🎾 Tennis | ☆☆☆
+		- 🏊🏻‍♂️ Swimming | ☆☆☆
+		- 🚲 Cycling | ☆☆☆
+		- 🏃🏻‍♂️ Running| ☆☆☆
+		- 🚴🏻‍♂️🏊🏻‍♂️ Biathlon | ☆☆
+		- Marathon |
+		- Iron Man 70.3 |
+	- Hobby: 
+		- ⛳ Golf  | ☆
+		- ⛸️ Ice Lake Skying | ☆☆
 
-**My Bucket 50 (things before 50)**
-Topics:
--  🌿 Personal Growth & Learning
-- 🌐 Travel & Adventure
-- 🌍 Health & Wellness
-- 💼 Career and Finance
-- ❤️ Relationship & Community
-- ✨ Creativity & Fun
+#### My Bucket 50 (things before 50)
+- Topics:
+	-  🌿 Personal Growth & Learning
+	- 🌐 Travel & Adventure
+	- 🌍 Health & Wellness
+	- 💼 Career and Finance
+	- ❤️ Relationship & Community
+	- ✨ Creativity & Fun
+- Age:
+	 - 🌱 (By 30): Foundational goals for exploration and habit-building
+	 - 🌳 (By 40): Deeper goals for mastery, reflection, and long-term planning
+	 - 🍁 (By 50): Legacy goals focused on wisdom, giving back, and deep fulfilment
 
-Age:
- - 🌱 (By 30): Foundational goals for exploration and habit-building
- - 🌳 (By 40): Deeper goals for mastery, reflection, and long-term planning
- - 🍁 (By 50): Legacy goals focused on wisdom, giving back, and deep fulfilment
-
-
+##### (+)
+ - item 1
 ---
 
 

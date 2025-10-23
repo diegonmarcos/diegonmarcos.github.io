@@ -55,11 +55,16 @@ body {
     text-shadow: 0 0 10px rgba(160, 96, 255, 0.5);
 }
 
+.hero-subtitle-container {
+    max-width: 50%;
+    margin: 0 auto;
+}
+
 .hero-subtitle {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
     font-weight: 500;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
 }
 
 .hero-quote {
@@ -103,6 +108,12 @@ body {
     font-weight: 700;
     color: var(--brand-light-purple);
     margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.card-title i {
+    margin-right: 0.5rem;
 }
 
 .card-description {

@@ -31,7 +31,7 @@
 ### ⚡ TL;DR
  >"Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 40+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany."
 
-[📜Curriculum Vitae (pdf)](https://drive.google.com/file/d/1Dec6E5hWDRvVIPRnCZaNFccS2fqr9ght/view?usp=drivesdk)
+[📜Curriculum Vitae (pdf)](https://diegonmarcos.github.io/cv_pdf)
  ``` mermaid
 gantt
     title Career and Education Timeline

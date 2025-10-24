@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Data for Value Proposition Cards ---
     const valuePropSections = [
         {
-            title: "Capital Markets & Venture Acumen",
+            title: "Capital Markets & Venture Capital Acumen",
             icon: "ti-briefcase",
             description: "\"I don't just analyze businesses; I've built, funded, and scaled them. My experience is rooted in tangible results and strategic growth.\"",
             points: [
@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         },
         {
-            title: "Global Perspective & Adaptability",
+            title: "Global Perspective & Cross Adaptability",
             icon: "ti-world",
-            description: "\"My personal and professional life has been a nomadic project, providing me with unparalleled adaptability and cross-cultural communication skills.\"",
+            description: "\"My personal life has been a nomadic project, providing me with unparalleled learning opportunities.\"",
             points: [
                 "Lived in Berlin, Barcelona, London, Paris, and Valencia, while traveling to over 170 cities in 40+ countries.",
                 "Fluent in Portuguese, English, and Spanish, with a growing proficiency in German.",
@@ -99,5 +99,36 @@ document.addEventListener('DOMContentLoaded', () => {
     animatedSections.forEach(section => {
         observer.observe(section);
     });
+
+    // --- Theme Toggle Logic ---
+    const themeToggleButton = document.getElementById('theme-toggle');
+    const body = document.body;
+
+    // Function to apply the saved theme on load
+    const applyTheme = () => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+            themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
+        } else {
+            body.classList.remove('light-theme');
+            themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
+        }
+    };
+
+    // Theme toggle button event listener
+    themeToggleButton.addEventListener('click', () => {
+        body.classList.toggle('light-theme');
+        if (body.classList.contains('light-theme')) {
+            localStorage.setItem('theme', 'light');
+            themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
+        } else {
+            localStorage.setItem('theme', 'dark');
+            themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
+        }
+    });
+
+    // Apply the theme when the page loads
+    applyTheme();
 
 });

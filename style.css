@@ -10,6 +10,19 @@
     --font-sans: 'Inter', sans-serif;
 }
 
+/* --- Light Theme Definition --- */
+body.light-theme {
+    --brand-dark: #F4F4F9;
+    --card-bg: #FFFFFF;
+    --card-border: #E2E8F0;
+    --text-primary: #1A202C;
+    --text-secondary: #4A5568;
+}
+
+body.light-theme .hero-title {
+    text-shadow: 0 0 10px rgba(160, 96, 255, 0.2);
+}
+
 /* --- Base Styles & Reset --- */
 *, *::before, *::after {
     box-sizing: border-box;
@@ -37,10 +50,36 @@ body {
     margin-bottom: 3rem;
 }
 
+/* --- Theme Toggle Button --- */
+.theme-toggle-button {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.theme-toggle-button:hover {
+    border-color: var(--brand-light-purple);
+    color: var(--brand-light-purple);
+}
+
 /* --- Hero Section --- */
 .hero {
     text-align: center;
     margin-bottom: 6rem;
+    position: relative;
 }
 
 .hero-title {
@@ -56,14 +95,15 @@ body {
 }
 
 .hero-subtitle-container {
-    max-width: 50%;
+    max-width: 60%;
     margin: 0 auto;
 }
 
 .hero-subtitle {
-    font-size: clamp(.5em, 1.5vw, 1.60rem); /* Responsive font size */
+    font-size: clamp(.5em, 1.5vw, 1.1rem); /* Responsive font size */
     color: var(--text-secondary);
     font-weight: 500;
+	font-style: italic;
     margin-bottom: 0;
 }
 
@@ -111,7 +151,7 @@ body {
 }
 
 .card-title {
-    font-size: clamp(1rem, 1.5vw, 3.5rem);
+    font-size: clamp(1rem, 1.0vw, 3.5rem);
     font-weight: 700;
     color: var(--brand-light-purple);
     margin-bottom: 0.75rem;
@@ -120,11 +160,11 @@ body {
 }
 
 .card-title i {
-    margin-right: 0.5rem;
+    margin-right: .5rem;
 }
 
 .card-description {
-    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    font-size: clamp(1.5rem, 1.5vw, 3.1rem);
     color: var(--text-secondary);
     margin-bottom: 1rem;
 	font-style: italic;
@@ -132,10 +172,11 @@ body {
 
 .card-list {
     list-style-position: inside;
-    list-style-type: '— ';
+    list-style-type: '- ';
     padding-left: 0.5rem;
-    font-size: clamp(0.8rem, 1.5vw, 1.1rem);
+    font-size: clamp(0.5rem, 0.5vw, 1.1rem);
     display: flex;
+	font-style: italic;
     flex-direction: column;
     gap: 0.5rem;
 }

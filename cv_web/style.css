@@ -395,25 +395,23 @@ a:hover {
     align-items: center;
     padding: 10px 25px 0 0;
     width: 100%;
+    gap: 15px; /* Consistent spacing */
+    margin-bottom: 15px; /* Add space below the button bar */
 }
 
 /* Override general .side-nav a styles for our buttons */
-.desktop-view-button-container a {
+.desktop-view-button-container .icon-button {
     display: inline-block;
     padding: 0;
-    font-size: 20px; /* Keep font size consistent */
-}
-
-.desktop-view-button {
-    margin-left: 10px; /* Space between buttons */
-}
-
-.desktop-view-button, .theme-toggle-button {
+    font-size: 16px;
     color: white;
     opacity: 0.7;
 }
-.desktop-view-button:hover, .theme-toggle-button:hover {
+
+.desktop-view-button-container .icon-button:hover {
     opacity: 1;
+    color: white; /* Ensure hover color is correct */
+    text-decoration: none; /* Remove underline on hover */
 }
 
 .nav-toggle-button {

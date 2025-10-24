@@ -66,17 +66,19 @@ document.addEventListener('DOMContentLoaded', () => {
             cardDescription.className = 'card-description';
             cardDescription.textContent = section.description;
 
-            const cardList = document.createElement('ul');
-            cardList.className = 'card-list';
+            const pointsContainer = document.createElement('div');
+            pointsContainer.className = 'card-points-container';
+
             section.points.forEach(pointText => {
-                const listItem = document.createElement('li');
-                listItem.textContent = pointText;
-                cardList.appendChild(listItem);
+                const pointBox = document.createElement('div');
+                pointBox.className = 'point-box';
+                pointBox.textContent = pointText;
+                pointsContainer.appendChild(pointBox);
             });
 
             card.appendChild(cardTitle);
             card.appendChild(cardDescription);
-            card.appendChild(cardList);
+            card.appendChild(pointsContainer);
             gridContainer.appendChild(card);
         });
     }

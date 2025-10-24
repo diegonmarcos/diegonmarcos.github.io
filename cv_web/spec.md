@@ -97,3 +97,48 @@ The `script.js` file sets up the following event listeners to provide interactiv
 - **`click` on the Main Content Area (`#main-content`):** Closes the side navigation menu if it is open.
 - **`click` on the Floating Action Button (`#floating-btn`):** Toggles the visibility of the floating menu.
 - **`click` on `window`:** Closes the floating menu if a click occurs outside of the menu or the floating action button.
+
+## Recent Feature Additions
+
+This section details new UI/UX features and interactive elements added to the portfolio.
+
+### Side Menu Utility Bar
+
+A new utility bar has been added to the top of the slide-out side navigation menu.
+
+- **HTML Structure:** The buttons are contained within a `<div class="desktop-view-button-container">` placed at the top of the `<nav id="side-nav">` element.
+- **CSS Styling:**
+    - The container uses Flexbox (`display: flex`, `justify-content: flex-end`) to align the icon buttons to the top-right.
+    - A consistent `icon-button` class is used for uniform styling (size, color, opacity).
+    - Hover states (`:hover`) are defined to provide visual feedback.
+    - Spacing is controlled via `gap` and `padding` on the container.
+- **Buttons (Right to Left):**
+    1.  **Desktop/Mobile View Toggle (`#desktop-view-toggle`):**
+        - **Functionality:** Toggles the viewport meta tag between a mobile-first view (`width=device-width, initial-scale=1.0`) and a scaled-down desktop view (`width=1024`).
+        - **UI:** The icon changes between `<i class="fas fa-desktop"></i>` and `<i class="fas fa-mobile-alt"></i>` to reflect the current mode.
+        - **Interaction:** Implemented via a click event listener in `script.js`.
+    2.  **Light/Dark Theme Toggle (`#theme-toggle`):**
+        - **Functionality:** (Placeholder) This button is in place for future theme-switching logic.
+        - **UI:** Uses a sun icon (`<i class="fas fa-sun"></i>`).
+    3.  **View Source (`#view-source-btn`):**
+        - **Functionality:** A direct link that opens the `cv_web` folder of the project's GitHub repository in a new tab.
+        - **UI:** Uses a code icon (`<i class="fas fa-code"></i>`).
+    4.  **Terminal Theme (`#terminal-theme-btn`):**
+        - **Functionality:** (Placeholder) This button is in place for a future terminal-style theme switcher.
+        - **UI:** Uses a terminal icon (`<i class="fas fa-terminal"></i>`).
+    5.  **Palette Cycler (`#palette-cycler-btn`):**
+        - **Functionality:** (Placeholder) This button is in place for a future feature to cycle through multiple color palettes.
+        - **UI:** Uses a palette icon (`<i class="fas fa-palette"></i>`).
+- **Accessibility:** All icon buttons have a `title` attribute to provide descriptive text on mouse hover.
+
+### Easter Egg: "Dev Mode"
+
+A hidden feature has been added to the main header.
+
+- **Trigger:** Clicking the main `<h1>` title ("DIEGO NEPOMUCENO MARCOS") seven times in quick succession (within a 2-second reset window).
+- **Effects:**
+    1.  **Toast Message:** A temporary message with the text "Dev Mode Unlocked" appears in the center of the screen. It is styled with a green, monospace font to give it a "hacker" feel.
+    2.  **Starburst Animation:** A 7-second particle animation is triggered, where 50 small white dots burst outwards from random positions across the entire screen.
+- **Implementation:**
+    - **CSS:** New styles for `.dev-mode-toast` and `.particle` (including a `@keyframes starburst` animation) were added to `style.css`.
+    - **JavaScript:** Logic was added to `script.js` to handle the click counting, trigger the toast and starburst functions, and manage the animation timeouts.

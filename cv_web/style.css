@@ -434,8 +434,47 @@ a:hover {
     padding: 16px;
 }
 
-#main-content.nav-open {
-    margin-left: 250px;
+.nav-toggle-button.nav-open {
+    left: 265px; /* 250px menu width + 15px offset */
+}
+
+/* --- Easter Egg Styles --- */
+.dev-mode-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #0f0; /* Green text */
+    padding: 15px 25px;
+    border-radius: 5px;
+    border: 1px solid #0f0;
+    z-index: 2000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.2em;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.particle {
+    position: fixed;
+    background-color: white;
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    z-index: 1999;
+    animation: starburst 7s ease-out forwards;
+}
+
+@keyframes starburst {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
 }
 
 .side-nav ul {

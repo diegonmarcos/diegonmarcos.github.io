@@ -173,4 +173,84 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Easter Egg Logic ---
+    const nameTitle = document.querySelector('.header-content h1');
+    let clickCount = 0;
+    let clickTimer = null;
+
+    if (nameTitle) {
+        nameTitle.addEventListener('click', () => {
+            clickCount++;
+
+            if (clickTimer) {
+                clearTimeout(clickTimer);
+            }
+
+            clickTimer = setTimeout(() => {
+                clickCount = 0; // Reset after 2 seconds of inactivity
+            }, 2000);
+
+            if (clickCount === 7) {
+                clickCount = 0;
+                clearTimeout(clickTimer);
+                showDevModeToast();
+                createStarburst();
+            }
+        });
+    }
+
+    function showDevModeToast() {
+        const toast = document.createElement('div');
+        toast.className = 'dev-mode-toast';
+        toast.textContent = 'Dev Mode Unlocked';
+        document.body.appendChild(toast);
+
+        // Fade in
+        setTimeout(() => {
+            toast.style.opacity = '1';
+        }, 10);
+
+        // Fade out and remove
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.remove();
+            }, 500);
+        }, 2500);
+    }
+
+    function createStarburst() {
+        const particleCount = 50; // Increased for a fuller effect
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            document.body.appendChild(particle);
+
+            const startX = Math.random() * screenWidth;
+            const startY = Math.random() * screenHeight;
+
+            const angle = Math.random() * 360;
+            const distance = Math.random() * 100 + 50; // How far they travel
+            const endX = startX + Math.cos(angle * Math.PI / 180) * distance;
+            const endY = startY + Math.sin(angle * Math.PI / 180) * distance;
+
+            particle.style.left = `${startX}px`;
+            particle.style.top = `${startY}px`;
+
+            // Trigger animation
+            setTimeout(() => {
+                particle.style.left = `${endX}px`;
+                particle.style.top = `${endY}px`;
+            }, 10);
+
+            // Remove particle after animation
+            setTimeout(() => {
+                particle.remove();
+            }, 7000);
+        }
+    }
 });

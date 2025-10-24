@@ -1444,5 +1444,41 @@ gantt
     <br><br><br><br><br><br>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Floating Action Button
+            const floatingBtn = document.getElementById('floating-btn');
+            const floatingMenu = document.getElementById('floating-menu');
+
+            if (floatingBtn && floatingMenu) {
+                floatingBtn.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    floatingMenu.classList.toggle('show');
+                    floatingBtn.classList.toggle('active');
+                });
+
+                window.addEventListener('click', (event) => {
+                    if (floatingMenu.classList.contains('show') && !floatingMenu.contains(event.target) && !floatingBtn.contains(event.target)) {
+                        floatingMenu.classList.remove('show');
+                        floatingBtn.classList.remove('active');
+                    }
+                });
+
+                // --- Scroll fade for buttons ---
+                let scrollTimeout;
+                const navToggleBtn = document.getElementById('nav-toggle');
+                window.addEventListener('scroll', () => {
+                    floatingBtn.classList.add('fade-out');
+                    if(navToggleBtn) navToggleBtn.classList.add('fade-out');
+
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        floatingBtn.classList.remove('fade-out');
+                        if(navToggleBtn) navToggleBtn.classList.remove('fade-out');
+                    }, 1000); // 1 second delay
+                });
+            }
+        });
+    </script>
 </body>
 </html>

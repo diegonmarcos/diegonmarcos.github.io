@@ -151,20 +151,4 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContent.classList.remove('nav-open');
         }
     });
-
-
-    // Floating Action Button
-    const floatingBtn = document.getElementById('floating-btn');
-    const floatingMenu = document.getElementById('floating-menu');
-
-    floatingBtn.addEventListener('click', (event) => {
-        event.stopPropagation();
-        floatingMenu.classList.toggle('show');
-    });
-
-    window.addEventListener('click', (event) => {
-        if (!floatingMenu.contains(event.target) && !floatingBtn.contains(event.target)) {
-            floatingMenu.classList.remove('show');
-        }
-    });
 });

@@ -131,19 +131,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply the theme when the page loads
     applyTheme();
 
-    // --- Floating Action Button ---
+    // --- Scroll fade for theme toggle button ---
+    let scrollTimeout;
     const floatingBtn = document.getElementById('floating-btn');
+
+    window.addEventListener('scroll', () => {
+        themeToggleButton.classList.add('fade-out');
+        if (floatingBtn) {
+            floatingBtn.classList.add('fade-out');
+        }
+
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            themeToggleButton.classList.remove('fade-out');
+            if (floatingBtn) {
+                floatingBtn.classList.remove('fade-out');
+            }
+        }, 1000); // Adjust timeout as needed
+    });
+
+    // --- Floating Action Button ---
     const floatingMenu = document.getElementById('floating-menu');
 
     if (floatingBtn && floatingMenu) {
         floatingBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             floatingMenu.classList.toggle('show');
+            floatingBtn.classList.toggle('active');
         });
 
         window.addEventListener('click', (event) => {
             if (floatingMenu.classList.contains('show') && !floatingMenu.contains(event.target) && !floatingBtn.contains(event.target)) {
                 floatingMenu.classList.remove('show');
+                floatingBtn.classList.remove('active');
             }
         });
     }

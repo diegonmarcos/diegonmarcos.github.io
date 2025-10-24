@@ -390,17 +390,29 @@ a:hover {
 }
 
 .desktop-view-button-container {
-    text-align: right;
-    margin-right: 25px;
-    margin-bottom: 15px; /* Added space */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 25px 0 0;
+    width: 100%;
+}
+
+/* Override general .side-nav a styles for our buttons */
+.desktop-view-button-container a {
+    display: inline-block;
+    padding: 0;
+    font-size: 20px; /* Keep font size consistent */
 }
 
 .desktop-view-button {
+    margin-left: 10px; /* Space between buttons */
+}
+
+.desktop-view-button, .theme-toggle-button {
     color: white;
     opacity: 0.7;
-    font-size: 20px;
 }
-.desktop-view-button:hover {
+.desktop-view-button:hover, .theme-toggle-button:hover {
     opacity: 1;
 }
 

@@ -63,10 +63,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scroll-spy functionality
     const scrollSpyHeadings = document.querySelectorAll('main h2, main h3');
     const navLinks = sideNav.querySelectorAll('a');
-    const careerSection = document.getElementById('career');
+    const headerContent = document.querySelector('.header-content');
     let menuOpenedOnce = false;
 
     window.addEventListener('scroll', () => {
+        // --- Header Fade-Out ---
+        const scrollPosition = window.pageYOffset;
+        const fadeOutThreshold = 200; // Pixels to scroll before fade starts
+        if (headerContent) {
+            if (scrollPosition < fadeOutThreshold) {
+                headerContent.style.opacity = 1 - (scrollPosition / fadeOutThreshold);
+            } else {
+                headerContent.style.opacity = 0;
+            }
+        }
+
         let current = '';
         scrollSpyHeadings.forEach(heading => {
             const headingTop = heading.offsetTop;
@@ -116,10 +127,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 content.classList.add('open');
                 collapser.classList.add('open');
                 collapser.classList.remove('closed');
-            }
-        });
-    });
-
+                    }
+                });
+            
+                // --- Custom Smooth Scroll for Arrow ---
+                const scrollArrow = document.querySelector('.scroll-down-arrow');
+                if (scrollArrow) {
+                    scrollArrow.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute('href');
+                        const targetElement = document.querySelector(targetId);
+                                    if (targetElement) {
+                                        smoothScrollTo(targetElement.offsetTop, 3000); // 3000ms = 3 seconds
+                                    }                    });
+                }
+            
+                function smoothScrollTo(endY, duration) {
+                    const startY = window.pageYOffset;
+                    const distanceY = endY - startY;
+                    let startTime = null;
+            
+                    function animation(currentTime) {
+                        if (startTime === null) startTime = currentTime;
+                        const timeElapsed = currentTime - startTime;
+                        const run = ease(timeElapsed, startY, distanceY, duration);
+                        window.scrollTo(0, run);
+                        if (timeElapsed < duration) requestAnimationFrame(animation);
+                    }
+            
+                    function ease(t, b, c, d) {
+                        t /= d / 2;
+                        if (t < 1) return c / 2 * t * t + b;
+                        t--;
+                        return -c / 2 * (t * (t - 2) - 1) + b;
+                    }
+            
+                    requestAnimationFrame(animation);
+                }
+            });
     // Side Navigation Toggle
     const navToggle = document.getElementById('nav-toggle');
     const mainContent = document.getElementById('main-content');

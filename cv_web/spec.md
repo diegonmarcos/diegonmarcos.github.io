@@ -142,3 +142,13 @@ A hidden feature has been added to the main header.
 - **Implementation:**
     - **CSS:** New styles for `.dev-mode-toast` and `.particle` (including a `@keyframes starburst` animation) were added to `style.css`.
     - **JavaScript:** Logic was added to `script.js` to handle the click counting, trigger the toast and starburst functions, and manage the animation timeouts.
+
+### UI/UX Enhancements
+
+- **Header Fade-Out on Scroll:**
+    - **Functionality:** The main header content (title, subtitle, quote) smoothly fades out as the user scrolls down the page.
+    - **Implementation:** A scroll event listener in `script.js` dynamically changes the `opacity` of the `.header-content` element based on the `window.pageYOffset`. A `transition` property on the element in `style.css` ensures the fade is smooth.
+
+- **Custom Smooth Scroll for Arrow:**
+    - **Functionality:** The scroll-down arrow in the header now triggers a custom JavaScript-based smooth scroll with a 3-second duration, providing a slower, more controlled animation.
+    - **Implementation:** The default CSS `scroll-behavior` was removed. A custom `smoothScrollTo` function using `requestAnimationFrame` was added to `script.js` to handle the animation, and a click listener was attached to the arrow element.

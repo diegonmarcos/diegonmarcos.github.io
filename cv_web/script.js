@@ -151,4 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContent.classList.remove('nav-open');
         }
     });
+
+    // --- Desktop View Toggle ---
+    const desktopViewToggle = document.getElementById('desktop-view-toggle');
+    const viewport = document.querySelector('meta[name="viewport"]');
+    let isDesktopView = false;
+
+    if (desktopViewToggle) {
+        desktopViewToggle.addEventListener('click', (event) => {
+            event.preventDefault();
+            isDesktopView = !isDesktopView;
+            if (isDesktopView) {
+                const DESKTOP_WIDTH = 1024;
+                const mobileWidth = window.screen.width;
+                const scale = mobileWidth / DESKTOP_WIDTH;
+                viewport.setAttribute('content', `width=${DESKTOP_WIDTH}, initial-scale=${scale}`);
+                desktopViewToggle.innerHTML = '<i class="fas fa-mobile-alt"></i>';
+            } else {
+                viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
+                desktopViewToggle.innerHTML = '<i class="fas fa-desktop"></i>';
+            }
+        });
+    }
 });

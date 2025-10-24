@@ -365,7 +365,7 @@ a:hover {
     overflow-x: hidden;
     overflow-y: auto;
     transition: 0.5s;
-    padding-top: 80px;
+    padding-top: 20px;
 }
 
 .side-nav ul li::before {
@@ -387,6 +387,21 @@ a:hover {
 
 .side-nav.open {
     left: 0;
+}
+
+.desktop-view-button-container {
+    text-align: right;
+    margin-right: 25px;
+    margin-bottom: 15px; /* Added space */
+}
+
+.desktop-view-button {
+    color: white;
+    opacity: 0.7;
+    font-size: 20px;
+}
+.desktop-view-button:hover {
+    opacity: 1;
 }
 
 .nav-toggle-button {

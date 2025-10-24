@@ -131,4 +131,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply the theme when the page loads
     applyTheme();
 
+    // --- Floating Action Button ---
+    const floatingBtn = document.getElementById('floating-btn');
+    const floatingMenu = document.getElementById('floating-menu');
+
+    if (floatingBtn && floatingMenu) {
+        floatingBtn.addEventListener('click', (event) => {
+            event.stopPropagation();
+            floatingMenu.classList.toggle('show');
+        });
+
+        window.addEventListener('click', (event) => {
+            if (floatingMenu.classList.contains('show') && !floatingMenu.contains(event.target) && !floatingBtn.contains(event.target)) {
+                floatingMenu.classList.remove('show');
+            }
+        });
+    }
 });

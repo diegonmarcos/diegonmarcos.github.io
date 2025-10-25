@@ -42,6 +42,88 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create 200 stars
     createStars(200);
 
+    // Function to create constellation
+    function createConstellation(name, stars, connections) {
+        const constellation = [];
+
+        // Create stars
+        stars.forEach((starPos, index) => {
+            const star = document.createElement('div');
+            star.className = 'constellation-star';
+            star.style.left = starPos.x + '%';
+            star.style.top = starPos.y + '%';
+            star.style.width = starPos.size + 'px';
+            star.style.height = starPos.size + 'px';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            spaceBackground.appendChild(star);
+            constellation.push({ element: star, x: starPos.x, y: starPos.y });
+        });
+
+        // Create lines connecting stars
+        connections.forEach(([startIdx, endIdx]) => {
+            const start = constellation[startIdx];
+            const end = constellation[endIdx];
+
+            const line = document.createElement('div');
+            line.className = 'constellation-line';
+
+            // Calculate line position and angle
+            const startRect = { x: start.x, y: start.y };
+            const endRect = { x: end.x, y: end.y };
+
+            const deltaX = endRect.x - startRect.x;
+            const deltaY = endRect.y - startRect.y;
+            const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
+            line.style.left = startRect.x + '%';
+            line.style.top = startRect.y + '%';
+            line.style.width = length + '%';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.animationDelay = Math.random() * 4 + 's';
+            line.style.animationDuration = (Math.random() * 3 + 3) + 's';
+
+            spaceBackground.appendChild(line);
+        });
+    }
+
+    // Cancer constellation (♋) - positioned in upper left
+    const cancerStars = [
+        { x: 15, y: 20, size: 3 },   // Acubens
+        { x: 12, y: 18, size: 2.5 }, // Al Tarf
+        { x: 18, y: 22, size: 2.5 }, // Asellus Australis
+        { x: 16, y: 17, size: 2 },   // Asellus Borealis
+        { x: 13, y: 15, size: 2 },   // Tegmine
+        { x: 19, y: 19, size: 2 }    // Additional star
+    ];
+
+    const cancerConnections = [
+        [0, 1], // Acubens to Al Tarf
+        [0, 2], // Acubens to Asellus Australis
+        [1, 4], // Al Tarf to Tegmine
+        [4, 3], // Tegmine to Asellus Borealis
+        [3, 5], // Asellus Borealis to additional
+        [5, 2]  // Additional to Asellus Australis
+    ];
+
+    // Aries constellation (♈) - positioned in upper right
+    const ariesStars = [
+        { x: 80, y: 25, size: 3 },   // Hamal (brightest)
+        { x: 83, y: 23, size: 2.5 }, // Sheratan
+        { x: 85, y: 28, size: 2 },   // Mesarthim
+        { x: 78, y: 22, size: 1.5 }  // Additional star
+    ];
+
+    const ariesConnections = [
+        [0, 1], // Hamal to Sheratan
+        [1, 2], // Sheratan to Mesarthim
+        [0, 3]  // Hamal to additional
+    ];
+
+    createConstellation('cancer', cancerStars, cancerConnections);
+    createConstellation('aries', ariesStars, ariesConnections);
+
     // Function to create star explosion
     function createStarExplosion() {
         if (!backgroundAnimationsEnabled) return;

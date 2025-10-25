@@ -220,6 +220,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Font Size Control ---
+    const increaseFontSizeBtn = document.getElementById('increase-font-size-btn');
+    const resetFontSizeBtn = document.getElementById('reset-font-size-btn');
+    const body = document.body;
+    const initialFontSize = getComputedStyle(body).fontSize;
+
+    if (increaseFontSizeBtn) {
+        increaseFontSizeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            let currentFontSize = parseFloat(getComputedStyle(body).fontSize);
+            body.style.fontSize = (currentFontSize * 1.2) + 'px';
+        });
+    }
+
+    if (resetFontSizeBtn) {
+        resetFontSizeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            body.style.fontSize = initialFontSize;
+        });
+    }
+
     // --- Easter Egg Logic ---
     const nameTitle = document.querySelector('.header-content h1');
     let clickCount = 0;
@@ -300,5 +321,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
-
-

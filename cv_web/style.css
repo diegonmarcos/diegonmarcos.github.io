@@ -419,14 +419,33 @@ a:hover {
     top: 15px;
     left: 15px;
     z-index: 1002;
-    background-color: #111;
-    color: white;
+    background-color: transparent;
     border: none;
-    padding: 10px 15px;
     cursor: pointer;
-    font-size: 20px;
+    padding: 10px;
     transition: opacity 0.3s ease, left 0.5s;
     opacity: 0.7;
+}
+
+.nav-toggle-button span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.nav-toggle-button.open span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.nav-toggle-button.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle-button.open span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 #main-content {
@@ -563,3 +582,5 @@ a:hover {
 .floating-menu a:hover {
     background-color: #3c3c3c;
 }
+
+

@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navToggle.addEventListener('click', () => {
         sideNav.classList.toggle('open');
         mainContent.classList.toggle('nav-open');
+        navToggle.classList.toggle('open');
     });
 
     // Auto-close on link click
@@ -299,3 +300,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+

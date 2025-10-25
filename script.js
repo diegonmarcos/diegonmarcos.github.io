@@ -440,38 +440,290 @@ document.addEventListener('DOMContentLoaded', () => {
         calculateAndApplyScale();
     });
 
-    // --- Scroll fade for floating button ---
-    let scrollTimeout;
-    const floatingBtn = document.getElementById('floating-btn');
+    // --- Clippy Assistant ---
+    const clippyContainer = document.getElementById('clippy-container');
+    const clippySvg = document.getElementById('clippy-svg');
+    const clippySpeech = document.querySelector('.clippy-speech');
+    const clippyMenu = document.getElementById('clippy-menu');
 
-    window.addEventListener('scroll', () => {
-        if (floatingBtn) {
-            floatingBtn.classList.add('fade-out');
+    // Check if Clippy is disabled
+    const clippyDisabled = localStorage.getItem('clippyDisabled') === 'true';
+    if (clippyDisabled) {
+        clippyContainer.style.display = 'none';
+        return; // Exit early, don't initialize Clippy
+    }
+
+    // Funny phrases for Clippy
+    const clippyPhrases = [
+        "Pretty sure there's a cat walking on the keyboard somewhere..",
+        "What's computer's favorite snack? Microchips.",
+        "Why do Java developers wear glasses? Because they don't C#.",
+        "Why don't programmers like nature? It has too many bugs.",
+        "Just waiting for that one semicolon to show up and fix everything.",
+        "Why was the JavaScript developer sad? Because he didn't Node how to Express himself."
+    ];
+
+    // Define two vertical lanes (left and right)
+    const LANE_LEFT = 50; // Left lane X position
+    const LANE_RIGHT_OFFSET = 150; // Right lane offset from right edge
+    let currentLane = 'right'; // Start in right lane
+
+    function getLaneX(lane) {
+        if (lane === 'left') {
+            return LANE_LEFT;
+        } else {
+            return window.innerWidth - LANE_RIGHT_OFFSET;
         }
+    }
 
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(() => {
-            if (floatingBtn) {
-                floatingBtn.classList.remove('fade-out');
-            }
-        }, 1000); // Adjust timeout as needed
+    // Position Clippy initially (bottom right lane)
+    let clippyX = getLaneX('right');
+    let clippyY = window.innerHeight - 150;
+    clippyContainer.style.left = clippyX + 'px';
+    clippyContainer.style.top = clippyY + 'px';
+
+    // Drag functionality - restricted to vertical movement in current lane
+    let isDragging = false;
+    let dragOffsetY = 0;
+
+    clippyContainer.addEventListener('mousedown', (e) => {
+        if (e.target.closest('#clippy-menu') || e.target.closest('.clippy-speech')) {
+            return; // Don't drag if clicking menu or speech bubble
+        }
+        isDragging = true;
+        clippyContainer.classList.add('dragging');
+        dragOffsetY = e.clientY - clippyContainer.offsetTop;
+        e.preventDefault();
     });
 
-    // --- Floating Action Button ---
-    const floatingMenu = document.getElementById('floating-menu');
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
 
-    if (floatingBtn && floatingMenu) {
-        floatingBtn.addEventListener('click', (event) => {
-            event.stopPropagation();
-            floatingMenu.classList.toggle('show');
-            floatingBtn.classList.toggle('active');
-        });
+        // Only allow vertical movement in current lane
+        clippyY = e.clientY - dragOffsetY;
 
-        window.addEventListener('click', (event) => {
-            if (floatingMenu.classList.contains('show') && !floatingMenu.contains(event.target) && !floatingBtn.contains(event.target)) {
-                floatingMenu.classList.remove('show');
-                floatingBtn.classList.remove('active');
+        // Keep Clippy within vertical bounds
+        clippyY = Math.max(50, Math.min(clippyY, window.innerHeight - 150));
+
+        // Keep X in current lane
+        clippyX = getLaneX(currentLane);
+
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            clippyContainer.classList.remove('dragging');
+        }
+    });
+
+    // Click to toggle menu
+    clippySvg.addEventListener('click', (e) => {
+        if (!isDragging) {
+            e.stopPropagation();
+            clippyMenu.classList.toggle('show');
+            clippySpeech.classList.remove('show'); // Hide speech when showing menu
+        }
+    });
+
+    // Close menu when clicking outside
+    window.addEventListener('click', (event) => {
+        if (clippyMenu.classList.contains('show') &&
+            !clippyMenu.contains(event.target) &&
+            !clippySvg.contains(event.target)) {
+            clippyMenu.classList.remove('show');
+        }
+    });
+
+    // Auto-movement animation (vertical only within current lane)
+    let autoMoveInterval;
+    let isAutoMoving = false;
+
+    function autoMoveClippy() {
+        if (isDragging || clippyMenu.classList.contains('show')) return;
+
+        isAutoMoving = true;
+        // Only move vertically in current lane
+        const targetY = Math.random() * (window.innerHeight - 200) + 50;
+
+        const duration = 2000; // 2 seconds
+        const startY = clippyY;
+        const startTime = Date.now();
+
+        function moveStep() {
+            if (isDragging) {
+                isAutoMoving = false;
+                return;
             }
+
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+            clippyY = startY + (targetY - startY) * eased;
+            clippyX = getLaneX(currentLane); // Stay in lane
+
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+
+            if (progress < 1) {
+                requestAnimationFrame(moveStep);
+            } else {
+                isAutoMoving = false;
+            }
+        }
+
+        moveStep();
+    }
+
+    // Schedule auto-movement every 15-25 seconds
+    function scheduleAutoMove() {
+        const delay = Math.random() * 10000 + 15000; // 15-25 seconds
+        autoMoveInterval = setTimeout(() => {
+            autoMoveClippy();
+            scheduleAutoMove();
+        }, delay);
+    }
+
+    scheduleAutoMove();
+
+    // Lane changing with fade out/in
+    function changeLane(newLane) {
+        if (isDragging || clippyMenu.classList.contains('show')) return;
+
+        // Fade out
+        clippyContainer.style.opacity = '0';
+
+        setTimeout(() => {
+            // Change lane
+            currentLane = newLane;
+            clippyX = getLaneX(currentLane);
+
+            // Move to random Y in new lane
+            clippyY = Math.random() * (window.innerHeight - 200) + 50;
+
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+
+            // Fade in
+            clippyContainer.style.opacity = '1';
+        }, 500); // Wait for fade out
+    }
+
+    // Schedule random lane changes every 30-60 seconds
+    function scheduleLaneChange() {
+        const delay = Math.random() * 30000 + 30000; // 30-60 seconds
+        setTimeout(() => {
+            const newLane = currentLane === 'left' ? 'right' : 'left';
+            changeLane(newLane);
+            scheduleLaneChange();
+        }, delay);
+    }
+
+    scheduleLaneChange();
+
+    // Appear/disappear functionality
+    let disappearTimeout;
+    let reappearTimeout;
+
+    function disappearClippy() {
+        // Fade out
+        clippyContainer.style.opacity = '0';
+        clippySpeech.classList.remove('show');
+        clippyMenu.classList.remove('show');
+
+        setTimeout(() => {
+            clippyContainer.classList.add('hidden');
+        }, 500);
+
+        // Reappear after 30-60 seconds
+        reappearTimeout = setTimeout(() => {
+            reappearClippy();
+        }, Math.random() * 30000 + 30000);
+    }
+
+    function reappearClippy() {
+        // Randomly choose lane (maybe switch)
+        currentLane = Math.random() > 0.5 ? 'left' : 'right';
+        clippyX = getLaneX(currentLane);
+        clippyY = Math.random() * (window.innerHeight - 200) + 50;
+
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+
+        clippyContainer.classList.remove('hidden');
+        // Fade in
+        clippyContainer.style.opacity = '1';
+
+        // Show a speech bubble when reappearing
+        setTimeout(() => showSpeechBubble(), 500);
+    }
+
+    // Occasionally disappear (every 2-3 minutes)
+    function scheduleDisappear() {
+        disappearTimeout = setTimeout(() => {
+            if (!clippyMenu.classList.contains('show')) {
+                disappearClippy();
+            }
+            scheduleDisappear();
+        }, Math.random() * 60000 + 120000); // 2-3 minutes
+    }
+
+    scheduleDisappear();
+
+    // Speech bubble functionality
+    function showSpeechBubble(message) {
+        if (clippyMenu.classList.contains('show')) return;
+
+        const phrase = message || clippyPhrases[Math.floor(Math.random() * clippyPhrases.length)];
+        clippySpeech.textContent = phrase;
+        clippySpeech.classList.add('show');
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+            clippySpeech.classList.remove('show');
+        }, 5000);
+    }
+
+    // Show speech bubble occasionally (every 30-60 seconds)
+    setInterval(() => {
+        if (!clippyContainer.classList.contains('hidden') &&
+            !clippyMenu.classList.contains('show') &&
+            !isDragging) {
+            showSpeechBubble();
+        }
+    }, Math.random() * 30000 + 30000);
+
+    // Show initial speech bubble after 3 seconds
+    setTimeout(() => showSpeechBubble(), 3000);
+
+    // Update Clippy position on window resize
+    window.addEventListener('resize', () => {
+        // Update to current lane position
+        clippyX = getLaneX(currentLane);
+        clippyY = Math.min(clippyY, window.innerHeight - 150);
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+    });
+
+    // Disable Clippy button
+    const clippyDisableBtn = document.getElementById('clippy-disable');
+    if (clippyDisableBtn) {
+        clippyDisableBtn.addEventListener('click', () => {
+            // Save preference to localStorage
+            localStorage.setItem('clippyDisabled', 'true');
+
+            // Fade out and hide Clippy
+            clippyContainer.style.opacity = '0';
+            setTimeout(() => {
+                clippyContainer.style.display = 'none';
+            }, 500);
         });
     }
 });

@@ -83,19 +83,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Custom Animation Engine ---
+    function animate(element, targetOpacity, targetTransform, duration) {
+        if (targetOpacity > 0) {
+            element.style.visibility = 'visible';
+        }
+
+        const startOpacity = parseFloat(window.getComputedStyle(element).opacity);
+        const matrix = new DOMMatrix(window.getComputedStyle(element).transform);
+        const startTransform = matrix.m42;
+        let startTime = null;
+
+        function animationStep(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+
+            const currentOpacity = startOpacity + (targetOpacity - startOpacity) * progress;
+            const currentTransform = startTransform + (targetTransform - startTransform) * progress;
+
+            element.style.opacity = currentOpacity;
+            element.style.transform = `translateY(${currentTransform}px)`;
+
+            if (progress < 1) {
+                requestAnimationFrame(animationStep);
+            } else {
+                if (targetOpacity === 0) {
+                    element.style.visibility = 'hidden';
+                }
+            }
+        }
+
+        requestAnimationFrame(animationStep);
+    }
+
     // --- Scroll Animation Logic using Intersection Observer ---
     const animatedSections = document.querySelectorAll('.animated-section');
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target); // Optional: Stop observing after animation
+                animate(entry.target, 1, 0, 600); // Fade in
+            } else {
+                animate(entry.target, 0, 30, 600); // Fade out
             }
         });
     }, {
-        root: null, // observes intersections relative to the viewport
-        threshold: 0.1 // trigger when 10% of the element is visible
+        root: null,
+        threshold: 0.95 // Trigger when 95% of the element is visible
+    });
+
+    animatedSections.forEach(section => {
+        observer.observe(section);
     });
 
     animatedSections.forEach(section => {

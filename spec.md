@@ -51,8 +51,8 @@ The CSS is clean and modern, utilizing variables for easy theme management betwe
 *   **DOM Content Loaded:** The script runs after the HTML has been fully loaded.
 *   **Data:** An array of objects (`valuePropSections`) holds the data for the "Value Proposition" cards.
 *   **Dynamic Content:** The script dynamically generates the "Value Proposition" cards by iterating over the `valuePropSections` array.
-*   **Intersection Observer:** An `IntersectionObserver` is used to detect when sections with the `animated-section` class enter the viewport.
-*   **Animation Trigger:** When a section becomes visible, the `is-visible` class is added to trigger the CSS animation.
+*   **Custom Animation Engine:** To overcome browser-specific rendering bugs with CSS transitions, the site uses a custom JavaScript animation engine. A bespoke `animate` function, powered by `requestAnimationFrame`, smoothly controls the `opacity` and `transform` properties of elements, providing reliable fade-in and fade-out effects.
+*   **Single Intersection Observer:** A single `IntersectionObserver` is used to monitor all elements with the `.animated-section` class. It triggers the `animate` function based on a single `threshold` value. When an element's visibility crosses this threshold, the observer determines whether to run the fade-in or fade-out animation. This provides a sensitive and symmetrical trigger for both effects.
 *   **Theme Toggle Logic:**
     *   Toggles the `.light-theme` class on the `<body>` element on button click.
     *   Swaps the button icon between a sun (`ti-sun`) and a moon (`ti-moon`).

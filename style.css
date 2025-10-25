@@ -211,6 +211,20 @@ body {
     text-align: center;
 }
 
+.cta .section-title {
+    margin-bottom: 1rem;
+}
+
+.card-quote {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.spacer {
+    height: 50vh;
+}
+
 .cta-description {
     max-width: 600px;
     margin: 0 auto 2rem auto;

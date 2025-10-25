@@ -497,6 +497,10 @@ body.fit-to-screen .container {
 
 
 @media (max-width: 768px) {
+    #clippy-container {
+        display: none;
+    }
+    
     .theme-toggle-button {
         top: 0.1rem;
         right: 0.1rem;

@@ -55,41 +55,57 @@ body.light-theme #space-background {
     background: radial-gradient(ellipse at bottom, #E8EAF6 0%, #C5CAE9 100%);
 }
 
-.stars {
+.star {
     position: absolute;
-    width: 2px;
-    height: 2px;
     background: white;
     border-radius: 50%;
-    box-shadow:
-        100px 100px white, 200px 150px white, 300px 200px white,
-        400px 250px white, 500px 100px white, 600px 180px white,
-        700px 220px white, 800px 90px white, 900px 160px white,
-        1000px 130px white, 1100px 210px white, 1200px 170px white,
-        150px 300px white, 250px 350px white, 350px 400px white,
-        450px 450px white, 550px 300px white, 650px 380px white,
-        750px 420px white, 850px 290px white, 950px 360px white,
-        1050px 330px white, 1150px 410px white, 1250px 370px white,
-        100px 500px white, 200px 550px white, 300px 600px white,
-        400px 650px white, 500px 500px white, 600px 580px white,
-        700px 620px white, 800px 490px white, 900px 560px white,
-        1000px 530px white, 1100px 610px white, 1200px 570px white;
+    animation: twinkle 4s ease-in-out infinite;
 }
 
-body.light-theme .stars {
-    box-shadow:
-        100px 100px #5C6BC0, 200px 150px #5C6BC0, 300px 200px #5C6BC0,
-        400px 250px #5C6BC0, 500px 100px #5C6BC0, 600px 180px #5C6BC0,
-        700px 220px #5C6BC0, 800px 90px #5C6BC0, 900px 160px #5C6BC0,
-        1000px 130px #5C6BC0, 1100px 210px #5C6BC0, 1200px 170px #5C6BC0,
-        150px 300px #5C6BC0, 250px 350px #5C6BC0, 350px 400px #5C6BC0,
-        450px 450px #5C6BC0, 550px 300px #5C6BC0, 650px 380px #5C6BC0,
-        750px 420px #5C6BC0, 850px 290px #5C6BC0, 950px 360px #5C6BC0,
-        1050px 330px #5C6BC0, 1150px 410px #5C6BC0, 1250px 370px #5C6BC0,
-        100px 500px #5C6BC0, 200px 550px #5C6BC0, 300px 600px #5C6BC0,
-        400px 650px #5C6BC0, 500px 500px #5C6BC0, 600px 580px #5C6BC0,
-        700px 620px #5C6BC0, 800px 490px #5C6BC0, 900px 560px #5C6BC0,
-        1000px 530px #5C6BC0, 1100px 610px #5C6BC0, 1200px 570px #5C6BC0;
+.star::before,
+.star::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+}
+
+/* Create star shape with cross effect */
+.star::before {
+    width: 100%;
+    height: 30%;
+    top: 35%;
+    left: 0;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+.star::after {
+    width: 30%;
+    height: 100%;
+    left: 35%;
+    top: 0;
+    box-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+body.light-theme .star {
+    background: #5C6BC0;
+}
+
+body.light-theme .star::before,
+body.light-theme .star::after {
+    background: #5C6BC0;
+    box-shadow: 0 0 3px rgba(92, 107, 192, 0.8);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.3;
+        transform: scale(0.8);
+    }
 }
 
 .star-explosion {

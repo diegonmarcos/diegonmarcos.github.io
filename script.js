@@ -10,10 +10,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Space Background Setup ---
     const spaceBackground = document.createElement('div');
     spaceBackground.id = 'space-background';
-    const starsElement = document.createElement('div');
-    starsElement.className = 'stars';
-    spaceBackground.appendChild(starsElement);
     document.body.insertBefore(spaceBackground, document.body.firstChild);
+
+    // Generate random stars
+    function createStars(count) {
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+
+            // Random position
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+
+            // Random size (1-3px)
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+
+            // Random opacity for depth
+            star.style.opacity = Math.random() * 0.5 + 0.5; // 0.5 to 1
+
+            // Random animation delay for varied twinkling
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's'; // 3-6 seconds
+
+            spaceBackground.appendChild(star);
+        }
+    }
+
+    // Create 200 stars
+    createStars(200);
 
     // Function to create star explosion
     function createStarExplosion() {

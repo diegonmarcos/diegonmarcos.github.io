@@ -2,9 +2,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Animation State Management ---
     let animationsEnabled = localStorage.getItem('animations') !== 'disabled';
+    let backgroundAnimationsEnabled = localStorage.getItem('backgroundAnimations') !== 'disabled';
 
     // --- Fit to Screen Scaling Logic ---
     const container = document.querySelector('.container');
+
+    // --- Space Background Setup ---
+    const spaceBackground = document.createElement('div');
+    spaceBackground.id = 'space-background';
+    const starsElement = document.createElement('div');
+    starsElement.className = 'stars';
+    spaceBackground.appendChild(starsElement);
+    document.body.insertBefore(spaceBackground, document.body.firstChild);
+
+    // Function to create star explosion
+    function createStarExplosion() {
+        if (!backgroundAnimationsEnabled) return;
+
+        const explosion = document.createElement('div');
+        explosion.className = 'star-explosion';
+        explosion.style.left = Math.random() * window.innerWidth + 'px';
+        explosion.style.top = Math.random() * window.innerHeight + 'px';
+        spaceBackground.appendChild(explosion);
+
+        setTimeout(() => explosion.remove(), 1000);
+    }
+
+    // Function to create comet
+    function createComet(size = 'small') {
+        if (!backgroundAnimationsEnabled) return;
+
+        const comet = document.createElement('div');
+        comet.className = `comet comet-${size}`;
+        comet.style.right = '-100px';
+        comet.style.top = Math.random() * (window.innerHeight / 2) + 'px';
+        spaceBackground.appendChild(comet);
+
+        const duration = size === 'medium' ? 3000 : 2000;
+        setTimeout(() => comet.remove(), duration);
+    }
+
+    // Random animation scheduler
+    let backgroundAnimationInterval;
+
+    function startBackgroundAnimations() {
+        if (!backgroundAnimationsEnabled) return;
+
+        backgroundAnimationInterval = setInterval(() => {
+            const rand = Math.random();
+            if (rand < 0.3) {
+                createStarExplosion();
+            } else if (rand < 0.6) {
+                createComet('small');
+            } else if (rand < 0.8) {
+                createComet('medium');
+            }
+        }, 3000); // Check every 3 seconds
+    }
+
+    function stopBackgroundAnimations() {
+        if (backgroundAnimationInterval) {
+            clearInterval(backgroundAnimationInterval);
+            backgroundAnimationInterval = null;
+        }
+    }
 
     function calculateAndApplyScale() {
         if (!animationsEnabled && body.classList.contains('fit-to-screen')) {
@@ -195,14 +256,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply the theme when the page loads
     applyTheme();
 
-    // --- Animation Toggle Logic ---
+    // --- Background Animation Toggle Logic ---
+    const backgroundToggleButton = document.getElementById('background-toggle');
+
+    // Function to apply background animation state
+    const applyBackgroundState = () => {
+        if (backgroundAnimationsEnabled) {
+            backgroundToggleButton.innerHTML = '<i class="ti ti-player-pause-filled"></i>';
+            backgroundToggleButton.classList.add('active');
+            startBackgroundAnimations();
+        } else {
+            backgroundToggleButton.innerHTML = '<i class="ti ti-player-play-filled"></i>';
+            backgroundToggleButton.classList.remove('active');
+            stopBackgroundAnimations();
+        }
+    };
+
+    // Background animation toggle button event listener
+    backgroundToggleButton.addEventListener('click', () => {
+        backgroundAnimationsEnabled = !backgroundAnimationsEnabled;
+        localStorage.setItem('backgroundAnimations', backgroundAnimationsEnabled ? 'enabled' : 'disabled');
+        applyBackgroundState();
+    });
+
+    // Apply the background animation state when the page loads
+    applyBackgroundState();
+
+    // --- Presentation Mode Toggle Logic ---
     const animationToggleButton = document.getElementById('animation-toggle');
 
-    // Function to apply animation state
+    // Function to apply presentation mode state
     const applyAnimationState = () => {
         if (animationsEnabled) {
-            animationToggleButton.innerHTML = '<i class="ti ti-player-pause-filled"></i>';
-            animationToggleButton.classList.add('active');
+            animationToggleButton.innerHTML = '<i class="ti ti-presentation"></i>';
+            animationToggleButton.classList.remove('active');
             body.classList.remove('fit-to-screen');
             container.style.transform = ''; // Reset transform
             // Reset animated sections to hidden state (observer will handle visibility)
@@ -215,8 +302,8 @@ document.addEventListener('DOMContentLoaded', () => {
             observer.disconnect();
             animatedSections.forEach(section => observer.observe(section));
         } else {
-            animationToggleButton.innerHTML = '<i class="ti ti-player-play-filled"></i>';
-            animationToggleButton.classList.remove('active');
+            animationToggleButton.innerHTML = '<i class="ti ti-layout-grid"></i>';
+            animationToggleButton.classList.add('active');
             body.classList.add('fit-to-screen');
             // Show all sections immediately
             animatedSections.forEach(section => {

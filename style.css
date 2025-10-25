@@ -35,6 +35,104 @@ body {
     color: var(--text-primary);
     font-family: var(--font-sans);
     line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* --- Space Background --- */
+#space-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+    overflow: hidden;
+}
+
+body.light-theme #space-background {
+    background: radial-gradient(ellipse at bottom, #E8EAF6 0%, #C5CAE9 100%);
+}
+
+.stars {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow:
+        100px 100px white, 200px 150px white, 300px 200px white,
+        400px 250px white, 500px 100px white, 600px 180px white,
+        700px 220px white, 800px 90px white, 900px 160px white,
+        1000px 130px white, 1100px 210px white, 1200px 170px white,
+        150px 300px white, 250px 350px white, 350px 400px white,
+        450px 450px white, 550px 300px white, 650px 380px white,
+        750px 420px white, 850px 290px white, 950px 360px white,
+        1050px 330px white, 1150px 410px white, 1250px 370px white,
+        100px 500px white, 200px 550px white, 300px 600px white,
+        400px 650px white, 500px 500px white, 600px 580px white,
+        700px 620px white, 800px 490px white, 900px 560px white,
+        1000px 530px white, 1100px 610px white, 1200px 570px white;
+}
+
+body.light-theme .stars {
+    box-shadow:
+        100px 100px #5C6BC0, 200px 150px #5C6BC0, 300px 200px #5C6BC0,
+        400px 250px #5C6BC0, 500px 100px #5C6BC0, 600px 180px #5C6BC0,
+        700px 220px #5C6BC0, 800px 90px #5C6BC0, 900px 160px #5C6BC0,
+        1000px 130px #5C6BC0, 1100px 210px #5C6BC0, 1200px 170px #5C6BC0,
+        150px 300px #5C6BC0, 250px 350px #5C6BC0, 350px 400px #5C6BC0,
+        450px 450px #5C6BC0, 550px 300px #5C6BC0, 650px 380px #5C6BC0,
+        750px 420px #5C6BC0, 850px 290px #5C6BC0, 950px 360px #5C6BC0,
+        1050px 330px #5C6BC0, 1150px 410px #5C6BC0, 1250px 370px #5C6BC0,
+        100px 500px #5C6BC0, 200px 550px #5C6BC0, 300px 600px #5C6BC0,
+        400px 650px #5C6BC0, 500px 500px #5C6BC0, 600px 580px #5C6BC0,
+        700px 620px #5C6BC0, 800px 490px #5C6BC0, 900px 560px #5C6BC0,
+        1000px 530px #5C6BC0, 1100px 610px #5C6BC0, 1200px 570px #5C6BC0;
+}
+
+.star-explosion {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: var(--brand-light-purple);
+    border-radius: 50%;
+    animation: explode 1s ease-out forwards;
+}
+
+.comet {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(160, 96, 255, 0.8);
+}
+
+.comet::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -80px;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--brand-light-purple));
+}
+
+.comet-small {
+    animation: comet-fly-small 2s linear forwards;
+}
+
+.comet-medium {
+    animation: comet-fly-medium 3s linear forwards;
+    width: 5px;
+    height: 5px;
+}
+
+.comet-medium::after {
+    width: 120px;
+    left: -120px;
 }
 
 .container {
@@ -281,6 +379,47 @@ body {
     }
     100% {
         background-position: -200% 0;
+    }
+}
+
+/* --- Space Animations --- */
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 5px 2px var(--brand-light-purple);
+    }
+    50% {
+        transform: scale(8);
+        opacity: 0.8;
+        box-shadow: 0 0 20px 10px var(--brand-light-purple);
+    }
+    100% {
+        transform: scale(15);
+        opacity: 0;
+        box-shadow: 0 0 30px 15px transparent;
+    }
+}
+
+@keyframes comet-fly-small {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-500px, 500px);
+        opacity: 0;
+    }
+}
+
+@keyframes comet-fly-medium {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-800px, 600px);
+        opacity: 0;
     }
 }
 

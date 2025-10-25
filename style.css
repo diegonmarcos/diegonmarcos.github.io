@@ -316,6 +316,7 @@ body.light-theme .stars {
 /* --- Call to Action (CTA) Section --- */
 .cta {
     text-align: center;
+    margin-bottom: 45vh;
 }
 
 .cta .section-title {

@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Animation State Management ---
     let animationsEnabled = localStorage.getItem('animations') !== 'disabled';
+    // Background animations ON by default (only disabled if explicitly set)
     let backgroundAnimationsEnabled = localStorage.getItem('backgroundAnimations') !== 'disabled';
 
     // --- Fit to Screen Scaling Logic ---

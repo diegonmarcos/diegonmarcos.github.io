@@ -272,6 +272,24 @@ body {
     visibility: hidden;
 }
 
+/* --- Fit to Screen Mode --- */
+body.fit-to-screen {
+    overflow: hidden;
+    height: 100vh;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body.fit-to-screen::-webkit-scrollbar {
+    display: none;
+}
+
+body.fit-to-screen .container {
+    transform-origin: top center;
+    overflow: visible;
+    transition: transform 0.3s ease;
+}
+
 
 @media (max-width: 768px) {
     .theme-toggle-button {
@@ -421,4 +439,40 @@ body {
 
 .floating-menu a:hover {
     background-color: var(--card-border);
+}
+
+.menu-toggles {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    padding-top: 8px;
+    margin-top: 8px;
+    border-top: 1px solid var(--card-border);
+}
+
+.menu-toggle-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.menu-toggle-btn:hover {
+    border-color: var(--brand-light-purple);
+    color: var(--brand-light-purple);
+    background: rgba(160, 96, 255, 0.1);
+}
+
+.menu-toggle-btn.active {
+    background: var(--brand-purple);
+    border-color: var(--brand-purple);
+    color: white;
 }

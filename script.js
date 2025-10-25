@@ -1,5 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // --- Animation State Management ---
+    let animationsEnabled = localStorage.getItem('animations') !== 'disabled';
+
+    // --- Fit to Screen Scaling Logic ---
+    const container = document.querySelector('.container');
+
+    function calculateAndApplyScale() {
+        if (!animationsEnabled && body.classList.contains('fit-to-screen')) {
+            // Get the actual content height
+            const contentHeight = container.scrollHeight;
+            const viewportHeight = window.innerHeight;
+
+            // Calculate scale to fit content in viewport with some padding
+            const scale = (viewportHeight * 0.95) / contentHeight;
+
+            // Apply the scale
+            container.style.transform = `scale(${scale})`;
+        }
+    }
+
     // --- Data for Value Proposition Cards ---
     const valuePropSections = [
         {
@@ -121,6 +141,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
+            if (!animationsEnabled) {
+                // If animations are disabled, show everything
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                entry.target.style.visibility = 'visible';
+                return;
+            }
+
             if (entry.isIntersecting) {
                 animate(entry.target, 1, 0, 600); // Fade in
             } else {
@@ -130,10 +158,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, {
         root: null,
         threshold: 0.95 // Trigger when 95% of the element is visible
-    });
-
-    animatedSections.forEach(section => {
-        observer.observe(section);
     });
 
     animatedSections.forEach(section => {
@@ -171,19 +195,66 @@ document.addEventListener('DOMContentLoaded', () => {
     // Apply the theme when the page loads
     applyTheme();
 
-    // --- Scroll fade for theme toggle button ---
+    // --- Animation Toggle Logic ---
+    const animationToggleButton = document.getElementById('animation-toggle');
+
+    // Function to apply animation state
+    const applyAnimationState = () => {
+        if (animationsEnabled) {
+            animationToggleButton.innerHTML = '<i class="ti ti-player-pause-filled"></i>';
+            animationToggleButton.classList.add('active');
+            body.classList.remove('fit-to-screen');
+            container.style.transform = ''; // Reset transform
+            // Reset animated sections to hidden state (observer will handle visibility)
+            animatedSections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.visibility = 'hidden';
+            });
+            // Trigger observer to check current visibility
+            observer.disconnect();
+            animatedSections.forEach(section => observer.observe(section));
+        } else {
+            animationToggleButton.innerHTML = '<i class="ti ti-player-play-filled"></i>';
+            animationToggleButton.classList.remove('active');
+            body.classList.add('fit-to-screen');
+            // Show all sections immediately
+            animatedSections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+                section.style.visibility = 'visible';
+            });
+            // Calculate and apply the fit-to-screen scale
+            setTimeout(calculateAndApplyScale, 50); // Small delay to ensure DOM is updated
+        }
+    };
+
+    // Animation toggle button event listener
+    animationToggleButton.addEventListener('click', () => {
+        animationsEnabled = !animationsEnabled;
+        localStorage.setItem('animations', animationsEnabled ? 'enabled' : 'disabled');
+        applyAnimationState();
+    });
+
+    // Apply the animation state when the page loads
+    applyAnimationState();
+
+    // --- Window Resize Handler for Fit-to-Screen Mode ---
+    window.addEventListener('resize', () => {
+        calculateAndApplyScale();
+    });
+
+    // --- Scroll fade for floating button ---
     let scrollTimeout;
     const floatingBtn = document.getElementById('floating-btn');
 
     window.addEventListener('scroll', () => {
-        themeToggleButton.classList.add('fade-out');
         if (floatingBtn) {
             floatingBtn.classList.add('fade-out');
         }
 
         clearTimeout(scrollTimeout);
         scrollTimeout = setTimeout(() => {
-            themeToggleButton.classList.remove('fade-out');
             if (floatingBtn) {
                 floatingBtn.classList.remove('fade-out');
             }

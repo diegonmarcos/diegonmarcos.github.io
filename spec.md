@@ -33,7 +33,7 @@ The HTML is well-structured and follows modern standards. It includes a comprehe
 *   **Variables:** Defines a color palette with dark and purple tones for the default dark theme.
 *   **Light Theme:** A `body.light-theme` class overrides the default variables to apply a light color scheme.
 *   **Base Styles:** A reset is applied to remove default margins and padding. The base font is `Inter`.
-*   **Space Background:** A fixed position element with a radial gradient background (dark blue to black) that adapts to light theme. Contains a starfield created using CSS box-shadow technique.
+*   **Space Background:** A fixed position element with a radial gradient background (dark blue to black) at 80% opacity that adapts to light theme. Contains 200 randomly generated stars with cross/plus shapes, varying sizes (1-3px), varied opacity (0.5-1) for depth, and individual twinkle animations with randomized delays and durations.
 *   **Layout:** A centered container with a maximum width of `1100px`.
 *   **Hero Section:** A large, centered hero section with a gradient text effect featuring an animated shimmer that sweeps across the title using a multi-stop purple gradient (6-second loop).
 *   **Value Proposition:** A grid layout that is responsive, switching from a single column to two columns on larger screens.
@@ -41,7 +41,8 @@ The HTML is well-structured and follows modern standards. It includes a comprehe
 *   **CTA Section:** A centered call-to-action with prominent buttons.
 *   **Floating Menu:** Fixed position menu button (bottom-right) that reveals a collapsible menu with social links and three toggle buttons. Toggle buttons are styled as circular icons with hover and active states.
 *   **Scroll Animations:** Fade-in and slide-up animations for sections as they become visible in the viewport.
-*   **Space Animations:** CSS keyframe animations for star explosions (scale and glow effect), small comets (2s diagonal flight), and medium comets (3s longer diagonal flight with extended tail).
+*   **Star Styling:** Individual `.star` elements with cross/plus shape created using `::before` and `::after` pseudo-elements with soft glow. Each star has a `twinkle` animation (opacity and scale variation).
+*   **Space Animations:** CSS keyframe animations for star explosions (scale and glow effect), small comets (2s diagonal flight), medium comets (3s longer diagonal flight with extended tail), and star twinkling (4s ease-in-out cycle).
 *   **Presentation Mode:** `.fit-to-screen` class dynamically scales the entire page to fit viewport height, hiding scrollbars for a clean overview mode.
 
 ### Descriptive
@@ -59,7 +60,12 @@ The CSS is clean and modern, utilizing variables for easy theme management betwe
     *   All states persist via `localStorage`
 *   **Data:** An array of objects (`valuePropSections`) holds the data for the "Value Proposition" cards.
 *   **Dynamic Content:** The script dynamically generates the "Value Proposition" cards by iterating over the `valuePropSections` array.
-*   **Space Background Creation:** Dynamically creates and inserts a `#space-background` div with a starfield element at page load.
+*   **Space Background Creation:** Dynamically creates and inserts a `#space-background` div at page load, then generates 200 individual star elements with randomized properties:
+    *   Position: Random coordinates across 100% viewport width and height
+    *   Size: Random 1-3px dimensions
+    *   Opacity: Random 0.5-1 for depth perception
+    *   Animation delay: Random 0-4 seconds (staggered twinkling)
+    *   Animation duration: Random 3-6 seconds per cycle
 *   **Custom Animation Engine:** To overcome browser-specific rendering bugs with CSS transitions, the site uses a custom JavaScript animation engine. A bespoke `animate` function, powered by `requestAnimationFrame`, smoothly controls the `opacity` and `transform` properties of elements, providing reliable fade-in and fade-out effects.
 *   **Single Intersection Observer:** A single `IntersectionObserver` is used to monitor all elements with the `.animated-section` class. It triggers the `animate` function based on a single `threshold` value (0.95). When an element's visibility crosses this threshold, the observer determines whether to run the fade-in or fade-out animation. When animations are disabled, all sections are immediately visible.
 *   **Space Animation System:**
@@ -99,12 +105,14 @@ The JavaScript is well-organized and efficient, managing multiple independent an
     *   **Theme Toggle:** Switch between dark and light themes
     *   **Background Animations:** Enable/disable space effects (star explosions and comets)
     *   **Presentation Mode:** Toggle between normal scrolling view and fit-to-screen overview
-*   **Performance:** The space background uses efficient CSS techniques (box-shadow for stars) and controlled interval-based JavaScript for animations. The custom animation engine uses `requestAnimationFrame` for smooth, performant animations.
+*   **Performance:** The space background uses 200 individual DOM elements for stars with CSS-only twinkle animations, and controlled interval-based JavaScript for dynamic effects (comets and explosions). The custom animation engine uses `requestAnimationFrame` for smooth, performant scroll animations.
 *   **Accessibility:** All toggle buttons include title attributes for tooltips. The presentation mode provides an alternative view for users who prefer to see all content at once without scrolling.
 *   **Visual Effects:**
     *   Hero title shimmer animation (6-second loop)
-    *   Space background with starfield
+    *   Space background with 200 randomly distributed stars featuring cross/plus shapes
+    *   Individual star twinkle animations with varied timing (3-6 second cycles)
     *   Random star explosions with purple glow
     *   Small and medium comets with trailing effects
     *   Card hover effects with purple glowing borders
     *   Smooth scroll-based fade-in/fade-out animations
+    *   80% opacity overlay for layered depth effect

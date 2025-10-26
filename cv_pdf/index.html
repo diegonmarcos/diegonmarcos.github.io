@@ -107,7 +107,7 @@
                     </button>
 
                     <!-- Download Button -->
-                    <a href="./DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                         <span class="hidden sm:inline">Download</span>
                     </a>
@@ -127,7 +127,7 @@
             <!-- PDF Canvas Container -->
             <main id="pdf-container" class="bg-gray-200 dark:bg-slate-800 shadow-lg rounded-lg p-4 w-full flex-grow">
                 <div id="loader" class="text-center pt-20"><div class="loader mx-auto"></div><p class="mt-4 text-lg">Loading Document...</p></div>
-                <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">CV.pdf</strong> exists in the same folder.</p></div>
+                <div id="error-message" class="hidden text-center text-red-500"><h2 class="text-2xl font-bold mb-2">Could not load PDF</h2><p>Make sure <strong class="font-mono bg-red-100 text-red-700 px-2 py-1 rounded">.pdf</strong> exists in the same folder.</p></div>
                 <div id="zoom-wrapper">
                     <div id="viewer-content" class="w-full"></div>
                 </div>
@@ -144,7 +144,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
 
-        const url = './DiegoNMarcos_CurriculumVitae_en.pdf';
+        const url = './assets/DiegoNMarcos_CurriculumVitae_en.pdf';
         let pdfDoc = null;
         // const scale = 1.75; // No longer needed, will be dynamic
         let pageRenderQueue = new Set();

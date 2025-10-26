@@ -1,0 +1,15 @@
+# Jekyll configuration for blog
+title: Diego's Blog
+description: Blog posts and articles
+
+# Build settings
+markdown: kramdown
+
+# No plugins needed
+plugins: []
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md

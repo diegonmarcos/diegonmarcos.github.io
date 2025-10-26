@@ -1,4 +1,4 @@
-name: Static Site Deployment
+name: GitHub Pages with Jekyll Blog
 
 on:
   push:
@@ -19,35 +19,34 @@ jobs:
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
-      - name: 📂 Prepare Deployment Directory
+      - name: 🔨 Build Jekyll Blog
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./blog
+          destination: ./_site/blog
+
+      - name: 📂 Copy Static Files
         run: |
-          echo "📋 Creating deploy directory with only necessary files..."
-          mkdir deploy
+          echo "📋 Copying static files to _site..."
 
-          # Copy root HTML, CSS, JS files
-          cp -v index.html deploy/ 2>/dev/null || true
-          cp -v *.css deploy/ 2>/dev/null || true
-          cp -v *.js deploy/ 2>/dev/null || true
+          # Copy root files
+          cp -v index.html _site/ 2>/dev/null || true
+          cp -v *.css _site/ 2>/dev/null || true
+          cp -v *.js _site/ 2>/dev/null || true
 
-          # Copy all site directories
-          cp -r linktree deploy/ 2>/dev/null || true
-          cp -r cv_web deploy/ 2>/dev/null || true
-          cp -r cv_pdf deploy/ 2>/dev/null || true
-          cp -r blog deploy/ 2>/dev/null || true
-          cp -r assets deploy/ 2>/dev/null || true
-          cp -r others deploy/ 2>/dev/null || true
+          # Copy static directories
+          cp -r linktree _site/ 2>/dev/null || true
+          cp -r cv_web _site/ 2>/dev/null || true
+          cp -r cv_pdf _site/ 2>/dev/null || true
+          cp -r assets _site/ 2>/dev/null || true
+          cp -r others _site/ 2>/dev/null || true
 
-          # The .git directory (189 MB) is automatically excluded by not being copied
-          # This is what was causing the upload failure, not the PDFs
-
-          echo "✅ Deployment directory prepared"
-          echo "📋 Deploy directory contents:"
-          ls -lah deploy/
+          echo "✅ Static files copied"
+          echo "📋 Final site structure:"
+          ls -lah _site/
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
-        with:
-          path: deploy
 
   deploy:
     environment:

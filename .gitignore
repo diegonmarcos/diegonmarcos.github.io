@@ -1,0 +1,23 @@
+# Symlinks to external directories
+markdown/
+
+# Jekyll build output
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Dependency directories
+node_modules/
+vendor/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Temporary build directories
+blog_output/
+final_site/

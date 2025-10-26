@@ -1,1 +1,0 @@
-/home/diego/Documents/Gdrive/A1.Projects/Obisidian/Websites

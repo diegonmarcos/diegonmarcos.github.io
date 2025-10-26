@@ -1,5 +1,9 @@
-# ✍️ Exploring the Full Spectrum of Markdown Features
+---
+layout: default
+title: Blog - Markdown Features
+---
 
+# ✍️ Exploring the Full Spectrum of Markdown Features
 
 -----
 

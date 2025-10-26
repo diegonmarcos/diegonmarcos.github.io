@@ -1,4 +1,4 @@
-name: GitHub Pages with Jekyll Blog
+name: GitHub Pages Deployment (Static Files)
 
 on:
   push:
@@ -16,34 +16,63 @@ jobs:
       - name: 📦 Checkout Code
         uses: actions/checkout@v4
 
+      - name: 💎 Setup Ruby and Jekyll
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: false
+
+      - name: 📦 Install Jekyll
+        run: |
+          gem install jekyll bundler
+
+      - name: 🔨 Build Blog HTML (Jekyll)
+        run: |
+          cd blog
+          chmod +x build.sh
+          ./build.sh build
+          echo "✅ Blog HTML files generated and copied to blog/ directory"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
-      - name: 🔨 Build Jekyll Blog
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./blog
-          destination: ./_site/blog
-
-      - name: 📂 Copy Static Files
+      - name: 📂 Prepare Site for Deployment
         run: |
-          echo "📋 Copying static files to _site..."
+          echo "📋 Creating _site directory and copying all files..."
+          mkdir -p _site
 
           # Copy root files
+          echo "Copying root HTML, CSS, and JS files..."
           cp -v index.html _site/ 2>/dev/null || true
           cp -v *.css _site/ 2>/dev/null || true
           cp -v *.js _site/ 2>/dev/null || true
 
           # Copy static directories
+          echo "Copying static directories..."
           cp -r linktree _site/ 2>/dev/null || true
           cp -r cv_web _site/ 2>/dev/null || true
           cp -r cv_pdf _site/ 2>/dev/null || true
           cp -r assets _site/ 2>/dev/null || true
           cp -r others _site/ 2>/dev/null || true
 
-          echo "✅ Static files copied"
+          # Copy blog directory (includes both .md and .html files)
+          echo "Copying blog directory..."
+          mkdir -p _site/blog
+          cp -r blog/* _site/blog/
+
+          # Clean up source files from deployment (keep only HTML)
+          echo "Cleaning up source files..."
+          find _site/blog -name "*.md" -type f -delete
+          rm -f _site/blog/_config.yml
+          rm -f _site/blog/build.sh
+          rm -rf _site/blog/_layouts
+          rm -rf _site/blog/.jekyll-cache
+
+          echo "✅ All files prepared for deployment"
           echo "📋 Final site structure:"
           ls -lah _site/
+          echo "📋 Blog directory (HTML only):"
+          ls -lah _site/blog/ || true
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3

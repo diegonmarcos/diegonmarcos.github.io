@@ -13,3 +13,5 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - README.md
+  - build.sh
+  - "index.html"  # Exclude generated HTML files (not layouts!)

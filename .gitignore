@@ -9,6 +9,8 @@ _site/
 .jekyll-metadata
 Gemfile.lock
 
+# Note: blog/*.html files ARE committed (generated from local Jekyll builds)
+
 # Dependency directories
 node_modules/
 vendor/

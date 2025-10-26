@@ -24,8 +24,23 @@ build_site() {
     echo "Building Jekyll site..."
     echo ""
     jekyll build
+
     echo ""
-    echo "Build complete! HTML files are in the _site/ directory"
+    echo "Copying HTML files to blog directory (side-by-side with markdown)..."
+
+    # Copy all HTML files from _site to blog directory
+    find _site -name "*.html" -type f | while read -r file; do
+        # Get relative path from _site
+        rel_path="${file#_site/}"
+        # Copy to current directory, preserving structure
+        target_dir="$(dirname "$rel_path")"
+        [ "$target_dir" != "." ] && mkdir -p "$target_dir"
+        cp -v "$file" "$rel_path"
+    done
+
+    echo ""
+    echo "Build complete! HTML files generated alongside markdown files"
+    echo "Jekyll build output: _site/"
 }
 
 serve_site() {

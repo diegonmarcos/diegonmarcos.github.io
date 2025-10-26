@@ -21,18 +21,16 @@ jobs:
 
       # --- 1. BUILD JEKYLL (CI) ---
       - name: 💎 Install Ruby and Jekyll Dependencies
-        # Only needed if you have a Gemfile inside the 'blog' folder for plugins
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.3'
           bundler-cache: true
-          # Point bundle to the Gemfile inside the blog folder
-          working-directory: blog
+          working-directory: ./blog
 
       - name: 🔨 Build Jekyll Site from /blog
-        # Run the build, outputting to a temporary folder called 'blog_output'
+        working-directory: ./blog
         run: |
-          bundle exec jekyll build --source blog --destination blog_output
+          bundle exec jekyll build --destination ../blog_output
           echo "Jekyll build complete in blog_output directory."
 
       # --- 2. COMBINE ARTIFACTS ---

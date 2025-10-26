@@ -1,0 +1,17 @@
+title: Diego's Blog
+description: Blog posts and articles
+baseurl: ""
+url: "https://diegonmarcos.github.io"
+
+# Build settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

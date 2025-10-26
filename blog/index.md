@@ -3,7 +3,7 @@ layout: default
 title: Blog - Markdown Features !
 ---
 
-# ✍️ Exploring the Full Spectrum of Markdown Features
+# ✍️ Exploring the Full Spectrum of Markdown Features...
 
 -----
 

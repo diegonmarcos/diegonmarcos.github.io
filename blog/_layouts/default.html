@@ -143,6 +143,30 @@
             content: "ℹ️ Info: ";
             color: #A060FF;
         }
+        .important {
+            border-left-color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+        .important > p:first-child::before {
+            content: "❗ Important: ";
+            color: #ec4899;
+        }
+        .example {
+            border-left-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .example > p:first-child::before {
+            content: "📝 Example: ";
+            color: #8b5cf6;
+        }
+        .question {
+            border-left-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+        .question > p:first-child::before {
+            content: "❓ Question: ";
+            color: #14b8a6;
+        }
     </style>
     <!-- Mermaid.js for diagram rendering -->
     <script type="module">
@@ -167,5 +191,38 @@
 </head>
 <body>
     {{ content }}
+
+    <!-- JavaScript for Obsidian-style admonitions and Mermaid code block conversion -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse Obsidian-style admonitions: > [!note]
+            const blockquotes = document.querySelectorAll('blockquote');
+            blockquotes.forEach(blockquote => {
+                const firstPara = blockquote.querySelector('p:first-child');
+                if (firstPara) {
+                    const text = firstPara.innerHTML;
+                    // Match [!type] pattern
+                    const match = text.match(/^\[!(\w+)\]\s*/i);
+                    if (match) {
+                        const type = match[1].toLowerCase();
+                        // Remove the [!type] marker from display
+                        firstPara.innerHTML = text.replace(/^\[!(\w+)\]\s*/i, '');
+                        // Add appropriate CSS class
+                        blockquote.classList.add(type);
+                    }
+                }
+            });
+
+            // Convert mermaid code blocks to divs for Mermaid.js rendering
+            const mermaidBlocks = document.querySelectorAll('code.language-mermaid');
+            mermaidBlocks.forEach(block => {
+                const pre = block.parentElement;
+                const mermaidDiv = document.createElement('div');
+                mermaidDiv.className = 'mermaid';
+                mermaidDiv.textContent = block.textContent;
+                pre.parentNode.replaceChild(mermaidDiv, pre);
+            });
+        });
+    </script>
 </body>
 </html>

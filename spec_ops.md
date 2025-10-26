@@ -66,23 +66,27 @@ Website Root (/)
 
 ## Deployment Pipeline
 
-### Workflow: `deploy.yml`
+### Workflow: `deploy.yml` (Local Jekyll Build Workflow)
+
+This workflow automates the build and deployment of the entire static site, including the Jekyll blog. It relies on a local build script to generate the blog's HTML files, which are then deployed alongside all other static assets.
 
 **Trigger**: Push to `main` branch
 
-**Steps**:
-1. **Checkout Code** - Clone repository
-2. **Setup Pages** - Configure GitHub Pages environment
-3. **Build Jekyll Blog**
-   - Source: `./blog`
-   - Destination: `./_site/blog`
-   - Converts `blog/index.md` → `blog/index.html`
-4. **Copy Static Files**
-   - Copies root HTML/CSS/JS
-   - Copies static directories (linktree, cv_web, cv_pdf, assets, others)
-   - Excludes: `.git` directory (189 MB)
-5. **Upload Artifact** - Uploads `_site/` directory
-6. **Deploy** - Publishes to GitHub Pages
+**Core Logic**:
+1.  **Environment Setup**: The workflow runs on a GitHub-hosted Ubuntu runner, where it sets up a Ruby environment and installs Jekyll.
+2.  **Jekyll Build**: It executes the `./blog/build.sh build` script. This script is the heart of the blog build process:
+    *   It runs `jekyll build` within the `blog` directory, which converts all Markdown files (`.md`) into HTML.
+    *   It then copies the generated HTML files from the temporary `blog/_site` directory back into the `blog/` directory. This results in `.md` and `.html` files existing side-by-side (e.g., `index.md` and `index.html`).
+3.  **Site Assembly**: The workflow creates a root `_site` directory to prepare for deployment. It copies all the necessary project files and directories into it:
+    *   Root files (`index.html`, `style.css`, etc.)
+    *   Static asset directories (`/assets`, `/linktree`, `/cv_web`, etc.)
+    *   The entire `/blog` directory (containing both markdown and the newly generated HTML).
+4.  **Cleanup**: Before deploying, the workflow cleans the `_site/blog` directory to optimize the final deployment package. It removes source files that are not needed on the live site, such as:
+    *   Markdown files (`*.md`)
+    *   Jekyll configuration (`_config.yml`)
+    *   The build script (`build.sh`)
+    *   Layouts (`_layouts/`)
+5.  **Upload & Deploy**: The cleaned `_site` directory is uploaded as a GitHub Pages artifact, which is then automatically deployed.
 
 ### Deployment URL
 - Production: `https://diegonmarcos.github.io/`
@@ -135,53 +139,46 @@ final_site/
 
 ## Workflows
 
-### Local Development Workflow
+### Jekyll Blog Workflow: Local Development and Deployment
 
-1. **Make changes** to HTML/CSS/JS files
-   ```bash
-   # Edit files locally
-   code index.html style.css script.js
-   ```
+This workflow separates local development from the automated deployment process.
 
-2. **Preview blog locally** (optional)
-   ```bash
-   cd blog
-   bundle exec jekyll serve
-   # Visit http://localhost:4000
-   ```
+#### **Local Development**
 
-3. **Commit changes**
-   ```bash
-   git add .
-   git commit -m "Description of changes"
-   ```
+For writing and previewing blog posts locally.
 
-4. **Push to GitHub**
-   ```bash
-   git push origin main
-   ```
+1.  **Edit Content**: Modify or create Markdown (`.md`) files inside the `/blog` directory.
+2.  **Build HTML (Optional but Recommended)**: Run the build script to generate the HTML files locally. This is the same command the GitHub workflow uses.
+    ```bash
+    cd blog
+    ./build.sh build
+    ```
+3.  **Preview Site Live (Optional)**: To see your changes in a live-reloading local server:
+    ```bash
+    cd blog
+    ./build.sh serve
+    # Visit http://localhost:4000 to preview the blog
+    ```
+    **Note**: The `serve` command is for local preview only and is **not** used in the deployment workflow.
 
-5. **Automatic deployment** - GitHub Actions builds and deploys
+#### **Deployment Process**
 
-### Adding Blog Content
+Deployment is fully automated via GitHub Actions on every push to the `main` branch.
 
-1. **Edit** `blog/index.md` with Markdown content
-2. **Front matter** required at top:
-   ```yaml
-   ---
-   layout: default
-   title: Your Title
-   ---
-   ```
-3. **Commit and push** - Jekyll automatically converts to HTML
+1.  **Commit and Push**: Commit your changes. You can choose whether or not to include the locally generated HTML files. The `.gitignore` is configured to allow them, but the workflow will regenerate them regardless to ensure consistency.
+    ```bash
+    # Example: Commit only the markdown source
+    git add blog/index.md
+    git commit -m "Update blog post"
+    git push origin main
+    ```
+2.  **Automatic Deployment**: The push triggers the `deploy.yml` workflow, which builds the blog HTML, assembles the full site, and deploys it to GitHub Pages as described in the "Deployment Pipeline" section.
 
-### Feature Development Workflow
+### File Management: Side-by-Side HTML
 
-1. **Clippy Assistant modifications**: Edit `script.js` (lines 443-809)
-2. **Styling changes**: Edit `style.css` (CSS variables in `:root`)
-3. **Theme adjustments**:
-   - Dark theme: `--brand-dark: #0D061F`
-   - Purple accents: `--brand-purple: #8A2BE2`, `--brand-light-purple: #A060FF`
+-   The `build.sh` script places the generated `.html` file directly next to its `.md` source file in the `blog/` directory.
+-   **Benefit**: This makes it clear which HTML file corresponds to which Markdown file and allows the generated site to be browsed directly in the repository if desired.
+-   The deployment workflow ensures only the final HTML is published to the live site.
 
 ---
 

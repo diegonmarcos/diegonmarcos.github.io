@@ -45,7 +45,7 @@ jobs:
 
           # Copy root static files and folders (your 3 other static folders + root files)
           # We use rsync to efficiently copy everything from the repo root except the blog folder and other CI/CD files
-          rsync -avz --exclude 'blog' --exclude '.git' --exclude '.github' --exclude 'blog_output' --exclude 'node_modules' --exclude '.gitignore' ${{ github.workspace }}/ final_site/
+          rsync -av --exclude 'blog' --exclude '.git' --exclude '.github' --exclude 'blog_output' --exclude 'node_modules' --exclude '.gitignore' ${{ github.workspace }}/ final_site/
 
           echo "Final site structure created in final_site/"
 

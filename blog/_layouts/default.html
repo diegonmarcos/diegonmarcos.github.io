@@ -76,7 +76,94 @@
             font-weight: 600;
             color: #A060FF;
         }
+        /* Mermaid diagram styling */
+        .mermaid {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 2em 0;
+        }
+        /* Admonition styling */
+        .admonition, .note, .warning, .tip, .danger, .info {
+            border-left: 4px solid;
+            padding: 15px 20px;
+            margin: 1.5em 0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .admonition > p:first-child, .note > p:first-child,
+        .warning > p:first-child, .tip > p:first-child,
+        .danger > p:first-child, .info > p:first-child {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        .admonition > p:last-child, .note > p:last-child,
+        .warning > p:last-child, .tip > p:last-child,
+        .danger > p:last-child, .info > p:last-child {
+            margin-bottom: 0;
+        }
+        .note {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .note > p:first-child::before {
+            content: "📘 Note: ";
+            color: #3b82f6;
+        }
+        .tip {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .tip > p:first-child::before {
+            content: "💡 Tip: ";
+            color: #10b981;
+        }
+        .warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .warning > p:first-child::before {
+            content: "⚠️ Warning: ";
+            color: #f59e0b;
+        }
+        .danger {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .danger > p:first-child::before {
+            content: "🚨 Danger: ";
+            color: #ef4444;
+        }
+        .info {
+            border-left-color: #8A2BE2;
+            background: rgba(138, 43, 226, 0.1);
+        }
+        .info > p:first-child::before {
+            content: "ℹ️ Info: ";
+            color: #A060FF;
+        }
     </style>
+    <!-- Mermaid.js for diagram rendering -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#8A2BE2',
+                primaryTextColor: '#d1d5db',
+                primaryBorderColor: '#A060FF',
+                lineColor: '#A060FF',
+                secondaryColor: '#A060FF',
+                tertiaryColor: '#0D061F',
+                background: '#0D061F',
+                mainBkg: '#0D061F',
+                textColor: '#d1d5db',
+                fontSize: '16px'
+            }
+        });
+    </script>
 </head>
 <body>
     {{ content }}

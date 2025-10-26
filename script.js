@@ -453,6 +453,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return; // Exit early, don't initialize Clippy
     }
 
+    // Assistant Mode: 'full' (animated Clippy) or 'pulse' (static pulsing circle)
+    // On mobile (screen width <= 768px), default to pulse mode
+    // On desktop, default to full mode
+    const isMobile = window.innerWidth <= 768;
+    let assistantMode = localStorage.getItem('assistantMode') || (isMobile ? 'pulse' : 'full');
+
     // Funny phrases for Clippy
     const clippyPhrases = [
         "Pretty sure there's a cat walking on the keyboard somewhere..",
@@ -487,8 +493,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let dragOffsetY = 0;
 
     clippyContainer.addEventListener('mousedown', (e) => {
-        if (e.target.closest('#clippy-menu') || e.target.closest('.clippy-speech')) {
-            return; // Don't drag if clicking menu or speech bubble
+        if (e.target.closest('#clippy-menu') || e.target.closest('.clippy-speech') || assistantMode === 'pulse') {
+            return; // Don't drag if clicking menu, speech bubble, or in pulse mode
         }
         isDragging = true;
         clippyContainer.classList.add('dragging');
@@ -519,30 +525,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Click to toggle menu
+    // Click to toggle menu (only in full mode)
     clippySvg.addEventListener('click', (e) => {
-        if (!isDragging) {
+        if (!isDragging && assistantMode === 'full') {
             e.stopPropagation();
             clippyMenu.classList.toggle('show');
             clippySpeech.classList.remove('show'); // Hide speech when showing menu
         }
     });
 
-    // Close menu when clicking outside
-    window.addEventListener('click', (event) => {
-        if (clippyMenu.classList.contains('show') &&
-            !clippyMenu.contains(event.target) &&
-            !clippySvg.contains(event.target)) {
-            clippyMenu.classList.remove('show');
-        }
-    });
+    // Close menu when clicking outside (will be set up after pulse circle is created)
+    // See below after pulse assistant initialization
 
     // Auto-movement animation (vertical only within current lane)
     let autoMoveInterval;
     let isAutoMoving = false;
 
     function autoMoveClippy() {
-        if (isDragging || clippyMenu.classList.contains('show')) return;
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
 
         isAutoMoving = true;
         // Only move vertically in current lane
@@ -595,7 +595,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lane changing with fade out/in
     function changeLane(newLane) {
-        if (isDragging || clippyMenu.classList.contains('show')) return;
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
 
         // Fade out
         clippyContainer.style.opacity = '0';
@@ -665,10 +665,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => showSpeechBubble(), 500);
     }
 
-    // Occasionally disappear (every 2-3 minutes)
+    // Occasionally disappear (every 2-3 minutes) - only in full mode
     function scheduleDisappear() {
         disappearTimeout = setTimeout(() => {
-            if (!clippyMenu.classList.contains('show')) {
+            if (!clippyMenu.classList.contains('show') && assistantMode === 'full') {
                 disappearClippy();
             }
             scheduleDisappear();
@@ -677,9 +677,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     scheduleDisappear();
 
-    // Speech bubble functionality
+    // Speech bubble functionality (only in full mode)
     function showSpeechBubble(message) {
-        if (clippyMenu.classList.contains('show')) return;
+        if (clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
 
         const phrase = message || clippyPhrases[Math.floor(Math.random() * clippyPhrases.length)];
         clippySpeech.textContent = phrase;
@@ -703,27 +703,127 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show initial speech bubble after 3 seconds
     setTimeout(() => showSpeechBubble(), 3000);
 
-    // Update Clippy position on window resize
-    window.addEventListener('resize', () => {
-        // Update to current lane position
+    // Update position on window resize (will be updated after pulse assistant is initialized)
+    // See below after assistant mode functions
+
+    // Assistant Mode Switching
+    // Create pulsing circle element (the pulse assistant)
+    const pulsingCircle = document.createElement('div');
+    pulsingCircle.id = 'clippy-pulsing-circle';
+    pulsingCircle.className = 'clippy-pulsing-circle';
+    clippyContainer.appendChild(pulsingCircle);
+
+    // Function to switch to pulse assistant mode
+    function switchToPulseMode() {
+        assistantMode = 'pulse';
+        localStorage.setItem('assistantMode', 'pulse');
+
+        // Hide the animated Clippy UI
+        clippySvg.style.display = 'none';
+        clippySpeech.classList.remove('show');
+        clippyMenu.classList.remove('show');
+
+        // Add pulse-menu class for proper menu positioning
+        clippyMenu.classList.add('pulse-menu');
+
+        // Show pulse assistant
+        pulsingCircle.style.display = 'block';
+
+        // Position the pulse assistant in bottom right corner
+        // Very tight corner positioning
+        const leftOffset = 70;
+        const bottomOffset = 60;
+        clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
+        clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
+    }
+
+    // Function to switch to full Clippy mode
+    function switchToFullMode() {
+        assistantMode = 'full';
+        localStorage.setItem('assistantMode', 'full');
+
+        // Hide pulse assistant
+        pulsingCircle.style.display = 'none';
+
+        // Remove pulse-menu class for default menu positioning
+        clippyMenu.classList.remove('pulse-menu');
+
+        // Show the animated Clippy UI
+        clippySvg.style.display = 'block';
+
+        // Restore to current lane position
         clippyX = getLaneX(currentLane);
         clippyY = Math.min(clippyY, window.innerHeight - 150);
         clippyContainer.style.left = clippyX + 'px';
         clippyContainer.style.top = clippyY + 'px';
-    });
+    }
 
-    // Disable Clippy button
+    // Switch assistant mode button (toggles between Clippy and Pulse)
     const clippyDisableBtn = document.getElementById('clippy-disable');
+
+    function updateSwitchButtonIcon() {
+        if (assistantMode === 'pulse') {
+            // When in pulse mode, show icon to switch back to Clippy
+            clippyDisableBtn.innerHTML = '<i class="ti ti-user"></i>';
+            clippyDisableBtn.title = 'Switch to Clippy Assistant';
+        } else {
+            // When in Clippy mode, show icon to switch to pulse
+            clippyDisableBtn.innerHTML = '<i class="ti ti-circle-dot"></i>';
+            clippyDisableBtn.title = 'Switch to Pulse Assistant';
+        }
+    }
+
     if (clippyDisableBtn) {
         clippyDisableBtn.addEventListener('click', () => {
-            // Save preference to localStorage
-            localStorage.setItem('clippyDisabled', 'true');
-
-            // Fade out and hide Clippy
-            clippyContainer.style.opacity = '0';
-            setTimeout(() => {
-                clippyContainer.style.display = 'none';
-            }, 500);
+            if (assistantMode === 'pulse') {
+                switchToFullMode();
+            } else {
+                switchToPulseMode();
+            }
+            updateSwitchButtonIcon();
         });
     }
+
+    // Pulse assistant click behavior - shows its own menu
+    pulsingCircle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clippyMenu.classList.toggle('show');
+    });
+
+    // Close menu when clicking outside (works for both assistants)
+    window.addEventListener('click', (event) => {
+        if (clippyMenu.classList.contains('show') &&
+            !clippyMenu.contains(event.target) &&
+            !clippySvg.contains(event.target) &&
+            !pulsingCircle.contains(event.target)) {
+            clippyMenu.classList.remove('show');
+        }
+    });
+
+    // Apply initial assistant mode
+    if (assistantMode === 'pulse') {
+        switchToPulseMode();
+    } else {
+        pulsingCircle.style.display = 'none';
+    }
+
+    // Update button icon to match initial mode
+    updateSwitchButtonIcon();
+
+    // Update position on window resize based on assistant mode
+    window.addEventListener('resize', () => {
+        if (assistantMode === 'pulse') {
+            // Reposition pulse assistant to corner
+            const leftOffset = 70;
+            const bottomOffset = 60;
+            clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
+            clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
+        } else {
+            // Update Clippy to current lane position
+            clippyX = getLaneX(currentLane);
+            clippyY = Math.min(clippyY, window.innerHeight - 150);
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+        }
+    });
 });

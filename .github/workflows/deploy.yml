@@ -19,10 +19,33 @@ jobs:
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
+      - name: 📂 Prepare Deployment Directory
+        run: |
+          echo "📋 Creating deploy directory with only necessary files..."
+          mkdir deploy
+
+          # Copy root HTML, CSS, JS files
+          cp -v index.html deploy/ 2>/dev/null || true
+          cp -v *.css deploy/ 2>/dev/null || true
+          cp -v *.js deploy/ 2>/dev/null || true
+
+          # Copy necessary directories (exclude large files)
+          cp -r linktree deploy/ 2>/dev/null || true
+          cp -r cv_web deploy/ 2>/dev/null || true
+          cp -r blog deploy/ 2>/dev/null || true
+          cp -r assets deploy/ 2>/dev/null || true
+          cp -r others deploy/ 2>/dev/null || true
+
+          # Do NOT copy cv_pdf (large PDFs) or other heavy assets
+
+          echo "✅ Deployment directory prepared"
+          echo "📋 Deploy directory contents:"
+          ls -lah deploy/
+
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: deploy
 
   deploy:
     environment:

@@ -37,17 +37,38 @@ jobs:
       # This step creates the final deployment folder
       - name: 📂 Prepare Final Artifact Directory
         run: |
-          # Create the final directory (this will be the root of your published site)
-          mkdir final_site 
+          set -e  # Exit immediately if a command exits with a non-zero status
 
-          # Copy Jekyll output (the built blog HTML) into the /blog subdirectory of final_site
+          echo "📋 Listing workspace contents:"
+          ls -lah ${{ github.workspace }}
+
+          echo "📋 Checking blog_output directory:"
+          ls -lah blog_output/ || echo "blog_output directory not found"
+
+          # Create the final directory (this will be the root of your published site)
+          mkdir final_site
+          echo "✅ Created final_site directory"
+
+          # Copy Jekyll output (the built blog HTML) into final_site
           cp -r blog_output/. final_site/
+          echo "✅ Copied blog_output to final_site"
 
           # Copy root static files and folders (your 3 other static folders + root files)
           # We use rsync to efficiently copy everything from the repo root except the blog folder and other CI/CD files
-          rsync -av --exclude 'blog' --exclude '.git' --exclude '.github' --exclude 'blog_output' --exclude 'node_modules' --exclude '.gitignore' ${{ github.workspace }}/ final_site/
+          rsync -av --ignore-missing-args \
+            --exclude 'blog' \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'blog_output' \
+            --exclude 'final_site' \
+            --exclude 'node_modules' \
+            --exclude '.gitignore' \
+            ${{ github.workspace }}/ final_site/
+          echo "✅ Synced static files to final_site"
 
-          echo "Final site structure created in final_site/"
+          echo "📋 Final site structure:"
+          ls -lah final_site/
+          echo "✅ Final site structure created in final_site/"
 
       # --- 3. DEPLOY (CD) ---
       - name: ⬆️ Upload Combined Artifact

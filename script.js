@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Create 200 stars
-    createStars(200);
+    createStars(100);
 
     // Function to create constellation
     function createConstellation(name, stars, connections) {

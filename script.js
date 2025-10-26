@@ -731,7 +731,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Position the pulse assistant in bottom right corner
         // Very tight corner positioning
-        const leftOffset = 70;
+        const leftOffset = 60;
         const bottomOffset = 60;
         clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
         clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';

@@ -42,11 +42,22 @@ jobs:
           echo "📋 Listing workspace contents:"
           ls -lah ${{ github.workspace }}
 
+          # Verify blog_output exists and has content
+          if [ ! -d "blog_output" ]; then
+            echo "❌ ERROR: blog_output directory not found. Jekyll build may have failed."
+            exit 1
+          fi
+
           echo "📋 Checking blog_output directory:"
-          ls -lah blog_output/ || echo "blog_output directory not found"
+          ls -lah blog_output/
+
+          if [ ! "$(ls -A blog_output)" ]; then
+            echo "❌ ERROR: blog_output directory is empty. Jekyll build produced no output."
+            exit 1
+          fi
 
           # Create the final directory (this will be the root of your published site)
-          mkdir final_site
+          mkdir -p final_site
           echo "✅ Created final_site directory"
 
           # Copy Jekyll output (the built blog HTML) into final_site
@@ -54,17 +65,24 @@ jobs:
           echo "✅ Copied blog_output to final_site"
 
           # Copy root static files and folders (your 3 other static folders + root files)
-          # We use rsync to efficiently copy everything from the repo root except the blog folder and other CI/CD files
-          rsync -av --ignore-missing-args \
-            --exclude 'blog' \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude 'blog_output' \
-            --exclude 'final_site' \
-            --exclude 'node_modules' \
-            --exclude '.gitignore' \
-            ${{ github.workspace }}/ final_site/
-          echo "✅ Synced static files to final_site"
+          echo "📋 Syncing static files from workspace..."
+
+          # Only run rsync if there are files to sync
+          if find ${{ github.workspace }} -maxdepth 1 -type f -o -type d | grep -vE '/(blog|\.git|\.github|blog_output|final_site|node_modules)$' | grep -q .; then
+            rsync -av --ignore-missing-args \
+              --exclude 'blog' \
+              --exclude '.git' \
+              --exclude '.github' \
+              --exclude 'blog_output' \
+              --exclude 'final_site' \
+              --exclude 'node_modules' \
+              --exclude '.gitignore' \
+              --exclude 'Gemfile.lock' \
+              ${{ github.workspace }}/ final_site/
+            echo "✅ Synced static files to final_site"
+          else
+            echo "ℹ️  No additional static files to sync (only blog content)"
+          fi
 
           echo "📋 Final site structure:"
           ls -lah final_site/

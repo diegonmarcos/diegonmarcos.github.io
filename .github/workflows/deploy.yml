@@ -1,0 +1,71 @@
+name: Hybrid Jekyll and Static Site Deployment
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🌐 Setup Pages Environment
+        uses: actions/configure-pages@v5
+
+      # --- 1. BUILD JEKYLL (CI) ---
+      - name: 💎 Install Ruby and Jekyll Dependencies
+        # Only needed if you have a Gemfile inside the 'blog' folder for plugins
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+          # Point bundle to the Gemfile inside the blog folder
+          working-directory: blog
+
+      - name: 🔨 Build Jekyll Site from /blog
+        # Run the build, outputting to a temporary folder called 'blog_output'
+        run: |
+          bundle exec jekyll build --source blog --destination blog_output
+          echo "Jekyll build complete in blog_output directory."
+
+      # --- 2. COMBINE ARTIFACTS ---
+      # This step creates the final deployment folder
+      - name: 📂 Prepare Final Artifact Directory
+        run: |
+          # Create the final directory (this will be the root of your published site)
+          mkdir final_site 
+
+          # Copy Jekyll output (the built blog HTML) into the /blog subdirectory of final_site
+          cp -r blog_output/. final_site/
+
+          # Copy root static files and folders (your 3 other static folders + root files)
+          # We use rsync to efficiently copy everything from the repo root except the blog folder and other CI/CD files
+          rsync -avz --exclude 'blog' --exclude '.git' --exclude '.github' --exclude 'blog_output' --exclude 'node_modules' --exclude '.gitignore' ${{ github.workspace }}/ final_site/
+
+          echo "Final site structure created in final_site/"
+
+      # --- 3. DEPLOY (CD) ---
+      - name: ⬆️ Upload Combined Artifact
+        # Upload the combined 'final_site' directory
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: final_site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

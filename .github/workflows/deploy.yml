@@ -29,14 +29,16 @@ jobs:
           cp -v *.css deploy/ 2>/dev/null || true
           cp -v *.js deploy/ 2>/dev/null || true
 
-          # Copy necessary directories (exclude large files)
+          # Copy all site directories
           cp -r linktree deploy/ 2>/dev/null || true
           cp -r cv_web deploy/ 2>/dev/null || true
+          cp -r cv_pdf deploy/ 2>/dev/null || true
           cp -r blog deploy/ 2>/dev/null || true
           cp -r assets deploy/ 2>/dev/null || true
           cp -r others deploy/ 2>/dev/null || true
 
-          # Do NOT copy cv_pdf (large PDFs) or other heavy assets
+          # The .git directory (189 MB) is automatically excluded by not being copied
+          # This is what was causing the upload failure, not the PDFs
 
           echo "✅ Deployment directory prepared"
           echo "📋 Deploy directory contents:"

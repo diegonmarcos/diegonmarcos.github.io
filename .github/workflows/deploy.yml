@@ -1,4 +1,4 @@
-name: Hybrid Jekyll and Static Site Deployment
+name: Static Site Deployment
 
 on:
   push:
@@ -19,81 +19,10 @@ jobs:
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
-      # --- 1. BUILD JEKYLL (CI) ---
-      - name: 💎 Install Ruby and Jekyll Dependencies
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.3'
-          bundler-cache: true
-          working-directory: ./blog
-
-      - name: 🔨 Build Jekyll Site from /blog
-        working-directory: ./blog
-        run: |
-          bundle exec jekyll build --destination ../blog_output
-          echo "Jekyll build complete in blog_output directory."
-
-      # --- 2. COMBINE ARTIFACTS ---
-      # This step creates the final deployment folder
-      - name: 📂 Prepare Final Artifact Directory
-        run: |
-          set -e  # Exit immediately if a command exits with a non-zero status
-
-          echo "📋 Listing workspace contents:"
-          ls -lah ${{ github.workspace }}
-
-          # Verify blog_output exists and has content
-          if [ ! -d "blog_output" ]; then
-            echo "❌ ERROR: blog_output directory not found. Jekyll build may have failed."
-            exit 1
-          fi
-
-          echo "📋 Checking blog_output directory:"
-          ls -lah blog_output/
-
-          if [ ! "$(ls -A blog_output)" ]; then
-            echo "❌ ERROR: blog_output directory is empty. Jekyll build produced no output."
-            exit 1
-          fi
-
-          # Create the final directory (this will be the root of your published site)
-          mkdir -p final_site
-          echo "✅ Created final_site directory"
-
-          # Copy Jekyll output (the built blog HTML) into final_site
-          cp -r blog_output/. final_site/
-          echo "✅ Copied blog_output to final_site"
-
-          # Copy root static files and folders (your 3 other static folders + root files)
-          echo "📋 Syncing static files from workspace..."
-
-          # Only run rsync if there are files to sync
-          if find ${{ github.workspace }} -maxdepth 1 -type f -o -type d | grep -vE '/(blog|\.git|\.github|blog_output|final_site|node_modules)$' | grep -q .; then
-            rsync -av --ignore-missing-args \
-              --exclude 'blog' \
-              --exclude '.git' \
-              --exclude '.github' \
-              --exclude 'blog_output' \
-              --exclude 'final_site' \
-              --exclude 'node_modules' \
-              --exclude '.gitignore' \
-              --exclude 'Gemfile.lock' \
-              ${{ github.workspace }}/ final_site/
-            echo "✅ Synced static files to final_site"
-          else
-            echo "ℹ️  No additional static files to sync (only blog content)"
-          fi
-
-          echo "📋 Final site structure:"
-          ls -lah final_site/
-          echo "✅ Final site structure created in final_site/"
-
-      # --- 3. DEPLOY (CD) ---
-      - name: ⬆️ Upload Combined Artifact
-        # Upload the combined 'final_site' directory
+      - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: final_site
+          path: .
 
   deploy:
     environment:

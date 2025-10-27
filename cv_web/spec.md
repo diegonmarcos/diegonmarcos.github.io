@@ -152,3 +152,60 @@ A hidden feature has been added to the main header.
 - **Custom Smooth Scroll for Arrow:**
     - **Functionality:** The scroll-down arrow in the header now triggers a custom JavaScript-based smooth scroll with a 3-second duration, providing a slower, more controlled animation.
     - **Implementation:** The default CSS `scroll-behavior` was removed. A custom `smoothScrollTo` function using `requestAnimationFrame` was added to `script.js` to handle the animation, and a click listener was attached to the arrow element.
+
+### Section Fade In/Fade Out Animations
+
+A smooth scroll-based animation system has been implemented to create an engaging visual experience as users navigate through the main content sections.
+
+- **Animated Sections:** All major content sections have the `animated-section` class applied:
+    - `<section id="intro" class="animated-section">`
+    - `<section id="portfolio" class="animated-section">`
+    - `<section id="career" class="animated-section">` (CURRICULUM)
+    - `<section id="skills" class="animated-section">`
+    - `<section id="contact" class="animated-section">`
+
+- **Animation Behavior:**
+    - **Fade In:** When a section enters the viewport (15% visible), it smoothly fades in (opacity 0→1) and slides up (translateY 30px→0px)
+    - **Fade Out:** When a section exits the viewport, it smoothly fades out (opacity 1→0) and slides down (translateY 0px→30px)
+    - **Duration:** 600ms for smooth, non-jarring transitions
+
+- **Custom Animation Engine:**
+    - **Function:** A bespoke `animate()` function in `script.js` (lines 324-355) uses `requestAnimationFrame` for 60fps smooth animations
+    - **Why Custom:** Overcomes browser-specific rendering bugs with CSS transitions, providing reliable cross-browser performance
+    - **Properties Animated:** `opacity` and `transform: translateY()` are smoothly interpolated
+    - **Visibility Control:** Sets `visibility: hidden` when fade-out completes to optimize performance
+
+- **Intersection Observer Implementation:**
+    - **Single Observer:** One `IntersectionObserver` monitors all `.animated-section` elements (lines 357-375)
+    - **Threshold:** Set to **0.15** (15% visibility) - optimized for large content sections
+        - Originally set to 0.95 (95%) like the main portfolio site
+        - Adjusted to 0.15 because CV sections contain extensive content that would never reach 95% visibility on most screens
+        - Lower threshold ensures animations trigger appropriately for content-heavy sections
+    - **Root:** `null` (uses viewport as root)
+    - **Trigger Logic:**
+        - `entry.isIntersecting` → Fade in animation
+        - `!entry.isIntersecting` → Fade out animation
+
+- **CSS Styling (`style.css` lines 619-625):**
+    ```css
+    .animated-section {
+        opacity: 0;
+        transform: translateY(30px);
+        visibility: hidden;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    ```
+    - Initial state: Hidden with 30px downward offset
+    - Transition properties provide fallback for browsers without requestAnimationFrame support
+
+- **Performance Considerations:**
+    - Uses hardware-accelerated `transform` property instead of `top`/`margin`
+    - `visibility: hidden` removes elements from accessibility tree when not visible
+    - Single observer instance watches all sections (efficient memory usage)
+    - `requestAnimationFrame` synchronizes with browser repaint cycles
+
+- **User Experience:**
+    - Creates a sense of progressive disclosure as users scroll
+    - Draws attention to newly visible content
+    - Reduces visual clutter by fading out passed sections
+    - Smooth 600ms animations feel natural and polished

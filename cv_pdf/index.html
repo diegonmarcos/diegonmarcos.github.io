@@ -92,28 +92,44 @@
     <div class="flex-grow w-0 flex flex-col"> <!-- Main content wrapper -->
         <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6 h-full">
             <!-- Sticky Header and Navigation -->
-            <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex items-center justify-between flex-wrap gap-4 z-10 w-full shrink-0">
-                <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200 shrink-0">Diego's CV</h1>
-                <div class="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-6">
-                    <!-- Page Indicator -->
+            <header class="bg-white dark:bg-slate-800 shadow-lg rounded-lg px-4 py-3 sm:px-6 sm:py-4 mb-4 flex flex-col gap-4 z-10 w-full shrink-0">
+                <!-- Line 1: Title -->
+                <div class="flex items-center justify-between w-full">
+                    <h1 class="text-xl font-bold text-slate-700 dark:text-slate-200">Diego's CV</h1>
                     <div class="text-center font-medium">
                         <span>Page: </span><span id="page-num">1</span> / <span id="page-count">--</span>
                     </div>
+                </div>
 
-                    <!-- Reset Zoom Button -->
-                    <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2 border-l border-slate-300 dark:border-slate-600 pl-4 ml-4">
+                <!-- Line 2: Download Buttons -->
+                <div class="flex items-center justify-center gap-x-4 sm:gap-x-6 border-t border-slate-200 dark:border-slate-700 pt-3">
+                    <span class="font-semibold text-slate-700 dark:text-slate-200">Download:</span>
+                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn-pdf" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">in PDF</span>
+                    </a>
+                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.docx" download="DiegoNMarcos_CurriculumVitae_en.docx" id="download-btn-docx" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">in Docx</span>
+                    </a>
+                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.md" download="DiegoNMarcos_CurriculumVitae_en.md" id="download-btn-md" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">in Markdown</span>
+                    </a>
+                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.csv" download="DiegoNMarcos_CurriculumVitae_en.csv" id="download-btn-csv" class="px-3 py-2 bg-gray-400 text-white rounded-md font-semibold transition-colors inline-flex items-center space-x-2 cursor-not-allowed" aria-disabled="true">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <span class="hidden sm:inline">in Csv</span>
+                    </a>
+                </div>
+
+                <!-- Line 3: Accessibility -->
+                <div class="flex items-center justify-center gap-x-4 sm:gap-x-6 border-t border-slate-200 dark:border-slate-700 pt-3">
+                    <span class="font-semibold text-slate-700 dark:text-slate-200">Accessibility:</span>
+                    <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
                         <span class="hidden sm:inline">Reset</span>
                     </button>
-
-                    <!-- Download Button -->
-                    <a href="./assets/DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                        <span class="hidden sm:inline">Download</span>
-                    </a>
-
-                    <!-- Link Preview Toggle -->
-                    <label for="preview-toggle" class="flex items-center cursor-pointer space-x-1.5 pl-4 ml-4 border-l border-slate-300 dark:border-slate-600">
+                    <label for="preview-toggle" class="flex items-center cursor-pointer space-x-1.5">
                         <span class="hidden sm:inline text-sm text-slate-700 dark:text-slate-200 font-semibold">Link Preview</span>
                         <div class="relative">
                             <input type="checkbox" id="preview-toggle" class="sr-only">
@@ -157,7 +173,9 @@
                 container: document.getElementById('pdf-container'),
                 viewerContent: document.getElementById('viewer-content'),
                 zoomWrapper: document.getElementById('zoom-wrapper'),
-                downloadBtn: document.getElementById('download-btn'),
+                downloadBtnPdf: document.getElementById('download-btn-pdf'),
+                downloadBtnDocx: document.getElementById('download-btn-docx'),
+                downloadBtnCsv: document.getElementById('download-btn-csv'),
                 resetZoomBtn: document.getElementById('reset-zoom-btn'),
                 previewToggle: document.getElementById('preview-toggle'),
                 previewPopup: document.getElementById('preview-popup'),
@@ -464,8 +482,8 @@
                 setupViewer(pdfDoc.numPages, placeholderHeight);
 
                 ui.loader.classList.add('hidden');
-                ui.downloadBtn.classList.remove('opacity-0', 'cursor-not-allowed');
-                ui.downloadBtn.removeAttribute('aria-disabled');
+                ui.downloadBtnPdf.classList.remove('opacity-0', 'cursor-not-allowed');
+                ui.downloadBtnPdf.removeAttribute('aria-disabled');
                 
                 // Initial Render
                 updateUI();

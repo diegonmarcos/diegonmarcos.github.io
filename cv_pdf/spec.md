@@ -29,12 +29,21 @@ The main viewer is a single-page application built with semantic HTML5.
 
 **Components:**
 
-1. **Header (Sticky):**
-   - Title: "Diego's CV"
-   - Page indicator: Shows current page / total pages
-   - Reset zoom button (desktop only): Returns view to original state
-   - Download button: Links to `DiegoNMarcos_CurriculumVitae_en.pdf`
-   - Link preview toggle: iOS-style switch to enable/disable link previews
+1.  **Header (Sticky):**
+    - A three-line layout.
+    - **Line 1: Title & Page Indicator**
+        - Title: "Diego's CV"
+        - Page indicator: Shows current page / total pages
+    - **Line 2: Download Buttons**
+        - "Download:" label
+        - Download "in PDF" button: Links to `DiegoNMarcos_CurriculumVitae_en.pdf`
+        - Download "in Docx" button: Links to `DiegoNMarcos_CurriculumVitae_en.docx`
+        - Download "in Markdown" button: Links to `DiegoNMarcos_CurriculumVitae_en.md`
+        - Download "in Csv" button: Links to `DiegoNMarcos_CurriculumVitae_en.csv` (currently disabled)
+    - **Line 3: Accessibility**
+        - "Accessibility:" label
+        - Reset zoom button (desktop only): Returns view to original state
+        - Link preview toggle: iOS-style switch to enable/disable link previews
 
 2. **Main PDF Container:**
    - ID: `pdf-container`

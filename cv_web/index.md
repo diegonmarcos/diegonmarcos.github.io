@@ -26,59 +26,40 @@
 <br>
 <br>
 <br>
-## INTRO
+## ABOUT
 
 ### ⚡ TL;DR
- >"Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 40+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany."
+ >"Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y; lived in 5 EU cities and moved over 170+ cities across 40+ countries; pivoting into Software n' Product Engineering; with Spanish and Brazilian roots based in Germany."
 
 [📜Curriculum Vitae (pdf)](https://diegonmarcos.github.io/cv_pdf)
- ``` mermaid
-gantt
-    title Career and Education Timeline
-    dateFormat  YYYY-MM-DD
-    axisFormat %Y
-    
-section ...........
-    💼 Professional Experience        : active, 2006-12-01, 2030-12-31
-section Capital
-    Capital Markets Advisor         :done, 2021-12-01, 2023-12-30
-    Real Estate Private Equity      :done, 2020-01-01, 2020-12-30
-    Portfolio M. & Credit A. :done, 2018-06-01, 2020-01-30
-    CVC & Wealth Management :done, 2015-12-01, 2018-06-30
-section Volunteer 
-    NGO (Financial, Social, Eng.)   :done, 2014-04-01, 2016-04-30
-section VC
-    Venture Capital Analyst         :done, 2013-12-01, 2015-05-30
-section Corporate 
-    Investor Relations / RE Bus. Dev. :done, 2011-01-01, 2013-02-28
-section Engineer 
-    RE Construction Intern          :done, 2009-01-01, 2010-07-30
-section .....
-    🌐 Relevant Experience        : active, 2006-12-01, 2030-12-30
-section Experiences
-    International Experience        :done, 2020-12-01, 2025-10-10
-    Volunteer Experience            :done, 2014-04-01, 2016-04-30
-    Army Service                    :done, 2006-01-01, 2006-12-30
-section ...............
-    🎓 Education        :active, 2006-12-01, 2030-12-31
-section Career Shift 
-    Software Engineering Course     :done, 2024-10-01, 2025-10-10
-    Product Management Spec.        :done, 2023-09-01, 2023-11-30
-section Capital
-    Capital Markets. Spec.      :done, 2016-01-01, 2016-12-30
-    Bay Area Workshop :done, 2015-12-01, 2015-12-30
-section Bachelor
-    B.Sc. Structural Civil Eng.     :done, 2008-01-01, 2013-12-30
-section ....  
-    🎓 Personal Pursuits       :active, 2006-12-01, 2030-12-31
-    My Bucket 1    :done, 2025-10-01, 2027-10-10
-    My Bucket 2    :done, 2027-10-01, 2030-10-10
-    ... :done, 2005-01,12m
+
+```mermaid
+mindmap
+  root((.))
+    ((.))
+	    ((W1))
+		    ((Capital Markets & Ventures))
+		    ((Business ))
+		    ((W2))
+			    ((C.Science ))
+			    ((Product ))
+				((E))
+					((International ))
+					((Pursuits ))
+					((NGO ))
+				((O))
+					((B.Sc. Engineering ))
+					((Army))
 ```
+ 
+
+### ⛏️ WORKING ON
+- Front-end Developments
+
 
 ## ---------------------------------------------
 ## PORTFOLIO
->Capital Markets, Corporate Business, Civil Engineering, Relevant Experiences, Educational Projects.
+>Capital Markets, Business Development, Civil Engineering, Computer Science, Product Management and Design, International Experience, NGO, Army Service, Personal Pursuits 
 ---
 
 ### 🎩 Capital Markets
@@ -87,37 +68,40 @@ section ....
 "*Risk comes from not knowing what you're doing.*" 
 — Charlie Munger | Warren Buffett (The Oracle of Omaha)
 #### (+)
-- Investment Banking / Advisory (ECM/DCM)
+- **Investment Banking**
 	* Structuring (Modeling and Due Diligence) of R$ 500Mi in MBS.
 	* Structuring Mezzanine debt of R$ 100Mi.
 	* Structuring BTS and Sales & Leaseback.
 	* Structuring and Private Placement of 5 companies in the Retail and Technology sector R$ 50Mi.
-	* Portfolio Manager / Private Equity / WM / Credit / Risk / Compliance
-* PM&PE (Constitution and Management):
-	 * 10 exclusive funds (FIM/FIDC/FIP) AuM of R$ 500Mi - Offers 476.
-	 * 2 MBS Funds with R$ 500Mi AuM - Offers 476/400.
-	 * 3 Funds Private Credit with AuM of R$ 350Mi.
-* PM&PE (Acquisitions):
-	 * MBS – R$ 350Mi.
-	 * Land for Real Estate Development - Sales R$ 200Mi.
-	 * LF /DEB – R$ 200Mi.
- * PE (building):
-	* Structuring of the front, middle, compliance, and risk elaborating processes and analysis criteria of an asset management company.
-	* Management and Risk/Compliance Committees.
-- Venture Capital / Corporate Venture Capital
+	* Constitution of 5 funds. Total  R$ 1,000 Mi AuM. Offers 476/400.
+	* Mortgage Backed Securities (CRI | 10 units | R$ 350 Mi NPV).
+* **Portfolio Management**
+	 * Exclusive Funds (FIM/FIDC/FIP | 10 funds | R$ 500 Mi AuM).
+	 * MBS Funds (FII |2 funds | R$ 500Mi AuM).
+	 * Private Credit Funds (FIM | 3 funds | R$ 350 Mi AuM).
+	 * Perpetual Bank Debt (LF | 1 unit | R$ 200 Mi).
+ * **Risk & Compliance**
+	 * Structuring of the front, middle, compliance, and risk: elaborating processes and analysis criteria of an asset management company. 
+	 * Risk Management: Credit Default Rate, Debt-to-Equity Ratio, VaR, non Liquid Asset Pricing, P&L, Liquidity Ratios, Liability Balance.
+	 * Front Committees (watcher) and Risk/Compliance Committees(Director).
+- **Private Equity**
+	 * Structuring a Holding Company for One-Stop-Shop Real Estate Investment Banking Solutions.
+	 * Land for Real Estate Development  (SPE, 1 unit,  R$ 200 Mi Sales).
+- **Venture Capital / CVC**
+	* Fund with R$ 200Mi AuM. Acquisition of 4 Startups focused on ESG.
 	* Structuring companies: Asset, Mortgage Bank, and Credit Servicer.
-	* Acquisition of 4 Startups focused on ESG - AuM 200Mi.
-### 💼 Corporate and Business 
+### 💼 Business Development
 > For 4 years in Real Estate Development working in the construction field, financial modeling, FP&A, and investor relations in a real estate developer company.
 
 "*We are what we repeatedly do. Excellence, then, is not an act, but a habit.*"
 — Aristotle (Frequently cited by Steve Jobs, Apple)" 
 #### (+)
-* Business Development / FP&A / Investor Relations / Project and Product Management
-	* Follow-on and MBS/Private Debit – R$ 350Mi.
+* **Real Estate Business Development / FP&A**
 	* Launch of real estate developments – Sales R$ 750Mi.
 	* Land for real estate business development – Sales R$ 500Mi.
-	* Financial modeling, product & project management, and construction follow-ups.
+	* Financial modeling, product & project management and construction follow-ups.
+* **Investor Relations**
+	* Follow-on and MBS/Private Debit – R$ 350Mi.
 
 ### 🏗️ Civil Engineering
 >Design, Plan, Management, and Development Residential towers and emergency houses for poverty alleviation.
@@ -125,36 +109,41 @@ section ....
 "*The important thing is not to stop questioning. Curiosity has its own reason for existing.*"
 — Albert Einstein (Physicist)"
 #### (+)
-* Construction Field
+* **Construction Field**
 	* Design, Plan, Management, and Development of 2 tower building.
 	* Construction of 8 houses for emergency housing acting directly on the building field of each house.
-* Educational Projects 
-	* Roads, bridges, water resources sites, Vertical Buildings.
+* **Educational Projects**
+	* Roads, Bridges, Water resources sites, Vertical Buildings and Damns.
 ### 👾 Computer Science
 > Pursuing a career shift. A Software Engineer and a Full Stack Developer under development.
 
 "*Talk is cheap. Show me the code.*" 
 — Linus Torvalds (Creator of the Linux Kernel and Git)
 #### (+)
-
- * Computer Science
+ * **Back-end**
 	* System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex.
-	* Data: Hashmap Techniques and Binary Trees.
+	* Data: Hash-map Techniques and Binary Trees.
 	* Graph and Gaming: Ray Casting Computer Graphics Algorithms.
- * Product
-	* Product requirements, Positioning strategy, User discover.
-	* Product requirements document (PRD/Spec) and Product Roadmap.
-	* Manage a product lifecycle, and Run an Operational Sprint.
+* **Front-end**
+	* Responsive, mobile-first websites:  Bootstrap CSS and Vanilla JavaScript.
+	* Dynamic, component-based applications: Tailwind CSS and Vue.js . (*ongoing*).
+	* Dynamic, component-based applications: Tailwind CSS and React.js . (*ongoing*).
+* **Data Science and Machine Learning/AI**
+	* Agent Coder: Langgraph  | TensorFlow/Pytorch | SQL/noSQL (*ongoing*).
+	* Hedge Fund Macro Analysis and Portfolio Rotation: Numpy/Scipy | SQL (*ongoing*).
+* **DevOPS**
+	* Github Actions and YAML settings for websites CI/CD.
 ### ✒️ Product Management and Design 
 > Pursuing a career shift.Passionate by innovation, creative coding, disruptive design and chaos patterns.
 
 "*Simplicity is the ultimate sophistication.*"
 — Leonardo da Vinci (Inventor, artist, engineer)
-
 #### (+)
-- item
-- item
-### ...
+- **Tech Product Management**
+	* Product requirements, Positioning strategy, User discover.
+	* Product requirements document (PRD/Spec) and Product Roadmap.
+	* Manage a product lifecycle, and Run an Operational Sprint.
+### ---
 ### 🌐 International Experience 
 > For 5 years, travelled to 170+ cities over 40+ countries across 5 continents; lived in 5 European capitals.
 
@@ -163,16 +152,17 @@ section ....
 **Long Stays**
 * Studying and working remotely in 5 European cities: Berlin and Barcelona, London, Valencia, and Paris. 
 * Also took long stays in: Rio de Janeiro, Casablanca, and Chiang Mai. 
-* Born and raised in São Paulo, the 5th biggest city in the world.
+- Born and raised in São Paulo, the 5th biggest city in the world.
 
  **Short Stays**
 - Traveled over 170+ cities, 100+ NomadMania Regions, 40+ countries across 5 continents. 
 - Visited: World Heritage Sites (50+), New Seven Wonder+Pyramids (3/8) and The Seven Natural WW (1/7).
 
-**Languages **
+**Languages**
 - Conversation Level: Portuguese, English and Spanish.
 - Intermediate Level: Galego. Beginner Level: Deutsche.
 - Basic Knowledge: Catalán, French and Italian.
+
 	``` mermaid
 	gantt
     title International Experience Timeline
@@ -207,7 +197,7 @@ section ....
     Asia2 Trip        :done, 2026-03-01, 2026-03-30
     ```
 
-### 🫂NGO 
+### 🫂 NGO 
 > For 2 years in a NGO worked on projects related to social development and the construction of emergency houses for people in extreme poverty.
 
 "*To rank the effort above the prize may be called love.*" 
@@ -236,6 +226,7 @@ section ....
 	- https://instagram.com/cporsp_exercito
 
 
+### ---
 ### 🌱 Personal Pursuits 
 > Always seeking for a balanced variety of fulfilling experiences 
 
@@ -328,10 +319,7 @@ High Adrenaline Sports:
 
 
 ## ----------------------------------------------
-## CAREER
-> STUDIED: B.SC. in Civil Engineer and a path towards Economics.
-> WORKED: in Capital Markets dealing with complex deals.
-> EXPERIENCED: Army Service, Volunteer and International Experience among relevant journeys.
+## CURRICULUM
 
 ---
 
@@ -518,7 +506,69 @@ gantt
 > Engineering, Tech Finance and Business.
 
 ---
-### 🛠️ Hard Skills
+
+### 🛠️ Skill List Professional Projects
+
+| Main Category            | Sub-Skill ID | Sub-Skill (Clickable Filter)    | Description                              |
+| :----------------------- | :----------: | :------------------------------ | :--------------------------------------- |
+| **Capital Markets**      |    **a**     | Financial Modelling             | Modeling, FP&A                           |
+|                          |    **b**     | IB / PE / VC (Deal Structuring) | IB, PE, VC, Structuring                  |
+|                          |    **c**     | Asset & Portfolio Management    | Portfolio Management                     |
+|                          |    **d**     | Risk Management & Compliance    | Risk & Compliance                        |
+| **Corporate & Business** |    **e**     | Business Development            | Real Estate Business Development         |
+|                          |    **f**     | FP&A                            | FP&A, Financial modeling                 |
+|                          |    **g**     | Investor Relations              | Investor Relations                       |
+| **Civil Engineering**    |    **h**     | Structural Design & Planning    | Design, Plan, Educational Projects       |
+|                          |    **i**     | Construction Management         | Management, Construction Field           |
+| **Computer Science**     |    **j**     | Back-End Development            | Back-end (Algos, System, Data)           |
+|                          |    **k**     | Front-End Development           | Front-end (CSS, JS, Vue, React)          |
+|                          |    **l**     | Data Science & ML/AI            | Data Science, ML/AI, Numpy               |
+|                          |    **m**     | DevOps                          | DevOps, CI/CD, Github Actions            |
+| **Product Management**   |    **n**     | Product Lifecycle (Agile)       | Manage product lifecycle, Sprint         |
+|                          |    **o**     | Product Strategy & Docs         | PRD, Roadmap, Positioning, User discover |
+
+#### Projects
+
+| Main Category            | Project ID/Name | Description                                                          | Sub-Skills (Used for Filtering) |
+| :----------------------- | :-------------: | :------------------------------------------------------------------- | :-----------------------------: |
+| **Capital Markets**      |     **A1**      | Structuring (Modeling/Due Diligence) of R$ 500Mi in MBS              |          **a**, **b**           |
+|                          |     **A2**      | Structuring Mezzanine debt of R$ 100Mi                               |          **a**, **b**           |
+|                          |     **A3**      | Structuring BTS and Sales & Leaseback                                |              **b**              |
+|                          |     **A4**      | Structuring and Private Placement (5 companies, R$ 50Mi)             |              **b**              |
+|                          |     **A5**      | Constitution of 5 funds (R$ 1,000 Mi AuM)                            |              **b**              |
+|                          |     **A6**      | Mortgage Backed Securities (CRI \| 10 units \| R$ 350 Mi NPV)        |              **b**              |
+|                          |     **A7**      | Exclusive Funds (FIM/FIDC/FIP \| 10 funds \| R$ 500 Mi AuM)          |              **c**              |
+|                          |     **A8**      | MBS Funds (FII \| 2 funds \| R$ 500Mi AuM)                           |              **c**              |
+|                          |     **A9**      | Private Credit Funds (FIM \| 3 funds \| R$ 350 Mi AuM)               |              **c**              |
+|                          |     **A10**     | Perpetual Bank Debt (LF \| 1 unit \| R$ 200 Mi)                      |              **c**              |
+|                          |     **A11**     | Structuring of the front, middle, compliance, and risk...            |          **d**, **c**           |
+|                          |     **A12**     | Risk Management: Credit Default Rate, Debt-to-Equity Ratio...        |              **d**              |
+|                          |     **A13**     | Front Committees (watcher) and Risk/Compliance Committees(Director)  |              **d**              |
+|                          |     **A14**     | PE: Structuring a Holding Company (One-Stop-Shop RE)                 |              **b**              |
+|                          |     **A15**     | PE: Land for Real Estate Development (SPE, R$ 200 Mi Sales)          |          **b**, **e**           |
+|                          |     **A16**     | VC: Fund (R$ 200Mi AuM) - Acq. 4 Startups (ESG)                      |              **b**              |
+|                          |     **A17**     | VC: Structuring companies (Asset, Mortgage Bank, Servicer)           |              **b**              |
+| **Corporate & Business** |     **B1**      | Launch of real estate developments – Sales R$ 750Mi                  |              **e**              |
+|                          |     **B2**      | Land for real estate business development – Sales R$ 500Mi           |              **e**              |
+|                          |     **B3**      | Financial modeling, product & project management...                  |       **a**, **f**, **n**       |
+|                          |     **B4**      | Follow-on and MBS/Private Debit – R$ 350Mi                           |          **g**, **b**           |
+| **Civil Engineering**    |     **C1**      | Design, Plan, Management, and Development of 2 tower building        |          **h**, **i**           |
+|                          |     **C2**      | Construction of 8 houses for emergency housing...                    |              **i**              |
+|                          |     **C3**      | Educational Projects (Roads, bridges, water resources...             |              **h**              |
+| **Computer Science**     |     **D1**      | System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex    |              **j**              |
+|                          |     **D2**      | Data: Hash-map Techniques and Binary Trees                           |              **j**              |
+|                          |     **D3**      | Graph and Gaming: Ray Casting Computer Graphics Algorithms           |              **j**              |
+|                          |     **D4**      | Front-End: Responsive, mobile-first websites...                      |              **k**              |
+|                          |     **D5**      | Front-End: Dynamic, component-based applications (Vue.js)            |              **k**              |
+|                          |     **D6**      | Front-End: Dynamic, component-based applications (React.js)          |              **k**              |
+|                          |     **D7**      | Agent Coder: Langgraph \| TensorFlow/Pytorch \| SQL/noSQL            |          **l**, **j**           |
+|                          |     **D8**      | Hedge Fund Macro Analysis and Portfolio Rotation: Numpy/Scipy \| SQL |          **l**, **c**           |
+|                          |     **D9**      | DevOps: Github Actions and YAML settings for websites CI/CD          |              **m**              |
+| **Product Management**   |     **E1**      | Product requirements, Positioning strategy, User discover            |              **o**              |
+|                          |     **E2**      | Product requirements document (PRD/Spec) and Product Roadmap         |              **o**              |
+|                          |     **E3**      | Manage a product lifecycle, and Run an Operational Sprint            |              **n**              |
+
+### 🛠️ Skills List Educational Projects
 
 #### 🔬 Foundational Science
 > Engineer foundation 
@@ -575,33 +625,28 @@ Product Manager
 
 
 ### 💾 Tech Stack
-> Software Engineer: from Back-end to Full Stack.
 
 ---
-#### (+)
-##### 👾 My Stack 
+#### 👾 My Stack 
 
-- List
+| Topic                                   | Rating  |   //   | Topic                                   | Rating  |
+| :-------------------------------------- | :-----: | :----: | :-------------------------------------- | :-----: |
+| **CS Concepts**                         |  **☆**  |        | **DevOps**                              |  **☆**  |
+| &nbsp;&nbsp;&nbsp; - Data Structures    |    ☆    |        | &nbsp;&nbsp;&nbsp; - GitHub Actions     |         |
+| **Back-End**                            |  **☆**  |        | **Database**                            |  **☆**  |
+| &nbsp;&nbsp;&nbsp; - UNIX               |   ☆☆☆   |        | &nbsp;&nbsp;&nbsp; - SQL                |   ☆☆☆   |
+| &nbsp;&nbsp;&nbsp; - Algorithms         |   ☆☆☆   |        | &nbsp;&nbsp;&nbsp; - NonSQL             |   ☆☆☆   |
+| &nbsp;&nbsp;&nbsp; - Web Servers        |    ~    |        | **Data Science & ML/AI**                | **☆☆☆** |
+| &nbsp;&nbsp;&nbsp; - Embedded Systems   |    ~    |        | &nbsp;&nbsp;&nbsp; - Numpy/Scipy        |    ☆    |
+| &nbsp;&nbsp;&nbsp; - Graphic and Gaming |    ☆    |        | &nbsp;&nbsp;&nbsp; - TensorFlow/Pytorch |    ~    |
+| **Front-End**                           | **☆☆☆** |        | &nbsp;&nbsp;&nbsp; - Langraph           |    ~    |
+| &nbsp;&nbsp;&nbsp; - Html/CSS           |    ☆    |        |                                         |         |
+| &nbsp;&nbsp;&nbsp; - Vanila.js          |    ~    |        |                                         |         |
+| &nbsp;&nbsp;&nbsp; - Vue.js             |    -    |        |                                         |         |
+| &nbsp;&nbsp;&nbsp; - React.js           |    -    | **//** |                                         |         |
+| &nbsp;&nbsp;&nbsp; - Pandas             |         |        |                                         |         |
 
-| Topic                                   | Rating  | //  | Topic                                   | Rating  |
-| :-------------------------------------- | :-----: | :-: | :-------------------------------------- | :-----: |
-| **CS Concepts**                         |  **☆**  |     | **DevOps**                              |  **☆**  |
-| &nbsp;&nbsp;&nbsp; - Data Structures    |    ☆    |     | &nbsp;&nbsp;&nbsp; - GitHub Actions     |         |
-| **Back-End**                            |  **☆**  |     | **Database**                            |  **☆**  |
-| &nbsp;&nbsp;&nbsp; - UNIX               |   ☆☆☆   |     | &nbsp;&nbsp;&nbsp; - SQL                |   ☆☆☆   |
-| &nbsp;&nbsp;&nbsp; - Algorithms         |   ☆☆☆   |     | &nbsp;&nbsp;&nbsp; - NonSQL             |   ☆☆☆   |
-| &nbsp;&nbsp;&nbsp; - Web Servers        |    ~    |     | **Data Science & ML & AI**              | **☆☆☆** |
-| &nbsp;&nbsp;&nbsp; - Embedded Systems   |    ~    |     | &nbsp;&nbsp;&nbsp; - Numpy/Scipy        |    ☆    |
-| &nbsp;&nbsp;&nbsp; - Graphic and Gaming |    ☆    |     | &nbsp;&nbsp;&nbsp; - TensorFlow/Pytorch |    ~    |
-| **Front-End**                           | **☆☆☆** |     | &nbsp;&nbsp;&nbsp; - Langraph           |    ~    |
-| &nbsp;&nbsp;&nbsp; - Html/CSS           |    ☆    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Js.Vanila          |    ~    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Js.Vue             |    -    |     |                                         |         |
-| &nbsp;&nbsp;&nbsp; - Pandas             |    -    | //  |                                         |         |
-
-
-
-- Icons
+##### Icons
 ###### 🚀 DevOps
 
 | SCRIPT                                       |                                                                                                                  |                                                  | VC/CI                                            |                                                                 | CONT                                             | CLOUD                                               | MONIT                                                    |
@@ -613,6 +658,7 @@ Product Manager
 ***
 
 ###### ⚙️ Back-End
+
 | SYS                                    |                                            |                                              |                                               | LANG                                     | FRAME                                            |                                                  | WEBSRVS                                        | API                                        | AUTH                                       | TESTING                                          |
 | :------------------------------------- | :----------------------------------------- | :------------------------------------------- | :-------------------------------------------- | :--------------------------------------- | :----------------------------------------------- | :----------------------------------------------- | :--------------------------------------------- | :----------------------------------------- | :----------------------------------------- | :----------------------------------------------- |
 | C                                      | C++                                        | Rust                                         | Make                                          | Go                                       | Django                                           | Spring                                           | Nginx                                          | REST                                       | JWT                                        | Pytest                                           |
@@ -622,6 +668,7 @@ Product Manager
 ***
 
 ###### 🖥️ Front-End
+
 | MARK                                                 |                                                |                                              |                                            | LANG                                             | FRAME                                          |
 | :--------------------------------------------------- | :--------------------------------------------- | :------------------------------------------- | :----------------------------------------- | :----------------------------------------------- | :--------------------------------------------- |
 | Obsidian                                             | Markdown                                       | Html                                         | Css                                        | TypeScript                                       | React                                          |
@@ -631,6 +678,7 @@ Product Manager
 ***
 
 ###### 📊 Data Science & ML
+
 | DATA-FRAME                                                                                                            |                                                                                                           | ML-FRAME                                                | DL-FRAME                                           | BIG-DATA                                                                                                   |
 | :-------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------- | :------------------------------------------------------ | :------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- |
 | Pandas                                                                                                                | NumPy                                                                                                     | Scikit-learn                                            | PyTorch                                            | Spark                                                                                                      |
@@ -647,7 +695,7 @@ Product Manager
 
 
 
-##### 🖥️ THE Stack
+#### 🖥️ THE Stack
 
 - List
 
@@ -909,7 +957,34 @@ Database
 
 
 
-#### 🗣️ Soft Skills
+
+### 🌎 Languages and Citizenship
+> Portuguese, English, Spanish and German. Brazilian and Spanish.
+
+---
+##### (+)
+ * Professional Languages
+	 * Portuguese: (Native)
+	 * English: Advanced (C1)
+	 * Spanish: Advanced (B2)
+	 * Deutsche: Beginner (A1)
+ * Other Conversational/Basic: 
+	 * Galego: Intermediate (A2)
+	 * Catalán, French and Italian (Basic Knowledge)
+ * Citizenship: 
+	 * Brazilian Citizenship
+	 * Spanish Citizenship
+ * Work Permits: 
+	 * Brazil (Brazilian Citizenship)
+	 * Portugal (CPLP)
+	 * Spain (Work Visa)
+	 * EU (Spanish Citizenship)
+
+---
+
+
+
+### 🗣️ Soft Skills
 > Logical and Teamwork 
 
 ---
@@ -936,31 +1011,6 @@ Database
 	 * Self Organisation (3)
 		 * Lean thinking
 		 * Hands-on
-#### 🌎 Languages and Citizenship
-> Portuguese, English, Spanish and German. Brazilian and Spanish.
-
----
-##### (+)
- * Professional Languages
-	 * Portuguese: (Native)
-	 * English: Advanced (C1)
-	 * Spanish: Advanced (B2)
-	 * Deutsche: Beginner (A1)
- * Other Conversational/Basic: 
-	 * Galego: Intermediate (A2)
-	 * Catalán, French and Italian (Basic Knowledge)
- * Citizenship: 
-	 * Brazilian Citizenship
-	 * Spanish Citizenship
- * Work Permits: 
-	 * Brazil (Brazilian Citizenship)
-	 * Portugal (CPLP)
-	 * Spain (Work Visa)
-	 * EU (Spanish Citizenship)
-
----
-
-
 ## ----------------------------------------------
 ## CONTACT
 

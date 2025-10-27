@@ -8,9 +8,9 @@
 | ** PROFESSIONAL**                                                                           |
 | ------------------------------------------------------------------------------------------- |
 | **Contact**                                                                                 |
+| - 🔗 [Linktree](https://drive.google.com/file/d/1TsICQ-p1eVc6dp0Ee3JHwx1X6uBJmbBA/view)     |
 | - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                          |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                |
-| - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                           |
 |                                                                                             |
 | **Profiles**                                                                                |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                |
@@ -34,14 +34,15 @@
 | - 🧠 [Machine Learning & DL](https://github.com/diegonmarcos/diegonmarcos.github.io "null") |
 | - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |
 |                                                                                             |
-|                                                                                             |
+| ** QR CODES**                                                                               |
+| -[Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")            |
 
 | **PERSONAL**                                                                                             |
 | -------------------------------------------------------------------------------------------------------- |
 | **MyProfiles**                                                                                           |
+| - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                       |
+| - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                        |
 | - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                       |
-| - 🪪 [MyID (building)](https://linktr.ee/diegonmarcos "null")                                            |
-| - 🔗 [MyLinktree(building)](https://diegonmarcos.github.io/linktree "null")                              |
 |                                                                                                          |
 | ** MyMedia**                                                                                             |
 | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")                                          |
@@ -66,3 +67,8 @@
 |                                                                                                          |
 | **My Ventures**                                                                                          |
 | - 🚀 [Venture 1](https://bucketlistjourney.net/my-bucket-list/ "null")                                   |
+| - 🚀 [Venture 2](https://bucketlistjourney.net/my-bucket-list/ "null")                                   |
+|                                                                                                          |
+| ** QR CODES**                                                                                            |
+| - [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                        |
+

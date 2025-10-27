@@ -74,6 +74,10 @@
         input:checked ~ .block {
             background-color: #48bb78;
         }
+        /* Progress Bar Styling */
+        #progress-bar {
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
         /* Mobile-specific overrides */
         @media (max-width: 767px) {
             #pdf-container {
@@ -90,6 +94,11 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex h-screen overflow-hidden">
+
+    <!-- Progress Bar -->
+    <div id="progress-bar-container" class="fixed top-0 left-0 w-full h-1 bg-gray-300 dark:bg-gray-700 z-50">
+        <div id="progress-bar" class="h-full bg-blue-500 transition-all duration-300 ease-out" style="width: 0%"></div>
+    </div>
 
     <div class="flex-grow w-0 flex flex-col"> <!-- Main content wrapper -->
         <div class="w-full max-w-4xl mx-auto flex flex-col p-4 sm:p-6 h-full">
@@ -182,7 +191,8 @@
                 previewToggle: document.getElementById('preview-toggle'),
                 previewPopup: document.getElementById('preview-popup'),
                 pageNumSpan: document.getElementById('page-num'),
-                pageCountSpan: document.getElementById('page-count')
+                pageCountSpan: document.getElementById('page-count'),
+                progressBar: document.getElementById('progress-bar')
             };
 
             let linkPreviewEnabled = false;
@@ -365,6 +375,12 @@
                     }
                 }
                 ui.pageNumSpan.textContent = mostVisiblePageIndex + 1;
+
+                // Update progress bar
+                if (pdfDoc) {
+                    const progress = ((mostVisiblePageIndex + 1) / pdfDoc.numPages) * 100;
+                    ui.progressBar.style.width = `${progress}%`;
+                }
             }
 
             function scheduleUIUpdate() {

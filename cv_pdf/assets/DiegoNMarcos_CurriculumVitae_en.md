@@ -204,4 +204,4 @@
 - **Endurance Sports:** Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump.
 - **Competition Sports:** Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y).
 - **Mindfulness:** Aikido, Yoga and Meditation.
-- **Pursuing:** Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
+- **Pursuing:** Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.e also the one under SKILL

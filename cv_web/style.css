@@ -352,6 +352,10 @@ a:hover {
     color: var(--color-accent-purple);
     font-weight: bold;
 }
+/* Style for Font Awesome icons in linktree */
+.linktree-container i {
+    color: #bdc3c7; /* Light gray for icons */
+}
 
 /* Side Navigation */
 .side-nav {

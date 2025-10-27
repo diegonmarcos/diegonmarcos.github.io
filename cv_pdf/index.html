@@ -17,6 +17,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- PDF.js library from Mozilla CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    <!-- Font Awesome for file type icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .loader {
@@ -105,26 +107,26 @@
                 <div class="flex items-center justify-center gap-x-4 sm:gap-x-6 border-t border-slate-200 dark:border-slate-700 pt-3">
                     <span class="font-semibold text-slate-700 dark:text-slate-200">Download:</span>
                     <a href="./assets/DiegoNMarcos_CurriculumVitae_en.pdf" download="DiegoNMarcos_CurriculumVitae_en.pdf" id="download-btn-pdf" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2 opacity-0 cursor-not-allowed" aria-disabled="true">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <i class="fa-solid fa-file-pdf text-lg"></i>
                         <span class="hidden sm:inline">in PDF</span>
                     </a>
                     <a href="./assets/DiegoNMarcos_CurriculumVitae_en.docx" download="DiegoNMarcos_CurriculumVitae_en.docx" id="download-btn-docx" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <i class="fa-solid fa-file-word text-lg"></i>
                         <span class="hidden sm:inline">in Docx</span>
                     </a>
                     <a href="./assets/DiegoNMarcos_CurriculumVitae_en.md" download="DiegoNMarcos_CurriculumVitae_en.md" id="download-btn-md" class="px-3 py-2 bg-blue-500 text-white rounded-md font-semibold hover:bg-blue-600 transition-colors inline-flex items-center space-x-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <i class="fa-brands fa-markdown text-lg"></i>
                         <span class="hidden sm:inline">in Markdown</span>
                     </a>
                     <a href="./assets/DiegoNMarcos_CurriculumVitae_en.csv" download="DiegoNMarcos_CurriculumVitae_en.csv" id="download-btn-csv" class="px-3 py-2 bg-gray-400 text-white rounded-md font-semibold transition-colors inline-flex items-center space-x-2 cursor-not-allowed" aria-disabled="true">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        <i class="fa-solid fa-file-csv text-lg"></i>
                         <span class="hidden sm:inline">in Csv</span>
                     </a>
                 </div>
 
-                <!-- Line 3: Accessibility -->
+                <!-- Line 3: View Options -->
                 <div class="flex items-center justify-center gap-x-4 sm:gap-x-6 border-t border-slate-200 dark:border-slate-700 pt-3">
-                    <span class="font-semibold text-slate-700 dark:text-slate-200">Accessibility:</span>
+                    <span class="font-semibold text-slate-700 dark:text-slate-200">View:</span>
                     <button id="reset-zoom-btn" title="Reset View" class="px-3 py-2 bg-slate-500 text-white rounded-md font-semibold hover:bg-slate-600 transition-colors inline-flex items-center space-x-2">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 1v4m0 0h-4m4 0l-5-5"></path></svg>
                         <span class="hidden sm:inline">Reset</span>

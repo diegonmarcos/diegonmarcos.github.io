@@ -5,10 +5,15 @@
 
 ### 🔗 Linktree
 
+ICONS
+
+| ✉️ [](mailto:diegonmarcos@gmail.com "null") | 💼 [](https://linkedin.com/in/diegonmarcos "null") | 🌐 [](https://diegonmarcos.github.io "null") |
+| ------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
+
 | ** PROFESSIONAL**                                                                           |
 | ------------------------------------------------------------------------------------------- |
 | **Contact**                                                                                 |
-| - 🔗 [Linktree](https://drive.google.com/file/d/1TsICQ-p1eVc6dp0Ee3JHwx1X6uBJmbBA/view)     |
+| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                                      |
 | - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                          |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                |
 |                                                                                             |
@@ -35,14 +40,18 @@
 | - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |
 |                                                                                             |
 | ** QR CODES**                                                                               |
-| -[Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")            |
+| - [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")           |
 
 | **PERSONAL**                                                                                             |
 | -------------------------------------------------------------------------------------------------------- |
-| **MyProfiles**                                                                                           |
+| **MyContact**                                                                                            |
 | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                       |
 | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                        |
+|                                                                                                          |
+| **MyProfiles**                                                                                           |
 | - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                       |
+| -                                                                                                        |
+| -                                                                                                        |
 |                                                                                                          |
 | ** MyMedia**                                                                                             |
 | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")                                          |

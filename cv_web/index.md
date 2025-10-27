@@ -1,3 +1,7 @@
+---
+layout: default
+title: My HTML Page
+---
 
 # DIEGO NEPOMUCENO MARCOS 
 **| Product n' Software Eng Std ✒️ | Venture Capital n' Portfolio Manager Analyst 🎩 | Civil Engineer B.Sc. 🏗️| @BERlin.de 🏛️ |**
@@ -59,7 +63,7 @@ mindmap
 
 ## ---------------------------------------------
 ## PORTFOLIO
->Capital Markets, Business Development, Civil Engineering, Computer Science, Product Management and Design, International Experience, NGO, Army Service, Personal Pursuits 
+>
 ---
 
 ### 🎩 Capital Markets
@@ -503,7 +507,7 @@ gantt
 ## --------------------------------------------------
 
 ## SKILLS
-> Engineering, Tech Finance and Business.
+> 
 
 ---
 
@@ -568,7 +572,7 @@ gantt
 |                          |     **E2**      | Product requirements document (PRD/Spec) and Product Roadmap         |              **o**              |
 |                          |     **E3**      | Manage a product lifecycle, and Run an Operational Sprint            |              **n**              |
 
-### 🛠️ Skills List Educational Projects
+### 🛠️ Skills List Educational
 
 #### 🔬 Foundational Science
 > Engineer foundation 
@@ -1026,35 +1030,37 @@ Database
 - item
 ### 🔗 Linktree
 
-| ** PROFESSIONAL**                                                                               | **PERSONAL**                                                                  |
-| ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **Contact**                                                                                     | **MyProfiles**                                                                |
-| - 📧 [Email](mailto:diegonmarcos@gmail.com "null")                                              | - [Myprofile (building)](https://linktr.ee/diegonmarcos "null")               |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                    | - [MyID (building)](https://linktr.ee/diegonmarcos "null")                    |
-| - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                               |                                                                               |
-|                                                                                                 |                                                                               |
-| **Profiles**                                                                                    | ** MyMedia**                                                                  |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                    | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")               |
-| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                          | - 📺 [YouTube](https://www.youtube.com/channel/diegonmarcos "null")           |
-| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                           | - 📌 [Pinterest](https://www.pinterest.com/diegonmarcos "null")               |
-| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                           | - 📷 [Instagram](https://www.instagram.com/diegonmarcos "null")               |
-|                                                                                                 |                                                                               |
-| **Repos**                                                                                       | ** MyEndurance**                                                              |
-| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                                      | - 🚵 [Komoot](https://www.komoot.com/user/2474200810898/routes "null")        |
-| - 💻 [Github](https://github.com/diegonmarcos "null")                                           | - 🏃 [Strava](https://www.strava.com/athletes/4662170 "null")                 |
-|                                                                                                 |                                                                               |
-| - 💾 Low Level Repos                                                                            | ** MyMaps**                                                                   |
-| - [MyLib](https://github.com/diegonmarcos/mylib "null")                                         | - 🌍 [NomadMania](https://nomadmania.com/profile/73889 "null")                |
-| - [Algos](https://github.com/diegonmarcos/algo "null")                                          | - 📍 [Pins](https://goo.gl/maps/9kh8VwQQntX3sfmk9?g_st=ac "null")             |
-| - [System](https://github.com/diegonmarcos/system "null")                                       |                                                                               |
-| - [Graphic](https://github.com/diegonmarcos/graphic "null")                                     | ** MyProjects**                                                               |
-| - 💾 Front Repos                                                                                | - 🚀 **My Bucket**                                                            |
-| - [Front_Git](https://github.com/diegonmarcos/diegonmarcos "null")                              | - [My Bucket 50 things](https://bucketlistjourney.net/my-bucket-list/ "null") |
-| - [Front_Web](https://www.google.com/search?q=https://github.com/diegonmarcos.github.io "null") | - [My Bucket Endurance](https://bucketlistjourney.net/my-bucket-list/ "null") |
-|                                                                                                 | - [My Bucket Inner](https://bucketlistjourney.net/my-bucket-list/ "null")     |
-|                                                                                                 |                                                                               |
-|                                                                                                 | - 🌐 **Others**                                                               |
-|                                                                                                 | - [Social Work (building)](https://linktr.ee/diegonmarcos "null"))            |
+| ** PROFESSIONAL**                                                                        | **PERSONAL**                                                                                           |
+| ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| **Contact**                                                                              | **MyProfiles**                                                                                         |
+| - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                       | - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                     |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                             | - 🪪 [MyID (building)](https://linktr.ee/diegonmarcos "null")                                          |
+| - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                        | - 🔗 [MyLinktree(building)](https://diegonmarcos.github.io/linktree "null")                            |
+|                                                                                          |                                                                                                        |
+| **Profiles**                                                                             | ** MyMedia**                                                                                           |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                             | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")                                        |
+| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                   | - 📺 [YouTube](https://www.youtube.com/channel/diegonmarcos "null")                                    |
+| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                    | - 📌 [Pinterest](https://www.pinterest.com/diegonmarcos "null")                                        |
+| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                    | - 📷 [Instagram](https://www.instagram.com/diegonmarcos "null")                                        |
+|                                                                                          |                                                                                                        |
+| **Repos**                                                                                | ** MyEndurance**                                                                                       |
+| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                               | - 🚴 [Komoot](https://www.komoot.com/user/2474200810898/routes "null")                                 |
+| - 💻 [Github](https://github.com/diegonmarcos "null")                                    | - 🏃 [Strava](https://www.strava.com/athletes/4662170 "null")                                          |
+|                                                                                          |                                                                                                        |
+| - 💾 Back Repos                                                                          | ** MyMaps**                                                                                            |
+| - 📚 [MyLib](https://github.com/diegonmarcos/mylib "null")                               | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                        |
+| - 💡 [Algos](https://github.com/diegonmarcos/algo "null")                                | - 📍 [Maps](https://www.google.com/maps/d/edit?mid=1EOqj1-9grA1Bt_gtUHh25-pGpeLzKzU&usp=sharing"null") |
+| - ⚙️ [System](https://github.com/diegonmarcos/system "null")                             | - 🌍 [Earth](https://earth.google.com/earth/d/1MwtAnYRNN5qyxl6BmRBpvAGpZv3modMy?usp=sharing "null")    |
+| - 🖌️ [Graphic](https://github.com/diegonmarcos/graphic "null")                           | - 🗺️ [Maps2](https://www.google.com/maps/d/edit?mid=1EOqj1-9grA1Bt_gtUHh25-pGpeLzKzU&usp=sharing"null") |
+|                                                                                          |                                                                                                        |
+| - 💾 Front & ML Repos                                                                    | - 🌱 **My Bucket**                                                                                     |
+| - 🖥️ [Front_Web](https://github.com/diegonmarcos/diegonmarcos.github.io "null")          | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                     |
+| - 🗄️ [Data Science](https://github.com/diegonmarcos/diegonmarcos.github.io "null")          | - 🏃 [My Bucket (Endurance)](https://bucketlistjourney.net/my-bucket-list/ "null")                        |
+| - 🧠 [Machine Learning & DL](https://github.com/diegonmarcos/diegonmarcos.github.io "null") | - ❤️ [My Bucket (Inner)](https://bucketlistjourney.net/my-bucket-list/ "null")                            |
+| - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |                                                                                                        |
+|                                                                                          | 🚀 **My Ventures**                                                                                     |
+|                                                                                          | - 🚀 [Venture 1](https://bucketlistjourney.net/my-bucket-list/ "null")                                    |
+
 
 ### (+)
 - item

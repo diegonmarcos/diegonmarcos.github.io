@@ -547,6 +547,32 @@ a:hover {
     #main-content.nav-open {
         margin-left: 0;
     }
+
+    /* Make skills tables more readable on mobile */
+    .skills-table {
+        font-size: 0.7em; /* Smaller font for mobile */
+    }
+
+    .skills-table th, .skills-table td {
+        padding: 2px; /* Reduced padding */
+    }
+
+    .skills-table th {
+        font-size: 0.75em; /* Even smaller headers */
+    }
+
+    .skills-table img {
+        max-height: 20px; /* Smaller icons */
+    }
+
+    .skills-table .kde-icon {
+        max-height: 16px; /* Adjust KDE icon proportionally */
+    }
+
+    .skills-list-table td,
+    .skills-list-table th {
+        padding-left: 5px; /* Reduce left padding on mobile */
+    }
 }
 
 .fade-out {

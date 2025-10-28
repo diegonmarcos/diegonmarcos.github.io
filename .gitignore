@@ -1,32 +1,37 @@
 #GITIGNORE FILE
 
+
+# General files to ignore
+## IDE files
+.vscode/
+.idea/
+
+## OS files
+.DS_Store
+Thumbs.db
+
 # Symlinks to external directories
 markdown/
 
-# Jekyll build output
+
+# Jekyll
+## Jekyll build output
 _site/
 .jekyll-cache/
 .jekyll-metadata
 Gemfile.lock
 
-# Note: blog/*.html files ARE committed (generated from local Jekyll builds)
-
-# Dependency directories
-node_modules/
-vendor/
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# IDE files
-.vscode/
-.idea/
-
-# Temporary build directories
+## Temporary build directories
 blog_output/
 final_site/
 
-# Sass/CSS build artifacts
+# Node and Sass build artifacts
+## Dependency directories (located in 3.sass/0.json/)
+node_modules/
+vendor/
+**/3.sass/0.json/node_modules/
+**/3.sass/0.json/package-lock.json
+
+## Sass/CSS build artifacts
 *.css.map
 *.backup

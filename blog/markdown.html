@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Markdown Features !</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #d1d5db;
+            background: #0D061F;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+            color: #A060FF;
+        }
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #A060FF;
+        }
+        pre {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: #d1d5db;
+        }
+        blockquote {
+            border-left: 4px solid #8A2BE2;
+            padding-left: 20px;
+            margin-left: 0;
+            color: #9ca3af;
+            background: rgba(138, 43, 226, 0.05);
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        a {
+            color: #A060FF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #8A2BE2;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2em 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+        table th, table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: #A060FF;
+        }
+        /* Mermaid diagram styling */
+        .mermaid {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 2em 0;
+        }
+        /* Admonition styling */
+        .admonition, .note, .warning, .tip, .danger, .info {
+            border-left: 4px solid;
+            padding: 15px 20px;
+            margin: 1.5em 0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .admonition > p:first-child, .note > p:first-child,
+        .warning > p:first-child, .tip > p:first-child,
+        .danger > p:first-child, .info > p:first-child {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        .admonition > p:last-child, .note > p:last-child,
+        .warning > p:last-child, .tip > p:last-child,
+        .danger > p:last-child, .info > p:last-child {
+            margin-bottom: 0;
+        }
+        .note {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .note > p:first-child::before {
+            content: "📘 Note: ";
+            color: #3b82f6;
+        }
+        .tip {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .tip > p:first-child::before {
+            content: "💡 Tip: ";
+            color: #10b981;
+        }
+        .warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .warning > p:first-child::before {
+            content: "⚠️ Warning: ";
+            color: #f59e0b;
+        }
+        .danger {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .danger > p:first-child::before {
+            content: "🚨 Danger: ";
+            color: #ef4444;
+        }
+        .info {
+            border-left-color: #8A2BE2;
+            background: rgba(138, 43, 226, 0.1);
+        }
+        .info > p:first-child::before {
+            content: "ℹ️ Info: ";
+            color: #A060FF;
+        }
+        .important {
+            border-left-color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+        .important > p:first-child::before {
+            content: "❗ Important: ";
+            color: #ec4899;
+        }
+        .example {
+            border-left-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .example > p:first-child::before {
+            content: "📝 Example: ";
+            color: #8b5cf6;
+        }
+        .question {
+            border-left-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+        .question > p:first-child::before {
+            content: "❓ Question: ";
+            color: #14b8a6;
+        }
+    </style>
+    <!-- Mermaid.js for diagram rendering -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#8A2BE2',
+                primaryTextColor: '#d1d5db',
+                primaryBorderColor: '#A060FF',
+                lineColor: '#A060FF',
+                secondaryColor: '#A060FF',
+                tertiaryColor: '#0D061F',
+                background: '#0D061F',
+                mainBkg: '#0D061F',
+                textColor: '#d1d5db',
+                fontSize: '16px'
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 id="️-exploring-the-full-spectrum-of-markdown-features">✍️ Exploring the Full Spectrum of Markdown Features…</h1>
+
+<hr />
+
+<h2 id="-structural-elements-headings-and-rules">🚀 Structural Elements: Headings and Rules</h2>
+
+<p>Headings are crucial for structuring your document and establishing a hierarchy. Markdown supports up to six levels of headings.</p>
+
+<h1 id="heading-level-1">Heading Level 1</h1>
+
+<h2 id="heading-level-2">Heading Level 2</h2>
+
+<h3 id="heading-level-3">Heading Level 3</h3>
+
+<h4 id="heading-level-4">Heading Level 4</h4>
+
+<h5 id="heading-level-5">Heading Level 5</h5>
+
+<h6 id="heading-level-6">Heading Level 6</h6>
+
+<p>A <strong>Horizontal Rule</strong> (<code class="language-plaintext highlighter-rouge">---</code>, <code class="language-plaintext highlighter-rouge">***</code>, or <code class="language-plaintext highlighter-rouge">___</code>) is used to separate content sections visually.</p>
+
+<hr />
+
+<h2 id="-basic-text-formatting">🔡 Basic Text Formatting</h2>
+
+<p>You can easily apply various styles to your text to add emphasis or indicate a different type of content.</p>
+
+<ul>
+  <li><strong>Bold:</strong> Use double asterisks or double underscores around text.
+    <ul>
+      <li>This text is <strong>bold</strong> or this is <strong>important</strong>.</li>
+    </ul>
+  </li>
+  <li><strong>Italics:</strong> Use single asterisks or single underscores around text.
+    <ul>
+      <li>This text is <em>italicised</em> or this is <em>a note</em>.</li>
+    </ul>
+  </li>
+  <li><strong>Bold and Italics:</strong> Combine three asterisks.
+    <ul>
+      <li>This is <strong><em>bold and italicised</em></strong>!</li>
+    </ul>
+  </li>
+  <li><strong>Strikethrough:</strong> Use double tildes around text (a common extension).
+    <ul>
+      <li>~~This text is incorrect.~~</li>
+    </ul>
+  </li>
+  <li><strong>Monospace Code/Inline Code:</strong> Use single backticks for code within a sentence.
+    <ul>
+      <li>The function is called <code class="language-plaintext highlighter-rouge">calculate_area()</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>This is a standard paragraph of text. To create a new paragraph, simply leave a blank line between blocks of text.</p>
+
+<p>To force a <strong>line break</strong> without starting a new paragraph, end a line with two or more spaces.
+Like this.<br />
+This is the next line, but part of the same paragraph.</p>
+
+<hr />
+
+<h2 id="-lists-and-blockquotes">📃 Lists and Blockquotes</h2>
+
+<p>Lists help organise information sequentially or non-sequentially.</p>
+
+<h3 id="unordered-lists-bullet-points">Unordered Lists (Bullet Points)</h3>
+
+<p>Use an asterisk, plus sign, or hyphen followed by a space.</p>
+
+<ul>
+  <li>First item</li>
+  <li>Second item
+    <ul>
+      <li>A sub-item (indent with two or four spaces or a tab)</li>
+      <li>Another sub-item</li>
+    </ul>
+  </li>
+  <li>Third item</li>
+</ul>
+
+<h3 id="ordered-lists-numbered">Ordered Lists (Numbered)</h3>
+
+<p>Use a number followed by a period and a space. The number you use doesn’t strictly matter; Markdown automatically numbers them correctly, but it’s conventional to start with <code class="language-plaintext highlighter-rouge">1.</code>.</p>
+
+<ol>
+  <li>Step one: Prepare ingredients.</li>
+  <li>Step two: Mix them thoroughly.</li>
+  <li>Step three: Bake for 45 minutes.</li>
+</ol>
+
+<h3 id="task-lists-checkboxes">Task Lists (Checkboxes)</h3>
+
+<p>(Often a common extension, not standard basic Markdown)</p>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Complete the presentation</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Review the report draft</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Send the follow-up email</li>
+</ul>
+
+<h3 id="blockquotes">Blockquotes</h3>
+
+<p>Use the greater-than sign (<code class="language-plaintext highlighter-rouge">&gt;</code>) to denote quoted text or a pull quote.</p>
+
+<blockquote>
+  <p>This is a blockquote. It’s often used for citations or to highlight a specific passage.</p>
+
+  <blockquote>
+    <p>You can also nest blockquotes for deeper emphasis.</p>
+  </blockquote>
+</blockquote>
+
+<hr />
+
+<h2 id="-hyperlinks-and-multimedia">🔗 Hyperlinks and Multimedia</h2>
+
+<p>Markdown makes linking to other resources simple and clean.</p>
+
+<h3 id="links">Links</h3>
+
+<p>There are two main styles for links: inline and reference.</p>
+
+<ul>
+  <li>
+    <p><strong>Inline Link:</strong> Use the format <code class="language-plaintext highlighter-rouge">[Link Text](URL "Optional Title")</code></p>
+
+    <ul>
+      <li>Visit the <a href="https://www.google.com" title="Search Engine">Google Search</a> page.</li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Reference Link:</strong> This keeps your text cleaner by putting the URL definition at the bottom of the document.</p>
+
+    <ul>
+      <li>See the definition in the <a href="https://www.google.com/search?q=%5Bhttps://www.markdownguide.org%5D\(https://www.markdownguide.org\)" title="The Definitive Guide to Markdown">Markdown Guide</a>.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="images">Images</h3>
+
+<p>The syntax for images is very similar to links, but you prefix it with an exclamation mark (<code class="language-plaintext highlighter-rouge">!</code>).</p>
+
+<p><code class="language-plaintext highlighter-rouge">![Alt Text](URL "Optional Title")</code></p>
+
+<hr />
+
+<h2 id="-code-demonstration">💻 Code Demonstration</h2>
+
+<p>For demonstrating code, there are two primary methods: inline code (shown earlier) and code blocks.</p>
+
+<h3 id="code-blocks">Code Blocks</h3>
+
+<p>Use triple backticks (```) before and after the code block. For syntax highlighting, specify the language immediately after the first set of backticks.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Python code example
+</span><span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sh">"""</span><span class="s">Returns a greeting for the person provided.</span><span class="sh">"""</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="sh">"</span><span class="s">Hello, </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">!</span><span class="sh">"</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">greet</span><span class="p">(</span><span class="sh">"</span><span class="s">World</span><span class="sh">"</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// JavaScript code example</span>
+<span class="kd">const</span> <span class="nx">button</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nf">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">myButton</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">button</span><span class="p">.</span><span class="nf">addEventListener</span><span class="p">(</span><span class="dl">'</span><span class="s1">click</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nf">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Button clicked!</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="-tables">📊 Tables</h2>
+
+<p>Tables are a powerful, though slightly more complex, feature for displaying structured data. They are commonly supported by most Markdown processors.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Feature</th>
+      <th style="text-align: center">Syntax Example</th>
+      <th style="text-align: right">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><strong>Headers</strong></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge"># H1</code></td>
+      <td style="text-align: right">✅ Supported</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Links</strong></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">[text](url)</code></td>
+      <td style="text-align: right">✅ Supported</td>
+    </tr>
+    <tr>
+      <td style="text-align: left"><strong>Alignment</strong></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">:---</code>, <code class="language-plaintext highlighter-rouge">:---:</code>, <code class="language-plaintext highlighter-rouge">---:</code></td>
+      <td style="text-align: right">🎨 Visual</td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>The colons <code class="language-plaintext highlighter-rouge">:</code> control text alignment within the column:
+    <ul>
+      <li>Left alignment: <code class="language-plaintext highlighter-rouge">:---</code></li>
+      <li>Centre alignment: <code class="language-plaintext highlighter-rouge">:---:</code></li>
+      <li>Right alignment: <code class="language-plaintext highlighter-rouge">---:</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="obsidian-markdownsnippets">Obsidian Markdown&amp;Snippets</h1>
+<h2 id="snippets">Snippets</h2>
+<p><strong>Functionality &amp; Workflow</strong></p>
+<ol>
+  <li><strong>Current Date:</strong> `` (or variations for specific formats) - Quickly insert today’s date.</li>
+  <li><strong>Current Time:</strong> `` - Insert the current time.</li>
+  <li><strong>File Name:</strong> `` - Insert the current note’s title.</li>
+  <li><strong>Link to Current File:</strong> <code class="language-plaintext highlighter-rouge">[[]]</code> - Create a self-referential link within a note.</li>
+  <li><strong>Random Number:</strong> `` (with optional range) - Generate a random number for various uses.</li>
+  <li><strong>Clipboard Content:</strong> `` - Paste the contents of your clipboard.</li>
+</ol>
+
+<p><strong>Templates &amp; Note Creation</strong></p>
+<ol>
+  <li><strong>Template Insertion:</strong> <code class="language-plaintext highlighter-rouge">/Template Name</code> - Trigger a specific template from your template folder.</li>
+  <li><strong>Daily Note:</strong> <code class="language-plaintext highlighter-rouge">/Daily Note</code> - Quickly create or open today’s daily note.</li>
+  <li><strong>New Note with Link:</strong> <code class="language-plaintext highlighter-rouge">[[new note name]]</code> - Create a new note and link to it simultaneously.</li>
+</ol>
+
+<p><strong>Text Manipulation</strong></p>
+<ol>
+  <li><strong>Title Case:</strong> `` - Transform text to title case (e.g., “hello world” to “Hello World”).</li>
+  <li><strong>Uppercase:</strong> `` - Convert text to uppercase.</li>
+  <li><strong>Lowercase:</strong> `` - Convert text to lowercase.</li>
+</ol>
+
+<p><strong>Dates &amp; Time</strong></p>
+<ol>
+  <li><strong>Date Arithmetic:</strong> `` (or similar) - Calculate dates relative to today or a specified date.</li>
+  <li><strong>Day of the Week:</strong> `` - Get the day of the week for a given date.</li>
+</ol>
+
+<p><strong>Advanced Snippets</strong></p>
+<ol>
+  <li><strong>Conditional Statements:</strong> ` text  other text ` - Display text based on a condition.</li>
+  <li><strong>Iteration:</strong> ` item ` - Loop through a list and perform actions.</li>
+  <li><strong>Javascript Code Execution:</strong> `` - Execute JavaScript code within a snippet.</li>
+</ol>
+
+<h2 id="markdown">Markdown</h2>
+<ol>
+  <li>
+    <p><strong>Headers:</strong>  <br />
+ # This is a level 1 heading
+ ## This is a level 2 heading
+ ### This is a level 3 heading</p>
+  </li>
+  <li>
+    <p><strong>Emphasis:</strong>
+ <em>This text will be italic</em>
+ <em>This will also be italic</em></p>
+
+    <p><strong>This text will be bold</strong>
+ <strong>This will also be bold</strong></p>
+  </li>
+  <li><strong>Lists:</strong>    ```
+    <ul>
+      <li>Item 1</li>
+      <li>Item 2
+        <ul>
+          <li>Subitem 2.1</li>
+          <li>Subitem 2.2</li>
+        </ul>
+      </li>
+      <li>Item 3
+        <ol>
+          <li>Numbered item 1</li>
+          <li>Numbered item 2</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p><strong>Links:</strong>
+ <a href="https://www.example.com">Link text</a></p>
+  </li>
+  <li><strong>Images:</strong>
+ <img src="image.jpg" alt="Alt text" /></li>
+  <li><strong>Code:</strong>
+ <code class="language-plaintext highlighter-rouge">This is inline code</code>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
+     <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, world!</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </li>
+  <li><strong>Blockquotes:</strong>
+    <blockquote>
+      <p>This is a blockquote.</p>
+    </blockquote>
+  </li>
+  <li>
+    <h2 id="horizontal-rule"><strong>Horizontal Rule:</strong></h2>
+  </li>
+  <li><strong>Tables:</strong></li>
+</ol>
+
+<table>
+  <thead>
+    <tr>
+      <th>Header 1</th>
+      <th>Header 2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Cell 1</td>
+      <td>Cell 2</td>
+    </tr>
+    <tr>
+      <td>Cell 3</td>
+      <td>Cell 4</td>
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li><strong>Escaping Characters:</strong></li>
+</ol>
+
+<p>*This text will not be italic* <em>This text will be italic</em></p>
+
+<ol>
+  <li><strong>Nested Lists:</strong>
+    <ul>
+      <li>Item 1
+        <ul>
+          <li>Subitem 1.1
+            <ul>
+              <li>Sub-subitem 1.1.1</li>
+            </ul>
+          </li>
+          <li>Subitem 1.2</li>
+        </ul>
+      </li>
+      <li>Item 2</li>
+    </ul>
+  </li>
+  <li><strong>Task Lists:</strong>
+    <ul class="task-list">
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" checked="checked" />Task 1 (completed)</li>
+      <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Task 2 (incomplete)</li>
+    </ul>
+  </li>
+  <li>
+    <dl>
+      <dt><strong>Definition Lists:</strong></dt>
+      <dt>Term 1</dt>
+      <dd>Definition 1
+Term 2</dd>
+      <dd>Definition 2a</dd>
+      <dd>Definition 2b</dd>
+    </dl>
+  </li>
+  <li>
+    <p><strong>Footnotes:</strong>
+This is some text with a footnote.[^1]
+[^1]: This is the footnote.</p>
+  </li>
+  <li>
+    <p><strong>Strikethrough:</strong></p>
+
+    <p><del>This text will be struck through.</del></p>
+  </li>
+  <li>
+    <p><strong>Highlight:</strong>
+<mark>This text will be highlighted.</mark></p>
+  </li>
+  <li>
+    <p><strong>Superscript:</strong>
+This is a superscript^2^</p>
+  </li>
+  <li>
+    <p><strong>Subscript:</strong>
+This is a subscript~2~</p>
+  </li>
+  <li><strong>HTML:</strong>
+    <p>This is a paragraph of HTML.</p>
+  </li>
+  <li><strong>Line Breaks:</strong>
+This is the first line.<br />
+This is the second line.
+(Note the two spaces at the end of the first line)</li>
+</ol>
+
+<h2 id="admotion">Admotion</h2>
+<p><strong>1. Notes and Tips:</strong></p>
+<blockquote>
+  <p>[!note] 
+This is a note about an important concept. You can use it to emphasize key takeaways or definitions.</p>
+</blockquote>
+
+<p><strong>2. Warnings and Cautions:</strong></p>
+
+<blockquote>
+  <p>[!warning] 
+Be careful when implementing this code. It could lead to unexpected consequences if not handled correctly.</p>
+</blockquote>
+
+<p><strong>3. Important Information:</strong></p>
+<blockquote>
+  <p>[!important]
+ Don’t forget to back up your data regularly!</p>
+</blockquote>
+
+<p><strong>4. Examples and Illustrations:</strong></p>
+<blockquote>
+  <p>[!example]
+This is how you would format a code block:</p>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Hello, world!</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div>  </div>
+</blockquote>
+
+<p><strong>5. Questions and FAQs:</strong></p>
+<blockquote>
+  <p>[!question]
+What is the best way to learn Markdown?</p>
+
+  <p>Practice and experimentation are key!</p>
+</blockquote>
+
+<h1 id="10-examples-of-mermaidjs-usage-in-obsidian">10 Examples of Mermaid.js Usage in Obsidian</h1>
+
+<p>Mermaid.js is a JavaScript library that allows you to create a variety of diagrams and charts using a simple, text-based syntax. Obsidian has built-in support for Mermaid, so you can embed these diagrams directly into your notes.</p>
+
+<p>Here are 10 examples of Mermaid diagrams you can use in Obsidian:</p>
+
+<h3 id="1-flowchart">1. Flowchart</h3>
+
+<p>Flowcharts are used to represent workflows or processes.</p>
+
+<pre><code class="language-mermaid">graph TD
+    A[Start] --&gt; B{Is it sunny?};
+    B -- Yes --&gt; C[Go to the beach];
+    B -- No --&gt; D[Stay home];
+    C --&gt; E[Enjoy the sun];
+    D --&gt; F[Read a book];
+    E --&gt; G[End];
+    F --&gt; G[End];
+</code></pre>
+
+<h3 id="2-sequence-diagram">2. Sequence Diagram</h3>
+
+<p>Sequence diagrams illustrate interactions between different entities over time.</p>
+
+<pre><code class="language-mermaid">sequenceDiagram
+    participant User
+    participant System
+    participant Database
+
+    User-&gt;&gt;System: Login Request
+    System-&gt;&gt;Database: Query User Credentials
+    Database--&gt;&gt;System: User Credentials
+    System-&gt;&gt;System: Authenticate User
+    System--&gt;&gt;User: Login Successful
+</code></pre>
+
+<h3 id="3-gantt-chart">3. Gantt Chart</h3>
+
+<p>Gantt charts are useful for project management and scheduling.</p>
+
+<pre><code class="language-mermaid">gantt
+    dateFormat  YYYY-MM-DD
+    title Project Schedule
+
+    section Planning
+    Research      :a1, 2025-10-13, 5d
+    Outline       :a2, after a1, 3d
+    section Development
+    Design        :b1, 2025-10-20, 7d
+    Coding        :b2, after b1, 10d
+    Testing       :b3, after b2, 5d
+    section Deployment
+    Release       :c1, after b3, 2d
+</code></pre>
+
+<h3 id="4-class-diagram">4. Class Diagram</h3>
+
+<p>Class diagrams are used in software engineering to model the structure of a system.</p>
+
+<pre><code class="language-mermaid">classDiagram
+    class Animal {
+        +String name
+        +int age
+        +void eat()
+    }
+
+    class Dog {
+        +String breed
+        +void bark()
+    }
+
+    class Cat {
+        +String color
+        +void meow()
+    }
+
+    Animal &lt;|-- Dog
+    Animal &lt;|-- Cat
+</code></pre>
+
+<h3 id="5-state-diagram">5. State Diagram</h3>
+
+<p>State diagrams describe the behavior of a system and its transitions between different states.</p>
+
+<pre><code class="language-mermaid">stateDiagram-v2
+    [*] --&gt; Still
+    Still --&gt; [*]
+
+    Still --&gt; Moving
+    Moving --&gt; Still
+    Moving --&gt; Crash
+    Crash --&gt; [*]
+</code></pre>
+
+<h3 id="6-pie-chart">6. Pie Chart</h3>
+
+<p>Pie charts are used to show the proportions of different categories.</p>
+
+<pre><code class="language-mermaid">pie
+    title What is your favorite pet?
+    "Dogs" : 45
+    "Cats" : 30
+    "Birds" : 15
+    "Other" : 10
+</code></pre>
+
+<h3 id="7-git-graph">7. Git Graph</h3>
+
+<p>Git graphs are used to visualize the history of a Git repository.</p>
+
+<pre><code class="language-mermaid">gitGraph
+   commit
+   commit
+   branch develop
+   checkout develop
+   commit
+   commit
+   checkout main
+   merge develop
+   commit
+</code></pre>
+
+<h3 id="8-user-journey-diagram">8. User Journey Diagram</h3>
+
+<p>User journey diagrams map out the user’s experience with a product or service.</p>
+
+<pre><code class="language-mermaid">journey
+    title My Trip to the Beach
+    section Go to the beach
+      Go to the beach: 5: Me
+      Listen to music: 3: Me
+      Arrive at the beach: 5: Me
+    section At the beach
+      Swim in the ocean: 5: Me
+      Build a sandcastle: 4: Me
+      Eat a snack: 3: Me
+</code></pre>
+
+<h3 id="9-mindmap">9. Mindmap</h3>
+
+<p>Mindmaps are used to visually organize information.</p>
+
+<pre><code class="language-mermaid">mindmap
+  root((Obsidian))
+    (Plugins)
+      (Community Plugins)
+        (Dataview)
+        (Templater)
+    (Themes)
+      (Community Themes)
+        (Minimal)
+        (Atom)
+</code></pre>
+
+<h3 id="10-timeline-diagram">10. Timeline Diagram</h3>
+
+<p>Timeline diagrams are used to display a sequence of events in chronological order.</p>
+
+<pre><code class="language-mermaid">timeline
+    title History of the Web
+    1990 : HTML
+    1995 : JavaScript
+    1996 : CSS
+    2009 : Node.js
+    2015 : React
+</code></pre>
+
+
+
+    <!-- JavaScript for Obsidian-style admonitions and Mermaid code block conversion -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse Obsidian-style admonitions: > [!note]
+            const blockquotes = document.querySelectorAll('blockquote');
+            blockquotes.forEach(blockquote => {
+                const firstPara = blockquote.querySelector('p:first-child');
+                if (firstPara) {
+                    const text = firstPara.innerHTML;
+                    // Match [!type] pattern
+                    const match = text.match(/^\[!(\w+)\]\s*/i);
+                    if (match) {
+                        const type = match[1].toLowerCase();
+                        // Remove the [!type] marker from display
+                        firstPara.innerHTML = text.replace(/^\[!(\w+)\]\s*/i, '');
+                        // Add appropriate CSS class
+                        blockquote.classList.add(type);
+                    }
+                }
+            });
+
+            // Convert mermaid code blocks to divs for Mermaid.js rendering
+            const mermaidBlocks = document.querySelectorAll('code.language-mermaid');
+            mermaidBlocks.forEach(block => {
+                const pre = block.parentElement;
+                const mermaidDiv = document.createElement('div');
+                mermaidDiv.className = 'mermaid';
+                mermaidDiv.textContent = block.textContent;
+                pre.parentNode.replaceChild(mermaidDiv, pre);
+            });
+        });
+    </script>
+</body>
+</html>

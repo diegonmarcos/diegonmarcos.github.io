@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #d1d5db;
+            background: #0D061F;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: 600;
+            color: #A060FF;
+        }
+        code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #A060FF;
+        }
+        pre {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: #d1d5db;
+        }
+        blockquote {
+            border-left: 4px solid #8A2BE2;
+            padding-left: 20px;
+            margin-left: 0;
+            color: #9ca3af;
+            background: rgba(138, 43, 226, 0.05);
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        a {
+            color: #A060FF;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+            color: #8A2BE2;
+        }
+        hr {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 2em 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 1em 0;
+        }
+        table th, table td {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 8px 12px;
+            text-align: left;
+        }
+        table th {
+            background: rgba(255, 255, 255, 0.05);
+            font-weight: 600;
+            color: #A060FF;
+        }
+        /* Mermaid diagram styling */
+        .mermaid {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 2em 0;
+        }
+        /* Admonition styling */
+        .admonition, .note, .warning, .tip, .danger, .info {
+            border-left: 4px solid;
+            padding: 15px 20px;
+            margin: 1.5em 0;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .admonition > p:first-child, .note > p:first-child,
+        .warning > p:first-child, .tip > p:first-child,
+        .danger > p:first-child, .info > p:first-child {
+            margin-top: 0;
+            font-weight: 600;
+        }
+        .admonition > p:last-child, .note > p:last-child,
+        .warning > p:last-child, .tip > p:last-child,
+        .danger > p:last-child, .info > p:last-child {
+            margin-bottom: 0;
+        }
+        .note {
+            border-left-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .note > p:first-child::before {
+            content: "📘 Note: ";
+            color: #3b82f6;
+        }
+        .tip {
+            border-left-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+        .tip > p:first-child::before {
+            content: "💡 Tip: ";
+            color: #10b981;
+        }
+        .warning {
+            border-left-color: #f59e0b;
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .warning > p:first-child::before {
+            content: "⚠️ Warning: ";
+            color: #f59e0b;
+        }
+        .danger {
+            border-left-color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+        .danger > p:first-child::before {
+            content: "🚨 Danger: ";
+            color: #ef4444;
+        }
+        .info {
+            border-left-color: #8A2BE2;
+            background: rgba(138, 43, 226, 0.1);
+        }
+        .info > p:first-child::before {
+            content: "ℹ️ Info: ";
+            color: #A060FF;
+        }
+        .important {
+            border-left-color: #ec4899;
+            background: rgba(236, 72, 153, 0.1);
+        }
+        .important > p:first-child::before {
+            content: "❗ Important: ";
+            color: #ec4899;
+        }
+        .example {
+            border-left-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        .example > p:first-child::before {
+            content: "📝 Example: ";
+            color: #8b5cf6;
+        }
+        .question {
+            border-left-color: #14b8a6;
+            background: rgba(20, 184, 166, 0.1);
+        }
+        .question > p:first-child::before {
+            content: "❓ Question: ";
+            color: #14b8a6;
+        }
+    </style>
+    <!-- Mermaid.js for diagram rendering -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            themeVariables: {
+                primaryColor: '#8A2BE2',
+                primaryTextColor: '#d1d5db',
+                primaryBorderColor: '#A060FF',
+                lineColor: '#A060FF',
+                secondaryColor: '#A060FF',
+                tertiaryColor: '#0D061F',
+                background: '#0D061F',
+                mainBkg: '#0D061F',
+                textColor: '#d1d5db',
+                fontSize: '16px'
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1 id="welcome-to-my-personal-blog">Welcome to my personal blog!</h1>
+
+<p>This is a space where I share my thoughts, projects, and experiments.</p>
+
+<h2 id="pages">Pages</h2>
+
+<ul>
+  <li><a href="CV_web.html"><strong>Curriculum Vitae</strong></a> - A detailed web version of my CV, showcasing my skills and experience.</li>
+  <li><a href="markdown.html"><strong>Markdown Guide</strong></a> - A comprehensive guide to Markdown, Obsidian, and Mermaid.js.</li>
+</ul>
+
+<p>Feel free to explore!</p>
+
+
+    <!-- JavaScript for Obsidian-style admonitions and Mermaid code block conversion -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Parse Obsidian-style admonitions: > [!note]
+            const blockquotes = document.querySelectorAll('blockquote');
+            blockquotes.forEach(blockquote => {
+                const firstPara = blockquote.querySelector('p:first-child');
+                if (firstPara) {
+                    const text = firstPara.innerHTML;
+                    // Match [!type] pattern
+                    const match = text.match(/^\[!(\w+)\]\s*/i);
+                    if (match) {
+                        const type = match[1].toLowerCase();
+                        // Remove the [!type] marker from display
+                        firstPara.innerHTML = text.replace(/^\[!(\w+)\]\s*/i, '');
+                        // Add appropriate CSS class
+                        blockquote.classList.add(type);
+                    }
+                }
+            });
+
+            // Convert mermaid code blocks to divs for Mermaid.js rendering
+            const mermaidBlocks = document.querySelectorAll('code.language-mermaid');
+            mermaidBlocks.forEach(block => {
+                const pre = block.parentElement;
+                const mermaidDiv = document.createElement('div');
+                mermaidDiv.className = 'mermaid';
+                mermaidDiv.textContent = block.textContent;
+                pre.parentNode.replaceChild(mermaidDiv, pre);
+            });
+        });
+    </script>
+</body>
+</html>

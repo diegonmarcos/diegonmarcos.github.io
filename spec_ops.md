@@ -18,6 +18,7 @@ This document outlines the operational aspects, workflows, and deployment proces
 
 ### Technology Stack
 - **Frontend**: Pure HTML, CSS, JavaScript (no framework)
+- **Styling**: Sass/SCSS with ITCSS architecture
 - **Blog**: Jekyll (Markdown → HTML conversion)
 - **Hosting**: GitHub Pages
 - **CI/CD**: GitHub Actions
@@ -27,10 +28,13 @@ This document outlines the operational aspects, workflows, and deployment proces
 ```
 Website Root (/)
 ├── index.html          # Main landing page
-├── style.css           # Global styles with dark theme + purple accents
+├── style.css           # Compiled CSS (auto-generated from Sass)
 ├── script.js           # Interactive features (Clippy assistant, animations)
+├── /sass               # Sass source files (ITCSS architecture)
 ├── /linktree           # Social links page
 ├── /cv_web             # Interactive CV
+│   ├── style.css       # Compiled CV CSS
+│   └── /scss           # CV Sass source files
 ├── /cv_pdf             # PDF curriculum vitae
 ├── /blog               # Jekyll-powered blog (Markdown)
 ├── /assets             # Images, icons, etc.
@@ -45,9 +49,23 @@ Website Root (/)
 
 #### Root Level
 - `index.html` - Portfolio landing page
-- `style.css` - Dark theme with CSS variables (`--brand-purple`, `--brand-dark`)
+- `style.css` - Compiled CSS (generated from Sass)
 - `script.js` - Features: Clippy assistant, space background, scroll animations
+- `build.sh` - POSIX shell script for local Sass compilation
+- `package.json` - Node.js dependencies and build scripts
 - `.gitignore` - Excludes: video files, build artifacts, symlinks
+
+#### Sass Source Files (`/sass`)
+```
+/sass
+├── abstracts/          # Variables, mixins, functions (no CSS output)
+├── base/               # Foundation styles (reset, typography)
+├── layout/             # Major structural components (header, sections)
+├── components/         # Reusable UI elements (buttons, cards, clippy)
+├── themes/             # Theme variations (dark, light)
+├── utilities/          # Helpers, animations, media queries
+└── style.scss          # Master import file (ITCSS methodology)
+```
 
 #### Blog Directory (`/blog`)
 ```
@@ -73,20 +91,25 @@ This workflow automates the build and deployment of the entire static site, incl
 **Trigger**: Push to `main` branch
 
 **Core Logic**:
-1.  **Environment Setup**: The workflow runs on a GitHub-hosted Ubuntu runner, where it sets up a Ruby environment and installs Jekyll.
-2.  **Jekyll Build**: It executes the `./blog/build.sh build` script. This script is the heart of the blog build process:
+1.  **Environment Setup**: The workflow runs on a GitHub-hosted Ubuntu runner, where it sets up Node.js for Sass compilation and Ruby for Jekyll.
+2.  **Sass Compilation**: Before any other build steps, the workflow compiles all Sass files to CSS:
+    *   Installs Node.js dependencies (`npm install`) in both root and cv_web directories
+    *   Runs `npm run sass:build` to compile Sass → CSS with compression
+    *   Generates `style.css` in root and `cv_web/style.css`
+    *   Uses compressed output for optimal performance
+3.  **Jekyll Build**: It executes the `./blog/build.sh build` script. This script is the heart of the blog build process:
     *   It runs `jekyll build` within the `blog` directory, which converts all Markdown files (`.md`) into HTML.
     *   It then copies the generated HTML files from the temporary `blog/_site` directory back into the `blog/` directory. This results in `.md` and `.html` files existing side-by-side (e.g., `index.md` and `index.html`).
-3.  **Site Assembly**: The workflow creates a root `_site` directory to prepare for deployment. It copies all the necessary project files and directories into it:
+4.  **Site Assembly**: The workflow creates a root `_site` directory to prepare for deployment. It copies all the necessary project files and directories into it:
     *   Root files (`index.html`, `style.css`, etc.)
     *   Static asset directories (`/assets`, `/linktree`, `/cv_web`, etc.)
     *   The entire `/blog` directory (containing both markdown and the newly generated HTML).
-4.  **Cleanup**: Before deploying, the workflow cleans the `_site/blog` directory to optimize the final deployment package. It removes source files that are not needed on the live site, such as:
+5.  **Cleanup**: Before deploying, the workflow cleans the `_site/blog` directory to optimize the final deployment package. It removes source files that are not needed on the live site, such as:
     *   Markdown files (`*.md`)
     *   Jekyll configuration (`_config.yml`)
     *   The build script (`build.sh`)
     *   Layouts (`_layouts/`)
-5.  **Upload & Deploy**: The cleaned `_site` directory is uploaded as a GitHub Pages artifact, which is then automatically deployed.
+6.  **Upload & Deploy**: The cleaned `_site` directory is uploaded as a GitHub Pages artifact, which is then automatically deployed.
 
 ### Deployment URL
 - Production: `https://diegonmarcos.github.io/`

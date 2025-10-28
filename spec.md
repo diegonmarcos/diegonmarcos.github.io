@@ -26,13 +26,70 @@ This document outlines the technical details of the portfolio website.
 
 The HTML is well-structured and follows modern standards. It includes a comprehensive `<head>` section with metadata for SEO and social media, as well as links to external resources. The `<body>` is organized into a clear header, main content area, and footer, with a container to center the content. The use of `animated-section` classes suggests that JavaScript-driven animations are applied to these sections. A floating action menu provides quick access to social links and control toggles for theme, background animations, and presentation mode.
 
-## 2. CSS Styling
+## 2. Sass/SCSS Architecture
 
-### Bullets
+The project has been migrated from a single `style.css` file to a modular Sass architecture for better maintainability, organization, and scalability.
 
-*   **Variables:** Defines a color palette with dark and purple tones for the default dark theme.
-*   **Light Theme:** A `body.light-theme` class overrides the default variables to apply a light color scheme.
-*   **Base Styles:** A reset is applied to remove default margins and padding. The base font is `Inter`.
+### Folder Structure
+
+```
+sass/
+├── base/
+│   ├── _reset.scss           # CSS reset and base body styles
+│   ├── _typography.scss      # Typography styles for headings, paragraphs, etc.
+│   └── _variables.scss       # Color palette, fonts, and other variables
+├── components/
+│   ├── _buttons.scss         # Styles for various buttons
+│   ├── _cards.scss           # Card component styles
+│   └── _clippy.scss          # Styles for the Clippy assistant
+├── layout/
+│   ├── _footer.scss          # Footer and CTA section styles
+│   ├── _header.scss          # Header and hero section styles
+│   └── _navigation.scss      # Navigation styles
+├── themes/
+│   ├── _dark.scss            # Dark theme styles
+│   └── _light.scss           # Light theme styles
+└── style.scss                # Master import file (compiles to style.css)
+```
+
+### Master Import File (style.scss)
+
+The `style.scss` file orchestrates all imports in the correct order:
+
+```scss
+// Base
+@import 'base/variables';
+@import 'base/reset';
+@import 'base/typography';
+
+// Components
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/clippy';
+
+// Layout
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/navigation';
+
+// Themes
+@import 'themes/dark';
+@import 'themes/light';
+```
+
+### Key Principles
+
+1.  **Partials**: Files prefixed with `_` are partials and won't compile individually.
+2.  **Single Output**: Only `style.scss` compiles to `style.css`.
+3.  **Import Order**: A logical import order is followed for clarity and cascading.
+4.  **Variables**: Centralized in `base/_variables.scss` for easy theming.
+5.  **Nesting**: Logical parent-child relationships for better code readability.
+
+### Styling Details
+
+*   **Variables:** The `base/_variables.scss` file defines a color palette with dark and purple tones for the default dark theme.
+*   **Light Theme:** The `themes/_light.scss` file overrides the default variables to apply a light color scheme when the `body.light-theme` class is present.
+*   **Base Styles:** A reset is applied in `base/_reset.scss` to remove default margins and padding. The base font is `Inter`.
 *   **Space Background:** A fixed position element with a radial gradient background (dark blue to black) at 80% opacity that adapts to light theme. Contains 200 randomly generated stars with cross/plus shapes, varying sizes (1-3px), varied opacity (0.5-1) for depth, and individual twinkle animations with randomized delays and durations.
 *   **Layout:** A centered container with a maximum width of `1100px`.
 *   **Hero Section:** A large, centered hero section with a gradient text effect featuring an animated shimmer that sweeps across the title using a multi-stop purple gradient (6-second loop).
@@ -45,9 +102,23 @@ The HTML is well-structured and follows modern standards. It includes a comprehe
 *   **Space Animations:** CSS keyframe animations for star explosions (scale and glow effect), small comets (2s diagonal flight), medium comets (3s longer diagonal flight with extended tail), and star twinkling (4s ease-in-out cycle).
 *   **Presentation Mode:** `.fit-to-screen` class dynamically scales the entire page to fit viewport height, hiding scrollbars for a clean overview mode.
 
-### Descriptive
+### Compilation
 
-The CSS is clean and modern, utilizing variables for easy theme management between dark and light modes. The styling creates a visually appealing cosmic theme with an animated space background, purple accents, and smooth transitions. The hero title features a continuous shimmer effect using gradient animation. A responsive floating menu provides intuitive controls for theme, background animations, and presentation mode. The layout is fully responsive, adapting to different screen sizes. The use of `clamp()` for font sizes ensures that the typography scales smoothly. Multiple animation systems (scroll-based fade-ins, space effects, and shimmer) add a dynamic and engaging feel to the user experience.
+The Sass files are compiled into a single `style.css` file using a Sass compiler. The following command can be used to watch for changes and automatically recompile:
+
+```bash
+sass --watch sass/style.scss:style.css
+```
+
+### Benefits of Sass Architecture
+
+1.  **Maintainability**: Easy to locate and update specific components.
+2.  **Scalability**: Simple to add new components without affecting existing code.
+3.  **DRY Principle**: Variables eliminate code repetition.
+4.  **Team Collaboration**: Clear file structure makes collaboration easier.
+5.  **Faster Development**: Auto-compilation with the `--watch` flag.
+6.  **Better Organization**: The CSS is split into focused files.
+7.  **Nesting**: More readable parent-child relationships.
 
 ## 3. JavaScript Scripts
 

@@ -1,0 +1,53 @@
+// ============================================
+// NAVIGATION
+// ============================================
+// Side navigation menu and toggle button
+
+@use '../abstracts' as *;
+
+.side-nav {
+  height: 100%;
+  width: $nav-width;
+  position: fixed;
+  z-index: $z-index-nav;
+  top: 0;
+  left: -$nav-width;
+  background-color: $color-nav-bg;
+  overflow-x: hidden;
+  overflow-y: auto;
+  @include transition($transition-side-nav);
+  padding-top: $spacing-xl;
+
+  &.open {
+    left: 0;
+  }
+
+  ul {
+    @include list-reset;
+
+    li::before {
+      content: none;
+    }
+
+    ul a {
+      font-size: $font-size-sub-nav;
+    }
+  }
+
+  a {
+    padding: $padding-nav-link;
+    text-decoration: none;
+    font-size: $font-size-nav-link;
+    color: $color-nav-links;
+    display: block;
+    @include transition($transition-medium);
+
+    &:hover {
+      color: $color-nav-hover;
+    }
+
+    &.active {
+      color: white;
+    }
+  }
+}

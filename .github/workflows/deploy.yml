@@ -16,6 +16,36 @@ jobs:
       - name: 📦 Checkout Code
         uses: actions/checkout@v4
 
+      # ============================================
+      # SASS COMPILATION
+      # ============================================
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 🎨 Build CSS from Sass (Root)
+        run: |
+          echo "📁 Building root Sass..."
+          npm install
+          npm run sass:build
+          echo "✅ Root style.css created"
+          ls -lh style.css
+
+      - name: 🎨 Build CSS from Sass (cv_web)
+        run: |
+          echo "📁 Building cv_web Sass..."
+          cd cv_web
+          npm install
+          npm run sass:build
+          echo "✅ cv_web/style.css created"
+          ls -lh style.css
+          cd ..
+
+      # ============================================
+      # JEKYLL BLOG BUILD
+      # ============================================
       - name: 💎 Setup Ruby and Jekyll
         uses: ruby/setup-ruby@v1
         with:

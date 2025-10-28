@@ -36,6 +36,171 @@ The styling is handled by a single stylesheet, `style.css`.
     - `.quote`, `.small-quote`: For styling blockquotes.
     - `.side-nav`, `.nav-toggle-button`, `.nested-nav`, `.collapsible-nav`, `.active`: For the side navigation menu.
 
+### Sass/SCSS Architecture (Planned Implementation)
+
+The project is planned to migrate from a single `style.css` file to a modular Sass architecture for better maintainability, organization, and scalability.
+
+#### Folder Structure
+
+```
+scss/
+├── abstracts/
+│   ├── _variables.scss       # Color palette, typography, spacing variables
+│   ├── _mixins.scss          # Reusable mixins (transitions, flexbox, borders)
+│   └── _functions.scss       # Custom Sass functions (optional)
+├── base/
+│   ├── _reset.scss           # CSS reset/normalize (optional)
+│   ├── _typography.scss      # Typography styles (h1-h6, p, font families)
+│   └── _base.scss            # Global styles (html, body)
+├── components/
+│   ├── _buttons.scss         # Button styles (floating buttons, nav toggle)
+│   ├── _collapsers.scss      # Collapser & collapsible content functionality
+│   ├── _quotes.scss          # Quote blocks (all variants: quote, small-quote, discipline-quote, tldr)
+│   ├── _tables.scss          # Table styles (contact-table, skills-table)
+│   ├── _lists.scss           # Custom list styles with bullet points
+│   ├── _links.scss           # Link styles and hover states
+│   └── _dividers.scss        # Horizontal rules and section dividers
+├── layout/
+│   ├── _header.scss          # Full-page header container and content
+│   ├── _navigation.scss      # Side navigation menu and toggle button
+│   ├── _sections.scss        # Main content section layout
+│   └── _floating-menu.scss   # Floating action button and menu
+├── pages/
+│   └── _linktree.scss        # Linktree-specific style overrides
+├── utilities/
+│   ├── _animations.scss      # Keyframe animations (bounce, wave, starburst)
+│   ├── _helpers.scss         # Utility classes (fade-out, etc.)
+│   └── _media-queries.scss   # Responsive breakpoints
+└── main.scss                 # Master import file (compiles to style.css)
+```
+
+#### Master Import File (main.scss)
+
+The `main.scss` file orchestrates all imports in the correct order following ITCSS principles:
+
+```scss
+// Abstracts - No CSS output
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// Base - Foundation styles
+@import 'base/base';
+@import 'base/typography';
+
+// Layout - Major structural components
+@import 'layout/header';
+@import 'layout/navigation';
+@import 'layout/sections';
+@import 'layout/floating-menu';
+
+// Components - Reusable UI elements
+@import 'components/buttons';
+@import 'components/collapsers';
+@import 'components/quotes';
+@import 'components/tables';
+@import 'components/lists';
+@import 'components/links';
+@import 'components/dividers';
+
+// Pages - Page-specific styles
+@import 'pages/linktree';
+
+// Utilities - Helpers and animations
+@import 'utilities/animations';
+@import 'utilities/helpers';
+@import 'utilities/media-queries';
+```
+
+#### Key Principles
+
+1. **Partials**: Files prefixed with `_` are partials and won't compile individually
+2. **Single Output**: Only `main.scss` compiles to `style.css`
+3. **Import Order**: Follows ITCSS (Inverted Triangle CSS) methodology
+   - Abstracts (variables, mixins) first
+   - Base styles (foundation)
+   - Layout (structural components)
+   - Components (reusable UI elements)
+   - Pages (page-specific overrides)
+   - Utilities (helpers, animations)
+4. **Variables**: Centralized in `abstracts/_variables.scss` for easy theming
+5. **Mixins**: Reusable code patterns (transitions, flexbox patterns)
+6. **Nesting**: Logical parent-child relationships for better code readability
+
+#### Example Variables (abstracts/_variables.scss)
+
+```scss
+// Color Palette
+$color-background: #000000;
+$color-text: #f0f0f0;
+$color-accent-purple: #9966cc;
+$color-border: #3c3c3c;
+$color-text-muted: #bdc3c7;
+
+// Typography
+$font-family-base: 'Roboto', sans-serif;
+$font-family-mono: 'Courier New', Courier, monospace;
+$font-size-base: 0.85rem;
+$line-height-base: 1.35;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 12px;
+$spacing-lg: 20px;
+$spacing-xl: 25px;
+
+// Transitions
+$transition-fast: 0.2s ease-in-out;
+$transition-medium: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Layout
+$max-width-content: 900px;
+$nav-width: 340px;
+```
+
+#### Example Mixins (abstracts/_mixins.scss)
+
+```scss
+// Transition mixin
+@mixin transition($properties...) {
+  transition: $properties;
+}
+
+// Flexbox centering
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Border-left accent
+@mixin accent-border-left($width: 3px) {
+  border-left: $width solid $color-accent-purple;
+  padding-left: $spacing-md;
+}
+
+// Responsive breakpoint
+@mixin responsive($breakpoint) {
+  @if $breakpoint == mobile {
+    @media screen and (max-width: 768px) {
+      @content;
+    }
+  }
+}
+```
+
+#### Benefits of Sass Architecture
+
+1. **Maintainability**: Easy to locate and update specific components
+2. **Scalability**: Simple to add new components without affecting existing code
+3. **DRY Principle**: Variables and mixins eliminate code repetition
+4. **Team Collaboration**: Clear file structure makes collaboration easier
+5. **Faster Development**: Auto-compilation with `--watch` flag
+6. **Better Organization**: 13KB+ of CSS split into ~15 focused files
+7. **Nesting**: More readable parent-child relationships
+8. **Minification**: Production builds are automatically compressed
+
 ## JavaScript
 
 The website uses JavaScript for interactivity and to enhance the user experience.

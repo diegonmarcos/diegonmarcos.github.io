@@ -1,0 +1,36 @@
+// ============================================
+// HEADER
+// ============================================
+// Full-page header container and content
+
+@use '../abstracts' as *;
+
+.header-container {
+  min-height: $header-min-height;
+  @include flex-column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.header-content {
+  flex-grow: 1;
+  @include flex-column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  @include transition(opacity $transition-header-fade);
+}
+
+.arrow-wrapper {
+  width: 100%;
+  padding-bottom: $header-arrow-padding;
+}
+
+.scroll-down-arrow {
+  font-size: $icon-size-scroll-arrow;
+  color: $color-accent-purple;
+  text-decoration: none;
+  animation: bounce $duration-bounce infinite;
+}

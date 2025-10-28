@@ -64,11 +64,14 @@ print_help() {
 Usage: ./build.sh [command] [target]
 
 Commands:
-  build   - Compile Sass to compressed CSS (production)
-  dev     - Compile Sass to expanded CSS (development)
-  watch   - Watch for changes and auto-compile
-  all     - Build both root and cv_web
-  help    - Show this help message
+  build           - Compile Sass to compressed CSS (production)
+  dev             - Compile Sass to expanded CSS (development)
+  watch           - Watch for changes and auto-compile
+  server          - Watch Sass and start a live server
+  server list     - List running web servers
+  server kill     - Stop a running web server
+  all             - Build both root and cv_web
+  help            - Show this help message
 
 Targets:
   root    - Build root directory only (default)
@@ -162,6 +165,69 @@ build_sass() {
     fi
 }
 
+
+
+kill_server() {
+    pid=$(pgrep -f "python3 -m http.server")
+
+    if [ -z "$pid" ]; then
+        printf "${YELLOW}⚠ No running server found${NC}\n"
+        exit 0
+    fi
+
+    if ps -p "$pid" > /dev/null; then
+        printf "${CYAN}→ Killing server with PID $pid...${NC}\n"
+        kill "$pid"
+        if [ $? -eq 0 ]; then
+            printf "${GREEN}✓ Server stopped successfully${NC}\n"
+        else
+            printf "${RED}✗ Failed to stop server${NC}\n"
+        fi
+    else
+        printf "${RED}✗ Error: Process with PID $pid not found, but was detected${NC}\n"
+    fi
+}
+
+list_servers() {
+    printf "${CYAN}→ Checking for running servers...${NC}\n"
+    
+    server_info=$(pgrep -af "python3 -m http.server" | grep -v "grep")
+
+    if [ -z "$server_info" ]; then
+        printf "${YELLOW}⚠ No running server found${NC}\n"
+        # Clean up old pid file if server is not running
+        rm -f /data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid
+        exit 0
+    fi
+
+    printf "  - Process: ${YELLOW}$server_info${NC}\n"
+    pid=$(echo "$server_info" | awk '{print $1}')
+    printf "  - PID: ${YELLOW}$pid${NC}\n"
+
+    if [ -r "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid" ]; then
+        port=$(cat "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid")
+        printf "  - Port: ${YELLOW}$port${NC}\n"
+        printf "  - URL: ${BLUE}http://localhost:$port${NC}\n"
+    else
+        printf "  - Port: ${YELLOW}Could not be determined (no pid file).${NC}\n"
+    fi
+}
+
+start_server() {
+    # Get the script's directory and parent (project root)
+    script_dir="$(cd "$(dirname "$0")" && pwd)"
+    project_root="$(cd "$script_dir/.." && pwd)"
+    port="8000" # Default port
+
+    cd "$project_root"
+    # Start server and save its port to a file
+    python3 -m http.server "$port" &
+    server_pid=$!
+    echo "$port" > "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid"
+    
+    printf "${GREEN}✓ Server started in the background (PID: $server_pid)${NC}\n"
+}
+
 watch_sass() {
     target_dir="$1"
 
@@ -203,7 +269,7 @@ fi
 
 # Validate command
 case "$COMMAND" in
-    build|dev|watch|all)
+    build|dev|watch|server|all)
         ;;
     *)
         printf "${RED}✗ Error: Unknown command '$COMMAND'${NC}\n"
@@ -213,6 +279,26 @@ case "$COMMAND" in
 esac
 
 # Handle special cases
+if [ "$COMMAND" = "server" ]; then
+    case "$TARGET" in
+        list)
+            list_servers
+            ;;
+        kill)
+            kill_server
+            ;;
+        *)
+            check_dependencies "." || exit 1
+            # Start watcher and server in the background
+            watch_sass "." &
+            start_server
+            printf "\n${CYAN}Sass watcher and web server are running in the background.${NC}\n"
+            printf "Use './build.sh server list' to check status and './build.sh server kill' to stop.${NC}\n"
+            ;;
+    esac
+    exit 0
+fi
+
 if [ "$COMMAND" = "all" ]; then
     TARGET="all"
     COMMAND="build"

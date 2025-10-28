@@ -26,3 +26,7 @@ Thumbs.db
 # Temporary build directories
 blog_output/
 final_site/
+
+# Sass/CSS build artifacts
+*.css.map
+*.backup

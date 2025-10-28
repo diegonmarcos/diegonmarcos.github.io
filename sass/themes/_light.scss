@@ -1,0 +1,50 @@
+
+body.light-theme {
+    --brand-dark: #{$lt-brand-dark};
+    --card-bg: #{$lt-card-bg};
+    --card-border: #{$lt-card-border};
+    --text-primary: #{$lt-text-primary};
+    --text-secondary: #{$lt-text-secondary};
+
+    .hero-title {
+        text-shadow: 0 0 10px rgba(160, 96, 255, 0.2);
+    }
+
+    #space-background {
+        background: radial-gradient(ellipse at bottom, #E8EAF6 0%, #C5CAE9 100%);
+    }
+
+    .star {
+        background: #5C6BC0;
+
+        &::before,
+        &::after {
+            background: #5C6BC0;
+            box-shadow: 0 0 3px rgba(92, 107, 192, 0.8);
+        }
+    }
+
+    .constellation-star {
+        background: #4169E1;
+        box-shadow: 0 0 4px rgba(65, 105, 225, 0.6);
+    }
+
+    #clippy-svg path {
+        fill: #606060;
+        stroke: #404040;
+    }
+
+    .clippy-speech {
+        background: white;
+        color: #333;
+        border-color: #333;
+
+        &::after {
+            border-top-color: #333;
+        }
+
+        &::before {
+            border-top-color: white;
+        }
+    }
+}

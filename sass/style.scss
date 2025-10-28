@@ -1,0 +1,53 @@
+// ============================================
+// MAIN SCSS FILE
+// ============================================
+// Master import file - compiles to style.css
+// Import order follows ITCSS (Inverted Triangle CSS) methodology
+
+// ============================================
+// ABSTRACTS - No CSS output
+// ============================================
+// Variables, mixins, and functions that don't generate CSS on their own
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+@import 'abstracts/functions';
+
+// ============================================
+// BASE - Foundation styles
+// ============================================
+// Global element styles and typography
+@import 'base/reset';
+@import 'base/typography';
+
+// ============================================
+// LAYOUT - Major structural components
+// ============================================
+// High-level page structure
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/navigation';
+@import 'layout/sections';
+
+// ============================================
+// COMPONENTS - Reusable UI elements
+// ============================================
+// Modular, reusable pieces
+@import 'components/buttons';
+@import 'components/cards';
+@import 'components/clippy';
+@import 'components/space-background';
+
+// ============================================
+// THEMES - Theme-specific styles
+// ============================================
+// Dark and light theme variations
+@import 'themes/dark';
+@import 'themes/light';
+
+// ============================================
+// UTILITIES - Helpers and animations
+// ============================================
+// Helper classes and keyframe animations
+@import 'utilities/animations';
+@import 'utilities/helpers';
+@import 'utilities/media-queries';

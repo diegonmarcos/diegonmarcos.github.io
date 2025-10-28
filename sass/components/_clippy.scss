@@ -1,0 +1,234 @@
+
+#clippy-container {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    z-index: 1001;
+    transition: opacity 0.5s ease;
+    user-select: none;
+    opacity: 1;
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    &.dragging {
+        transition: none;
+    }
+
+    &.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+}
+
+#clippy-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+    animation: clippy-bounce 3s ease-in-out infinite;
+
+    path {
+        fill: #C0C0C0;
+        stroke: #808080;
+        stroke-width: 2;
+    }
+
+    &:hover {
+        filter: drop-shadow(0 0 10px $brand-light-purple);
+
+        path {
+            fill: #D8D8D8;
+        }
+    }
+}
+
+.clippy-speech {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2a2a2a;
+    color: $text-primary;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border: 2px solid #555;
+    margin-bottom: 15px;
+    min-width: 200px;
+    max-width: 250px;
+    font-size: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 1002;
+
+    &.show {
+        opacity: 1;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 20px;
+        border: 10px solid transparent;
+        border-top-color: #555;
+    }
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 22px;
+        border: 8px solid transparent;
+        border-top-color: #2a2a2a;
+        z-index: 1;
+    }
+}
+
+#clippy-menu {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    padding: 10px;
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    min-width: 220px;
+
+    &.pulse-menu {
+        left: auto;
+        right: 50px;
+        transform: translateX(0);
+
+        &.show {
+            transform: translateX(0) translateY(0);
+        }
+    }
+
+    &.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+    }
+
+    a {
+        display: block;
+        color: $text-primary;
+        padding: 10px 12px;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+        font-size: 14px;
+
+        &:hover {
+            background-color: rgba(160, 96, 255, 0.2);
+        }
+
+        i {
+            color: $text-primary;
+            margin-right: 8px;
+            font-size: 16px;
+        }
+    }
+
+    .menu-toggles {
+        display: flex;
+        justify-content: center;
+        gap: 0.4rem;
+        padding-top: 8px;
+        margin-top: 8px;
+        border-top: 1px solid #444;
+        flex-wrap: nowrap;
+    }
+
+    .menu-toggle-btn {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid #555;
+        color: $text-primary;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+
+        &:hover {
+            border-color: $brand-light-purple;
+            color: $brand-light-purple;
+            background: rgba(160, 96, 255, 0.1);
+        }
+
+        &.active {
+            background: $brand-purple;
+            border-color: $brand-purple;
+            color: white;
+        }
+
+        i {
+            color: inherit;
+        }
+    }
+}
+
+.clippy-pulsing-circle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: $brand-purple;
+    cursor: pointer;
+    display: none;
+    z-index: 1;
+
+    &::before,
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        opacity: 0;
+    }
+
+    &::before {
+        width: 50px;
+        height: 50px;
+        background: $brand-light-purple;
+        animation: pulse-ring-1 2s ease-out infinite;
+    }
+
+    &::after {
+        width: 50px;
+        height: 50px;
+        background: $brand-light-purple;
+        animation: pulse-ring-2 2s ease-out infinite;
+        animation-delay: 0.66s;
+    }
+
+    animation: pulse-ring-3 2s ease-out infinite;
+    animation-delay: 1.32s;
+    box-shadow: 0 0 0 0 $brand-light-purple;
+
+    &:hover {
+        background: $brand-light-purple;
+        box-shadow: 0 0 20px $brand-light-purple;
+    }
+}

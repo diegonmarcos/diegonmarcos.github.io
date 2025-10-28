@@ -1,0 +1,39 @@
+// ============================================
+// SECTIONS
+// ============================================
+// Page section layouts
+
+// --- Value Proposition Section ---
+.value-proposition {
+    margin-bottom: 6rem;
+}
+
+.title-with-arrow {
+    position: relative;
+    padding-bottom: 1.5rem;
+
+    &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: 15px solid rgba(138, 43, 226, 0.5);
+    }
+}
+
+.value-proposition-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.card-points-container {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}

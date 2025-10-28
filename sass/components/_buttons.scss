@@ -1,0 +1,63 @@
+
+.theme-toggle-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: $card-bg;
+    border: 1px solid $card-border;
+    color: $text-primary;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+    z-index: 100;
+
+    &:hover {
+        border-color: $brand-light-purple;
+        color: $brand-light-purple;
+    }
+}
+
+.cta-button {
+    position: relative;
+    display: block;
+    background-color: $brand-purple;
+    color: white;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 1.2rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    margin-bottom: 0.5rem;
+    text-align: center;
+
+    i {
+        position: absolute;
+        left: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &:hover {
+        background-color: $brand-light-purple;
+        transform: scale(1.05);
+    }
+}
+
+.floating-btn {
+    background-color: rgba(138, 43, 226, 0.7);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
+}

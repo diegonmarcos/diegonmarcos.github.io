@@ -1,0 +1,130 @@
+// ============================================
+// ANIMATIONS
+// ============================================
+// Keyframe animations and transitions
+
+// --- Star Animations ---
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes constellation-twinkle {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(0.8);
+    }
+}
+
+// --- Explosion Animation ---
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 5px 2px $brand-light-purple;
+    }
+    50% {
+        transform: scale(8);
+        opacity: 0.8;
+        box-shadow: 0 0 20px 10px $brand-light-purple;
+    }
+    100% {
+        transform: scale(15);
+        opacity: 0;
+        box-shadow: 0 0 30px 15px transparent;
+    }
+}
+
+// --- Comet Animations ---
+@keyframes comet-fly-small {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-500px, 500px);
+        opacity: 0;
+    }
+}
+
+@keyframes comet-fly-medium {
+    0% {
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-800px, 600px);
+        opacity: 0;
+    }
+}
+
+// --- Shimmer Animation ---
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// --- Pulse Animations ---
+@keyframes pulse-ring-1 {
+    0% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.5);
+    }
+}
+
+@keyframes pulse-ring-2 {
+    0% {
+        opacity: 0.6;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(2.5);
+    }
+}
+
+@keyframes pulse-ring-3 {
+    0% {
+        box-shadow: 0 0 0 0 rgba(160, 96, 255, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(160, 96, 255, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(160, 96, 255, 0);
+    }
+}
+
+// --- Clippy Bounce ---
+@keyframes clippy-bounce {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-5px) rotate(-2deg);
+    }
+    50% {
+        transform: translateY(0) rotate(0deg);
+    }
+    75% {
+        transform: translateY(-3px) rotate(2deg);
+    }
+}

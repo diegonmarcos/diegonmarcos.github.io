@@ -1,0 +1,66 @@
+// ============================================
+// MEDIA QUERIES
+// ============================================
+// Responsive design adjustments
+
+@media (max-width: $breakpoint-mobile) {
+    .theme-toggle-button {
+        top: 0.1rem;
+        right: 0.1rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+    }
+
+    .cta-button {
+        min-height: 4.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            position: static;
+            transform: none;
+            margin-right: 0.5rem;
+        }
+    }
+
+    /* Mobile defaults to pulse assistant mode - smaller sizing */
+    #clippy-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    .clippy-pulsing-circle {
+        width: 45px;
+        height: 45px;
+
+        &::before,
+        &::after {
+            width: 45px;
+            height: 45px;
+        }
+    }
+
+    #clippy-svg {
+        width: 80px;
+        height: 80px;
+    }
+
+    /* Pulse menu positioning for mobile - offset left for visibility */
+    #clippy-menu.pulse-menu {
+        right: 30px;
+        min-width: 200px;
+    }
+}
+
+@media (min-width: $breakpoint-mobile) {
+    .value-proposition-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.floating-btn.active,
+.floating-btn:not(.active):hover {
+    background-color: var(--brand-light-purple);
+}

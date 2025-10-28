@@ -1,0 +1,21 @@
+
+// --- Colors ---
+$brand-dark: #0D061F;
+$brand-purple: #8A2BE2;
+$brand-light-purple: #A060FF;
+$text-primary: #d1d5db;
+$text-secondary: #9ca3af;
+
+// --- Card ---
+$card-bg: rgba(255, 255, 255, 0.05);
+$card-border: rgba(255, 255, 255, 0.1);
+
+// --- Fonts ---
+$font-sans: 'Inter', sans-serif;
+
+// --- Light Theme ---
+$lt-brand-dark: #F4F4F9;
+$lt-card-bg: #FFFFFF;
+$lt-card-border: #E2E8F0;
+$lt-text-primary: #1A202C;
+$lt-text-secondary: #4A5568;

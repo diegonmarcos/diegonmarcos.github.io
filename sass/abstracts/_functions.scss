@@ -1,0 +1,14 @@
+// ============================================
+// FUNCTIONS
+// ============================================
+// Utility functions for calculations and transformations
+
+// Convert pixels to rem
+@function rem($pixels, $base: 16) {
+  @return #{$pixels / $base}rem;
+}
+
+// Get a color with modified opacity
+@function alpha($color, $opacity) {
+  @return rgba($color, $opacity);
+}

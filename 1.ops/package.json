@@ -1,0 +1,30 @@
+{
+  "name": "personal-website-build-tools",
+  "version": "1.0.0",
+  "description": "Build tools for Personal Website (Sass + TypeScript)",
+  "scripts": {
+    "sass:watch": "sass --watch ../3.sass/style.scss:../style.css",
+    "sass:build": "sass ../3.sass/style.scss:../style.css --style=compressed && npm run move:maps",
+    "sass:dev": "sass ../3.sass/style.scss:../style.css --style=expanded && npm run move:maps",
+    "ts:watch": "tsc --watch",
+    "ts:build": "tsc && npm run move:maps",
+    "ts:dev": "tsc --watch",
+    "move:maps": "mv -f ../*.map ./logs/ 2>/dev/null || true",
+    "build": "npm run sass:build && npm run ts:build",
+    "dev": "npm run sass:dev && npm run ts:build",
+    "watch:all": "concurrently \"npm run sass:watch\" \"npm run ts:watch\""
+  },
+  "keywords": [
+    "portfolio",
+    "sass",
+    "scss",
+    "typescript"
+  ],
+  "author": "Diego Nepomuceno Marcos",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.69.0",
+    "typescript": "^5.3.3",
+    "concurrently": "^8.2.2"
+  }
+}

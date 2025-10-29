@@ -113,6 +113,46 @@ This structure is applied consistently across the root and subdirectories (cv_we
 
 ---
 
+## Build and Operations (1.ops)
+
+The `1.ops/` directory centralizes all build tools, scripts, and configurations, abstracting the operational aspects of the project from the source code.
+
+### Folder Structure
+
+```
+1.ops/
+├── logs/
+│   ├── script.js.map         # Source map for debugging TypeScript
+│   └── style.css.map         # Source map for debugging Sass
+├── node_modules/             # Node.js dependencies
+├── scripts/
+│   ├── build.sh              # (Example) Build script
+│   ├── push.sh               # (Example) Deployment script
+│   └── s.sh                  # (Example) Utility script
+├── package.json              # npm dependencies and scripts
+├── package-lock.json         # Exact versions of dependencies
+└── tsconfig.json             # TypeScript compiler options
+```
+
+### Key Files
+
+*   **`package.json`**: Defines project metadata, dependencies (like `sass`, `typescript`, `concurrently`), and a set of npm scripts to automate common tasks.
+*   **`tsconfig.json`**: Configures the TypeScript compiler (`tsc`). It specifies the root files, output directory, and compiler options like `sourceMap` and `outDir`.
+*   **`logs/`**: Contains build artifacts that are useful for debugging but not essential for the final product, such as source maps (`.map` files).
+
+### NPM Scripts
+
+The `package.json` file contains the following scripts for managing the build process:
+
+*   `npm run sass:build`: Compiles the main Sass file (`3.sass/style.scss`) into `style.css` and moves the source map to `1.ops/logs/`.
+*   `npm run ts:build`: Compiles the main TypeScript file (`4.ts/script.ts`) into `script.js` and moves the source map to `1.ops/logs/`.
+*   `npm run build`: Runs both `sass:build` and `ts:build` to create a full production build.
+*   `npm run sass:watch`: Watches for changes in the Sass files and automatically recompiles them.
+*   `npm run ts:watch`: Watches for changes in the TypeScript files and automatically recompiles them.
+*   `npm run watch:all`: Runs both `sass:watch` and `ts:watch` concurrently for a seamless development workflow.
+
+---
+
 ## Deployment Pipeline
 
 ### Workflow: `deploy.yml` (Local Jekyll Build Workflow)

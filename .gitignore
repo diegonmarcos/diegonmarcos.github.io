@@ -25,13 +25,19 @@ Gemfile.lock
 blog_output/
 final_site/
 
+
+
 # Node and Sass build artifacts
 ## Dependency directories (located in 3.sass/0.json/)
 node_modules/
 vendor/
-**/3.sass/0.json/node_modules/
-**/3.sass/0.json/package-lock.json
+**/1.ops/node_modules/
+#1.ops/package-lock.json
 
 ## Sass/CSS build artifacts
 *.css.map
 *.backup
+
+# LOGS
+## Build logs and source maps
+#1.ops/logs/

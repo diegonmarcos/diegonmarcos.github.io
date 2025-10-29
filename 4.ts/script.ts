@@ -1,29 +1,75 @@
-"use strict";
+// Type definitions
+interface ValuePropSection {
+    title: string;
+    icon: string;
+    description: string;
+    points: string[];
+}
+
+interface StarPosition {
+    x: number;
+    y: number;
+    size: number;
+}
+
+interface ConstellationElement {
+    element: HTMLDivElement;
+    x: number;
+    y: number;
+}
+
+type AssistantMode = 'full' | 'pulse';
+type Lane = 'left' | 'right';
+
 document.addEventListener('DOMContentLoaded', () => {
-    let animationsEnabled = localStorage.getItem('animations') !== 'disabled';
-    let backgroundAnimationsEnabled = localStorage.getItem('backgroundAnimations') !== 'disabled';
-    const container = document.querySelector('.container');
+
+    // --- Animation State Management ---
+    let animationsEnabled: boolean = localStorage.getItem('animations') !== 'disabled';
+    // Background animations ON by default (only disabled if explicitly set)
+    let backgroundAnimationsEnabled: boolean = localStorage.getItem('backgroundAnimations') !== 'disabled';
+
+    // --- Fit to Screen Scaling Logic ---
+    const container = document.querySelector('.container') as HTMLDivElement;
+
+    // --- Space Background Setup ---
     const spaceBackground = document.createElement('div');
     spaceBackground.id = 'space-background';
     document.body.insertBefore(spaceBackground, document.body.firstChild);
-    function createStars(count) {
+
+    // Generate random stars
+    function createStars(count: number): void {
         for (let i = 0; i < count; i++) {
             const star = document.createElement('div');
             star.className = 'star';
+
+            // Random position
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 100 + '%';
+
+            // Random size (1-3px)
             const size = Math.random() * 2 + 1;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
-            star.style.opacity = (Math.random() * 0.5 + 0.5).toString();
+
+            // Random opacity for depth
+            star.style.opacity = (Math.random() * 0.5 + 0.5).toString(); // 0.5 to 1
+
+            // Random animation delay for varied twinkling
             star.style.animationDelay = Math.random() * 4 + 's';
-            star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's'; // 3-6 seconds
+
             spaceBackground.appendChild(star);
         }
     }
+
+    // Create 200 stars
     createStars(100);
-    function createConstellation(_name, stars, connections) {
-        const constellation = [];
+
+    // Function to create constellation
+    function createConstellation(_name: string, stars: StarPosition[], connections: [number, number][]): void {
+        const constellation: ConstellationElement[] = [];
+
+        // Create stars
         stars.forEach((starPos) => {
             const star = document.createElement('div');
             star.className = 'constellation-star';
@@ -36,108 +82,139 @@ document.addEventListener('DOMContentLoaded', () => {
             spaceBackground.appendChild(star);
             constellation.push({ element: star, x: starPos.x, y: starPos.y });
         });
+
+        // Create lines connecting stars
         connections.forEach(([startIdx, endIdx]) => {
             const start = constellation[startIdx];
             const end = constellation[endIdx];
+
             const line = document.createElement('div');
             line.className = 'constellation-line';
+
+            // Calculate line position and angle
             const startRect = { x: start.x, y: start.y };
             const endRect = { x: end.x, y: end.y };
+
             const deltaX = endRect.x - startRect.x;
             const deltaY = endRect.y - startRect.y;
             const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
             const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+
             line.style.left = startRect.x + '%';
             line.style.top = startRect.y + '%';
             line.style.width = length + '%';
             line.style.transform = `rotate(${angle}deg)`;
             line.style.animationDelay = Math.random() * 4 + 's';
             line.style.animationDuration = (Math.random() * 3 + 3) + 's';
+
             spaceBackground.appendChild(line);
         });
     }
-    const cancerStars = [
-        { x: 15, y: 20, size: 3 },
-        { x: 12, y: 18, size: 2.5 },
-        { x: 18, y: 22, size: 2.5 },
-        { x: 16, y: 17, size: 2 },
-        { x: 13, y: 15, size: 2 },
-        { x: 19, y: 19, size: 2 }
+
+    // Cancer constellation (♋) - positioned in upper left
+    const cancerStars: StarPosition[] = [
+        { x: 15, y: 20, size: 3 },   // Acubens
+        { x: 12, y: 18, size: 2.5 }, // Al Tarf
+        { x: 18, y: 22, size: 2.5 }, // Asellus Australis
+        { x: 16, y: 17, size: 2 },   // Asellus Borealis
+        { x: 13, y: 15, size: 2 },   // Tegmine
+        { x: 19, y: 19, size: 2 }    // Additional star
     ];
-    const cancerConnections = [
-        [0, 1],
-        [0, 2],
-        [1, 4],
-        [4, 3],
-        [3, 5],
-        [5, 2]
+
+    const cancerConnections: [number, number][] = [
+        [0, 1], // Acubens to Al Tarf
+        [0, 2], // Acubens to Asellus Australis
+        [1, 4], // Al Tarf to Tegmine
+        [4, 3], // Tegmine to Asellus Borealis
+        [3, 5], // Asellus Borealis to additional
+        [5, 2]  // Additional to Asellus Australis
     ];
-    const ariesStars = [
-        { x: 80, y: 25, size: 3 },
-        { x: 83, y: 23, size: 2.5 },
-        { x: 85, y: 28, size: 2 },
-        { x: 78, y: 22, size: 1.5 }
+
+    // Aries constellation (♈) - positioned in upper right
+    const ariesStars: StarPosition[] = [
+        { x: 80, y: 25, size: 3 },   // Hamal (brightest)
+        { x: 83, y: 23, size: 2.5 }, // Sheratan
+        { x: 85, y: 28, size: 2 },   // Mesarthim
+        { x: 78, y: 22, size: 1.5 }  // Additional star
     ];
-    const ariesConnections = [
-        [0, 1],
-        [1, 2],
-        [0, 3]
+
+    const ariesConnections: [number, number][] = [
+        [0, 1], // Hamal to Sheratan
+        [1, 2], // Sheratan to Mesarthim
+        [0, 3]  // Hamal to additional
     ];
+
     createConstellation('cancer', cancerStars, cancerConnections);
     createConstellation('aries', ariesStars, ariesConnections);
-    function createStarExplosion() {
-        if (!backgroundAnimationsEnabled)
-            return;
+
+    // Function to create star explosion
+    function createStarExplosion(): void {
+        if (!backgroundAnimationsEnabled) return;
+
         const explosion = document.createElement('div');
         explosion.className = 'star-explosion';
         explosion.style.left = Math.random() * window.innerWidth + 'px';
         explosion.style.top = Math.random() * window.innerHeight + 'px';
         spaceBackground.appendChild(explosion);
+
         setTimeout(() => explosion.remove(), 1000);
     }
-    function createComet(size = 'small') {
-        if (!backgroundAnimationsEnabled)
-            return;
+
+    // Function to create comet
+    function createComet(size: 'small' | 'medium' = 'small'): void {
+        if (!backgroundAnimationsEnabled) return;
+
         const comet = document.createElement('div');
         comet.className = `comet comet-${size}`;
         comet.style.right = '-100px';
         comet.style.top = Math.random() * (window.innerHeight / 2) + 'px';
         spaceBackground.appendChild(comet);
+
         const duration = size === 'medium' ? 3000 : 2000;
         setTimeout(() => comet.remove(), duration);
     }
-    let backgroundAnimationInterval;
-    function startBackgroundAnimations() {
-        if (!backgroundAnimationsEnabled)
-            return;
+
+    // Random animation scheduler
+    let backgroundAnimationInterval: number | undefined;
+
+    function startBackgroundAnimations(): void {
+        if (!backgroundAnimationsEnabled) return;
+
         backgroundAnimationInterval = window.setInterval(() => {
             const rand = Math.random();
             if (rand < 0.3) {
                 createStarExplosion();
-            }
-            else if (rand < 0.6) {
+            } else if (rand < 0.6) {
                 createComet('small');
-            }
-            else if (rand < 0.8) {
+            } else if (rand < 0.8) {
                 createComet('medium');
             }
-        }, 3000);
+        }, 3000); // Check every 3 seconds
     }
-    function stopBackgroundAnimations() {
+
+    function stopBackgroundAnimations(): void {
         if (backgroundAnimationInterval) {
             clearInterval(backgroundAnimationInterval);
             backgroundAnimationInterval = undefined;
         }
     }
-    function calculateAndApplyScale() {
+
+    function calculateAndApplyScale(): void {
         if (!animationsEnabled && body.classList.contains('fit-to-screen')) {
+            // Get the actual content height
             const contentHeight = container.scrollHeight;
             const viewportHeight = window.innerHeight;
+
+            // Calculate scale to fit content in viewport with some padding
             const scale = (viewportHeight * 0.95) / contentHeight;
+
+            // Apply the scale
             container.style.transform = `scale(${scale})`;
         }
     }
-    const valuePropSections = [
+
+    // --- Data for Value Proposition Cards ---
+    const valuePropSections: ValuePropSection[] = [
         {
             title: "Capital Markets & Venture Capital Acumen",
             icon: "ti-briefcase",
@@ -179,178 +256,234 @@ document.addEventListener('DOMContentLoaded', () => {
             ]
         }
     ];
-    const gridContainer = document.getElementById('value-proposition-grid');
+
+    // --- Dynamic Card Generation ---
+    const gridContainer = document.getElementById('value-proposition-grid') as HTMLDivElement | null;
     if (gridContainer) {
         valuePropSections.forEach(section => {
             const card = document.createElement('div');
-            card.className = 'card animated-section';
+            card.className = 'card animated-section'; // Add animation class here too
+
             const cardTitle = document.createElement('h3');
             cardTitle.className = 'card-title';
+
             const icon = document.createElement('i');
             icon.className = `ti ${section.icon}`;
             cardTitle.appendChild(icon);
+
             const titleText = document.createElement('span');
             titleText.textContent = section.title;
             cardTitle.appendChild(titleText);
+
             const cardDescription = document.createElement('p');
             cardDescription.className = 'card-description';
             cardDescription.textContent = section.description;
+
             const pointsContainer = document.createElement('div');
             pointsContainer.className = 'card-points-container';
+
             section.points.forEach(pointText => {
                 const pointBox = document.createElement('div');
                 pointBox.className = 'point-box';
                 pointBox.textContent = pointText;
                 pointsContainer.appendChild(pointBox);
             });
+
             card.appendChild(cardTitle);
             card.appendChild(cardDescription);
             card.appendChild(pointsContainer);
             gridContainer.appendChild(card);
         });
     }
-    function animate(element, targetOpacity, targetTransform, duration) {
+
+    // --- Custom Animation Engine ---
+    function animate(element: HTMLElement, targetOpacity: number, targetTransform: number, duration: number): void {
         if (targetOpacity > 0) {
             element.style.visibility = 'visible';
         }
+
         const startOpacity = parseFloat(window.getComputedStyle(element).opacity);
         const matrix = new DOMMatrix(window.getComputedStyle(element).transform);
         const startTransform = matrix.m42;
-        let startTime = null;
-        function animationStep(timestamp) {
-            if (!startTime)
-                startTime = timestamp;
+        let startTime: number | null = null;
+
+        function animationStep(timestamp: number): void {
+            if (!startTime) startTime = timestamp;
             const progress = Math.min((timestamp - startTime) / duration, 1);
+
             const currentOpacity = startOpacity + (targetOpacity - startOpacity) * progress;
             const currentTransform = startTransform + (targetTransform - startTransform) * progress;
+
             element.style.opacity = currentOpacity.toString();
             element.style.transform = `translateY(${currentTransform}px)`;
+
             if (progress < 1) {
                 requestAnimationFrame(animationStep);
-            }
-            else {
+            } else {
                 if (targetOpacity === 0) {
                     element.style.visibility = 'hidden';
                 }
             }
         }
+
         requestAnimationFrame(animationStep);
     }
-    const animatedSections = document.querySelectorAll('.animated-section');
+
+    // --- Scroll Animation Logic using Intersection Observer ---
+    const animatedSections = document.querySelectorAll<HTMLElement>('.animated-section');
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (!animationsEnabled) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-                entry.target.style.visibility = 'visible';
+                // If animations are disabled, show everything
+                (entry.target as HTMLElement).style.opacity = '1';
+                (entry.target as HTMLElement).style.transform = 'translateY(0)';
+                (entry.target as HTMLElement).style.visibility = 'visible';
                 return;
             }
+
             if (entry.isIntersecting) {
-                animate(entry.target, 1, 0, 600);
-            }
-            else {
-                animate(entry.target, 0, 30, 600);
+                animate(entry.target as HTMLElement, 1, 0, 600); // Fade in
+            } else {
+                animate(entry.target as HTMLElement, 0, 30, 600); // Fade out
             }
         });
     }, {
         root: null,
-        threshold: 0.95
+        threshold: 0.95 // Trigger when 95% of the element is visible
     });
+
     animatedSections.forEach(section => {
         observer.observe(section);
     });
-    const themeToggleButton = document.getElementById('theme-toggle');
+
+    // --- Theme Toggle Logic ---
+    const themeToggleButton = document.getElementById('theme-toggle') as HTMLButtonElement;
     const body = document.body;
-    const applyTheme = () => {
+
+    // Function to apply the saved theme on load
+    const applyTheme = (): void => {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             body.classList.add('light-theme');
             themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
-        }
-        else {
+        } else {
             body.classList.remove('light-theme');
             themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
         }
     };
+
+    // Theme toggle button event listener
     themeToggleButton.addEventListener('click', () => {
         body.classList.toggle('light-theme');
         if (body.classList.contains('light-theme')) {
             localStorage.setItem('theme', 'light');
             themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
-        }
-        else {
+        } else {
             localStorage.setItem('theme', 'dark');
             themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
         }
     });
+
+    // Apply the theme when the page loads
     applyTheme();
-    const backgroundToggleButton = document.getElementById('background-toggle');
-    const applyBackgroundState = () => {
+
+    // --- Background Animation Toggle Logic ---
+    const backgroundToggleButton = document.getElementById('background-toggle') as HTMLButtonElement;
+
+    // Function to apply background animation state
+    const applyBackgroundState = (): void => {
         if (backgroundAnimationsEnabled) {
             backgroundToggleButton.innerHTML = '<i class="ti ti-player-pause-filled"></i>';
             backgroundToggleButton.classList.add('active');
             startBackgroundAnimations();
-        }
-        else {
+        } else {
             backgroundToggleButton.innerHTML = '<i class="ti ti-player-play-filled"></i>';
             backgroundToggleButton.classList.remove('active');
             stopBackgroundAnimations();
         }
     };
+
+    // Background animation toggle button event listener
     backgroundToggleButton.addEventListener('click', () => {
         backgroundAnimationsEnabled = !backgroundAnimationsEnabled;
         localStorage.setItem('backgroundAnimations', backgroundAnimationsEnabled ? 'enabled' : 'disabled');
         applyBackgroundState();
     });
+
+    // Apply the background animation state when the page loads
     applyBackgroundState();
-    const animationToggleButton = document.getElementById('animation-toggle');
-    const applyAnimationState = () => {
+
+    // --- Presentation Mode Toggle Logic ---
+    const animationToggleButton = document.getElementById('animation-toggle') as HTMLButtonElement;
+
+    // Function to apply presentation mode state
+    const applyAnimationState = (): void => {
         if (animationsEnabled) {
             animationToggleButton.innerHTML = '<i class="ti ti-presentation"></i>';
             animationToggleButton.classList.remove('active');
             body.classList.remove('fit-to-screen');
-            container.style.transform = '';
+            container.style.transform = ''; // Reset transform
+            // Reset animated sections to hidden state (observer will handle visibility)
             animatedSections.forEach(section => {
                 section.style.opacity = '0';
                 section.style.transform = 'translateY(30px)';
                 section.style.visibility = 'hidden';
             });
+            // Trigger observer to check current visibility
             observer.disconnect();
             animatedSections.forEach(section => observer.observe(section));
-        }
-        else {
+        } else {
             animationToggleButton.innerHTML = '<i class="ti ti-layout-grid"></i>';
             animationToggleButton.classList.add('active');
             body.classList.add('fit-to-screen');
+            // Show all sections immediately
             animatedSections.forEach(section => {
                 section.style.opacity = '1';
                 section.style.transform = 'translateY(0)';
                 section.style.visibility = 'visible';
             });
-            setTimeout(calculateAndApplyScale, 50);
+            // Calculate and apply the fit-to-screen scale
+            setTimeout(calculateAndApplyScale, 50); // Small delay to ensure DOM is updated
         }
     };
+
+    // Animation toggle button event listener
     animationToggleButton.addEventListener('click', () => {
         animationsEnabled = !animationsEnabled;
         localStorage.setItem('animations', animationsEnabled ? 'enabled' : 'disabled');
         applyAnimationState();
     });
+
+    // Apply the animation state when the page loads
     applyAnimationState();
+
+    // --- Window Resize Handler for Fit-to-Screen Mode ---
     window.addEventListener('resize', () => {
         calculateAndApplyScale();
     });
-    const clippyContainer = document.getElementById('clippy-container');
+
+    // --- Clippy Assistant ---
+    const clippyContainer = document.getElementById('clippy-container') as HTMLDivElement;
     const clippySvg = document.getElementById('clippy-svg');
-    const clippySpeech = document.querySelector('.clippy-speech');
-    const clippyMenu = document.getElementById('clippy-menu');
+    const clippySpeech = document.querySelector('.clippy-speech') as HTMLDivElement;
+    const clippyMenu = document.getElementById('clippy-menu') as HTMLDivElement;
+
+    // Check if Clippy is disabled
     const clippyDisabled = localStorage.getItem('clippyDisabled') === 'true';
     if (clippyDisabled) {
         clippyContainer.style.display = 'none';
-        return;
+        return; // Exit early, don't initialize Clippy
     }
+
+    // Assistant Mode: 'full' (animated Clippy) or 'pulse' (static pulsing circle)
+    // On mobile (screen width <= 768px), default to pulse mode
+    // On desktop, default to full mode
     const isMobile = window.innerWidth <= 768;
-    let assistantMode = localStorage.getItem('assistantMode') || (isMobile ? 'pulse' : 'full');
-    const clippyPhrases = [
+    let assistantMode: AssistantMode = (localStorage.getItem('assistantMode') as AssistantMode) || (isMobile ? 'pulse' : 'full');
+
+    // Funny phrases for Clippy
+    const clippyPhrases: string[] = [
         "Pretty sure there's a cat walking on the keyboard somewhere..",
         "What's computer's favorite snack? Microchips.",
         "Why do Java developers wear glasses? Because they don't C#.",
@@ -358,161 +491,236 @@ document.addEventListener('DOMContentLoaded', () => {
         "Just waiting for that one semicolon to show up and fix everything.",
         "Why was the JavaScript developer sad? Because he didn't Node how to Express himself."
     ];
-    const LANE_LEFT = 50;
-    const LANE_RIGHT_OFFSET = 150;
-    let currentLane = 'right';
-    function getLaneX(lane) {
+
+    // Define two vertical lanes (left and right)
+    const LANE_LEFT = 50; // Left lane X position
+    const LANE_RIGHT_OFFSET = 150; // Right lane offset from right edge
+    let currentLane: Lane = 'right'; // Start in right lane
+
+    function getLaneX(lane: Lane): number {
         if (lane === 'left') {
             return LANE_LEFT;
-        }
-        else {
+        } else {
             return window.innerWidth - LANE_RIGHT_OFFSET;
         }
     }
+
+    // Position Clippy initially (bottom right lane)
     let clippyX = getLaneX('right');
     let clippyY = window.innerHeight - 150;
     clippyContainer.style.left = clippyX + 'px';
     clippyContainer.style.top = clippyY + 'px';
+
+    // Drag functionality - restricted to vertical movement in current lane
     let isDragging = false;
     let dragOffsetY = 0;
-    clippyContainer.addEventListener('mousedown', (e) => {
-        if (e.target.closest('#clippy-menu') ||
-            e.target.closest('.clippy-speech') ||
+
+    clippyContainer.addEventListener('mousedown', (e: MouseEvent) => {
+        if ((e.target as HTMLElement).closest('#clippy-menu') ||
+            (e.target as HTMLElement).closest('.clippy-speech') ||
             assistantMode === 'pulse') {
-            return;
+            return; // Don't drag if clicking menu, speech bubble, or in pulse mode
         }
         isDragging = true;
         clippyContainer.classList.add('dragging');
         dragOffsetY = e.clientY - clippyContainer.offsetTop;
         e.preventDefault();
     });
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging)
-            return;
+
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+        if (!isDragging) return;
+
+        // Only allow vertical movement in current lane
         clippyY = e.clientY - dragOffsetY;
+
+        // Keep Clippy within vertical bounds
         clippyY = Math.max(50, Math.min(clippyY, window.innerHeight - 150));
+
+        // Keep X in current lane
         clippyX = getLaneX(currentLane);
+
         clippyContainer.style.left = clippyX + 'px';
         clippyContainer.style.top = clippyY + 'px';
     });
+
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             clippyContainer.classList.remove('dragging');
         }
     });
-    clippySvg?.addEventListener('click', (e) => {
+
+    // Click to toggle menu (only in full mode)
+    clippySvg?.addEventListener('click', (e: MouseEvent) => {
         if (!isDragging && assistantMode === 'full') {
             e.stopPropagation();
             clippyMenu.classList.toggle('show');
-            clippySpeech.classList.remove('show');
+            clippySpeech.classList.remove('show'); // Hide speech when showing menu
         }
     });
-    let _autoMoveInterval;
+
+    // Close menu when clicking outside (will be set up after pulse circle is created)
+    // See below after pulse assistant initialization
+
+    // Auto-movement animation (vertical only within current lane)
+    // @ts-ignore - Used for timeout side effects
+    let _autoMoveInterval: number | undefined;
+    // @ts-ignore - Used for state tracking
     let _isAutoMoving = false;
-    function autoMoveClippy() {
-        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse')
-            return;
+
+    function autoMoveClippy(): void {
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
+
         _isAutoMoving = true;
+        // Only move vertically in current lane
         const targetY = Math.random() * (window.innerHeight - 200) + 50;
-        const duration = 2000;
+
+        const duration = 2000; // 2 seconds
         const startY = clippyY;
         const startTime = Date.now();
-        function moveStep() {
+
+        function moveStep(): void {
             if (isDragging) {
                 _isAutoMoving = false;
                 return;
             }
+
             const elapsed = Date.now() - startTime;
             const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function
             const eased = progress < 0.5
                 ? 2 * progress * progress
                 : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
             clippyY = startY + (targetY - startY) * eased;
-            clippyX = getLaneX(currentLane);
+            clippyX = getLaneX(currentLane); // Stay in lane
+
             clippyContainer.style.left = clippyX + 'px';
             clippyContainer.style.top = clippyY + 'px';
+
             if (progress < 1) {
                 requestAnimationFrame(moveStep);
-            }
-            else {
+            } else {
                 _isAutoMoving = false;
             }
         }
+
         moveStep();
     }
-    function scheduleAutoMove() {
-        const delay = Math.random() * 10000 + 15000;
+
+    // Schedule auto-movement every 15-25 seconds
+    function scheduleAutoMove(): void {
+        const delay = Math.random() * 10000 + 15000; // 15-25 seconds
         _autoMoveInterval = window.setTimeout(() => {
             autoMoveClippy();
             scheduleAutoMove();
         }, delay);
     }
+
     scheduleAutoMove();
-    function changeLane(newLane) {
-        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse')
-            return;
+
+    // Lane changing with fade out/in
+    function changeLane(newLane: Lane): void {
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
+
+        // Fade out
         clippyContainer.style.opacity = '0';
+
         setTimeout(() => {
+            // Change lane
             currentLane = newLane;
             clippyX = getLaneX(currentLane);
+
+            // Move to random Y in new lane
             clippyY = Math.random() * (window.innerHeight - 200) + 50;
+
             clippyContainer.style.left = clippyX + 'px';
             clippyContainer.style.top = clippyY + 'px';
+
+            // Fade in
             clippyContainer.style.opacity = '1';
-        }, 500);
+        }, 500); // Wait for fade out
     }
-    function scheduleLaneChange() {
-        const delay = Math.random() * 30000 + 30000;
+
+    // Schedule random lane changes every 30-60 seconds
+    function scheduleLaneChange(): void {
+        const delay = Math.random() * 30000 + 30000; // 30-60 seconds
         setTimeout(() => {
-            const newLane = currentLane === 'left' ? 'right' : 'left';
+            const newLane: Lane = currentLane === 'left' ? 'right' : 'left';
             changeLane(newLane);
             scheduleLaneChange();
         }, delay);
     }
+
     scheduleLaneChange();
-    let _disappearTimeout;
-    let _reappearTimeout;
-    function disappearClippy() {
+
+    // Appear/disappear functionality
+    // @ts-ignore - Used for timeout side effects
+    let _disappearTimeout: number;
+    // @ts-ignore - Used for timeout side effects
+    let _reappearTimeout: number;
+
+    function disappearClippy(): void {
+        // Fade out
         clippyContainer.style.opacity = '0';
         clippySpeech.classList.remove('show');
         clippyMenu.classList.remove('show');
+
         setTimeout(() => {
             clippyContainer.classList.add('hidden');
         }, 500);
+
+        // Reappear after 30-60 seconds
         _reappearTimeout = window.setTimeout(() => {
             reappearClippy();
         }, Math.random() * 30000 + 30000);
     }
-    function reappearClippy() {
+
+    function reappearClippy(): void {
+        // Randomly choose lane (maybe switch)
         currentLane = Math.random() > 0.5 ? 'left' : 'right';
         clippyX = getLaneX(currentLane);
         clippyY = Math.random() * (window.innerHeight - 200) + 50;
+
         clippyContainer.style.left = clippyX + 'px';
         clippyContainer.style.top = clippyY + 'px';
+
         clippyContainer.classList.remove('hidden');
+        // Fade in
         clippyContainer.style.opacity = '1';
+
+        // Show a speech bubble when reappearing
         setTimeout(() => showSpeechBubble(), 500);
     }
-    function scheduleDisappear() {
+
+    // Occasionally disappear (every 2-3 minutes) - only in full mode
+    function scheduleDisappear(): void {
         _disappearTimeout = window.setTimeout(() => {
             if (!clippyMenu.classList.contains('show') && assistantMode === 'full') {
                 disappearClippy();
             }
             scheduleDisappear();
-        }, Math.random() * 60000 + 120000);
+        }, Math.random() * 60000 + 120000); // 2-3 minutes
     }
+
     scheduleDisappear();
-    function showSpeechBubble(message) {
-        if (clippyMenu.classList.contains('show') || assistantMode === 'pulse')
-            return;
+
+    // Speech bubble functionality (only in full mode)
+    function showSpeechBubble(message?: string): void {
+        if (clippyMenu.classList.contains('show') || assistantMode === 'pulse') return;
+
         const phrase = message || clippyPhrases[Math.floor(Math.random() * clippyPhrases.length)];
         clippySpeech.textContent = phrase;
         clippySpeech.classList.add('show');
+
+        // Hide after 5 seconds
         setTimeout(() => {
             clippySpeech.classList.remove('show');
         }, 5000);
     }
+
+    // Show speech bubble occasionally (every 30-60 seconds)
     setInterval(() => {
         if (!clippyContainer.classList.contains('hidden') &&
             !clippyMenu.classList.contains('show') &&
@@ -520,86 +728,127 @@ document.addEventListener('DOMContentLoaded', () => {
             showSpeechBubble();
         }
     }, Math.random() * 30000 + 30000);
+
+    // Show initial speech bubble after 3 seconds
     setTimeout(() => showSpeechBubble(), 3000);
+
+    // Update position on window resize (will be updated after pulse assistant is initialized)
+    // See below after assistant mode functions
+
+    // Assistant Mode Switching
+    // Create pulsing circle element (the pulse assistant)
     const pulsingCircle = document.createElement('div');
     pulsingCircle.id = 'clippy-pulsing-circle';
     pulsingCircle.className = 'clippy-pulsing-circle';
     clippyContainer.appendChild(pulsingCircle);
-    function switchToPulseMode() {
+
+    // Function to switch to pulse assistant mode
+    function switchToPulseMode(): void {
         assistantMode = 'pulse';
         localStorage.setItem('assistantMode', 'pulse');
-        if (clippySvg)
-            clippySvg.style.display = 'none';
+
+        // Hide the animated Clippy UI
+        if (clippySvg) clippySvg.style.display = 'none';
         clippySpeech.classList.remove('show');
         clippyMenu.classList.remove('show');
+
+        // Add pulse-menu class for proper menu positioning
         clippyMenu.classList.add('pulse-menu');
+
+        // Show pulse assistant
         pulsingCircle.style.display = 'block';
+
+        // Position the pulse assistant in bottom right corner
+        // Very tight corner positioning
         const leftOffset = 60;
         const bottomOffset = 60;
         clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
         clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
     }
-    function switchToFullMode() {
+
+    // Function to switch to full Clippy mode
+    function switchToFullMode(): void {
         assistantMode = 'full';
         localStorage.setItem('assistantMode', 'full');
+
+        // Hide pulse assistant
         pulsingCircle.style.display = 'none';
+
+        // Remove pulse-menu class for default menu positioning
         clippyMenu.classList.remove('pulse-menu');
-        if (clippySvg)
-            clippySvg.style.display = 'block';
+
+        // Show the animated Clippy UI
+        if (clippySvg) clippySvg.style.display = 'block';
+
+        // Restore to current lane position
         clippyX = getLaneX(currentLane);
         clippyY = Math.min(clippyY, window.innerHeight - 150);
         clippyContainer.style.left = clippyX + 'px';
         clippyContainer.style.top = clippyY + 'px';
     }
-    const clippyDisableBtn = document.getElementById('clippy-disable');
-    function updateSwitchButtonIcon() {
+
+    // Switch assistant mode button (toggles between Clippy and Pulse)
+    const clippyDisableBtn = document.getElementById('clippy-disable') as HTMLButtonElement;
+
+    function updateSwitchButtonIcon(): void {
         if (assistantMode === 'pulse') {
+            // When in pulse mode, show icon to switch back to Clippy
             clippyDisableBtn.innerHTML = '<i class="ti ti-user"></i>';
             clippyDisableBtn.title = 'Switch to Clippy Assistant';
-        }
-        else {
+        } else {
+            // When in Clippy mode, show icon to switch to pulse
             clippyDisableBtn.innerHTML = '<i class="ti ti-circle-dot"></i>';
             clippyDisableBtn.title = 'Switch to Pulse Assistant';
         }
     }
+
     if (clippyDisableBtn) {
         clippyDisableBtn.addEventListener('click', () => {
             if (assistantMode === 'pulse') {
                 switchToFullMode();
-            }
-            else {
+            } else {
                 switchToPulseMode();
             }
             updateSwitchButtonIcon();
         });
     }
-    pulsingCircle.addEventListener('click', (e) => {
+
+    // Pulse assistant click behavior - shows its own menu
+    pulsingCircle.addEventListener('click', (e: MouseEvent) => {
         e.stopPropagation();
         clippyMenu.classList.toggle('show');
     });
-    window.addEventListener('click', (event) => {
+
+    // Close menu when clicking outside (works for both assistants)
+    window.addEventListener('click', (event: MouseEvent) => {
         if (clippyMenu.classList.contains('show') &&
-            !clippyMenu.contains(event.target) &&
-            !(clippySvg?.contains(event.target)) &&
-            !pulsingCircle.contains(event.target)) {
+            !clippyMenu.contains(event.target as Node) &&
+            !(clippySvg?.contains(event.target as Node)) &&
+            !pulsingCircle.contains(event.target as Node)) {
             clippyMenu.classList.remove('show');
         }
     });
+
+    // Apply initial assistant mode
     if (assistantMode === 'pulse') {
         switchToPulseMode();
-    }
-    else {
+    } else {
         pulsingCircle.style.display = 'none';
     }
+
+    // Update button icon to match initial mode
     updateSwitchButtonIcon();
+
+    // Update position on window resize based on assistant mode
     window.addEventListener('resize', () => {
         if (assistantMode === 'pulse') {
+            // Reposition pulse assistant to corner
             const leftOffset = 70;
             const bottomOffset = 60;
             clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
             clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
-        }
-        else {
+        } else {
+            // Update Clippy to current lane position
             clippyX = getLaneX(currentLane);
             clippyY = Math.min(clippyY, window.innerHeight - 150);
             clippyContainer.style.left = clippyX + 'px';
@@ -607,4 +856,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-//# sourceMappingURL=4.ts/1.ops/logs/script.js.map

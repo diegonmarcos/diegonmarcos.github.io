@@ -97,13 +97,14 @@ check_dependencies() {
 
     # Get the script's directory and parent (project root)
     script_dir="$(cd "$(dirname "$0")" && pwd)"
-    project_root="$(cd "$script_dir/.." && pwd)"
+    project_root="$(cd "$script_dir/../.." && pwd)"
 
     # Determine package.json location based on new structure
+    # Package files are in 1.ops directory
     if [ "$target_dir" = "." ]; then
-        pkg_dir="$project_root/3.sass/0.json"
+        pkg_dir="$project_root/1.ops"
     else
-        pkg_dir="$project_root/$target_dir/3.sass/0.json"
+        pkg_dir="$project_root/$target_dir"
     fi
 
     if [ ! -f "$pkg_dir/package.json" ]; then
@@ -128,18 +129,19 @@ build_sass() {
 
     # Get the script's directory and parent (project root)
     script_dir="$(cd "$(dirname "$0")" && pwd)"
-    project_root="$(cd "$script_dir/.." && pwd)"
+    project_root="$(cd "$script_dir/../.." && pwd)"
 
     printf "${CYAN}→ Building Sass in $target_dir ($style)...${NC}\n"
 
     # Determine package directory, source, and output based on directory
+    # Package files are in 1.ops directory
     if [ "$target_dir" = "." ]; then
-        pkg_dir="$project_root/3.sass/0.json"
+        pkg_dir="$project_root/1.ops"
         src="$project_root/3.sass/style.scss"
         out="$project_root/style.css"
         dir_name="root"
     else
-        pkg_dir="$project_root/$target_dir/3.sass/0.json"
+        pkg_dir="$project_root/$target_dir"
         src="$project_root/$target_dir/3.sass/main.scss"
         out="$project_root/$target_dir/style.css"
         dir_name="$target_dir"
@@ -190,13 +192,13 @@ kill_server() {
 
 list_servers() {
     printf "${CYAN}→ Checking for running servers...${NC}\n"
-    
+
     server_info=$(pgrep -af "python3 -m http.server" | grep -v "grep")
 
     if [ -z "$server_info" ]; then
         printf "${YELLOW}⚠ No running server found${NC}\n"
         # Clean up old pid file if server is not running
-        rm -f /data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid
+        rm -f /tmp/portfolio-server/server.pid
         exit 0
     fi
 
@@ -204,8 +206,8 @@ list_servers() {
     pid=$(echo "$server_info" | awk '{print $1}')
     printf "  - PID: ${YELLOW}$pid${NC}\n"
 
-    if [ -r "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid" ]; then
-        port=$(cat "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid")
+    if [ -r "/tmp/portfolio-server/server.pid" ]; then
+        port=$(cat "/tmp/portfolio-server/server.pid")
         printf "  - Port: ${YELLOW}$port${NC}\n"
         printf "  - URL: ${BLUE}http://localhost:$port${NC}\n"
     else
@@ -216,16 +218,21 @@ list_servers() {
 start_server() {
     # Get the script's directory and parent (project root)
     script_dir="$(cd "$(dirname "$0")" && pwd)"
-    project_root="$(cd "$script_dir/.." && pwd)"
+    project_root="$(cd "$script_dir/../.." && pwd)"
     port="8000" # Default port
 
     cd "$project_root"
-    # Start server and save its port to a file
+
+    printf "${CYAN}→ Starting server from: ${BLUE}$project_root${NC}\n"
+
+    # Start server and save its port to a file (create temp dir if needed)
+    mkdir -p /tmp/portfolio-server
     python3 -m http.server "$port" &
     server_pid=$!
-    echo "$port" > "/data/data/com.termux/files/home/.gemini/tmp/1e9c5d521777c6f4ad2b5b0b58318fe23ca312756d4180594ef6ae5c12e5b600/server.pid"
-    
+    echo "$port" > "/tmp/portfolio-server/server.pid"
+
     printf "${GREEN}✓ Server started in the background (PID: $server_pid)${NC}\n"
+    printf "${BLUE}→ Access at: http://localhost:$port${NC}\n"
 }
 
 watch_sass() {
@@ -233,16 +240,17 @@ watch_sass() {
 
     # Get the script's directory and parent (project root)
     script_dir="$(cd "$(dirname "$0")" && pwd)"
-    project_root="$(cd "$script_dir/.." && pwd)"
+    project_root="$(cd "$script_dir/../.." && pwd)"
 
     printf "${CYAN}→ Watching Sass in $target_dir for changes...${NC}\n"
     printf "${YELLOW}  Press Ctrl+C to stop${NC}\n\n"
 
     # Determine package directory based on target
+    # Package files are in 1.ops directory
     if [ "$target_dir" = "." ]; then
-        pkg_dir="$project_root/3.sass/0.json"
+        pkg_dir="$project_root/1.ops"
     else
-        pkg_dir="$project_root/$target_dir/3.sass/0.json"
+        pkg_dir="$project_root/$target_dir"
     fi
 
     # Run Sass in watch mode from package directory

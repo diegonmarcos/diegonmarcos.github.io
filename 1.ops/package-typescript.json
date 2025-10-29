@@ -1,0 +1,19 @@
+{
+  "name": "personal-website-typescript",
+  "version": "1.0.0",
+  "description": "Personal Website with TypeScript",
+  "scripts": {
+    "ts:watch": "tsc --watch",
+    "ts:build": "tsc",
+    "ts:dev": "tsc --watch"
+  },
+  "keywords": [
+    "portfolio",
+    "typescript"
+  ],
+  "author": "Diego Nepomuceno Marcos",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}

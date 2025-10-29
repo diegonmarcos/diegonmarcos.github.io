@@ -24,24 +24,31 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: |
+            1.ops/package-lock-root-sass.json
+            1.ops/package-lock-cvweb-sass.json
 
       - name: 🎨 Build CSS from Sass (Root)
         run: |
           echo "📁 Building root Sass..."
-          cd 3.sass/0.json
-          npm install
+          cd 1.ops
+          cp package-root-sass.json package.json
+          cp package-lock-root-sass.json package-lock.json
+          npm ci
           npm run sass:build
-          cd ../..
+          cd ..
           echo "✅ Root style.css created"
           ls -lh style.css
 
       - name: 🎨 Build CSS from Sass (cv_web)
         run: |
           echo "📁 Building cv_web Sass..."
-          cd cv_web/3.sass/0.json
-          npm install
+          cd 1.ops
+          cp package-cvweb-sass.json package.json
+          cp package-lock-cvweb-sass.json package-lock.json
+          npm ci
           npm run sass:build
-          cd ../../..
+          cd ..
           echo "✅ cv_web/style.css created"
           ls -lh cv_web/style.css
 

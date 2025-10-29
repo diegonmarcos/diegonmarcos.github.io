@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Personal CV Website with Sass architecture",
   "scripts": {
-    "sass:watch": "sass --watch ../main.scss:../../style.css",
-    "sass:build": "sass ../main.scss:../../style.css --style=compressed",
-    "sass:dev": "sass ../main.scss:../../style.css --style=expanded"
+    "sass:watch": "sass --watch ../cv_web/3.sass/main.scss:../cv_web/style.css",
+    "sass:build": "sass ../cv_web/3.sass/main.scss:../cv_web/style.css --style=compressed",
+    "sass:dev": "sass ../cv_web/3.sass/main.scss:../cv_web/style.css --style=expanded"
   },
   "keywords": [
     "cv",

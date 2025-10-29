@@ -35,9 +35,9 @@ vendor/
 #1.ops/package-lock.json
 
 ## Sass/CSS build artifacts
-*.css.map
 *.backup
 
 # LOGS
 ## Build logs and source maps
 #1.ops/logs/
+#*.css.map

@@ -145,12 +145,30 @@
             }
 
             .qr-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .qr-card {
+                padding: 1rem;
+            }
+
+            .qr-card h2 {
+                font-size: 1rem;
+                margin-bottom: 1rem;
+            }
+
+            .qr-image-wrapper {
+                padding: 0.5rem;
             }
 
             .qr-image {
-                max-width: 250px;
+                max-width: 150px;
+            }
+
+            .qr-description {
+                font-size: 0.75rem;
+                margin-top: 0.5rem;
             }
         }
 

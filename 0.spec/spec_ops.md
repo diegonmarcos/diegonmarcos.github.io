@@ -155,34 +155,40 @@ The `package.json` file contains the following scripts for managing the build pr
 
 ## Deployment Pipeline
 
-### Workflow: `deploy.yml` (Local Jekyll Build Workflow)
+### Workflow: `deploy.yml`
 
-This workflow automates the build and deployment of the entire static site, including the Jekyll blog. It relies on a local build script to generate the blog's HTML files, which are then deployed alongside all other static assets.
+This workflow automates the build and deployment of the entire static site. It is triggered on every push to the `main` branch.
 
-**Trigger**: Push to `main` branch
+### Conditional Build Logic ("Makefile" Style)
 
-**Core Logic**:
-1.  **Environment Setup**: The workflow runs on a GitHub-hosted Ubuntu runner, where it sets up Node.js for Sass compilation and Ruby for Jekyll.
-2.  **Sass Compilation**: Before any other build steps, the workflow compiles all Sass files to CSS:
-    *   Installs Node.js dependencies (`npm install`) in both root and cv_web directories
-    *   Runs `npm run sass:build` to compile Sass → CSS with compression
-    *   Root: Compiles `/3.sass/style.scss` → `style.css`
-    *   CV Web: Compiles `/cv_web/3.sass/style.scss` → `cv_web/style.css`
-    *   Uses compressed output for optimal performance
-3.  **Jekyll Build**: It executes the `./blog/build.sh build` script. This script is the heart of the blog build process:
-    *   It runs `jekyll build` within the `blog` directory, which converts all Markdown files (`.md`) into HTML.
-    *   It then copies the generated HTML files from the temporary `blog/_site` directory back into the `blog/` directory. This results in `.md` and `.html` files existing side-by-side (e.g., `index.md` and `index.html`).
-4.  **Site Assembly**: The workflow creates a root `_site` directory to prepare for deployment. It copies all the necessary project files and directories into it:
-    *   Root files (`index.html`, `style.css`, `script.js`, etc.)
-    *   Static asset directories (`/2.assets`, `/linktree`, `/cv_web`, etc.)
-    *   The entire `/blog` directory (containing both markdown and the newly generated HTML)
-    *   Note: `/0.spec`, `/1.ops`, and `/3.sass` directories are typically excluded from deployment as they contain source files
-5.  **Cleanup**: Before deploying, the workflow cleans the `_site/blog` directory to optimize the final deployment package. It removes source files that are not needed on the live site, such as:
-    *   Markdown files (`*.md`)
-    *   Jekyll configuration (`_config.yml`)
-    *   The build script (`build.sh`)
-    *   Layouts (`_layouts/`)
-6.  **Upload & Deploy**: The cleaned `_site` directory is uploaded as a GitHub Pages artifact, which is then automatically deployed.
+To improve efficiency and speed up deployment times, the workflow incorporates a conditional, "Makefile-like" logic. It ensures that build steps (like compiling Sass or TypeScript) only run if relevant source files have actually changed in the push. This prevents unnecessary work.
+
+**Core Mechanism:**
+
+1.  **Fetch Git History**: The `actions/checkout@v4` step uses `fetch-depth: 0` to retrieve the full Git history for the branch.
+
+2.  **Detect Changes**: The `tj-actions/changed-files` action is used to get a list of all files that were modified in the push. It does this by running a `git diff` between the commit SHA before the push and the commit SHA after the push.
+
+3.  **Conditional Execution**: Each build step (Sass, TypeScript, Jekyll) has an `if` condition that checks the output of the `changed-files` action. The step is only executed if the list of changed files contains a path to its corresponding source directory.
+
+**Example: Conditional TypeScript Build**
+
+The following snippet from `deploy.yml` shows how the TypeScript compilation step is skipped if no `.ts` files have changed:
+
+```yaml
+- name: 📜 Build JS from TypeScript
+  # This step only runs if a file inside '4.ts/' was changed
+  if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '4.ts/')
+  run: |
+    echo "📜 Building TypeScript..."
+    cd 1.ops
+    npm install
+    npm run ts:build
+    cd ..
+    echo "✅ script.js created"
+```
+
+This approach provides the efficiency of a traditional Makefile within the event-driven model of GitHub Actions, saving time and computational resources on each deployment.
 
 ### Deployment URL
 - Production: `https://diegonmarcos.github.io/`

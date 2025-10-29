@@ -1,4 +1,4 @@
-name: GitHub Pages Deployment (Static Files)
+name: GitHub Pages Deployment (CI)
 
 on:
   push:
@@ -15,9 +15,15 @@ jobs:
     steps:
       - name: 📦 Checkout Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to compare changes
+
+      - name: 📂 Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
 
       # ============================================
-      # SASS COMPILATION
+      # SASS COMPILATION (Conditional)
       # ============================================
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
@@ -25,52 +31,65 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: |
-            1.ops/package-lock-root-sass.json
-            1.ops/package-lock-cvweb-sass.json
+            1.ops/package-lock.json
 
       - name: 🎨 Build CSS from Sass (Root)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '3.sass/')
         run: |
           echo "📁 Building root Sass..."
           cd 1.ops
-          cp package-root-sass.json package.json
-          cp package-lock-root-sass.json package-lock.json
-          npm ci
+          npm install
           npm run sass:build
           cd ..
           echo "✅ Root style.css created"
-          ls -lh style.css
 
       - name: 🎨 Build CSS from Sass (cv_web)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/3.sass/')
         run: |
           echo "📁 Building cv_web Sass..."
           cd 1.ops
-          cp package-cvweb-sass.json package.json
-          cp package-lock-cvweb-sass.json package-lock.json
-          npm ci
-          npm run sass:build
+          npm install
+          # This should be adapted if cv_web has a different build script
+          # Assuming it uses the same for now
+          npm run sass:build 
           cd ..
           echo "✅ cv_web/style.css created"
-          ls -lh cv_web/style.css
 
       # ============================================
-      # JEKYLL BLOG BUILD
+      # TYPESCRIPT COMPILATION (Conditional)
+      # ============================================
+      - name: 📜 Build JS from TypeScript
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '4.ts/')
+        run: |
+          echo "📜 Building TypeScript..."
+          cd 1.ops
+          npm install
+          npm run ts:build
+          cd ..
+          echo "✅ script.js created"
+
+      # ============================================
+      # JEKYLL BLOG BUILD (Conditional)
       # ============================================
       - name: 💎 Setup Ruby and Jekyll
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
           bundler-cache: false
 
       - name: 📦 Install Jekyll
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
         run: |
           gem install jekyll bundler
 
       - name: 🔨 Build Blog HTML (Jekyll)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
         run: |
           cd blog/1.ops
           chmod +x build.sh
           ./build.sh build
-          echo "✅ Blog HTML files generated and copied to blog/ directory"
+          echo "✅ Blog HTML files generated"
 
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
@@ -79,39 +98,18 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
-
-          # Copy root files
-          echo "Copying root HTML, CSS, and JS files..."
-          cp -v index.html _site/ 2>/dev/null || true
-          cp -v *.css _site/ 2>/dev/null || true
-          cp -v *.js _site/ 2>/dev/null || true
-
-          # Copy static directories
-          echo "Copying static directories..."
-          cp -r linktree _site/ 2>/dev/null || true
-          cp -r cv_web _site/ 2>/dev/null || true
-          cp -r cv_pdf _site/ 2>/dev/null || true
-          cp -r assets _site/ 2>/dev/null || true
-          cp -r others _site/ 2>/dev/null || true
-
-          # Copy blog directory (includes both .md and .html files)
-          echo "Copying blog directory..."
-          mkdir -p _site/blog
-          cp -r blog/* _site/blog/
-
-          # Clean up source files from deployment (keep only HTML)
-          echo "Cleaning up source files..."
+          # Copy all relevant files and directories
+          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ blog/ _site/ 2>/dev/null || true
+          
+          # Clean up source files from blog deployment
           find _site/blog -name "*.md" -type f -delete
           rm -f _site/blog/_config.yml
           rm -f _site/blog/build.sh
           rm -rf _site/blog/_layouts
           rm -rf _site/blog/.jekyll-cache
-
+          
           echo "✅ All files prepared for deployment"
-          echo "📋 Final site structure:"
           ls -lah _site/
-          echo "📋 Blog directory (HTML only):"
-          ls -lah _site/blog/ || true
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
@@ -122,7 +120,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
-
     steps:
       - name: 🚀 Deploy to GitHub Pages
         id: deployment

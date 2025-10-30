@@ -1,0 +1,22 @@
+# OAuth Credentials - Never commit these!
+credentials.json
+token.pickle
+gtm_config_created.json
+
+# Python virtual environment
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

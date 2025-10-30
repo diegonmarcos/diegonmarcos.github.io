@@ -41,3 +41,10 @@ vendor/
 ## Build logs and source maps
 #1.ops/logs/
 #*.css.map
+
+# GTM API - Security (Never commit OAuth credentials!)
+.gtm/credentials.json
+.gtm/token.pickle
+.gtm/gtm_config_created.json
+.gtm/venv/
+.gtm/__pycache__/

@@ -20,3 +20,10 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# GTM API - Security (Never commit OAuth credentials!)
+.gtm/credentials.json
+.gtm/token.pickle
+.gtm/gtm_config_created.json
+.gtm/venv/
+.gtm/__pycache__/

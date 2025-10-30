@@ -15,6 +15,7 @@ Setup:
 
 import json
 import os
+import time
 from typing import Dict, List, Any
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -22,10 +23,11 @@ from google.auth.transport.requests import Request
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 import pickle
+from datetime import datetime
 
 # GTM Configuration
-ACCOUNT_ID = "YOUR_ACCOUNT_ID"  # Update with your GTM Account ID
-CONTAINER_ID = "YOUR_CONTAINER_ID"  # Update with your GTM Container ID (numeric)
+ACCOUNT_ID = "6321374781"  # Update with your GTM Account ID
+CONTAINER_ID = "233770428"  # Update with your GTM Container ID (numeric)
 GTM_CONTAINER = "GTM-TN9SV57D"
 GA4_MEASUREMENT_ID = "G-VB9ENP6DZ0"
 
@@ -50,9 +52,13 @@ class GTMConfigurator:
         """Authenticate with Google Tag Manager API"""
         creds = None
 
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        token_path = os.path.join(script_dir, 'token.pickle')
+        credentials_path = os.path.join(script_dir, 'credentials.json')
+
         # Check for existing token
-        if os.path.exists('token.pickle'):
-            with open('token.pickle', 'rb') as token:
+        if os.path.exists(token_path):
+            with open(token_path, 'rb') as token:
                 creds = pickle.load(token)
 
         # If no valid credentials, let user log in
@@ -60,15 +66,15 @@ class GTMConfigurator:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
             else:
-                if not os.path.exists('credentials.json'):
+                if not os.path.exists(credentials_path):
                     raise FileNotFoundError(
                         "credentials.json not found. Please download OAuth credentials from Google Cloud Console."
                     )
-                flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+                flow = InstalledAppFlow.from_client_secrets_file(credentials_path, SCOPES)
                 creds = flow.run_local_server(port=0)
 
             # Save credentials for next run
-            with open('token.pickle', 'wb') as token:
+            with open(token_path, 'wb') as token:
                 pickle.dump(creds, token)
 
         self.service = build('tagmanager', 'v2', credentials=creds)
@@ -77,10 +83,23 @@ class GTMConfigurator:
     def create_workspace(self) -> str:
         """Create a new workspace for changes"""
         try:
+            # Check if there's already a workspace with our naming pattern
+            workspaces = self.service.accounts().containers().workspaces().list(
+                parent=f'accounts/{self.account_id}/containers/{self.container_id}'
+            ).execute()
+
+            for ws in workspaces.get('workspace', []):
+                if ws.get('name', '') == 'main':
+                    self.workspace_id = ws['workspaceId']
+                    print(f"✅ Using existing workspace: {ws['name']} (ID: {self.workspace_id})")
+                    return self.workspace_id
+
+            # Create new workspace if none exists
+            timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
             workspace = self.service.accounts().containers().workspaces().create(
                 parent=f'accounts/{self.account_id}/containers/{self.container_id}',
                 body={
-                    'name': 'Universal Event Tracking Setup',
+                    'name': 'main',
                     'description': 'Automated setup via GTM API'
                 }
             ).execute()
@@ -96,51 +115,111 @@ class GTMConfigurator:
         """Get the full workspace path"""
         return f'accounts/{self.account_id}/containers/{self.container_id}/workspaces/{self.workspace_id}'
 
+    def get_all_variables(self):
+        """Get all variables in the workspace"""
+        try:
+            variables = self.service.accounts().containers().workspaces().variables().list(
+                parent=self.get_workspace_path()
+            ).execute()
+            for var in variables.get('variable', []):
+                self.created_items['variables'][var.get('name')] = var.get('variableId')
+        except HttpError as e:
+            print(f"❌ Error getting variables: {e}")
+
+    def get_all_triggers(self):
+        """Get all triggers in the workspace"""
+        try:
+            triggers = self.service.accounts().containers().workspaces().triggers().list(
+                parent=self.get_workspace_path()
+            ).execute()
+            for trigger in triggers.get('trigger', []):
+                self.created_items['triggers'][trigger.get('name')] = trigger.get('triggerId')
+        except HttpError as e:
+            print(f"❌ Error getting triggers: {e}")
+
+    def get_all_tags(self):
+        """Get all tags in the workspace"""
+        try:
+            tags = self.service.accounts().containers().workspaces().tags().list(
+                parent=self.get_workspace_path()
+            ).execute()
+            for tag in tags.get('tag', []):
+                self.created_items['tags'][tag.get('name')] = tag.get('tagId')
+        except HttpError as e:
+            print(f"❌ Error getting tags: {e}")
+
+    def get_trigger_id_by_name(self, name: str) -> str:
+        """Get trigger ID by name (from created items or by fetching from API)"""
+        if name in self.created_items['triggers'] and self.created_items['triggers'][name]:
+            return self.created_items['triggers'][name]
+
+        raise ValueError(f"Trigger '{name}' not found")
+
     # ==================== VARIABLES ====================
 
     def create_ga4_config_variable(self) -> str:
         """Create GA4 Configuration variable"""
-        variable = {
-            'name': 'GA4 Measurement ID',
-            'type': 'gas',  # Google Analytics Settings
-            'parameter': [
-                {'key': 'trackingId', 'type': 'template', 'value': GA4_MEASUREMENT_ID}
-            ]
-        }
+        if 'GA4 Measurement ID' in self.created_items['variables']:
+            print(f"⏭️  Skipped variable (already exists): GA4 Measurement ID")
+            return None
+        try:
+            variable = {
+                'name': 'GA4 Measurement ID',
+                'type': 'c',  # Constant variable for GA4 measurement ID
+                'parameter': [
+                    {'key': 'value', 'type': 'template', 'value': GA4_MEASUREMENT_ID}
+                ]
+            }
 
-        result = self.service.accounts().containers().workspaces().variables().create(
-            parent=self.get_workspace_path(),
-            body=variable
-        ).execute()
+            result = self.service.accounts().containers().workspaces().variables().create(
+                parent=self.get_workspace_path(),
+                body=variable
+            ).execute()
+            time.sleep(1)
 
-        var_id = result['variableId']
-        self.created_items['variables']['ga4_config'] = var_id
-        print(f"✅ Created variable: GA4 Measurement ID")
-        return var_id
+            var_id = result['variableId']
+            self.created_items['variables']['ga4_config'] = var_id
+            print(f"✅ Created variable: GA4 Measurement ID")
+            return var_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped variable (already exists): GA4 Measurement ID")
+                return None
+            raise
 
     def create_custom_javascript_variable(self, name: str, code: str) -> str:
         """Create a Custom JavaScript variable"""
-        variable = {
-            'name': name,
-            'type': 'jsm',  # Custom JavaScript
-            'parameter': [
-                {'key': 'javascript', 'type': 'template', 'value': code}
-            ]
-        }
+        if name in self.created_items['variables']:
+            print(f"⏭️  Skipped variable (already exists): {name}")
+            return None
+        try:
+            variable = {
+                'name': name,
+                'type': 'jsm',  # Custom JavaScript
+                'parameter': [
+                    {'key': 'javascript', 'type': 'template', 'value': code}
+                ]
+            }
 
-        result = self.service.accounts().containers().workspaces().variables().create(
-            parent=self.get_workspace_path(),
-            body=variable
-        ).execute()
+            result = self.service.accounts().containers().workspaces().variables().create(
+                parent=self.get_workspace_path(),
+                body=variable
+            ).execute()
+            time.sleep(1)
 
-        var_id = result['variableId']
-        self.created_items['variables'][name] = var_id
-        print(f"✅ Created custom JS variable: {name}")
-        return var_id
+            var_id = result['variableId']
+            self.created_items['variables'][name] = var_id
+            print(f"✅ Created custom JS variable: {name}")
+            return var_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped variable (already exists): {name}")
+                return None
+            raise
 
     def create_link_domain_variable(self) -> str:
         """Extract domain from clicked link URL"""
-        code = """
+        code = r"""
 function() {
   var url = {{Click URL}};
   if (url) {
@@ -158,7 +237,7 @@ function() {
 
     def create_file_extension_variable(self) -> str:
         """Extract file extension from URL"""
-        code = """
+        code = r"""
 function() {
   var url = {{Click URL}};
   if (url) {
@@ -172,7 +251,7 @@ function() {
 
     def create_link_category_variable(self) -> str:
         """Get linktree link category (Professional/Personal)"""
-        code = """
+        code = r"""
 function() {
   var element = {{Click Element}};
   if (!element) return 'Unknown';
@@ -189,7 +268,7 @@ function() {
 
     def create_link_subsection_variable(self) -> str:
         """Get linktree link subsection"""
-        code = """
+        code = r"""
 function() {
   var element = {{Click Element}};
   if (!element) return 'Unknown';
@@ -212,7 +291,7 @@ function() {
 
     def create_cv_format_variable(self) -> str:
         """Extract CV format from button ID"""
-        code = """
+        code = r"""
 function() {
   var element = {{Click Element}};
   if (!element) return 'unknown';
@@ -237,12 +316,21 @@ function() {
 
     def create_device_type_variable(self) -> str:
         """Detect device type (mobile/desktop)"""
-        code = """
+        code = r"""
 function() {
   return /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 }
 """
         return self.create_custom_javascript_variable('Device Type', code)
+
+    def create_page_title_variable(self) -> str:
+        """Create Page Title custom variable"""
+        code = r"""
+function() {
+  return document.title;
+}
+"""
+        return self.create_custom_javascript_variable('Page Title', code)
 
     def create_all_variables(self):
         """Create all custom variables"""
@@ -255,6 +343,7 @@ function() {
         self.create_link_subsection_variable()
         self.create_cv_format_variable()
         self.create_device_type_variable()
+        self.create_page_title_variable()
 
         print(f"✅ Created {len(self.created_items['variables'])} variables")
 
@@ -262,35 +351,45 @@ function() {
 
     def create_trigger(self, name: str, trigger_type: str, filters: List[Dict] = None, **kwargs) -> str:
         """Create a generic trigger"""
-        trigger_body = {
-            'name': name,
-            'type': trigger_type
-        }
+        if name in self.created_items['triggers']:
+            print(f"⏭️  Skipped trigger (already exists): {name}")
+            return None
+        try:
+            trigger_body = {
+                'name': name,
+                'type': trigger_type
+            }
 
-        # Add trigger-specific parameters
-        if trigger_type == 'scrollDepth':
-            trigger_body['verticalScrollPercentagesList'] = kwargs.get('percentages', {})
-        elif trigger_type == 'timer':
-            trigger_body['interval'] = kwargs.get('interval')
-            trigger_body['limit'] = kwargs.get('limit', 1)
-        elif trigger_type == 'click':
-            trigger_body['autoEventFilter'] = filters if filters else []
-            trigger_body['waitForTags'] = {'type': 'boolean', 'value': 'false'}
-            trigger_body['checkValidation'] = {'type': 'boolean', 'value': 'false'}
+            # Add trigger-specific parameters
+            if trigger_type == 'scrollDepth':
+                trigger_body['verticalScrollPercentagesList'] = kwargs.get('percentages', {})
+            elif trigger_type == 'timer':
+                trigger_body['interval'] = {'type': 'template', 'value': str(kwargs.get('interval'))}
+                trigger_body['limit'] = {'type': 'template', 'value': str(kwargs.get('limit', 1))}
+            elif trigger_type == 'click':
+                trigger_body['autoEventFilter'] = filters if filters else []
+                trigger_body['waitForTags'] = {'type': 'boolean', 'value': 'false'}
+                trigger_body['checkValidation'] = {'type': 'boolean', 'value': 'false'}
 
-        # Add filters for conditional triggers
-        if filters and trigger_type != 'click':
-            trigger_body['filter'] = filters
+            # Add filters for conditional triggers
+            if filters and trigger_type != 'click':
+                trigger_body['filter'] = filters
 
-        result = self.service.accounts().containers().workspaces().triggers().create(
-            parent=self.get_workspace_path(),
-            body=trigger_body
-        ).execute()
+            result = self.service.accounts().containers().workspaces().triggers().create(
+                parent=self.get_workspace_path(),
+                body=trigger_body
+            ).execute()
+            time.sleep(1)
 
-        trigger_id = result['triggerId']
-        self.created_items['triggers'][name] = trigger_id
-        print(f"✅ Created trigger: {name}")
-        return trigger_id
+            trigger_id = result['triggerId']
+            self.created_items['triggers'][name] = trigger_id
+            print(f"✅ Created trigger: {name}")
+            return trigger_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped trigger (already exists): {name}")
+                return None
+            raise
 
     def create_scroll_depth_trigger(self) -> str:
         """Create scroll depth trigger"""
@@ -309,13 +408,6 @@ function() {
         """Create outbound link click trigger"""
         filters = [
             {
-                'type': 'equals',
-                'parameter': [
-                    {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
-                    {'type': 'template', 'key': 'arg1', 'value': 'gtm.linkClick'}
-                ]
-            },
-            {
                 'type': 'contains',
                 'parameter': [
                     {'type': 'template', 'key': 'arg0', 'value': '{{Click URL}}'},
@@ -323,10 +415,10 @@ function() {
                 ]
             },
             {
-                'type': 'doesNotContain',
+                'type': 'matchRegex',
                 'parameter': [
                     {'type': 'template', 'key': 'arg0', 'value': '{{Click URL}}'},
-                    {'type': 'template', 'key': 'arg1', 'value': 'diegonmarcos.github.io'}
+                    {'type': 'template', 'key': 'arg1', 'value': '^(?!.*diegonmarcos\\.github\\.io).*$'}
                 ]
             }
         ]
@@ -375,7 +467,7 @@ function() {
                 ]
             },
             {
-                'type': 'matchCssSelector',
+                'type': 'cssSelector',
                 'parameter': [
                     {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
                     {'type': 'template', 'key': 'arg1', 'value': 'a.link'}
@@ -396,7 +488,7 @@ function() {
                 ]
             },
             {
-                'type': 'matchCssSelector',
+                'type': 'cssSelector',
                 'parameter': [
                     {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
                     {'type': 'template', 'key': 'arg1', 'value': '.social-icons a'}
@@ -410,7 +502,7 @@ function() {
         """Create CV download button trigger"""
         filters = [
             {
-                'type': 'matchCssSelector',
+                'type': 'cssSelector',
                 'parameter': [
                     {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
                     {'type': 'template', 'key': 'arg1', 'value': '#download-btn-pdf, #download-btn-docx, #download-btn-md, #download-btn-csv, .cta-button'}
@@ -441,86 +533,118 @@ function() {
 
     def create_ga4_config_tag(self) -> str:
         """Create GA4 Configuration tag"""
-        tag = {
-            'name': 'GA4 Config - All Pages',
-            'type': 'gaawc',  # GA4 Configuration
-            'parameter': [
-                {'key': 'measurementId', 'type': 'template', 'value': GA4_MEASUREMENT_ID}
-            ],
-            'firingTriggerId': [self.get_all_pages_trigger_id()]
-        }
+        if 'GA4 Config - All Pages' in self.created_items['tags']:
+            print(f"⏭️  Skipped tag (already exists): GA4 Config - All Pages")
+            return None
+        try:
+            tag = {
+                'name': 'GA4 Config - All Pages',
+                'type': 'gaawc',  # GA4 Configuration
+                'parameter': [
+                    {'key': 'measurementId', 'type': 'template', 'value': GA4_MEASUREMENT_ID}
+                ],
+                'firingTriggerId': [self.get_all_pages_trigger_id()]
+            }
 
-        result = self.service.accounts().containers().workspaces().tags().create(
-            parent=self.get_workspace_path(),
-            body=tag
-        ).execute()
+            result = self.service.accounts().containers().workspaces().tags().create(
+                parent=self.get_workspace_path(),
+                body=tag
+            ).execute()
+            time.sleep(1)
 
-        tag_id = result['tagId']
-        self.created_items['tags']['ga4_config'] = tag_id
-        print(f"✅ Created tag: GA4 Config - All Pages")
-        return tag_id
+            tag_id = result['tagId']
+            self.created_items['tags']['ga4_config'] = tag_id
+            print(f"✅ Created tag: GA4 Config - All Pages")
+            return tag_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped tag (already exists): GA4 Config - All Pages")
+                return None
+            raise
 
     def create_ga4_event_tag(self, name: str, event_name: str, parameters: Dict, trigger_ids: List[str]) -> str:
         """Create a GA4 Event tag"""
-        # Build parameter list
-        param_list = [
-            {'key': 'eventName', 'type': 'template', 'value': event_name}
-        ]
+        if name in self.created_items['tags']:
+            print(f"⏭️  Skipped tag (already exists): {name}")
+            return None
+        try:
+            # Build parameter list
+            param_list = [
+                {'key': 'measurementIdOverride', 'type': 'template', 'value': GA4_MEASUREMENT_ID},
+                {'key': 'eventName', 'type': 'template', 'value': event_name}
+            ]
 
-        # Add event parameters
-        if parameters:
-            event_params = []
-            for key, value in parameters.items():
-                event_params.append({
-                    'map': [
-                        {'key': 'name', 'type': 'template', 'value': key},
-                        {'key': 'value', 'type': 'template', 'value': value}
-                    ]
+            # Add event parameters
+            if parameters:
+                event_params = []
+                for key, value in parameters.items():
+                    event_params.append({
+                        'type': 'map',
+                        'map': [
+                            {'key': 'name', 'type': 'template', 'value': key},
+                            {'key': 'value', 'type': 'template', 'value': value}
+                        ]
+                    })
+
+                param_list.append({
+                    'key': 'eventParameters',
+                    'type': 'list',
+                    'list': event_params
                 })
 
-            param_list.append({
-                'key': 'eventParameters',
-                'type': 'list',
-                'list': event_params
-            })
+            tag = {
+                'name': name,
+                'type': 'gaawe',  # GA4 Event
+                'parameter': param_list,
+                'firingTriggerId': trigger_ids
+            }
 
-        tag = {
-            'name': name,
-            'type': 'gaawe',  # GA4 Event
-            'parameter': param_list,
-            'firingTriggerId': trigger_ids
-        }
+            result = self.service.accounts().containers().workspaces().tags().create(
+                parent=self.get_workspace_path(),
+                body=tag
+            ).execute()
+            time.sleep(1)
 
-        result = self.service.accounts().containers().workspaces().tags().create(
-            parent=self.get_workspace_path(),
-            body=tag
-        ).execute()
-
-        tag_id = result['tagId']
-        self.created_items['tags'][name] = tag_id
-        print(f"✅ Created tag: {name}")
-        return tag_id
+            tag_id = result['tagId']
+            self.created_items['tags'][name] = tag_id
+            print(f"✅ Created tag: {name}")
+            return tag_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped tag (already exists): {name}")
+                return None
+            raise
 
     def create_custom_html_tag(self, name: str, html: str, trigger_ids: List[str]) -> str:
         """Create Custom HTML tag"""
-        tag = {
-            'name': name,
-            'type': 'html',
-            'parameter': [
-                {'key': 'html', 'type': 'template', 'value': html}
-            ],
-            'firingTriggerId': trigger_ids
-        }
+        if name in self.created_items['tags']:
+            print(f"⏭️  Skipped tag (already exists): {name}")
+            return None
+        try:
+            tag = {
+                'name': name,
+                'type': 'html',
+                'parameter': [
+                    {'key': 'html', 'type': 'template', 'value': html}
+                ],
+                'firingTriggerId': trigger_ids
+            }
 
-        result = self.service.accounts().containers().workspaces().tags().create(
-            parent=self.get_workspace_path(),
-            body=tag
-        ).execute()
+            result = self.service.accounts().containers().workspaces().tags().create(
+                parent=self.get_workspace_path(),
+                body=tag
+            ).execute()
+            time.sleep(1)
 
-        tag_id = result['tagId']
-        self.created_items['tags'][name] = tag_id
-        print(f"✅ Created tag: {name}")
-        return tag_id
+            tag_id = result['tagId']
+            self.created_items['tags'][name] = tag_id
+            print(f"✅ Created tag: {name}")
+            return tag_id
+        except HttpError as e:
+            if 'duplicate' in str(e).lower():
+                print(f"⏭️  Skipped tag (already exists): {name}")
+                return None
+            raise
 
     def get_all_pages_trigger_id(self) -> str:
         """Get the built-in All Pages trigger ID"""
@@ -548,7 +672,7 @@ function() {
             'GA4 Event - Scroll Depth',
             'scroll_depth',
             params,
-            [self.created_items['triggers']['Scroll Depth - 25%, 50%, 75%, 100%']]
+            [self.get_trigger_id_by_name('Scroll Depth - 25%, 50%, 75%, 100%')]
         )
 
     def create_outbound_link_tag(self):
@@ -564,7 +688,7 @@ function() {
             'GA4 Event - Outbound Link',
             'outbound_click',
             params,
-            [self.created_items['triggers']['Outbound Link Click']]
+            [self.get_trigger_id_by_name('Outbound Link Click')]
         )
 
     def create_download_tag(self):
@@ -580,7 +704,7 @@ function() {
             'GA4 Event - File Download',
             'file_download',
             params,
-            [self.created_items['triggers']['File Download Click']]
+            [self.get_trigger_id_by_name('File Download Click')]
         )
 
     def create_linktree_link_tag(self):
@@ -597,7 +721,7 @@ function() {
             'GA4 Event - Linktree Link Click',
             'linktree_link_click',
             params,
-            [self.created_items['triggers']['Linktree - Link Click']]
+            [self.get_trigger_id_by_name('Linktree - Link Click')]
         )
 
     def create_social_icon_tag(self):
@@ -612,7 +736,7 @@ function() {
             'GA4 Event - Social Icon Click',
             'social_icon_click',
             params,
-            [self.created_items['triggers']['Linktree - Social Icon Click']]
+            [self.get_trigger_id_by_name('Linktree - Social Icon Click')]
         )
 
     def create_cv_download_tag(self):
@@ -627,7 +751,7 @@ function() {
             'GA4 Event - CV Download',
             'cv_download',
             params,
-            [self.created_items['triggers']['CV - Download Button Click']]
+            [self.get_trigger_id_by_name('CV - Download Button Click')]
         )
 
     def create_session_info_tag(self):
@@ -756,6 +880,11 @@ function() {
             # Create workspace
             self.create_workspace()
 
+            # Get all existing items
+            self.get_all_variables()
+            self.get_all_triggers()
+            self.get_all_tags()
+
             # Create all configuration
             self.create_all_variables()
             self.create_all_triggers()
@@ -785,9 +914,11 @@ function() {
 
     def save_configuration(self):
         """Save created items to JSON for reference"""
-        with open('gtm_config_created.json', 'w') as f:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        config_path = os.path.join(script_dir, 'gtm_config_created.json')
+        with open(config_path, 'w') as f:
             json.dump(self.created_items, f, indent=2)
-        print("\n💾 Configuration saved to gtm_config_created.json")
+        print(f"\n💾 Configuration saved to {config_path}")
 
 
 def main():

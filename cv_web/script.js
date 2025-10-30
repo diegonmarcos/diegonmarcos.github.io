@@ -1,4 +1,74 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const cookieConsentBanner = document.getElementById('cookie-consent-banner');
+    const acceptCookiesBtn = document.getElementById('accept-cookies');
+    const declineCookiesBtn = document.getElementById('decline-cookies');
+
+    // Function to set a cookie
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            let date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // Function to get a cookie
+    function getCookie(name) {
+        let nameEQ = name + "=";
+        let ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    // Function to handle cookie consent
+    function handleCookieConsent() {
+        const consent = getCookie('cookie_consent');
+
+        if (consent === 'accepted') {
+            // Cookies accepted, hide banner and potentially fire GTM events
+            cookieConsentBanner.style.display = 'none';
+            gtag('consent', 'update', {
+                'ad_storage': 'granted',
+                'analytics_storage': 'granted'
+            });
+        } else if (consent === 'declined') {
+            // Cookies declined, hide banner and ensure GTM doesn't fire tracking cookies
+            cookieConsentBanner.style.display = 'none';
+            gtag('consent', 'update', {
+                'ad_storage': 'denied',
+                'analytics_storage': 'denied'
+            });
+        } else {
+            // No consent yet, show banner
+            cookieConsentBanner.style.display = 'flex';
+        }
+    }
+
+    // Event listeners for consent buttons
+    acceptCookiesBtn.addEventListener('click', () => {
+        setCookie('cookie_consent', 'accepted', 365);
+        handleCookieConsent();
+        // Reload the page to ensure GTM re-evaluates consent
+        location.reload();
+    });
+
+    declineCookiesBtn.addEventListener('click', () => {
+        setCookie('cookie_consent', 'declined', 365);
+        handleCookieConsent();
+        // Reload the page to ensure GTM re-evaluates consent
+        location.reload();
+    });
+
+    // Initial check for cookie consent
+    handleCookieConsent();
+
     // Dynamically generate the side navigation
     const sideNav = document.getElementById('side-nav');
     const headings = document.querySelectorAll('main h2, main h3');

@@ -10,38 +10,38 @@ ICONS
 | ✉️ [](mailto:diegonmarcos@gmail.com "null") | 💼 [](https://linkedin.com/in/diegonmarcos "null") | 🌐 [](https://diegonmarcos.github.io "null") |
 | ------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
 
-| ** PROFESSIONAL**                                                                           |
-| ------------------------------------------------------------------------------------------- |
-| **Contact**                                                                                 |
-| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                                      |
-| - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                          |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                |
-| - 👤 [vCard](2.assets/diegonmarcos-contact_photo.vcf "null")                                |
-|                                                                                             |
-| **Profiles**                                                                                |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                |
-| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                      |
-| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                       |
-| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                       |
-|                                                                                             |
-| **Repos**                                                                                   |
-| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                                  |
-| - 💻 [Github](https://github.com/diegonmarcos "null")                                       |
-|                                                                                             |
-| Back Repos                                                                                  |
-| - 📚 [MyLib](https://github.com/diegonmarcos/mylib "null")                                  |
-| - 💡 [Algos](https://github.com/diegonmarcos/algo "null")                                   |
-| - ⚙️ [System](https://github.com/diegonmarcos/system "null")                                |
-| - 🖌️ [Graphic](https://github.com/diegonmarcos/graphic "null")                             |
-|                                                                                             |
-| Front & ML Repos                                                                            |
-| - 🖥️ [Front_Web](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |
-| - 🗄️ [Data Science](https://github.com/diegonmarcos/diegonmarcos.github.io "null")         |
-| - 🧠 [Machine Learning & DL](https://github.com/diegonmarcos/diegonmarcos.github.io "null") |
-| - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |
-|                                                                                             |
-| ** QR CODES**                                                                               |
-| -[QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                     |
+| ** PROFESSIONAL**                                                                |
+| -------------------------------------------------------------------------------- |
+| **Contact**                                                                      |
+| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                           |
+| - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                               |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                     |
+| - 👤 [vCard](2.assets/diegonmarcos-contact_photo.vcf "null")                     |
+|                                                                                  |
+| **Profiles**                                                                     |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                     |
+| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                           |
+| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")            |
+| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")            |
+|                                                                                  |
+| **Repos**                                                                        |
+| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                       |
+| - 💻 [Github](https://github.com/diegonmarcos "null")                            |
+|                                                                                  |
+| Back Repos                                                                       |
+| - 📚 [MyLib](https://github.com/diegonmarcos/mylib "null")                       |
+| - 💡 [Algos](https://github.com/diegonmarcos/algo "null")                        |
+| - ⚙️ [System](https://github.com/diegonmarcos/system "null")                     |
+| - 🖌️ [Graphic](https://github.com/diegonmarcos/graphic "null")                  |
+|                                                                                  |
+| Front & ML Repos                                                                 |
+| - 🖥️ [Front_Web](https://github.com/diegonmarcos/diegonmarcos.github.io "null") |
+| - 🤖 [Agentic AI](https://github.com/diegonmarcos/agentic "null")                |
+| - 🗄️ [Data Science *](https://github.com/diegonmarcos/ds "null")                |
+| - 🧠 [Machine Learning & DL *](https://github.com/diegonmarcos/mlearning "null") |
+|                                                                                  |
+| ** QR CODES**                                                                    |
+| -[QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")          |
 
 | **PERSONAL**                                                                                           |
 | ------------------------------------------------------------------------------------------------------ |

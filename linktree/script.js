@@ -70,10 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
     handleCookieConsent();
 
     const videos = [
-        'assets/videos/background.mp4',
-        'assets/videos/background2.mp4',
-        'assets/videos/background3.mp4',
-        'assets/videos/background4.mp4'
+        '2.assets/videos/background.mp4',
+        '2.assets/videos/background2.mp4',
+        '2.assets/videos/background3.mp4',
+        '2.assets/videos/background4.mp4'
     ];
 
     const videoElement = document.getElementById('background-video');

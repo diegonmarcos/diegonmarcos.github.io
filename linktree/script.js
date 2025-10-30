@@ -69,6 +69,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial check for cookie consent
     handleCookieConsent();
 
+    // Handle collapsible sections
+    const moreToggles = document.querySelectorAll('.more-toggle');
+
+    moreToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const targetId = toggle.getAttribute('data-target');
+            const content = document.getElementById(targetId);
+
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                toggle.classList.add('open');
+            } else {
+                content.style.display = 'none';
+                toggle.classList.remove('open');
+            }
+        });
+    });
+
     const videos = [
         '2.assets/videos/background.mp4',
         '2.assets/videos/background2.mp4',

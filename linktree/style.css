@@ -263,3 +263,50 @@ input:checked + .slider:before {
 .cookie-consent-buttons .decline-btn:hover {
     background-color: #da190b;
 }
+
+/* Inline icons for description */
+.inline-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    filter: invert(1);
+    margin: 0 2px;
+}
+
+/* More toggle button */
+.more-toggle {
+    display: block;
+    width: 100%;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 28px;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.more-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.more-toggle .arrow {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    margin-right: 5px;
+}
+
+.more-toggle.open .arrow {
+    transform: rotate(90deg);
+}
+
+/* Collapsible content */
+.collapsible-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}

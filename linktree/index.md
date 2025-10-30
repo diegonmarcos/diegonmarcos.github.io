@@ -21,6 +21,8 @@ ICONS
 | **Profiles**                                                                     |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                     |
 | - 🌐 [Landpage](https://diegonmarcos.github.io "null")                           |
+|                                                                                  |
+| > more                                                                           |
 | - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")            |
 | - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")            |
 |                                                                                  |
@@ -51,6 +53,8 @@ ICONS
 |                                                                                                        |
 | **MyProfiles**                                                                                         |
 | - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                     |
+|                                                                                                        |
+| > more                                                                                                 |
 |                                                                                                        |
 | ** MyMedia**                                                                                           |
 | - 🎵 [TIDAL](https://tidal.com/@diegonmarcos "null")                                                   |

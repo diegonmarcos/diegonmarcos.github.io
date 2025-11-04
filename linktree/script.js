@@ -77,12 +77,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const targetId = toggle.getAttribute('data-target');
             const content = document.getElementById(targetId);
 
-            if (content.style.display === 'none' || content.style.display === '') {
-                content.style.display = 'block';
-                toggle.classList.add('open');
-            } else {
-                content.style.display = 'none';
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
                 toggle.classList.remove('open');
+                content.style.maxHeight = '0px';
+            } else {
+                content.classList.add('open');
+                toggle.classList.add('open');
+                content.style.maxHeight = content.scrollHeight + 'px';
             }
         });
     });

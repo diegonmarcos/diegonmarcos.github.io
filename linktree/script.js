@@ -72,6 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle collapsible sections
     const moreToggles = document.querySelectorAll('.more-toggle');
 
+    // Initialize all collapsible sections as closed
+    document.querySelectorAll('.collapsible-content').forEach(content => {
+        content.style.maxHeight = '0px';
+    });
+
     moreToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');
@@ -84,7 +89,15 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 content.classList.add('open');
                 toggle.classList.add('open');
+                // Use scrollHeight for smooth animation
                 content.style.maxHeight = content.scrollHeight + 'px';
+
+                // Recalculate after transition for dynamic content
+                setTimeout(() => {
+                    if (content.classList.contains('open')) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    }
+                }, 100);
             }
         });
     });

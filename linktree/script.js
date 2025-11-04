@@ -89,15 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 content.classList.add('open');
                 toggle.classList.add('open');
-                // Use scrollHeight for smooth animation
                 content.style.maxHeight = content.scrollHeight + 'px';
-
-                // Recalculate after transition for dynamic content
-                setTimeout(() => {
-                    if (content.classList.contains('open')) {
-                        content.style.maxHeight = content.scrollHeight + 'px';
-                    }
-                }, 100);
             }
         });
     });

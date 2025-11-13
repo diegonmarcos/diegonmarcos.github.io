@@ -1,14 +1,11 @@
 # DIEGO NEPOMUCENO MARCOS 
 **| Product n' Software Eng Std ✒️ | Venture Capital n' Portfolio Manager Analyst 🎩 | Civil Engineer B.Sc. 🏗️| @BERlin.de 🏛️ |**
 
----
-
-### 🔗 Linktree
-
-ICONS
-
 | ✉️ [](mailto:diegonmarcos@gmail.com "null") | 💼 [](https://linkedin.com/in/diegonmarcos "null") | 🌐 [](https://diegonmarcos.github.io "null") |
 | ------------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
+
+---
+
 
 | ** PROFESSIONAL**                                                                |
 | -------------------------------------------------------------------------------- |
@@ -44,6 +41,9 @@ ICONS
 |                                                                                  |
 | ** QR CODES**                                                                    |
 | -[QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")          |
+
+---
+
 
 | **PERSONAL**                                                                                           |
 | ------------------------------------------------------------------------------------------------------ |

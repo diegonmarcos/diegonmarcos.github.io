@@ -91,6 +91,16 @@ jobs:
           ./build.sh build
           echo "✅ Blog HTML files generated"
 
+      - name: 🔨 Build MyProfile (SvelteKit)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
+        run: |
+          echo "🔨 Building MyProfile SvelteKit project..."
+          cd myprofile/1.3.svelte
+          npm install
+          npm run build
+          cd ../../..
+          echo "✅ MyProfile build complete"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -101,6 +111,10 @@ jobs:
           # Copy all relevant files and directories
           cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ blog/ _site/ 2>/dev/null || true
           
+          # Create myprofile directory in _site and copy built assets
+          mkdir -p _site/myprofile
+          cp -r myprofile/1.3.svelte/build/* _site/myprofile/
+
           # Clean up source files from blog deployment
           find _site/blog -name "*.md" -type f -delete
           rm -f _site/blog/_config.yml

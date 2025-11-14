@@ -14,7 +14,15 @@ const config = {
 			strict: true
 		}),
 		paths: {
-			base: process.env.NODE_ENV === 'production' ? '/myprofile' : '',
+			base: process.env.NODE_ENV === 'production' ? '/myprofile' : ''
+		},
+		prerender: {
+			entries: [
+				'/',
+				'/photos',
+				'/music',
+				'/stats'
+			]
 		}
 	}
 };

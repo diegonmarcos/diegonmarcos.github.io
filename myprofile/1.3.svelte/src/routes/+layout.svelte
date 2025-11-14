@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import '../styles/global.scss'; // Import global Sass styles
 
 	let { children } = $props();
@@ -21,7 +22,7 @@
 	<header class="header">
 		<div class="header-content container">
 			<div class="logo">
-				<a href="/" class="logo-link">
+				<a href="{base}/" class="logo-link">
 					<span class="logo-icon">🎮</span>
 					<span class="logo-text">Diego</span>
 				</a>
@@ -30,25 +31,25 @@
 			<nav class="nav">
 				<ul class="nav-list">
 					<li class="nav-item">
-						<a href="/" class="nav-link" class:active={currentPath === '/'}>
+						<a href="{base}/" class="nav-link" class:active={currentPath === `${base}/`}>
 							<span class="nav-icon">🏠</span>
 							<span class="nav-label">Home</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="/photos" class="nav-link" class:active={currentPath === '/photos'}>
+						<a href="{base}/photos.html" class="nav-link" class:active={currentPath === `${base}/photos.html`}>
 							<span class="nav-icon">📷</span>
 							<span class="nav-label">Photos</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="/music" class="nav-link" class:active={currentPath === '/music'}>
+						<a href="{base}/music.html" class="nav-link" class:active={currentPath === `${base}/music.html`}>
 							<span class="nav-icon">🎵</span>
 							<span class="nav-label">Music</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="/stats" class="nav-link" class:active={currentPath === '/stats'}>
+						<a href="{base}/stats.html" class="nav-link" class:active={currentPath === `${base}/stats.html`}>
 							<span class="nav-icon">📊</span>
 							<span class="nav-label">Stats</span>
 						</a>

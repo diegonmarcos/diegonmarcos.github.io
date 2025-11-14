@@ -1,4 +1,5 @@
-<script lang="ts">
+R<script lang="ts">
+	import { base } from '$app/paths';
 	// Home page with hero section
 </script>
 
@@ -22,15 +23,15 @@
 			</p>
 
 			<div class="hero-links">
-				<a href="/photos" class="hero-link primary">
+				<a href="{base}/photos.html" class="hero-link primary">
 					<span class="link-icon">📷</span>
 					<span class="link-text">Explore Photos</span>
 				</a>
-				<a href="/music" class="hero-link secondary">
+				<a href="{base}/music.html" class="hero-link secondary">
 					<span class="link-icon">🎵</span>
 					<span class="link-text">My Music</span>
 				</a>
-				<a href="/stats" class="hero-link secondary">
+				<a href="{base}/stats.html" class="hero-link secondary">
 					<span class="link-icon">📊</span>
 					<span class="link-text">View Stats</span>
 				</a>

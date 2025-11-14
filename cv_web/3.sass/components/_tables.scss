@@ -26,7 +26,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: $spacing-lg;
-  text-align: center;
+  text-align: left;
 
   th,
   td {
@@ -49,6 +49,10 @@
   .kde-icon {
     max-height: $icon-size-kde;
   }
+}
+
+.skills-table.text-center {
+  text-align: center;
 }
 
 .skills-list-table {

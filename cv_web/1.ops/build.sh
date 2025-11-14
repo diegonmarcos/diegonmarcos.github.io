@@ -89,7 +89,7 @@ check_dependencies() {
 
 build_sass() {
     style="$1"  # "compressed" or "expanded"
-    src="scss/main.scss"
+    src="3.sass/main.scss"
     out="style.css"
 
     printf "${CYAN}→ Building Sass ($style)...${NC}\n"

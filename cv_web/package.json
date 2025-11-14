@@ -1,0 +1,16 @@
+{
+  "name": "cv_web",
+  "version": "1.0.0",
+  "description": "CV website",
+  "main": "script.js",
+  "scripts": {
+    "build": "sass 3.sass/main.scss style.css --style compressed",
+    "dev": "sass 3.sass/main.scss style.css",
+    "watch": "sass --watch 3.sass:."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "sass": "^1.77.4"
+  }
+}

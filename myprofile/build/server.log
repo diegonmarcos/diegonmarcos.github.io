@@ -24,3 +24,5 @@
 127.0.0.1 - - [14/Nov/2025 17:30:30] "GET /_app/immutable/assets/5.CqsuUm_f.css HTTP/1.1" 200 -
 127.0.0.1 - - [14/Nov/2025 17:30:32] "GET /_app/immutable/nodes/4.CHKHnQIA.js HTTP/1.1" 200 -
 127.0.0.1 - - [14/Nov/2025 17:30:32] "GET /_app/immutable/assets/4.C2LOTrTm.css HTTP/1.1" 200 -
+127.0.0.1 - - [14/Nov/2025 17:42:50] code 404, message File not found
+127.0.0.1 - - [14/Nov/2025 17:42:50] "GET /favicon.ico HTTP/1.1" 404 -

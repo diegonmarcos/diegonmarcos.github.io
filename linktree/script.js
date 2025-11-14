@@ -77,19 +77,56 @@ document.addEventListener('DOMContentLoaded', () => {
         content.style.maxHeight = '0px';
     });
 
+    function updateParentHeights(element) {
+        let parentCollapsible = element.parentElement.closest('.collapsible-content');
+        while (parentCollapsible) {
+            if (parentCollapsible.classList.contains('open')) {
+                // Set to a very large value temporarily to measure actual content
+                const currentHeight = parentCollapsible.style.maxHeight;
+                parentCollapsible.style.maxHeight = 'none';
+                const actualHeight = parentCollapsible.scrollHeight;
+                parentCollapsible.style.maxHeight = currentHeight;
+
+                // Trigger reflow
+                parentCollapsible.offsetHeight;
+
+                // Set to actual height
+                parentCollapsible.style.maxHeight = actualHeight + 'px';
+            }
+            parentCollapsible = parentCollapsible.parentElement.closest('.collapsible-content');
+        }
+    }
+
     moreToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
             const targetId = toggle.getAttribute('data-target');
             const content = document.getElementById(targetId);
 
             if (content.classList.contains('open')) {
+                // Close the collapsible
                 content.classList.remove('open');
                 toggle.classList.remove('open');
                 content.style.maxHeight = '0px';
+
+                // Update parent heights after closing
+                setTimeout(() => updateParentHeights(content), 100);
             } else {
+                // Open the collapsible
                 content.classList.add('open');
                 toggle.classList.add('open');
                 content.style.maxHeight = content.scrollHeight + 'px';
+
+                // Update this collapsible's height after a moment
+                setTimeout(() => {
+                    if (content.classList.contains('open')) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    }
+                }, 50);
+
+                // Update parent collapsibles multiple times to ensure proper sizing
+                setTimeout(() => updateParentHeights(content), 100);
+                setTimeout(() => updateParentHeights(content), 300);
+                setTimeout(() => updateParentHeights(content), 500);
             }
         });
     });

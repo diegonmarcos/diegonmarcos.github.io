@@ -1,0 +1,71 @@
+// ============================================
+// CSS RESET & BASE STYLES
+// ============================================
+
+// Modern CSS reset
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  text-rendering: optimizeSpeed;
+}
+
+// Remove list styles on ul, ol elements
+ul, ol {
+  list-style: none;
+}
+
+// Make images easier to work with
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+// Inherit fonts for inputs and buttons
+input, button, textarea, select {
+  font: inherit;
+}
+
+// Remove button default styles
+button {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+// Remove link default styles
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+// Remove default fieldset styles
+fieldset {
+  border: none;
+  padding: 0;
+}
+
+// Improve text rendering
+p, h1, h2, h3, h4, h5, h6 {
+  overflow-wrap: break-word;
+}
+
+// Create a root stacking context
+#root, #__next {
+  isolation: isolate;
+}

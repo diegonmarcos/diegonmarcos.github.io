@@ -1,0 +1,176 @@
+// ============================================
+// GLOBAL STYLES - PERSONAL PROFILE WEBSITE
+// ============================================
+// Pixel art themed personal website
+// Following the design system from 01-spec.md
+
+// Import design system
+@use './abstracts/variables' as *;
+@use './abstracts/mixins' as *;
+
+// Import base styles
+@use './base/reset';
+@use './base/typography';
+
+// ----------------
+// ROOT VARIABLES
+// ----------------
+
+:root {
+  // Colors
+  --bg-primary: #{$background};
+  --bg-secondary: #{$gray-800};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+
+  // Purple shades
+  --purple-900: #{$purple-900};
+  --purple-800: #{$purple-800};
+  --purple-700: #{$purple-700};
+  --purple-600: #{$purple-600};
+  --purple-500: #{$purple-500};
+  --purple-400: #{$purple-400};
+  --purple-300: #{$purple-300};
+  --purple-200: #{$purple-200};
+
+  // Accents
+  --pink-500: #{$pink-500};
+  --cyan-400: #{$cyan-400};
+  --yellow-400: #{$yellow-400};
+
+  // Status colors
+  --success: #{$success};
+  --error: #{$error};
+  --warning: #{$warning};
+}
+
+// ----------------
+// BODY & HTML
+// ----------------
+
+html {
+  background-color: $background;
+}
+
+body {
+  background-color: $background;
+  color: $text-primary;
+  font-family: $font-sans;
+  overflow-x: hidden;
+
+  // Optional: subtle scanline effect on body
+  // @include scanlines;
+}
+
+// ----------------
+// PIXEL ART UTILITIES
+// ----------------
+
+.pixel-border {
+  @include pixel-border($purple-500);
+}
+
+.pixel-shadow {
+  @include pixel-shadow();
+}
+
+.pixelated {
+  @include pixelated;
+}
+
+// ----------------
+// LAYOUT UTILITIES
+// ----------------
+
+.container {
+  @include container;
+}
+
+.flex-center {
+  @include flex-center;
+}
+
+// ----------------
+// ANIMATION UTILITIES
+// ----------------
+
+.hover-lift {
+  @include hover-lift;
+}
+
+.pulse {
+  @include pulse;
+}
+
+.float {
+  @include float;
+}
+
+.shimmer {
+  @include shimmer;
+}
+
+// ----------------
+// ACCESSIBILITY
+// ----------------
+
+.sr-only {
+  @include sr-only;
+}
+
+// Reduce motion for users who prefer it
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+// ----------------
+// SELECTION STYLES
+// ----------------
+
+::selection {
+  background-color: $purple-500;
+  color: $text-primary;
+}
+
+::-moz-selection {
+  background-color: $purple-500;
+  color: $text-primary;
+}
+
+// ----------------
+// SCROLLBAR STYLING
+// ----------------
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: $background;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $purple-600;
+  border: 2px solid $background;
+
+  &:hover {
+    background: $purple-500;
+  }
+}
+
+// ----------------
+// FOCUS STYLES
+// ----------------
+
+:focus-visible {
+  outline: 2px solid $cyan-400;
+  outline-offset: 2px;
+}

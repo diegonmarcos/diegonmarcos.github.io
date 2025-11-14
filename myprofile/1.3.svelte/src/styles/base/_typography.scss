@@ -1,0 +1,166 @@
+// ============================================
+// TYPOGRAPHY
+// ============================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// Import Google Fonts (Press Start 2P, VT323)
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap');
+
+// ----------------
+// BASE TYPOGRAPHY
+// ----------------
+
+body {
+  font-family: $font-sans;
+  font-size: $text-base;
+  line-height: $leading-normal;
+  color: $text-primary;
+}
+
+// ----------------
+// HEADINGS
+// ----------------
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-pixel-heading;
+  line-height: $leading-tight;
+  color: $text-primary;
+  margin-bottom: $space-4;
+}
+
+h1 {
+  font-size: $text-3xl;
+  @include pixel-text-shadow($purple-500);
+}
+
+h2 {
+  font-size: $text-2xl;
+  @include pixel-text-shadow($purple-600);
+}
+
+h3 {
+  font-size: $text-xl;
+}
+
+h4 {
+  font-size: $text-lg;
+}
+
+h5 {
+  font-size: $text-base;
+}
+
+h6 {
+  font-size: $text-sm;
+}
+
+// ----------------
+// BODY TEXT
+// ----------------
+
+p {
+  margin-bottom: $space-4;
+  line-height: $leading-relaxed;
+}
+
+// Pixel font variant for retro text
+.pixel-text {
+  font-family: $font-pixel-body;
+  font-size: $text-lg;
+  letter-spacing: 0.05em;
+}
+
+// ----------------
+// LINKS
+// ----------------
+
+a {
+  color: $purple-400;
+  @include transition(color);
+
+  &:hover {
+    color: $pink-500;
+  }
+
+  &:focus-visible {
+    outline: 2px solid $cyan-400;
+    outline-offset: 2px;
+  }
+}
+
+// ----------------
+// LISTS
+// ----------------
+
+ul, ol {
+  margin-bottom: $space-4;
+  padding-left: $space-6;
+
+  &.unstyled {
+    list-style: none;
+    padding-left: 0;
+  }
+}
+
+li {
+  margin-bottom: $space-2;
+}
+
+// ----------------
+// TEXT UTILITIES
+// ----------------
+
+.text-xs { font-size: $text-xs; }
+.text-sm { font-size: $text-sm; }
+.text-base { font-size: $text-base; }
+.text-lg { font-size: $text-lg; }
+.text-xl { font-size: $text-xl; }
+.text-2xl { font-size: $text-2xl; }
+.text-3xl { font-size: $text-3xl; }
+
+.text-primary { color: $text-primary; }
+.text-secondary { color: $text-secondary; }
+.text-accent { color: $pink-500; }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-pixel-heading { font-family: $font-pixel-heading; }
+.font-pixel-body { font-family: $font-pixel-body; }
+.font-sans { font-family: $font-sans; }
+
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+.font-normal { font-weight: 400; }
+
+// ----------------
+// CODE & PRE
+// ----------------
+
+code, pre {
+  font-family: $font-pixel-body;
+  font-size: $text-sm;
+}
+
+code {
+  background-color: rgba($purple-700, 0.3);
+  padding: $space-1 $space-2;
+  border-radius: 2px;
+}
+
+pre {
+  background-color: rgba($purple-900, 0.5);
+  padding: $space-4;
+  border: 2px solid $purple-700;
+  overflow-x: auto;
+  margin-bottom: $space-4;
+
+  code {
+    background: none;
+    padding: 0;
+  }
+}

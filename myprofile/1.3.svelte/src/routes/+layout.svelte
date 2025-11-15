@@ -37,19 +37,19 @@
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="{base}/photos.html" class="nav-link" class:active={currentPath === `${base}/photos.html`}>
+						<a href="{base}/photos" class="nav-link" class:active={currentPath === `${base}/photos`}>
 							<span class="nav-icon">📷</span>
 							<span class="nav-label">Photos</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="{base}/music.html" class="nav-link" class:active={currentPath === `${base}/music.html`}>
+						<a href="{base}/music" class="nav-link" class:active={currentPath === `${base}/music`}>
 							<span class="nav-icon">🎵</span>
 							<span class="nav-label">Music</span>
 						</a>
 					</li>
 					<li class="nav-item">
-						<a href="{base}/stats.html" class="nav-link" class:active={currentPath === `${base}/stats.html`}>
+						<a href="{base}/stats" class="nav-link" class:active={currentPath === `${base}/stats`}>
 							<span class="nav-icon">📊</span>
 							<span class="nav-label">Stats</span>
 						</a>

@@ -62,7 +62,7 @@
 | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                      |
 |                                                                                                        |
 | **MyProfiles**                                                                                         |
-| - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                     |
+| - 👤 [Myprofile](https://diegonmarcos.github.io/ "null")                                               |
 |                                                                                                        |
 | > more                                                                                                 |
 |                                                                                                        |

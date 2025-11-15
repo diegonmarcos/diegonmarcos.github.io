@@ -21,7 +21,8 @@ const config = {
 				'/',
 				'/photos',
 				'/music',
-				'/stats'
+				'/stats',
+				'/sitemap.xml'
 			]
 		}
 	}

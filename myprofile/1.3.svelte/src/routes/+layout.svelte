@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import '../styles/global.scss'; // Import global Sass styles
+	import Analytics from '$lib/components/common/Analytics.svelte';
 
 	let { children } = $props();
 
@@ -74,6 +75,9 @@
 		</div>
 	</footer>
 </div>
+
+<!-- Analytics Component - Privacy-focused tracking -->
+<Analytics />
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
@@ -175,10 +179,6 @@
 			justify-content: center;
 			gap: $space-2;
 		}
-	}
-
-	.nav-item {
-		// Empty - styling on link
 	}
 
 	.nav-link {

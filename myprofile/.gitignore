@@ -4,8 +4,8 @@ node_modules/
 .pnp.js
 
 # Build output
-dist/
-build/
+#dist/
+#build/
 .svelte-kit/
 .vercel/
 .netlify/

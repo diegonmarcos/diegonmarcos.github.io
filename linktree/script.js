@@ -142,20 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const randomVideo = videos[Math.floor(Math.random() * videos.length)];
     videoElement.src = randomVideo;
 
-    const sections = document.querySelectorAll('.link-section');
 
-    sections.forEach(section => {
-        const title = section.querySelector('.section-title');
-        const links = section.querySelector('.links-container');
-
-        title.addEventListener('click', () => {
-            if (links.style.display === 'block' || links.style.display === '') {
-                links.style.display = 'none';
-            } else {
-                links.style.display = 'block';
-            }
-        });
-    });
 
     const linkIcons = document.querySelectorAll('.link .icon');
     const linkPreview = document.getElementById('link-preview');

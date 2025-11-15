@@ -37,7 +37,8 @@
   padding-left: $collapsible-padding-left;
 
   &.open {
-    max-height: $collapsible-max-height;
+    max-height: none;
+    overflow: visible;
     opacity: 1;
     padding-bottom: 6px;
   }

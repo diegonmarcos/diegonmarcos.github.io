@@ -30,7 +30,35 @@
 
 .scroll-down-arrow {
   font-size: $icon-size-scroll-arrow;
-  color: $color-accent-purple;
   text-decoration: none;
   animation: bounce $duration-bounce infinite;
+  display: inline-block;
+
+  i {
+    animation: shimmer 3s linear infinite;
+    background: linear-gradient(
+      to right,
+      $color-accent-purple 0%,
+      lighten($color-accent-purple, 20%) 50%,
+      $color-accent-purple 100%
+    );
+    background-size: 1000px 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.header-content h1 {
+  animation: shimmer 3s linear infinite;
+  background: linear-gradient(
+    to right,
+    $color-accent-purple 0%,
+    lighten($color-accent-purple, 25%) 50%,
+    $color-accent-purple 100%
+  );
+  background-size: 1000px 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

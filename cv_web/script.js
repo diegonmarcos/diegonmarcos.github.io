@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Dynamically generate the side navigation
     const sideNav = document.getElementById('side-nav');
+    const navToggle = document.getElementById('nav-toggle');
+    const mainContent = document.getElementById('main-content');
     const headings = document.querySelectorAll('main h2, main h3');
     let currentLists = [document.createElement('ul')];
     sideNav.appendChild(currentLists[0]);
@@ -15,7 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     headings.forEach(heading => {
         const level = parseInt(heading.tagName.substring(1)) - 2; // h2 -> 0, h3 -> 1
-        
+        const isMainSection = heading.tagName === 'H2'; // Track if it's a main section
+
         if (!heading.id) {
             heading.id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
         }
@@ -23,6 +26,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const listItem = document.createElement('li');
         const link = document.createElement('a');
         link.href = `#${heading.id}`;
+
+        // Mark main section links with a data attribute
+        if (isMainSection) {
+            link.setAttribute('data-main-section', 'true');
+        }
+
         if (heading.textContent === 'Intro') {
             link.textContent = heading.textContent.toUpperCase();
         } else {
@@ -45,18 +54,34 @@ document.addEventListener('DOMContentLoaded', () => {
         currentLists[level].appendChild(listItem);
     });
 
-    // Add collapsible functionality to the generated nav
+    // Add collapsible functionality to the generated nav (only for sub-sections, not main sections)
     sideNav.querySelectorAll('li > a').forEach(link => {
         const sublist = link.nextElementSibling;
-        if (sublist && sublist.tagName === 'UL') {
+        const isMainSection = link.getAttribute('data-main-section') === 'true';
+
+        // Only make h3+ level items collapsible, not main h2 sections
+        if (sublist && sublist.tagName === 'UL' && !isMainSection) {
             link.classList.add('collapsible-nav');
             sublist.style.display = 'block'; // Start expanded
 
             link.addEventListener('click', (e) => {
-                e.preventDefault();
+                // Toggle the submenu display
                 sublist.style.display = sublist.style.display === 'none' ? 'block' : 'none';
                 link.classList.toggle('open');
+                // Don't prevent default or stop propagation - let menu close handler work
             });
+        }
+    });
+
+    // SIMPLE APPROACH: Close menu when ANY link in the nav is clicked
+    sideNav.addEventListener('click', (e) => {
+        // Check if clicked element is a link or inside a link
+        const clickedLink = e.target.closest('a');
+        if (clickedLink && clickedLink.getAttribute('href')) {
+            // Close the menu for ANY link click
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('nav-open');
+            navToggle.classList.remove('open');
         }
     });
 
@@ -165,21 +190,58 @@ document.addEventListener('DOMContentLoaded', () => {
                     requestAnimationFrame(animation);
                 }
             });
-    // Side Navigation Toggle
-    const navToggle = document.getElementById('nav-toggle');
-    const mainContent = document.getElementById('main-content');
 
+    // Side Navigation Toggle
     navToggle.addEventListener('click', () => {
         sideNav.classList.toggle('open');
         mainContent.classList.toggle('nav-open');
         navToggle.classList.toggle('open');
     });
 
-    // Auto-close on link click
+    // Auto-expand collapsed sections when navigating to them
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            sideNav.classList.remove('open');
-            mainContent.classList.remove('nav-open');
+        link.addEventListener('click', (e) => {
+            const targetId = link.getAttribute('href');
+
+            // If it's an actual anchor link (not just a navigation item)
+            if (targetId && targetId.startsWith('#') && targetId !== '#') {
+                const targetElement = document.querySelector(targetId);
+
+                // Open ALL parent collapsible sections
+                if (targetElement) {
+                    let currentElement = targetElement;
+
+                    // Traverse up the DOM tree
+                    while (currentElement && currentElement !== document.body) {
+                        // If we find a collapsible content container, open it
+                        if (currentElement.classList.contains('collapsible-content')) {
+                            if (!currentElement.classList.contains('open')) {
+                                const collapser = currentElement.previousElementSibling;
+                                if (collapser && collapser.classList.contains('collapser')) {
+                                    currentElement.classList.add('open');
+                                    collapser.classList.add('open');
+                                    collapser.classList.remove('closed');
+                                }
+                            }
+                        }
+
+                        // If the current element itself is a collapser, open its content
+                        if (currentElement.classList.contains('collapser')) {
+                            const content = currentElement.nextElementSibling;
+                            if (content && content.classList.contains('collapsible-content')) {
+                                if (!content.classList.contains('open')) {
+                                    content.classList.add('open');
+                                    currentElement.classList.add('open');
+                                    currentElement.classList.remove('closed');
+                                }
+                            }
+                        }
+
+                        currentElement = currentElement.parentElement;
+                    }
+                }
+            }
+            // REMOVED menu close from here - now handled by delegated handler on sideNav
         });
     });
 
@@ -188,6 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sideNav.classList.contains('open')) {
             sideNav.classList.remove('open');
             mainContent.classList.remove('nav-open');
+            navToggle.classList.remove('open');
         }
     });
 
@@ -195,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (sideNav.classList.contains('open')) {
             sideNav.classList.remove('open');
             mainContent.classList.remove('nav-open');
+            navToggle.classList.remove('open');
         }
     });
 
@@ -356,15 +420,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Scroll Animation Logic using Intersection Observer ---
     const animatedSections = document.querySelectorAll('.animated-section');
+    const animatedOnce = new Set(); // Track sections that have been animated
+    let lastScrollY = window.scrollY;
 
     const observer = new IntersectionObserver((entries) => {
+        const currentScrollY = window.scrollY;
+        const scrollingDown = currentScrollY > lastScrollY;
+
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                animate(entry.target, 1, 0, 600); // Fade in
+                // Always fade in when entering viewport
+                animate(entry.target, 1, 0, 600);
+                animatedOnce.add(entry.target);
             } else {
-                animate(entry.target, 0, 30, 600); // Fade out
+                // Only fade out when scrolling DOWN past a section
+                // Keep visible when scrolling UP
+                if (scrollingDown && animatedOnce.has(entry.target)) {
+                    // Section is going above viewport - keep it visible
+                    entry.target.style.opacity = '1';
+                    entry.target.style.visibility = 'visible';
+                } else if (!animatedOnce.has(entry.target)) {
+                    // Section hasn't been seen yet, keep it hidden
+                    animate(entry.target, 0, 30, 600);
+                }
             }
         });
+
+        lastScrollY = currentScrollY;
     }, {
         root: null,
         threshold: 0.15 // Trigger when 15% of the element is visible

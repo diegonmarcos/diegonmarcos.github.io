@@ -49,5 +49,33 @@
     &.active {
       color: white;
     }
+
+    // Main section links (h2) - styled differently
+    &[data-main-section="true"] {
+      font-weight: bold;
+      color: $color-accent-purple;
+      font-size: 1.1em;
+      padding-left: 16px;
+
+      &:hover {
+        color: lighten($color-accent-purple, 15%);
+      }
+
+      &.active {
+        color: lighten($color-accent-purple, 20%);
+      }
+    }
+
+    // Collapsible nav indicator
+    &.collapsible-nav::before {
+      content: '▸';
+      display: inline-block;
+      margin-right: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    &.collapsible-nav.open::before {
+      transform: rotate(90deg);
+    }
   }
 }

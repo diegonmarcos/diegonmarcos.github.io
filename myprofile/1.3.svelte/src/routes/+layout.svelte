@@ -55,6 +55,18 @@
 							<span class="nav-label">Stats</span>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="{base}/mario" class="nav-link" class:active={currentPath === `${base}/mario`}>
+							<span class="nav-icon">🍄</span>
+							<span class="nav-label">Mario</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a href="{base}/pac-man" class="nav-link" class:active={currentPath === `${base}/pac-man`}>
+							<span class="nav-icon">👻</span>
+							<span class="nav-label">Pac-Man</span>
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

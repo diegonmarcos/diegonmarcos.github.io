@@ -24,6 +24,7 @@ const config = {
 				'/stats',
 				'/sitemap.xml',
 				'/mario',
+				'/pac-man',
 				'/clumsy-bird'
 			]
 		}

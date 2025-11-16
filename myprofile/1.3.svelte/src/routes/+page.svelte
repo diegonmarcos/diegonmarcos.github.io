@@ -45,6 +45,10 @@
 					<span class="link-icon">🍄</span>
 					<span class="link-text">Play Mario</span>
 				</a>
+				<a href="{base}/pac-man" class="hero-link secondary">
+					<span class="link-icon">👻</span>
+					<span class="link-text">Play Pac-Man</span>
+				</a>
 			</div>
 		</div>
 

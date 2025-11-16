@@ -20,6 +20,7 @@
 		{ href: '/photos', icon: 'photo', label: 'Photos' },
 		{ href: '/music', icon: 'music', label: 'Music' },
 		{ href: '/stats', icon: 'stats', label: 'Stats' },
+		{ href: '/pinball', icon: 'pinball', label: 'Pinball' },
 		{ href: '/mario', icon: 'mario', label: 'Mario' },
 		{ href: '/pac-man', icon: 'pacman', label: 'Pac-Man' },
 		{ href: '/clumsy-bird', icon: 'bird', label: 'Flappy' }

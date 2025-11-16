@@ -23,6 +23,7 @@ const config = {
 				'/music',
 				'/stats',
 				'/sitemap.xml',
+				'/pinball',
 				'/mario',
 				'/pac-man',
 				'/clumsy-bird'

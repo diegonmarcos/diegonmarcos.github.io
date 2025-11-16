@@ -13,6 +13,15 @@
 			size: 'large'
 		},
 		{
+			type: 'embedded',
+			title: 'Google I/O Pinball',
+			embedUrl: 'https://pinball.flutter.dev',
+			href: `${base}/pinball`,
+			color: 'purple',
+			size: 'large',
+			description: 'Tap to play! Mobile optimized'
+		},
+		{
 			type: 'game',
 			title: 'Super Mario',
 			icon: 'mario',
@@ -135,6 +144,23 @@
 						</div>
 						<div class="hover-effect"></div>
 					</a>
+				{:else if card.type === 'embedded'}
+					<div class="card card-embedded card-{card.size} color-{card.color}" data-index={i}>
+						<div class="card-header">
+							<h3>{card.title}</h3>
+							<p class="embed-description">{card.description}</p>
+						</div>
+						<div class="embed-container">
+							<iframe
+								src={card.embedUrl}
+								title={card.title}
+								class="game-embed"
+								allow="accelerometer; gyroscope"
+								loading="lazy"
+							></iframe>
+						</div>
+						<a href={card.href} class="fullscreen-link">Open Fullscreen →</a>
+					</div>
 				{:else if card.type === 'social'}
 					<div class="card card-social card-{card.size} color-{card.color}" data-index={i}>
 						<div class="card-content">
@@ -460,6 +486,78 @@
 				&::before {
 					opacity: 0.3;
 				}
+			}
+		}
+	}
+
+	// Embedded Game Card
+	.card-embedded {
+		display: flex;
+		flex-direction: column;
+		padding: $space-4;
+
+		.card-header {
+			margin-bottom: $space-4;
+
+			h3 {
+				font-family: $font-pixel-heading;
+				font-size: $text-xl;
+				margin-bottom: $space-2;
+			}
+
+			.embed-description {
+				font-family: $font-pixel-body;
+				font-size: $text-sm;
+				color: $text-secondary;
+			}
+		}
+
+		.embed-container {
+			position: relative;
+			flex: 1;
+			width: 100%;
+			border: 3px solid currentColor;
+			border-radius: 4px;
+			overflow: hidden;
+			background: $gray-900;
+
+			// Maintain aspect ratio
+			&::before {
+				content: '';
+				display: block;
+				padding-top: 133%; // Portrait aspect for pinball
+
+				@include mobile {
+					padding-top: 140%;
+				}
+			}
+
+			.game-embed {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				border: none;
+			}
+		}
+
+		.fullscreen-link {
+			display: block;
+			margin-top: $space-3;
+			text-align: center;
+			font-family: $font-pixel-body;
+			font-size: $text-sm;
+			color: currentColor;
+			text-decoration: none;
+			padding: $space-2;
+			border: 2px solid currentColor;
+			@include transition(all);
+
+			&:hover {
+				background: currentColor;
+				color: $background;
+				transform: translateY(-2px);
 			}
 		}
 	}

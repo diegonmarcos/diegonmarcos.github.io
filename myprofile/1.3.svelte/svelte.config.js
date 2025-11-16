@@ -22,7 +22,8 @@ const config = {
 				'/photos',
 				'/music',
 				'/stats',
-				'/sitemap.xml'
+				'/sitemap.xml',
+				'/mario'
 			]
 		}
 	}

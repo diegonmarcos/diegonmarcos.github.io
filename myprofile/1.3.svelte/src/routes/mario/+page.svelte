@@ -4,4 +4,5 @@
   width="800"
   height="600"
   frameborder="0"
+  title="Super Mario Bros. Game"
 ></iframe>

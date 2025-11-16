@@ -23,7 +23,8 @@ const config = {
 				'/music',
 				'/stats',
 				'/sitemap.xml',
-				'/mario'
+				'/mario',
+				'/clumsy-bird'
 			]
 		}
 	}

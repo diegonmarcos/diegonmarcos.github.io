@@ -144,28 +144,20 @@
 
 // Retro glow effect
 @mixin retro-glow($color: $purple-500) {
+  --glow-color: #{$color};
   box-shadow:
     0 0 10px $color,
     0 0 20px $color,
-    0 0 30px $color,
-    inset 0 0 10px rgba($color, 0.2);
+    0 0 30px $color;
   animation: retro-glow-pulse 2s ease-in-out infinite alternate;
 }
 
 @keyframes retro-glow-pulse {
-  from {
-    box-shadow:
-      0 0 10px var(--glow-color, #{$purple-500}),
-      0 0 20px var(--glow-color, #{$purple-500}),
-      0 0 30px var(--glow-color, #{$purple-500}),
-      inset 0 0 10px rgba(var(--glow-color, #{$purple-500}), 0.2);
+  0% {
+    filter: brightness(1) drop-shadow(0 0 10px currentColor);
   }
-  to {
-    box-shadow:
-      0 0 15px var(--glow-color, #{$purple-500}),
-      0 0 30px var(--glow-color, #{$purple-500}),
-      0 0 45px var(--glow-color, #{$purple-500}),
-      inset 0 0 15px rgba(var(--glow-color, #{$purple-500}), 0.3);
+  100% {
+    filter: brightness(1.1) drop-shadow(0 0 20px currentColor);
   }
 }
 

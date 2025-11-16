@@ -69,27 +69,27 @@ jobs:
           echo "✅ script.js created"
 
       # ============================================
-      # JEKYLL BLOG BUILD (Conditional)
+      # JEKYLL MYFEED BUILD (Conditional)
       # ============================================
       - name: 💎 Setup Ruby and Jekyll
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.1'
           bundler-cache: false
 
       - name: 📦 Install Jekyll
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
         run: |
           gem install jekyll bundler
 
-      - name: 🔨 Build Blog HTML (Jekyll)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'blog/')
+      - name: 🔨 Build MyFeed HTML (Jekyll)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
         run: |
-          cd blog/1.ops
+          cd myfeed/1.ops
           chmod +x build.sh
           ./build.sh build
-          echo "✅ Blog HTML files generated"
+          echo "✅ MyFeed HTML files generated"
 
       - name: 🔨 Build MyProfile (SvelteKit)
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
@@ -109,7 +109,7 @@ jobs:
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
           # Copy all relevant files and directories
-          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ blog/ _site/ 2>/dev/null || true
+          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ myfeed/ _site/ 2>/dev/null || true
           
           # Create myprofile directory in _site and copy built assets (if build exists)
           if [ -d "myprofile/1.3.svelte/build" ]; then
@@ -120,12 +120,15 @@ jobs:
             echo "⏭️  Skipping MyProfile copy (no build directory found)"
           fi
 
-          # Clean up source files from blog deployment
-          find _site/blog -name "*.md" -type f -delete
-          rm -f _site/blog/_config.yml
-          rm -f _site/blog/build.sh
-          rm -rf _site/blog/_layouts
-          rm -rf _site/blog/.jekyll-cache
+          # Clean up source files from myfeed deployment
+          if [ -d "_site/myfeed" ]; then
+            find _site/myfeed -name "*.md" -type f -delete
+            rm -f _site/myfeed/_config.yml
+            rm -f _site/myfeed/build.sh
+            rm -rf _site/myfeed/_layouts
+            rm -rf _site/myfeed/.jekyll-cache
+            echo "✅ MyFeed cleanup complete"
+          fi
           
           echo "✅ All files prepared for deployment"
           ls -lah _site/

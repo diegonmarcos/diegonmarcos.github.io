@@ -440,13 +440,26 @@
 			font-family: $font-pixel-body;
 			font-size: $text-sm;
 			padding: $space-1 $space-3;
-			background: rgba(currentColor, 0.1);
+			background: transparent;
 			border: 2px solid currentColor;
 			@include transition(all);
+			position: relative;
+
+			&::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: currentColor;
+				opacity: 0.1;
+				@include transition(opacity);
+			}
 
 			&:hover {
-				background: rgba(currentColor, 0.3);
 				transform: translateX(4px);
+
+				&::before {
+					opacity: 0.3;
+				}
 			}
 		}
 	}

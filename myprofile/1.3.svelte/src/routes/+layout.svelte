@@ -1,292 +1,480 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import '../styles/global.scss'; // Import global Sass styles
+	import '../styles/global.scss';
 	import Analytics from '$lib/components/common/Analytics.svelte';
+	import PixelIcon from '$lib/components/icons/PixelIcon.svelte';
 
 	let { children } = $props();
 
 	// Get current path for active nav highlighting
 	let currentPath = $state('/');
+	let menuOpen = $state(false);
 
 	// Update on mount and navigation
 	if (typeof window !== 'undefined') {
 		currentPath = window.location.pathname;
 	}
+
+	const navItems = [
+		{ href: '/', icon: 'home', label: 'Home' },
+		{ href: '/photos', icon: 'photo', label: 'Photos' },
+		{ href: '/music', icon: 'music', label: 'Music' },
+		{ href: '/stats', icon: 'stats', label: 'Stats' },
+		{ href: '/mario', icon: 'mario', label: 'Mario' },
+		{ href: '/pac-man', icon: 'pacman', label: 'Pac-Man' },
+		{ href: '/clumsy-bird', icon: 'bird', label: 'Flappy' }
+	];
 </script>
 
 <svelte:head>
-	<title>Diego's Profile - Pixel Art Personal Space</title>
-	<meta name="description" content="Personal profile showcasing photos, music, and adventures" />
+	<title>Diego's Pixel Universe - Retro Gaming Meets Modern Life</title>
+	<meta
+		name="description"
+		content="A pixel art personal space showcasing photos, music, fitness stats, and retro games"
+	/>
 </svelte:head>
 
-<div class="app-container">
-	<header class="header">
+<div class="app-container crt-screen">
+	<!-- Arcade Header -->
+	<header class="arcade-header">
 		<div class="header-content container">
-			<div class="logo">
-				<a href="{base}/" class="logo-link">
-					<span class="logo-icon">🎮</span>
-					<span class="logo-text">Diego</span>
-				</a>
-			</div>
+			<!-- Logo -->
+			<a href="{base}/" class="logo-arcade">
+				<div class="logo-screen">
+					<PixelIcon icon="profile" size={48} color="#ec4899" />
+				</div>
+				<div class="logo-text">
+					<span class="logo-name glitch" data-text="DIEGO">DIEGO</span>
+					<span class="logo-subtitle">PIXEL UNIVERSE</span>
+				</div>
+			</a>
 
-			<nav class="nav">
-				<ul class="nav-list">
-					<li class="nav-item">
-						<a href="{base}/" class="nav-link" class:active={currentPath === `${base}/`}>
-							<span class="nav-icon">🏠</span>
-							<span class="nav-label">Home</span>
+			<!-- Arcade Controls (Navigation) -->
+			<nav class="arcade-controls">
+				<button class="menu-toggle" onclick={() => (menuOpen = !menuOpen)}>
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
+
+				<div class="controls-panel" class:open={menuOpen}>
+					{#each navItems as { href, icon, label }}
+						{@const isActive = currentPath === `${base}${href}`}
+						<a href="{base}{href}" class="control-btn" class:active={isActive}>
+							<div class="btn-face">
+								<div class="btn-icon">
+									<PixelIcon {icon} size={24} color={isActive ? '#ec4899' : '#a855f7'} />
+								</div>
+								<span class="btn-label">{label}</span>
+							</div>
+							<div class="btn-shadow"></div>
 						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/photos" class="nav-link" class:active={currentPath === `${base}/photos`}>
-							<span class="nav-icon">📷</span>
-							<span class="nav-label">Photos</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/music" class="nav-link" class:active={currentPath === `${base}/music`}>
-							<span class="nav-icon">🎵</span>
-							<span class="nav-label">Music</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/stats" class="nav-link" class:active={currentPath === `${base}/stats`}>
-							<span class="nav-icon">📊</span>
-							<span class="nav-label">Stats</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/mario" class="nav-link" class:active={currentPath === `${base}/mario`}>
-							<span class="nav-icon">🍄</span>
-							<span class="nav-label">Mario</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/pac-man" class="nav-link" class:active={currentPath === `${base}/pac-man`}>
-							<span class="nav-icon">👻</span>
-							<span class="nav-label">Pac-Man</span>
-						</a>
-					</li>
-					<li class="nav-item">
-						<a href="{base}/clumsy-bird" class="nav-link" class:active={currentPath === `${base}/clumsy-bird`}>
-							<span class="nav-icon">🐦</span>
-							<span class="nav-label">Flappy Bird</span>
-						</a>
-					</li>
-				</ul>
+					{/each}
+				</div>
 			</nav>
+		</div>
+
+		<!-- Decorative LED Strip -->
+		<div class="led-strip">
+			{#each Array(20) as _, i}
+				<div class="led" style="--delay: {i * 0.1}s"></div>
+			{/each}
 		</div>
 	</header>
 
-	<main class="main">
+	<!-- Main Content -->
+	<main class="main-screen">
+		<div class="scanlines"></div>
 		{@render children()}
 	</main>
 
-	<footer class="footer">
+	<!-- Arcade Footer -->
+	<footer class="arcade-footer">
 		<div class="footer-content container">
-			<p class="footer-text">
-				<span class="pixel-text">Made with 💜 by Diego</span>
-			</p>
-			<p class="footer-copyright">
-				&copy; {new Date().getFullYear()} - Powered by pixels & passion
-			</p>
+			<div class="footer-display">
+				<div class="pixel-heart">
+					<PixelIcon icon="heart" size={20} color="#ec4899" />
+				</div>
+				<p class="footer-text">MADE WITH PIXELS & PASSION</p>
+			</div>
+			<div class="footer-score">
+				<span class="label">YEAR</span>
+				<span class="value">{new Date().getFullYear()}</span>
+			</div>
+			<div class="footer-credits">
+				<span class="credit-text">INSERT COIN TO CONTINUE</span>
+			</div>
 		</div>
 	</footer>
 </div>
 
-<!-- Analytics Component - Privacy-focused tracking -->
+<!-- Analytics Component -->
 <Analytics />
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
 	@use '../styles/abstracts/mixins' as *;
+	@use '../styles/effects/crt' as *;
 
-	// ----------------
-	// APP CONTAINER
-	// ----------------
+	// App Container
 	.app-container {
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
-		background-color: $background;
+		background: $background;
+		position: relative;
 	}
 
-	// ----------------
-	// HEADER
-	// ----------------
-	.header {
-		background-color: $gray-900;
-		border-bottom: 4px solid $purple-500;
+	// CRT Screen Effect
+	.crt-screen {
+		@include crt-curve;
+
+		&::before {
+			content: '';
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: repeating-linear-gradient(
+				0deg,
+				rgba(0, 0, 0, 0.1) 0px,
+				rgba(0, 0, 0, 0.1) 1px,
+				transparent 1px,
+				transparent 2px
+			);
+			pointer-events: none;
+			z-index: 9999;
+		}
+	}
+
+	// Arcade Header
+	.arcade-header {
+		background: linear-gradient(180deg, $gray-900 0%, $gray-800 100%);
+		border-bottom: 6px solid $purple-500;
+		box-shadow:
+			0 4px 0 $purple-700,
+			0 8px 20px rgba(0, 0, 0, 0.5);
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		@include pixel-shadow(4px, $purple-700);
 	}
 
 	.header-content {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding-top: $space-4;
-		padding-bottom: $space-4;
-		gap: $space-4;
+		padding: $space-4 $space-6;
+		gap: $space-6;
 
 		@include mobile {
 			flex-direction: column;
+			padding: $space-3;
 			gap: $space-3;
 		}
 	}
 
-	// ----------------
-	// LOGO
-	// ----------------
-	.logo {
-		flex-shrink: 0;
-	}
-
-	.logo-link {
+	// Logo
+	.logo-arcade {
 		display: flex;
 		align-items: center;
-		gap: $space-3;
+		gap: $space-4;
 		@include transition(transform);
 
 		&:hover {
 			transform: scale(1.05);
 		}
-	}
 
-	.logo-icon {
-		font-size: $text-2xl;
-		@include float(2s);
-	}
+		.logo-screen {
+			padding: $space-2;
+			background: $gray-800;
+			border: 4px solid $purple-500;
+			@include retro-glow($pink-500);
+			@include float(3s);
+		}
 
-	.logo-text {
-		font-family: $font-pixel-heading;
-		font-size: $text-xl;
-		color: $pink-500;
-		@include pixel-text-shadow($purple-500);
+		.logo-text {
+			display: flex;
+			flex-direction: column;
+			gap: $space-1;
+		}
 
-		@include mobile {
-			font-size: $text-lg;
+		.logo-name {
+			font-family: $font-pixel-heading;
+			font-size: $text-2xl;
+			color: $pink-500;
+			text-shadow:
+				2px 2px 0 $purple-700,
+				0 0 10px $pink-500;
+			position: relative;
+
+			&.glitch {
+				@include glitch-effect;
+			}
+		}
+
+		.logo-subtitle {
+			font-family: $font-pixel-body;
+			font-size: $text-xs;
+			color: $purple-400;
+			letter-spacing: 0.1em;
 		}
 	}
 
-	// ----------------
-	// NAVIGATION
-	// ----------------
-	.nav {
-		flex-grow: 1;
-		display: flex;
-		justify-content: flex-end;
-
-		@include mobile {
-			width: 100%;
-			justify-content: center;
-		}
-	}
-
-	.nav-list {
-		display: flex;
-		gap: $space-2;
-		list-style: none;
-		padding: 0;
-		margin: 0;
-
-		@include mobile {
-			flex-wrap: wrap;
-			justify-content: center;
-			gap: $space-2;
-		}
-	}
-
-	.nav-link {
-		display: flex;
-		align-items: center;
-		gap: $space-2;
-		padding: $space-3 $space-4;
-		background-color: $gray-800;
-		border: 2px solid $purple-600;
-		color: $text-primary;
-		font-family: $font-pixel-body;
-		font-size: $text-base;
-		@include transition(all);
+	// Arcade Controls (Navigation)
+	.arcade-controls {
 		position: relative;
+	}
 
-		&:hover {
-			background-color: $purple-700;
-			border-color: $purple-400;
-			transform: translateY(-2px);
-			@include pixel-shadow(2px, $purple-500);
-		}
+	.menu-toggle {
+		display: none;
+		flex-direction: column;
+		gap: 4px;
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: $space-2;
 
-		&.active {
-			background-color: $purple-600;
-			border-color: $pink-500;
-			@include pixel-shadow(2px, $pink-500);
+		span {
+			width: 30px;
+			height: 4px;
+			background: $purple-400;
+			@include transition(all);
 		}
 
 		@include mobile {
-			padding: $space-2 $space-3;
-			font-size: $text-sm;
+			display: flex;
 		}
 	}
 
-	.nav-icon {
-		font-size: $text-lg;
+	.controls-panel {
+		display: flex;
+		gap: $space-2;
+		flex-wrap: wrap;
 
 		@include mobile {
-			font-size: $text-base;
-		}
-	}
-
-	.nav-label {
-		@include mobile {
+			position: absolute;
+			top: 100%;
+			right: 0;
+			background: $gray-900;
+			border: 4px solid $purple-500;
+			padding: $space-4;
+			flex-direction: column;
+			min-width: 200px;
 			display: none;
-		}
 
-		@include respond-to($breakpoint-sm) {
-			display: inline;
+			&.open {
+				display: flex;
+			}
 		}
 	}
 
-	// ----------------
-	// MAIN CONTENT
-	// ----------------
-	.main {
+	.control-btn {
+		position: relative;
+		display: block;
+		@include transition(all);
+
+		.btn-face {
+			position: relative;
+			z-index: 2;
+			display: flex;
+			align-items: center;
+			gap: $space-2;
+			padding: $space-3 $space-4;
+			background: linear-gradient(180deg, $gray-700 0%, $gray-800 100%);
+			border: 3px solid $purple-600;
+			border-radius: 4px;
+			@include transition(all);
+
+			.btn-label {
+				font-family: $font-pixel-body;
+				font-size: $text-sm;
+				color: $purple-300;
+				white-space: nowrap;
+
+				@include mobile {
+					font-size: $text-xs;
+				}
+			}
+		}
+
+		.btn-shadow {
+			position: absolute;
+			bottom: -4px;
+			left: 0;
+			right: 0;
+			height: 6px;
+			background: $purple-800;
+			border-radius: 0 0 4px 4px;
+			@include transition(all);
+		}
+
+		&:hover .btn-face {
+			transform: translateY(-2px);
+			border-color: $purple-400;
+			box-shadow: 0 0 15px rgba($purple-500, 0.5);
+		}
+
+		&:active .btn-face {
+			transform: translateY(2px);
+		}
+
+		&:active .btn-shadow {
+			height: 2px;
+		}
+
+		&.active .btn-face {
+			background: linear-gradient(180deg, $purple-700 0%, $purple-800 100%);
+			border-color: $pink-500;
+			@include retro-glow($pink-500);
+
+			.btn-label {
+				color: $pink-400;
+			}
+		}
+	}
+
+	// LED Strip
+	.led-strip {
+		display: flex;
+		justify-content: space-evenly;
+		padding: $space-2 0;
+		background: $gray-900;
+		border-top: 2px solid $gray-700;
+	}
+
+	.led {
+		width: 8px;
+		height: 8px;
+		border-radius: 50%;
+		background: $purple-600;
+		box-shadow: 0 0 10px $purple-500;
+		animation: led-blink 2s ease-in-out infinite;
+		animation-delay: var(--delay, 0s);
+	}
+
+	@keyframes led-blink {
+		0%, 100% {
+			opacity: 0.3;
+		}
+		50% {
+			opacity: 1;
+			box-shadow: 0 0 15px $purple-400;
+		}
+	}
+
+	// Main Screen
+	.main-screen {
 		flex-grow: 1;
-		width: 100%;
-		padding-top: $space-8;
-		padding-bottom: $space-8;
+		position: relative;
+		padding: $space-8 0;
+
+		@include mobile {
+			padding: $space-4 0;
+		}
 	}
 
-	// ----------------
-	// FOOTER
-	// ----------------
-	.footer {
-		background-color: $gray-900;
-		border-top: 4px solid $purple-500;
+	.scanlines {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: repeating-linear-gradient(
+			0deg,
+			rgba(0, 0, 0, 0.05) 0px,
+			rgba(0, 0, 0, 0.05) 2px,
+			transparent 2px,
+			transparent 4px
+		);
+		pointer-events: none;
+		z-index: 1;
+		animation: scanline-move 8s linear infinite;
+	}
+
+	@keyframes scanline-move {
+		0% {
+			transform: translateY(0);
+		}
+		100% {
+			transform: translateY(8px);
+		}
+	}
+
+	// Arcade Footer
+	.arcade-footer {
+		background: linear-gradient(180deg, $gray-800 0%, $gray-900 100%);
+		border-top: 6px solid $purple-500;
+		box-shadow:
+			0 -4px 0 $purple-700,
+			0 -8px 20px rgba(0, 0, 0, 0.5);
 		margin-top: auto;
-		@include pixel-shadow(-4px, $purple-700);
 	}
 
 	.footer-content {
-		padding-top: $space-6;
-		padding-bottom: $space-6;
-		text-align: center;
-	}
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: $space-6;
+		gap: $space-4;
 
-	.footer-text {
-		margin-bottom: $space-2;
-		font-size: $text-lg;
-
-		.pixel-text {
-			color: $purple-400;
+		@include mobile {
+			flex-direction: column;
+			text-align: center;
+			padding: $space-4;
 		}
 	}
 
-	.footer-copyright {
-		font-size: $text-sm;
-		color: $text-secondary;
+	.footer-display {
+		display: flex;
+		align-items: center;
+		gap: $space-3;
+
+		.pixel-heart {
+			@include pulse;
+		}
+
+		.footer-text {
+			font-family: $font-pixel-body;
+			font-size: $text-sm;
+			color: $purple-400;
+			letter-spacing: 0.05em;
+		}
+	}
+
+	.footer-score {
+		display: flex;
+		gap: $space-2;
+		align-items: center;
 		font-family: $font-pixel-body;
+
+		.label {
+			font-size: $text-xs;
+			color: $text-secondary;
+		}
+
+		.value {
+			font-size: $text-lg;
+			color: $pink-500;
+			font-weight: bold;
+		}
+	}
+
+	.footer-credits {
+		.credit-text {
+			font-family: $font-pixel-body;
+			font-size: $text-xs;
+			color: $cyan-400;
+			animation: blink 1.5s step-end infinite;
+		}
+	}
+
+	@keyframes blink {
+		0%, 50% {
+			opacity: 1;
+		}
+		51%, 100% {
+			opacity: 0;
+		}
 	}
 </style>

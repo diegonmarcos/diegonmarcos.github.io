@@ -1,382 +1,469 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	// Home page with hero section
+	import PixelIcon from '$lib/components/icons/PixelIcon.svelte';
+	import PixelParticles from '$lib/components/effects/PixelParticles.svelte';
+
+	// Card data for masonry grid
+	const cards = [
+		{
+			type: 'hero',
+			title: "Diego's Pixel Universe",
+			subtitle: 'Where retro gaming meets modern life',
+			color: 'purple',
+			size: 'large'
+		},
+		{
+			type: 'game',
+			title: 'Super Mario',
+			icon: 'mario',
+			href: `${base}/mario`,
+			color: 'red',
+			size: 'medium'
+		},
+		{
+			type: 'game',
+			title: 'Pac-Man',
+			icon: 'pacman',
+			href: `${base}/pac-man`,
+			color: 'yellow',
+			size: 'medium'
+		},
+		{
+			type: 'game',
+			title: 'Flappy Bird',
+			icon: 'bird',
+			href: `${base}/clumsy-bird`,
+			color: 'cyan',
+			size: 'medium'
+		},
+		{
+			type: 'feature',
+			title: 'Photo Gallery',
+			description: 'Travel memories & adventures',
+			icon: 'photo',
+			href: `${base}/photos`,
+			color: 'pink',
+			size: 'large'
+		},
+		{
+			type: 'feature',
+			title: 'Music Vibes',
+			description: 'Spotify playlists & favorites',
+			icon: 'music',
+			href: `${base}/music`,
+			color: 'purple',
+			size: 'medium'
+		},
+		{
+			type: 'feature',
+			title: 'Activity Stats',
+			description: 'Fitness & endurance tracking',
+			icon: 'stats',
+			href: `${base}/stats`,
+			color: 'green',
+			size: 'medium'
+		},
+		{
+			type: 'social',
+			title: 'Connect',
+			items: ['GitHub', 'Strava', 'Spotify'],
+			size: 'small',
+			color: 'cyan'
+		},
+		{
+			type: 'quote',
+			text: 'Life is a game, make it pixelated',
+			size: 'medium',
+			color: 'pink'
+		}
+	];
 </script>
 
-<div class="home">
-	<!-- Hero Section -->
-	<section class="hero">
-		<div class="hero-content container">
-			<div class="hero-avatar">
-				<div class="avatar-pixel">
-					🎮
-				</div>
-			</div>
+<PixelParticles />
 
-			<h1 class="hero-title">
-				<span class="title-line">Diego's</span>
-				<span class="title-line accent">Digital Space</span>
-			</h1>
+<div class="pixel-home">
+	<!-- Parallax Background Layers -->
+	<div class="parallax-bg layer-1"></div>
+	<div class="parallax-bg layer-2"></div>
+	<div class="parallax-bg layer-3"></div>
 
-			<p class="hero-subtitle">
-				A pixel-perfect collection of photos, music, and adventures
-			</p>
-
-			<iframe
-			  src="{base}/clumsy-bird-game/index.html"
-			  style="width: 100%; max-width: 800px; border: 0; margin-top: 2rem; margin-bottom: 2rem;"
-			  title="Clumsy Bird Game"
-			></iframe>
-
-			<div class="hero-links">
-				<a href="{base}/photos" class="hero-link primary">
-					<span class="link-icon">📷</span>
-					<span class="link-text">Explore Photos</span>
-				</a>
-				<a href="{base}/music" class="hero-link secondary">
-					<span class="link-icon">🎵</span>
-					<span class="link-text">My Music</span>
-				</a>
-				<a href="{base}/stats" class="hero-link secondary">
-					<span class="link-icon">📊</span>
-					<span class="link-text">View Stats</span>
-				</a>
-				<a href="{base}/mario" class="hero-link secondary">
-					<span class="link-icon">🍄</span>
-					<span class="link-text">Play Mario</span>
-				</a>
-				<a href="{base}/pac-man" class="hero-link secondary">
-					<span class="link-icon">👻</span>
-					<span class="link-text">Play Pac-Man</span>
-				</a>
-				<a href="{base}/clumsy-bird" class="hero-link secondary">
-					<span class="link-icon">🐦</span>
-					<span class="link-text">Play Flappy Bird</span>
-				</a>
-			</div>
+	<!-- Main Content -->
+	<div class="container">
+		<!-- Masonry Grid -->
+		<div class="masonry-grid">
+			{#each cards as card, i}
+				{#if card.type === 'hero'}
+					<div class="card card-hero card-{card.size} color-{card.color}" data-index={i}>
+						<div class="card-content">
+							<div class="glitch-title" data-text={card.title}>
+								<h1>{card.title}</h1>
+							</div>
+							<p class="subtitle">{card.subtitle}</p>
+							<div class="pixel-avatar">
+								<PixelIcon icon="profile" size={80} color="#ec4899" />
+							</div>
+						</div>
+						<div class="card-glow"></div>
+					</div>
+				{:else if card.type === 'game'}
+					<a
+						href={card.href}
+						class="card card-game card-{card.size} color-{card.color}"
+						data-index={i}
+					>
+						<div class="card-content">
+							<div class="icon-wrapper">
+								<PixelIcon icon={card.icon} size={64} color="currentColor" />
+							</div>
+							<h3>{card.title}</h3>
+							<div class="arcade-btn">PLAY</div>
+						</div>
+						<div class="card-scanlines"></div>
+					</a>
+				{:else if card.type === 'feature'}
+					<a
+						href={card.href}
+						class="card card-feature card-{card.size} color-{card.color}"
+						data-index={i}
+					>
+						<div class="card-content">
+							<div class="icon-wrapper">
+								<PixelIcon icon={card.icon} size={48} color="currentColor" />
+							</div>
+							<h3>{card.title}</h3>
+							<p class="description">{card.description}</p>
+						</div>
+						<div class="hover-effect"></div>
+					</a>
+				{:else if card.type === 'social'}
+					<div class="card card-social card-{card.size} color-{card.color}" data-index={i}>
+						<div class="card-content">
+							<h4>{card.title}</h4>
+							<div class="social-icons">
+								{#each card.items as item}
+									<div class="social-item">{item}</div>
+								{/each}
+							</div>
+						</div>
+					</div>
+				{:else if card.type === 'quote'}
+					<div class="card card-quote card-{card.size} color-{card.color}" data-index={i}>
+						<div class="card-content">
+							<blockquote>"{card.text}"</blockquote>
+						</div>
+					</div>
+				{/if}
+			{/each}
 		</div>
-
-		<!-- Decorative pixel elements -->
-		<div class="pixel-decoration top-left"></div>
-		<div class="pixel-decoration top-right"></div>
-		<div class="pixel-decoration bottom-left"></div>
-		<div class="pixel-decoration bottom-right"></div>
-	</section>
-
-	<!-- Quick Info Section -->
-	<section class="quick-info">
-		<div class="container">
-			<div class="info-grid">
-				<div class="info-card">
-					<div class="info-icon">📷</div>
-					<h3 class="info-title">Photo Albums</h3>
-					<p class="info-description">
-						Browse through moments captured from travels, events, and adventures
-					</p>
-				</div>
-
-				<div class="info-card">
-					<div class="info-icon">🎵</div>
-					<h3 class="info-title">Music Taste</h3>
-					<p class="info-description">
-						Discover my playlists, favorite tracks, and artists from Spotify
-					</p>
-				</div>
-
-				<div class="info-card">
-					<div class="info-icon">📊</div>
-					<h3 class="info-title">Activity Stats</h3>
-					<p class="info-description">
-						Track endurance activities, achievements, and fitness milestones
-					</p>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<!-- Coming Soon Badge -->
-	<section class="status-badge">
-		<div class="container">
-			<div class="badge">
-				<span class="badge-icon">🚧</span>
-				<span class="badge-text">Currently under construction - More features coming soon!</span>
-				<span class="badge-icon">🚧</span>
-			</div>
-		</div>
-	</section>
+	</div>
 </div>
 
 <style lang="scss">
 	@use '../styles/abstracts/variables' as *;
 	@use '../styles/abstracts/mixins' as *;
+	@use '../styles/effects/crt' as *;
 
-	.home {
-		width: 100%;
-	}
-
-	// ----------------
-	// HERO SECTION
-	// ----------------
-	.hero {
+	.pixel-home {
 		position: relative;
-		min-height: 80vh;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: linear-gradient(135deg, $gray-900 0%, $background 50%, $purple-900 100%);
+		min-height: 100vh;
 		overflow: hidden;
-		padding: $space-12 0;
+		padding: $space-16 0;
 
 		@include mobile {
-			min-height: 60vh;
 			padding: $space-8 0;
 		}
 	}
 
-	.hero-content {
-		text-align: center;
-		z-index: 2;
-	}
+	// Parallax Background Layers
+	.parallax-bg {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		opacity: 0.1;
 
-	.hero-avatar {
-		margin-bottom: $space-8;
-		@include flex-center;
-	}
+		&.layer-1 {
+			background: radial-gradient(circle at 20% 50%, $purple-900 0%, transparent 50%);
+			animation: parallax-1 20s ease-in-out infinite;
+		}
 
-	.avatar-pixel {
-		font-size: clamp(4rem, 10vw, 8rem);
-		@include float(3s);
-		filter: drop-shadow(0 0 20px rgba($purple-500, 0.5));
-	}
+		&.layer-2 {
+			background: radial-gradient(circle at 80% 50%, $pink-500 0%, transparent 50%);
+			animation: parallax-2 15s ease-in-out infinite;
+		}
 
-	.hero-title {
-		font-family: $font-pixel-heading;
-		font-size: $text-3xl;
-		margin-bottom: $space-6;
-		line-height: $leading-tight;
-
-		.title-line {
-			display: block;
-			margin-bottom: $space-2;
-
-			&.accent {
-				color: $pink-500;
-				@include pixel-text-shadow($purple-500);
-				@include shimmer;
-			}
+		&.layer-3 {
+			background: radial-gradient(circle at 50% 80%, $cyan-400 0%, transparent 50%);
+			animation: parallax-3 25s ease-in-out infinite;
 		}
 	}
 
-	.hero-subtitle {
-		font-family: $font-pixel-body;
-		font-size: $text-xl;
-		color: $text-secondary;
-		margin-bottom: $space-8;
-		max-width: 600px;
-		margin-left: auto;
-		margin-right: auto;
-
-		@include mobile {
-			font-size: $text-lg;
+	@keyframes parallax-1 {
+		0%, 100% {
+			transform: translate(0, 0);
+		}
+		50% {
+			transform: translate(-30px, 30px);
 		}
 	}
 
-	.hero-links {
-		display: flex;
-		gap: $space-4;
-		justify-content: center;
-		flex-wrap: wrap;
+	@keyframes parallax-2 {
+		0%, 100% {
+			transform: translate(0, 0);
+		}
+		50% {
+			transform: translate(30px, -30px);
+		}
 	}
 
-	.hero-link {
-		display: inline-flex;
-		align-items: center;
-		gap: $space-3;
-		padding: $space-4 $space-6;
-		font-family: $font-pixel-body;
-		font-size: $text-lg;
-		border: 3px solid;
-		@include transition(all);
+	@keyframes parallax-3 {
+		0%, 100% {
+			transform: translate(0, 0);
+		}
+		50% {
+			transform: translate(20px, 20px);
+		}
+	}
+
+	// Masonry Grid
+	.masonry-grid {
 		position: relative;
-
-		&.primary {
-			background-color: $purple-600;
-			border-color: $purple-400;
-			color: $text-primary;
-
-			&:hover {
-				background-color: $purple-500;
-				border-color: $pink-500;
-				transform: translateY(-4px);
-				@include pixel-shadow(4px, $pink-500);
-			}
-		}
-
-		&.secondary {
-			background-color: transparent;
-			border-color: $purple-600;
-			color: $purple-400;
-
-			&:hover {
-				background-color: rgba($purple-600, 0.3);
-				border-color: $purple-400;
-				transform: translateY(-4px);
-				@include pixel-shadow(4px, $purple-600);
-			}
-		}
-
-		@include mobile {
-			padding: $space-3 $space-4;
-			font-size: $text-base;
-		}
-	}
-
-	.link-icon {
-		font-size: $text-2xl;
-
-		@include mobile {
-			font-size: $text-xl;
-		}
-	}
-
-	// Decorative pixel elements
-	.pixel-decoration {
-		position: absolute;
-		width: 40px;
-		height: 40px;
-		background-color: $purple-500;
-		@include pixel-shadow(4px, $purple-700);
-		opacity: 0.3;
-
-		&.top-left {
-			top: 10%;
-			left: 5%;
-			@include float(4s);
-		}
-
-		&.top-right {
-			top: 15%;
-			right: 8%;
-			@include float(5s);
-		}
-
-		&.bottom-left {
-			bottom: 15%;
-			left: 10%;
-			@include float(6s);
-		}
-
-		&.bottom-right {
-			bottom: 10%;
-			right: 5%;
-			@include float(3.5s);
-		}
-
-		@include mobile {
-			width: 20px;
-			height: 20px;
-		}
-	}
-
-	// ----------------
-	// QUICK INFO SECTION
-	// ----------------
-	.quick-info {
-		padding: $space-16 0;
-		background-color: $background;
-
-		@include mobile {
-			padding: $space-12 0;
-		}
-	}
-
-	.info-grid {
+		z-index: 2;
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: $space-8;
+		grid-auto-rows: 200px;
+		gap: $space-6;
+		padding: $space-4;
 
 		@include mobile {
 			grid-template-columns: 1fr;
-			gap: $space-6;
+			grid-auto-rows: 180px;
+			gap: $space-4;
 		}
 	}
 
-	.info-card {
-		background-color: $gray-800;
-		border: 3px solid $purple-700;
-		padding: $space-8;
-		text-align: center;
+	// Card Base Styles
+	.card {
+		position: relative;
+		border: 4px solid currentColor;
+		background: rgba($gray-900, 0.9);
+		backdrop-filter: blur(10px);
+		padding: $space-6;
+		cursor: pointer;
+		overflow: hidden;
 		@include transition(all);
+		image-rendering: pixelated;
 
-		&:hover {
+		// Size variants
+		&.card-large {
+			grid-row: span 2;
+			grid-column: span 2;
+
+			@include mobile {
+				grid-column: span 1;
+			}
+		}
+
+		&.card-medium {
+			grid-row: span 1;
+		}
+
+		&.card-small {
+			grid-row: span 1;
+		}
+
+		// Color variants
+		&.color-purple {
+			color: $purple-400;
 			border-color: $purple-500;
-			transform: translateY(-8px);
-			@include pixel-shadow(4px, $purple-500);
+		}
+
+		&.color-pink {
+			color: $pink-500;
+			border-color: $pink-500;
+		}
+
+		&.color-cyan {
+			color: $cyan-400;
+			border-color: $cyan-400;
+		}
+
+		&.color-yellow {
+			color: $yellow-400;
+			border-color: $yellow-400;
+		}
+
+		&.color-red {
+			color: #ef4444;
+			border-color: #ef4444;
+		}
+
+		&.color-green {
+			color: #22c55e;
+			border-color: #22c55e;
+		}
+
+		// Hover effects
+		&:hover {
+			transform: translateY(-8px) scale(1.02);
+			@include retro-glow(currentColor);
+			box-shadow:
+				0 0 20px currentColor,
+				0 0 40px currentColor,
+				0 8px 32px rgba(0, 0, 0, 0.5);
+		}
+
+		// Stagger animation
+		animation: card-enter 0.6s ease-out backwards;
+		animation-delay: calc(var(--index, 0) * 0.05s);
+	}
+
+	@keyframes card-enter {
+		from {
+			opacity: 0;
+			transform: translateY(40px) scale(0.9);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0) scale(1);
 		}
 	}
 
-	.info-icon {
-		font-size: clamp(3rem, 6vw, 4rem);
-		margin-bottom: $space-4;
-		@include pulse;
-	}
-
-	.info-title {
-		font-family: $font-pixel-heading;
-		font-size: $text-lg;
-		color: $purple-400;
-		margin-bottom: $space-3;
-	}
-
-	.info-description {
-		font-family: $font-pixel-body;
-		font-size: $text-base;
-		color: $text-secondary;
-		line-height: $leading-relaxed;
-	}
-
-	// ----------------
-	// STATUS BADGE
-	// ----------------
-	.status-badge {
-		padding: $space-8 0 $space-12 0;
-
-		@include mobile {
-			padding: $space-6 0 $space-8 0;
-		}
-	}
-
-	.badge {
-		display: inline-flex;
+	.card-content {
+		position: relative;
+		z-index: 2;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
 		align-items: center;
+		text-align: center;
 		gap: $space-3;
-		padding: $space-4 $space-6;
-		background-color: rgba($yellow-400, 0.1);
-		border: 2px solid $yellow-400;
-		color: $yellow-400;
-		font-family: $font-pixel-body;
-		font-size: $text-base;
-		margin: 0 auto;
-		@include pulse;
+	}
 
-		@include mobile {
-			flex-direction: column;
-			text-align: center;
-			padding: $space-3;
+	// Hero Card
+	.card-hero {
+		.glitch-title {
+			@include glitch-effect;
+			position: relative;
+
+			h1 {
+				font-family: $font-pixel-heading;
+				font-size: clamp(2rem, 5vw, 3.5rem);
+				margin: 0;
+			}
+		}
+
+		.subtitle {
+			font-family: $font-pixel-body;
+			font-size: $text-lg;
+			color: $text-secondary;
+			margin: $space-4 0;
+		}
+
+		.pixel-avatar {
+			margin-top: $space-4;
+			animation: float 3s ease-in-out infinite;
 		}
 	}
 
-	.badge-icon {
-		font-size: $text-xl;
+	// Game Cards
+	.card-game {
+		.icon-wrapper {
+			@include float(3s);
+		}
 
-		@include mobile {
-			display: none;
+		h3 {
+			font-family: $font-pixel-heading;
+			font-size: $text-xl;
+			margin: $space-2 0;
+		}
+
+		.arcade-btn {
+			margin-top: $space-4;
+			padding: $space-2 $space-6;
+			background: currentColor;
+			color: $background;
+			font-family: $font-pixel-body;
+			font-weight: bold;
+			border: 3px solid currentColor;
+			@include transition(all);
+			animation: pulse 2s ease-in-out infinite;
+		}
+
+		&:hover .arcade-btn {
+			transform: scale(1.1);
+			box-shadow: 0 0 20px currentColor;
+		}
+
+		.card-scanlines {
+			@include crt-scanlines;
 		}
 	}
 
-	.badge-text {
-		@include mobile {
+	// Feature Cards
+	.card-feature {
+		.icon-wrapper {
+			@include pulse;
+		}
+
+		h3 {
+			font-family: $font-pixel-heading;
+			font-size: $text-lg;
+			margin: $space-2 0;
+		}
+
+		.description {
+			font-family: $font-pixel-body;
 			font-size: $text-sm;
+			color: $text-secondary;
+		}
+	}
+
+	// Social Card
+	.card-social {
+		h4 {
+			font-family: $font-pixel-heading;
+			font-size: $text-base;
+			margin-bottom: $space-3;
+		}
+
+		.social-icons {
+			display: flex;
+			flex-direction: column;
+			gap: $space-2;
+		}
+
+		.social-item {
+			font-family: $font-pixel-body;
+			font-size: $text-sm;
+			padding: $space-1 $space-3;
+			background: rgba(currentColor, 0.1);
+			border: 2px solid currentColor;
+			@include transition(all);
+
+			&:hover {
+				background: rgba(currentColor, 0.3);
+				transform: translateX(4px);
+			}
+		}
+	}
+
+	// Quote Card
+	.card-quote {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		blockquote {
+			font-family: $font-pixel-body;
+			font-size: $text-lg;
+			font-style: italic;
+			color: currentColor;
+			margin: 0;
+			line-height: 1.6;
 		}
 	}
 </style>

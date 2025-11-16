@@ -49,6 +49,10 @@
 					<span class="link-icon">👻</span>
 					<span class="link-text">Play Pac-Man</span>
 				</a>
+				<a href="{base}/clumsy-bird" class="hero-link secondary">
+					<span class="link-icon">🐦</span>
+					<span class="link-text">Play Flappy Bird</span>
+				</a>
 			</div>
 		</div>
 

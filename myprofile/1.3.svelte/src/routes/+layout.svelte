@@ -67,6 +67,12 @@
 							<span class="nav-label">Pac-Man</span>
 						</a>
 					</li>
+					<li class="nav-item">
+						<a href="{base}/clumsy-bird" class="nav-link" class:active={currentPath === `${base}/clumsy-bird`}>
+							<span class="nav-icon">🐦</span>
+							<span class="nav-label">Flappy Bird</span>
+						</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

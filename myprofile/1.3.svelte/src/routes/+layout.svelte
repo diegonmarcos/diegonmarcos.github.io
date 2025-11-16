@@ -16,7 +16,7 @@
 
 <svelte:head>
 	<title>Diego's Profile - Pixel Art Personal Space</title>
-	<meta name="description" content="Personal profile showcasing photos, music, and fitness adventures" />
+	<meta name="description" content="Personal profile showcasing photos, music, and adventures" />
 </svelte:head>
 
 <div class="app-container">

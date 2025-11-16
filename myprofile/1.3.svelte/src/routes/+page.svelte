@@ -22,6 +22,12 @@
 				A pixel-perfect collection of photos, music, and adventures
 			</p>
 
+			<iframe
+			  src="{base}/clumsy-bird-game/index.html"
+			  style="width: 100%; max-width: 800px; height: 600px; border: 0; margin-top: 2rem; margin-bottom: 2rem;"
+			  title="Clumsy Bird Game"
+			></iframe>
+
 			<div class="hero-links">
 				<a href="{base}/photos" class="hero-link primary">
 					<span class="link-icon">📷</span>
@@ -34,6 +40,10 @@
 				<a href="{base}/stats" class="hero-link secondary">
 					<span class="link-icon">📊</span>
 					<span class="link-text">View Stats</span>
+				</a>
+				<a href="{base}/mario" class="hero-link secondary">
+					<span class="link-icon">🍄</span>
+					<span class="link-text">Play Mario</span>
 				</a>
 			</div>
 		</div>

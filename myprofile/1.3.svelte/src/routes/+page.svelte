@@ -534,7 +534,7 @@
 			border-radius: 4px;
 			overflow: hidden;
 			background: $gray-900;
-			box-shadow: 0 0 20px rgba(currentColor, 0.3);
+			filter: drop-shadow(0 0 20px currentColor);
 
 			.game-embed {
 				position: absolute;

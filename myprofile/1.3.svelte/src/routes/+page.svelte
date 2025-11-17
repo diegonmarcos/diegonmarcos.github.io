@@ -22,31 +22,28 @@
 			description: 'Play now! Tap sides for flippers. Mobile optimized.'
 		},
 		{
-			type: 'embedded',
-			title: 'Super Mario Bros',
-			embedUrl: `${base}/mario-game/index.html`,
+			type: 'game',
+			title: 'Super Mario',
+			icon: 'mario',
 			href: `${base}/mario`,
 			color: 'red',
-			size: 'medium',
-			description: 'Classic platformer preview'
+			size: 'medium'
 		},
 		{
-			type: 'embedded',
+			type: 'game',
 			title: 'Pac-Man',
-			embedUrl: `${base}/pac-man-game/index.html`,
+			icon: 'pacman',
 			href: `${base}/pac-man`,
 			color: 'yellow',
-			size: 'medium',
-			description: 'Arcade classic preview'
+			size: 'medium'
 		},
 		{
-			type: 'embedded',
+			type: 'game',
 			title: 'Flappy Bird',
-			embedUrl: `${base}/clumsy-bird-game/index.html`,
+			icon: 'bird',
 			href: `${base}/clumsy-bird`,
 			color: 'cyan',
-			size: 'medium',
-			description: 'Tap to flap preview'
+			size: 'medium'
 		},
 		{
 			type: 'feature',
@@ -101,6 +98,29 @@
 
 	<!-- Main Content -->
 	<div class="container">
+		<!-- Games Quick Menu -->
+		<div class="games-menu">
+			<h2 class="menu-title">🎮 Quick Play</h2>
+			<div class="menu-games">
+				<a href="{base}/pinball" class="menu-game color-purple">
+					<PixelIcon icon="pinball" size={48} color="#a855f7" />
+					<span>Pinball</span>
+				</a>
+				<a href="{base}/mario" class="menu-game color-red">
+					<PixelIcon icon="mario" size={48} color="#ef4444" />
+					<span>Mario</span>
+				</a>
+				<a href="{base}/pac-man" class="menu-game color-yellow">
+					<PixelIcon icon="pacman" size={48} color="#facc15" />
+					<span>Pac-Man</span>
+				</a>
+				<a href="{base}/clumsy-bird" class="menu-game color-cyan">
+					<PixelIcon icon="bird" size={48} color="#22d3ee" />
+					<span>Flappy</span>
+				</a>
+			</div>
+		</div>
+
 		<!-- Masonry Grid -->
 		<div class="masonry-grid">
 			{#each cards as card, i}
@@ -253,6 +273,102 @@
 		}
 		50% {
 			transform: translate(20px, 20px);
+		}
+	}
+
+	// Games Quick Menu
+	.games-menu {
+		position: relative;
+		z-index: 2;
+		margin-bottom: $space-12;
+		text-align: center;
+
+		.menu-title {
+			font-family: $font-pixel-heading;
+			font-size: clamp(1.5rem, 3vw, 2rem);
+			color: $pink-500;
+			margin-bottom: $space-6;
+			text-shadow: 2px 2px 0 $purple-700;
+		}
+
+		.menu-games {
+			display: flex;
+			justify-content: center;
+			gap: $space-6;
+			flex-wrap: wrap;
+
+			@include mobile {
+				gap: $space-4;
+			}
+		}
+
+		.menu-game {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: $space-3;
+			padding: $space-6;
+			background: rgba($gray-900, 0.9);
+			border: 4px solid;
+			border-radius: 8px;
+			min-width: 120px;
+			@include transition(all);
+			backdrop-filter: blur(10px);
+
+			span {
+				font-family: $font-pixel-body;
+				font-size: $text-base;
+				color: $text-primary;
+			}
+
+			&.color-purple {
+				border-color: $purple-500;
+
+				&:hover {
+					background: rgba($purple-700, 0.5);
+					transform: translateY(-8px);
+					box-shadow: 0 0 30px $purple-500;
+				}
+			}
+
+			&.color-red {
+				border-color: #ef4444;
+
+				&:hover {
+					background: rgba(#ef4444, 0.2);
+					transform: translateY(-8px);
+					box-shadow: 0 0 30px #ef4444;
+				}
+			}
+
+			&.color-yellow {
+				border-color: $yellow-400;
+
+				&:hover {
+					background: rgba($yellow-400, 0.2);
+					transform: translateY(-8px);
+					box-shadow: 0 0 30px $yellow-400;
+				}
+			}
+
+			&.color-cyan {
+				border-color: $cyan-400;
+
+				&:hover {
+					background: rgba($cyan-400, 0.2);
+					transform: translateY(-8px);
+					box-shadow: 0 0 30px $cyan-400;
+				}
+			}
+
+			@include mobile {
+				min-width: 90px;
+				padding: $space-4;
+
+				span {
+					font-size: $text-sm;
+				}
+			}
 		}
 	}
 

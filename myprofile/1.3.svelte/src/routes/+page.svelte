@@ -14,36 +14,39 @@
 		},
 		{
 			type: 'embedded',
-			title: 'Google I/O Pinball',
+			title: '🎯 Google I/O Pinball',
 			embedUrl: 'https://pinball.flutter.dev',
 			href: `${base}/pinball`,
 			color: 'purple',
-			size: 'large',
-			description: 'Tap to play! Mobile optimized'
+			size: 'featured',
+			description: 'Play now! Tap sides for flippers. Mobile optimized.'
 		},
 		{
-			type: 'game',
-			title: 'Super Mario',
-			icon: 'mario',
+			type: 'embedded',
+			title: 'Super Mario Bros',
+			embedUrl: `${base}/mario-game/index.html`,
 			href: `${base}/mario`,
 			color: 'red',
-			size: 'medium'
+			size: 'medium',
+			description: 'Classic platformer preview'
 		},
 		{
-			type: 'game',
+			type: 'embedded',
 			title: 'Pac-Man',
-			icon: 'pacman',
+			embedUrl: `${base}/pac-man-game/index.html`,
 			href: `${base}/pac-man`,
 			color: 'yellow',
-			size: 'medium'
+			size: 'medium',
+			description: 'Arcade classic preview'
 		},
 		{
-			type: 'game',
+			type: 'embedded',
 			title: 'Flappy Bird',
-			icon: 'bird',
+			embedUrl: `${base}/clumsy-bird-game/index.html`,
 			href: `${base}/clumsy-bird`,
 			color: 'cyan',
-			size: 'medium'
+			size: 'medium',
+			description: 'Tap to flap preview'
 		},
 		{
 			type: 'feature',
@@ -258,15 +261,15 @@
 		position: relative;
 		z-index: 2;
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		grid-auto-rows: 200px;
-		gap: $space-6;
+		grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+		grid-auto-rows: 250px;
+		gap: $space-8;
 		padding: $space-4;
 
 		@include mobile {
 			grid-template-columns: 1fr;
-			grid-auto-rows: 180px;
-			gap: $space-4;
+			grid-auto-rows: 200px;
+			gap: $space-6;
 		}
 	}
 
@@ -283,6 +286,16 @@
 		image-rendering: pixelated;
 
 		// Size variants
+		&.card-featured {
+			grid-row: span 4;
+			grid-column: span 2;
+
+			@include mobile {
+				grid-column: span 1;
+				grid-row: span 3;
+			}
+		}
+
 		&.card-large {
 			grid-row: span 2;
 			grid-column: span 2;
@@ -293,7 +306,8 @@
 		}
 
 		&.card-medium {
-			grid-row: span 1;
+			grid-row: span 2;
+			grid-column: span 1;
 		}
 
 		&.card-small {
@@ -497,11 +511,11 @@
 		padding: $space-4;
 
 		.card-header {
-			margin-bottom: $space-4;
+			margin-bottom: $space-3;
 
 			h3 {
 				font-family: $font-pixel-heading;
-				font-size: $text-xl;
+				font-size: clamp(1rem, 2.5vw, 1.5rem);
 				margin-bottom: $space-2;
 			}
 
@@ -520,17 +534,7 @@
 			border-radius: 4px;
 			overflow: hidden;
 			background: $gray-900;
-
-			// Maintain aspect ratio
-			&::before {
-				content: '';
-				display: block;
-				padding-top: 133%; // Portrait aspect for pinball
-
-				@include mobile {
-					padding-top: 140%;
-				}
-			}
+			box-shadow: 0 0 20px rgba(currentColor, 0.3);
 
 			.game-embed {
 				position: absolute;
@@ -550,7 +554,7 @@
 			font-size: $text-sm;
 			color: currentColor;
 			text-decoration: none;
-			padding: $space-2;
+			padding: $space-2 $space-4;
 			border: 2px solid currentColor;
 			@include transition(all);
 
@@ -558,6 +562,35 @@
 				background: currentColor;
 				color: $background;
 				transform: translateY(-2px);
+			}
+		}
+
+		// Featured variant (Pinball)
+		&.card-featured {
+			.card-header h3 {
+				font-size: clamp(1.5rem, 3vw, 2rem);
+				text-align: center;
+			}
+
+			.embed-description {
+				text-align: center;
+				font-size: $text-base;
+			}
+
+			.embed-container {
+				border-width: 4px;
+			}
+
+			.fullscreen-link {
+				font-size: $text-base;
+				padding: $space-3 $space-6;
+			}
+		}
+
+		// Medium variant (other games)
+		&.card-medium {
+			.embed-container {
+				min-height: 300px;
 			}
 		}
 	}

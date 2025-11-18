@@ -46,6 +46,19 @@ jobs:
           ls -lh cv_web/style.css
 
       # ============================================
+      # MYFEED VUE APP BUILD
+      # ============================================
+      - name: 🚀 Build MyFeed Vue Application
+        run: |
+          echo "📁 Building MyFeed Vue app..."
+          cd myfeed
+          npm install
+          npm run build
+          cd ..
+          echo "✅ MyFeed production build created"
+          ls -lh myfeed/dist/
+
+      # ============================================
       # JEKYLL BLOG BUILD
       # ============================================
       - name: 💎 Setup Ruby and Jekyll
@@ -86,6 +99,13 @@ jobs:
           cp -r cv_pdf _site/ 2>/dev/null || true
           cp -r assets _site/ 2>/dev/null || true
           cp -r others _site/ 2>/dev/null || true
+
+          # Copy MyFeed Vue app build
+          echo "Copying MyFeed app..."
+          mkdir -p _site/myfeed
+          cp -r myfeed/dist/* _site/myfeed/
+          echo "✅ MyFeed deployed to _site/myfeed/"
+          ls -lah _site/myfeed/
 
           # Copy blog directory (includes both .md and .html files)
           echo "Copying blog directory..."

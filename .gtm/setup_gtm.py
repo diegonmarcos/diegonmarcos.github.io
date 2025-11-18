@@ -512,6 +512,62 @@ function() {
 
         return self.create_trigger('CV - Download Button Click', 'click', filters=filters)
 
+    def create_ui_controls_trigger(self) -> str:
+        """Create UI controls/buttons trigger (theme, font, language toggles)"""
+        filters = [
+            {
+                'type': 'cssSelector',
+                'parameter': [
+                    {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
+                    {'type': 'template', 'key': 'arg1', 'value': '#theme-toggle, #language-toggle-btn, #palette-cycler-btn, #terminal-theme-btn, #desktop-view-toggle, #increase-font-size-btn, #reset-font-size-btn, #background-toggle, #animation-toggle, #clippy-disable, .menu-toggle-btn, .icon-button'}
+                ]
+            }
+        ]
+
+        return self.create_trigger('UI Controls Click', 'click', filters=filters)
+
+    def create_collapsible_toggle_trigger(self) -> str:
+        """Create collapsible button trigger"""
+        filters = [
+            {
+                'type': 'cssSelector',
+                'parameter': [
+                    {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
+                    {'type': 'template', 'key': 'arg1', 'value': '.more-toggle, button.more-toggle, .collapsible-toggle'}
+                ]
+            }
+        ]
+
+        return self.create_trigger('Collapsible Toggle Click', 'click', filters=filters)
+
+    def create_vcard_download_trigger(self) -> str:
+        """Create vCard download trigger"""
+        filters = [
+            {
+                'type': 'contains',
+                'parameter': [
+                    {'type': 'template', 'key': 'arg0', 'value': '{{Click URL}}'},
+                    {'type': 'template', 'key': 'arg1', 'value': '.vcf'}
+                ]
+            }
+        ]
+
+        return self.create_trigger('vCard Download', 'click', filters=filters)
+
+    def create_game_nav_trigger(self) -> str:
+        """Create game/navigation menu trigger for myprofile"""
+        filters = [
+            {
+                'type': 'cssSelector',
+                'parameter': [
+                    {'type': 'template', 'key': 'arg0', 'value': '{{Click Element}}'},
+                    {'type': 'template', 'key': 'arg1', 'value': '.control-btn, .arcade-controls a, nav a'}
+                ]
+            }
+        ]
+
+        return self.create_trigger('Navigation Menu Click', 'click', filters=filters)
+
     def create_all_triggers(self):
         """Create all triggers"""
         print("\n🎯 Creating Triggers...")
@@ -526,6 +582,12 @@ function() {
         self.create_linktree_link_trigger()
         self.create_social_icon_trigger()
         self.create_cv_download_trigger()
+
+        # New interaction triggers
+        self.create_ui_controls_trigger()
+        self.create_collapsible_toggle_trigger()
+        self.create_vcard_download_trigger()
+        self.create_game_nav_trigger()
 
         print(f"✅ Created {len(self.created_items['triggers'])} triggers")
 
@@ -754,6 +816,67 @@ function() {
             [self.get_trigger_id_by_name('CV - Download Button Click')]
         )
 
+    def create_ui_controls_tag(self):
+        """Create UI controls click tracking tag"""
+        params = {
+            'control_type': '{{Click ID}}',
+            'control_text': '{{Click Text}}',
+            'control_class': '{{Click Classes}}',
+            'page_location': '{{Page Path}}'
+        }
+
+        return self.create_ga4_event_tag(
+            'GA4 Event - UI Control Click',
+            'ui_control_click',
+            params,
+            [self.get_trigger_id_by_name('UI Controls Click')]
+        )
+
+    def create_collapsible_toggle_tag(self):
+        """Create collapsible toggle tracking tag"""
+        params = {
+            'toggle_target': '{{Click Attributes.data-target}}',
+            'toggle_text': '{{Click Text}}',
+            'page_location': '{{Page Path}}'
+        }
+
+        return self.create_ga4_event_tag(
+            'GA4 Event - Collapsible Toggle',
+            'collapsible_toggle',
+            params,
+            [self.get_trigger_id_by_name('Collapsible Toggle Click')]
+        )
+
+    def create_vcard_download_tag(self):
+        """Create vCard download tracking tag"""
+        params = {
+            'file_url': '{{Click URL}}',
+            'link_text': '{{Click Text}}',
+            'page_location': '{{Page Path}}'
+        }
+
+        return self.create_ga4_event_tag(
+            'GA4 Event - vCard Download',
+            'vcard_download',
+            params,
+            [self.get_trigger_id_by_name('vCard Download')]
+        )
+
+    def create_game_nav_tag(self):
+        """Create game/navigation menu tracking tag"""
+        params = {
+            'nav_text': '{{Click Text}}',
+            'nav_url': '{{Click URL}}',
+            'nav_location': '{{Page Path}}'
+        }
+
+        return self.create_ga4_event_tag(
+            'GA4 Event - Navigation Click',
+            'navigation_click',
+            params,
+            [self.get_trigger_id_by_name('Navigation Menu Click')]
+        )
+
     def create_session_info_tag(self):
         """Create session info tracking tag"""
         html = """
@@ -860,6 +983,12 @@ function() {
         self.create_linktree_link_tag()
         self.create_social_icon_tag()
         self.create_cv_download_tag()
+
+        # New interaction tags
+        self.create_ui_controls_tag()
+        self.create_collapsible_toggle_tag()
+        self.create_vcard_download_tag()
+        self.create_game_nav_tag()
 
         print(f"✅ Created {len(self.created_items['tags'])} tags")
 

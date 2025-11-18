@@ -33,7 +33,46 @@
 		name="description"
 		content="A pixel art personal space showcasing photos, music, fitness stats, and retro games"
 	/>
+
+	<!-- Cookie Consent CSS -->
+	<link rel="stylesheet" href="/5.analytics/cookie-consent.css">
+
+	<!-- Google Tag Manager Consent Mode -->
+	{@html `
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('consent', 'default', {
+			'ad_storage': 'denied',
+			'analytics_storage': 'denied',
+			'ad_personalization': 'denied',
+			'ad_user_data': 'denied',
+			'wait_for_update': 500
+		});
+		gtag('set', 'ads_data_redaction', true);
+	</script>
+	`}
+
+	<!-- Google Tag Manager -->
+	{@html `
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-TN9SV57D');</script>
+	`}
+	<!-- End Google Tag Manager -->
+
+	<!-- Cookie Consent Script -->
+	<script src="/5.analytics/cookie-consent.js" defer></script>
 </svelte:head>
+
+<!-- Google Tag Manager (noscript) -->
+<noscript>
+	<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN9SV57D"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <div class="app-container crt-screen">
 	<!-- Arcade Header -->

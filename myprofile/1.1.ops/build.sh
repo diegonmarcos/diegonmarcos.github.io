@@ -5,7 +5,7 @@ set -e
 cd "$(dirname "$0")/../1.3.svelte"
 
 # Install dependencies
-npm install --no-bin-links --force
+npm install
 
 # Build the project
 npm run build

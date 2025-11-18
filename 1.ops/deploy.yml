@@ -74,25 +74,8 @@ jobs:
           NODE_ENV: production
 
       # ============================================
-      # JEKYLL BLOG BUILD
+      # DEPLOYMENT PREPARATION
       # ============================================
-      - name: 💎 Setup Ruby and Jekyll
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: false
-
-      - name: 📦 Install Jekyll
-        run: |
-          gem install jekyll bundler
-
-      - name: 🔨 Build Blog HTML (Jekyll)
-        run: |
-          cd blog/1.ops
-          chmod +x build.sh
-          ./build.sh build
-          echo "✅ Blog HTML files generated and copied to blog/ directory"
-
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -129,24 +112,9 @@ jobs:
           echo "✅ MyProfile deployed to _site/myprofile/"
           ls -lah _site/myprofile/
 
-          # Copy blog directory (includes both .md and .html files)
-          echo "Copying blog directory..."
-          mkdir -p _site/blog
-          cp -r blog/* _site/blog/
-
-          # Clean up source files from deployment (keep only HTML)
-          echo "Cleaning up source files..."
-          find _site/blog -name "*.md" -type f -delete
-          rm -f _site/blog/_config.yml
-          rm -f _site/blog/build.sh
-          rm -rf _site/blog/_layouts
-          rm -rf _site/blog/.jekyll-cache
-
           echo "✅ All files prepared for deployment"
           echo "📋 Final site structure:"
           ls -lah _site/
-          echo "📋 Blog directory (HTML only):"
-          ls -lah _site/blog/ || true
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3

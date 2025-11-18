@@ -1,0 +1,58 @@
+// ============================================
+// CUSTOM BASE STYLES
+// ============================================
+// Additional styles beyond Tailwind
+
+:root {
+  // Colors
+  --bg-primary: #{$obsidian-950};
+  --bg-secondary: #{$obsidian-900};
+  --text-primary: rgba(255, 255, 255, 0.95);
+  --text-secondary: rgba(255, 255, 255, 0.7);
+
+  // Spacing
+  --container-max-width: #{$container-max-width};
+  --card-gap: #{$card-gap};
+
+  // Transitions
+  --ease-smooth: #{$ease-smooth};
+  --duration-normal: #{$duration-normal};
+  --duration-slow: #{$duration-slow};
+}
+
+[data-theme='light'] {
+  --bg-primary: #{$obsidian-100};
+  --bg-secondary: #ffffff;
+  --text-primary: #{$obsidian-950};
+  --text-secondary: #{$obsidian-700};
+}
+
+// Custom scrollbar
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $obsidian-950;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, $violet-accent, $obsidian-600);
+  border-radius: 10px;
+
+  &:hover {
+    background: linear-gradient(180deg, $violet-glow, $obsidian-500);
+  }
+}
+
+// Selection
+::selection {
+  background: rgba($violet-accent, 0.3);
+  color: white;
+}
+
+// Focus styles
+:focus-visible {
+  outline: 2px solid $violet-accent;
+  outline-offset: 2px;
+}

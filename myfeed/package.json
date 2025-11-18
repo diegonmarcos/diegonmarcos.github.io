@@ -13,9 +13,8 @@
     "format": "prettier --write \"2.src/**/*.{vue,ts,js,css}\""
   },
   "dependencies": {
-    "vue": "^3.4.0",
-    "@formkit/auto-animate": "^0.8.0",
     "@floating-ui/vue": "^1.0.0",
+    "@formkit/auto-animate": "^0.8.0",
     "@orama/orama": "^2.0.0",
     "@sanity/client": "^6.12.0",
     "@sanity/image-url": "^1.0.2",
@@ -32,6 +31,7 @@
     "radix-vue": "^1.5.0",
     "shiki": "^1.0.0",
     "unlazy": "^0.11.0",
+    "vue": "^3.4.0",
     "vue-sonner": "^1.0.0",
     "web-vitals": "^3.5.0"
   },
@@ -47,6 +47,7 @@
     "prettier": "^3.2.0",
     "prettier-plugin-tailwindcss": "^0.5.0",
     "tailwindcss": "^3.4.0",
+    "terser": "^5.44.1",
     "typescript": "^5.3.0",
     "unplugin-auto-import": "^0.17.0",
     "unplugin-vue-components": "^0.26.0",

@@ -2,6 +2,7 @@ import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
+// Build: 2025-11-18 - Cookie consent via static files
 const config = {
 	preprocess: vitePreprocess(),
 

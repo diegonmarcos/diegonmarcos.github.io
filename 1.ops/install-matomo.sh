@@ -99,7 +99,8 @@ echo ""
 
 echo "Step 5: Starting Docker containers..."
 echo "--------------------------------------"
-docker compose up -d
+echo "Note: Using sudo because group membership requires re-login"
+sudo docker compose up -d
 echo "✅ Containers starting..."
 echo ""
 
@@ -111,7 +112,7 @@ echo ""
 
 echo "Step 7: Checking container status..."
 echo "-------------------------------------"
-docker compose ps
+sudo docker compose ps
 echo ""
 
 echo "Step 8: Waiting for Nginx Proxy Manager to be ready..."
@@ -200,8 +201,10 @@ echo "      - Follow setup wizard"
 echo "      - Use database credentials above"
 echo ""
 echo "💡 Useful commands:"
-echo "   View logs:        cd ~/matomo && docker compose logs -f"
-echo "   Restart services: cd ~/matomo && docker compose restart"
-echo "   Stop services:    cd ~/matomo && docker compose stop"
-echo "   Start services:   cd ~/matomo && docker compose start"
+echo "   View logs:        cd ~/matomo && sudo docker compose logs -f"
+echo "   Restart services: cd ~/matomo && sudo docker compose restart"
+echo "   Stop services:    cd ~/matomo && sudo docker compose stop"
+echo "   Start services:   cd ~/matomo && sudo docker compose start"
+echo ""
+echo "   (After re-login, you can omit 'sudo' from docker commands)"
 echo ""

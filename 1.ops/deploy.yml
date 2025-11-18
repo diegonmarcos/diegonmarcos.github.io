@@ -28,20 +28,20 @@ jobs:
       - name: 🎨 Build CSS from Sass (Root)
         run: |
           echo "📁 Building root Sass..."
-          cd 3.sass/0.json
+          cd 1.ops
           npm install
           npm run sass:build
-          cd ../..
+          cd ..
           echo "✅ Root style.css created"
           ls -lh style.css
 
       - name: 🎨 Build CSS from Sass (cv_web)
         run: |
           echo "📁 Building cv_web Sass..."
-          cd cv_web/3.sass/0.json
+          cd cv_web
           npm install
-          npm run sass:build
-          cd ../../..
+          npm run build
+          cd ..
           echo "✅ cv_web/style.css created"
           ls -lh cv_web/style.css
 
@@ -83,6 +83,10 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
+
+          # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
+          touch _site/.nojekyll
+          echo "✅ Created .nojekyll file"
 
           # Copy root files
           echo "Copying root HTML, CSS, and JS files..."

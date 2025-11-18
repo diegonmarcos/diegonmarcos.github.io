@@ -35,7 +35,7 @@
 	/>
 
 	<!-- Cookie Consent CSS -->
-	<link rel="stylesheet" href="/5.analytics/cookie-consent.css">
+	<link rel="stylesheet" href="{base}/../5.analytics/cookie-consent.css">
 
 	<!-- Google Tag Manager Consent Mode -->
 	{@html `
@@ -64,13 +64,13 @@
 	<!-- End Google Tag Manager -->
 
 	<!-- Cookie Consent Script -->
-	<script src="/5.analytics/cookie-consent.js" defer></script>
+	<script src="{base}/../5.analytics/cookie-consent.js" defer></script>
 </svelte:head>
 
 <!-- Google Tag Manager (noscript) -->
 <noscript>
 	<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TN9SV57D"
-	height="0" width="0" style="display:none;visibility:hidden"></iframe>
+	height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe>
 </noscript>
 <!-- End Google Tag Manager (noscript) -->
 
@@ -91,7 +91,7 @@
 
 			<!-- Arcade Controls (Navigation) -->
 			<nav class="arcade-controls">
-				<button class="menu-toggle" onclick={() => (menuOpen = !menuOpen)}>
+				<button class="menu-toggle" onclick={() => (menuOpen = !menuOpen)} aria-label="Toggle navigation menu">
 					<span></span>
 					<span></span>
 					<span></span>

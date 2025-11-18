@@ -38,12 +38,54 @@ Simple login script for SSH access.
 
 Equivalent to:
 ```bash
-ssh -i ~/.ssh/matomo_key ubuntu@144.24.205.254
+ssh -i ~/.ssh/matomo_key ubuntu@129.151.229.21
 ```
 
 ---
 
-### 3. `matomo-manage.sh`
+### 3. `matomo-https-setup.sh`
+**Configure HTTPS with Let's Encrypt SSL**
+
+Guided setup for enabling HTTPS on analytics.diegonmarcos.com with automatic SSL certificate.
+
+**Usage:**
+```bash
+./matomo-https-setup.sh
+```
+
+**What it does:**
+- Verifies DNS configuration
+- Checks Matomo is running
+- Provides step-by-step Nginx Proxy Manager setup instructions
+- Configures Let's Encrypt SSL certificate
+- Enables force HTTPS redirect
+
+---
+
+### 4. `matomo-https-auto.sh`
+**Automated HTTPS configuration via API**
+
+Fully automated HTTPS setup using Nginx Proxy Manager API (alternative to manual setup).
+
+**Usage:**
+```bash
+./matomo-https-auto.sh
+```
+
+**Requires:**
+- Nginx Proxy Manager credentials
+- DNS already configured
+
+**What it does:**
+- Logs into Nginx Proxy Manager API
+- Creates proxy host configuration
+- Requests Let's Encrypt SSL certificate
+- Enables force HTTPS redirect
+- Enables HTTP/2 and HSTS
+
+---
+
+### 5. `matomo-manage.sh`
 **Manage Matomo Docker containers**
 
 Comprehensive management script with multiple commands.
@@ -99,14 +141,21 @@ Comprehensive management script with multiple commands.
 2. **Save the credentials** from `matomo-credentials.txt`
 
 3. **Configure DNS:**
-   - Point `analytics.diegonmarcos.com` to `144.24.205.254`
+   - Point `analytics.diegonmarcos.com` to `129.151.229.21`
 
-4. **Setup Nginx Proxy Manager:**
-   - Visit: http://144.24.205.254:81
-   - Login: admin@example.com / changeme
-   - Change password immediately
-   - Add proxy host for analytics.diegonmarcos.com
-   - Enable SSL with Let's Encrypt
+4. **Setup HTTPS (Choose one method):**
+
+   **Method A - Guided Setup (Recommended):**
+   ```bash
+   ./matomo-https-setup.sh
+   ```
+   Follow the interactive instructions to configure Nginx Proxy Manager with SSL.
+
+   **Method B - Automated API Setup:**
+   ```bash
+   ./matomo-https-auto.sh
+   ```
+   Fully automated SSL configuration via Nginx Proxy Manager API.
 
 5. **Complete Matomo setup:**
    - Visit: https://analytics.diegonmarcos.com
@@ -117,7 +166,8 @@ Comprehensive management script with multiple commands.
 
 ## 🔐 Server Information
 
-- **Server IP**: 144.24.205.254
+- **Server IP**: 129.151.229.21
+- **Domain**: analytics.diegonmarcos.com
 - **Region**: EU-Marseille-1 (France)
 - **Instance Type**: VM.Standard.E2.1.Micro (Always Free)
 - **OS**: Ubuntu 24.04 Minimal
@@ -176,9 +226,9 @@ Comprehensive management script with multiple commands.
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| Matomo | https://analytics.diegonmarcos.com | Main analytics interface |
-| Nginx Proxy Manager | http://144.24.205.254:81 | Reverse proxy admin |
-| Matomo (direct) | http://144.24.205.254:8080 | Direct access (dev only) |
+| Matomo (HTTPS) | https://analytics.diegonmarcos.com | Main analytics interface ✅ |
+| Nginx Proxy Manager | http://129.151.229.21:81 | Reverse proxy admin |
+| Matomo (direct) | http://129.151.229.21:8080 | Direct access (dev only) |
 
 ---
 

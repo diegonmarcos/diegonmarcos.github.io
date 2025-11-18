@@ -5,7 +5,7 @@
 set -e
 
 # Configuration
-SERVER_IP="129.151.229.21"
+SERVER_IP="144.24.200.177"
 SSH_KEY="${HOME}/.ssh/matomo_key"
 SSH_USER="ubuntu"
 MATOMO_DB_PASSWORD="$(openssl rand -base64 32 | tr -d '/+=' | cut -c1-32)"

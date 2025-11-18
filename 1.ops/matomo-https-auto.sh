@@ -4,7 +4,7 @@
 
 set -e
 
-SERVER_IP="144.24.200.177"
+SERVER_IP="130.110.251.193"
 DOMAIN="analytics.diegonmarcos.com"
 EMAIL="diegonmarcos@gmail.com"
 NPM_PORT="81"

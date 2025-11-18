@@ -4,7 +4,7 @@
 
 set -e
 
-SERVER_IP="144.24.200.177"
+SERVER_IP="130.110.251.193"
 SSH_KEY="${HOME}/.ssh/matomo_key"
 SSH_USER="ubuntu"
 

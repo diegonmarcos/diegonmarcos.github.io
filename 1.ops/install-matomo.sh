@@ -82,7 +82,7 @@ services:
       - "8080:80"
 
   nginx-proxy:
-    image: nginxproxymanager/nginx-proxy-manager:latest
+    image: jc21/nginx-proxy-manager:latest
     container_name: nginx-proxy
     restart: always
     ports:

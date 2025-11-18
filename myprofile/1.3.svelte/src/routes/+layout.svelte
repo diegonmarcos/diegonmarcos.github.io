@@ -35,7 +35,7 @@
 	/>
 
 	<!-- Cookie Consent CSS -->
-	<link rel="stylesheet" href="{base}/../5.analytics/cookie-consent.css">
+	<link rel="stylesheet" href="{base}/cookie-consent.css">
 
 	<!-- Google Tag Manager Consent Mode -->
 	{@html `
@@ -64,7 +64,7 @@
 	<!-- End Google Tag Manager -->
 
 	<!-- Cookie Consent Script -->
-	<script src="{base}/../5.analytics/cookie-consent.js" defer></script>
+	<script src="{base}/cookie-consent.js" defer></script>
 </svelte:head>
 
 <!-- Google Tag Manager (noscript) -->

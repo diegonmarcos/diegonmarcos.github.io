@@ -28,43 +28,54 @@ jobs:
       - name: 🎨 Build CSS from Sass (Root)
         run: |
           echo "📁 Building root Sass..."
-          cd 3.sass/0.json
+          cd 1.ops
           npm install
           npm run sass:build
-          cd ../..
+          cd ..
           echo "✅ Root style.css created"
           ls -lh style.css
 
       - name: 🎨 Build CSS from Sass (cv_web)
         run: |
           echo "📁 Building cv_web Sass..."
-          cd cv_web/3.sass/0.json
+          cd cv_web
           npm install
-          npm run sass:build
-          cd ../../..
+          npm run build
+          cd ..
           echo "✅ cv_web/style.css created"
           ls -lh cv_web/style.css
 
       # ============================================
-      # JEKYLL BLOG BUILD
+      # MYFEED VUE APP BUILD
       # ============================================
-      - name: 💎 Setup Ruby and Jekyll
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: false
-
-      - name: 📦 Install Jekyll
+      - name: 🚀 Build MyFeed Vue Application
         run: |
-          gem install jekyll bundler
+          echo "📁 Building MyFeed Vue app..."
+          cd myfeed
+          npm install
+          npm run build
+          cd ..
+          echo "✅ MyFeed production build created"
+          ls -lh myfeed/dist/
 
-      - name: 🔨 Build Blog HTML (Jekyll)
+      # ============================================
+      # MYPROFILE SVELTEKIT APP BUILD
+      # ============================================
+      - name: 🎮 Build MyProfile SvelteKit Application
         run: |
-          cd blog/1.ops
+          echo "📁 Building MyProfile SvelteKit app..."
+          cd myprofile/1.1.ops
           chmod +x build.sh
-          ./build.sh build
-          echo "✅ Blog HTML files generated and copied to blog/ directory"
+          ./build.sh
+          cd ../..
+          echo "✅ MyProfile production build created"
+          ls -lh myprofile/1.3.svelte/build/
+        env:
+          NODE_ENV: production
 
+      # ============================================
+      # DEPLOYMENT PREPARATION
+      # ============================================
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -72,6 +83,10 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
+
+          # Create .nojekyll to prevent GitHub Pages from processing as Jekyll
+          touch _site/.nojekyll
+          echo "✅ Created .nojekyll file"
 
           # Copy root files
           echo "Copying root HTML, CSS, and JS files..."
@@ -84,27 +99,26 @@ jobs:
           cp -r linktree _site/ 2>/dev/null || true
           cp -r cv_web _site/ 2>/dev/null || true
           cp -r cv_pdf _site/ 2>/dev/null || true
-          cp -r assets _site/ 2>/dev/null || true
+          cp -r 2.assets _site/assets 2>/dev/null || true
           cp -r others _site/ 2>/dev/null || true
 
-          # Copy blog directory (includes both .md and .html files)
-          echo "Copying blog directory..."
-          mkdir -p _site/blog
-          cp -r blog/* _site/blog/
+          # Copy MyFeed Vue app build
+          echo "Copying MyFeed app..."
+          mkdir -p _site/myfeed
+          cp -r myfeed/dist/* _site/myfeed/
+          echo "✅ MyFeed deployed to _site/myfeed/"
+          ls -lah _site/myfeed/
 
-          # Clean up source files from deployment (keep only HTML)
-          echo "Cleaning up source files..."
-          find _site/blog -name "*.md" -type f -delete
-          rm -f _site/blog/_config.yml
-          rm -f _site/blog/build.sh
-          rm -rf _site/blog/_layouts
-          rm -rf _site/blog/.jekyll-cache
+          # Copy MyProfile SvelteKit app build
+          echo "Copying MyProfile app..."
+          mkdir -p _site/myprofile
+          cp -r myprofile/1.3.svelte/build/* _site/myprofile/
+          echo "✅ MyProfile deployed to _site/myprofile/"
+          ls -lah _site/myprofile/
 
           echo "✅ All files prepared for deployment"
           echo "📋 Final site structure:"
           ls -lah _site/
-          echo "📋 Blog directory (HTML only):"
-          ls -lah _site/blog/ || true
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3

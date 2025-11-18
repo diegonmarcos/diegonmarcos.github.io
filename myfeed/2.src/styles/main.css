@@ -1,0 +1,223 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Colors */
+    --bg-primary: #1a0b2e;
+    --bg-secondary: #2d1b4e;
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.7);
+
+    /* Spacing */
+    --container-max-width: 900px;
+    --card-gap: 24px;
+
+    /* Transitions */
+    --ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
+    --duration-normal: 250ms;
+    --duration-slow: 350ms;
+  }
+
+  [data-theme='light'] {
+    --bg-primary: #f5f2fd;
+    --bg-secondary: #ffffff;
+    --text-primary: #1a0b2e;
+    --text-secondary: #523c6e;
+  }
+
+  body {
+    @apply bg-obsidian-950 text-white font-sans antialiased;
+    background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #1a0b2e 100%);
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* Subtle noise texture */
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  #app {
+    @apply relative z-10;
+  }
+}
+
+@layer components {
+  /* Glass Morphism Effects */
+  .glass-card {
+    @apply bg-obsidian-900/60 backdrop-blur-xl border border-white/20 rounded-2xl shadow-glass;
+  }
+
+  .glass-strong {
+    @apply bg-obsidian-900/80 backdrop-blur-[30px] border-white/30;
+  }
+
+  .glass-subtle {
+    @apply bg-obsidian-900/40 backdrop-blur-md border-white/15;
+  }
+
+  /* Glass Card Hover */
+  .glass-hover {
+    @apply transition-all duration-[350ms] ease-[cubic-bezier(0.4,0.0,0.2,1)];
+  }
+
+  .glass-hover:hover {
+    @apply -translate-y-1 shadow-glass-lg border-white/30;
+  }
+
+  /* Glass Button */
+  .btn-glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl px-4 py-2 font-medium;
+    @apply transition-all duration-300 hover:bg-white/15 hover:border-white/30;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-br from-violet-accent to-violet-600 text-white rounded-xl px-6 py-3 font-semibold;
+    @apply shadow-[0_4px_12px_rgba(139,92,246,0.3)] transition-all duration-300;
+    @apply hover:-translate-y-0.5 hover:shadow-[0_6px_16px_rgba(139,92,246,0.4)];
+  }
+
+  /* Input Glass */
+  .input-glass {
+    @apply bg-obsidian-900/40 backdrop-blur-md border border-white/20 rounded-xl px-4 py-3;
+    @apply text-white placeholder:text-white/50;
+    @apply focus:outline-none focus:border-violet-accent focus:ring-2 focus:ring-violet-accent/20;
+  }
+
+  /* Skeleton Loading */
+  .skeleton {
+    @apply bg-gradient-to-r from-obsidian-800 via-obsidian-700 to-obsidian-800;
+    @apply bg-[length:1000px_100%] animate-shimmer;
+  }
+
+  /* Card Media */
+  .card-media {
+    @apply rounded-xl overflow-hidden;
+  }
+
+  .card-media img {
+    @apply w-full h-full object-cover transition-transform duration-300;
+  }
+
+  .card-media:hover img {
+    @apply scale-105;
+  }
+
+  /* Prose Styles for Markdown */
+  .prose {
+    @apply max-w-none text-white/90;
+  }
+
+  .prose h1 {
+    @apply text-3xl font-bold text-white mb-4;
+  }
+
+  .prose h2 {
+    @apply text-2xl font-bold text-white mb-3 mt-6;
+  }
+
+  .prose h3 {
+    @apply text-xl font-semibold text-white mb-2 mt-4;
+  }
+
+  .prose p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose a {
+    @apply text-violet-accent underline hover:text-violet-glow;
+  }
+
+  .prose code {
+    @apply bg-obsidian-800 px-1.5 py-0.5 rounded text-sm font-mono text-lavender-soft;
+  }
+
+  .prose pre {
+    @apply bg-obsidian-900 rounded-xl p-4 overflow-x-auto my-4 border border-white/10;
+  }
+
+  .prose pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .prose ul {
+    @apply list-disc list-inside mb-4;
+  }
+
+  .prose ol {
+    @apply list-decimal list-inside mb-4;
+  }
+
+  .prose blockquote {
+    @apply border-l-4 border-violet-accent pl-4 italic text-white/70 my-4;
+  }
+
+  /* Tag Pills */
+  .tag-pill {
+    @apply inline-block bg-violet-accent/20 border border-violet-accent/40 text-violet-glow;
+    @apply px-3 py-1 rounded-full text-xs font-medium;
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold;
+  }
+
+  .badge-purple {
+    @apply bg-violet-accent/20 text-violet-glow border border-violet-accent/40;
+  }
+}
+
+@layer utilities {
+  /* Custom Scrollbar */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(139, 92, 246, 0.3) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.3);
+    border-radius: 4px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.5);
+  }
+
+  /* Text Gradient */
+  .text-gradient-purple {
+    @apply bg-gradient-to-r from-violet-accent to-lavender-soft bg-clip-text text-transparent;
+  }
+
+  /* Focus Visible */
+  .focus-visible-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-accent focus-visible:ring-offset-2 focus-visible:ring-offset-obsidian-950;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

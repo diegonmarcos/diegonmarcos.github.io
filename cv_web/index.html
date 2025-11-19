@@ -58,6 +58,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             gantt: { axisFormat: '%Y' } // Specific format for your Gantt charts
         });
     </script>
+
+    <!-- Matomo -->
+    <script>
+      var _paq = window._paq = window._paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//analytics.diegonmarcos.com/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -1527,7 +1542,7 @@ gantt
                                     <h5>MyProfiles</h5>
                                     <ul>
                                         <li><a href="https://diegonmarcos.github.io/myprofile" target="_blank"><i class="fas fa-user"></i> Myprofile</a></li>
-                                        <li>&nbsp;</li>
+                                        <li><a href="https://diegonmarcos.github.io/myfeed" target="_blank"><i class="fas fa-rss"></i> MyFeed</a></li>
                                         <li>&nbsp;</li>
                                         <li>&nbsp;</li>
                                     </ul>

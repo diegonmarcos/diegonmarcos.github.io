@@ -1,76 +1,105 @@
 #!/bin/sh
 
-# Jekyll management script (POSIX sh)
-# Handles building and serving the Jekyll blog
-# This script runs from blog/1.ops/ directory
+# MyFeed Vue Build Script (POSIX sh)
+# Handles building the Vue 3 application with Vite
+# This script runs from myfeed/1.ops/ directory
 
 show_help() {
     cat << EOF
 Usage: ./build.sh [COMMAND]
 
 Commands:
-    build       Convert markdown to HTML (output in 4.jenkyls/_site/)
-    serve       Run local development server at http://localhost:4000
+    build       Build Vue app for production (output in dist/)
+    dev         Run development server with hot reload
+    preview     Preview production build locally
     help        Show this help message
 
 Examples:
-    ./build.sh build    # Build the site
-    ./build.sh serve    # Run development server
+    ./build.sh build    # Build for production
+    ./build.sh dev      # Start dev server
+    ./build.sh preview  # Preview production build
     ./build.sh          # Show help
 
-Note: This script must be run from the blog/1.ops/ directory
+Note: This script must be run from the myfeed/1.ops/ directory
 
 EOF
 }
 
 build_site() {
-    # Change to blog root directory (parent of 1.ops)
+    # Change to myfeed root directory (parent of 1.ops)
     cd "$(dirname "$0")/.." || exit 1
 
-    echo "Building Jekyll site with new folder structure..."
+    echo "🔨 Building MyFeed Vue application..."
     echo "Working directory: $(pwd)"
     echo ""
 
-    # Build Jekyll with config from 4.jenkyls/ and output to 4.jenkyls/_site/
-    jekyll build \
-        --config "4.jenkyls/_config.yml" \
-        --layouts "4.jenkyls/_layouts" \
-        --destination "4.jenkyls/_site"
+    # Check if node_modules exists
+    if [ ! -d "node_modules" ]; then
+        echo "📦 Installing dependencies..."
+        npm install
+        echo ""
+    fi
 
-    echo ""
-    echo "Copying HTML files to blog root (side-by-side with markdown)..."
+    # Build the Vue app
+    echo "🚀 Running Vite build..."
+    npm run build
 
-    # Copy all HTML files from 4.jenkyls/_site to blog root directory
-    find "4.jenkyls/_site" -name "*.html" -type f | while read -r file; do
-        # Get relative path from 4.jenkyls/_site
-        rel_path="${file#4.jenkyls/_site/}"
-        # Copy to blog root, preserving structure
-        target_dir="$(dirname "$rel_path")"
-        [ "$target_dir" != "." ] && mkdir -p "$target_dir"
-        cp -v "$file" "$rel_path"
-    done
-
-    echo ""
-    echo "Build complete! HTML files generated alongside markdown files"
-    echo "Jekyll build output: 4.jenkyls/_site/"
+    if [ $? -eq 0 ]; then
+        echo ""
+        echo "✅ Build complete!"
+        echo "📂 Output directory: dist/"
+        echo "📊 Build size:"
+        du -sh dist/
+    else
+        echo ""
+        echo "❌ Build failed!"
+        exit 1
+    fi
 }
 
-serve_site() {
-    # Change to blog root directory (parent of 1.ops)
+dev_server() {
+    # Change to myfeed root directory (parent of 1.ops)
     cd "$(dirname "$0")/.." || exit 1
 
-    echo "Starting Jekyll development server..."
-    echo "Using config from: 4.jenkyls/_config.yml"
-    echo "Using layouts from: 4.jenkyls/_layouts/"
-    echo "The blog will be available at: http://localhost:4000"
+    echo "🚀 Starting MyFeed development server..."
+    echo "Working directory: $(pwd)"
+    echo ""
+
+    # Check if node_modules exists
+    if [ ! -d "node_modules" ]; then
+        echo "📦 Installing dependencies..."
+        npm install
+        echo ""
+    fi
+
+    echo "🌐 Development server will be available at: http://localhost:3000"
+    echo "⚡ Hot Module Replacement (HMR) enabled"
     echo "Press Ctrl+C to stop the server"
     echo ""
 
-    jekyll serve \
-        --config "4.jenkyls/_config.yml" \
-        --layouts "4.jenkyls/_layouts" \
-        --destination "4.jenkyls/_site" \
-        --livereload
+    npm run dev
+}
+
+preview_build() {
+    # Change to myfeed root directory (parent of 1.ops)
+    cd "$(dirname "$0")/.." || exit 1
+
+    echo "🔍 Previewing production build..."
+    echo "Working directory: $(pwd)"
+    echo ""
+
+    # Check if dist exists
+    if [ ! -d "dist" ]; then
+        echo "⚠️  No build found. Building first..."
+        build_site
+        echo ""
+    fi
+
+    echo "🌐 Preview server will be available at: http://localhost:4173"
+    echo "Press Ctrl+C to stop the server"
+    echo ""
+
+    npm run preview
 }
 
 # Main script logic
@@ -78,8 +107,11 @@ case "${1:-}" in
     build)
         build_site
         ;;
-    serve)
-        serve_site
+    dev)
+        dev_server
+        ;;
+    preview)
+        preview_build
         ;;
     help)
         show_help

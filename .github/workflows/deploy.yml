@@ -69,27 +69,16 @@ jobs:
           echo "✅ script.js created"
 
       # ============================================
-      # JEKYLL MYFEED BUILD (Conditional)
+      # MYFEED BUILD (Vue 3 + Vite - Conditional)
       # ============================================
-      - name: 💎 Setup Ruby and Jekyll
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'
-          bundler-cache: false
-
-      - name: 📦 Install Jekyll
+      - name: 🔨 Build MyFeed (Vue 3 + Vite)
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
         run: |
-          gem install jekyll bundler
-
-      - name: 🔨 Build MyFeed HTML (Jekyll)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
-        run: |
-          cd myfeed/1.ops
-          chmod +x build.sh
-          ./build.sh build
-          echo "✅ MyFeed HTML files generated"
+          echo "🔨 Building MyFeed Vue application..."
+          cd myfeed
+          npm install
+          npm run build
+          echo "✅ MyFeed Vue build complete"
 
       - name: 🔨 Build MyProfile (SvelteKit)
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
@@ -108,30 +97,35 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
-          # Copy all relevant files and directories
-          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ myfeed/ _site/ 2>/dev/null || true
-          
-          # Create myprofile directory in _site and copy built assets (if build exists)
+          # Copy all relevant files and directories (excluding myfeed for now)
+          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ _site/ 2>/dev/null || true
+
+          # Copy MyFeed Vue build (if dist exists)
+          if [ -d "myfeed/dist" ]; then
+            echo "📦 Copying MyFeed Vue build..."
+            mkdir -p _site/myfeed
+            cp -r myfeed/dist/* _site/myfeed/
+            echo "✅ MyFeed Vue build copied to _site/myfeed/"
+          else
+            echo "⏭️  Skipping MyFeed copy (no dist directory found)"
+          fi
+
+          # Copy MyProfile SvelteKit build (if build exists)
           if [ -d "myprofile/1.3.svelte/build" ]; then
+            echo "📦 Copying MyProfile SvelteKit build..."
             mkdir -p _site/myprofile
             cp -r myprofile/1.3.svelte/build/* _site/myprofile/
-            echo "✅ MyProfile built assets copied"
+            echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no build directory found)"
           fi
 
-          # Clean up source files from myfeed deployment
-          if [ -d "_site/myfeed" ]; then
-            find _site/myfeed -name "*.md" -type f -delete
-            rm -f _site/myfeed/_config.yml
-            rm -f _site/myfeed/build.sh
-            rm -rf _site/myfeed/_layouts
-            rm -rf _site/myfeed/.jekyll-cache
-            echo "✅ MyFeed cleanup complete"
-          fi
-          
           echo "✅ All files prepared for deployment"
+          echo "📊 Site structure:"
           ls -lah _site/
+          echo ""
+          echo "📊 MyFeed contents:"
+          ls -lah _site/myfeed/ 2>/dev/null || echo "No myfeed directory"
 
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3

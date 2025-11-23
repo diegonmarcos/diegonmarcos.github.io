@@ -21,6 +21,7 @@ NC='\033[0m'
 PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT_NAME="cv_web"
 SASS_DIR="$PROJECT_DIR/3.sass"
+SASS_INPUT="$SASS_DIR/main.scss"
 CSS_OUTPUT="$PROJECT_DIR/style.css"
 
 # Logging
@@ -79,7 +80,7 @@ build() {
     else
         # Fallback to direct sass command
         if command -v sass &> /dev/null; then
-            sass "$SASS_DIR/style.scss:$CSS_OUTPUT" --style=compressed
+            sass "$SASS_INPUT:$CSS_OUTPUT" --style=compressed
         else
             log_error "Sass compiler not found"
             log_info "Install with: npm install -g sass"
@@ -104,7 +105,7 @@ dev() {
         npm run sass:watch
     else
         if command -v sass &> /dev/null; then
-            sass --watch "$SASS_DIR/style.scss:$CSS_OUTPUT"
+            sass --watch "$SASS_INPUT:$CSS_OUTPUT"
         else
             log_error "Sass compiler not found"
             return 1

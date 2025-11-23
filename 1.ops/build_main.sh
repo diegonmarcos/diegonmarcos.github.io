@@ -116,9 +116,14 @@ execute_build() {
     local action=$2
     local build_script="$PROJECT_ROOT/$project/1.ops/build.sh"
 
+    # Special case for myprofile which uses 1.1.ops
+    if [ "$project" = "myprofile" ]; then
+        build_script="$PROJECT_ROOT/$project/1.1.ops/build.sh"
+    fi
+
     log_section "Building: $project"
 
-    if check_build_script "$project"; then
+    if [ -f "$build_script" ]; then
         log_info "Executing: $build_script $action"
         if bash "$build_script" "$action"; then
             log_success "$project build completed"

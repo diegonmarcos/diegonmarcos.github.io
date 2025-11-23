@@ -1,0 +1,12 @@
+{
+  "name": "cv-web-sass",
+  "version": "1.0.0",
+  "description": "CV Web Sass compilation",
+  "scripts": {
+    "sass:watch": "sass --watch ../3.sass/main.scss:../style.css",
+    "sass:build": "sass ../3.sass/main.scss:../style.css --style=compressed"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0"
+  }
+}

@@ -25,7 +25,7 @@ $line-height-base: 1.35;
 $line-height-paragraph: 1.2;
 
 // Font Sizes
-$font-size-h1: 1.8em;
+$font-size-h1: clamp(1.5rem, 2.5vw, 1.8rem);
 $font-size-subtitle: 0.9em;
 $font-size-portfolio-title: 0.8em;
 $font-size-main-title: 1.4em;

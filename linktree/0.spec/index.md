@@ -58,7 +58,7 @@
 |         <br>                                                                                               |
 | ** MyMaps**                                                                                            |
 | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                        |
-| - 📍 [Maps](https://www.google.com/maps/d/edit?mid=1EOqj1-9grA1Bt_gtUHh25-pGpeLzKzU&usp=sharing"null") |
+| - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
 | - 🌍 [Earth](https://earth.google.com/earth/d/1MwtAnYRNN5qyxl6BmRBpvAGpZv3modMy?usp=sharing "null")    |
 |        <br>                                                                                                |
 | **My Bucket**                                                                                          |

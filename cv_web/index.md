@@ -1056,9 +1056,9 @@ Database
 |                                                                                             |                                                                                                          |
 | Front & ML Repos                                                                            | ** MyMaps**                                                                                              |
 | - 🖥️ [Front_Web](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                          |
-| - 🗄️ [Data Science](https://github.com/diegonmarcos/diegonmarcos.github.io "null")         | - 📍 [Maps](https://www.google.com/maps/d/edit?mid=1EOqj1-9grA1Bt_gtUHh25-pGpeLzKzU&usp=sharing"null")   |
+| - 🗄️ [Data Science](https://github.com/diegonmarcos/diegonmarcos.github.io "null")         | - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null")   |
 | - 🧠 [Machine Learning & DL](https://github.com/diegonmarcos/diegonmarcos.github.io "null") | - 🌍 [Earth](https://earth.google.com/earth/d/1MwtAnYRNN5qyxl6BmRBpvAGpZv3modMy?usp=sharing "null")      |
-| - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            | - 🗺️ [Maps2](https://www.google.com/maps/d/edit?mid=1EOqj1-9grA1Bt_gtUHh25-pGpeLzKzU&usp=sharing"null") |
+| - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            | - 🗺️ [Maps2](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
 |                                                                                             |                                                                                                          |
 |                                                                                             | **My Bucket**                                                                                            |
 |                                                                                             | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                       |

@@ -936,7 +936,7 @@ Database
 | - 🌐 [Github_io](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |     | ** MyMaps**                                                                                            |
 | Back Repos                                                                                 |     | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                        |
 | - ⚙️ [System](https://github.com/diegonmarcos/back-System "null")                          |     | - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
-| - 💡 [Algo](https://github.com/diegonmarcos/back-Algo "null")                              |     | - 🌍 [Earth](https://earth.google.com/earth/d/1MwtAnYRNN5qyxl6BmRBpvAGpZv3modMy?usp=sharing "null")    |
+| - 💡 [Algo](https://github.com/diegonmarcos/back-Algo "null")                              |     | - 🌍 [Earth](https://earth.google.com/earth/d/1WF5_9NDew9IB5xkTqXPpm9e9n8JM0a3H?usp=sharing  "null")    |
 | - 🖌️ [Graphic](https://github.com/diegonmarcos/back-Graphic "null")                       |     |                                                                                                        |
 | Cyber Repos                                                                                |     | **My Bucket**                                                                                          |
 | - ⚔️ [Cyberwarfare](https://github.com/diegonmarcos/cyber-Cyberwarfare "null")             |     | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                     |

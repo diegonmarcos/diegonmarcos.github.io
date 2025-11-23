@@ -79,7 +79,7 @@
 | ** MyMaps**                                                                                            |
 | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                        |
 | - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
-| - 🌍 [Earth](https://earth.google.com/earth/d/1MwtAnYRNN5qyxl6BmRBpvAGpZv3modMy?usp=sharing "null")    |
+| - 🌍 [Earth](https://earth.google.com/earth/d/1WF5_9NDew9IB5xkTqXPpm9e9n8JM0a3H?usp=sharing  "null")    |
 |                                                                                                        |
 | **My Bucket**                                                                                          |
 | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                     |

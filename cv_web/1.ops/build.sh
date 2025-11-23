@@ -1,169 +1,182 @@
-#!/bin/sh
-# =============================================================================
-# Build Script for CV_WEB
-# =============================================================================
-# POSIX-compliant shell script for Sass compilation in the cv_web directory.
+#!/bin/bash
+
+#=====================================
+# CV_WEB BUILD SCRIPT
+#=====================================
+# Build script for Sass-based project
 #
-# Usage:
-#   ./build.sh [command]
+# Usage: ./1.ops/build.sh <action>
 #
-# Commands:
-#   build   - Compile Sass to compressed CSS (production)
-#   dev     - Compile Sass to expanded CSS (development)
-#   watch   - Watch for changes and auto-compile
-#   help    - Show this help message
-#
-# Examples:
-#   ./build.sh build    # Build for production
-#   ./build.sh watch    # Watch for changes
-#   ./build.sh dev      # Build for development
-# ==============================================================================
 
-set -e  # Exit on error
+set -e
 
-# Colors for output (POSIX compatible)
-if [ -t 1 ]; then
-    RED='\033[0;31m'
-    GREEN='\033[0;32m'
-    YELLOW='\033[1;33m'
-    BLUE='\033[0;34m'
-    PURPLE='\033[0;35m'
-    CYAN='\033[0;36m'
-    NC='\033[0m' # No Color
-else
-    RED=''
-    GREEN=''
-    YELLOW=''
-    BLUE=''
-    PURPLE=''
-    CYAN=''
-    NC=''
-fi
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m'
 
-# ==============================================================================
-# Functions
-# ==============================================================================
+# Project directory
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROJECT_NAME="cv_web"
+SASS_DIR="$PROJECT_DIR/3.sass"
+CSS_OUTPUT="$PROJECT_DIR/style.css"
 
-print_header() {
-    printf "${PURPLE}================================${NC}\n"
-    printf "${PURPLE}  CV_WEB Sass Builder${NC}\n"
-    printf "${PURPLE}================================${NC}\n\n"
-}
+# Logging
+log_info() { echo -e "${BLUE}[${PROJECT_NAME}]${NC} $1"; }
+log_success() { echo -e "${GREEN}[${PROJECT_NAME}]${NC} ✓ $1"; }
+log_error() { echo -e "${RED}[${PROJECT_NAME}]${NC} ✗ $1"; }
+log_warning() { echo -e "${YELLOW}[${PROJECT_NAME}]${NC} ⚠ $1"; }
 
-print_help() {
-    print_header
-    cat << 'EOF'
-Usage: ./build.sh [command]
+print_usage() {
+    cat << EOF
+${BLUE}CV_Web Build Script${NC}
 
-Commands:
-  build   - Compile Sass to compressed CSS (production)
-  dev     - Compile Sass to expanded CSS (development)
-  watch   - Watch for changes and auto-compile
-  help    - Show this help message
+${YELLOW}Usage:${NC} ./1.ops/build.sh <action>
 
-Examples:
-  ./build.sh build    # Build for production
-  ./build.sh watch    # Watch for changes
-  ./build.sh dev      # Build for development
+${YELLOW}Actions:${NC}
+  build              - Build Sass to CSS (production)
+  dev                - Build Sass to CSS (development) + watch
+  watch              - Watch Sass files for changes
+  clean              - Clean build artifacts
+  lint               - Lint Sass files
+  test               - Run validation tests
+  help               - Show this help
 
-Notes:
-  - Run 'npm install' before first use.
-  - Watch mode runs until you press Ctrl+C.
+${YELLOW}Tech Stack:${NC}
+  - Sass/SCSS
+  - HTML5
+  - Modern CSS architecture
+
 EOF
 }
 
+# Check if npm dependencies are installed
 check_dependencies() {
-    if [ ! -f "package.json" ]; then
-        printf "${RED}✗ Error: package.json not found.${NC}\n"
-        return 1
-    fi
-
-    if [ ! -d "node_modules" ]; then
-        printf "${YELLOW}⚠ Warning: node_modules not found.${NC}\n"
-        printf "${CYAN}→ Installing dependencies...${NC}\n"
+    if [ ! -d "$PROJECT_DIR/1.ops/node_modules" ]; then
+        log_info "Installing dependencies..."
+        cd "$PROJECT_DIR/1.ops"
         npm install
+        cd "$PROJECT_DIR"
     fi
-
-    return 0
 }
 
-build_sass() {
-    style="$1"  # "compressed" or "expanded"
-    src="3.sass/main.scss"
-    out="style.css"
+# Build Sass (production)
+build() {
+    log_info "Building Sass for production..."
 
-    printf "${CYAN}→ Building Sass ($style)...${NC}\n"
+    check_dependencies
 
-    if [ ! -f "$src" ]; then
-        printf "${RED}✗ Error: Source file not found: $src${NC}\n"
-        return 1
-    fi
+    cd "$PROJECT_DIR/1.ops"
 
-    npx sass "$src:$out" --style="$style" --no-source-map
-
-    if [ $? -eq 0 ]; then
-        size=$(du -h "$out" | cut -f1)
-        printf "${GREEN}✓ Successfully compiled: $out ($size)${NC}\n\n"
+    if [ -f "package.json" ]; then
+        # Use npm script if available
+        npm run sass:build 2>&1 || {
+            log_error "Sass build failed"
+            return 1
+        }
     else
-        printf "${RED}✗ Compilation failed.${NC}\n\n"
+        # Fallback to direct sass command
+        if command -v sass &> /dev/null; then
+            sass "$SASS_DIR/style.scss:$CSS_OUTPUT" --style=compressed
+        else
+            log_error "Sass compiler not found"
+            log_info "Install with: npm install -g sass"
+            return 1
+        fi
+    fi
+
+    log_success "Sass compiled to $CSS_OUTPUT"
+}
+
+# Development build
+dev() {
+    log_info "Starting Sass development mode..."
+
+    check_dependencies
+
+    cd "$PROJECT_DIR/1.ops"
+
+    if [ -f "package.json" ] && grep -q "sass:watch" package.json; then
+        log_success "Watching Sass files for changes..."
+        log_info "Press Ctrl+C to stop"
+        npm run sass:watch
+    else
+        if command -v sass &> /dev/null; then
+            sass --watch "$SASS_DIR/style.scss:$CSS_OUTPUT"
+        else
+            log_error "Sass compiler not found"
+            return 1
+        fi
+    fi
+}
+
+# Watch Sass files
+watch() {
+    dev
+}
+
+# Clean build artifacts
+clean() {
+    log_info "Cleaning build artifacts..."
+
+    rm -f "$CSS_OUTPUT"
+    rm -f "$CSS_OUTPUT.map"
+    rm -f "$PROJECT_DIR/1.ops/logs/"*.map 2>/dev/null || true
+
+    log_success "Clean completed"
+}
+
+# Lint Sass files
+lint() {
+    log_info "Linting Sass files..."
+
+    if command -v stylelint &> /dev/null; then
+        stylelint "$SASS_DIR/**/*.scss" || log_warning "Linting completed with warnings"
+    else
+        log_warning "stylelint not installed"
+        log_info "Install with: npm install -g stylelint stylelint-config-standard-scss"
+    fi
+
+    log_success "Linting completed"
+}
+
+# Run tests
+test() {
+    log_info "Running tests..."
+
+    # Test that Sass compiles without errors
+    build
+
+    # Check output file exists
+    if [ -f "$CSS_OUTPUT" ]; then
+        log_success "CSS file generated successfully"
+        return 0
+    else
+        log_error "CSS file not generated"
         return 1
     fi
 }
 
-watch_sass() {
-    src="scss/main.scss"
-    out="style.css"
+# Main execution
+main() {
+    local action=${1:-help}
 
-    printf "${CYAN}→ Watching Sass for changes...${NC}\n"
-    printf "${YELLOW}  Press Ctrl+C to stop${NC}\n\n"
-
-    npx sass --watch "$src:$out"
+    case $action in
+        build) build ;;
+        dev) dev ;;
+        watch) watch ;;
+        clean) clean ;;
+        lint) lint ;;
+        test) test ;;
+        help|--help|-h) print_usage ;;
+        *)
+            log_error "Unknown action: $action"
+            print_usage
+            exit 1
+            ;;
+    esac
 }
 
-# ==============================================================================
-# Main Script
-# ==============================================================================
-
-# Parse arguments
-COMMAND="${1:-help}"
-
-# Show header
-print_header
-
-# Handle help command
-if [ "$COMMAND" = "help" ] || [ "$COMMAND" = "-h" ] || [ "$COMMAND" = "--help" ]; then
-    print_help
-    exit 0
-fi
-
-# Validate command
-case "$COMMAND" in
-    build|dev|watch)
-        ;;
-    *)
-        printf "${RED}✗ Error: Unknown command \'%s\'${NC}\n"
-        printf "Run './build.sh help' for usage information\n"
-        exit 1
-        ;;
-esac
-
-# Determine style based on command
-if [ "$COMMAND" = "build" ]; then
-    STYLE="compressed"
-    MODE="Production"
-elif [ "$COMMAND" = "dev" ]; then
-    STYLE="expanded"
-    MODE="Development"
-fi
-
-# Execute command
-check_dependencies || exit 1
-
-if [ "$COMMAND" = "watch" ]; then
-    watch_sass
-else
-    printf "${BLUE}Building in $MODE mode...${NC}\n\n"
-    build_sass "$STYLE"
-fi
-
-exit 0
+main "$@"

@@ -1,7 +1,7 @@
 # DIEGO NEPOMUCENO MARCOS
 
 * [linkedin.com/in/diegonmarcos](https://linkedin.com/in/diegonmarcos) | [diegonmarcos@gmail.com](mailto:diegonmarcos@gmail.com) | July/1987 (38 years) | Berlin / DE*
-* [Github](https://github.com/diegonmarcos) | [Linktr.ee](https://linktr.ee/diegonmarcos) | [Website](https://diegonmarcos.github.io)
+* [Github](https://github.com/diegonmarcos) | [Linktr.ee](https://linktree.diegonmarcos.com) | [Website](https://diegonmarcos.github.io)
 
 > Holding a B.Sc. as a Civil Structural Engineer, Investment Banker and Private Equity analyst for 10y, lived in 5 EU cities, moved over 170+ cities across 40+ countries, pivoting into Software and Product Engineering, with Spanish and Brazilian roots based in Germany.
 

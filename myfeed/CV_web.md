@@ -982,7 +982,7 @@ Database
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
-| Linktree | https://linktr.ee/diegonmarcos       |
+| Linktree | https://linktree.diegonmarcos.com       |
 ### (+)
 - item
 ### 🔗 Linktree
@@ -990,8 +990,8 @@ Database
 | ** PROFESSIONAL**                                                                               | **PERSONAL**                                                                  |
 | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | **Contact**                                                                                     | **MyProfiles**                                                                |
-| - 📧 [Email](mailto:diegonmarcos@gmail.com "null")                                              | - [Myprofile (building)](https://linktr.ee/diegonmarcos "null")               |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                    | - [MyID (building)](https://linktr.ee/diegonmarcos "null")                    |
+| - 📧 [Email](mailto:diegonmarcos@gmail.com "null")                                              | - [Myprofile (building)](https://linktree.diegonmarcos.com "null")               |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                    | - [MyID (building)](https://linktree.diegonmarcos.com "null")                    |
 | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                               |                                                                               |
 |                                                                                                 |                                                                               |
 | **Profiles**                                                                                    | ** MyMedia**                                                                  |
@@ -1015,7 +1015,7 @@ Database
 |                                                                                                 | - [My Bucket Inner](https://bucketlistjourney.net/my-bucket-list/ "null")     |
 |                                                                                                 |                                                                               |
 |                                                                                                 | - 🌐 **Others**                                                               |
-|                                                                                                 | - [Social Work (building)](https://linktr.ee/diegonmarcos "null"))            |
+|                                                                                                 | - [Social Work (building)](https://linktree.diegonmarcos.com "null"))            |
 
 ### (+)
 - item

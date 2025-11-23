@@ -905,7 +905,7 @@ Database
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
-| Linktree | https://linktr.ee/diegonmarcos       |
+| Linktree | https://linktree.diegonmarcos.com       |
 
 ### 🔗 Linktree
 
@@ -950,5 +950,5 @@ Database
 |                                                                                            |     |                                                                                                        |
 | ** Q** QR CODES**R CODES**                                                                 |     | ** QR CODES**                                                                                          |
 | - 🔗 [QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                |     | - 🔗 [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                   |
-| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                                     |     | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                     |
+| - 🔗 [Linktree](https://linktree.diegonmarcos.com "null")                                     |     | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                     |
 |                                                                                            |     |                                                                                                        |

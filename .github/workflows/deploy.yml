@@ -87,7 +87,7 @@ jobs:
           cd myprofile/1.3.svelte
           npm install
           npm run build
-          cd ../../..
+          cd ../..
           echo "✅ MyProfile build complete"
 
       - name: 🌐 Setup Pages Environment

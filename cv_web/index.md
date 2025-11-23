@@ -1025,7 +1025,7 @@ Database
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
-| Linktree | https://linktr.ee/diegonmarcos       |
+| Linktree | https://linktree.diegonmarcos.com       |
 ### (+)
 - item
 
@@ -1034,12 +1034,12 @@ Database
 | ** PROFESSIONAL**                                                                           | **PERSONAL**                                                                                             |
 | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | **Contact**                                                                                 | **MyContact**                                                                                            |
-| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                                      | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                       |
+| - 🔗 [Linktree](https://linktree.diegonmarcos.com "null")                                      | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                       |
 | - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                          | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                        |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                | -                                                                                                        |
 |                                                                                             |                                                                                                          |
 | **Profiles**                                                                                | **MyProfiles**                                                                                           |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                | - 👤 [Myprofile (building)](https://linktr.ee/diegonmarcos "null")                                       |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                | - 👤 [Myprofile (building)](https://linktree.diegonmarcos.com "null")                                       |
 | - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                      | -                                                                                                        |
 | - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                       | -                                                                                                        |
 | - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                       | -                                                                                                        |

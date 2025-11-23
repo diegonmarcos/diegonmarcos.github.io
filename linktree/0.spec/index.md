@@ -48,7 +48,7 @@
 |                                                                                                                                                        |              |              |
 | ** QR CODES**                                                                                                                                          |              |              |
 | - 🔗 [QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                                                                            |              |              |
-| - 🔗 [Linktree](https://linktr.ee/diegonmarcos "null")                                                                                                 |              |              |
+| - 🔗 [Linktree](https://linktree.diegonmarcos.com "null")                                                                                                 |              |              |
 |                                                                                                                                                        |              |              |
 
 ---

@@ -978,7 +978,7 @@ Database
 |          |                                      |
 | -------- | ------------------------------------ |
 | Name     | Diego Nepomuceno Marcos              |
-| Email    | diegonmarcos@gmail.com               |
+| Email    | me@diegonmarcos.com               |
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
@@ -990,7 +990,7 @@ Database
 | ** PROFESSIONAL**                                                                               | **PERSONAL**                                                                  |
 | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | **Contact**                                                                                     | **MyProfiles**                                                                |
-| - 📧 [Email](mailto:diegonmarcos@gmail.com "null")                                              | - [Myprofile (building)](https://linktree.diegonmarcos.com "null")               |
+| - 📧 [Email](mailto:me@diegonmarcos.com "null")                                              | - [Myprofile (building)](https://linktree.diegonmarcos.com "null")               |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                    | - [MyID (building)](https://linktree.diegonmarcos.com "null")                    |
 | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                               |                                                                               |
 |                                                                                                 |                                                                               |

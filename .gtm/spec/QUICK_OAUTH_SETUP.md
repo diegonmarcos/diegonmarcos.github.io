@@ -8,9 +8,9 @@
 **Do This:**
 1. User Type: `External` → CREATE
 2. App name: `GTM API Automation`
-3. Email: `diegonmarcos@gmail.com`
+3. Email: `me@diegonmarcos.com`
 4. Scopes: Add `tagmanager.edit.containers`
-5. Test users: Add `diegonmarcos@gmail.com`
+5. Test users: Add `me@diegonmarcos.com`
 6. SAVE through all pages
 
 ---

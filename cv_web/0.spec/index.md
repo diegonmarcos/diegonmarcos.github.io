@@ -901,7 +901,7 @@ Database
 
 | Name     | Diego Nepomuceno Marcos              |
 | -------- | ------------------------------------ |
-| Email    | diegonmarcos@gmail.com               |
+| Email    | me@diegonmarcos.com               |
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
@@ -913,7 +913,7 @@ Database
 | ------------------------------------------------------------------------------------------ | --- | ------------------------------------------------------------------------------------------------------ |
 | **Contact**                                                                                |     | **MyContact**                                                                                          |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                      |
-| - ✉️ [Email](mailto:diegonmarcos@gmail.com "null")                                         |     | -                                                                                                      |
+| - ✉️ [Email](mailto:me@diegonmarcos.com "null")                                         |     | -                                                                                                      |
 |                                                                                            |     |                                                                                                        |
 | **Profiles**                                                                               |     | **MyProfiles**                                                                                         |
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - 👤 [Myprofile](https://diegonmarcos.github.io/myprofile "null")                                      |

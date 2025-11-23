@@ -3,7 +3,7 @@
 ## ✅ Completed by Automation
 
 1. ✅ **Google Cloud CLI** - Already installed and authenticated
-2. ✅ **GCP Account** - Using: diegonmarcos@gmail.com
+2. ✅ **GCP Account** - Using: me@diegonmarcos.com
 3. ✅ **GCP Project** - Selected: Gemini API (gen-lang-client-0167192380)
 4. ✅ **GTM API** - Enabled successfully
 5. ✅ **Browser URLs** - Opened OAuth consent & credentials pages

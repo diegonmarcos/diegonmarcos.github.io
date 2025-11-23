@@ -40,7 +40,7 @@ def main():
 
     print_header("🚀 GTM API OAuth 2.0 Credentials Setup")
     print(f"📋 Project: {PROJECT_NAME} ({PROJECT_ID})")
-    print(f"👤 Account: diegonmarcos@gmail.com")
+    print(f"👤 Account: me@diegonmarcos.com")
 
     # Step 1: Enable API (already done, but verify)
     print_step(1, "Verify GTM API is Enabled")
@@ -68,8 +68,8 @@ def main():
     print("   2. Click 'CREATE'")
     print("\n   3. App Information:")
     print("      - App name: GTM API Automation")
-    print("      - User support email: diegonmarcos@gmail.com")
-    print("      - Developer contact: diegonmarcos@gmail.com")
+    print("      - User support email: me@diegonmarcos.com")
+    print("      - Developer contact: me@diegonmarcos.com")
     print("\n   4. Scopes:")
     print("      - Click 'ADD OR REMOVE SCOPES'")
     print("      - Search for: 'Tag Manager API'")
@@ -77,7 +77,7 @@ def main():
     print("      - Click 'UPDATE'")
     print("\n   5. Test Users:")
     print("      - Click 'ADD USERS'")
-    print("      - Add: diegonmarcos@gmail.com")
+    print("      - Add: me@diegonmarcos.com")
     print("\n   6. Click 'SAVE AND CONTINUE' through all pages")
     print("   7. Click 'BACK TO DASHBOARD'")
 

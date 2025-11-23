@@ -1,7 +1,7 @@
 # OAuth 2.0 Credentials Setup - Step by Step
 
 ## ✅ Already Completed
-- Google Cloud authentication: diegonmarcos@gmail.com
+- Google Cloud authentication: me@diegonmarcos.com
 - Project selected: Gemini API (gen-lang-client-0167192380)
 - Tag Manager API: **ENABLED** ✅
 
@@ -22,8 +22,8 @@ https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-clien
 
 2. **App Information:**
    - App name: `GTM API Automation`
-   - User support email: `diegonmarcos@gmail.com`
-   - Developer contact: `diegonmarcos@gmail.com`
+   - User support email: `me@diegonmarcos.com`
+   - Developer contact: `me@diegonmarcos.com`
 
    Click `SAVE AND CONTINUE`
 
@@ -36,7 +36,7 @@ https://console.cloud.google.com/apis/credentials/consent?project=gen-lang-clien
 
 4. **Test Users:**
    - Click `+ ADD USERS`
-   - Enter: `diegonmarcos@gmail.com`
+   - Enter: `me@diegonmarcos.com`
    - Click `ADD`
    - Click `SAVE AND CONTINUE`
 
@@ -182,7 +182,7 @@ CONTAINER_ID = "9876543210"   # Your container ID
 - Re-download if needed
 
 ### "Permission denied"
-- Make sure you're using the same Google account: diegonmarcos@gmail.com
+- Make sure you're using the same Google account: me@diegonmarcos.com
 - Add yourself as a test user in OAuth consent screen
 
 ---

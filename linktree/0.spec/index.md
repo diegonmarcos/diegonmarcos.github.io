@@ -9,7 +9,7 @@
 | ** PROFESSIONAL**                                                                                                                                      | ## VENTURE 1 | ## VENTURE 2 |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------ | ------------ |
 | **Contact**                                                                                                                                            |              |              |
-| - ✉️ [](mailto:diegonmarcos@gmail.com "null")  💼 [](https://linkedin.com/in/diegonmarcos "null") 👤[](2.assets/diegonmarcos-contact_photo.vcf "null") |              |              |
+| - ✉️ [](mailto:me@diegonmarcos.com "null")  💼 [](https://linkedin.com/in/diegonmarcos "null") 👤[](2.assets/diegonmarcos-contact_photo.vcf "null") |              |              |
 |                                                                                                                                                        |              |              |
 |                                                                                                                                                        |              |              |
 | **Profiles**                                                                                                                                           |              |              |

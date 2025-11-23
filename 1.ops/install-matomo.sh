@@ -6,7 +6,7 @@ set -e
 # Configuration
 SERVER_IP="130.110.251.193"
 DOMAIN="analytics.diegonmarcos.com"
-EMAIL="diegonmarcos@gmail.com"
+EMAIL="me@diegonmarcos.com"
 NPM_PORT="81"
 
 echo "========================================="

@@ -280,7 +280,7 @@ SSL Certificate: Let's Encrypt
 Force SSL: ✓
 HTTP/2 Support: ✓
 HSTS Enabled: ✓
-Email: diegonmarcos@gmail.com
+Email: me@diegonmarcos.com
 ```
 
 ### SSL Certificate Details

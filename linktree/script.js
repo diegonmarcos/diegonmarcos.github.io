@@ -506,10 +506,79 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial trackpad listener setup
     updateTrackpadListeners();
 
+    // ====================================
+    // MOBILE SCROLL-BASED AUTO-SELECTION
+    // ====================================
+
+    // Function to check if device is mobile
+    function isMobileDevice() {
+        return window.innerWidth <= 768;
+    }
+
+    // Throttle function to limit scroll event frequency
+    function throttle(func, limit) {
+        let inThrottle;
+        return function() {
+            const args = arguments;
+            const context = this;
+            if (!inThrottle) {
+                func.apply(context, args);
+                inThrottle = true;
+                setTimeout(() => inThrottle = false, limit);
+            }
+        };
+    }
+
+    // Function to get carousel center position
+    function getCarouselCenterY(carousel) {
+        const rect = carousel.getBoundingClientRect();
+        return rect.top + (rect.height / 2);
+    }
+
+    // Function to determine which carousel is in viewport center
+    function selectCarouselByScroll() {
+        if (!isMobileDevice()) return;
+
+        const viewportCenter = window.innerHeight / 2;
+        const professionalCenter = getCarouselCenterY(professionalRow);
+        const personalCenter = getCarouselCenterY(personalRow);
+
+        const professionalDistance = Math.abs(viewportCenter - professionalCenter);
+        const personalDistance = Math.abs(viewportCenter - personalCenter);
+
+        // Select the carousel closest to viewport center
+        if (professionalDistance < personalDistance) {
+            if (selectedCarousel !== 'professional') {
+                selectCarousel('professional');
+                updateArrowStates();
+            }
+        } else {
+            if (selectedCarousel !== 'personal') {
+                selectCarousel('personal');
+                updateArrowStates();
+            }
+        }
+    }
+
+    // Add scroll listener for mobile
+    if (isMobileDevice()) {
+        window.addEventListener('scroll', throttle(selectCarouselByScroll, 100));
+        // Initial selection on load
+        setTimeout(selectCarouselByScroll, 100);
+    }
+
+    // Update on window resize (in case of orientation change)
+    window.addEventListener('resize', throttle(() => {
+        if (isMobileDevice()) {
+            selectCarouselByScroll();
+        }
+    }, 200));
+
     console.log('Carousel navigation system enabled');
     console.log('- Touch screens: Single-finger swipe');
     console.log('- Desktop trackpad: Two-finger horizontal swipe');
     console.log('- Desktop mouse: Click navigation arrows');
     console.log('- Keyboard: ↑/↓ to switch carousels, ←/→ to navigate cards');
     console.log('- Hover over carousel to select it');
+    console.log('- Mobile: Auto-select carousel in viewport center on scroll');
 });

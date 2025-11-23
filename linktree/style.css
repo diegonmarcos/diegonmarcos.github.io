@@ -935,10 +935,11 @@ input:checked + .slider:before {
 /* ====================================== */
 
 .swiper-pagination {
-    bottom: 10px !important;
+    bottom: 25px !important;
     display: flex;
     justify-content: center;
     gap: 10px;
+    
 }
 
 .swiper-pagination-bullet {

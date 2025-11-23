@@ -181,4 +181,335 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // ====================================
+    // SWIPER.JS INITIALIZATION
+    // ====================================
+
+    // Common Swiper configuration
+    const swiperConfig = {
+        // Core parameters
+        effect: 'creative',
+        grabCursor: true,
+        centeredSlides: false,
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: false,
+
+        // Creative 3D card swipe effect
+        creativeEffect: {
+            prev: {
+                // Previous card slides left with 3D rotation and fade
+                shadow: true,
+                translate: ['-120%', 0, -500],
+                rotate: [0, 0, -15],
+                opacity: 0,
+                scale: 0.8,
+            },
+            next: {
+                // Next card enters from right with 3D rotation and scale
+                shadow: true,
+                translate: ['120%', 0, -500],
+                rotate: [0, 0, 15],
+                opacity: 0,
+                scale: 0.8,
+            },
+        },
+
+        // Keyboard control
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true,
+        },
+
+        // Enhanced touch settings for multi-touch gestures
+        touchRatio: 1,
+        resistanceRatio: 0.85,
+        touchStartPreventDefault: false,
+        touchStartForcePreventDefault: false,
+        touchMoveStopPropagation: false,
+        simulateTouch: true,
+        allowTouchMove: true,
+        touchEventsTarget: 'container',
+
+        // Threshold for swipe detection (pixels)
+        threshold: 10,
+
+        // Allow sliding with mouse
+        passiveListeners: false,
+
+        // Speed and transitions
+        speed: 900,
+
+        // Events
+        on: {
+            init: function() {
+                console.log('Swiper initialized with 3D creative effect');
+            },
+            touchStart: function(swiper, event) {
+                // Detect multi-touch (two-finger swipe)
+                if (event.touches && event.touches.length === 2) {
+                    console.log('Two-finger swipe detected');
+                }
+            },
+            touchMove: function(swiper, event) {
+                // Handle two-finger gestures
+                if (event.touches && event.touches.length === 2) {
+                    // Two-finger swipe is active
+                }
+            },
+        },
+    };
+
+    // Initialize Professional Swiper
+    const professionalSwiper = new Swiper('.professional-swiper', {
+        ...swiperConfig,
+        navigation: {
+            nextEl: '.professional-next',
+            prevEl: '.professional-prev',
+        },
+        pagination: {
+            el: '.professional-pagination',
+            clickable: true,
+        },
+    });
+
+    // Initialize Personal Swiper
+    const personalSwiper = new Swiper('.personal-swiper', {
+        ...swiperConfig,
+        navigation: {
+            nextEl: '.personal-next',
+            prevEl: '.personal-prev',
+        },
+        pagination: {
+            el: '.personal-pagination',
+            clickable: true,
+        },
+    });
+
+    // ====================================
+    // TWO-FINGER SWIPE SELECTION SYSTEM
+    // ====================================
+
+    let selectedCarousel = 'professional'; // Default selection
+    const professionalRow = document.querySelector('.carousel-row:nth-of-type(1)');
+    const personalRow = document.querySelector('.carousel-row:nth-of-type(2)');
+
+    // Set initial selected state
+    professionalRow.classList.add('selected');
+
+    // Two-finger swipe detection variables
+    let touchStartY = 0;
+    let touchStartX = 0;
+    let isTwoFingerSwipe = false;
+
+    // Function to select carousel
+    function selectCarousel(carousel) {
+        selectedCarousel = carousel;
+
+        if (carousel === 'professional') {
+            professionalRow.classList.add('selected');
+            personalRow.classList.remove('selected');
+            console.log('Professional carousel selected');
+        } else {
+            personalRow.classList.add('selected');
+            professionalRow.classList.remove('selected');
+            console.log('Personal carousel selected');
+        }
+    }
+
+    // Add touch event listeners to carousel rows
+    [professionalRow, personalRow].forEach((row, index) => {
+        row.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                isTwoFingerSwipe = true;
+                touchStartY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+                touchStartX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+            }
+        });
+
+        row.addEventListener('touchmove', (e) => {
+            if (isTwoFingerSwipe && e.touches.length === 2) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        row.addEventListener('touchend', (e) => {
+            if (isTwoFingerSwipe) {
+                const touchEndY = touchStartY;
+                const deltaY = touchEndY - touchStartY;
+
+                // Select the carousel that was touched with two fingers
+                if (index === 0) {
+                    selectCarousel('professional');
+                } else {
+                    selectCarousel('personal');
+                }
+
+                isTwoFingerSwipe = false;
+            }
+        });
+    });
+
+    // Override navigation arrows to control selected carousel only
+    const professionalPrev = document.querySelector('.professional-prev');
+    const professionalNext = document.querySelector('.professional-next');
+    const personalPrev = document.querySelector('.personal-prev');
+    const personalNext = document.querySelector('.personal-next');
+
+    // Disable arrows and touch for non-selected carousels
+    function updateArrowStates() {
+        const professionalSwiperEl = document.querySelector('.professional-swiper');
+        const personalSwiperEl = document.querySelector('.personal-swiper');
+
+        if (selectedCarousel === 'professional') {
+            // Enable professional carousel
+            professionalPrev.style.opacity = '1';
+            professionalNext.style.opacity = '1';
+            professionalPrev.style.pointerEvents = 'auto';
+            professionalNext.style.pointerEvents = 'auto';
+            professionalSwiper.allowTouchMove = true;
+            professionalSwiper.enable();
+            professionalSwiperEl.classList.add('swiper-enabled');
+            professionalSwiperEl.classList.remove('swiper-disabled');
+
+            // Disable personal carousel
+            personalPrev.style.opacity = '0.3';
+            personalNext.style.opacity = '0.3';
+            personalPrev.style.pointerEvents = 'none';
+            personalNext.style.pointerEvents = 'none';
+            personalSwiper.allowTouchMove = false;
+            personalSwiper.disable();
+            personalSwiperEl.classList.add('swiper-disabled');
+            personalSwiperEl.classList.remove('swiper-enabled');
+        } else {
+            // Enable personal carousel
+            personalPrev.style.opacity = '1';
+            personalNext.style.opacity = '1';
+            personalPrev.style.pointerEvents = 'auto';
+            personalNext.style.pointerEvents = 'auto';
+            personalSwiper.allowTouchMove = true;
+            personalSwiper.enable();
+            personalSwiperEl.classList.add('swiper-enabled');
+            personalSwiperEl.classList.remove('swiper-disabled');
+
+            // Disable professional carousel
+            professionalPrev.style.opacity = '0.3';
+            professionalNext.style.opacity = '0.3';
+            professionalPrev.style.pointerEvents = 'none';
+            professionalNext.style.pointerEvents = 'none';
+            professionalSwiper.allowTouchMove = false;
+            professionalSwiper.disable();
+            professionalSwiperEl.classList.add('swiper-disabled');
+            professionalSwiperEl.classList.remove('swiper-enabled');
+        }
+    }
+
+    // Initial arrow state
+    updateArrowStates();
+
+    // Keyboard navigation for selected carousel
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            if (selectedCarousel === 'professional') {
+                professionalSwiper.slidePrev();
+            } else {
+                personalSwiper.slidePrev();
+            }
+        } else if (e.key === 'ArrowRight') {
+            if (selectedCarousel === 'professional') {
+                professionalSwiper.slideNext();
+            } else {
+                personalSwiper.slideNext();
+            }
+        } else if (e.key === 'ArrowDown') {
+            // Switch to personal carousel
+            selectCarousel('personal');
+            updateArrowStates();
+        } else if (e.key === 'ArrowUp') {
+            // Switch to professional carousel
+            selectCarousel('professional');
+            updateArrowStates();
+        }
+    });
+
+    // ====================================
+    // TRACKPAD TWO-FINGER SWIPE SUPPORT
+    // ====================================
+
+    let trackpadDebounce = false;
+    const trackpadDebounceTime = 300; // ms between swipes
+
+    // Add wheel event listeners for trackpad gestures
+    function handleTrackpadSwipe(e, swiper) {
+        // Check for horizontal scroll (trackpad two-finger swipe)
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+            // Horizontal swipe detected
+            if (!trackpadDebounce) {
+                trackpadDebounce = true;
+
+                if (e.deltaX > 30) {
+                    // Swipe left (previous slide)
+                    swiper.slidePrev();
+                    console.log('Trackpad swipe left → Previous card');
+                } else if (e.deltaX < -30) {
+                    // Swipe right (next slide)
+                    swiper.slideNext();
+                    console.log('Trackpad swipe right → Next card');
+                }
+
+                setTimeout(() => {
+                    trackpadDebounce = false;
+                }, trackpadDebounceTime);
+
+                e.preventDefault();
+            }
+        }
+    }
+
+    // Attach trackpad listeners to selected carousel only
+    function updateTrackpadListeners() {
+        // Remove all existing listeners first
+        professionalRow.removeEventListener('wheel', professionalTrackpadHandler);
+        personalRow.removeEventListener('wheel', personalTrackpadHandler);
+
+        // Add listener only to selected carousel
+        if (selectedCarousel === 'professional') {
+            professionalRow.addEventListener('wheel', professionalTrackpadHandler, { passive: false });
+        } else {
+            personalRow.addEventListener('wheel', personalTrackpadHandler, { passive: false });
+        }
+    }
+
+    // Handler functions for each carousel
+    function professionalTrackpadHandler(e) {
+        handleTrackpadSwipe(e, professionalSwiper);
+    }
+
+    function personalTrackpadHandler(e) {
+        handleTrackpadSwipe(e, personalSwiper);
+    }
+
+    // Update hover listeners to also update trackpad listeners
+    professionalRow.addEventListener('mouseenter', () => {
+        selectCarousel('professional');
+        updateArrowStates();
+        updateTrackpadListeners();
+    });
+
+    personalRow.addEventListener('mouseenter', () => {
+        selectCarousel('personal');
+        updateArrowStates();
+        updateTrackpadListeners();
+    });
+
+    // Initial trackpad listener setup
+    updateTrackpadListeners();
+
+    console.log('Carousel navigation system enabled');
+    console.log('- Touch screens: Single-finger swipe');
+    console.log('- Desktop trackpad: Two-finger horizontal swipe');
+    console.log('- Desktop mouse: Click navigation arrows');
+    console.log('- Keyboard: ↑/↓ to switch carousels, ←/→ to navigate cards');
+    console.log('- Hover over carousel to select it');
 });

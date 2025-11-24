@@ -833,6 +833,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isTouchDevice) {
         const cards = document.querySelectorAll('.card');
+        let currentSelectedCard = null;
+
+        // Make all cards focusable
+        cards.forEach(card => {
+            card.setAttribute('tabindex', '-1');
+        });
 
         function findCenteredCard() {
             const viewportCenter = window.innerHeight / 2;
@@ -854,13 +860,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function updateCenteredCard() {
-            // Remove centered class from all cards
-            cards.forEach(card => card.classList.remove('centered'));
-
-            // Add centered class to the most centered card
             const centeredCard = findCenteredCard();
-            if (centeredCard) {
-                centeredCard.classList.add('centered');
+
+            // Only update if changed
+            if (centeredCard !== currentSelectedCard) {
+                // Remove centered class and selection from all cards
+                cards.forEach(card => {
+                    card.classList.remove('centered');
+                    card.setAttribute('tabindex', '-1');
+                    card.blur();
+                });
+
+                // Add centered class and select the new card
+                if (centeredCard) {
+                    centeredCard.classList.add('centered');
+                    centeredCard.setAttribute('tabindex', '0');
+                    centeredCard.focus({ preventScroll: true });
+                    currentSelectedCard = centeredCard;
+                }
             }
         }
 

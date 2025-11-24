@@ -1,0 +1,16 @@
+{
+  "name": "root-typescript",
+  "version": "1.0.0",
+  "description": "TypeScript compilation for root script.js",
+  "scripts": {
+    "ts:watch": "tsc --watch",
+    "ts:build": "tsc && npm run move:maps",
+    "ts:dev": "tsc --watch",
+    "move:maps": "mv -f ../*.map ./logs/ 2>/dev/null || true",
+    "watch:all": "concurrently \"npm run ts:watch\""
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "concurrently": "^8.2.2"
+  }
+}

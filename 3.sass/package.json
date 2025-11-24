@@ -1,0 +1,13 @@
+{
+  "name": "root-sass",
+  "version": "1.0.0",
+  "description": "Sass compilation for root style.css",
+  "scripts": {
+    "sass:watch": "sass --watch ./style.scss:../style.css",
+    "sass:build": "sass ./style.scss:../style.css --style=compressed",
+    "sass:dev": "sass ./style.scss:../style.css --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0"
+  }
+}

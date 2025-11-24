@@ -1,0 +1,13 @@
+{
+  "name": "cv-web-sass",
+  "version": "1.0.0",
+  "description": "Sass compilation for cv_web style.css",
+  "scripts": {
+    "sass:watch": "sass --watch ./main.scss:../../style.css",
+    "sass:build": "sass ./main.scss:../../style.css --style=compressed",
+    "sass:dev": "sass ./main.scss:../../style.css --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0"
+  }
+}

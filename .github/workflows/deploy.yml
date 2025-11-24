@@ -89,6 +89,16 @@ jobs:
           cd ../..
           echo "✅ MyProfile build complete"
 
+      - name: 🔨 Build Nexus (Vue 3 + Tailwind)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'nexus/')
+        run: |
+          echo "🔨 Building Nexus Holdings application..."
+          cd nexus
+          npm install
+          npm run build
+          cd ..
+          echo "✅ Nexus build complete"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -117,6 +127,16 @@ jobs:
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no build directory found)"
+          fi
+
+          # Copy Nexus Vue build (if dist exists)
+          if [ -d "nexus/dist" ]; then
+            echo "📦 Copying Nexus Holdings build..."
+            mkdir -p _site/nexus
+            cp -r nexus/dist/* _site/nexus/
+            echo "✅ Nexus build copied to _site/nexus/"
+          else
+            echo "⏭️  Skipping Nexus copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

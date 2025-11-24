@@ -99,7 +99,6 @@ jobs:
           cp -r linktree _site/ 2>/dev/null || true
           cp -r cv_web _site/ 2>/dev/null || true
           cp -r cv_pdf _site/ 2>/dev/null || true
-          cp -r nexus _site/ 2>/dev/null || true
           cp -r 2.assets _site/assets 2>/dev/null || true
           cp -r others _site/ 2>/dev/null || true
 

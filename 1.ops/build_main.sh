@@ -55,7 +55,7 @@ print_usage() {
     printf "  ${GREEN}build-cv-web${NC}       Build cv_web (Sass only)\n"
     printf "  ${GREEN}build-myfeed${NC}       Build MyFeed (Vue 3 + Vite)\n"
     printf "  ${GREEN}build-myprofile${NC}    Build MyProfile (SvelteKit)\n"
-    printf "  ${GREEN}build-dhgp-vc${NC}      Build DHGP VC (Vue 3 + Tailwind)\n"
+    printf "  ${GREEN}build-nexus${NC}      Build Nexus (Vue 3 + Tailwind)\n"
     printf "\n"
     printf "${YELLOW}DEVELOPMENT ACTIONS:${NC}\n"
     printf "  ${GREEN}dev${NC}                Start all dev servers (quiet mode)\n"
@@ -64,7 +64,7 @@ print_usage() {
     printf "  ${GREEN}dev-cv-web${NC}         Start cv_web Sass watch\n"
     printf "  ${GREEN}dev-myfeed${NC}         Start MyFeed dev server\n"
     printf "  ${GREEN}dev-myprofile${NC}      Start MyProfile dev server\n"
-    printf "  ${GREEN}dev-dhgp-vc${NC}        Start DHGP VC dev server\n"
+    printf "  ${GREEN}dev-nexus${NC}        Start Nexus dev server\n"
     printf "\n"
     printf "${YELLOW}UTILITY ACTIONS:${NC}\n"
     printf "  ${GREEN}kill${NC}               Kill all running dev servers\n"
@@ -94,7 +94,7 @@ print_usage() {
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "CV Web" "Sass" "—" "—"
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "MyFeed" "Sass" "TypeScript" "Vue 3"
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "MyProfile" "Sass" "TypeScript" "SvelteKit"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "DHGP VC" "Tailwind CSS" "TypeScript" "Vue 3"
+    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Nexus" "Tailwind CSS" "TypeScript" "Vue 3"
     printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER URLS:${NC}\n"
@@ -256,7 +256,7 @@ dev_all() {
         tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/1.ops && bash build.sh dev"
         tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && bash build.sh dev"
         tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && bash build.sh dev"
-        tmux new-session -d -s build-dhgp-vc "cd $PROJECT_ROOT/dhgp_vc/1.ops && bash build.sh dev"
+        tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && bash build.sh dev"
 
         log_success "All servers started in tmux sessions!"
         echo ""
@@ -268,10 +268,10 @@ dev_all() {
         echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
         echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
         echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
-        echo -e "${BLUE}  🏢 DHGP VC:${NC}             http://localhost:3001/dhgp_vc/"
+        echo -e "${BLUE}  🏢 Nexus:${NC}             http://localhost:3001/nexus/"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo ""
-        log_info "Tmux Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-dhgp-vc"
+        log_info "Tmux Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus"
         log_info "To view logs: tmux attach -t <session-name>"
         log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
         echo ""
@@ -323,11 +323,11 @@ dev_all() {
             bash "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev &
         fi
 
-        log_info "Starting dhgp_vc..."
+        log_info "Starting nexus..."
         if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/dhgp_vc/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/dhgp-vc-dev.log" 2>&1 &
+            nohup bash "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/nexus-dev.log" 2>&1 &
         else
-            bash "$PROJECT_ROOT/dhgp_vc/1.ops/build.sh" dev &
+            bash "$PROJECT_ROOT/nexus/1.ops/build.sh" dev &
         fi
 
         sleep 3  # Give servers time to start
@@ -342,7 +342,7 @@ dev_all() {
         echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
         echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
         echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
-        echo -e "${BLUE}  🏢 DHGP VC:${NC}             http://localhost:3001/dhgp_vc/"
+        echo -e "${BLUE}  🏢 Nexus:${NC}             http://localhost:3001/nexus/"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo ""
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -361,7 +361,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux &> /dev/null; then
-        for session in build-root build-linktree build-cv-web build-myfeed build-myprofile build-dhgp-vc; do
+        for session in build-root build-linktree build-cv-web build-myfeed build-myprofile build-nexus; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && ((killed++)) || true
@@ -518,8 +518,8 @@ main() {
         build-myprofile)
             execute_build "myprofile" "build"
             ;;
-        build-dhgp-vc)
-            execute_build "dhgp_vc" "build"
+        build-nexus)
+            execute_build "nexus" "build"
             ;;
         dev)
             dev_all $verbose
@@ -542,8 +542,8 @@ main() {
         dev-myprofile)
             execute_build "myprofile" "dev"
             ;;
-        dev-dhgp-vc)
-            execute_build "dhgp_vc" "dev"
+        dev-nexus)
+            execute_build "nexus" "dev"
             ;;
         kill)
             kill_servers

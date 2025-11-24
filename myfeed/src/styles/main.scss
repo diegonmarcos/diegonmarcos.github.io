@@ -1,0 +1,23 @@
+// ============================================
+// MYFEED MAIN STYLESHEET
+// ============================================
+// Entry point for all styles
+
+// 1. Import Tailwind CSS
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// 2. Import abstracts (variables, mixins, functions)
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+@import 'abstracts/transitions';
+
+// 3. Import base styles
+@import 'base/custom';
+
+// 4. Import components
+@import 'components/glass';
+
+// 5. Import any overrides (PrimeVue, Shadcn, etc.)
+// @import 'overrides/primevue';

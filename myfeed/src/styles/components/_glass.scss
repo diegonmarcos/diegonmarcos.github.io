@@ -1,0 +1,38 @@
+// ============================================
+// GLASS MORPHISM COMPONENTS
+// ============================================
+// Enhanced glass effects for MyFeed
+
+.glass-enhanced {
+  @include glass(0.6, 20px);
+}
+
+.glass-strong {
+  background: rgba($obsidian-900, 0.85);
+  backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-subtle {
+  background: rgba($obsidian-900, 0.3);
+  backdrop-filter: blur(12px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+// Glass hover effect
+.glass-hover-effect {
+  @include hover-lift();
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    @include glow($violet-accent, 0.2);
+  }
+}
+
+// Glow effect
+.glow-purple {
+  @include glow($violet-accent, 0.4);
+}

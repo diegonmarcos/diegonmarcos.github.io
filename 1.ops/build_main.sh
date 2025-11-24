@@ -178,12 +178,16 @@ build_all() {
 
     local failed=0
 
-    # Build root (Sass + TypeScript)
-    log_info "Building root Sass + TypeScript..."
-    if [ -d "$PROJECT_ROOT/1.ops" ]; then
-        cd "$PROJECT_ROOT/1.ops"
-        npm install > /dev/null 2>&1 || true
-        npm run build || ((failed++))
+    # Build root Sass
+    log_info "Building root Sass..."
+    if [ -d "$PROJECT_ROOT/3.sass" ]; then
+        (cd "$PROJECT_ROOT/3.sass" && npm install > /dev/null 2>&1 && npm run sass:build) || ((failed++))
+    fi
+
+    # Build root TypeScript
+    log_info "Building root TypeScript..."
+    if [ -d "$PROJECT_ROOT/4.ts" ]; then
+        (cd "$PROJECT_ROOT/4.ts" && npm install > /dev/null 2>&1 && npm run ts:build) || ((failed++))
     fi
 
     # Build each sub-project
@@ -251,9 +255,10 @@ dev_all() {
     if command -v tmux &> /dev/null; then
         log_info "Starting servers in tmux sessions..."
 
-        tmux new-session -d -s build-root "cd $PROJECT_ROOT/1.ops && npm run watch:all"
+        tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/3.sass && npm install && npm run sass:watch"
+        tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/4.ts && npm install && npm run ts:watch"
         tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/1.ops && bash build.sh dev"
+        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/3.sass && npm install && npm run sass:watch"
         tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && bash build.sh dev"
         tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && bash build.sh dev"
         tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && bash build.sh dev"
@@ -263,7 +268,7 @@ dev_all() {
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo -e "${CYAN}📡 Development Servers Running:${NC}"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active)${NC}"
+        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active, TS watch active)${NC}"
         echo -e "${BLUE}  🔗 Linktree:${NC}            http://localhost:8000/linktree/"
         echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
         echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
@@ -271,7 +276,7 @@ dev_all() {
         echo -e "${BLUE}  🏢 Nexus:${NC}             http://localhost:3001/nexus/"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo ""
-        log_info "Tmux Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus"
+        log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus"
         log_info "To view logs: tmux attach -t <session-name>"
         log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
         echo ""
@@ -285,14 +290,25 @@ dev_all() {
         # Create log directory
         mkdir -p "$PROJECT_ROOT/1.ops/logs"
 
-        # Start root watch in background
-        log_info "Starting root (Sass + TypeScript)..."
-        cd "$PROJECT_ROOT/1.ops"
-        if [ "$verbose" = false ]; then
-            nohup npm run watch:all > "$PROJECT_ROOT/1.ops/logs/root-dev.log" 2>&1 &
+        # Start root Sass watch in background
+        log_info "Starting root Sass..."
+        (cd "$PROJECT_ROOT/3.sass" && if [ "$verbose" = false ]; then
+            nohup npm install > /dev/null 2>&1 &
+            nohup npm run sass:watch > "$PROJECT_ROOT/3.sass/logs/sass-dev.log" 2>&1 &
         else
-            npm run watch:all &
-        fi
+            npm install
+            npm run sass:watch &
+        fi)
+
+        # Start root TypeScript watch in background
+        log_info "Starting root TypeScript..."
+        (cd "$PROJECT_ROOT/4.ts" && if [ "$verbose" = false ]; then
+            nohup npm install > /dev/null 2>&1 &
+            nohup npm run ts:watch > "$PROJECT_ROOT/4.ts/logs/ts-dev.log" 2>&1 &
+        else
+            npm install
+            npm run ts:watch &
+        fi)
 
         # Start others in background with logs
         log_info "Starting linktree..."
@@ -302,11 +318,11 @@ dev_all() {
             bash "$PROJECT_ROOT/linktree/1.ops/build.sh" dev &
         fi
 
-        log_info "Starting cv_web..."
+        log_info "Starting cv_web Sass..."
         if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cv-web-dev.log" 2>&1 &
+            (cd "$PROJECT_ROOT/cv_web/3.sass" && nohup npm install > /dev/null 2>&1 & nohup npm run sass:watch > "$PROJECT_ROOT/cv_web/3.sass/logs/sass-dev.log" 2>&1 &)
         else
-            bash "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev &
+            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch &)
         fi
 
         log_info "Starting myfeed..."
@@ -500,10 +516,10 @@ main() {
             build_all $force
             ;;
         build-root)
-            log_section "Building Root"
-            cd "$PROJECT_ROOT/1.ops"
-            npm install
-            npm run build
+            log_section "Building Root Sass"
+            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:build)
+            log_section "Building Root TypeScript"
+            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:build)
             log_success "Root build completed"
             ;;
         build-linktree)
@@ -525,16 +541,19 @@ main() {
             dev_all $verbose
             ;;
         dev-root)
-            log_section "Starting Root Development"
-            cd "$PROJECT_ROOT/1.ops"
-            npm install
-            npm run watch:all
+            log_section "Starting Root Sass Development"
+            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:watch) &
+            log_section "Starting Root TypeScript Development"
+            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:watch) &
+            log_success "Root development servers started"
             ;;
         dev-linktree)
             execute_build "linktree" "dev"
             ;;
         dev-cv-web)
-            execute_build "cv_web" "dev"
+            log_section "Starting cv_web Sass Development"
+            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch)
+            log_success "cv_web Sass development server started"
             ;;
         dev-myfeed)
             execute_build "myfeed" "dev"

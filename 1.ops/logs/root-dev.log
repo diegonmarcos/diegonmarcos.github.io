@@ -16,3 +16,5 @@
 [0] 
 [1] 
 [1] 1:39:56 AM - Found 0 errors. Watching for file changes.
+[1] npm run ts:watch exited with code SIGTERM
+[0] npm run sass:watch exited with code SIGTERM

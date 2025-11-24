@@ -30,19 +30,19 @@ export default defineConfig({
           ],
         },
       ],
-      dts: '2.src/auto-imports.d.ts',
+      dts: 'src/auto-imports.d.ts',
       dirs: [
-        '2.src/composables',
-        '2.src/stores',
+        'src/composables',
+        'src/stores',
       ],
       vueTemplate: true,
     }),
 
     // Auto import components
     Components({
-      dts: '2.src/components.d.ts',
+      dts: 'src/components.d.ts',
       dirs: [
-        '2.src/components',
+        'src/components',
       ],
       extensions: ['vue'],
     }),
@@ -56,7 +56,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./2.src', import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #=====================================
 # MAIN BUILD ORCHESTRATOR
@@ -8,6 +8,7 @@
 #
 # Usage: ./1.ops/build_main.sh <action> [options]
 #
+# NOTE: This script requires bash. Do not run with 'sh' or 'dash'.
 
 set -e  # Exit on error
 
@@ -20,8 +21,14 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Project root directory
-PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Project root directory - more robust detection
+if [ -n "${BASH_SOURCE[0]}" ]; then
+    # When run with bash
+    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+else
+    # Fallback for other shells or when sourced
+    PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+fi
 
 # Banner function
 print_banner() {
@@ -47,8 +54,10 @@ ${YELLOW}Actions:${NC}
   dev                - Start all development servers
   dev-root           - Start root Sass + TS watch
   dev-linktree       - Start linktree live server
+  dev-cv-web         - Start cv_web Sass watch
   dev-myfeed         - Start MyFeed dev server
   dev-myprofile      - Start MyProfile dev server
+  kill               - Kill all running dev servers
   clean              - Clean all build artifacts
   clean-all          - Clean all build artifacts + node_modules
   test               - Run all tests
@@ -61,9 +70,11 @@ ${YELLOW}Options:${NC}
 ${YELLOW}Examples:${NC}
   ./1.ops/build_main.sh build                 # Build all projects
   ./1.ops/build_main.sh build-myprofile       # Build only MyProfile
-  ./1.ops/build_main.sh dev                   # Start all dev servers
+  ./1.ops/build_main.sh dev                   # Start all dev servers (quiet mode)
+  ./1.ops/build_main.sh dev --verbose         # Start all dev servers (show output)
   ./1.ops/build_main.sh build --force         # Clean and build all
   ./1.ops/build_main.sh clean                 # Clean build artifacts
+  ./1.ops/build_main.sh kill                  # Kill all running dev servers
 
 ${YELLOW}Project Structure:${NC}
   Root (Sass + TypeScript)
@@ -207,11 +218,18 @@ clean_deep() {
 
 # Start development servers
 dev_all() {
+    local verbose=${1:-false}
+
     log_section "Starting All Development Servers"
 
     log_warning "This will start multiple development servers concurrently."
-    log_warning "Press Ctrl+C to stop all servers."
     echo ""
+
+    # Redirect output unless verbose mode
+    local output_redirect=""
+    if [ "$verbose" = false ]; then
+        output_redirect="> /dev/null 2>&1"
+    fi
 
     # Use tmux or screen if available, otherwise warn
     if command -v tmux &> /dev/null; then
@@ -219,30 +237,159 @@ dev_all() {
 
         tmux new-session -d -s build-root "cd $PROJECT_ROOT/1.ops && npm run watch:all"
         tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && bash build.sh dev"
+        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/1.ops && bash build.sh dev"
         tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && bash build.sh dev"
         tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && bash build.sh dev"
 
         log_success "All servers started in tmux sessions!"
         echo ""
         log_info "To attach to a session: tmux attach -t <session-name>"
-        log_info "Sessions: build-root, build-linktree, build-myfeed, build-myprofile"
-        log_info "To kill all sessions: tmux kill-session -a"
+        log_info "Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile"
+        log_info "To view logs: tmux attach -t <session-name>"
+        log_info "To kill all sessions: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
+        echo ""
+        log_success "Returning to prompt. Dev servers are running in background."
 
     else
-        log_warning "tmux not found. Starting servers sequentially (Ctrl+C to stop)..."
-        log_info "Install tmux for concurrent dev servers: sudo apt-get install tmux"
+        log_warning "tmux not found. Starting servers in background..."
+        log_info "Install tmux for better session management: sudo apt-get install tmux"
         echo ""
 
+        # Create log directory
+        mkdir -p "$PROJECT_ROOT/1.ops/logs"
+
         # Start root watch in background
+        log_info "Starting root (Sass + TypeScript)..."
         cd "$PROJECT_ROOT/1.ops"
-        npm run watch:all &
+        if [ "$verbose" = false ]; then
+            nohup npm run watch:all > "$PROJECT_ROOT/1.ops/logs/root-dev.log" 2>&1 &
+        else
+            npm run watch:all &
+        fi
 
-        # Start others
-        execute_build "linktree" "dev" &
-        execute_build "myfeed" "dev" &
-        execute_build "myprofile" "dev" &
+        # Start others in background with logs
+        log_info "Starting linktree..."
+        if [ "$verbose" = false ]; then
+            nohup bash "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/linktree-dev.log" 2>&1 &
+        else
+            bash "$PROJECT_ROOT/linktree/1.ops/build.sh" dev &
+        fi
 
-        wait
+        log_info "Starting cv_web..."
+        if [ "$verbose" = false ]; then
+            nohup bash "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cv-web-dev.log" 2>&1 &
+        else
+            bash "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev &
+        fi
+
+        log_info "Starting myfeed..."
+        if [ "$verbose" = false ]; then
+            nohup bash "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myfeed-dev.log" 2>&1 &
+        else
+            bash "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev &
+        fi
+
+        log_info "Starting myprofile..."
+        if [ "$verbose" = false ]; then
+            nohup bash "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
+        else
+            bash "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev &
+        fi
+
+        sleep 3  # Give servers time to start
+
+        log_success "All servers started in background!"
+        echo ""
+        log_info "Logs are being written to: $PROJECT_ROOT/1.ops/logs/"
+        log_info "To view logs: tail -f $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
+        log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
+        echo ""
+        log_success "Returning to prompt. Dev servers are running in background."
+    fi
+}
+
+# Kill all running dev servers
+kill_servers() {
+    log_section "Killing All Development Servers"
+
+    local killed=0
+
+    # Kill tmux sessions if they exist
+    if command -v tmux &> /dev/null; then
+        for session in build-root build-linktree build-cv-web build-myfeed build-myprofile; do
+            if tmux has-session -t "$session" 2>/dev/null; then
+                log_info "Killing tmux session: $session"
+                tmux kill-session -t "$session" 2>/dev/null && ((killed++)) || true
+            fi
+        done
+    fi
+
+    # Kill processes by pattern matching (fallback for non-tmux sessions)
+    # Look for specific dev server processes
+    local pids=$(pgrep -f "npm run (watch:all|dev)" || true)
+    if [ -n "$pids" ]; then
+        log_info "Killing npm dev processes..."
+        echo "$pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        sleep 1
+        # Force kill if still running
+        pids=$(pgrep -f "npm run (watch:all|dev)" || true)
+        if [ -n "$pids" ]; then
+            echo "$pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    # Kill live-server processes (for linktree)
+    local live_server_pids=$(pgrep -f "live-server.*8080" || true)
+    if [ -n "$live_server_pids" ]; then
+        log_info "Killing live-server processes..."
+        echo "$live_server_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        sleep 1
+        live_server_pids=$(pgrep -f "live-server.*8080" || true)
+        if [ -n "$live_server_pids" ]; then
+            echo "$live_server_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    # Kill vite dev server (for myfeed)
+    local vite_pids=$(pgrep -f "vite.*--port.*8081" || true)
+    if [ -n "$vite_pids" ]; then
+        log_info "Killing Vite dev server..."
+        echo "$vite_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        sleep 1
+        vite_pids=$(pgrep -f "vite.*--port.*8081" || true)
+        if [ -n "$vite_pids" ]; then
+            echo "$vite_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    # Kill SvelteKit dev server (for myprofile)
+    local svelte_pids=$(pgrep -f "svelte-kit.*dev.*--port.*8082" || true)
+    if [ -n "$svelte_pids" ]; then
+        log_info "Killing SvelteKit dev server..."
+        echo "$svelte_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        sleep 1
+        svelte_pids=$(pgrep -f "svelte-kit.*dev.*--port.*8082" || true)
+        if [ -n "$svelte_pids" ]; then
+            echo "$svelte_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    # Kill Sass watch processes (for root and cv_web)
+    local sass_pids=$(pgrep -f "sass.*--watch" || true)
+    if [ -n "$sass_pids" ]; then
+        log_info "Killing Sass watch processes..."
+        echo "$sass_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        sleep 1
+        sass_pids=$(pgrep -f "sass.*--watch" || true)
+        if [ -n "$sass_pids" ]; then
+            echo "$sass_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    if [ $killed -gt 0 ]; then
+        log_success "Killed $killed server(s)"
+    else
+        log_warning "No running dev servers found"
     fi
 }
 
@@ -317,7 +464,7 @@ main() {
             execute_build "myprofile" "build"
             ;;
         dev)
-            dev_all
+            dev_all $verbose
             ;;
         dev-root)
             log_section "Starting Root Development"
@@ -328,11 +475,17 @@ main() {
         dev-linktree)
             execute_build "linktree" "dev"
             ;;
+        dev-cv-web)
+            execute_build "cv_web" "dev"
+            ;;
         dev-myfeed)
             execute_build "myfeed" "dev"
             ;;
         dev-myprofile)
             execute_build "myprofile" "dev"
+            ;;
+        kill)
+            kill_servers
             ;;
         clean)
             clean_all_builds

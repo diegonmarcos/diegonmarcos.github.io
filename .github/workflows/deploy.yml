@@ -31,13 +31,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: |
-            1.ops/package-lock.json
+            3.sass/package-lock.json
+            cv_web/3.sass/package-lock.json
+            4.ts/package-lock.json
 
       - name: 🎨 Build CSS from Sass (Root)
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '3.sass/')
         run: |
           echo "📁 Building root Sass..."
-          cd 1.ops
+          cd 3.sass
           npm install
           npm run sass:build
           cd ..
@@ -47,12 +49,10 @@ jobs:
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/3.sass/')
         run: |
           echo "📁 Building cv_web Sass..."
-          cd 1.ops
+          cd cv_web/3.sass
           npm install
-          # This should be adapted if cv_web has a different build script
-          # Assuming it uses the same for now
           npm run sass:build 
-          cd ..
+          cd ../..
           echo "✅ cv_web/style.css created"
 
       # ============================================
@@ -62,7 +62,7 @@ jobs:
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '4.ts/')
         run: |
           echo "📜 Building TypeScript..."
-          cd 1.ops
+          cd 4.ts
           npm install
           npm run ts:build
           cd ..
@@ -90,7 +90,6 @@ jobs:
           echo "✅ MyProfile build complete"
 
       - name: 🔨 Build Nexus (Vue 3 + Tailwind)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'nexus/')
         run: |
           echo "🔨 Building Nexus Holdings application..."
           cd nexus

@@ -834,6 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isTouchDevice) {
         const cards = document.querySelectorAll('.card');
         let currentSelectedCard = null;
+        let isScrolling = false;
 
         // Make all cards focusable
         cards.forEach(card => {
@@ -862,42 +863,58 @@ document.addEventListener('DOMContentLoaded', () => {
         function updateCenteredCard() {
             const centeredCard = findCenteredCard();
 
-            // Only update if changed
-            if (centeredCard !== currentSelectedCard) {
-                // Remove centered class and selection from all cards
-                cards.forEach(card => {
-                    card.classList.remove('centered');
-                    card.setAttribute('tabindex', '-1');
-                    card.blur();
-                });
+            // Always update, even if same card (in case it was deselected)
+            // Remove centered class and selection from all cards
+            cards.forEach(card => {
+                card.classList.remove('centered');
+                card.setAttribute('tabindex', '-1');
+            });
 
-                // Add centered class and select the new card
-                if (centeredCard) {
-                    centeredCard.classList.add('centered');
-                    centeredCard.setAttribute('tabindex', '0');
-                    centeredCard.focus({ preventScroll: true });
-                    currentSelectedCard = centeredCard;
-                }
+            // Add centered class and select the new card
+            if (centeredCard) {
+                centeredCard.classList.add('centered');
+                centeredCard.setAttribute('tabindex', '0');
+                // Don't call focus() as it might interfere with scrolling
+                currentSelectedCard = centeredCard;
             }
         }
 
-        // Throttle function to limit how often updateCenteredCard runs
-        let scrollTimeout;
-        function handleScroll() {
-            if (scrollTimeout) {
-                clearTimeout(scrollTimeout);
+        // Use requestAnimationFrame for smooth updates
+        let rafId = null;
+        function handleScrollRaf() {
+            if (rafId) {
+                cancelAnimationFrame(rafId);
             }
 
-            scrollTimeout = setTimeout(() => {
+            rafId = requestAnimationFrame(() => {
                 updateCenteredCard();
-            }, 50); // Update every 50ms during scroll
+                isScrolling = false;
+            });
         }
 
-        // Listen to scroll events
-        window.addEventListener('scroll', handleScroll);
+        // Listen to scroll events (passive for better performance)
+        window.addEventListener('scroll', () => {
+            isScrolling = true;
+            handleScrollRaf();
+        }, { passive: true });
+
+        // Also listen to touch events for mobile
+        window.addEventListener('touchmove', () => {
+            isScrolling = true;
+            handleScrollRaf();
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => {
+            // Small delay to catch final position
+            setTimeout(() => {
+                updateCenteredCard();
+            }, 100);
+        });
 
         // Initial check on page load
-        updateCenteredCard();
+        setTimeout(() => {
+            updateCenteredCard();
+        }, 300); // Delay to ensure page is fully loaded
 
         // Re-check when window is resized
         window.addEventListener('resize', updateCenteredCard);

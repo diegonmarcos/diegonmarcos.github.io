@@ -38,7 +38,7 @@ Simple login script for SSH access.
 
 Equivalent to:
 ```bash
-ssh -i ~/.ssh/matomo_key ubuntu@129.151.229.21
+ssh -i ~/.ssh/matomo_key ubuntu@130.110.251.193
 ```
 
 ---
@@ -141,7 +141,7 @@ Comprehensive management script with multiple commands.
 2. **Save the credentials** from `matomo-credentials.txt`
 
 3. **Configure DNS:**
-   - Point `analytics.diegonmarcos.com` to `129.151.229.21`
+   - Point `analytics.diegonmarcos.com` to `130.110.251.193`
 
 4. **Setup HTTPS (Choose one method):**
 
@@ -166,7 +166,7 @@ Comprehensive management script with multiple commands.
 
 ## 🔐 Server Information
 
-- **Server IP**: 129.151.229.21
+- **Server IP**: 130.110.251.193
 - **Domain**: analytics.diegonmarcos.com
 - **Region**: EU-Marseille-1 (France)
 - **Instance Type**: VM.Standard.E2.1.Micro (Always Free)
@@ -227,8 +227,8 @@ Comprehensive management script with multiple commands.
 | Service | URL | Purpose |
 |---------|-----|---------|
 | Matomo (HTTPS) | https://analytics.diegonmarcos.com | Main analytics interface ✅ |
-| Nginx Proxy Manager | http://129.151.229.21:81 | Reverse proxy admin |
-| Matomo (direct) | http://129.151.229.21:8080 | Direct access (dev only) |
+| Nginx Proxy Manager | http://130.110.251.193:81 | Reverse proxy admin |
+| Matomo (direct) | http://130.110.251.193:8080 | Direct access (dev only) |
 
 ---
 

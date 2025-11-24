@@ -19,7 +19,7 @@
 - **Shape**: VM.Standard.E2.1.Micro (Always Free ✅)
 - **OS**: Ubuntu 24.04 Minimal
 - **Resources**: 2 vCPUs, 1GB RAM, 50GB storage
-- **Public IP**: **129.151.229.21**
+- **Public IP**: **130.110.251.193**
 - **Status**: RUNNING ✅
 
 ### ✅ 3. Management Scripts Created
@@ -60,7 +60,7 @@ All scripts are POSIX-compliant and ready to use in `1.ops/`:
    ```
 5. Test SSH:
    ```bash
-   ssh -i ~/.ssh/matomo_key ubuntu@129.151.229.21
+   ssh -i ~/.ssh/matomo_key ubuntu@130.110.251.193
    ```
 
 ---
@@ -84,10 +84,10 @@ Point your DNS to the server:
 
 **A Record:**
 - **Name**: analytics
-- **Value**: 129.151.229.21
+- **Value**: 130.110.251.193
 - **TTL**: 300 (or auto)
 
-**Result**: analytics.diegonmarcos.com → 129.151.229.21
+**Result**: analytics.diegonmarcos.com → 130.110.251.193
 
 ### Step 3: Enable HTTPS
 
@@ -203,8 +203,8 @@ MariaDB Database (Docker)
 | Service | URL | Status |
 |---------|-----|--------|
 | Matomo Analytics | https://analytics.diegonmarcos.com | ⏳ Pending DNS + SSL |
-| NPM Admin | http://129.151.229.21:81 | ⏳ Pending installation |
-| Matomo Direct | http://129.151.229.21:8080 | ⏳ Pending installation |
+| NPM Admin | http://130.110.251.193:81 | ⏳ Pending installation |
+| Matomo Direct | http://130.110.251.193:8080 | ⏳ Pending installation |
 
 ---
 

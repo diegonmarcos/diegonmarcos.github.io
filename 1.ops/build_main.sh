@@ -243,10 +243,19 @@ dev_all() {
 
         log_success "All servers started in tmux sessions!"
         echo ""
-        log_info "To attach to a session: tmux attach -t <session-name>"
-        log_info "Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${CYAN}📡 Development Servers Running:${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active)${NC}"
+        echo -e "${BLUE}  🔗 Linktree:${NC}            http://localhost:8000/linktree/"
+        echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
+        echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
+        echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+        log_info "Tmux Sessions: build-root, build-linktree, build-cv-web, build-myfeed, build-myprofile"
         log_info "To view logs: tmux attach -t <session-name>"
-        log_info "To kill all sessions: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
+        log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
         echo ""
         log_success "Returning to prompt. Dev servers are running in background."
 
@@ -300,9 +309,19 @@ dev_all() {
 
         log_success "All servers started in background!"
         echo ""
-        log_info "Logs are being written to: $PROJECT_ROOT/1.ops/logs/"
-        log_info "To view logs: tail -f $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
-        log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${CYAN}📡 Development Servers Running:${NC}"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active)${NC}"
+        echo -e "${BLUE}  🔗 Linktree:${NC}            http://localhost:8000/linktree/"
+        echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
+        echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
+        echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
+        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+        echo ""
+        log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
+        log_info "View logs: tail -f $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
+        log_info "Kill servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
         echo ""
         log_success "Returning to prompt. Dev servers are running in background."
     fi
@@ -324,61 +343,59 @@ kill_servers() {
         done
     fi
 
-    # Kill processes by pattern matching (fallback for non-tmux sessions)
-    # Look for specific dev server processes
-    local pids=$(pgrep -f "npm run (watch:all|dev)" || true)
-    if [ -n "$pids" ]; then
-        log_info "Killing npm dev processes..."
-        echo "$pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+    # Kill Python HTTP servers (linktree and potentially others on port 8000/8001)
+    local python_pids=$(pgrep -f "python3.*http.server" || true)
+    if [ -n "$python_pids" ]; then
+        log_info "Killing Python HTTP servers..."
+        echo "$python_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$python_pids" | wc -w))) || true
         sleep 1
-        # Force kill if still running
-        pids=$(pgrep -f "npm run (watch:all|dev)" || true)
-        if [ -n "$pids" ]; then
-            echo "$pids" | xargs kill -9 2>/dev/null || true
+        python_pids=$(pgrep -f "python3.*http.server" || true)
+        if [ -n "$python_pids" ]; then
+            echo "$python_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    # Kill live-server processes (for linktree)
-    local live_server_pids=$(pgrep -f "live-server.*8080" || true)
-    if [ -n "$live_server_pids" ]; then
-        log_info "Killing live-server processes..."
-        echo "$live_server_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
-        sleep 1
-        live_server_pids=$(pgrep -f "live-server.*8080" || true)
-        if [ -n "$live_server_pids" ]; then
-            echo "$live_server_pids" | xargs kill -9 2>/dev/null || true
-        fi
-    fi
-
-    # Kill vite dev server (for myfeed)
-    local vite_pids=$(pgrep -f "vite.*--port.*8081" || true)
+    # Kill Vite dev servers (myfeed and myprofile)
+    local vite_pids=$(pgrep -f "node.*vite" || true)
     if [ -n "$vite_pids" ]; then
-        log_info "Killing Vite dev server..."
-        echo "$vite_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        log_info "Killing Vite dev servers..."
+        echo "$vite_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$vite_pids" | wc -w))) || true
         sleep 1
-        vite_pids=$(pgrep -f "vite.*--port.*8081" || true)
+        vite_pids=$(pgrep -f "node.*vite" || true)
         if [ -n "$vite_pids" ]; then
             echo "$vite_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    # Kill SvelteKit dev server (for myprofile)
-    local svelte_pids=$(pgrep -f "svelte-kit.*dev.*--port.*8082" || true)
-    if [ -n "$svelte_pids" ]; then
-        log_info "Killing SvelteKit dev server..."
-        echo "$svelte_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+    # Kill concurrently processes (root watch:all)
+    local concurrently_pids=$(pgrep -f "node.*concurrently" || true)
+    if [ -n "$concurrently_pids" ]; then
+        log_info "Killing concurrently processes..."
+        echo "$concurrently_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$concurrently_pids" | wc -w))) || true
         sleep 1
-        svelte_pids=$(pgrep -f "svelte-kit.*dev.*--port.*8082" || true)
-        if [ -n "$svelte_pids" ]; then
-            echo "$svelte_pids" | xargs kill -9 2>/dev/null || true
+        concurrently_pids=$(pgrep -f "node.*concurrently" || true)
+        if [ -n "$concurrently_pids" ]; then
+            echo "$concurrently_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    # Kill Sass watch processes (for root and cv_web)
+    # Kill npm run processes (sass:watch, ts:watch, etc.)
+    local npm_pids=$(pgrep -f "npm run" || true)
+    if [ -n "$npm_pids" ]; then
+        log_info "Killing npm processes..."
+        echo "$npm_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$npm_pids" | wc -w))) || true
+        sleep 1
+        npm_pids=$(pgrep -f "npm run" || true)
+        if [ -n "$npm_pids" ]; then
+            echo "$npm_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
+    # Kill Sass watch processes
     local sass_pids=$(pgrep -f "sass.*--watch" || true)
     if [ -n "$sass_pids" ]; then
         log_info "Killing Sass watch processes..."
-        echo "$sass_pids" | xargs kill -15 2>/dev/null && ((killed++)) || true
+        echo "$sass_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$sass_pids" | wc -w))) || true
         sleep 1
         sass_pids=$(pgrep -f "sass.*--watch" || true)
         if [ -n "$sass_pids" ]; then
@@ -386,8 +403,20 @@ kill_servers() {
         fi
     fi
 
+    # Kill TypeScript watch processes
+    local tsc_pids=$(pgrep -f "tsc.*--watch" || true)
+    if [ -n "$tsc_pids" ]; then
+        log_info "Killing TypeScript watch processes..."
+        echo "$tsc_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$tsc_pids" | wc -w))) || true
+        sleep 1
+        tsc_pids=$(pgrep -f "tsc.*--watch" || true)
+        if [ -n "$tsc_pids" ]; then
+            echo "$tsc_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
     if [ $killed -gt 0 ]; then
-        log_success "Killed $killed server(s)"
+        log_success "Killed $killed process(es)"
     else
         log_warning "No running dev servers found"
     fi

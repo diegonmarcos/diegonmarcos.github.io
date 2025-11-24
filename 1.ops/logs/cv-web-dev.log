@@ -1,0 +1,9 @@
+[0;34m[cv_web][0m Starting Sass development mode...
+[0;32m[cv_web][0m ✓ Watching Sass files for changes...
+[0;34m[cv_web][0m Press Ctrl+C to stop
+
+> cv-web-sass@1.0.0 sass:watch
+> sass --watch ../3.sass/main.scss:../style.css
+
+Sass is watching for changes. Press Ctrl-C to stop.
+

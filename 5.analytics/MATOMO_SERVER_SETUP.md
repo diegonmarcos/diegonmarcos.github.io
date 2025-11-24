@@ -16,7 +16,7 @@
 ### Network Configuration
 - **VCN**: matomo-vcn (10.0.0.0/16)
 - **Subnet**: matomo-subnet (10.0.1.0/24)
-- **Public IP**: **129.151.229.21**
+- **Public IP**: **130.110.251.193**
 - **Private IP**: 10.0.1.154
 - **Internet Gateway**: Configured ✅
 
@@ -35,7 +35,7 @@
 
 ### Connect to Server
 ```bash
-ssh -i ~/.ssh/matomo_key ubuntu@129.151.229.21
+ssh -i ~/.ssh/matomo_key ubuntu@130.110.251.193
 ```
 
 ### First Time Connection
@@ -123,16 +123,16 @@ docker-compose up -d
 ```
 
 ### 3. Configure DNS
-Point **analytics.diegonmarcos.com** to **129.151.229.21**
+Point **analytics.diegonmarcos.com** to **130.110.251.193**
 
 Add an A record in your DNS provider:
 - **Type**: A
 - **Name**: analytics
-- **Value**: 129.151.229.21
+- **Value**: 130.110.251.193
 - **TTL**: 300 (or auto)
 
 ### 4. Configure Nginx Proxy Manager
-1. Access: http://129.151.229.21:81
+1. Access: http://130.110.251.193:81
 2. Default login:
    - **Email**: admin@example.com
    - **Password**: changeme
@@ -205,8 +205,8 @@ The Always Free tier includes:
 ## 🌐 URLs
 
 - **Matomo**: https://analytics.diegonmarcos.com
-- **Nginx Proxy Manager**: http://129.151.229.21:81
-- **SSH**: ssh -i ~/.ssh/matomo_key ubuntu@129.151.229.21
+- **Nginx Proxy Manager**: http://130.110.251.193:81
+- **SSH**: ssh -i ~/.ssh/matomo_key ubuntu@130.110.251.193
 
 ---
 

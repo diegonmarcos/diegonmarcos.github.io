@@ -1,0 +1,13 @@
+[0;34m[myprofile][0m Starting SvelteKit development server...
+[0;32m[myprofile][0m ✓ Development server starting...
+[0;34m[myprofile][0m Press Ctrl+C to stop
+
+
+> svelte@0.0.1 dev
+> vite dev
+
+
+  VITE v7.2.2  ready in 2826 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose

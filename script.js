@@ -826,4 +826,63 @@ document.addEventListener('DOMContentLoaded', () => {
             clippyContainer.style.top = clippyY + 'px';
         }
     });
+
+    // --- Mobile Card Centering Effect ---
+    // Only activate on mobile devices (touch-enabled)
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouchDevice) {
+        const cards = document.querySelectorAll('.card');
+
+        function findCenteredCard() {
+            const viewportCenter = window.innerHeight / 2;
+            let closestCard = null;
+            let closestDistance = Infinity;
+
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cardCenter = rect.top + (rect.height / 2);
+                const distance = Math.abs(cardCenter - viewportCenter);
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestCard = card;
+                }
+            });
+
+            return closestCard;
+        }
+
+        function updateCenteredCard() {
+            // Remove centered class from all cards
+            cards.forEach(card => card.classList.remove('centered'));
+
+            // Add centered class to the most centered card
+            const centeredCard = findCenteredCard();
+            if (centeredCard) {
+                centeredCard.classList.add('centered');
+            }
+        }
+
+        // Throttle function to limit how often updateCenteredCard runs
+        let scrollTimeout;
+        function handleScroll() {
+            if (scrollTimeout) {
+                clearTimeout(scrollTimeout);
+            }
+
+            scrollTimeout = setTimeout(() => {
+                updateCenteredCard();
+            }, 50); // Update every 50ms during scroll
+        }
+
+        // Listen to scroll events
+        window.addEventListener('scroll', handleScroll);
+
+        // Initial check on page load
+        updateCenteredCard();
+
+        // Re-check when window is resized
+        window.addEventListener('resize', updateCenteredCard);
+    }
 });

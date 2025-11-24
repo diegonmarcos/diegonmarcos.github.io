@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vue-tsc && node build.js",
     "preview": "vite preview"
   },
   "keywords": [],
@@ -19,6 +19,7 @@
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "vite": "^7.2.4",
+    "vite-plugin-singlefile": "^2.3.0",
     "vue-tsc": "^3.1.5"
   },
   "dependencies": {

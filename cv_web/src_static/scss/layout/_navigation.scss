@@ -1,0 +1,81 @@
+// ============================================
+// NAVIGATION
+// ============================================
+// Side navigation menu and toggle button
+
+@use '../abstracts' as *;
+
+.side-nav {
+  height: 100%;
+  width: $nav-width;
+  position: fixed;
+  z-index: $z-index-nav;
+  top: 0;
+  left: -$nav-width;
+  background-color: $color-nav-bg;
+  overflow-x: hidden;
+  overflow-y: auto;
+  @include transition($transition-side-nav);
+  padding-top: $spacing-xl;
+
+  &.open {
+    left: 0;
+  }
+
+  ul {
+    @include list-reset;
+
+    li::before {
+      content: none;
+    }
+
+    ul a {
+      font-size: $font-size-sub-nav;
+    }
+  }
+
+  a {
+    padding: $padding-nav-link;
+    text-decoration: none;
+    font-size: $font-size-nav-link;
+    color: $color-nav-links;
+    display: block;
+    @include transition($transition-medium);
+
+    &:hover {
+      color: $color-nav-hover;
+    }
+
+    &.active {
+      color: white;
+    }
+
+    // Main section links (h2) - styled differently
+    &[data-main-section="true"] {
+      font-weight: bold;
+      color: $color-accent-purple;
+      font-size: 1.1em;
+      padding-left: 16px;
+
+      &:hover {
+        color: lighten($color-accent-purple, 15%);
+      }
+
+      &.active {
+        color: lighten($color-accent-purple, 20%);
+      }
+    }
+
+    // Collapsible nav indicator
+    &.collapsible-nav::before {
+      content: '▸';
+      display: inline-block;
+      margin-right: 5px;
+      transition: transform 0.3s ease;
+    }
+
+    &.collapsible-nav.open::before {
+      transform: rotate(90deg);
+    }
+  }
+}

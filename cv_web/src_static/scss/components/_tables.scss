@@ -1,0 +1,75 @@
+// ============================================
+// TABLES
+// ============================================
+// Contact and skills table styles
+
+@use '../abstracts' as *;
+
+.contact-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: $collapsible-padding-left;
+
+  td {
+    padding: $padding-contact-td;
+    border-bottom: $border-width-thin solid $color-border;
+  }
+
+  tr td:first-child {
+    font-weight: bold;
+    color: $color-accent-purple;
+    width: $contact-cell-width;
+  }
+}
+
+.skills-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: $spacing-lg;
+  text-align: left;
+
+  th,
+  td {
+    border: $border-width-thin solid $color-border;
+    padding: $padding-skills-td;
+    vertical-align: middle;
+  }
+
+  th {
+    font-size: $font-size-subtitle;
+    color: $color-accent-purple;
+  }
+
+  img {
+    max-height: $icon-size-skills;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .kde-icon {
+    max-height: $icon-size-kde;
+  }
+}
+
+.skills-table.text-center {
+  text-align: center;
+}
+
+.skills-list-table {
+  td,
+  th {
+    text-align: left;
+    padding-left: $padding-article;
+  }
+}
+
+.mermaid-diagram {
+  overflow-x: auto;
+  margin: $spacing-lg 0;
+  text-align: center;
+
+  pre.mermaid {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}

@@ -1,0 +1,45 @@
+// ============================================
+// COLLAPSERS
+// ============================================
+// Collapsible section functionality
+
+@use '../abstracts' as *;
+
+.collapser {
+  cursor: pointer;
+  margin-top: $spacing-lg;
+  margin-bottom: $spacing-sm;
+  padding: $spacing-xs 0;
+  display: flex;
+  align-items: center;
+  user-select: none;
+
+  &::before {
+    content: '>>';
+    display: inline-block;
+    width: 1em;
+    margin-right: 6px;
+    color: $color-accent-purple;
+    @include transition(transform $transition-medium ease);
+    transform-origin: center;
+  }
+
+  &.open::before {
+    transform: rotate(90deg);
+  }
+}
+
+.collapsible-content {
+  max-height: 0;
+  overflow: hidden;
+  @include transition(max-height $transition-slow, opacity $transition-medium);
+  opacity: 0;
+  padding-left: $collapsible-padding-left;
+
+  &.open {
+    max-height: none;
+    overflow: visible;
+    opacity: 1;
+    padding-bottom: 6px;
+  }
+}

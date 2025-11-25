@@ -1,0 +1,47 @@
+// ============================================
+// LINKTREE PAGE
+// ============================================
+// Linktree-specific style overrides
+
+@use '../abstracts' as *;
+
+.linktree-container {
+  ul li::before {
+    content: none;
+  }
+
+  ul li {
+    padding-left: 0.5em;
+    text-indent: 0;
+  }
+
+  .nested-list,
+  .nested-list-items {
+    padding-left: 1.5em;
+  }
+
+  h5 {
+    margin-top: 8px;
+    margin-bottom: 0;
+
+    + ul {
+      margin-top: 0;
+    }
+  }
+
+  .skills-table td {
+    width: $skills-cell-width;
+    text-align: left;
+  }
+
+  // Style for li elements that act as headers
+  li:has(ul) {
+    color: $color-accent-purple;
+    font-weight: bold;
+  }
+
+  // Style for Font Awesome icons in linktree
+  i {
+    color: $color-text-muted;
+  }
+}

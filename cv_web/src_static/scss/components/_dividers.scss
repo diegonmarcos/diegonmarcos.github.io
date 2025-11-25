@@ -1,0 +1,19 @@
+// ============================================
+// DIVIDERS
+// ============================================
+// Horizontal rules and section dividers
+
+@use '../abstracts' as *;
+
+hr {
+  border: none;
+  border-top: $border-width-thin solid $color-border;
+  margin: $spacing-xl 0;
+  opacity: $opacity-low;
+}
+
+.section-divider {
+  border-top: $border-width-medium double $color-accent-purple;
+  opacity: $opacity-medium;
+  margin: $spacing-xxl 0;
+}

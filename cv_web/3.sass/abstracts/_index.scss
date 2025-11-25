@@ -1,9 +1,0 @@
-// ============================================
-// ABSTRACTS INDEX
-// ============================================
-// Forwards all abstract files for easy importing
-// This allows other files to @use 'abstracts' instead of importing each file
-
-@forward 'variables';
-@forward 'mixins';
-@forward 'functions';

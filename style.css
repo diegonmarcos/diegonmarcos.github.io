@@ -252,6 +252,16 @@ body {
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Centered card effect for scroll-based selection (all devices) */
+.card.centered {
+  transform: translateY(-5px) scale(1.05);
+  border-color: rgba(160, 96, 255, 0.7) !important;
+  box-shadow: 0 0 30px rgba(160, 96, 255, 0.6) !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  z-index: 10;
+  position: relative;
+}
+
 .point-box {
   flex: 1;
   background-color: rgba(0, 0, 0, 0.2);
@@ -878,25 +888,9 @@ body.fit-to-screen .container {
     right: 30px;
     min-width: 200px;
   }
-  /* Centered card effect for mobile scrolling */
-  .card.centered {
-    transform: translateY(-5px) scale(1.05);
-    border-color: rgba(160, 96, 255, 0.7) !important;
-    box-shadow: 0 0 30px rgba(160, 96, 255, 0.6) !important;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    z-index: 10;
-    position: relative;
-  }
-  /* Focus state for selected card */
-  .card:focus {
-    outline: none;
-  }
   /* Make non-centered cards slightly dimmed on mobile */
-  .card {
-    transition: opacity 0.2s ease;
-  }
   .card:not(.centered) {
-    opacity: 0.7;
+    opacity: 0.75;
   }
   /* Add extra bottom padding on mobile so last card can center */
   .cta {

@@ -132,10 +132,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const videos = [
-        '2.assets/videos/background.mp4',
-        '2.assets/videos/background2.mp4',
-        '2.assets/videos/background3.mp4',
-        '2.assets/videos/background4.mp4'
+        'public/videos/background.mp4',
+        'public/videos/background2.mp4',
+        'public/videos/background3.mp4',
+        'public/videos/background4.mp4'
     ];
 
     const videoElement = document.getElementById('background-video');
@@ -603,4 +603,128 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('- Keyboard: ↑/↓ to switch carousels, ←/→ to navigate cards');
     console.log('- Hover over carousel to select it');
     console.log('- Mobile: Auto-select carousel in viewport center on scroll');
+
+    // ====================================
+    // GALLERY VIEW TOGGLE
+    // ====================================
+
+    const galleryToggle = document.getElementById('gallery-toggle');
+    let galleryEnabled = localStorage.getItem('galleryEnabled') === 'true';
+    galleryToggle.checked = galleryEnabled;
+
+    // Function to create thumbnail galleries
+    function createThumbnailGalleries() {
+        // Find all links-container elements
+        const linksContainers = document.querySelectorAll('.links-container');
+
+        linksContainers.forEach(container => {
+            // Check if gallery already exists
+            if (container.querySelector('.thumbnail-gallery')) {
+                return;
+            }
+
+            // Create thumbnail gallery container
+            const gallery = document.createElement('div');
+            gallery.className = 'thumbnail-gallery';
+
+            // Find all link elements (exclude contact-icons)
+            const links = container.querySelectorAll('.link');
+
+            links.forEach(link => {
+                const href = link.getAttribute('href');
+                const previewUrl = link.getAttribute('data-preview');
+                const iconSrc = link.querySelector('.icon')?.getAttribute('src');
+                const linkText = link.textContent.trim();
+
+                // Skip if no preview URL
+                if (!previewUrl) return;
+
+                // Create thumbnail item
+                const thumbItem = document.createElement('a');
+                thumbItem.className = 'thumbnail-item';
+                thumbItem.href = href;
+                thumbItem.target = link.getAttribute('target') || '_self';
+                if (link.hasAttribute('download')) {
+                    thumbItem.setAttribute('download', link.getAttribute('download'));
+                }
+
+                // Create thumbnail image
+                const thumbImg = document.createElement('img');
+                thumbImg.src = previewUrl;
+                thumbImg.alt = linkText;
+                thumbImg.loading = 'lazy';
+
+                // Handle image load errors - use a placeholder
+                thumbImg.onerror = function() {
+                    // Create a gradient placeholder with the link text
+                    thumbItem.style.background = 'linear-gradient(135deg, rgba(100, 100, 255, 0.3), rgba(255, 100, 100, 0.3))';
+                    thumbImg.style.display = 'none';
+                };
+
+                // Create overlay with icon and text
+                const overlay = document.createElement('div');
+                overlay.className = 'thumbnail-overlay';
+
+                if (iconSrc) {
+                    const icon = document.createElement('img');
+                    icon.className = 'icon';
+                    icon.src = iconSrc;
+                    icon.alt = '';
+                    overlay.appendChild(icon);
+                }
+
+                const label = document.createElement('span');
+                label.className = 'label';
+                label.textContent = linkText;
+                overlay.appendChild(label);
+
+                thumbItem.appendChild(thumbImg);
+                thumbItem.appendChild(overlay);
+                gallery.appendChild(thumbItem);
+            });
+
+            // Add gallery to container
+            container.appendChild(gallery);
+        });
+    }
+
+    // Function to toggle gallery mode
+    function toggleGalleryMode() {
+        galleryEnabled = galleryToggle.checked;
+        localStorage.setItem('galleryEnabled', galleryEnabled);
+
+        const linksContainers = document.querySelectorAll('.links-container');
+
+        if (galleryEnabled) {
+            // Create galleries if they don't exist
+            createThumbnailGalleries();
+
+            // Add gallery-mode class to all links containers
+            linksContainers.forEach(container => {
+                container.classList.add('gallery-mode');
+            });
+
+            console.log('Gallery view enabled');
+        } else {
+            // Remove gallery-mode class
+            linksContainers.forEach(container => {
+                container.classList.remove('gallery-mode');
+            });
+
+            console.log('Gallery view disabled');
+        }
+    }
+
+    // Event listener for gallery toggle
+    galleryToggle.addEventListener('change', toggleGalleryMode);
+
+    // Initialize gallery mode on page load
+    if (galleryEnabled) {
+        toggleGalleryMode();
+    } else {
+        // Still create the galleries but keep them hidden
+        createThumbnailGalleries();
+    }
+
+    console.log('Gallery view toggle initialized');
 });

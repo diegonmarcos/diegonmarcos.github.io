@@ -104,7 +104,7 @@ To add Matomo to GTM:
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u="http://130.110.251.193:8080/";
+    var u="https://analytics.diegonmarcos.com/";
     _paq.push(['setTrackerUrl', u+'matomo.php']);
     _paq.push(['setSiteId', '1']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
@@ -135,7 +135,7 @@ show_status() {
 
     echo ""
     echo -e "${BLUE}Matomo Configuration:${NC}"
-    echo "  Server: 130.110.251.193:8080"
+    echo "  Server: https://analytics.diegonmarcos.com"
     echo "  Site ID: 1"
     echo "  Tracked Site: diegonmarcos.github.io"
 

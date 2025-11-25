@@ -512,7 +512,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to check if device is mobile
     function isMobileDevice() {
-        return window.innerWidth <= 768;
+        const isMobile = window.innerWidth <= 768;
+        console.log('isMobileDevice check:', isMobile, 'width:', window.innerWidth);
+        return isMobile;
     }
 
     // Throttle function to limit scroll event frequency
@@ -537,7 +539,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to determine which carousel is in viewport center
     function selectCarouselByScroll() {
-        if (!isMobileDevice()) return;
+        if (!isMobileDevice()) {
+            console.log('Not mobile, skipping auto-select');
+            return;
+        }
 
         const viewportCenter = window.innerHeight / 2;
         const professionalCenter = getCarouselCenterY(professionalRow);
@@ -546,14 +551,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const professionalDistance = Math.abs(viewportCenter - professionalCenter);
         const personalDistance = Math.abs(viewportCenter - personalCenter);
 
+        console.log('Scroll selection:', {
+            viewportCenter,
+            professionalCenter,
+            personalCenter,
+            professionalDistance,
+            personalDistance,
+            currentSelection: selectedCarousel
+        });
+
         // Select the carousel closest to viewport center
         if (professionalDistance < personalDistance) {
             if (selectedCarousel !== 'professional') {
+                console.log('Switching to PROFESSIONAL carousel');
                 selectCarousel('professional');
                 updateArrowStates();
             }
         } else {
             if (selectedCarousel !== 'personal') {
+                console.log('Switching to PERSONAL carousel');
                 selectCarousel('personal');
                 updateArrowStates();
             }
@@ -561,10 +577,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add scroll listener for mobile
+    console.log('Setting up mobile scroll listener...');
     if (isMobileDevice()) {
+        console.log('Mobile detected - adding scroll listener');
         window.addEventListener('scroll', throttle(selectCarouselByScroll, 100));
         // Initial selection on load
         setTimeout(selectCarouselByScroll, 100);
+    } else {
+        console.log('Desktop detected - no scroll listener');
     }
 
     // Update on window resize (in case of orientation change)

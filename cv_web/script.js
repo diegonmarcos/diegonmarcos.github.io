@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.getElementById('nav-toggle');
     const mainContent = document.getElementById('main-content');
     const headings = document.querySelectorAll('main h2, main h3');
+    const careerSection = document.getElementById('career');
     let currentLists = [document.createElement('ul')];
     sideNav.appendChild(currentLists[0]);
 
@@ -119,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Auto-open menu at Career section
-        if (!menuOpenedOnce && window.pageYOffset >= careerSection.offsetTop - 60) {
+        if (!menuOpenedOnce && careerSection && window.pageYOffset >= careerSection.offsetTop - 60) {
             sideNav.classList.add('open');
             mainContent.classList.add('nav-open');
             menuOpenedOnce = true;

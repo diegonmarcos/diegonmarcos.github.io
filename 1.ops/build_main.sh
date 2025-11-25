@@ -58,6 +58,7 @@ print_usage() {
     printf "  ${GREEN}build-nexus${NC}        Build Nexus (Vue 3 + Tailwind)\n"
     printf "  ${GREEN}build-cloud${NC}        Build Cloud Dashboard (Sass + TypeScript)\n"
     printf "  ${GREEN}build-feed${NC}         Build Feed Yourself (Static HTML)\n"
+    printf "  ${GREEN}build-others${NC}       Build Others (Python index generator)\n"
     printf "\n"
     printf "${YELLOW}DEVELOPMENT ACTIONS:${NC}\n"
     printf "  ${GREEN}dev${NC}                Start all dev servers (quiet mode)\n"
@@ -69,6 +70,7 @@ print_usage() {
     printf "  ${GREEN}dev-nexus${NC}          Start Nexus dev server\n"
     printf "  ${GREEN}dev-cloud${NC}          Start Cloud Dashboard dev server\n"
     printf "  ${GREEN}dev-feed${NC}           Start Feed Yourself dev server\n"
+    printf "  ${GREEN}dev-others${NC}         Start Others dev server\n"
     printf "\n"
     printf "${YELLOW}UTILITY ACTIONS:${NC}\n"
     printf "  ${GREEN}kill${NC}               Kill all running dev servers\n"
@@ -101,6 +103,7 @@ print_usage() {
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Nexus" "Tailwind CSS" "TypeScript" "Vue 3"
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Cloud" "Sass" "TypeScript" "—"
     printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Feed Yourself" "Embedded CSS" "Embedded JS" "—"
+    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Others" "—" "Python" "—"
     printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER URLS:${NC}\n"
@@ -203,6 +206,7 @@ build_all() {
     execute_build "myprofile" "build" || ((failed++))
     execute_build "cloud" "build" || ((failed++))
     execute_build "feed_yourself" "build" || ((failed++))
+    execute_build "others" "build" || ((failed++))
 
     if [ $failed -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -229,6 +233,7 @@ clean_all_builds() {
     execute_build "myprofile" "clean" || true
     execute_build "cloud" "clean" || true
     execute_build "feed_yourself" "clean" || true
+    execute_build "others" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -274,6 +279,7 @@ dev_all() {
         tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && bash build.sh dev"
         tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/cloud/1.ops && bash build.sh dev"
         tmux new-session -d -s build-feed "cd $PROJECT_ROOT/feed_yourself/1.ops && bash build.sh dev"
+        tmux new-session -d -s build-others "cd $PROJECT_ROOT/others/1.ops && bash build.sh dev"
 
         log_success "All servers started in tmux sessions!"
         echo ""
@@ -288,9 +294,10 @@ dev_all() {
         echo -e "${BLUE}  🏢 Nexus:${NC}               http://localhost:3001/nexus/"
         echo -e "${BLUE}  ☁️  Cloud Dashboard:${NC}  http://localhost:8000/cloud/"
         echo -e "${BLUE}  🍽️  Feed Yourself:${NC}     http://localhost:8003/"
+        echo -e "${BLUE}  📂 Others:${NC}              http://localhost:8004/"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo ""
-        log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus, build-cloud, build-feed"
+        log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus, build-cloud, build-feed, build-others"
         log_info "To view logs: tmux attach -t <session-name>"
         log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
         echo ""
@@ -374,6 +381,13 @@ dev_all() {
             bash "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev &
         fi
 
+        log_info "Starting others..."
+        if [ "$verbose" = false ]; then
+            nohup bash "$PROJECT_ROOT/others/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/others-dev.log" 2>&1 &
+        else
+            bash "$PROJECT_ROOT/others/1.ops/build.sh" dev &
+        fi
+
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
@@ -389,6 +403,7 @@ dev_all() {
         echo -e "${BLUE}  🏢 Nexus:${NC}               http://localhost:3001/nexus/"
         echo -e "${BLUE}  ☁️  Cloud Dashboard:${NC}  http://localhost:8000/cloud/"
         echo -e "${BLUE}  🍽️  Feed Yourself:${NC}     http://localhost:8003/"
+        echo -e "${BLUE}  📂 Others:${NC}              http://localhost:8004/"
         echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
         echo ""
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -573,6 +588,9 @@ main() {
         build-feed)
             execute_build "feed_yourself" "build"
             ;;
+        build-others)
+            execute_build "others" "build"
+            ;;
         dev)
             dev_all $verbose
             ;;
@@ -605,6 +623,9 @@ main() {
             ;;
         dev-feed)
             execute_build "feed_yourself" "dev"
+            ;;
+        dev-others)
+            execute_build "others" "dev"
             ;;
         kill)
             kill_servers

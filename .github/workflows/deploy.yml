@@ -98,6 +98,23 @@ jobs:
           cd ..
           echo "✅ Nexus build complete"
 
+      - name: 🔨 Build Cloud Dashboard (Sass + TypeScript)
+        run: |
+          echo "🔨 Building Cloud Dashboard..."
+          cd cloud
+          npm install
+          npm run build
+          cd ..
+          echo "✅ Cloud Dashboard build complete"
+
+      - name: 🔨 Build Feed Yourself (Static HTML)
+        run: |
+          echo "🔨 Building Feed Yourself application..."
+          cd feed_yourself/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ Feed Yourself build complete"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -136,6 +153,26 @@ jobs:
             echo "✅ Nexus build copied to _site/nexus/"
           else
             echo "⏭️  Skipping Nexus copy (no dist directory found)"
+          fi
+
+          # Copy Cloud Dashboard build (if dist exists)
+          if [ -d "cloud/dist" ]; then
+            echo "📦 Copying Cloud Dashboard build..."
+            mkdir -p _site/cloud
+            cp -r cloud/dist/* _site/cloud/
+            echo "✅ Cloud Dashboard build copied to _site/cloud/"
+          else
+            echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"
+          fi
+
+          # Copy Feed Yourself build (if dist exists)
+          if [ -d "feed_yourself/dist" ]; then
+            echo "📦 Copying Feed Yourself build..."
+            mkdir -p _site/feed_yourself
+            cp -r feed_yourself/dist/* _site/feed_yourself/
+            echo "✅ Feed Yourself build copied to _site/feed_yourself/"
+          else
+            echo "⏭️  Skipping Feed Yourself copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

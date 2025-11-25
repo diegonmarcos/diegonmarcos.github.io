@@ -76,6 +76,25 @@
             padding: 20px;
             overflow: hidden;
             position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* HIGHLIGHT EFFECTS */
+        /* Desktop Hover */
+        @media (min-width: 768px) {
+            .glass-panel:hover {
+                border-color: rgba(255, 255, 255, 0.4);
+                box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255,255,255,0.05);
+                transform: translateY(-4px);
+                z-index: 10;
+            }
+        }
+        /* Mobile Active State (Scroll Spy) */
+        .glass-panel.highlighted {
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(10, 132, 255, 0.15);
+            background: rgba(40, 40, 45, 0.6);
+            transform: scale(1.01);
         }
 
         /* --- CONFIGURATION --- */
@@ -96,7 +115,7 @@
             border-radius: 12px; 
             text-align: center; 
             font-weight: 500; 
-            font-size: 1rem; 
+            font-size: 0.9rem; /* Adjusted for dropdown text */
             outline: none;
             transition: border-color 0.2s;
         }
@@ -261,25 +280,30 @@
                 
                 <div class="input-group">
                     <label class="input-label">Active (kcal)</label>
-                    <input type="number" id="inActive" class="glass-input" value="300" onchange="calculate()">
+                    <input type="number" id="inActive" class="glass-input" value="200" onchange="calculate()">
                 </div>
                 
                 <div class="input-group">
                     <label class="input-label">Deficit</label>
-                    <input type="number" id="inDeficit" class="glass-input" value="200" onchange="calculate()">
+                    <input type="number" id="inDeficit" class="glass-input" value="50" onchange="calculate()">
                 </div>
 
                 <div class="input-group">
-                    <label class="input-label">Protein (g)</label>
-                    <input type="number" id="inProtein" class="glass-input" value="150" onchange="calculate()">
+                    <label class="input-label">Protein Target</label>
+                    <select id="inProtein" class="glass-input" onchange="calculate()">
+                        <option value="60">Minimum (60g)</option>
+                        <option value="80">Ideal (80g)</option>
+                        <option value="100" selected>High (100g)</option>
+                        <option value="150">Bodybuilding (150g)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
                     <label class="input-label">Carb Mode</label>
                     <select id="inCarbMode" class="glass-input" onchange="calculate()">
                         <option value="50">Keto (<50g)</option>
-                        <option value="150">Low Carb (150g)</option>
-                        <option value="250" selected>Normal (250g)</option>
+                        <option value="150" selected>Low Carb (150g)</option>
+                        <option value="250">Normal (250g)</option>
                         <option value="400">Bodybuilding (High)</option>
                     </select>
                 </div>
@@ -287,9 +311,9 @@
                 <div class="input-group">
                     <label class="input-label">Prot Cost (kcal/g)</label>
                     <select id="inCost" class="glass-input" onchange="calculate()">
-                        <option value="5">Low (5)</option>
-                        <option value="10" selected>Avg (10)</option>
-                        <option value="15">High (15)</option>
+                        <option value="5">Cheap (5)</option>
+                        <option value="7" selected>Medium (7)</option>
+                        <option value="10">Expensive (10)</option>
                     </select>
                 </div>
             </div>
@@ -541,7 +565,34 @@
         renderGroup(sides, 'vegan', 'row-side-vegan');
         renderGroup(sides, 'veg', 'row-side-veg');
         
+        // Start Scroll Spy for Mobile
+        setupScrollSpy();
+
         calculate();
+    }
+
+    function setupScrollSpy() {
+        // Intersection Observer for highlighting sections on scroll
+        const options = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px', // Trigger when element is in the vertical center
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    // Remove highlight from others
+                    document.querySelectorAll('.glass-panel').forEach(p => p.classList.remove('highlighted'));
+                    // Add to current
+                    entry.target.classList.add('highlighted');
+                }
+            });
+        }, options);
+
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            observer.observe(panel);
+        });
     }
 
     function renderGroup(data, sub, elId) {
@@ -893,3 +944,4 @@
 
 </body>
 </html>
+

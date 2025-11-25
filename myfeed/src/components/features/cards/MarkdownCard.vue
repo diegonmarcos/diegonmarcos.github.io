@@ -42,7 +42,7 @@ const renderedContent = computed(() => {
       class="card-media mb-4"
     >
       <img
-        :src="`https://via.placeholder.com/800x400/2d1b4e/8b5cf6?text=${encodeURIComponent(article.title)}`"
+        :src="article.coverImage.url || `https://placehold.co/800x400/2d1b4e/8b5cf6?text=${encodeURIComponent(article.title)}`"
         :alt="article.coverImage.alt || article.title"
         class="w-full h-64 object-cover"
       />

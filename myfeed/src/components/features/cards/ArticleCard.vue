@@ -31,7 +31,7 @@ const emit = defineEmits<{
     >
       <div class="relative aspect-[4/3] rounded-xl overflow-hidden bg-obsidian-800">
         <img
-          :src="`https://via.placeholder.com/800x600/2d1b4e/8b5cf6?text=${encodeURIComponent(article.source.name)}`"
+          :src="article.coverImage || `https://placehold.co/800x600/2d1b4e/8b5cf6?text=${encodeURIComponent(article.source.name)}`"
           :alt="article.title"
           class="w-full h-full object-cover"
         />

@@ -1,0 +1,58 @@
+// Media Query Mixins
+@mixin mobile {
+  @media (max-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin no-hover {
+  @media (hover: none) {
+    @content;
+  }
+}
+
+// Gradient Mixins
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $accent-blue, $accent-purple);
+}
+
+@mixin gradient-bg {
+  background: linear-gradient(135deg, $bg-primary 0%, $bg-secondary 100%);
+}
+
+@mixin text-gradient {
+  @include gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Shadow Mixins
+@mixin card-shadow {
+  box-shadow: 0 20px 60px $shadow, 0 0 40px $glow;
+}
+
+@mixin glow-effect($color: $accent-blue) {
+  filter: drop-shadow(0 0 12px $color);
+}
+
+// Animation Mixins
+@mixin fade-in($delay: 0s) {
+  animation: fadeIn 0.8s ease-out $delay backwards;
+}
+
+@mixin fade-in-down {
+  animation: fadeInDown 0.6s ease-out;
+}

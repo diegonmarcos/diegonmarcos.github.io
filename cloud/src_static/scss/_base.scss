@@ -1,0 +1,36 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-primary: #{$bg-primary};
+  --bg-secondary: #{$bg-secondary};
+  --bg-card: #{$bg-card};
+  --text-primary: #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --accent-blue: #{$accent-blue};
+  --accent-purple: #{$accent-purple};
+  --accent-green: #{$accent-green};
+  --shadow: #{$shadow};
+  --glow: #{$glow};
+}
+
+body {
+  font-family: $font-family;
+  @include gradient-bg;
+  color: $text-primary;
+  min-height: 100vh;
+  padding: $spacing-xlarge;
+  overflow-x: hidden;
+
+  @include mobile {
+    padding: $spacing-medium;
+  }
+}
+
+.container {
+  max-width: $breakpoint-desktop;
+  margin: 0 auto;
+}

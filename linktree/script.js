@@ -144,44 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const linkIcons = document.querySelectorAll('.link .icon');
-    const linkPreview = document.getElementById('link-preview');
-    const previewToggle = document.getElementById('preview-toggle');
-
-    let previewsEnabled = localStorage.getItem('previewsEnabled') === 'true';
-    previewToggle.checked = previewsEnabled;
-
-    const togglePreviews = () => {
-        previewsEnabled = previewToggle.checked;
-        localStorage.setItem('previewsEnabled', previewsEnabled);
-    };
-
-    previewToggle.addEventListener('change', togglePreviews);
-
-    if (window.innerWidth > 768) {
-        linkIcons.forEach(icon => {
-            icon.addEventListener('mouseover', (e) => {
-                if (!previewsEnabled) return;
-                const link = e.target.parentElement;
-                const previewUrl = link.getAttribute('data-preview');
-                if (previewUrl) {
-                    linkPreview.style.backgroundImage = `url(${previewUrl})`;
-                    linkPreview.style.display = 'block';
-                }
-            });
-
-            icon.addEventListener('mousemove', (e) => {
-                if (!previewsEnabled) return;
-                linkPreview.style.left = `${e.pageX + 10}px`;
-                linkPreview.style.top = `${e.pageY + 10}px`;
-            });
-
-            icon.addEventListener('mouseout', () => {
-                linkPreview.style.display = 'none';
-            });
-        });
-    }
-
     // ====================================
     // SWIPER.JS INITIALIZATION
     // ====================================
@@ -612,80 +574,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let galleryEnabled = localStorage.getItem('galleryEnabled') === 'true';
     galleryToggle.checked = galleryEnabled;
 
-    // Function to create thumbnail galleries
-    function createThumbnailGalleries() {
-        // Find all links-container elements
-        const linksContainers = document.querySelectorAll('.links-container');
+    // Function to get OpenGraph thumbnail URL from link
+    function getThumbnailUrl(href, dataPreview) {
+        // If data-preview points to a local image, use it
+        if (dataPreview && dataPreview.startsWith('public/')) {
+            return dataPreview;
+        }
 
-        linksContainers.forEach(container => {
-            // Check if gallery already exists
-            if (container.querySelector('.thumbnail-gallery')) {
-                return;
+        // For external links, try to extract domain and create a favicon/thumbnail URL
+        // This is a simplified approach - in production you'd want a backend service to fetch og:image
+        if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+            try {
+                const url = new URL(href);
+                // Use a placeholder gradient for now
+                return null; // Will trigger placeholder gradient
+            } catch (e) {
+                return null;
             }
+        }
 
-            // Create thumbnail gallery container
-            const gallery = document.createElement('div');
-            gallery.className = 'thumbnail-gallery';
-
-            // Find all link elements (exclude contact-icons)
-            const links = container.querySelectorAll('.link');
-
-            links.forEach(link => {
-                const href = link.getAttribute('href');
-                const previewUrl = link.getAttribute('data-preview');
-                const iconSrc = link.querySelector('.icon')?.getAttribute('src');
-                const linkText = link.textContent.trim();
-
-                // Skip if no preview URL
-                if (!previewUrl) return;
-
-                // Create thumbnail item
-                const thumbItem = document.createElement('a');
-                thumbItem.className = 'thumbnail-item';
-                thumbItem.href = href;
-                thumbItem.target = link.getAttribute('target') || '_self';
-                if (link.hasAttribute('download')) {
-                    thumbItem.setAttribute('download', link.getAttribute('download'));
-                }
-
-                // Create thumbnail image
-                const thumbImg = document.createElement('img');
-                thumbImg.src = previewUrl;
-                thumbImg.alt = linkText;
-                thumbImg.loading = 'lazy';
-
-                // Handle image load errors - use a placeholder
-                thumbImg.onerror = function() {
-                    // Create a gradient placeholder with the link text
-                    thumbItem.style.background = 'linear-gradient(135deg, rgba(100, 100, 255, 0.3), rgba(255, 100, 100, 0.3))';
-                    thumbImg.style.display = 'none';
-                };
-
-                // Create overlay with icon and text
-                const overlay = document.createElement('div');
-                overlay.className = 'thumbnail-overlay';
-
-                if (iconSrc) {
-                    const icon = document.createElement('img');
-                    icon.className = 'icon';
-                    icon.src = iconSrc;
-                    icon.alt = '';
-                    overlay.appendChild(icon);
-                }
-
-                const label = document.createElement('span');
-                label.className = 'label';
-                label.textContent = linkText;
-                overlay.appendChild(label);
-
-                thumbItem.appendChild(thumbImg);
-                thumbItem.appendChild(overlay);
-                gallery.appendChild(thumbItem);
-            });
-
-            // Add gallery to container
-            container.appendChild(gallery);
-        });
+        return null;
     }
 
     // Function to toggle gallery mode
@@ -693,24 +601,15 @@ document.addEventListener('DOMContentLoaded', () => {
         galleryEnabled = galleryToggle.checked;
         localStorage.setItem('galleryEnabled', galleryEnabled);
 
-        const linksContainers = document.querySelectorAll('.links-container');
+        const body = document.body;
 
         if (galleryEnabled) {
-            // Create galleries if they don't exist
-            createThumbnailGalleries();
-
-            // Add gallery-mode class to all links containers
-            linksContainers.forEach(container => {
-                container.classList.add('gallery-mode');
-            });
-
+            // Add gallery-mode class to body to trigger CSS changes
+            body.classList.add('gallery-mode');
             console.log('Gallery view enabled');
         } else {
             // Remove gallery-mode class
-            linksContainers.forEach(container => {
-                container.classList.remove('gallery-mode');
-            });
-
+            body.classList.remove('gallery-mode');
             console.log('Gallery view disabled');
         }
     }
@@ -721,9 +620,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize gallery mode on page load
     if (galleryEnabled) {
         toggleGalleryMode();
-    } else {
-        // Still create the galleries but keep them hidden
-        createThumbnailGalleries();
     }
 
     console.log('Gallery view toggle initialized');

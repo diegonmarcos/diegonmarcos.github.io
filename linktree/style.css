@@ -489,19 +489,7 @@ hr {
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
-#link-preview {
-    display: none;
-    position: absolute;
-    width: 300px;
-    height: 200px;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    border-radius: 16px;
-    background-size: cover;
-    background-position: center;
-    z-index: 100;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-}
+/* Link preview removed - using gallery view instead */
 
 .toggle-container {
     display: flex;
@@ -981,106 +969,140 @@ input:checked + .slider:before {
 /* ====================================== */
 
 /* ====================================== */
-/* THUMBNAIL GALLERY VIEW */
+/* GALLERY VIEW MODE */
 /* ====================================== */
 
-/* Hide links in gallery mode */
-.links-container.gallery-mode .link {
-    display: none !important;
-}
-
-/* Show thumbnail gallery in gallery mode */
-.thumbnail-gallery {
-    display: none;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-    width: 100%;
-}
-
-.links-container.gallery-mode .thumbnail-gallery {
+/* Transform links into card layout when gallery mode is active */
+.gallery-mode .links-container {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 0.5rem;
 }
 
-.thumbnail-item {
+.gallery-mode .link {
     position: relative;
-    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 180px;
+    background: linear-gradient(135deg, rgba(100, 100, 255, 0.15), rgba(255, 100, 100, 0.15));
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 0;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    cursor: pointer;
-    aspect-ratio: 16 / 9;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.thumbnail-item:hover {
-    transform: translateY(-4px) scale(1.02);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.4),
-        0 0 20px rgba(255, 255, 255, 0.15);
+/* Add thumbnail background using data-preview attribute */
+.gallery-mode .link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--thumbnail-url);
+    background-size: cover;
+    background-position: center;
+    opacity: 0.3;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 0;
 }
 
-.thumbnail-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.thumbnail-item:hover img {
+.gallery-mode .link:hover::before {
+    opacity: 0.5;
     transform: scale(1.05);
 }
 
-.thumbnail-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.9) 0%,
-        rgba(0, 0, 0, 0.7) 50%,
-        transparent 100%
-    );
-    padding: 1rem 0.75rem 0.75rem;
+.gallery-mode .link:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.4),
+        0 0 20px rgba(255, 255, 255, 0.15);
+    background: linear-gradient(135deg, rgba(120, 120, 255, 0.2), rgba(255, 120, 120, 0.2));
+}
+
+/* Icon and text positioning in gallery mode */
+.gallery-mode .link .icon {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
+    z-index: 1;
+}
+
+.gallery-mode .link {
+    font-size: 1rem;
+    text-align: center;
+    z-index: 1;
+}
+
+/* Contact icons should NOT change in gallery mode */
+.gallery-mode .contact-icons {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+    flex-direction: row !important;
+    grid-column: 1 / -1; /* Span across all columns */
+    justify-content: center;
 }
 
-.thumbnail-overlay .icon {
-    width: 20px;
-    height: 20px;
-    filter: invert(1);
-    flex-shrink: 0;
+.gallery-mode .contact-icons a {
+    display: inline-flex !important;
+    min-height: auto !important;
+    padding: 0.75rem !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 50% !important;
+    width: auto !important;
 }
 
-.thumbnail-overlay .label {
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #fff;
-    text-align: left;
-    line-height: 1.2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+.gallery-mode .contact-icons img {
+    width: 24px !important;
+    height: 24px !important;
+    position: static !important;
+    transform: none !important;
+}
+
+/* Keep subsection titles and hr full width */
+.gallery-mode .subsection-title,
+.gallery-mode hr {
+    grid-column: 1 / -1;
+}
+
+/* Collapsible content in gallery mode */
+.gallery-mode .more-toggle {
+    grid-column: 1 / -1;
+}
+
+.gallery-mode .collapsible-content {
+    grid-column: 1 / -1;
+    display: contents;
+}
+
+.gallery-mode .collapsible-content.open {
+    display: contents;
 }
 
 @media (max-width: 768px) {
-    .thumbnail-gallery {
+    .gallery-mode .links-container {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 0.75rem;
     }
 
-    .thumbnail-overlay {
-        padding: 0.75rem 0.5rem 0.5rem;
+    .gallery-mode .link {
+        min-height: 140px;
+        padding: 0.75rem;
+        font-size: 0.85rem;
     }
 
-    .thumbnail-overlay .label {
-        font-size: 0.8rem;
+    .gallery-mode .link .icon {
+        width: 24px;
+        height: 24px;
     }
 }
 

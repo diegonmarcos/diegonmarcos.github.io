@@ -1,0 +1,102 @@
+name: Build Cloud Dashboard
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'cloud/**'
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'cloud/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: cloud/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./cloud
+      run: npm ci
+
+    - name: Lint TypeScript
+      working-directory: ./cloud
+      run: npm run lint --if-present
+
+    - name: Build SCSS
+      working-directory: ./cloud
+      run: npm run build:css
+
+    - name: Build TypeScript
+      working-directory: ./cloud
+      run: npm run build:js
+
+    - name: Check build artifacts
+      working-directory: ./cloud
+      run: |
+        ls -lh dist/
+        test -f dist/styles.css || exit 1
+        test -f dist/script.js || exit 1
+        echo "Build artifacts verified successfully"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: cloud-dashboard-${{ matrix.node-version }}
+        path: |
+          cloud/dist/
+          cloud/dist/index.html
+          cloud/dist/styles.css
+          cloud/dist/script.js
+        retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: cloud/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./cloud
+      run: npm ci
+
+    - name: Build for production
+      working-directory: ./cloud
+      run: npm run build
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: success()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./cloud/dist
+        destination_dir: cloud
+        keep_files: false
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: 'Deploy cloud dashboard'

@@ -31,18 +31,18 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: |
-            3.sass/package-lock.json
+            src_static/scss/package-lock.json
             cv_web/src_static/scss/package-lock.json
-            4.ts/package-lock.json
+            src_static/typescript/package-lock.json
 
       - name: 🎨 Build CSS from Sass (Root)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '3.sass/')
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'src_static/scss/')
         run: |
           echo "📁 Building root Sass..."
-          cd 3.sass
+          cd src_static/scss
           npm install
           npm run sass:build
-          cd ..
+          cd ../..
           echo "✅ Root style.css created"
 
       - name: 🎨 Build CSS from Sass (cv_web)
@@ -59,13 +59,13 @@ jobs:
       # TYPESCRIPT COMPILATION (Conditional)
       # ============================================
       - name: 📜 Build JS from TypeScript
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, '4.ts/')
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'src_static/typescript/')
         run: |
           echo "📜 Building TypeScript..."
-          cd 4.ts
+          cd src_static/typescript
           npm install
           npm run ts:build
-          cd ..
+          cd ../..
           echo "✅ script.js created"
 
       # ============================================

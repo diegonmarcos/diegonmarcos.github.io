@@ -32,7 +32,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: |
             3.sass/package-lock.json
-            cv_web/3.sass/package-lock.json
+            cv_web/src_static/scss/package-lock.json
             4.ts/package-lock.json
 
       - name: 🎨 Build CSS from Sass (Root)
@@ -46,13 +46,13 @@ jobs:
           echo "✅ Root style.css created"
 
       - name: 🎨 Build CSS from Sass (cv_web)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/3.sass/')
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/src_static/scss/')
         run: |
           echo "📁 Building cv_web Sass..."
-          cd cv_web/3.sass
+          cd cv_web/src_static/scss
           npm install
-          npm run sass:build 
-          cd ../..
+          npm run sass:build
+          cd ../../..
           echo "✅ cv_web/style.css created"
 
       # ============================================
@@ -106,7 +106,7 @@ jobs:
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
           # Copy all relevant files and directories (excluding myfeed for now)
-          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ assets/ others/ _site/ 2>/dev/null || true
+          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ 2.assets/ others/ _site/ 2>/dev/null || true
 
           # Copy MyFeed Vue build (if dist exists)
           if [ -d "myfeed/dist" ]; then

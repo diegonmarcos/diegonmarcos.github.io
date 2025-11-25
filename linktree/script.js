@@ -510,10 +510,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // MOBILE SCROLL-BASED AUTO-SELECTION
     // ====================================
 
-    // Function to check if device is mobile
+    // Function to check if device is mobile (use touch capability instead of width)
     function isMobileDevice() {
-        const isMobile = window.innerWidth <= 768;
-        console.log('isMobileDevice check:', isMobile, 'width:', window.innerWidth);
+        const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+        const isNarrowScreen = window.innerWidth <= 768;
+        const isMobile = isTouchDevice || isNarrowScreen;
+        console.log('isMobileDevice check:', isMobile, '(touch:', isTouchDevice, 'width:', window.innerWidth + ')');
         return isMobile;
     }
 

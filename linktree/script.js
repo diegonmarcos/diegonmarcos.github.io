@@ -596,6 +596,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    // Function to set thumbnail backgrounds for links
+    function setThumbnailBackgrounds() {
+        const links = document.querySelectorAll('.link');
+        links.forEach(link => {
+            const previewUrl = link.getAttribute('data-preview');
+            if (previewUrl) {
+                link.style.setProperty('--thumbnail-url', `url(${previewUrl})`);
+            }
+        });
+    }
+
     // Function to toggle gallery mode
     function toggleGalleryMode() {
         galleryEnabled = galleryToggle.checked;
@@ -604,6 +615,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = document.body;
 
         if (galleryEnabled) {
+            // Set thumbnail backgrounds
+            setThumbnailBackgrounds();
             // Add gallery-mode class to body to trigger CSS changes
             body.classList.add('gallery-mode');
             console.log('Gallery view enabled');
@@ -619,6 +632,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize gallery mode on page load
     if (galleryEnabled) {
+        // Set thumbnails first
+        setThumbnailBackgrounds();
         toggleGalleryMode();
     }
 

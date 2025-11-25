@@ -1,0 +1,1 @@
+import{A as u,B as o,a8 as _,k as t,D as g,O as p,a3 as i,K as l,C as d,M as m}from"./HIk4-1cy.js";function E(n,r){let a=null,f=t;var s;if(t){a=m;for(var e=g(document.head);e!==null&&(e.nodeType!==p||e.data!==n);)e=i(e);if(e===null)l(!1);else{var y=i(e);e.remove(),d(y)}}t||(s=document.head.appendChild(u()));try{o(()=>r(s),_)}finally{f&&(l(!0),d(a))}}export{E as h};

@@ -34,9 +34,6 @@
 		content="A pixel art personal space showcasing photos, music, fitness stats, and retro games"
 	/>
 
-	<!-- Cookie Consent CSS -->
-	<link rel="stylesheet" href="{base}/cookie-consent.css">
-
 	<!-- Google Tag Manager Consent Mode -->
 	{@html `
 	<script>
@@ -62,9 +59,6 @@
 	})(window,document,'script','dataLayer','GTM-TN9SV57D');</script>
 	`}
 	<!-- End Google Tag Manager -->
-
-	<!-- Cookie Consent Script -->
-	<script src="{base}/cookie-consent.js" defer></script>
 </svelte:head>
 
 <!-- Google Tag Manager (noscript) -->

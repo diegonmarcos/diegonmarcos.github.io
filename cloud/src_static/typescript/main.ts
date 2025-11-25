@@ -6,12 +6,18 @@ import { CardElement } from './types';
 // Main application entry point
 class CloudDashboard {
   private serviceHandler: ServiceHandler;
-  private statusMonitor: StatusMonitor;
+  private _statusMonitor: StatusMonitor | null = null;
 
   constructor() {
     this.serviceHandler = new ServiceHandler();
-    this.statusMonitor = new StatusMonitor();
+    this._statusMonitor = new StatusMonitor();
     this.initializeCards();
+  }
+
+  public destroy(): void {
+    if (this._statusMonitor) {
+      this._statusMonitor.destroy();
+    }
   }
 
   private initializeCards(): void {

@@ -90,6 +90,34 @@ get_running_servers() {
         _count=$((_count + 1))
     fi
 
+    # Check Vite dev servers
+    if pgrep -f "vite.*myfeed" >/dev/null 2>&1 || pgrep -f "node.*myfeed.*vite" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyFeed (Vite)      ${BLUE}http://localhost:5173${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "vite.*myprofile" >/dev/null 2>&1 || pgrep -f "node.*myprofile.*vite" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyProfile (Vite)   ${BLUE}http://localhost:5174${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "vite.*nexus" >/dev/null 2>&1 || pgrep -f "node.*nexus.*vite" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} Nexus (Vite)       ${BLUE}http://localhost:5175${NC}\n"
+        _count=$((_count + 1))
+    fi
+    # Generic Vite check (fallback)
+    if pgrep -f "vite" >/dev/null 2>&1; then
+        _vite_count=$(pgrep -f "vite" | wc -l)
+        if [ "$_vite_count" -gt 0 ] && ! pgrep -f "vite.*myfeed\|vite.*myprofile\|vite.*nexus" >/dev/null 2>&1; then
+            _servers="${_servers}  ${CYAN}*${NC} Vite Server        ${BLUE}(check terminal)${NC}\n"
+            _count=$((_count + 1))
+        fi
+    fi
+
+    # Check Python http.server
+    if pgrep -f "python.*http.server" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Python HTTP        ${BLUE}(check terminal)${NC}\n"
+        _count=$((_count + 1))
+    fi
+
     # Check watch processes (Sass/TypeScript)
     if pgrep -f "sass.*--watch" >/dev/null 2>&1; then
         _servers="${_servers}  ${YELLOW}~${NC} Sass Watch         ${YELLOW}(file watcher)${NC}\n"

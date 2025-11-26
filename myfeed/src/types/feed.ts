@@ -251,6 +251,20 @@ export interface RSSItem extends BaseFeedItem {
   categories?: string[]
 }
 
+// Tidal Track
+export interface TidalTrack extends BaseFeedItem {
+  type: 'tidal'
+  _type: 'tidalTrack'
+
+  // Track Data
+  title: string
+  artist: string
+  album?: string
+  duration?: string
+  coverUrl?: string
+  tidalUrl: string
+}
+
 // Discriminated union of all feed item types
 export type FeedItem =
   | MarkdownArticle
@@ -258,6 +272,7 @@ export type FeedItem =
   | ExternalArticle
   | Tweet
   | RSSItem
+  | TidalTrack
 
 // Type guards
 export function isMarkdownArticle(item: FeedItem): item is MarkdownArticle {
@@ -280,8 +295,12 @@ export function isRSSItem(item: FeedItem): item is RSSItem {
   return item.type === 'rss'
 }
 
+export function isTidalTrack(item: FeedItem): item is TidalTrack {
+  return item.type === 'tidal'
+}
+
 // Filter/Sort types
-export type FeedFilterType = 'all' | 'markdown' | 'youtube' | 'article' | 'tweet' | 'rss'
+export type FeedFilterType = 'all' | 'markdown' | 'youtube' | 'article' | 'tweet' | 'rss' | 'tidal'
 
 export type SortBy = 'createdAt' | 'publishDate' | 'likes'
 export type SortOrder = 'asc' | 'desc'

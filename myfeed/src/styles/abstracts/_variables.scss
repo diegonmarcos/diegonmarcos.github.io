@@ -1,46 +1,74 @@
 // ============================================
 // MYFEED VARIABLES
 // ============================================
-// Obsidian Purple Color Palette
+// Apple Glassy Pixel Art Color Palette
 
-// Primary Colors
-$obsidian-950: #1a0b2e;
-$obsidian-900: #2d1b4e;
-$obsidian-800: #3f2b5e;
-$obsidian-700: #523c6e;
-$obsidian-600: #7c5cbf;
-$obsidian-500: #9b7fd4;
-$obsidian-400: #b89ee8;
-$obsidian-300: #d4c3f5;
-$obsidian-200: #e9e0fa;
-$obsidian-100: #f5f2fd;
+// Primary Colors - Apple-inspired with pixel art influence
+$obsidian-950: #0a0a0f;    // Deep space black
+$obsidian-900: #1a1a2e;    // Dark purple-black
+$obsidian-800: #2d2b4e;    // Rich purple
+$obsidian-700: #3f3a6e;    // Medium purple
+$obsidian-600: #5c52bf;    // Vibrant purple
+$obsidian-500: #7b6fd4;    // Soft purple
+$obsidian-400: #9b8ee8;    // Light purple
+$obsidian-300: #c4b8f5;    // Pastel purple
+$obsidian-200: #e0d8fa;    // Pale purple
+$obsidian-100: #f0eafd;    // Near white
 
-// Accent Colors
-$violet-accent: #8b5cf6;
-$violet-glow: #a78bfa;
+// Apple Accent Colors
+$violet-accent: #8b5cf6;   // Main accent (Apple purple)
+$violet-glow: #a78bfa;     // Glow effect
+$apple-blue: #007aff;      // Apple blue
+$apple-green: #34c759;     // Apple green
+$apple-pink: #ff2d55;      // Apple pink
+$apple-orange: #ff9500;    // Apple orange
 
-// Grays with purple tint
-$gray-950: #0f0a1a;
-$gray-900: #1e1731;
-$gray-800: #2d2540;
-$gray-700: #3d3450;
-$gray-600: #5c5470;
-$gray-500: #7b7690;
-$gray-400: #a39db0;
-$gray-300: #c4c0cc;
-$gray-200: #e1dfe6;
-$gray-100: #f0eff3;
+// Pixel Art Neon Colors
+$pixel-cyan: #00d4ff;
+$pixel-magenta: #ff00ff;
+$pixel-yellow: #ffff00;
+$pixel-lime: #00ff88;
 
-// Glass Morphism
-$glass-bg: rgba(45, 27, 78, 0.6);
-$glass-border: rgba(255, 255, 255, 0.2);
-$glass-blur: 20px;
+// Grays with purple tint (Apple style)
+$gray-950: #0a0a10;
+$gray-900: #1c1c24;
+$gray-800: #2c2c3a;
+$gray-700: #3c3c50;
+$gray-600: #5c5c70;
+$gray-500: #8c8c9a;
+$gray-400: #acacb8;
+$gray-300: #c8c8d0;
+$gray-200: #e4e4e8;
+$gray-100: #f4f4f6;
+
+// Glass Morphism (Apple style)
+$glass-bg: rgba(30, 30, 46, 0.65);
+$glass-bg-strong: rgba(20, 20, 36, 0.85);
+$glass-border: rgba(255, 255, 255, 0.18);
+$glass-border-strong: rgba(255, 255, 255, 0.25);
+$glass-blur: 24px;
+$glass-blur-strong: 40px;
+
+// Pixel Art Glass
+$pixel-glass-bg: rgba(26, 26, 46, 0.7);
+$pixel-glass-border: rgba(139, 92, 246, 0.4);
+$pixel-glass-glow: rgba(139, 92, 246, 0.3);
 
 // Spacing
-$container-max-width: 900px;
-$card-gap: 24px;
+$container-max-width: 1400px;
+$card-gap: 20px;
 
 // Transitions
 $ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
-$duration-normal: 250ms;
-$duration-slow: 350ms;
+$ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+$duration-normal: 200ms;
+$duration-slow: 300ms;
+
+// Pixel Art Specific
+$pixel-border-width: 2px;
+$pixel-corner-size: 4px;
+
+// Typography - Pixel Art Fonts
+$font-pixel: 'Press Start 2P', 'VT323', monospace;
+$font-pixel-body: 'VT323', 'Courier New', monospace;
+$font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;

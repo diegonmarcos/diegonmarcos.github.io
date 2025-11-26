@@ -70,27 +70,6 @@ The result is a lightning-fast, beautiful feed experience! ✨`,
     userComment: 'Excited to share this project! Built with Vue 3 and an obsidian purple design system.',
   },
 
-  // YouTube Video 1
-  {
-    id: 'yt-001',
-    type: 'youtube',
-    _type: 'youtubeVideo',
-    _createdAt: '2025-11-18T09:00:00Z',
-    videoId: 'dQw4w9WgXcQ',
-    title: '100 Seconds of Vue 3 Composition API',
-    description: 'Learn Vue 3 Composition API in 100 seconds! Perfect introduction to modern Vue development.',
-    channel: {
-      name: 'Fireship',
-      id: 'UCsBjURrPoezykLs9EqgamOA',
-    },
-    publishDate: '2025-11-15T14:00:00Z',
-    duration: '1:40',
-    likes: 156,
-    isLiked: true,
-    isBookmarked: false,
-    userComment: 'Great explanation of Vue 3 Composition API! Helped me understand the reactive() and ref() differences.',
-  },
-
   // External Article 1
   {
     id: 'ext-001',
@@ -225,27 +204,6 @@ Perfect for modern web applications!`,
     likes: 67,
     isLiked: false,
     isBookmarked: false,
-  },
-
-  // YouTube Video 2
-  {
-    id: 'yt-002',
-    type: 'youtube',
-    _type: 'youtubeVideo',
-    _createdAt: '2025-11-17T14:00:00Z',
-    videoId: 'dQw4w9WgXcQ',
-    title: 'Tailwind CSS Crash Course 2025',
-    description: 'Complete Tailwind CSS tutorial covering utility classes, responsive design, and custom configurations.',
-    channel: {
-      name: 'Traversy Media',
-      id: 'UC29ju8bIPH5as8OGnQzwJyA',
-    },
-    publishDate: '2025-11-14T10:00:00Z',
-    duration: '45:23',
-    likes: 203,
-    isLiked: false,
-    isBookmarked: true,
-    userComment: 'Best Tailwind tutorial I\'ve found! Clear explanations and great examples.',
   },
 
   // External Article 2

@@ -2,43 +2,89 @@
 import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import { useFeedStore } from '@/stores/feedStore'
 import { sampleFeed } from '@/data/sampleFeed'
-import type { FeedItem } from '@/types/feed'
+import { useYouTubeFeed } from '@/composables/useYouTubeFeed'
+import { useTidalFeed } from '@/composables/useTidalFeed'
+import type { FeedItem, FeedFilterType } from '@/types/feed'
 import MarkdownCard from '../cards/MarkdownCard.vue'
 import YouTubeCard from '../cards/YouTubeCard.vue'
 import ArticleCard from '../cards/ArticleCard.vue'
 import TweetCard from '../cards/TweetCard.vue'
 import RSSCard from '../cards/RSSCard.vue'
+import TidalCard from '../cards/TidalCard.vue'
+
+// Props for filtering
+const props = withDefaults(defineProps<{
+  excludeTypes?: FeedFilterType[]
+  onlyTypes?: FeedFilterType[]
+}>(), {
+  excludeTypes: () => [],
+  onlyTypes: () => []
+})
 
 const feedStore = useFeedStore()
+
+// YouTube playlists feeds
+const { videos: musicVideos } = useYouTubeFeed({
+  playlistId: 'PLXEvzcFfwK5M3Z0EtjK_HvaBgUNLKkOE7',
+  label: '🎵 MUSIC',
+  maxItems: 15
+})
+
+const { videos: csNewsVideos } = useYouTubeFeed({
+  playlistId: 'PLXEvzcFfwK5Pto5dazySakJje8s2ufSJh',
+  label: '📰 CS_NEWS',
+  maxItems: 15
+})
+
+// Tidal music feed
+const { tracks: tidalTracks } = useTidalFeed({
+  username: 'diegonmarcos',
+  label: '🎧 TIDAL',
+  maxItems: 10
+})
 
 // Auto-animate container
 const [parent] = useAutoAnimate()
 
-// Feed items
-const items = ref<FeedItem[]>(sampleFeed)
+// Combined feed items (sample + YouTube playlists + Tidal)
+const items = computed<FeedItem[]>(() => {
+  // Merge all feeds
+  const combined = [
+    ...sampleFeed,
+    ...musicVideos.value,
+    ...csNewsVideos.value,
+    ...tidalTracks.value
+  ]
+  // Sort by creation date (newest first)
+  return combined.sort((a, b) =>
+    new Date(b._createdAt).getTime() - new Date(a._createdAt).getTime()
+  )
+})
 
 // Filtered and sorted items
 const filteredItems = computed(() => {
-  return feedStore.filterItems(items.value)
+  let filtered = feedStore.filterItems(items.value)
+
+  // Apply excludeTypes filter
+  if (props.excludeTypes.length > 0) {
+    filtered = filtered.filter(item => !props.excludeTypes.includes(item.type as FeedFilterType))
+  }
+
+  // Apply onlyTypes filter
+  if (props.onlyTypes.length > 0) {
+    filtered = filtered.filter(item => props.onlyTypes.includes(item.type as FeedFilterType))
+  }
+
+  return filtered
 })
 
-// Handle likes and bookmarks
+// Handle likes and bookmarks (state persisted in store)
 function handleLike(item: FeedItem) {
   feedStore.toggleLike(item.id)
-  // Update item likes count
-  const index = items.value.findIndex(i => i.id === item.id)
-  if (index !== -1) {
-    items.value[index].likes += feedStore.isLiked(item.id) ? 1 : -1
-    items.value[index].isLiked = feedStore.isLiked(item.id)
-  }
 }
 
 function handleBookmark(item: FeedItem) {
   feedStore.toggleBookmark(item.id)
-  const index = items.value.findIndex(i => i.id === item.id)
-  if (index !== -1) {
-    items.value[index].isBookmarked = feedStore.isBookmarked(item.id)
-  }
 }
 
 // Get component for feed item type
@@ -49,6 +95,7 @@ function getCardComponent(type: string) {
     article: ArticleCard,
     tweet: TweetCard,
     rss: RSSCard,
+    tidal: TidalCard,
   }
   return components[type as keyof typeof components]
 }
@@ -61,6 +108,7 @@ function getPropsName(type: string) {
     article: 'article',
     tweet: 'tweet',
     rss: 'item',
+    tidal: 'track',
   }
   return propsNames[type as keyof typeof propsNames]
 }

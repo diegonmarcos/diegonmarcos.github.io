@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioMetrics Pro - Health Tracker</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0a0f;
+            --bg-card: rgba(20, 20, 30, 0.7);
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-rose: #f43f5e;
+            --accent-emerald: #10b981;
+            --accent-amber: #f59e0b;
+            --accent-cyan: #06b6d4;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        .bg-animated {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glassmorphism panels */
+        .glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+        }
+
+        .glass-inner {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+        }
+
+        /* Glow effects */
+        .glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); }
+        .glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.3); }
+        .glow-rose { box-shadow: 0 0 30px rgba(244, 63, 94, 0.3); }
+        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
+
+        /* Input styling */
+        .input-styled {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .input-styled:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* Animations */
+        .fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Progress bars */
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* Body composition blocks */
+        .comp-block {
+            display: flex;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 60px;
+        }
+
+        .comp-segment {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            transition: all 0.5s ease;
+            min-width: 50px;
+        }
+
+        /* HR Zone colors */
+        .zone-1 { background: linear-gradient(135deg, #10b981, #059669); }
+        .zone-2 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .zone-3 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .zone-4 { background: linear-gradient(135deg, #f43f5e, #e11d48); }
+        .zone-5 { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        /* Stat cards */
+        .stat-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            background: rgba(255,255,255,0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Tab buttons */
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .tab-btn:not(.active) {
+            background: transparent;
+            color: #64748b;
+        }
+
+        .tab-btn:not(.active):hover {
+            background: rgba(255,255,255,0.05);
+            color: white;
+        }
+
+        /* Delta indicators */
+        .delta-positive { color: #10b981; }
+        .delta-negative { color: #f43f5e; }
+        .delta-neutral { color: #64748b; }
+
+        /* Mono font for numbers */
+        .mono { font-family: 'JetBrains Mono', 'SF Mono', monospace; }
+
+        /* Navigation links */
+        .nav-link {
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            color: #64748b;
+            border-radius: 6px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover {
+            color: #e2e8f0;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-link.active {
+            color: #3b82f6;
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* KPI card */
+        .kpi-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 16px 20px;
+            text-align: center;
+        }
+
+        /* Hierarchy indent */
+        .indent-1 { padding-left: 20px; }
+        .indent-2 { padding-left: 40px; }
+    </style>
+</head>
+<body class="bg-animated">
+
+<!-- Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 glass !rounded-none border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 py-2">
+        <!-- Top row: Logo + Actions -->
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white text-sm">BioMetrics<span class="text-blue-400">Pro</span></h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="exportData()" class="px-3 py-1.5 text-xs font-medium text-slate-400 hover:text-white transition-colors">Export</button>
+                <button onclick="clearData()" class="px-3 py-1.5 text-xs font-medium text-rose-400 hover:text-rose-300 transition-colors">Reset</button>
+            </div>
+        </div>
+        <!-- Bottom row: Section Navigation -->
+        <div class="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-hide" id="section-nav">
+            <a href="#sec-input" class="nav-link active" data-section="sec-input">Input</a>
+            <a href="#sec-composition" class="nav-link" data-section="sec-composition">Body Comp</a>
+            <a href="#sec-scenarios" class="nav-link" data-section="sec-scenarios">Scenarios</a>
+            <a href="#sec-performance" class="nav-link" data-section="sec-performance">Performance</a>
+            <a href="#sec-cardio" class="nav-link" data-section="sec-cardio">Cardio Zones</a>
+            <a href="#sec-graphics" class="nav-link" data-section="sec-graphics">Graphics</a>
+            <a href="#sec-history" class="nav-link" data-section="sec-history">History</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto pt-24 pb-12 px-4 space-y-8">
+
+    <!-- Section 1: Input Data -->
+    <section id="sec-input" class="fade-up scroll-mt-24" style="animation-delay: 0.1s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Input Data</h2>
+        </div>
+
+        <div class="glass p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                <!-- Measurements -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        Measurements
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Height (cm)</label>
+                            <input type="number" id="in-height" value="175" class="input-styled text-center" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Weight (kg)</label>
+                            <input type="number" id="in-weight" value="74" step="0.1" class="input-styled text-center" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Waist (cm)</label>
+                            <input type="number" id="in-waist" value="84" class="input-styled text-center" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Neck (cm)</label>
+                            <input type="number" id="in-neck" value="39" class="input-styled text-center" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        Personal
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Age</label>
+                            <input type="number" id="in-age" value="38" class="input-styled text-center" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Sex</label>
+                            <select id="in-sex" class="input-styled text-center" onchange="calculate()">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Heart Rate -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-rose-400 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        Heart Rate
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">HR Rest</label>
+                            <input type="number" id="in-hr-rest" value="52" class="input-styled text-center text-emerald-400" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">HR Max (calc)</label>
+                            <input type="number" id="in-hr-max" value="" placeholder="Auto" class="input-styled text-center text-rose-400" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Goals -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Goals
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Target Fat %</label>
+                            <input type="number" id="in-goal-fat" value="12" step="0.5" class="input-styled text-center text-emerald-400" oninput="calculate()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-500 uppercase mb-1">Target Muscle %</label>
+                            <input type="number" id="in-goal-muscle" value="40" step="0.5" class="input-styled text-center text-emerald-400" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="mt-6 pt-4 border-t border-white/5 flex flex-wrap gap-3">
+                <button onclick="saveEntry()" class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg text-xs font-semibold hover:bg-blue-500/30 transition-colors flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                    Save Today's Entry
+                </button>
+                <span class="text-xs text-slate-600 self-center" id="last-saved">No data saved yet</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Body Composition -->
+    <section id="sec-composition" class="fade-up scroll-mt-24" style="animation-delay: 0.2s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-rose-500 to-orange-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Body Composition</h2>
+        </div>
+
+        <div class="glass p-6">
+            <!-- KPIs Row -->
+            <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="kpi-card border-l-2 border-amber-500">
+                    <p class="text-[10px] text-amber-400 uppercase mb-1">BMI</p>
+                    <p id="out-bmi" class="mono text-2xl font-bold text-white">--</p>
+                    <p class="text-[10px] text-slate-500">Body Mass Index</p>
+                </div>
+                <div class="kpi-card border-l-2 border-rose-500">
+                    <p class="text-[10px] text-rose-400 uppercase mb-1">Body Fat</p>
+                    <p id="out-fat-kpi" class="mono text-2xl font-bold text-white">--%</p>
+                    <p class="text-[10px] text-slate-500">US Navy Formula</p>
+                </div>
+                <div class="kpi-card border-l-2 border-purple-500">
+                    <p class="text-[10px] text-purple-400 uppercase mb-1">Muscle</p>
+                    <p id="out-muscle-kpi" class="mono text-2xl font-bold text-white">--%</p>
+                    <p class="text-[10px] text-slate-500">Estimated</p>
+                </div>
+            </div>
+            <!-- Visual Composition Bar -->
+            <div class="mb-8">
+                <p class="text-xs text-slate-500 uppercase mb-3">Mass Distribution</p>
+                <div class="comp-block">
+                    <div id="bar-fat" class="comp-segment bg-gradient-to-r from-rose-600 to-rose-500" style="width: 15%">
+                        <span id="bar-fat-label">Fat</span>
+                    </div>
+                    <div id="bar-muscle" class="comp-segment bg-gradient-to-r from-blue-600 to-blue-500" style="width: 35%">
+                        <span id="bar-muscle-label">Muscle</span>
+                    </div>
+                    <div id="bar-water" class="comp-segment bg-gradient-to-r from-cyan-600 to-cyan-500" style="width: 40%">
+                        <span id="bar-water-label">Water</span>
+                    </div>
+                    <div id="bar-bone" class="comp-segment bg-gradient-to-r from-slate-600 to-slate-500" style="width: 10%">
+                        <span id="bar-bone-label">Bone</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Composition Details -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Left: Breakdown -->
+                <div class="space-y-4">
+                    <div class="glass-inner p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-white font-semibold">Total Mass</span>
+                            <span id="out-total-mass" class="mono text-2xl font-bold text-white">-- kg</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-inner p-4 border-l-2 border-rose-500">
+                            <p class="text-[10px] text-rose-400 uppercase mb-1">Fat Mass</p>
+                            <p id="out-fat-mass" class="mono text-xl font-bold text-white">-- kg</p>
+                            <p id="out-fat-pct" class="mono text-sm text-rose-400">--%</p>
+                        </div>
+                        <div class="glass-inner p-4 border-l-2 border-blue-500">
+                            <p class="text-[10px] text-blue-400 uppercase mb-1">Lean Mass</p>
+                            <p id="out-lean-mass" class="mono text-xl font-bold text-white">-- kg</p>
+                            <p id="out-lean-pct" class="mono text-sm text-blue-400">--%</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="glass-inner p-3 text-center">
+                            <p class="text-[10px] text-purple-400 uppercase mb-1">Muscle</p>
+                            <p id="out-muscle-mass" class="mono text-lg font-bold text-white">--</p>
+                            <p id="out-muscle-pct" class="mono text-xs text-purple-400">--%</p>
+                        </div>
+                        <div class="glass-inner p-3 text-center">
+                            <p class="text-[10px] text-cyan-400 uppercase mb-1">Water</p>
+                            <p id="out-water-mass" class="mono text-lg font-bold text-white">--</p>
+                            <p id="out-water-pct" class="mono text-xs text-cyan-400">--%</p>
+                        </div>
+                        <div class="glass-inner p-3 text-center">
+                            <p class="text-[10px] text-slate-400 uppercase mb-1">Bone</p>
+                            <p id="out-bone-mass" class="mono text-lg font-bold text-white">--</p>
+                            <p id="out-bone-pct" class="mono text-xs text-slate-400">--%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: US Navy Formula Info -->
+                <div class="glass-inner p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <h4 class="font-semibold text-white">US Navy Body Fat Formula</h4>
+                    </div>
+                    <p class="text-sm text-slate-400 mb-4">
+                        Body fat percentage calculated using the US Navy circumference method, which uses height, waist, and neck measurements.
+                    </p>
+                    <div class="bg-black/30 rounded-lg p-3 mono text-xs text-slate-300">
+                        <p class="text-amber-400 mb-1">// Male Formula:</p>
+                        <p>BF% = 495 / (1.0324 - 0.19077 × log₁₀(waist - neck) + 0.15456 × log₁₀(height)) - 450</p>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-3 text-center">
+                        <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2">
+                            <p class="text-[10px] text-emerald-400">Athlete</p>
+                            <p class="mono text-sm text-white">6-13%</p>
+                        </div>
+                        <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-2">
+                            <p class="text-[10px] text-blue-400">Fitness</p>
+                            <p class="mono text-sm text-white">14-17%</p>
+                        </div>
+                        <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2">
+                            <p class="text-[10px] text-amber-400">Average</p>
+                            <p class="mono text-sm text-white">18-24%</p>
+                        </div>
+                        <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-2">
+                            <p class="text-[10px] text-rose-400">Obese</p>
+                            <p class="mono text-sm text-white">25%+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Goal Scenarios -->
+    <section id="sec-scenarios" class="fade-up scroll-mt-24" style="animation-delay: 0.3s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Goal Scenarios</h2>
+            <div class="ml-auto flex bg-black/30 p-1 rounded-lg">
+                <button id="tab-keep-mass" onclick="setScenario('keepMass')" class="tab-btn active">Keep Mass</button>
+                <button id="tab-keep-fat" onclick="setScenario('keepFat')" class="tab-btn">Keep Fat</button>
+            </div>
+        </div>
+
+        <div class="glass p-6">
+            <p class="text-sm text-slate-400 mb-6" id="scenario-desc">
+                Projection if you maintain your current total mass and only change body composition.
+            </p>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-xs text-slate-500 uppercase border-b border-white/10">
+                            <th class="text-left py-3 pr-4">Metric</th>
+                            <th class="text-right py-3 px-4">Current</th>
+                            <th class="text-right py-3 px-4">Goal</th>
+                            <th class="text-right py-3 pl-4">Delta</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scenario-table" class="divide-y divide-white/5">
+                        <!-- Populated by JS with hierarchy -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Performance -->
+    <section id="sec-performance" class="fade-up scroll-mt-24" style="animation-delay: 0.35s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-amber-500 to-orange-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Performance</h2>
+        </div>
+
+        <div class="glass p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Strength Benchmarks -->
+                <div class="glass-inner p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                        </svg>
+                        <h4 class="font-semibold text-white">Strength Benchmarks</h4>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">Squat</p>
+                                <p class="text-[10px] text-slate-500">Lower body compound</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-squat" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">Bench Press</p>
+                                <p class="text-[10px] text-slate-500">Upper body push</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-bench" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">Deadlift</p>
+                                <p class="text-[10px] text-slate-500">Posterior chain</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-deadlift" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-500">Total (Big 3)</span>
+                            <span id="out-total-lift" class="mono text-lg font-bold text-amber-400">-- kg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cardio Performance -->
+                <div class="glass-inner p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <h4 class="font-semibold text-white">Cardio Performance</h4>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">Power (watts)</p>
+                                <p class="text-[10px] text-slate-500">Sustained output</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-power" value="" placeholder="W" class="input-styled w-20 text-center text-cyan-400" oninput="saveState()">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">Duration (min)</p>
+                                <p class="text-[10px] text-slate-500">Time at power</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-duration" value="" placeholder="min" class="input-styled w-20 text-center text-cyan-400" oninput="saveState()">
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
+                            <div>
+                                <p class="text-sm font-medium text-white">HR During</p>
+                                <p class="text-[10px] text-slate-500">Average heart rate</p>
+                            </div>
+                            <div class="text-right">
+                                <input type="number" id="in-hr-cardio" value="" placeholder="bpm" class="input-styled w-20 text-center text-rose-400" oninput="saveState()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-white/5">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs text-slate-500">Power/Weight Ratio</span>
+                            <span id="out-power-ratio" class="mono text-lg font-bold text-cyan-400">-- W/kg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Heart Rate Zones -->
+    <section id="sec-cardio" class="fade-up scroll-mt-24" style="animation-delay: 0.4s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-rose-500 to-pink-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Cardio Zones</h2>
+            <div class="ml-auto glass-inner px-4 py-2 flex items-center gap-4">
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-500 uppercase">HR Max</p>
+                    <p id="out-hr-max" class="mono text-lg font-bold text-rose-400">--</p>
+                </div>
+                <div class="w-px h-8 bg-white/10"></div>
+                <div class="text-center">
+                    <p class="text-[10px] text-slate-500 uppercase">HR Reserve</p>
+                    <p id="out-hr-reserve" class="mono text-lg font-bold text-emerald-400">--</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-4" id="hr-zones">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: Charts -->
+    <section id="sec-graphics" class="fade-up scroll-mt-24" style="animation-delay: 0.5s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">Graphics</h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Composition Chart -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">Body Composition</h3>
+                <div class="h-64">
+                    <canvas id="chart-composition"></canvas>
+                </div>
+            </div>
+
+            <!-- Progress Chart -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">12-Week Projection</h3>
+                <div class="h-64">
+                    <canvas id="chart-progress"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 7: History -->
+    <section id="sec-history" class="fade-up scroll-mt-24" style="animation-delay: 0.6s">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-1 h-8 bg-gradient-to-b from-slate-500 to-slate-600 rounded-full"></div>
+            <h2 class="text-xl font-bold text-white">History Log</h2>
+            <span class="ml-auto text-xs text-slate-500" id="history-count">0 entries</span>
+        </div>
+
+        <div class="glass overflow-hidden">
+            <div class="overflow-x-auto max-h-80">
+                <table class="w-full text-sm">
+                    <thead class="sticky top-0 bg-slate-900/95 backdrop-blur text-xs text-slate-500 uppercase">
+                        <tr>
+                            <th class="text-left p-4">Date</th>
+                            <th class="text-right p-4">Weight</th>
+                            <th class="text-right p-4">BMI</th>
+                            <th class="text-right p-4">Fat %</th>
+                            <th class="text-right p-4">Fat Mass</th>
+                            <th class="text-right p-4">Lean Mass</th>
+                            <th class="text-right p-4">Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table" class="divide-y divide-white/5 mono text-slate-300">
+                        <tr><td colspan="7" class="p-8 text-center text-slate-600">No entries yet. Save today's data to start tracking!</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<!-- Footer -->
+<footer class="border-t border-white/5 py-6 text-center">
+    <p class="text-xs text-slate-600">BioMetrics Pro - Health Tracker</p>
+</footer>
+
+<script>
+// ============================================================
+// STATE & CONFIG
+// ============================================================
+let state = {
+    scenario: 'keepMass',
+    history: []
+};
+
+let charts = {};
+
+// ============================================================
+// CALCULATIONS
+// ============================================================
+function calculate() {
+    // Get inputs
+    const height = parseFloat(document.getElementById('in-height').value) || 175;
+    const weight = parseFloat(document.getElementById('in-weight').value) || 74;
+    const waist = parseFloat(document.getElementById('in-waist').value) || 84;
+    const neck = parseFloat(document.getElementById('in-neck').value) || 39;
+    const age = parseInt(document.getElementById('in-age').value) || 38;
+    const sex = document.getElementById('in-sex').value;
+    const hrRest = parseInt(document.getElementById('in-hr-rest').value) || 52;
+    let hrMax = parseInt(document.getElementById('in-hr-max').value);
+    const goalFat = parseFloat(document.getElementById('in-goal-fat').value) || 12;
+    const goalMuscle = parseFloat(document.getElementById('in-goal-muscle').value) || 40;
+
+    // Calculate HR Max if not provided (220 - age)
+    if (!hrMax || isNaN(hrMax)) {
+        hrMax = 220 - age;
+        document.getElementById('in-hr-max').placeholder = hrMax;
+    }
+
+    // BMI
+    const heightM = height / 100;
+    const bmi = weight / (heightM * heightM);
+    let bmiCategory = 'Normal';
+    let bmiColor = 'text-emerald-400';
+    if (bmi < 18.5) { bmiCategory = 'Underweight'; bmiColor = 'text-amber-400'; }
+    else if (bmi >= 25 && bmi < 30) { bmiCategory = 'Overweight'; bmiColor = 'text-amber-400'; }
+    else if (bmi >= 30) { bmiCategory = 'Obese'; bmiColor = 'text-rose-400'; }
+
+    // US Navy Body Fat % (Male formula)
+    let bodyFatPct;
+    if (sex === 'male') {
+        bodyFatPct = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+    } else {
+        // Female formula would need hip measurement, using simplified version
+        bodyFatPct = 495 / (1.29579 - 0.35004 * Math.log10(waist + 0 - neck) + 0.22100 * Math.log10(height)) - 450;
+    }
+    bodyFatPct = Math.max(0, Math.min(50, bodyFatPct)); // Clamp
+
+    // Body Composition
+    const fatMass = weight * (bodyFatPct / 100);
+    const leanMass = weight - fatMass;
+    const leanPct = 100 - bodyFatPct;
+
+    // Estimated components (typical ratios)
+    const waterMass = weight * 0.50; // ~50% of body weight
+    const boneMass = weight * 0.035; // ~3.5% of body weight
+    const muscleMass = leanMass - waterMass - boneMass;
+    const musclePct = (muscleMass / weight) * 100;
+    const waterPct = (waterMass / weight) * 100;
+    const bonePct = (boneMass / weight) * 100;
+
+    // HR Reserve
+    const hrReserve = hrMax - hrRest;
+
+    // Update UI
+    updateUI({
+        bmi, bmiCategory, bmiColor,
+        weight, bodyFatPct, leanPct,
+        fatMass, leanMass, muscleMass, waterMass, boneMass,
+        musclePct, waterPct, bonePct,
+        hrMax, hrRest, hrReserve,
+        goalFat, goalMuscle, height
+    });
+
+    // Save to localStorage
+    saveState();
+}
+
+function updateUI(data) {
+    // KPIs
+    document.getElementById('out-bmi').textContent = data.bmi.toFixed(1);
+    document.getElementById('out-fat-kpi').textContent = `${data.bodyFatPct.toFixed(1)}%`;
+    document.getElementById('out-muscle-kpi').textContent = `${data.musclePct.toFixed(1)}%`;
+
+    // Total Mass
+    document.getElementById('out-total-mass').textContent = `${data.weight.toFixed(1)} kg`;
+
+    // Fat
+    document.getElementById('out-fat-mass').textContent = `${data.fatMass.toFixed(2)} kg`;
+    document.getElementById('out-fat-pct').textContent = `${data.bodyFatPct.toFixed(1)}%`;
+
+    // Lean
+    document.getElementById('out-lean-mass').textContent = `${data.leanMass.toFixed(2)} kg`;
+    document.getElementById('out-lean-pct').textContent = `${data.leanPct.toFixed(1)}%`;
+
+    // Components
+    document.getElementById('out-muscle-mass').textContent = `${data.muscleMass.toFixed(1)}`;
+    document.getElementById('out-muscle-pct').textContent = `${data.musclePct.toFixed(1)}%`;
+    document.getElementById('out-water-mass').textContent = `${data.waterMass.toFixed(1)}`;
+    document.getElementById('out-water-pct').textContent = `${data.waterPct.toFixed(1)}%`;
+    document.getElementById('out-bone-mass').textContent = `${data.boneMass.toFixed(2)}`;
+    document.getElementById('out-bone-pct').textContent = `${data.bonePct.toFixed(1)}%`;
+
+    // Composition Bar
+    document.getElementById('bar-fat').style.width = `${data.bodyFatPct}%`;
+    document.getElementById('bar-fat-label').textContent = `${data.bodyFatPct.toFixed(0)}%`;
+    document.getElementById('bar-muscle').style.width = `${data.musclePct}%`;
+    document.getElementById('bar-muscle-label').textContent = `${data.musclePct.toFixed(0)}%`;
+    document.getElementById('bar-water').style.width = `${data.waterPct}%`;
+    document.getElementById('bar-water-label').textContent = `${data.waterPct.toFixed(0)}%`;
+    document.getElementById('bar-bone').style.width = `${data.bonePct}%`;
+    document.getElementById('bar-bone-label').textContent = `${data.bonePct.toFixed(0)}%`;
+
+    // HR
+    document.getElementById('out-hr-max').textContent = data.hrMax;
+    document.getElementById('out-hr-reserve').textContent = data.hrReserve;
+
+    // Update HR Zones
+    updateHRZones(data.hrMax, data.hrRest);
+
+    // Update Scenarios
+    updateScenarios(data);
+
+    // Update Charts
+    updateCharts(data);
+}
+
+function updateHRZones(hrMax, hrRest) {
+    const zones = [
+        { name: 'Recovery', pct: [0.50, 0.60], color: 'zone-1', desc: 'Warm-up, cool-down' },
+        { name: 'Fat Burn', pct: [0.60, 0.70], color: 'zone-2', desc: 'Aerobic base' },
+        { name: 'Cardio', pct: [0.70, 0.80], color: 'zone-3', desc: 'Endurance' },
+        { name: 'Threshold', pct: [0.80, 0.90], color: 'zone-4', desc: 'Performance' },
+        { name: 'VO2 Max', pct: [0.90, 1.00], color: 'zone-5', desc: 'Max effort' }
+    ];
+
+    const container = document.getElementById('hr-zones');
+    container.innerHTML = zones.map((z, i) => {
+        const hrLow = Math.round(hrMax * z.pct[0]);
+        const hrHigh = Math.round(hrMax * z.pct[1]);
+        return `
+            <div class="${z.color} rounded-xl p-4 text-center text-white">
+                <p class="text-xs opacity-80 uppercase mb-1">Zone ${i + 1}</p>
+                <p class="font-bold text-lg">${z.name}</p>
+                <p class="mono text-2xl font-bold my-2">${hrLow}-${hrHigh}</p>
+                <p class="text-[10px] opacity-70">${z.desc}</p>
+            </div>
+        `;
+    }).join('');
+}
+
+function updateScenarios(data) {
+    const tbody = document.getElementById('scenario-table');
+    const descEl = document.getElementById('scenario-desc');
+
+    let goalWeight, goalFatMass, goalLeanMass, goalMuscleMass, goalWaterMass, goalBoneMass;
+
+    if (state.scenario === 'keepMass') {
+        // Keep total mass, change composition
+        goalWeight = data.weight;
+        goalFatMass = goalWeight * (data.goalFat / 100);
+        goalLeanMass = goalWeight - goalFatMass;
+        goalMuscleMass = goalWeight * (data.goalMuscle / 100);
+        goalWaterMass = goalWeight * 0.50;
+        goalBoneMass = goalWeight * 0.035;
+        descEl.textContent = 'Projection if you maintain your current total mass and only change body composition (recomp).';
+    } else {
+        // Keep fat mass, change total weight
+        goalFatMass = data.fatMass;
+        goalWeight = goalFatMass / (data.goalFat / 100);
+        goalLeanMass = goalWeight - goalFatMass;
+        goalMuscleMass = goalWeight * (data.goalMuscle / 100);
+        goalWaterMass = goalWeight * 0.50;
+        goalBoneMass = goalWeight * 0.035;
+        descEl.textContent = 'Projection if you keep your current fat mass and build muscle (bulk).';
+    }
+
+    // Hierarchical rows with indent levels
+    const rows = [
+        { name: 'Body Fat %', current: data.bodyFatPct, goal: data.goalFat, unit: '%', inverse: true, level: 0, highlight: true },
+        { name: 'Muscle %', current: data.musclePct, goal: data.goalMuscle, unit: '%', level: 0, highlight: true },
+        { name: 'Total Mass', current: data.weight, goal: goalWeight, unit: 'kg', level: 0, header: true },
+        { name: 'Fat Mass', current: data.fatMass, goal: goalFatMass, unit: 'kg', inverse: true, level: 1 },
+        { name: 'Lean Mass', current: data.leanMass, goal: goalLeanMass, unit: 'kg', level: 1 },
+        { name: 'Muscle', current: data.muscleMass, goal: goalMuscleMass, unit: 'kg', level: 2 },
+        { name: 'Water', current: data.waterMass, goal: goalWaterMass, unit: 'kg', level: 2 },
+        { name: 'Bone', current: data.boneMass, goal: goalBoneMass, unit: 'kg', level: 2 }
+    ];
+
+    tbody.innerHTML = rows.map(row => {
+        const delta = row.goal - row.current;
+        const sign = delta > 0 ? '+' : '';
+        let colorClass = 'delta-neutral';
+
+        if (row.inverse) {
+            colorClass = delta < 0 ? 'delta-positive' : (delta > 0 ? 'delta-negative' : 'delta-neutral');
+        } else {
+            colorClass = delta > 0 ? 'delta-positive' : (delta < 0 ? 'delta-negative' : 'delta-neutral');
+        }
+
+        // Indent and style based on level
+        const indent = row.level === 1 ? 'pl-4' : row.level === 2 ? 'pl-8' : '';
+        const nameStyle = row.header ? 'font-semibold text-white' : row.highlight ? 'font-semibold text-emerald-400' : row.level > 0 ? 'text-slate-500' : 'text-slate-300';
+        const prefix = row.level === 1 ? '<span class="text-slate-600 mr-1">└</span>' : row.level === 2 ? '<span class="text-slate-700 mr-1">└</span>' : '';
+
+        return `
+            <tr class="hover:bg-white/5 transition-colors ${row.header ? 'bg-white/[0.02]' : ''}">
+                <td class="py-2 pr-4 ${indent} ${nameStyle}">${prefix}${row.name}</td>
+                <td class="py-2 px-4 text-right mono text-slate-400 ${row.level > 0 ? 'text-xs' : ''}">${row.current.toFixed(1)} ${row.unit}</td>
+                <td class="py-2 px-4 text-right mono text-blue-400 font-semibold ${row.level > 0 ? 'text-xs' : ''}">${row.goal.toFixed(1)} ${row.unit}</td>
+                <td class="py-2 pl-4 text-right mono font-bold ${colorClass} ${row.level > 0 ? 'text-xs' : ''}">${sign}${delta.toFixed(1)}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function setScenario(scenario) {
+    state.scenario = scenario;
+
+    document.getElementById('tab-keep-mass').className = scenario === 'keepMass' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tab-keep-fat').className = scenario === 'keepFat' ? 'tab-btn active' : 'tab-btn';
+
+    calculate();
+}
+
+// ============================================================
+// CHARTS
+// ============================================================
+function initCharts() {
+    // Composition Doughnut
+    const ctxComp = document.getElementById('chart-composition').getContext('2d');
+    charts.composition = new Chart(ctxComp, {
+        type: 'doughnut',
+        data: {
+            labels: ['Fat', 'Muscle', 'Water', 'Bone'],
+            datasets: [{
+                data: [15, 35, 40, 10],
+                backgroundColor: ['#f43f5e', '#3b82f6', '#06b6d4', '#64748b'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', font: { size: 11 } }
+                }
+            }
+        }
+    });
+
+    // Progress Line Chart
+    const ctxProgress = document.getElementById('chart-progress').getContext('2d');
+    charts.progress = new Chart(ctxProgress, {
+        type: 'line',
+        data: {
+            labels: ['Now', 'W2', 'W4', 'W6', 'W8', 'W10', 'W12'],
+            datasets: [
+                {
+                    label: 'Body Fat %',
+                    data: [],
+                    borderColor: '#f43f5e',
+                    backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                },
+                {
+                    label: 'Muscle %',
+                    data: [],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#64748b' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#64748b' }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#94a3b8', font: { size: 11 } }
+                }
+            }
+        }
+    });
+}
+
+function updateCharts(data) {
+    // Update composition chart
+    charts.composition.data.datasets[0].data = [
+        data.bodyFatPct,
+        data.musclePct,
+        data.waterPct,
+        data.bonePct
+    ];
+    charts.composition.update();
+
+    // Update progress chart (12-week projection)
+    const steps = 7;
+    const fatData = [];
+    const muscleData = [];
+
+    for (let i = 0; i < steps; i++) {
+        const progress = i / (steps - 1);
+        fatData.push(data.bodyFatPct + (data.goalFat - data.bodyFatPct) * progress);
+        muscleData.push(data.musclePct + (data.goalMuscle - data.musclePct) * progress);
+    }
+
+    charts.progress.data.datasets[0].data = fatData;
+    charts.progress.data.datasets[1].data = muscleData;
+    charts.progress.update();
+}
+
+// ============================================================
+// HISTORY & PERSISTENCE
+// ============================================================
+function saveEntry() {
+    const entry = {
+        date: new Date().toISOString(),
+        weight: parseFloat(document.getElementById('in-weight').value),
+        height: parseFloat(document.getElementById('in-height').value),
+        waist: parseFloat(document.getElementById('in-waist').value),
+        neck: parseFloat(document.getElementById('in-neck').value),
+        age: parseInt(document.getElementById('in-age').value),
+        hrRest: parseInt(document.getElementById('in-hr-rest').value)
+    };
+
+    // Calculate derived values
+    const heightM = entry.height / 100;
+    entry.bmi = entry.weight / (heightM * heightM);
+    entry.fatPct = 495 / (1.0324 - 0.19077 * Math.log10(entry.waist - entry.neck) + 0.15456 * Math.log10(entry.height)) - 450;
+    entry.fatPct = Math.max(0, Math.min(50, entry.fatPct));
+    entry.fatMass = entry.weight * (entry.fatPct / 100);
+    entry.leanMass = entry.weight - entry.fatMass;
+
+    state.history.unshift(entry);
+
+    // Keep only last 100 entries
+    if (state.history.length > 100) state.history.pop();
+
+    saveState();
+    renderHistory();
+
+    document.getElementById('last-saved').textContent = `Saved: ${new Date().toLocaleString()}`;
+}
+
+function renderHistory() {
+    const tbody = document.getElementById('history-table');
+    const countEl = document.getElementById('history-count');
+
+    countEl.textContent = `${state.history.length} entries`;
+
+    if (state.history.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-600">No entries yet. Save today\'s data to start tracking!</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = state.history.map((entry, idx) => {
+        const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
+
+        // Trend compared to next entry (older)
+        let trend = '';
+        if (idx < state.history.length - 1) {
+            const prev = state.history[idx + 1];
+            if (entry.weight < prev.weight) trend = '<span class="text-emerald-400">↓</span>';
+            else if (entry.weight > prev.weight) trend = '<span class="text-rose-400">↑</span>';
+            else trend = '<span class="text-slate-500">→</span>';
+        }
+
+        return `
+            <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-4 text-slate-400">${date}</td>
+                <td class="p-4 text-right font-bold text-white">${entry.weight.toFixed(1)}</td>
+                <td class="p-4 text-right">${entry.bmi.toFixed(1)}</td>
+                <td class="p-4 text-right text-rose-400">${entry.fatPct.toFixed(1)}%</td>
+                <td class="p-4 text-right text-slate-400">${entry.fatMass.toFixed(1)}</td>
+                <td class="p-4 text-right text-slate-400">${entry.leanMass.toFixed(1)}</td>
+                <td class="p-4 text-right">${trend}</td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function saveState() {
+    const inputs = {
+        height: document.getElementById('in-height').value,
+        weight: document.getElementById('in-weight').value,
+        waist: document.getElementById('in-waist').value,
+        neck: document.getElementById('in-neck').value,
+        age: document.getElementById('in-age').value,
+        sex: document.getElementById('in-sex').value,
+        hrRest: document.getElementById('in-hr-rest').value,
+        hrMax: document.getElementById('in-hr-max').value,
+        goalFat: document.getElementById('in-goal-fat').value,
+        goalMuscle: document.getElementById('in-goal-muscle').value,
+        squat: document.getElementById('in-squat').value,
+        bench: document.getElementById('in-bench').value,
+        deadlift: document.getElementById('in-deadlift').value,
+        power: document.getElementById('in-power').value,
+        duration: document.getElementById('in-duration').value,
+        hrCardio: document.getElementById('in-hr-cardio').value
+    };
+
+    localStorage.setItem('bioMetricsState', JSON.stringify({
+        inputs,
+        history: state.history,
+        scenario: state.scenario
+    }));
+
+    // Update performance display
+    updatePerformance();
+}
+
+function loadState() {
+    const saved = localStorage.getItem('bioMetricsState');
+    if (saved) {
+        try {
+            const data = JSON.parse(saved);
+
+            // Restore inputs - handle camelCase to kebab-case conversion
+            if (data.inputs) {
+                const fieldMap = {
+                    'height': 'in-height',
+                    'weight': 'in-weight',
+                    'waist': 'in-waist',
+                    'neck': 'in-neck',
+                    'age': 'in-age',
+                    'sex': 'in-sex',
+                    'hrRest': 'in-hr-rest',
+                    'hrMax': 'in-hr-max',
+                    'goalFat': 'in-goal-fat',
+                    'goalMuscle': 'in-goal-muscle',
+                    'squat': 'in-squat',
+                    'bench': 'in-bench',
+                    'deadlift': 'in-deadlift',
+                    'power': 'in-power',
+                    'duration': 'in-duration',
+                    'hrCardio': 'in-hr-cardio'
+                };
+
+                Object.entries(data.inputs).forEach(([key, val]) => {
+                    const elId = fieldMap[key];
+                    if (elId) {
+                        const el = document.getElementById(elId);
+                        if (el && val) el.value = val;
+                    }
+                });
+            }
+
+            // Restore history
+            if (data.history) state.history = data.history;
+
+            // Restore scenario
+            if (data.scenario) {
+                state.scenario = data.scenario;
+                setScenario(data.scenario);
+            }
+        } catch (e) {
+            console.error('Failed to load state:', e);
+        }
+    }
+}
+
+function exportData() {
+    const data = {
+        exportDate: new Date().toISOString(),
+        history: state.history
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `biometrics-export-${new Date().toISOString().split('T')[0]}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function clearData() {
+    if (confirm('Are you sure you want to clear all saved data?')) {
+        localStorage.removeItem('bioMetricsState');
+        state.history = [];
+        renderHistory();
+        location.reload();
+    }
+}
+
+// ============================================================
+// PERFORMANCE
+// ============================================================
+function updatePerformance() {
+    const squat = parseFloat(document.getElementById('in-squat').value) || 0;
+    const bench = parseFloat(document.getElementById('in-bench').value) || 0;
+    const deadlift = parseFloat(document.getElementById('in-deadlift').value) || 0;
+    const power = parseFloat(document.getElementById('in-power').value) || 0;
+    const weight = parseFloat(document.getElementById('in-weight').value) || 74;
+
+    // Total lift (Big 3)
+    const totalLift = squat + bench + deadlift;
+    document.getElementById('out-total-lift').textContent = totalLift > 0 ? `${totalLift} kg` : '-- kg';
+
+    // Power/weight ratio
+    const powerRatio = power / weight;
+    document.getElementById('out-power-ratio').textContent = power > 0 ? `${powerRatio.toFixed(2)} W/kg` : '-- W/kg';
+}
+
+// ============================================================
+// SCROLL HIGHLIGHTING
+// ============================================================
+function initScrollHighlight() {
+    const sections = document.querySelectorAll('section[id^="sec-"]');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-section') === id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0
+    });
+
+    sections.forEach(section => observer.observe(section));
+}
+
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadState();
+    initCharts();
+    initScrollHighlight();
+    calculate();
+    updatePerformance();
+    renderHistory();
+});
+</script>
+
+</body>
+</html>

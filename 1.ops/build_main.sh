@@ -37,6 +37,7 @@ URL_NEXUS="http://localhost:8005/"
 URL_CLOUD="http://localhost:8006/"
 URL_FEED="http://localhost:8007/"
 URL_OTHERS="http://localhost:8008/"
+URL_HEALTH="http://localhost:8009/"
 
 # Banner function
 print_banner() {
@@ -89,10 +90,14 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Others             ${BLUE}${URL_OTHERS}${NC}\n"
         _count=$((_count + 1))
     fi
+    if pgrep -f "live-server.*8009" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Health Tracker     ${BLUE}${URL_HEALTH}${NC}\n"
+        _count=$((_count + 1))
+    fi
     # Generic live-server check (fallback for other ports)
     if pgrep -f "live-server" >/dev/null 2>&1; then
         _other_live=$(pgrep -f "live-server" 2>/dev/null | while read pid; do
-            ps -p "$pid" -o args= 2>/dev/null | grep -v "800[0-8]" || true
+            ps -p "$pid" -o args= 2>/dev/null | grep -v "800[0-9]" || true
         done)
         if [ -n "$_other_live" ]; then
             _servers="${_servers}  ${GREEN}*${NC} live-server        ${BLUE}(check terminal)${NC}\n"
@@ -144,7 +149,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others; do
+        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-root-sass)  _servers="${_servers}  ${GREEN}*${NC} Root (tmux)        ${BLUE}${URL_ROOT}${NC}\n" ;;
@@ -157,6 +162,7 @@ get_running_servers() {
                     build-cloud)      _servers="${_servers}  ${GREEN}*${NC} Cloud (tmux)       ${BLUE}${URL_CLOUD}${NC}\n" ;;
                     build-feed)       _servers="${_servers}  ${GREEN}*${NC} Feed (tmux)        ${BLUE}${URL_FEED}${NC}\n" ;;
                     build-others)     _servers="${_servers}  ${GREEN}*${NC} Others (tmux)      ${BLUE}${URL_OTHERS}${NC}\n" ;;
+                    build-health)     _servers="${_servers}  ${GREEN}*${NC} Health (tmux)      ${BLUE}${URL_HEALTH}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -209,6 +215,7 @@ print_usage() {
     printf "  ${GREEN}build-cloud${NC}        # Cloud - Sass + TypeScript\n"
     printf "  ${GREEN}build-feed${NC}         # Feed Yourself - Static HTML\n"
     printf "  ${GREEN}build-others${NC}       # Others - Python\n"
+    printf "  ${GREEN}build-health${NC}       # Health Tracker - Static HTML\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -221,6 +228,7 @@ print_usage() {
     printf "  ${GREEN}dev-cloud${NC}          # Cloud - npm-live :8006\n"
     printf "  ${GREEN}dev-feed${NC}           # Feed Yourself - npm-live :8007\n"
     printf "  ${GREEN}dev-others${NC}         # Others - npm-live :8008\n"
+    printf "  ${GREEN}dev-health${NC}         # Health Tracker - npm-live :8009\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -245,6 +253,7 @@ print_usage() {
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Cloud" "-" "Sass" "TypeScript" "npm-live :8006" "Sass, TS"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Feed Yourself" "-" "Embedded" "Embedded" "npm-live :8007" "-"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Others" "-" "-" "Python" "npm-live :8008" "-"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "HealthTracker" "-" "Tailwind" "Vanilla" "npm-live :8009" "-"
     printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
 
     # Show status box in help
@@ -367,6 +376,7 @@ build_all() {
     execute_build "cloud" "build" || _failed=$((_failed + 1))
     execute_build "feed_yourself" "build" || _failed=$((_failed + 1))
     execute_build "others" "build" || _failed=$((_failed + 1))
+    execute_build "health_tracker" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -394,6 +404,7 @@ clean_all_builds() {
     execute_build "cloud" "clean" || true
     execute_build "feed_yourself" "clean" || true
     execute_build "others" "clean" || true
+    execute_build "health_tracker" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -482,6 +493,7 @@ dev_all() {
         tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/cloud/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-feed "cd $PROJECT_ROOT/feed_yourself/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-others "cd $PROJECT_ROOT/others/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-health "cd $PROJECT_ROOT/health_tracker/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -497,6 +509,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Cloud" "$URL_CLOUD"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Feed Yourself" "$URL_FEED"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, etc."
@@ -544,6 +557,9 @@ dev_all() {
         log_info "Starting others..."
         nohup sh "$PROJECT_ROOT/others/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/others-dev.log" 2>&1 &
 
+        log_info "Starting health_tracker..."
+        nohup sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/health-dev.log" 2>&1 &
+
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
@@ -560,6 +576,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Cloud" "$URL_CLOUD"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Feed Yourself" "$URL_FEED"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -634,6 +651,12 @@ dev_single() {
             print_server_started "Others" "$_url"
             wait
             ;;
+        health)
+            execute_build "health_tracker" "dev" &
+            sleep 2
+            print_server_started "Health Tracker" "$_url"
+            wait
+            ;;
     esac
 }
 
@@ -645,7 +668,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others; do
+        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -814,6 +837,9 @@ main() {
         build-others)
             execute_build "others" "build"
             ;;
+        build-health)
+            execute_build "health_tracker" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -843,6 +869,9 @@ main() {
             ;;
         dev-others)
             dev_single "others" "$URL_OTHERS"
+            ;;
+        dev-health)
+            dev_single "health" "$URL_HEALTH"
             ;;
         list)
             list_servers

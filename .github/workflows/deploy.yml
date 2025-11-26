@@ -128,6 +128,15 @@ jobs:
           cd ..
           echo "✅ Others index.html generated"
 
+      - name: 🔨 Build Health Tracker (Static HTML)
+        if: contains(steps.changed-files.outputs.all_changed_files, 'health_tracker/')
+        run: |
+          echo "🔨 Building Health Tracker application..."
+          cd health_tracker/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ Health Tracker build complete"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -194,6 +203,16 @@ jobs:
             echo "✅ Feed Yourself build copied to _site/feed_yourself/"
           else
             echo "⏭️  Skipping Feed Yourself copy (no dist directory found)"
+          fi
+
+          # Copy Health Tracker build (if dist exists)
+          if [ -d "health_tracker/dist" ]; then
+            echo "📦 Copying Health Tracker build..."
+            mkdir -p _site/health_tracker
+            cp -r health_tracker/dist/* _site/health_tracker/
+            echo "✅ Health Tracker build copied to _site/health_tracker/"
+          else
+            echo "⏭️  Skipping Health Tracker copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioTracker Ultimate</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #e2e8f0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* --- Ambient Background --- */
+        .ambient-blob {
+            position: absolute;
+            filter: blur(90px);
+            z-index: -1;
+            opacity: 0.5;
+            animation: float 25s infinite ease-in-out;
+        }
+        .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: #4338ca; animation-delay: 0s; }
+        .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #be185d; animation-delay: -5s; }
+        .blob-3 { top: 40%; left: 30%; width: 400px; height: 400px; background: #0e7490; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -40px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.95); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+
+        /* --- Glassmorphism --- */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border-radius: 1.5rem;
+        }
+
+        .input-field {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        /* --- Animations --- */
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; opacity: 0; transform: translateY(15px); }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Scrollbar --- */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* --- Block Chart Styles --- */
+        .block-container {
+            display: flex;
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .block-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            transition: width 0.5s ease-in-out;
+            position: relative;
+            min-width: 40px; /* Ensure label visibility */
+        }
+        .block-label {
+            z-index: 10;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            text-align: center;
+            padding: 4px;
+        }
+        .block-sub-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-200">
+
+    <!-- Ambient Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="ambient-blob blob-1 rounded-full"></div>
+        <div class="ambient-blob blob-2 rounded-full"></div>
+        <div class="ambient-blob blob-3 rounded-full"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-panel !rounded-none !border-x-0 !border-t-0 px-4 py-3 border-b border-white/5">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <i data-lucide="activity" class="text-white w-5 h-5"></i>
+                </div>
+                <h1 class="font-bold text-lg tracking-tight text-white hidden sm:block">Bio<span class="text-indigo-400">Tracker</span></h1>
+            </div>
+            <div class="flex gap-2 text-xs md:text-sm font-medium overflow-x-auto no-scrollbar">
+                <button onclick="scrollToSection('input')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Input</button>
+                <button onclick="scrollToSection('body-comp')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Body</button>
+                <button onclick="scrollToSection('scenarios')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Scenarios</button>
+                <button onclick="scrollToSection('performance')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Perf</button>
+                <button onclick="scrollToSection('visuals')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Visuals</button>
+                <button onclick="scrollToSection('cardio-zones')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">Zones</button>
+                <button onclick="scrollToSection('history')" class="px-3 py-2 rounded-xl hover:bg-white/5 whitespace-nowrap">History</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto pt-24 pb-20 px-4 space-y-12">
+
+        <!-- ==================== CONTAINER 1: INPUT DECK ==================== -->
+        <section id="input" class="fade-in" style="animation-delay: 0.1s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-indigo-500 rounded-full shadow-[0_0_15px_rgba(99,102,241,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Input Data</h2>
+            </div>
+
+            <div class="glass-panel p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                    <!-- 1. Physiology -->
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-indigo-400 uppercase tracking-widest border-b border-white/5 pb-2">Physiology</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Mass (kg)</label>
+                                <input type="number" id="input-weight" value="74.0" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Height (cm)</label>
+                                <input type="number" id="input-height" value="175" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-rose-300 mb-1">Fat %</label>
+                                <input type="number" id="input-fat-pct" value="15.3" step="0.1" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-rose-300" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-indigo-300 mb-1">Muscle %</label>
+                                <input type="number" id="input-muscle-pct" value="31.1" step="0.1" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-indigo-300" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-cyan-300 mb-1">Water</label>
+                                <input type="number" id="input-water" value="37.0" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-cyan-300" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-300 mb-1">Bone</label>
+                                <input type="number" id="input-bone" value="2.59" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-slate-300" oninput="calculateAll()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Goals -->
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest border-b border-white/5 pb-2">Target Goals</h3>
+                         <div class="space-y-3">
+                            <div class="flex justify-between items-center bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                                <label class="text-xs text-slate-300">Goal Fat %</label>
+                                <input type="number" id="goal-fat-pct" value="12.0" step="0.1" class="input-field w-20 px-2 py-1 rounded text-right font-mono text-emerald-400" oninput="calculateAll()">
+                            </div>
+                            <div class="flex justify-between items-center bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                                <label class="text-xs text-slate-300">Goal Muscle %</label>
+                                <input type="number" id="goal-muscle-pct" value="40.0" step="0.1" class="input-field w-20 px-2 py-1 rounded text-right font-mono text-emerald-400" oninput="calculateAll()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. HR Performance -->
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-rose-500 uppercase tracking-widest border-b border-white/5 pb-2">Heart Data</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">HR Max</label>
+                                <input type="number" id="input-hr-max" value="182" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-rose-400" oninput="calculateAll()">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">HR Rest</label>
+                                <input type="number" id="input-hr-rest" value="52" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-slate-300" oninput="calculateAll()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. Benchmarks -->
+                    <div class="space-y-4">
+                        <h3 class="text-xs font-bold text-amber-400 uppercase tracking-widest border-b border-white/5 pb-2">Benchmarks</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Squat (kg)</label>
+                                <input type="number" id="input-squat" placeholder="--" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-amber-300">
+                            </div>
+                            <div>
+                                <label class="block text-xs text-slate-400 mb-1">Chest (kg)</label>
+                                <input type="number" id="input-chest" placeholder="--" class="input-field w-full px-3 py-2 rounded-lg font-mono font-bold text-amber-300">
+                            </div>
+                        </div>
+                         <div class="grid grid-cols-3 gap-2 mt-2 pt-2 border-t border-white/5">
+                             <div class="col-span-3 text-[10px] text-slate-500 uppercase">Cardio Power</div>
+                             <input type="number" id="input-power" placeholder="Watts" class="input-field px-2 py-1 rounded text-xs">
+                             <input type="number" id="input-min" placeholder="Min" class="input-field px-2 py-1 rounded text-xs">
+                             <input type="number" id="input-cardio-hr" placeholder="HR" class="input-field px-2 py-1 rounded text-xs">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 2: BODY COMPOSITION ==================== -->
+        <section id="body-comp" class="fade-in" style="animation-delay: 0.2s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-rose-500 rounded-full shadow-[0_0_15px_rgba(244,63,94,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Body Composition</h2>
+                <div class="ml-auto bg-slate-800/50 px-3 py-1 rounded-full border border-white/5 flex items-center gap-2">
+                    <span class="text-xs text-slate-400 uppercase font-bold">BMI</span>
+                    <span id="display-bmi" class="text-sm font-mono font-bold text-slate-300">--</span>
+                </div>
+            </div>
+
+            <div class="glass-panel p-0 overflow-hidden flex flex-col">
+                <div class="px-6 py-4 border-b border-white/5 bg-slate-800/50 flex justify-between">
+                    <h3 class="font-bold text-slate-200">Mass Breakdown Hierarchy</h3>
+                    <span class="text-xs text-slate-500 font-mono">VALUES WITH %</span>
+                </div>
+                <div class="p-6 space-y-4">
+                    <!-- Level 1: Total -->
+                    <div class="flex items-center justify-between p-4 rounded-xl bg-slate-700/30 border border-white/5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-3 h-3 rounded-full bg-slate-200 shadow-[0_0_10px_white]"></div>
+                            <span class="font-bold text-white text-lg">Total Mass</span>
+                        </div>
+                        <div class="text-right">
+                             <span id="display-total-mass" class="font-mono text-2xl font-bold text-white">--</span>
+                             <span class="text-sm text-slate-400 ml-1 font-mono">(100%)</span>
+                        </div>
+                    </div>
+
+                    <!-- Level 2: Fat vs Lean -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-4 md:pl-8 relative">
+                        <div class="hidden md:block absolute left-4 top-[-20px] bottom-16 w-0.5 bg-slate-600/30"></div>
+                        <div class="hidden md:block absolute left-4 top-1/2 w-4 h-0.5 bg-slate-600/30"></div>
+
+                        <!-- Fat Mass -->
+                        <div class="relative bg-rose-900/10 border border-rose-500/20 p-5 rounded-2xl">
+                            <div class="flex justify-between items-start mb-2">
+                                <p class="text-sm text-rose-300 font-bold uppercase tracking-wider">Fat Mass</p>
+                                <span class="px-2 py-0.5 rounded text-[10px] bg-rose-500/20 text-rose-300 border border-rose-500/20">Essential</span>
+                            </div>
+                            <div class="flex items-baseline justify-between">
+                                <p id="display-fat-mass" class="font-mono text-3xl font-bold text-white">--</p>
+                                <div class="text-right">
+                                     <p id="display-fat-pct-main" class="text-xl font-mono text-rose-400 font-bold">--%</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lean Mass -->
+                        <div class="relative">
+                            <div class="bg-indigo-900/10 border border-indigo-500/20 p-5 rounded-2xl mb-4">
+                                <div class="flex justify-between items-start mb-2">
+                                    <p class="text-sm text-indigo-300 font-bold uppercase tracking-wider">Lean Mass</p>
+                                    <span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/20">Performance</span>
+                                </div>
+                                <div class="flex items-baseline justify-between">
+                                    <p id="display-lean-mass" class="font-mono text-3xl font-bold text-white">--</p>
+                                    <div class="text-right">
+                                        <p id="display-lean-pct-main" class="text-xl font-mono text-indigo-400 font-bold">--%</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Level 3 Components (With % added) -->
+                            <div class="space-y-2 pl-2 border-l border-indigo-500/20 ml-4">
+                                <div class="flex justify-between text-sm items-center p-3 rounded-lg bg-indigo-500/5 border border-indigo-500/10">
+                                    <span class="text-indigo-200 flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-indigo-400"></div> Muscle</span>
+                                    <div>
+                                        <span id="display-muscle-mass" class="font-mono font-bold text-white">--</span>
+                                        <span id="display-muscle-pct-inner" class="text-xs text-indigo-400/70 font-mono ml-1">(--%)</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm items-center p-3 rounded-lg bg-cyan-500/5 border border-cyan-500/10">
+                                    <span class="text-cyan-200 flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div> Water</span>
+                                    <div>
+                                        <span id="display-water-mass" class="font-mono font-bold text-white">--</span>
+                                        <span id="display-water-pct-inner" class="text-xs text-cyan-400/70 font-mono ml-1">(--%)</span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm items-center p-3 rounded-lg bg-slate-500/5 border border-slate-500/10">
+                                    <span class="text-slate-300 flex items-center gap-2"><div class="w-1.5 h-1.5 rounded-full bg-slate-400"></div> Bone</span>
+                                    <div>
+                                        <span id="display-bone-mass" class="font-mono font-bold text-white">--</span>
+                                        <span id="display-bone-pct-inner" class="text-xs text-slate-400/70 font-mono ml-1">(--%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 3: BODY MASS SCENARIOS (MOVED UP) ==================== -->
+        <section id="scenarios" class="fade-in" style="animation-delay: 0.25s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Body Mass Scenarios</h2>
+                <div class="ml-auto flex bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+                    <button onclick="switchTab('total')" id="tab-total" class="px-3 py-1 text-[10px] font-bold rounded bg-indigo-500 text-white">Keep Mass</button>
+                    <button onclick="switchTab('fat')" id="tab-fat" class="px-3 py-1 text-[10px] font-bold rounded text-slate-400 hover:text-white">Keep Fat</button>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 flex flex-col">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="target" class="text-indigo-400"></i>
+                    <p class="text-sm text-slate-400">Projection based on selected strategy:</p>
+                </div>
+
+                <div class="overflow-x-auto rounded-lg border border-white/5 flex-grow">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800/50 text-xs text-slate-400 uppercase">
+                            <tr>
+                                <th class="p-3">Metric</th>
+                                <th class="p-3 text-right">Goal</th>
+                                <th class="p-3 text-right">Delta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 font-mono" id="scenario-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 4: PERFORMANCE BENCHMARKS ==================== -->
+        <section id="performance" class="fade-in" style="animation-delay: 0.3s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-amber-500 rounded-full shadow-[0_0_15px_rgba(245,158,11,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Performance Benchmarks</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 4.1 Strength Benchmarks -->
+                <div class="glass-panel p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                             <i data-lucide="dumbbell" class="text-amber-400"></i>
+                             <h3 class="font-bold text-white">Strength</h3>
+                        </div>
+                    </div>
+                    <div class="space-y-4">
+                         <div class="flex justify-between items-center bg-slate-800/40 p-3 rounded-lg border border-white/5">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Squat</span>
+                            <span class="text-xl font-mono font-bold text-white" id="disp-squat">--</span>
+                        </div>
+                         <div class="flex justify-between items-center bg-slate-800/40 p-3 rounded-lg border border-white/5">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Chest</span>
+                            <span class="text-xl font-mono font-bold text-white" id="disp-chest">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4.2 Main Muscle Exercises (New) -->
+                <div class="glass-panel p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                             <i data-lucide="list" class="text-indigo-400"></i>
+                             <h3 class="font-bold text-white">Main Exercises</h3>
+                        </div>
+                    </div>
+                    <ul class="space-y-2 text-sm text-slate-300">
+                        <li class="flex items-center justify-between border-b border-white/5 pb-1">
+                            <span><span class="text-indigo-400 font-bold mr-2">LEGS</span>Squat / Lunges</span>
+                        </li>
+                        <li class="flex items-center justify-between border-b border-white/5 pb-1">
+                            <span><span class="text-indigo-400 font-bold mr-2">CHEST</span>Bench Press / Pushups</span>
+                        </li>
+                        <li class="flex items-center justify-between border-b border-white/5 pb-1">
+                            <span><span class="text-indigo-400 font-bold mr-2">BACK</span>Deadlift / Pull-ups</span>
+                        </li>
+                        <li class="flex items-center justify-between border-b border-white/5 pb-1">
+                            <span><span class="text-indigo-400 font-bold mr-2">SHLDR</span>Overhead Press</span>
+                        </li>
+                        <li class="flex items-center justify-between pt-1">
+                            <span><span class="text-indigo-400 font-bold mr-2">CORE</span>Planks / Hanging Raises</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 4.3 Cardio Benchmark -->
+                <div class="glass-panel p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                             <i data-lucide="zap" class="text-cyan-400"></i>
+                             <h3 class="font-bold text-white">Cardio Baseline</h3>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                         <div class="bg-slate-800/40 p-2 rounded-lg border border-white/5">
+                            <span class="block text-[10px] text-cyan-500/80 mb-1">POWER (W)</span>
+                            <span class="block text-lg font-mono font-bold text-white" id="disp-power">--</span>
+                        </div>
+                         <div class="bg-slate-800/40 p-2 rounded-lg border border-white/5">
+                            <span class="block text-[10px] text-cyan-500/80 mb-1">TIME (MIN)</span>
+                            <span class="block text-lg font-mono font-bold text-white" id="disp-min">--</span>
+                        </div>
+                         <div class="bg-slate-800/40 p-2 rounded-lg border border-white/5">
+                            <span class="block text-[10px] text-rose-500/80 mb-1">AVG HR</span>
+                            <span class="block text-lg font-mono font-bold text-white" id="disp-cardio-hr">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 5: GRAPHICS ==================== -->
+        <section id="visuals" class="fade-in" style="animation-delay: 0.4s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-purple-500 rounded-full shadow-[0_0_15px_rgba(168,85,247,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Visual Analytics</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Expansion Blocks -->
+                <div class="glass-panel p-6 flex flex-col">
+                    <h3 class="text-xs font-bold text-slate-400 mb-6 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="layers" class="w-4 h-4"></i> Mass Expansion Blocks
+                    </h3>
+
+                    <div class="w-full flex-grow flex flex-col justify-center">
+                        <div id="block-chart-container">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 text-[10px] uppercase text-slate-500 mt-4 justify-center">
+                        <div class="flex items-center gap-1"><div class="w-2 h-2 bg-rose-500 rounded-sm"></div> Fat</div>
+                        <div class="flex items-center gap-1"><div class="w-2 h-2 bg-indigo-500 rounded-sm"></div> Muscle</div>
+                        <div class="flex items-center gap-1"><div class="w-2 h-2 bg-cyan-500 rounded-sm"></div> Water</div>
+                        <div class="flex items-center gap-1"><div class="w-2 h-2 bg-slate-500 rounded-sm"></div> Bone</div>
+                    </div>
+                </div>
+
+                <!-- Evolution Process -->
+                <div class="glass-panel p-6 relative">
+                    <h3 class="text-xs font-bold text-slate-400 mb-4 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-4 h-4"></i> Evolution Process (12 Week Projection)
+                    </h3>
+                    <div class="w-full h-64">
+                        <canvas id="evolutionChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 6: CARDIO THRESHOLDS (NEW) ==================== -->
+        <section id="cardio-zones" class="fade-in" style="animation-delay: 0.45s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-rose-600 rounded-full shadow-[0_0_15px_rgba(225,29,72,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Cardio Thresholds</h2>
+            </div>
+
+            <div class="glass-panel p-6">
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center gap-2">
+                         <i data-lucide="heart-pulse" class="text-rose-500"></i>
+                         <h3 class="font-bold text-white">Heart Rate Zones</h3>
+                    </div>
+                    <div class="text-right">
+                         <p class="text-[10px] text-slate-400 uppercase">Max HR</p>
+                         <p class="text-xl font-mono font-bold text-rose-400" id="disp-hr-max">--</p>
+                    </div>
+                </div>
+
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="text-xs text-slate-500 uppercase border-b border-white/10 text-left">
+                            <th class="pb-2">Zone</th>
+                            <th class="pb-2 text-right">Intensity</th>
+                            <th class="pb-2 text-right">Target HR</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-white/5 font-mono text-sm" id="hr-zones-table"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- ==================== CONTAINER 7: HISTORY LOG ==================== -->
+        <section id="history" class="fade-in" style="animation-delay: 0.5s;">
+            <div class="flex items-center gap-4 mb-4">
+                <div class="h-10 w-1 bg-slate-400 rounded-full shadow-[0_0_15px_rgba(148,163,184,0.5)]"></div>
+                <h2 class="text-2xl font-bold text-white">Historical Data Log</h2>
+            </div>
+
+            <div class="glass-panel overflow-hidden">
+                <div class="p-4 border-b border-white/10 bg-slate-800/40 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-200 flex items-center gap-2">
+                        <i data-lucide="history" class="w-4 h-4"></i> Line-by-Line Progress
+                    </h3>
+                    <button class="px-3 py-1 rounded bg-indigo-500/20 text-indigo-300 text-xs border border-indigo-500/30 hover:bg-indigo-500/30 transition-colors">
+                        Export CSV
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-left text-sm border-collapse">
+                        <thead class="sticky top-0 bg-slate-900 shadow-md text-xs uppercase text-slate-400 font-bold z-10">
+                            <tr>
+                                <th class="p-4 whitespace-nowrap">Date</th>
+                                <th class="p-4 whitespace-nowrap">Weight (kg)</th>
+                                <th class="p-4 whitespace-nowrap">BMI</th>
+                                <th class="p-4 whitespace-nowrap">Fat %</th>
+                                <th class="p-4 whitespace-nowrap">Muscle %</th>
+                                <th class="p-4 whitespace-nowrap">Fat Mass</th>
+                                <th class="p-4 whitespace-nowrap">Lean Mass</th>
+                                <th class="p-4 whitespace-nowrap">Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 font-mono text-slate-300" id="history-table-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- JS Logic -->
+    <script>
+        lucide.createIcons();
+        let charts = {};
+        let currentStrategy = 'total';
+
+        function calculateAll() {
+            // --- INPUTS ---
+            const weight = parseFloat(document.getElementById('input-weight').value) || 0;
+            const height = parseFloat(document.getElementById('input-height').value) || 0;
+            const fatPct = parseFloat(document.getElementById('input-fat-pct').value) || 0;
+            const musclePct = parseFloat(document.getElementById('input-muscle-pct').value) || 0;
+            const water = parseFloat(document.getElementById('input-water').value) || 0;
+            const bone = parseFloat(document.getElementById('input-bone').value) || 0;
+
+            const goalFatPct = parseFloat(document.getElementById('goal-fat-pct').value) || 0;
+            const goalMusclePct = parseFloat(document.getElementById('goal-muscle-pct').value) || 0;
+            const hrMax = parseFloat(document.getElementById('input-hr-max').value) || 0;
+
+            // --- PHYSIOLOGY CALCS ---
+            const heightM = height / 100;
+            const bmi = weight / (heightM * heightM);
+            const fatMass = weight * (fatPct / 100);
+            const muscleMass = weight * (musclePct / 100);
+            const leanMass = weight - fatMass;
+            const leanPct = (leanMass / weight) * 100;
+
+            const waterPct = (water / weight) * 100;
+            const bonePct = (bone / weight) * 100;
+
+            // --- UPDATE UI ---
+            document.getElementById('display-bmi').innerText = bmi.toFixed(1);
+            document.getElementById('display-total-mass').innerText = weight.toFixed(1) + ' kg';
+
+            document.getElementById('display-fat-mass').innerText = fatMass.toFixed(2) + ' kg';
+            document.getElementById('display-fat-pct-main').innerText = fatPct.toFixed(1) + '%';
+
+            document.getElementById('display-lean-mass').innerText = leanMass.toFixed(2) + ' kg';
+            document.getElementById('display-lean-pct-main').innerText = leanPct.toFixed(1) + '%';
+
+            document.getElementById('display-muscle-mass').innerText = muscleMass.toFixed(2) + ' kg';
+            document.getElementById('display-muscle-pct-inner').innerText = `(${musclePct.toFixed(1)}%)`;
+
+            document.getElementById('display-water-mass').innerText = water.toFixed(1) + ' L';
+            document.getElementById('display-water-pct-inner').innerText = `(${waterPct.toFixed(1)}%)`;
+
+            document.getElementById('display-bone-mass').innerText = bone.toFixed(2) + ' kg';
+            document.getElementById('display-bone-pct-inner').innerText = `(${bonePct.toFixed(1)}%)`;
+
+            // --- HR ZONES ---
+            document.getElementById('disp-hr-max').innerText = hrMax;
+            const zones = [
+                { name: 'Recovery', pct: 0.60, color: 'text-emerald-400' },
+                { name: 'Aerobic Threshold', pct: 0.70, color: 'text-cyan-400' },
+                { name: 'Tempo', pct: 0.80, color: 'text-amber-400' },
+                { name: 'Anaerobic Threshold', pct: 0.90, color: 'text-rose-400' },
+                { name: 'VO2 Max', pct: 1.00, color: 'text-purple-400' },
+            ];
+
+            const zonesTbody = document.getElementById('hr-zones-table');
+            zonesTbody.innerHTML = '';
+            zones.forEach(z => {
+                const bpm = Math.round(hrMax * z.pct);
+                zonesTbody.innerHTML += `
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="py-2 text-slate-300 font-medium">${z.name}</td>
+                        <td class="py-2 text-right text-slate-500">${(z.pct*100).toFixed(0)}%</td>
+                        <td class="py-2 text-right font-bold ${z.color}">${bpm} <span class="text-[10px] text-slate-600">BPM</span></td>
+                    </tr>
+                `;
+            });
+
+            // Mirror Inputs to Benchmarks
+            ['squat', 'chest', 'power', 'min', 'cardio-hr'].forEach(id => {
+                const inputEl = document.getElementById('input-'+id);
+                const dispEl = document.getElementById('disp-'+id);
+                if(inputEl) dispEl.innerText = inputEl.value || '--';
+                inputEl.addEventListener('input', (e) => dispEl.innerText = e.target.value || '--');
+            });
+
+            // --- SCENARIOS ---
+            let scenarioData = [];
+            let s_fatPct, s_musclePct, s_weight;
+
+            if (currentStrategy === 'total') {
+                s_weight = weight;
+                s_fatPct = goalFatPct;
+                s_musclePct = goalMusclePct;
+            } else {
+                s_weight = fatMass / (goalFatPct / 100);
+                s_fatPct = goalFatPct;
+                s_musclePct = goalMusclePct;
+            }
+
+            const s_fatMass = s_weight * (s_fatPct / 100);
+            const s_muscleMass = s_weight * (s_musclePct / 100);
+
+            scenarioData = [
+                { name: 'Total Mass', current: weight, goal: s_weight, unit: 'kg' },
+                { name: 'Fat Mass', current: fatMass, goal: s_fatMass, unit: 'kg' },
+                { name: 'Muscle Mass', current: muscleMass, goal: s_muscleMass, unit: 'kg' },
+                { name: 'Body Fat %', current: fatPct, goal: s_fatPct, unit: '%' },
+                { name: 'Muscle %', current: musclePct, goal: s_musclePct, unit: '%' }
+            ];
+
+            renderScenarioTable(scenarioData);
+
+            // --- VISUALS ---
+            renderBlockChart(fatPct, musclePct, waterPct, bonePct);
+            updateEvolutionChart(fatPct, musclePct, s_fatPct, s_musclePct);
+
+            // --- HISTORY (Init once) ---
+            if(document.getElementById('history-table-body').children.length === 0) {
+                 renderHistoryTable(weight, fatPct, musclePct);
+            }
+        }
+
+        function renderScenarioTable(data) {
+            const tbody = document.getElementById('scenario-table-body');
+            tbody.innerHTML = '';
+            data.forEach(row => {
+                const delta = row.goal - row.current;
+                const deltaSign = delta > 0 ? '+' : '';
+                let color = delta > 0 ? 'text-emerald-400' : (delta < 0 ? 'text-rose-400' : 'text-slate-500');
+                if (row.name.includes('Fat')) color = delta < 0 ? 'text-emerald-400' : (delta > 0 ? 'text-rose-400' : 'text-slate-500');
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-3 text-slate-300">${row.name}</td>
+                        <td class="p-3 text-right text-indigo-300 bg-indigo-500/5">${row.goal.toFixed(1)} ${row.unit}</td>
+                        <td class="p-3 text-right font-bold ${color}">${deltaSign}${delta.toFixed(1)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function renderBlockChart(fatP, muscleP, waterP, boneP) {
+            const container = document.getElementById('block-chart-container');
+            const leanP = 100 - fatP;
+            const otherP = Math.max(0, 100 - (fatP + muscleP + waterP + boneP));
+            const leanTotal = muscleP + waterP + boneP + otherP;
+
+            const muscleW = (muscleP / leanTotal) * 100;
+            const waterW = (waterP / leanTotal) * 100;
+            const boneW = (boneP / leanTotal) * 100;
+            const otherW = (otherP / leanTotal) * 100;
+
+            container.innerHTML = `
+                <div class="block-container bg-slate-800/50">
+                    <div class="block-item bg-rose-500 hover:bg-rose-400" style="width: ${fatP}%;">
+                        <span class="block-label">FAT<br>${fatP.toFixed(1)}%</span>
+                    </div>
+                    <div class="block-item bg-transparent" style="width: ${leanTotal}%;">
+                        <div class="block-sub-container">
+                            <div class="block-item bg-indigo-600 hover:bg-indigo-500" style="width: ${muscleW}%;">
+                                <span class="block-label">MUSCLE<br>${muscleP.toFixed(1)}%</span>
+                            </div>
+                            <div class="block-item bg-cyan-600 hover:bg-cyan-500" style="width: ${waterW}%;">
+                                <span class="block-label">WATER<br>${waterP.toFixed(1)}%</span>
+                            </div>
+                            <div class="block-item bg-slate-500 hover:bg-slate-400" style="width: ${boneW}%;">
+                                <span class="block-label">BONE</span>
+                            </div>
+                            <div class="block-item bg-slate-700 hover:bg-slate-600" style="width: ${otherW}%;"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- MOCK HISTORY GENERATOR ---
+        function renderHistoryTable(currentW, currentF, currentM) {
+            const tbody = document.getElementById('history-table-body');
+            const now = new Date();
+
+            // Create 10 mock entries
+            let entries = [];
+            // Entry 0 is Current
+            entries.push({ date: 'Today', w: currentW, f: currentF, m: currentM });
+
+            // Generate past data (slightly worse stats to show improvement)
+            for(let i=1; i<=8; i++) {
+                const d = new Date();
+                d.setDate(now.getDate() - (i*7)); // Weekly
+                const w = currentW + (Math.random() * 2); // Heavier in past
+                const f = currentF + (Math.random() * 1.5); // Fatter in past
+                const m = currentM - (Math.random() * 0.8); // Less muscle in past
+                entries.push({
+                    date: d.toLocaleDateString('en-US', {month:'short', day:'numeric'}),
+                    w: w, f: f, m: m
+                });
+            }
+
+            entries.forEach((e, idx) => {
+                // Calculate derived
+                const h = 1.75; // assume fixed height
+                const bmi = e.w / (h*h);
+                const fatMass = e.w * (e.f / 100);
+                const leanMass = e.w - fatMass;
+
+                // Trend (Compare to previous in list, which is actually next in array since we went backwards)
+                // Actually, let's just make trend random for visual demo or compare to next index
+                let trendIcon = '';
+                if (idx < entries.length - 1) {
+                    const prev = entries[idx+1];
+                    if (e.w < prev.w) trendIcon = '<span class="text-emerald-400">↓</span>';
+                    else if (e.w > prev.w) trendIcon = '<span class="text-rose-400">↑</span>';
+                    else trendIcon = '<span class="text-slate-500">-</span>';
+                }
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 transition-colors border-b border-white/5 last:border-0";
+                tr.innerHTML = `
+                    <td class="p-4 text-slate-400">${e.date}</td>
+                    <td class="p-4 font-bold text-white">${e.w.toFixed(1)}</td>
+                    <td class="p-4">${bmi.toFixed(1)}</td>
+                    <td class="p-4 text-rose-300">${e.f.toFixed(1)}%</td>
+                    <td class="p-4 text-indigo-300">${e.m.toFixed(1)}%</td>
+                    <td class="p-4 text-slate-400">${fatMass.toFixed(1)}</td>
+                    <td class="p-4 text-slate-400">${leanMass.toFixed(1)}</td>
+                    <td class="p-4">${trendIcon}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function initCharts() {
+            const ctx = document.getElementById('evolutionChart').getContext('2d');
+            charts.evolution = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 0', 'Week 2', 'Week 4', 'Week 6', 'Week 8', 'Week 10', 'Week 12'],
+                    datasets: [
+                        {
+                            label: 'Body Fat %',
+                            data: [],
+                            borderColor: '#f43f5e',
+                            backgroundColor: 'rgba(244, 63, 94, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Muscle Mass %',
+                            data: [],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                    },
+                    plugins: { legend: { labels: { color: '#e2e8f0' } } }
+                }
+            });
+        }
+
+        function updateEvolutionChart(startFat, startMuscle, endFat, endMuscle) {
+            const steps = 6;
+            const fatData = [];
+            const muscleData = [];
+            for (let i = 0; i <= steps; i++) {
+                const progress = i / steps;
+                fatData.push(startFat + (endFat - startFat) * progress);
+                muscleData.push(startMuscle + (endMuscle - startMuscle) * progress);
+            }
+            charts.evolution.data.datasets[0].data = fatData;
+            charts.evolution.data.datasets[1].data = muscleData;
+            charts.evolution.update();
+        }
+
+        function switchTab(s) {
+            currentStrategy = s;
+            document.getElementById('tab-total').className = s === 'total' ? "px-3 py-1 text-[10px] font-bold rounded bg-indigo-500 text-white" : "px-3 py-1 text-[10px] font-bold rounded text-slate-400 hover:text-white";
+            document.getElementById('tab-fat').className = s === 'fat' ? "px-3 py-1 text-[10px] font-bold rounded bg-indigo-500 text-white" : "px-3 py-1 text-[10px] font-bold rounded text-slate-400 hover:text-white";
+            calculateAll();
+        }
+
+        function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+
+        document.addEventListener('DOMContentLoaded', () => { initCharts(); calculateAll(); });
+    </script>
+</body>
+</html>

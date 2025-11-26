@@ -425,21 +425,22 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="glass-inner p-3 text-center">
-                            <p class="text-[10px] text-purple-400 uppercase mb-1">Muscle</p>
-                            <p id="out-muscle-mass" class="mono text-lg font-bold text-white">--</p>
-                            <p id="out-muscle-pct" class="mono text-xs text-purple-400">--%</p>
+                    <div class="grid grid-cols-4 gap-2">
+                        <div class="glass-inner p-2 text-center border-t border-rose-500/30">
+                            <p class="text-[9px] text-rose-400 uppercase mb-1">Fat</p>
+                            <p id="out-fat-mass-2" class="mono text-sm font-bold text-white">--</p>
                         </div>
-                        <div class="glass-inner p-3 text-center">
-                            <p class="text-[10px] text-cyan-400 uppercase mb-1">Water</p>
-                            <p id="out-water-mass" class="mono text-lg font-bold text-white">--</p>
-                            <p id="out-water-pct" class="mono text-xs text-cyan-400">--%</p>
+                        <div class="glass-inner p-2 text-center border-t border-purple-500/30">
+                            <p class="text-[9px] text-purple-400 uppercase mb-1">Muscle</p>
+                            <p id="out-muscle-mass" class="mono text-sm font-bold text-white">--</p>
                         </div>
-                        <div class="glass-inner p-3 text-center">
-                            <p class="text-[10px] text-slate-400 uppercase mb-1">Bone</p>
-                            <p id="out-bone-mass" class="mono text-lg font-bold text-white">--</p>
-                            <p id="out-bone-pct" class="mono text-xs text-slate-400">--%</p>
+                        <div class="glass-inner p-2 text-center border-t border-cyan-500/30">
+                            <p class="text-[9px] text-cyan-400 uppercase mb-1">Water</p>
+                            <p id="out-water-mass" class="mono text-sm font-bold text-white">--</p>
+                        </div>
+                        <div class="glass-inner p-2 text-center border-t border-slate-500/30">
+                            <p class="text-[9px] text-slate-400 uppercase mb-1">Bone</p>
+                            <p id="out-bone-mass" class="mono text-sm font-bold text-white">--</p>
                         </div>
                     </div>
                 </div>
@@ -1003,6 +1004,7 @@ function updateUI(data) {
     // Fat
     document.getElementById('out-fat-mass').textContent = `${data.fatMass.toFixed(2)} kg`;
     document.getElementById('out-fat-pct').textContent = `${data.bodyFatPct.toFixed(1)}%`;
+    document.getElementById('out-fat-mass-2').textContent = `${data.fatMass.toFixed(1)}`;
 
     // Lean
     document.getElementById('out-lean-mass').textContent = `${data.leanMass.toFixed(2)} kg`;
@@ -1010,11 +1012,8 @@ function updateUI(data) {
 
     // Components
     document.getElementById('out-muscle-mass').textContent = `${data.muscleMass.toFixed(1)}`;
-    document.getElementById('out-muscle-pct').textContent = `${data.musclePct.toFixed(1)}%`;
     document.getElementById('out-water-mass').textContent = `${data.waterMass.toFixed(1)}`;
-    document.getElementById('out-water-pct').textContent = `${data.waterPct.toFixed(1)}%`;
-    document.getElementById('out-bone-mass').textContent = `${data.boneMass.toFixed(2)}`;
-    document.getElementById('out-bone-pct').textContent = `${data.bonePct.toFixed(1)}%`;
+    document.getElementById('out-bone-mass').textContent = `${data.boneMass.toFixed(1)}`;
 
     // Update Benchmark Rulers
     updateBenchmarkRulers(data.bodyFatPct, data.musclePct);

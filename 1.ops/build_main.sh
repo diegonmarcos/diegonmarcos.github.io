@@ -89,6 +89,16 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Others             ${BLUE}${URL_OTHERS}${NC}\n"
         _count=$((_count + 1))
     fi
+    # Generic live-server check (fallback for other ports)
+    if pgrep -f "live-server" >/dev/null 2>&1; then
+        _other_live=$(pgrep -f "live-server" 2>/dev/null | while read pid; do
+            ps -p "$pid" -o args= 2>/dev/null | grep -v "800[0-8]" || true
+        done)
+        if [ -n "$_other_live" ]; then
+            _servers="${_servers}  ${GREEN}*${NC} live-server        ${BLUE}(check terminal)${NC}\n"
+            _count=$((_count + 1))
+        fi
+    fi
 
     # Check Vite dev servers
     if pgrep -f "vite.*myfeed" >/dev/null 2>&1 || pgrep -f "node.*myfeed.*vite" >/dev/null 2>&1; then

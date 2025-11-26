@@ -29,9 +29,12 @@ def get_page_meta(filename):
 def generate_index_html():
     files = [f for f in os.listdir('.') if f.endswith('.html') and f != 'index.html']
 
+    # Sort by modification date (most recent first)
+    files.sort(key=lambda f: os.path.getmtime(f), reverse=True)
+
     # Generate card HTML for each file
     cards_html = ''
-    for i, filename in enumerate(sorted(files)):
+    for i, filename in enumerate(files):
         meta = get_page_meta(filename)
         delay = i * 0.1  # Staggered animation delay
         cards_html += f'''

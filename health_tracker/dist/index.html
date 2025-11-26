@@ -542,94 +542,198 @@
         </div>
 
         <div class="glass p-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <!-- Strength Benchmarks -->
-                <div class="glass-inner p-5">
-                    <div class="flex items-center gap-2 mb-4">
-                        <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+            <!-- Strength Section with Body Diagram -->
+            <div class="mb-6">
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+                    </svg>
+                    <h4 class="font-semibold text-white">Strength Benchmarks</h4>
+                    <span class="ml-auto text-xs text-slate-500">1RM or best set</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <!-- Body Diagram -->
+                    <div class="glass-inner p-4 flex items-center justify-center">
+                        <svg viewBox="0 0 120 200" class="h-64 w-auto">
+                            <!-- Body outline - side view -->
+                            <ellipse cx="60" cy="22" rx="18" ry="20" fill="none" stroke="#475569" stroke-width="1.5"/>
+                            <!-- Neck -->
+                            <line x1="60" y1="42" x2="60" y2="52" stroke="#475569" stroke-width="8"/>
+                            <!-- Torso -->
+                            <path d="M40 52 Q30 80 35 110 L45 140 L75 140 L85 110 Q90 80 80 52 Z" fill="none" stroke="#475569" stroke-width="1.5"/>
+                            <!-- Arms -->
+                            <path d="M35 58 Q15 75 20 100 Q18 115 25 130" fill="none" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+                            <path d="M85 58 Q105 75 100 100 Q102 115 95 130" fill="none" stroke="#475569" stroke-width="6" stroke-linecap="round"/>
+                            <!-- Legs -->
+                            <path d="M50 140 L45 175 L42 195" fill="none" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M70 140 L75 175 L78 195" fill="none" stroke="#475569" stroke-width="8" stroke-linecap="round"/>
+
+                            <!-- Muscle labels with letters -->
+                            <circle cx="60" cy="75" r="6" fill="#f59e0b" opacity="0.8"/><text x="60" y="78" text-anchor="middle" fill="white" font-size="8" font-weight="bold">A</text>
+                            <circle cx="27" cy="85" r="6" fill="#3b82f6" opacity="0.8"/><text x="27" y="88" text-anchor="middle" fill="white" font-size="8" font-weight="bold">B</text>
+                            <circle cx="93" cy="85" r="6" fill="#3b82f6" opacity="0.8"/><text x="93" y="88" text-anchor="middle" fill="white" font-size="8" font-weight="bold">B</text>
+                            <circle cx="60" cy="95" r="6" fill="#10b981" opacity="0.8"/><text x="60" y="98" text-anchor="middle" fill="white" font-size="8" font-weight="bold">C</text>
+                            <circle cx="40" cy="60" r="6" fill="#8b5cf6" opacity="0.8"/><text x="40" y="63" text-anchor="middle" fill="white" font-size="8" font-weight="bold">D</text>
+                            <circle cx="80" cy="60" r="6" fill="#8b5cf6" opacity="0.8"/><text x="80" y="63" text-anchor="middle" fill="white" font-size="8" font-weight="bold">D</text>
+                            <circle cx="60" cy="120" r="6" fill="#ef4444" opacity="0.8"/><text x="60" y="123" text-anchor="middle" fill="white" font-size="8" font-weight="bold">E</text>
+                            <circle cx="50" cy="165" r="6" fill="#06b6d4" opacity="0.8"/><text x="50" y="168" text-anchor="middle" fill="white" font-size="8" font-weight="bold">F</text>
+                            <circle cx="70" cy="165" r="6" fill="#06b6d4" opacity="0.8"/><text x="70" y="168" text-anchor="middle" fill="white" font-size="8" font-weight="bold">F</text>
+                            <circle cx="55" cy="185" r="6" fill="#ec4899" opacity="0.8"/><text x="55" y="188" text-anchor="middle" fill="white" font-size="8" font-weight="bold">G</text>
                         </svg>
-                        <h4 class="font-semibold text-white">Strength Benchmarks</h4>
                     </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">Squat</p>
-                                <p class="text-[10px] text-slate-500">Lower body compound</p>
+
+                    <!-- Exercise List -->
+                    <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-amber-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-amber-500/80 text-[10px] font-bold flex items-center justify-center">A</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Bench Press</p>
+                                    <p class="text-[10px] text-slate-500">Chest</p>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <input type="number" id="in-squat" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
-                            </div>
+                            <input type="number" id="in-bench" value="" placeholder="kg" class="input-styled w-16 text-center text-amber-400 text-sm" oninput="saveState()">
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">Bench Press</p>
-                                <p class="text-[10px] text-slate-500">Upper body push</p>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-blue-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-blue-500/80 text-[10px] font-bold flex items-center justify-center">B</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Bicep Curl</p>
+                                    <p class="text-[10px] text-slate-500">Biceps</p>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <input type="number" id="in-bench" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
-                            </div>
+                            <input type="number" id="in-curl" value="" placeholder="kg" class="input-styled w-16 text-center text-blue-400 text-sm" oninput="saveState()">
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">Deadlift</p>
-                                <p class="text-[10px] text-slate-500">Posterior chain</p>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-emerald-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-emerald-500/80 text-[10px] font-bold flex items-center justify-center">C</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Deadlift</p>
+                                    <p class="text-[10px] text-slate-500">Back / Core</p>
+                                </div>
                             </div>
-                            <div class="text-right">
-                                <input type="number" id="in-deadlift" value="" placeholder="kg" class="input-styled w-20 text-center text-amber-400" oninput="saveState()">
-                            </div>
+                            <input type="number" id="in-deadlift" value="" placeholder="kg" class="input-styled w-16 text-center text-emerald-400 text-sm" oninput="saveState()">
                         </div>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-white/5">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-500">Total (Big 3)</span>
-                            <span id="out-total-lift" class="mono text-lg font-bold text-amber-400">-- kg</span>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-purple-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-purple-500/80 text-[10px] font-bold flex items-center justify-center">D</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Overhead Press</p>
+                                    <p class="text-[10px] text-slate-500">Shoulders</p>
+                                </div>
+                            </div>
+                            <input type="number" id="in-ohp" value="" placeholder="kg" class="input-styled w-16 text-center text-purple-400 text-sm" oninput="saveState()">
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-red-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-red-500/80 text-[10px] font-bold flex items-center justify-center">E</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Squat</p>
+                                    <p class="text-[10px] text-slate-500">Glutes / Core</p>
+                                </div>
+                            </div>
+                            <input type="number" id="in-squat" value="" placeholder="kg" class="input-styled w-16 text-center text-red-400 text-sm" oninput="saveState()">
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-cyan-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-cyan-500/80 text-[10px] font-bold flex items-center justify-center">F</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Leg Press</p>
+                                    <p class="text-[10px] text-slate-500">Quads</p>
+                                </div>
+                            </div>
+                            <input type="number" id="in-legpress" value="" placeholder="kg" class="input-styled w-16 text-center text-cyan-400 text-sm" oninput="saveState()">
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-pink-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-pink-500/80 text-[10px] font-bold flex items-center justify-center">G</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Calf Raise</p>
+                                    <p class="text-[10px] text-slate-500">Calves</p>
+                                </div>
+                            </div>
+                            <input type="number" id="in-calf" value="" placeholder="kg" class="input-styled w-16 text-center text-pink-400 text-sm" oninput="saveState()">
+                        </div>
+                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg border-l-2 border-slate-500">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-slate-500/80 text-[10px] font-bold flex items-center justify-center">+</span>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Pull-up / Row</p>
+                                    <p class="text-[10px] text-slate-500">Lats / Traps</p>
+                                </div>
+                            </div>
+                            <input type="number" id="in-pullup" value="" placeholder="kg" class="input-styled w-16 text-center text-slate-400 text-sm" oninput="saveState()">
                         </div>
                     </div>
                 </div>
 
-                <!-- Cardio Performance -->
+                <!-- Big 3 Total -->
+                <div class="mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span class="text-xs text-slate-500">Total (Big 3: Squat + Bench + Deadlift)</span>
+                    <span id="out-total-lift" class="mono text-lg font-bold text-amber-400">-- kg</span>
+                </div>
+            </div>
+
+            <!-- Cardio Section: Aerobic vs Anaerobic -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Aerobic -->
                 <div class="glass-inner p-5">
                     <div class="flex items-center gap-2 mb-4">
-                        <svg class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                         </svg>
-                        <h4 class="font-semibold text-white">Cardio Performance</h4>
+                        <h4 class="font-semibold text-white">Aerobic</h4>
+                        <span class="ml-auto text-[10px] text-emerald-400/60 bg-emerald-500/10 px-2 py-0.5 rounded">Zone 2-3</span>
                     </div>
+                    <p class="text-[10px] text-slate-500 mb-3">Low-moderate intensity, fat burning, endurance</p>
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">Power (watts)</p>
-                                <p class="text-[10px] text-slate-500">Sustained output</p>
-                            </div>
-                            <div class="text-right">
-                                <input type="number" id="in-power" value="" placeholder="W" class="input-styled w-20 text-center text-cyan-400" oninput="saveState()">
-                            </div>
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Power (watts)</span>
+                            <input type="number" id="in-power-aerobic" value="" placeholder="W" class="input-styled w-20 text-center text-emerald-400 text-sm" oninput="saveState()">
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">Duration (min)</p>
-                                <p class="text-[10px] text-slate-500">Time at power</p>
-                            </div>
-                            <div class="text-right">
-                                <input type="number" id="in-duration" value="" placeholder="min" class="input-styled w-20 text-center text-cyan-400" oninput="saveState()">
-                            </div>
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Duration (min)</span>
+                            <input type="number" id="in-duration-aerobic" value="" placeholder="min" class="input-styled w-20 text-center text-emerald-400 text-sm" oninput="saveState()">
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-black/20 rounded-lg">
-                            <div>
-                                <p class="text-sm font-medium text-white">HR During</p>
-                                <p class="text-[10px] text-slate-500">Average heart rate</p>
-                            </div>
-                            <div class="text-right">
-                                <input type="number" id="in-hr-cardio" value="" placeholder="bpm" class="input-styled w-20 text-center text-rose-400" oninput="saveState()">
-                            </div>
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Avg HR</span>
+                            <input type="number" id="in-hr-aerobic" value="" placeholder="bpm" class="input-styled w-20 text-center text-rose-400 text-sm" oninput="saveState()">
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-white/5">
-                        <div class="flex justify-between items-center">
-                            <span class="text-xs text-slate-500">Power/Weight Ratio</span>
-                            <span id="out-power-ratio" class="mono text-lg font-bold text-cyan-400">-- W/kg</span>
+                    <div class="mt-3 pt-3 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-500">Power/Weight</span>
+                        <span id="out-power-aerobic" class="mono text-sm font-bold text-emerald-400">-- W/kg</span>
+                    </div>
+                </div>
+
+                <!-- Anaerobic -->
+                <div class="glass-inner p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <svg class="w-5 h-5 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/>
+                        </svg>
+                        <h4 class="font-semibold text-white">Anaerobic</h4>
+                        <span class="ml-auto text-[10px] text-rose-400/60 bg-rose-500/10 px-2 py-0.5 rounded">Zone 4-5</span>
+                    </div>
+                    <p class="text-[10px] text-slate-500 mb-3">High intensity, power, VO2 max efforts</p>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Power (watts)</span>
+                            <input type="number" id="in-power-anaerobic" value="" placeholder="W" class="input-styled w-20 text-center text-rose-400 text-sm" oninput="saveState()">
                         </div>
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Duration (min)</span>
+                            <input type="number" id="in-duration-anaerobic" value="" placeholder="min" class="input-styled w-20 text-center text-rose-400 text-sm" oninput="saveState()">
+                        </div>
+                        <div class="flex items-center justify-between p-2 bg-black/20 rounded">
+                            <span class="text-xs text-slate-400">Max HR</span>
+                            <input type="number" id="in-hr-anaerobic" value="" placeholder="bpm" class="input-styled w-20 text-center text-rose-400 text-sm" oninput="saveState()">
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-[10px] text-slate-500">Power/Weight</span>
+                        <span id="out-power-anaerobic" class="mono text-sm font-bold text-rose-400">-- W/kg</span>
                     </div>
                 </div>
             </div>
@@ -668,7 +772,7 @@
             <h2 class="text-xl font-bold text-white">Graphics</h2>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <!-- Composition Chart -->
             <div class="glass p-6">
                 <h3 class="text-sm font-semibold text-slate-300 mb-4">Body Composition</h3>
@@ -685,6 +789,41 @@
                 </div>
             </div>
         </div>
+
+        <!-- Historic Charts -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Weight History -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">Weight History</h3>
+                <div class="h-48">
+                    <canvas id="chart-weight-history"></canvas>
+                </div>
+            </div>
+
+            <!-- Body Fat History -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">Body Fat % History</h3>
+                <div class="h-48">
+                    <canvas id="chart-fat-history"></canvas>
+                </div>
+            </div>
+
+            <!-- Measurements History -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">Measurements History</h3>
+                <div class="h-48">
+                    <canvas id="chart-measurements-history"></canvas>
+                </div>
+            </div>
+
+            <!-- Performance History -->
+            <div class="glass p-6">
+                <h3 class="text-sm font-semibold text-slate-300 mb-4">Strength Progress</h3>
+                <div class="h-48">
+                    <canvas id="chart-strength-history"></canvas>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Section 7: History -->
@@ -692,25 +831,61 @@
         <div class="flex items-center gap-3 mb-4">
             <div class="w-1 h-8 bg-gradient-to-b from-slate-500 to-slate-600 rounded-full"></div>
             <h2 class="text-xl font-bold text-white">History Log</h2>
-            <span class="ml-auto text-xs text-slate-500" id="history-count">0 entries</span>
+            <div class="ml-auto flex bg-black/30 p-1 rounded-lg">
+                <button id="tab-body-log" onclick="setHistoryTab('body')" class="tab-btn active">Body</button>
+                <button id="tab-perf-log" onclick="setHistoryTab('performance')" class="tab-btn">Performance</button>
+            </div>
         </div>
 
-        <div class="glass overflow-hidden">
-            <div class="overflow-x-auto max-h-80">
+        <!-- Body Composition History -->
+        <div id="history-body" class="glass overflow-hidden">
+            <div class="p-3 border-b border-white/5 flex justify-between items-center">
+                <span class="text-xs text-slate-500" id="history-count">0 entries</span>
+                <button onclick="saveEntry()" class="px-3 py-1.5 bg-blue-500/20 text-blue-400 rounded text-xs font-semibold hover:bg-blue-500/30 transition-colors">+ Save Entry</button>
+            </div>
+            <div class="overflow-x-auto max-h-72">
                 <table class="w-full text-sm">
                     <thead class="sticky top-0 bg-slate-900/95 backdrop-blur text-xs text-slate-500 uppercase">
                         <tr>
-                            <th class="text-left p-4">Date</th>
-                            <th class="text-right p-4">Weight</th>
-                            <th class="text-right p-4">BMI</th>
-                            <th class="text-right p-4">Fat %</th>
-                            <th class="text-right p-4">Fat Mass</th>
-                            <th class="text-right p-4">Lean Mass</th>
-                            <th class="text-right p-4">Trend</th>
+                            <th class="text-left p-3">Date</th>
+                            <th class="text-right p-3">Weight</th>
+                            <th class="text-right p-3">Waist</th>
+                            <th class="text-right p-3">Neck</th>
+                            <th class="text-right p-3">HR Rest</th>
+                            <th class="text-right p-3">BMI</th>
+                            <th class="text-right p-3">Fat %</th>
+                            <th class="text-right p-3">Trend</th>
                         </tr>
                     </thead>
                     <tbody id="history-table" class="divide-y divide-white/5 mono text-slate-300">
-                        <tr><td colspan="7" class="p-8 text-center text-slate-600">No entries yet. Save today's data to start tracking!</td></tr>
+                        <tr><td colspan="8" class="p-8 text-center text-slate-600">No entries yet. Save today's data to start tracking!</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Performance History -->
+        <div id="history-performance" class="glass overflow-hidden hidden">
+            <div class="p-3 border-b border-white/5 flex justify-between items-center">
+                <span class="text-xs text-slate-500" id="perf-history-count">0 entries</span>
+                <button onclick="savePerfEntry()" class="px-3 py-1.5 bg-amber-500/20 text-amber-400 rounded text-xs font-semibold hover:bg-amber-500/30 transition-colors">+ Save Performance</button>
+            </div>
+            <div class="overflow-x-auto max-h-72">
+                <table class="w-full text-sm">
+                    <thead class="sticky top-0 bg-slate-900/95 backdrop-blur text-xs text-slate-500 uppercase">
+                        <tr>
+                            <th class="text-left p-3">Date</th>
+                            <th class="text-right p-3 text-amber-400">Squat</th>
+                            <th class="text-right p-3 text-amber-400">Bench</th>
+                            <th class="text-right p-3 text-amber-400">Deadlift</th>
+                            <th class="text-right p-3 text-amber-400">Total</th>
+                            <th class="text-right p-3 text-cyan-400">Power</th>
+                            <th class="text-right p-3 text-cyan-400">Duration</th>
+                            <th class="text-right p-3 text-rose-400">HR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="perf-history-table" class="divide-y divide-white/5 mono text-slate-300">
+                        <tr><td colspan="8" class="p-8 text-center text-slate-600">No performance entries yet.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -730,7 +905,9 @@
 // ============================================================
 let state = {
     scenario: 'keepMass',
-    history: []
+    history: [],
+    perfHistory: [],
+    historyTab: 'body'
 };
 
 let charts = {};
@@ -956,6 +1133,18 @@ function setScenario(scenario) {
 // ============================================================
 // CHARTS
 // ============================================================
+const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 10 } } },
+        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } }
+    },
+    plugins: {
+        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } }
+    }
+};
+
 function initCharts() {
     // Composition Doughnut
     const ctxComp = document.getElementById('chart-composition').getContext('2d');
@@ -974,10 +1163,7 @@ function initCharts() {
             maintainAspectRatio: false,
             cutout: '60%',
             plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: { color: '#94a3b8', font: { size: 11 } }
-                }
+                legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
             }
         }
     });
@@ -989,47 +1175,103 @@ function initCharts() {
         data: {
             labels: ['Now', 'W2', 'W4', 'W6', 'W8', 'W10', 'W12'],
             datasets: [
-                {
-                    label: 'Body Fat %',
-                    data: [],
-                    borderColor: '#f43f5e',
-                    backgroundColor: 'rgba(244, 63, 94, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                },
-                {
-                    label: 'Muscle %',
-                    data: [],
-                    borderColor: '#3b82f6',
-                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4
-                }
+                { label: 'Body Fat %', data: [], borderColor: '#f43f5e', backgroundColor: 'rgba(244,63,94,0.1)', borderWidth: 2, fill: true, tension: 0.4 },
+                { label: 'Muscle %', data: [], borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: true, tension: 0.4 }
             ]
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { color: '#64748b' }
-                },
-                x: {
-                    grid: { display: false },
-                    ticks: { color: '#64748b' }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'bottom',
-                    labels: { color: '#94a3b8', font: { size: 11 } }
-                }
-            }
-        }
+        options: chartOptions
     });
+
+    // Weight History Chart
+    const ctxWeight = document.getElementById('chart-weight-history').getContext('2d');
+    charts.weightHistory = new Chart(ctxWeight, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{ label: 'Weight (kg)', data: [], borderColor: '#3b82f6', backgroundColor: 'rgba(59,130,246,0.1)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 3 }]
+        },
+        options: chartOptions
+    });
+
+    // Body Fat History Chart
+    const ctxFat = document.getElementById('chart-fat-history').getContext('2d');
+    charts.fatHistory = new Chart(ctxFat, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{ label: 'Body Fat %', data: [], borderColor: '#f43f5e', backgroundColor: 'rgba(244,63,94,0.1)', borderWidth: 2, fill: true, tension: 0.3, pointRadius: 3 }]
+        },
+        options: chartOptions
+    });
+
+    // Measurements History Chart
+    const ctxMeas = document.getElementById('chart-measurements-history').getContext('2d');
+    charts.measurementsHistory = new Chart(ctxMeas, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                { label: 'Waist (cm)', data: [], borderColor: '#f59e0b', borderWidth: 2, tension: 0.3, pointRadius: 3 },
+                { label: 'Neck (cm)', data: [], borderColor: '#8b5cf6', borderWidth: 2, tension: 0.3, pointRadius: 3 }
+            ]
+        },
+        options: chartOptions
+    });
+
+    // Strength History Chart
+    const ctxStrength = document.getElementById('chart-strength-history').getContext('2d');
+    charts.strengthHistory = new Chart(ctxStrength, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [
+                { label: 'Squat', data: [], borderColor: '#ef4444', borderWidth: 2, tension: 0.3, pointRadius: 3 },
+                { label: 'Bench', data: [], borderColor: '#f59e0b', borderWidth: 2, tension: 0.3, pointRadius: 3 },
+                { label: 'Deadlift', data: [], borderColor: '#10b981', borderWidth: 2, tension: 0.3, pointRadius: 3 }
+            ]
+        },
+        options: chartOptions
+    });
+}
+
+function updateHistoricCharts() {
+    // Get last 20 entries (oldest to newest for chart)
+    const bodyData = [...state.history].reverse().slice(-20);
+    const perfData = [...state.perfHistory].reverse().slice(-20);
+
+    const bodyLabels = bodyData.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+    const perfLabels = perfData.map(e => new Date(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
+
+    // Weight History
+    if (charts.weightHistory) {
+        charts.weightHistory.data.labels = bodyLabels;
+        charts.weightHistory.data.datasets[0].data = bodyData.map(e => e.weight);
+        charts.weightHistory.update();
+    }
+
+    // Body Fat History
+    if (charts.fatHistory) {
+        charts.fatHistory.data.labels = bodyLabels;
+        charts.fatHistory.data.datasets[0].data = bodyData.map(e => e.fatPct);
+        charts.fatHistory.update();
+    }
+
+    // Measurements History
+    if (charts.measurementsHistory) {
+        charts.measurementsHistory.data.labels = bodyLabels;
+        charts.measurementsHistory.data.datasets[0].data = bodyData.map(e => e.waist || null);
+        charts.measurementsHistory.data.datasets[1].data = bodyData.map(e => e.neck || null);
+        charts.measurementsHistory.update();
+    }
+
+    // Strength History
+    if (charts.strengthHistory) {
+        charts.strengthHistory.data.labels = perfLabels;
+        charts.strengthHistory.data.datasets[0].data = perfData.map(e => e.squat || null);
+        charts.strengthHistory.data.datasets[1].data = perfData.map(e => e.bench || null);
+        charts.strengthHistory.data.datasets[2].data = perfData.map(e => e.deadlift || null);
+        charts.strengthHistory.update();
+    }
 }
 
 function updateCharts(data) {
@@ -1098,7 +1340,7 @@ function renderHistory() {
     countEl.textContent = `${state.history.length} entries`;
 
     if (state.history.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-slate-600">No entries yet. Save today\'s data to start tracking!</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-slate-600">No entries yet. Save today\'s data to start tracking!</td></tr>';
         return;
     }
 
@@ -1116,41 +1358,132 @@ function renderHistory() {
 
         return `
             <tr class="hover:bg-white/5 transition-colors">
-                <td class="p-4 text-slate-400">${date}</td>
-                <td class="p-4 text-right font-bold text-white">${entry.weight.toFixed(1)}</td>
-                <td class="p-4 text-right">${entry.bmi.toFixed(1)}</td>
-                <td class="p-4 text-right text-rose-400">${entry.fatPct.toFixed(1)}%</td>
-                <td class="p-4 text-right text-slate-400">${entry.fatMass.toFixed(1)}</td>
-                <td class="p-4 text-right text-slate-400">${entry.leanMass.toFixed(1)}</td>
-                <td class="p-4 text-right">${trend}</td>
+                <td class="p-3 text-slate-400">${date}</td>
+                <td class="p-3 text-right font-bold text-white">${entry.weight.toFixed(1)}</td>
+                <td class="p-3 text-right text-slate-400">${entry.waist || '--'}</td>
+                <td class="p-3 text-right text-slate-400">${entry.neck || '--'}</td>
+                <td class="p-3 text-right text-emerald-400">${entry.hrRest || '--'}</td>
+                <td class="p-3 text-right">${entry.bmi.toFixed(1)}</td>
+                <td class="p-3 text-right text-rose-400">${entry.fatPct.toFixed(1)}%</td>
+                <td class="p-3 text-right">${trend}</td>
             </tr>
         `;
     }).join('');
+
+    // Update historic charts
+    updateHistoricCharts();
+}
+
+function setHistoryTab(tab) {
+    state.historyTab = tab;
+
+    document.getElementById('tab-body-log').className = tab === 'body' ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('tab-perf-log').className = tab === 'performance' ? 'tab-btn active' : 'tab-btn';
+
+    document.getElementById('history-body').classList.toggle('hidden', tab !== 'body');
+    document.getElementById('history-performance').classList.toggle('hidden', tab !== 'performance');
+}
+
+function savePerfEntry() {
+    const entry = {
+        date: new Date().toISOString(),
+        squat: parseFloat(document.getElementById('in-squat').value) || 0,
+        bench: parseFloat(document.getElementById('in-bench').value) || 0,
+        deadlift: parseFloat(document.getElementById('in-deadlift').value) || 0,
+        curl: parseFloat(document.getElementById('in-curl').value) || 0,
+        ohp: parseFloat(document.getElementById('in-ohp').value) || 0,
+        legpress: parseFloat(document.getElementById('in-legpress').value) || 0,
+        calf: parseFloat(document.getElementById('in-calf').value) || 0,
+        pullup: parseFloat(document.getElementById('in-pullup').value) || 0,
+        powerAerobic: parseFloat(document.getElementById('in-power-aerobic').value) || 0,
+        durationAerobic: parseFloat(document.getElementById('in-duration-aerobic').value) || 0,
+        hrAerobic: parseFloat(document.getElementById('in-hr-aerobic').value) || 0,
+        powerAnaerobic: parseFloat(document.getElementById('in-power-anaerobic').value) || 0,
+        durationAnaerobic: parseFloat(document.getElementById('in-duration-anaerobic').value) || 0,
+        hrAnaerobic: parseFloat(document.getElementById('in-hr-anaerobic').value) || 0
+    };
+
+    entry.total = entry.squat + entry.bench + entry.deadlift;
+
+    state.perfHistory.unshift(entry);
+
+    if (state.perfHistory.length > 100) state.perfHistory.pop();
+
+    saveState();
+    renderPerfHistory();
+}
+
+function renderPerfHistory() {
+    const tbody = document.getElementById('perf-history-table');
+    const countEl = document.getElementById('perf-history-count');
+
+    countEl.textContent = `${state.perfHistory.length} entries`;
+
+    if (state.perfHistory.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-slate-600">No performance entries yet.</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = state.perfHistory.map((entry) => {
+        const date = new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: '2-digit' });
+
+        return `
+            <tr class="hover:bg-white/5 transition-colors">
+                <td class="p-3 text-slate-400">${date}</td>
+                <td class="p-3 text-right text-amber-400">${entry.squat || '--'}</td>
+                <td class="p-3 text-right text-amber-400">${entry.bench || '--'}</td>
+                <td class="p-3 text-right text-amber-400">${entry.deadlift || '--'}</td>
+                <td class="p-3 text-right font-bold text-amber-300">${entry.total || '--'}</td>
+                <td class="p-3 text-right text-cyan-400">${entry.powerAerobic || '--'}</td>
+                <td class="p-3 text-right text-cyan-400">${entry.durationAerobic || '--'}</td>
+                <td class="p-3 text-right text-rose-400">${entry.hrAerobic || '--'}</td>
+            </tr>
+        `;
+    }).join('');
+
+    updateHistoricCharts();
 }
 
 function saveState() {
+    const getVal = (id) => {
+        const el = document.getElementById(id);
+        return el ? el.value : '';
+    };
+
     const inputs = {
-        height: document.getElementById('in-height').value,
-        weight: document.getElementById('in-weight').value,
-        waist: document.getElementById('in-waist').value,
-        neck: document.getElementById('in-neck').value,
-        age: document.getElementById('in-age').value,
-        sex: document.getElementById('in-sex').value,
-        hrRest: document.getElementById('in-hr-rest').value,
-        hrMax: document.getElementById('in-hr-max').value,
-        goalFat: document.getElementById('in-goal-fat').value,
-        goalMuscle: document.getElementById('in-goal-muscle').value,
-        squat: document.getElementById('in-squat').value,
-        bench: document.getElementById('in-bench').value,
-        deadlift: document.getElementById('in-deadlift').value,
-        power: document.getElementById('in-power').value,
-        duration: document.getElementById('in-duration').value,
-        hrCardio: document.getElementById('in-hr-cardio').value
+        height: getVal('in-height'),
+        weight: getVal('in-weight'),
+        waist: getVal('in-waist'),
+        neck: getVal('in-neck'),
+        age: getVal('in-age'),
+        sex: getVal('in-sex'),
+        hrRest: getVal('in-hr-rest'),
+        hrMax: getVal('in-hr-max'),
+        goalFat: getVal('in-goal-fat'),
+        goalMuscle: getVal('in-goal-muscle'),
+        // Strength
+        squat: getVal('in-squat'),
+        bench: getVal('in-bench'),
+        deadlift: getVal('in-deadlift'),
+        curl: getVal('in-curl'),
+        ohp: getVal('in-ohp'),
+        legpress: getVal('in-legpress'),
+        calf: getVal('in-calf'),
+        pullup: getVal('in-pullup'),
+        // Aerobic
+        powerAerobic: getVal('in-power-aerobic'),
+        durationAerobic: getVal('in-duration-aerobic'),
+        hrAerobic: getVal('in-hr-aerobic'),
+        // Anaerobic
+        powerAnaerobic: getVal('in-power-anaerobic'),
+        durationAnaerobic: getVal('in-duration-anaerobic'),
+        hrAnaerobic: getVal('in-hr-anaerobic')
     };
 
     localStorage.setItem('bioMetricsState', JSON.stringify({
         inputs,
         history: state.history,
+        perfHistory: state.perfHistory,
         scenario: state.scenario
     }));
 
@@ -1164,7 +1497,7 @@ function loadState() {
         try {
             const data = JSON.parse(saved);
 
-            // Restore inputs - handle camelCase to kebab-case conversion
+            // Restore inputs
             if (data.inputs) {
                 const fieldMap = {
                     'height': 'in-height',
@@ -1180,9 +1513,17 @@ function loadState() {
                     'squat': 'in-squat',
                     'bench': 'in-bench',
                     'deadlift': 'in-deadlift',
-                    'power': 'in-power',
-                    'duration': 'in-duration',
-                    'hrCardio': 'in-hr-cardio'
+                    'curl': 'in-curl',
+                    'ohp': 'in-ohp',
+                    'legpress': 'in-legpress',
+                    'calf': 'in-calf',
+                    'pullup': 'in-pullup',
+                    'powerAerobic': 'in-power-aerobic',
+                    'durationAerobic': 'in-duration-aerobic',
+                    'hrAerobic': 'in-hr-aerobic',
+                    'powerAnaerobic': 'in-power-anaerobic',
+                    'durationAnaerobic': 'in-duration-anaerobic',
+                    'hrAnaerobic': 'in-hr-anaerobic'
                 };
 
                 Object.entries(data.inputs).forEach(([key, val]) => {
@@ -1196,6 +1537,9 @@ function loadState() {
 
             // Restore history
             if (data.history) state.history = data.history;
+
+            // Restore performance history
+            if (data.perfHistory) state.perfHistory = data.perfHistory;
 
             // Restore scenario
             if (data.scenario) {
@@ -1239,16 +1583,19 @@ function updatePerformance() {
     const squat = parseFloat(document.getElementById('in-squat').value) || 0;
     const bench = parseFloat(document.getElementById('in-bench').value) || 0;
     const deadlift = parseFloat(document.getElementById('in-deadlift').value) || 0;
-    const power = parseFloat(document.getElementById('in-power').value) || 0;
+    const powerAerobic = parseFloat(document.getElementById('in-power-aerobic').value) || 0;
+    const powerAnaerobic = parseFloat(document.getElementById('in-power-anaerobic').value) || 0;
     const weight = parseFloat(document.getElementById('in-weight').value) || 74;
 
     // Total lift (Big 3)
     const totalLift = squat + bench + deadlift;
     document.getElementById('out-total-lift').textContent = totalLift > 0 ? `${totalLift} kg` : '-- kg';
 
-    // Power/weight ratio
-    const powerRatio = power / weight;
-    document.getElementById('out-power-ratio').textContent = power > 0 ? `${powerRatio.toFixed(2)} W/kg` : '-- W/kg';
+    // Power/weight ratios
+    const powerRatioAerobic = powerAerobic / weight;
+    const powerRatioAnaerobic = powerAnaerobic / weight;
+    document.getElementById('out-power-aerobic').textContent = powerAerobic > 0 ? `${powerRatioAerobic.toFixed(2)} W/kg` : '-- W/kg';
+    document.getElementById('out-power-anaerobic').textContent = powerAnaerobic > 0 ? `${powerRatioAnaerobic.toFixed(2)} W/kg` : '-- W/kg';
 }
 
 // ============================================================
@@ -1288,6 +1635,8 @@ document.addEventListener('DOMContentLoaded', () => {
     calculate();
     updatePerformance();
     renderHistory();
+    renderPerfHistory();
+    updateHistoricCharts();
 });
 </script>
 

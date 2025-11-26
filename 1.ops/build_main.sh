@@ -113,10 +113,14 @@ get_running_servers() {
         _servers="${_servers}  ${CYAN}*${NC} Nexus (Vite)       ${BLUE}http://localhost:5175${NC}\n"
         _count=$((_count + 1))
     fi
-    # Generic Vite check (fallback)
-    if pgrep -f "vite" >/dev/null 2>&1; then
-        _vite_count=$(pgrep -f "vite" | wc -l)
-        if [ "$_vite_count" -gt 0 ] && ! pgrep -f "vite.*myfeed\|vite.*myprofile\|vite.*nexus" >/dev/null 2>&1; then
+    # Generic Vite check (fallback - only if no specific vite detected)
+    if pgrep -f "node.*vite" >/dev/null 2>&1; then
+        # Check if any vite process is NOT from known projects
+        _unknown_vite=$(pgrep -f "node.*vite" 2>/dev/null | while read pid; do
+            _cmd=$(ps -p "$pid" -o args= 2>/dev/null)
+            echo "$_cmd" | grep -qE "myfeed|myprofile|nexus" || echo "$_cmd"
+        done)
+        if [ -n "$_unknown_vite" ]; then
             _servers="${_servers}  ${CYAN}*${NC} Vite Server        ${BLUE}(check terminal)${NC}\n"
             _count=$((_count + 1))
         fi

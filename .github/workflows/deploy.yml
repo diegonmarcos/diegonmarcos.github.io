@@ -119,6 +119,15 @@ jobs:
           cd ../..
           echo "✅ Feed Yourself build complete"
 
+      - name: 🔨 Build Others Index (Python)
+        if: contains(steps.changed-files.outputs.all_changed_files, 'others/')
+        run: |
+          echo "🔨 Building Others index page..."
+          cd others
+          python3 build_index.py
+          cd ..
+          echo "✅ Others index.html generated"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 

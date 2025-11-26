@@ -1,10 +1,9 @@
-#!/usr/bin/env bash
-
+#!/bin/sh
 #=====================================
-# Nexus Holdings BUILD SCRIPT
+# NEXUS BUILD SCRIPT
 #=====================================
-# Nexus Holdings - Capital & Corporate Services
-# Vue 3 + TypeScript + Tailwind CSS
+# POSIX-compliant build script
+# Usage: ./1.ops/build.sh [action]
 
 set -e
 
@@ -14,88 +13,111 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 # Project paths
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BUILD_DIR="$PROJECT_DIR/dist"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_NAME="Nexus"
+PORT="8005"
+DIST_DIR="$PROJECT_DIR/dist"
 
 # Logging
-log_info() { printf "${BLUE}[nexus]${NC} $1\n"; }
-log_success() { printf "${GREEN}[nexus]${NC} ✓ $1\n"; }
-log_error() { printf "${RED}[nexus]${NC} ✗ $1\n" >&2; }
-log_warning() { printf "${YELLOW}[nexus]${NC} $1\n"; }
+log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
+log_success() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
+log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1" >&2; }
+log_warning() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
 
-# Build function
-build() {
-    log_info "Building Nexus Holdings..."
-    
-    cd "$PROJECT_DIR"
-    
-    if [ ! -d "node_modules" ]; then
-        log_warning "node_modules not found. Running npm install..."
-        npm install
-    fi
-    
-    log_info "Running production build..."
-    npm run build
-    
-    log_success "Build completed! Output: $BUILD_DIR"
+# Help menu
+print_usage() {
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "${CYAN}  ${PROJECT_NAME} Build Script${NC}\n"
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
+    printf "\n"
+    printf "${YELLOW}BUILD:${NC}\n"
+    printf "  ${GREEN}build${NC}        # Build for production\n"
+    printf "\n"
+    printf "${YELLOW}DEV SERVER:${NC}\n"
+    printf "  ${GREEN}dev${NC}          # Start Vite dev server :${PORT}\n"
+    printf "\n"
+    printf "${YELLOW}UTILITY:${NC}\n"
+    printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
+    printf "  ${GREEN}help${NC}         # Show this help\n"
+    printf "\n"
+    printf "${YELLOW}PROJECT INFO:${NC}\n"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Nexus" "Vue 3" "Tailwind" "TypeScript" "Vite :${PORT}" "HMR"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "\n"
 }
 
-# Dev function
-dev() {
-    log_info "Starting Nexus Holdings development server..."
-    
-    cd "$PROJECT_DIR"
-    
-    if [ ! -d "node_modules" ]; then
-        log_warning "node_modules not found. Running npm install..."
-        npm install
+# Check dependencies
+check_dependencies() {
+    if [ -d "$PROJECT_DIR/node_modules" ]; then
+        return 0
     fi
-    
-    log_success "Development server starting..."
+    log_info "Installing dependencies..."
+    cd "$PROJECT_DIR"
+    npm install
+}
+
+# Build for production
+build() {
+    log_info "Building ${PROJECT_NAME} for production..."
+    check_dependencies
+    cd "$PROJECT_DIR"
+
+    npm run build 2>&1 || {
+        log_error "Build failed"
+        return 1
+    }
+
+    if [ -d "$DIST_DIR" ]; then
+        log_success "Build completed → $DIST_DIR"
+    else
+        log_error "Build directory not created"
+        return 1
+    fi
+}
+
+# Development server
+dev() {
+    log_info "Starting Vite development server..."
+    check_dependencies
+    cd "$PROJECT_DIR"
+
+    log_success "Server starting at http://localhost:${PORT}/"
     log_info "Press Ctrl+C to stop"
     printf "\n"
-    
+
     npm run dev
 }
 
-# Clean function
+# Clean build artifacts
 clean() {
     log_info "Cleaning build artifacts..."
-    rm -rf "$BUILD_DIR"
+
+    rm -rf "$DIST_DIR"
     rm -rf "$PROJECT_DIR/node_modules/.vite"
+
     log_success "Clean completed"
 }
 
 # Main
-case "${1:-help}" in
-    build)
-        build
-        ;;
-    dev)
-        dev
-        ;;
-    clean)
-        clean
-        ;;
-    *)
-        cat << EOF
-${CYAN}Nexus Holdings Build Script${NC}
+main() {
+    _action="${1:-help}"
 
-${YELLOW}Usage:${NC} ./1.ops/build.sh <command>
+    case "$_action" in
+        build)      build ;;
+        dev)        dev ;;
+        clean)      clean ;;
+        help|-h|--help) print_usage ;;
+        *)          print_usage ;;
+    esac
+}
 
-${YELLOW}Commands:${NC}
-  build    Build for production
-  dev      Start development server
-  clean    Clean build artifacts
-  help     Show this help
-
-${YELLOW}Tech Stack:${NC}
-  Vue 3 + TypeScript + Tailwind CSS + Vite
-  Port: 3001
-
-EOF
-        ;;
-esac
+main "$@"

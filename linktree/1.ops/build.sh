@@ -1,12 +1,9 @@
-#!/bin/bash
-
+#!/bin/sh
 #=====================================
 # LINKTREE BUILD SCRIPT
 #=====================================
-# Build script for static HTML/CSS/JS project
-#
-# Usage: ./1.ops/build.sh <action>
-#
+# POSIX-compliant build script
+# Usage: ./1.ops/build.sh [action]
 
 set -e
 
@@ -15,101 +12,92 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
 NC='\033[0m'
 
-# Project directory
-PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROJECT_NAME="linktree"
+# Project paths
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_NAME="Linktree"
+PORT="8001"
 
 # Logging
-log_info() { echo -e "${BLUE}[${PROJECT_NAME}]${NC} $1"; }
-log_success() { echo -e "${GREEN}[${PROJECT_NAME}]${NC} ✓ $1"; }
-log_error() { echo -e "${RED}[${PROJECT_NAME}]${NC} ✗ $1"; }
-log_warning() { echo -e "${YELLOW}[${PROJECT_NAME}]${NC} ⚠ $1"; }
+log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
+log_success() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
+log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1" >&2; }
+log_warning() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
 
+# Help menu
 print_usage() {
-    cat << EOF
-${BLUE}Linktree Build Script${NC}
-
-${YELLOW}Usage:${NC} ./1.ops/build.sh <action>
-
-${YELLOW}Actions:${NC}
-  build              - Build project (validate files)
-  dev                - Start development server
-  watch              - Watch files for changes
-  clean              - Clean build artifacts
-  lint               - Lint HTML/CSS/JS files
-  minify             - Minify CSS and JS
-  test               - Run validation tests
-  help               - Show this help
-
-${YELLOW}Tech Stack:${NC}
-  - Static HTML5
-  - CSS3 (with glassmorphism)
-  - Vanilla JavaScript
-  - Swiper.js (CDN)
-
-EOF
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "${CYAN}  ${PROJECT_NAME} Build Script${NC}\n"
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
+    printf "\n"
+    printf "${YELLOW}BUILD:${NC}\n"
+    printf "  ${GREEN}build${NC}        # Validate project files\n"
+    printf "  ${GREEN}minify${NC}       # Minify CSS and JS\n"
+    printf "\n"
+    printf "${YELLOW}DEV SERVER:${NC}\n"
+    printf "  ${GREEN}dev${NC}          # Start npm-live server :${PORT}\n"
+    printf "\n"
+    printf "${YELLOW}UTILITY:${NC}\n"
+    printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
+    printf "  ${GREEN}help${NC}         # Show this help\n"
+    printf "\n"
+    printf "${YELLOW}PROJECT INFO:${NC}\n"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Vanilla" "Vanilla" "npm-live :${PORT}" "-"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "\n"
 }
 
-# Build action (validate everything)
+# Build action
 build() {
-    log_info "Building $PROJECT_NAME..."
+    log_info "Building ${PROJECT_NAME}..."
 
-    local errors=0
+    _errors=0
 
     # Check required files exist
-    [ -f "$PROJECT_DIR/index.html" ] || { log_error "index.html not found"; ((errors++)); }
-    [ -f "$PROJECT_DIR/style.css" ] || { log_error "style.css not found"; ((errors++)); }
-    [ -f "$PROJECT_DIR/script.js" ] || { log_error "script.js not found"; ((errors++)); }
+    [ -f "$PROJECT_DIR/index.html" ] || { log_error "index.html not found"; _errors=$((_errors + 1)); }
+    [ -f "$PROJECT_DIR/style.css" ] || { log_error "style.css not found"; _errors=$((_errors + 1)); }
+    [ -f "$PROJECT_DIR/script.js" ] || { log_error "script.js not found"; _errors=$((_errors + 1)); }
 
-    if [ $errors -eq 0 ]; then
+    if [ "$_errors" -eq 0 ]; then
         log_success "Build completed successfully"
         return 0
     else
-        log_error "Build failed: missing required files"
+        log_error "Build failed: $_errors missing file(s)"
         return 1
     fi
 }
 
 # Start development server
 dev() {
-    log_info "Starting development server for $PROJECT_NAME..."
+    log_info "Starting development server..."
 
-    local port=8000
-
-    # Check if port is in use
-    if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null 2>&1; then
-        log_warning "Port $port already in use"
-        port=8001
-        log_info "Trying port $port instead..."
+    # Check if live-server is available
+    if command -v live-server >/dev/null 2>&1; then
+        log_success "Server starting at http://localhost:${PORT}/"
+        log_info "Press Ctrl+C to stop"
+        printf "\n"
+        cd "$PROJECT_DIR"
+        live-server --port="${PORT}" --no-browser
+    elif command -v npx >/dev/null 2>&1; then
+        log_success "Server starting at http://localhost:${PORT}/"
+        log_info "Press Ctrl+C to stop"
+        printf "\n"
+        cd "$PROJECT_DIR"
+        npx live-server --port="${PORT}" --no-browser
+    else
+        log_warning "live-server not found, using Python http.server"
+        log_success "Server starting at http://localhost:${PORT}/"
+        cd "$PROJECT_DIR"
+        python3 -m http.server "$PORT"
     fi
-
-    log_success "Server starting at http://localhost:$port/$PROJECT_NAME/"
-    log_info "Press Ctrl+C to stop"
-    echo ""
-
-    cd "$PROJECT_DIR/.."
-    python3 -m http.server $port
-}
-
-# Watch files for changes
-watch() {
-    log_info "Watching files for changes..."
-
-    if ! command -v inotifywait &> /dev/null; then
-        log_error "inotifywait not installed"
-        log_info "Install with: sudo apt-get install inotify-tools"
-        return 1
-    fi
-
-    log_success "Watching $PROJECT_DIR for changes..."
-    log_info "Press Ctrl+C to stop"
-
-    while inotifywait -e modify,create,delete -r "$PROJECT_DIR" --exclude '(\.git|node_modules|\.swp)' 2>/dev/null; do
-        log_info "Change detected, validating..."
-        build || true
-    done
 }
 
 # Clean build artifacts
@@ -118,6 +106,8 @@ clean() {
 
     find "$PROJECT_DIR" -name "*.tmp" -delete 2>/dev/null || true
     find "$PROJECT_DIR" -name ".DS_Store" -delete 2>/dev/null || true
+    rm -f "$PROJECT_DIR/style.min.css" 2>/dev/null || true
+    rm -f "$PROJECT_DIR/script.min.js" 2>/dev/null || true
 
     log_success "Clean completed"
 }
@@ -126,58 +116,36 @@ clean() {
 minify() {
     log_info "Minifying assets..."
 
-    if ! command -v uglifyjs &> /dev/null || ! command -v cleancss &> /dev/null; then
+    if ! command -v uglifyjs >/dev/null 2>&1 || ! command -v cleancss >/dev/null 2>&1; then
         log_warning "Minification tools not installed"
         log_info "Install with: npm install -g uglify-js clean-css-cli"
         return 1
     fi
 
-    # Minify CSS
     if [ -f "$PROJECT_DIR/style.css" ]; then
         cleancss -o "$PROJECT_DIR/style.min.css" "$PROJECT_DIR/style.css"
-        log_success "CSS minified → style.min.css"
+        log_success "CSS minified"
     fi
 
-    # Minify JS
     if [ -f "$PROJECT_DIR/script.js" ]; then
         uglifyjs "$PROJECT_DIR/script.js" -o "$PROJECT_DIR/script.min.js" -c -m
-        log_success "JavaScript minified → script.min.js"
+        log_success "JavaScript minified"
     fi
 
     log_success "Minification completed"
 }
 
-# Lint files
-lint() {
-    log_info "Linting files..."
-    build
-    log_success "Linting completed"
-}
-
-# Run tests
-test() {
-    log_info "Running tests..."
-    build
-}
-
-# Main execution
+# Main
 main() {
-    local action=${1:-help}
+    _action="${1:-help}"
 
-    case $action in
-        build) build ;;
-        dev) dev ;;
-        watch) watch ;;
-        clean) clean ;;
-        lint) lint ;;
-        minify) minify ;;
-        test) test ;;
-        help|--help|-h) print_usage ;;
-        *)
-            log_error "Unknown action: $action"
-            print_usage
-            exit 1
-            ;;
+    case "$_action" in
+        build)      build ;;
+        dev)        dev ;;
+        clean)      clean ;;
+        minify)     minify ;;
+        help|-h|--help) print_usage ;;
+        *)          print_usage ;;
     esac
 }
 

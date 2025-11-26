@@ -1,74 +1,126 @@
-#!/usr/bin/env bash
-
+#!/bin/sh
 #=====================================
 # FEED YOURSELF BUILD SCRIPT
 #=====================================
-# This is a simple build script that copies the standalone HTML file
-# to the dist directory for deployment.
+# POSIX-compliant build script
+# Usage: ./1.ops/build.sh [action]
 
-set -e  # Exit on error
+set -e
 
-# Colors for output
+# Colors
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
 
-# Project root directory
-if [ -n "${BASH_SOURCE[0]}" ]; then
-    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-else
-    PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-fi
+# Project paths
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_NAME="Feed Yourself"
+PORT="8007"
+DIST_DIR="$PROJECT_DIR/dist"
 
-ACTION=${1:-build}
+# Logging
+log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
+log_success() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
+log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1" >&2; }
+log_warning() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
 
-log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+# Help menu
+print_usage() {
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "${CYAN}  ${PROJECT_NAME} Build Script${NC}\n"
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
+    printf "\n"
+    printf "${YELLOW}BUILD:${NC}\n"
+    printf "  ${GREEN}build${NC}        # Copy static files to dist\n"
+    printf "\n"
+    printf "${YELLOW}DEV SERVER:${NC}\n"
+    printf "  ${GREEN}dev${NC}          # Start npm-live server :${PORT}\n"
+    printf "\n"
+    printf "${YELLOW}UTILITY:${NC}\n"
+    printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
+    printf "  ${GREEN}help${NC}         # Show this help\n"
+    printf "\n"
+    printf "${YELLOW}PROJECT INFO:${NC}\n"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "FeedYourself" "-" "Vanilla" "Vanilla" "npm-live :${PORT}" "-"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "\n"
 }
 
-log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+# Build action
+build() {
+    log_info "Building ${PROJECT_NAME}..."
+    mkdir -p "$DIST_DIR"
+
+    # Copy the main HTML file from src_static
+    if [ -f "$PROJECT_DIR/src_static/feed_yourself.html" ]; then
+        cp "$PROJECT_DIR/src_static/feed_yourself.html" "$DIST_DIR/index.html"
+        log_success "Copied feed_yourself.html to dist/index.html"
+    else
+        log_error "src_static/feed_yourself.html not found"
+        return 1
+    fi
+
+    # Copy public assets if they exist
+    if [ -d "$PROJECT_DIR/public" ]; then
+        cp -r "$PROJECT_DIR/public/"* "$DIST_DIR/" 2>/dev/null || true
+        log_success "Copied public assets to dist/"
+    fi
+
+    log_success "Build completed"
 }
 
-case $ACTION in
-    build)
-        log_info "Building feed_yourself..."
-        mkdir -p "$PROJECT_ROOT/dist"
+# Start development server
+dev() {
+    log_info "Starting development server..."
 
-        # Copy the main HTML file from src_static
-        if [ -f "$PROJECT_ROOT/src_static/feed_yourself.html" ]; then
-            cp "$PROJECT_ROOT/src_static/feed_yourself.html" "$PROJECT_ROOT/dist/index.html"
-            log_success "Copied feed_yourself.html to dist/index.html"
-        else
-            echo "Error: src_static/feed_yourself.html not found"
-            exit 1
-        fi
+    cd "$PROJECT_DIR"
 
-        # Copy public assets if they exist
-        if [ -d "$PROJECT_ROOT/public" ]; then
-            cp -r "$PROJECT_ROOT/public/"* "$PROJECT_ROOT/dist/" 2>/dev/null || true
-            log_success "Copied public assets to dist/"
-        fi
+    if command -v live-server >/dev/null 2>&1; then
+        log_success "Server starting at http://localhost:${PORT}/"
+        log_info "Press Ctrl+C to stop"
+        printf "\n"
+        live-server --port="${PORT}" --no-browser
+    elif command -v npx >/dev/null 2>&1; then
+        log_success "Server starting at http://localhost:${PORT}/"
+        log_info "Press Ctrl+C to stop"
+        printf "\n"
+        npx live-server --port="${PORT}" --no-browser
+    else
+        log_warning "live-server not found, using Python http.server"
+        log_success "Server starting at http://localhost:${PORT}/"
+        python3 -m http.server "$PORT"
+    fi
+}
 
-        log_success "feed_yourself build complete!"
-        ;;
+# Clean build artifacts
+clean() {
+    log_info "Cleaning build artifacts..."
 
-    dev)
-        log_info "Starting feed_yourself dev server..."
-        log_info "Serving at http://localhost:8003/"
-        cd "$PROJECT_ROOT"
-        python3 -m http.server 8003
-        ;;
+    rm -rf "$DIST_DIR"
 
-    clean)
-        log_info "Cleaning feed_yourself dist..."
-        rm -rf "$PROJECT_ROOT/dist"
-        log_success "Clean complete"
-        ;;
+    log_success "Clean completed"
+}
 
-    *)
-        echo "Usage: $0 {build|dev|clean}"
-        exit 1
-        ;;
-esac
+# Main
+main() {
+    _action="${1:-help}"
+
+    case "$_action" in
+        build)      build ;;
+        dev)        dev ;;
+        clean)      clean ;;
+        help|-h|--help) print_usage ;;
+        *)          print_usage ;;
+    esac
+}
+
+main "$@"

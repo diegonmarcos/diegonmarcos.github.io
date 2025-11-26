@@ -1,79 +1,74 @@
 #!/bin/sh
-# POSIX-compliant build script for cloud dashboard
-# Usage: ./build.sh [dev|build|clean|help]
+#=====================================
+# CLOUD BUILD SCRIPT
+#=====================================
+# POSIX-compliant build script
+# Usage: ./1.ops/build.sh [action]
 
 set -e
 
-# Colors for output
+# Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+NC='\033[0m'
 
 # Project paths
-PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-DIST_DIR="${PROJECT_ROOT}/dist"
-SCSS_DIR="${PROJECT_ROOT}/src_static/scss"
-TS_DIR="${PROJECT_ROOT}/src_static/typescript"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_NAME="Cloud"
+PORT="8006"
+DIST_DIR="$PROJECT_DIR/dist"
 
-# Print colored messages
-print_info() {
-    printf "${BLUE}[INFO]${NC} %s\n" "$1"
-}
+# Logging
+log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
+log_success() { printf "${GREEN}[OK]${NC} %s\n" "$1"; }
+log_error() { printf "${RED}[ERROR]${NC} %s\n" "$1" >&2; }
+log_warning() { printf "${YELLOW}[WARN]${NC} %s\n" "$1"; }
 
-print_success() {
-    printf "${GREEN}[SUCCESS]${NC} %s\n" "$1"
-}
-
-print_error() {
-    printf "${RED}[ERROR]${NC} %s\n" "$1" >&2
-}
-
-print_warning() {
-    printf "${YELLOW}[WARNING]${NC} %s\n" "$1"
-}
-
-# Check if command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
+# Help menu
+print_usage() {
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "${CYAN}  ${PROJECT_NAME} Build Script${NC}\n"
+    printf "${BLUE}===========================================================================${NC}\n"
+    printf "\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
+    printf "\n"
+    printf "${YELLOW}BUILD:${NC}\n"
+    printf "  ${GREEN}build${NC}        # Build Sass and TypeScript (production)\n"
+    printf "\n"
+    printf "${YELLOW}DEV SERVER:${NC}\n"
+    printf "  ${GREEN}dev${NC}          # Watch Sass and TypeScript\n"
+    printf "\n"
+    printf "${YELLOW}UTILITY:${NC}\n"
+    printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
+    printf "  ${GREEN}help${NC}         # Show this help\n"
+    printf "\n"
+    printf "${YELLOW}PROJECT INFO:${NC}\n"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Cloud" "-" "Sass" "TypeScript" "npm-live :${PORT}" "Sass, TS"
+    printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
+    printf "\n"
 }
 
 # Check dependencies
 check_dependencies() {
-    print_info "Checking dependencies..."
-
-    if ! command_exists node; then
-        print_error "Node.js is not installed. Please install Node.js first."
-        exit 1
+    if [ -d "$PROJECT_DIR/node_modules" ]; then
+        return 0
     fi
-
-    if ! command_exists npm; then
-        print_error "npm is not installed. Please install npm first."
-        exit 1
-    fi
-
-    if [ ! -d "${PROJECT_ROOT}/node_modules" ]; then
-        print_warning "node_modules not found. Running npm install..."
-        cd "${PROJECT_ROOT}"
-        npm install
-    fi
-
-    print_success "All dependencies are available"
-}
-
-# Create dist directory if it doesn't exist
-ensure_dist() {
-    if [ ! -d "${DIST_DIR}" ]; then
-        print_info "Creating dist directory..."
-        mkdir -p "${DIST_DIR}"
-    fi
+    log_info "Installing dependencies..."
+    cd "$PROJECT_DIR"
+    npm install
 }
 
 # Build SCSS to CSS
 build_scss() {
-    print_info "Building SCSS..."
-    cd "${PROJECT_ROOT}"
+    log_info "Building SCSS..."
+    cd "$PROJECT_DIR"
 
     if [ "$1" = "dev" ]; then
         npm run build:css -- --style=expanded --source-map
@@ -81,13 +76,13 @@ build_scss() {
         npm run build:css
     fi
 
-    print_success "SCSS compiled successfully"
+    log_success "SCSS compiled successfully"
 }
 
 # Build TypeScript to JavaScript
 build_typescript() {
-    print_info "Building TypeScript..."
-    cd "${PROJECT_ROOT}"
+    log_info "Building TypeScript..."
+    cd "$PROJECT_DIR"
 
     if [ "$1" = "dev" ]; then
         npm run build:js -- --sourcemap
@@ -95,91 +90,67 @@ build_typescript() {
         npm run build:js
     fi
 
-    print_success "TypeScript compiled successfully"
+    log_success "TypeScript compiled successfully"
 }
 
-# Clean build artifacts
-clean_build() {
-    print_info "Cleaning build artifacts..."
-
-    if [ -d "${DIST_DIR}" ]; then
-        rm -f "${DIST_DIR}/styles.css"
-        rm -f "${DIST_DIR}/styles.css.map"
-        rm -f "${DIST_DIR}/script.js"
-        rm -f "${DIST_DIR}/script.js.map"
-        print_success "Build artifacts cleaned"
-    else
-        print_warning "Dist directory doesn't exist, nothing to clean"
-    fi
-}
-
-# Full build
-build_all() {
-    MODE="${1:-prod}"
-    print_info "Starting ${MODE} build..."
-
+# Build for production
+build() {
+    log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
-    ensure_dist
-    build_scss "$MODE"
-    build_typescript "$MODE"
 
-    print_success "Build completed successfully!"
-    print_info "Output directory: ${DIST_DIR}"
+    if [ ! -d "$DIST_DIR" ]; then
+        mkdir -p "$DIST_DIR"
+    fi
+
+    build_scss "prod"
+    build_typescript "prod"
+
+    log_success "Build completed → $DIST_DIR"
 }
 
 # Development mode with watch
-dev_mode() {
-    print_info "Starting development mode with watch..."
-
+dev() {
+    log_info "Starting development mode with watch..."
     check_dependencies
-    ensure_dist
 
-    cd "${PROJECT_ROOT}"
+    if [ ! -d "$DIST_DIR" ]; then
+        mkdir -p "$DIST_DIR"
+    fi
+
+    cd "$PROJECT_DIR"
+    log_success "Watching at http://localhost:${PORT}/"
+    log_info "Press Ctrl+C to stop"
+    printf "\n"
+
     npm run dev
 }
 
-# Show help
-show_help() {
-    cat << EOF
-Cloud Dashboard Build Script
-Usage: ./build.sh [COMMAND]
+# Clean build artifacts
+clean() {
+    log_info "Cleaning build artifacts..."
 
-Commands:
-  build       Build for production (minified, no source maps)
-  dev         Start development mode with watch
-  clean       Clean build artifacts
-  help        Show this help message
-
-Examples:
-  ./build.sh build    # Production build
-  ./build.sh dev      # Development mode
-  ./build.sh clean    # Clean build files
-
-EOF
+    if [ -d "$DIST_DIR" ]; then
+        rm -f "$DIST_DIR/styles.css"
+        rm -f "$DIST_DIR/styles.css.map"
+        rm -f "$DIST_DIR/script.js"
+        rm -f "$DIST_DIR/script.js.map"
+        log_success "Build artifacts cleaned"
+    else
+        log_warning "Dist directory doesn't exist, nothing to clean"
+    fi
 }
 
-# Main script logic
+# Main
 main() {
-    case "${1:-build}" in
-        build)
-            build_all "prod"
-            ;;
-        dev)
-            dev_mode
-            ;;
-        clean)
-            clean_build
-            ;;
-        help|--help|-h)
-            show_help
-            ;;
-        *)
-            print_error "Unknown command: $1"
-            show_help
-            exit 1
-            ;;
+    _action="${1:-help}"
+
+    case "$_action" in
+        build)      build ;;
+        dev)        dev ;;
+        clean)      clean ;;
+        help|-h|--help) print_usage ;;
+        *)          print_usage ;;
     esac
 }
 
-# Run main function
 main "$@"

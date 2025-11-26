@@ -92,7 +92,7 @@ jobs:
         run: |
           echo "🔨 Building MyProfile SvelteKit project..."
           cd myprofile/1.3.svelte
-          NODE_ENV=production npm install
+          npm install
           NODE_ENV=production npm run build
           cd ../..
           echo "✅ MyProfile build complete"

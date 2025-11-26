@@ -14,10 +14,13 @@ interface GitHubEvent {
     commits?: Array<{
       sha: string
       message: string
-    }>
+    }> | null
     ref?: string
     ref_type?: string
     action?: string
+    head?: string       // SHA of the most recent commit
+    before?: string     // SHA of the commit before the push
+    size?: number       // Number of commits in push
     pull_request?: {
       title: string
       number: number
@@ -52,9 +55,43 @@ const error = ref<string | null>(null)
 // GitHub username
 const GITHUB_USERNAME = 'diegonmarcos'
 
+// Cache for commit messages to avoid duplicate API calls
+const commitCache = new Map<string, string>()
+
+// Fetch commit message by SHA
+async function fetchCommitMessage(repoFullName: string, sha: string): Promise<string> {
+  const cacheKey = `${repoFullName}:${sha}`
+  if (commitCache.has(cacheKey)) {
+    return commitCache.get(cacheKey)!
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${repoFullName}/commits/${sha}`,
+      {
+        headers: {
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      }
+    )
+
+    if (response.ok) {
+      const data = await response.json()
+      const message = data.commit?.message?.split('\n')[0] || ''
+      commitCache.set(cacheKey, message)
+      return message
+    }
+  } catch (e) {
+    console.warn(`Failed to fetch commit ${sha}:`, e)
+  }
+
+  return ''
+}
+
 // Fetch GitHub Events API (returns up to 300 events, 100 per page)
 async function fetchGitHubEvents(): Promise<FeedItem[]> {
   const items: FeedItem[] = []
+  const pushEventsToFetch: Array<{ index: number; repoFullName: string; sha: string }> = []
 
   // Fetch multiple pages to get more events
   for (let page = 1; page <= 3; page++) {
@@ -84,6 +121,14 @@ async function fetchGitHubEvents(): Promise<FeedItem[]> {
       for (const event of events) {
         const item = processEvent(event)
         if (item) {
+          // Track PushEvents that need commit message fetching
+          if (event.type === 'PushEvent' && event.payload.head && item.details === 'Loading...') {
+            pushEventsToFetch.push({
+              index: items.length,
+              repoFullName: event.repo.name,
+              sha: event.payload.head
+            })
+          }
           items.push(item)
         }
       }
@@ -92,6 +137,16 @@ async function fetchGitHubEvents(): Promise<FeedItem[]> {
       break
     }
   }
+
+  // Fetch commit messages for PushEvents (limit to first 20 to avoid rate limiting)
+  const fetchPromises = pushEventsToFetch.slice(0, 20).map(async ({ index, repoFullName, sha }) => {
+    const message = await fetchCommitMessage(repoFullName, sha)
+    if (message && items[index]) {
+      items[index].details = message
+    }
+  })
+
+  await Promise.all(fetchPromises)
 
   return items
 }
@@ -104,22 +159,22 @@ function processEvent(event: GitHubEvent): FeedItem | null {
   switch (event.type) {
     case 'PushEvent': {
       const commits = event.payload.commits || []
-      const commitCount = commits.length
+      const commitCount = event.payload.size || commits.length || 1
       const branch = event.payload.ref?.replace('refs/heads/', '') || 'main'
 
-      // Get commit messages - take first line of each (most recent commit is last in array)
+      // Get commit message from payload if available
       let commitPreview = ''
-      if (commits.length > 0) {
+      if (Array.isArray(commits) && commits.length > 0) {
         // Get the most recent commit's first line
         const recentCommit = commits[commits.length - 1]
         const message = recentCommit?.message || ''
-        // Take only the first line (before any newline)
-        const firstLine = message.split('\n')[0] || ''
-        commitPreview = firstLine.trim()
+        commitPreview = message.split('\n')[0]?.trim() || ''
       }
 
-      // Fallback if no message
-      if (!commitPreview) {
+      // If no commits in payload, mark for fetching via Commits API
+      if (!commitPreview && event.payload.head) {
+        commitPreview = 'Loading...'
+      } else if (!commitPreview) {
         commitPreview = `Updated ${branch}`
       }
 

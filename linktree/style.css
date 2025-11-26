@@ -481,6 +481,24 @@ hr {
     filter: invert(1);
 }
 
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.links-grid .link {
+    margin-bottom: 0;
+    padding: 0.75rem 0.5rem 0.75rem 2.5rem;
+    font-size: 0.9rem;
+}
+
+.links-grid .link .icon {
+    left: 0.5rem;
+    width: 20px;
+    height: 20px;
+}
+
 .featured-image {
     width: 100%;
     border-radius: 16px;

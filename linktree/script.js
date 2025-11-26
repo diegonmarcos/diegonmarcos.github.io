@@ -3,9 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle collapsible sections
     const moreToggles = document.querySelectorAll('.more-toggle');
 
-    // Initialize all collapsible sections as closed
+    // Initialize collapsible sections - open ones stay open, others closed
     document.querySelectorAll('.collapsible-content').forEach(content => {
-        content.style.maxHeight = '0px';
+        if (content.classList.contains('open')) {
+            content.style.maxHeight = content.scrollHeight + 'px';
+        } else {
+            content.style.maxHeight = '0px';
+        }
     });
 
     function updateParentHeights(element) {
@@ -87,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         centeredSlides: false,
         slidesPerView: 1,
         spaceBetween: 0,
-        loop: false,
+        loop: true,
 
         // Creative 3D card swipe effect
         creativeEffect: {

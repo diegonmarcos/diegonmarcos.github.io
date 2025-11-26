@@ -4,25 +4,33 @@
 
 export function initViewToggle(): void {
     const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
-    const cardsView = document.getElementById('cards-view');
-    const treeView = document.getElementById('tree-view');
+    
+    const views: Record<string, HTMLElement | null> = {
+        'cards': document.getElementById('cards-view'),
+        'tree': document.getElementById('tree-view'),
+        'architecture': document.getElementById('architecture-view')
+    };
 
     viewButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const view = btn.dataset.view;
+            const viewName = btn.dataset.view;
+            if (!viewName) return;
 
             // Update button states
             viewButtons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
             // Toggle views
-            if (view === 'cards') {
-                cardsView?.classList.add('active');
-                treeView?.classList.remove('active');
-            } else if (view === 'tree') {
-                cardsView?.classList.remove('active');
-                treeView?.classList.add('active');
-            }
+            Object.keys(views).forEach(key => {
+                const viewElement = views[key];
+                if (viewElement) {
+                    if (key === viewName) {
+                        viewElement.classList.add('active');
+                    } else {
+                        viewElement.classList.remove('active');
+                    }
+                }
+            });
         });
     });
 }

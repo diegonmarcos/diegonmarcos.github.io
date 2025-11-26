@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 #=====================================
 # MAIN BUILD ORCHESTRATOR
@@ -8,7 +8,7 @@
 #
 # Usage: ./1.ops/build_main.sh <action> [options]
 #
-# NOTE: This script requires bash. Do not run with 'sh' or 'dash'.
+# POSIX-compliant shell script
 
 set -e  # Exit on error
 
@@ -21,125 +21,243 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Project root directory - more robust detection
-if [ -n "${BASH_SOURCE[0]}" ]; then
-    # When run with bash
-    PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-else
-    # Fallback for other shells or when sourced
-    PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-fi
+# Project root directory
+PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+# PID file for tracking background processes
+PID_FILE="${PROJECT_ROOT}/1.ops/.dev-servers.pid"
+
+# Server URLs mapping (sequential ports starting at 8000)
+URL_ROOT="http://localhost:8000/"
+URL_LINKTREE="http://localhost:8001/"
+URL_CV_WEB="http://localhost:8002/"
+URL_MYFEED="http://localhost:8003/"
+URL_MYPROFILE="http://localhost:8004/"
+URL_NEXUS="http://localhost:8005/"
+URL_CLOUD="http://localhost:8006/"
+URL_FEED="http://localhost:8007/"
+URL_OTHERS="http://localhost:8008/"
 
 # Banner function
 print_banner() {
-    echo -e "${CYAN}"
-    echo "====================================="
-    echo "  MAIN BUILD ORCHESTRATOR"
-    echo "====================================="
-    echo -e "${NC}"
+    printf "${CYAN}\n"
+    printf "=====================================\n"
+    printf "  MAIN BUILD ORCHESTRATOR\n"
+    printf "=====================================\n"
+    printf "${NC}\n"
+}
+
+# Get running servers status
+get_running_servers() {
+    _servers=""
+    _count=0
+
+    # Check live-server processes by port
+    if pgrep -f "live-server.*8000" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Root               ${BLUE}${URL_ROOT}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8001" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Linktree           ${BLUE}${URL_LINKTREE}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8002" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} CV Web             ${BLUE}${URL_CV_WEB}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8003" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} MyFeed             ${BLUE}${URL_MYFEED}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8004" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} MyProfile          ${BLUE}${URL_MYPROFILE}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8005" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Nexus              ${BLUE}${URL_NEXUS}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8006" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Cloud              ${BLUE}${URL_CLOUD}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8007" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Feed Yourself      ${BLUE}${URL_FEED}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "live-server.*8008" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Others             ${BLUE}${URL_OTHERS}${NC}\n"
+        _count=$((_count + 1))
+    fi
+
+    # Check watch processes (Sass/TypeScript)
+    if pgrep -f "sass.*--watch" >/dev/null 2>&1; then
+        _servers="${_servers}  ${YELLOW}~${NC} Sass Watch         ${YELLOW}(file watcher)${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "tsc.*--watch" >/dev/null 2>&1; then
+        _servers="${_servers}  ${YELLOW}~${NC} TypeScript Watch   ${YELLOW}(file watcher)${NC}\n"
+        _count=$((_count + 1))
+    fi
+
+    # Check tmux sessions
+    if command -v tmux >/dev/null 2>&1; then
+        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others; do
+            if tmux has-session -t "$session" 2>/dev/null; then
+                case "$session" in
+                    build-root-sass)  _servers="${_servers}  ${GREEN}*${NC} Root (tmux)        ${BLUE}${URL_ROOT}${NC}\n" ;;
+                    build-root-ts)    _servers="${_servers}  ${YELLOW}~${NC} Root TS (tmux)     ${YELLOW}(watcher)${NC}\n" ;;
+                    build-linktree)   _servers="${_servers}  ${GREEN}*${NC} Linktree (tmux)    ${BLUE}${URL_LINKTREE}${NC}\n" ;;
+                    build-cv-web)     _servers="${_servers}  ${GREEN}*${NC} CV Web (tmux)      ${BLUE}${URL_CV_WEB}${NC}\n" ;;
+                    build-myfeed)     _servers="${_servers}  ${GREEN}*${NC} MyFeed (tmux)      ${BLUE}${URL_MYFEED}${NC}\n" ;;
+                    build-myprofile)  _servers="${_servers}  ${GREEN}*${NC} MyProfile (tmux)   ${BLUE}${URL_MYPROFILE}${NC}\n" ;;
+                    build-nexus)      _servers="${_servers}  ${GREEN}*${NC} Nexus (tmux)       ${BLUE}${URL_NEXUS}${NC}\n" ;;
+                    build-cloud)      _servers="${_servers}  ${GREEN}*${NC} Cloud (tmux)       ${BLUE}${URL_CLOUD}${NC}\n" ;;
+                    build-feed)       _servers="${_servers}  ${GREEN}*${NC} Feed (tmux)        ${BLUE}${URL_FEED}${NC}\n" ;;
+                    build-others)     _servers="${_servers}  ${GREEN}*${NC} Others (tmux)      ${BLUE}${URL_OTHERS}${NC}\n" ;;
+                esac
+                _count=$((_count + 1))
+            fi
+        done
+    fi
+
+    RUNNING_SERVERS="$_servers"
+    RUNNING_COUNT="$_count"
+}
+
+# Print status box
+print_status_box() {
+    get_running_servers
+
+    printf "\n"
+    printf "${MAGENTA}+----------------------------------------------------------+${NC}\n"
+    printf "${MAGENTA}|${NC}  ${CYAN}SERVER STATUS${NC}                                           ${MAGENTA}|${NC}\n"
+    printf "${MAGENTA}+----------------------------------------------------------+${NC}\n"
+
+    if [ "$RUNNING_COUNT" -eq 0 ]; then
+        printf "${MAGENTA}|${NC}  ${YELLOW}No servers currently running${NC}                            ${MAGENTA}|${NC}\n"
+    else
+        printf "${MAGENTA}|${NC}  ${GREEN}$RUNNING_COUNT server(s)/watcher(s) running:${NC}                         ${MAGENTA}|${NC}\n"
+        printf "${MAGENTA}|${NC}                                                          ${MAGENTA}|${NC}\n"
+        printf "%b" "$RUNNING_SERVERS" | while IFS= read -r line; do
+            printf "${MAGENTA}|${NC}%-58b${MAGENTA}|${NC}\n" "$line"
+        done
+    fi
+
+    printf "${MAGENTA}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Usage information
 print_usage() {
-    printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
-    printf "${CYAN}                        MAIN BUILD ORCHESTRATOR                            ${NC}\n"
-    printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
+    printf "${BLUE}===============================================================================${NC}\n"
+    printf "${CYAN}                        MAIN BUILD ORCHESTRATOR                                ${NC}\n"
+    printf "${BLUE}===============================================================================${NC}\n"
     printf "\n"
-    printf "${YELLOW}USAGE:${NC}\n"
-    printf "  ./1.ops/build_main.sh <action> [options]\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build_main.sh <action> [options]\n"
     printf "\n"
-    printf "${YELLOW}BUILD ACTIONS:${NC}\n"
-    printf "  ${GREEN}build${NC}              Build all projects\n"
-    printf "  ${GREEN}build-root${NC}         Build root (Sass + TypeScript)\n"
-    printf "  ${GREEN}build-linktree${NC}     Build linktree (static HTML/CSS/JS)\n"
-    printf "  ${GREEN}build-cv-web${NC}       Build cv_web (Sass only)\n"
-    printf "  ${GREEN}build-myfeed${NC}       Build MyFeed (Vue 3 + Vite)\n"
-    printf "  ${GREEN}build-myprofile${NC}    Build MyProfile (SvelteKit)\n"
-    printf "  ${GREEN}build-nexus${NC}        Build Nexus (Vue 3 + Tailwind)\n"
-    printf "  ${GREEN}build-cloud${NC}        Build Cloud Dashboard (Sass + TypeScript)\n"
-    printf "  ${GREEN}build-feed${NC}         Build Feed Yourself (Static HTML)\n"
-    printf "  ${GREEN}build-others${NC}       Build Others (Python index generator)\n"
+    printf "${YELLOW}BUILD:${NC}\n"
+    printf "  ${GREEN}build${NC}              # All projects\n"
+    printf "  ${GREEN}build-root${NC}         # Root - Sass + TypeScript\n"
+    printf "  ${GREEN}build-linktree${NC}     # Linktree - Static HTML/CSS/JS\n"
+    printf "  ${GREEN}build-cv-web${NC}       # CV Web - Sass\n"
+    printf "  ${GREEN}build-myfeed${NC}       # MyFeed - Vue 3 + Vite\n"
+    printf "  ${GREEN}build-myprofile${NC}    # MyProfile - SvelteKit\n"
+    printf "  ${GREEN}build-nexus${NC}        # Nexus - Vue 3 + Tailwind\n"
+    printf "  ${GREEN}build-cloud${NC}        # Cloud - Sass + TypeScript\n"
+    printf "  ${GREEN}build-feed${NC}         # Feed Yourself - Static HTML\n"
+    printf "  ${GREEN}build-others${NC}       # Others - Python\n"
     printf "\n"
-    printf "${YELLOW}DEVELOPMENT ACTIONS:${NC}\n"
-    printf "  ${GREEN}dev${NC}                Start all dev servers (quiet mode)\n"
-    printf "  ${GREEN}dev-root${NC}           Start root Sass + TypeScript watch\n"
-    printf "  ${GREEN}dev-linktree${NC}       Start linktree HTTP server\n"
-    printf "  ${GREEN}dev-cv-web${NC}         Start cv_web Sass watch\n"
-    printf "  ${GREEN}dev-myfeed${NC}         Start MyFeed dev server\n"
-    printf "  ${GREEN}dev-myprofile${NC}      Start MyProfile dev server\n"
-    printf "  ${GREEN}dev-nexus${NC}          Start Nexus dev server\n"
-    printf "  ${GREEN}dev-cloud${NC}          Start Cloud Dashboard dev server\n"
-    printf "  ${GREEN}dev-feed${NC}           Start Feed Yourself dev server\n"
-    printf "  ${GREEN}dev-others${NC}         Start Others dev server\n"
+    printf "${YELLOW}DEV SERVER:${NC}\n"
+    printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
+    printf "  ${GREEN}dev-root${NC}           # Root - npm-live :8000\n"
+    printf "  ${GREEN}dev-linktree${NC}       # Linktree - npm-live :8001\n"
+    printf "  ${GREEN}dev-cv-web${NC}         # CV Web - npm-live :8002\n"
+    printf "  ${GREEN}dev-myfeed${NC}         # MyFeed - Vite :8003\n"
+    printf "  ${GREEN}dev-myprofile${NC}      # MyProfile - Vite :8004\n"
+    printf "  ${GREEN}dev-nexus${NC}          # Nexus - Vite :8005\n"
+    printf "  ${GREEN}dev-cloud${NC}          # Cloud - npm-live :8006\n"
+    printf "  ${GREEN}dev-feed${NC}           # Feed Yourself - npm-live :8007\n"
+    printf "  ${GREEN}dev-others${NC}         # Others - npm-live :8008\n"
     printf "\n"
-    printf "${YELLOW}UTILITY ACTIONS:${NC}\n"
-    printf "  ${GREEN}kill${NC}               Kill all running dev servers\n"
-    printf "  ${GREEN}clean${NC}              Clean all build artifacts\n"
-    printf "  ${GREEN}clean-all${NC}          Clean build artifacts + node_modules\n"
-    printf "  ${GREEN}test${NC}               Run all tests\n"
-    printf "  ${GREEN}help${NC}               Show this help message\n"
+    printf "${YELLOW}UTILITY:${NC}\n"
+    printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
+    printf "  ${GREEN}kill${NC}               # Kill all dev servers\n"
+    printf "  ${GREEN}clean${NC}              # Clean build artifacts\n"
+    printf "  ${GREEN}clean-all${NC}          # Clean artifacts + node_modules\n"
+    printf "  ${GREEN}test${NC}               # Run all tests\n"
+    printf "  ${GREEN}help${NC}               # Show this help\n"
     printf "\n"
-    printf "${YELLOW}OPTIONS:${NC}\n"
-    printf "  ${GREEN}-v, --verbose${NC}      Show all output (useful for debugging)\n"
-    printf "  ${GREEN}-f, --force${NC}        Force rebuild (clean before build)\n"
+    printf "${YELLOW}OPTIONS:${NC}  ${GREEN}-v, --verbose${NC}  |  ${GREEN}-f, --force${NC}\n"
     printf "\n"
-    printf "${YELLOW}EXAMPLES:${NC}\n"
-    printf "  ${BLUE}./1.ops/build_main.sh build${NC}                 # Build all projects\n"
-    printf "  ${BLUE}./1.ops/build_main.sh dev${NC}                   # Start all dev servers (quiet)\n"
-    printf "  ${BLUE}./1.ops/build_main.sh dev --verbose${NC}         # Start all dev servers (verbose)\n"
-    printf "  ${BLUE}./1.ops/build_main.sh kill${NC}                  # Stop all running servers\n"
-    printf "  ${BLUE}./1.ops/build_main.sh build --force${NC}         # Clean + build all\n"
-    printf "  ${BLUE}./1.ops/build_main.sh build-myprofile${NC}       # Build only MyProfile\n"
-    printf "\n"
-    printf "${YELLOW}PROJECT STRUCTURE & TECH STACK:${NC}\n"
-    printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
-    printf "  ${MAGENTA}%-15s  %-18s  %-17s  %s${NC}\n" "Project" "CSS" "JavaScript" "Framework"
-    printf "${BLUE}───────────────────────────────────────────────────────────────────────────${NC}\n"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Root" "Sass" "TypeScript" "—"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Linktree" "Vanilla CSS" "Vanilla JS" "—"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "CV Web" "Sass" "—" "—"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "MyFeed" "Sass" "TypeScript" "Vue 3"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "MyProfile" "Sass" "TypeScript" "SvelteKit"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Nexus" "Tailwind CSS" "TypeScript" "Vue 3"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Cloud" "Sass" "TypeScript" "—"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Feed Yourself" "Embedded CSS" "Embedded JS" "—"
-    printf "  ${CYAN}%-15s${NC}  %-18s  %-17s  ${GREEN}%s${NC}\n" "Others" "—" "Python" "—"
-    printf "${BLUE}═══════════════════════════════════════════════════════════════════════════${NC}\n"
-    printf "\n"
-    printf "${YELLOW}DEV SERVER URLS:${NC}\n"
-    printf "  Run '${GREEN}bash 1.ops/build_main.sh dev${NC}' to see all server URLs\n"
-    printf "\n"
+    printf "${YELLOW}PROJECT STRUCTURE:${NC}\n"
+    printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
+    printf "  ${MAGENTA}%-13s  %-10s  %-10s  %-10s  %-15s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Root" "-" "Sass" "TypeScript" "npm-live :8000" "Sass, TS"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Vanilla" "Vanilla" "npm-live :8001" "-"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "CV Web" "-" "Sass" "-" "npm-live :8002" "Sass"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyFeed" "Vue 3" "Sass" "TypeScript" "Vite :8003" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "SvelteKit" "Sass" "TypeScript" "Vite :8004" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Nexus" "Vue 3" "Tailwind" "TypeScript" "Vite :8005" "HMR"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Cloud" "-" "Sass" "TypeScript" "npm-live :8006" "Sass, TS"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Feed Yourself" "-" "Embedded" "Embedded" "npm-live :8007" "-"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Others" "-" "-" "Python" "npm-live :8008" "-"
+    printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
+
+    # Show status box in help
+    print_status_box
 }
 
 # Logging functions
 log_info() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+    printf "${BLUE}[INFO]${NC} %s\n" "$1"
 }
 
 log_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+    printf "${GREEN}[SUCCESS]${NC} %s\n" "$1"
 }
 
 log_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+    printf "${YELLOW}[WARNING]${NC} %s\n" "$1"
 }
 
 log_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+    printf "${RED}[ERROR]${NC} %s\n" "$1"
 }
 
 log_section() {
-    echo -e "\n${MAGENTA}========================================${NC}"
-    echo -e "${MAGENTA}  $1${NC}"
-    echo -e "${MAGENTA}========================================${NC}\n"
+    printf "\n${MAGENTA}========================================${NC}\n"
+    printf "${MAGENTA}  %s${NC}\n" "$1"
+    printf "${MAGENTA}========================================${NC}\n\n"
+}
+
+# Print server started message with URL
+print_server_started() {
+    _name="$1"
+    _url="$2"
+    _type="${3:-server}"
+
+    printf "\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}%s STARTED${NC}\n" "$_name"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    if [ "$_type" = "watcher" ]; then
+        printf "${GREEN}|${NC}  ${YELLOW}Type:${NC} File Watcher (no HTTP server)\n"
+    else
+        printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}%s${NC}\n" "$_url"
+    fi
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Check if build.sh exists in a directory
 check_build_script() {
-    local dir=$1
-    local build_script="$PROJECT_ROOT/$dir/1.ops/build.sh"
+    _dir="$1"
+    _build_script="$PROJECT_ROOT/$_dir/1.ops/build.sh"
 
-    if [ -f "$build_script" ]; then
+    if [ -f "$_build_script" ]; then
         return 0
     else
         return 1
@@ -148,71 +266,71 @@ check_build_script() {
 
 # Execute build script
 execute_build() {
-    local project=$1
-    local action=$2
-    local build_script="$PROJECT_ROOT/$project/1.ops/build.sh"
+    _project="$1"
+    _action="$2"
+    _build_script="$PROJECT_ROOT/$_project/1.ops/build.sh"
 
     # Special case for myprofile which uses 1.1.ops
-    if [ "$project" = "myprofile" ]; then
-        build_script="$PROJECT_ROOT/$project/1.1.ops/build.sh"
+    if [ "$_project" = "myprofile" ]; then
+        _build_script="$PROJECT_ROOT/$_project/1.1.ops/build.sh"
     fi
 
-    log_section "Building: $project"
+    log_section "Building: $_project"
 
-    if [ -f "$build_script" ]; then
-        log_info "Executing: $build_script $action"
-        if bash "$build_script" "$action"; then
-            log_success "$project build completed"
+    if [ -f "$_build_script" ]; then
+        log_info "Executing: $_build_script $_action"
+        if sh "$_build_script" "$_action"; then
+            log_success "$_project build completed"
             return 0
         else
-            log_error "$project build failed"
+            log_error "$_project build failed"
             return 1
         fi
     else
-        log_warning "Build script not found: $build_script"
+        log_warning "Build script not found: $_build_script"
         return 1
     fi
 }
 
 # Build all projects
 build_all() {
-    local force=${1:-false}
+    _force="${1:-false}"
 
     log_section "Building All Projects"
 
-    if [ "$force" = true ]; then
+    if [ "$_force" = "true" ]; then
         log_info "Force rebuild enabled - cleaning first..."
         clean_all_builds
     fi
 
-    local failed=0
+    _failed=0
 
     # Build root Sass
     log_info "Building root Sass..."
     if [ -d "$PROJECT_ROOT/3.sass" ]; then
-        (cd "$PROJECT_ROOT/3.sass" && npm install > /dev/null 2>&1 && npm run sass:build) || ((failed++))
+        (cd "$PROJECT_ROOT/3.sass" && npm install > /dev/null 2>&1 && npm run sass:build) || _failed=$((_failed + 1))
     fi
 
     # Build root TypeScript
     log_info "Building root TypeScript..."
     if [ -d "$PROJECT_ROOT/4.ts" ]; then
-        (cd "$PROJECT_ROOT/4.ts" && npm install > /dev/null 2>&1 && npm run ts:build) || ((failed++))
+        (cd "$PROJECT_ROOT/4.ts" && npm install > /dev/null 2>&1 && npm run ts:build) || _failed=$((_failed + 1))
     fi
 
     # Build each sub-project
-    execute_build "linktree" "build" || ((failed++))
-    execute_build "cv_web" "build" || ((failed++))
-    execute_build "myfeed" "build" || ((failed++))
-    execute_build "myprofile" "build" || ((failed++))
-    execute_build "cloud" "build" || ((failed++))
-    execute_build "feed_yourself" "build" || ((failed++))
-    execute_build "others" "build" || ((failed++))
+    execute_build "linktree" "build" || _failed=$((_failed + 1))
+    execute_build "cv_web" "build" || _failed=$((_failed + 1))
+    execute_build "myfeed" "build" || _failed=$((_failed + 1))
+    execute_build "myprofile" "build" || _failed=$((_failed + 1))
+    execute_build "cloud" "build" || _failed=$((_failed + 1))
+    execute_build "feed_yourself" "build" || _failed=$((_failed + 1))
+    execute_build "others" "build" || _failed=$((_failed + 1))
 
-    if [ $failed -eq 0 ]; then
+    if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
         return 0
     else
-        log_error "$failed build(s) failed"
+        log_error "$_failed build(s) failed"
         return 1
     fi
 }
@@ -251,259 +369,315 @@ clean_deep() {
     log_success "Deep clean completed"
 }
 
+# List running servers
+list_servers() {
+    log_section "Running Servers & Watchers"
+    print_status_box
+
+    # Additional details
+    printf "${YELLOW}Process Details:${NC}\n"
+    printf "${BLUE}-------------------------------------------------------------------------------${NC}\n"
+
+    # live-server processes
+    _live_pids=$(pgrep -f "live-server" 2>/dev/null || true)
+    if [ -n "$_live_pids" ]; then
+        printf "${CYAN}live-server Processes:${NC}\n"
+        ps -p $(echo "$_live_pids" | tr '\n' ',') -o pid,args 2>/dev/null | tail -n +2 || true
+        printf "\n"
+    fi
+
+    # Sass watchers
+    _sass_pids=$(pgrep -f "sass.*--watch" 2>/dev/null || true)
+    if [ -n "$_sass_pids" ]; then
+        printf "${CYAN}Sass Watchers:${NC}\n"
+        ps -p $(echo "$_sass_pids" | tr '\n' ',') -o pid,args 2>/dev/null | tail -n +2 || true
+        printf "\n"
+    fi
+
+    # TypeScript watchers
+    _tsc_pids=$(pgrep -f "tsc.*--watch" 2>/dev/null || true)
+    if [ -n "$_tsc_pids" ]; then
+        printf "${CYAN}TypeScript Watchers:${NC}\n"
+        ps -p $(echo "$_tsc_pids" | tr '\n' ',') -o pid,args 2>/dev/null | tail -n +2 || true
+        printf "\n"
+    fi
+
+    # Tmux sessions
+    if command -v tmux >/dev/null 2>&1; then
+        _tmux_sessions=$(tmux list-sessions 2>/dev/null | grep "^build-" || true)
+        if [ -n "$_tmux_sessions" ]; then
+            printf "${CYAN}Tmux Sessions:${NC}\n"
+            printf "%s\n" "$_tmux_sessions"
+            printf "\n"
+        fi
+    fi
+
+    printf "${BLUE}-------------------------------------------------------------------------------${NC}\n"
+    printf "${YELLOW}To stop all:${NC} ./1.ops/build_main.sh kill\n"
+    printf "\n"
+}
+
 # Start development servers
 dev_all() {
-    local verbose=${1:-false}
+    _verbose="${1:-false}"
 
     log_section "Starting All Development Servers"
 
     log_warning "This will start multiple development servers concurrently."
-    echo ""
+    printf "\n"
 
-    # Redirect output unless verbose mode
-    local output_redirect=""
-    if [ "$verbose" = false ]; then
-        output_redirect="> /dev/null 2>&1"
-    fi
-
-    # Use tmux or screen if available, otherwise warn
-    if command -v tmux &> /dev/null; then
+    # Use tmux if available
+    if command -v tmux >/dev/null 2>&1; then
         log_info "Starting servers in tmux sessions..."
 
-        tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/3.sass && npm install && npm run sass:watch"
-        tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/4.ts && npm install && npm run ts:watch"
-        tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/3.sass && npm install && npm run sass:watch"
-        tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && bash build.sh dev"
-        tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/cloud/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-feed "cd $PROJECT_ROOT/feed_yourself/1.ops && bash build.sh dev"
-        tmux new-session -d -s build-others "cd $PROJECT_ROOT/others/1.ops && bash build.sh dev"
+        tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/3.sass && npm install && npm run sass:watch" 2>/dev/null || true
+        tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/4.ts && npm install && npm run ts:watch" 2>/dev/null || true
+        tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/3.sass && npm install && npm run sass:watch" 2>/dev/null || true
+        tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/cloud/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-feed "cd $PROJECT_ROOT/feed_yourself/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-others "cd $PROJECT_ROOT/others/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
-        echo ""
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${CYAN}📡 Development Servers Running:${NC}"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active, TS watch active)${NC}"
-        echo -e "${BLUE}  🔗 Linktree:${NC}            http://localhost:8000/linktree/"
-        echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
-        echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
-        echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
-        echo -e "${BLUE}  🏢 Nexus:${NC}               http://localhost:3001/nexus/"
-        echo -e "${BLUE}  ☁️  Cloud Dashboard:${NC}  http://localhost:8000/cloud/"
-        echo -e "${BLUE}  🍽️  Feed Yourself:${NC}     http://localhost:8003/"
-        echo -e "${BLUE}  📂 Others:${NC}              http://localhost:8004/"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo ""
-        log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, build-cv-web, build-myfeed, build-myprofile, build-nexus, build-cloud, build-feed, build-others"
+        printf "\n"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "${CYAN}  Development Servers Running (live-server):${NC}\n"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Root" "$URL_ROOT"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Linktree" "$URL_LINKTREE"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "CV Web" "$URL_CV_WEB"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyFeed" "$URL_MYFEED"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyProfile" "$URL_MYPROFILE"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Nexus" "$URL_NEXUS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Cloud" "$URL_CLOUD"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Feed Yourself" "$URL_FEED"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "\n"
+        log_info "Tmux Sessions: build-root-sass, build-root-ts, build-linktree, etc."
         log_info "To view logs: tmux attach -t <session-name>"
-        log_info "To kill all servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
-        echo ""
+        log_info "To kill all servers: ./1.ops/build_main.sh kill"
+        printf "\n"
         log_success "Returning to prompt. Dev servers are running in background."
 
     else
         log_warning "tmux not found. Starting servers in background..."
         log_info "Install tmux for better session management: sudo apt-get install tmux"
-        echo ""
+        printf "\n"
 
         # Create log directory
         mkdir -p "$PROJECT_ROOT/1.ops/logs"
 
-        # Start root Sass watch in background
+        # Start servers in background
         log_info "Starting root Sass..."
-        (cd "$PROJECT_ROOT/3.sass" && if [ "$verbose" = false ]; then
-            nohup npm install > /dev/null 2>&1 &
-            nohup npm run sass:watch > "$PROJECT_ROOT/3.sass/logs/sass-dev.log" 2>&1 &
-        else
-            npm install
-            npm run sass:watch &
-        fi)
+        (cd "$PROJECT_ROOT/3.sass" && nohup npm run sass:watch > "$PROJECT_ROOT/1.ops/logs/sass-dev.log" 2>&1 &)
 
-        # Start root TypeScript watch in background
         log_info "Starting root TypeScript..."
-        (cd "$PROJECT_ROOT/4.ts" && if [ "$verbose" = false ]; then
-            nohup npm install > /dev/null 2>&1 &
-            nohup npm run ts:watch > "$PROJECT_ROOT/4.ts/logs/ts-dev.log" 2>&1 &
-        else
-            npm install
-            npm run ts:watch &
-        fi)
+        (cd "$PROJECT_ROOT/4.ts" && nohup npm run ts:watch > "$PROJECT_ROOT/1.ops/logs/ts-dev.log" 2>&1 &)
 
-        # Start others in background with logs
         log_info "Starting linktree..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/linktree-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/linktree/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/linktree-dev.log" 2>&1 &
 
         log_info "Starting cv_web Sass..."
-        if [ "$verbose" = false ]; then
-            (cd "$PROJECT_ROOT/cv_web/3.sass" && nohup npm install > /dev/null 2>&1 & nohup npm run sass:watch > "$PROJECT_ROOT/cv_web/3.sass/logs/sass-dev.log" 2>&1 &)
-        else
-            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch &)
-        fi
+        (cd "$PROJECT_ROOT/cv_web/3.sass" && nohup npm run sass:watch > "$PROJECT_ROOT/1.ops/logs/cv-web-dev.log" 2>&1 &)
 
         log_info "Starting myfeed..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myfeed-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myfeed-dev.log" 2>&1 &
 
         log_info "Starting myprofile..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
 
         log_info "Starting nexus..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/nexus-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/nexus/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/nexus-dev.log" 2>&1 &
 
         log_info "Starting cloud..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/cloud/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cloud-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/cloud/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/cloud/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cloud-dev.log" 2>&1 &
 
         log_info "Starting feed_yourself..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/feed-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/feed-dev.log" 2>&1 &
 
         log_info "Starting others..."
-        if [ "$verbose" = false ]; then
-            nohup bash "$PROJECT_ROOT/others/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/others-dev.log" 2>&1 &
-        else
-            bash "$PROJECT_ROOT/others/1.ops/build.sh" dev &
-        fi
+        nohup sh "$PROJECT_ROOT/others/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/others-dev.log" 2>&1 &
 
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
-        echo ""
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${CYAN}📡 Development Servers Running:${NC}"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo -e "${BLUE}  🌐 Root (Landing):${NC}      http://localhost:8000/ ${YELLOW}(Sass watch active)${NC}"
-        echo -e "${BLUE}  🔗 Linktree:${NC}            http://localhost:8000/linktree/"
-        echo -e "${BLUE}  📄 CV Web (Portfolio):${NC}  http://localhost:8000/cv_web/ ${YELLOW}(Sass watch active)${NC}"
-        echo -e "${BLUE}  📰 MyFeed:${NC}              http://localhost:3000/myfeed/"
-        echo -e "${BLUE}  👤 MyProfile:${NC}           http://localhost:5173/"
-        echo -e "${BLUE}  🏢 Nexus:${NC}               http://localhost:3001/nexus/"
-        echo -e "${BLUE}  ☁️  Cloud Dashboard:${NC}  http://localhost:8000/cloud/"
-        echo -e "${BLUE}  🍽️  Feed Yourself:${NC}     http://localhost:8003/"
-        echo -e "${BLUE}  📂 Others:${NC}              http://localhost:8004/"
-        echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-        echo ""
+        printf "\n"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "${CYAN}  Development Servers Running (live-server):${NC}\n"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Root" "$URL_ROOT"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Linktree" "$URL_LINKTREE"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "CV Web" "$URL_CV_WEB"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyFeed" "$URL_MYFEED"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyProfile" "$URL_MYPROFILE"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Nexus" "$URL_NEXUS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Cloud" "$URL_CLOUD"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Feed Yourself" "$URL_FEED"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
+        printf "${GREEN}============================================================${NC}\n"
+        printf "\n"
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
         log_info "View logs: tail -f $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
-        log_info "Kill servers: bash $PROJECT_ROOT/1.ops/build_main.sh kill"
-        echo ""
+        log_info "Kill servers: ./1.ops/build_main.sh kill"
+        printf "\n"
         log_success "Returning to prompt. Dev servers are running in background."
     fi
+}
+
+# Start single dev server and show URL
+dev_single() {
+    _project="$1"
+    _url="$2"
+    _type="${3:-server}"
+
+    log_section "Starting: $_project"
+
+    case "$_project" in
+        root)
+            log_info "Starting root Sass + TypeScript watch..."
+            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:watch) &
+            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:watch) &
+            print_server_started "Root Sass + TypeScript" "$_url" "watcher"
+            wait
+            ;;
+        linktree)
+            execute_build "linktree" "dev" &
+            sleep 2
+            print_server_started "Linktree" "$_url"
+            wait
+            ;;
+        cv-web)
+            log_info "Starting cv_web Sass watch..."
+            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch) &
+            print_server_started "CV Web Sass" "$_url" "watcher"
+            wait
+            ;;
+        myfeed)
+            execute_build "myfeed" "dev" &
+            sleep 2
+            print_server_started "MyFeed" "$_url"
+            wait
+            ;;
+        myprofile)
+            execute_build "myprofile" "dev" &
+            sleep 2
+            print_server_started "MyProfile" "$_url"
+            wait
+            ;;
+        nexus)
+            execute_build "nexus" "dev" &
+            sleep 2
+            print_server_started "Nexus" "$_url"
+            wait
+            ;;
+        cloud)
+            execute_build "cloud" "dev" &
+            sleep 2
+            print_server_started "Cloud Dashboard" "$_url"
+            wait
+            ;;
+        feed)
+            execute_build "feed_yourself" "dev" &
+            sleep 2
+            print_server_started "Feed Yourself" "$_url"
+            wait
+            ;;
+        others)
+            execute_build "others" "dev" &
+            sleep 2
+            print_server_started "Others" "$_url"
+            wait
+            ;;
+    esac
 }
 
 # Kill all running dev servers
 kill_servers() {
     log_section "Killing All Development Servers"
 
-    local killed=0
+    _killed=0
 
     # Kill tmux sessions if they exist
-    if command -v tmux &> /dev/null; then
-        for session in build-root build-linktree build-cv-web build-myfeed build-myprofile build-nexus; do
+    if command -v tmux >/dev/null 2>&1; then
+        for session in build-root-sass build-root-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
-                tmux kill-session -t "$session" 2>/dev/null && ((killed++)) || true
+                tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
             fi
         done
     fi
 
-    # Kill Python HTTP servers (linktree and potentially others on port 8000/8001)
-    local python_pids=$(pgrep -f "python3.*http.server" || true)
-    if [ -n "$python_pids" ]; then
-        log_info "Killing Python HTTP servers..."
-        echo "$python_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$python_pids" | wc -w))) || true
+    # Kill live-server processes
+    _live_pids=$(pgrep -f "live-server" 2>/dev/null || true)
+    if [ -n "$_live_pids" ]; then
+        log_info "Killing live-server processes..."
+        echo "$_live_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_live_pids" | wc -w)))
         sleep 1
-        python_pids=$(pgrep -f "python3.*http.server" || true)
-        if [ -n "$python_pids" ]; then
-            echo "$python_pids" | xargs kill -9 2>/dev/null || true
+        _live_pids=$(pgrep -f "live-server" 2>/dev/null || true)
+        if [ -n "$_live_pids" ]; then
+            echo "$_live_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    # Kill Vite dev servers (myfeed and myprofile)
-    local vite_pids=$(pgrep -f "node.*vite" || true)
-    if [ -n "$vite_pids" ]; then
-        log_info "Killing Vite dev servers..."
-        echo "$vite_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$vite_pids" | wc -w))) || true
-        sleep 1
-        vite_pids=$(pgrep -f "node.*vite" || true)
-        if [ -n "$vite_pids" ]; then
-            echo "$vite_pids" | xargs kill -9 2>/dev/null || true
-        fi
-    fi
-
-    # Kill concurrently processes (root watch:all)
-    local concurrently_pids=$(pgrep -f "node.*concurrently" || true)
-    if [ -n "$concurrently_pids" ]; then
+    # Kill concurrently processes
+    _concurrently_pids=$(pgrep -f "node.*concurrently" 2>/dev/null || true)
+    if [ -n "$_concurrently_pids" ]; then
         log_info "Killing concurrently processes..."
-        echo "$concurrently_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$concurrently_pids" | wc -w))) || true
+        echo "$_concurrently_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_concurrently_pids" | wc -w)))
         sleep 1
-        concurrently_pids=$(pgrep -f "node.*concurrently" || true)
-        if [ -n "$concurrently_pids" ]; then
-            echo "$concurrently_pids" | xargs kill -9 2>/dev/null || true
+        _concurrently_pids=$(pgrep -f "node.*concurrently" 2>/dev/null || true)
+        if [ -n "$_concurrently_pids" ]; then
+            echo "$_concurrently_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    # Kill npm run processes (sass:watch, ts:watch, etc.)
-    local npm_pids=$(pgrep -f "npm run" || true)
-    if [ -n "$npm_pids" ]; then
+    # Kill npm run processes
+    _npm_pids=$(pgrep -f "npm run" 2>/dev/null || true)
+    if [ -n "$_npm_pids" ]; then
         log_info "Killing npm processes..."
-        echo "$npm_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$npm_pids" | wc -w))) || true
+        echo "$_npm_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_npm_pids" | wc -w)))
         sleep 1
-        npm_pids=$(pgrep -f "npm run" || true)
-        if [ -n "$npm_pids" ]; then
-            echo "$npm_pids" | xargs kill -9 2>/dev/null || true
+        _npm_pids=$(pgrep -f "npm run" 2>/dev/null || true)
+        if [ -n "$_npm_pids" ]; then
+            echo "$_npm_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
     # Kill Sass watch processes
-    local sass_pids=$(pgrep -f "sass.*--watch" || true)
-    if [ -n "$sass_pids" ]; then
+    _sass_pids=$(pgrep -f "sass.*--watch" 2>/dev/null || true)
+    if [ -n "$_sass_pids" ]; then
         log_info "Killing Sass watch processes..."
-        echo "$sass_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$sass_pids" | wc -w))) || true
+        echo "$_sass_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_sass_pids" | wc -w)))
         sleep 1
-        sass_pids=$(pgrep -f "sass.*--watch" || true)
-        if [ -n "$sass_pids" ]; then
-            echo "$sass_pids" | xargs kill -9 2>/dev/null || true
+        _sass_pids=$(pgrep -f "sass.*--watch" 2>/dev/null || true)
+        if [ -n "$_sass_pids" ]; then
+            echo "$_sass_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
     # Kill TypeScript watch processes
-    local tsc_pids=$(pgrep -f "tsc.*--watch" || true)
-    if [ -n "$tsc_pids" ]; then
+    _tsc_pids=$(pgrep -f "tsc.*--watch" 2>/dev/null || true)
+    if [ -n "$_tsc_pids" ]; then
         log_info "Killing TypeScript watch processes..."
-        echo "$tsc_pids" | xargs kill -15 2>/dev/null && killed=$((killed + $(echo "$tsc_pids" | wc -w))) || true
+        echo "$_tsc_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_tsc_pids" | wc -w)))
         sleep 1
-        tsc_pids=$(pgrep -f "tsc.*--watch" || true)
-        if [ -n "$tsc_pids" ]; then
-            echo "$tsc_pids" | xargs kill -9 2>/dev/null || true
+        _tsc_pids=$(pgrep -f "tsc.*--watch" 2>/dev/null || true)
+        if [ -n "$_tsc_pids" ]; then
+            echo "$_tsc_pids" | xargs kill -9 2>/dev/null || true
         fi
     fi
 
-    if [ $killed -gt 0 ]; then
-        log_success "Killed $killed process(es)"
+    if [ "$_killed" -gt 0 ]; then
+        log_success "Killed $_killed process(es)"
     else
         log_warning "No running dev servers found"
     fi
@@ -513,36 +687,43 @@ kill_servers() {
 run_tests() {
     log_section "Running Tests"
 
-    local failed=0
+    _failed=0
 
-    execute_build "myfeed" "test" || ((failed++))
-    execute_build "myprofile" "test" || ((failed++))
+    execute_build "myfeed" "test" || _failed=$((_failed + 1))
+    execute_build "myprofile" "test" || _failed=$((_failed + 1))
 
-    if [ $failed -eq 0 ]; then
+    if [ "$_failed" -eq 0 ]; then
         log_success "All tests passed!"
         return 0
     else
-        log_error "$failed test suite(s) failed"
+        log_error "$_failed test suite(s) failed"
         return 1
     fi
 }
 
 # Main execution
 main() {
-    local action=${1:-help}
-    local force=false
-    local verbose=false
+    # Show help if no argument provided
+    if [ $# -eq 0 ]; then
+        print_banner
+        print_usage
+        exit 0
+    fi
+
+    _action="$1"
+    _force="false"
+    _verbose="false"
 
     # Parse options
-    shift || true
-    while [[ $# -gt 0 ]]; do
-        case $1 in
+    shift 2>/dev/null || true
+    while [ $# -gt 0 ]; do
+        case "$1" in
             --force|-f)
-                force=true
+                _force="true"
                 shift
                 ;;
             --verbose|-v)
-                verbose=true
+                _verbose="true"
                 set -x
                 shift
                 ;;
@@ -556,9 +737,9 @@ main() {
 
     print_banner
 
-    case $action in
+    case "$_action" in
         build)
-            build_all $force
+            build_all "$_force"
             ;;
         build-root)
             log_section "Building Root Sass"
@@ -592,40 +773,37 @@ main() {
             execute_build "others" "build"
             ;;
         dev)
-            dev_all $verbose
+            dev_all "$_verbose"
             ;;
         dev-root)
-            log_section "Starting Root Sass Development"
-            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:watch) &
-            log_section "Starting Root TypeScript Development"
-            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:watch) &
-            log_success "Root development servers started"
+            dev_single "root" "$URL_ROOT" "watcher"
             ;;
         dev-linktree)
-            execute_build "linktree" "dev"
+            dev_single "linktree" "$URL_LINKTREE"
             ;;
         dev-cv-web)
-            log_section "Starting cv_web Sass Development"
-            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch)
-            log_success "cv_web Sass development server started"
+            dev_single "cv-web" "$URL_CV_WEB" "watcher"
             ;;
         dev-myfeed)
-            execute_build "myfeed" "dev"
+            dev_single "myfeed" "$URL_MYFEED"
             ;;
         dev-myprofile)
-            execute_build "myprofile" "dev"
+            dev_single "myprofile" "$URL_MYPROFILE"
             ;;
         dev-nexus)
-            execute_build "nexus" "dev"
+            dev_single "nexus" "$URL_NEXUS"
             ;;
         dev-cloud)
-            execute_build "cloud" "dev"
+            dev_single "cloud" "$URL_CLOUD"
             ;;
         dev-feed)
-            execute_build "feed_yourself" "dev"
+            dev_single "feed" "$URL_FEED"
             ;;
         dev-others)
-            execute_build "others" "dev"
+            dev_single "others" "$URL_OTHERS"
+            ;;
+        list)
+            list_servers
             ;;
         kill)
             kill_servers
@@ -643,8 +821,8 @@ main() {
             print_usage
             ;;
         *)
-            log_error "Unknown action: $action"
-            echo ""
+            log_error "Unknown command: $_action"
+            printf "\n"
             print_usage
             exit 1
             ;;

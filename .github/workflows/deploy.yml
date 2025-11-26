@@ -125,6 +125,14 @@ jobs:
           # Copy all relevant files and directories (excluding myfeed for now)
           cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ 2.assets/ others/ _site/ 2>/dev/null || true
 
+          # Copy Matomo tracking scripts
+          if [ -d "1.ops/matomo-tracking" ]; then
+            echo "📊 Copying Matomo tracking scripts..."
+            mkdir -p _site/1.ops/matomo-tracking
+            cp -r 1.ops/matomo-tracking/* _site/1.ops/matomo-tracking/
+            echo "✅ Matomo tracking scripts copied"
+          fi
+
           # Copy MyFeed Vue build (if dist exists)
           if [ -d "myfeed/dist" ]; then
             echo "📦 Copying MyFeed Vue build..."

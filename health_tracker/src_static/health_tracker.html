@@ -119,25 +119,6 @@
             transition: width 0.5s ease;
         }
 
-        /* Body composition blocks */
-        .comp-block {
-            display: flex;
-            border-radius: 12px;
-            overflow: hidden;
-            height: 60px;
-        }
-
-        .comp-segment {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 700;
-            color: white;
-            transition: all 0.5s ease;
-            min-width: 50px;
-        }
-
         /* HR Zone colors */
         .zone-1 { background: linear-gradient(135deg, #10b981, #059669); }
         .zone-2 { background: linear-gradient(135deg, #06b6d4, #0891b2); }
@@ -417,24 +398,6 @@
                     <p class="text-[10px] text-purple-400 uppercase mb-1">Muscle</p>
                     <p id="out-muscle-kpi" class="mono text-2xl font-bold text-white">--%</p>
                     <p class="text-[10px] text-slate-500">Estimated</p>
-                </div>
-            </div>
-            <!-- Visual Composition Bar -->
-            <div class="mb-8">
-                <p class="text-xs text-slate-500 uppercase mb-3">Mass Distribution</p>
-                <div class="comp-block">
-                    <div id="bar-fat" class="comp-segment bg-gradient-to-r from-rose-600 to-rose-500" style="width: 15%">
-                        <span id="bar-fat-label">Fat</span>
-                    </div>
-                    <div id="bar-muscle" class="comp-segment bg-gradient-to-r from-blue-600 to-blue-500" style="width: 35%">
-                        <span id="bar-muscle-label">Muscle</span>
-                    </div>
-                    <div id="bar-water" class="comp-segment bg-gradient-to-r from-cyan-600 to-cyan-500" style="width: 40%">
-                        <span id="bar-water-label">Water</span>
-                    </div>
-                    <div id="bar-bone" class="comp-segment bg-gradient-to-r from-slate-600 to-slate-500" style="width: 10%">
-                        <span id="bar-bone-label">Bone</span>
-                    </div>
                 </div>
             </div>
 
@@ -1040,16 +1003,6 @@ function updateUI(data) {
     document.getElementById('out-water-pct').textContent = `${data.waterPct.toFixed(1)}%`;
     document.getElementById('out-bone-mass').textContent = `${data.boneMass.toFixed(2)}`;
     document.getElementById('out-bone-pct').textContent = `${data.bonePct.toFixed(1)}%`;
-
-    // Composition Bar
-    document.getElementById('bar-fat').style.width = `${data.bodyFatPct}%`;
-    document.getElementById('bar-fat-label').textContent = `${data.bodyFatPct.toFixed(0)}%`;
-    document.getElementById('bar-muscle').style.width = `${data.musclePct}%`;
-    document.getElementById('bar-muscle-label').textContent = `${data.musclePct.toFixed(0)}%`;
-    document.getElementById('bar-water').style.width = `${data.waterPct}%`;
-    document.getElementById('bar-water-label').textContent = `${data.waterPct.toFixed(0)}%`;
-    document.getElementById('bar-bone').style.width = `${data.bonePct}%`;
-    document.getElementById('bar-bone-label').textContent = `${data.bonePct.toFixed(0)}%`;
 
     // HR
     document.getElementById('out-hr-max').textContent = data.hrMax;

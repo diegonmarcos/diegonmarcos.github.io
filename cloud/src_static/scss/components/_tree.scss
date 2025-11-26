@@ -1,0 +1,283 @@
+// View Toggle
+.view-toggle {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+// Tree Controls
+.tree-controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-top: 1rem;
+}
+
+.tree-ctrl-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    &:hover {
+        border-color: var(--accent-blue);
+        color: var(--text-primary);
+        background: rgba(74, 158, 255, 0.1);
+    }
+}
+
+.view-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        border-color: var(--accent-blue);
+        color: var(--text-primary);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+        border-color: transparent;
+        color: white;
+    }
+}
+
+// View Content
+.view-content {
+    display: none;
+    animation: fadeIn 0.4s ease-out;
+
+    &.active {
+        display: block;
+    }
+}
+
+#tree-view {
+    width: 100%;
+}
+
+// Tree Container
+.tree-container {
+    display: inline-flex;
+    gap: 2rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    padding: 1rem 0;
+    min-width: max-content;
+}
+
+// Tree VPS (top-level columns)
+.tree-vps {
+    flex: 0 0 auto;
+    min-width: 280px;
+    width: auto;
+}
+
+// Side-by-side container for siblings (Docker + Planned)
+.tree-siblings {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.tree-sibling-column {
+    flex: 0 0 auto;
+    min-width: 180px;
+}
+
+// Tree Node
+.tree-node {
+    margin: 0.25rem 0;
+
+    &.vps-node {
+        .node-header {
+            background: linear-gradient(135deg, var(--bg-card), rgba(74, 158, 255, 0.1));
+            border: 1px solid var(--accent-blue);
+            padding: 1rem 1.25rem;
+            font-size: 1.1rem;
+        }
+    }
+
+    &.vm-node {
+        .node-header {
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 0.875rem 1rem;
+        }
+    }
+
+    &.container-node {
+        .node-header {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+        }
+    }
+
+    &.service-node {
+        .node-header {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 0.625rem 0.875rem;
+            font-size: 0.9rem;
+        }
+
+        &.clickable {
+            cursor: pointer;
+
+            &:hover .node-header {
+                background: rgba(74, 158, 255, 0.1);
+                border-color: var(--accent-blue);
+                transform: translateX(4px);
+            }
+        }
+    }
+}
+
+// Node Header
+.node-header {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-wrap: wrap;
+    min-width: 0;
+
+    &:hover {
+        background: rgba(74, 158, 255, 0.08);
+    }
+}
+
+.expand-icon {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    transition: transform 0.3s ease;
+    width: 12px;
+
+    &.expanded {
+        transform: rotate(90deg);
+    }
+}
+
+.node-icon {
+    font-size: 1.1rem;
+}
+
+.node-title {
+    font-weight: 500;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.node-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.node-port {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+    background: rgba(74, 158, 255, 0.1);
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.node-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-weight: 500;
+    margin-left: auto;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    &.online {
+        background: rgba(16, 185, 129, 0.15);
+        color: var(--accent-green);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    &.pending {
+        background: rgba(251, 191, 36, 0.15);
+        color: var(--accent-yellow);
+        border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+}
+
+// Tree Children (collapsible)
+.tree-children {
+    margin-left: 1rem;
+    padding-left: 0.75rem;
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+
+    &.expanded {
+        max-height: 2000px;
+        opacity: 1;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    // No left border/margin for siblings container
+    .tree-siblings & {
+        margin-left: 0.5rem;
+        padding-left: 0.5rem;
+    }
+}
+
+// Connection lines
+.tree-vps > .tree-children {
+    margin-left: 1rem;
+    border-left-color: var(--accent-blue);
+}
+
+.vm-node + .tree-children {
+    border-left-color: rgba(139, 92, 246, 0.4);
+}
+
+.container-node + .tree-children {
+    border-left-color: rgba(255, 255, 255, 0.15);
+}

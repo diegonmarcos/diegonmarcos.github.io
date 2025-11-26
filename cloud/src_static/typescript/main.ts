@@ -1,8 +1,10 @@
 import { initCardEffects, initStatusPulse } from './card-effects';
 import { handleCardClick } from './service-handler';
+import { initViewToggle, initTreeExpand, initTreeServiceClick, initTreeControls } from './tree-view';
 import type { ServiceId } from './types';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Card view initialization
     initCardEffects();
     initStatusPulse();
 
@@ -16,4 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Tree view initialization
+    initViewToggle();
+    initTreeExpand();
+    initTreeServiceClick();
+    initTreeControls();
+
+    // Listen for service clicks from tree view
+    document.addEventListener('service-click', ((e: CustomEvent) => {
+        const service = e.detail.service as ServiceId;
+        if (service) {
+            handleCardClick(service);
+        }
+    }) as EventListener);
 });

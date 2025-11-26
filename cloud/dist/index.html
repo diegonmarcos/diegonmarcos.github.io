@@ -22,12 +22,38 @@
         <header>
             <h1>Cloud Services Dashboard</h1>
             <p class="subtitle">Manage your infrastructure</p>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="cards">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                    </svg>
+                    Cards
+                </button>
+                <button class="view-btn" data-view="tree">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v6"/>
+                        <path d="M12 8L6 14"/>
+                        <path d="M12 8l6 6"/>
+                        <circle cx="12" cy="2" r="2"/>
+                        <circle cx="6" cy="16" r="2"/>
+                        <circle cx="18" cy="16" r="2"/>
+                        <path d="M6 18v4"/>
+                        <path d="M18 18v4"/>
+                    </svg>
+                    Tree
+                </button>
+            </div>
         </header>
 
-        <!-- Active Services -->
-        <section class="section-header">
-            <h2>Active Services</h2>
-        </section>
+        <!-- Cards View -->
+        <div id="cards-view" class="view-content active">
+            <!-- Active Services -->
+            <section class="section-header">
+                <h2>Active Services</h2>
+            </section>
 
         <div class="cards-grid">
             <div class="card" data-service="proxy">
@@ -216,6 +242,235 @@
                 <div class="card-status pending">Pending</div>
             </div>
         </div>
+        </div><!-- End Cards View -->
+
+        <!-- Tree View -->
+        <div id="tree-view" class="view-content">
+            <div class="tree-controls">
+                <button class="tree-ctrl-btn" id="expand-all">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"/>
+                    </svg>
+                    Expand All
+                </button>
+                <button class="tree-ctrl-btn" id="collapse-all">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="18 15 12 9 6 15"/>
+                    </svg>
+                    Collapse All
+                </button>
+            </div>
+            <div class="tree-container">
+                <!-- Oracle Cloud VPS -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🟠</span>
+                            <span class="node-title">Oracle Cloud</span>
+                            <span class="node-badge online">Always Free</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <!-- Ubuntu VM -->
+                        <div class="tree-node vm-node" data-expanded="true">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-icon">🖥️</span>
+                                <span class="node-title">Ubuntu1</span>
+                                <span class="node-subtitle">130.110.251.193</span>
+                                <span class="node-badge online">Online</span>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded">
+                            <div class="tree-siblings">
+                                <!-- Docker Column -->
+                                <div class="tree-sibling-column">
+                                    <div class="tree-node container-node" data-expanded="true">
+                                        <div class="node-header">
+                                            <span class="expand-icon expanded">▶</span>
+                                            <span class="node-icon">🐳</span>
+                                            <span class="node-title">Docker Engine</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-children expanded">
+                                        <div class="tree-node service-node clickable" data-service="proxy">
+                                            <div class="node-header">
+                                                <span class="node-icon">🔀</span>
+                                                <span class="node-title">Nginx Proxy</span>
+                                                <span class="node-port">:80,:443,:81</span>
+                                                <span class="node-badge online">Online</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node service-node clickable" data-service="analytics">
+                                            <div class="node-header">
+                                                <span class="node-icon">📊</span>
+                                                <span class="node-title">Matomo</span>
+                                                <span class="node-port">:8080</span>
+                                                <span class="node-badge online">Online</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node service-node clickable" data-service="database">
+                                            <div class="node-header">
+                                                <span class="node-icon">🗄️</span>
+                                                <span class="node-title">MariaDB</span>
+                                                <span class="node-port">:3306</span>
+                                                <span class="node-badge online">Internal</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Planned Column -->
+                                <div class="tree-sibling-column">
+                                    <div class="tree-node container-node" data-expanded="true">
+                                        <div class="node-header">
+                                            <span class="expand-icon expanded">▶</span>
+                                            <span class="node-icon">⏳</span>
+                                            <span class="node-title">Planned</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-children expanded">
+                                        <div class="tree-node service-node" data-service="sync">
+                                            <div class="node-header">
+                                                <span class="node-icon">🔄</span>
+                                                <span class="node-title">Sync Service</span>
+                                                <span class="node-badge pending">Planned</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node service-node" data-service="mail">
+                                            <div class="node-header">
+                                                <span class="node-icon">📧</span>
+                                                <span class="node-title">Mail Server</span>
+                                                <span class="node-badge pending">Planned</span>
+                                            </div>
+                                        </div>
+                                        <div class="tree-node service-node" data-service="drive">
+                                            <div class="node-header">
+                                                <span class="node-icon">💾</span>
+                                                <span class="node-title">Nextcloud</span>
+                                                <span class="node-badge pending">Planned</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Google Cloud VPS -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🔵</span>
+                            <span class="node-title">Google Cloud</span>
+                            <span class="node-badge online">€5/month</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <div class="tree-siblings">
+                            <!-- Serverless Column -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node vm-node" data-expanded="true">
+                                    <div class="node-header">
+                                        <span class="expand-icon expanded">▶</span>
+                                        <span class="node-icon">⚡</span>
+                                        <span class="node-title">Serverless</span>
+                                    </div>
+                                </div>
+                                <div class="tree-children expanded">
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">⚡</span>
+                                            <span class="node-title">Cloud Function</span>
+                                            <span class="node-badge online">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">📨</span>
+                                            <span class="node-title">Pub/Sub</span>
+                                            <span class="node-badge online">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">💰</span>
+                                            <span class="node-title">Budget Alert</span>
+                                            <span class="node-badge online">Active</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Arch VM Column -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node vm-node" data-expanded="true">
+                                    <div class="node-header">
+                                        <span class="expand-icon expanded">▶</span>
+                                        <span class="node-icon">🖥️</span>
+                                        <span class="node-title">Arch1</span>
+                                        <span class="node-badge pending">Pending</span>
+                                    </div>
+                                </div>
+                                <div class="tree-children expanded">
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🔧</span>
+                                            <span class="node-title">n8n</span>
+                                            <span class="node-port">:5678</span>
+                                            <span class="node-badge pending">Setup</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VPS AI 1 -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🤖</span>
+                            <span class="node-title">VPS AI 1</span>
+                            <span class="node-badge pending">Planned</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <div class="tree-node vm-node">
+                            <div class="node-header">
+                                <span class="node-icon">🖥️</span>
+                                <span class="node-title">AI VM</span>
+                                <span class="node-badge pending">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VPS AI 2 -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🤖</span>
+                            <span class="node-title">VPS AI 2</span>
+                            <span class="node-badge pending">Planned</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <div class="tree-node vm-node">
+                            <div class="node-header">
+                                <span class="node-icon">🖥️</span>
+                                <span class="node-title">AI VM</span>
+                                <span class="node-badge pending">TBD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Tree View -->
     </div>
 
     <script src="script.js"></script>

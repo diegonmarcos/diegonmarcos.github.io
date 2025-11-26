@@ -444,50 +444,62 @@
                     </div>
                 </div>
 
-                <!-- Right: Benchmarks -->
-                <div class="space-y-4">
-                    <!-- Body Fat Benchmarks -->
+                <!-- Right: Benchmark Rulers -->
+                <div class="space-y-5">
+                    <!-- Body Fat % Ruler -->
                     <div class="glass-inner p-4">
-                        <h4 class="text-xs font-semibold text-rose-400 uppercase mb-3">Body Fat % Benchmarks</h4>
-                        <div class="grid grid-cols-4 gap-2 text-center">
-                            <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-emerald-400">Athlete</p>
-                                <p class="mono text-sm text-white">6-13%</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-semibold text-rose-400 uppercase">Body Fat %</h4>
+                            <span id="fat-ruler-value" class="mono text-sm font-bold text-white">--</span>
+                        </div>
+                        <!-- Ruler -->
+                        <div class="relative">
+                            <div class="flex h-8 rounded-lg overflow-hidden">
+                                <div class="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Athlete</div>
+                                <div class="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Fitness</div>
+                                <div class="flex-1 bg-gradient-to-r from-amber-600 to-amber-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Average</div>
+                                <div class="flex-1 bg-gradient-to-r from-rose-600 to-rose-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Obese</div>
                             </div>
-                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-blue-400">Fitness</p>
-                                <p class="mono text-sm text-white">14-17%</p>
+                            <!-- Marker -->
+                            <div id="fat-ruler-marker" class="absolute top-0 w-0.5 h-8 bg-white shadow-lg transition-all duration-500" style="left: 50%">
+                                <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-white"></div>
                             </div>
-                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-amber-400">Average</p>
-                                <p class="mono text-sm text-white">18-24%</p>
-                            </div>
-                            <div class="bg-rose-500/10 border border-rose-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-rose-400">Obese</p>
-                                <p class="mono text-sm text-white">25%+</p>
+                            <!-- Scale labels -->
+                            <div class="flex justify-between mt-1 text-[9px] text-slate-500 mono">
+                                <span>6%</span>
+                                <span>13%</span>
+                                <span>17%</span>
+                                <span>24%</span>
+                                <span>35%</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Muscle % Benchmarks -->
+                    <!-- Muscle % Ruler -->
                     <div class="glass-inner p-4">
-                        <h4 class="text-xs font-semibold text-purple-400 uppercase mb-3">Muscle % Benchmarks</h4>
-                        <div class="grid grid-cols-4 gap-2 text-center">
-                            <div class="bg-slate-500/10 border border-slate-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-slate-400">Low</p>
-                                <p class="mono text-sm text-white">&lt;30%</p>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-xs font-semibold text-purple-400 uppercase">Muscle %</h4>
+                            <span id="muscle-ruler-value" class="mono text-sm font-bold text-white">--</span>
+                        </div>
+                        <!-- Ruler -->
+                        <div class="relative">
+                            <div class="flex h-8 rounded-lg overflow-hidden">
+                                <div class="flex-1 bg-gradient-to-r from-slate-600 to-slate-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Low</div>
+                                <div class="flex-1 bg-gradient-to-r from-amber-600 to-amber-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Average</div>
+                                <div class="flex-1 bg-gradient-to-r from-blue-600 to-blue-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Fit</div>
+                                <div class="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-500 flex items-center justify-center text-[9px] font-semibold text-white/90">Athletic</div>
                             </div>
-                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-amber-400">Average</p>
-                                <p class="mono text-sm text-white">30-35%</p>
+                            <!-- Marker -->
+                            <div id="muscle-ruler-marker" class="absolute top-0 w-0.5 h-8 bg-white shadow-lg transition-all duration-500" style="left: 50%">
+                                <div class="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-l-transparent border-r-transparent border-t-white"></div>
                             </div>
-                            <div class="bg-blue-500/10 border border-blue-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-blue-400">Fit</p>
-                                <p class="mono text-sm text-white">35-40%</p>
-                            </div>
-                            <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2">
-                                <p class="text-[10px] text-emerald-400">Athletic</p>
-                                <p class="mono text-sm text-white">40%+</p>
+                            <!-- Scale labels -->
+                            <div class="flex justify-between mt-1 text-[9px] text-slate-500 mono">
+                                <span>20%</span>
+                                <span>30%</span>
+                                <span>35%</span>
+                                <span>40%</span>
+                                <span>50%</span>
                             </div>
                         </div>
                     </div>
@@ -1003,6 +1015,9 @@ function updateUI(data) {
     document.getElementById('out-water-pct').textContent = `${data.waterPct.toFixed(1)}%`;
     document.getElementById('out-bone-mass').textContent = `${data.boneMass.toFixed(2)}`;
     document.getElementById('out-bone-pct').textContent = `${data.bonePct.toFixed(1)}%`;
+
+    // Update Benchmark Rulers
+    updateBenchmarkRulers(data.bodyFatPct, data.musclePct);
 
     // HR
     document.getElementById('out-hr-max').textContent = data.hrMax;
@@ -1560,6 +1575,27 @@ function clearData() {
         renderHistory();
         location.reload();
     }
+}
+
+// ============================================================
+// BENCHMARK RULERS
+// ============================================================
+function updateBenchmarkRulers(fatPct, musclePct) {
+    // Body Fat ruler: 6% to 35% range
+    // Zones: Athlete 6-13 (0-25%), Fitness 13-17 (25-38%), Average 17-24 (38-62%), Obese 24-35 (62-100%)
+    const fatMin = 6, fatMax = 35;
+    const fatPos = Math.max(0, Math.min(100, ((fatPct - fatMin) / (fatMax - fatMin)) * 100));
+
+    document.getElementById('fat-ruler-value').textContent = `${fatPct.toFixed(1)}%`;
+    document.getElementById('fat-ruler-marker').style.left = `${fatPos}%`;
+
+    // Muscle ruler: 20% to 50% range
+    // Zones: Low 20-30 (0-33%), Average 30-35 (33-50%), Fit 35-40 (50-67%), Athletic 40-50 (67-100%)
+    const muscleMin = 20, muscleMax = 50;
+    const musclePos = Math.max(0, Math.min(100, ((musclePct - muscleMin) / (muscleMax - muscleMin)) * 100));
+
+    document.getElementById('muscle-ruler-value').textContent = `${musclePct.toFixed(1)}%`;
+    document.getElementById('muscle-ruler-marker').style.left = `${musclePos}%`;
 }
 
 // ============================================================

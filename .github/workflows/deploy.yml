@@ -72,6 +72,9 @@ jobs:
       # MYFEED BUILD (Vue 3 + Vite - Conditional)
       # ============================================
       - name: 🔨 Build MyFeed (Vue 3 + Vite)
+        id: build-myfeed
+        if: contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
+        continue-on-error: true
         run: |
           echo "🔨 Building MyFeed Vue application..."
           cd myfeed
@@ -87,6 +90,9 @@ jobs:
           key: ${{ runner.os }}-myprofile-${{ hashFiles('myprofile/1.3.svelte/**') }}
 
       - name: 🔨 Build MyProfile (SvelteKit)
+        id: build-myprofile
+        if: contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
+        continue-on-error: true
         run: |
           echo "🔨 Building MyProfile SvelteKit project..."
           cd myprofile/1.3.svelte
@@ -96,7 +102,9 @@ jobs:
           echo "✅ MyProfile build complete"
 
       - name: 🔨 Build Nexus (Vue 3 + Tailwind)
+        id: build-nexus
         if: contains(steps.changed-files.outputs.all_changed_files, 'nexus/')
+        continue-on-error: true
         run: |
           echo "🔨 Building Nexus Holdings application..."
           cd nexus
@@ -106,7 +114,9 @@ jobs:
           echo "✅ Nexus build complete"
 
       - name: 🔨 Build Cloud Dashboard (Sass + TypeScript)
+        id: build-cloud
         if: contains(steps.changed-files.outputs.all_changed_files, 'cloud/')
+        continue-on-error: true
         run: |
           echo "🔨 Building Cloud Dashboard..."
           cd cloud
@@ -116,6 +126,9 @@ jobs:
           echo "✅ Cloud Dashboard build complete"
 
       - name: 🔨 Build Feed Yourself (Static HTML)
+        id: build-feed-yourself
+        if: contains(steps.changed-files.outputs.all_changed_files, 'feed_yourself/')
+        continue-on-error: true
         run: |
           echo "🔨 Building Feed Yourself application..."
           cd feed_yourself/1.ops
@@ -133,6 +146,9 @@ jobs:
           echo "✅ Others index.html generated"
 
       - name: 🔨 Build Health Tracker (Static HTML)
+        id: build-health-tracker
+        if: contains(steps.changed-files.outputs.all_changed_files, 'health_tracker/')
+        continue-on-error: true
         run: |
           echo "🔨 Building Health Tracker application..."
           cd health_tracker/1.ops
@@ -141,7 +157,9 @@ jobs:
           echo "✅ Health Tracker build complete"
 
       - name: 🔨 Build Market Watch (Sass + TypeScript)
+        id: build-market-watch
         if: contains(steps.changed-files.outputs.all_changed_files, 'market_watch/')
+        continue-on-error: true
         run: |
           echo "🔨 Building Market Watch Terminal..."
           cd market_watch
@@ -149,6 +167,76 @@ jobs:
           npm run build
           cd ..
           echo "✅ Market Watch build complete"
+
+      # ============================================
+      # BUILD STATUS SUMMARY
+      # ============================================
+      - name: 📊 Build Status Summary
+        run: |
+          echo "============================================"
+          echo "📊 BUILD STATUS SUMMARY"
+          echo "============================================"
+          FAILED=""
+
+          if [ "${{ steps.build-myfeed.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyFeed (Vue 3)"
+            FAILED="$FAILED myfeed"
+          elif [ "${{ steps.build-myfeed.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyFeed (Vue 3)"
+          fi
+
+          if [ "${{ steps.build-myprofile.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyProfile (SvelteKit)"
+            FAILED="$FAILED myprofile"
+          elif [ "${{ steps.build-myprofile.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyProfile (SvelteKit)"
+          fi
+
+          if [ "${{ steps.build-nexus.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Nexus (Vue 3)"
+            FAILED="$FAILED nexus"
+          elif [ "${{ steps.build-nexus.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Nexus (Vue 3)"
+          fi
+
+          if [ "${{ steps.build-cloud.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Cloud Dashboard"
+            FAILED="$FAILED cloud"
+          elif [ "${{ steps.build-cloud.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Cloud Dashboard"
+          fi
+
+          if [ "${{ steps.build-feed-yourself.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Feed Yourself"
+            FAILED="$FAILED feed_yourself"
+          elif [ "${{ steps.build-feed-yourself.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Feed Yourself"
+          fi
+
+          if [ "${{ steps.build-health-tracker.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Health Tracker"
+            FAILED="$FAILED health_tracker"
+          elif [ "${{ steps.build-health-tracker.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Health Tracker"
+          fi
+
+          if [ "${{ steps.build-market-watch.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Market Watch"
+            FAILED="$FAILED market_watch"
+          elif [ "${{ steps.build-market-watch.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Market Watch"
+          fi
+
+          echo "============================================"
+
+          if [ -n "$FAILED" ]; then
+            echo "⚠️ WARNING: Some builds failed:$FAILED"
+            echo "⚠️ Deployment will continue with existing dist/ files for failed projects"
+            echo ""
+            echo "::warning::Build failures detected:$FAILED - check logs above for details"
+          else
+            echo "✅ All triggered builds completed successfully!"
+          fi
 
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5

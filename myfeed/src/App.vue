@@ -119,12 +119,12 @@ onMounted(() => {
   100% { background-position: -200% 0; }
 }
 
-/* Linktree Corner Button */
+/* Linktree Corner Button - z-index must be above scanlines (9999) */
 .linktree-corner {
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  z-index: 50;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;

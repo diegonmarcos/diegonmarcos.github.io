@@ -149,3 +149,4 @@ onMounted(() => {
   box-shadow: 0 6px 25px rgba(139, 92, 246, 0.5);
 }
 </style>
+// Trigger rebuild Thu Nov 27 22:45:05 CET 2025

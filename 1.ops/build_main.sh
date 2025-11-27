@@ -1333,9 +1333,7 @@ main() {
         *)
             log_error "Unknown command: $_action"
             printf "\n"
-            printf "${YELLOW}Launching TUI menu...${NC}\n"
-            sleep 1
-            tui_simple
+            print_usage
             ;;
     esac
 }

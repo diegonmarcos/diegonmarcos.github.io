@@ -632,10 +632,9 @@ dev_single() {
 
     case "$_project" in
         root)
-            log_info "Starting root Sass + TypeScript watch..."
-            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:watch) &
-            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:watch) &
-            print_server_started "Root Sass + TypeScript" "$_url" "watcher"
+            log_info "Starting root live server..."
+            (cd "$PROJECT_ROOT" && npx live-server --port=8000 --no-browser --quiet) &
+            print_server_started "Root" "$_url"
             wait
             ;;
         linktree)

@@ -131,6 +131,10 @@
 				</div>
 				<p class="footer-text">MADE WITH PIXELS & PASSION</p>
 			</div>
+			<a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn">
+				<span class="btn-icon">🔗</span>
+				<span class="btn-text">DIEGO MARCOS</span>
+			</a>
 			<div class="footer-score">
 				<span class="label">YEAR</span>
 				<span class="value">{new Date().getFullYear()}</span>
@@ -509,6 +513,40 @@
 		}
 		51%, 100% {
 			opacity: 0;
+		}
+	}
+
+	// Linktree Button
+	.linktree-btn {
+		display: flex;
+		align-items: center;
+		gap: $space-2;
+		padding: $space-3 $space-5;
+		background: linear-gradient(180deg, $gray-700 0%, $gray-800 100%);
+		border: 3px solid $purple-600;
+		border-radius: 4px;
+		font-family: $font-pixel-body;
+		color: $purple-300;
+		text-decoration: none;
+		@include transition(all);
+
+		.btn-icon {
+			font-size: $text-lg;
+		}
+
+		.btn-text {
+			font-size: $text-sm;
+			letter-spacing: 0.05em;
+		}
+
+		&:hover {
+			border-color: $pink-500;
+			@include retro-glow($pink-500);
+			transform: translateY(-2px);
+
+			.btn-text {
+				color: $pink-400;
+			}
 		}
 	}
 </style>

@@ -292,7 +292,52 @@
         FEED YOURSELF
     </div>
 
+    <!-- Linktree Button -->
+    <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn">
+        <span class="linktree-icon">🔗</span>
+        <span class="linktree-text">Diego Marcos</span>
+        <span class="linktree-arrow">→</span>
+    </a>
+
 </div>
+
+<style>
+    .linktree-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 14px 24px;
+        margin: 20px auto 30px;
+        max-width: 280px;
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 14px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    .linktree-btn:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: var(--accent);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    .linktree-icon { font-size: 1.1rem; }
+    .linktree-text { font-weight: 500; }
+    .linktree-arrow {
+        opacity: 0;
+        transition: opacity 0.3s, transform 0.3s;
+        transform: translateX(-5px);
+    }
+    .linktree-btn:hover .linktree-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+</style>
 
 <script>
     /* --- DATA (Enhanced with Fat/Carbs/UnitSize/PricePerKg) --- */

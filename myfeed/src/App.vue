@@ -25,6 +25,18 @@ onMounted(() => {
     <!-- Header -->
     <Header />
 
+    <!-- Linktree Button -->
+    <div class="max-w-[1400px] mx-auto px-4 py-3">
+      <a href="https://linktree.diegonmarcos.com" target="_blank"
+         class="inline-flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-violet-accent/50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 group">
+        <span>🔗</span>
+        <span class="text-sm font-pixel-body text-white/60 group-hover:text-violet-accent transition-colors">Diego Marcos</span>
+        <svg class="w-3 h-3 text-white/30 group-hover:text-violet-accent transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        </svg>
+      </a>
+    </div>
+
     <!-- Two-Column Layout -->
     <main class="main-container">
       <div class="two-column-layout">

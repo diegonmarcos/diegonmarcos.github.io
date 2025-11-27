@@ -13,6 +13,57 @@
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
 
+    <!-- Linktree Button Styles -->
+    <style>
+        .linktree-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 28px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-top: 1px solid #ffb400;
+            padding: 0 16px;
+            text-decoration: none;
+            font-family: "Roboto Mono", "Consolas", "Monaco", monospace;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+        .linktree-btn:hover {
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-top-color: #ffc933;
+        }
+        .linktree-btn:hover .linktree-btn__label {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .linktree-btn__cmd {
+            font-weight: 700;
+            color: #ffb400;
+            letter-spacing: 0.5px;
+        }
+        .linktree-btn__go {
+            color: #6b7280;
+            font-size: 10px;
+        }
+        .linktree-btn__label {
+            color: #6cf;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        .linktree-btn__icon {
+            width: 12px;
+            height: 12px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+        .linktree-btn:hover .linktree-btn__icon {
+            color: #ffb400;
+        }
+    </style>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -139,6 +190,14 @@
                 <!-- Function keys injected by JS -->
             </div>
         </footer>
+
+        <!-- Linktree Button -->
+        <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn" title="LINK <GO>">
+            <span class="linktree-btn__cmd">LINK</span>
+            <span class="linktree-btn__go">&lt;GO&gt;</span>
+            <span class="linktree-btn__label">Diego Marcos</span>
+            <i data-lucide="external-link" class="linktree-btn__icon"></i>
+        </a>
 
     </div>
 

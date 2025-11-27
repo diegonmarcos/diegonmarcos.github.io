@@ -1026,15 +1026,28 @@ print_project_table() {
     printf "\n"
 }
 
+# Default project root
+DEFAULT_PROJECT_ROOT="$HOME/Documents/Git/front-Github_io"
+
 # Print working directory section
 print_workdir_section() {
     printf "${YELLOW}WORKING DIRECTORY:${NC}\n"
     printf "${BLUE}══════════════════${NC}\n"
-    if [ "$PROJECT_ROOT" = "$(pwd)" ]; then
-        printf "  ${GREEN}[●]${NC} Current Directory (.)\n"
-        printf "  [ ] Custom Path: %s\n" "$PROJECT_ROOT"
+
+    # Determine which option is selected
+    _current_dir="$(pwd)"
+
+    if [ "$PROJECT_ROOT" = "$DEFAULT_PROJECT_ROOT" ]; then
+        printf "  ${GREEN}[●]${NC} Default: %s\n" "$DEFAULT_PROJECT_ROOT"
+        printf "  [ ] Current Directory: %s\n" "$_current_dir"
+        printf "  [ ] Custom Path\n"
+    elif [ "$PROJECT_ROOT" = "$_current_dir" ]; then
+        printf "  [ ] Default: %s\n" "$DEFAULT_PROJECT_ROOT"
+        printf "  ${GREEN}[●]${NC} Current Directory: %s\n" "$_current_dir"
+        printf "  [ ] Custom Path\n"
     else
-        printf "  [ ] Current Directory (.)\n"
+        printf "  [ ] Default: %s\n" "$DEFAULT_PROJECT_ROOT"
+        printf "  [ ] Current Directory: %s\n" "$_current_dir"
         printf "  ${GREEN}[●]${NC} Custom Path: %s\n" "$PROJECT_ROOT"
     fi
     printf "\n"
@@ -1122,17 +1135,23 @@ tui_simple() {
             33|test)           _cmd="test" ;;
             w|workdir)
                 printf "\n${YELLOW}Change Working Directory:${NC}\n"
-                printf "  ${CYAN}1)${NC} Current Directory: $(pwd)\n"
-                printf "  ${CYAN}2)${NC} Custom Path\n"
-                printf "${GREEN}Choose (1/2): ${NC}"
+                printf "  ${CYAN}1)${NC} Default: %s\n" "$DEFAULT_PROJECT_ROOT"
+                printf "  ${CYAN}2)${NC} Current Directory: $(pwd)\n"
+                printf "  ${CYAN}3)${NC} Custom Path\n"
+                printf "${GREEN}Choose (1/2/3): ${NC}"
                 read -r _wd_choice
                 case "$_wd_choice" in
                     1)
+                        PROJECT_ROOT="$DEFAULT_PROJECT_ROOT"
+                        printf "${GREEN}Set to default: %s${NC}\n" "$PROJECT_ROOT"
+                        sleep 1
+                        ;;
+                    2)
                         PROJECT_ROOT="$(pwd)"
                         printf "${GREEN}Set to current directory: %s${NC}\n" "$PROJECT_ROOT"
                         sleep 1
                         ;;
-                    2)
+                    3)
                         printf "${GREEN}Enter path: ${NC}"
                         read -r _new_path
                         if [ -d "$_new_path" ]; then

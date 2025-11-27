@@ -119,9 +119,12 @@
                     <p>Console & OCI CLI</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
-                            <code class="card-code">bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"</code>
-                            <button class="copy-icon" data-copy="bash -c &quot;$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)&quot;" title="Copy command">
+                            <code class="card-code">oci compute instance list --compartment-id $OCI_COMPARTMENT_ID</code>
+                            <button class="copy-icon" data-copy="oci compute instance list --compartment-id $OCI_COMPARTMENT_ID" title="Copy OCI command">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                            <button class="copy-icon cli-install" data-copy="bash -c &quot;$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)&quot;" title="Copy OCI CLI install command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             </button>
                         </div>
                     </div>
@@ -140,9 +143,12 @@
                     <p>Console & gcloud CLI</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
-                            <code class="card-code">curl https://sdk.cloud.google.com | bash</code>
-                            <button class="copy-icon" data-copy="curl https://sdk.cloud.google.com | bash" title="Copy command">
+                            <code class="card-code">gcloud compute instances list</code>
+                            <button class="copy-icon" data-copy="gcloud compute instances list" title="Copy gcloud command">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                            <button class="copy-icon cli-install" data-copy="curl https://sdk.cloud.google.com | bash" title="Copy gcloud CLI install command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                             </button>
                         </div>
                     </div>

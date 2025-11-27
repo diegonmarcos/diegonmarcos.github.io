@@ -21,8 +21,26 @@ MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Project root directory
-PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# Project root directory (resolve to absolute path of front-Github_io)
+# Handle both direct execution and sourced execution
+if [ -n "$BASH_SOURCE" ]; then
+    SCRIPT_PATH="$BASH_SOURCE"
+elif [ -n "$0" ]; then
+    SCRIPT_PATH="$0"
+fi
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Verify PROJECT_ROOT contains expected structure
+if [ ! -d "$PROJECT_ROOT/cloud" ] || [ ! -d "$PROJECT_ROOT/linktree" ]; then
+    # Fallback: try to find front-Github_io in common locations
+    for _try_root in "$HOME/Documents/Git/front-Github_io" "$HOME/front-Github_io" "$(pwd)"; do
+        if [ -d "$_try_root/cloud" ] && [ -d "$_try_root/linktree" ]; then
+            PROJECT_ROOT="$_try_root"
+            break
+        fi
+    done
+fi
 
 # PID file for tracking background processes
 PID_FILE="${PROJECT_ROOT}/1.ops/.dev-servers.pid"

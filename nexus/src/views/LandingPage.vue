@@ -17,7 +17,7 @@
       </div>
 
       <!-- The Three Paths -->
-      <div class="relative z-10 grid md:grid-cols-3 gap-6 w-full max-w-6xl">
+      <div class="relative z-10 grid md:grid-cols-3 gap-6 w-full max-w-6xl mb-12">
         <!-- Path 1: VC -->
         <div
           @click="emit('changePage', 'vc')"
@@ -111,12 +111,28 @@
           </div>
         </div>
       </div>
+
+      <!-- Linktree Button -->
+      <div class="relative z-10 mt-8">
+        <a
+          href="https://linktree.diegonmarcos.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-3 px-8 py-4 border border-stone-700 bg-stone-800/50 backdrop-blur-sm hover:border-stone-500 hover:bg-stone-800 transition-all duration-300"
+        >
+          <PhLink :size="20" class="text-stone-400 group-hover:text-white transition" />
+          <span class="text-sm font-sans tracking-wider uppercase text-stone-400 group-hover:text-white transition">
+            Linktree
+          </span>
+          <PhArrowUpRight :size="16" class="text-stone-500 group-hover:text-stone-300 transition" />
+        </a>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PhArrowRight, PhCaretRight } from '@phosphor-icons/vue'
+import { PhArrowRight, PhCaretRight, PhLink, PhArrowUpRight } from '@phosphor-icons/vue'
 import type { PageType } from '../types'
 
 const emit = defineEmits<{

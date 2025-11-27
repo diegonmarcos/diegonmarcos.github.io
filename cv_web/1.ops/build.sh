@@ -91,36 +91,27 @@ build() {
 
 # Development mode
 dev() {
-    log_info "Starting development server + Sass watch..."
     check_dependencies
 
-    # Start Sass watch in background
+    # Start Sass watch in background (silent)
     cd "$PROJECT_DIR/1.ops"
     if [ -f "package.json" ] && grep -q "sass:watch" package.json 2>/dev/null; then
-        npm run sass:watch &
-        _sass_pid=$!
+        nohup npm run sass:watch > /dev/null 2>&1 &
     fi
 
-    # Start live-server
+    # Start live-server in background
     cd "$PROJECT_DIR"
-    if command -v live-server >/dev/null 2>&1; then
-        log_success "Server starting at http://localhost:${PORT}/"
-        log_info "Press Ctrl+C to stop"
-        printf "\n"
-        live-server --port="${PORT}" --no-browser
-    elif command -v npx >/dev/null 2>&1; then
-        log_success "Server starting at http://localhost:${PORT}/"
-        log_info "Press Ctrl+C to stop"
-        printf "\n"
-        npx live-server --port="${PORT}" --no-browser
-    else
-        log_warning "live-server not found, using Python http.server"
-        log_success "Server starting at http://localhost:${PORT}/"
-        python3 -m http.server "$PORT"
-    fi
+    nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
-    # Kill sass watch on exit
-    [ -n "$_sass_pid" ] && kill "$_sass_pid" 2>/dev/null || true
+    # Print URL and return control
+    printf "\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} STARTED${NC}\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Watch Sass only

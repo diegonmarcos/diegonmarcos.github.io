@@ -24,8 +24,10 @@
 }
 
 .cta-button {
-    position: relative;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
     background-color: $brand-purple;
     color: white;
     font-weight: 700;
@@ -37,10 +39,7 @@
     text-align: center;
 
     i {
-        position: absolute;
-        left: 1.5rem;
-        top: 50%;
-        transform: translateY(-50%);
+        font-size: 1.2em;
     }
 
     &:hover {

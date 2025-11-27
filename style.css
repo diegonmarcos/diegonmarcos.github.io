@@ -1,8 +1,12 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -55,22 +59,30 @@ body {
 }
 
 .card-title {
-  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 700;
   color: #A060FF;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  width: 100%;
 }
 .card-title i {
-  margin-right: 0.5rem;
+  font-size: 1.2em;
 }
 
 .card-description {
-  font-size: clamp(1.5rem, 1.5vw, 1.5rem);
-  color: #9ca3af;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #d1d5db;
   margin-bottom: 1rem;
   font-style: italic;
+  text-align: center;
+  line-height: 1.8;
+  max-width: 800px;
+  padding: 0 1rem;
 }
 
 .card-quote {
@@ -101,11 +113,12 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   max-width: 50%;
   margin: 2rem auto;
+  width: 100%;
 }
 
 .cta {
   text-align: center;
-  margin-bottom: 10vh;
+  margin-bottom: 4rem;
 }
 .cta .section-title {
   margin-bottom: 1rem;
@@ -179,6 +192,31 @@ body {
   margin-top: 1.5rem;
 }
 
+.card-title {
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-weight: 700;
+  color: #A060FF;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+}
+.card-title i {
+  margin-right: 0.5rem;
+}
+
+.card-description {
+  font-size: clamp(1.5rem, 1.5vw, 1.5rem);
+  color: #9ca3af;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.card-quote {
+  font-style: italic;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
 .theme-toggle-button {
   position: absolute;
   top: 1rem;
@@ -203,8 +241,10 @@ body {
 }
 
 .cta-button {
-  position: relative;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
   background-color: #8A2BE2;
   color: white;
   font-weight: 700;
@@ -216,10 +256,7 @@ body {
   text-align: center;
 }
 .cta-button i {
-  position: absolute;
-  left: 1.5rem;
-  top: 50%;
-  transform: translateY(-50%);
+  font-size: 1.2em;
 }
 .cta-button:hover {
   background-color: #A060FF;
@@ -250,16 +287,6 @@ body {
   border-color: rgba(160, 96, 255, 0.5);
   box-shadow: 0 0 25px rgba(160, 96, 255, 0.4);
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Centered card effect for scroll-based selection (all devices) */
-.card.centered {
-  transform: translateY(-5px) scale(1.05);
-  border-color: rgba(160, 96, 255, 0.7) !important;
-  box-shadow: 0 0 30px rgba(160, 96, 255, 0.6) !important;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-  z-index: 10;
-  position: relative;
 }
 
 .point-box {
@@ -801,7 +828,7 @@ body.fit-to-screen .container {
   --card-border: rgba(255, 255, 255, 0.1);
   --text-primary: #d1d5db;
   --text-secondary: #9ca3af;
-  --font-sans: "Inter", sans-serif;
+  --font-sans: 'Inter', sans-serif;
   box-sizing: border-box;
   margin: 0 auto 2rem auto;
   padding: 1.5rem;
@@ -888,19 +915,15 @@ body.fit-to-screen .container {
     right: 30px;
     min-width: 200px;
   }
-  /* Make non-centered cards slightly dimmed on mobile */
-  .card:not(.centered) {
-    opacity: 0.75;
-  }
-  /* Add extra bottom padding on mobile so last card can center */
-  .cta {
-    margin-bottom: 80vh !important;
-    padding-bottom: 80vh;
+}
+@media (min-width: 768px) {
+  .value-proposition-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
-/* Keep single column layout on all screen sizes for card-by-card scrolling */
-/* Desktop gets same experience as mobile */
 .floating-btn.active,
 .floating-btn:not(.active):hover {
   background-color: var(--brand-light-purple);
 }
+
+/*# sourceMappingURL=style.css.map */

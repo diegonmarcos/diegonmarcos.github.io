@@ -73,25 +73,20 @@ build() {
 
 # Start development server
 dev() {
-    log_info "Starting development server..."
-
     cd "$PROJECT_DIR"
 
-    if command -v live-server >/dev/null 2>&1; then
-        log_success "Server starting at http://localhost:${PORT}/"
-        log_info "Press Ctrl+C to stop"
-        printf "\n"
-        live-server --port="${PORT}" --no-browser
-    elif command -v npx >/dev/null 2>&1; then
-        log_success "Server starting at http://localhost:${PORT}/"
-        log_info "Press Ctrl+C to stop"
-        printf "\n"
-        npx live-server --port="${PORT}" --no-browser
-    else
-        log_warning "live-server not found, using Python http.server"
-        log_success "Server starting at http://localhost:${PORT}/"
-        python3 -m http.server "$PORT"
-    fi
+    # Start live-server in background
+    nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+
+    # Print URL and return control
+    printf "\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} STARTED${NC}\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Clean build artifacts

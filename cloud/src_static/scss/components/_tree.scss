@@ -2,78 +2,78 @@
 .view-toggle {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
 }
 
 // Tree Controls
 .tree-controls {
     display: flex;
     justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-    padding-top: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-top: 0.5rem;
 }
 
 .tree-ctrl-btn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
+    gap: 0.25rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border-color);
     background: var(--bg-card);
     color: var(--text-secondary);
-    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
 
     svg {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
     }
 
     &:hover {
-        border-color: var(--accent-blue);
-        color: var(--text-primary);
-        background: rgba(74, 158, 255, 0.1);
+        border-color: var(--accent-orange);
+        color: var(--accent-orange);
     }
 }
 
 .view-btn {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
+    gap: 0.25rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--border-color);
     background: var(--bg-card);
     color: var(--text-secondary);
-    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
 
     svg {
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
     }
 
     &:hover {
-        border-color: var(--accent-blue);
+        border-color: var(--accent-orange);
         color: var(--text-primary);
     }
 
     &.active {
-        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
-        border-color: transparent;
-        color: white;
+        background: var(--accent-orange);
+        border-color: var(--accent-orange);
+        color: #000;
     }
 }
 
 // View Content
 .view-content {
     display: none;
-    animation: fadeIn 0.4s ease-out;
 
     &.active {
         display: block;
@@ -87,78 +87,80 @@
 // Tree Container
 .tree-container {
     display: inline-flex;
-    gap: 2rem;
+    gap: 1rem;
     justify-content: flex-start;
     align-items: flex-start;
     flex-wrap: nowrap;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     min-width: max-content;
 }
 
 // Tree VPS (top-level columns)
 .tree-vps {
     flex: 0 0 auto;
-    min-width: 280px;
+    min-width: 240px;
     width: auto;
 }
 
-// Side-by-side container for siblings (Docker + Planned)
+// Side-by-side container for siblings
 .tree-siblings {
     display: flex;
-    gap: 1rem;
+    gap: 0.5rem;
     align-items: flex-start;
 }
 
 .tree-sibling-column {
     flex: 0 0 auto;
-    min-width: 180px;
+    min-width: 160px;
 }
 
 // Tree Node
 .tree-node {
-    margin: 0.25rem 0;
+    margin: 0.15rem 0;
 
     &.vps-node {
         .node-header {
-            background: linear-gradient(135deg, var(--bg-card), rgba(74, 158, 255, 0.1));
-            border: 1px solid var(--accent-blue);
-            padding: 1rem 1.25rem;
-            font-size: 1.1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-orange);
+            border-left: 3px solid var(--accent-orange);
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
         }
     }
 
     &.vm-node {
         .node-header {
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 0.875rem 1rem;
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-blue);
+            padding: 0.4rem 0.6rem;
         }
     }
 
     &.container-node {
         .node-header {
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--accent-yellow);
+            padding: 0.35rem 0.5rem;
+            font-size: 0.85rem;
         }
     }
 
     &.service-node {
         .node-header {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 0.625rem 0.875rem;
-            font-size: 0.9rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.5rem;
+            font-size: 0.8rem;
         }
 
         &.clickable {
             cursor: pointer;
 
             &:hover .node-header {
-                background: rgba(74, 158, 255, 0.1);
-                border-color: var(--accent-blue);
-                transform: translateX(4px);
+                background: var(--bg-card-hover);
+                border-color: var(--accent-orange);
             }
         }
     }
@@ -168,23 +170,22 @@
 .node-header {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
+    gap: 0.4rem;
+    transition: all 0.15s ease;
     cursor: pointer;
     flex-wrap: wrap;
     min-width: 0;
 
     &:hover {
-        background: rgba(74, 158, 255, 0.08);
+        background: var(--bg-card-hover);
     }
 }
 
 .expand-icon {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     color: var(--text-secondary);
-    transition: transform 0.3s ease;
-    width: 12px;
+    transition: transform 0.15s ease;
+    width: 10px;
 
     &.expanded {
         transform: rotate(90deg);
@@ -192,7 +193,7 @@
 }
 
 .node-icon {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
 }
 
 .node-title {
@@ -203,81 +204,84 @@
     text-overflow: ellipsis;
     flex-shrink: 1;
     min-width: 0;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
 }
 
 .node-subtitle {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     white-space: nowrap;
 }
 
 .node-port {
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: var(--accent-blue);
-    background: rgba(74, 158, 255, 0.1);
-    padding: 0.125rem 0.5rem;
-    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--accent-orange);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.1rem 0.3rem;
     white-space: nowrap;
     flex-shrink: 0;
 }
 
 .node-badge {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-weight: 500;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    font-weight: 600;
     margin-left: auto;
     white-space: nowrap;
     flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 
     &.online {
-        background: rgba(16, 185, 129, 0.15);
+        background: transparent;
         color: var(--accent-green);
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border: 1px solid var(--accent-green);
     }
 
     &.pending {
-        background: rgba(251, 191, 36, 0.15);
+        background: transparent;
         color: var(--accent-yellow);
-        border: 1px solid rgba(251, 191, 36, 0.3);
+        border: 1px solid var(--accent-yellow);
     }
 }
 
 // Tree Children (collapsible)
 .tree-children {
-    margin-left: 1rem;
-    padding-left: 0.75rem;
-    border-left: 2px solid rgba(255, 255, 255, 0.1);
+    margin-left: 0.75rem;
+    padding-left: 0.5rem;
+    border-left: 1px solid var(--border-color);
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+    transition: max-height 0.2s ease, opacity 0.15s ease, margin 0.15s ease;
 
     &.expanded {
         max-height: 2000px;
         opacity: 1;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
     }
 
-    // No left border/margin for siblings container
     .tree-siblings & {
-        margin-left: 0.5rem;
-        padding-left: 0.5rem;
+        margin-left: 0.4rem;
+        padding-left: 0.4rem;
     }
 }
 
 // Connection lines
 .tree-vps > .tree-children {
-    margin-left: 1rem;
-    border-left-color: var(--accent-blue);
+    margin-left: 0.75rem;
+    border-left-color: var(--accent-orange);
 }
 
 .vm-node + .tree-children {
-    border-left-color: rgba(139, 92, 246, 0.4);
+    border-left-color: var(--accent-blue);
 }
 
 .container-node + .tree-children {
-    border-left-color: rgba(255, 255, 255, 0.15);
+    border-left-color: var(--accent-yellow);
 }

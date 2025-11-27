@@ -11,16 +11,19 @@ html, body {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: var(--font-mono);
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
+    font-size: 13px;
+    line-height: 1.4;
 
     @media (max-width: 768px) {
-        padding: 1rem;
+        padding: 0.5rem;
+        font-size: 12px;
     }
 }
 
@@ -34,7 +37,7 @@ body {
 }
 
 #cards-view {
-    max-width: 1400px;
+    max-width: 1600px;
     width: 100%;
     margin: 0 auto;
 }

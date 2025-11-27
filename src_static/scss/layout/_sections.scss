@@ -5,16 +5,12 @@
 
 // --- Value Proposition Section ---
 .value-proposition {
-    margin-bottom: 0;
-    scroll-snap-type: y proximity;
-    padding: 0;
+    margin-bottom: 6rem;
 }
 
 .title-with-arrow {
     position: relative;
-    padding-bottom: 2rem;
-    margin-bottom: 3rem;
-    text-align: center;
+    padding-bottom: 1.5rem;
 
     &::after {
         content: '';
@@ -31,44 +27,39 @@
 }
 
 .value-proposition-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
 }
 
 .card-points-container {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
-    width: 100%;
-    max-width: 900px;
+    gap: 1rem;
+    margin-top: 1.5rem;
 }
 
 .card-title {
-    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
     font-weight: 700;
-    color: #a060ff;
-    margin-bottom: 1.5rem;
+    color: #A060FF;
+    margin-bottom: 0.75rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 0.75rem;
 
     i {
-        font-size: 1.2em;
+        margin-right: 0.5rem;
     }
 }
 
 .card-description {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: #d1d5db;
+    font-size: clamp(1.5rem, 1.5vw, 1.5rem);
+    color: $text-secondary;
     margin-bottom: 1rem;
     font-style: italic;
-    text-align: center;
-    line-height: 1.8;
-    max-width: 800px;
-    padding: 0 1rem;
+}
+
+.card-quote {
+    font-style: italic;
+    color: $text-secondary;
+    margin-bottom: 1rem;
 }

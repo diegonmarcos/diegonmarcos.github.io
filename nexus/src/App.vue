@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import LandingPage from './views/LandingPage.vue'
@@ -23,11 +23,39 @@ import AdvisoryPage from './views/AdvisoryPage.vue'
 import ConsultingPage from './views/ConsultingPage.vue'
 import type { PageType } from './types'
 
-const currentPage = ref<PageType>('landing')
+const validPages: PageType[] = ['landing', 'vc', 'advisory', 'consulting']
+
+const getPageFromHash = (): PageType => {
+  const hash = window.location.hash.slice(1)
+  return validPages.includes(hash as PageType) ? (hash as PageType) : 'landing'
+}
+
+const currentPage = ref<PageType>(getPageFromHash())
 
 const handlePageChange = (page: PageType) => {
-  currentPage.value = page
+  if (page !== currentPage.value) {
+    currentPage.value = page
+    window.history.pushState({ page }, '', `#${page}`)
+  }
 }
+
+const handlePopState = (event: PopStateEvent) => {
+  if (event.state?.page && validPages.includes(event.state.page)) {
+    currentPage.value = event.state.page
+  } else {
+    currentPage.value = getPageFromHash()
+  }
+}
+
+onMounted(() => {
+  // Set initial state
+  window.history.replaceState({ page: currentPage.value }, '', `#${currentPage.value}`)
+  window.addEventListener('popstate', handlePopState)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('popstate', handlePopState)
+})
 </script>
 
 <style scoped>

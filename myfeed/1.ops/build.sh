@@ -92,15 +92,21 @@ build() {
 
 # Development server
 dev() {
-    log_info "Starting Vite development server..."
     check_dependencies
     cd "$PROJECT_DIR"
 
-    log_success "Server starting at http://localhost:${PORT}/"
-    log_info "Press Ctrl+C to stop"
-    printf "\n"
+    # Start Vite in background
+    nohup npm run dev > /dev/null 2>&1 &
 
-    npm run dev
+    # Print URL and return control
+    printf "\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} STARTED${NC}\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Preview production build

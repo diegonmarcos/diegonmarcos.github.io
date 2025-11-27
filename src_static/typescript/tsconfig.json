@@ -9,7 +9,7 @@
     "moduleResolution": "bundler",
 
     /* Emit */
-    "outDir": "..",
+    "outDir": "../../dist",
     "removeComments": true,
     "sourceMap": true,
     "mapRoot": "./logs",

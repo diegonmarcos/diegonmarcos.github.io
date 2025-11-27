@@ -383,16 +383,19 @@ build_all() {
 
     _failed=0
 
+    # Create dist directory for root
+    mkdir -p "$PROJECT_ROOT/dist"
+
     # Build root Sass
     log_info "Building root Sass..."
-    if [ -d "$PROJECT_ROOT/3.sass" ]; then
-        (cd "$PROJECT_ROOT/3.sass" && npm install > /dev/null 2>&1 && npm run sass:build) || _failed=$((_failed + 1))
+    if [ -d "$PROJECT_ROOT/src_static/scss" ]; then
+        (cd "$PROJECT_ROOT/src_static/scss" && npm install > /dev/null 2>&1 && npm run sass:build) || _failed=$((_failed + 1))
     fi
 
     # Build root TypeScript
     log_info "Building root TypeScript..."
-    if [ -d "$PROJECT_ROOT/4.ts" ]; then
-        (cd "$PROJECT_ROOT/4.ts" && npm install > /dev/null 2>&1 && npm run ts:build) || _failed=$((_failed + 1))
+    if [ -d "$PROJECT_ROOT/src_static/typescript" ]; then
+        (cd "$PROJECT_ROOT/src_static/typescript" && npm install > /dev/null 2>&1 && npm run ts:build) || _failed=$((_failed + 1))
     fi
 
     # Build each sub-project
@@ -423,6 +426,8 @@ clean_all_builds() {
     log_info "Cleaning root build artifacts..."
     rm -rf "$PROJECT_ROOT/style.css" "$PROJECT_ROOT/style.css.map"
     rm -rf "$PROJECT_ROOT/script.js" "$PROJECT_ROOT/script.js.map"
+    rm -rf "$PROJECT_ROOT/src_static/style.css" "$PROJECT_ROOT/src_static/style.css.map"
+    rm -rf "$PROJECT_ROOT/src_static/script.js" "$PROJECT_ROOT/src_static/script.js.map"
 
     # Clean sub-projects
     execute_build "linktree" "clean" || true
@@ -512,8 +517,8 @@ dev_all() {
     if command -v tmux >/dev/null 2>&1; then
         log_info "Starting servers in tmux sessions..."
 
-        tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/3.sass && npm install && npm run sass:watch" 2>/dev/null || true
-        tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/4.ts && npm install && npm run ts:watch" 2>/dev/null || true
+        tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/src_static/scss && npm install && npm run sass:watch" 2>/dev/null || true
+        tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/src_static/typescript && npm install && npm run ts:watch" 2>/dev/null || true
         tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/3.sass && npm install && npm run sass:watch" 2>/dev/null || true
         tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && sh build.sh dev" 2>/dev/null || true
@@ -559,10 +564,10 @@ dev_all() {
 
         # Start servers in background
         log_info "Starting root Sass..."
-        (cd "$PROJECT_ROOT/3.sass" && nohup npm run sass:watch > "$PROJECT_ROOT/1.ops/logs/sass-dev.log" 2>&1 &)
+        (cd "$PROJECT_ROOT/src_static/scss" && nohup npm run sass:watch > "$PROJECT_ROOT/1.ops/logs/sass-dev.log" 2>&1 &)
 
         log_info "Starting root TypeScript..."
-        (cd "$PROJECT_ROOT/4.ts" && nohup npm run ts:watch > "$PROJECT_ROOT/1.ops/logs/ts-dev.log" 2>&1 &)
+        (cd "$PROJECT_ROOT/src_static/typescript" && nohup npm run ts:watch > "$PROJECT_ROOT/1.ops/logs/ts-dev.log" 2>&1 &)
 
         log_info "Starting linktree..."
         nohup sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/linktree-dev.log" 2>&1 &
@@ -1240,11 +1245,14 @@ main() {
             build_all "$_force"
             ;;
         build-root)
+            mkdir -p "$PROJECT_ROOT/dist"
             log_section "Building Root Sass"
-            (cd "$PROJECT_ROOT/3.sass" && npm install && npm run sass:build)
+            (cd "$PROJECT_ROOT/src_static/scss" && npm install && npm run sass:build)
             log_section "Building Root TypeScript"
-            (cd "$PROJECT_ROOT/4.ts" && npm install && npm run ts:build)
-            log_success "Root build completed"
+            (cd "$PROJECT_ROOT/src_static/typescript" && npm install && npm run ts:build)
+            log_info "Copying index.html to dist..."
+            cp "$PROJECT_ROOT/src_static/index.html" "$PROJECT_ROOT/dist/"
+            log_success "Root build completed → $PROJECT_ROOT/dist/"
             ;;
         build-linktree)
             execute_build "linktree" "build"
@@ -1280,7 +1288,7 @@ main() {
             dev_all "$_verbose"
             ;;
         dev-root)
-            dev_single "root" "$URL_ROOT" "watcher"
+            dev_single "root" "$URL_ROOT"
             ;;
         dev-linktree)
             dev_single "linktree" "$URL_LINKTREE"

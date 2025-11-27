@@ -6,6 +6,10 @@
     margin-top: 1rem;
 }
 
+[data-theme="blurred"] .view-toggle {
+    gap: 0.75rem;
+}
+
 // Tree Controls
 .tree-controls {
     display: flex;
@@ -27,7 +31,8 @@
     font-size: 0.75rem;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all var(--transition-speed) ease;
+    border-radius: var(--border-radius);
 
     svg {
         width: 12px;
@@ -35,8 +40,20 @@
     }
 
     &:hover {
-        border-color: var(--accent-orange);
-        color: var(--accent-orange);
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+    }
+}
+
+[data-theme="blurred"] .tree-ctrl-btn {
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-blue);
+        color: var(--accent-blue);
     }
 }
 
@@ -52,7 +69,8 @@
     font-size: 0.8rem;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: all var(--transition-speed) ease;
+    border-radius: var(--border-radius);
 
     svg {
         width: 14px;
@@ -60,14 +78,33 @@
     }
 
     &:hover {
-        border-color: var(--accent-orange);
+        border-color: var(--accent-primary);
         color: var(--text-primary);
     }
 
     &.active {
-        background: var(--accent-orange);
-        border-color: var(--accent-orange);
+        background: var(--accent-primary);
+        border-color: var(--accent-primary);
         color: #000;
+    }
+}
+
+[data-theme="blurred"] .view-btn {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.05);
+    text-transform: none;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: var(--accent-blue);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+        border-color: transparent;
+        color: white;
     }
 }
 

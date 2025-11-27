@@ -11,7 +11,7 @@ html, body {
 }
 
 body {
-    font-family: var(--font-mono);
+    font-family: var(--font-main);
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
@@ -20,10 +20,23 @@ body {
     flex-direction: column;
     font-size: 13px;
     line-height: 1.4;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
 
     @media (max-width: 768px) {
         padding: 0.5rem;
         font-size: 12px;
+    }
+}
+
+// Blurred theme: gradient background
+[data-theme="blurred"] body {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    font-size: 14px;
+    padding: 2rem;
+
+    @media (max-width: 768px) {
+        padding: 1rem;
+        font-size: 13px;
     }
 }
 
@@ -34,6 +47,10 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+[data-theme="blurred"] .container {
+    max-width: 1400px;
 }
 
 #cards-view {

@@ -31,19 +31,19 @@ jobs:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: |
-            src_static/scss/package-lock.json
+            landpage/src_static/scss/package-lock.json
             cv_web/src_static/scss/package-lock.json
-            src_static/typescript/package-lock.json
+            landpage/src_static/typescript/package-lock.json
 
-      - name: 🎨 Build CSS from Sass (Root)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'src_static/scss/')
+      - name: 🎨 Build CSS from Sass (Landpage)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'landpage/src_static/scss/')
         run: |
-          echo "📁 Building root Sass..."
-          cd src_static/scss
+          echo "📁 Building Landpage Sass..."
+          cd landpage/src_static/scss
           npm install
           npm run sass:build
-          cd ../..
-          echo "✅ Root style.css created"
+          cd ../../..
+          echo "✅ Landpage style.css created"
 
       - name: 🎨 Build CSS from Sass (cv_web)
         if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/src_static/scss/')
@@ -58,15 +58,15 @@ jobs:
       # ============================================
       # TYPESCRIPT COMPILATION (Conditional)
       # ============================================
-      - name: 📜 Build JS from TypeScript
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'src_static/typescript/')
+      - name: 📜 Build JS from TypeScript (Landpage)
+        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'landpage/src_static/typescript/')
         run: |
-          echo "📜 Building TypeScript..."
-          cd src_static/typescript
+          echo "📜 Building Landpage TypeScript..."
+          cd landpage/src_static/typescript
           npm install
           npm run ts:build
-          cd ../..
-          echo "✅ script.js created"
+          cd ../../..
+          echo "✅ Landpage script.js created"
 
       # ============================================
       # MYFEED BUILD (Vue 3 + Vite - Conditional)
@@ -161,8 +161,22 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
-          # Copy all relevant files and directories (excluding myfeed for now)
-          cp -r index.html style.css script.js linktree/ cv_web/ cv_pdf/ 2.assets/ others/ _site/ 2>/dev/null || true
+          # Copy all relevant files and directories
+          cp -r linktree/ cv_web/ cv_pdf/ others/ _site/ 2>/dev/null || true
+
+          # Copy Landpage (main landing page)
+          if [ -d "landpage/dist" ]; then
+            echo "📦 Copying Landpage build..."
+            mkdir -p _site/landpage
+            cp -r landpage/dist/* _site/landpage/
+            echo "✅ Landpage build copied to _site/landpage/"
+          elif [ -d "landpage/src_static" ]; then
+            echo "📦 Copying Landpage src_static..."
+            mkdir -p _site/landpage
+            cp landpage/src_static/index.html landpage/src_static/style.css landpage/src_static/script.js _site/landpage/ 2>/dev/null || true
+            cp -r landpage/public _site/landpage/ 2>/dev/null || true
+            echo "✅ Landpage src_static copied to _site/landpage/"
+          fi
 
           # Copy Matomo tracking scripts
           if [ -d "1.ops/matomo-tracking" ]; then

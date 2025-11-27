@@ -4,7 +4,7 @@
 
 | **Project**       | **Description**                 | **Classification (Type)**      | **Framework** | Build Strategy           | **Single-File** | **SPA** |
 | ----------------- | ------------------------------- | ------------------------------ | ------------- | ------------------------ | --------------- | ------- |
-| **Root**          | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Landpage**      | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Linktree**      | Simple links hub & bio page     | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **CV Web**        | Digital Resume/CV               | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
@@ -22,7 +22,7 @@
 
 | **Project**       | **Framework** | **CSS**  | **JS Variant** |
 | ----------------- | ------------- | -------- | -------------- |
-| **Root**          | Vanilla       | Sass     | TypeScript     |
+| **Landpage**      | Vanilla       | Sass     | TypeScript     |
 | **Linktree**      | Vanilla       | Sass     | Vanilla        |
 | **CV Web**        | Vanilla       | Sass     | Vanilla        |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
@@ -40,7 +40,7 @@
 
 | **Project**       | **Dev Server (Port)** | **Watch**  |
 | ----------------- | --------------------- | ---------- |
-| **Root**          | npm-live :8000        | Sass, TS   |
+| **Landpage**      | npm-live :8000        | Sass, TS   |
 | **Linktree**      | npm-live :8001        | -          |
 | **CV Web**        | npm-live :8002        | Sass       |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
@@ -73,7 +73,7 @@
 * **SvelteKit:** Used for Type 4 Hybrid applications needing SEO + interactivity (MyProfile).
 
 ### CSS Strategy
-* **Sass:** The default styling engine for custom designs. (Root, Linktree, CV Web, Cloud, MarketWatch, Feed Yourself)
+* **Sass:** The default styling engine for custom designs. (Landpage, Linktree, CV Web, Cloud, MarketWatch, Feed Yourself)
 * **Tailwind:** Pure utility-first approach. (HealthTracker)
 * **Sass+Tailwind:** Hybrid - Sass for custom styles, Tailwind for utilities. (Nexus)
 

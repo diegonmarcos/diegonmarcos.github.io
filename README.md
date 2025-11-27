@@ -2,7 +2,7 @@
 
 This repository contains the source code for my personal portfolio website and blog, hosted on GitHub Pages.
 
-**Live Site: [https://diegonmarcos.github.io/](https://diegonmarcos.github.io/)**
+**Live Site: [https://diegonmarcos.github.io/landpage](https://diegonmarcos.github.io/landpage)**
 
 
 ---
@@ -13,7 +13,7 @@ This repository contains the source code for my personal portfolio website and b
 
 | **Project**       | **Description**                 | **Classification (Type)**      | **Framework** | Build Strategy           | **Single-File** | **SPA** |
 | ----------------- | ------------------------------- | ------------------------------ | ------------- | ------------------------ | --------------- | ------- |
-| **Root**          | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Landpage**      | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Linktree**      | Simple links hub & bio page     | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **CV Web**        | Digital Resume/CV               | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
@@ -29,7 +29,7 @@ This repository contains the source code for my personal portfolio website and b
 
 | **Project**       | **Framework** | **CSS**  | **JS Variant** |
 | ----------------- | ------------- | -------- | -------------- |
-| **Root**          | Vanilla       | Sass     | TypeScript     |
+| **Landpage**      | Vanilla       | Sass     | TypeScript     |
 | **Linktree**      | Vanilla       | Sass     | Vanilla        |
 | **CV Web**        | Vanilla       | Sass     | Vanilla        |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
@@ -45,7 +45,7 @@ This repository contains the source code for my personal portfolio website and b
 
 | **Project**       | **Dev Server (Port)** | **Watch**  |
 | ----------------- | --------------------- | ---------- |
-| **Root**          | npm-live :8000        | Sass, TS   |
+| **Landpage**      | npm-live :8000        | Sass, TS   |
 | **Linktree**      | npm-live :8001        | -          |
 | **CV Web**        | npm-live :8002        | Sass       |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
@@ -64,18 +64,21 @@ The repository follows a numbered directory structure for clarity and organizati
 
 ```
 /
-├── 0.spec/         # Specification documents (project specs, ops specs)
-├── 1.ops/          # Build scripts, npm packages, and operational configurations
-├── 2.assets/       # Static assets (images, icons, etc.)
-├── 3.sass/         # Sass/SCSS source files
-├── 4.ts/           # TypeScript source files
-├── blog/           # Jekyll blog source and build scripts
-├── cv_web/         # Source files for the interactive web CV
-├── linktree/       # Source files for the linktree page
-├── .github/        # GitHub Actions workflow definitions
-├── index.html      # Main landing page
-├── script.js       # Compiled JavaScript
-└── style.css       # Compiled CSS
+├── .github/workflows/  # GitHub Actions CI/CD
+├── 0.spec/             # Specifications & documentation
+├── 1.ops/              # Build scripts & operations
+├── landpage/           # Main landing page (diegonmarcos.com)
+├── linktree/           # Links hub & bio page
+├── cv_web/             # Digital Resume/CV
+├── cv_pdf/             # PDF Resume
+├── cloud/              # Cloud resources monitor
+├── market_watch/       # Financial market tracker
+├── health_tracker/     # Personal health monitoring
+├── feed_yourself/      # Calculator / Utility Tool
+├── nexus/              # Company Business Website
+├── myfeed/             # Social feed aggregator (Vue 3)
+├── myprofile/          # Personal portfolio (SvelteKit)
+└── others/             # Python tools & scripts
 ```
 
 For more details on the project's technical specifications and operational workflows, please see the documents in the `0.spec/` directory:

@@ -1,0 +1,186 @@
+// Table Component
+.data-table {
+  width: 100%;
+  font-family: $font-mono;
+  font-size: 9px;
+  border-collapse: collapse;
+  white-space: nowrap;
+
+  &__section {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__title {
+    font-size: 10px;
+    font-weight: 700;
+    color: $amber;
+    border-bottom: 1px solid $gray-800;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+  }
+
+  thead {
+    tr {
+      border-bottom: 1px solid $border-light;
+    }
+
+    th {
+      padding: 4px 6px;
+      font-weight: 400;
+      font-size: 9px;
+      color: $amber;
+      text-align: right;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 4px;
+      }
+
+      &:last-child {
+        padding-right: 4px;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      cursor: pointer;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background: $bg-panel;
+
+        .ticker-cell {
+          text-decoration: underline;
+          text-underline-offset: 2px;
+        }
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      padding: 4px 6px;
+      text-align: right;
+      line-height: 1.2;
+
+      &:first-child {
+        text-align: left;
+        padding-left: 4px;
+      }
+
+      &:last-child {
+        padding-right: 4px;
+      }
+    }
+  }
+
+  // Cell types
+  .ticker-cell {
+    color: $ticker-cyan;
+    font-weight: 500;
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .price-cell {
+    color: $white;
+    font-weight: 700;
+  }
+
+  .perf-cell {
+    &.positive {
+      color: $positive;
+    }
+
+    &.negative {
+      color: $negative;
+    }
+
+    &.neutral {
+      color: $gray-500;
+    }
+  }
+
+  // Flash animation for live updates
+  .flash-up {
+    animation: flashGreen 0.5s ease-out;
+  }
+
+  .flash-down {
+    animation: flashRed 0.5s ease-out;
+  }
+}
+
+@keyframes flashGreen {
+  0% { background-color: rgba(0, 255, 0, 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flashRed {
+  0% { background-color: rgba(255, 68, 68, 0.3); }
+  100% { background-color: transparent; }
+}
+
+// Yield table variant
+.yield-table {
+  flex: 1;
+
+  &__title {
+    font-size: 9px;
+    font-weight: 700;
+    color: $amber;
+    border-bottom: 1px solid $gray-800;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+  }
+
+  table {
+    width: 100%;
+    font-family: $font-mono;
+    font-size: 9px;
+    border-collapse: collapse;
+
+    thead {
+      th {
+        padding: 2px 0;
+        font-weight: 400;
+        color: $amber;
+        text-align: right;
+
+        &:first-child {
+          text-align: left;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      td {
+        padding: 2px 0;
+        text-align: right;
+
+        &:first-child {
+          text-align: left;
+          color: $ticker-cyan;
+          font-weight: 700;
+        }
+
+        &:nth-child(2) {
+          color: $white;
+        }
+      }
+    }
+  }
+}

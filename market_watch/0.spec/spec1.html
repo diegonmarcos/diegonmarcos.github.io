@@ -1,0 +1,321 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Activity,
+  Globe,
+  DollarSign,
+  Briefcase,
+  Layers,
+  Landmark,
+  User,
+  LineChart,
+  Maximize2,
+  Search,
+  Filter
+} from 'lucide-react';
+
+// --- Mock Data Generator ---
+
+const generateRow = (name) => ({
+  name,
+  daily: (Math.random() * 2 - 1).toFixed(2) + '%',
+  w1: (Math.random() * 4 - 2).toFixed(2) + '%',
+  m1: (Math.random() * 6 - 3).toFixed(2) + '%',
+  ytd: (Math.random() * 15 - 5).toFixed(2) + '%',
+  y1: (Math.random() * 20 - 8).toFixed(2) + '%',
+  y3: (Math.random() * 40 - 10).toFixed(2) + '%'
+});
+
+const INDEX_DATA = [
+  generateRow('S&P 500'), generateRow('Nasdaq 100'), generateRow('Dow Jones'),
+  generateRow('Russell 2000'), generateRow('VIX Volatility'), generateRow('IBOVESPA'),
+  generateRow('Nikkei 225'), generateRow('DAX (Ger)'), generateRow('FTSE 100'), generateRow('Shanghai Comp')
+];
+
+const CURRENCY_DATA = [
+  generateRow('US Dollar Index'), generateRow('EUR/USD'), generateRow('GBP/USD'),
+  generateRow('USD/JPY'), generateRow('USD/CHF'), generateRow('AUD/USD'),
+  generateRow('USD/CAD'), generateRow('USD/CNY'), generateRow('USD/BRL'), generateRow('Bitcoin/USD')
+];
+
+const COMMODITY_DATA = [
+  generateRow('Gold Spot'), generateRow('Silver Spot'), generateRow('WTI Crude Oil'),
+  generateRow('Brent Crude'), generateRow('Natural Gas'), generateRow('Copper'),
+  generateRow('Platinum'), generateRow('Corn'), generateRow('Soybeans'), generateRow('Wheat')
+];
+
+const BUFFETT_DATA = [
+  generateRow('Apple (AAPL)'), generateRow('Bank of America'), generateRow('American Express'),
+  generateRow('Coca-Cola'), generateRow('Chevron'), generateRow('Occidental Pete'),
+  generateRow('Kraft Heinz'), generateRow('Moodys Corp'), generateRow('DaVita Inc'), generateRow('Citigroup')
+];
+
+const TREASURY_DATA = [
+  generateRow('US 01M Bill'), generateRow('US 03M Bill'), generateRow('US 06M Bill'),
+  generateRow('US 01Y Bond'), generateRow('US 02Y Bond'), generateRow('US 05Y Bond'),
+  generateRow('US 07Y Bond'), generateRow('US 10Y Bond'), generateRow('US 20Y Bond'), generateRow('US 30Y Bond')
+];
+
+const PERSONAL_DATA = [
+  generateRow('NVIDIA (NVDA)'), generateRow('Tesla (TSLA)'), generateRow('Microsoft (MSFT)'),
+  generateRow('Amazon (AMZN)'), generateRow('Alphabet (GOOGL)'), generateRow('Meta Platforms'),
+  generateRow('Palantir (PLTR)'), generateRow('Coinbase (COIN)'), generateRow('Petrobras (PBR)'), generateRow('Vale (VALE)')
+];
+
+// --- Components ---
+
+// Ticking Live Value Component
+const LiveCell = ({ value, align = 'right' }) => {
+  const [currVal, setCurrVal] = useState(parseFloat(value));
+  const [flash, setFlash] = useState(null); // 'up' | 'down' | null
+
+  useEffect(() => {
+    // Randomly update values to simulate live socket
+    const interval = setInterval(() => {
+      if (Math.random() > 0.9) {
+        const change = (Math.random() - 0.5) * 0.1;
+        setCurrVal(prev => {
+          const next = prev + change;
+          setFlash(next > prev ? 'up' : 'down');
+          setTimeout(() => setFlash(null), 500);
+          return next;
+        });
+      }
+    }, 1000 + Math.random() * 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const colorClass = currVal >= 0 ? 'text-emerald-400' : 'text-rose-400';
+  const bgClass = flash === 'up' ? 'bg-emerald-500/20' : flash === 'down' ? 'bg-rose-500/20' : '';
+
+  return (
+    <div className={`w-full h-full flex items-center ${align === 'right' ? 'justify-end' : 'justify-start'}`}>
+      <span className={`px-1 rounded-sm transition-colors duration-300 ${colorClass} ${bgClass}`}>
+        {currVal > 0 ? '+' : ''}{currVal.toFixed(2)}%
+      </span>
+    </div>
+  );
+};
+
+// Compact Row
+const CompactRow = ({ row, isEven }) => (
+  <tr className={`border-b border-slate-800/40 hover:bg-slate-800/60 transition-colors ${isEven ? 'bg-slate-900/20' : ''}`}>
+    <td className="py-1 px-2 text-left font-semibold text-slate-300 truncate max-w-[100px] border-r border-slate-800/30">
+      {row.name}
+    </td>
+    <td className="py-1 px-2 text-right border-r border-slate-800/30"><LiveCell value={row.daily} /></td>
+    <td className="py-1 px-2 text-right border-r border-slate-800/30 text-slate-400"><span className={parseFloat(row.w1) >= 0 ? 'text-emerald-500/80' : 'text-rose-500/80'}>{row.w1}</span></td>
+    <td className="py-1 px-2 text-right border-r border-slate-800/30 text-slate-400"><span className={parseFloat(row.m1) >= 0 ? 'text-emerald-500/80' : 'text-rose-500/80'}>{row.m1}</span></td>
+    <td className="py-1 px-2 text-right border-r border-slate-800/30"><span className={parseFloat(row.ytd) >= 0 ? 'text-emerald-400' : 'text-rose-400'}>{row.ytd}</span></td>
+    <td className="py-1 px-2 text-right border-r border-slate-800/30 text-slate-500">{row.y1}</td>
+    <td className="py-1 px-2 text-right text-slate-500">{row.y3}</td>
+  </tr>
+);
+
+// Table Container
+const CompactTable = ({ title, icon: Icon, data }) => (
+  <div className="bg-slate-900 border border-slate-800 rounded shadow-sm flex flex-col h-full">
+    {/* Header */}
+    <div className="flex items-center justify-between px-2 py-1.5 bg-slate-950 border-b border-slate-800">
+      <div className="flex items-center gap-2">
+        <Icon size={12} className="text-blue-500" />
+        <h3 className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">{title}</h3>
+      </div>
+      <Maximize2 size={10} className="text-slate-600 hover:text-white cursor-pointer" />
+    </div>
+
+    {/* Table */}
+    <div className="overflow-x-auto no-scrollbar flex-grow">
+      <table className="w-full text-[10px] font-mono leading-tight whitespace-nowrap">
+        <thead>
+          <tr className="bg-slate-950 text-slate-500 font-semibold border-b border-slate-800">
+            <th className="py-1 px-2 text-left sticky left-0 bg-slate-950 z-10 border-r border-slate-800">Asset</th>
+            <th className="py-1 px-2 text-right w-16 border-r border-slate-800">Daily</th>
+            <th className="py-1 px-2 text-right w-16 border-r border-slate-800">1 Wk</th>
+            <th className="py-1 px-2 text-right w-16 border-r border-slate-800">1 Mo</th>
+            <th className="py-1 px-2 text-right w-16 border-r border-slate-800">YTD</th>
+            <th className="py-1 px-2 text-right w-16 border-r border-slate-800">1 Yr</th>
+            <th className="py-1 px-2 text-right w-16">3 Yr</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((row, idx) => (
+            <CompactRow key={idx} row={row} isEven={idx % 2 === 0} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+);
+
+// Combined Macro Chart
+const CombinedYieldChart = () => {
+  const usData = [5.4, 5.3, 4.9, 4.5, 4.4, 4.3, 4.4, 4.5, 4.6]; // Inverted US curve
+  const brData = [10.5, 10.4, 10.3, 10.4, 10.6, 10.9, 11.2, 11.4, 11.5]; // Upward BR curve
+  const labels = ['1M', '3M', '6M', '1Y', '2Y', '5Y', '10Y', '20Y', '30Y'];
+
+  const width = 100;
+  const height = 60;
+  const padding = 5;
+
+  // Scales
+  const maxVal = 12; // Max Y (12%)
+  const minVal = 3;  // Min Y (3%)
+
+  const getX = (i) => (i / (labels.length - 1)) * (width - padding * 2) + padding;
+  const getY = (val) => height - padding - ((val - minVal) / (maxVal - minVal)) * (height - padding * 2);
+
+  const makePath = (data) => {
+    return `M ${data.map((d, i) => `${getX(i)},${getY(d)}`).join(' L ')}`;
+  };
+
+  return (
+    <div className="bg-slate-900 border border-slate-800 rounded p-3 relative h-full flex flex-col">
+      <div className="flex justify-between items-start mb-2">
+        <h3 className="text-[11px] font-bold text-slate-300 uppercase flex items-center gap-2">
+          <LineChart size={12} /> Yield Curve Comparison
+        </h3>
+        <div className="flex gap-3 text-[10px]">
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-blue-500"></div> <span className="text-slate-400">US Treasuries</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-2 h-2 rounded-full bg-green-500"></div> <span className="text-slate-400">Brazil DI Future</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-grow w-full relative">
+        <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible" preserveAspectRatio="none">
+          {/* Grid Lines */}
+          {[4, 6, 8, 10, 12].map(val => (
+            <g key={val}>
+              <line x1={padding} y1={getY(val)} x2={width-padding} y2={getY(val)} stroke="#1e293b" strokeWidth="0.2" />
+              <text x={0} y={getY(val) + 1.5} fontSize="2.5" fill="#475569" textAnchor="start">{val}%</text>
+            </g>
+          ))}
+
+          {/* US Line */}
+          <path d={makePath(usData)} fill="none" stroke="#3b82f6" strokeWidth="0.8" />
+          {/* Brazil Line */}
+          <path d={makePath(brData)} fill="none" stroke="#22c55e" strokeWidth="0.8" />
+
+          {/* Points US */}
+          {usData.map((d, i) => (
+             <circle key={`us-${i}`} cx={getX(i)} cy={getY(d)} r="1" fill="#1e293b" stroke="#60a5fa" strokeWidth="0.5" />
+          ))}
+          {/* Points BR */}
+          {brData.map((d, i) => (
+             <circle key={`br-${i}`} cx={getX(i)} cy={getY(d)} r="1" fill="#1e293b" stroke="#4ade80" strokeWidth="0.5" />
+          ))}
+
+          {/* Labels */}
+          {labels.map((l, i) => (
+            <text key={i} x={getX(i)} y={height} fontSize="2.5" fill="#64748b" textAnchor="middle">{l}</text>
+          ))}
+        </svg>
+      </div>
+    </div>
+  );
+};
+
+// --- Main App ---
+
+const App = () => {
+  return (
+    <div className="min-h-screen bg-black text-slate-300 font-sans text-xs selection:bg-blue-900 selection:text-white">
+
+      {/* Navbar */}
+      <nav className="h-10 border-b border-slate-800 bg-slate-950 flex items-center px-4 justify-between fixed top-0 w-full z-50">
+        <div className="flex items-center gap-4">
+          <div className="font-bold text-slate-100 flex items-center gap-1">
+            <Activity size={14} className="text-blue-500" />
+            MW<span className="text-slate-600">TERMINAL</span>
+          </div>
+          <div className="h-4 w-[1px] bg-slate-800"></div>
+          <div className="flex gap-4 text-[11px] font-medium text-slate-400">
+            <span className="text-white border-b border-blue-500 pb-2.5 mt-2.5">Performance</span>
+            <span className="hover:text-white cursor-pointer transition-colors mt-2.5">News</span>
+            <span className="hover:text-white cursor-pointer transition-colors mt-2.5">Screener</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="bg-slate-900 border border-slate-800 rounded px-2 py-0.5 flex items-center gap-2 text-[10px] text-slate-400 min-w-[150px]">
+            <Search size={10} />
+            <span>Search ticker...</span>
+          </div>
+          <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+        </div>
+      </nav>
+
+      <main className="pt-14 pb-8 px-2 max-w-[1920px] mx-auto">
+
+        {/* Performance Grid */}
+        <section className="mb-6">
+          <div className="flex items-center justify-between mb-2 px-1">
+             <h2 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+               MARKET PERFORMANCE
+             </h2>
+             <div className="flex gap-2">
+               <button className="flex items-center gap-1 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-[10px] hover:bg-slate-800">
+                 <Filter size={10}/> Filters
+               </button>
+             </div>
+          </div>
+
+          {/* High Density Grid: 3 columns on large screens, scrollable on mobile */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
+
+            <CompactTable title="Global Indexes" icon={Globe} data={INDEX_DATA} />
+            <CompactTable title="Currencies" icon={DollarSign} data={CURRENCY_DATA} />
+            <CompactTable title="Commodities" icon={Layers} data={COMMODITY_DATA} />
+
+            <CompactTable title="Buffett Portfolio" icon={Briefcase} data={BUFFETT_DATA} />
+            <CompactTable title="US Treasury Bonds" icon={Landmark} data={TREASURY_DATA} />
+            <CompactTable title="Personal Portfolio" icon={User} data={PERSONAL_DATA} />
+
+          </div>
+        </section>
+
+        {/* Macro Section */}
+        <section className="h-64 border-t border-slate-800 pt-4 mt-4">
+           <h2 className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2 px-1">
+             MACRO OUTLOOK
+           </h2>
+
+           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 h-full pb-8">
+              {/* Chart - Takes up 2 columns */}
+              <div className="lg:col-span-2 h-full">
+                <CombinedYieldChart />
+              </div>
+
+              {/* Macro Cards - Takes up 1 column */}
+              <div className="grid grid-cols-2 gap-2 h-full">
+                 <div className="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between">
+                    <div className="text-[10px] text-slate-500 uppercase font-bold">US 10Y Yield</div>
+                    <div className="text-xl text-blue-400 font-mono">4.42%</div>
+                    <div className="text-[10px] text-slate-600">Target: 4.00%</div>
+                 </div>
+                 <div className="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between">
+                    <div className="text-[10px] text-slate-500 uppercase font-bold">Brazil Selic</div>
+                    <div className="text-xl text-emerald-400 font-mono">10.50%</div>
+                    <div className="text-[10px] text-slate-600">Target: 9.75%</div>
+                 </div>
+                 <div className="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between">
+                    <div className="text-[10px] text-slate-500 uppercase font-bold">Brent Crude</div>
+                    <div className="text-xl text-slate-200 font-mono">82.40</div>
+                    <div className="text-[10px] text-rose-500">-1.20%</div>
+                 </div>
+                 <div className="bg-slate-900 border border-slate-800 p-3 rounded flex flex-col justify-between">
+                    <div className="text-[10px] text-slate-500 uppercase font-bold">Gold Spot</div>
+                    <div className="text-xl text-slate-200 font-mono">2,340.50</div>
+                    <div className="text-[10px] text-emerald-500">+0.45%</div>
+                 </div>
+              </div>
+           </div>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default App;

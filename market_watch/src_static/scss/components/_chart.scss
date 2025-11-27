@@ -1,0 +1,99 @@
+// Chart Component
+.yield-chart {
+  width: 100%;
+  height: 100%;
+  background: $black;
+  border: 1px solid $gray-800;
+  position: relative;
+
+  &__title {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    color: $amber;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2px 6px;
+    border: 1px solid rgba(255, 180, 0, 0.3);
+    z-index: 10;
+  }
+
+  &__legend {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    display: flex;
+    gap: 12px;
+    font-size: 8px;
+    z-index: 10;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .legend-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+
+        &.us {
+          background: #ffff00;
+        }
+
+        &.br {
+          background: $positive;
+        }
+      }
+
+      .legend-label {
+        color: $gray-400;
+      }
+    }
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    .grid-line {
+      stroke: $border-dark;
+      stroke-dasharray: 2, 2;
+      stroke-width: 0.5;
+    }
+
+    .grid-label {
+      fill: $gray-500;
+      font-family: $font-mono;
+      font-size: 8px;
+    }
+
+    .axis-label {
+      fill: $amber;
+      font-family: $font-mono;
+      font-size: 8px;
+    }
+
+    .line-us {
+      fill: none;
+      stroke: #ffff00;
+      stroke-width: 1.5;
+    }
+
+    .line-br {
+      fill: none;
+      stroke: $positive;
+      stroke-width: 1.5;
+    }
+
+    .point-us {
+      fill: #ffff00;
+    }
+
+    .point-br {
+      fill: $positive;
+    }
+  }
+}

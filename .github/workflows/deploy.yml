@@ -144,6 +144,16 @@ jobs:
           cd ../..
           echo "✅ Health Tracker build complete"
 
+      - name: 🔨 Build Market Watch (Sass + TypeScript)
+        if: contains(steps.changed-files.outputs.all_changed_files, 'market_watch/')
+        run: |
+          echo "🔨 Building Market Watch Terminal..."
+          cd market_watch
+          npm install
+          npm run build
+          cd ..
+          echo "✅ Market Watch build complete"
+
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
 
@@ -220,6 +230,16 @@ jobs:
             echo "✅ Health Tracker build copied to _site/health_tracker/"
           else
             echo "⏭️  Skipping Health Tracker copy (no dist directory found)"
+          fi
+
+          # Copy Market Watch build (if dist exists)
+          if [ -d "market_watch/dist" ]; then
+            echo "📦 Copying Market Watch build..."
+            mkdir -p _site/market_watch
+            cp -r market_watch/dist/* _site/market_watch/
+            echo "✅ Market Watch build copied to _site/market_watch/"
+          else
+            echo "⏭️  Skipping Market Watch copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

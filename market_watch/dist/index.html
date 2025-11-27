@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Watch Terminal</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app">
+
+        <!-- Header -->
+        <header class="header">
+            <div class="header__top">
+                <div class="header__brand">
+                    <span class="brand-name">1-BLOOMBERG</span>
+                    <div class="header__divider"></div>
+                    <span class="brand-section">HOME</span>
+                </div>
+                <div class="header__clock font-mono" id="clock-display">
+                    <!-- Time injected by JS -->
+                </div>
+            </div>
+            <div class="header__command">
+                <div class="command-line">
+                    <span class="command-label">COMMAND:</span>
+                    <div class="command-cursor"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main 4-Quadrant Grid -->
+        <main class="main-grid">
+
+            <!-- Panel 1: Global Equity Indices -->
+            <section class="panel">
+                <div class="panel__header">
+                    <div class="panel-title">
+                        <span class="panel-number">1)</span>
+                        <span class="panel-name">GLOBAL EQUITY INDICES</span>
+                    </div>
+                    <div class="panel-actions">
+                        <span class="panel-command font-mono">WEI &lt;GO&gt;</span>
+                        <div class="panel-icons">
+                            <i data-lucide="minimize-2"></i>
+                            <i data-lucide="maximize-2"></i>
+                            <i data-lucide="x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel__content custom-scrollbar" id="panel-1-content">
+                    <!-- Content injected by JS -->
+                </div>
+            </section>
+
+            <!-- Panel 2: Foreign Exchange -->
+            <section class="panel">
+                <div class="panel__header">
+                    <div class="panel-title">
+                        <span class="panel-number">2)</span>
+                        <span class="panel-name">FOREIGN EXCHANGE MATRIX</span>
+                    </div>
+                    <div class="panel-actions">
+                        <span class="panel-command font-mono">FXIP &lt;GO&gt;</span>
+                        <div class="panel-icons">
+                            <i data-lucide="minimize-2"></i>
+                            <i data-lucide="maximize-2"></i>
+                            <i data-lucide="x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel__content custom-scrollbar" id="panel-2-content">
+                    <!-- Content injected by JS -->
+                </div>
+            </section>
+
+            <!-- Panel 3: Portfolio & Commodities -->
+            <section class="panel">
+                <div class="panel__header">
+                    <div class="panel-title">
+                        <span class="panel-number">3)</span>
+                        <span class="panel-name">PORTFOLIO & COMMODITY</span>
+                    </div>
+                    <div class="panel-actions">
+                        <span class="panel-command font-mono">PORT &lt;GO&gt;</span>
+                        <div class="panel-icons">
+                            <i data-lucide="minimize-2"></i>
+                            <i data-lucide="maximize-2"></i>
+                            <i data-lucide="x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel__content custom-scrollbar" id="panel-3-content">
+                    <!-- Content injected by JS -->
+                </div>
+            </section>
+
+            <!-- Panel 4: Rates & Curves -->
+            <section class="panel">
+                <div class="panel__header">
+                    <div class="panel-title">
+                        <span class="panel-number">4)</span>
+                        <span class="panel-name">GLOBAL RATES & CURVES</span>
+                    </div>
+                    <div class="panel-actions">
+                        <span class="panel-command font-mono">GC &lt;GO&gt;</span>
+                        <div class="panel-icons">
+                            <i data-lucide="minimize-2"></i>
+                            <i data-lucide="maximize-2"></i>
+                            <i data-lucide="x"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel__chart">
+                    <div class="chart-container" id="yield-chart-container">
+                        <!-- Chart injected by JS -->
+                    </div>
+                    <div class="chart-tables" id="yield-tables-container">
+                        <!-- Yield tables injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer__keys" id="footer-keys">
+                <!-- Function keys injected by JS -->
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Initialize Lucide Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+
+    <!-- Main Script -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloomberg Terminal</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Setup */
+        body {
+            background-color: #000000;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            user-select: none;
+        }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+
+        /* Custom Colors */
+        .text-amber { color: #ffb400; }
+        .bg-header { background-color: #003366; }
+        .text-ticker { color: #66ccff; }
+
+        /* Custom Scrollbar (Exact match to React version) */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="text-xs">
+
+    <!-- 1. Header -->
+    <div class="flex flex-col bg-black border-b border-white/20 shrink-0">
+        <div class="flex justify-between items-center px-2 py-1 bg-[#000000]">
+           <div class="flex items-center gap-1 text-[11px]">
+             <span class="font-bold tracking-wide" style="color: #aaa;">1-BLOOMBERG</span>
+             <div class="w-[1px] h-3 bg-gray-600 mx-2"></div>
+             <span class="font-bold text-white">HOME</span>
+           </div>
+           <div class="text-[10px] text-gray-400 font-mono" id="clock-display">
+             <!-- Time injected here -->
+           </div>
+        </div>
+        <div class="px-2 py-1 flex items-center bg-[#000000]">
+          <div class="flex items-center w-full max-w-2xl bg-black border-b border-gray-600 pb-1">
+             <span class="font-bold mr-2 text-[11px] text-amber">COMMAND:</span>
+             <div class="h-3 w-2 bg-[#ffb400] animate-pulse"></div>
+          </div>
+        </div>
+    </div>
+
+    <!-- 2. Main Quad Grid -->
+    <div class="flex-1 p-1 bg-black grid grid-cols-2 grid-rows-2 gap-1 overflow-hidden">
+
+        <!-- Screen 1: Equity Indices -->
+        <div class="border border-gray-700 flex flex-col bg-black overflow-hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-1 py-0.5 select-none bg-header">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-amber">1)</span>
+                    <span class="font-bold text-xs text-white tracking-tight">GLOBAL EQUITY INDICES</span>
+                </div>
+                <div class="flex items-center gap-2 text-white/80">
+                    <span class="text-[10px] font-mono hover:text-white cursor-pointer">WEI &lt;GO&gt;</span>
+                    <div class="flex gap-1">
+                        <i data-lucide="minimize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="maximize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="x" class="w-2.5 h-2.5"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="flex-1 overflow-auto custom-scrollbar p-1" id="screen-1-content"></div>
+        </div>
+
+        <!-- Screen 2: Currencies -->
+        <div class="border border-gray-700 flex flex-col bg-black overflow-hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-1 py-0.5 select-none bg-header">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-amber">2)</span>
+                    <span class="font-bold text-xs text-white tracking-tight">FOREIGN EXCHANGE MATRIX</span>
+                </div>
+                <div class="flex items-center gap-2 text-white/80">
+                    <span class="text-[10px] font-mono hover:text-white cursor-pointer">FXIP &lt;GO&gt;</span>
+                    <div class="flex gap-1">
+                        <i data-lucide="minimize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="maximize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="x" class="w-2.5 h-2.5"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="flex-1 overflow-auto custom-scrollbar p-1" id="screen-2-content"></div>
+        </div>
+
+        <!-- Screen 3: Portfolio -->
+        <div class="border border-gray-700 flex flex-col bg-black overflow-hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-1 py-0.5 select-none bg-header">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-amber">3)</span>
+                    <span class="font-bold text-xs text-white tracking-tight">PORTFOLIO & COMMODITY</span>
+                </div>
+                <div class="flex items-center gap-2 text-white/80">
+                    <span class="text-[10px] font-mono hover:text-white cursor-pointer">PORT &lt;GO&gt;</span>
+                    <div class="flex gap-1">
+                        <i data-lucide="minimize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="maximize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="x" class="w-2.5 h-2.5"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="flex-1 overflow-auto custom-scrollbar p-1" id="screen-3-content"></div>
+        </div>
+
+        <!-- Screen 4: Rates -->
+        <div class="border border-gray-700 flex flex-col bg-black overflow-hidden">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-1 py-0.5 select-none bg-header">
+                <div class="flex items-center gap-2">
+                    <span class="font-bold text-xs text-amber">4)</span>
+                    <span class="font-bold text-xs text-white tracking-tight">GLOBAL RATES & CURVES</span>
+                </div>
+                <div class="flex items-center gap-2 text-white/80">
+                    <span class="text-[10px] font-mono hover:text-white cursor-pointer">GC &lt;GO&gt;</span>
+                    <div class="flex gap-1">
+                        <i data-lucide="minimize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="maximize-2" class="w-2.5 h-2.5"></i>
+                        <i data-lucide="x" class="w-2.5 h-2.5"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- Content -->
+            <div class="flex-1 flex flex-col p-1 overflow-hidden" id="screen-4-content">
+                 <!-- Chart Container -->
+                 <div class="flex-grow min-h-0 mb-2" id="yield-chart-container"></div>
+                 <!-- Tables Container -->
+                 <div class="h-24 flex gap-4 border-t border-gray-800 pt-2 shrink-0" id="yield-tables-container"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 3. Footer -->
+    <div class="bg-[#1a1a1a] border-t border-gray-800 h-6 flex items-center px-1 gap-1 overflow-hidden shrink-0">
+        <!-- Generated via JS to keep clean -->
+        <div id="footer-keys" class="w-full flex gap-1 h-full items-center"></div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. Constants & Data Mocking ---
+        const AMBER = '#ffb400';
+        const TICKER_CYAN = '#66ccff';
+
+        const rnd = (min, max) => (Math.random() * (max - min) + min).toFixed(2);
+
+        const generateRow = (ticker, name) => ({
+            ticker, name,
+            last: rnd(10, 1000),
+            daily: rnd(-2, 2),
+            w1: rnd(-4, 4),
+            m1: rnd(-8, 8),
+            ytd: rnd(-15, 25),
+            y1: rnd(-20, 30),
+            y3: rnd(-40, 60)
+        });
+
+        // Data Sets
+        const DM_INDEXES = [
+            generateRow('SPX Index', 'S&P 500'), generateRow('CCMP Index', 'NASDAQ 100'),
+            generateRow('INDU Index', 'DOW JONES'), generateRow('SX5E Index', 'EURO STOXX 50'),
+            generateRow('UKX Index', 'FTSE 100'), generateRow('DAX Index', 'DAX (GER)'),
+            generateRow('CAC Index', 'CAC 40 (FRA)'), generateRow('NKY Index', 'NIKKEI 225'),
+            generateRow('AS51 Index', 'ASX 200')
+        ];
+        const EM_INDEXES = [
+            generateRow('IBOV Index', 'IBOVESPA'), generateRow('SHCOMP Index', 'SHANGHAI COMP'),
+            generateRow('HSI Index', 'HANG SENG'), generateRow('NIFTY Index', 'NIFTY 50'),
+            generateRow('MEXBOL Index', 'MEXICO BOLSA'), generateRow('JALSH Index', 'JSE AFRICA'),
+            generateRow('RTSI Index', 'RTS (RUS)'), generateRow('KOSPI Index', 'KOSPI'),
+            generateRow('TWSE Index', 'TAIEX')
+        ];
+        const DM_CURRENCIES = [
+            generateRow('DXY Curncy', 'DOLLAR INDEX'), generateRow('EURUSD Curncy', 'EUR-USD'),
+            generateRow('GBPUSD Curncy', 'GBP-USD'), generateRow('USDJPY Curncy', 'USD-JPY'),
+            generateRow('USDCHF Curncy', 'USD-CHF'), generateRow('USDCAD Curncy', 'USD-CAD'),
+            generateRow('AUDUSD Curncy', 'AUD-USD'), generateRow('NZDUSD Curncy', 'NZD-USD')
+        ];
+        const EM_CURRENCIES = [
+            generateRow('USDBRL Curncy', 'USD-BRL'), generateRow('USDCNY Curncy', 'USD-CNY'),
+            generateRow('USDMXN Curncy', 'USD-MXN'), generateRow('USDZAR Curncy', 'USD-ZAR'),
+            generateRow('USDTRY Curncy', 'USD-TRY'), generateRow('USDINR Curncy', 'USD-INR'),
+            generateRow('USDKRW Curncy', 'USD-KRW'), generateRow('USDPLN Curncy', 'USD-PLN')
+        ];
+        const COMMODITIES = [
+            generateRow('XAU Curncy', 'GOLD SPOT'), generateRow('XAG Curncy', 'SILVER SPOT'),
+            generateRow('CL1 Comdty', 'WTI CRUDE'), generateRow('CO1 Comdty', 'BRENT CRUDE'),
+            generateRow('NG1 Comdty', 'NAT GAS'), generateRow('HG1 Comdty', 'COPPER'),
+            generateRow('W 1 Comdty', 'WHEAT'), generateRow('S 1 Comdty', 'SOYBEAN')
+        ];
+        const BUFFETT_PF = [
+            generateRow('AAPL US Equity', 'APPLE INC'), generateRow('BAC US Equity', 'BANK OF AMER'),
+            generateRow('AXP US Equity', 'AMER EXPRESS'), generateRow('KO US Equity', 'COCA-COLA'),
+            generateRow('CVX US Equity', 'CHEVRON'), generateRow('OXY US Equity', 'OCCIDENTAL'),
+            generateRow('KHC US Equity', 'KRAFT HEINZ'), generateRow('MCO US Equity', 'MOODYS')
+        ];
+        const WATCHLIST = [
+            generateRow('NVDA US Equity', 'NVIDIA'), generateRow('MSFT US Equity', 'MICROSOFT'),
+            generateRow('TSLA US Equity', 'TESLA'), generateRow('META US Equity', 'META'),
+            generateRow('AMD US Equity', 'AMD'), generateRow('PLTR US Equity', 'PALANTIR'),
+            generateRow('COIN US Equity', 'COINBASE'), generateRow('PBR US Equity', 'PETROBRAS')
+        ];
+
+        const US_YIELDS = [
+            { tenor: '2Y', last: 4.75, chg: -0.02 }, { tenor: '5Y', last: 4.40, chg: -0.01 },
+            { tenor: '10Y', last: 4.35, chg: 0.01 }, { tenor: '30Y', last: 4.50, chg: 0.02 }
+        ];
+        const BRL_YIELDS = [
+            { tenor: 'Jan25', last: 10.40, chg: -0.05 }, { tenor: 'Jan26', last: 10.55, chg: -0.03 },
+            { tenor: 'Jan27', last: 10.80, chg: 0.02 }, { tenor: 'Jan29', last: 11.20, chg: 0.05 }
+        ];
+
+        // --- 2. Render Functions ---
+
+        // Helper for colored percentage
+        const perfCell = (val) => {
+            const num = parseFloat(val);
+            const color = num > 0 ? 'text-green-500' : num < 0 ? 'text-red-500' : 'text-white';
+            return `<span class="${color} tabular-nums">${num > 0 ? '+' : ''}${num.toFixed(2)}%</span>`;
+        };
+
+        const renderTable = (data, title) => {
+            const rows = data.map(row => `
+                <tr class="hover:bg-[#1a1a1a] cursor-pointer group leading-none border-b border-white/5 last:border-0">
+                    <td class="py-1 pl-1 font-medium group-hover:underline decoration-white decoration-1 underline-offset-2 truncate text-ticker">${row.ticker}</td>
+                    <td class="py-1 text-right text-white font-bold">${row.last}</td>
+                    <td class="py-1 text-right">${perfCell(row.daily)}</td>
+                    <td class="py-1 text-right">${perfCell(row.w1)}</td>
+                    <td class="py-1 text-right">${perfCell(row.m1)}</td>
+                    <td class="py-1 text-right">${perfCell(row.ytd)}</td>
+                    <td class="py-1 text-right hidden sm:table-cell">${perfCell(row.y1)}</td>
+                    <td class="py-1 text-right pr-1 hidden sm:table-cell">${perfCell(row.y3)}</td>
+                </tr>
+            `).join('');
+
+            return `
+                <div class="mb-2">
+                    ${title ? `<div class="text-[10px] font-bold border-b border-gray-800 mb-1 text-amber">${title}</div>` : ''}
+                    <div class="w-full overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-[9px] font-mono border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr class="border-b border-white/20 text-[9px] text-amber">
+                                    <th class="text-left py-1 pl-1 font-normal w-20">Ticker</th>
+                                    <th class="text-right py-1 font-normal w-10">Last</th>
+                                    <th class="text-right py-1 font-normal w-10">Dly%</th>
+                                    <th class="text-right py-1 font-normal w-10">1W%</th>
+                                    <th class="text-right py-1 font-normal w-10">1M%</th>
+                                    <th class="text-right py-1 font-normal w-10">YTD%</th>
+                                    <th class="text-right py-1 font-normal w-10 hidden sm:table-cell">1Y%</th>
+                                    <th class="text-right py-1 pr-1 font-normal w-10 hidden sm:table-cell">3Y%</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        };
+
+        const renderYieldTable = (data, title) => {
+            const rows = data.map(d => {
+                const color = d.chg > 0 ? 'text-green-500' : d.chg < 0 ? 'text-red-500' : 'text-white';
+                const sign = d.chg > 0 ? '+' : '';
+                return `
+                    <tr class="border-b border-gray-900/50">
+                        <td class="text-ticker font-bold py-0.5">${d.tenor}</td>
+                        <td class="text-white text-right py-0.5">${d.last.toFixed(2)}</td>
+                        <td class="text-right py-0.5 ${color}">${sign}${d.chg.toFixed(2)}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            return `
+                <div class="flex-1">
+                    <div class="text-[9px] font-bold border-b border-gray-800 mb-1 text-amber">${title}</div>
+                    <table class="w-full text-[9px] font-mono border-collapse">
+                        <thead>
+                            <tr class="text-amber">
+                                <th class="text-left py-0.5">Tenor</th>
+                                <th class="text-right py-0.5">Yld</th>
+                                <th class="text-right py-0.5">Chg</th>
+                            </tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            `;
+        };
+
+        const renderYieldPlot = () => {
+            const width = 400;
+            const height = 160;
+            const padding = { top: 20, right: 30, bottom: 20, left: 30 };
+
+            const tenors = ['3M', '6M', '1Y', '2Y', '5Y', '10Y', '30Y'];
+            const usCurve = [5.38, 5.20, 4.90, 4.75, 4.40, 4.35, 4.50];
+            const brCurve = [10.55, 10.60, 10.50, 10.80, 11.20, 11.50, 11.80];
+            const minRate = 3;
+            const maxRate = 13;
+
+            const getX = (i) => padding.left + (i / (tenors.length - 1)) * (width - padding.left - padding.right);
+            const getY = (r) => height - padding.bottom - ((r - minRate) / (maxRate - minRate)) * (height - padding.top - padding.bottom);
+            const makePath = (data) => `M ${data.map((d, i) => `${getX(i)},${getY(d)}`).join(' L ')}`;
+
+            let gridLines = '';
+            [4, 6, 8, 10, 12].forEach(r => {
+                const y = getY(r);
+                gridLines += `
+                    <g>
+                        <line x1="${padding.left}" y1="${y}" x2="${width - padding.right}" y2="${y}" stroke="#333" stroke-dasharray="2,2" stroke-width="0.5" />
+                        <text x="${padding.left - 4}" y="${y + 2}" fill="#999" text-anchor="end">${r}</text>
+                    </g>
+                `;
+            });
+
+            const makeRects = (data, color) => data.map((r, i) => `<rect x="${getX(i)-1.5}" y="${getY(r)-1.5}" width="3" height="3" fill="${color}" />`).join('');
+            const xLabels = tenors.map((t, i) => `<text x="${getX(i)}" y="${height - 5}" fill="#ffb400" text-anchor="middle">${t}</text>`).join('');
+
+            return `
+                <div class="w-full h-full bg-black border border-gray-800 relative">
+                    <div class="absolute top-1 left-2 text-[9px] font-bold z-10 bg-black/50 px-1 border border-amber-900/50 text-amber">
+                        GC I 25: US (Y) vs BRAZIL (G)
+                    </div>
+                    <svg viewBox="0 0 ${width} ${height}" class="w-full h-full block font-mono text-[8px]">
+                        ${gridLines}
+                        <path d="${makePath(brCurve)}" fill="none" stroke="#00ff00" stroke-width="1.5" />
+                        ${makeRects(brCurve, '#00ff00')}
+                        <path d="${makePath(usCurve)}" fill="none" stroke="#ffff00" stroke-width="1.5" />
+                        ${makeRects(usCurve, '#ffff00')}
+                        ${xLabels}
+                    </svg>
+                </div>
+            `;
+        };
+
+        // --- 3. Execution ---
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Clock
+            const updateClock = () => {
+                const now = new Date();
+                const date = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase();
+                const time = now.toLocaleTimeString('en-US', { hour12: false });
+                document.getElementById('clock-display').innerHTML = `${date} <span class="text-white">${time}</span>`;
+            };
+            setInterval(updateClock, 1000);
+            updateClock();
+
+            // Screen 1 Content
+            const s1 = document.getElementById('screen-1-content');
+            s1.innerHTML = renderTable(DM_INDEXES, "DEVELOPED MARKETS (DM)") + renderTable(EM_INDEXES, "EMERGING MARKETS (EM)");
+
+            // Screen 2 Content
+            const s2 = document.getElementById('screen-2-content');
+            s2.innerHTML = renderTable(DM_CURRENCIES, "G10 / DEVELOPED CURRENCIES") + renderTable(EM_CURRENCIES, "EMERGING MARKET CURRENCIES");
+
+            // Screen 3 Content
+            const s3 = document.getElementById('screen-3-content');
+            s3.innerHTML = renderTable(COMMODITIES, "KEY COMMODITY FUTURES") +
+                           renderTable(BUFFETT_PF, "BUFFETT (BERKSHIRE) HOLDINGS") +
+                           renderTable(WATCHLIST, "PERSONAL WATCHLIST");
+
+            // Screen 4 Content
+            document.getElementById('yield-chart-container').innerHTML = renderYieldPlot();
+            document.getElementById('yield-tables-container').innerHTML =
+                renderYieldTable(US_YIELDS, "US TREASURIES") +
+                '<div class="w-[1px] bg-gray-800"></div>' +
+                renderYieldTable(BRL_YIELDS, "BRAZIL FUTURES (DI)");
+
+            // Footer Keys
+            const keys = ['NEWS', 'MSG', 'MON', 'QUOTE', 'CHART', 'DWNLD', 'ALERT', 'HELP'];
+            document.getElementById('footer-keys').innerHTML = keys.map((k, i) => `
+                <div class="flex-1 h-4 bg-black border border-gray-700 flex items-center justify-center text-[9px] cursor-pointer hover:bg-gray-800">
+                    <span class="font-bold mr-1 text-amber">F${i+1}</span>
+                    <span class="text-white font-bold tracking-tight">${k}</span>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

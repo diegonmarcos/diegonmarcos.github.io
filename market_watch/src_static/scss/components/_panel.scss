@@ -1,0 +1,122 @@
+// Panel Component (4-quadrant screens)
+.main-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4px;
+  padding: 4px;
+  background: $black;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: $black;
+  border: 1px solid $gray-700;
+  overflow: hidden;
+  min-height: 0;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 6px;
+    background: $bg-header;
+    flex-shrink: 0;
+    user-select: none;
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .panel-number {
+        font-weight: 700;
+        font-size: 11px;
+        color: $amber;
+      }
+
+      .panel-name {
+        font-weight: 700;
+        font-size: 11px;
+        color: $white;
+        letter-spacing: 0.3px;
+      }
+    }
+
+    .panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .panel-command {
+        font-family: $font-mono;
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+
+        &:hover {
+          color: $white;
+        }
+      }
+
+      .panel-icons {
+        display: flex;
+        gap: 4px;
+
+        svg {
+          width: 10px;
+          height: 10px;
+          color: rgba(255, 255, 255, 0.6);
+          cursor: pointer;
+
+          &:hover {
+            color: $white;
+          }
+        }
+      }
+    }
+  }
+
+  &__content {
+    flex: 1;
+    overflow: auto;
+    padding: 4px;
+    min-height: 0;
+  }
+
+  &__chart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    overflow: hidden;
+    min-height: 0;
+
+    .chart-container {
+      flex: 1;
+      min-height: 0;
+      margin-bottom: 8px;
+    }
+
+    .chart-tables {
+      height: 96px;
+      display: flex;
+      gap: 16px;
+      border-top: 1px solid $gray-800;
+      padding-top: 8px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Responsive: Stack on mobile
+@media (max-width: 768px) {
+  .main-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+}

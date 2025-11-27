@@ -1,0 +1,86 @@
+// Header Component
+.header {
+  display: flex;
+  flex-direction: column;
+  background: $black;
+  border-bottom: 1px solid $border-light;
+  flex-shrink: 0;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: $black;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: $gray-400;
+    }
+
+    .brand-section {
+      font-weight: 700;
+      color: $white;
+    }
+  }
+
+  &__divider {
+    width: 1px;
+    height: 12px;
+    background: $gray-600;
+    margin: 0 8px;
+  }
+
+  &__clock {
+    font-family: $font-mono;
+    font-size: 10px;
+    color: $gray-400;
+
+    .time {
+      color: $white;
+    }
+  }
+
+  &__command {
+    display: flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: $black;
+
+    .command-line {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      max-width: 600px;
+      border-bottom: 1px solid $gray-600;
+      padding-bottom: 4px;
+    }
+
+    .command-label {
+      font-weight: 700;
+      font-size: 11px;
+      color: $amber;
+      margin-right: 8px;
+    }
+
+    .command-cursor {
+      width: 8px;
+      height: 12px;
+      background: $amber;
+      animation: blink 1s infinite;
+    }
+  }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}

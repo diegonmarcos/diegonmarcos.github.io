@@ -1,0 +1,73 @@
+// Market Watch Terminal - Main Styles
+// Bloomberg Terminal inspired design
+
+// 1. Variables & Configuration
+@import 'variables';
+
+// 2. Base Styles
+@import 'base';
+
+// 3. Components
+@import 'components/header';
+@import 'components/panel';
+@import 'components/table';
+@import 'components/chart';
+@import 'components/footer';
+
+// 4. Layout
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// 5. Additional utilities
+.hidden-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-divider {
+  width: 1px;
+  background: $gray-800;
+  margin: 0 8px;
+}
+
+// 6. Responsive utilities
+@media (max-width: 1024px) {
+  body {
+    font-size: 10px;
+  }
+
+  .data-table {
+    font-size: 8px;
+
+    thead th,
+    tbody td {
+      padding: 3px 4px;
+    }
+  }
+}
+
+// 6. Print styles
+@media print {
+  .header,
+  .footer {
+    display: none;
+  }
+
+  .main-grid {
+    display: block;
+  }
+
+  .panel {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}

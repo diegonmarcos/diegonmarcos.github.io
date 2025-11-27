@@ -131,7 +131,7 @@
 				</div>
 				<p class="footer-text">MADE WITH PIXELS & PASSION</p>
 			</div>
-			<a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn">
+			<a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener" class="linktree-btn">
 				<span class="btn-icon">🔗</span>
 				<span class="btn-text">DIEGO MARCOS</span>
 			</a>

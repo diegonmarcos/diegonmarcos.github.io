@@ -118,7 +118,12 @@
                     <h3>Oracle Cloud</h3>
                     <p>Console & OCI CLI</p>
                     <div class="card-actions">
-                        <code class="card-code">bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"</code>
+                        <div class="code-with-copy">
+                            <code class="card-code">bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"</code>
+                            <button class="copy-icon" data-copy="bash -c &quot;$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)&quot;" title="Copy command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-status online">Always Free</div>
                 </div>
@@ -134,7 +139,12 @@
                     <h3>Google Cloud</h3>
                     <p>Console & gcloud CLI</p>
                     <div class="card-actions">
-                        <code class="card-code">curl https://sdk.cloud.google.com | bash</code>
+                        <div class="code-with-copy">
+                            <code class="card-code">curl https://sdk.cloud.google.com | bash</code>
+                            <button class="copy-icon" data-copy="curl https://sdk.cloud.google.com | bash" title="Copy command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-status online">Active</div>
                 </div>
@@ -146,7 +156,7 @@
             </section>
 
             <div class="cards-grid">
-                <div class="card" data-service="vm-webserver1">
+                <div class="card" data-service="vm-webserver1-proxy">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -158,12 +168,27 @@
                     <h3>Oracle/web-server-1</h3>
                     <p>Matomo, Syncthing, NPM</p>
                     <div class="card-actions">
-                        <code class="card-code">ssh ubuntu@130.110.251.193</code>
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh ubuntu@130.110.251.193</code>
+                            <button class="copy-icon" data-copy="ssh ubuntu@130.110.251.193" title="Copy SSH command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" data-url="http://130.110.251.193:81" title="Nginx Proxy Manager">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            Proxy
+                        </button>
+                        <button class="vm-btn" data-url="https://cloud.oracle.com/networking/vcns" title="Oracle Security Lists">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+                            Firewall
+                        </button>
                     </div>
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="vm-servicesserver1">
+                <div class="card" data-service="vm-servicesserver1-proxy">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -175,12 +200,27 @@
                     <h3>Oracle/services-server-1</h3>
                     <p>n8n Orchestrator, NPM</p>
                     <div class="card-actions">
-                        <code class="card-code">ssh ubuntu@129.151.228.66</code>
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh ubuntu@129.151.228.66</code>
+                            <button class="copy-icon" data-copy="ssh ubuntu@129.151.228.66" title="Copy SSH command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" data-url="http://129.151.228.66:81" title="Nginx Proxy Manager">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            Proxy
+                        </button>
+                        <button class="vm-btn" data-url="https://cloud.oracle.com/networking/vcns" title="Oracle Security Lists">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+                            Firewall
+                        </button>
                     </div>
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="vm-arch1">
+                <div class="card" data-service="vm-arch1-pending">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -192,7 +232,22 @@
                     <h3>GCloud/Arch1</h3>
                     <p>arch-server</p>
                     <div class="card-actions">
-                        <code class="card-code">ssh user@[pending]</code>
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh user@[pending]</code>
+                            <button class="copy-icon" data-copy="ssh user@[pending]" title="Copy SSH command" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" disabled title="Pending">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            Proxy
+                        </button>
+                        <button class="vm-btn" data-url="https://console.cloud.google.com/networking/firewalls" title="GCloud Firewall">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
+                            Firewall
+                        </button>
                     </div>
                     <div class="card-status pending">Pending</div>
                 </div>

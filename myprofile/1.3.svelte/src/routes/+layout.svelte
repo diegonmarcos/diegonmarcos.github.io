@@ -521,7 +521,7 @@
 		display: flex;
 		align-items: center;
 		gap: $space-2;
-		padding: $space-3 $space-5;
+		padding: $space-3 $space-4;
 		background: linear-gradient(180deg, $gray-700 0%, $gray-800 100%);
 		border: 3px solid $purple-600;
 		border-radius: 4px;

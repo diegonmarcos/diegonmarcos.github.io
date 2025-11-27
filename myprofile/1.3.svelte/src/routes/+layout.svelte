@@ -133,7 +133,8 @@
 			</div>
 			<a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener" class="linktree-btn">
 				<span class="btn-icon">🔗</span>
-				<span class="btn-text">DIEGO MARCOS</span>
+				<span class="btn-text">LINKTREE</span>
+				<span class="btn-arrow">→</span>
 			</a>
 			<div class="footer-score">
 				<span class="label">YEAR</span>
@@ -536,7 +537,16 @@
 
 		.btn-text {
 			font-size: $text-sm;
-			letter-spacing: 0.05em;
+			letter-spacing: 0.1em;
+			color: $cyan-400;
+		}
+
+		.btn-arrow {
+			font-size: $text-sm;
+			color: $purple-400;
+			opacity: 0;
+			transform: translateX(-5px);
+			@include transition(all);
 		}
 
 		&:hover {
@@ -545,6 +555,12 @@
 			transform: translateY(-2px);
 
 			.btn-text {
+				color: $pink-400;
+			}
+
+			.btn-arrow {
+				opacity: 1;
+				transform: translateX(0);
 				color: $pink-400;
 			}
 		}

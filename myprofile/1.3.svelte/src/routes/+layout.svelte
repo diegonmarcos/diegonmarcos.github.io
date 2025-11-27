@@ -537,6 +537,9 @@
 		font-family: $font-pixel-body;
 		color: $purple-300;
 		text-decoration: none;
+		position: relative;
+		z-index: 10;
+		cursor: pointer;
 		@include transition(all);
 
 		.btn-icon {

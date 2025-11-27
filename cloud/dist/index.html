@@ -590,6 +590,10 @@
     </footer>
 
     <style>
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
         .cloud-footer {
             text-align: center;
             padding: 1.5rem 1rem;
@@ -601,46 +605,42 @@
             align-items: center;
             gap: 0.5rem;
             padding: 0.6rem 1.2rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
+            background: linear-gradient(110deg, #ff6600 0%, #ff6600 40%, #ffaa66 50%, #ff6600 60%, #ff6600 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+            border: 1px solid var(--accent-primary);
             border-radius: var(--border-radius);
-            color: var(--text-secondary);
+            color: #000;
             text-decoration: none;
             font-family: var(--font-mono);
             font-size: 0.85rem;
+            font-weight: 600;
             transition: all var(--transition-speed) ease;
         }
         .linktree-footer-btn:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            background: var(--bg-card-hover);
+            animation: shimmer 1.5s linear infinite;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
         }
         .link-icon { font-size: 1rem; }
-        .link-text { font-weight: 500; }
+        .link-text { font-weight: 600; }
         .link-arrow {
             width: 14px;
             height: 14px;
-            opacity: 0;
-            transform: translateX(-5px);
-            transition: all 0.2s ease;
+            opacity: 0.7;
         }
         .linktree-footer-btn:hover .link-arrow {
             opacity: 1;
-            transform: translateX(0);
-        }
-        [data-theme="blurred"] .cloud-footer {
-            border-top-color: rgba(255,255,255,0.1);
         }
         [data-theme="blurred"] .linktree-footer-btn {
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            background: rgba(255,255,255,0.05);
+            background: linear-gradient(110deg, #4a9eff 0%, #4a9eff 40%, #a0cfff 50%, #4a9eff 60%, #4a9eff 100%);
+            background-size: 200% 100%;
+            border-color: var(--accent-blue);
+            color: #fff;
         }
         [data-theme="blurred"] .linktree-footer-btn:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            box-shadow: 0 0 20px var(--glow);
+            box-shadow: 0 0 25px rgba(74, 158, 255, 0.6);
         }
     </style>
 

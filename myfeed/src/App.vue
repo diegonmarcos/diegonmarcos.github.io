@@ -113,6 +113,12 @@ onMounted(() => {
   }
 }
 
+/* Shimmer animation */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
 /* Linktree Corner Button */
 .linktree-corner {
   position: fixed;
@@ -124,19 +130,22 @@ onMounted(() => {
   justify-content: center;
   width: 48px;
   height: 48px;
-  background: rgba(139, 92, 246, 0.15);
+  background: linear-gradient(110deg, rgba(139, 92, 246, 0.3) 0%, rgba(139, 92, 246, 0.3) 40%, rgba(167, 139, 250, 0.5) 50%, rgba(139, 92, 246, 0.3) 60%, rgba(139, 92, 246, 0.3) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(139, 92, 246, 0.3);
+  border: 1px solid rgba(139, 92, 246, 0.4);
   border-radius: 50%;
   font-size: 1.25rem;
   text-decoration: none;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
 }
 .linktree-corner:hover {
-  background: rgba(139, 92, 246, 0.3);
+  background: linear-gradient(110deg, rgba(139, 92, 246, 0.5) 0%, rgba(139, 92, 246, 0.5) 40%, rgba(167, 139, 250, 0.7) 50%, rgba(139, 92, 246, 0.5) 60%, rgba(139, 92, 246, 0.5) 100%);
+  background-size: 200% 100%;
   border-color: rgba(139, 92, 246, 0.6);
   transform: scale(1.1);
-  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 6px 25px rgba(139, 92, 246, 0.5);
 }
 </style>

@@ -651,10 +651,7 @@ dev_single() {
             wait
             ;;
         cloud)
-            execute_build "cloud" "dev" &
-            sleep 2
-            print_server_started "Cloud Dashboard" "$_url"
-            wait
+            execute_build "cloud" "dev"
             ;;
         feed)
             execute_build "feed_yourself" "dev" &
@@ -675,10 +672,7 @@ dev_single() {
             wait
             ;;
         market)
-            execute_build "market_watch" "dev" &
-            sleep 2
-            print_server_started "Market Watch" "$_url"
-            wait
+            execute_build "market_watch" "dev"
             ;;
     esac
 }
@@ -789,10 +783,321 @@ run_tests() {
     fi
 }
 
+# TUI Menu System
+tui_menu() {
+    # Menu items: "label|command"
+    _menu_items="
+BUILD ALL|build
+─────────────────────────────|
+Root (Sass + TS)|build-root
+Linktree|build-linktree
+CV Web|build-cv-web
+MyFeed|build-myfeed
+MyProfile|build-myprofile
+Nexus|build-nexus
+Cloud|build-cloud
+Feed Yourself|build-feed
+Others|build-others
+Health Tracker|build-health
+Market Watch|build-market
+─────────────────────────────|
+DEV ALL|dev
+─────────────────────────────|
+Root :8000|dev-root
+Linktree :8001|dev-linktree
+CV Web :8002|dev-cv-web
+MyFeed :8003|dev-myfeed
+MyProfile :8004|dev-myprofile
+Nexus :8005|dev-nexus
+Cloud :8006|dev-cloud
+Feed Yourself :8007|dev-feed
+Others :8008|dev-others
+Health Tracker :8009|dev-health
+Market Watch :8010|dev-market
+─────────────────────────────|
+List Servers|list
+Kill Servers|kill
+Clean Builds|clean
+Clean All|clean-all
+Run Tests|test
+─────────────────────────────|
+Exit|quit
+"
+
+    # Convert to arrays
+    _idx=0
+    _labels=""
+    _commands=""
+    _separators=""
+
+    echo "$_menu_items" | while IFS='|' read -r _label _cmd; do
+        [ -z "$_label" ] && continue
+        if [ -z "$_cmd" ]; then
+            _separators="$_separators $_idx"
+        fi
+        _idx=$((_idx + 1))
+    done
+
+    # Current selection
+    _selected=0
+    _total=0
+
+    # Count items
+    _total=$(echo "$_menu_items" | grep -c '|' 2>/dev/null || echo "0")
+
+    # Hide cursor
+    printf "\033[?25l"
+
+    # Trap to restore cursor on exit
+    trap 'printf "\033[?25h"; clear' EXIT INT TERM
+
+    while true; do
+        clear
+
+        # Header
+        printf "${CYAN}"
+        printf "╔══════════════════════════════════════════════════════════╗\n"
+        printf "║            MAIN BUILD ORCHESTRATOR - TUI                 ║\n"
+        printf "╚══════════════════════════════════════════════════════════╝${NC}\n"
+        printf "\n"
+
+        # Server status (compact)
+        get_running_servers
+        if [ "$RUNNING_COUNT" -gt 0 ]; then
+            printf "${GREEN}● ${RUNNING_COUNT} server(s) running${NC}\n"
+        else
+            printf "${YELLOW}○ No servers running${NC}\n"
+        fi
+        printf "\n"
+
+        # Menu
+        printf "${BLUE}┌──────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}BUILD${NC}                                                    ${BLUE}│${NC}\n"
+        printf "${BLUE}├──────────────────────────────────────────────────────────┤${NC}\n"
+
+        _idx=0
+        _section="build"
+        echo "$_menu_items" | while IFS='|' read -r _label _cmd; do
+            [ -z "$_label" ] && continue
+
+            # Section headers
+            if echo "$_label" | grep -q "^─"; then
+                if [ "$_section" = "build" ] && [ $_idx -gt 12 ]; then
+                    printf "${BLUE}├──────────────────────────────────────────────────────────┤${NC}\n"
+                    printf "${BLUE}│${NC}  ${YELLOW}DEV SERVER${NC}                                               ${BLUE}│${NC}\n"
+                    printf "${BLUE}├──────────────────────────────────────────────────────────┤${NC}\n"
+                    _section="dev"
+                elif [ "$_section" = "dev" ] && [ $_idx -gt 25 ]; then
+                    printf "${BLUE}├──────────────────────────────────────────────────────────┤${NC}\n"
+                    printf "${BLUE}│${NC}  ${YELLOW}UTILITY${NC}                                                  ${BLUE}│${NC}\n"
+                    printf "${BLUE}├──────────────────────────────────────────────────────────┤${NC}\n"
+                    _section="util"
+                fi
+                _idx=$((_idx + 1))
+                continue
+            fi
+
+            # Menu item
+            if [ $_idx -eq $_selected ]; then
+                printf "${BLUE}│${NC} ${GREEN}▶ %-54s${NC} ${BLUE}│${NC}\n" "$_label"
+            else
+                printf "${BLUE}│${NC}   %-54s ${BLUE}│${NC}\n" "$_label"
+            fi
+
+            _idx=$((_idx + 1))
+        done
+
+        printf "${BLUE}└──────────────────────────────────────────────────────────┘${NC}\n"
+        printf "\n"
+        printf "${CYAN}↑/↓${NC} Navigate  ${CYAN}Enter${NC} Select  ${CYAN}q${NC} Quit  ${CYAN}h${NC} Help\n"
+
+        # Read key
+        _key=""
+        IFS= read -r -s -n 1 _key
+
+        case "$_key" in
+            q|Q)
+                printf "\033[?25h"
+                clear
+                exit 0
+                ;;
+            h|H)
+                printf "\033[?25h"
+                clear
+                print_usage
+                printf "\nPress any key to return to menu..."
+                read -r -s -n 1
+                ;;
+            "")  # Enter
+                # Get selected command
+                _idx=0
+                _selected_cmd=""
+                echo "$_menu_items" | while IFS='|' read -r _label _cmd; do
+                    [ -z "$_label" ] && continue
+                    if [ $_idx -eq $_selected ]; then
+                        echo "$_cmd"
+                        break
+                    fi
+                    _idx=$((_idx + 1))
+                done > /tmp/tui_cmd.tmp
+                _selected_cmd=$(cat /tmp/tui_cmd.tmp 2>/dev/null)
+                rm -f /tmp/tui_cmd.tmp
+
+                if [ -n "$_selected_cmd" ] && [ "$_selected_cmd" != "quit" ]; then
+                    printf "\033[?25h"
+                    clear
+                    # Execute command
+                    main "$_selected_cmd"
+                    printf "\n${CYAN}Press any key to return to menu...${NC}"
+                    read -r -s -n 1
+                elif [ "$_selected_cmd" = "quit" ]; then
+                    printf "\033[?25h"
+                    clear
+                    exit 0
+                fi
+                ;;
+            $'\x1b')  # Escape sequence (arrow keys)
+                read -r -s -n 2 _seq
+                case "$_seq" in
+                    '[A')  # Up
+                        _selected=$((_selected - 1))
+                        [ $_selected -lt 0 ] && _selected=$((_total - 1))
+                        # Skip separators
+                        _check_label=$(echo "$_menu_items" | sed -n "$((_selected + 1))p" | cut -d'|' -f1)
+                        while echo "$_check_label" | grep -q "^─"; do
+                            _selected=$((_selected - 1))
+                            [ $_selected -lt 0 ] && _selected=$((_total - 1))
+                            _check_label=$(echo "$_menu_items" | sed -n "$((_selected + 1))p" | cut -d'|' -f1)
+                        done
+                        ;;
+                    '[B')  # Down
+                        _selected=$((_selected + 1))
+                        [ $_selected -ge $_total ] && _selected=0
+                        # Skip separators
+                        _check_label=$(echo "$_menu_items" | sed -n "$((_selected + 1))p" | cut -d'|' -f1)
+                        while echo "$_check_label" | grep -q "^─"; do
+                            _selected=$((_selected + 1))
+                            [ $_selected -ge $_total ] && _selected=0
+                            _check_label=$(echo "$_menu_items" | sed -n "$((_selected + 1))p" | cut -d'|' -f1)
+                        done
+                        ;;
+                esac
+                ;;
+        esac
+    done
+}
+
+# Simple TUI (POSIX-compliant)
+tui_simple() {
+    while true; do
+        clear
+        print_banner
+
+        # Show server status box (like list command)
+        print_status_box
+
+        printf "${BLUE}┌─────────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}BUILD${NC}                                                       ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}1)${NC}  build           ${CYAN}Build all projects${NC}                    ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}2)${NC}  build-root      ${CYAN}Root Sass + TypeScript${NC}                ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}3)${NC}  build-cloud     ${CYAN}Cloud Dashboard${NC}                       ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}4)${NC}  build-market    ${CYAN}Market Watch${NC}                          ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}5)${NC}  build-health    ${CYAN}Health Tracker${NC}                        ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}DEV SERVER${NC}                                                  ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}10)${NC} dev             ${CYAN}Start all dev servers${NC}                 ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}11)${NC} dev-root        ${CYAN}Root :8000${NC}                            ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}12)${NC} dev-linktree    ${CYAN}Linktree :8001${NC}                        ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}13)${NC} dev-cv-web      ${CYAN}CV Web :8002${NC}                          ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}14)${NC} dev-myfeed      ${CYAN}MyFeed :8003${NC}                          ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}15)${NC} dev-myprofile   ${CYAN}MyProfile :8004${NC}                       ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}16)${NC} dev-nexus       ${CYAN}Nexus :8005${NC}                           ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}17)${NC} dev-cloud       ${CYAN}Cloud :8006${NC}                           ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}18)${NC} dev-feed        ${CYAN}Feed Yourself :8007${NC}                   ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}19)${NC} dev-others      ${CYAN}Others :8008${NC}                          ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}20)${NC} dev-health      ${CYAN}Health Tracker :8009${NC}                  ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}21)${NC} dev-market      ${CYAN}Market Watch :8010${NC}                    ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}UTILITY${NC}                                                     ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}30)${NC} list            ${CYAN}List running servers${NC}                  ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}31)${NC} kill            ${CYAN}Kill all servers${NC}                      ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}32)${NC} clean           ${CYAN}Clean build artifacts${NC}                 ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}33)${NC} test            ${CYAN}Run tests${NC}                             ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}h)${NC}  help            ${CYAN}Show help${NC}                             ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}q)${NC}  quit            ${CYAN}Exit TUI${NC}                              ${BLUE}│${NC}\n"
+        printf "${BLUE}└─────────────────────────────────────────────────────────────┘${NC}\n"
+        printf "\n"
+        printf "${GREEN}Enter choice: ${NC}"
+
+        read -r _choice
+
+        case "$_choice" in
+            1|build)           _cmd="build" ;;
+            2|build-root)      _cmd="build-root" ;;
+            3|build-cloud)     _cmd="build-cloud" ;;
+            4|build-market)    _cmd="build-market" ;;
+            5|build-health)    _cmd="build-health" ;;
+            6|build-linktree)  _cmd="build-linktree" ;;
+            7|build-cv-web)    _cmd="build-cv-web" ;;
+            8|build-myfeed)    _cmd="build-myfeed" ;;
+            9|build-myprofile) _cmd="build-myprofile" ;;
+            10|dev)            _cmd="dev" ;;
+            11|dev-root)       _cmd="dev-root" ;;
+            12|dev-linktree)   _cmd="dev-linktree" ;;
+            13|dev-cv-web)     _cmd="dev-cv-web" ;;
+            14|dev-myfeed)     _cmd="dev-myfeed" ;;
+            15|dev-myprofile)  _cmd="dev-myprofile" ;;
+            16|dev-nexus)      _cmd="dev-nexus" ;;
+            17|dev-cloud)      _cmd="dev-cloud" ;;
+            18|dev-feed)       _cmd="dev-feed" ;;
+            19|dev-others)     _cmd="dev-others" ;;
+            20|dev-health)     _cmd="dev-health" ;;
+            21|dev-market)     _cmd="dev-market" ;;
+            30|list)           _cmd="list" ;;
+            31|kill)           _cmd="kill" ;;
+            32|clean)          _cmd="clean" ;;
+            33|test)           _cmd="test" ;;
+            h|help)            _cmd="help" ;;
+            q|quit|Q|exit)
+                clear
+                printf "${GREEN}Goodbye!${NC}\n"
+                exit 0
+                ;;
+            "")
+                continue
+                ;;
+            *)
+                printf "${RED}Invalid option: %s${NC}\n" "$_choice"
+                sleep 1
+                continue
+                ;;
+        esac
+
+        clear
+        main "$_cmd"
+        printf "\n${CYAN}Press any key to continue...${NC}"
+        # Read single key (POSIX-compatible)
+        _old_tty=$(stty -g 2>/dev/null)
+        stty -icanon min 1 time 0 2>/dev/null
+        dd bs=1 count=1 >/dev/null 2>&1
+        stty "$_old_tty" 2>/dev/null
+        printf "\n"
+    done
+}
+
 # Main execution
 main() {
-    # Show help if no argument provided
+    # Show TUI if no argument provided
     if [ $# -eq 0 ]; then
+        tui_simple
+        exit 0
+    fi
+
+    # Show help for -h/--help
+    if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
         print_banner
         print_usage
         exit 0
@@ -917,14 +1222,15 @@ main() {
         test)
             run_tests
             ;;
-        help|-h|--help)
+        help)
             print_usage
             ;;
         *)
             log_error "Unknown command: $_action"
             printf "\n"
-            print_usage
-            exit 1
+            printf "${YELLOW}Launching TUI menu...${NC}\n"
+            sleep 1
+            tui_simple
             ;;
     esac
 }

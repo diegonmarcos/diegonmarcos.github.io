@@ -69,6 +69,21 @@
         .glow-rose { box-shadow: 0 0 30px rgba(244, 63, 94, 0.3); }
         .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
 
+        /* Shimmer animation for linktree button */
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .linktree-shimmer {
+            background: linear-gradient(110deg, #3b82f6 0%, #3b82f6 40%, #60a5fa 50%, #3b82f6 60%, #3b82f6 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+            color: white !important;
+        }
+        .linktree-shimmer:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+        }
+
         /* Input styling */
         .input-styled {
             background: rgba(0, 0, 0, 0.4);
@@ -915,7 +930,15 @@
 </main>
 
 <!-- Footer -->
-<footer class="border-t border-white/5 py-6 text-center">
+<footer class="border-t border-white/5 py-6 text-center space-y-4">
+    <a href="https://linktree.diegonmarcos.com" target="_blank" title="diegonmarcos"
+       class="inline-flex items-center gap-3 px-6 py-3 linktree-shimmer rounded-xl text-white transition-all duration-300 hover:-translate-y-0.5 group">
+        <span class="text-lg">🔗</span>
+        <span class="font-medium">LINKTREE</span>
+        <svg class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        </svg>
+    </a>
     <p class="text-xs text-slate-600">BioMetrics Pro - Health Tracker</p>
 </footer>
 

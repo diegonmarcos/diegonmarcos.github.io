@@ -1085,6 +1085,7 @@ tui_simple() {
         printf "${BLUE}│${NC}  ${GREEN}31)${NC} kill            ${CYAN}Kill all servers${NC}                      ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC}  ${GREEN}32)${NC} clean           ${CYAN}Clean build artifacts${NC}                 ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC}  ${GREEN}33)${NC} test            ${CYAN}Run tests${NC}                             ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}w)${NC}  workdir         ${CYAN}Change working directory${NC}              ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC}  ${GREEN}h)${NC}  help            ${CYAN}Show help${NC}                             ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC}  ${GREEN}q)${NC}  quit            ${CYAN}Exit TUI${NC}                              ${BLUE}│${NC}\n"
         printf "${BLUE}└─────────────────────────────────────────────────────────────┘${NC}\n"
@@ -1119,6 +1120,32 @@ tui_simple() {
             31|kill)           _cmd="kill" ;;
             32|clean)          _cmd="clean" ;;
             33|test)           _cmd="test" ;;
+            w|workdir)
+                printf "\n${YELLOW}Change Working Directory:${NC}\n"
+                printf "  ${CYAN}1)${NC} Current Directory: $(pwd)\n"
+                printf "  ${CYAN}2)${NC} Custom Path\n"
+                printf "${GREEN}Choose (1/2): ${NC}"
+                read -r _wd_choice
+                case "$_wd_choice" in
+                    1)
+                        PROJECT_ROOT="$(pwd)"
+                        printf "${GREEN}Set to current directory: %s${NC}\n" "$PROJECT_ROOT"
+                        sleep 1
+                        ;;
+                    2)
+                        printf "${GREEN}Enter path: ${NC}"
+                        read -r _new_path
+                        if [ -d "$_new_path" ]; then
+                            PROJECT_ROOT="$_new_path"
+                            printf "${GREEN}Set to: %s${NC}\n" "$PROJECT_ROOT"
+                        else
+                            printf "${RED}Invalid path: %s${NC}\n" "$_new_path"
+                        fi
+                        sleep 1
+                        ;;
+                esac
+                continue
+                ;;
             h|help)            _cmd="help" ;;
             q|quit|Q|exit)
                 clear

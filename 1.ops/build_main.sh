@@ -638,9 +638,14 @@ dev_single() {
     case "$_project" in
         root)
             log_info "Starting root Sass + TypeScript watch + live-server..."
-            nohup sh -c "cd '$PROJECT_ROOT/src_static/scss' && npm run sass:watch" > /dev/null 2>&1 &
-            nohup sh -c "cd '$PROJECT_ROOT/src_static/typescript' && npm run ts:watch" > /dev/null 2>&1 &
-            nohup npx live-server "$PROJECT_ROOT" --port=8000 --no-browser --quiet > /dev/null 2>&1 &
+            mkdir -p "$PROJECT_ROOT/dist"
+            # Copy index.html to dist if not exists
+            if [ ! -f "$PROJECT_ROOT/dist/index.html" ]; then
+                cp "$PROJECT_ROOT/src_static/index.html" "$PROJECT_ROOT/dist/"
+            fi
+            (cd "$PROJECT_ROOT/src_static/scss" && npm install > /dev/null 2>&1 && npm run sass:watch > /dev/null 2>&1) &
+            (cd "$PROJECT_ROOT/src_static/typescript" && npm install > /dev/null 2>&1 && npm run ts:watch > /dev/null 2>&1) &
+            npx live-server "$PROJECT_ROOT/dist" --port=8000 --no-browser --quiet &
             print_server_started "Root" "$_url"
             ;;
         linktree)

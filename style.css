@@ -894,15 +894,12 @@ body.fit-to-screen .container {
   }
   /* Add extra bottom padding on mobile so last card can center */
   .cta {
-    margin-bottom: 50vh !important;
-    padding-bottom: 50vh;
+    margin-bottom: 80vh !important;
+    padding-bottom: 80vh;
   }
 }
-@media (min-width: 768px) {
-  .value-proposition-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+/* Keep single column layout on all screen sizes for card-by-card scrolling */
+/* Desktop gets same experience as mobile */
 .floating-btn.active,
 .floating-btn:not(.active):hover {
   background-color: var(--brand-light-purple);

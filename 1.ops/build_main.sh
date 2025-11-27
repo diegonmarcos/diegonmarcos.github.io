@@ -1005,11 +1005,35 @@ Exit|quit
     done
 }
 
+# Print project structure table
+print_project_table() {
+    printf "${YELLOW}PROJECT STRUCTURE:${NC}\n"
+    printf "${BLUE}────────────────────────────────────────────────────────────────────────────────${NC}\n"
+    printf "  ${MAGENTA}%-14s %-11s %-11s %-11s %-16s %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "${BLUE}────────────────────────────────────────────────────────────────────────────────${NC}\n"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "Root" "-" "Sass" "TypeScript" "npm-live :8000" "Sass, TS"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "Linktree" "-" "Vanilla" "Vanilla" "npm-live :8001" "-"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "CV Web" "-" "Sass" "-" "npm-live :8002" "Sass"
+    printf "  ${CYAN}%-14s${NC} ${GREEN}%-11s${NC} %-11s %-11s ${CYAN}%-16s${NC} ${YELLOW}%s${NC}\n" "MyFeed" "Vue 3" "Sass" "TypeScript" "Vite :8003" "HMR"
+    printf "  ${CYAN}%-14s${NC} ${GREEN}%-11s${NC} %-11s %-11s ${CYAN}%-16s${NC} ${YELLOW}%s${NC}\n" "MyProfile" "SvelteKit" "Sass" "TypeScript" "Vite :8004" "HMR"
+    printf "  ${CYAN}%-14s${NC} ${GREEN}%-11s${NC} %-11s %-11s ${CYAN}%-16s${NC} ${YELLOW}%s${NC}\n" "Nexus" "Vue 3" "Tailwind" "TypeScript" "Vite :8005" "HMR"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "Cloud" "-" "Sass" "TypeScript" "npm-live :8006" "Sass, TS"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "Feed Yourself" "-" "Embedded" "Embedded" "npm-live :8007" "-"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "Others" "-" "-" "Python" "npm-live :8008" "-"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "HealthTracker" "-" "Tailwind" "Vanilla" "npm-live :8009" "-"
+    printf "  ${CYAN}%-14s${NC} %-11s %-11s %-11s ${GREEN}%-16s${NC} ${YELLOW}%s${NC}\n" "MarketWatch" "-" "Sass" "TypeScript" "npm-live :8010" "Sass, TS"
+    printf "${BLUE}────────────────────────────────────────────────────────────────────────────────${NC}\n"
+    printf "\n"
+}
+
 # Simple TUI (POSIX-compliant)
 tui_simple() {
     while true; do
         clear
         print_banner
+
+        # Show project structure table
+        print_project_table
 
         # Show server status box (like list command)
         print_status_box

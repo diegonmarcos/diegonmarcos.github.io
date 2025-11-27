@@ -8,6 +8,12 @@
 html, body {
   height: 100%;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    overflow: auto;
+    height: auto;
+    min-height: 100%;
+  }
 }
 
 body {

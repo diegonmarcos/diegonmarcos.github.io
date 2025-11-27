@@ -2,7 +2,7 @@
 > root-typescript@1.0.0 ts:watch
 > tsc --watch
 
-[2J[3J[H8:02:59 PM - Starting compilation in watch mode...
+[2J[3J[H8:15:09 PM - Starting compilation in watch mode...
 
 
-8:12:43 PM - Found 0 errors. Watching for file changes.
+8:15:21 PM - Found 0 errors. Watching for file changes.

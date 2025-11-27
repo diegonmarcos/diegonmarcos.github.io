@@ -94,7 +94,7 @@ header {
     }
 }
 
-// Theme Toggle Button (top-right corner)
+// Theme Toggle Button (top-right corner) - Icon-only style
 .theme-toggle {
     position: fixed;
     top: 1rem;
@@ -102,58 +102,78 @@ header {
     z-index: 1000;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--border-color);
-    background: var(--bg-card);
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    background: transparent;
     color: var(--text-secondary);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
-    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    border-radius: 50%;
 
     svg {
-        width: 14px;
-        height: 14px;
-        transition: transform 0.3s ease;
+        width: 18px;
+        height: 18px;
+        transition: transform 0.5s ease, color 0.3s ease;
+    }
+
+    .theme-label {
+        position: absolute;
+        right: 100%;
+        margin-right: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateX(10px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        pointer-events: none;
     }
 
     &:hover {
-        border-color: var(--accent-primary);
-        color: var(--text-primary);
+        color: var(--accent-primary);
+        background: var(--bg-card);
 
         svg {
             transform: rotate(180deg);
         }
+
+        .theme-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
     @media (max-width: 768px) {
-        padding: 0.3rem 0.6rem;
-        font-size: 0.7rem;
+        width: 32px;
+        height: 32px;
+        top: 0.5rem;
+        right: 0.5rem;
 
         svg {
-            width: 12px;
-            height: 12px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .theme-label {
+            display: none;
         }
     }
 }
 
 [data-theme="blurred"] .theme-toggle {
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-secondary);
 
     &:hover {
-        background: rgba(255, 255, 255, 0.15);
-        border-color: var(--accent-blue);
+        color: var(--accent-blue);
+        background: rgba(255, 255, 255, 0.1);
         box-shadow: 0 0 20px var(--glow);
-    }
 
-    @media (max-width: 768px) {
-        padding: 0.4rem 0.8rem;
+        svg {
+            filter: drop-shadow(0 0 8px var(--accent-blue));
+        }
     }
 }

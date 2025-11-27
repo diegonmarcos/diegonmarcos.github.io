@@ -1,0 +1,6 @@
+
+> root-sass@1.0.0 sass:watch
+> sass --watch ./style.scss:../../dist/style.css
+
+Sass is watching for changes. Press Ctrl-C to stop.
+

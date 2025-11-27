@@ -1,0 +1,12 @@
+{
+  "name": "linktree",
+  "version": "1.0.0",
+  "description": "Linktree - Personal links hub",
+  "scripts": {
+    "build:css": "sass src_static/scss/main.scss style.css --style=compressed --no-source-map",
+    "dev:css": "sass src_static/scss/main.scss style.css --style=expanded --source-map --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

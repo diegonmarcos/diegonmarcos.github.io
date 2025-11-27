@@ -1,0 +1,12 @@
+{
+  "name": "feed-yourself",
+  "version": "1.0.0",
+  "description": "Feed Yourself - Menu Designer Pro",
+  "scripts": {
+    "build:css": "sass src_static/scss/main.scss dist/style.css --style=compressed --no-source-map",
+    "dev:css": "sass src_static/scss/main.scss dist/style.css --style=expanded --source-map --watch"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}

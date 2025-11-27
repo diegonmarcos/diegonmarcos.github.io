@@ -104,8 +104,55 @@ build() {
 
     build_scss "prod"
     build_typescript "prod"
+    build_single_file
 
     log_success "Build completed → $DIST_DIR"
+}
+
+# Build single-file HTML (inline CSS + JS)
+build_single_file() {
+    log_info "Building single-file HTML..."
+
+    _html_file="$DIST_DIR/index.html"
+    _css_file="$DIST_DIR/styles.css"
+    _js_file="$DIST_DIR/script.js"
+    _output_file="$DIST_DIR/index_spa.html"
+
+    if [ ! -f "$_html_file" ]; then
+        log_warning "index.html not found, skipping single-file build"
+        return 0
+    fi
+
+    # Read CSS content
+    _css_content=""
+    if [ -f "$_css_file" ]; then
+        _css_content=$(cat "$_css_file")
+    fi
+
+    # Read JS content
+    _js_content=""
+    if [ -f "$_js_file" ]; then
+        _js_content=$(cat "$_js_file")
+    fi
+
+    # Create single-file HTML
+    awk -v css="$_css_content" -v js="$_js_content" '
+    /<link[^>]*href="styles\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    /<script[^>]*src="script\.js"[^>]*>/ {
+        print "<script>"
+        print js
+        print "</script>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → $_output_file"
 }
 
 # Development mode with watch

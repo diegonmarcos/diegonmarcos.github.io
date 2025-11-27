@@ -1,15 +1,8 @@
-[0;34m[linktree][0m Starting development server for linktree...
-[0;32m[linktree][0m ✓ Server starting at http://localhost:8000/linktree/
-[0;34m[linktree][0m Press Ctrl+C to stop
 
-127.0.0.1 - - [24/Nov/2025 01:40:11] "GET / HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:40:11] "GET /style.css?v=1.1 HTTP/1.1" 200 -
-127.0.0.1 - - [24/Nov/2025 01:40:11] "GET /script.js?v=1.1 HTTP/1.1" 200 -
-127.0.0.1 - - [24/Nov/2025 01:42:14] "GET / HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:42:14] "GET /style.css?v=1.1 HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:42:14] "GET /script.js?v=1.1 HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:42:14] "GET /favicon.ico HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:49:42] "GET / HTTP/1.1" 304 -
-127.0.0.1 - - [24/Nov/2025 01:49:42] "GET /style.css?v=1.1 HTTP/1.1" 200 -
-127.0.0.1 - - [24/Nov/2025 01:49:42] "GET /script.js?v=1.1 HTTP/1.1" 200 -
-Terminated
+[0;32m+----------------------------------------------------------+[0m
+[0;32m|[0m  [0;36mLinktree STARTED[0m
+[0;32m+----------------------------------------------------------+[0m
+[0;32m|[0m  [1;33mURL:[0m  [0;34mhttp://localhost:8001/[0m
+[0;32m|[0m  [1;33mStop:[0m ./1.ops/build_main.sh kill
+[0;32m+----------------------------------------------------------+[0m
+

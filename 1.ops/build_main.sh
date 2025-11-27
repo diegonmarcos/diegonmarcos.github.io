@@ -348,10 +348,7 @@ execute_build() {
     _action="$2"
     _build_script="$PROJECT_ROOT/$_project/1.ops/build.sh"
 
-    # Special case for myprofile which uses 1.1.ops
-    if [ "$_project" = "myprofile" ]; then
-        _build_script="$PROJECT_ROOT/$_project/1.1.ops/build.sh"
-    fi
+    # myprofile now uses standard 1.ops path
 
     log_section "Building: $_project"
 
@@ -519,10 +516,11 @@ dev_all() {
 
         tmux new-session -d -s build-root-sass "cd $PROJECT_ROOT/src_static/scss && npm install && npm run sass:watch" 2>/dev/null || true
         tmux new-session -d -s build-root-ts "cd $PROJECT_ROOT/src_static/typescript && npm install && npm run ts:watch" 2>/dev/null || true
+        tmux new-session -d -s build-root-server "cd $PROJECT_ROOT && npx live-server --port=8000 --no-browser --quiet" 2>/dev/null || true
         tmux new-session -d -s build-linktree "cd $PROJECT_ROOT/linktree/1.ops && sh build.sh dev" 2>/dev/null || true
-        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/3.sass && npm install && npm run sass:watch" 2>/dev/null || true
+        tmux new-session -d -s build-cv-web "cd $PROJECT_ROOT/cv_web/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-myfeed "cd $PROJECT_ROOT/myfeed/1.ops && sh build.sh dev" 2>/dev/null || true
-        tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/nexus/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/cloud/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-feed "cd $PROJECT_ROOT/feed_yourself/1.ops && sh build.sh dev" 2>/dev/null || true
@@ -569,17 +567,20 @@ dev_all() {
         log_info "Starting root TypeScript..."
         (cd "$PROJECT_ROOT/src_static/typescript" && nohup npm run ts:watch > "$PROJECT_ROOT/1.ops/logs/ts-dev.log" 2>&1 &)
 
+        log_info "Starting root live-server..."
+        (cd "$PROJECT_ROOT" && nohup npx live-server --port=8000 --no-browser --quiet > "$PROJECT_ROOT/1.ops/logs/root-dev.log" 2>&1 &)
+
         log_info "Starting linktree..."
         nohup sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/linktree-dev.log" 2>&1 &
 
-        log_info "Starting cv_web Sass..."
-        (cd "$PROJECT_ROOT/cv_web/3.sass" && nohup npm run sass:watch > "$PROJECT_ROOT/1.ops/logs/cv-web-dev.log" 2>&1 &)
+        log_info "Starting cv_web..."
+        nohup sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cv-web-dev.log" 2>&1 &
 
         log_info "Starting myfeed..."
         nohup sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myfeed-dev.log" 2>&1 &
 
         log_info "Starting myprofile..."
-        nohup sh "$PROJECT_ROOT/myprofile/1.1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
+        nohup sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
 
         log_info "Starting nexus..."
         nohup sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/nexus-dev.log" 2>&1 &
@@ -655,9 +656,9 @@ dev_single() {
             wait
             ;;
         cv-web)
-            log_info "Starting cv_web Sass watch..."
-            (cd "$PROJECT_ROOT/cv_web/3.sass" && npm install && npm run sass:watch) &
-            print_server_started "CV Web Sass" "$_url" "watcher"
+            execute_build "cv_web" "dev" &
+            sleep 2
+            print_server_started "CV Web" "$_url"
             wait
             ;;
         myfeed)

@@ -1,15 +1,8 @@
-[0;34m[myfeed][0m Starting Vite development server...
-[0;32m[myfeed][0m ✓ Development server starting...
-[0;34m[myfeed][0m Press Ctrl+C to stop
 
+[0;32m+----------------------------------------------------------+[0m
+[0;32m|[0m  [0;36mMyFeed STARTED[0m
+[0;32m+----------------------------------------------------------+[0m
+[0;32m|[0m  [1;33mURL:[0m  [0;34mhttp://localhost:8003/[0m
+[0;32m|[0m  [1;33mStop:[0m ./1.ops/build_main.sh kill
+[0;32m+----------------------------------------------------------+[0m
 
-> myfeed@1.0.0 dev
-> vite
-
-
-  VITE v5.4.21  ready in 2907 ms
-
-  ➜  Local:   http://localhost:3000/myfeed/
-  ➜  Network: use --host to expose
-  ➜  Vue DevTools: Open http://localhost:3000/myfeed/__devtools__/ as a separate window
-  ➜  Vue DevTools: Press Alt(⌥)+Shift(⇧)+D in App to toggle the Vue DevTools

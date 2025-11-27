@@ -1,6 +1,6 @@
 #!/bin/sh
 #=====================================
-# NEXUS BUILD SCRIPT
+# NEXUS BUILD SCRIPT (Vanilla Version)
 #=====================================
 # POSIX-compliant build script
 # Usage: ./1.ops/build.sh [action]
@@ -37,10 +37,10 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Build for production\n"
+    printf "  ${GREEN}build${NC}        # Build Sass, TypeScript, and create single-file HTML\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
-    printf "  ${GREEN}dev${NC}          # Start Vite dev server :${PORT}\n"
+    printf "  ${GREEN}dev${NC}          # Start live-server :${PORT} + Sass/TS watch\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
@@ -50,7 +50,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Nexus" "Vue 3" "Tailwind" "TypeScript" "Vite :${PORT}" "HMR"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Nexus" "Vanilla" "Sass+TW" "TypeScript" "live :${PORT}" "Sass+TS"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -65,33 +65,109 @@ check_dependencies() {
     npm install
 }
 
+# Build Sass
+build_scss() {
+    log_info "Building SCSS..."
+    cd "$PROJECT_DIR"
+    npm run build:css
+    log_success "SCSS compiled successfully"
+}
+
+# Build TypeScript
+build_ts() {
+    log_info "Building TypeScript..."
+    cd "$PROJECT_DIR"
+    npm run build:ts
+    log_success "TypeScript compiled successfully"
+}
+
+# Build single-file HTML (inline CSS + JS)
+build_single_file() {
+    log_info "Building single-file HTML..."
+
+    _html_file="$DIST_DIR/index.html"
+    _css_file="$DIST_DIR/styles.css"
+    _js_file="$DIST_DIR/script.js"
+    _output_file="$DIST_DIR/index_spa.html"
+
+    # Read CSS content
+    _css_content=""
+    if [ -f "$_css_file" ]; then
+        _css_content=$(cat "$_css_file")
+    fi
+
+    # Read JS content
+    _js_content=""
+    if [ -f "$_js_file" ]; then
+        _js_content=$(cat "$_js_file")
+    fi
+
+    # Create single-file HTML
+    awk -v css="$_css_content" -v js="$_js_content" '
+    /<link[^>]*href="styles\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    /<script[^>]*src="script\.js"[^>]*>/ {
+        print "<script>"
+        print js
+        print "</script>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → $_output_file"
+}
+
 # Build for production
 build() {
     log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
-    cd "$PROJECT_DIR"
+    mkdir -p "$DIST_DIR"
 
-    npm run build 2>&1 || {
-        log_error "Build failed"
-        return 1
-    }
+    # Build Sass and TypeScript
+    build_scss
+    build_ts
 
-    if [ -d "$DIST_DIR" ]; then
-        log_success "Build completed → $DIST_DIR"
-    else
-        log_error "Build directory not created"
-        return 1
+    # Copy HTML file
+    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
+    log_success "Copied index.html"
+
+    # Copy favicon if exists
+    if [ -f "$PROJECT_DIR/favicon.ico" ]; then
+        cp "$PROJECT_DIR/favicon.ico" "$DIST_DIR/"
+        log_success "Copied favicon.ico"
     fi
+
+    # Build single-file version
+    build_single_file
+
+    log_success "Build completed → $DIST_DIR"
 }
 
 # Development server
 dev() {
-    log_info "Starting Vite development server..."
+    log_info "Starting development server..."
     check_dependencies
+
+    # Build first
+    mkdir -p "$DIST_DIR"
+    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
+    [ -f "$PROJECT_DIR/favicon.ico" ] && cp "$PROJECT_DIR/favicon.ico" "$DIST_DIR/"
+
     cd "$PROJECT_DIR"
 
-    # Start Vite in background
-    nohup npm run dev > /dev/null 2>&1 &
+    # Start Sass watch in background
+    nohup npm run dev:css > /dev/null 2>&1 &
+
+    # Start TypeScript watch in background
+    nohup npm run dev:ts > /dev/null 2>&1 &
+
+    # Start live-server in background
+    nohup npx live-server dist --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"
@@ -109,7 +185,6 @@ clean() {
     log_info "Cleaning build artifacts..."
 
     rm -rf "$DIST_DIR"
-    rm -rf "$PROJECT_DIR/node_modules/.vite"
 
     log_success "Clean completed"
 }

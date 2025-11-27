@@ -2,36 +2,74 @@
  * Tree View functionality for Cloud Dashboard
  */
 
-export function initViewToggle(): void {
+const validViews = ['cards', 'tree', 'architecture'] as const;
+type ViewName = typeof validViews[number];
+
+function getViewFromHash(): ViewName {
+    const hash = window.location.hash.slice(1);
+    return validViews.includes(hash as ViewName) ? (hash as ViewName) : 'cards';
+}
+
+function switchToView(viewName: ViewName, pushState: boolean = true): void {
     const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
-    
     const views: Record<string, HTMLElement | null> = {
         'cards': document.getElementById('cards-view'),
         'tree': document.getElementById('tree-view'),
         'architecture': document.getElementById('architecture-view')
     };
 
+    // Update button states
+    viewButtons.forEach(b => {
+        if (b.dataset.view === viewName) {
+            b.classList.add('active');
+        } else {
+            b.classList.remove('active');
+        }
+    });
+
+    // Toggle views
+    Object.keys(views).forEach(key => {
+        const viewElement = views[key];
+        if (viewElement) {
+            if (key === viewName) {
+                viewElement.classList.add('active');
+            } else {
+                viewElement.classList.remove('active');
+            }
+        }
+    });
+
+    // Update URL hash (push to history for back button support)
+    if (pushState) {
+        window.history.pushState({ view: viewName }, '', `#${viewName}`);
+    }
+}
+
+export function initViewToggle(): void {
+    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
+
+    // Set initial view from hash
+    const initialView = getViewFromHash();
+    switchToView(initialView, false);
+    window.history.replaceState({ view: initialView }, '', `#${initialView}`);
+
+    // Handle button clicks
     viewButtons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const viewName = btn.dataset.view;
-            if (!viewName) return;
-
-            // Update button states
-            viewButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            // Toggle views
-            Object.keys(views).forEach(key => {
-                const viewElement = views[key];
-                if (viewElement) {
-                    if (key === viewName) {
-                        viewElement.classList.add('active');
-                    } else {
-                        viewElement.classList.remove('active');
-                    }
-                }
-            });
+            const viewName = btn.dataset.view as ViewName;
+            if (viewName && validViews.includes(viewName)) {
+                switchToView(viewName);
+            }
         });
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', (event) => {
+        if (event.state?.view && validViews.includes(event.state.view)) {
+            switchToView(event.state.view, false);
+        } else {
+            switchToView(getViewFromHash(), false);
+        }
     });
 }
 

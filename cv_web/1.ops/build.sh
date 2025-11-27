@@ -87,6 +87,41 @@ build() {
     fi
 
     log_success "Sass compiled to $CSS_OUTPUT"
+
+    build_single_file
+}
+
+# Build single-file HTML (inline CSS)
+build_single_file() {
+    log_info "Building single-file HTML..."
+
+    _html_file="$PROJECT_DIR/index.html"
+    _css_file="$PROJECT_DIR/style.css"
+    _output_file="$PROJECT_DIR/index_spa.html"
+
+    if [ ! -f "$_html_file" ]; then
+        log_warning "index.html not found, skipping single-file build"
+        return 0
+    fi
+
+    # Read CSS content
+    _css_content=""
+    if [ -f "$_css_file" ]; then
+        _css_content=$(cat "$_css_file")
+    fi
+
+    # Create single-file HTML (inline CSS only, CV Web has no local JS)
+    awk -v css="$_css_content" '
+    /<link[^>]*href="style\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → $_output_file"
 }
 
 # Development mode

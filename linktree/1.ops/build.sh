@@ -36,11 +36,10 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Validate project files\n"
-    printf "  ${GREEN}minify${NC}       # Minify CSS and JS\n"
+    printf "  ${GREEN}build${NC}        # Build Sass and create single-file HTML\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
-    printf "  ${GREEN}dev${NC}          # Start npm-live server :${PORT}\n"
+    printf "  ${GREEN}dev${NC}          # Start npm-live server :${PORT} + Sass watch\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
@@ -50,23 +49,45 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Vanilla" "Vanilla" "npm-live :${PORT}" "-"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Sass" "Vanilla" "npm-live :${PORT}" "Sass"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
+}
+
+# Check dependencies
+check_dependencies() {
+    if [ -d "$PROJECT_DIR/node_modules" ]; then
+        return 0
+    fi
+    log_info "Installing dependencies..."
+    cd "$PROJECT_DIR"
+    npm install
+}
+
+# Build Sass
+build_scss() {
+    log_info "Building SCSS..."
+    cd "$PROJECT_DIR"
+    npm run build:css
+    log_success "SCSS compiled successfully"
 }
 
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
+    check_dependencies
 
-    _errors=0
+    # Build Sass
+    build_scss
 
     # Check required files exist
+    _errors=0
     [ -f "$PROJECT_DIR/index.html" ] || { log_error "index.html not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/style.css" ] || { log_error "style.css not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/script.js" ] || { log_error "script.js not found"; _errors=$((_errors + 1)); }
 
     if [ "$_errors" -eq 0 ]; then
+        build_single_file
         log_success "Build completed successfully"
         return 0
     else
@@ -75,9 +96,54 @@ build() {
     fi
 }
 
+# Build single-file HTML (inline CSS + JS)
+build_single_file() {
+    log_info "Building single-file HTML..."
+
+    _html_file="$PROJECT_DIR/index.html"
+    _css_file="$PROJECT_DIR/style.css"
+    _js_file="$PROJECT_DIR/script.js"
+    _output_file="$PROJECT_DIR/index_spa.html"
+
+    # Read CSS content
+    _css_content=""
+    if [ -f "$_css_file" ]; then
+        _css_content=$(cat "$_css_file")
+    fi
+
+    # Read JS content
+    _js_content=""
+    if [ -f "$_js_file" ]; then
+        _js_content=$(cat "$_js_file")
+    fi
+
+    # Create single-file HTML
+    awk -v css="$_css_content" -v js="$_js_content" '
+    /<link[^>]*href="style\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    /<script[^>]*src="script\.js"[^>]*>/ {
+        print "<script>"
+        print js
+        print "</script>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → $_output_file"
+}
+
 # Start development server
 dev() {
+    check_dependencies
     cd "$PROJECT_DIR"
+
+    # Start Sass watch in background
+    nohup npm run dev:css > /dev/null 2>&1 &
 
     # Start live-server in background
     nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &

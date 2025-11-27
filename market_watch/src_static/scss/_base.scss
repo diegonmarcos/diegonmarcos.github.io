@@ -1,4 +1,4 @@
-// Base styles
+// Base styles - Bloomberg Terminal
 * {
   margin: 0;
   padding: 0;
@@ -12,9 +12,9 @@ html, body {
 
 body {
   font-family: $font-sans;
-  font-size: 11px;
+  font-size: 12px;
   background-color: $black;
-  color: $gray-300;
+  color: $text-primary;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   user-select: none;
@@ -54,7 +54,7 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-// Custom scrollbar
+// Custom scrollbar - Bloomberg style
 .custom-scrollbar {
   &::-webkit-scrollbar {
     width: 6px;
@@ -66,13 +66,19 @@ body {
   }
 
   &::-webkit-scrollbar-thumb {
-    background: $border-dark;
+    background: #333;
     border-radius: 2px;
 
     &:hover {
-      background: $gray-600;
+      background: #555;
     }
   }
+}
+
+// Firefox scrollbar
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #333 $black;
 }
 
 // Hide scrollbar but keep functionality
@@ -83,4 +89,10 @@ body {
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+// Selection
+::selection {
+  background: $amber;
+  color: $black;
 }

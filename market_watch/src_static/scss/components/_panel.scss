@@ -1,4 +1,4 @@
-// Panel Component (4-quadrant screens)
+// Panel Component - Bloomberg 4-quadrant screens
 .main-grid {
   flex: 1;
   display: grid;
@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 2px 6px;
+    padding: 2px 4px;
     background: $bg-header;
     flex-shrink: 0;
     user-select: none;
@@ -31,19 +31,19 @@
     .panel-title {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
 
       .panel-number {
         font-weight: 700;
-        font-size: 11px;
+        font-size: 12px;
         color: $amber;
       }
 
       .panel-name {
         font-weight: 700;
-        font-size: 11px;
+        font-size: 12px;
         color: $white;
-        letter-spacing: 0.3px;
+        letter-spacing: -0.2px;
       }
     }
 
@@ -55,8 +55,9 @@
       .panel-command {
         font-family: $font-mono;
         font-size: 10px;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(255, 255, 255, 0.8);
         cursor: pointer;
+        transition: color 0.15s;
 
         &:hover {
           color: $white;
@@ -72,6 +73,7 @@
           height: 10px;
           color: rgba(255, 255, 255, 0.6);
           cursor: pointer;
+          transition: color 0.15s;
 
           &:hover {
             color: $white;

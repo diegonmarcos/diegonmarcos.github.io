@@ -1,4 +1,4 @@
-// Footer Component
+// Footer Component - Bloomberg Style
 .footer {
   display: flex;
   align-items: center;
@@ -8,23 +8,27 @@
   padding: 0 4px;
   gap: 4px;
   flex-shrink: 0;
+  overflow: hidden;
 
   &__keys {
     display: flex;
     gap: 4px;
     width: 100%;
     height: 16px;
+    align-items: center;
   }
 
   &__key {
     flex: 1;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: $black;
     border: 1px solid $gray-700;
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color 0.1s ease;
+    font-size: 9px;
 
     &:hover {
       background: $gray-800;
@@ -32,16 +36,14 @@
 
     .key-number {
       font-weight: 700;
-      font-size: 9px;
       color: $amber;
       margin-right: 4px;
     }
 
     .key-label {
       font-weight: 700;
-      font-size: 9px;
       color: $white;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
   }
 }

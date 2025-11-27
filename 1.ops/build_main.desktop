@@ -1,0 +1,18 @@
+[Desktop Entry]
+Categories=Development;
+Comment[en_US]=Launches the Build Main shell script in a terminal
+Comment=Launches the Build Main shell script in a terminal
+Exec=/home/diego/Documents/Git/front-Github_io/1.ops/build_main.sh
+GenericName[en_US]=
+GenericName=
+Icon=preferences-git
+MimeType=
+Name[en_US]=Build Main
+Name=Build Main
+Path=
+StartupNotify=true
+Terminal=true
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

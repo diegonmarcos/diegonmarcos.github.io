@@ -110,7 +110,6 @@ build() {
 
 # Development mode with watch
 dev() {
-    log_info "Starting development mode with watch..."
     check_dependencies
 
     if [ ! -d "$DIST_DIR" ]; then
@@ -118,11 +117,23 @@ dev() {
     fi
 
     cd "$PROJECT_DIR"
-    log_success "Watching at http://localhost:${PORT}/"
-    log_info "Press Ctrl+C to stop"
-    printf "\n"
 
-    npm run dev
+    # Start watchers in background (silent)
+    nohup npm run dev:css > /dev/null 2>&1 &
+    nohup npm run dev:js > /dev/null 2>&1 &
+
+    # Start live-server in background
+    nohup npx live-server "$DIST_DIR" --port=${PORT} --no-browser --quiet > /dev/null 2>&1 &
+
+    # Print URL and return control
+    printf "\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} Dashboard STARTED${NC}\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
+    printf "${GREEN}+----------------------------------------------------------+${NC}\n"
+    printf "\n"
 }
 
 # Clean build artifacts

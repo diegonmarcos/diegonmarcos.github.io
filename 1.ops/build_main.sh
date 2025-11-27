@@ -633,11 +633,10 @@ dev_single() {
     case "$_project" in
         root)
             log_info "Starting root Sass + TypeScript watch..."
-            (cd "$PROJECT_ROOT/src_static/scss" && npm run sass:watch) &
-            (cd "$PROJECT_ROOT/src_static/typescript" && npm run ts:watch) &
-            (cd "$PROJECT_ROOT" && npx live-server --port=8000 --no-browser --quiet) &
+            nohup sh -c "cd '$PROJECT_ROOT/src_static/scss' && npm run sass:watch" > /dev/null 2>&1 &
+            nohup sh -c "cd '$PROJECT_ROOT/src_static/typescript' && npm run ts:watch" > /dev/null 2>&1 &
+            nohup npx live-server "$PROJECT_ROOT" --port=8000 --no-browser --quiet > /dev/null 2>&1 &
             print_server_started "Root" "$_url" "watcher"
-            wait
             ;;
         linktree)
             execute_build "linktree" "dev" &

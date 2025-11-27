@@ -9,22 +9,53 @@ This repository contains the source code for my personal portfolio website and b
 
 ## 1. Tech Stack
 
-### Stack
-- **Frontend**: HTML5, Sass/SCSS, TypeScript
-- **Blog**: Jekyll
-- **Build Tools**: Node.js, npm, Sass, TypeScript Compiler (tsc)
-- **CI/CD**: GitHub Actions
-- **Hosting**: GitHub Pages
+### Stack Definition
 
-### Features
+| **Project**       | **Description**                 | **Classification (Type)**      | **Framework** | Build Strategy           | **Single-File** | **SPA** |
+| ----------------- | ------------------------------- | ------------------------------ | ------------- | ------------------------ | --------------- | ------- |
+| **Root**          | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Linktree**      | Simple links hub & bio page     | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **CV Web**        | Digital Resume/CV               | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
+| **Cloud**         | Cloud resources monitor         | **Type 3** (Private Dashboard) | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
+| **MarketWatch**   | Financial market tracker        | **Type 3** (Private Dashboard) | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
+| **HealthTracker** | Personal health monitoring      | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Feed Yourself** | Calculator / Utility Tool       | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | No      |
+| **Others**        | Python tools & scripts          | **Scripts**                    | **Python**    | Server-Side (Static SSG) | Yes             | No      |
+| **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
+| **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 
-- **Modern & Responsive Design**: A clean, responsive layout built with HTML5 and Sass.
-- **Interactive Elements**: Engaging user experience with animations and interactive components built with TypeScript.
-- **Modular Architecture**: A well-organized project structure separating concerns (specs, operations, assets, styles, and logic).
-- **Jekyll-Powered Blog**: A simple and clean blog powered by Jekyll, with posts written in Markdown.
-- **Linktree Page**: A dedicated page for social and professional links.
-- **Web CV**: An online, interactive version of my curriculum vitae.
-- **Efficient CI/CD**: An optimized GitHub Actions workflow for automated deployment, featuring conditional builds to save time and resources.
+### Dev Environment
+
+| **Project**       | **Framework** | **CSS**  | **JS Variant** |
+| ----------------- | ------------- | -------- | -------------- |
+| **Root**          | Vanilla       | Sass     | TypeScript     |
+| **Linktree**      | Vanilla       | Sass     | Vanilla        |
+| **CV Web**        | Vanilla       | Sass     | Vanilla        |
+| **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
+| **Cloud**         | Vanilla       | Sass     | TypeScript     |
+| **MarketWatch**   | Vanilla       | Sass     | TypeScript     |
+| **HealthTracker** | Vanilla       | Tailwind | Vanilla        |
+| **Feed Yourself** | Vanilla       | Sass     | Vanilla        |
+| **Others**        | Python 3.11+  | -        | -              |
+| **MyFeed**        | Vue 3         | Sass     | TypeScript     |
+| **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
+
+### Dev Servers
+
+| **Project**       | **Dev Server (Port)** | **Watch**  |
+| ----------------- | --------------------- | ---------- |
+| **Root**          | npm-live :8000        | Sass, TS   |
+| **Linktree**      | npm-live :8001        | -          |
+| **CV Web**        | npm-live :8002        | Sass       |
+| **Nexus**         | npm-live :8005        | Sass, TS   |
+| **Cloud**         | npm-live :8006        | Sass, TS   |
+| **MarketWatch**   | npm-live :8010        | Sass, TS   |
+| **HealthTracker** | npm-live :8009        | -          |
+| **Feed Yourself** | npm-live :8007        | -          |
+| **Others**        | npm-live :8008        | -          |
+| **MyFeed**        | Vite :8003            | HMR        |
+| **MyProfile**     | Vite :8004            | HMR        |
 ---
 
 ## 2. Project Structure

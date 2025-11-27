@@ -1026,11 +1026,28 @@ print_project_table() {
     printf "\n"
 }
 
+# Print working directory section
+print_workdir_section() {
+    printf "${YELLOW}WORKING DIRECTORY:${NC}\n"
+    printf "${BLUE}══════════════════${NC}\n"
+    if [ "$PROJECT_ROOT" = "$(pwd)" ]; then
+        printf "  ${GREEN}[●]${NC} Current Directory (.)\n"
+        printf "  [ ] Custom Path: %s\n" "$PROJECT_ROOT"
+    else
+        printf "  [ ] Current Directory (.)\n"
+        printf "  ${GREEN}[●]${NC} Custom Path: %s\n" "$PROJECT_ROOT"
+    fi
+    printf "\n"
+}
+
 # Simple TUI (POSIX-compliant)
 tui_simple() {
     while true; do
         clear
         print_banner
+
+        # Show working directory
+        print_workdir_section
 
         # Show project structure table
         print_project_table

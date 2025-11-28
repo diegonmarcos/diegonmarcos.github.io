@@ -602,3 +602,14 @@ export function renderFooter(): string {
     </footer>
   `;
 }
+
+export function renderLinktreeButton(): string {
+  return `
+    <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn" title="LINK <GO>">
+      <span class="linktree-btn__cmd">LINK</span>
+      <span class="linktree-btn__go">&lt;GO&gt;</span>
+      <span class="linktree-btn__label">DIEGONMARCOS</span>
+      ${icon('external-link', 'linktree-btn__icon')}
+    </a>
+  `;
+}

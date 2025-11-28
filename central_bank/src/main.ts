@@ -1,6 +1,6 @@
 import './styles.css';
 import { state, applyTheme, generateAgents, defaultDSGEParams, defaultABMParams, defaultMLParams, dsgeScenarios, abmScenarios } from './state';
-import { renderHeader, renderDSGEPage, renderMLABMPage, renderFooter } from './render';
+import { renderHeader, renderDSGEPage, renderMLABMPage, renderFooter, renderLinktreeButton } from './render';
 import { initDSGECharts, initMLCharts, destroyCharts } from './charts';
 import { initAgentCanvas } from './canvas';
 import type { ModelType, DSGEParameters, ABMParameters, MLParameters } from './types';
@@ -15,6 +15,7 @@ function render(): void {
     ${renderHeader()}
     ${state.activeModel === 'dsge' ? renderDSGEPage() : renderMLABMPage()}
     ${renderFooter()}
+    ${renderLinktreeButton()}
   `;
 
   setTimeout(() => {

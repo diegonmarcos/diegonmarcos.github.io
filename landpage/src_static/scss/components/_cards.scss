@@ -1,3 +1,5 @@
+@use '../abstracts' as *;
+
 .card {
     background-color: $card-bg;
     border: 1px solid $card-border;

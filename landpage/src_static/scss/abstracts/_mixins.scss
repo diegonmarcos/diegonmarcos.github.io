@@ -3,6 +3,8 @@
 // ============================================
 // Reusable style patterns
 
+@use 'variables' as *;
+
 // Responsive breakpoints
 @mixin mobile {
   @media (max-width: $breakpoint-mobile) {

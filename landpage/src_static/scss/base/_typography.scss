@@ -1,3 +1,4 @@
+@use '../abstracts' as *;
 
 .hero-title {
     font-size: clamp(2rem, 4.5vw, 4.5rem);

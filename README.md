@@ -30,13 +30,13 @@ This repository contains the source code for my personal portfolio website and b
 | **Project**       | **Framework** | **CSS**  | **JS Variant** |
 | ----------------- | ------------- | -------- | -------------- |
 | **Landpage**      | Vanilla       | Sass     | TypeScript     |
-| **Linktree**      | Vanilla       | Sass     | Vanilla        |
-| **CV Web**        | Vanilla       | Sass     | Vanilla        |
+| **Linktree**      | Vanilla       | Sass     | TypeScript     |
+| **CV Web**        | Vanilla       | Sass     | TypeScript     |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
 | **Cloud**         | Vanilla       | Sass     | TypeScript     |
 | **MarketWatch**   | Vanilla       | Sass     | TypeScript     |
-| **HealthTracker** | Vanilla       | Tailwind | Vanilla        |
-| **Feed Yourself** | Vanilla       | Sass     | Vanilla        |
+| **HealthTracker** | Vanilla       | Tailwind | -              |
+| **Feed Yourself** | Vanilla       | Sass     | TypeScript     |
 | **Others**        | Python 3.11+  | -        | -              |
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
 | **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
@@ -46,13 +46,13 @@ This repository contains the source code for my personal portfolio website and b
 | **Project**       | **Dev Server (Port)** | **Watch**  |
 | ----------------- | --------------------- | ---------- |
 | **Landpage**      | npm-live :8000        | Sass, TS   |
-| **Linktree**      | npm-live :8001        | -          |
-| **CV Web**        | npm-live :8002        | Sass       |
+| **Linktree**      | npm-live :8001        | Sass, TS   |
+| **CV Web**        | npm-live :8002        | Sass, TS   |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
 | **Cloud**         | npm-live :8006        | Sass, TS   |
 | **MarketWatch**   | npm-live :8010        | Sass, TS   |
 | **HealthTracker** | npm-live :8009        | -          |
-| **Feed Yourself** | npm-live :8007        | -          |
+| **Feed Yourself** | npm-live :8007        | Sass, TS   |
 | **Others**        | npm-live :8008        | -          |
 | **MyFeed**        | Vite :8003            | HMR        |
 | **MyProfile**     | Vite :8004            | HMR        |

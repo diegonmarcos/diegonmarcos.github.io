@@ -57,6 +57,7 @@ URL_FEED="http://localhost:8007/"
 URL_OTHERS="http://localhost:8008/"
 URL_HEALTH="http://localhost:8009/"
 URL_MARKET="http://localhost:8010/"
+URL_CENTRALBANK="http://localhost:8011/"
 
 # Banner function
 print_banner() {
@@ -117,6 +118,10 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Market Watch       ${BLUE}${URL_MARKET}${NC}\n"
         _count=$((_count + 1))
     fi
+    if pgrep -f "live-server.*8011" >/dev/null 2>&1; then
+        _servers="${_servers}  ${GREEN}*${NC} Central Bank       ${BLUE}${URL_CENTRALBANK}${NC}\n"
+        _count=$((_count + 1))
+    fi
     # Generic live-server check (fallback for other ports)
     if pgrep -f "live-server" >/dev/null 2>&1; then
         _other_live=$(pgrep -f "live-server" 2>/dev/null | while read pid; do
@@ -169,7 +174,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health build-market; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health build-market build-centralbank; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -184,6 +189,7 @@ get_running_servers() {
                     build-others)     _servers="${_servers}  ${GREEN}*${NC} Others (tmux)      ${BLUE}${URL_OTHERS}${NC}\n" ;;
                     build-health)     _servers="${_servers}  ${GREEN}*${NC} Health (tmux)      ${BLUE}${URL_HEALTH}${NC}\n" ;;
                     build-market)     _servers="${_servers}  ${GREEN}*${NC} Market (tmux)      ${BLUE}${URL_MARKET}${NC}\n" ;;
+                    build-centralbank) _servers="${_servers}  ${GREEN}*${NC} Central Bank (tmux) ${BLUE}${URL_CENTRALBANK}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -238,6 +244,7 @@ print_usage() {
     printf "  ${GREEN}build-others${NC}       # Others - Python\n"
     printf "  ${GREEN}build-health${NC}       # Health Tracker - Vanilla + Tailwind\n"
     printf "  ${GREEN}build-market${NC}       # Market Watch - Vanilla + Sass + TypeScript\n"
+    printf "  ${GREEN}build-centralbank${NC}  # Central Bank - Vanilla + Tailwind + TypeScript\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -252,6 +259,7 @@ print_usage() {
     printf "  ${GREEN}dev-others${NC}         # Others - npm-live :8008\n"
     printf "  ${GREEN}dev-health${NC}         # Health Tracker - npm-live :8009\n"
     printf "  ${GREEN}dev-market${NC}         # Market Watch - npm-live :8010\n"
+    printf "  ${GREEN}dev-centralbank${NC}    # Central Bank - npm-live :8011\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -278,6 +286,7 @@ print_usage() {
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "Others" "Python" "-" "-" "npm-live :8008" "-"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "HealthTracker" "Vanilla" "Tailwind" "Vanilla" "npm-live :8009" "-"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MarketWatch" "Vanilla" "Sass" "TypeScript" "npm-live :8010" "Sass, TS"
+    printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "CentralBank" "Vanilla" "Tailwind" "TypeScript" "npm-live :8011" "-"
     printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
 
     # Show status box in help
@@ -394,6 +403,7 @@ build_all() {
     execute_build "others" "build" || _failed=$((_failed + 1))
     execute_build "health_tracker" "build" || _failed=$((_failed + 1))
     execute_build "market_watch" "build" || _failed=$((_failed + 1))
+    execute_build "central_bank" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -421,6 +431,7 @@ clean_all_builds() {
     execute_build "others" "clean" || true
     execute_build "health_tracker" "clean" || true
     execute_build "market_watch" "clean" || true
+    execute_build "central_bank" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -510,6 +521,7 @@ dev_all() {
         tmux new-session -d -s build-others "cd $PROJECT_ROOT/others/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-health "cd $PROJECT_ROOT/health_tracker/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-market "cd $PROJECT_ROOT/market_watch/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-centralbank "cd $PROJECT_ROOT/central_bank/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -527,6 +539,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Tmux Sessions: build-landpage, build-linktree, etc."
@@ -577,6 +590,9 @@ dev_all() {
         log_info "Starting market_watch..."
         nohup sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/market-dev.log" 2>&1 &
 
+        log_info "Starting central_bank..."
+        nohup sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/centralbank-dev.log" 2>&1 &
+
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
@@ -595,6 +611,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Others" "$URL_OTHERS"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -671,6 +688,9 @@ dev_single() {
         market)
             execute_build "market_watch" "dev"
             ;;
+        centralbank)
+            execute_build "central_bank" "dev"
+            ;;
     esac
 }
 
@@ -682,7 +702,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health build-market; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-myprofile build-nexus build-cloud build-feed build-others build-health build-market build-centralbank; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -1251,6 +1271,9 @@ main() {
         build-market)
             execute_build "market_watch" "build"
             ;;
+        build-centralbank)
+            execute_build "central_bank" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -1286,6 +1309,9 @@ main() {
             ;;
         dev-market)
             dev_single "market" "$URL_MARKET"
+            ;;
+        dev-centralbank)
+            dev_single "centralbank" "$URL_CENTRALBANK"
             ;;
         list)
             list_servers

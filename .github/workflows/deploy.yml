@@ -168,6 +168,17 @@ jobs:
           cd ..
           echo "✅ Market Watch build complete"
 
+      - name: 🔨 Build Central Bank Forecasting (Tailwind + TypeScript)
+        id: build-central-bank
+        if: contains(steps.changed-files.outputs.all_changed_files, 'central_bank/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Central Bank Forecasting..."
+          cd central_bank/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ Central Bank Forecasting build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -225,6 +236,13 @@ jobs:
             FAILED="$FAILED market_watch"
           elif [ "${{ steps.build-market-watch.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Market Watch"
+          fi
+
+          if [ "${{ steps.build-central-bank.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Central Bank Forecasting"
+            FAILED="$FAILED central_bank"
+          elif [ "${{ steps.build-central-bank.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Central Bank Forecasting"
           fi
 
           echo "============================================"
@@ -338,6 +356,16 @@ jobs:
             echo "✅ Market Watch build copied to _site/market_watch/"
           else
             echo "⏭️  Skipping Market Watch copy (no dist directory found)"
+          fi
+
+          # Copy Central Bank Forecasting build (if dist exists)
+          if [ -d "central_bank/dist" ]; then
+            echo "📦 Copying Central Bank Forecasting build..."
+            mkdir -p _site/central_bank
+            cp -r central_bank/dist/* _site/central_bank/
+            echo "✅ Central Bank Forecasting build copied to _site/central_bank/"
+          else
+            echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

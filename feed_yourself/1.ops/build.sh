@@ -37,7 +37,7 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Copy static files to dist\n"
+    printf "  ${GREEN}build${NC}        # Build both apps to dist (single-file outputs)\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}          # Start npm-live server :${PORT}\n"
@@ -48,9 +48,10 @@ print_usage() {
     printf "\n"
     printf "${YELLOW}PROJECT INFO:${NC}\n"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
+    printf "  ${MAGENTA}%-20s  %-10s  %-10s  %s${NC}\n" "Output" "Source" "CSS" "Description"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "FeedYourself" "-" "Sass" "Vanilla" "npm-live :${PORT}" "Sass"
+    printf "  ${CYAN}%-20s${NC}  %-10s  %-10s  %s\n" "index.html" "src_static" "Sass" "Menu Designer Pro"
+    printf "  ${CYAN}%-20s${NC}  %-10s  %-10s  %s\n" "protein_calculator.html" "src_static_2" "Sass" "Protein Calculator"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -65,17 +66,21 @@ check_dependencies() {
     npm install
 }
 
-# Build Sass
+# Build Sass for both folders
 build_scss() {
-    log_info "Building SCSS..."
+    log_info "Building SCSS for src_static..."
     cd "$PROJECT_DIR"
     npm run build:css
-    log_success "SCSS compiled successfully"
+    log_success "SCSS (src_static) compiled successfully"
+
+    log_info "Building SCSS for src_static_2..."
+    npm run build:css2
+    log_success "SCSS (src_static_2) compiled successfully"
 }
 
-# Build single-file HTML (inline CSS)
-build_single_file() {
-    log_info "Building single-file HTML..."
+# Build single-file HTML (inline CSS) for src_static
+build_single_file_1() {
+    log_info "Building single-file HTML for src_static..."
 
     _html_file="$DIST_DIR/index.html"
     _css_file="$DIST_DIR/style.css"
@@ -98,24 +103,74 @@ build_single_file() {
     { print }
     ' "$_html_file" > "$_output_file"
 
-    log_success "Single-file build → $_output_file"
+    log_success "Single-file build → index_spa.html"
+}
+
+# Build single-file HTML (inline CSS) for src_static_2
+build_single_file_2() {
+    log_info "Building single-file HTML for src_static_2..."
+
+    _html_file="$DIST_DIR/protein_calculator.html"
+    _css_file="$DIST_DIR/style2.css"
+    _output_file="$DIST_DIR/protein_calculator_spa.html"
+
+    # Read CSS content
+    _css_content=""
+    if [ -f "$_css_file" ]; then
+        _css_content=$(cat "$_css_file")
+    fi
+
+    # Create single-file HTML by replacing CSS link with inline styles
+    awk -v css="$_css_content" '
+    /<link[^>]*href="css\/main\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    /<link[^>]*href="style2\.css"[^>]*>/ {
+        print "<style>"
+        print css
+        print "</style>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → protein_calculator_spa.html"
 }
 
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
     check_dependencies
-    mkdir -p "$DIST_DIR"
 
-    # Build Sass
+    # Clean dist folder first
+    log_info "Cleaning dist folder..."
+    rm -rf "$DIST_DIR"
+    mkdir -p "$DIST_DIR"
+    log_success "dist folder cleared"
+
+    # Build Sass for both folders
     build_scss
 
     # Copy the main HTML file from src_static
     if [ -f "$PROJECT_DIR/src_static/feed_yourself.html" ]; then
         cp "$PROJECT_DIR/src_static/feed_yourself.html" "$DIST_DIR/index.html"
-        log_success "Copied feed_yourself.html to dist/index.html"
+        log_success "Copied feed_yourself.html → dist/index.html"
     else
         log_error "src_static/feed_yourself.html not found"
+        return 1
+    fi
+
+    # Copy the HTML file from src_static_2
+    if [ -f "$PROJECT_DIR/src_static_2/index.html" ]; then
+        cp "$PROJECT_DIR/src_static_2/index.html" "$DIST_DIR/protein_calculator.html"
+        # Update the CSS link in the copied file to point to style2.css
+        sed -i 's|href="css/main.css"|href="style2.css"|g' "$DIST_DIR/protein_calculator.html"
+        log_success "Copied src_static_2/index.html → dist/protein_calculator.html"
+    else
+        log_error "src_static_2/index.html not found"
         return 1
     fi
 
@@ -125,10 +180,22 @@ build() {
         log_success "Copied public assets to dist/"
     fi
 
-    # Build single-file version
-    build_single_file
+    # Build single-file versions
+    build_single_file_1
+    build_single_file_2
 
-    log_success "Build completed"
+    # Cleanup intermediate CSS files (keep only single-file outputs)
+    rm -f "$DIST_DIR/style.css" "$DIST_DIR/style2.css"
+    log_success "Cleaned up intermediate CSS files"
+
+    log_success "Build completed!"
+    printf "\n"
+    printf "${GREEN}Output files:${NC}\n"
+    printf "  - dist/index.html (Menu Designer - with external CSS)\n"
+    printf "  - dist/index_spa.html (Menu Designer - single file)\n"
+    printf "  - dist/protein_calculator.html (Protein Calculator - with external CSS)\n"
+    printf "  - dist/protein_calculator_spa.html (Protein Calculator - single file)\n"
+    printf "\n"
 }
 
 # Start development server

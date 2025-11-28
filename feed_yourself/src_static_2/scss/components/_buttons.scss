@@ -1,0 +1,69 @@
+// ===========================================
+// COMPONENT - BUTTONS
+// ===========================================
+@use '../base/variables' as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-1 $spacing-4;
+  font-size: $text-xs;
+  font-weight: $font-bold;
+  border-radius: $rounded;
+  border: none;
+  cursor: pointer;
+  transition: $transition-colors;
+  width: 100%;
+
+  i {
+    margin-right: $spacing-1;
+  }
+}
+
+.btn--primary {
+  background-color: $blue-600;
+  color: white;
+
+  &:hover {
+    background-color: $blue-500;
+  }
+}
+
+// Filter buttons
+.filter-btn {
+  padding: $spacing-1 $spacing-3;
+  border-radius: $rounded-full;
+  font-size: $text-xs;
+  font-weight: $font-semibold;
+  transition: $transition-all;
+  border: none;
+  cursor: pointer;
+
+  &--inactive {
+    background-color: white;
+    color: $slate-600;
+    border: 1px solid $slate-200;
+
+    &:hover {
+      background-color: $slate-50;
+    }
+  }
+
+  &--active,
+  &.active {
+    background-color: $blue-600;
+    color: white;
+    box-shadow: $shadow-sm;
+    border: 1px solid transparent;
+  }
+}
+
+// Filters container
+.filters {
+  display: flex;
+  gap: $spacing-2;
+  margin-bottom: $spacing-3;
+  overflow-x: auto;
+  padding-bottom: $spacing-1;
+}

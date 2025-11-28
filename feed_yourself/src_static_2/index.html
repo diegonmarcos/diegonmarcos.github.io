@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Meal Planner</title>
+    <!-- Compiled CSS from Sass -->
+    <link href="css/main.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div>
+                <h1>Protein Source Analyzer</h1>
+                <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Menu Designer</a>
+            </div>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-nav">
+            <button onclick="switchTab('planner')" id="btn-planner" class="tab-btn tab-active">
+                <i class="fas fa-calculator"></i>Protein Calculator
+            </button>
+            <button onclick="switchTab('nutritionals')" id="btn-nutritionals" class="tab-btn">
+                <i class="fas fa-table"></i>Nutritionals
+            </button>
+            <button onclick="switchTab('calculator')" id="btn-calculator" class="tab-btn">
+                <i class="fas fa-utensils"></i>Sides Kcal Calculator
+            </button>
+            <button onclick="switchTab('menu')" id="btn-menu" class="tab-btn">
+                <i class="fas fa-receipt"></i>Menu
+            </button>
+        </div>
+
+        <!-- SHARED GLOBAL SETTINGS -->
+        <div id="global-settings" class="card">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 items-end">
+
+                <!-- Input: Target Protein -->
+                <div class="form-group">
+                    <label>Target Protein / Meal</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="targetProtein" value="35">
+                        <span class="input-suffix">g</span>
+                    </div>
+                </div>
+
+                <!-- Input: Daily Calories -->
+                <div class="form-group">
+                    <label>Daily Calorie Goal</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="dailyCalories" value="2200">
+                        <span class="input-suffix">kcal</span>
+                    </div>
+                </div>
+
+                <!-- Result: Max Cals -->
+                <div class="result-box col-span-2 md:col-span-1">
+                    <div class="result-box__content">
+                        <span class="result-box__label">Meal Limit</span>
+                        <div class="flex items-baseline gap-1">
+                            <span id="mealLimitDisplay" class="result-box__value">733</span>
+                            <span class="result-box__unit">kcal</span>
+                        </div>
+                    </div>
+
+                    <!-- Info Icon -->
+                    <div class="tooltip">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="tooltip__text">Calculations assume 3 meals per day.</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TAB 1: PROTEIN CALCULATOR (Meal Planner) -->
+        <div id="view-planner" class="tab-view">
+            <!-- Filters -->
+            <div class="filters" id="categoryFilters">
+                <button onclick="filterTable('all')" class="filter-btn active">All</button>
+                <button onclick="filterTable('Powders')" class="filter-btn filter-btn--inactive">Powders</button>
+                <button onclick="filterTable('Vegan')" class="filter-btn filter-btn--inactive">Vegan</button>
+                <button onclick="filterTable('Vegetarian')" class="filter-btn filter-btn--inactive">Vegetarian</button>
+                <button onclick="filterTable('Meat/Fish')" class="filter-btn filter-btn--inactive">Meat/Fish</button>
+            </div>
+
+            <!-- Calculator Table -->
+            <div class="card card--no-padding card--rounded-lg">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="sticky">Food Source</th>
+                                <th class="text-right">Side Dish Budget</th>
+                                <th class="text-right">Amount Required</th>
+                                <th class="text-right">Total Calories</th>
+                                <th class="text-right hidden md:table-cell">Efficiency</th>
+                                <th class="text-right hidden lg:table-cell">Base Prot/100g</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+                <div class="card__footer">
+                    * Negative Budget = Protein source alone exceeds meal calorie limit.
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 2: NUTRITIONALS -->
+        <div id="view-nutritionals" class="tab-view hidden">
+            <div class="card card--no-padding card--rounded-lg">
+                <div class="card__header">
+                    <div>
+                        <h2>Nutritional Database (Per 100g)</h2>
+                        <p class="text-xs text-slate-500">Static reference values.</p>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table table--nutritionals">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Food Source</th>
+                                <th class="text-right th--blue">Protein (g)</th>
+                                <th class="text-right th--orange">Kcal</th>
+                                <th class="text-right">Ratio (Kcal/Prot)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nutritionBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 3: SIDES KCAL CALCULATOR -->
+        <div id="view-calculator" class="tab-view hidden">
+            <!-- Top Dashboard -->
+            <div class="dashboard">
+                <div class="dashboard__grid">
+
+                    <div class="dashboard__stat">
+                        <span class="dashboard__label">Meal Budget</span>
+                        <span class="dashboard__value" id="calc-budget">0</span>
+                    </div>
+
+                    <div class="dashboard__stat dashboard__stat--bordered">
+                        <span class="dashboard__label">Protein Source</span>
+                        <select id="protein-select">
+                            <option value="">-- Manual --</option>
+                            <!-- Options added by JS -->
+                        </select>
+                        <div class="dashboard__inputs">
+                            <div class="dashboard__input-group">
+                                <input type="number" id="calc-protein-amount" readonly class="input--dark" placeholder="0">
+                                <span>Amount (g)</span>
+                            </div>
+                            <div class="dashboard__input-group">
+                                <input type="number" id="calc-protein-kcal" value="0" class="input--dark input--dark--editable">
+                                <span>Kcal</span>
+                            </div>
+                        </div>
+                        <button onclick="addMealToMenu()" class="btn btn--primary mt-2">
+                            <i class="fas fa-plus"></i> Add Meal
+                        </button>
+                    </div>
+
+                    <div class="dashboard__stat dashboard__stat--with-equals">
+                        <span class="dashboard__label">Sides Target</span>
+                        <span class="dashboard__value dashboard__value--blue" id="calc-target">0</span>
+                        <div class="dashboard__equals">=</div>
+                    </div>
+
+                    <div class="dashboard__stat">
+                        <span class="dashboard__label">Sides Selected</span>
+                        <span class="dashboard__value dashboard__value--yellow" id="calc-selected">0</span>
+                    </div>
+
+                    <div class="dashboard__stat">
+                        <span class="dashboard__label">Delta</span>
+                        <span class="dashboard__value" id="calc-delta">0</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Input Table -->
+            <div class="card card--no-padding card--rounded-lg">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="sticky w-1/4">Food (Carbs/Fats)</th>
+                                <th class="text-right w-24 th--highlight">Amount (g)</th>
+                                <th class="text-right">Kcal</th>
+                                <th class="text-right">Carb</th>
+                                <th class="text-right hidden sm:table-cell th--muted">Kcal/100g</th>
+                                <th class="text-right hidden sm:table-cell th--muted">Carb/100g</th>
+                                <th class="text-right hidden md:table-cell th--muted">Kcal/Carb</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calculatorBody">
+                            <!-- Rows inserted by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB 4: MENU -->
+        <div id="view-menu" class="tab-view hidden">
+            <div id="menu-container" class="space-y-6">
+                <!-- Meals will be added here -->
+                <div class="empty-state" id="empty-menu-msg">
+                    <i class="fas fa-utensils"></i>
+                    <p>No meals added yet. Go to "Sides Kcal Calculator" to add a meal.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Data Sources ---
+        // p100 = Protein, k100 = Kcal, c100 = Carbs, f100 = Fat (Values per 100g)
+        const foodData = [
+            { category: "Powders", name: "Soy Protein Isolate", p100: 88.0, k100: 320, c100: 0, f100: 1 },
+            { category: "Powders", name: "Whey Protein Isolate", p100: 90.0, k100: 370, c100: 1, f100: 1 },
+            { category: "Powders", name: "Casein Protein", p100: 80.0, k100: 360, c100: 4, f100: 2 },
+            { category: "Vegan", name: "Seitan", p100: 25.0, k100: 120, c100: 4, f100: 2 },
+            { category: "Vegan", name: "Nutritional Yeast", p100: 50.0, k100: 324, c100: 30, f100: 4 },
+            { category: "Vegan", name: "Tofu (Firm)", p100: 16.0, k100: 145, c100: 2, f100: 8 },
+            { category: "Vegan", name: "Tempeh", p100: 20.3, k100: 192, c100: 7, f100: 11 },
+            { category: "Vegan", name: "Edamame (Shelled)", p100: 11.9, k100: 121, c100: 9, f100: 5 },
+            { category: "Vegan", name: "Lentils (Cooked)", p100: 9.0, k100: 116, c100: 20, f100: 0.4 },
+            { category: "Vegan", name: "Black Beans (Cooked)", p100: 8.9, k100: 132, c100: 24, f100: 0.5 },
+            { category: "Vegan", name: "Hemp Seeds", p100: 31.6, k100: 551, c100: 8, f100: 49 },
+            { category: "Vegan", name: "Chickpeas (Cooked)", p100: 8.9, k100: 164, c100: 27, f100: 2.6 },
+            { category: "Vegan", name: "Pumpkin Seeds", p100: 30.0, k100: 557, c100: 11, f100: 49 },
+            { category: "Vegan", name: "Peanuts", p100: 25.8, k100: 565, c100: 16, f100: 49 },
+            { category: "Vegan", name: "Almonds", p100: 21.2, k100: 579, c100: 22, f100: 50 },
+            { category: "Vegan", name: "Quinoa (Cooked)", p100: 4.4, k100: 120, c100: 21, f100: 2 },
+            { category: "Vegetarian", name: "Egg Whites (Liquid)", p100: 11.0, k100: 52, c100: 0.7, f100: 0.2 },
+            { category: "Vegetarian", name: "Quark (Low Fat)", p100: 12.0, k100: 68, c100: 4, f100: 0.3 },
+            { category: "Vegetarian", name: "Greek Yogurt (0%)", p100: 10.0, k100: 59, c100: 3.6, f100: 0.4 },
+            { category: "Vegetarian", name: "Cottage Cheese (1%)", p100: 11.1, k100: 81, c100: 3, f100: 1 },
+            { category: "Vegetarian", name: "Parmesan Cheese", p100: 36.0, k100: 392, c100: 3, f100: 25 },
+            { category: "Vegetarian", name: "Mozzarella (Light)", p100: 25.0, k100: 280, c100: 3, f100: 17 },
+            { category: "Vegetarian", name: "Eggs (Whole)", p100: 12.6, k100: 143, c100: 0.7, f100: 9.5 },
+            { category: "Vegetarian", name: "Swiss Cheese", p100: 27.0, k100: 379, c100: 5, f100: 28 },
+            { category: "Vegetarian", name: "Cheddar Cheese", p100: 25.0, k100: 402, c100: 1, f100: 33 },
+            { category: "Meat/Fish", name: "Shrimp (Cooked)", p100: 24.0, k100: 99, c100: 0, f100: 0.3 },
+            { category: "Meat/Fish", name: "Tuna (Water Canned)", p100: 25.5, k100: 116, c100: 0, f100: 1 },
+            { category: "Meat/Fish", name: "Cod (Cooked)", p100: 23.0, k100: 105, c100: 0, f100: 1 },
+            { category: "Meat/Fish", name: "Tilapia (Cooked)", p100: 26.0, k100: 128, c100: 0, f100: 3 },
+            { category: "Meat/Fish", name: "Turkey Breast (Cooked)", p100: 30.0, k100: 157, c100: 0, f100: 3 },
+            { category: "Meat/Fish", name: "Chicken Breast (Cooked)", p100: 31.0, k100: 165, c100: 0, f100: 3.6 },
+            { category: "Meat/Fish", name: "Ground Turkey (93%)", p100: 27.0, k100: 169, c100: 0, f100: 8 },
+            { category: "Meat/Fish", name: "Sardines (Canned)", p100: 25.0, k100: 208, c100: 0, f100: 11 },
+            { category: "Meat/Fish", name: "Lean Beef (Sirloin)", p100: 29.0, k100: 250, c100: 0, f100: 14 },
+            { category: "Meat/Fish", name: "Salmon (Cooked)", p100: 22.0, k100: 206, c100: 0, f100: 12 },
+            { category: "Meat/Fish", name: "Beef Jerky", p100: 33.2, k100: 410, c100: 11, f100: 26 },
+        ];
+
+        const sideData = [
+            { category: "Starches", name: "White Rice (Cooked)", k100: 130, c100: 28, p100: 2.7, f100: 0.3 },
+            { category: "Starches", name: "Brown Rice (Cooked)", k100: 111, c100: 23, p100: 2.6, f100: 0.9 },
+            { category: "Starches", name: "Pasta (Cooked)", k100: 131, c100: 25, p100: 5, f100: 1.1 },
+            { category: "Starches", name: "Potato (Boiled)", k100: 87, c100: 20, p100: 1.9, f100: 0.1 },
+            { category: "Starches", name: "Sweet Potato (Baked)", k100: 90, c100: 21, p100: 2, f100: 0.1 },
+            { category: "Starches", name: "Oats (Dry)", k100: 389, c100: 66, p100: 16.9, f100: 6.9 },
+            { category: "Starches", name: "Whole Wheat Bread", k100: 265, c100: 43, p100: 13, f100: 3 },
+
+            { category: "Veggies", name: "Broccoli (Steamed)", k100: 35, c100: 7, p100: 2.4, f100: 0.4 },
+            { category: "Veggies", name: "Tomatoes", k100: 18, c100: 3.9, p100: 0.9, f100: 0.2 },
+            { category: "Veggies", name: "Cabbage", k100: 25, c100: 6, p100: 1.3, f100: 0.1 },
+            { category: "Veggies", name: "Aubergine (Eggplant)", k100: 25, c100: 6, p100: 1, f100: 0.2 },
+            { category: "Veggies", name: "Zucchini", k100: 17, c100: 3.1, p100: 1.2, f100: 0.3 },
+            { category: "Veggies", name: "Peppers (Bell)", k100: 31, c100: 6, p100: 1, f100: 0.3 },
+            { category: "Veggies", name: "Cucumber", k100: 15, c100: 3.6, p100: 0.7, f100: 0.1 },
+            { category: "Veggies", name: "Mixed Vegetables", k100: 60, c100: 12, p100: 3, f100: 0.5 },
+            { category: "Veggies", name: "Green Beans", k100: 31, c100: 7, p100: 1.8, f100: 0.1 },
+            { category: "Veggies", name: "Spinach (Raw)", k100: 23, c100: 4, p100: 2.9, f100: 0.4 },
+
+            { category: "Fats/Other", name: "Olive Oil", k100: 884, c100: 0, p100: 0, f100: 100 },
+            { category: "Fats/Other", name: "Avocado", k100: 160, c100: 9, p100: 2, f100: 15 },
+            { category: "Fats/Other", name: "Almonds (Side)", k100: 579, c100: 22, p100: 21, f100: 50 },
+
+            { category: "Fruits", name: "Banana", k100: 89, c100: 23, p100: 1.1, f100: 0.3 },
+            { category: "Fruits", name: "Apple", k100: 52, c100: 14, p100: 0.3, f100: 0.2 },
+            { category: "Fruits", name: "Grapes", k100: 67, c100: 17, p100: 0.6, f100: 0.4 },
+            { category: "Fruits", name: "Figs (Fresh)", k100: 74, c100: 19, p100: 0.8, f100: 0.3 },
+            { category: "Fruits", name: "Pomegranate", k100: 83, c100: 19, p100: 1.7, f100: 1.2 },
+            { category: "Fruits", name: "Kaki (Persimmon)", k100: 70, c100: 19, p100: 0.6, f100: 0.2 },
+            { category: "Fruits", name: "Blueberries", k100: 57, c100: 14, p100: 0.7, f100: 0.3 },
+        ];
+
+        // --- Global Variables ---
+        const inputProtein = document.getElementById('targetProtein');
+        const inputCalories = document.getElementById('dailyCalories');
+        const displayLimit = document.getElementById('mealLimitDisplay');
+        const proteinSelect = document.getElementById('protein-select');
+
+        let savedMeals = [];
+        let currentFilter = 'all';
+
+        // --- Tab Switching Logic ---
+        function switchTab(viewName) {
+            const views = ['planner', 'nutritionals', 'calculator', 'menu'];
+
+            // Hide all views and reset button states
+            views.forEach(v => {
+                document.getElementById('view-'+v).classList.add('hidden');
+                const btn = document.getElementById('btn-'+v);
+                btn.classList.remove('tab-active');
+            });
+
+            // Show selected view and activate button
+            document.getElementById('view-'+viewName).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-'+viewName);
+            activeBtn.classList.add('tab-active');
+
+            // Trigger lazy loading of tables
+            if(viewName === 'calculator') renderCalculator();
+            if(viewName === 'menu') renderMenu();
+        }
+
+        // --- Core Calculation Logic ---
+        function getMealLimit() {
+            const daily = parseFloat(inputCalories.value) || 0;
+            return Math.round(daily / 3); // Fixed to 3 meals as per requirements
+        }
+
+        function calculateAndRender() {
+            const targetP = parseFloat(inputProtein.value) || 0;
+            const mealLimit = getMealLimit();
+            displayLimit.innerText = mealLimit;
+
+            // --- Update Planner Table (Tab 1) ---
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            // Calculate values for all food items
+            const computedData = foodData.map(food => {
+                const amountNeeded = (targetP / food.p100) * 100;
+                const totalKcal = (amountNeeded / 100) * food.k100;
+                return {
+                    ...food,
+                    amountNeeded,
+                    totalKcal,
+                    budget: mealLimit - totalKcal,
+                    efficiency: totalKcal/targetP
+                };
+            });
+
+            // Determine which categories to show
+            const categories = currentFilter === 'all'
+                ? ['Powders', 'Vegan', 'Vegetarian', 'Meat/Fish']
+                : [currentFilter];
+
+            categories.forEach(cat => {
+                // Filter and Sort by budget (highest budget first)
+                const items = computedData.filter(i => i.category === cat).sort((a,b) => b.budget - a.budget);
+
+                if(currentFilter === 'all') {
+                    // Render Category Header
+                    let colorClass = 'table__category-row--slate';
+                    if(cat === 'Vegan') colorClass = 'table__category-row--green';
+                    if(cat === 'Vegetarian') colorClass = 'table__category-row--yellow';
+                    if(cat === 'Meat/Fish') colorClass = 'table__category-row--red';
+                    if(cat === 'Powders') colorClass = 'table__category-row--purple';
+
+                    const trH = document.createElement('tr');
+                    trH.className = `table__category-row ${colorClass}`;
+                    trH.innerHTML = `<td colspan="6">${cat}</td>`;
+                    tableBody.appendChild(trH);
+                }
+
+                items.forEach(item => {
+                    const tr = document.createElement('tr');
+                    tr.className = "group";
+
+                    // Logic for badge color based on remaining budget
+                    let bClass = item.budget < 0
+                        ? "badge--red"
+                        : (item.budget < 150 ? "badge--orange" : "badge--green");
+
+                    tr.innerHTML = `
+                        <td class="sticky font-medium text-slate-800">${item.name}</td>
+                        <td class="text-right"><span class="badge ${bClass}">${Math.round(item.budget)}</span></td>
+                        <td class="text-right font-mono text-slate-700">${Math.round(item.amountNeeded)} g</td>
+                        <td class="text-right font-mono text-slate-600">${Math.round(item.totalKcal)}</td>
+                        <td class="text-right text-slate-500 hidden md:table-cell">${item.efficiency.toFixed(1)}</td>
+                        <td class="text-right text-slate-400 hidden lg:table-cell">${item.p100}g</td>
+                    `;
+                    tableBody.appendChild(tr);
+                });
+            });
+
+            // Update other tabs dependent on global settings
+            renderNutritionals();
+            updateSideCalculator();
+        }
+
+        // --- Nutritionals Tab Logic (Tab 2) ---
+        function renderNutritionals() {
+            const nutritionBody = document.getElementById('nutritionBody');
+            nutritionBody.innerHTML = '';
+
+            ['Powders', 'Vegan', 'Vegetarian', 'Meat/Fish'].forEach(cat => {
+                const items = foodData.filter(i => i.category === cat).sort((a,b) => (a.k100/a.p100) - (b.k100/b.p100));
+
+                let colorClass = 'table__category-row--slate';
+                if(cat === 'Vegan') colorClass = 'table__category-row--green';
+                if(cat === 'Vegetarian') colorClass = 'table__category-row--yellow';
+                if(cat === 'Meat/Fish') colorClass = 'table__category-row--red';
+                if(cat === 'Powders') colorClass = 'table__category-row--purple';
+
+                nutritionBody.innerHTML += `<tr class="table__category-row ${colorClass}"><td colspan="4">${cat}</td></tr>`;
+
+                items.forEach(item => {
+                    nutritionBody.innerHTML += `
+                        <tr>
+                            <td class="font-medium text-slate-700">${item.name}</td>
+                            <td class="text-right font-mono text-blue-700">${item.p100}</td>
+                            <td class="text-right font-mono text-orange-700">${item.k100}</td>
+                            <td class="text-right font-mono text-slate-500">${(item.k100/item.p100).toFixed(1)}</td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        // --- Sides Calculator Logic (Tab 3) ---
+
+        function populateProteinSelect() {
+            proteinSelect.innerHTML = '<option value="">-- Manual --</option>';
+            const categories = ['Powders', 'Vegan', 'Vegetarian', 'Meat/Fish'];
+
+            categories.forEach(cat => {
+                const group = document.createElement('optgroup');
+                group.label = cat;
+                // Alphabetical sort within dropdown
+                const items = foodData.filter(f => f.category === cat).sort((a,b) => a.name.localeCompare(b.name));
+
+                items.forEach(food => {
+                    const option = document.createElement('option');
+                    option.value = food.name;
+                    option.text = food.name;
+                    group.appendChild(option);
+                });
+
+                if (items.length > 0) proteinSelect.appendChild(group);
+            });
+        }
+
+        function handleProteinSelect() {
+            const selectedName = proteinSelect.value;
+
+            // Clear fields if manual is selected
+            if(!selectedName) {
+                document.getElementById('calc-protein-amount').value = '';
+                return;
+            }
+
+            const food = foodData.find(f => f.name === selectedName);
+            if(food) {
+                const targetP = parseFloat(inputProtein.value) || 0;
+                const amountNeeded = (targetP / food.p100) * 100;
+                const totalKcal = (amountNeeded / 100) * food.k100;
+
+                document.getElementById('calc-protein-amount').value = Math.round(amountNeeded);
+                document.getElementById('calc-protein-kcal').value = Math.round(totalKcal);
+                updateSideCalculator();
+            }
+        }
+
+        function renderCalculator() {
+            const calcBody = document.getElementById('calculatorBody');
+            // Prevent re-rendering if already populated to save input states
+            if(calcBody.children.length > 0) return;
+
+            ['Starches', 'Veggies', 'Fruits', 'Fats/Other'].forEach(cat => {
+                calcBody.innerHTML += `<tr class="table__category-row table__category-row--slate"><td colspan="7">${cat}</td></tr>`;
+
+                const items = sideData.filter(i => i.category === cat);
+                items.forEach((item) => {
+                    const ratio = item.c100 > 0 ? (item.k100/item.c100).toFixed(1) : "-";
+                    // Store full item data in dataset for quick retrieval
+                    const itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
+
+                    calcBody.innerHTML += `
+                        <tr>
+                            <td class="sticky font-medium text-slate-800 border-r">${item.name}</td>
+                            <td class="td--highlight">
+                                <input type="number"
+                                    data-item="${itemJson}"
+                                    class="side-input"
+                                    placeholder="0" oninput="updateSideRow(this)">
+                            </td>
+                            <td class="text-right font-mono text-slate-700">0</td>
+                            <td class="text-right font-mono text-slate-600">0</td>
+                            <td class="text-right text-slate-400 hidden sm:table-cell">${item.k100}</td>
+                            <td class="text-right text-slate-400 hidden sm:table-cell">${item.c100}</td>
+                            <td class="text-right text-slate-400 hidden md:table-cell">${ratio}</td>
+                        </tr>
+                    `;
+                });
+            });
+        }
+
+        function updateSideRow(input) {
+            const row = input.closest('tr');
+            const data = JSON.parse(input.dataset.item);
+            const val = parseFloat(input.value) || 0;
+
+            const totalK = (val/100) * data.k100;
+            const totalC = (val/100) * data.c100;
+
+            // Update row calculations live
+            row.cells[2].innerText = Math.round(totalK);
+            row.cells[3].innerText = Math.round(totalC);
+
+            updateSideCalculator();
+        }
+
+        function updateSideCalculator() {
+            const budget = getMealLimit();
+            const proteinKcal = parseFloat(document.getElementById('calc-protein-kcal').value) || 0;
+            const sidesTarget = budget - proteinKcal;
+
+            let sidesSelected = 0;
+            // Sum up all inputs
+            document.querySelectorAll('.side-input').forEach(inp => {
+                const val = parseFloat(inp.value) || 0;
+                const data = JSON.parse(inp.dataset.item);
+                sidesSelected += (val/100) * data.k100;
+            });
+
+            const delta = sidesTarget - sidesSelected;
+
+            // Update Dashboard Elements
+            document.getElementById('calc-budget').innerText = budget;
+            document.getElementById('calc-target').innerText = sidesTarget;
+            document.getElementById('calc-selected').innerText = Math.round(sidesSelected);
+
+            const deltaEl = document.getElementById('calc-delta');
+            deltaEl.innerText = (delta > 0 ? "+" : "") + Math.round(delta);
+            deltaEl.className = "dashboard__value " + (delta >= 0 ? "dashboard__value--green" : "dashboard__value--red");
+        }
+
+        // --- Menu Tab Logic (Tab 4) ---
+
+        function addMealToMenu() {
+            // 1. Gather Protein Data
+            const selectedProteinName = proteinSelect.value;
+            let mealItems = [];
+
+            if (selectedProteinName) {
+                const pAmount = parseFloat(document.getElementById('calc-protein-amount').value) || 0;
+                const food = foodData.find(f => f.name === selectedProteinName);
+                if (food && pAmount > 0) {
+                    mealItems.push({
+                        name: food.name,
+                        amount: pAmount,
+                        kcal: (pAmount/100) * food.k100,
+                        prot: (pAmount/100) * food.p100,
+                        carb: (pAmount/100) * food.c100,
+                        fat: (pAmount/100) * food.f100,
+                        type: 'Protein'
+                    });
+                }
+            }
+
+            // 2. Gather Sides Data
+            document.querySelectorAll('.side-input').forEach(inp => {
+                const amount = parseFloat(inp.value) || 0;
+                if (amount > 0) {
+                    const data = JSON.parse(inp.dataset.item);
+                    mealItems.push({
+                        name: data.name,
+                        amount: amount,
+                        kcal: (amount/100) * data.k100,
+                        prot: (amount/100) * data.p100,
+                        carb: (amount/100) * data.c100,
+                        fat: (amount/100) * data.f100,
+                        type: 'Side'
+                    });
+                }
+            });
+
+            if (mealItems.length === 0) {
+                alert("Please select a protein or add sides before adding a meal.");
+                return;
+            }
+
+            // 3. Save to Global Array
+            savedMeals.push(mealItems);
+
+            // 4. Feedback & Render
+            alert(`Meal ${savedMeals.length} added to Menu!`);
+            renderMenu();
+        }
+
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+
+            if (savedMeals.length === 0) {
+                document.getElementById('empty-menu-msg').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('empty-menu-msg').classList.add('hidden');
+            container.innerHTML = '';
+
+            savedMeals.forEach((meal, index) => {
+                // Calculate Meal Totals
+                let tKcal = 0, tProt = 0, tCarb = 0, tFat = 0;
+
+                let rowsHtml = '';
+                meal.forEach(item => {
+                    tKcal += item.kcal;
+                    tProt += item.prot;
+                    tCarb += item.carb;
+                    tFat += item.fat;
+
+                    rowsHtml += `
+                        <tr>
+                            <td class="font-medium text-slate-700">${item.name}</td>
+                            <td class="text-right text-slate-500">${Math.round(item.amount)}g</td>
+                            <td class="text-right text-slate-600">${Math.round(item.kcal)}</td>
+                            <td class="text-right text-slate-400">${Math.round(item.prot)}</td>
+                            <td class="text-right text-slate-400">${Math.round(item.carb)}</td>
+                            <td class="text-right text-slate-400">${Math.round(item.fat)}</td>
+                        </tr>
+                    `;
+                });
+
+                // Create Meal Card
+                const card = document.createElement('div');
+                card.className = "meal-card";
+                card.innerHTML = `
+                    <div class="meal-card__header">
+                        <h3 class="meal-card__title">Meal ${index + 1}</h3>
+                        <span class="meal-card__kcal-badge">
+                            ${Math.round(tKcal)} Kcal
+                        </span>
+                    </div>
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="w-1/3">Item</th>
+                                    <th class="text-right">Amt</th>
+                                    <th class="text-right">Kcal</th>
+                                    <th class="text-right">Prot</th>
+                                    <th class="text-right">Carb</th>
+                                    <th class="text-right">Fat</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rowsHtml}</tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>TOTALS</td>
+                                    <td class="text-right">-</td>
+                                    <td class="text-right text-orange-600">${Math.round(tKcal)}</td>
+                                    <td class="text-right text-blue-600">${Math.round(tProt)}</td>
+                                    <td class="text-right text-green-600">${Math.round(tCarb)}</td>
+                                    <td class="text-right text-purple-600">${Math.round(tFat)}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Filter Logic ---
+        function filterTable(category) {
+            currentFilter = category;
+
+            // Update active button state
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const isActive = (category === 'all' && btn.textContent === 'All') || btn.textContent === category;
+                if (isActive) {
+                    btn.classList.add('active');
+                    btn.classList.remove('filter-btn--inactive');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('filter-btn--inactive');
+                }
+            });
+
+            calculateAndRender();
+        }
+
+        // --- Initialization ---
+
+        // Event Listeners
+        inputProtein.addEventListener('input', () => {
+            calculateAndRender();
+            handleProteinSelect(); // Re-calculate protein needs if target changes
+        });
+        inputCalories.addEventListener('input', calculateAndRender);
+        document.getElementById('calc-protein-kcal').addEventListener('input', updateSideCalculator);
+        proteinSelect.addEventListener('change', handleProteinSelect);
+
+        // Initial Execution
+        populateProteinSelect();
+        renderCalculator();
+        calculateAndRender();
+    </script>
+</body>
+</html>

@@ -151,6 +151,7 @@
 <Analytics />
 
 <style lang="scss">
+	@use 'sass:color';
 	@use '../styles/abstracts/variables' as *;
 	@use '../styles/abstracts/mixins' as *;
 	@use '../styles/effects/crt' as *;
@@ -529,7 +530,7 @@
 		align-items: center;
 		gap: $space-2;
 		padding: $space-3 $space-4;
-		background: linear-gradient(110deg, $gray-700 0%, $gray-700 35%, lighten($gray-700, 10%) 50%, $gray-700 65%, $gray-700 100%);
+		background: linear-gradient(110deg, $gray-700 0%, $gray-700 35%, color.adjust($gray-700, $lightness: 10%) 50%, $gray-700 65%, $gray-700 100%);
 		background-size: 200% 100%;
 		animation: shimmer 3s linear infinite;
 		border: 3px solid $purple-600;
@@ -564,7 +565,7 @@
 			border-color: $pink-500;
 			@include retro-glow($pink-500);
 			transform: translateY(-2px);
-			background: linear-gradient(110deg, lighten($gray-700, 5%) 0%, lighten($gray-700, 5%) 35%, lighten($gray-700, 15%) 50%, lighten($gray-700, 5%) 65%, lighten($gray-700, 5%) 100%);
+			background: linear-gradient(110deg, color.adjust($gray-700, $lightness: 5%) 0%, color.adjust($gray-700, $lightness: 5%) 35%, color.adjust($gray-700, $lightness: 15%) 50%, color.adjust($gray-700, $lightness: 5%) 65%, color.adjust($gray-700, $lightness: 5%) 100%);
 			background-size: 200% 100%;
 
 			.btn-text {

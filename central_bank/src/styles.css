@@ -45,21 +45,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  min-width: 1400px;
   background-color: #18181b; /* zinc-900 */
   color: white;
-}
-
-/* Force desktop view that scales to fit screen */
-@media screen and (max-width: 1399px) {
-  html {
-    overflow-x: hidden;
-  }
-  body {
-    width: 1400px;
-    transform-origin: top left;
-    transform: scale(calc(100vw / 1400));
-    overflow-x: hidden;
-  }
 }
 
 ::-webkit-scrollbar { width: 8px; height: 8px; }

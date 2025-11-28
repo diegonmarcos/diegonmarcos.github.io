@@ -1,4 +1,6 @@
 // Header Component - Bloomberg Style
+@use '../variables' as *;
+
 .header {
   display: flex;
   flex-direction: column;

@@ -1,4 +1,6 @@
 // Table Component - Bloomberg Style
+@use '../variables' as *;
+
 .data-table {
   width: 100%;
   font-family: $font-mono;

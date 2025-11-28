@@ -1,4 +1,6 @@
 // Panel Component - Bloomberg 4-quadrant screens
+@use '../variables' as *;
+
 .main-grid {
   flex: 1;
   display: grid;

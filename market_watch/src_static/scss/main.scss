@@ -2,17 +2,17 @@
 // Bloomberg Terminal inspired design
 
 // 1. Variables & Configuration
-@import 'variables';
+@use 'variables' as *;
 
 // 2. Base Styles
-@import 'base';
+@use 'base';
 
 // 3. Components
-@import 'components/header';
-@import 'components/panel';
-@import 'components/table';
-@import 'components/chart';
-@import 'components/footer';
+@use 'components/header';
+@use 'components/panel';
+@use 'components/table';
+@use 'components/chart';
+@use 'components/footer';
 
 // 4. Layout
 .app {

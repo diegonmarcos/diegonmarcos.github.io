@@ -4,9 +4,16 @@
   "description": "Feed Yourself - Menu Designer Pro",
   "scripts": {
     "build:css": "sass src_static/scss/main.scss dist/style.css --style=compressed --no-source-map",
-    "dev:css": "sass src_static/scss/main.scss dist/style.css --style=expanded --source-map --watch"
+    "build:css2": "sass src_static_2/scss/main.scss dist/style2.css --style=compressed --no-source-map",
+    "build:ts": "esbuild src_static/typescript/main.ts --bundle --minify --outfile=dist/script.js --target=es2020",
+    "build": "npm run build:css && npm run build:css2 && npm run build:ts",
+    "dev:css": "sass src_static/scss/main.scss dist/style.css --style=expanded --source-map --watch",
+    "dev:ts": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --target=es2020 --watch",
+    "typecheck": "tsc --project src_static/typescript/tsconfig.json --noEmit"
   },
   "devDependencies": {
-    "sass": "^1.77.0"
+    "esbuild": "^0.20.0",
+    "sass": "^1.77.0",
+    "typescript": "^5.4.0"
   }
 }

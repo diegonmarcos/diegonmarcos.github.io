@@ -4,6 +4,7 @@
 // Full-page header container and content
 
 @use '../abstracts' as *;
+@use 'sass:color';
 
 .header-container {
   min-height: $header-min-height;
@@ -39,7 +40,7 @@
     background: linear-gradient(
       to right,
       $color-accent-purple 0%,
-      lighten($color-accent-purple, 20%) 50%,
+      color.adjust($color-accent-purple, $lightness: 20%) 50%,
       $color-accent-purple 100%
     );
     background-size: 1000px 100%;
@@ -54,7 +55,7 @@
   background: linear-gradient(
     to right,
     $color-accent-purple 0%,
-    lighten($color-accent-purple, 25%) 50%,
+    color.adjust($color-accent-purple, $lightness: 25%) 50%,
     $color-accent-purple 100%
   );
   background-size: 1000px 100%;

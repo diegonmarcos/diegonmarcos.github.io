@@ -4,6 +4,7 @@
 // Side navigation menu and toggle button
 
 @use '../abstracts' as *;
+@use 'sass:color';
 
 .side-nav {
   height: 100%;
@@ -58,11 +59,11 @@
       padding-left: 16px;
 
       &:hover {
-        color: lighten($color-accent-purple, 15%);
+        color: color.adjust($color-accent-purple, $lightness: 15%);
       }
 
       &.active {
-        color: lighten($color-accent-purple, 20%);
+        color: color.adjust($color-accent-purple, $lightness: 20%);
       }
     }
 

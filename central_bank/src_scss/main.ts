@@ -1,9 +1,9 @@
-import './styles.scss';
+import './scss/main.scss';
 import { state, applyTheme, generateAgents, defaultDSGEParams, defaultABMParams, defaultMLParams, dsgeScenarios, abmScenarios } from './state';
 import { renderHeader, renderDSGEPage, renderMLABMPage, renderFooter } from './render';
 import { initDSGECharts, initMLCharts, destroyCharts } from './charts';
 import { initAgentCanvas } from './canvas';
-import type { ModelType } from './types';
+import type { ModelType, DSGEParameters, ABMParameters, MLParameters } from './types';
 
 function render(): void {
   const app = document.getElementById('app');
@@ -49,7 +49,7 @@ function bindSlider<T extends Record<string, number | boolean>>(
     }
 
     const progressBar = slider.nextElementSibling as HTMLElement | null;
-    if (progressBar && progressBar.classList.contains('slider-progress')) {
+    if (progressBar) {
       const min = parseFloat(slider.min);
       const max = parseFloat(slider.max);
       const percent = ((value - min) / (max - min)) * 100;
@@ -101,7 +101,7 @@ function bindEvents(): void {
   dsgeScenarioSelect?.addEventListener('change', () => {
     const scenario = dsgeScenarioSelect.value;
     state.selectedScenario = scenario;
-    state.dsgeParams = { ...defaultDSGEParams, ...dsgeScenarios[scenario] };
+    state.dsgeParams = { ...defaultDSGEParams, ...dsgeScenarios[scenario] } as DSGEParameters;
     render();
   });
 
@@ -151,7 +151,7 @@ function bindEvents(): void {
 
   // Reset DSGE params
   document.getElementById('reset-params')?.addEventListener('click', () => {
-    state.dsgeParams = { ...defaultDSGEParams };
+    state.dsgeParams = { ...defaultDSGEParams } as DSGEParameters;
     state.selectedScenario = 'baseline';
     render();
   });
@@ -160,7 +160,7 @@ function bindEvents(): void {
   document.getElementById('run-simulation')?.addEventListener('click', () => {
     const btn = document.getElementById('run-simulation');
     if (btn) {
-      btn.innerHTML = '<span class="animate-spin w-4 h-4 border-2 border-zinc-900/30 border-t-zinc-900 rounded-full"></span> Running...';
+      btn.innerHTML = '<span class="w-4 h-4 border-2 border-zinc-900/30 border-t-zinc-900 rounded-full animate-spin"></span> Running...';
       (btn as HTMLButtonElement).disabled = true;
       setTimeout(() => {
         render();
@@ -176,7 +176,7 @@ function bindEvents(): void {
   const abmScenarioSelect = document.getElementById('abm-scenario') as HTMLSelectElement | null;
   abmScenarioSelect?.addEventListener('change', () => {
     const scenario = abmScenarioSelect.value;
-    state.abmParams = { ...defaultABMParams, ...abmScenarios[scenario] };
+    state.abmParams = { ...defaultABMParams, ...abmScenarios[scenario] } as ABMParameters;
     state.agents = generateAgents(state.abmParams);
     render();
   });

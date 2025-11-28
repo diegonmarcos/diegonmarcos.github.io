@@ -101,7 +101,7 @@ function bindEvents(): void {
   dsgeScenarioSelect?.addEventListener('change', () => {
     const scenario = dsgeScenarioSelect.value;
     state.selectedScenario = scenario;
-    state.dsgeParams = { ...defaultDSGEParams, ...dsgeScenarios[scenario] };
+    state.dsgeParams = { ...defaultDSGEParams, ...dsgeScenarios[scenario] } as DSGEParameters;
     render();
   });
 
@@ -151,7 +151,7 @@ function bindEvents(): void {
 
   // Reset DSGE params
   document.getElementById('reset-params')?.addEventListener('click', () => {
-    state.dsgeParams = { ...defaultDSGEParams };
+    state.dsgeParams = { ...defaultDSGEParams } as DSGEParameters;
     state.selectedScenario = 'baseline';
     render();
   });
@@ -176,7 +176,7 @@ function bindEvents(): void {
   const abmScenarioSelect = document.getElementById('abm-scenario') as HTMLSelectElement | null;
   abmScenarioSelect?.addEventListener('change', () => {
     const scenario = abmScenarioSelect.value;
-    state.abmParams = { ...defaultABMParams, ...abmScenarios[scenario] };
+    state.abmParams = { ...defaultABMParams, ...abmScenarios[scenario] } as ABMParameters;
     state.agents = generateAgents(state.abmParams);
     render();
   });

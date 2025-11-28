@@ -20,6 +20,7 @@ export interface TimeSeriesData {
 
 // Extended DSGE Parameters
 export interface DSGEParameters {
+  [key: string]: number;
   // Household Preferences
   beta: number;        // Discount factor (0.9-0.999)
   sigma: number;       // Risk aversion / IES inverse (0.5-5)
@@ -67,6 +68,7 @@ export interface DSGEParameters {
 
 // Extended ABM Parameters
 export interface ABMParameters {
+  [key: string]: number;
   // Population
   numHouseholds: number;    // 50-500
   numFirms: number;         // 10-100
@@ -106,6 +108,7 @@ export interface ABMParameters {
 
 // ML Nowcasting Parameters
 export interface MLParameters {
+  [key: string]: number | boolean;
   // Model Selection
   useLSTM: boolean;
   useRandomForest: boolean;

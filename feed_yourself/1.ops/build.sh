@@ -82,9 +82,9 @@ build_scss() {
 build_single_file_1() {
     log_info "Building single-file HTML for src_static..."
 
-    _html_file="$DIST_DIR/index.html"
+    _html_file="$PROJECT_DIR/src_static/feed_yourself.html"
     _css_file="$DIST_DIR/style.css"
-    _output_file="$DIST_DIR/index_spa.html"
+    _output_file="$DIST_DIR/index.html"
 
     # Read CSS content
     _css_content=""
@@ -103,16 +103,16 @@ build_single_file_1() {
     { print }
     ' "$_html_file" > "$_output_file"
 
-    log_success "Single-file build → index_spa.html"
+    log_success "Single-file build → index.html"
 }
 
 # Build single-file HTML (inline CSS) for src_static_2
 build_single_file_2() {
     log_info "Building single-file HTML for src_static_2..."
 
-    _html_file="$DIST_DIR/protein_calculator.html"
+    _html_file="$PROJECT_DIR/src_static_2/index.html"
     _css_file="$DIST_DIR/style2.css"
-    _output_file="$DIST_DIR/protein_calculator_spa.html"
+    _output_file="$DIST_DIR/protein_calculator.html"
 
     # Read CSS content
     _css_content=""
@@ -128,16 +128,10 @@ build_single_file_2() {
         print "</style>"
         next
     }
-    /<link[^>]*href="style2\.css"[^>]*>/ {
-        print "<style>"
-        print css
-        print "</style>"
-        next
-    }
     { print }
     ' "$_html_file" > "$_output_file"
 
-    log_success "Single-file build → protein_calculator_spa.html"
+    log_success "Single-file build → protein_calculator.html"
 }
 
 # Build action
@@ -154,25 +148,9 @@ build() {
     # Build Sass for both folders
     build_scss
 
-    # Copy the main HTML file from src_static
-    if [ -f "$PROJECT_DIR/src_static/feed_yourself.html" ]; then
-        cp "$PROJECT_DIR/src_static/feed_yourself.html" "$DIST_DIR/index.html"
-        log_success "Copied feed_yourself.html → dist/index.html"
-    else
-        log_error "src_static/feed_yourself.html not found"
-        return 1
-    fi
-
-    # Copy the HTML file from src_static_2
-    if [ -f "$PROJECT_DIR/src_static_2/index.html" ]; then
-        cp "$PROJECT_DIR/src_static_2/index.html" "$DIST_DIR/protein_calculator.html"
-        # Update the CSS link in the copied file to point to style2.css
-        sed -i 's|href="css/main.css"|href="style2.css"|g' "$DIST_DIR/protein_calculator.html"
-        log_success "Copied src_static_2/index.html → dist/protein_calculator.html"
-    else
-        log_error "src_static_2/index.html not found"
-        return 1
-    fi
+    # Build single-file versions (CSS inlined)
+    build_single_file_1
+    build_single_file_2
 
     # Copy public assets if they exist
     if [ -d "$PROJECT_DIR/public" ]; then
@@ -180,21 +158,15 @@ build() {
         log_success "Copied public assets to dist/"
     fi
 
-    # Build single-file versions
-    build_single_file_1
-    build_single_file_2
-
-    # Cleanup intermediate CSS files (keep only single-file outputs)
+    # Cleanup intermediate CSS files
     rm -f "$DIST_DIR/style.css" "$DIST_DIR/style2.css"
     log_success "Cleaned up intermediate CSS files"
 
     log_success "Build completed!"
     printf "\n"
     printf "${GREEN}Output files:${NC}\n"
-    printf "  - dist/index.html (Menu Designer - with external CSS)\n"
-    printf "  - dist/index_spa.html (Menu Designer - single file)\n"
-    printf "  - dist/protein_calculator.html (Protein Calculator - with external CSS)\n"
-    printf "  - dist/protein_calculator_spa.html (Protein Calculator - single file)\n"
+    printf "  - dist/index.html (Menu Designer - single file)\n"
+    printf "  - dist/protein_calculator.html (Protein Calculator - single file)\n"
     printf "\n"
 }
 

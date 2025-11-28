@@ -10,20 +10,24 @@
   padding: 0;
 }
 
-html {
+html, body {
   font-family: $font-sans;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
-}
-
-body {
+  margin: 0;
+  padding: 0;
   min-height: 100vh;
   min-width: 1400px;
-  background-color: $zinc-900;
+  background-color: $zinc-900 !important; // dark gray
   color: white;
   line-height: 1.5;
   @include custom-scrollbar;
+}
+
+#app {
+  background-color: $zinc-900;
+  min-height: 100vh;
 }
 
 // Links

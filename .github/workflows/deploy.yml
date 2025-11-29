@@ -351,7 +351,7 @@ jobs:
           if [ -d "myfeed/dist" ]; then
             echo "📦 Copying MyFeed Vue build..."
             mkdir -p _site/myfeed
-            cp -r myfeed/dist/* _site/myfeed/
+            cp -rL myfeed/dist/* _site/myfeed/ 2>/dev/null || cp -r myfeed/dist/* _site/myfeed/
             echo "✅ MyFeed Vue build copied to _site/myfeed/"
           else
             echo "⏭️  Skipping MyFeed copy (no dist directory found)"
@@ -361,7 +361,7 @@ jobs:
           if [ -d "mygames/src/build" ]; then
             echo "📦 Copying MyGames SvelteKit build..."
             mkdir -p _site/mygames
-            cp -r mygames/src/build/* _site/mygames/
+            cp -rL mygames/src/build/* _site/mygames/ 2>/dev/null || cp -r mygames/src/build/* _site/mygames/
             echo "✅ MyGames build copied to _site/mygames/"
           else
             echo "⏭️  Skipping MyGames copy (no build directory found)"
@@ -371,7 +371,7 @@ jobs:
           if [ -d "nexus/dist" ]; then
             echo "📦 Copying Nexus Holdings build..."
             mkdir -p _site/nexus
-            cp -r nexus/dist/* _site/nexus/
+            cp -rL nexus/dist/* _site/nexus/ 2>/dev/null || cp -r nexus/dist/* _site/nexus/
             echo "✅ Nexus build copied to _site/nexus/"
           else
             echo "⏭️  Skipping Nexus copy (no dist directory found)"
@@ -381,7 +381,7 @@ jobs:
           if [ -d "cloud/dist" ]; then
             echo "📦 Copying Cloud Dashboard build..."
             mkdir -p _site/cloud
-            cp -r cloud/dist/* _site/cloud/
+            cp -rL cloud/dist/* _site/cloud/ 2>/dev/null || cp -r cloud/dist/* _site/cloud/
             echo "✅ Cloud Dashboard build copied to _site/cloud/"
           else
             echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"
@@ -391,7 +391,7 @@ jobs:
           if [ -d "feed_yourself/dist" ]; then
             echo "📦 Copying Feed Yourself build..."
             mkdir -p _site/feed_yourself
-            cp -r feed_yourself/dist/* _site/feed_yourself/
+            cp -rL feed_yourself/dist/* _site/feed_yourself/ 2>/dev/null || cp -r feed_yourself/dist/* _site/feed_yourself/
             echo "✅ Feed Yourself build copied to _site/feed_yourself/"
           else
             echo "⏭️  Skipping Feed Yourself copy (no dist directory found)"
@@ -401,7 +401,7 @@ jobs:
           if [ -d "health_tracker/dist" ]; then
             echo "📦 Copying Health Tracker build..."
             mkdir -p _site/health_tracker
-            cp -r health_tracker/dist/* _site/health_tracker/
+            cp -rL health_tracker/dist/* _site/health_tracker/ 2>/dev/null || cp -r health_tracker/dist/* _site/health_tracker/
             echo "✅ Health Tracker build copied to _site/health_tracker/"
           else
             echo "⏭️  Skipping Health Tracker copy (no dist directory found)"
@@ -411,7 +411,7 @@ jobs:
           if [ -d "market_watch/dist" ]; then
             echo "📦 Copying Market Watch build..."
             mkdir -p _site/market_watch
-            cp -r market_watch/dist/* _site/market_watch/
+            cp -rL market_watch/dist/* _site/market_watch/ 2>/dev/null || cp -r market_watch/dist/* _site/market_watch/
             echo "✅ Market Watch build copied to _site/market_watch/"
           else
             echo "⏭️  Skipping Market Watch copy (no dist directory found)"
@@ -421,7 +421,7 @@ jobs:
           if [ -d "central_bank/dist" ]; then
             echo "📦 Copying Central Bank Forecasting build..."
             mkdir -p _site/central_bank
-            cp -r central_bank/dist/* _site/central_bank/
+            cp -rL central_bank/dist/* _site/central_bank/ 2>/dev/null || cp -r central_bank/dist/* _site/central_bank/
             echo "✅ Central Bank Forecasting build copied to _site/central_bank/"
           else
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
@@ -431,7 +431,7 @@ jobs:
           if [ -d "mymaps/out" ]; then
             echo "📦 Copying MyMaps build..."
             mkdir -p _site/mymaps
-            cp -r mymaps/out/* _site/mymaps/
+            cp -rL mymaps/out/* _site/mymaps/ 2>/dev/null || cp -r mymaps/out/* _site/mymaps/
             echo "✅ MyMaps build copied to _site/mymaps/"
           else
             echo "⏭️  Skipping MyMaps copy (no out directory found)"
@@ -441,7 +441,7 @@ jobs:
           if [ -d "myprofile/dist" ]; then
             echo "📦 Copying MyProfile build..."
             mkdir -p _site/myprofile
-            cp -r myprofile/dist/* _site/myprofile/
+            cp -rL myprofile/dist/* _site/myprofile/ 2>/dev/null || cp -r myprofile/dist/* _site/myprofile/
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no dist directory found)"

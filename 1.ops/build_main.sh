@@ -220,20 +220,23 @@ print_status_box() {
     get_running_servers
 
     printf "\n"
-    printf "${MAGENTA}┌─────────────────────────────────────────────────────────────────────┐${NC}\n"
-    printf "${MAGENTA}│${NC}  ${CYAN}SERVER STATUS${NC}                                                        ${MAGENTA}│${NC}\n"
-    printf "${MAGENTA}├─────────────────────────────────────────────────────────────────────┤${NC}\n"
+    printf "${MAGENTA}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
+    printf "${MAGENTA}│${NC}  ${CYAN}SERVER STATUS${NC}                                                               ${MAGENTA}│${NC}\n"
+    printf "${MAGENTA}├────────────────────────────────────────────────────────────────────────────┤${NC}\n"
 
     if [ "$RUNNING_COUNT" -eq 0 ]; then
-        printf "${MAGENTA}│${NC}  ${YELLOW}No servers currently running${NC}                                       ${MAGENTA}│${NC}\n"
+        printf "${MAGENTA}│${NC}  ${YELLOW}No servers currently running${NC}                                                ${MAGENTA}│${NC}\n"
     else
-        printf "${MAGENTA}│${NC}  ${GREEN}%d server(s)/watcher(s) running:${NC}                                    ${MAGENTA}│${NC}\n" "$RUNNING_COUNT"
+        # Calculate padding for the running count line. Assumes RUNNING_COUNT is max 2 digits.
+        _len_running_count_text=$(( 2 + ${#RUNNING_COUNT} + 33 )) # "  " + count + " server(s)/watcher(s) running:"
+        _padding_running_count=$(( 76 - _len_running_count_text ))
+        printf "${MAGENTA}│${NC}  ${GREEN}%d server(s)/watcher(s) running:${NC}%${_padding_running_count}s${MAGENTA}│${NC}\n" "$RUNNING_COUNT" ""
         printf "%b" "$RUNNING_SERVERS" | while IFS= read -r line; do
-            printf "${MAGENTA}│${NC} %-66b${MAGENTA}│${NC}\n" "$line"
+            printf "${MAGENTA}│${NC} %-74b${MAGENTA}│${NC}\n" "$line"
         done
     fi
 
-    printf "${MAGENTA}└─────────────────────────────────────────────────────────────────────┘${NC}\n"
+    printf "${MAGENTA}└────────────────────────────────────────────────────────────────────────────┘${NC}\n"
 }
 
 # Usage information
@@ -753,6 +756,19 @@ kill_servers() {
         fi
     fi
 
+    # Kill Next.js processes
+    _next_pids=$(pgrep -f "node.*next" 2>/dev/null || true)
+    if [ -n "$_next_pids" ]; then
+        log_info "Killing Next.js server processes..."
+        echo "$_next_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_next_pids" | wc -w)))
+        sleep 1
+        _next_pids=$(pgrep -f "node.*next" 2>/dev/null || true)
+        if [ -n "$_next_pids" ]; then
+            echo "$_next_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
     # Kill live-server processes
     _live_pids=$(pgrep -f "live-server" 2>/dev/null || true)
     if [ -n "$_live_pids" ]; then
@@ -1099,30 +1115,54 @@ print_workdir_section() {
 tui_simple() {
     _last_msg=""
 
+    # Helper to check status and return colored string
+    get_status() {
+        if eval "$1" >/dev/null 2>&1; then
+            echo "${GREEN}On ${NC}"
+        else
+            echo "${RED}Off${NC}"
+        fi
+    }
+
     while true; do
         clear
         print_banner
 
+        # Check statuses
+        _s1=$(get_status 'pgrep -f "live-server.*8000"')
+        _s2=$(get_status 'pgrep -f "live-server.*8001"')
+        _s3=$(get_status 'pgrep -f "live-server.*8002"')
+        _s4=$(get_status 'pgrep -f "myfeed.*vite" || pgrep -f "vite.*myfeed"')
+        _s5=$(get_status 'pgrep -f "mygames.*vite" || pgrep -f "vite.*mygames"')
+        _s6=$(get_status 'pgrep -f "live-server.*8005"')
+        _s7=$(get_status 'pgrep -f "live-server.*8006"')
+        _s8=$(get_status 'pgrep -f "live-server.*8007"')
+        _s9=$(get_status 'pgrep -f "live-server.*8008"')
+        _s10=$(get_status 'pgrep -f "live-server.*8009"')
+        _s11=$(get_status 'pgrep -f "live-server.*8010"')
+        _s12=$(get_status 'pgrep -f "live-server.*8011"')
+        _s13=$(get_status 'pgrep -f "next.*dev.*8012" || pgrep -f "mymaps.*next"')
+
         # Table 1: Full project details
-        printf "${BLUE}┌─────────────────────────────────────────────────────────────────────┐${NC}\n"
-        printf "${BLUE}│${NC}  ${YELLOW}PROJECTS${NC}                                                            ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────┬────────────────┬────────────┬──────────┬────────────┬───────┤${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}#${NC}   ${BLUE}│${NC} ${MAGENTA}Name${NC}           ${BLUE}│${NC} ${MAGENTA}Framework${NC}  ${BLUE}│${NC} ${MAGENTA}CSS${NC}      ${BLUE}│${NC} ${MAGENTA}JavaScript${NC} ${BLUE}│${NC} ${MAGENTA}Port${NC}  ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────┼────────────────┼────────────┼──────────┼────────────┼───────┤${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}1${NC}   ${BLUE}│${NC} Landpage       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8000 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}2${NC}   ${BLUE}│${NC} Linktree       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8001 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}3${NC}   ${BLUE}│${NC} CV Web         ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8002 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}4${NC}   ${BLUE}│${NC} MyFeed         ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8003 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}5${NC}   ${BLUE}│${NC} MyGames      ${BLUE}│${NC} SvelteKit  ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8004 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}6${NC}   ${BLUE}│${NC} Nexus          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass+TW  ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8005 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}7${NC}   ${BLUE}│${NC} Cloud          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8006 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}8${NC}   ${BLUE}│${NC} Feed Yourself  ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8007 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}9${NC}   ${BLUE}│${NC} Others         ${BLUE}│${NC} Python     ${BLUE}│${NC} -        ${BLUE}│${NC} -          ${BLUE}│${NC} :8008 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC}\n"
-        printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┘${NC}\n"
+        printf "${BLUE}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}PROJECTS${NC}                                                                  ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────┬────────────────┬────────────┬──────────┬────────────┬───────┬────────┤${NC}\n"
+        printf "${BLUE}│${NC} ${GREEN}#${NC}   ${BLUE}│${NC} ${MAGENTA}Name${NC}           ${BLUE}│${NC} ${MAGENTA}Framework${NC}  ${BLUE}│${NC} ${MAGENTA}CSS${NC}      ${BLUE}│${NC} ${MAGENTA}JavaScript${NC} ${BLUE}│${NC} ${MAGENTA}Port${NC}  ${BLUE}│${NC} ${MAGENTA}Live${NC}   ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────┼────────────────┼────────────┼──────────┼────────────┼───────┼────────┤${NC}\n"
+        printf "${BLUE}│${NC} ${GREEN}1${NC}   ${BLUE}│${NC} Landpage       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8000 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s1"
+        printf "${BLUE}│${NC} ${GREEN}2${NC}   ${BLUE}│${NC} Linktree       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8001 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s2"
+        printf "${BLUE}│${NC} ${GREEN}3${NC}   ${BLUE}│${NC} CV Web         ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8002 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s3"
+        printf "${BLUE}│${NC} ${GREEN}4${NC}   ${BLUE}│${NC} MyFeed         ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8003 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s4"
+        printf "${BLUE}│${NC} ${GREEN}5${NC}   ${BLUE}│${NC} MyGames        ${BLUE}│${NC} SvelteKit  ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8004 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s5"
+        printf "${BLUE}│${NC} ${GREEN}6${NC}   ${BLUE}│${NC} Nexus          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass+TW  ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8005 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s6"
+        printf "${BLUE}│${NC} ${GREEN}7${NC}   ${BLUE}│${NC} Cloud          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8006 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s7"
+        printf "${BLUE}│${NC} ${GREEN}8${NC}   ${BLUE}│${NC} Feed Yourself  ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8007 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s8"
+        printf "${BLUE}│${NC} ${GREEN}9${NC}   ${BLUE}│${NC} Others         ${BLUE}│${NC} Python     ${BLUE}│${NC} -        ${BLUE}│${NC} -          ${BLUE}│${NC} :8008 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s9"
+        printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s10"
+        printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s11"
+        printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s12"
+        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s13"
+        printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┘${NC}\n"
 
         # Server status
         print_status_box
@@ -1133,14 +1173,14 @@ tui_simple() {
         fi
 
         # Legend section
-        printf "${BLUE}┌─────────────────────────────────────────────────────────────────────┐${NC}\n"
-        printf "${BLUE}│${NC}  ${YELLOW}COMMANDS${NC}                                                            ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────────────────────────────────────────────────────────────────────┤${NC}\n"
-        printf "${BLUE}│${NC}  ${GREEN}B${NC}[n] Build project    ${GREEN}D${NC}[n] Start dev server    ${GREEN}0${NC} All projects  ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC}  ${GREEN}K${NC}    Kill servers     ${GREEN}H${NC}    Help (full docs)    ${GREEN}Q${NC} Quit          ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────────────────────────────────────────────────────────────────────┤${NC}\n"
-        printf "${BLUE}│${NC}  ${CYAN}Examples:${NC}  D3  D11  B0  K                                         ${BLUE}│${NC}\n"
-        printf "${BLUE}└─────────────────────────────────────────────────────────────────────┘${NC}\n"
+        printf "${BLUE}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}COMMANDS${NC}                                                                  ${BLUE}│${NC}\n"
+        printf "${BLUE}├────────────────────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}B${NC}[n] Build project    ${GREEN}D${NC}[n] Start dev server    ${GREEN}0${NC} All projects             ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}K${NC}    Kill servers     ${GREEN}H${NC}    Help (full docs)    ${GREEN}Q${NC} Quit                     ${BLUE}│${NC}\n"
+        printf "${BLUE}├────────────────────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${CYAN}Examples:${NC}  D3  D11  B0  K                                                 ${BLUE}│${NC}\n"
+        printf "${BLUE}└────────────────────────────────────────────────────────────────────────────┘${NC}\n"
 
         # Input prompt
         printf "\n${YELLOW}Enter command:${NC} "

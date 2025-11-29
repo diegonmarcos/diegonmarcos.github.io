@@ -126,21 +126,19 @@ build_single_file() {
 build() {
     log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
-    mkdir -p "$DIST_DIR"
 
     # Build Sass and TypeScript
     build_scss
     build_ts
 
-    # Copy HTML file
-    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
-    log_success "Copied index.html"
+    # Clean and create dist directory
+    rm -rf "$DIST_DIR"
+    mkdir -p "$DIST_DIR"
 
-    # Copy favicon if exists
-    if [ -f "$PROJECT_DIR/favicon.ico" ]; then
-        cp "$PROJECT_DIR/favicon.ico" "$DIST_DIR/"
-        log_success "Copied favicon.ico"
-    fi
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Build single-file version
     build_single_file

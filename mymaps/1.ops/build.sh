@@ -81,6 +81,9 @@ dev() {
     # Start Next.js dev server in background
     nohup npm run dev -- -p $PORT > /dev/null 2>&1 &
 
+    # Give server time to start
+    sleep 2
+
     # Print URL and return control
     printf "\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"

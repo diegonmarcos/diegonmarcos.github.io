@@ -103,8 +103,14 @@ build() {
 build_single_file() {
     log_info "Building single-file HTML..."
 
-    # Create dist directory
+    # Clean and create dist directory
+    rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"
+
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"

@@ -118,24 +118,28 @@ build_typescript() {
 build() {
     log_info "Building ${PROJECT_NAME} for production..."
 
-    if [ ! -d "$DIST_DIR" ]; then
-        mkdir -p "$DIST_DIR"
-    fi
-
     build_scss "prod"
     build_typescript "prod"
 
-    # Copy files to dist
+    # Clean and create dist directory
+    rm -rf "$DIST_DIR"
+    mkdir -p "$DIST_DIR"
+
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
+
+    # Copy files temporarily for single-file build
     cp "$SRC_STATIC/index.html" "$DIST_DIR/"
     cp "$SRC_STATIC/style.css" "$DIST_DIR/"
     cp "$SRC_STATIC/script.js" "$DIST_DIR/"
 
-    # Copy public assets if they exist
-    if [ -d "$PROJECT_DIR/public" ]; then
-        cp -r "$PROJECT_DIR/public" "$DIST_DIR/"
-    fi
-
     build_single_file
+
+    # Clean up intermediate files, keep only SPA
+    rm -f "$DIST_DIR/style.css" "$DIST_DIR/script.js"
+    mv "$DIST_DIR/index_spa.html" "$DIST_DIR/index.html"
 
     log_success "Build completed → $DIST_DIR"
 }

@@ -114,7 +114,6 @@ build() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
     ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Restore compiled assets

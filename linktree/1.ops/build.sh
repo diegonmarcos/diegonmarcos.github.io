@@ -118,7 +118,6 @@ build_single_file() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
     ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     _html_file="$PROJECT_DIR/src_static/index.html"

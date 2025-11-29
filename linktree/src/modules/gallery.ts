@@ -1,6 +1,6 @@
 // Gallery view toggle module
 
-import { getElementById, querySelectorAll, addClass, removeClass, setCSSProperty } from '../utils/dom';
+import { getElementById, querySelectorAll, addClass, removeClass, setCSSProperty, hasClass } from '../utils/dom';
 
 let galleryEnabled = false;
 
@@ -21,15 +21,17 @@ function setThumbnailBackgrounds(): void {
 /**
  * Toggle gallery mode on/off
  */
-function toggleGalleryMode(toggle: HTMLInputElement): void {
-  galleryEnabled = toggle.checked;
+function toggleGalleryMode(button: HTMLButtonElement): void {
+  galleryEnabled = !galleryEnabled;
   localStorage.setItem('galleryEnabled', String(galleryEnabled));
 
   if (galleryEnabled) {
     setThumbnailBackgrounds();
     addClass(document.body, 'gallery-mode');
+    addClass(button, 'active');
   } else {
     removeClass(document.body, 'gallery-mode');
+    removeClass(button, 'active');
   }
 }
 
@@ -37,20 +39,20 @@ function toggleGalleryMode(toggle: HTMLInputElement): void {
  * Initialize gallery view toggle
  */
 export function initGalleryToggle(): void {
-  const galleryToggle = getElementById<HTMLInputElement>('gallery-toggle');
+  const galleryToggle = getElementById<HTMLButtonElement>('gallery-toggle');
 
   if (!galleryToggle) return;
 
   // Load saved state
   galleryEnabled = localStorage.getItem('galleryEnabled') === 'true';
-  galleryToggle.checked = galleryEnabled;
-
-  // Event listener
-  galleryToggle.addEventListener('change', () => toggleGalleryMode(galleryToggle));
 
   // Initialize on page load if enabled
   if (galleryEnabled) {
     setThumbnailBackgrounds();
-    toggleGalleryMode(galleryToggle);
+    addClass(document.body, 'gallery-mode');
+    addClass(galleryToggle, 'active');
   }
+
+  // Event listener
+  galleryToggle.addEventListener('click', () => toggleGalleryMode(galleryToggle));
 }

@@ -2,6 +2,8 @@
 // ANIMATIONS - Cyberpunk Effects
 // ==============================================
 
+@use 'variables' as *;
+
 // Fade In
 @keyframes fadeIn {
   from { opacity: 0; }

@@ -448,6 +448,27 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
+.video-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.video-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.video-toggle-btn #video-toggle-icon {
+  font-size: 1rem;
+}
+
 .cookie-consent-banner {
   position: fixed;
   bottom: 0;

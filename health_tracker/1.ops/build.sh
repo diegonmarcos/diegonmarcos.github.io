@@ -58,7 +58,15 @@ print_usage() {
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
+
+    # Clean and create dist directory
+    rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"
+
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Copy the main HTML file from src_static
     if [ -f "$PROJECT_DIR/src_static/health_tracker.html" ]; then
@@ -67,12 +75,6 @@ build() {
     else
         log_error "src_static/health_tracker.html not found"
         return 1
-    fi
-
-    # Copy public assets if they exist
-    if [ -d "$PROJECT_DIR/public" ]; then
-        cp -r "$PROJECT_DIR/public/"* "$DIST_DIR/" 2>/dev/null || true
-        log_success "Copied public assets to dist/"
     fi
 
     log_success "Build completed"

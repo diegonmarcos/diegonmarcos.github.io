@@ -98,12 +98,32 @@ build() {
     log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
 
-    if [ ! -d "$DIST_DIR" ]; then
-        mkdir -p "$DIST_DIR"
-    fi
+    # Ensure dist exists for npm builds
+    mkdir -p "$DIST_DIR"
 
     build_scss "prod"
     build_typescript "prod"
+
+    # Save compiled assets
+    _css_tmp=$(cat "$DIST_DIR/styles.css" 2>/dev/null || echo "")
+    _js_tmp=$(cat "$DIST_DIR/script.js" 2>/dev/null || echo "")
+
+    # Clean and recreate dist directory
+    rm -rf "$DIST_DIR"
+    mkdir -p "$DIST_DIR"
+
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
+
+    # Restore compiled assets
+    echo "$_css_tmp" > "$DIST_DIR/styles.css"
+    echo "$_js_tmp" > "$DIST_DIR/script.js"
+
+    # Copy HTML source
+    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
+
     build_single_file
 
     log_success "Build completed → $DIST_DIR"

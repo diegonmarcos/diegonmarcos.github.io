@@ -139,28 +139,32 @@ build() {
     log_info "Building ${PROJECT_NAME}..."
     check_dependencies
 
-    # Clean dist folder first
-    log_info "Cleaning dist folder..."
+    # Build Sass for both folders (outputs to dist/)
+    build_scss
+
+    # Save compiled CSS before cleaning dist
+    _css1_tmp=$(cat "$DIST_DIR/style.css" 2>/dev/null || echo "")
+    _css2_tmp=$(cat "$DIST_DIR/style2.css" 2>/dev/null || echo "")
+
+    # Clean and create dist directory
     rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"
-    log_success "dist folder cleared"
 
-    # Build Sass for both folders
-    build_scss
+    # Create symlinks for media assets
+    ln -sf ../public "$DIST_DIR/public"
+    ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
+    ln -sf ../1.ops "$DIST_DIR/1.ops"
+
+    # Restore compiled CSS
+    echo "$_css1_tmp" > "$DIST_DIR/style.css"
+    echo "$_css2_tmp" > "$DIST_DIR/style2.css"
 
     # Build single-file versions (CSS inlined)
     build_single_file_1
     build_single_file_2
 
-    # Copy public assets if they exist
-    if [ -d "$PROJECT_DIR/public" ]; then
-        cp -r "$PROJECT_DIR/public/"* "$DIST_DIR/" 2>/dev/null || true
-        log_success "Copied public assets to dist/"
-    fi
-
     # Cleanup intermediate CSS files
     rm -f "$DIST_DIR/style.css" "$DIST_DIR/style2.css"
-    log_success "Cleaned up intermediate CSS files"
 
     log_success "Build completed!"
     printf "\n"

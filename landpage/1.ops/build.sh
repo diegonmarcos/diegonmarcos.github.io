@@ -127,7 +127,6 @@ build() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Copy files temporarily for single-file build
     cp "$SRC_STATIC/index.html" "$DIST_DIR/"

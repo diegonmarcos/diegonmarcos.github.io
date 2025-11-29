@@ -118,7 +118,6 @@ build_single_file() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"

@@ -113,7 +113,7 @@ build_single_file() {
     _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"
     _js_file="$PROJECT_DIR/script.js"
-    _matomo_file="$PROJECT_DIR/../1.ops/matomo-tracking/cv_web.js"
+    _matomo_file="$PROJECT_DIR/public/matomo.js"
     _output_file="$DIST_DIR/index.html"
 
     if [ ! -f "$_html_file" ]; then
@@ -153,7 +153,7 @@ build_single_file() {
         print "</script>"
         next
     }
-    /<script[^>]*src="\/1\.ops\/matomo-tracking\/cv_web\.js"[^>]*>/ {
+    /<script[^>]*src="public\/matomo\.js"[^>]*>/ {
         print "<script>"
         print matomo
         print "</script>"

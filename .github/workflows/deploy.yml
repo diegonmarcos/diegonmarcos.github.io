@@ -339,14 +339,6 @@ jobs:
             echo "✅ Landpage src_static copied to _site/landpage/"
           fi
 
-          # Copy Matomo tracking scripts
-          if [ -d "1.ops/matomo-tracking" ]; then
-            echo "📊 Copying Matomo tracking scripts..."
-            mkdir -p _site/1.ops/matomo-tracking
-            cp -r 1.ops/matomo-tracking/* _site/1.ops/matomo-tracking/
-            echo "✅ Matomo tracking scripts copied"
-          fi
-
           # Copy MyFeed Vue build (if dist exists)
           if [ -d "myfeed/dist" ]; then
             echo "📦 Copying MyFeed Vue build..."

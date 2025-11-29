@@ -65,7 +65,6 @@ build() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Copy the main HTML file from src_static
     if [ -f "$PROJECT_DIR/src_static/health_tracker.html" ]; then

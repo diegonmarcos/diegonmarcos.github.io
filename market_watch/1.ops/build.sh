@@ -114,7 +114,6 @@ build() {
 
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
-    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     # Restore compiled assets
     echo "$_css_tmp" > "$DIST_DIR/styles.css"

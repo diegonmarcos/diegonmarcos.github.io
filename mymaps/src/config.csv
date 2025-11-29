@@ -1,8 +1,0 @@
-setting,value
-map_path,custom/world
-join_by,hc-key
-title,Global Strategic View
-data_code_column,code
-data_name_column,name
-data_role_column,role
-data_sphere_column,sphere

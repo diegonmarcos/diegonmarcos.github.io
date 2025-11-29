@@ -28,10 +28,10 @@
 </script>
 
 <svelte:head>
-	<title>Diego's Pixel Universe - Retro Gaming Meets Modern Life</title>
+	<title>Fun Zone - Retro Arcade & Pixel Entertainment</title>
 	<meta
 		name="description"
-		content="A pixel art personal space showcasing photos, music, fitness stats, and retro games"
+		content="A pixel art arcade with retro games, photos, music, and more entertainment"
 	/>
 
 	<!-- Google Tag Manager Consent Mode -->
@@ -75,11 +75,11 @@
 			<!-- Logo -->
 			<a href="{base}/" class="logo-arcade">
 				<div class="logo-screen">
-					<PixelIcon icon="profile" size={48} color="#ec4899" />
+					<PixelIcon icon="gamepad" size={48} color="#ec4899" />
 				</div>
 				<div class="logo-text">
-					<span class="logo-name glitch" data-text="DIEGO">DIEGO</span>
-					<span class="logo-subtitle">PIXEL UNIVERSE</span>
+					<span class="logo-name glitch" data-text="FUN ZONE">FUN ZONE</span>
+					<span class="logo-subtitle">PIXEL ARCADE</span>
 				</div>
 			</a>
 

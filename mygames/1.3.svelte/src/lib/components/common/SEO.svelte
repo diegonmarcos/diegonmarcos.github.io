@@ -22,7 +22,7 @@
 	// Construct full URL
 	const baseUrl = 'https://diegonmarcos.github.io/mygames';
 	const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
-	const fullTitle = title.includes('Diego') ? title : `${title} - Diego's Profile`;
+	const fullTitle = title.includes('Fun Zone') ? title : `${title} - Fun Zone`;
 </script>
 
 <svelte:head>
@@ -40,7 +40,7 @@
 	<meta property="og:title" content={fullTitle} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={image} />
-	<meta property="og:site_name" content="Diego's Profile" />
+	<meta property="og:site_name" content="Fun Zone" />
 
 	<!-- Twitter -->
 	<meta property="twitter:card" content="summary_large_image" />

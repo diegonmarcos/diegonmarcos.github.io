@@ -7,8 +7,8 @@
 	const cards = [
 		{
 			type: 'hero',
-			title: "Diego's Pixel Universe",
-			subtitle: 'Where retro gaming meets modern life',
+			title: "Welcome to the Fun Zone",
+			subtitle: 'Retro arcade vibes & pixel entertainment',
 			color: 'purple',
 			size: 'large'
 		},
@@ -132,7 +132,7 @@
 							</div>
 							<p class="subtitle">{card.subtitle}</p>
 							<div class="pixel-avatar">
-								<PixelIcon icon="profile" size={80} color="#ec4899" />
+								<PixelIcon icon="gamepad" size={80} color="#ec4899" />
 							</div>
 						</div>
 						<div class="card-glow"></div>

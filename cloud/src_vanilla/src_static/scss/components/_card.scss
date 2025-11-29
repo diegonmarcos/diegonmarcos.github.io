@@ -1,0 +1,361 @@
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    animation: fadeIn 0.8s ease-out;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+[data-theme="blurred"] .cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: var(--card-padding);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    text-decoration: none;
+    display: block;
+
+    @media (max-width: 768px) {
+        padding: 0.75rem;
+    }
+
+    &:hover {
+        background: var(--bg-card-hover);
+        border-color: var(--border-highlight);
+
+        .card-icon {
+            color: var(--accent-primary);
+        }
+
+        h3 {
+            color: var(--accent-primary);
+        }
+
+        .card-status.online {
+            background: var(--accent-green);
+            color: #000;
+        }
+    }
+
+    &.card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+}
+
+// Blurred theme card enhancements
+[data-theme="blurred"] .card {
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 0;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+
+    &:hover {
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 20px 60px var(--shadow), 0 0 40px var(--glow);
+        border-color: var(--accent-blue);
+
+        &::before {
+            opacity: 0.1;
+        }
+
+        &::after {
+            opacity: 1;
+        }
+
+        .card-icon {
+            transform: scale(1.15) rotate(5deg);
+            filter: drop-shadow(0 0 12px var(--accent-blue));
+        }
+
+        h3 {
+            color: var(--accent-blue);
+        }
+
+        p {
+            color: var(--text-primary);
+        }
+
+        .card-status.online {
+            background: rgba(16, 185, 129, 0.25);
+            color: var(--accent-green);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+        }
+    }
+
+    & > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    @media (max-width: 768px) {
+        padding: 1.5rem;
+    }
+}
+
+.card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+    color: var(--accent-blue);
+    transition: all var(--transition-speed) ease;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+[data-theme="blurred"] .card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.5rem;
+}
+
+.card h3 {
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color var(--transition-speed) ease;
+}
+
+[data-theme="blurred"] .card h3 {
+    font-size: 1.5rem;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-bottom: 0.75rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+    transition: color var(--transition-speed) ease;
+}
+
+[data-theme="blurred"] .card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.card-status {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all var(--transition-speed) ease;
+    border-radius: var(--border-radius);
+
+    &.online {
+        background: transparent;
+        color: var(--accent-green);
+        border: 1px solid var(--accent-green);
+    }
+
+    &.pending {
+        background: transparent;
+        color: var(--accent-yellow);
+        border: 1px solid var(--accent-yellow);
+    }
+}
+
+[data-theme="blurred"] .card-status {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 20px;
+
+    &.online {
+        background: rgba(16, 185, 129, 0.15);
+        border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    &.pending {
+        background: rgba(251, 191, 36, 0.15);
+        border-color: rgba(251, 191, 36, 0.3);
+    }
+}
+
+// Card Actions (SSH commands, buttons)
+.card-actions {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+[data-theme="blurred"] .card-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+}
+
+.code-with-copy {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-primary);
+    padding: 0.4rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+[data-theme="blurred"] .code-with-copy {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.card-code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--accent-orange);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+[data-theme="blurred"] .card-code {
+    color: var(--accent-green);
+    font-size: 0.85rem;
+}
+
+.copy-icon {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-speed) ease;
+
+    svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    &:hover {
+        color: var(--accent-primary);
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+// VM Buttons
+.vm-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.vm-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+
+    svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    &:hover:not(:disabled) {
+        border-color: var(--accent-primary);
+        color: var(--accent-primary);
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+}
+
+[data-theme="blurred"] .vm-btn {
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    backdrop-filter: blur(5px);
+    background: rgba(255, 255, 255, 0.05);
+
+    &:hover:not(:disabled) {
+        background: rgba(74, 158, 255, 0.1);
+        border-color: var(--accent-blue);
+        color: var(--accent-blue);
+        box-shadow: 0 0 15px rgba(74, 158, 255, 0.2);
+    }
+}
+
+// Card animation delays
+.card:nth-child(1) { animation: fadeIn 0.4s ease-out 0.1s backwards; }
+.card:nth-child(2) { animation: fadeIn 0.4s ease-out 0.2s backwards; }
+.card:nth-child(3) { animation: fadeIn 0.4s ease-out 0.3s backwards; }
+.card:nth-child(4) { animation: fadeIn 0.4s ease-out 0.4s backwards; }
+.card:nth-child(5) { animation: fadeIn 0.4s ease-out 0.5s backwards; }
+.card:nth-child(6) { animation: fadeIn 0.4s ease-out 0.6s backwards; }
+.card:nth-child(7) { animation: fadeIn 0.4s ease-out 0.7s backwards; }
+.card:nth-child(8) { animation: fadeIn 0.4s ease-out 0.8s backwards; }
+.card:nth-child(9) { animation: fadeIn 0.4s ease-out 0.9s backwards; }
+.card:nth-child(10) { animation: fadeIn 0.4s ease-out 1s backwards; }

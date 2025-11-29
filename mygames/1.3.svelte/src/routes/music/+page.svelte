@@ -52,7 +52,7 @@
 </script>
 
 <svelte:head>
-	<title>Music - Diego's Profile</title>
+	<title>Music - Fun Zone</title>
 	<meta name="description" content="Explore my music taste, playlists, and favorite artists" />
 </svelte:head>
 

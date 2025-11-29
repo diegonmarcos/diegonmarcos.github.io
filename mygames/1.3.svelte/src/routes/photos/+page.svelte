@@ -76,7 +76,7 @@
 </script>
 
 <svelte:head>
-	<title>Photo Albums - Diego's Profile</title>
+	<title>Photo Albums - Fun Zone</title>
 	<meta name="description" content="Browse through photo albums from travels and adventures" />
 </svelte:head>
 

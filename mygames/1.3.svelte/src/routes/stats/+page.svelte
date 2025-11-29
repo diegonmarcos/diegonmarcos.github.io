@@ -108,7 +108,7 @@
 </script>
 
 <svelte:head>
-	<title>Activity Stats - Diego's Profile</title>
+	<title>Activity Stats - Fun Zone</title>
 	<meta name="description" content="Track my endurance activities, achievements, and fitness milestones" />
 </svelte:head>
 

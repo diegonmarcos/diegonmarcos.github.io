@@ -1,0 +1,23 @@
+// ===========================================
+// FOOTER LAYOUT
+// ===========================================
+
+@use '../abstracts' as *;
+
+.footer {
+  margin-top: $spacing-xl;
+  padding: 30px $spacing-md;
+  text-align: center;
+  border-top: 1px solid $color-border;
+  color: $color-text-dim;
+  font-size: $font-size-xs;
+
+  a {
+    color: $color-text-muted;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-text;
+    }
+  }
+}

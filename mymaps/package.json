@@ -1,0 +1,22 @@
+{
+  "name": "mymaps",
+  "version": "1.0.0",
+  "description": "Strategic Map Viewer",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export"
+  },
+  "author": "Diego Nepomuceno Marcos",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.7",
+    "next": "^16.0.5",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "sass": "^1.94.2",
+    "typescript": "^5.9.3"
+  }
+}

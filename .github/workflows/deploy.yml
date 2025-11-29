@@ -318,7 +318,8 @@ jobs:
           if [ -d "cv_web/dist" ]; then
             echo "📦 Copying CV Web build..."
             mkdir -p _site/cv_web
-            cp -r cv_web/dist/* _site/cv_web/
+            # Use -L to dereference symlinks (dist contains symlinks to public/)
+            cp -rL cv_web/dist/* _site/cv_web/ 2>/dev/null || cp -r cv_web/dist/* _site/cv_web/
             cp -r cv_web/public/* _site/cv_web/ 2>/dev/null || true
             echo "✅ CV Web build copied to _site/cv_web/"
           fi
@@ -446,6 +447,12 @@ jobs:
           fi
 
           echo "✅ All files prepared for deployment"
+
+          # Remove any broken symlinks that could cause tar to fail
+          echo "🔗 Checking for broken symlinks..."
+          find _site -type l ! -exec test -e {} \; -delete 2>/dev/null || true
+          echo "✅ Broken symlinks removed"
+
           echo "📊 Site structure:"
           ls -lah _site/
           echo ""

@@ -82,24 +82,24 @@ jobs:
           npm run build
           echo "✅ MyFeed Vue build complete"
 
-      - name: ♻️ Cache MyProfile Build
-        id: cache-myprofile
+      - name: ♻️ Cache MyGames Build
+        id: cache-mygames
         uses: actions/cache@v4
         with:
-          path: myprofile/1.3.svelte/build
-          key: ${{ runner.os }}-myprofile-${{ hashFiles('myprofile/1.3.svelte/**') }}
+          path: mygames/1.3.svelte/build
+          key: ${{ runner.os }}-mygames-${{ hashFiles('mygames/1.3.svelte/**') }}
 
-      - name: 🔨 Build MyProfile (SvelteKit)
-        id: build-myprofile
-        if: contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
+      - name: 🔨 Build MyGames (SvelteKit)
+        id: build-mygames
+        if: contains(steps.changed-files.outputs.all_changed_files, 'mygames/')
         continue-on-error: true
         run: |
-          echo "🔨 Building MyProfile SvelteKit project..."
-          cd myprofile/1.3.svelte
+          echo "🔨 Building MyGames SvelteKit project..."
+          cd mygames/1.3.svelte
           npm install
           NODE_ENV=production npm run build
           cd ../..
-          echo "✅ MyProfile build complete"
+          echo "✅ MyGames build complete"
 
       - name: 🔨 Build Nexus (Vue 3 + Tailwind)
         id: build-nexus
@@ -196,11 +196,11 @@ jobs:
             echo "✅ SUCCESS: MyFeed (Vue 3)"
           fi
 
-          if [ "${{ steps.build-myprofile.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: MyProfile (SvelteKit)"
-            FAILED="$FAILED myprofile"
-          elif [ "${{ steps.build-myprofile.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: MyProfile (SvelteKit)"
+          if [ "${{ steps.build-mygames.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyGames (SvelteKit)"
+            FAILED="$FAILED mygames"
+          elif [ "${{ steps.build-mygames.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyGames (SvelteKit)"
           fi
 
           if [ "${{ steps.build-nexus.outcome }}" == "failure" ]; then
@@ -298,14 +298,14 @@ jobs:
             echo "⏭️  Skipping MyFeed copy (no dist directory found)"
           fi
 
-          # Copy MyProfile SvelteKit build (if build exists)
-          if [ -d "myprofile/1.3.svelte/build" ]; then
-            echo "📦 Copying MyProfile SvelteKit build..."
-            mkdir -p _site/myprofile
-            cp -r myprofile/1.3.svelte/build/* _site/myprofile/
-            echo "✅ MyProfile build copied to _site/myprofile/"
+          # Copy MyGames SvelteKit build (if build exists)
+          if [ -d "mygames/1.3.svelte/build" ]; then
+            echo "📦 Copying MyGames SvelteKit build..."
+            mkdir -p _site/mygames
+            cp -r mygames/1.3.svelte/build/* _site/mygames/
+            echo "✅ MyGames build copied to _site/mygames/"
           else
-            echo "⏭️  Skipping MyProfile copy (no build directory found)"
+            echo "⏭️  Skipping MyGames copy (no build directory found)"
           fi
 
           # Copy Nexus Vue build (if dist exists)

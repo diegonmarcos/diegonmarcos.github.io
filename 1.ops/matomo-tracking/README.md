@@ -18,7 +18,7 @@ Page-specific tracking scripts for Matomo analytics integration.
 | `cv_pdf.js` | `/cv_pdf/` | 2.8KB | Downloads, navigation, zoom |
 | `cv_web.js` | `/cv_web/` | 4.1KB | Downloads, UI controls |
 | `myfeed.js` | `/myfeed/` | 1.7KB | Feed items, filters |
-| `myprofile.js` | `/myprofile/` | 2.9KB | SPA navigation, games |
+| `mygames.js` | `/mygames/` | 2.9KB | SPA navigation, games |
 | `cloud.js` | `/cloud/` | 1.8KB | Service cards, docs |
 | `feed_yourself.js` | `/feed_yourself/` | 1.1KB | Actions, content |
 
@@ -70,9 +70,9 @@ Add this at the **end of `<body>`** section:
 <script src="/1.ops/matomo-tracking/cv_pdf.js"></script>
 ```
 
-**MyProfile** (`/myprofile/index.html`):
+**MyGames** (`/mygames/index.html`):
 ```html
-<script src="/1.ops/matomo-tracking/myprofile.js"></script>
+<script src="/1.ops/matomo-tracking/mygames.js"></script>
 ```
 
 And so on for other pages...
@@ -115,11 +115,11 @@ _paq.push(['trackEvent', 'CV UI', 'Font Size', 'Increase']);
 _paq.push(['trackEvent', 'CV PDF', 'Navigation', 'Next Page']);
 ```
 
-**MyProfile**:
+**MyGames**:
 ```javascript
-_paq.push(['trackEvent', 'MyProfile', 'Navigation', 'Photos']);
-_paq.push(['trackEvent', 'MyProfile', 'Game Select', 'Pinball']);
-_paq.push(['trackEvent', 'MyProfile', 'Music', 'Play']);
+_paq.push(['trackEvent', 'MyGames', 'Navigation', 'Photos']);
+_paq.push(['trackEvent', 'MyGames', 'Game Select', 'Pinball']);
+_paq.push(['trackEvent', 'MyGames', 'Music', 'Play']);
 ```
 
 ---
@@ -181,7 +181,7 @@ _paq.push(['trackEvent', Category, Action, Name, Value]);
 ```
 
 **Parameters**:
-- `Category`: Group (e.g., 'Linktree', 'CV', 'MyProfile')
+- `Category`: Group (e.g., 'Linktree', 'CV', 'MyGames')
 - `Action`: What happened (e.g., 'Link Click', 'Download', 'Navigation')
 - `Name`: Specific detail (e.g., 'PDF', 'GitHub', 'Pinball')
 - `Value` (optional): Numeric value or URL
@@ -262,7 +262,7 @@ console.log(typeof _mtm);  // Should be 'object'
 **Path**: Behavior → Events
 
 **Filters**:
-- Event Category: Linktree, CV, MyProfile, etc.
+- Event Category: Linktree, CV, MyGames, etc.
 - Event Action: Link Click, Download, Navigation, etc.
 - Event Name: Specific items clicked
 

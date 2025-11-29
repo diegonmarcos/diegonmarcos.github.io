@@ -915,8 +915,8 @@ Database
 | - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                      |
 | - ✉️ [Email](mailto:me@diegonmarcos.com "null")                                         |     | -                                                                                                      |
 |                                                                                            |     |                                                                                                        |
-| **Profiles**                                                                               |     | **MyProfiles**                                                                                         |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - 👤 [Myprofile](https://diegonmarcos.github.io/myprofile "null")                                      |
+| **Profiles**                                                                               |     | **MyGamess**                                                                                         |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - 👤 [Myprofile](https://diegonmarcos.github.io/mygames "null")                                      |
 | - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                     |     | -                                                                                                      |
 | - 💻 [Github](https://github.com/diegonmarcos "null")                                      |     | -                                                                                                      |
 | - [Vcard](https://diegonmarcos.github.io/linktree/2.assets/diegonmarcos-contact_photo.vcf) |     | -                                                                                                      |

@@ -61,15 +61,15 @@ jobs:
       # ============================================
       # MYPROFILE SVELTEKIT APP BUILD
       # ============================================
-      - name: 🎮 Build MyProfile SvelteKit Application
+      - name: 🎮 Build MyGames SvelteKit Application
         run: |
-          echo "📁 Building MyProfile SvelteKit app..."
-          cd myprofile/1.1.ops
+          echo "📁 Building MyGames SvelteKit app..."
+          cd mygames/1.1.ops
           chmod +x build.sh
           ./build.sh
           cd ../..
-          echo "✅ MyProfile production build created"
-          ls -lh myprofile/1.3.svelte/build/
+          echo "✅ MyGames production build created"
+          ls -lh mygames/1.3.svelte/build/
         env:
           NODE_ENV: production
 
@@ -109,12 +109,12 @@ jobs:
           echo "✅ MyFeed deployed to _site/myfeed/"
           ls -lah _site/myfeed/
 
-          # Copy MyProfile SvelteKit app build
-          echo "Copying MyProfile app..."
-          mkdir -p _site/myprofile
-          cp -r myprofile/1.3.svelte/build/* _site/myprofile/
-          echo "✅ MyProfile deployed to _site/myprofile/"
-          ls -lah _site/myprofile/
+          # Copy MyGames SvelteKit app build
+          echo "Copying MyGames app..."
+          mkdir -p _site/mygames
+          cp -r mygames/1.3.svelte/build/* _site/mygames/
+          echo "✅ MyGames deployed to _site/mygames/"
+          ls -lah _site/mygames/
 
           echo "✅ All files prepared for deployment"
           echo "📋 Final site structure:"

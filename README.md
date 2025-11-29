@@ -23,7 +23,7 @@ This repository contains the source code for my personal portfolio website and b
 | **Feed Yourself** | Calculator / Utility Tool       | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | No      |
 | **Others**        | Python tools & scripts          | **Scripts**                    | **Python**    | Server-Side (Static SSG) | Yes             | No      |
 | **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
-| **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
+| **MyGames**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 
 ### Dev Environment
 
@@ -39,7 +39,7 @@ This repository contains the source code for my personal portfolio website and b
 | **Feed Yourself** | Vanilla       | Sass     | TypeScript     |
 | **Others**        | Python 3.11+  | -        | -              |
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
-| **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
+| **MyGames**     | SvelteKit     | Sass     | TypeScript     |
 
 ### Dev Servers
 
@@ -55,7 +55,7 @@ This repository contains the source code for my personal portfolio website and b
 | **Feed Yourself** | npm-live :8007        | Sass, TS   |
 | **Others**        | npm-live :8008        | -          |
 | **MyFeed**        | Vite :8003            | HMR        |
-| **MyProfile**     | Vite :8004            | HMR        |
+| **MyGames**     | Vite :8004            | HMR        |
 ---
 
 ## 2. Project Structure
@@ -77,7 +77,7 @@ The repository follows a numbered directory structure for clarity and organizati
 ├── feed_yourself/      # Calculator / Utility Tool
 ├── nexus/              # Company Business Website
 ├── myfeed/             # Social feed aggregator (Vue 3)
-├── myprofile/          # Personal portfolio (SvelteKit)
+├── mygames/          # Personal portfolio (SvelteKit)
 └── others/             # Python tools & scripts
 ```
 

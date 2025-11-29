@@ -59,9 +59,9 @@
 | **MyContact**                                                                                              |              |              |
 | - ✉️ [](https://t.me/diegonmarcos "null")✉️ [](https://wa.me/+34634769833"null"                            |              |              |
 |                                                                                                            |              |              |
-| **MyProfiles**                                                                                             |              |              |
-| - 👤 [MyProfile](https://diegonmarcos.github.io/myprofile "null")                                          |              |              |
-| - 👤 [MyFeed](https://diegonmarcos.github.io/myprofile "null")                                             |              |              |
+| **MyGamess**                                                                                             |              |              |
+| - 👤 [MyGames](https://diegonmarcos.github.io/mygames "null")                                          |              |              |
+| - 👤 [MyFeed](https://diegonmarcos.github.io/mygames "null")                                             |              |              |
 |                                                                                                            |              |              |
 | > more                                                                                                     |              |              |
 |                                                                                                            |              |              |

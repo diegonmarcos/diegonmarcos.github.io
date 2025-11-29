@@ -176,9 +176,9 @@ Vue 3 Source Files (`/myfeed/src`)
 
 # src/ (Svelte)
 
-SvelteKit Source Files (`/myprofile/1.3.svelte/src`)
+SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 ```
-/myprofile/1.3.svelte/src
+/mygames/1.3.svelte/src
 ├──   app.html          # HTML template
 ├── lib/                # Library code
 │   ├── assets/         # Static assets (favicon.svg)
@@ -214,7 +214,7 @@ SvelteKit Source Files (`/myprofile/1.3.svelte/src`)
 ├── linktree/
 ├── market_watch/
 ├── myfeed/
-├── myprofile/
+├── mygames/
 ├── nexus/
 ├── others/
 └──   README.md

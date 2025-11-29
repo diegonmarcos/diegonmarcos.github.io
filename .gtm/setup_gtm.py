@@ -555,7 +555,7 @@ function() {
         return self.create_trigger('vCard Download', 'click', filters=filters)
 
     def create_game_nav_trigger(self) -> str:
-        """Create game/navigation menu trigger for myprofile"""
+        """Create game/navigation menu trigger for mygames"""
         filters = [
             {
                 'type': 'cssSelector',

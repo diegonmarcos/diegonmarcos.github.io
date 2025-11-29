@@ -18,9 +18,9 @@ This directory contains the orchestration scripts for building and developing al
 ├── myfeed/
 │   └── 1.ops/
 │       └── build.sh           # MyFeed build script (Vue 3 + Vite)
-└── myprofile/
+└── mygames/
     └── 1.1.ops/
-        └── build.sh           # MyProfile build script (SvelteKit)
+        └── build.sh           # MyGames build script (SvelteKit)
 ```
 
 ## 🚀 Quick Start
@@ -45,14 +45,14 @@ This directory contains the orchestration scripts for building and developing al
 ./1.ops/build_main.sh build-linktree
 ./1.ops/build_main.sh build-cv-web
 ./1.ops/build_main.sh build-myfeed
-./1.ops/build_main.sh build-myprofile
+./1.ops/build_main.sh build-mygames
 ```
 
 ### Start Individual Dev Servers
 ```bash
 ./1.ops/build_main.sh dev-linktree
 ./1.ops/build_main.sh dev-myfeed
-./1.ops/build_main.sh dev-myprofile
+./1.ops/build_main.sh dev-mygames
 ```
 
 ## 📋 Main Orchestrator Commands
@@ -66,12 +66,12 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `build-linktree` | Build linktree (static) |
 | `build-cv-web` | Build cv_web (Sass) |
 | `build-myfeed` | Build MyFeed (Vue 3 + Vite) |
-| `build-myprofile` | Build MyProfile (SvelteKit) |
+| `build-mygames` | Build MyGames (SvelteKit) |
 | `dev` | Start all development servers |
 | `dev-root` | Start root Sass + TS watch |
 | `dev-linktree` | Start linktree live server |
 | `dev-myfeed` | Start MyFeed dev server |
-| `dev-myprofile` | Start MyProfile dev server |
+| `dev-mygames` | Start MyGames dev server |
 | `clean` | Clean all build artifacts |
 | `clean-all` | Clean all build artifacts + node_modules |
 | `test` | Run all tests |
@@ -161,10 +161,10 @@ cd myfeed/1.ops
 
 ---
 
-### MyProfile (SvelteKit)
+### MyGames (SvelteKit)
 
 ```bash
-cd myprofile/1.1.ops
+cd mygames/1.1.ops
 ./build.sh <action>
 ```
 
@@ -185,8 +185,8 @@ cd myprofile/1.1.ops
 - Static adapter (for GitHub Pages)
 - Vite
 
-**Project Location:** `myprofile/1.3.svelte/`
-**Output:** `myprofile/1.3.svelte/build/`
+**Project Location:** `mygames/1.3.svelte/`
+**Output:** `mygames/1.3.svelte/build/`
 
 ## 🔄 GitHub Actions Equivalence
 
@@ -198,7 +198,7 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 | Build CV Web Sass | `./1.ops/build_main.sh build-cv-web` |
 | Build TypeScript | `cd 1.ops && npm run ts:build` |
 | Build MyFeed | `./1.ops/build_main.sh build-myfeed` |
-| Build MyProfile | `./1.ops/build_main.sh build-myprofile` |
+| Build MyGames | `./1.ops/build_main.sh build-mygames` |
 | Build All | `./1.ops/build_main.sh build` |
 
 ## 🧪 Testing Locally
@@ -213,7 +213,7 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 
 # Verify builds exist
 ls -lah myfeed/dist/
-ls -lah myprofile/1.3.svelte/build/
+ls -lah mygames/1.3.svelte/build/
 ls -lah cv_web/style.css
 ls -lah linktree/index.html
 ```
@@ -234,7 +234,7 @@ ls -lah linktree/index.html
 ./1.ops/build_main.sh dev-myfeed
 
 # Terminal 4:
-./1.ops/build_main.sh dev-myprofile
+./1.ops/build_main.sh dev-mygames
 ```
 
 ## 📦 Dependencies
@@ -252,7 +252,7 @@ ls -lah linktree/index.html
 # Install all npm dependencies
 cd 1.ops && npm install
 cd ../myfeed && npm install
-cd ../myprofile/1.3.svelte && npm install
+cd ../mygames/1.3.svelte && npm install
 
 # Or use the orchestrator (recommended)
 ./1.ops/build_main.sh build  # Auto-installs deps if missing
@@ -289,8 +289,8 @@ lsof -ti:8000 | xargs kill -9
 # Or use a different port (scripts auto-detect)
 ```
 
-### MyProfile Build Path Issues
-The MyProfile project is located at `myprofile/1.3.svelte/`. The build script in `myprofile/1.1.ops/build.sh` automatically navigates to the correct directory.
+### MyGames Build Path Issues
+The MyGames project is located at `mygames/1.3.svelte/`. The build script in `mygames/1.1.ops/build.sh` automatically navigates to the correct directory.
 
 ### Sass Compilation Errors
 ```bash
@@ -426,7 +426,7 @@ git push
 - `.github/workflows/deploy.yml` - GitHub Actions CI/CD pipeline
 - `1.ops/package.json` - Root build dependencies
 - `myfeed/package.json` - MyFeed dependencies
-- `myprofile/1.3.svelte/package.json` - MyProfile dependencies
+- `mygames/1.3.svelte/package.json` - MyGames dependencies
 
 ## 📖 Documentation
 

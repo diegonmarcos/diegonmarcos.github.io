@@ -328,7 +328,8 @@ jobs:
           if [ -d "landpage/dist" ]; then
             echo "📦 Copying Landpage build..."
             mkdir -p _site/landpage
-            cp -r landpage/dist/* _site/landpage/
+            # Use -L to dereference symlinks (dist contains symlinks to public/)
+            cp -rL landpage/dist/* _site/landpage/ 2>/dev/null || cp -r landpage/dist/* _site/landpage/
             echo "✅ Landpage build copied to _site/landpage/"
           elif [ -d "landpage/src_static" ]; then
             echo "📦 Copying Landpage src_static..."

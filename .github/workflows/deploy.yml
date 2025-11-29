@@ -86,8 +86,8 @@ jobs:
         id: cache-mygames
         uses: actions/cache@v4
         with:
-          path: mygames/1.3.svelte/build
-          key: ${{ runner.os }}-mygames-${{ hashFiles('mygames/1.3.svelte/**') }}
+          path: mygames/src/build
+          key: ${{ runner.os }}-mygames-${{ hashFiles('mygames/src/**') }}
 
       - name: 🔨 Build MyGames (SvelteKit)
         id: build-mygames
@@ -95,7 +95,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "🔨 Building MyGames SvelteKit project..."
-          cd mygames/1.3.svelte
+          cd mygames/src
           npm install
           NODE_ENV=production npm run build
           cd ../..
@@ -197,7 +197,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "🔨 Building MyProfile..."
-          cd myprofile/1.3.nuxt
+          cd myprofile/src
           npm install
           npm run generate
           cd ../..
@@ -436,10 +436,10 @@ jobs:
           fi
 
           # Copy MyProfile build (if .output/public exists - Nuxt static export)
-          if [ -d "myprofile/1.3.nuxt/.output/public" ]; then
+          if [ -d "myprofile/src/.output/public" ]; then
             echo "📦 Copying MyProfile build..."
             mkdir -p _site/myprofile
-            cp -r myprofile/1.3.nuxt/.output/public/* _site/myprofile/
+            cp -r myprofile/src/.output/public/* _site/myprofile/
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no .output/public directory found)"

@@ -20,7 +20,7 @@ NC='\033[0m'
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="MyProfile"
 PORT="8013"
-NUXT_DIR="$PROJECT_DIR/1.3.nuxt"
+NUXT_DIR="$PROJECT_DIR/src"
 DIST_DIR="$NUXT_DIR/.output"
 
 # Logging

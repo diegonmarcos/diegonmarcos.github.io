@@ -185,14 +185,14 @@ Next.js App Router (`/mymaps`)
 
 ---
 
-# 1.3.nuxt/ (Nuxt 4 - myprofile)
+# src/ (Nuxt 4 - myprofile)
 
 Nuxt 4 App (`/myprofile`)
 ```
 /myprofile
 ├── 1.ops/
 │   └──   build.sh          # Build script
-├── 1.3.nuxt/               # Nuxt 4 application
+├── src/                    # Nuxt 4 application
 │   ├──   app.vue           # Root Vue component
 │   ├──   nuxt.config.ts    # Nuxt configuration
 │   ├── assets/             # Static assets

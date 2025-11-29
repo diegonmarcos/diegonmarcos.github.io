@@ -3,9 +3,10 @@ import tailwindcss from '@tailwindcss/vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
 export default defineConfig({
+  root: 'src_static',
   plugins: [tailwindcss(), viteSingleFile()],
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
     emptyOutDir: true
   },
   server: {

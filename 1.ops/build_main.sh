@@ -59,6 +59,7 @@ URL_HEALTH="http://localhost:8009/"
 URL_MARKET="http://localhost:8010/"
 URL_CENTRALBANK="http://localhost:8011/"
 URL_MYMAPS="http://localhost:8012/"
+URL_MYPROFILE="http://localhost:8013/"
 
 # Banner function
 print_banner() {
@@ -127,6 +128,10 @@ get_running_servers() {
         _servers="${_servers}  ${CYAN}*${NC} MyMaps (Next.js)   ${BLUE}${URL_MYMAPS}${NC}\n"
         _count=$((_count + 1))
     fi
+    if pgrep -f "nuxt.*dev.*8013" >/dev/null 2>&1 || pgrep -f "myprofile.*nuxt" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyProfile (Nuxt)   ${BLUE}${URL_MYPROFILE}${NC}\n"
+        _count=$((_count + 1))
+    fi
     # Generic live-server check (fallback for other ports)
     if pgrep -f "live-server" >/dev/null 2>&1; then
         _other_live=$(pgrep -f "live-server" 2>/dev/null | while read pid; do
@@ -188,7 +193,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -205,6 +210,7 @@ get_running_servers() {
                     build-market)     _servers="${_servers}  ${GREEN}*${NC} Market (tmux)      ${BLUE}${URL_MARKET}${NC}\n" ;;
                     build-centralbank) _servers="${_servers}  ${GREEN}*${NC} Central Bank (tmux) ${BLUE}${URL_CENTRALBANK}${NC}\n" ;;
                     build-mymaps) _servers="${_servers}  ${GREEN}*${NC} MyMaps (tmux)      ${BLUE}${URL_MYMAPS}${NC}\n" ;;
+                    build-myprofile) _servers="${_servers}  ${GREEN}*${NC} MyProfile (tmux)   ${BLUE}${URL_MYPROFILE}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -262,6 +268,7 @@ print_usage() {
     printf "  ${GREEN}build-market${NC}       # Market Watch - Vanilla + Sass + TypeScript\n"
     printf "  ${GREEN}build-centralbank${NC}  # Central Bank - Vanilla + Tailwind + TypeScript\n"
     printf "  ${GREEN}build-mymaps${NC}       # MyMaps - Next.js + Sass + TypeScript\n"
+    printf "  ${GREEN}build-myprofile${NC}    # MyProfile - Nuxt 4 + Sass + TypeScript\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -278,6 +285,7 @@ print_usage() {
     printf "  ${GREEN}dev-market${NC}         # Market Watch - npm-live :8010\n"
     printf "  ${GREEN}dev-centralbank${NC}    # Central Bank - npm-live :8011\n"
     printf "  ${GREEN}dev-mymaps${NC}         # MyMaps - Next.js :8012\n"
+    printf "  ${GREEN}dev-myprofile${NC}      # MyProfile - Nuxt :8013\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -306,6 +314,7 @@ print_usage() {
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MarketWatch" "Vanilla" "Sass" "TypeScript" "npm-live :8010" "Sass, TS"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "CentralBank" "Vanilla" "Tailwind" "TypeScript" "npm-live :8011" "-"
     printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next.js :8012" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "Nuxt 4" "Sass" "TypeScript" "Vite :8013" "HMR"
     printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
 
     # Show status box in help
@@ -424,6 +433,7 @@ build_all() {
     execute_build "market_watch" "build" || _failed=$((_failed + 1))
     execute_build "central_bank" "build" || _failed=$((_failed + 1))
     execute_build "mymaps" "build" || _failed=$((_failed + 1))
+    execute_build "myprofile" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -453,6 +463,7 @@ clean_all_builds() {
     execute_build "market_watch" "clean" || true
     execute_build "central_bank" "clean" || true
     execute_build "mymaps" "clean" || true
+    execute_build "myprofile" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -544,6 +555,7 @@ dev_all() {
         tmux new-session -d -s build-market "cd $PROJECT_ROOT/market_watch/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-centralbank "cd $PROJECT_ROOT/central_bank/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-mymaps "cd $PROJECT_ROOT/mymaps/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -563,6 +575,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
         printf "  ${CYAN}%-15s${NC}  %s\n" "MyMaps" "$URL_MYMAPS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyProfile" "$URL_MYPROFILE"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Tmux Sessions: build-landpage, build-linktree, etc."
@@ -619,6 +632,9 @@ dev_all() {
         log_info "Starting mymaps..."
         nohup sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymaps-dev.log" 2>&1 &
 
+        log_info "Starting myprofile..."
+        nohup sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
+
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
@@ -639,6 +655,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
         printf "  ${CYAN}%-15s${NC}  %s\n" "MyMaps" "$URL_MYMAPS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyProfile" "$URL_MYPROFILE"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -722,6 +739,12 @@ dev_single() {
             execute_build "mymaps" "dev" &
             sleep 2
             print_server_started "MyMaps" "$_url"
+            wait
+            ;;
+        myprofile)
+            execute_build "myprofile" "dev" &
+            sleep 2
+            print_server_started "MyProfile" "$_url"
             wait
             ;;
     esac
@@ -1142,6 +1165,7 @@ tui_simple() {
         _s11=$(get_status 'pgrep -f "live-server.*8010"')
         _s12=$(get_status 'pgrep -f "live-server.*8011"')
         _s13=$(get_status 'pgrep -f "next.*dev.*8012" || pgrep -f "mymaps.*next"')
+        _s14=$(get_status 'pgrep -f "nuxt.*dev.*8013" || pgrep -f "myprofile.*nuxt"')
 
         # Table 1: Full project details
         printf "${BLUE}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
@@ -1162,6 +1186,7 @@ tui_simple() {
         printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s11"
         printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s12"
         printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s13"
+        printf "${BLUE}│${NC} ${GREEN}14${NC}  ${BLUE}│${NC} MyProfile      ${BLUE}│${NC} Nuxt 4     ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8013 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s14"
         printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┘${NC}\n"
 
         # Server status
@@ -1206,6 +1231,7 @@ tui_simple() {
             b11)               _cmd="build-market"; _last_msg="Building Market Watch" ;;
             b12)               _cmd="build-centralbank"; _last_msg="Building Central Bank" ;;
             b13)               _cmd="build-mymaps"; _last_msg="Building MyMaps" ;;
+            b14)               _cmd="build-myprofile"; _last_msg="Building MyProfile" ;;
             # Dev commands
             d|d0)              _cmd="dev"; _last_msg="Starting all dev servers..." ;;
             d1)                _cmd="dev-landpage"; _last_msg="Started Landpage :8000" ;;
@@ -1221,6 +1247,7 @@ tui_simple() {
             d11)               _cmd="dev-market"; _last_msg="Started Market Watch :8010" ;;
             d12)               _cmd="dev-centralbank"; _last_msg="Started Central Bank :8011" ;;
             d13)               _cmd="dev-mymaps"; _last_msg="Started MyMaps :8012" ;;
+            d14)               _cmd="dev-myprofile"; _last_msg="Started MyProfile :8013" ;;
             # Utility commands
             k|kill)            _cmd="kill"; _last_msg="Killed all servers" ;;
             c|clean)           _cmd="clean"; _last_msg="Cleaned build artifacts" ;;
@@ -1263,6 +1290,7 @@ tui_simple() {
             dev-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
             dev-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
             dev-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-myprofile)   sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
             dev)             dev_all > /dev/null 2>&1 & ;;
             kill)            kill_servers > /dev/null 2>&1 ;;
             build-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" build > /dev/null 2>&1 & ;;
@@ -1278,6 +1306,7 @@ tui_simple() {
             build-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" build > /dev/null 2>&1 & ;;
+            build-myprofile)   sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build)           build_all > /dev/null 2>&1 & ;;
             clean)           clean_all > /dev/null 2>&1 ;;
         esac
@@ -1372,6 +1401,9 @@ main() {
         build-mymaps)
             execute_build "mymaps" "build"
             ;;
+        build-myprofile)
+            execute_build "myprofile" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -1413,6 +1445,9 @@ main() {
             ;;
         dev-mymaps)
             dev_single "mymaps" "$URL_MYMAPS"
+            ;;
+        dev-myprofile)
+            dev_single "myprofile" "$URL_MYPROFILE"
             ;;
         list)
             list_servers

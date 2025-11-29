@@ -19,7 +19,7 @@ NC='\033[0m'
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="MyProfile"
-PORT="8004"
+PORT="8013"
 NUXT_DIR="$PROJECT_DIR/1.3.nuxt"
 DIST_DIR="$NUXT_DIR/.output"
 

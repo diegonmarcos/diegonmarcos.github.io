@@ -433,8 +433,8 @@ hr {
 
 .featured-image {
     width: 100%;
-    max-height: 500px;
-    object-fit: contain;
+    height: 500px;
+    object-fit: fill;
     border-radius: 16px;
     margin-top: 1rem;
     border: 1px solid rgba(255, 255, 255, 0.2);

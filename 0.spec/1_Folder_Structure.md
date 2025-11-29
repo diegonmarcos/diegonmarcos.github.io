@@ -185,6 +185,38 @@ Next.js App Router (`/mymaps`)
 
 ---
 
+# 1.3.nuxt/ (Nuxt 4 - myprofile)
+
+Nuxt 4 App (`/myprofile`)
+```
+/myprofile
+├── 1.ops/
+│   └──   build.sh          # Build script
+├── 1.3.nuxt/               # Nuxt 4 application
+│   ├──   app.vue           # Root Vue component
+│   ├──   nuxt.config.ts    # Nuxt configuration
+│   ├── assets/             # Static assets
+│   │   └── scss/           # Sass styles
+│   ├── components/         # Vue components
+│   │   ├── views/          # View-specific components
+│   │   │   ├──   CardsView.vue      # Grid card layout
+│   │   │   ├──   PlayerView.vue     # Audio player interface
+│   │   │   └──   SphereView.vue     # 3D sphere visualization
+│   │   └──   ProfileCard.vue        # Profile card component
+│   ├── composables/        # Vue composables
+│   ├── data/               # Static data files
+│   │   └──   profiles.ts   # Profile data
+│   ├── layouts/            # Nuxt layouts
+│   ├── pages/              # File-based routing
+│   │   └──   index.vue     # Home page
+│   ├── public/             # Public static files
+│   └── .output/            # Build output
+│       └── public/         # Static export for deployment
+└──   README.md
+```
+
+---
+
 # Actual Project Structure
 
 ```
@@ -204,6 +236,7 @@ Next.js App Router (`/mymaps`)
 ├── myfeed/
 ├── mygames/
 ├── mymaps/
+├── myprofile/
 ├── nexus/
 ├── others/
 └──   README.md

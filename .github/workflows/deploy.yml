@@ -191,6 +191,18 @@ jobs:
           cd ..
           echo "✅ MyMaps build complete"
 
+      - name: 🔨 Build MyProfile (Nuxt 4 + Sass)
+        id: build-myprofile
+        if: contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyProfile..."
+          cd myprofile/1.3.nuxt
+          npm install
+          npm run generate
+          cd ../..
+          echo "✅ MyProfile build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -262,6 +274,13 @@ jobs:
             FAILED="$FAILED mymaps"
           elif [ "${{ steps.build-mymaps.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: MyMaps"
+          fi
+
+          if [ "${{ steps.build-myprofile.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyProfile"
+            FAILED="$FAILED myprofile"
+          elif [ "${{ steps.build-myprofile.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyProfile"
           fi
 
           echo "============================================"
@@ -414,6 +433,16 @@ jobs:
             echo "✅ MyMaps build copied to _site/mymaps/"
           else
             echo "⏭️  Skipping MyMaps copy (no out directory found)"
+          fi
+
+          # Copy MyProfile build (if .output/public exists - Nuxt static export)
+          if [ -d "myprofile/1.3.nuxt/.output/public" ]; then
+            echo "📦 Copying MyProfile build..."
+            mkdir -p _site/myprofile
+            cp -r myprofile/1.3.nuxt/.output/public/* _site/myprofile/
+            echo "✅ MyProfile build copied to _site/myprofile/"
+          else
+            echo "⏭️  Skipping MyProfile copy (no .output/public directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

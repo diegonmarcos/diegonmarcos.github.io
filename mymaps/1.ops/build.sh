@@ -18,6 +18,7 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+DIST_DIR="$PROJECT_DIR/out"
 PROJECT_NAME="MyMaps"
 PORT="8012"
 

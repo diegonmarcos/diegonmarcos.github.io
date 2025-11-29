@@ -179,6 +179,18 @@ jobs:
           cd ../..
           echo "✅ Central Bank Forecasting build complete"
 
+      - name: 🔨 Build MyMaps (Next.js + Sass)
+        id: build-mymaps
+        if: contains(steps.changed-files.outputs.all_changed_files, 'mymaps/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMaps..."
+          cd mymaps
+          npm install
+          npm run build
+          cd ..
+          echo "✅ MyMaps build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -243,6 +255,13 @@ jobs:
             FAILED="$FAILED central_bank"
           elif [ "${{ steps.build-central-bank.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Central Bank Forecasting"
+          fi
+
+          if [ "${{ steps.build-mymaps.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMaps"
+            FAILED="$FAILED mymaps"
+          elif [ "${{ steps.build-mymaps.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMaps"
           fi
 
           echo "============================================"
@@ -384,6 +403,16 @@ jobs:
             echo "✅ Central Bank Forecasting build copied to _site/central_bank/"
           else
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
+          fi
+
+          # Copy MyMaps build (if out exists - Next.js static export)
+          if [ -d "mymaps/out" ]; then
+            echo "📦 Copying MyMaps build..."
+            mkdir -p _site/mymaps
+            cp -r mymaps/out/* _site/mymaps/
+            echo "✅ MyMaps build copied to _site/mymaps/"
+          else
+            echo "⏭️  Skipping MyMaps copy (no out directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

@@ -158,29 +158,24 @@ build_single_file() {
         return 0
     fi
 
-    # Read CSS content (strip BOM if present - Sass outputs UTF-8 BOM which breaks inlined CSS)
-    _css_content=""
+    # Strip BOM from CSS if present (Sass outputs UTF-8 BOM which breaks inlined CSS)
     if [ -f "$_css_file" ]; then
-        _css_content=$(sed '1s/^\xEF\xBB\xBF//' "$_css_file")
+        sed -i '1s/^\xEF\xBB\xBF//' "$_css_file"
     fi
 
-    # Read JS content
-    _js_content=""
-    if [ -f "$_js_file" ]; then
-        _js_content=$(cat "$_js_file")
-    fi
-
-    # Create single-file HTML
-    awk -v css="$_css_content" -v js="$_js_content" '
+    # Create single-file HTML using awk with file reading (avoids backslash escape issues)
+    awk '
     /<link[^>]*href="style\.css[^"]*"[^>]*>/ {
         print "<style>"
-        print css
+        while ((getline line < "'"$_css_file"'") > 0) print line
+        close("'"$_css_file"'")
         print "</style>"
         next
     }
     /<script[^>]*src="script\.js[^"]*"[^>]*>/ {
         print "<script>"
-        print js
+        while ((getline line < "'"$_js_file"'") > 0) print line
+        close("'"$_js_file"'")
         print "</script>"
         next
     }

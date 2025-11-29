@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Strategic View</title>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #121212;
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+        .header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        .header h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .header .subtitle {
+            color: #888;
+            font-size: 0.9em;
+        }
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #fff; }
+        #container {
+            height: calc(100vh - 180px);
+            min-height: 400px;
+            margin: 20px;
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 10px;
+            background: #222;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-link">← Back to Maps</a>
+
+    <div class="header">
+        <h1>Global Strategic View</h1>
+        <div class="subtitle">Map: custom/world</div>
+    </div>
+
+    <div id="container"></div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#8B0000"></div>Red Core</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#CD5C5C"></div>Red Ally</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FF8C00"></div>Red Tie</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#00008B"></div>Blue Core</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#87CEEB"></div>Blue Ally</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#90EE90"></div>Blue Surr</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4F4F4F"></div>Neutral Strong</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#2C2C2C"></div>Neutral</div>
+    </div>
+
+    <script>
+        const mapConfig = {
+        "map_path": "custom/world",
+        "join_by": "hc-key",
+        "title": "Global Strategic View",
+        "data_code_column": "code",
+        "data_name_column": "name",
+        "data_role_column": "role",
+        "data_sphere_column": "sphere"
+};
+        const strategicData = [
+        {
+                "code": "ru",
+                "color": "#8B0000",
+                "name": "Russia",
+                "role": "AGGRESSOR CORE / HEARTLAND"
+        },
+        {
+                "code": "by",
+                "color": "#CD5C5C",
+                "name": "Belarus",
+                "role": "Union State / Staging Ground"
+        },
+        {
+                "code": "ir",
+                "color": "#CD5C5C",
+                "name": "Iran",
+                "role": "Drone Supplier / South Corridor"
+        },
+        {
+                "code": "kp",
+                "color": "#CD5C5C",
+                "name": "North Korea",
+                "role": "Ammo Factory"
+        },
+        {
+                "code": "sy",
+                "color": "#CD5C5C",
+                "name": "Syria",
+                "role": "Mediterranean Base"
+        },
+        {
+                "code": "ve",
+                "color": "#CD5C5C",
+                "name": "Venezuela",
+                "role": "Oil Reserve / Ideological Ally"
+        },
+        {
+                "code": "ni",
+                "color": "#CD5C5C",
+                "name": "Nicaragua",
+                "role": "Political Support"
+        },
+        {
+                "code": "cu",
+                "color": "#CD5C5C",
+                "name": "Cuba",
+                "role": "Intelligence Asset"
+        },
+        {
+                "code": "kz",
+                "color": "#FF8C00",
+                "name": "Kazakhstan",
+                "role": "Pipeline Hostage (CPC)"
+        },
+        {
+                "code": "hu",
+                "color": "#FF8C00",
+                "name": "Hungary",
+                "role": "NATO Member / Energy Client"
+        },
+        {
+                "code": "rs",
+                "color": "#FF8C00",
+                "name": "Serbia",
+                "role": "Political Ally in Europe"
+        },
+        {
+                "code": "uz",
+                "color": "#FF8C00",
+                "name": "Uzbekistan",
+                "role": "Economic Dependence"
+        },
+        {
+                "code": "az",
+                "color": "#FF8C00",
+                "name": "Azerbaijan",
+                "role": "Transport Hub (Plays both sides)"
+        },
+        {
+                "code": "ge",
+                "color": "#F0E68C",
+                "name": "Georgia",
+                "role": "20% Occupied / Under Pressure"
+        },
+        {
+                "code": "kg",
+                "color": "#F0E68C",
+                "name": "Kyrgyzstan",
+                "role": "Economic Dependent"
+        },
+        {
+                "code": "tj",
+                "color": "#F0E68C",
+                "name": "Tajikistan",
+                "role": "Military Base Host"
+        },
+        {
+                "code": "ml",
+                "color": "#F0E68C",
+                "name": "Mali",
+                "role": "Wagner/Africa Corps Ops"
+        },
+        {
+                "code": "bf",
+                "color": "#F0E68C",
+                "name": "Burkina Faso",
+                "role": "Wagner/Africa Corps Ops"
+        },
+        {
+                "code": "cf",
+                "color": "#F0E68C",
+                "name": "Central African Rep.",
+                "role": "Wagner Controlled"
+        },
+        {
+                "code": "us",
+                "color": "#00008B",
+                "name": "USA",
+                "role": "NATO BACKBONE"
+        },
+        {
+                "code": "gb",
+                "color": "#00008B",
+                "name": "United Kingdom",
+                "role": "Nuclear Power / Intel"
+        },
+        {
+                "code": "fr",
+                "color": "#00008B",
+                "name": "France",
+                "role": "EU Military Leader"
+        },
+        {
+                "code": "de",
+                "color": "#00008B",
+                "name": "Germany",
+                "role": "Logistics Hub"
+        },
+        {
+                "code": "pl",
+                "color": "#00008B",
+                "name": "Poland",
+                "role": "THE SHIELD (Heavy Armor)"
+        },
+        {
+                "code": "tr",
+                "color": "#00008B",
+                "name": "Turkey",
+                "role": "THE GATEKEEPER (Bosporus)"
+        },
+        {
+                "code": "fi",
+                "color": "#00008B",
+                "name": "Finland",
+                "role": "Northern Flank"
+        },
+        {
+                "code": "se",
+                "color": "#00008B",
+                "name": "Sweden",
+                "role": "Baltic Control"
+        },
+        {
+                "code": "no",
+                "color": "#00008B",
+                "name": "Norway",
+                "role": "Arctic / Energy Supplier"
+        },
+        {
+                "code": "ro",
+                "color": "#00008B",
+                "name": "Romania",
+                "role": "Black Sea Hub"
+        },
+        {
+                "code": "it",
+                "color": "#00008B",
+                "name": "Italy",
+                "role": "NATO Core"
+        },
+        {
+                "code": "es",
+                "color": "#00008B",
+                "name": "Spain",
+                "role": "NATO Core"
+        },
+        {
+                "code": "ca",
+                "color": "#00008B",
+                "name": "Canada",
+                "role": "NATO Core"
+        },
+        {
+                "code": "ee",
+                "color": "#00008B",
+                "name": "Estonia",
+                "role": "Tripwire State"
+        },
+        {
+                "code": "lv",
+                "color": "#00008B",
+                "name": "Latvia",
+                "role": "Tripwire State"
+        },
+        {
+                "code": "lt",
+                "color": "#00008B",
+                "name": "Lithuania",
+                "role": "Suwalki Guardian"
+        },
+        {
+                "code": "ua",
+                "color": "#87CEEB",
+                "name": "Ukraine",
+                "role": "THE TANK HIGHWAY / FRONTLINE"
+        },
+        {
+                "code": "jp",
+                "color": "#87CEEB",
+                "name": "Japan",
+                "role": "Eastern Containment"
+        },
+        {
+                "code": "kr",
+                "color": "#87CEEB",
+                "name": "South Korea",
+                "role": "Artillery Production"
+        },
+        {
+                "code": "au",
+                "color": "#87CEEB",
+                "name": "Australia",
+                "role": "Pacific Depth"
+        },
+        {
+                "code": "il",
+                "color": "#87CEEB",
+                "name": "Israel",
+                "role": "Tech / Intel Partner"
+        },
+        {
+                "code": "tw",
+                "color": "#87CEEB",
+                "name": "Taiwan",
+                "role": "Semiconductor Shield"
+        },
+        {
+                "code": "ch",
+                "color": "#90EE90",
+                "name": "Switzerland",
+                "role": "Surrounded"
+        },
+        {
+                "code": "at",
+                "color": "#90EE90",
+                "name": "Austria",
+                "role": "Surrounded"
+        },
+        {
+                "code": "ie",
+                "color": "#90EE90",
+                "name": "Ireland",
+                "role": "Surrounded"
+        },
+        {
+                "code": "cn",
+                "color": "#4F4F4F",
+                "name": "China",
+                "role": "SILENT SUPERPOWER"
+        },
+        {
+                "code": "in",
+                "color": "#4F4F4F",
+                "name": "India",
+                "role": "Strategic Autonomy"
+        },
+        {
+                "code": "br",
+                "color": "#4F4F4F",
+                "name": "Brazil",
+                "role": "BRICS Leader"
+        },
+        {
+                "code": "sa",
+                "color": "#4F4F4F",
+                "name": "Saudi Arabia",
+                "role": "Energy Swing State"
+        },
+        {
+                "code": "za",
+                "color": "#4F4F4F",
+                "name": "South Africa",
+                "role": "BRICS"
+        },
+        {
+                "code": "mx",
+                "color": "#4F4F4F",
+                "name": "Mexico",
+                "role": "Economic Partner / Political Neutral"
+        },
+        {
+                "code": "id",
+                "color": "#4F4F4F",
+                "name": "Indonesia",
+                "role": "Regional Power"
+        }
+];
+
+        const mapUrl = `https://code.highcharts.com/mapdata/${mapConfig.map_path}.js`;
+
+        function loadScript(url, callback) {
+            const script = document.createElement("script");
+            script.src = url;
+            script.onload = callback;
+            script.onerror = () => {
+                document.getElementById('container').innerHTML =
+                    '<p style="color:red;text-align:center;padding:50px">Error loading map: ' + url + '</p>';
+            };
+            document.head.appendChild(script);
+        }
+
+        loadScript(mapUrl, function() {
+            const mapKey = Object.keys(Highcharts.maps)[0];
+            if (!mapKey) {
+                document.getElementById('container').innerHTML = '<p style="color:red;text-align:center;padding:50px">Map data not found</p>';
+                return;
+            }
+
+            Highcharts.mapChart('container', {
+                chart: {
+                    map: Highcharts.maps[mapKey],
+                    backgroundColor: '#121212'
+                },
+                title: { text: '' },
+                mapNavigation: {
+                    enabled: true,
+                    buttonOptions: {
+                        verticalAlign: 'bottom',
+                        theme: { fill: '#333', stroke: '#444', style: { color: '#fff' } }
+                    }
+                },
+                legend: { enabled: false },
+                credits: { enabled: false },
+                tooltip: {
+                    backgroundColor: 'rgba(0,0,0,0.9)',
+                    borderColor: '#666',
+                    style: { color: '#fff' },
+                    formatter: function() {
+                        if (this.point.role) {
+                            return '<b>' + this.point.name + '</b><br>' +
+                                   '<span style="color:' + this.point.color + '">' + this.point.role + '</span>';
+                        }
+                        return '<b>' + this.point.name + '</b><br>Neutral';
+                    }
+                },
+                series: [{
+                    data: strategicData,
+                    joinBy: [mapConfig.join_by || 'hc-key', 'code'],
+                    name: 'Strategic',
+                    nullColor: '#2C2C2C',
+                    borderColor: '#444',
+                    borderWidth: 0.5,
+                    states: { hover: { color: '#fff', borderColor: '#fff' } }
+                }]
+            });
+        });
+    </script>
+</body>
+</html>

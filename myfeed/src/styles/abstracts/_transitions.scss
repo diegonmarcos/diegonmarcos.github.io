@@ -3,6 +3,8 @@
 // ============================================
 // Transition classes for Vue <Transition> components
 
+@use 'variables' as *;
+
 // Fade transition
 .fade-enter-active,
 .fade-leave-active {

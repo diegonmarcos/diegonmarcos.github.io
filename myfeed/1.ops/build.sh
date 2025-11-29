@@ -103,7 +103,7 @@ dev() {
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} STARTED${NC}\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
-    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/myfeed/${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "\n"

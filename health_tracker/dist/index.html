@@ -4,41 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioMetrics Pro - Health Tracker</title>
-    <meta name="description" content="BioMetrics Pro - Personal health tracking dashboard for fitness and wellness metrics">
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://diegonmarcos.github.io/health_tracker/">
-    <meta property="og:title" content="BioMetrics Pro - Health Tracker">
-    <meta property="og:description" content="Personal health tracking dashboard for fitness and wellness metrics">
-    <meta property="og:image" content="https://diegonmarcos.github.io/health_tracker/public/health_tracker_thumbnail.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="BioMetrics Pro - Health Tracker">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://diegonmarcos.github.io/health_tracker/">
-    <meta name="twitter:title" content="BioMetrics Pro - Health Tracker">
-    <meta name="twitter:description" content="Personal health tracking dashboard for fitness and wellness metrics">
-    <meta name="twitter:image" content="https://diegonmarcos.github.io/health_tracker/public/health_tracker_thumbnail.png">
-    <meta name="twitter:image:alt" content="BioMetrics Pro - Health Tracker">
-
-    <!-- LinkedIn -->
-    <meta property="og:site_name" content="Diego Nepomuceno Marcos">
-    <meta name="author" content="Diego Nepomuceno Marcos">
-
-    <!-- Matomo Tag Manager -->
-    <script>
-      var _mtm = window._mtm = window._mtm || [];
-      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-      (function() {
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js'; s.parentNode.insertBefore(g,s);
-      })();
-    </script>
-    <!-- End Matomo Tag Manager -->
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -101,6 +67,7 @@
         .glow-blue { box-shadow: 0 0 30px rgba(59, 130, 246, 0.3); }
         .glow-purple { box-shadow: 0 0 30px rgba(139, 92, 246, 0.3); }
         .glow-rose { box-shadow: 0 0 30px rgba(244, 63, 94, 0.3); }
+        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
 
         /* Shimmer animation for linktree button */
         @keyframes shimmer {
@@ -116,7 +83,6 @@
         .linktree-shimmer:hover {
             box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
         }
-        .glow-emerald { box-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
 
         /* Input styling */
         .input-styled {
@@ -1744,9 +1710,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHistoricCharts();
 });
 </script>
-
-<!-- Page-specific Matomo tracking -->
-<script src="/1.ops/matomo-tracking/health_tracker.js"></script>
 
 </body>
 </html>

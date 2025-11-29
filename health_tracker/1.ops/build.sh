@@ -82,8 +82,8 @@ build() {
 dev() {
     cd "$PROJECT_DIR"
 
-    # Start live-server in background
-    nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+    # Start live-server from src_static directory
+    nohup npx live-server src_static --port="${PORT}" --no-browser --quiet --entry-file=health_tracker.html > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"

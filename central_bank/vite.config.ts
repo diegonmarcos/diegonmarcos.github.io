@@ -7,5 +7,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true
+  },
+  server: {
+    port: 8011,
+    open: false
   }
 })

@@ -3,6 +3,8 @@
 // ============================================
 // Apple Glassy Pixel Art Enhanced Effects
 
+@use '../abstracts/variables' as *;
+
 // Standard Glass Card
 .glass-card {
   background: $glass-bg;

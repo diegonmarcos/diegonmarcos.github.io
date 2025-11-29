@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERPUNK ARCADE SYSTEM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* --- CYBERPUNK RED PALETTE --- */
+            --bg-root: #050002;
+            --screen-bg: #140005;
+            --nav-top-bg: #1a0005;
+            --nav-sub-bg: #0f0003;
+
+            /* The Neon Trio */
+            --primary: #ff003c;   /* Crimson Neon */
+            --secondary: #00f7ff; /* Cyan Glitch */
+            --tertiary: #ffe600;  /* Hazard Yellow */
+
+            --font-main: 'Press Start 2P', cursive;
+            --font-code: 'VT323', monospace;
+        }
+
+        * { box-sizing: border-box; user-select: none; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-root);
+            /* Grid Background */
+            background-image:
+                linear-gradient(transparent 98%, rgba(255, 0, 60, 0.08) 50%),
+                linear-gradient(90deg, transparent 98%, rgba(255, 0, 60, 0.08) 50%);
+            background-size: 8px 8px;
+            color: #ffccd5; /* Lightened Primary */
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .centered { text-align: center; margin: auto; }
+
+        .blink-text {
+            margin-bottom: 3rem;
+            color: #b3002a;
+            font-size: 0.8rem;
+            animation: blink 1s infinite steps(2);
+        }
+        @keyframes blink { 0% { opacity: 1; } 100% { opacity: 0; } }
+
+        /* --- CRT OVERLAY --- */
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(rgba(20, 0, 10, 0.1) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 4px; pointer-events: none; z-index: 999;
+            mix-blend-mode: hard-light;
+            opacity: 0.3;
+        }
+        .crt-overlay::after {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(to bottom, transparent, rgba(255, 0, 60, 0.2) 50%, transparent);
+            height: 30%;
+            animation: scanline-pass 6s linear infinite;
+            pointer-events: none;
+        }
+        @keyframes scanline-pass { 0% { transform: translateY(-150%); } 100% { transform: translateY(500%); } }
+
+        /* --- CABINET CHASSIS --- */
+        .arcade-cabinet {
+            width: 100%; max-width: 900px; height: 95vh;
+            background-color: var(--screen-bg);
+            border: 4px solid var(--primary);
+            box-shadow: 0 0 30px var(--primary), inset 0 0 100px rgba(0,0,0,0.9);
+            position: relative; display: flex; flex-direction: column;
+            border-radius: 6px; overflow: hidden;
+            z-index: 10;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-container {
+            display: flex; flex-direction: column; z-index: 10;
+            border-bottom: 4px solid var(--primary);
+            box-shadow: 0 5px 20px rgba(255, 0, 60, 0.2);
+        }
+
+        /* Level 1: Categories */
+        .top-nav { display: flex; width: 100%; background: var(--nav-top-bg); }
+
+        .cat-tab {
+            flex: 1; padding: 1.5rem 0;
+            text-align: center; font-size: 0.9rem; cursor: pointer;
+            color: #804050; transition: 0.2s;
+            border-right: 2px solid #2a000a;
+            border-bottom: 4px solid transparent;
+            position: relative; text-transform: uppercase;
+        }
+        .cat-tab:hover { color: #fff; background: #2a000a; }
+
+        .cat-tab.active {
+            color: #000; background: var(--primary);
+            border-bottom: 4px solid var(--tertiary);
+            font-weight: bold;
+        }
+        .cat-tab.active::after {
+            content: "▼"; position: absolute; bottom: -18px; left: 50%;
+            transform: translateX(-50%); color: var(--primary); font-size: 1rem;
+            z-index: 20; text-shadow: 0 2px 5px #000;
+        }
+
+        /* Level 2: Sub-Menu */
+        .sub-nav {
+            display: flex; background-color: var(--nav-sub-bg);
+            width: 100%; overflow-x: auto; border-top: 4px solid #000;
+        }
+
+        .game-tab {
+            flex: 1; padding: 1rem 0.5rem; text-align: center; font-size: 0.6rem;
+            cursor: pointer; color: #666; transition: 0.2s;
+            white-space: nowrap; min-width: 80px;
+            border-right: 1px solid #333;
+        }
+        .game-tab:hover { color: var(--secondary); background: #1a1a2a; }
+
+        .game-tab.active {
+            color: var(--bg-root); background: var(--secondary);
+            font-weight: bold; box-shadow: 0 0 15px var(--secondary);
+        }
+
+        /* --- GAME AREA --- */
+        .game-area {
+            flex: 1; padding: 2rem; position: relative;
+            display: flex; flex-direction: column; z-index: 5;
+            background-image:
+                radial-gradient(rgba(255, 0, 60, 0.05) 20%, transparent 20%);
+            background-size: 16px 16px;
+        }
+
+        #engine-container { width: 100%; height: 100%; display: flex; flex-direction: column; }
+        .game-screen { width: 100%; height: 100%; display: flex; flex-direction: column; }
+
+        /* --- COMPONENTS --- */
+        .pixel-btn {
+            background: rgba(20, 0, 5, 0.8);
+            border: 2px solid var(--primary);
+            color: var(--primary); font-family: inherit; padding: 1rem 2rem;
+            cursor: pointer; transition: 0.1s; margin: 0.5rem;
+            text-transform: uppercase; font-size: 1rem;
+            box-shadow: 0 0 10px rgba(255, 0, 60, 0.2);
+        }
+        .pixel-btn:hover {
+            background: var(--primary); color: #000;
+            box-shadow: 0 0 25px var(--primary);
+            border-color: var(--tertiary);
+        }
+        .pixel-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .game-title {
+            font-size: 3rem; color: #fff;
+            text-shadow: 3px 0 0 var(--primary), -3px 0 0 var(--secondary);
+            animation: glitch 2s infinite;
+            margin-bottom: 2rem;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(0); }
+        }
+
+        .hud-panel {
+            display: flex; justify-content: space-between;
+            border: 1px solid var(--primary); background: rgba(255, 0, 60, 0.1);
+            padding: 0.8rem; margin-bottom: 2rem;
+        }
+        #ui-score { color: var(--tertiary); }
+        .status-stable { color: var(--secondary); }
+
+        .lyrics-box {
+            border: 4px double var(--secondary); padding: 2rem;
+            font-family: var(--font-code); font-size: 2.2rem;
+            color: var(--secondary); text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--secondary);
+            animation: pulse 3s infinite;
+        }
+        @keyframes pulse { 50% { box-shadow: 0 0 25px var(--secondary); } }
+
+        .answers-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        @media (max-width: 650px) { .answers-grid { grid-template-columns: 1fr; } }
+
+        /* --- PLACEHOLDER --- */
+        #placeholder-container h1 { color: var(--secondary); font-size: 2.5rem; text-shadow: 0 0 10px var(--secondary); }
+        .float-icon { font-size: 6rem; animation: float 3s ease-in-out infinite; }
+        .error-box {
+            border: 2px dashed var(--primary); padding: 1rem; margin-top: 2rem; color: var(--primary);
+        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* --- ANIMATED CITY FOOTER --- */
+        .pixel-city-container {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 160px;
+            overflow: hidden; z-index: 1; opacity: 0.85; pointer-events: none;
+            border-top: 2px solid var(--primary);
+            background: linear-gradient(to top, rgba(255, 0, 60, 0.1), transparent);
+        }
+        .skyline {
+            position: absolute; bottom: 0; left: 0; width: 200%; height: 100%;
+            background-repeat: repeat-x;
+        }
+        .layer-1 {
+            height: 70%; z-index: 1; opacity: 0.6;
+            background-image: linear-gradient(to top, #1a0005 0%, #3a0010 100%);
+            background-size: 60px 100%;
+            clip-path: polygon(0% 100%, 10% 100%, 10% 40%, 20% 40%, 20% 10%, 30% 10%, 30% 50%, 40% 50%, 40% 20%, 50% 20%, 50% 60%, 60% 60%, 60% 30%, 70% 30%, 70% 80%, 80% 80%, 80% 10%, 90% 10%, 90% 100%, 100% 100%);
+            animation: city-scroll 40s linear infinite;
+        }
+        .layer-2 {
+            height: 40%; z-index: 2;
+            background-image: linear-gradient(to top, #2b000a 0%, var(--primary) 100%);
+            background-size: 90px 100%;
+            clip-path: polygon(0% 100%, 5% 100%, 5% 30%, 15% 30%, 15% 60%, 25% 60%, 25% 10%, 35% 10%, 35% 50%, 45% 50%, 45% 20%, 55% 20%, 55% 100%, 100% 100%);
+            animation: city-scroll 15s linear infinite;
+            box-shadow: 0 0 20px var(--primary);
+        }
+        .pixel-car {
+            position: absolute; bottom: 10px; left: -50px;
+            width: 50px; height: 14px; background: var(--secondary);
+            box-shadow: -15px 0 20px var(--secondary);
+            animation: car-drive 5s linear infinite; z-index: 3;
+        }
+        @keyframes city-scroll { 100% { transform: translateX(-50%); } }
+        @keyframes car-drive { 100% { transform: translateX(150vw); } }
+    </style>
+</head>
+<body>
+
+    <!-- CRT Overlay Layer -->
+    <div class="crt-overlay"></div>
+
+    <div class="arcade-cabinet">
+
+        <!-- Navigation Header -->
+        <div class="nav-container">
+            <!-- Physical Tabs -->
+            <div class="top-nav">
+                <div class="cat-tab active" data-cat="arcade">ARCADE ZONE</div>
+                <div class="cat-tab" data-cat="party">PARTY LOUNGE</div>
+            </div>
+            <!-- Sub Navigation -->
+            <div class="sub-nav" id="sub-nav">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+
+        <!-- Main Game Viewport -->
+        <div class="game-area">
+
+            <!-- Game Engine (Trivia/Karaoke) -->
+            <div id="engine-container" class="hidden">
+
+                <!-- Start Screen -->
+                <div id="screen-start" class="game-screen centered">
+                    <h1 class="game-title" id="game-title-text">SYSTEM READY</h1>
+                    <div class="blink-text"> > INSERT COIN TO BEGIN_</div>
+                    <button class="pixel-btn" id="btn-init">INITIALIZE</button>
+                </div>
+
+                <!-- Gameplay Screen -->
+                <div id="screen-play" class="game-screen hidden">
+                    <div class="hud-panel">
+                        <span>SCORE: <span id="ui-score">0000</span></span>
+                        <span>LINK: <span class="status-stable">STABLE</span></span>
+                    </div>
+
+                    <div id="question-area">
+                        <div id="q-text" style="text-align: center; margin-bottom: 2rem; font-size: 1.2rem; line-height: 1.6;">Loading...</div>
+                        <div id="lyrics-area" class="lyrics-box hidden"></div>
+                        <div class="answers-grid" id="options-area"></div>
+                    </div>
+                </div>
+
+                <!-- End Screen -->
+                <div id="screen-end" class="game-screen centered hidden">
+                    <h2 style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">TERMINATED</h2>
+                    <p style="margin-bottom: 2rem;">FINAL SCORE: <span id="final-score" style="color: var(--tertiary); font-size: 1.5rem;">0</span></p>
+                    <button class="pixel-btn" id="btn-menu">MAIN MENU</button>
+                </div>
+            </div>
+
+            <!-- Arcade Placeholder -->
+            <div id="placeholder-container" class="hidden centered">
+                <h1 id="placeholder-title">TITLE</h1>
+                <div class="float-icon">👾</div>
+                <div class="error-box">
+                    HARDWARE MISSING<br>PLEASE INSERT CARTRIDGE
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Animated Footer -->
+        <div class="pixel-city-container">
+            <div class="skyline layer-1"></div>
+            <div class="skyline layer-2"></div>
+            <div class="pixel-car"></div>
+        </div>
+
+    </div>
+
+    <!-- Logic -->
+    <script>
+        // --- DATA ---
+        const NAV_DATA = {
+            'arcade': [
+                { id: 'pacman', label: 'PAC-MAN' },
+                { id: 'mario', label: 'SUPER MARIO' },
+                { id: 'invaders', label: 'SPACE INVADERS' },
+                { id: 'pinball', label: 'NEON PINBALL' }
+            ],
+            'party': [
+                { id: 'trivia-gen', label: 'NEURAL QUIZ' },
+                { id: 'karaoke-80s', label: 'RETRO VOCALS' },
+                { id: 'trivia-cyber', label: 'CYBER LORE' }
+            ]
+        };
+
+        const GAME_LIBRARY = {
+            'trivia-gen': {
+                type: 'quiz',
+                title: 'NEURAL NET QUIZ',
+                data: [
+                    { q: "What is the primary language of the web?", opts: ["Python", "HTML", "C++", "Binary"], a: 1 },
+                    { q: "Who controls the Matrix?", opts: ["The Architect", "Neo", "Morpheus", "Users"], a: 0 },
+                    { q: "Which color is #FF0000?", opts: ["Blue", "Green", "Red", "Cyan"], a: 2 }
+                ]
+            },
+            'trivia-cyber': {
+                type: 'quiz',
+                title: 'CYBER LORE TEST',
+                data: [
+                    { q: "Blade Runner is set in which year?", opts: ["2019", "2049", "2077", "1999"], a: 0 },
+                    { q: "What is the 'Ghost' in the Shell?", opts: ["A Virus", "The Soul", "AI", "A Demon"], a: 1 }
+                ]
+            },
+            'karaoke-80s': {
+                type: 'karaoke',
+                title: 'SYNTHWAVE VOCALS',
+                data: [
+                    { full: "I ran so far [?]", opts: ["Away", "Today", "Okay", "Astray"], a: 0 },
+                    { full: "Never gonna give you [?]", opts: ["Down", "Up", "In", "Out"], a: 1 },
+                    { full: "Don't you want me [?]", opts: ["Honey", "Baby", "Lady", "Crazy"], a: 1 }
+                ]
+            }
+        };
+
+        // --- CLASSES ---
+
+        class GameManager {
+            constructor() {
+                this.score = 0;
+                this.qIndex = 0;
+                this.currentGame = null;
+
+                // Cache DOM elements
+                this.uiScore = document.getElementById('ui-score');
+                this.screenStart = document.getElementById('screen-start');
+                this.screenPlay = document.getElementById('screen-play');
+                this.screenEnd = document.getElementById('screen-end');
+                this.finalScore = document.getElementById('final-score');
+                this.qText = document.getElementById('q-text');
+                this.lyricsBox = document.getElementById('lyrics-area');
+                this.optsArea = document.getElementById('options-area');
+
+                // Bind Buttons
+                document.getElementById('btn-init').addEventListener('click', () => this.startGame());
+                document.getElementById('btn-menu').addEventListener('click', () => this.resetToMenu());
+            }
+
+            loadGame(gameId) {
+                const engineContainer = document.getElementById('engine-container');
+                const placeholderContainer = document.getElementById('placeholder-container');
+                const gameTitleText = document.getElementById('game-title-text');
+
+                // Hide Everything first
+                engineContainer.classList.add('hidden');
+                placeholderContainer.classList.add('hidden');
+
+                const content = GAME_LIBRARY[gameId];
+
+                if (!content) {
+                    // Arcade Mode (Placeholder)
+                    placeholderContainer.classList.remove('hidden');
+                    document.getElementById('placeholder-title').innerText = gameId.toUpperCase();
+                } else {
+                    // Party Mode (Interactive)
+                    this.currentGame = content;
+                    this.resetToMenu();
+                    engineContainer.classList.remove('hidden');
+                    if (gameTitleText) gameTitleText.innerText = content.title;
+
+                    // Mode specific setup
+                    if (content.type === 'karaoke') {
+                        this.qText.classList.add('hidden');
+                        this.lyricsBox.classList.remove('hidden');
+                    } else {
+                        this.qText.classList.remove('hidden');
+                        this.lyricsBox.classList.add('hidden');
+                    }
+                }
+            }
+
+            startGame() {
+                this.score = 0;
+                this.qIndex = 0;
+                this.uiScore.innerText = '0000';
+
+                this.screenStart.classList.add('hidden');
+                this.screenEnd.classList.add('hidden');
+                this.screenPlay.classList.remove('hidden');
+
+                this.renderQuestion();
+            }
+
+            renderQuestion() {
+                if (!this.currentGame) return;
+
+                if (this.qIndex >= this.currentGame.data.length) {
+                    this.endGame();
+                    return;
+                }
+
+                const item = this.currentGame.data[this.qIndex];
+                this.optsArea.innerHTML = '';
+
+                // Render Text/Lyrics
+                if (this.currentGame.type === 'karaoke' && item.full) {
+                    this.lyricsBox.innerHTML = item.full.replace('[?]',
+                        '<span style="color:#fff; text-decoration:underline; text-shadow:0 0 10px #fff;">_____</span>'
+                    );
+                } else if (item.q) {
+                    this.qText.innerText = item.q;
+                }
+
+                // Render Options
+                item.opts.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'pixel-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => this.handleAnswer(idx, item.a, btn);
+                    this.optsArea.appendChild(btn);
+                });
+            }
+
+            handleAnswer(selected, correct, btn) {
+                if (selected === correct) {
+                    this.score += 500;
+                    this.uiScore.innerText = this.score.toString().padStart(4, '0');
+
+                    // Visuals
+                    btn.style.background = 'var(--secondary)';
+                    btn.style.color = '#000';
+                    btn.style.borderColor = 'var(--secondary)';
+                    btn.style.boxShadow = '0 0 25px var(--secondary)';
+                } else {
+                    btn.style.background = 'var(--primary)';
+                    btn.style.color = '#000';
+                }
+
+                // Disable all buttons
+                Array.from(this.optsArea.children).forEach((child) => {
+                    child.disabled = true;
+                });
+
+                setTimeout(() => {
+                    this.qIndex++;
+                    this.renderQuestion();
+                }, 1000);
+            }
+
+            endGame() {
+                this.screenPlay.classList.add('hidden');
+                this.screenEnd.classList.remove('hidden');
+                this.finalScore.innerText = this.score.toString();
+            }
+
+            resetToMenu() {
+                this.screenPlay.classList.add('hidden');
+                this.screenEnd.classList.add('hidden');
+                this.screenStart.classList.remove('hidden');
+            }
+        }
+
+        class UIManager {
+            constructor(gameManager) {
+                this.gameManager = gameManager;
+                this.subNavContainer = document.getElementById('sub-nav');
+                this.initCatTabs();
+
+                // Default Load
+                this.renderSubNav('arcade');
+            }
+
+            initCatTabs() {
+                const tabs = document.querySelectorAll('.cat-tab');
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        const target = e.target;
+
+                        // UI Toggle
+                        tabs.forEach(t => t.classList.remove('active'));
+                        target.classList.add('active');
+
+                        // Logic
+                        const cat = target.dataset.cat || 'arcade';
+                        this.renderSubNav(cat);
+                    });
+                });
+            }
+
+            renderSubNav(category) {
+                this.subNavContainer.innerHTML = '';
+                const items = NAV_DATA[category];
+
+                if (!items) return;
+
+                items.forEach((item, index) => {
+                    const el = document.createElement('div');
+                    el.className = 'game-tab';
+                    if (index === 0) el.classList.add('active'); // Select first by default
+
+                    el.innerText = item.label;
+
+                    el.addEventListener('click', () => {
+                        // Toggle active state locally
+                        const allTabs = document.querySelectorAll('.game-tab');
+                        allTabs.forEach(t => t.classList.remove('active'));
+                        el.classList.add('active');
+
+                        // Load Game
+                        this.gameManager.loadGame(item.id);
+                    });
+
+                    this.subNavContainer.appendChild(el);
+                });
+
+                // Auto load first item
+                if (items.length > 0) {
+                    this.gameManager.loadGame(items[0].id);
+                }
+            }
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameManager = new GameManager();
+            new UIManager(gameManager);
+        });
+    </script>
+</body>
+</html>

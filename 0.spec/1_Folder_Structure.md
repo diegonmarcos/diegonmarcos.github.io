@@ -205,6 +205,7 @@ SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 ├── .github/workflows/
 ├── 0.spec/
 ├── 1.ops/
+├── central_bank/
 ├── cloud/
 ├── cv_pdf/
 ├── cv_web/
@@ -215,7 +216,33 @@ SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 ├── market_watch/
 ├── myfeed/
 ├── mygames/
+├── mymaps/
 ├── nexus/
 ├── others/
 └──   README.md
 ```
+
+---
+
+# src/ (Python - mymaps)
+
+Python Map Generator (`/mymaps`)
+```
+/mymaps
+├──   index.html          # Menu with cards linking to maps
+├──   README.md
+├── src/
+│   ├──   mymaps.py       # Map generator script
+│   ├──   gui.py          # Tkinter GUI for configuration
+│   ├──   config.csv      # Map configuration
+│   └──   input_data.csv  # Country/region data with spheres
+└── maps/
+    └──   *.html          # Generated standalone map files
+```
+
+Workflow:
+- Edit `src/input_data.csv` with country data and sphere classifications
+- Configure `src/config.csv` for map settings (title, map type, join method)
+- Run `python3 src/mymaps.py` to generate HTML map to `maps/`
+- Or use GUI: `python3 src/gui.py`
+- Browse maps via `index.html`

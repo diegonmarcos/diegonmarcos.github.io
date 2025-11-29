@@ -269,9 +269,9 @@ jobs:
           # Copy Linktree build (if dist exists)
           if [ -d "linktree/dist" ]; then
             echo "📦 Copying Linktree build..."
-            mkdir -p _site/linktree/public
+            mkdir -p _site/linktree
             cp -r linktree/dist/* _site/linktree/
-            cp -r linktree/public/* _site/linktree/public/ 2>/dev/null || true
+            cp -r linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
           fi
 

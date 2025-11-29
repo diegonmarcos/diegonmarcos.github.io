@@ -1,0 +1,22 @@
+// ==============================================
+// MAIN SCSS - Entry Point
+// ==============================================
+
+// Abstracts (variables and mixins loaded globally via nuxt.config)
+@use 'abstracts/animations';
+
+// Base
+@use 'base/reset';
+@use 'base/typography';
+
+// Layouts
+@use 'layouts/matrix';
+@use 'layouts/hud';
+
+// Components
+@use 'components/header';
+@use 'components/footer';
+@use 'components/cards';
+@use 'components/player';
+@use 'components/sphere';
+@use 'components/boot';

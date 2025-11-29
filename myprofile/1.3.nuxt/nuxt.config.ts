@@ -36,7 +36,11 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: [],
+  modules: ['@nuxt/icon'],
+
+  icon: {
+    serverBundle: 'remote'
+  },
 
   typescript: {
     strict: true

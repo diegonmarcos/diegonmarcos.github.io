@@ -1,0 +1,40 @@
+// ==============================================
+// FOOTER / TERMINAL DOCK
+// ==============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.terminal-dock {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: $bg-black;
+  border-top: 1px solid $border-dim;
+  padding: $space-2 $space-8;
+  z-index: $z-footer;
+  font-size: $text-sm;
+  font-family: $font-mono;
+}
+
+.dock-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.prompt {
+  color: $terminal-green;
+}
+
+.cursor {
+  animation: blink 1s step-end infinite;
+}
+
+.dock-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

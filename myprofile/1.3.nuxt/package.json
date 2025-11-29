@@ -15,8 +15,9 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@nuxt/icon": "^1.10.3",
+    "@iconify-json/lucide": "^1.2.34",
     "sass": "^1.89.0",
-    "sass-loader": "^16.0.5",
-    "lucide-vue-next": "^0.468.0"
+    "sass-loader": "^16.0.5"
   }
 }

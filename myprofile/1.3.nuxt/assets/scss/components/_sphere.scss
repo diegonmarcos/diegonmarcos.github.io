@@ -1,0 +1,113 @@
+// ==============================================
+// SPHERE VIEW - 3D Interaction
+// ==============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.sphere-viewport {
+  height: 600px;
+  width: 100%;
+  perspective: 1000px;
+  overflow: hidden;
+  @include flex-center;
+  position: relative;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.sphere-instruction {
+  position: absolute;
+  top: $space-4;
+  left: 50%;
+  transform: translateX(-50%);
+  color: $text-dim;
+  font-size: $text-sm;
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+  pointer-events: none;
+  font-family: $font-mono;
+
+  .anim-icon {
+    animation: blink 2s infinite;
+  }
+}
+
+.sphere-scene {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  @include transition(transform);
+}
+
+.sphere-node {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  left: -20px;
+  top: -20px;
+  border: 1px solid $terminal-green;
+  border-radius: 50%;
+  @include flex-center;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8);
+  @include transition(border-color);
+
+  &:hover {
+    border-width: 2px;
+  }
+}
+
+.node-face {
+  pointer-events: none;
+  @include flex-column;
+  align-items: center;
+  gap: 5px;
+  transform: translateZ(20px);
+}
+
+.node-label {
+  font-size: $text-xs;
+  white-space: nowrap;
+  text-shadow: 0 0 5px black;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 2px 4px;
+  font-family: $font-mono;
+}
+
+.core-glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: radial-gradient(circle, $terminal-green 0%, transparent 70%);
+  opacity: 0.2;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.holo-ring {
+  position: absolute;
+  border: 1px solid rgba($terminal-green, 0.1);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  &.r1 {
+    width: 400px;
+    height: 400px;
+    transform: translate(-50%, -50%) rotateX(90deg);
+  }
+
+  &.r2 {
+    width: 350px;
+    height: 350px;
+    transform: translate(-50%, -50%) rotateY(45deg);
+  }
+}

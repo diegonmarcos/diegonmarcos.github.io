@@ -356,10 +356,10 @@ jobs:
           fi
 
           # Copy MyGames SvelteKit build (if build exists)
-          if [ -d "mygames/1.3.svelte/build" ]; then
+          if [ -d "mygames/src/build" ]; then
             echo "📦 Copying MyGames SvelteKit build..."
             mkdir -p _site/mygames
-            cp -r mygames/1.3.svelte/build/* _site/mygames/
+            cp -r mygames/src/build/* _site/mygames/
             echo "✅ MyGames build copied to _site/mygames/"
           else
             echo "⏭️  Skipping MyGames copy (no build directory found)"

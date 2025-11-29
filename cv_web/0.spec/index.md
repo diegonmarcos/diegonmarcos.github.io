@@ -1,4 +1,4 @@
-on---
+---
 layout: default
 title: My HTML Page
 ---
@@ -6,7 +6,7 @@ title: My HTML Page
 # DIEGO NEPOMUCENO MARCOS 
 **| Product n' Software Eng Std ✒️ | Venture Capital n' Portfolio Manager Analyst 🎩 | Civil Engineer B.Sc. 🏗️| @BERlin.de 🏛️ |**
 
-*Portfolio & Curriculum*
+*Curriculum & Portfolio*
 
 ---
 
@@ -41,33 +41,27 @@ title: My HTML Page
 mindmap
   root((.))
     ((.))
-    ((..))
-    ((W0))
-       ((Eng))
 	    ((W1))
-		    ((Capital Markets Ventures))
-		    ((Business))
+		    ((Capital Markets & Ventures))
+		    ((Business ))
 		    ((W2))
-			    ((C.Science))
-			    ((Product))
+			    ((C.Science ))
+			    ((Product ))
 				((E))
-					((International))
-					((Pursuits))
-					((NGO))
+					((International ))
+					((Pursuits ))
+					((NGO ))
 				((O))
-					((B.Sc. Engineering))
+					((B.Sc. Engineering ))
 					((Army))
 ```
  
 
 ### ⛏️ WORKING ON
 - Front-end Developments
-- Agentic AI Orchestration
-##
-<br>
-<br>
-<br>
 
+
+## ---------------------------------------------
 ## PORTFOLIO
 >
 ---
@@ -130,22 +124,19 @@ mindmap
 "*Talk is cheap. Show me the code.*" 
 — Linus Torvalds (Creator of the Linux Kernel and Git)
 #### (+)
-* **DevOPS**
-	* Github Actions and YAML settings for websites CI/CD.
-* **Back-end**
-	 * Data: Hash-map Techniques and Binary Trees.
-	 * System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex, WebServer.
-	 * Algo: Leet Code
-	 * Graph and Gaming: Ray Casting Computer Graphics Algorithms.
+ * **Back-end**
+	* System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex.
+	* Data: Hash-map Techniques and Binary Trees.
+	* Graph and Gaming: Ray Casting Computer Graphics Algorithms.
 * **Front-end**
 	* Responsive, mobile-first websites:  Bootstrap CSS and Vanilla JavaScript.
 	* Dynamic, component-based applications: Tailwind CSS and Vue.js . (*ongoing*).
 	* Dynamic, component-based applications: Tailwind CSS and React.js . (*ongoing*).
-* **Data Science and Machine Learning**
+* **Data Science and Machine Learning/AI**
 	* Agent Coder: Langgraph  | TensorFlow/Pytorch | SQL/noSQL (*ongoing*).
 	* Hedge Fund Macro Analysis and Portfolio Rotation: Numpy/Scipy | SQL (*ongoing*).
-* **Cyber-security**
-	* Cyber
+* **DevOPS**
+	* Github Actions and YAML settings for websites CI/CD.
 ### ✒️ Product Management and Design 
 > Pursuing a career shift.Passionate by innovation, creative coding, disruptive design and chaos patterns.
 
@@ -156,7 +147,7 @@ mindmap
 	* Product requirements, Positioning strategy, User discover.
 	* Product requirements document (PRD/Spec) and Product Roadmap.
 	* Manage a product lifecycle, and Run an Operational Sprint.
-
+### ---
 ### 🌐 International Experience 
 > For 5 years, travelled to 170+ cities over 40+ countries across 5 continents; lived in 5 European capitals.
 
@@ -239,7 +230,7 @@ mindmap
 	- https://instagram.com/cporsp_exercito
 
 
-
+### ---
 ### 🌱 Personal Pursuits 
 > Always seeking for a balanced variety of fulfilling experiences 
 
@@ -247,20 +238,24 @@ mindmap
 — Epictetus"
 #### (+) 
 
-- Interests: Modern Physics (Quantum and Particle), Global Macro, Mediterranean and Vegetarian Cooking, Backpacking, Jazzy Music, Wellness and Wellbeing.
- - Endurance Sports: Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump. 
- - Competition Sports: Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y). 
- - Mindfulness: Aikido, Yoga and Meditation.
- - Pursuing: Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
+>  Listening to jazzy music, Feeding myself with grass, Dopamine seeker over tires, Resting in silence into the wild.
+>  
+>> Interests: Modern Physics (Quantum and Particle), Global Macro, Mediterranean and Vegetarian Cooking, Backpacking, Jazzy Music, Wellness and Wellbeing.
 
-##### My Bucket (Endurance)
+- Endurance Sports: Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump. 
+- Competition Sports: Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y). 
+- Mindfulness: Aikido, Yoga and Meditation.
+- Pursuing:  Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
+
+
+##### My Bucket Endurance
  - 🪂 High Adrenaline Sports
  - 🏂 Adrenaline Sports
  - 🏔️ Nature Sports and Activities
  - 🥋 Martial Arts
  - ⚽️ Collective Sports
  - 🏃 Individual Sports
- 
+##### (+)
 High Adrenaline Sports:
 	- 🚵🏻‍♂️ Trail Moto | ☆☆
 	- 🪁 Kitesurfing | ☆
@@ -322,17 +317,14 @@ High Adrenaline Sports:
 	 - 🌳 (By 40): Deeper goals for mastery, reflection, and long-term planning
 	 - 🍁 (By 50): Legacy goals focused on wisdom, giving back, and deep fulfilment
 
+##### (+)
+ - item 1
+---
 
-<br>
-<br>
-<br>
 
-##
-<br>
-<br>
-<br>
+## ----------------------------------------------
 ## CURRICULUM
->
+
 ---
 
 ### ⏳Timeline
@@ -414,6 +406,11 @@ gantt
     Asia1 Trip        :done, 2026-01-01, 2026-01-30
     Asia2 Trip        :done, 2026-03-01, 2026-03-30
 ```
+
+---
+
+
+### ...
 ### 💼 Professional Experience
 #### Capital Markets Advisor (Sr/Partner) 
 >Description: Structuring deals and distribution with investors focused on the middle market - ECM R$ 60Mi / DCM R$ 120Mi.
@@ -476,7 +473,7 @@ gantt
 - For 1 year studied as a cadet in Brazilian Army Intensive Preparation of Officers. Graded as Second Lieutenant of the Logistics Brigade, from the Army Reserve Officers' Training Corps (CPOR/SP).
 ##### (+)
 - Timeline: Jan/2006 ~ Dec/2006 (1 year - 2,016 hours).
-<br>
+### ...
 ### 🎓 Professional Education
 #### Software Engineering (Course) 
 > Focus / Description: C/C++ programming: data structures, classic algorithm, UNIX processes, network architecture, system administration, object-oriented programming, client-server projects and computer graphics and gaming.
@@ -504,19 +501,133 @@ gantt
 * Duration / Credits: 5 years (4,500 hours), 440 ECTS/240 USCred
 ### ⛓️‍💥 Relevant Education 
 - **Macro Economics (Course)**
-- **Silicon Valley Workshop and Vegas Conferences**
-##### (+)
-- a
-##
-<br><br>
-<br>
+- **Silicon Valley Workshop and Vegas Conferences **
 
-<br>
-<br>
-<br>
+
+## --------------------------------------------------
+
 ## SKILLS
->
+> 
+
 ---
+
+### 🛠️ Skill List Professional Projects
+
+| Main Category            | Sub-Skill ID | Sub-Skill (Clickable Filter)    | Description                              |
+| :----------------------- | :----------: | :------------------------------ | :--------------------------------------- |
+| **Capital Markets**      |    **a**     | Financial Modelling             | Modeling, FP&A                           |
+|                          |    **b**     | IB / PE / VC (Deal Structuring) | IB, PE, VC, Structuring                  |
+|                          |    **c**     | Asset & Portfolio Management    | Portfolio Management                     |
+|                          |    **d**     | Risk Management & Compliance    | Risk & Compliance                        |
+| **Corporate & Business** |    **e**     | Business Development            | Real Estate Business Development         |
+|                          |    **f**     | FP&A                            | FP&A, Financial modeling                 |
+|                          |    **g**     | Investor Relations              | Investor Relations                       |
+| **Civil Engineering**    |    **h**     | Structural Design & Planning    | Design, Plan, Educational Projects       |
+|                          |    **i**     | Construction Management         | Management, Construction Field           |
+| **Computer Science**     |    **j**     | Back-End Development            | Back-end (Algos, System, Data)           |
+|                          |    **k**     | Front-End Development           | Front-end (CSS, JS, Vue, React)          |
+|                          |    **l**     | Data Science & ML/AI            | Data Science, ML/AI, Numpy               |
+|                          |    **m**     | DevOps                          | DevOps, CI/CD, Github Actions            |
+| **Product Management**   |    **n**     | Product Lifecycle (Agile)       | Manage product lifecycle, Sprint         |
+|                          |    **o**     | Product Strategy & Docs         | PRD, Roadmap, Positioning, User discover |
+
+#### Projects
+
+| Main Category            | Project ID/Name | Description                                                          | Sub-Skills (Used for Filtering) |
+| :----------------------- | :-------------: | :------------------------------------------------------------------- | :-----------------------------: |
+| **Capital Markets**      |     **A1**      | Structuring (Modeling/Due Diligence) of R$ 500Mi in MBS              |          **a**, **b**           |
+|                          |     **A2**      | Structuring Mezzanine debt of R$ 100Mi                               |          **a**, **b**           |
+|                          |     **A3**      | Structuring BTS and Sales & Leaseback                                |              **b**              |
+|                          |     **A4**      | Structuring and Private Placement (5 companies, R$ 50Mi)             |              **b**              |
+|                          |     **A5**      | Constitution of 5 funds (R$ 1,000 Mi AuM)                            |              **b**              |
+|                          |     **A6**      | Mortgage Backed Securities (CRI \| 10 units \| R$ 350 Mi NPV)        |              **b**              |
+|                          |     **A7**      | Exclusive Funds (FIM/FIDC/FIP \| 10 funds \| R$ 500 Mi AuM)          |              **c**              |
+|                          |     **A8**      | MBS Funds (FII \| 2 funds \| R$ 500Mi AuM)                           |              **c**              |
+|                          |     **A9**      | Private Credit Funds (FIM \| 3 funds \| R$ 350 Mi AuM)               |              **c**              |
+|                          |     **A10**     | Perpetual Bank Debt (LF \| 1 unit \| R$ 200 Mi)                      |              **c**              |
+|                          |     **A11**     | Structuring of the front, middle, compliance, and risk...            |          **d**, **c**           |
+|                          |     **A12**     | Risk Management: Credit Default Rate, Debt-to-Equity Ratio...        |              **d**              |
+|                          |     **A13**     | Front Committees (watcher) and Risk/Compliance Committees(Director)  |              **d**              |
+|                          |     **A14**     | PE: Structuring a Holding Company (One-Stop-Shop RE)                 |              **b**              |
+|                          |     **A15**     | PE: Land for Real Estate Development (SPE, R$ 200 Mi Sales)          |          **b**, **e**           |
+|                          |     **A16**     | VC: Fund (R$ 200Mi AuM) - Acq. 4 Startups (ESG)                      |              **b**              |
+|                          |     **A17**     | VC: Structuring companies (Asset, Mortgage Bank, Servicer)           |              **b**              |
+| **Corporate & Business** |     **B1**      | Launch of real estate developments – Sales R$ 750Mi                  |              **e**              |
+|                          |     **B2**      | Land for real estate business development – Sales R$ 500Mi           |              **e**              |
+|                          |     **B3**      | Financial modeling, product & project management...                  |       **a**, **f**, **n**       |
+|                          |     **B4**      | Follow-on and MBS/Private Debit – R$ 350Mi                           |          **g**, **b**           |
+| **Civil Engineering**    |     **C1**      | Design, Plan, Management, and Development of 2 tower building        |          **h**, **i**           |
+|                          |     **C2**      | Construction of 8 houses for emergency housing...                    |              **i**              |
+|                          |     **C3**      | Educational Projects (Roads, bridges, water resources...             |              **h**              |
+| **Computer Science**     |     **D1**      | System: Atomic operations, Concurrent Algorithms, Semaphore/Mutex    |              **j**              |
+|                          |     **D2**      | Data: Hash-map Techniques and Binary Trees                           |              **j**              |
+|                          |     **D3**      | Graph and Gaming: Ray Casting Computer Graphics Algorithms           |              **j**              |
+|                          |     **D4**      | Front-End: Responsive, mobile-first websites...                      |              **k**              |
+|                          |     **D5**      | Front-End: Dynamic, component-based applications (Vue.js)            |              **k**              |
+|                          |     **D6**      | Front-End: Dynamic, component-based applications (React.js)          |              **k**              |
+|                          |     **D7**      | Agent Coder: Langgraph \| TensorFlow/Pytorch \| SQL/noSQL            |          **l**, **j**           |
+|                          |     **D8**      | Hedge Fund Macro Analysis and Portfolio Rotation: Numpy/Scipy \| SQL |          **l**, **c**           |
+|                          |     **D9**      | DevOps: Github Actions and YAML settings for websites CI/CD          |              **m**              |
+| **Product Management**   |     **E1**      | Product requirements, Positioning strategy, User discover            |              **o**              |
+|                          |     **E2**      | Product requirements document (PRD/Spec) and Product Roadmap         |              **o**              |
+|                          |     **E3**      | Manage a product lifecycle, and Run an Operational Sprint            |              **n**              |
+
+### 🛠️ Skills List Educational
+
+#### 🔬 Foundational Science
+> Engineer foundation 
+
+##### (+)
+ * Physics: Classical Mechanics, Electromagnetism, Thermodynamics.
+ * Mathematics: Calculus, Applied Mathematics (Ordinary Differential Equations and Partial Differential Equations).
+ * Statistics: Mathematical Statistics, Regression Analysis, Time Series Modeling.
+ 
+#### 🏗️ Civil Engineering
+> Design, Plan, Management, and Development of Infrastructure Projects
+
+##### (+)
+ * Structural: Buildings, Bridges, Tunnels, Dams.
+ * Transport: Roads, Railways, Airports, Ports.
+ * Water: Supply, Treatment, and Flood Mitigation.
+ * Geo-Technical: Foundation, Underground Excavation, Retaining Walls, and Slopes.
+ * Environmental: Solid Waste, Air and Water Pollution, EIA, and Remediation.
+ 
+#### 📈 Capital Markets
+> Investment Banker, Private Equity, Venture Capital Analyst, and Portfolio Manager
+
+##### (+)
+ * Corporate Finance: Accounting, Corporate Finance, Financial Planning and Analysis.
+ * Economy: Macroeconomics.
+ * Finance: Financial Modeling, Project Finance, Valuation, M&A, Research, and Accounting.
+ * Math: Numerical Analysis, Probability Theory, Stochastic Calculus, and Game Theory.
+ * Stats: Mathematical Statistics, Regression Analysis, and Time Series Modeling.
+ * Quantitative Finance: Asset Pricing Theory, Options Pricing, Futures and Derivatives, Equity Investment, Fixed Income.
+ * IB/PE/VC: Market Research and Analysis, Financial Modeling / Project Finance, Due Diligence, ECM/DCM, Intangible Asset Pricing.
+ * Asset Management: Asset Pricing, Risk Management, Modern Portfolio Allocation Theory.
+
+#### 📱 Product and Design
+> Design Thinking 
+
+##### (+)
+Product Manager
+ * Product: Design Thinking, Product Management, Kanban, and Agile Management Methodologies.
+ * Marketing: Digital Marketing, Google Analytics, Sales B2B.
+
+#### 💻 Computer Science
+> Software Engineer: LAMP+MERN (Data Structures, Algorithms, Machine Learning, Deep Learning and Agentic AI)
+
+##### (+)
+- DevOps: SCRIPT (Linux/Bash, VBA, Python), VC/CI (GitHub, GitHubActions), CONT (Docker), CLOUD (Google Cloud), MONIT (ongoing).
+- Back-End: SYS (C, C++), LANG (ongoing), FRAME (Django, ongoing), WEBSRVS (ongoing), API (ongoing), AUTH (ongoing), TESTING (ongoing).
+- Front-End: MARK (Html, Css), LANG (ongoing), FRAME (ongoing).
+- Database: QUERY (Sql), REL. DB (ongoing), GRAPH (ongoing).
+- Data Science & ML: DATA-FRAME (Pandas, NumPy), ML-FRAME (ongoing), DL-FRAME (ongoing), BIG-DATA (ongoing).
+
+
+
+
+
+
 ### 💾 Tech Stack
 
 ---
@@ -851,9 +962,11 @@ Database
 
 
 
-### Quantitative Finance
-### Macro Economics
 ### 🌎 Languages and Citizenship
+> Portuguese, English, Spanish and German. Brazilian and Spanish.
+
+---
+##### (+)
  * Professional Languages
 	 * Portuguese: (Native)
 	 * English: Advanced (C1)
@@ -862,7 +975,6 @@ Database
  * Other Conversational/Basic: 
 	 * Galego: Intermediate (A2)
 	 * Catalán, French and Italian (Basic Knowledge)
-	
  * Citizenship: 
 	 * Brazilian Citizenship
 	 * Spanish Citizenship
@@ -877,6 +989,20 @@ Database
 
 
 ### 🗣️ Soft Skills
+> Logical and Teamwork 
+
+---
+##### (+)
+ * Radar Chart
+``` mermaid
+	radar-beta
+  axis m["Math"], s["Science"], e["English"]
+  axis h["History"], g["Geography"], a["Art"]
+  curve a["Alice"]{85, 90, 80, 7, 75, 9}
+  curve b["Bob"]{70, 75, 5, 80, 90, 85}
+     
+```
+ 
  * List (1 to 5)
 	 * Logic (3)
 		 * Data, Quantitative and Analytical
@@ -889,66 +1015,70 @@ Database
 	 * Self Organisation (3)
 		 * Lean thinking
 		 * Hands-on
-##
-
-
-<br>
-<br>
-<br>
+## ----------------------------------------------
 ## CONTACT
->
----
 
-| Name     | Diego Nepomuceno Marcos              |
+|          |                                      |
 | -------- | ------------------------------------ |
+| Name     | Diego Nepomuceno Marcos              |
 | Email    | me@diegonmarcos.com               |
 | LinkedIn | https://linkedin.com/in/diegonmarcos |
 | Age      | July/1987 (38 years)                 |
 | Location | Berlin / DE                          |
 | Linktree | https://linktree.diegonmarcos.com       |
+### (+)
+- item
 
 ### 🔗 Linktree
 
-| ** PROFESSIONAL**                                                                          |     | **PERSONAL**                                                                                           |
-| ------------------------------------------------------------------------------------------ | --- | ------------------------------------------------------------------------------------------------------ |
-| **Contact**                                                                                |     | **MyContact**                                                                                          |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                      |
-| - ✉️ [Email](mailto:me@diegonmarcos.com "null")                                         |     | -                                                                                                      |
-|                                                                                            |     |                                                                                                        |
-| **Profiles**                                                                               |     | **MyGamess**                                                                                         |
-| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                               |     | - 👤 [Myprofile](https://diegonmarcos.github.io/mygames "null")                                      |
-| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                     |     | -                                                                                                      |
-| - 💻 [Github](https://github.com/diegonmarcos "null")                                      |     | -                                                                                                      |
-| - [Vcard](https://diegonmarcos.github.io/linktree/2.assets/diegonmarcos-contact_photo.vcf) |     | -                                                                                                      |
-|                                                                                            |     |                                                                                                        |
-| ---------------------------------                                                          |     | ---------------------------------                                                                      |
-|                                                                                            |     |                                                                                                        |
-| **Curriculum**                                                                             |     | ** MyMedia**                                                                                           |
-| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                      |     | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")                                        |
-| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                      |     | - 📺 [YouTube](https://www.youtube.com/channel/diegonmarcos "null")                                    |
-|                                                                                            |     | - 📌 [Pinterest](https://www.pinterest.com/diegonmarcos "null")                                        |
-| **Repos**                                                                                  |     | - 📷 [Instagram](https://www.instagram.com/diegonmarcos "null")                                        |
-| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                                 |     |                                                                                                        |
-| - 💻 [Github](https://github.com/diegonmarcos "null")                                      |     | ** MyEndurance**                                                                                       |
-|                                                                                            |     | - 🚴 [Komoot](https://www.komoot.com/user/2474200810898/routes "null")                                 |
-| Front Repos                                                                                |     | - 🏃 [Strava](https://www.strava.com/athletes/4662170 "null")                                          |
-| - 👤 [Github_profile](https://github.com/diegonmarcos/diegonmarcos "null")                 |     |                                                                                                        |
-| - 🌐 [Github_io](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            |     | ** MyMaps**                                                                                            |
-| Back Repos                                                                                 |     | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                        |
-| - ⚙️ [System](https://github.com/diegonmarcos/back-System "null")                          |     | - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
-| - 💡 [Algo](https://github.com/diegonmarcos/back-Algo "null")                              |     | - 🌍 [Earth](https://earth.google.com/earth/d/1WF5_9NDew9IB5xkTqXPpm9e9n8JM0a3H?usp=sharing  "null")    |
-| - 🖌️ [Graphic](https://github.com/diegonmarcos/back-Graphic "null")                       |     |                                                                                                        |
-| Cyber Repos                                                                                |     | **My Bucket**                                                                                          |
-| - ⚔️ [Cyberwarfare](https://github.com/diegonmarcos/cyber-Cyberwarfare "null")             |     | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                     |
-| Ops Repos                                                                                  |     | - 🏃 [My Bucket (Endurance)](https://bucketlistjourney.net/my-bucket-list/ "null")                     |
-| - 🛠️ [Tooling](https://github.com/diegonmarcos/ops-Tooling "null")                        |     | - ❤️ [My Bucket (Inner)](https://bucketlistjourney.net/my-bucket-list/ "null")                         |
-| - 📚 [Mylibs](https://github.com/diegonmarcos/ops-Mylibs "null")                           |     |                                                                                                        |
-| ML Repos                                                                                   |     | **My Ventures**                                                                                        |
-| - 🧠 [MachineLearning](https://github.com/diegonmarcos/ml-MachineLearning "null")          |     | - 🚀 [Venture 1](https://bucketlistjourney.net/my-bucket-list/ "null")                                 |
-| - 🗄️ [DataScience](https://github.com/diegonmarcos/ml-DataScience "null")                 |     | - 🚀 [Venture 2](https://bucketlistjourney.net/my-bucket-list/ "null")                                 |
-| - 🤖 [Agentic](https://github.com/diegonmarcos/ml-Agentic "null")                          |     |                                                                                                        |
-|                                                                                            |     |                                                                                                        |
-| ** Q** QR CODES**R CODES**                                                                 |     | ** QR CODES**                                                                                          |
-| - 🔗 [QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                |     | - 🔗 [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                   |
-| - 🔗 [Linktree](https://linktree.diegonmarcos.com "null")                                     |     | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                     |
-|                                                                                            |     |                                                                                                        |
+| ** PROFESSIONAL**                                                                           | **PERSONAL**                                                                                             |
+| ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **Contact**                                                                                 | **MyContact**                                                                                            |
+| - 🔗 [Linktree](https://linktree.diegonmarcos.com "null")                                      | - 🔗 [MyLinktree ](https://diegonmarcos.github.io/linktree "null")                                       |
+| - ✉️ [Email](mailto:me@diegonmarcos.com "null")                                          | - ✈️ [Telegram](https://t.me/diegonmarcos "null")                                                        |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                | -                                                                                                        |
+|                                                                                             |                                                                                                          |
+| **Profiles**                                                                                | **MyProfiles**                                                                                           |
+| - 💼 [LinkedIn](https://linkedin.com/in/diegonmarcos "null")                                | - 👤 [Myprofile (building)](https://linktree.diegonmarcos.com "null")                                       |
+| - 🌐 [Landpage](https://diegonmarcos.github.io "null")                                      | -                                                                                                        |
+| - 📃 [Curriculum (web)](https://diegonmarcos.github.io/cv_web "null")                       | -                                                                                                        |
+| - 📄 [Curriculum (pdf)](https://diegonmarcos.github.io/cv_pdf "null")                       | -                                                                                                        |
+|                                                                                             |                                                                                                          |
+| **Repos**                                                                                   | ** MyMedia**                                                                                             |
+| - 🕒 [WakaTime](https://wakatime.com/@diegonmarcos "null")                                  | - 🎵 [TIDAL](https://tidal.com/browse/user/diegonmarcos "null")                                          |
+| - 💻 [Github](https://github.com/diegonmarcos "null")                                       | - 📺 [YouTube](https://www.youtube.com/channel/diegonmarcos "null")                                      |
+|                                                                                             | - 📌 [Pinterest](https://www.pinterest.com/diegonmarcos "null")                                          |
+| Back Repos                                                                                  | - 📷 [Instagram](https://www.instagram.com/diegonmarcos "null")                                          |
+| - 📚 [MyLib](https://github.com/diegonmarcos/mylib "null")                                  |                                                                                                          |
+| - 💡 [Algos](https://github.com/diegonmarcos/algo "null")                                   | ** MyEndurance**                                                                                         |
+| - ⚙️ [System](https://github.com/diegonmarcos/system "null")                                | - 🚴 [Komoot](https://www.komoot.com/user/2474200810898/routes "null")                                   |
+| - 🖌️ [Graphic](https://github.com/diegonmarcos/graphic "null")                             | - 🏃 [Strava](https://www.strava.com/athletes/4662170 "null")                                            |
+|                                                                                             |                                                                                                          |
+| Front & ML Repos                                                                            | ** MyMaps**                                                                                              |
+| - 🖥️ [Front_Web](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            | - 🗺️ [NomadMania](https://nomadmania.com/profile/73889 "null")                                          |
+| - 🗄️ [Data Science](https://github.com/diegonmarcos/diegonmarcos.github.io "null")         | - 📍 [Maps](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null")   |
+| - 🧠 [Machine Learning & DL](https://github.com/diegonmarcos/diegonmarcos.github.io "null") | - 🌍 [Earth](https://earth.google.com/earth/d/1WF5_9NDew9IB5xkTqXPpm9e9n8JM0a3H?usp=sharing  "null")      |
+| - 🤖 [Agentic AI](https://github.com/diegonmarcos/diegonmarcos.github.io "null")            | - 🗺️ [Maps2](https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing"null") |
+|                                                                                             |                                                                                                          |
+|                                                                                             | **My Bucket**                                                                                            |
+|                                                                                             | - 📋 [My Bucket (50 things)](https://bucketlistjourney.net/my-bucket-list/ "null")                       |
+|                                                                                             | - 🏃 [My Bucket (Endurance)](https://bucketlistjourney.net/my-bucket-list/ "null")                       |
+|                                                                                             | - ❤️ [My Bucket (Inner)](https://bucketlistjourney.net/my-bucket-list/ "null")                           |
+|                                                                                             |                                                                                                          |
+|                                                                                             | **My Ventures**                                                                                          |
+|                                                                                             | - 🚀 [Venture 1](https://bucketlistjourney.net/my-bucket-list/ "null")                                   |
+|                                                                                             | - 🚀 [Venture 2](https://bucketlistjourney.net/my-bucket-list/ "null")                                   |
+|                                                                                             |                                                                                                          |
+| ** QR CODES**                                                                               | ** QR CODES**                                                                                            |
+| - [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")           | - [Linktree QR Codes](https://diegonmarcos.github.io/linktree/qrcode.html "null")                        |
+
+### (+)
+- item
+
+
+
+
+
+
+
+

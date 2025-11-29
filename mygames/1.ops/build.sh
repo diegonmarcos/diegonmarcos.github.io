@@ -17,7 +17,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 # Project paths
-PROJECT_DIR="$(cd "$(dirname "$0")/../1.3.svelte" && pwd)"
+PROJECT_DIR="$(cd "$(dirname "$0")/../src" && pwd)"
 PROJECT_NAME="MyProfile"
 PORT="8004"
 BUILD_DIR="$PROJECT_DIR/build"

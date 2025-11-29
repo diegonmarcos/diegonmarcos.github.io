@@ -176,7 +176,7 @@ get_running_servers() {
         _servers="${_servers}  ${YELLOW}~${NC} Sass Watch         ${YELLOW}(file watcher)${NC}\n"
         _count=$((_count + 1))
     fi
-    if pgrep -f "tsc.*--watch" >/dev/null 2>&1; then
+    if pgrep -f "tsc.*--watch" >/dev/null 2>&1 || pgrep -f "esbuild.*--watch" >/dev/null 2>&1; then
         _servers="${_servers}  ${YELLOW}~${NC} TypeScript Watch   ${YELLOW}(file watcher)${NC}\n"
         _count=$((_count + 1))
     fi

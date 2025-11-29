@@ -19,7 +19,7 @@ NC='\033[0m'
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="MyMaps"
-PORT="3000"
+PORT="8012"
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -78,16 +78,18 @@ dev() {
     check_dependencies
     cd "$PROJECT_DIR"
 
+    # Start Next.js dev server in background
+    nohup npm run dev -- -p $PORT > /dev/null 2>&1 &
+
+    # Print URL and return control
     printf "\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
-    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} DEV SERVER${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} Dev Server STARTED${NC}\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
-    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} Ctrl+C\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "\n"
-
-    npm run dev
 }
 
 # Clean

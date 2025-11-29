@@ -58,6 +58,7 @@ URL_OTHERS="http://localhost:8008/"
 URL_HEALTH="http://localhost:8009/"
 URL_MARKET="http://localhost:8010/"
 URL_CENTRALBANK="http://localhost:8011/"
+URL_MYMAPS="http://localhost:8012/"
 
 # Banner function
 print_banner() {
@@ -122,6 +123,10 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Central Bank       ${BLUE}${URL_CENTRALBANK}${NC}\n"
         _count=$((_count + 1))
     fi
+    if pgrep -f "next.*dev.*8012" >/dev/null 2>&1 || pgrep -f "mymaps.*next" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyMaps (Next.js)   ${BLUE}${URL_MYMAPS}${NC}\n"
+        _count=$((_count + 1))
+    fi
     # Generic live-server check (fallback for other ports)
     if pgrep -f "live-server" >/dev/null 2>&1; then
         _other_live=$(pgrep -f "live-server" 2>/dev/null | while read pid; do
@@ -183,7 +188,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -199,6 +204,7 @@ get_running_servers() {
                     build-health)     _servers="${_servers}  ${GREEN}*${NC} Health (tmux)      ${BLUE}${URL_HEALTH}${NC}\n" ;;
                     build-market)     _servers="${_servers}  ${GREEN}*${NC} Market (tmux)      ${BLUE}${URL_MARKET}${NC}\n" ;;
                     build-centralbank) _servers="${_servers}  ${GREEN}*${NC} Central Bank (tmux) ${BLUE}${URL_CENTRALBANK}${NC}\n" ;;
+                    build-mymaps) _servers="${_servers}  ${GREEN}*${NC} MyMaps (tmux)      ${BLUE}${URL_MYMAPS}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -252,6 +258,7 @@ print_usage() {
     printf "  ${GREEN}build-health${NC}       # Health Tracker - Vanilla + Tailwind\n"
     printf "  ${GREEN}build-market${NC}       # Market Watch - Vanilla + Sass + TypeScript\n"
     printf "  ${GREEN}build-centralbank${NC}  # Central Bank - Vanilla + Tailwind + TypeScript\n"
+    printf "  ${GREEN}build-mymaps${NC}       # MyMaps - Next.js + Sass + TypeScript\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -267,6 +274,7 @@ print_usage() {
     printf "  ${GREEN}dev-health${NC}         # Health Tracker - npm-live :8009\n"
     printf "  ${GREEN}dev-market${NC}         # Market Watch - npm-live :8010\n"
     printf "  ${GREEN}dev-centralbank${NC}    # Central Bank - npm-live :8011\n"
+    printf "  ${GREEN}dev-mymaps${NC}         # MyMaps - Next.js :8012\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -294,6 +302,7 @@ print_usage() {
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "HealthTracker" "Vanilla" "Tailwind" "Vanilla" "npm-live :8009" "-"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MarketWatch" "Vanilla" "Sass" "TypeScript" "npm-live :8010" "Sass, TS"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "CentralBank" "Vanilla" "Tailwind" "TypeScript" "npm-live :8011" "-"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next.js :8012" "HMR"
     printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
 
     # Show status box in help
@@ -411,6 +420,7 @@ build_all() {
     execute_build "health_tracker" "build" || _failed=$((_failed + 1))
     execute_build "market_watch" "build" || _failed=$((_failed + 1))
     execute_build "central_bank" "build" || _failed=$((_failed + 1))
+    execute_build "mymaps" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -439,6 +449,7 @@ clean_all_builds() {
     execute_build "health_tracker" "clean" || true
     execute_build "market_watch" "clean" || true
     execute_build "central_bank" "clean" || true
+    execute_build "mymaps" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -529,6 +540,7 @@ dev_all() {
         tmux new-session -d -s build-health "cd $PROJECT_ROOT/health_tracker/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-market "cd $PROJECT_ROOT/market_watch/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-centralbank "cd $PROJECT_ROOT/central_bank/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-mymaps "cd $PROJECT_ROOT/mymaps/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -547,6 +559,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyMaps" "$URL_MYMAPS"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Tmux Sessions: build-landpage, build-linktree, etc."
@@ -600,6 +613,9 @@ dev_all() {
         log_info "Starting central_bank..."
         nohup sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/centralbank-dev.log" 2>&1 &
 
+        log_info "Starting mymaps..."
+        nohup sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymaps-dev.log" 2>&1 &
+
         sleep 3  # Give servers time to start
 
         log_success "All servers started in background!"
@@ -619,6 +635,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "Health Tracker" "$URL_HEALTH"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Market Watch" "$URL_MARKET"
         printf "  ${CYAN}%-15s${NC}  %s\n" "Central Bank" "$URL_CENTRALBANK"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyMaps" "$URL_MYMAPS"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Logs: $PROJECT_ROOT/1.ops/logs/<project>-dev.log"
@@ -698,6 +715,12 @@ dev_single() {
         centralbank)
             execute_build "central_bank" "dev"
             ;;
+        mymaps)
+            execute_build "mymaps" "dev" &
+            sleep 2
+            print_server_started "MyMaps" "$_url"
+            wait
+            ;;
     esac
 }
 
@@ -709,7 +732,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -1098,6 +1121,7 @@ tui_simple() {
         printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC}\n"
         printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC}\n"
         printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┘${NC}\n"
 
         # Server status
@@ -1141,6 +1165,7 @@ tui_simple() {
             b10)               _cmd="build-health"; _last_msg="Building Health Tracker" ;;
             b11)               _cmd="build-market"; _last_msg="Building Market Watch" ;;
             b12)               _cmd="build-centralbank"; _last_msg="Building Central Bank" ;;
+            b13)               _cmd="build-mymaps"; _last_msg="Building MyMaps" ;;
             # Dev commands
             d|d0)              _cmd="dev"; _last_msg="Starting all dev servers..." ;;
             d1)                _cmd="dev-landpage"; _last_msg="Started Landpage :8000" ;;
@@ -1155,6 +1180,7 @@ tui_simple() {
             d10)               _cmd="dev-health"; _last_msg="Started Health Tracker :8009" ;;
             d11)               _cmd="dev-market"; _last_msg="Started Market Watch :8010" ;;
             d12)               _cmd="dev-centralbank"; _last_msg="Started Central Bank :8011" ;;
+            d13)               _cmd="dev-mymaps"; _last_msg="Started MyMaps :8012" ;;
             # Utility commands
             k|kill)            _cmd="kill"; _last_msg="Killed all servers" ;;
             c|clean)           _cmd="clean"; _last_msg="Cleaned build artifacts" ;;
@@ -1182,21 +1208,22 @@ tui_simple() {
                 ;;
         esac
 
-        # Run command silently
+        # Run command silently in background
         case "$_cmd" in
-            dev-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-linktree)    sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-cv-web)      sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-myfeed)      sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-mygames)   sh "$PROJECT_ROOT/mygames/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-nexus)       sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-cloud)       sh "$PROJECT_ROOT/cloud/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-feed)        sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-others)      sh "$PROJECT_ROOT/others/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-health)      sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > /dev/null 2>&1 ;;
-            dev)             dev_all > /dev/null 2>&1 ;;
+            dev-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-linktree)    sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-cv-web)      sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-myfeed)      sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-mygames)     sh "$PROJECT_ROOT/mygames/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-nexus)       sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-cloud)       sh "$PROJECT_ROOT/cloud/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-feed)        sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-others)      sh "$PROJECT_ROOT/others/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-health)      sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
+            dev)             dev_all > /dev/null 2>&1 & ;;
             kill)            kill_servers > /dev/null 2>&1 ;;
             build-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build-linktree)    sh "$PROJECT_ROOT/linktree/1.ops/build.sh" build > /dev/null 2>&1 & ;;
@@ -1210,6 +1237,7 @@ tui_simple() {
             build-health)      sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" build > /dev/null 2>&1 & ;;
+            build-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" build > /dev/null 2>&1 & ;;
             build)           build_all > /dev/null 2>&1 & ;;
             clean)           clean_all > /dev/null 2>&1 ;;
         esac
@@ -1301,6 +1329,9 @@ main() {
         build-centralbank)
             execute_build "central_bank" "build"
             ;;
+        build-mymaps)
+            execute_build "mymaps" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -1339,6 +1370,9 @@ main() {
             ;;
         dev-centralbank)
             dev_single "centralbank" "$URL_CENTRALBANK"
+            ;;
+        dev-mymaps)
+            dev_single "mymaps" "$URL_MYMAPS"
             ;;
         list)
             list_servers

@@ -10,11 +10,6 @@
 		{ title: 'Flappy Bird', icon: 'bird', href: `${base}/clumsy-bird`, color: 'cyan' }
 	];
 
-	const features = [
-		{ title: 'Photos', icon: 'photo', href: `${base}/photos`, color: 'pink', desc: 'Travel memories' },
-		{ title: 'Music', icon: 'music', href: `${base}/music`, color: 'purple', desc: 'Spotify vibes' },
-		{ title: 'Stats', icon: 'stats', href: `${base}/stats`, color: 'green', desc: 'Activity tracking' }
-	];
 </script>
 
 <PixelParticles />
@@ -62,23 +57,6 @@
 		</div>
 	</section>
 
-	<!-- Features Grid -->
-	<section class="section container">
-		<h2 class="section-title">✨ Explore</h2>
-		<div class="features-grid">
-			{#each features as feature}
-				<a href={feature.href} class="feature-card color-{feature.color}">
-					<div class="card-icon">
-						<PixelIcon icon={feature.icon} size={48} color="currentColor" />
-					</div>
-					<div class="card-info">
-						<h3>{feature.title}</h3>
-						<p>{feature.desc}</p>
-					</div>
-				</a>
-			{/each}
-		</div>
-	</section>
 </div>
 
 <style lang="scss">
@@ -313,48 +291,4 @@
 		&.color-cyan { color: $cyan-400; }
 	}
 
-	// Features Grid
-	.features-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: $space-6;
-	}
-
-	.feature-card {
-		display: flex;
-		align-items: center;
-		gap: $space-4;
-		padding: $space-6;
-		background: rgba($gray-900, 0.9);
-		border: 3px solid currentColor;
-		border-radius: 8px;
-		text-decoration: none;
-		@include transition(all);
-
-		&:hover {
-			transform: translateX(8px);
-			box-shadow: 0 0 20px currentColor;
-		}
-
-		.card-info {
-			h3 {
-				font-family: $font-pixel-heading;
-				font-size: $text-base;
-				color: $text-primary;
-				margin: 0 0 $space-1 0;
-			}
-
-			p {
-				font-family: $font-pixel-body;
-				font-size: $text-sm;
-				color: $text-secondary;
-				margin: 0;
-			}
-		}
-
-		// Color variants
-		&.color-pink { color: $pink-500; }
-		&.color-purple { color: $purple-500; }
-		&.color-green { color: #22c55e; }
-	}
 </style>

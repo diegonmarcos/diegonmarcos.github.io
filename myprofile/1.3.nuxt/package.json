@@ -1,0 +1,22 @@
+{
+  "name": "myprofile",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --port 8004",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview --port 8004",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^4.2.1",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3"
+  },
+  "devDependencies": {
+    "sass": "^1.89.0",
+    "sass-loader": "^16.0.5",
+    "lucide-vue-next": "^0.468.0"
+  }
+}

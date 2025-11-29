@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEX_NOVA // VUE_NUXT</title>
+    <!-- Vue 3 from CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /* GLOBAL RESET (Ideally in assets/css/main.css in Nuxt) */
+        body, html {
+            margin: 0; padding: 0;
+            background-color: #000000;
+            color: #00ff41;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, ref, computed, onMounted, onUnmounted, reactive } = Vue;
+
+        // --- ICON DATA (Simulating Lucide for standalone file) ---
+        // In Nuxt, you would install 'lucide-vue-next' and import components directly.
+        const ICONS = {
+            music: '<path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle>',
+            activity: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>',
+            globe: '<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>',
+            youtube: '<path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"></path><path d="m10 15 5-3-5-3z"></path>',
+            camera: '<path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path><circle cx="12" cy="13" r="3"></circle>',
+            alert: '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>',
+            layers: '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
+            user: '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+            box: '<path d="M21 16.5 12 22l-9-5.5"></path><path d="M3.27 6.96 12 12.01l8.73-5.05"></path><path d="M12 22.08V12"></path><path d="m12 2 9 5.5v9l-9 5.5-9-5.5v-9L12 2z"></path>',
+            wifi: '<path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line>',
+            eye: '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle>'
+        };
+
+        // Component to render icons
+        const Icon = {
+            props: ['name', 'size'],
+            template: `
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    :width="size || 24"
+                    :height="size || 24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    v-html="path"
+                ></svg>
+            `,
+            setup(props) {
+                const path = computed(() => ICONS[props.name] || '');
+                return { path };
+            }
+        };
+
+        // --- MAIN APP ---
+        const App = {
+            components: { Icon },
+            setup() {
+                // --- STATE ---
+                const view = ref('cards'); // 'cards' | 'player' | 'sphere'
+                const booting = ref(true);
+                const rotation = reactive({ x: 0, y: 0 });
+
+                // Sphere Interaction Refs
+                const sphereContainer = ref(null);
+                const isDragging = ref(false);
+                const lastMouse = reactive({ x: 0, y: 0 });
+
+                // Matrix Canvas Ref
+                const matrixCanvas = ref(null);
+
+                // --- DATA ---
+                const data = [
+                    { id: '1', type: 'music', platform: 'Tidal', title: 'AUDITORY_STREAM', subtitle: 'MIDNIGHT CITY // M83', metric: '1411 KBPS', image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=1000&auto=format&fit=crop', accentColor: '#00f3ff', icon: 'music', statType: 'CREATIVITY', statValue: 85 },
+                    { id: '2', type: 'fitness', platform: 'Strava', title: 'BIO_METRICS', subtitle: 'SHIBUYA SECTOR RUN', metric: '165 BPM', image: 'https://images.unsplash.com/photo-1517130038641-a774d04afb3c?q=80&w=1000&auto=format&fit=crop', accentColor: '#ff9100', icon: 'activity', statType: 'ENDURANCE', statValue: 92 },
+                    { id: '3', type: 'travel', platform: 'NomadMania', title: 'GEO_TAG', subtitle: 'COORDS: REYKJAVIK', metric: '42/193 NODES', image: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1000&auto=format&fit=crop', accentColor: '#00ff9d', icon: 'globe', statType: 'EXPLORATION', statValue: 78 },
+                    { id: '4', type: 'video', platform: 'YouTube', title: 'VISUAL_FEED', subtitle: 'CYBERPUNK AMBIENCE', metric: 'REC [00:14:22]', image: 'https://images.unsplash.com/photo-1535189043414-47a3c49a0bed?q=80&w=1000&auto=format&fit=crop', accentColor: '#ff0055', icon: 'youtube', statType: 'INFLUENCE', statValue: 64 },
+                    { id: '5', type: 'social', platform: 'Instagram', title: 'MEMORY_BANK', subtitle: 'IMG_8842.RAW', metric: 'ISO 3200', image: 'https://images.unsplash.com/photo-1496449903678-68ddcb189a24?q=80&w=1000&auto=format&fit=crop', accentColor: '#bc13fe', icon: 'camera', statType: 'VISION', statValue: 88 },
+                    { id: 'system', type: 'system', platform: 'SYS_LOG', title: 'CRITICAL_FAILURE', subtitle: 'KERNEL PANIC', metric: 'ERR_0x8849A', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop', accentColor: '#ff0000', icon: 'alert', statType: 'CHAOS', statValue: 12 }
+                ];
+
+                // --- SPHERE COMPUTED LOGIC ---
+                const spherePoints = computed(() => {
+                    const phi = Math.PI * (3 - Math.sqrt(5));
+                    return data.map((item, i, arr) => {
+                        const y = 1 - (i / (arr.length - 1)) * 2;
+                        const radius = Math.sqrt(1 - y * y);
+                        const theta = phi * i;
+                        const x = Math.cos(theta) * radius;
+                        const z = Math.sin(theta) * radius;
+                        return { ...item, pos: [x, y, z] };
+                    });
+                });
+
+                // --- SEO (NUXT SIMULATION) ---
+                // In a real Nuxt file, you would uncomment this:
+                /*
+                useHead({
+                    title: 'ALEX_NOVA // PORTFOLIO',
+                    meta: [
+                        { name: 'description', content: 'Cyberpunk Data Stream Portfolio' },
+                        { property: 'og:title', content: 'ALEX_NOVA // NETWORK' }
+                    ]
+                })
+                */
+
+                // --- LIFECYCLE ---
+                onMounted(() => {
+                    // Boot Sequence
+                    setTimeout(() => booting.value = false, 1500);
+
+                    // Start Matrix Rain
+                    initMatrixRain();
+                    window.addEventListener('resize', handleResize);
+                });
+
+                onUnmounted(() => {
+                    window.removeEventListener('resize', handleResize);
+                });
+
+                // --- METHODS ---
+                const initMatrixRain = () => {
+                    const canvas = matrixCanvas.value;
+                    if (!canvas) return;
+                    const ctx = canvas.getContext('2d');
+
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+
+                    const katakana = '01';
+                    const alphabet = katakana.split('');
+                    const fontSize = 12;
+                    const columns = canvas.width / fontSize;
+                    const rainDrops = Array(Math.ceil(columns)).fill(1);
+
+                    const draw = () => {
+                        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                        ctx.fillStyle = '#0f0';
+                        ctx.font = fontSize + 'px monospace';
+
+                        for (let i = 0; i < rainDrops.length; i++) {
+                            const text = alphabet[Math.floor(Math.random() * alphabet.length)];
+                            ctx.globalAlpha = Math.random() > 0.5 ? 1 : 0.5;
+                            ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                            if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                                rainDrops[i] = 0;
+                            }
+                            rainDrops[i]++;
+                        }
+                        ctx.globalAlpha = 1;
+                        requestAnimationFrame(draw);
+                    };
+                    draw();
+                };
+
+                const handleResize = () => {
+                    if (matrixCanvas.value) {
+                        matrixCanvas.value.width = window.innerWidth;
+                        matrixCanvas.value.height = window.innerHeight;
+                    }
+                };
+
+                // Sphere Interaction
+                const onMouseDown = (e) => {
+                    isDragging.value = true;
+                    lastMouse.x = e.clientX;
+                    lastMouse.y = e.clientY;
+                };
+
+                const onMouseMove = (e) => {
+                    if (!isDragging.value) return;
+                    const deltaX = e.clientX - lastMouse.x;
+                    const deltaY = e.clientY - lastMouse.y;
+
+                    rotation.x -= deltaY * 0.5;
+                    rotation.y += deltaX * 0.5;
+
+                    lastMouse.x = e.clientX;
+                    lastMouse.y = e.clientY;
+                };
+
+                const onMouseUp = () => isDragging.value = false;
+
+                return {
+                    view, booting, data, rotation, spherePoints,
+                    matrixCanvas, sphereContainer,
+                    onMouseDown, onMouseMove, onMouseUp
+                };
+            },
+            template: `
+                <div class="matrix-container">
+                    <!-- Matrix Background -->
+                    <canvas ref="matrixCanvas" class="matrix-canvas"></canvas>
+                    <div class="vignette"></div>
+                    <div class="scanlines"></div>
+
+                    <!-- Boot Screen -->
+                    <div v-if="booting" class="boot-screen">
+                        <div class="terminal-text">
+                            <div class="typewriter mono">LOADING VUE SYSTEM...</div>
+                            <div class="typewriter mono" style="animation-delay: 0.5s">INITIALIZING NUXT ENGINE...</div>
+                        </div>
+                    </div>
+
+                    <!-- Main HUD -->
+                    <main v-else class="hud-interface">
+                        <!-- Header -->
+                        <header class="tactical-header">
+                            <h1 class="logo-text mono">ALEX_NOVA <span class="green">//</span> VUE_OS</h1>
+                            <nav class="view-tabs">
+                                <button class="tab-btn" :class="{ active: view === 'cards' }" @click="view = 'cards'">
+                                    <Icon name="layers" :size="14" /> CARDS
+                                </button>
+                                <button class="tab-btn" :class="{ active: view === 'player' }" @click="view = 'player'">
+                                    <Icon name="user" :size="14" /> PLAYER
+                                </button>
+                                <button class="tab-btn" :class="{ active: view === 'sphere' }" @click="view = 'sphere'">
+                                    <Icon name="box" :size="14" /> SPHERE
+                                </button>
+                            </nav>
+                        </header>
+
+                        <!-- Content Views -->
+                        <div class="view-content-area">
+
+                            <!-- 1. CARDS VIEW -->
+                            <div v-if="view === 'cards'" class="shard-grid fade-in-up">
+                                <div
+                                    v-for="shard in data"
+                                    :key="shard.id"
+                                    class="shard-card"
+                                    :class="'type-' + shard.type"
+                                    :style="{ '--accent': shard.accentColor }"
+                                >
+                                    <div class="shard-bg-layer" :style="{ backgroundImage: 'url(' + shard.image + ')' }"></div>
+                                    <div class="static-noise"></div>
+                                    <div class="shard-content mono">
+                                        <div class="shard-meta">
+                                            <div class="platform-tag">
+                                                <Icon :name="shard.icon" :size="14" />
+                                                <span>{{ shard.platform }}</span>
+                                            </div>
+                                            <Icon name="eye" :size="14" class="view-icon"/>
+                                        </div>
+                                        <div class="shard-info">
+                                            <h3 class="shard-title">{{ shard.title }}</h3>
+                                            <div class="shard-sub">{{ shard.subtitle }}</div>
+                                            <div class="shard-metric"><span class="bracket">[</span>{{ shard.metric }}<span class="bracket">]</span></div>
+                                        </div>
+                                        <div class="hover-reveal-btn">INITIALIZE LINK ></div>
+                                    </div>
+                                    <div class="border-line top"></div><div class="border-line bottom"></div>
+                                    <div class="border-line left"></div><div class="border-line right"></div>
+                                </div>
+                            </div>
+
+                            <!-- 2. PLAYER VIEW -->
+                            <div v-else-if="view === 'player'" class="player-view-container fade-in">
+                                <!-- Attributes -->
+                                <div class="player-col left">
+                                    <h3 class="section-header">ATTRIBUTES</h3>
+                                    <div class="attributes-list">
+                                        <div v-for="item in data" :key="item.id" class="attribute-row">
+                                            <div class="attr-label">
+                                                <Icon :name="item.icon" :size="14" :style="{ color: item.accentColor }" />
+                                                <span>{{ item.statType }}</span>
+                                            </div>
+                                            <div class="attr-bar-container">
+                                                <div class="attr-bar-fill" :style="{ width: item.statValue + '%', backgroundColor: item.accentColor, boxShadow: '0 0 10px ' + item.accentColor }"></div>
+                                            </div>
+                                            <div class="attr-val">{{ item.statValue }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="radar-mockup">
+                                        <div class="radar-scan"></div>
+                                        <!-- Simple SVG Radar -->
+                                        <svg viewBox="0 0 100 100" class="radar-svg">
+                                            <polygon points="50,10 90,50 50,90 10,50" fill="none" stroke="#0f0" stroke-width="0.5" opacity="0.5"/>
+                                            <polygon points="50,15 85,50 50,80 20,50" fill="rgba(0, 255, 65, 0.2)" stroke="#0f0" stroke-width="1" />
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <!-- Avatar -->
+                                <div class="player-col center">
+                                    <div class="avatar-hologram">
+                                        <div class="scan-ring"></div>
+                                        <Icon name="user" :size="120" class="silhouette" />
+                                    </div>
+                                    <div class="player-identity">
+                                        <h2>ALEX_NOVA</h2>
+                                        <div class="lvl-badge">LVL. 24</div>
+                                    </div>
+                                    <div class="xp-container">
+                                        <span>XP</span>
+                                        <div class="xp-bar"><div class="xp-fill"></div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Gear -->
+                                <div class="player-col right">
+                                    <h3 class="section-header">EQUIPMENT</h3>
+                                    <div class="gear-grid">
+                                        <div v-for="item in data" :key="item.id" class="gear-slot">
+                                            <div class="corner-bracket tl"></div><div class="corner-bracket br"></div>
+                                            <Icon :name="item.icon" :size="24" :style="{ color: item.accentColor }" />
+                                            <span class="gear-label">{{ item.platform }}</span>
+                                        </div>
+                                        <div class="gear-slot empty"><div class="cross"></div></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. SPHERE VIEW -->
+                            <div
+                                v-else-if="view === 'sphere'"
+                                class="sphere-viewport fade-in"
+                                @mousedown="onMouseDown"
+                                @mousemove="onMouseMove"
+                                @mouseup="onMouseUp"
+                                @mouseleave="onMouseUp"
+                            >
+                                <div class="sphere-instruction"><Icon name="box" class="anim-icon"/> DRAG TO ROTATE</div>
+                                <div class="sphere-scene" :style="{ transform: 'rotateX(' + rotation.x + 'deg) rotateY(' + rotation.y + 'deg)' }">
+                                    <div class="core-glow"></div>
+                                    <div
+                                        v-for="pt in spherePoints"
+                                        :key="pt.id"
+                                        class="sphere-node"
+                                        :style="{ transform: 'translate3d(' + (pt.pos[0]*250) + 'px, ' + (pt.pos[1]*250) + 'px, ' + (pt.pos[2]*250) + 'px)', borderColor: pt.accentColor }"
+                                    >
+                                        <div class="node-face" :style="{ transform: 'rotateY(' + (-rotation.y) + 'deg) rotateX(' + (-rotation.x) + 'deg)' }">
+                                            <Icon :name="pt.icon" :size="20" :style="{ color: pt.accentColor }" />
+                                            <span class="node-label" :style="{ color: pt.accentColor }">{{ pt.platform }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="holo-ring r1"></div>
+                                    <div class="holo-ring r2"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </main>
+
+                    <footer class="terminal-dock mono">
+                        <div class="dock-content">
+                            <span class="prompt">root@nova:~/views/{{ view }}#</span>
+                            <span class="cursor blinking">█</span>
+                            <div class="dock-actions">
+                                <Icon name="wifi" :size="16" class="green"/>
+                                <span class="dim">PING: 24ms</span>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            `
+        };
+
+        createApp(App).mount('#app');
+    </script>
+
+    <style scoped>
+        /* CSS VARIABLES */
+        :root {
+            --bg-black: #000000;
+            --bg-dark-panel: #050505;
+            --terminal-green: #00ff41;
+            --terminal-dim: #004411;
+            --accent-cyan: #00f3ff;
+            --text-dim: #4a4a4a;
+            --border-dim: #1a1a1a;
+        }
+
+        /* LAYOUT & BG */
+        .matrix-container { position: relative; min-height: 100vh; width: 100%; display: flex; flex-direction: column; background: black; }
+        .matrix-canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.15; pointer-events: none; }
+        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 0%, black 120%); z-index: 1; pointer-events: none; }
+        .scanlines { position: fixed; inset: 0; background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0,0,0,0.5) 3px); z-index: 2; pointer-events: none; opacity: 0.7; }
+
+        .hud-interface { position: relative; z-index: 10; padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%; padding-bottom: 6rem; }
+
+        /* HEADER */
+        .tactical-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; border-bottom: 2px solid #1a1a1a; padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+        .logo-text { font-size: 1.5rem; color: white; letter-spacing: 2px; }
+        .green { color: #00ff41; }
+        .dim { color: #4a4a4a; }
+
+        .view-tabs { display: flex; gap: 0.5rem; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 4px; }
+        .tab-btn { background: transparent; border: none; color: #666; padding: 8px 16px; font-family: 'JetBrains Mono'; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s; border: 1px solid transparent; }
+        .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab-btn.active { color: black; background: #00ff41; border-color: #00ff41; box-shadow: 0 0 15px rgba(0,255,65,0.4); font-weight: bold; }
+
+        /* BOOT SCREEN */
+        .boot-screen { position: fixed; inset: 0; background: black; z-index: 9999; display: flex; align-items: center; justify-content: center; color: #00ff41; }
+        .typewriter { opacity: 0; animation: fadeIn 0.3s forwards; margin-bottom: 10px; }
+
+        /* CARDS */
+        .shard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+        .shard-card { position: relative; height: 240px; background: #050505; border: 1px solid #111; overflow: hidden; cursor: pointer; transition: all 0.3s; }
+        .shard-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .shard-bg-layer { position: absolute; inset: 0; background-size: cover; opacity: 0; filter: grayscale(100%); transition: opacity 0.4s; }
+        .shard-card:hover .shard-bg-layer { opacity: 0.2; }
+        .shard-content { position: relative; z-index: 5; padding: 1.5rem; height: 100%; display: flex; flex-direction: column; color: #555; transition: color 0.3s; }
+        .shard-card:hover .shard-content { color: #aaa; }
+        .shard-meta { display: flex; justify-content: space-between; font-size: 0.75rem; border-bottom: 1px solid #222; padding-bottom: 1rem; margin-bottom: auto; }
+        .platform-tag { display: flex; gap: 0.5rem; align-items: center; }
+        .shard-title { font-size: 1.5rem; color: #eee; margin: 0; }
+        .shard-metric { color: #004411; font-size: 0.8rem; margin-top: 1rem; }
+        .shard-card:hover .shard-metric { color: var(--accent); }
+        .hover-reveal-btn { margin-top: 1.5rem; font-size: 0.7rem; opacity: 0; transform: translateX(-10px); transition: all 0.3s; color: var(--accent); }
+        .shard-card:hover .hover-reveal-btn { opacity: 1; transform: translateX(0); }
+        .border-line { position: absolute; background: var(--accent); opacity: 0; transition: all 0.3s; }
+        .shard-card:hover .border-line { opacity: 1; }
+        .top { top: 0; left: 0; height: 2px; width: 100%; } .bottom { bottom: 0; right: 0; height: 2px; width: 100%; }
+        .left { bottom: 0; left: 0; width: 2px; height: 100%; } .right { top: 0; right: 0; width: 2px; height: 100%; }
+
+        /* PLAYER VIEW */
+        .player-view-container { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; background: rgba(0,20,0,0.1); border: 1px solid #111; padding: 2rem; }
+        .player-col { display: flex; flex-direction: column; gap: 1rem; }
+        .section-header { color: #00ff41; font-size: 1rem; border-bottom: 1px solid #222; padding-bottom: 0.5rem; margin: 0; }
+        .attribute-row { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #888; }
+        .attr-label { width: 100px; display: flex; align-items: center; gap: 8px; }
+        .attr-bar-container { flex: 1; height: 4px; background: #111; }
+        .attr-bar-fill { height: 100%; }
+        .attr-val { width: 30px; text-align: right; color: white; }
+        .radar-mockup { margin-top: 2rem; width: 100%; height: 200px; position: relative; display: flex; justify-content: center; align-items: center; }
+        .radar-svg { width: 180px; height: 180px; }
+        .radar-scan { position: absolute; inset: 0; background: conic-gradient(from 0deg, transparent 0deg, rgba(0,255,65,0.1) 60deg, transparent 61deg); animation: scan 4s infinite linear; border-radius: 50%; }
+        .avatar-hologram { position: relative; width: 100%; height: 300px; display: flex; justify-content: center; align-items: center; color: #00ff41; }
+        .silhouette { filter: drop-shadow(0 0 10px #00ff41); opacity: 0.8; }
+        .scan-ring { position: absolute; width: 200px; height: 200px; border: 1px dashed rgba(0,255,65,0.3); border-radius: 50%; animation: spin 10s linear infinite; }
+        .player-identity { text-align: center; margin-top: 1rem; }
+        .player-identity h2 { margin: 0; font-family: 'Rajdhani'; font-size: 2.5rem; color: white; letter-spacing: 2px; }
+        .lvl-badge { display: inline-block; background: #00ff41; color: black; padding: 2px 8px; font-weight: bold; font-size: 0.8rem; margin-top: 0.5rem; }
+        .xp-container { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; color: #555; font-size: 0.8rem; }
+        .xp-bar { flex: 1; height: 6px; background: #111; border: 1px solid #333; }
+        .xp-fill { width: 70%; height: 100%; background: #00f3ff; box-shadow: 0 0 10px #00f3ff; }
+        .gear-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .gear-slot { height: 80px; background: rgba(0,0,0,0.5); border: 1px solid #222; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; position: relative; cursor: pointer; transition: all 0.2s; }
+        .gear-slot:hover { border-color: white; background: rgba(255,255,255,0.05); }
+        .gear-label { font-size: 0.7rem; color: #666; }
+        .corner-bracket { position: absolute; width: 5px; height: 5px; border: 2px solid #00ff41; }
+        .tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+        .br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+        .gear-slot.empty { opacity: 0.3; }
+        .cross { width: 10px; height: 10px; position: relative; }
+        .cross:before, .cross:after { content:''; position: absolute; background: #444; }
+        .cross:before { width: 100%; height: 2px; top: 4px; }
+        .cross:after { height: 100%; width: 2px; left: 4px; }
+
+        /* SPHERE VIEW */
+        .sphere-viewport { height: 600px; width: 100%; perspective: 1000px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; cursor: grab; }
+        .sphere-viewport:active { cursor: grabbing; }
+        .sphere-instruction { position: absolute; top: 1rem; left: 50%; transform: translateX(-50%); color: #444; font-size: 0.8rem; display: flex; gap: 0.5rem; align-items: center; pointer-events: none; }
+        .sphere-scene { position: relative; width: 0; height: 0; transform-style: preserve-3d; }
+        .sphere-node { position: absolute; width: 40px; height: 40px; left: -20px; top: -20px; border: 1px solid #00ff41; border-radius: 50%; display: flex; align-items: center; justify-content: center; transform-style: preserve-3d; box-shadow: 0 0 15px rgba(0,0,0,0.8); background: rgba(0,0,0,0.8); }
+        .node-face { pointer-events: none; display: flex; flex-direction: column; align-items: center; gap: 5px; transform: translateZ(20px); }
+        .node-label { font-size: 0.7rem; white-space: nowrap; text-shadow: 0 0 5px black; font-weight: bold; background: rgba(0,0,0,0.8); padding: 2px 4px; }
+        .core-glow { position: absolute; width: 100px; height: 100px; background: radial-gradient(circle, #00ff41 0%, transparent 70%); opacity: 0.2; transform: translate(-50%, -50%); border-radius: 50%; pointer-events: none; }
+        .holo-ring { position: absolute; border: 1px solid rgba(0,255,65,0.1); border-radius: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+        .r1 { width: 400px; height: 400px; transform: translate(-50%, -50%) rotateX(90deg); }
+        .r2 { width: 350px; height: 350px; transform: translate(-50%, -50%) rotateY(45deg); }
+
+        /* FOOTER */
+        .terminal-dock { position: fixed; bottom: 0; left: 0; width: 100%; background: black; border-top: 1px solid #1a1a1a; padding: 0.5rem 2rem; z-index: 100; font-size: 0.8rem; }
+        .dock-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; }
+        .prompt { color: #00ff41; }
+        .cursor { animation: blink 1s step-end infinite; }
+        .dock-actions { display: flex; gap: 10px; align-items: center; }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes fade-in-up { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes scan { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .anim-icon { animation: blink 2s infinite; }
+        .fade-in-up { animation: fade-in-up 0.5s ease-out; }
+        .fade-in { animation: fadeIn 0.8s ease-out; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .player-view-container { grid-template-columns: 1fr; }
+            .tactical-header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</body>
+</html>

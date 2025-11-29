@@ -17,6 +17,7 @@
 
 	const navItems = [
 		{ href: '/', icon: 'home', label: 'Home' },
+		{ href: '/console', icon: 'gamepad', label: 'Console' },
 		{ href: '/photos', icon: 'photo', label: 'Photos' },
 		{ href: '/music', icon: 'music', label: 'Music' },
 		{ href: '/stats', icon: 'stats', label: 'Stats' },

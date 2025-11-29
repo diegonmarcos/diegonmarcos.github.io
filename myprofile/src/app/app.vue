@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type { ViewType } from '~/types'
-
 // State
-const view = ref<ViewType>('cards')
 const booting = ref(true)
 
 // Matrix canvas ref
@@ -11,7 +8,7 @@ const matrixCanvas = ref<HTMLCanvasElement | null>(null)
 // Composables
 const { initMatrixRain, handleResize } = useMatrixRain()
 const { data } = useData()
-const { rotation, calculateSpherePoints, onMouseDown, onMouseMove, onMouseUp } = useSphere()
+const { rotation, calculateSpherePoints, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd } = useSphere()
 
 // Computed
 const spherePoints = computed(() => calculateSpherePoints(data))
@@ -42,6 +39,13 @@ const onResize = () => {
     handleResize(matrixCanvas.value)
   }
 }
+
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
+}
 </script>
 
 <template>
@@ -68,58 +72,66 @@ const onResize = () => {
           DIEGO N. MARCOS <span class="green">//</span> PROFILE
         </h1>
         <nav class="view-tabs">
-          <button
+          <a
             class="tab-btn"
-            :class="{ active: view === 'cards' }"
-            @click="view = 'cards'"
+            href="#cards"
+            @click.prevent="scrollToSection('cards')"
           >
             <Icon name="lucide:layers" :size="14" />
             CARDS
-          </button>
-          <button
+          </a>
+          <a
             class="tab-btn"
-            :class="{ active: view === 'player' }"
-            @click="view = 'player'"
+            href="#player"
+            @click.prevent="scrollToSection('player')"
           >
             <Icon name="lucide:user" :size="14" />
             PLAYER
-          </button>
-          <button
+          </a>
+          <a
             class="tab-btn"
-            :class="{ active: view === 'sphere' }"
-            @click="view = 'sphere'"
+            href="#sphere"
+            @click.prevent="scrollToSection('sphere')"
           >
             <Icon name="lucide:box" :size="14" />
             SPHERE
-          </button>
+          </a>
         </nav>
       </header>
 
-      <!-- Content Views -->
+      <!-- Content Views - All on same page -->
       <div class="view-content-area">
-        <!-- Cards View -->
-        <CardsView v-if="view === 'cards'" :data="data" />
+        <!-- Cards Section -->
+        <section id="cards" class="view-section">
+          <CardsView :data="data" />
+        </section>
 
-        <!-- Player View -->
-        <PlayerView v-else-if="view === 'player'" :data="data" />
+        <!-- Player Section -->
+        <section id="player" class="view-section">
+          <PlayerView :data="data" />
+        </section>
 
-        <!-- Sphere View -->
-        <SphereView
-          v-else-if="view === 'sphere'"
-          :sphere-points="spherePoints"
-          :rotation="rotation"
-          @mousedown="onMouseDown"
-          @mousemove="onMouseMove"
-          @mouseup="onMouseUp"
-          @mouseleave="onMouseUp"
-        />
+        <!-- Sphere Section -->
+        <section id="sphere" class="view-section">
+          <SphereView
+            :sphere-points="spherePoints"
+            :rotation="rotation"
+            @mousedown="onMouseDown"
+            @mousemove="onMouseMove"
+            @mouseup="onMouseUp"
+            @mouseleave="onMouseUp"
+            @touchstart="onTouchStart"
+            @touchmove="onTouchMove"
+            @touchend="onTouchEnd"
+          />
+        </section>
       </div>
     </main>
 
     <!-- Footer -->
     <footer class="terminal-dock mono">
       <div class="dock-content">
-        <span class="prompt">root@nova:~/views/{{ view }}#</span>
+        <span class="prompt">root@dnm:~/profile#</span>
         <span class="cursor blink">█</span>
         <div class="dock-actions">
           <Icon name="lucide:wifi" :size="16" class="green" />

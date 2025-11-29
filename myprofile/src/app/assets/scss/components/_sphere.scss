@@ -1,17 +1,18 @@
 // ==============================================
-// SPHERE VIEW - 3D Interaction
+// SOLAR SYSTEM VIEW - 3D Planetary Visualization
 // ==============================================
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
 .sphere-viewport {
-  height: 600px;
+  height: 700px;
   width: 100%;
-  perspective: 1000px;
+  perspective: 1200px;
   overflow: hidden;
   @include flex-center;
   position: relative;
   cursor: grab;
+  background: radial-gradient(ellipse at center, rgba(10, 20, 40, 0.8) 0%, transparent 70%);
 
   &:active {
     cursor: grabbing;
@@ -30,84 +31,180 @@
   align-items: center;
   pointer-events: none;
   font-family: $font-mono;
+  z-index: 10;
 
   .anim-icon {
-    animation: blink 2s infinite;
+    animation: pulse-glow 2s ease-in-out infinite;
   }
 }
 
-.sphere-scene {
+.sphere-scene.solar-system {
   position: relative;
   width: 0;
   height: 0;
   transform-style: preserve-3d;
-  @include transition(transform);
+  transition: transform 0.1s ease-out;
 }
 
-.sphere-node {
+// ==================
+// CENTRAL SUN
+// ==================
+.sun {
   position: absolute;
-  width: 40px;
-  height: 40px;
-  left: -20px;
-  top: -20px;
-  border: 1px solid $terminal-green;
-  border-radius: 50%;
-  @include flex-center;
+  transform: translate(-50%, -50%);
   transform-style: preserve-3d;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-  background: rgba(0, 0, 0, 0.8);
-  @include transition(border-color);
+}
 
-  &:hover {
-    border-width: 2px;
+.sun-core {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, #fff 0%, #ffdd00 30%, #ff8800 70%, transparent 100%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 30px #ffaa00,
+    0 0 60px #ff8800,
+    0 0 100px #ff660080,
+    inset 0 0 20px #ffffff80;
+  animation: sun-pulse 4s ease-in-out infinite;
+}
+
+.sun-corona {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: corona-rotate 20s linear infinite;
+}
+
+.sun-flare {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(255, 150, 50, 0.1) 0%, transparent 60%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: flare-pulse 6s ease-in-out infinite;
+}
+
+@keyframes sun-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+@keyframes corona-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes flare-pulse {
+  0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+// ==================
+// 3D PLANETS
+// ==================
+.planet-3d {
+  position: absolute;
+  transform-style: preserve-3d;
+  animation: planet-float 8s ease-in-out infinite;
+}
+
+@keyframes planet-float {
+  0%, 100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.1);
   }
 }
 
-.node-face {
+.planet-face {
   pointer-events: none;
   @include flex-column;
   align-items: center;
-  gap: 5px;
-  transform: translateZ(20px);
+  gap: 8px;
+  transform-style: preserve-3d;
 }
 
-.node-label {
+.planet-body {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid var(--planet-color, $terminal-green);
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.9));
+  @include flex-center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--planet-glow, rgba(0, 255, 136, 0.3)) 0%, transparent 70%);
+    opacity: 0.5;
+    animation: planet-glow 3s ease-in-out infinite;
+  }
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes planet-glow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+.planet-label {
   font-size: $text-xs;
   white-space: nowrap;
-  text-shadow: 0 0 5px black;
+  text-shadow: 0 0 10px black, 0 0 20px black;
   font-weight: bold;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 2px 4px;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 4px 8px;
   font-family: $font-mono;
+  border-radius: 4px;
+  border: 1px solid var(--planet-color, $terminal-green);
+  letter-spacing: 0.05em;
 }
 
-.core-glow {
+// ==================
+// STARFIELD
+// ==================
+.starfield {
   position: absolute;
-  width: 100px;
-  height: 100px;
-  background: radial-gradient(circle, $terminal-green 0%, transparent 70%);
-  opacity: 0.2;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
   pointer-events: none;
 }
 
-.holo-ring {
+.star {
   position: absolute;
-  border: 1px solid rgba($terminal-green, 0.1);
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  background: white;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
+  transform: translate3d(var(--x), var(--y), var(--z));
+  opacity: 0.6;
+  animation: star-twinkle 2s ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  box-shadow: 0 0 3px white;
+}
 
-  &.r1 {
-    width: 400px;
-    height: 400px;
-    transform: translate(-50%, -50%) rotateX(90deg);
-  }
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.9; }
+}
 
-  &.r2 {
-    width: 350px;
-    height: 350px;
-    transform: translate(-50%, -50%) rotateY(45deg);
-  }
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
 }

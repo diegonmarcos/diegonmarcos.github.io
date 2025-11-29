@@ -7,7 +7,7 @@ import type { DataItem, SpherePoint, Rotation, MousePosition } from '~/types'
 export const useSphere = () => {
   const rotation = reactive<Rotation>({ x: 0, y: 0 })
   const isDragging = ref(false)
-  const lastMouse = reactive<MousePosition>({ x: 0, y: 0 })
+  const lastPosition = reactive<MousePosition>({ x: 0, y: 0 })
 
   const calculateSpherePoints = (data: DataItem[]): SpherePoint[] => {
     const phi = Math.PI * (3 - Math.sqrt(5)) // Golden angle
@@ -26,26 +26,55 @@ export const useSphere = () => {
     })
   }
 
+  // Mouse events
   const onMouseDown = (e: MouseEvent) => {
     isDragging.value = true
-    lastMouse.x = e.clientX
-    lastMouse.y = e.clientY
+    lastPosition.x = e.clientX
+    lastPosition.y = e.clientY
   }
 
   const onMouseMove = (e: MouseEvent) => {
     if (!isDragging.value) return
 
-    const deltaX = e.clientX - lastMouse.x
-    const deltaY = e.clientY - lastMouse.y
+    const deltaX = e.clientX - lastPosition.x
+    const deltaY = e.clientY - lastPosition.y
 
     rotation.x -= deltaY * 0.5
     rotation.y += deltaX * 0.5
 
-    lastMouse.x = e.clientX
-    lastMouse.y = e.clientY
+    lastPosition.x = e.clientX
+    lastPosition.y = e.clientY
   }
 
   const onMouseUp = () => {
+    isDragging.value = false
+  }
+
+  // Touch events for mobile
+  const onTouchStart = (e: TouchEvent) => {
+    if (e.touches.length === 1) {
+      isDragging.value = true
+      lastPosition.x = e.touches[0].clientX
+      lastPosition.y = e.touches[0].clientY
+    }
+  }
+
+  const onTouchMove = (e: TouchEvent) => {
+    if (!isDragging.value || e.touches.length !== 1) return
+
+    e.preventDefault() // Prevent scroll while dragging
+
+    const deltaX = e.touches[0].clientX - lastPosition.x
+    const deltaY = e.touches[0].clientY - lastPosition.y
+
+    rotation.x -= deltaY * 0.5
+    rotation.y += deltaX * 0.5
+
+    lastPosition.x = e.touches[0].clientX
+    lastPosition.y = e.touches[0].clientY
+  }
+
+  const onTouchEnd = () => {
     isDragging.value = false
   }
 
@@ -55,6 +84,9 @@ export const useSphere = () => {
     calculateSpherePoints,
     onMouseDown,
     onMouseMove,
-    onMouseUp
+    onMouseUp,
+    onTouchStart,
+    onTouchMove,
+    onTouchEnd
   }
 }

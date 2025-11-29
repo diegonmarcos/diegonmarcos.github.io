@@ -18,6 +18,7 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+DIST_DIR="$PROJECT_DIR/dist"
 PROJECT_NAME="Linktree"
 PORT="8001"
 
@@ -49,7 +50,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Sass" "Vanilla" "npm-live :${PORT}" "Sass"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Linktree" "-" "Sass" "TypeScript" "npm-live :${PORT}" "Sass+TS"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -72,17 +73,28 @@ build_scss() {
     log_success "SCSS compiled successfully"
 }
 
+# Build TypeScript
+build_typescript() {
+    log_info "Building TypeScript..."
+    cd "$PROJECT_DIR"
+    npm run build:bundle
+    log_success "TypeScript compiled successfully"
+}
+
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
     check_dependencies
+
+    # Build TypeScript
+    build_typescript
 
     # Build Sass
     build_scss
 
     # Check required files exist
     _errors=0
-    [ -f "$PROJECT_DIR/index.html" ] || { log_error "index.html not found"; _errors=$((_errors + 1)); }
+    [ -f "$PROJECT_DIR/src_static/index.html" ] || { log_error "src_static/index.html not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/style.css" ] || { log_error "style.css not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/script.js" ] || { log_error "script.js not found"; _errors=$((_errors + 1)); }
 
@@ -96,14 +108,17 @@ build() {
     fi
 }
 
-# Build single-file HTML (inline CSS + JS)
+# Build single-file HTML (inline CSS + JS) into dist/
 build_single_file() {
     log_info "Building single-file HTML..."
 
-    _html_file="$PROJECT_DIR/index.html"
+    # Create dist directory
+    mkdir -p "$DIST_DIR"
+
+    _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"
     _js_file="$PROJECT_DIR/script.js"
-    _output_file="$PROJECT_DIR/index_spa.html"
+    _output_file="$DIST_DIR/index.html"
 
     # Read CSS content
     _css_content=""
@@ -134,6 +149,9 @@ build_single_file() {
     { print }
     ' "$_html_file" > "$_output_file"
 
+    # Clean up intermediate files
+    rm -f "$PROJECT_DIR/style.css" "$PROJECT_DIR/script.js"
+
     log_success "Single-file build → $_output_file"
 }
 
@@ -142,11 +160,14 @@ dev() {
     check_dependencies
     cd "$PROJECT_DIR"
 
-    # Start Sass watch in background
+    # Start TypeScript watch in background (outputs to src_static)
+    nohup npm run dev:bundle > /dev/null 2>&1 &
+
+    # Start Sass watch in background (outputs to src_static)
     nohup npm run dev:css > /dev/null 2>&1 &
 
-    # Start live-server in background
-    nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+    # Start live-server from src_static directory
+    nohup npx live-server src_static --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"
@@ -165,8 +186,12 @@ clean() {
 
     find "$PROJECT_DIR" -name "*.tmp" -delete 2>/dev/null || true
     find "$PROJECT_DIR" -name ".DS_Store" -delete 2>/dev/null || true
+    rm -f "$PROJECT_DIR/style.css" 2>/dev/null || true
+    rm -f "$PROJECT_DIR/script.js" 2>/dev/null || true
     rm -f "$PROJECT_DIR/style.min.css" 2>/dev/null || true
     rm -f "$PROJECT_DIR/script.min.js" 2>/dev/null || true
+    rm -f "$PROJECT_DIR/index.html" 2>/dev/null || true
+    rm -rf "$DIST_DIR" 2>/dev/null || true
 
     log_success "Clean completed"
 }

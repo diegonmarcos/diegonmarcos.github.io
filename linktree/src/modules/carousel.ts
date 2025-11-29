@@ -1,0 +1,329 @@
+// Carousel module - Swiper.js integration
+
+import { querySelector, addClass, removeClass } from '../utils/dom';
+import type { CarouselType, Swiper, SwiperOptions } from '../types';
+
+// Declare global Swiper
+declare const Swiper: new (selector: string, options: SwiperOptions) => import('../types').Swiper;
+
+// State
+let selectedCarousel: CarouselType = 'professional';
+let professionalSwiper: import('../types').Swiper;
+let personalSwiper: import('../types').Swiper;
+let professionalRow: HTMLElement;
+let personalRow: HTMLElement;
+let professionalPrev: HTMLElement;
+let professionalNext: HTMLElement;
+let personalPrev: HTMLElement;
+let personalNext: HTMLElement;
+
+// Trackpad debounce
+let trackpadDebounce = false;
+const TRACKPAD_DEBOUNCE_TIME = 300;
+
+/**
+ * Common Swiper configuration
+ */
+const swiperConfig: SwiperOptions = {
+  effect: 'creative',
+  grabCursor: true,
+  centeredSlides: false,
+  slidesPerView: 1,
+  spaceBetween: 0,
+  loop: true,
+  creativeEffect: {
+    prev: {
+      shadow: true,
+      translate: ['-120%', 0, -500],
+      rotate: [0, 0, -15],
+      opacity: 0,
+      scale: 0.8,
+    },
+    next: {
+      shadow: true,
+      translate: ['120%', 0, -500],
+      rotate: [0, 0, 15],
+      opacity: 0,
+      scale: 0.8,
+    },
+  },
+  keyboard: {
+    enabled: true,
+    onlyInViewport: true,
+  },
+  touchRatio: 1,
+  resistanceRatio: 0.85,
+  touchStartPreventDefault: false,
+  touchStartForcePreventDefault: false,
+  touchMoveStopPropagation: false,
+  simulateTouch: true,
+  allowTouchMove: true,
+  touchEventsTarget: 'container',
+  threshold: 10,
+  passiveListeners: false,
+  speed: 900,
+};
+
+/**
+ * Select a carousel
+ */
+export function selectCarousel(carousel: CarouselType): void {
+  selectedCarousel = carousel;
+
+  if (carousel === 'professional') {
+    addClass(professionalRow, 'selected');
+    removeClass(personalRow, 'selected');
+  } else {
+    addClass(personalRow, 'selected');
+    removeClass(professionalRow, 'selected');
+  }
+}
+
+/**
+ * Update arrow and touch states based on selected carousel
+ */
+export function updateArrowStates(): void {
+  const professionalSwiperEl = querySelector<HTMLElement>('.professional-swiper');
+  const personalSwiperEl = querySelector<HTMLElement>('.personal-swiper');
+
+  if (!professionalSwiperEl || !personalSwiperEl) return;
+
+  if (selectedCarousel === 'professional') {
+    // Enable professional carousel
+    professionalPrev.style.opacity = '1';
+    professionalNext.style.opacity = '1';
+    professionalPrev.style.pointerEvents = 'auto';
+    professionalNext.style.pointerEvents = 'auto';
+    professionalSwiper.allowTouchMove = true;
+    professionalSwiper.enable();
+    addClass(professionalSwiperEl, 'swiper-enabled');
+    removeClass(professionalSwiperEl, 'swiper-disabled');
+
+    // Disable personal carousel
+    personalPrev.style.opacity = '0.3';
+    personalNext.style.opacity = '0.3';
+    personalPrev.style.pointerEvents = 'none';
+    personalNext.style.pointerEvents = 'none';
+    personalSwiper.allowTouchMove = false;
+    personalSwiper.disable();
+    addClass(personalSwiperEl, 'swiper-disabled');
+    removeClass(personalSwiperEl, 'swiper-enabled');
+  } else {
+    // Enable personal carousel
+    personalPrev.style.opacity = '1';
+    personalNext.style.opacity = '1';
+    personalPrev.style.pointerEvents = 'auto';
+    personalNext.style.pointerEvents = 'auto';
+    personalSwiper.allowTouchMove = true;
+    personalSwiper.enable();
+    addClass(personalSwiperEl, 'swiper-enabled');
+    removeClass(personalSwiperEl, 'swiper-disabled');
+
+    // Disable professional carousel
+    professionalPrev.style.opacity = '0.3';
+    professionalNext.style.opacity = '0.3';
+    professionalPrev.style.pointerEvents = 'none';
+    professionalNext.style.pointerEvents = 'none';
+    professionalSwiper.allowTouchMove = false;
+    professionalSwiper.disable();
+    addClass(professionalSwiperEl, 'swiper-disabled');
+    removeClass(professionalSwiperEl, 'swiper-enabled');
+  }
+}
+
+/**
+ * Handle trackpad swipe
+ */
+function handleTrackpadSwipe(e: WheelEvent, swiper: import('../types').Swiper): void {
+  if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+    if (!trackpadDebounce) {
+      trackpadDebounce = true;
+
+      if (e.deltaX > 30) {
+        swiper.slidePrev();
+      } else if (e.deltaX < -30) {
+        swiper.slideNext();
+      }
+
+      setTimeout(() => {
+        trackpadDebounce = false;
+      }, TRACKPAD_DEBOUNCE_TIME);
+
+      e.preventDefault();
+    }
+  }
+}
+
+/**
+ * Professional trackpad handler
+ */
+function professionalTrackpadHandler(e: WheelEvent): void {
+  handleTrackpadSwipe(e, professionalSwiper);
+}
+
+/**
+ * Personal trackpad handler
+ */
+function personalTrackpadHandler(e: WheelEvent): void {
+  handleTrackpadSwipe(e, personalSwiper);
+}
+
+/**
+ * Update trackpad listeners
+ */
+function updateTrackpadListeners(): void {
+  professionalRow.removeEventListener('wheel', professionalTrackpadHandler);
+  personalRow.removeEventListener('wheel', personalTrackpadHandler);
+
+  if (selectedCarousel === 'professional') {
+    professionalRow.addEventListener('wheel', professionalTrackpadHandler, { passive: false });
+  } else {
+    personalRow.addEventListener('wheel', personalTrackpadHandler, { passive: false });
+  }
+}
+
+/**
+ * Initialize two-finger swipe detection
+ */
+function initTwoFingerSwipe(): void {
+  let touchStartY = 0;
+  let touchStartX = 0;
+  let isTwoFingerSwipe = false;
+
+  [professionalRow, personalRow].forEach((row, index) => {
+    row.addEventListener('touchstart', (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        isTwoFingerSwipe = true;
+        touchStartY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+        touchStartX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      }
+    });
+
+    row.addEventListener('touchmove', (e: TouchEvent) => {
+      if (isTwoFingerSwipe && e.touches.length === 2) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    row.addEventListener('touchend', () => {
+      if (isTwoFingerSwipe) {
+        selectCarousel(index === 0 ? 'professional' : 'personal');
+        updateArrowStates();
+        isTwoFingerSwipe = false;
+      }
+    });
+  });
+}
+
+/**
+ * Initialize keyboard navigation
+ */
+function initKeyboardNavigation(): void {
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.key === 'ArrowLeft') {
+      if (selectedCarousel === 'professional') {
+        professionalSwiper.slidePrev();
+      } else {
+        personalSwiper.slidePrev();
+      }
+    } else if (e.key === 'ArrowRight') {
+      if (selectedCarousel === 'professional') {
+        professionalSwiper.slideNext();
+      } else {
+        personalSwiper.slideNext();
+      }
+    } else if (e.key === 'ArrowDown') {
+      selectCarousel('personal');
+      updateArrowStates();
+    } else if (e.key === 'ArrowUp') {
+      selectCarousel('professional');
+      updateArrowStates();
+    }
+  });
+}
+
+/**
+ * Initialize hover selection
+ */
+function initHoverSelection(): void {
+  professionalRow.addEventListener('mouseenter', () => {
+    selectCarousel('professional');
+    updateArrowStates();
+    updateTrackpadListeners();
+  });
+
+  personalRow.addEventListener('mouseenter', () => {
+    selectCarousel('personal');
+    updateArrowStates();
+    updateTrackpadListeners();
+  });
+}
+
+/**
+ * Initialize carousels
+ */
+export function initCarousels(): void {
+  // Get carousel rows
+  const profRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(1)');
+  const persRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(2)');
+
+  if (!profRow || !persRow) return;
+
+  professionalRow = profRow;
+  personalRow = persRow;
+
+  // Get navigation elements
+  const profPrev = querySelector<HTMLElement>('.professional-prev');
+  const profNext = querySelector<HTMLElement>('.professional-next');
+  const persPrev = querySelector<HTMLElement>('.personal-prev');
+  const persNext = querySelector<HTMLElement>('.personal-next');
+
+  if (!profPrev || !profNext || !persPrev || !persNext) return;
+
+  professionalPrev = profPrev;
+  professionalNext = profNext;
+  personalPrev = persPrev;
+  personalNext = persNext;
+
+  // Initialize Swiper instances
+  professionalSwiper = new Swiper('.professional-swiper', {
+    ...swiperConfig,
+    navigation: {
+      nextEl: '.professional-next',
+      prevEl: '.professional-prev',
+    },
+    pagination: {
+      el: '.professional-pagination',
+      clickable: true,
+    },
+  });
+
+  personalSwiper = new Swiper('.personal-swiper', {
+    ...swiperConfig,
+    navigation: {
+      nextEl: '.personal-next',
+      prevEl: '.personal-prev',
+    },
+    pagination: {
+      el: '.personal-pagination',
+      clickable: true,
+    },
+  });
+
+  // Set initial selected state
+  addClass(professionalRow, 'selected');
+
+  // Initialize features
+  updateArrowStates();
+  initTwoFingerSwipe();
+  initKeyboardNavigation();
+  initHoverSelection();
+  updateTrackpadListeners();
+}
+
+/**
+ * Get current selected carousel
+ */
+export function getSelectedCarousel(): CarouselType {
+  return selectedCarousel;
+}

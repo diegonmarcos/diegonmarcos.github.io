@@ -18,6 +18,7 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+DIST_DIR="$PROJECT_DIR/dist"
 PROJECT_NAME="CV Web"
 PORT="8002"
 SASS_DIR="$PROJECT_DIR/3.sass"
@@ -52,7 +53,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "CV Web" "-" "Sass" "-" "npm-live :${PORT}" "Sass"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "CV Web" "-" "Sass" "TypeScript" "npm-live :${PORT}" "Sass+TS"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -68,36 +69,47 @@ check_dependencies() {
     cd "$PROJECT_DIR"
 }
 
+# Build TypeScript
+build_typescript() {
+    log_info "Building TypeScript..."
+    cd "$PROJECT_DIR"
+    npm run build:bundle
+    log_success "TypeScript compiled successfully"
+}
+
 # Build Sass
-build() {
+build_sass() {
     log_info "Building Sass for production..."
-    check_dependencies
-    cd "$PROJECT_DIR/1.ops"
-
-    if [ -f "package.json" ]; then
-        npm run sass:build 2>&1 || {
-            log_error "Sass build failed"
-            return 1
-        }
-    elif command -v sass >/dev/null 2>&1; then
-        sass "$SASS_DIR/main.scss:$CSS_OUTPUT" --style=compressed
-    else
-        log_error "Sass compiler not found"
-        return 1
-    fi
-
+    cd "$PROJECT_DIR"
+    npm run build:css
     log_success "Sass compiled to $CSS_OUTPUT"
+}
+
+# Build action
+build() {
+    log_info "Building ${PROJECT_NAME}..."
+    check_dependencies
+
+    # Build TypeScript
+    build_typescript
+
+    # Build Sass
+    build_sass
 
     build_single_file
 }
 
-# Build single-file HTML (inline CSS)
+# Build single-file HTML (inline CSS) into dist/
 build_single_file() {
     log_info "Building single-file HTML..."
 
-    _html_file="$PROJECT_DIR/index.html"
+    # Create dist directory
+    mkdir -p "$DIST_DIR"
+
+    _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"
-    _output_file="$PROJECT_DIR/index_spa.html"
+    _js_file="$PROJECT_DIR/script.js"
+    _output_file="$DIST_DIR/index.html"
 
     if [ ! -f "$_html_file" ]; then
         log_warning "index.html not found, skipping single-file build"
@@ -110,16 +122,31 @@ build_single_file() {
         _css_content=$(cat "$_css_file")
     fi
 
-    # Create single-file HTML (inline CSS only, CV Web has no local JS)
-    awk -v css="$_css_content" '
+    # Read JS content
+    _js_content=""
+    if [ -f "$_js_file" ]; then
+        _js_content=$(cat "$_js_file")
+    fi
+
+    # Create single-file HTML (inline CSS and JS)
+    awk -v css="$_css_content" -v js="$_js_content" '
     /<link[^>]*href="style\.css"[^>]*>/ {
         print "<style>"
         print css
         print "</style>"
         next
     }
+    /<script[^>]*src="script\.js"[^>]*>/ {
+        print "<script>"
+        print js
+        print "</script>"
+        next
+    }
     { print }
     ' "$_html_file" > "$_output_file"
+
+    # Clean up intermediate files
+    rm -f "$PROJECT_DIR/style.css" "$PROJECT_DIR/script.js" "$PROJECT_DIR/style.css.map"
 
     log_success "Single-file build → $_output_file"
 }
@@ -127,16 +154,16 @@ build_single_file() {
 # Development mode
 dev() {
     check_dependencies
-
-    # Start Sass watch in background (silent)
-    cd "$PROJECT_DIR/1.ops"
-    if [ -f "package.json" ] && grep -q "sass:watch" package.json 2>/dev/null; then
-        nohup npm run sass:watch > /dev/null 2>&1 &
-    fi
-
-    # Start live-server in background
     cd "$PROJECT_DIR"
-    nohup npx live-server --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+
+    # Start TypeScript watch in background (output to src_static)
+    nohup npm run dev:bundle > /dev/null 2>&1 &
+
+    # Start Sass watch in background (outputs to src_static/style.css)
+    nohup npm run watch:css > /dev/null 2>&1 &
+
+    # Start live-server from src_static directory
+    nohup npx live-server src_static --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"
@@ -151,20 +178,18 @@ dev() {
 
 # Watch Sass only
 watch() {
-    log_info "Watching Sass files..."
+    log_info "Watching Sass and TypeScript files..."
     check_dependencies
-    cd "$PROJECT_DIR/1.ops"
+    cd "$PROJECT_DIR"
 
-    if [ -f "package.json" ] && grep -q "sass:watch" package.json 2>/dev/null; then
-        log_success "Watching for changes..."
-        log_info "Press Ctrl+C to stop"
-        npm run sass:watch
-    elif command -v sass >/dev/null 2>&1; then
-        sass --watch "$SASS_DIR/main.scss:$CSS_OUTPUT"
-    else
-        log_error "Sass compiler not found"
-        return 1
-    fi
+    # Start TypeScript watch in background
+    npm run dev:bundle &
+
+    log_success "Watching for changes..."
+    log_info "Press Ctrl+C to stop"
+
+    # Start Sass watch in foreground
+    npm run watch:css
 }
 
 # Clean
@@ -172,6 +197,9 @@ clean() {
     log_info "Cleaning build artifacts..."
     rm -f "$CSS_OUTPUT"
     rm -f "$CSS_OUTPUT.map"
+    rm -f "$PROJECT_DIR/script.js"
+    rm -f "$PROJECT_DIR/index.html"
+    rm -rf "$DIST_DIR"
     log_success "Clean completed"
 }
 

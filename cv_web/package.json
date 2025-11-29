@@ -2,15 +2,28 @@
   "name": "cv_web",
   "version": "1.0.0",
   "description": "CV website",
-  "main": "script.js",
+  "main": "dist/main.js",
+  "type": "module",
   "scripts": {
-    "build": "sass 3.sass/main.scss style.css --style compressed",
-    "dev": "sass 3.sass/main.scss style.css",
-    "watch": "sass --watch 3.sass:."
+    "build:css": "sass src_static/scss/main.scss style.css --style compressed",
+    "build:ts": "tsc",
+    "build:bundle": "esbuild src/main.ts --bundle --outfile=script.js --format=iife --target=es2020 --minify",
+    "build": "npm run build:ts && npm run build:bundle && npm run build:css",
+    "dev:css": "sass src_static/scss/main.scss style.css",
+    "dev:ts": "tsc --watch",
+    "dev:bundle": "esbuild src/main.ts --bundle --outfile=src_static/script.js --format=iife --target=es2020 --sourcemap --watch",
+    "dev": "npm run build:bundle",
+    "watch:css": "sass --watch src_static/scss/main.scss:src_static/style.css",
+    "watch:ts": "npm run dev:bundle",
+    "typecheck": "tsc --noEmit"
   },
-  "author": "",
+  "author": "Diego Nepomuceno Marcos",
   "license": "ISC",
   "dependencies": {
     "sass": "^1.77.4"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "typescript": "^5.9.3"
   }
 }

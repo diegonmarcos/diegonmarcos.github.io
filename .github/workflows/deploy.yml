@@ -263,8 +263,26 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
-          # Copy all relevant files and directories
-          cp -r linktree/ cv_web/ cv_pdf/ others/ _site/ 2>/dev/null || true
+          # Copy cv_pdf and others (no build needed)
+          cp -r cv_pdf/ others/ _site/ 2>/dev/null || true
+
+          # Copy Linktree build (if dist exists)
+          if [ -d "linktree/dist" ]; then
+            echo "📦 Copying Linktree build..."
+            mkdir -p _site/linktree
+            cp -r linktree/dist/* _site/linktree/
+            cp -r linktree/public/* _site/linktree/ 2>/dev/null || true
+            echo "✅ Linktree build copied to _site/linktree/"
+          fi
+
+          # Copy CV Web build (if dist exists)
+          if [ -d "cv_web/dist" ]; then
+            echo "📦 Copying CV Web build..."
+            mkdir -p _site/cv_web
+            cp -r cv_web/dist/* _site/cv_web/
+            cp -r cv_web/public/* _site/cv_web/ 2>/dev/null || true
+            echo "✅ CV Web build copied to _site/cv_web/"
+          fi
 
           # Copy Landpage (main landing page)
           if [ -d "landpage/dist" ]; then

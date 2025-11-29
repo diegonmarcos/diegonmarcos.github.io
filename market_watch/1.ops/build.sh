@@ -109,18 +109,18 @@ build() {
     log_success "Build completed → $DIST_DIR"
 }
 
-# Build single-file HTML (inline CSS + JS)
+# Build single-file HTML (inline CSS + JS) as the main index.html
 build_single_file() {
-    log_info "Building single-file HTML..."
+    log_info "Building single-file SPA..."
 
     _html_file="$DIST_DIR/index.html"
     _css_file="$DIST_DIR/styles.css"
     _js_file="$DIST_DIR/script.js"
-    _output_file="$DIST_DIR/index_spa.html"
+    _tmp_file="$DIST_DIR/index.tmp.html"
 
     if [ ! -f "$_html_file" ]; then
-        log_warning "index.html not found, skipping single-file build"
-        return 0
+        log_error "index.html not found at $_html_file"
+        return 1
     fi
 
     # Read CSS content
@@ -135,7 +135,7 @@ build_single_file() {
         _js_content=$(cat "$_js_file")
     fi
 
-    # Create single-file HTML
+    # Create single-file HTML with inlined CSS and JS
     awk -v css="$_css_content" -v js="$_js_content" '
     /<link[^>]*href="styles\.css"[^>]*>/ {
         print "<style>"
@@ -150,9 +150,16 @@ build_single_file() {
         next
     }
     { print }
-    ' "$_html_file" > "$_output_file"
+    ' "$_html_file" > "$_tmp_file"
 
-    log_success "Single-file build → $_output_file"
+    # Replace original with SPA version
+    mv "$_tmp_file" "$_html_file"
+
+    # Clean up separate CSS and JS files (now inlined)
+    rm -f "$_css_file" "$_js_file"
+    rm -f "$DIST_DIR/index_spa.html"  # Remove old SPA file if exists
+
+    log_success "SPA build → $_html_file (CSS + JS inlined)"
 }
 
 # Development mode with watch
@@ -192,6 +199,8 @@ clean() {
         rm -f "$DIST_DIR/styles.css.map"
         rm -f "$DIST_DIR/script.js"
         rm -f "$DIST_DIR/script.js.map"
+        rm -f "$DIST_DIR/index_spa.html"
+        rm -f "$DIST_DIR/index.tmp.html"
         log_success "Build artifacts cleaned"
     else
         log_warning "Dist directory doesn't exist, nothing to clean"

@@ -1,101 +1,141 @@
-// Base styles - Bloomberg Terminal
+/* * BLOOMBERG TERMINAL - BASE STYLES
+ * ----------------------------------
+ * Global resets, mixins, and utilities.
+ */
+
 @use 'variables' as *;
 
+// --- 1. Mixins ---
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin terminal-focus {
+  outline: none;
+  background-color: $color-text-accent;
+  color: $color-bg-global;
+  font-weight: bold;
+}
+
+// --- 2. Global Resets ---
+
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html, body {
   height: 100%;
   overflow: hidden;
-  min-width: 1400px;
 }
 
 body {
-  font-family: $font-sans;
-  font-size: 12px;
-  background-color: $black;
-  color: $text-primary;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: $color-bg-global;
+  color: $color-text-primary;
+  font-family: $font-mono;
+  font-size: $font-size-base;
+  -webkit-font-smoothing: none; // Keeps pixels sharp
   user-select: none;
 }
 
-// Utility classes
-.font-mono {
-  font-family: $font-mono;
+// --- 3. App Container ---
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-.text-amber {
-  color: $amber;
-}
+// --- 4. Scrollbar Styling ---
 
-.text-ticker {
-  color: $ticker-cyan;
-}
-
-.text-positive {
-  color: $positive;
-}
-
-.text-negative {
-  color: $negative;
-}
-
-.text-white {
-  color: $white;
-}
-
-.text-muted {
-  color: $gray-500;
-}
-
-// Tabular numbers for alignment
-.tabular-nums {
-  font-variant-numeric: tabular-nums;
-}
-
-// Custom scrollbar - Bloomberg style
 .custom-scrollbar {
   &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 8px;
+    height: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: $black;
+    background: $color-bg-global;
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 2px;
+    background: $gray-600;
+    // NO border-radius - sharp edges
 
     &:hover {
-      background: #555;
+      background: $gray-500;
     }
   }
 }
 
-// Firefox scrollbar
+// Firefox
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #333 $black;
+  scrollbar-color: $gray-600 $color-bg-global;
 }
 
-// Hide scrollbar but keep functionality
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+// --- 5. Selection ---
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-// Selection
 ::selection {
-  background: $amber;
-  color: $black;
+  background: $color-text-accent;
+  color: $color-bg-global;
+}
+
+// --- 6. Utility Classes ---
+
+// Text colors
+.txt-green   { color: $color-text-green; }
+.txt-red     { color: $color-text-red; }
+.txt-amber   { color: $color-text-accent; }
+.txt-muted   { color: $color-text-muted; }
+.txt-white   { color: #ffffff; }
+
+// Text alignment
+.txt-right   { text-align: right; }
+.txt-left    { text-align: left; }
+.txt-center  { text-align: center; }
+
+// Font utilities
+.font-mono   { font-family: $font-mono; }
+.font-bold   { font-weight: bold; }
+.uppercase   { text-transform: uppercase; }
+
+// Number alignment - critical for terminal
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+// --- 7. Keyframes ---
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes flash-green {
+  0% { background-color: rgba($color-text-green, 0.3); }
+  100% { background-color: transparent; }
+}
+
+@keyframes flash-red {
+  0% { background-color: rgba($color-text-red, 0.3); }
+  100% { background-color: transparent; }
 }

@@ -1,46 +1,71 @@
-// Bloomberg Terminal Color Palette - Authentic
-$black: #000000 !default;
-$bg-dark: #000000 !default;
-$bg-panel: #1a1a1a !default;
-$bg-header: #003366 !default;
+/* * BLOOMBERG TERMINAL - DESIGN SYSTEM
+ * ----------------------------------
+ * A high-density, high-contrast theme engine.
+ */
 
-// Bloomberg Brand Colors
-$amber: #ffb400 !default;
-$ticker-cyan: #66ccff !default;
-$white: #ffffff !default;
-$text-primary: #e2e8f0 !default;
+// --- 1. Color Palette - The Core Identity ---
 
-// Gray Scale
-$gray-100: #f8f9fa !default;
-$gray-300: #d1d5db !default;
-$gray-400: #9ca3af !default;
-$gray-500: #6b7280 !default;
-$gray-600: #4b5563 !default;
-$gray-700: #374151 !default;
-$gray-800: #1f2937 !default;
-$gray-900: #111827 !default;
+// Backgrounds
+$color-bg-global:       #000000;
+$color-bg-panel:        #121212;
+$color-bg-panel-alt:    #1a1a1a;
+$color-bg-selection:    #003366; // The iconic "Selected Blue"
+$color-bg-header:       #1a1a1a;
 
-// Performance Colors (Bloomberg authentic)
-$positive: #22c55e !default;  // Green for positive
-$negative: #ef4444 !default;  // Red for negative
-$neutral: #888888 !default;
+// Text Colors
+$color-text-primary:    #e0e0e0;
+$color-text-muted:      #999999;
+$color-text-accent:     #ff9800; // Bloomberg Amber
+$color-text-green:      #00ff00; // Terminal Green
+$color-text-red:        #ff3333; // Alert Red
 
-// Border Colors
-$border-dark: #333333 !default;
-$border-light: rgba(255, 255, 255, 0.2) !default;
-$border-panel: #374151 !default;
+// Accents & Borders
+$color-border:          #333333;
+$gradient-ribbon:       linear-gradient(to bottom, #cc0000 0%, #880000 100%);
 
-// Fonts
-$font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !default;
-$font-mono: 'Roboto Mono', 'Consolas', 'Monaco', monospace !default;
+// --- 2. Typography ---
 
-// Sizes - Tighter like Bloomberg
-$header-height: auto !default;
-$footer-height: 24px !default;
-$panel-padding: 4px !default;
-$table-row-height: 18px !default;
+$font-mono:             'Consolas', 'Monaco', 'Andale Mono', monospace;
+$font-size-base:        12px;
+$font-size-tiny:        11px;
+$font-size-small:       10px;
 
-// Z-index layers
-$z-header: 100 !default;
-$z-modal: 200 !default;
-$z-tooltip: 300 !default;
+// --- 3. Sizing & Spacing ---
+
+$row-height:            22px;
+$cell-padding:          2px 6px;
+$header-padding:        4px 8px;
+$panel-gap:             1px;
+
+// --- 4. Legacy Aliases (for backwards compatibility) ---
+
+$black:                 $color-bg-global;
+$white:                 #ffffff;
+$orange:                $color-text-accent;
+$amber:                 $color-text-accent;
+$green:                 $color-text-green;
+$red:                   $color-text-red;
+$positive:              $color-text-green;
+$negative:              $color-text-red;
+$neutral:               $color-text-muted;
+
+$bg-global:             $color-bg-global;
+$bg-panel:              $color-bg-panel;
+$bg-selection:          $color-bg-selection;
+$text-primary:          $color-text-primary;
+$text-muted:            $color-text-muted;
+$text-secondary:        $color-text-muted;
+$text-accent:           $color-text-accent;
+$border-dark:           $color-border;
+
+$gray-100:              #e0e0e0;
+$gray-300:              #a0a0a0;
+$gray-400:              #808080;
+$gray-500:              #606060;
+$gray-600:              #404040;
+$gray-700:              #333333;
+$gray-800:              #1a1a1a;
+$gray-900:              #121212;
+
+// Footer
+$footer-height:         24px;

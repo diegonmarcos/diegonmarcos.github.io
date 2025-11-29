@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1400, shrink-to-fit=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.25, maximum-scale=3, user-scalable=yes">
     <title>Market Watch Terminal</title>
     <meta name="description" content="Market Watch Terminal - Real-time financial market data and analytics dashboard">
 
@@ -39,35 +39,474 @@
     </script>
     <!-- End Matomo Tag Manager -->
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts - Strictly monospace for Bloomberg terminal -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&family=Source+Code+Pro:wght@400;500;700&display=swap" rel="stylesheet">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="styles.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}body{background-color:#000;color:#e0e0e0;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:12px;-webkit-font-smoothing:none;user-select:none}.app{display:flex;flex-direction:column;height:100vh;width:100vw;overflow:hidden}.custom-scrollbar::-webkit-scrollbar{width:8px;height:8px}.custom-scrollbar::-webkit-scrollbar-track{background:#000}.custom-scrollbar::-webkit-scrollbar-thumb{background:#404040}.custom-scrollbar::-webkit-scrollbar-thumb:hover{background:#606060}.custom-scrollbar{scrollbar-width:thin;scrollbar-color:#404040 #000}::selection{background:#ff9800;color:#000}.txt-green{color:lime}.txt-red{color:#f33}.txt-amber{color:#ff9800}.txt-muted{color:#999}.txt-white{color:#fff}.txt-right{text-align:right}.txt-left{text-align:left}.txt-center{text-align:center}.font-mono{font-family:"Consolas","Monaco","Andale Mono",monospace}.font-bold{font-weight:bold}.uppercase{text-transform:uppercase}.tabular-nums{font-variant-numeric:tabular-nums}@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}@keyframes flash-green{0%{background-color:rgba(0,255,0,.3)}100%{background-color:rgba(0,0,0,0)}}@keyframes flash-red{0%{background-color:rgba(255,51,51,.3)}100%{background-color:rgba(0,0,0,0)}}.header{display:flex;flex-direction:column;background:#000;flex-shrink:0}.header__top{display:flex;justify-content:space-between;align-items:center;padding:4px 8px;background:#000;border-bottom:1px solid #333;font-size:11px}.header__brand{display:flex;align-items:center;gap:4px;font-family:"Consolas","Monaco","Andale Mono",monospace}.header__brand .brand-name{font-weight:bold;color:#e0e0e0}.header__brand .brand-section{color:#999;font-size:11px}.header__brand .brand-section::before{content:">>";margin:0 6px;color:#999}.header__clock{font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:11px;color:#e0e0e0}.header__action-ribbon{display:flex;align-items:center;padding:4px 8px;background:linear-gradient(to bottom, #cc0000 0%, #880000 100%);gap:16px;box-shadow:inset 0 1px 0 hsla(0,0%,100%,.15)}.header__action-ribbon .action-item{font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:11px;font-weight:bold;color:#fff;cursor:pointer}.header__action-ribbon .action-item .action-number{opacity:.8;margin-right:2px}.header__action-ribbon .action-item:hover{text-decoration:underline}.header__command{display:flex;align-items:center;padding:4px 8px;background:#000;gap:8px}.header__command .command-line{display:flex;align-items:center;background:#ff9800;padding:2px 8px;min-width:200px}.header__command .command-label{font-weight:bold;font-size:12px;font-family:"Consolas","Monaco","Andale Mono",monospace;color:#000;margin-right:4px;text-transform:uppercase}.header__command .command-cursor{width:8px;height:14px;background:#000;animation:blink 1s step-end infinite}.header__command .cmd-input{background:rgba(0,0,0,0);border:none;color:#000;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:12px;font-weight:bold;text-transform:uppercase;outline:none;flex:1}.header__command .cmd-input::placeholder{color:rgba(0,0,0,.5)}.main-grid{flex:1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:1px;padding:0;background:#333;overflow:hidden;min-height:0}.panel{display:flex;flex-direction:column;background:#000;border:none;overflow:hidden;min-height:0}.panel__header{display:flex;align-items:center;justify-content:space-between;padding:2px 6px;background:#1a1a1a;border-bottom:1px solid #333;flex-shrink:0;user-select:none}.panel__header .panel-title{display:flex;align-items:center;gap:6px}.panel__header .panel-title .panel-number{font-weight:bold;font-size:12px;font-family:"Consolas","Monaco","Andale Mono",monospace;color:#ff9800}.panel__header .panel-title .panel-name{font-weight:bold;font-size:11px;font-family:"Consolas","Monaco","Andale Mono",monospace;color:#e0e0e0;text-transform:uppercase}.panel__header .panel-actions{display:flex;align-items:center;gap:8px}.panel__header .panel-actions .panel-command{font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:10px;font-weight:bold;color:#000;background:#ff9800;cursor:pointer;padding:1px 6px}.panel__header .panel-actions .panel-command:hover{filter:brightness(1.1)}.panel__header .panel-actions .panel-icons{display:flex;gap:4px}.panel__header .panel-actions .panel-icons svg{width:12px;height:12px;color:#999;cursor:pointer}.panel__header .panel-actions .panel-icons svg:hover{color:#ff9800}.panel__content{flex:1;overflow:auto;padding:2px;min-height:0;background:#000}.panel__chart{flex:1;display:flex;flex-direction:column;padding:2px;overflow:hidden;min-height:0;background:#000}.panel__chart .chart-container{flex:1;min-height:0;margin-bottom:4px;position:relative}.panel__chart .chart-tables{height:80px;display:flex;gap:8px;border-top:1px solid #333;padding-top:4px;flex-shrink:0}.filter-bar{background-color:#ff9800;color:#000;padding:4px 6px;font-weight:bold;font-size:11px;display:flex;gap:8px;align-items:center}.filter-bar select{background:#000;color:#ff9800;border:1px solid #404040;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:11px;height:20px;padding:0 4px}.data-table{width:100%;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:12px;border-collapse:collapse;white-space:nowrap}.data-table__section{margin-bottom:4px}.data-table__section:last-child{margin-bottom:0}.data-table__title{font-size:11px;font-weight:bold;color:#ff9800;background:#000;padding:2px 6px;margin-bottom:0;text-transform:uppercase;border-bottom:1px solid #ff9800}.data-table thead{position:sticky;top:0;background-color:#1a1a1a;z-index:10}.data-table thead tr{border-bottom:1px solid #333}.data-table thead th{padding:2px 6px;font-weight:normal;font-size:11px;color:#ff9800;text-align:right;text-transform:uppercase}.data-table thead th:first-child{text-align:left;width:100px}.data-table tbody tr{height:22px;cursor:pointer;border-bottom:1px solid hsl(0,0%,10%)}.data-table tbody tr:nth-child(even){background-color:#121212}.data-table tbody tr:nth-child(odd){background-color:#000}.data-table tbody tr.is-selected{background-color:#036 !important;color:#fff !important;outline:1px solid #06c}.data-table tbody tr.is-selected .ticker-cell,.data-table tbody tr.is-selected .perf-cell,.data-table tbody tr.is-selected .txt-green,.data-table tbody tr.is-selected .txt-red,.data-table tbody tr.is-selected .txt-amber{color:#fff !important}.data-table tbody tr:not(.is-selected):hover{border:1px solid #999}.data-table tbody td{padding:2px 6px;text-align:right;font-variant-numeric:tabular-nums}.data-table tbody td:first-child{text-align:left}.data-table .ticker-cell{color:#ff9800;font-weight:bold;max-width:100px;overflow:hidden;text-overflow:ellipsis}.data-table .price-cell{color:#e0e0e0;font-weight:bold;font-variant-numeric:tabular-nums}.data-table .perf-cell{font-variant-numeric:tabular-nums}.data-table .perf-cell.positive{color:lime}.data-table .perf-cell.negative{color:#f33}.data-table .perf-cell.neutral{color:#999}.data-table .flash-up{animation:flash-green .3s ease-out}.data-table .flash-down{animation:flash-red .3s ease-out}.yield-table{flex:1}.yield-table__title{font-size:10px;font-weight:bold;color:#ff9800;background:#000;padding:2px 6px;text-transform:uppercase;border-bottom:1px solid #ff9800}.yield-table table{width:100%;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:11px;border-collapse:collapse}.yield-table table thead tr{background:#1a1a1a}.yield-table table thead th{padding:2px 6px;font-weight:normal;color:#ff9800;text-align:right;text-transform:uppercase}.yield-table table thead th:first-child{text-align:left}.yield-table table tbody tr:nth-child(even){background-color:#121212}.yield-table table tbody tr:nth-child(odd){background-color:#000}.yield-table table tbody td{padding:2px 6px;text-align:right;font-variant-numeric:tabular-nums}.yield-table table tbody td:first-child{text-align:left;color:#ff9800;font-weight:bold}.yield-table table tbody td:nth-child(2){color:#e0e0e0;font-weight:bold}.table-wrapper{flex:1;overflow-y:auto}.yield-chart{width:100%;height:100%;background:#000;border:1px solid #333;position:relative}.yield-chart__title{position:absolute;top:4px;left:6px;font-size:11px;font-weight:bold;font-family:"Consolas","Monaco","Andale Mono",monospace;color:#ff9800;background:#000;padding:2px 4px;z-index:10;text-transform:uppercase}.yield-chart__legend{position:absolute;top:4px;right:6px;display:flex;gap:12px;font-size:10px;font-family:"Consolas","Monaco","Andale Mono",monospace;z-index:10;background:#000;padding:2px 4px}.yield-chart__legend .legend-item{display:flex;align-items:center;gap:4px}.yield-chart__legend .legend-item .legend-dot{width:10px;height:2px}.yield-chart__legend .legend-item .legend-dot.us{background:#ff9800}.yield-chart__legend .legend-item .legend-dot.br{background:lime}.yield-chart__legend .legend-item .legend-label{color:#e0e0e0}.yield-chart svg{width:100%;height:100%;display:block;font-family:"Consolas","Monaco","Andale Mono",monospace;overflow:visible}.yield-chart svg .grid-line{stroke:#222;stroke-dasharray:2 2;stroke-width:.5}.yield-chart svg .grid-label{fill:#999;font-size:9px}.yield-chart svg .axis-label{fill:#ff9800;font-size:10px;font-weight:bold}.yield-chart svg .chart-line{fill:none;stroke-width:1.5;vector-effect:non-scaling-stroke}.yield-chart svg .line-us{fill:none;stroke:#ff9800;stroke-width:2}.yield-chart svg .line-br{fill:none;stroke:lime;stroke-width:2}.yield-chart svg .point-us{fill:#ff9800}.yield-chart svg .point-br{fill:lime}.footer{display:flex;align-items:center;height:24px;background:#000;border-top:1px solid #333;padding:2px 4px;gap:2px;flex-shrink:0;overflow:hidden}.footer__keys{display:flex;gap:2px;width:100%;height:18px;align-items:center}.footer__key{flex:1;height:18px;display:flex;align-items:center;justify-content:center;background:#c90;border:none;cursor:pointer;font-family:"Consolas","Monaco","Andale Mono",monospace;font-size:9px}.footer__key:hover{filter:brightness(1.2)}.footer__key:active{filter:brightness(0.8)}.footer__key--green{background:#090}.footer__key--green .key-number,.footer__key--green .key-label{color:#fff}.footer__key--red{background:#c00}.footer__key--red .key-number,.footer__key--red .key-label{color:#fff}.footer__key .key-number{font-weight:bold;color:#000;margin-right:2px}.footer__key .key-label{font-weight:bold;color:#000;text-transform:uppercase;font-size:8px}.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}@media(max-width: 768px){.hidden-mobile{display:none !important}}.table-wrapper{overflow-x:auto}.table-divider{width:1px;background:#1a1a1a;margin:0 8px}@media(max-width: 1024px){body{font-size:10px}.data-table{font-size:8px}.data-table thead th,.data-table tbody td{padding:3px 4px}}@media print{.header,.footer{display:none}.main-grid{display:block}.panel{break-inside:avoid;margin-bottom:1rem}}
+</style>
 
-    <!-- Linktree Button Styles -->
+    <!-- Terminal Frame + Linktree Button Styles -->
+    <style>
+        /* Body layout for frame + button */
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 8px;
+            box-sizing: border-box;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        /* Terminal Frame - Physical Monitor Bezel */
+        .terminal-frame {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-height: 0;
+            background: #1a1a1a;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        /* Top bezel with brand */
+        .terminal-frame__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 16px;
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #333;
+            border-bottom: none;
+        }
+
+        .terminal-frame__brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-frame__logo {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 14px;
+            font-weight: 900;
+            color: #ff9800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .terminal-frame__model {
+            font-family: 'Consolas', monospace;
+            font-size: 10px;
+            color: #666;
+            padding: 2px 6px;
+            background: #111;
+            border-radius: 2px;
+        }
+
+        .terminal-frame__led {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            box-shadow: 0 0 6px #00ff00, 0 0 12px #00ff00;
+            animation: led-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes led-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Screen area with inner shadow */
+        .terminal-frame__screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            background: #000;
+            border: 3px solid #111;
+            box-shadow:
+                inset 0 0 30px rgba(0,0,0,0.8),
+                inset 0 0 10px rgba(0,0,0,0.9),
+                0 0 1px #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ============================================
+           MASTER RULE: Force ALL children to stay
+           within the terminal screen bounds
+           ============================================ */
+        .terminal-frame__screen *,
+        .terminal-frame__screen *::before,
+        .terminal-frame__screen *::after {
+            box-sizing: border-box;
+            max-width: 100%;
+        }
+
+        .terminal-frame__screen div,
+        .terminal-frame__screen section,
+        .terminal-frame__screen main,
+        .terminal-frame__screen header,
+        .terminal-frame__screen footer,
+        .terminal-frame__screen table,
+        .terminal-frame__screen thead,
+        .terminal-frame__screen tbody,
+        .terminal-frame__screen tr,
+        .terminal-frame__screen td,
+        .terminal-frame__screen th {
+            min-width: 0;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Flex containers must allow shrinking */
+        .terminal-frame__screen [style*="flex"],
+        .terminal-frame__screen .app,
+        .terminal-frame__screen .main-grid,
+        .terminal-frame__screen .panel,
+        .terminal-frame__screen .panel__content,
+        .terminal-frame__screen .panel__chart,
+        .terminal-frame__screen .footer,
+        .terminal-frame__screen .header {
+            min-width: 0;
+            min-height: 0;
+        }
+
+        /* Tables must respect container width */
+        .terminal-frame__screen table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .terminal-frame__screen td,
+        .terminal-frame__screen th {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* CRT scanline effect (subtle) */
+        .terminal-frame__screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        /* Bottom bezel */
+        .terminal-frame__bottom {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #333;
+            border-top: none;
+            gap: 24px;
+        }
+
+        .terminal-frame__controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .terminal-frame__btn {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(180deg, #333 0%, #222 100%);
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .terminal-frame__btn:hover {
+            background: linear-gradient(180deg, #444 0%, #333 100%);
+        }
+
+        .terminal-frame__btn-icon {
+            width: 10px;
+            height: 10px;
+            background: #666;
+            border-radius: 2px;
+        }
+
+        .terminal-frame__btn--power .terminal-frame__btn-icon {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 2px solid #666;
+            background: transparent;
+        }
+
+        .terminal-frame__serial {
+            font-family: 'Consolas', monospace;
+            font-size: 9px;
+            color: #444;
+            letter-spacing: 1px;
+        }
+
+        /* Make app fill the screen area */
+        .terminal-frame__screen .app {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Ensure main-grid fills available space */
+        .terminal-frame__screen .main-grid {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        /* Ensure panels don't overflow */
+        .terminal-frame__screen .panel {
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .panel__content {
+            min-height: 0;
+            overflow: auto;
+        }
+
+        /* Fix table overflow - scale down to fit */
+        .terminal-frame__screen .data-table__section {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .table-wrapper {
+            width: 100%;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .terminal-frame__screen .data-table {
+            width: 100%;
+            table-layout: fixed;
+            font-size: 10px;
+            white-space: nowrap;
+        }
+
+        .terminal-frame__screen .data-table th,
+        .terminal-frame__screen .data-table td {
+            padding: 1px 2px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Column widths - first column (ticker) gets more space */
+        .terminal-frame__screen .data-table th:first-child,
+        .terminal-frame__screen .data-table td:first-child {
+            width: 22%;
+        }
+
+        /* Price column */
+        .terminal-frame__screen .data-table th:nth-child(2),
+        .terminal-frame__screen .data-table td:nth-child(2) {
+            width: 13%;
+        }
+
+        /* Percentage columns - equal widths */
+        .terminal-frame__screen .data-table th:nth-child(n+3),
+        .terminal-frame__screen .data-table td:nth-child(n+3) {
+            width: 13%;
+        }
+
+        .terminal-frame__screen .data-table .ticker-cell {
+            max-width: none;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Section titles */
+        .terminal-frame__screen .data-table__title {
+            font-size: 9px;
+            padding: 1px 4px;
+        }
+
+        /* Yield tables in panel 4 */
+        .terminal-frame__screen .yield-table table {
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        .terminal-frame__screen .yield-table td,
+        .terminal-frame__screen .yield-table th {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ============================================
+           CRITICAL: Panel 4 (Chart) overflow fix
+           ============================================ */
+        .terminal-frame__screen .panel__chart {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .panel__chart .chart-container {
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .panel__chart .chart-tables {
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            gap: 4px;
+            border-top: 1px solid #333;
+            padding-top: 2px;
+        }
+
+        .terminal-frame__screen .yield-chart {
+            width: 100%;
+            height: 100%;
+        }
+
+        .terminal-frame__screen .yield-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Yield tables side by side - compact, no extra space */
+        .terminal-frame__screen .yield-table {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .terminal-frame__screen .yield-table__title {
+            font-size: 8px;
+            padding: 1px 3px;
+        }
+
+        .terminal-frame__screen .yield-table table {
+            font-size: 8px;
+            width: 100%;
+        }
+
+        .terminal-frame__screen .yield-table th,
+        .terminal-frame__screen .yield-table td {
+            padding: 1px 2px;
+            font-size: 8px;
+        }
+
+        /* Table divider between yield tables */
+        .terminal-frame__screen .table-divider {
+            width: 1px;
+            flex-shrink: 0;
+            background: #333;
+        }
+
+        /* ============================================
+           HEADER compact for more space
+           ============================================ */
+        .terminal-frame__screen .header {
+            flex-shrink: 0;
+        }
+
+        .terminal-frame__screen .header__top {
+            padding: 2px 6px;
+        }
+
+        .terminal-frame__screen .header__action-ribbon {
+            padding: 2px 6px;
+            gap: 10px;
+        }
+
+        .terminal-frame__screen .header__command {
+            padding: 2px 6px;
+        }
+
+        /* ============================================
+           FOOTER compact - prevent overflow
+           ============================================ */
+        .terminal-frame__screen .footer {
+            height: 20px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .footer__keys {
+            height: 16px;
+            display: flex;
+            gap: 1px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .terminal-frame__screen .footer__key {
+            flex: 1 1 0;
+            min-width: 0;
+            height: 16px;
+            font-size: 7px;
+            padding: 0 2px;
+            overflow: hidden;
+        }
+
+        .terminal-frame__screen .footer__key .key-number {
+            font-size: 7px;
+            margin-right: 1px;
+        }
+
+        .terminal-frame__screen .footer__key .key-label {
+            font-size: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
     <style>
         .linktree-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 8px;
-            height: 28px;
-            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-            border-top: 1px solid #ffb400;
-            padding: 0 16px;
+            gap: 4px;
+            height: 18px;
+            /* Bloomberg amber = editable/interactive */
+            background: #ff9800;
+            border: none;
+            padding: 0 8px;
             text-decoration: none;
-            font-family: "Roboto Mono", "Consolas", "Monaco", monospace;
+            font-family: "Consolas", "Monaco", "Andale Mono", monospace;
             font-size: 11px;
             cursor: pointer;
-            transition: all 0.15s ease;
-            flex-shrink: 0;
+            margin-left: auto; /* Push to right side of ribbon */
         }
         .linktree-btn:hover {
-            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
-            border-top-color: #ffc933;
+            background: #ffb300;
         }
         .linktree-btn:hover .linktree-btn__label {
             text-decoration: underline;
@@ -75,41 +514,83 @@
         }
         .linktree-btn__cmd {
             font-weight: 700;
-            color: #ffb400;
-            letter-spacing: 0.5px;
+            color: #000;
         }
         .linktree-btn__go {
-            color: #6b7280;
+            color: #333;
             font-size: 10px;
+            font-weight: 600;
         }
         .linktree-btn__label {
-            color: #6cf;
-            font-weight: 500;
-            margin-left: 8px;
-        }
-        .linktree-btn__icon {
-            width: 12px;
-            height: 12px;
-            color: #6b7280;
+            color: #000;
+            font-weight: 700;
             margin-left: 4px;
         }
+        .linktree-btn__icon {
+            width: 10px;
+            height: 10px;
+            color: #333;
+            margin-left: 2px;
+        }
         .linktree-btn:hover .linktree-btn__icon {
-            color: #ffb400;
+            color: #000;
+        }
+        .linktree-btn:active {
+            background: #cc7a00;
         }
 
-        /* Shimmer animation */
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        /* External Linktree Button - Under the monitor frame (in normal flow) */
+        .linktree-external {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 32px;
+            flex-shrink: 0;
+            background: linear-gradient(180deg, #ff9800 0%, #e68900 100%);
+            border: none;
+            padding: 0 20px;
+            margin: 8px auto 0 auto;
+            text-decoration: none;
+            font-family: "Consolas", "Monaco", "Andale Mono", monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.3);
         }
-        .linktree-btn {
-            background: linear-gradient(110deg, #1a1a1a 0%, #1a1a1a 35%, #2d2d2d 50%, #1a1a1a 65%, #1a1a1a 100%);
-            background-size: 200% 100%;
-            animation: shimmer 3s linear infinite;
+        .linktree-external:hover {
+            background: linear-gradient(180deg, #ffb300 0%, #ff9800 100%);
+            box-shadow: 0 2px 12px rgba(255, 152, 0, 0.6), 0 4px 20px rgba(0, 0, 0, 0.4);
         }
-        .linktree-btn:hover {
-            background: linear-gradient(110deg, #2a2a2a 0%, #2a2a2a 35%, #3d3d3d 50%, #2a2a2a 65%, #2a2a2a 100%);
-            background-size: 200% 100%;
+        .linktree-external:hover .linktree-external__label {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .linktree-external__cmd {
+            font-weight: 700;
+            color: #000;
+        }
+        .linktree-external__go {
+            color: #333;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .linktree-external__label {
+            color: #000;
+            font-weight: 700;
+            margin-left: 4px;
+        }
+        .linktree-external__icon {
+            width: 12px;
+            height: 12px;
+            color: #333;
+            margin-left: 4px;
+        }
+        .linktree-external:hover .linktree-external__icon {
+            color: #000;
+        }
+        .linktree-external:active {
+            background: linear-gradient(180deg, #e68900 0%, #cc7a00 100%);
         }
     </style>
 
@@ -117,23 +598,43 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
-    <div class="app">
+    <!-- Terminal Frame -->
+    <div class="terminal-frame">
+        <!-- Top Bezel -->
+        <div class="terminal-frame__top">
+            <div class="terminal-frame__brand">
+                <span class="terminal-frame__logo">Bloomberg</span>
+                <span class="terminal-frame__model">TERMINAL</span>
+            </div>
+            <div class="terminal-frame__led" title="Connected"></div>
+        </div>
+
+        <!-- Screen Area -->
+        <div class="terminal-frame__screen">
+            <div class="app">
 
         <!-- Header -->
         <header class="header">
             <div class="header__top">
                 <div class="header__brand">
-                    <span class="brand-name">1-BLOOMBERG</span>
-                    <div class="header__divider"></div>
-                    <span class="brand-section">HOME</span>
+                    <span class="brand-name">MARKET WATCH</span>
+                    <span class="brand-section">Global Overview</span>
                 </div>
                 <div class="header__clock font-mono" id="clock-display">
                     <!-- Time injected by JS -->
                 </div>
             </div>
+            <!-- Red Action Ribbon -->
+            <div class="header__action-ribbon">
+                <span class="action-item"><span class="action-number">1)</span> Equities</span>
+                <span class="action-item"><span class="action-number">2)</span> FX</span>
+                <span class="action-item"><span class="action-number">3)</span> Rates</span>
+                <span class="action-item"><span class="action-number">4)</span> Cmdty</span>
+                <span class="action-item"><span class="action-number">91)</span> Settings</span>
+            </div>
             <div class="header__command">
                 <div class="command-line">
-                    <span class="command-label">COMMAND:</span>
+                    <span class="command-label">GO:</span>
                     <div class="command-cursor"></div>
                 </div>
             </div>
@@ -240,15 +741,35 @@
             </div>
         </footer>
 
-        <!-- Linktree Button -->
-        <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn" title="LINK <GO>">
-            <span class="linktree-btn__cmd">LINK</span>
-            <span class="linktree-btn__go">&lt;GO&gt;</span>
-            <span class="linktree-btn__label">DIEGONMARCOS</span>
-            <i data-lucide="external-link" class="linktree-btn__icon"></i>
-        </a>
+            </div>
+        </div>
+        <!-- End Screen Area -->
 
+        <!-- Bottom Bezel -->
+        <div class="terminal-frame__bottom">
+            <div class="terminal-frame__controls">
+                <div class="terminal-frame__btn" title="Menu">
+                    <div class="terminal-frame__btn-icon"></div>
+                </div>
+                <div class="terminal-frame__btn" title="Brightness">
+                    <div class="terminal-frame__btn-icon"></div>
+                </div>
+                <div class="terminal-frame__btn terminal-frame__btn--power" title="Power">
+                    <div class="terminal-frame__btn-icon"></div>
+                </div>
+            </div>
+            <span class="terminal-frame__serial">SN: BBG-2024-MKT-001</span>
+        </div>
     </div>
+    <!-- End Terminal Frame -->
+
+    <!-- Linktree Button - Under the monitor -->
+    <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-external" title="LINK <GO>">
+        <span class="linktree-external__cmd">LINK</span>
+        <span class="linktree-external__go">&lt;GO&gt;</span>
+        <span class="linktree-external__label">DIEGONMARCOS</span>
+        <i data-lucide="external-link" class="linktree-external__icon"></i>
+    </a>
 
     <!-- Initialize Lucide Icons -->
     <script>
@@ -258,7 +779,81 @@
     </script>
 
     <!-- Main Script -->
-    <script src="script.js"></script>
+<script>
+"use strict";(()=>{var c=(e,n)=>parseFloat((Math.random()*(n-e)+e).toFixed(2)),t=(e,n)=>({ticker:e,name:n,last:c(10,1e3),daily:c(-2,2),w1:c(-4,4),m1:c(-8,8),ytd:c(-15,25),y1:c(-20,30),y3:c(-40,60)}),U=[t("SPX Index","S&P 500"),t("CCMP Index","NASDAQ 100"),t("INDU Index","DOW JONES"),t("SX5E Index","EURO STOXX 50"),t("UKX Index","FTSE 100"),t("DAX Index","DAX (GER)"),t("CAC Index","CAC 40 (FRA)"),t("NKY Index","NIKKEI 225"),t("AS51 Index","ASX 200")],D=[t("IBOV Index","IBOVESPA"),t("SHCOMP Index","SHANGHAI COMP"),t("HSI Index","HANG SENG"),t("NIFTY Index","NIFTY 50"),t("MEXBOL Index","MEXICO BOLSA"),t("JALSH Index","JSE AFRICA"),t("RTSI Index","RTS (RUS)"),t("KOSPI Index","KOSPI"),t("TWSE Index","TAIEX")],u=[t("DXY Curncy","DOLLAR INDEX"),t("EURUSD Curncy","EUR-USD"),t("GBPUSD Curncy","GBP-USD"),t("USDJPY Curncy","USD-JPY"),t("USDCHF Curncy","USD-CHF"),t("USDCAD Curncy","USD-CAD"),t("AUDUSD Curncy","AUD-USD"),t("NZDUSD Curncy","NZD-USD")],m=[t("USDBRL Curncy","USD-BRL"),t("USDCNY Curncy","USD-CNY"),t("USDMXN Curncy","USD-MXN"),t("USDZAR Curncy","USD-ZAR"),t("USDTRY Curncy","USD-TRY"),t("USDINR Curncy","USD-INR"),t("USDKRW Curncy","USD-KRW"),t("USDPLN Curncy","USD-PLN")],T=[t("XAU Curncy","GOLD SPOT"),t("XAG Curncy","SILVER SPOT"),t("CL1 Comdty","WTI CRUDE"),t("CO1 Comdty","BRENT CRUDE"),t("NG1 Comdty","NAT GAS"),t("HG1 Comdty","COPPER"),t("W 1 Comdty","WHEAT"),t("S 1 Comdty","SOYBEAN")],p=[t("AAPL US Equity","APPLE INC"),t("BAC US Equity","BANK OF AMER"),t("AXP US Equity","AMER EXPRESS"),t("KO US Equity","COCA-COLA"),t("CVX US Equity","CHEVRON"),t("OXY US Equity","OCCIDENTAL"),t("KHC US Equity","KRAFT HEINZ"),t("MCO US Equity","MOODYS")],M=[t("NVDA US Equity","NVIDIA"),t("MSFT US Equity","MICROSOFT"),t("TSLA US Equity","TESLA"),t("META US Equity","META"),t("AMD US Equity","AMD"),t("PLTR US Equity","PALANTIR"),t("COIN US Equity","COINBASE"),t("PBR US Equity","PETROBRAS")],A=[{tenor:"2Y",last:4.75,chg:-.02},{tenor:"5Y",last:4.4,chg:-.01},{tenor:"10Y",last:4.35,chg:.01},{tenor:"30Y",last:4.5,chg:.02}],g=[{tenor:"Jan25",last:10.4,chg:-.05},{tenor:"Jan26",last:10.55,chg:-.03},{tenor:"Jan27",last:10.8,chg:.02},{tenor:"Jan29",last:11.2,chg:.05}],C=[5.38,5.2,4.9,4.75,4.4,4.35,4.5],y=[10.55,10.6,10.5,10.8,11.2,11.5,11.8],R=["3M","6M","1Y","2Y","5Y","10Y","30Y"],O=[{label:"GOVT",color:"yellow"},{label:"CORP",color:"yellow"},{label:"MTGE",color:"yellow"},{label:"M-MKT",color:"yellow"},{label:"MUNI",color:"yellow"},{label:"PFD",color:"yellow"},{label:"EQUITY",color:"yellow"},{label:"CMDTY",color:"yellow"},{label:"INDEX",color:"yellow"},{label:"CRNCY",color:"yellow"},{label:"GO",color:"green"},{label:"CANCEL",color:"red"}];var b=e=>e>0?"positive":e<0?"negative":"neutral",_=e=>`${e>0?"+":""}${e.toFixed(2)}%`,E=e=>`<span class="perf-cell ${b(e)}">${_(e)}</span>`,a=(e,n)=>{let r=e.map(o=>`
+    <tr>
+      <td class="ticker-cell">${o.ticker}</td>
+      <td class="price-cell">${o.last.toFixed(2)}</td>
+      <td>${E(o.daily)}</td>
+      <td>${E(o.w1)}</td>
+      <td>${E(o.m1)}</td>
+      <td>${E(o.ytd)}</td>
+      <td class="hidden-mobile">${E(o.y1)}</td>
+      <td class="hidden-mobile">${E(o.y3)}</td>
+    </tr>
+  `).join("");return`
+    <div class="data-table__section">
+      ${n?`<div class="data-table__title">${n}</div>`:""}
+      <div class="table-wrapper custom-scrollbar">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th>Last</th>
+              <th>Dly%</th>
+              <th>1W%</th>
+              <th>1M%</th>
+              <th>YTD%</th>
+              <th class="hidden-mobile">1Y%</th>
+              <th class="hidden-mobile">3Y%</th>
+            </tr>
+          </thead>
+          <tbody>${r}</tbody>
+        </table>
+      </div>
+    </div>
+  `},h=(e,n)=>{let r=e.map(o=>{let i=b(o.chg),d=o.chg>0?"+":"";return`
+      <tr>
+        <td>${o.tenor}</td>
+        <td>${o.last.toFixed(2)}</td>
+        <td class="perf-cell ${i}">${d}${o.chg.toFixed(2)}</td>
+      </tr>
+    `}).join("");return`
+    <div class="yield-table">
+      <div class="yield-table__title">${n}</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Tenor</th>
+            <th>Yld</th>
+            <th>Chg</th>
+          </tr>
+        </thead>
+        <tbody>${r}</tbody>
+      </table>
+    </div>
+  `},x=()=>{let r={top:25,right:30,bottom:20,left:30},o=3,i=13,d=l=>r.left+l/(R.length-1)*(400-r.left-r.right),S=l=>160-r.bottom-(l-o)/(i-o)*(160-r.top-r.bottom),I=l=>`M ${l.map((s,v)=>`${d(v)},${S(s)}`).join(" L ")}`,$=[4,6,8,10,12].map(l=>{let s=S(l);return`
+      <line class="grid-line" x1="${r.left}" y1="${s}" x2="${400-r.right}" y2="${s}" />
+      <text class="grid-label" x="${r.left-4}" y="${s+2}" text-anchor="end">${l}</text>
+    `}).join(""),Y=C.map((l,s)=>`<rect class="point-us" x="${d(s)-1.5}" y="${S(l)-1.5}" width="3" height="3" />`).join(""),P=y.map((l,s)=>`<rect class="point-br" x="${d(s)-1.5}" y="${S(l)-1.5}" width="3" height="3" />`).join(""),f=R.map((l,s)=>`<text class="axis-label" x="${d(s)}" y="155" text-anchor="middle">${l}</text>`).join("");return`
+    <div class="yield-chart">
+      <div class="yield-chart__title">GC I 25: US (Y) vs BRAZIL (G)</div>
+      <svg viewBox="0 0 400 160" preserveAspectRatio="xMidYMid meet">
+        ${$}
+        <path class="line-br" d="${I(y)}" />
+        ${P}
+        <path class="line-us" d="${I(C)}" />
+        ${Y}
+        ${f}
+      </svg>
+    </div>
+  `},L=e=>e.map((n,r)=>`
+      <div class="footer__key ${n.color==="green"?"footer__key--green":n.color==="red"?"footer__key--red":""}">
+        <span class="key-number">F${r+1}</span>
+        <span class="key-label">${n.label}</span>
+      </div>
+    `).join("");var F=()=>{let e=document.getElementById("clock-display");if(!e)return;let n=()=>{let r=new Date,o=r.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"}).toUpperCase(),i=r.toLocaleTimeString("en-US",{hour12:!1});e.innerHTML=`${o} <span class="time">${i}</span>`};n(),setInterval(n,1e3)},B=()=>{let e=document.getElementById("panel-1-content");e&&(e.innerHTML=a(U,"DEVELOPED MARKETS (DM)")+a(D,"EMERGING MARKETS (EM)"))},w=()=>{let e=document.getElementById("panel-2-content");e&&(e.innerHTML=a(u,"G10 / DEVELOPED CURRENCIES")+a(m,"EMERGING MARKET CURRENCIES"))},X=()=>{let e=document.getElementById("panel-3-content");e&&(e.innerHTML=a(T,"KEY COMMODITY FUTURES")+a(p,"BUFFETT (BERKSHIRE) HOLDINGS")+a(M,"PERSONAL WATCHLIST"))},H=()=>{let e=document.getElementById("yield-chart-container"),n=document.getElementById("yield-tables-container");e&&(e.innerHTML=x()),n&&(n.innerHTML=h(A,"US TREASURIES")+'<div class="table-divider"></div>'+h(g,"BRAZIL FUTURES (DI)"))},k=()=>{let e=document.getElementById("footer-keys");e&&(e.innerHTML=L(O))},K=()=>{let e=()=>{let n=document.querySelectorAll(".perf-cell");if(n.length===0)return;let r=Math.floor(Math.random()*n.length),o=n[r],i=Math.random()>.5;o.classList.add(i?"flash-up":"flash-down"),setTimeout(()=>{o.classList.remove("flash-up","flash-down")},500)};setInterval(()=>{Math.random()>.7&&e()},1e3)},N=()=>{F(),B(),w(),X(),H(),k(),K(),console.log("Market Watch Terminal initialized")};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",N):N();})();
+</script>
 
     <!-- Page-specific Matomo tracking -->
     <script src="/1.ops/matomo-tracking/market_watch.js"></script>

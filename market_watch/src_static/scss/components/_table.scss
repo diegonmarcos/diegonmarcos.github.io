@@ -1,168 +1,188 @@
-// Table Component - Bloomberg Style
+/* * BLOOMBERG TERMINAL - DATA GRID
+ * --------------------------------
+ * High-density data table with zebra stripes and selection state.
+ */
+
 @use '../variables' as *;
+@use 'sass:color';
+
+// --- Data Table ---
 
 .data-table {
   width: 100%;
   font-family: $font-mono;
-  font-size: 9px;
+  font-size: $font-size-base;
   border-collapse: collapse;
   white-space: nowrap;
 
   &__section {
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 
     &:last-child {
       margin-bottom: 0;
     }
   }
 
+  // Section title - amber underline
   &__title {
-    font-size: 10px;
-    font-weight: 700;
-    color: $amber;
-    border-bottom: 1px solid $gray-800;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
+    font-size: $font-size-tiny;
+    font-weight: bold;
+    color: $color-text-accent;
+    background: $color-bg-global;
+    padding: $cell-padding;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid $color-text-accent;
   }
 
+  // Table header row
   thead {
+    position: sticky;
+    top: 0;
+    background-color: $color-bg-panel-alt;
+    z-index: 10;
+
     tr {
-      border-bottom: 1px solid $border-light;
+      border-bottom: 1px solid $color-border;
     }
 
     th {
-      padding: 4px 4px;
-      font-weight: 400;
-      font-size: 9px;
-      color: $amber;
+      padding: $cell-padding;
+      font-weight: normal;
+      font-size: $font-size-tiny;
+      color: $color-text-accent;
       text-align: right;
+      text-transform: uppercase;
 
       &:first-child {
         text-align: left;
-        padding-left: 4px;
-        width: 80px;
-      }
-
-      &:last-child {
-        padding-right: 4px;
+        width: 100px;
       }
     }
   }
 
+  // Table body
   tbody {
     tr {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      height: $row-height;
       cursor: pointer;
-      transition: background-color 0.1s ease;
-      line-height: 1;
+      border-bottom: 1px solid color.adjust($color-border, $lightness: -10%);
 
-      &:hover {
-        background: $bg-panel;
+      // Zebra striping
+      &:nth-child(even) {
+        background-color: $color-bg-panel;
+      }
 
-        .ticker-cell {
-          text-decoration: underline;
-          text-decoration-color: $white;
-          text-underline-offset: 2px;
-          text-decoration-thickness: 1px;
+      &:nth-child(odd) {
+        background-color: $color-bg-global;
+      }
+
+      // SELECTION STATE - The iconic blue
+      &.is-selected {
+        background-color: $color-bg-selection !important;
+        color: white !important;
+        outline: 1px solid color.adjust($color-bg-selection, $lightness: 20%);
+
+        // Override colored text when selected for readability
+        .ticker-cell,
+        .perf-cell,
+        .txt-green,
+        .txt-red,
+        .txt-amber {
+          color: white !important;
         }
       }
 
-      &:last-child {
-        border-bottom: none;
+      // Hover state (only if not selected)
+      &:not(.is-selected):hover {
+        border: 1px solid $color-text-muted;
       }
     }
 
     td {
-      padding: 4px 4px;
+      padding: $cell-padding;
       text-align: right;
-      line-height: 1;
+      font-variant-numeric: tabular-nums;
 
       &:first-child {
         text-align: left;
-        padding-left: 4px;
-      }
-
-      &:last-child {
-        padding-right: 4px;
       }
     }
   }
 
   // Cell types
   .ticker-cell {
-    color: $ticker-cyan;
-    font-weight: 500;
-    max-width: 80px;
+    color: $color-text-accent;
+    font-weight: bold;
+    max-width: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
 
   .price-cell {
-    color: $white;
-    font-weight: 700;
+    color: $color-text-primary;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
   }
 
   .perf-cell {
     font-variant-numeric: tabular-nums;
 
     &.positive {
-      color: $positive;
+      color: $color-text-green;
     }
 
     &.negative {
-      color: $negative;
+      color: $color-text-red;
     }
 
     &.neutral {
-      color: $gray-500;
+      color: $color-text-muted;
     }
   }
 
-  // Flash animation for live updates
+  // Flash animations for live updates
   .flash-up {
-    animation: flashGreen 0.5s ease-out;
+    animation: flash-green 0.3s ease-out;
   }
 
   .flash-down {
-    animation: flashRed 0.5s ease-out;
+    animation: flash-red 0.3s ease-out;
   }
 }
 
-@keyframes flashGreen {
-  0% { background-color: rgba(34, 197, 94, 0.4); }
-  100% { background-color: transparent; }
-}
+// --- Yield Table Variant ---
 
-@keyframes flashRed {
-  0% { background-color: rgba(239, 68, 68, 0.4); }
-  100% { background-color: transparent; }
-}
-
-// Yield table variant
 .yield-table {
   flex: 1;
 
   &__title {
-    font-size: 9px;
-    font-weight: 700;
-    color: $amber;
-    border-bottom: 1px solid $gray-800;
-    padding-bottom: 4px;
-    margin-bottom: 4px;
+    font-size: $font-size-small;
+    font-weight: bold;
+    color: $color-text-accent;
+    background: $color-bg-global;
+    padding: $cell-padding;
+    text-transform: uppercase;
+    border-bottom: 1px solid $color-text-accent;
   }
 
   table {
     width: 100%;
     font-family: $font-mono;
-    font-size: 9px;
+    font-size: $font-size-tiny;
     border-collapse: collapse;
 
     thead {
+      tr {
+        background: $color-bg-panel-alt;
+      }
+
       th {
-        padding: 2px 0;
-        font-weight: 400;
-        color: $amber;
+        padding: $cell-padding;
+        font-weight: normal;
+        color: $color-text-accent;
         text-align: right;
+        text-transform: uppercase;
 
         &:first-child {
           text-align: left;
@@ -172,23 +192,39 @@
 
     tbody {
       tr {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        // Zebra stripes
+        &:nth-child(even) {
+          background-color: $color-bg-panel;
+        }
+
+        &:nth-child(odd) {
+          background-color: $color-bg-global;
+        }
       }
 
       td {
-        padding: 2px 0;
+        padding: $cell-padding;
         text-align: right;
+        font-variant-numeric: tabular-nums;
 
         &:first-child {
           text-align: left;
-          color: $ticker-cyan;
-          font-weight: 700;
+          color: $color-text-accent;
+          font-weight: bold;
         }
 
         &:nth-child(2) {
-          color: $white;
+          color: $color-text-primary;
+          font-weight: bold;
         }
       }
     }
   }
+}
+
+// --- Table Wrapper for Scrolling ---
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
 }

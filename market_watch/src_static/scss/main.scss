@@ -20,12 +20,6 @@
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    height: auto;
-    min-height: 100vh;
-    overflow: visible;
-  }
 }
 
 // 5. Additional utilities

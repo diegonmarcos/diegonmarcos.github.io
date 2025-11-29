@@ -146,12 +146,16 @@ export const renderYieldChart = (): string => {
   `;
 };
 
-// Render footer keys
-export const renderFooterKeys = (keys: string[]): string => {
-  return keys.map((k, i) => `
-    <div class="footer__key">
-      <span class="key-number">F${i + 1}</span>
-      <span class="key-label">${k}</span>
-    </div>
-  `).join('');
+// Render footer keys - Bloomberg keyboard style
+export const renderFooterKeys = (keys: { label: string; color: string }[]): string => {
+  return keys.map((k, i) => {
+    const colorClass = k.color === 'green' ? 'footer__key--green' :
+                       k.color === 'red' ? 'footer__key--red' : '';
+    return `
+      <div class="footer__key ${colorClass}">
+        <span class="key-number">F${i + 1}</span>
+        <span class="key-label">${k.label}</span>
+      </div>
+    `;
+  }).join('');
 };

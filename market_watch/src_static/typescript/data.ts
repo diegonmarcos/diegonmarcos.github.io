@@ -125,5 +125,19 @@ export const US_CURVE = [5.38, 5.20, 4.90, 4.75, 4.40, 4.35, 4.50];
 export const BR_CURVE = [10.55, 10.60, 10.50, 10.80, 11.20, 11.50, 11.80];
 export const CURVE_TENORS = ['3M', '6M', '1Y', '2Y', '5Y', '10Y', '30Y'];
 
-// Footer Function Keys
-export const FOOTER_KEYS = ['NEWS', 'MSG', 'MON', 'QUOTE', 'CHART', 'DWNLD', 'ALERT', 'HELP'];
+// Footer Function Keys - Bloomberg keyboard style
+// yellow = market sector, green = action, red = stop
+export const FOOTER_KEYS = [
+  { label: 'GOVT', color: 'yellow' },
+  { label: 'CORP', color: 'yellow' },
+  { label: 'MTGE', color: 'yellow' },
+  { label: 'M-MKT', color: 'yellow' },
+  { label: 'MUNI', color: 'yellow' },
+  { label: 'PFD', color: 'yellow' },
+  { label: 'EQUITY', color: 'yellow' },
+  { label: 'CMDTY', color: 'yellow' },
+  { label: 'INDEX', color: 'yellow' },
+  { label: 'CRNCY', color: 'yellow' },
+  { label: 'GO', color: 'green' },
+  { label: 'CANCEL', color: 'red' }
+];

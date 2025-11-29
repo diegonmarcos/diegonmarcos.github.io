@@ -3,14 +3,30 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  ssr: false,
+
+  nitro: {
+    preset: 'github-pages',
+    output: {
+      dir: '../dist',
+      publicDir: '../dist'
+    },
+    inlineDynamicImports: true
+  },
+
+  experimental: {
+    inlineSSRStyles: true
+  },
+
   app: {
+    baseURL: '/myprofile/',
     head: {
-      title: 'ALEX_NOVA // VUE_OS',
+      title: 'DIEGO N. MARCOS // PROFILE',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Cyberpunk Data Stream Portfolio' },
-        { property: 'og:title', content: 'ALEX_NOVA // NETWORK' }
+        { property: 'og:title', content: 'DIEGO N. MARCOS // NETWORK' }
       ],
       link: [
         {
@@ -24,6 +40,14 @@ export default defineNuxtConfig({
   css: ['~/assets/scss/main.scss'],
 
   vite: {
+    build: {
+      cssCodeSplit: false,
+      rollupOptions: {
+        output: {
+          inlineDynamicImports: true
+        }
+      }
+    },
     css: {
       preprocessorOptions: {
         scss: {

@@ -65,7 +65,7 @@ const onResize = () => {
       <!-- Header -->
       <header class="tactical-header">
         <h1 class="logo-text mono">
-          ALEX_NOVA <span class="green">//</span> VUE_OS
+          DIEGO N. MARCOS <span class="green">//</span> PROFILE
         </h1>
         <nav class="view-tabs">
           <button

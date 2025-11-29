@@ -61,7 +61,7 @@ defineProps<{
         <Icon name="lucide:user" :size="120" class="silhouette" />
       </div>
       <div class="player-identity">
-        <h2>ALEX_NOVA</h2>
+        <h2>DIEGO N. MARCOS</h2>
         <div class="lvl-badge">LVL. 24</div>
       </div>
       <div class="xp-container">

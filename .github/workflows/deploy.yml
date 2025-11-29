@@ -435,14 +435,14 @@ jobs:
             echo "⏭️  Skipping MyMaps copy (no out directory found)"
           fi
 
-          # Copy MyProfile build (if .output/public exists - Nuxt static export)
-          if [ -d "myprofile/src/.output/public" ]; then
+          # Copy MyProfile build (if dist exists - Nuxt static export)
+          if [ -d "myprofile/dist" ]; then
             echo "📦 Copying MyProfile build..."
             mkdir -p _site/myprofile
-            cp -r myprofile/src/.output/public/* _site/myprofile/
+            cp -r myprofile/dist/* _site/myprofile/
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
-            echo "⏭️  Skipping MyProfile copy (no .output/public directory found)"
+            echo "⏭️  Skipping MyProfile copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

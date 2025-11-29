@@ -2,9 +2,22 @@
 // DATA COMPOSABLE
 // ==============================================
 
-import type { DataItem } from '~/types'
+import type { DataItem, MediaItem } from '~/types'
 
 export const useData = () => {
+  // Social media links for Medias section
+  const mediaLinks: MediaItem[] = [
+    { id: 'm1', platform: 'GitHub', icon: 'github', url: 'https://github.com/diegonmarcos', accentColor: '#f0f0f0' },
+    { id: 'm2', platform: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/in/diegonmarcos', accentColor: '#0a66c2' },
+    { id: 'm3', platform: 'YouTube', icon: 'youtube', url: 'https://youtube.com/@diegonmarcos', accentColor: '#ff0000' },
+    { id: 'm4', platform: 'Instagram', icon: 'instagram', url: 'https://instagram.com/diegonmarcos', accentColor: '#e4405f' },
+    { id: 'm5', platform: 'Twitter', icon: 'twitter', url: 'https://twitter.com/diegonmarcos', accentColor: '#1da1f2' },
+    { id: 'm6', platform: 'Twitch', icon: 'twitch', url: 'https://twitch.tv/diegonmarcos', accentColor: '#9146ff' },
+    { id: 'm7', platform: 'Discord', icon: 'message-circle', url: 'https://discord.gg/diegonmarcos', accentColor: '#5865f2' },
+    { id: 'm8', platform: 'Spotify', icon: 'music', url: 'https://open.spotify.com/user/diegonmarcos', accentColor: '#1db954' }
+  ]
+
+  // Card data for Cards, Player, and Sphere sections
   const data: DataItem[] = [
     {
       id: '1',
@@ -87,6 +100,7 @@ export const useData = () => {
   ]
 
   return {
-    data
+    data,
+    mediaLinks
   }
 }

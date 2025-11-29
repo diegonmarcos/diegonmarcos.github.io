@@ -16,34 +16,29 @@ defineEmits<{
   (e: 'touchend'): void
 }>()
 
-// Golden angle for Fibonacci sphere distribution
-const PHI = Math.PI * (3 - Math.sqrt(5))
-
-// Calculate 3D spherical position for each planet using Fibonacci sphere
-const getPlanetPosition = (index: number, total: number) => {
-  const radius = 200 // Base sphere radius
-
-  // Fibonacci sphere distribution for even spacing
-  const y = 1 - (index / (total - 1)) * 2 // Range from 1 to -1
-  const radiusAtY = Math.sqrt(1 - y * y)
-  const theta = PHI * index
-
-  const x = Math.cos(theta) * radiusAtY * radius
-  const z = Math.sin(theta) * radiusAtY * radius
-  const yPos = y * radius
-
-  return { x, y: yPos, z }
+// Calculate orbit radius for each planet (concentric rings)
+const getOrbitRadius = (index: number, total: number) => {
+  const minRadius = 100
+  const maxRadius = 280
+  return minRadius + ((index / (total - 1)) * (maxRadius - minRadius))
 }
 
-// Get orbit tilt angle based on position (varied orbital planes)
+// Get orbit tilt angle for varied orbital planes
 const getOrbitTilt = (index: number) => {
-  // Vary tilt between 60-85 degrees for visual interest
-  return 65 + (index % 3) * 8
+  // Each orbit has different tilt for 3D effect
+  const tilts = [75, 70, 80, 65, 85, 72]
+  return tilts[index % tilts.length]
 }
 
-// Get orbit animation speed (different speeds for variety)
+// Get orbit animation speed (inner planets faster)
 const getOrbitSpeed = (index: number) => {
-  return 20 + (index * 7) % 15
+  return 12 + index * 4
+}
+
+// Get starting rotation offset for each planet
+const getOrbitOffset = (index: number) => {
+  // Spread planets around their orbits
+  return index * 60
 }
 </script>
 
@@ -75,35 +70,54 @@ const getOrbitSpeed = (index: number) => {
         <div class="sun-flare" />
       </div>
 
-      <!-- Planets positioned in 3D space using Fibonacci sphere -->
+      <!-- Orbital Rings -->
+      <div
+        v-for="(pt, index) in spherePoints"
+        :key="'orbit-' + pt.id"
+        class="orbit-ring"
+        :style="{
+          width: getOrbitRadius(index, spherePoints.length) * 2 + 'px',
+          height: getOrbitRadius(index, spherePoints.length) * 2 + 'px',
+          transform: 'translate(-50%, -50%) rotateX(' + getOrbitTilt(index) + 'deg)',
+          '--ring-color': pt.accentColor
+        }"
+      />
+
+      <!-- Planets in orbit -->
       <div
         v-for="(pt, index) in spherePoints"
         :key="pt.id"
-        class="planet-3d"
+        class="planet-orbit"
         :style="{
-          transform: `translate3d(${getPlanetPosition(index, spherePoints.length).x}px, ${getPlanetPosition(index, spherePoints.length).y}px, ${getPlanetPosition(index, spherePoints.length).z}px)`,
-          '--planet-color': pt.accentColor,
-          '--planet-glow': pt.accentColor + '60',
           animationDuration: getOrbitSpeed(index) + 's',
-          animationDelay: (index * -3) + 's'
+          transform: 'rotateX(' + getOrbitTilt(index) + 'deg) rotateZ(' + getOrbitOffset(index) + 'deg)'
         }"
       >
         <div
-          class="planet-face"
+          class="planet"
           :style="{
-            transform: 'rotateY(' + (-rotation.y) + 'deg) rotateX(' + (-rotation.x) + 'deg)'
+            transform: 'translateX(' + getOrbitRadius(index, spherePoints.length) + 'px)',
+            '--planet-color': pt.accentColor,
+            '--planet-glow': pt.accentColor + '60'
           }"
         >
-          <div class="planet-body" :style="{ borderColor: pt.accentColor, boxShadow: '0 0 20px ' + pt.accentColor + ', inset 0 0 15px ' + pt.accentColor + '40' }">
-            <Icon
-              :name="'lucide:' + pt.icon"
-              :size="22"
-              :style="{ color: pt.accentColor }"
-            />
+          <div
+            class="planet-face"
+            :style="{
+              transform: 'rotateZ(' + (-getOrbitOffset(index)) + 'deg) rotateX(' + (-getOrbitTilt(index)) + 'deg) rotateX(' + (-rotation.x) + 'deg) rotateY(' + (-rotation.y) + 'deg)'
+            }"
+          >
+            <div class="planet-body" :style="{ borderColor: pt.accentColor, boxShadow: '0 0 20px ' + pt.accentColor + ', inset 0 0 15px ' + pt.accentColor + '40' }">
+              <Icon
+                :name="'lucide:' + pt.icon"
+                :size="22"
+                :style="{ color: pt.accentColor }"
+              />
+            </div>
+            <span class="planet-label" :style="{ color: pt.accentColor }">
+              {{ pt.platform }}
+            </span>
           </div>
-          <span class="planet-label" :style="{ color: pt.accentColor }">
-            {{ pt.platform }}
-          </span>
         </div>
       </div>
 

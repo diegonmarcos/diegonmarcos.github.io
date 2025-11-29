@@ -106,21 +106,51 @@
 }
 
 // ==================
-// 3D PLANETS
+// ORBITAL RINGS
 // ==================
-.planet-3d {
+.orbit-ring {
   position: absolute;
-  transform-style: preserve-3d;
-  animation: planet-float 8s ease-in-out infinite;
+  border: 1px solid rgba(var(--ring-color), 0.2);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: orbit-glow 3s ease-in-out infinite;
+  border-color: var(--ring-color, rgba(0, 255, 136, 0.15));
+  opacity: 0.3;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 50%;
+    border: 1px dashed var(--ring-color, rgba(0, 255, 136, 0.08));
+    opacity: 0.5;
+  }
 }
 
-@keyframes planet-float {
-  0%, 100% {
-    filter: brightness(1);
-  }
-  50% {
-    filter: brightness(1.1);
-  }
+@keyframes orbit-glow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.4; }
+}
+
+// ==================
+// PLANETS IN ORBIT
+// ==================
+.planet-orbit {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  animation: orbit-rotate 20s linear infinite;
+}
+
+@keyframes orbit-rotate {
+  from { transform: rotateX(var(--tilt, 75deg)) rotateZ(var(--offset, 0deg)); }
+  to { transform: rotateX(var(--tilt, 75deg)) rotateZ(calc(var(--offset, 0deg) + 360deg)); }
+}
+
+.planet {
+  position: absolute;
+  transform-style: preserve-3d;
 }
 
 .planet-face {

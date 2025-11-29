@@ -7,7 +7,7 @@ const matrixCanvas = ref<HTMLCanvasElement | null>(null)
 
 // Composables
 const { initMatrixRain, handleResize } = useMatrixRain()
-const { data } = useData()
+const { data, mediaLinks } = useData()
 const { rotation, calculateSpherePoints, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd } = useSphere()
 
 // Computed
@@ -96,6 +96,14 @@ const scrollToSection = (id: string) => {
             <Icon name="lucide:box" :size="14" />
             SPHERE
           </a>
+          <a
+            class="tab-btn"
+            href="#medias"
+            @click.prevent="scrollToSection('medias')"
+          >
+            <Icon name="lucide:share-2" :size="14" />
+            MEDIAS
+          </a>
         </nav>
       </header>
 
@@ -124,6 +132,11 @@ const scrollToSection = (id: string) => {
             @touchmove="onTouchMove"
             @touchend="onTouchEnd"
           />
+        </section>
+
+        <!-- Medias Section -->
+        <section id="medias" class="view-section">
+          <MediasView :media-links="mediaLinks" />
         </section>
       </div>
     </main>

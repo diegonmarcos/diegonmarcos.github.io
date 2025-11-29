@@ -46,3 +46,11 @@ export interface MousePosition {
   x: number
   y: number
 }
+
+export interface MediaItem {
+  id: string
+  platform: string
+  icon: string
+  url: string
+  accentColor: string
+}

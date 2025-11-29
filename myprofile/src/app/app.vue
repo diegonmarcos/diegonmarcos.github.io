@@ -104,6 +104,14 @@ const scrollToSection = (id: string) => {
             <Icon name="lucide:share-2" :size="14" />
             MEDIAS
           </a>
+          <a
+            class="tab-btn"
+            href="#terminal"
+            @click.prevent="scrollToSection('terminal')"
+          >
+            <Icon name="lucide:terminal" :size="14" />
+            TERMINAL
+          </a>
         </nav>
       </header>
 
@@ -137,6 +145,11 @@ const scrollToSection = (id: string) => {
         <!-- Medias Section -->
         <section id="medias" class="view-section">
           <MediasView :media-links="mediaLinks" />
+        </section>
+
+        <!-- Terminal Section -->
+        <section id="terminal" class="view-section">
+          <TerminalAI />
         </section>
       </div>
     </main>

@@ -289,7 +289,8 @@ jobs:
           if [ -d "linktree/dist" ]; then
             echo "📦 Copying Linktree build..."
             mkdir -p _site/linktree
-            cp -r linktree/dist/* _site/linktree/
+            # Use -L to dereference symlinks (dist may contain symlinks to public/)
+            cp -rL linktree/dist/* _site/linktree/ 2>/dev/null || cp -r linktree/dist/* _site/linktree/
             cp -r linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
           fi

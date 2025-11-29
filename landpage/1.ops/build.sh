@@ -158,10 +158,10 @@ build_single_file() {
         return 0
     fi
 
-    # Read CSS content
+    # Read CSS content (strip BOM if present - Sass outputs UTF-8 BOM which breaks inlined CSS)
     _css_content=""
     if [ -f "$_css_file" ]; then
-        _css_content=$(cat "$_css_file")
+        _css_content=$(sed '1s/^\xEF\xBB\xBF//' "$_css_file")
     fi
 
     # Read JS content

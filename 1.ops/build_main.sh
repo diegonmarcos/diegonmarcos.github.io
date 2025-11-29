@@ -792,6 +792,19 @@ kill_servers() {
         fi
     fi
 
+    # Kill Nuxt.js processes
+    _nuxt_pids=$(pgrep -f "nuxt" 2>/dev/null || true)
+    if [ -n "$_nuxt_pids" ]; then
+        log_info "Killing Nuxt.js server processes..."
+        echo "$_nuxt_pids" | xargs kill -15 2>/dev/null || true
+        _killed=$((_killed + $(echo "$_nuxt_pids" | wc -w)))
+        sleep 1
+        _nuxt_pids=$(pgrep -f "nuxt" 2>/dev/null || true)
+        if [ -n "$_nuxt_pids" ]; then
+            echo "$_nuxt_pids" | xargs kill -9 2>/dev/null || true
+        fi
+    fi
+
     # Kill live-server processes
     _live_pids=$(pgrep -f "live-server" 2>/dev/null || true)
     if [ -n "$_live_pids" ]; then

@@ -22,22 +22,6 @@
     opacity: 0;
     transform: translateY(30px);
     visibility: hidden;
-    // CSS-only fallback: if JS doesn't run, sections become visible after 1s
-    animation: fallback-reveal 0s 1s forwards;
-}
-
-// When JS successfully adds .animated class, disable the fallback
-.animated-section.animated {
-    animation: none;
-}
-
-// Fallback animation - reveals content if JS fails
-@keyframes fallback-reveal {
-    to {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
 }
 
 .fade-out {

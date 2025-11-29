@@ -110,11 +110,11 @@ build_single_file() {
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
     ln -sf ../favicon.ico "$DIST_DIR/favicon.ico"
-    ln -sf ../1.ops "$DIST_DIR/1.ops"
 
     _html_file="$PROJECT_DIR/src_static/index.html"
     _css_file="$PROJECT_DIR/style.css"
     _js_file="$PROJECT_DIR/script.js"
+    _matomo_file="$PROJECT_DIR/../1.ops/matomo-tracking/cv_web.js"
     _output_file="$DIST_DIR/index.html"
 
     if [ ! -f "$_html_file" ]; then
@@ -122,10 +122,10 @@ build_single_file() {
         return 0
     fi
 
-    # Read CSS content
+    # Read CSS content (strip BOM if present)
     _css_content=""
     if [ -f "$_css_file" ]; then
-        _css_content=$(cat "$_css_file")
+        _css_content=$(sed '1s/^\xEF\xBB\xBF//' "$_css_file")
     fi
 
     # Read JS content
@@ -134,8 +134,14 @@ build_single_file() {
         _js_content=$(cat "$_js_file")
     fi
 
-    # Create single-file HTML (inline CSS and JS)
-    awk -v css="$_css_content" -v js="$_js_content" '
+    # Read Matomo tracking content
+    _matomo_content=""
+    if [ -f "$_matomo_file" ]; then
+        _matomo_content=$(cat "$_matomo_file")
+    fi
+
+    # Create single-file HTML (inline CSS, JS, and Matomo)
+    awk -v css="$_css_content" -v js="$_js_content" -v matomo="$_matomo_content" '
     /<link[^>]*href="style\.css"[^>]*>/ {
         print "<style>"
         print css
@@ -145,6 +151,12 @@ build_single_file() {
     /<script[^>]*src="script\.js"[^>]*>/ {
         print "<script>"
         print js
+        print "</script>"
+        next
+    }
+    /<script[^>]*src="\/1\.ops\/matomo-tracking\/cv_web\.js"[^>]*>/ {
+        print "<script>"
+        print matomo
         print "</script>"
         next
     }

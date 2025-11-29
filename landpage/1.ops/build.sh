@@ -172,13 +172,13 @@ build_single_file() {
 
     # Create single-file HTML
     awk -v css="$_css_content" -v js="$_js_content" '
-    /<link[^>]*href="style\.css"[^>]*>/ {
+    /<link[^>]*href="style\.css[^"]*"[^>]*>/ {
         print "<style>"
         print css
         print "</style>"
         next
     }
-    /<script[^>]*src="script\.js"[^>]*>/ {
+    /<script[^>]*src="script\.js[^"]*"[^>]*>/ {
         print "<script>"
         print js
         print "</script>"

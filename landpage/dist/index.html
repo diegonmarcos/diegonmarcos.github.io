@@ -75,16 +75,622 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=1.1">
+<style>
+﻿*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background-color:#0d061f;color:#d1d5db;font-family:"Inter",sans-serif;line-height:1.6;position:relative;overflow-x:hidden}.hero-title{font-size:clamp(2rem,4.5vw,4.5rem);font-weight:700;letter-spacing:-0.05em;margin-bottom:1rem;background:linear-gradient(110deg, #8A2BE2 0%, #A060FF 35%, #E0C3FF 50%, #A060FF 65%, #8A2BE2 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:rgba(0,0,0,0);animation:shimmer 6s linear infinite;text-shadow:0 0 10px rgba(160,96,255,.5)}.hero-subtitle{font-size:clamp(.5em,1.5vw,1.1rem);color:#9ca3af;font-weight:500;font-style:italic;margin-bottom:0}.hero-quote{max-width:800px;margin:0 auto;font-size:clamp(.8em,1.5vw,1.5rem);font-style:italic;color:#d1d5db;border-left:1px solid #8a2be2;padding-left:1.5rem;text-align:left}.section-title{font-size:clamp(1.75rem,3.25vw,3.25rem);font-weight:700;text-align:center;margin-bottom:3rem}.card-title{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;color:#a060ff;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:center;text-align:center;gap:.75rem;width:100%}.card-title i{font-size:1.2em}.card-description{font-size:clamp(1rem,2vw,1.25rem);color:#d1d5db;margin-bottom:1rem;font-style:italic;text-align:center;line-height:1.8;max-width:800px;padding:0 1rem}.card-quote{font-style:italic;color:#9ca3af;margin-bottom:1rem}.cta-description{max-width:600px;margin:0 auto 2rem auto;color:#9ca3af}.hero{text-align:center;margin-bottom:6rem;position:relative}.hero-subtitle-container{max-width:60%;margin:0 auto}.hero-divider{border:0;border-top:1px solid hsla(0,0%,100%,.1);max-width:50%;margin:2rem auto;width:100%}.cta{text-align:center;margin-bottom:4rem}.cta .section-title{margin-bottom:1rem}.cta-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:1rem;max-width:900px;margin:0 auto}.floating-menu-container{position:fixed;bottom:15px;right:15px;z-index:1000}.floating-menu{position:absolute;bottom:60px;right:0;background-color:#333;border-radius:5px;box-shadow:0 2px 5px rgba(0,0,0,.2);padding:10px;z-index:1;opacity:0;transform:translateY(10px);transition:opacity .3s ease,transform .3s ease;pointer-events:none}.floating-menu.show{opacity:1;transform:translateY(0);pointer-events:auto}.value-proposition{margin-bottom:6rem}.title-with-arrow{position:relative;padding-bottom:1.5rem}.title-with-arrow::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:0;height:0;border-left:15px solid rgba(0,0,0,0);border-right:15px solid rgba(0,0,0,0);border-top:15px solid rgba(138,43,226,.5)}.value-proposition-grid{display:grid;grid-template-columns:1fr;gap:2rem}.card-points-container{display:flex;gap:1rem;margin-top:1.5rem}.card-title{font-size:clamp(1rem,1.5vw,1.5rem);font-weight:700;color:#a060ff;margin-bottom:.75rem;display:flex;align-items:center}.card-title i{margin-right:.5rem}.card-description{font-size:clamp(1.5rem,1.5vw,1.5rem);color:#9ca3af;margin-bottom:1rem;font-style:italic}.card-quote{font-style:italic;color:#9ca3af;margin-bottom:1rem}.theme-toggle-button{position:absolute;top:1rem;right:1rem;background:hsla(0,0%,100%,.05);border:1px solid hsla(0,0%,100%,.1);color:#d1d5db;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:1.2rem;transition:all .3s ease;z-index:100}.theme-toggle-button:hover{border-color:#a060ff;color:#a060ff}.cta-button{display:flex;align-items:center;justify-content:center;gap:.5rem;background-color:#8a2be2;color:#fff;font-weight:700;text-decoration:none;padding:1.2rem 1.5rem;border-radius:8px;transition:all .3s ease;margin-bottom:.5rem;text-align:center}.cta-button i{font-size:1.2em}.cta-button:hover{background-color:#a060ff;transform:scale(1.05)}.cta-shimmer{position:relative;overflow:hidden;background:linear-gradient(110deg, #8A2BE2 0%, #8A2BE2 40%, #E0C3FF 50%, #8A2BE2 60%, #8A2BE2 100%);background-size:200% 100%;animation:shimmer 3s linear infinite}.cta-shimmer:hover{background:linear-gradient(110deg, #A060FF 0%, #A060FF 40%, #ffffff 50%, #A060FF 60%, #A060FF 100%);background-size:200% 100%;animation:shimmer 2s linear infinite}.floating-btn{background-color:rgba(138,43,226,.7);color:#fff;border:none;border-radius:50%;width:50px;height:50px;font-size:24px;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.2);transition:background-color .3s}.card{background-color:hsla(0,0%,100%,.05);border:1px solid hsla(0,0%,100%,.1);border-radius:12px;padding:1.5rem}.card:hover{transform:translateY(-5px);border-color:rgba(160,96,255,.5);box-shadow:0 0 25px rgba(160,96,255,.4);transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}.point-box{flex:1;background-color:rgba(0,0,0,.2);border:1px solid hsla(0,0%,100%,.1);border-radius:8px;padding:1rem;font-size:.3rem;font-style:italic;color:#9ca3af}#clippy-container{position:fixed;width:100px;height:100px;cursor:pointer;z-index:1001;transition:opacity .5s ease;user-select:none;opacity:1}#clippy-container:hover{cursor:pointer}#clippy-container.dragging{transition:none}#clippy-container.hidden{opacity:0;pointer-events:none}#clippy-svg{width:100%;height:100%;filter:drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));animation:clippy-bounce 3s ease-in-out infinite}#clippy-svg path{fill:silver;stroke:gray;stroke-width:2}#clippy-svg:hover{filter:drop-shadow(0 0 10px #A060FF)}#clippy-svg:hover path{fill:#d8d8d8}.clippy-speech{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#2a2a2a;color:#d1d5db;padding:12px 16px;border-radius:12px;border:2px solid #555;margin-bottom:15px;min-width:200px;max-width:250px;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:1002}.clippy-speech.show{opacity:1}.clippy-speech::after{content:"";position:absolute;top:100%;left:20px;border:10px solid rgba(0,0,0,0);border-top-color:#555}.clippy-speech::before{content:"";position:absolute;top:100%;left:22px;border:8px solid rgba(0,0,0,0);border-top-color:#2a2a2a;z-index:1}#clippy-menu{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background-color:#2a2a2a;border:1px solid #444;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.3);padding:10px;margin-bottom:15px;opacity:0;transform:translateX(-50%) translateY(10px);transition:opacity .3s ease,transform .3s ease;pointer-events:none;min-width:220px}#clippy-menu.pulse-menu{left:auto;right:50px;transform:translateX(0)}#clippy-menu.pulse-menu.show{transform:translateX(0) translateY(0)}#clippy-menu.show{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}#clippy-menu a{display:block;color:#d1d5db;padding:10px 12px;text-decoration:none;border-radius:4px;transition:all .3s ease;font-size:14px;position:relative;overflow:hidden;border:1px solid rgba(0,0,0,0)}#clippy-menu a:hover{background:linear-gradient(135deg, rgba(160, 96, 255, 0.15), rgba(138, 43, 226, 0.25));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(160,96,255,.4);box-shadow:0 4px 15px rgba(160,96,255,.3),inset 0 1px 0 hsla(0,0%,100%,.1);transform:translateY(-2px)}#clippy-menu a:hover::before{opacity:1;transform:translateX(100%)}#clippy-menu a:hover i{color:#a060ff;transform:scale(1.15) rotate(-5deg);text-shadow:0 0 10px rgba(160,96,255,.6)}#clippy-menu a::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);opacity:0;transition:transform .6s ease,opacity .3s ease}#clippy-menu a i{color:#d1d5db;margin-right:8px;font-size:16px;display:inline-block;transition:all .3s ease}#clippy-menu .menu-toggles{display:flex;justify-content:center;gap:.4rem;padding-top:8px;margin-top:8px;border-top:1px solid #444;flex-wrap:nowrap}#clippy-menu .menu-toggle-btn{background:hsla(0,0%,100%,.05);border:1px solid #555;color:#d1d5db;width:34px;height:34px;border-radius:50%;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:1rem;transition:all .3s ease;flex-shrink:0}#clippy-menu .menu-toggle-btn:hover{border-color:#a060ff;color:#a060ff;background:rgba(160,96,255,.1)}#clippy-menu .menu-toggle-btn.active{background:#8a2be2;border-color:#8a2be2;color:#fff}#clippy-menu .menu-toggle-btn i{color:inherit}.clippy-pulsing-circle{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);width:50px;height:50px;border-radius:50%;background:#8a2be2;cursor:pointer;display:none;z-index:1}.clippy-pulsing-circle::before,.clippy-pulsing-circle::after{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);border-radius:50%;opacity:0}.clippy-pulsing-circle::before{width:50px;height:50px;background:#a060ff;animation:pulse-ring-1 2s ease-out infinite}.clippy-pulsing-circle::after{width:50px;height:50px;background:#a060ff;animation:pulse-ring-2 2s ease-out infinite;animation-delay:.66s}.clippy-pulsing-circle{animation:pulse-ring-3 2s ease-out infinite;animation-delay:1.32s;box-shadow:0 0 0 0 #a060ff}.clippy-pulsing-circle:hover{background:#a060ff;box-shadow:0 0 20px #a060ff}#space-background{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background:radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);overflow:hidden;opacity:.8}.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle 4s ease-in-out infinite}.star::before,.star::after{content:"";position:absolute;background:#fff;border-radius:50%}.star::before{width:100%;height:30%;top:35%;left:0;box-shadow:0 0 3px hsla(0,0%,100%,.8)}.star::after{width:30%;height:100%;left:35%;top:0;box-shadow:0 0 3px hsla(0,0%,100%,.8)}.constellation-star{position:absolute;background:#6495ed;border-radius:50%;animation:constellation-twinkle 4s ease-in-out infinite;z-index:2;box-shadow:0 0 4px rgba(100,149,237,.6)}.constellation-line{display:none}.star-explosion{position:absolute;width:3px;height:3px;background:#a060ff;border-radius:50%;animation:explode 1s ease-out forwards}.comet{position:absolute;width:3px;height:3px;background:#fff;border-radius:50%;box-shadow:0 0 10px 2px rgba(160,96,255,.8)}.comet::after{content:"";position:absolute;top:0;left:-80px;width:80px;height:2px;background:linear-gradient(to right, transparent, #A060FF)}.comet-small{animation:comet-fly-small 2s linear forwards}.comet-medium{animation:comet-fly-medium 3s linear forwards;width:5px;height:5px}.comet-medium::after{width:120px;left:-120px}body.light-theme{--brand-dark: #F4F4F9;--card-bg: #FFFFFF;--card-border: #E2E8F0;--text-primary: #1A202C;--text-secondary: #4A5568}body.light-theme .hero-title{text-shadow:0 0 10px rgba(160,96,255,.2)}body.light-theme #space-background{background:radial-gradient(ellipse at bottom, #E8EAF6 0%, #C5CAE9 100%)}body.light-theme .star{background:#5c6bc0}body.light-theme .star::before,body.light-theme .star::after{background:#5c6bc0;box-shadow:0 0 3px rgba(92,107,192,.8)}body.light-theme .constellation-star{background:#4169e1;box-shadow:0 0 4px rgba(65,105,225,.6)}body.light-theme #clippy-svg path{fill:#606060;stroke:#404040}body.light-theme .clippy-speech{background:#fff;color:#333;border-color:#333}body.light-theme .clippy-speech::after{border-top-color:#333}body.light-theme .clippy-speech::before{border-top-color:#fff}@keyframes twinkle{0%,100%{opacity:.1;transform:scale(1)}50%{opacity:.5;transform:scale(0.8)}}@keyframes constellation-twinkle{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:.7;transform:scale(0.8)}}@keyframes explode{0%{transform:scale(1);opacity:1;box-shadow:0 0 5px 2px #a060ff}50%{transform:scale(8);opacity:.8;box-shadow:0 0 20px 10px #a060ff}100%{transform:scale(15);opacity:0;box-shadow:0 0 30px 15px rgba(0,0,0,0)}}@keyframes comet-fly-small{0%{transform:translate(0, 0);opacity:1}100%{transform:translate(-500px, 500px);opacity:0}}@keyframes comet-fly-medium{0%{transform:translate(0, 0);opacity:1}100%{transform:translate(-800px, 600px);opacity:0}}@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes pulse-ring-1{0%{opacity:.8;transform:translate(-50%, -50%) scale(1)}100%{opacity:0;transform:translate(-50%, -50%) scale(2.5)}}@keyframes pulse-ring-2{0%{opacity:.6;transform:translate(-50%, -50%) scale(1)}100%{opacity:0;transform:translate(-50%, -50%) scale(2.5)}}@keyframes pulse-ring-3{0%{box-shadow:0 0 0 0 rgba(160,96,255,.4)}50%{box-shadow:0 0 0 15px rgba(160,96,255,0)}100%{box-shadow:0 0 0 0 rgba(160,96,255,0)}}@keyframes clippy-bounce{0%,100%{transform:translateY(0) rotate(0deg)}25%{transform:translateY(-5px) rotate(-2deg)}50%{transform:translateY(0) rotate(0deg)}75%{transform:translateY(-3px) rotate(2deg)}}.container{max-width:1100px;margin:0 auto;padding:3rem 1.5rem}.spacer{height:50vh}.animated-section{opacity:0;transform:translateY(30px);visibility:hidden}.fade-out{opacity:0;pointer-events:none;transition:opacity .3s ease}body.fit-to-screen{overflow:hidden;height:100vh;-ms-overflow-style:none;scrollbar-width:none}body.fit-to-screen::-webkit-scrollbar{display:none}body.fit-to-screen .container{transform-origin:top center;overflow:visible;transition:transform .3s ease}.sample-style{--brand-dark: #0D061F;--brand-purple: #8A2BE2;--brand-light-purple: #A060FF;--card-bg: rgba(255, 255, 255, 0.05);--card-border: rgba(255, 255, 255, 0.1);--text-primary: #d1d5db;--text-secondary: #9ca3af;--font-sans: 'Inter', sans-serif;box-sizing:border-box;margin:0 auto 2rem auto;padding:1.5rem;background-color:var(--brand-dark);color:var(--text-primary);font-family:var(--font-sans);line-height:1.6;max-width:1100px;font-size:clamp(1rem,2.5vw,1.5rem);font-weight:700;text-align:center;margin-bottom:3rem;letter-spacing:-0.05em;background:linear-gradient(to right, var(--brand-light-purple), var(--brand-purple));-webkit-background-clip:text;background-clip:text;color:rgba(0,0,0,0);text-shadow:0 0 10px rgba(160,96,255,.5);font-style:italic;border-left:1px solid var(--brand-purple);padding-left:1.5rem;border:1px solid var(--card-border);border-top:1px solid var(--card-border);display:grid;grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));gap:2rem;border-radius:12px;transition:all .3s ease;transform:translateY(-5px);border-color:rgba(160,96,255,.5);box-shadow:0 0 25px rgba(160,96,255,.4);align-items:center;margin-right:.5rem;list-style-position:inside;list-style-type:"— ";flex-direction:column;position:relative;text-decoration:none;left:1.5rem;top:50%;opacity:1;min-height:4.5rem;justify-content:center}@media(max-width: 768px){.theme-toggle-button{top:.1rem;right:.1rem;width:28px;height:28px;font-size:.9rem}.cta-button{min-height:4.5rem;display:flex;align-items:center;justify-content:center}.cta-button i{position:static;transform:none;margin-right:.5rem}#clippy-container{width:80px;height:80px}.clippy-pulsing-circle{width:45px;height:45px}.clippy-pulsing-circle::before,.clippy-pulsing-circle::after{width:45px;height:45px}#clippy-svg{width:80px;height:80px}#clippy-menu.pulse-menu{right:30px;min-width:200px}}@media(min-width: 768px){.value-proposition-grid{grid-template-columns:repeat(2, 1fr)}}.floating-btn.active,.floating-btn:not(.active):hover{background-color:var(--brand-light-purple)}
+</style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 
-    <!-- Cookie Consent CSS -->
-    <link rel="stylesheet" href="/5.analytics/cookie-consent.css">
-
-    <script src="script.js?v=1.1" defer></script>
-
-    <!-- Cookie Consent Script -->
-    <script src="/5.analytics/cookie-consent.js" defer></script>
+<script>
+"use strict";
+document.addEventListener('DOMContentLoaded', () => {
+    let animationsEnabled = localStorage.getItem('animations') !== 'disabled';
+    let backgroundAnimationsEnabled = localStorage.getItem('backgroundAnimations') !== 'disabled';
+    const container = document.querySelector('.container');
+    const spaceBackground = document.createElement('div');
+    spaceBackground.id = 'space-background';
+    document.body.insertBefore(spaceBackground, document.body.firstChild);
+    function createStars(count) {
+        for (let i = 0; i < count; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.opacity = (Math.random() * 0.5 + 0.5).toString();
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            spaceBackground.appendChild(star);
+        }
+    }
+    createStars(100);
+    function createConstellation(_name, stars, connections) {
+        const constellation = [];
+        stars.forEach((starPos) => {
+            const star = document.createElement('div');
+            star.className = 'constellation-star';
+            star.style.left = starPos.x + '%';
+            star.style.top = starPos.y + '%';
+            star.style.width = starPos.size + 'px';
+            star.style.height = starPos.size + 'px';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            spaceBackground.appendChild(star);
+            constellation.push({ element: star, x: starPos.x, y: starPos.y });
+        });
+        connections.forEach(([startIdx, endIdx]) => {
+            const start = constellation[startIdx];
+            const end = constellation[endIdx];
+            const line = document.createElement('div');
+            line.className = 'constellation-line';
+            const startRect = { x: start.x, y: start.y };
+            const endRect = { x: end.x, y: end.y };
+            const deltaX = endRect.x - startRect.x;
+            const deltaY = endRect.y - startRect.y;
+            const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+            line.style.left = startRect.x + '%';
+            line.style.top = startRect.y + '%';
+            line.style.width = length + '%';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.animationDelay = Math.random() * 4 + 's';
+            line.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            spaceBackground.appendChild(line);
+        });
+    }
+    const cancerStars = [
+        { x: 15, y: 20, size: 3 },
+        { x: 12, y: 18, size: 2.5 },
+        { x: 18, y: 22, size: 2.5 },
+        { x: 16, y: 17, size: 2 },
+        { x: 13, y: 15, size: 2 },
+        { x: 19, y: 19, size: 2 }
+    ];
+    const cancerConnections = [
+        [0, 1],
+        [0, 2],
+        [1, 4],
+        [4, 3],
+        [3, 5],
+        [5, 2]
+    ];
+    const ariesStars = [
+        { x: 80, y: 25, size: 3 },
+        { x: 83, y: 23, size: 2.5 },
+        { x: 85, y: 28, size: 2 },
+        { x: 78, y: 22, size: 1.5 }
+    ];
+    const ariesConnections = [
+        [0, 1],
+        [1, 2],
+        [0, 3]
+    ];
+    createConstellation('cancer', cancerStars, cancerConnections);
+    createConstellation('aries', ariesStars, ariesConnections);
+    function createStarExplosion() {
+        if (!backgroundAnimationsEnabled)
+            return;
+        const explosion = document.createElement('div');
+        explosion.className = 'star-explosion';
+        explosion.style.left = Math.random() * window.innerWidth + 'px';
+        explosion.style.top = Math.random() * window.innerHeight + 'px';
+        spaceBackground.appendChild(explosion);
+        setTimeout(() => explosion.remove(), 1000);
+    }
+    function createComet(size = 'small') {
+        if (!backgroundAnimationsEnabled)
+            return;
+        const comet = document.createElement('div');
+        comet.className = `comet comet-${size}`;
+        comet.style.right = '-100px';
+        comet.style.top = Math.random() * (window.innerHeight / 2) + 'px';
+        spaceBackground.appendChild(comet);
+        const duration = size === 'medium' ? 3000 : 2000;
+        setTimeout(() => comet.remove(), duration);
+    }
+    let backgroundAnimationInterval;
+    function startBackgroundAnimations() {
+        if (!backgroundAnimationsEnabled)
+            return;
+        backgroundAnimationInterval = window.setInterval(() => {
+            const rand = Math.random();
+            if (rand < 0.3) {
+                createStarExplosion();
+            }
+            else if (rand < 0.6) {
+                createComet('small');
+            }
+            else if (rand < 0.8) {
+                createComet('medium');
+            }
+        }, 3000);
+    }
+    function stopBackgroundAnimations() {
+        if (backgroundAnimationInterval) {
+            clearInterval(backgroundAnimationInterval);
+            backgroundAnimationInterval = undefined;
+        }
+    }
+    function calculateAndApplyScale() {
+        if (!animationsEnabled && body.classList.contains('fit-to-screen')) {
+            const contentHeight = container.scrollHeight;
+            const viewportHeight = window.innerHeight;
+            const scale = (viewportHeight * 0.95) / contentHeight;
+            container.style.transform = `scale(${scale})`;
+        }
+    }
+    const valuePropSections = [
+        {
+            title: "Capital Markets & Venture Capital Acumen",
+            icon: "ti-briefcase",
+            description: ""I don't just analyze businesses; I've built, funded, and scaled them. My experience is rooted in tangible results and strategic growth."",
+            points: [
+                "Successfully structured and managed deals in Investment Banking, including R$ 500Mi in MBS and R$ 100Mi in mezzanine debt.",
+                "Directed portfolios with an Asset under Management (AuM) of R$ 500Mi, handling everything from exclusive funds to private credit.",
+                "Led the full cycle of Venture Capital deals, from acquisition to disinvestment, with a focus on ESG-centric startups."
+            ]
+        },
+        {
+            title: "Engineering & Problem-Solving Mindset",
+            icon: "ti-ruler",
+            description: ""My foundation in Civil Engineering trained me to deconstruct complex problems and build robust, lasting solutions from the ground up."",
+            points: [
+                "Honed in critical thinking and problem-solving through a B.Sc. in Structural Civil Engineering.",
+                "Managed on-site construction of residential towers and developed infrastructure projects for NGOs, turning blueprints into reality.",
+                "Applied financial modeling and project management not just to finance, but to the tangible world of infrastructure and development."
+            ]
+        },
+        {
+            title: "The Pivot: Product & Software Engineering",
+            icon: "ti-code",
+            description: ""Driven by a passion for creative endeavors and innovation, I am channeling my experience into building the products of tomorrow."",
+            points: [
+                "Currently honing skills in C/C++ programming, data structures, and UNIX at L'École 42, and Product Management from Stanford.",
+                "Learning to manage the entire product lifecycle—from user discovery and roadmap creation to running operational sprints.",
+                "Combining a decade of understanding *what* to build with the emerging knowledge of *how* to build it."
+            ]
+        },
+        {
+            title: "Global Perspective & Cross Adaptability",
+            icon: "ti-world",
+            description: ""My personal life has been a nomadic project, providing me with unparalleled learning opportunities."",
+            points: [
+                "Lived in Berlin, Barcelona, London, Paris, and Valencia, while traveling to over 170 cities in 40+ countries.",
+                "Fluent in Portuguese, English, and Spanish, with a growing proficiency in German.",
+                "Thrives in multicultural environments, bringing a unique worldview to every team."
+            ]
+        }
+    ];
+    const gridContainer = document.getElementById('value-proposition-grid');
+    if (gridContainer) {
+        valuePropSections.forEach(section => {
+            const card = document.createElement('div');
+            card.className = 'card animated-section';
+            const cardTitle = document.createElement('h3');
+            cardTitle.className = 'card-title';
+            const icon = document.createElement('i');
+            icon.className = `ti ${section.icon}`;
+            cardTitle.appendChild(icon);
+            const titleText = document.createElement('span');
+            titleText.textContent = section.title;
+            cardTitle.appendChild(titleText);
+            const cardDescription = document.createElement('p');
+            cardDescription.className = 'card-description';
+            cardDescription.textContent = section.description;
+            const pointsContainer = document.createElement('div');
+            pointsContainer.className = 'card-points-container';
+            section.points.forEach(pointText => {
+                const pointBox = document.createElement('div');
+                pointBox.className = 'point-box';
+                pointBox.textContent = pointText;
+                pointsContainer.appendChild(pointBox);
+            });
+            card.appendChild(cardTitle);
+            card.appendChild(cardDescription);
+            card.appendChild(pointsContainer);
+            gridContainer.appendChild(card);
+        });
+    }
+    function animate(element, targetOpacity, targetTransform, duration) {
+        if (targetOpacity > 0) {
+            element.style.visibility = 'visible';
+        }
+        const startOpacity = parseFloat(window.getComputedStyle(element).opacity);
+        const matrix = new DOMMatrix(window.getComputedStyle(element).transform);
+        const startTransform = matrix.m42;
+        let startTime = null;
+        function animationStep(timestamp) {
+            if (!startTime)
+                startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const currentOpacity = startOpacity + (targetOpacity - startOpacity) * progress;
+            const currentTransform = startTransform + (targetTransform - startTransform) * progress;
+            element.style.opacity = currentOpacity.toString();
+            element.style.transform = `translateY(${currentTransform}px)`;
+            if (progress < 1) {
+                requestAnimationFrame(animationStep);
+            }
+            else {
+                if (targetOpacity === 0) {
+                    element.style.visibility = 'hidden';
+                }
+            }
+        }
+        requestAnimationFrame(animationStep);
+    }
+    const animatedSections = document.querySelectorAll('.animated-section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!animationsEnabled) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+                entry.target.style.visibility = 'visible';
+                return;
+            }
+            if (entry.isIntersecting) {
+                animate(entry.target, 1, 0, 600);
+            }
+            else {
+                animate(entry.target, 0, 30, 600);
+            }
+        });
+    }, {
+        root: null,
+        threshold: 0.95
+    });
+    animatedSections.forEach(section => {
+        observer.observe(section);
+    });
+    const themeToggleButton = document.getElementById('theme-toggle');
+    const body = document.body;
+    const applyTheme = () => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+            themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
+        }
+        else {
+            body.classList.remove('light-theme');
+            themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
+        }
+    };
+    themeToggleButton.addEventListener('click', () => {
+        body.classList.toggle('light-theme');
+        if (body.classList.contains('light-theme')) {
+            localStorage.setItem('theme', 'light');
+            themeToggleButton.innerHTML = '<i class="ti ti-moon"></i>';
+        }
+        else {
+            localStorage.setItem('theme', 'dark');
+            themeToggleButton.innerHTML = '<i class="ti ti-sun"></i>';
+        }
+    });
+    applyTheme();
+    const backgroundToggleButton = document.getElementById('background-toggle');
+    const applyBackgroundState = () => {
+        if (backgroundAnimationsEnabled) {
+            backgroundToggleButton.innerHTML = '<i class="ti ti-player-pause-filled"></i>';
+            backgroundToggleButton.classList.add('active');
+            startBackgroundAnimations();
+        }
+        else {
+            backgroundToggleButton.innerHTML = '<i class="ti ti-player-play-filled"></i>';
+            backgroundToggleButton.classList.remove('active');
+            stopBackgroundAnimations();
+        }
+    };
+    backgroundToggleButton.addEventListener('click', () => {
+        backgroundAnimationsEnabled = !backgroundAnimationsEnabled;
+        localStorage.setItem('backgroundAnimations', backgroundAnimationsEnabled ? 'enabled' : 'disabled');
+        applyBackgroundState();
+    });
+    applyBackgroundState();
+    const animationToggleButton = document.getElementById('animation-toggle');
+    const applyAnimationState = () => {
+        if (animationsEnabled) {
+            animationToggleButton.innerHTML = '<i class="ti ti-presentation"></i>';
+            animationToggleButton.classList.remove('active');
+            body.classList.remove('fit-to-screen');
+            container.style.transform = '';
+            animatedSections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.visibility = 'hidden';
+            });
+            observer.disconnect();
+            animatedSections.forEach(section => observer.observe(section));
+        }
+        else {
+            animationToggleButton.innerHTML = '<i class="ti ti-layout-grid"></i>';
+            animationToggleButton.classList.add('active');
+            body.classList.add('fit-to-screen');
+            animatedSections.forEach(section => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+                section.style.visibility = 'visible';
+            });
+            setTimeout(calculateAndApplyScale, 50);
+        }
+    };
+    animationToggleButton.addEventListener('click', () => {
+        animationsEnabled = !animationsEnabled;
+        localStorage.setItem('animations', animationsEnabled ? 'enabled' : 'disabled');
+        applyAnimationState();
+    });
+    applyAnimationState();
+    window.addEventListener('resize', () => {
+        calculateAndApplyScale();
+    });
+    const clippyContainer = document.getElementById('clippy-container');
+    const clippySvg = document.getElementById('clippy-svg');
+    const clippySpeech = document.querySelector('.clippy-speech');
+    const clippyMenu = document.getElementById('clippy-menu');
+    const clippyDisabled = localStorage.getItem('clippyDisabled') === 'true';
+    if (clippyDisabled) {
+        clippyContainer.style.display = 'none';
+        return;
+    }
+    const isMobile = window.innerWidth <= 768;
+    let assistantMode = localStorage.getItem('assistantMode') || (isMobile ? 'pulse' : 'full');
+    const clippyPhrases = [
+        "Pretty sure there's a cat walking on the keyboard somewhere..",
+        "What's computer's favorite snack? Microchips.",
+        "Why do Java developers wear glasses? Because they don't C#.",
+        "Why don't programmers like nature? It has too many bugs.",
+        "Just waiting for that one semicolon to show up and fix everything.",
+        "Why was the JavaScript developer sad? Because he didn't Node how to Express himself."
+    ];
+    const LANE_LEFT = 50;
+    const LANE_RIGHT_OFFSET = 150;
+    let currentLane = 'right';
+    function getLaneX(lane) {
+        if (lane === 'left') {
+            return LANE_LEFT;
+        }
+        else {
+            return window.innerWidth - LANE_RIGHT_OFFSET;
+        }
+    }
+    let clippyX = getLaneX('right');
+    let clippyY = window.innerHeight - 150;
+    clippyContainer.style.left = clippyX + 'px';
+    clippyContainer.style.top = clippyY + 'px';
+    let isDragging = false;
+    let dragOffsetY = 0;
+    clippyContainer.addEventListener('mousedown', (e) => {
+        if (e.target.closest('#clippy-menu') ||
+            e.target.closest('.clippy-speech') ||
+            assistantMode === 'pulse') {
+            return;
+        }
+        isDragging = true;
+        clippyContainer.classList.add('dragging');
+        dragOffsetY = e.clientY - clippyContainer.offsetTop;
+        e.preventDefault();
+    });
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging)
+            return;
+        clippyY = e.clientY - dragOffsetY;
+        clippyY = Math.max(50, Math.min(clippyY, window.innerHeight - 150));
+        clippyX = getLaneX(currentLane);
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+    });
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            clippyContainer.classList.remove('dragging');
+        }
+    });
+    clippySvg?.addEventListener('click', (e) => {
+        if (!isDragging && assistantMode === 'full') {
+            e.stopPropagation();
+            clippyMenu.classList.toggle('show');
+            clippySpeech.classList.remove('show');
+        }
+    });
+    let _autoMoveInterval;
+    let _isAutoMoving = false;
+    function autoMoveClippy() {
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse')
+            return;
+        _isAutoMoving = true;
+        const targetY = Math.random() * (window.innerHeight - 200) + 50;
+        const duration = 2000;
+        const startY = clippyY;
+        const startTime = Date.now();
+        function moveStep() {
+            if (isDragging) {
+                _isAutoMoving = false;
+                return;
+            }
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = progress < 0.5
+                ? 2 * progress * progress
+                : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+            clippyY = startY + (targetY - startY) * eased;
+            clippyX = getLaneX(currentLane);
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+            if (progress < 1) {
+                requestAnimationFrame(moveStep);
+            }
+            else {
+                _isAutoMoving = false;
+            }
+        }
+        moveStep();
+    }
+    function scheduleAutoMove() {
+        const delay = Math.random() * 10000 + 15000;
+        _autoMoveInterval = window.setTimeout(() => {
+            autoMoveClippy();
+            scheduleAutoMove();
+        }, delay);
+    }
+    scheduleAutoMove();
+    function changeLane(newLane) {
+        if (isDragging || clippyMenu.classList.contains('show') || assistantMode === 'pulse')
+            return;
+        clippyContainer.style.opacity = '0';
+        setTimeout(() => {
+            currentLane = newLane;
+            clippyX = getLaneX(currentLane);
+            clippyY = Math.random() * (window.innerHeight - 200) + 50;
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+            clippyContainer.style.opacity = '1';
+        }, 500);
+    }
+    function scheduleLaneChange() {
+        const delay = Math.random() * 30000 + 30000;
+        setTimeout(() => {
+            const newLane = currentLane === 'left' ? 'right' : 'left';
+            changeLane(newLane);
+            scheduleLaneChange();
+        }, delay);
+    }
+    scheduleLaneChange();
+    let _disappearTimeout;
+    let _reappearTimeout;
+    function disappearClippy() {
+        clippyContainer.style.opacity = '0';
+        clippySpeech.classList.remove('show');
+        clippyMenu.classList.remove('show');
+        setTimeout(() => {
+            clippyContainer.classList.add('hidden');
+        }, 500);
+        _reappearTimeout = window.setTimeout(() => {
+            reappearClippy();
+        }, Math.random() * 30000 + 30000);
+    }
+    function reappearClippy() {
+        currentLane = Math.random() > 0.5 ? 'left' : 'right';
+        clippyX = getLaneX(currentLane);
+        clippyY = Math.random() * (window.innerHeight - 200) + 50;
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+        clippyContainer.classList.remove('hidden');
+        clippyContainer.style.opacity = '1';
+        setTimeout(() => showSpeechBubble(), 500);
+    }
+    function scheduleDisappear() {
+        _disappearTimeout = window.setTimeout(() => {
+            if (!clippyMenu.classList.contains('show') && assistantMode === 'full') {
+                disappearClippy();
+            }
+            scheduleDisappear();
+        }, Math.random() * 60000 + 120000);
+    }
+    scheduleDisappear();
+    function showSpeechBubble(message) {
+        if (clippyMenu.classList.contains('show') || assistantMode === 'pulse')
+            return;
+        const phrase = message || clippyPhrases[Math.floor(Math.random() * clippyPhrases.length)];
+        clippySpeech.textContent = phrase;
+        clippySpeech.classList.add('show');
+        setTimeout(() => {
+            clippySpeech.classList.remove('show');
+        }, 5000);
+    }
+    setInterval(() => {
+        if (!clippyContainer.classList.contains('hidden') &&
+            !clippyMenu.classList.contains('show') &&
+            !isDragging) {
+            showSpeechBubble();
+        }
+    }, Math.random() * 30000 + 30000);
+    setTimeout(() => showSpeechBubble(), 3000);
+    const pulsingCircle = document.createElement('div');
+    pulsingCircle.id = 'clippy-pulsing-circle';
+    pulsingCircle.className = 'clippy-pulsing-circle';
+    clippyContainer.appendChild(pulsingCircle);
+    function switchToPulseMode() {
+        assistantMode = 'pulse';
+        localStorage.setItem('assistantMode', 'pulse');
+        if (clippySvg)
+            clippySvg.style.display = 'none';
+        clippySpeech.classList.remove('show');
+        clippyMenu.classList.remove('show');
+        clippyMenu.classList.add('pulse-menu');
+        pulsingCircle.style.display = 'block';
+        const leftOffset = 60;
+        const bottomOffset = 60;
+        clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
+        clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
+    }
+    function switchToFullMode() {
+        assistantMode = 'full';
+        localStorage.setItem('assistantMode', 'full');
+        pulsingCircle.style.display = 'none';
+        clippyMenu.classList.remove('pulse-menu');
+        if (clippySvg)
+            clippySvg.style.display = 'block';
+        clippyX = getLaneX(currentLane);
+        clippyY = Math.min(clippyY, window.innerHeight - 150);
+        clippyContainer.style.left = clippyX + 'px';
+        clippyContainer.style.top = clippyY + 'px';
+    }
+    const clippyDisableBtn = document.getElementById('clippy-disable');
+    function updateSwitchButtonIcon() {
+        if (assistantMode === 'pulse') {
+            clippyDisableBtn.innerHTML = '<i class="ti ti-user"></i>';
+            clippyDisableBtn.title = 'Switch to Clippy Assistant';
+        }
+        else {
+            clippyDisableBtn.innerHTML = '<i class="ti ti-circle-dot"></i>';
+            clippyDisableBtn.title = 'Switch to Pulse Assistant';
+        }
+    }
+    if (clippyDisableBtn) {
+        clippyDisableBtn.addEventListener('click', () => {
+            if (assistantMode === 'pulse') {
+                switchToFullMode();
+            }
+            else {
+                switchToPulseMode();
+            }
+            updateSwitchButtonIcon();
+        });
+    }
+    pulsingCircle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        clippyMenu.classList.toggle('show');
+    });
+    window.addEventListener('click', (event) => {
+        if (clippyMenu.classList.contains('show') &&
+            !clippyMenu.contains(event.target) &&
+            !(clippySvg?.contains(event.target)) &&
+            !pulsingCircle.contains(event.target)) {
+            clippyMenu.classList.remove('show');
+        }
+    });
+    if (assistantMode === 'pulse') {
+        switchToPulseMode();
+    }
+    else {
+        pulsingCircle.style.display = 'none';
+    }
+    updateSwitchButtonIcon();
+    window.addEventListener('resize', () => {
+        if (assistantMode === 'pulse') {
+            const leftOffset = 70;
+            const bottomOffset = 60;
+            clippyContainer.style.left = (window.innerWidth - leftOffset) + 'px';
+            clippyContainer.style.top = (window.innerHeight - bottomOffset) + 'px';
+        }
+        else {
+            clippyX = getLaneX(currentLane);
+            clippyY = Math.min(clippyY, window.innerHeight - 150);
+            clippyContainer.style.left = clippyX + 'px';
+            clippyContainer.style.top = clippyY + 'px';
+        }
+    });
+});
+</script>
 
     <!-- Matomo -->
     <script>

@@ -607,4 +607,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-//# sourceMappingURL=typescript/logs/script.js.map

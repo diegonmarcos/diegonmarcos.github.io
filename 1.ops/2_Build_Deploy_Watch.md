@@ -437,5 +437,42 @@ git push
 
 ---
 
+
+
+
+GitHub Actions workflow for automated deployment:
+- **Trigger**: Push to `main` branch
+- **Conditional Builds**: Only rebuilds assets (Sass, TypeScript, Jekyll) if source files changed
+- **Deploy**: Builds site to `_site/` and deploys to `gh-pages` branch
+
+
+---
+
+Python Map Generator (`/mymaps`)
+
+```
+/mymaps
+├──   index.html          # Menu with cards linking to maps
+├──   README.md
+├── src/
+│   ├──   mymaps.py       # Map generator script
+│   ├──   gui.py          # Tkinter GUI for configuration
+│   ├──   config.csv      # Map configuration
+│   └──   input_data.csv  # Country/region data with spheres
+└── maps/
+    └──   *.html          # Generated standalone map files
+```
+
+Workflow:
+- Edit `src/input_data.csv` with country data and sphere classifications
+- Configure `src/config.csv` for map settings (title, map type, join method)
+- Run `python3 src/mymaps.py` to generate HTML map to `maps/`
+- Or use GUI: `python3 src/gui.py`
+- Browse maps via `index.html`
+
+
+---
+
+
 **Last Updated:** 2025-11-23
 **Maintainer:** Diego Nepomuceno Marcos

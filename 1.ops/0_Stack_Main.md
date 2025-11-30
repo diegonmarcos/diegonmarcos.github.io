@@ -84,20 +84,4 @@
 
 ---
 
-## III. Migration Notes (Today → New)
 
-| Project         | Change                          | Reason                                           |
-| --------------- | ------------------------------- | ------------------------------------------------ |
-| **Nexus**       | Vue 3 → Vanilla + SPA           | Overkill for 4 pages. Keep SPA routing.          |
-| **Nexus**       | Tailwind → Sass+Tailwind        | Learn hybrid approach (Sass + Tailwind together) |
-| **Cloud**       | Add SPA (history routing)       | Back-button support for tab navigation           |
-| **MarketWatch** | Add SPA (history routing)       | Back-button support for tab navigation           |
-| **Linktree**    | Vanilla CSS → Sass              | Consistency with other projects                  |
-| **Feed Yourself** | Vanilla CSS → Sass            | Consistency with other projects                  |
-| **All Vanilla** | Add Single-File build           | Portable, offline-ready output                   |
-| **MyFeed**      | Add Single-File build           | Portable output via vite-plugin-singlefile       |
-
-### Keep As-Is (Correct Choice)
-- **MyFeed** - Vue 3 justified (complex state, multiple sources, search)
-- **MyProfile** - SvelteKit justified (SEO + dynamic portfolio), Route Chunks
-- **All others** - Vanilla is the right choice

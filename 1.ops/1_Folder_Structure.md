@@ -1,15 +1,61 @@
 
+# Actual Project Structure
+
+```
+/diegonmarcos.github.io
+                        # Main Ops
+├── 0.spec/
+├── 1.ops/
+
+                        # Projects
+├── central_bank/
+├── cloud/
+├── cv_pdf/
+├── cv_web/
+├── feed_yourself/
+├── health_tracker/
+├── landpage/
+├── linktree/
+├── market_watch/
+├── myfeed/
+├── mygames/
+├── mymaps/
+├── myprofile/
+├── nexus/
+├── others/
+
+                        # Build Config Files
+├── package.json
+├── tsconfig.json
+├── .github/workflows/
+
+                        # Others
+├── .gitignore
+├── .git
+├── .gim
+├── .vscode
+└──   README.md
+```
+
 # FOLDER STRUCTURE ROOT
 
 ```
 /project
-├── .github/workflows/
+                        # Ops
 ├── 0.spec/
 ├── 1.ops/
+
+                        # Source and Dist
 ├── src_static/ | src/
 ├── dist/
 ├── public/
+
+                        # Build Config
+├── .github/workflows/
+
+                        # Local Only
 └── node_modules/
+
 ```
 
 ---
@@ -22,10 +68,6 @@
 └──   README.md         # Workflow documentation
 ```
 
-GitHub Actions workflow for automated deployment:
-- **Trigger**: Push to `main` branch
-- **Conditional Builds**: Only rebuilds assets (Sass, TypeScript, Jekyll) if source files changed
-- **Deploy**: Builds site to `_site/` and deploys to `gh-pages` branch
 
 ---
 
@@ -33,16 +75,23 @@ GitHub Actions workflow for automated deployment:
 
 ```
 /0.spec
-├──   Folder_structure.md
-├──   Stack_Definition.md
-└──   index.md              # (brief)
+
+├──   feature1.md
+├──   feature2.md
+└──   index.md              # production index.html into markdwon frame
 ```
 
 # 1. ops/
 
 ```
 /1.ops
-└──   build.sh              # (helper is enough to explain it all)
+├──   0_Stack_Main.md
+├──   1_Folder_Structure.md
+├──   2_Build_Deploy_Watch.md
+└──   build.sh                  # (helper is enough to explain it all)
+├──   deploy.ml                 # symlink to .github/workflow
+├──   Reademe.md                # symlink to reamde of the repo
+
 ```
 
 ---
@@ -50,6 +99,17 @@ GitHub Actions workflow for automated deployment:
 # src_static/
 
 Static Source Files (`/src_static`)
+
+```
+/dist
+├── index.html          # single-file inline html
+└──  public/            # Symlinked
+```
+
+# src_static/
+
+Static Source Files (`/src_static`)
+
 ```
 /src_static
 ├── scss/               # Sass source files (see Scss section)
@@ -59,10 +119,11 @@ Static Source Files (`/src_static`)
 └──   style.css         # Compiled CSS output
 ```
 
-# scss/
+## scss/
 
 
 Sass Source Files (`/scss`)
+
 ```
 /scss
 ├── abstracts/          # Variables, mixins, functions (no CSS output)
@@ -99,9 +160,10 @@ scss/
 ```
 
 
-# typescript/
+## typescript/
 
 TypeScript Source Files (`/src_static/typescript`)
+
 ```
 /typescript
 ├──   script.ts         # Main TypeScript source file
@@ -150,6 +212,7 @@ script.ts
 # src/ (vue)
 
 Vue 3 Source Files (`/myfeed/src`)
+
 ```
 /myfeed/src
 ├──   App.vue           # Root Vue component
@@ -177,6 +240,7 @@ Vue 3 Source Files (`/myfeed/src`)
 # src/ (Svelte)
 
 SvelteKit Source Files (`/mygames/1.3.svelte/src`)
+
 ```
 /mygames/1.3.svelte/src
 ├──   app.html          # HTML template
@@ -196,37 +260,13 @@ SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 └── styles/             # Sass styles
 ```
 
----
-
-# Actual Project Structure
-
-```
-/diegonmarcos.github.io
-├── .github/workflows/
-├── 0.spec/
-├── 1.ops/
-├── central_bank/
-├── cloud/
-├── cv_pdf/
-├── cv_web/
-├── feed_yourself/
-├── health_tracker/
-├── landpage/
-├── linktree/
-├── market_watch/
-├── myfeed/
-├── mygames/
-├── mymaps/
-├── nexus/
-├── others/
-└──   README.md
-```
 
 ---
 
 # src/ (Python - mymaps)
 
 Python Map Generator (`/mymaps`)
+
 ```
 /mymaps
 ├──   index.html          # Menu with cards linking to maps
@@ -240,9 +280,3 @@ Python Map Generator (`/mymaps`)
     └──   *.html          # Generated standalone map files
 ```
 
-Workflow:
-- Edit `src/input_data.csv` with country data and sphere classifications
-- Configure `src/config.csv` for map settings (title, map type, join method)
-- Run `python3 src/mymaps.py` to generate HTML map to `maps/`
-- Or use GUI: `python3 src/gui.py`
-- Browse maps via `index.html`

@@ -82,6 +82,12 @@ build() {
 dev() {
     cd "$PROJECT_DIR"
 
+    # Create symlink to public folder if it doesn't exist
+    if [ ! -e "src_static/public" ] && [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf ../public src_static/public
+        log_info "Created symlink: src_static/public -> ../public"
+    fi
+
     # Start live-server from src_static directory
     nohup npx live-server src_static --port="${PORT}" --no-browser --quiet --entry-file=health_tracker.html > /dev/null 2>&1 &
 

@@ -193,6 +193,12 @@ dev() {
 
     cd "$SRC_STATIC"
 
+    # Create symlink to public folder if it doesn't exist
+    if [ ! -e "public" ] && [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf ../public public
+        log_info "Created symlink: src_static/public -> ../public"
+    fi
+
     # Start SCSS watcher in background
     cd scss
     nohup npx sass --watch style.scss:../style.css --style=expanded > /dev/null 2>&1 &

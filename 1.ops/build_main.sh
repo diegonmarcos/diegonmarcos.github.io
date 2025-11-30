@@ -45,6 +45,12 @@ fi
 # PID file for tracking background processes
 PID_FILE="${PROJECT_ROOT}/1.ops/.dev-servers.pid"
 
+# Log file for build/dev output
+LOG_FILE="${PROJECT_ROOT}/1.ops/build_main.log"
+
+# Build status file (tracks successful builds)
+BUILD_STATUS_FILE="${PROJECT_ROOT}/1.ops/.build-status"
+
 # Server URLs mapping (sequential ports starting at 8000)
 URL_LANDPAGE="http://localhost:8000/"
 URL_LINKTREE="http://localhost:8001/"
@@ -60,6 +66,63 @@ URL_MARKET="http://localhost:8010/"
 URL_CENTRALBANK="http://localhost:8011/"
 URL_MYMAPS="http://localhost:8012/"
 URL_MYPROFILE="http://localhost:8013/"
+
+# Initialize log file with timestamp
+init_log() {
+    printf "\n========================================\n" >> "$LOG_FILE"
+    printf "[%s] Build session started\n" "$(date '+%Y-%m-%d %H:%M:%S')" >> "$LOG_FILE"
+    printf "========================================\n" >> "$LOG_FILE"
+}
+
+# Log to file
+log_to_file() {
+    printf "[%s] %s\n" "$(date '+%Y-%m-%d %H:%M:%S')" "$1" >> "$LOG_FILE"
+}
+
+# Mark a project build as successful
+mark_build_success() {
+    _project="$1"
+    # Create or update status file
+    touch "$BUILD_STATUS_FILE"
+    # Remove old entry if exists and add new one with timestamp
+    grep -v "^${_project}|" "$BUILD_STATUS_FILE" > "${BUILD_STATUS_FILE}.tmp" 2>/dev/null || true
+    printf "%s|%s\n" "$_project" "$(date '+%Y-%m-%d %H:%M:%S')" >> "${BUILD_STATUS_FILE}.tmp"
+    mv "${BUILD_STATUS_FILE}.tmp" "$BUILD_STATUS_FILE"
+}
+
+# Check if a project has been built successfully
+check_build_status() {
+    _project="$1"
+    if [ -f "$BUILD_STATUS_FILE" ]; then
+        grep -q "^${_project}|" "$BUILD_STATUS_FILE" 2>/dev/null
+        return $?
+    fi
+    return 1
+}
+
+# Get build status indicator
+get_build_status() {
+    _project="$1"
+    if check_build_status "$_project"; then
+        echo "${GREEN}OK ${NC}"
+    else
+        echo "${RED}-- ${NC}"
+    fi
+}
+
+# Clear build status for a project (e.g., on clean)
+clear_build_status() {
+    _project="$1"
+    if [ -f "$BUILD_STATUS_FILE" ]; then
+        grep -v "^${_project}|" "$BUILD_STATUS_FILE" > "${BUILD_STATUS_FILE}.tmp" 2>/dev/null || true
+        mv "${BUILD_STATUS_FILE}.tmp" "$BUILD_STATUS_FILE"
+    fi
+}
+
+# Clear all build statuses
+clear_all_build_status() {
+    rm -f "$BUILD_STATUS_FILE"
+}
 
 # Banner function
 print_banner() {
@@ -1147,6 +1210,29 @@ print_workdir_section() {
     printf "\n"
 }
 
+# Build all projects for TUI (logs to file and marks success)
+tui_build_all() {
+    log_to_file "Starting build all..."
+
+    # Build each project and mark success if successful
+    for _proj in landpage linktree cv_web myfeed mygames nexus cloud feed_yourself others health_tracker market_watch central_bank mymaps myprofile; do
+        _build_script="$PROJECT_ROOT/$_proj/1.ops/build.sh"
+        if [ -f "$_build_script" ]; then
+            log_to_file "Building: $_proj"
+            if sh "$_build_script" build >> "$LOG_FILE" 2>&1; then
+                mark_build_success "$_proj"
+                log_to_file "SUCCESS: $_proj build completed"
+            else
+                log_to_file "FAILED: $_proj build failed"
+            fi
+        else
+            log_to_file "SKIPPED: $_proj (no build script found)"
+        fi
+    done
+
+    log_to_file "Build all completed"
+}
+
 # Simple TUI (POSIX-compliant)
 tui_simple() {
     _last_msg=""
@@ -1164,7 +1250,7 @@ tui_simple() {
         clear
         print_banner
 
-        # Check statuses
+        # Check live server statuses
         _s1=$(get_status 'pgrep -f "live-server.*8000"')
         _s2=$(get_status 'pgrep -f "live-server.*8001"')
         _s3=$(get_status 'pgrep -f "live-server.*8002"')
@@ -1180,27 +1266,43 @@ tui_simple() {
         _s13=$(get_status 'pgrep -f "next.*dev.*8012" || pgrep -f "mymaps.*next"')
         _s14=$(get_status 'pgrep -f "nuxt.*dev.*8013" || pgrep -f "myprofile.*nuxt"')
 
+        # Check build statuses
+        _b1=$(get_build_status "landpage")
+        _b2=$(get_build_status "linktree")
+        _b3=$(get_build_status "cv_web")
+        _b4=$(get_build_status "myfeed")
+        _b5=$(get_build_status "mygames")
+        _b6=$(get_build_status "nexus")
+        _b7=$(get_build_status "cloud")
+        _b8=$(get_build_status "feed_yourself")
+        _b9=$(get_build_status "others")
+        _b10=$(get_build_status "health_tracker")
+        _b11=$(get_build_status "market_watch")
+        _b12=$(get_build_status "central_bank")
+        _b13=$(get_build_status "mymaps")
+        _b14=$(get_build_status "myprofile")
+
         # Table 1: Full project details
-        printf "${BLUE}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
-        printf "${BLUE}│${NC}  ${YELLOW}PROJECTS${NC}                                                                  ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────┬────────────────┬────────────┬──────────┬────────────┬───────┬────────┤${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}#${NC}   ${BLUE}│${NC} ${MAGENTA}Name${NC}           ${BLUE}│${NC} ${MAGENTA}Framework${NC}  ${BLUE}│${NC} ${MAGENTA}CSS${NC}      ${BLUE}│${NC} ${MAGENTA}JavaScript${NC} ${BLUE}│${NC} ${MAGENTA}Port${NC}  ${BLUE}│${NC} ${MAGENTA}Live${NC}   ${BLUE}│${NC}\n"
-        printf "${BLUE}├─────┼────────────────┼────────────┼──────────┼────────────┼───────┼────────┤${NC}\n"
-        printf "${BLUE}│${NC} ${GREEN}1${NC}   ${BLUE}│${NC} Landpage       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8000 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s1"
-        printf "${BLUE}│${NC} ${GREEN}2${NC}   ${BLUE}│${NC} Linktree       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8001 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s2"
-        printf "${BLUE}│${NC} ${GREEN}3${NC}   ${BLUE}│${NC} CV Web         ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8002 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s3"
-        printf "${BLUE}│${NC} ${GREEN}4${NC}   ${BLUE}│${NC} MyFeed         ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8003 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s4"
-        printf "${BLUE}│${NC} ${GREEN}5${NC}   ${BLUE}│${NC} MyGames        ${BLUE}│${NC} SvelteKit  ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8004 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s5"
-        printf "${BLUE}│${NC} ${GREEN}6${NC}   ${BLUE}│${NC} Nexus          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass+TW  ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8005 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s6"
-        printf "${BLUE}│${NC} ${GREEN}7${NC}   ${BLUE}│${NC} Cloud          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8006 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s7"
-        printf "${BLUE}│${NC} ${GREEN}8${NC}   ${BLUE}│${NC} Feed Yourself  ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8007 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s8"
-        printf "${BLUE}│${NC} ${GREEN}9${NC}   ${BLUE}│${NC} Others         ${BLUE}│${NC} Python     ${BLUE}│${NC} -        ${BLUE}│${NC} -          ${BLUE}│${NC} :8008 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s9"
-        printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s10"
-        printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s11"
-        printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s12"
-        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s13"
-        printf "${BLUE}│${NC} ${GREEN}14${NC}  ${BLUE}│${NC} MyProfile      ${BLUE}│${NC} Nuxt 4     ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8013 ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_s14"
-        printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┘${NC}\n"
+        printf "${BLUE}┌──────────────────────────────────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}PROJECTS${NC}                                                                            ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────┬────────────────┬────────────┬──────────┬────────────┬───────┬────────┬────────┤${NC}\n"
+        printf "${BLUE}│${NC} ${GREEN}#${NC}   ${BLUE}│${NC} ${MAGENTA}Name${NC}           ${BLUE}│${NC} ${MAGENTA}Framework${NC}  ${BLUE}│${NC} ${MAGENTA}CSS${NC}      ${BLUE}│${NC} ${MAGENTA}JavaScript${NC} ${BLUE}│${NC} ${MAGENTA}Port${NC}  ${BLUE}│${NC} ${MAGENTA}Build${NC}  ${BLUE}│${NC} ${MAGENTA}Live${NC}   ${BLUE}│${NC}\n"
+        printf "${BLUE}├─────┼────────────────┼────────────┼──────────┼────────────┼───────┼────────┼────────┤${NC}\n"
+        printf "${BLUE}│${NC} ${GREEN}1${NC}   ${BLUE}│${NC} Landpage       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8000 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b1" "$_s1"
+        printf "${BLUE}│${NC} ${GREEN}2${NC}   ${BLUE}│${NC} Linktree       ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8001 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b2" "$_s2"
+        printf "${BLUE}│${NC} ${GREEN}3${NC}   ${BLUE}│${NC} CV Web         ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8002 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b3" "$_s3"
+        printf "${BLUE}│${NC} ${GREEN}4${NC}   ${BLUE}│${NC} MyFeed         ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8003 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b4" "$_s4"
+        printf "${BLUE}│${NC} ${GREEN}5${NC}   ${BLUE}│${NC} MyGames        ${BLUE}│${NC} SvelteKit  ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8004 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b5" "$_s5"
+        printf "${BLUE}│${NC} ${GREEN}6${NC}   ${BLUE}│${NC} Nexus          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass+TW  ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8005 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b6" "$_s6"
+        printf "${BLUE}│${NC} ${GREEN}7${NC}   ${BLUE}│${NC} Cloud          ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8006 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b7" "$_s7"
+        printf "${BLUE}│${NC} ${GREEN}8${NC}   ${BLUE}│${NC} Feed Yourself  ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8007 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b8" "$_s8"
+        printf "${BLUE}│${NC} ${GREEN}9${NC}   ${BLUE}│${NC} Others         ${BLUE}│${NC} Python     ${BLUE}│${NC} -        ${BLUE}│${NC} -          ${BLUE}│${NC} :8008 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b9" "$_s9"
+        printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b10" "$_s10"
+        printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b11" "$_s11"
+        printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b12" "$_s12"
+        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b13" "$_s13"
+        printf "${BLUE}│${NC} ${GREEN}14${NC}  ${BLUE}│${NC} MyProfile      ${BLUE}│${NC} Nuxt 4     ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8013 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b14" "$_s14"
+        printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┴────────┘${NC}\n"
 
         # Server status
         print_status_box
@@ -1211,14 +1313,14 @@ tui_simple() {
         fi
 
         # Legend section
-        printf "${BLUE}┌────────────────────────────────────────────────────────────────────────────┐${NC}\n"
-        printf "${BLUE}│${NC}  ${YELLOW}COMMANDS${NC}                                                                  ${BLUE}│${NC}\n"
-        printf "${BLUE}├────────────────────────────────────────────────────────────────────────────┤${NC}\n"
-        printf "${BLUE}│${NC}  ${GREEN}B${NC}[n] Build project    ${GREEN}D${NC}[n] Start dev server    ${GREEN}0${NC} All projects             ${BLUE}│${NC}\n"
-        printf "${BLUE}│${NC}  ${GREEN}K${NC}    Kill servers     ${GREEN}H${NC}    Help (full docs)    ${GREEN}Q${NC} Quit                     ${BLUE}│${NC}\n"
-        printf "${BLUE}├────────────────────────────────────────────────────────────────────────────┤${NC}\n"
-        printf "${BLUE}│${NC}  ${CYAN}Examples:${NC}  D3  D11  B0  K                                                 ${BLUE}│${NC}\n"
-        printf "${BLUE}└────────────────────────────────────────────────────────────────────────────┘${NC}\n"
+        printf "${BLUE}┌──────────────────────────────────────────────────────────────────────────────────────┐${NC}\n"
+        printf "${BLUE}│${NC}  ${YELLOW}COMMANDS${NC}                                                                              ${BLUE}│${NC}\n"
+        printf "${BLUE}├──────────────────────────────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}B${NC}[n] Build project    ${GREEN}D${NC}[n] Start dev server    ${GREEN}0${NC} All projects                     ${BLUE}│${NC}\n"
+        printf "${BLUE}│${NC}  ${GREEN}K${NC}    Kill servers     ${GREEN}H${NC}    Help (full docs)    ${GREEN}Q${NC} Quit                             ${BLUE}│${NC}\n"
+        printf "${BLUE}├──────────────────────────────────────────────────────────────────────────────────────┤${NC}\n"
+        printf "${BLUE}│${NC}  ${CYAN}Examples:${NC}  D3  D11  B0  K                                                             ${BLUE}│${NC}\n"
+        printf "${BLUE}└──────────────────────────────────────────────────────────────────────────────────────┘${NC}\n"
 
         # Input prompt
         printf "\n${YELLOW}Enter command:${NC} "
@@ -1288,40 +1390,40 @@ tui_simple() {
                 ;;
         esac
 
-        # Run command silently in background
+        # Run command silently in background, logging to file
         case "$_cmd" in
-            dev-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-linktree)    sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-cv-web)      sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-myfeed)      sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-mygames)     sh "$PROJECT_ROOT/mygames/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-nexus)       sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-cloud)       sh "$PROJECT_ROOT/cloud/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-feed)        sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-others)      sh "$PROJECT_ROOT/others/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-health)      sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev-myprofile)   sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev > /dev/null 2>&1 & ;;
-            dev)             dev_all > /dev/null 2>&1 & ;;
-            kill)            kill_servers > /dev/null 2>&1 ;;
-            build-landpage)    sh "$PROJECT_ROOT/landpage/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-linktree)    sh "$PROJECT_ROOT/linktree/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-cv-web)      sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-myfeed)      sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-mygames)   sh "$PROJECT_ROOT/mygames/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-nexus)       sh "$PROJECT_ROOT/nexus/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-cloud)       sh "$PROJECT_ROOT/cloud/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-feed)        sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-others)      sh "$PROJECT_ROOT/others/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-health)      sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-market)      sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-centralbank) sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-mymaps)      sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build-myprofile)   sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" build > /dev/null 2>&1 & ;;
-            build)           build_all > /dev/null 2>&1 & ;;
-            clean)           clean_all > /dev/null 2>&1 ;;
+            dev-landpage)    log_to_file "Starting dev: landpage"; sh "$PROJECT_ROOT/landpage/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-linktree)    log_to_file "Starting dev: linktree"; sh "$PROJECT_ROOT/linktree/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-cv-web)      log_to_file "Starting dev: cv_web"; sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-myfeed)      log_to_file "Starting dev: myfeed"; sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mygames)     log_to_file "Starting dev: mygames"; sh "$PROJECT_ROOT/mygames/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-nexus)       log_to_file "Starting dev: nexus"; sh "$PROJECT_ROOT/nexus/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-cloud)       log_to_file "Starting dev: cloud"; sh "$PROJECT_ROOT/cloud/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-feed)        log_to_file "Starting dev: feed_yourself"; sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-others)      log_to_file "Starting dev: others"; sh "$PROJECT_ROOT/others/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-health)      log_to_file "Starting dev: health_tracker"; sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-market)      log_to_file "Starting dev: market_watch"; sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-centralbank) log_to_file "Starting dev: central_bank"; sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mymaps)      log_to_file "Starting dev: mymaps"; sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-myprofile)   log_to_file "Starting dev: myprofile"; sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev)             log_to_file "Starting dev: all"; dev_all >> "$LOG_FILE" 2>&1 & ;;
+            kill)            log_to_file "Killing all servers"; kill_servers >> "$LOG_FILE" 2>&1 ;;
+            build-landpage)    log_to_file "Building: landpage"; (sh "$PROJECT_ROOT/landpage/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "landpage") & ;;
+            build-linktree)    log_to_file "Building: linktree"; (sh "$PROJECT_ROOT/linktree/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "linktree") & ;;
+            build-cv-web)      log_to_file "Building: cv_web"; (sh "$PROJECT_ROOT/cv_web/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "cv_web") & ;;
+            build-myfeed)      log_to_file "Building: myfeed"; (sh "$PROJECT_ROOT/myfeed/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "myfeed") & ;;
+            build-mygames)     log_to_file "Building: mygames"; (sh "$PROJECT_ROOT/mygames/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "mygames") & ;;
+            build-nexus)       log_to_file "Building: nexus"; (sh "$PROJECT_ROOT/nexus/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "nexus") & ;;
+            build-cloud)       log_to_file "Building: cloud"; (sh "$PROJECT_ROOT/cloud/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "cloud") & ;;
+            build-feed)        log_to_file "Building: feed_yourself"; (sh "$PROJECT_ROOT/feed_yourself/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "feed_yourself") & ;;
+            build-others)      log_to_file "Building: others"; (sh "$PROJECT_ROOT/others/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "others") & ;;
+            build-health)      log_to_file "Building: health_tracker"; (sh "$PROJECT_ROOT/health_tracker/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "health_tracker") & ;;
+            build-market)      log_to_file "Building: market_watch"; (sh "$PROJECT_ROOT/market_watch/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "market_watch") & ;;
+            build-centralbank) log_to_file "Building: central_bank"; (sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "central_bank") & ;;
+            build-mymaps)      log_to_file "Building: mymaps"; (sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "mymaps") & ;;
+            build-myprofile)   log_to_file "Building: myprofile"; (sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "myprofile") & ;;
+            build)             log_to_file "Building: all"; tui_build_all & ;;
+            clean)             log_to_file "Cleaning all"; clean_all_builds >> "$LOG_FILE" 2>&1; clear_all_build_status ;;
         esac
 
         # Small delay to let processes start

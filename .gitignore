@@ -41,6 +41,12 @@ vendor/
 ## Build logs and source maps
 #1.ops/logs/
 #*.css.map
+1.ops/build_main.log
+1.ops/.build-status
+1.ops/.dev-servers.pid
+
+# Dev mode symlinks (public folder in src_static)
+**/src_static/public
 
 # GTM API - Security (Never commit OAuth credentials!)
 .gtm/credentials.json

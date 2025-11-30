@@ -173,6 +173,12 @@ dev() {
     check_dependencies
     cd "$PROJECT_DIR"
 
+    # Create symlink to public folder if it doesn't exist
+    if [ ! -e "src_static/public" ] && [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf ../public src_static/public
+        log_info "Created symlink: src_static/public -> ../public"
+    fi
+
     # Start TypeScript watch in background (output to src_static)
     nohup npm run dev:bundle > /dev/null 2>&1 &
 

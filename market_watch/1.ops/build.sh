@@ -153,22 +153,53 @@ build_single_file() {
         _js_content=$(cat "$_js_file")
     fi
 
-    # Create single-file HTML with inlined CSS and JS
-    awk -v css="$_css_content" -v js="$_js_content" '
-    /<link[^>]*href="styles\.css"[^>]*>/ {
-        print "<style>"
-        print css
-        print "</style>"
-        next
-    }
-    /<script[^>]*src="script\.js"[^>]*>/ {
-        print "<script>"
-        print js
-        print "</script>"
-        next
-    }
-    { print }
-    ' "$_html_file" > "$_tmp_file"
+    # Check if source has external references or is already inlined
+    if grep -q 'href="styles\.css"' "$_html_file" || grep -q 'src="script\.js"' "$_html_file"; then
+        # Source has external references - replace them with inline content
+        awk -v css="$_css_content" -v js="$_js_content" '
+        /<link[^>]*href="styles\.css"[^>]*>/ {
+            print "<style>"
+            print css
+            print "</style>"
+            next
+        }
+        /<script[^>]*src="script\.js"[^>]*>/ {
+            print "<script>"
+            print js
+            print "</script>"
+            next
+        }
+        { print }
+        ' "$_html_file" > "$_tmp_file"
+    else
+        # Source is already inlined - inject compiled CSS/JS before </head> and </body>
+        log_info "Source already inlined, injecting compiled assets..."
+
+        # Use awk to inject CSS before </head> and JS before </body>
+        awk -v css="$_css_content" -v js="$_js_content" '
+        /<\/head>/ {
+            if (css != "") {
+                print "    <!-- Compiled SCSS -->"
+                print "    <style>"
+                print css
+                print "    </style>"
+            }
+            print
+            next
+        }
+        /<\/body>/ {
+            if (js != "") {
+                print "    <!-- Compiled TypeScript -->"
+                print "    <script>"
+                print js
+                print "    </script>"
+            }
+            print
+            next
+        }
+        { print }
+        ' "$_html_file" > "$_tmp_file"
+    fi
 
     # Replace original with SPA version
     mv "$_tmp_file" "$_html_file"
@@ -192,7 +223,9 @@ dev() {
 
     # Start watchers in background (silent)
     nohup npm run dev:css > /dev/null 2>&1 &
-    nohup npm run dev:js > /dev/null 2>&1 &
+    # Start tsc watch and esbuild watch separately (esbuild needs --watch=forever for daemon mode)
+    nohup npx tsc --watch > /dev/null 2>&1 &
+    nohup npx esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch=forever --sourcemap > /dev/null 2>&1 &
 
     # Start live-server in background
     nohup npx live-server "$DIST_DIR" --port=${PORT} --no-browser --quiet > /dev/null 2>&1 &

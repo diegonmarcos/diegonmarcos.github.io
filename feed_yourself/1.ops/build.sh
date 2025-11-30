@@ -180,6 +180,9 @@ dev() {
     # Start Sass watch in background
     nohup npm run dev:css > /dev/null 2>&1 &
 
+    # Start TypeScript/esbuild watch in background (use --watch=forever for daemon mode)
+    nohup npx esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --target=es2020 --watch=forever > /dev/null 2>&1 &
+
     # Start live-server in background (serve from dist)
     nohup npx live-server dist --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 

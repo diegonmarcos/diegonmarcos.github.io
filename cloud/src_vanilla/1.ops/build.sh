@@ -170,7 +170,9 @@ dev() {
 
     # Start watchers in background (silent)
     nohup npm run dev:css > /dev/null 2>&1 &
-    nohup npm run dev:js > /dev/null 2>&1 &
+    # Start tsc watch and esbuild watch separately (esbuild needs --watch=forever for daemon mode)
+    nohup npx tsc --watch > /dev/null 2>&1 &
+    nohup npx esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch=forever --sourcemap > /dev/null 2>&1 &
 
     # Start live-server in background
     nohup npx live-server "$DIST_DIR" --port=${PORT} --no-browser --quiet > /dev/null 2>&1 &

@@ -179,8 +179,8 @@ dev() {
         log_info "Created symlink: src_static/public -> ../public"
     fi
 
-    # Start TypeScript watch in background (output to src_static)
-    nohup npm run dev:bundle > /dev/null 2>&1 &
+    # Start TypeScript/esbuild watch in background (use --watch=forever for daemon mode)
+    nohup npx esbuild src/main.ts --bundle --outfile=src_static/script.js --format=iife --target=es2020 --sourcemap --watch=forever > /dev/null 2>&1 &
 
     # Start Sass watch in background (outputs to src_static/style.css)
     nohup npm run watch:css > /dev/null 2>&1 &

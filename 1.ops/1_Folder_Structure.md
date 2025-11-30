@@ -25,14 +25,14 @@
 ├── others/
 
                         # Build Config Files
-├── package.json
-├── tsconfig.json
+├── package-lock.json
 ├── .github/workflows/
 
                         # Others
 ├── .gitignore
 ├── .git
-├── .gim
+├── .gtm
+├── .nojekyll
 ├── .vscode
 └──   README.md
 ```
@@ -75,10 +75,7 @@
 
 ```
 /0.spec
-
-├──   feature1.md
-├──   feature2.md
-└──   index.md              # production index.html into markdwon frame
+└── archive/                # Archived spec files
 ```
 
 # 1. ops/
@@ -88,10 +85,14 @@
 ├──   0_Stack_Main.md
 ├──   1_Folder_Structure.md
 ├──   2_Build_Deploy_Watch.md
-└──   build.sh                  # (helper is enough to explain it all)
-├──   deploy.ml                 # symlink to .github/workflow
-├──   Reademe.md                # symlink to reamde of the repo
-
+├──   build_main.sh             # Master build script
+├──   build_main.desktop        # Desktop launcher
+├──   deploy.yml                # symlink to .github/workflows/deploy.yml
+├──   README.md                 # symlink to repo README
+├── archive/                    # Archived files
+├── logs/                       # Build logs
+├── matomo-tracking/            # Analytics tracking scripts
+└── ops-Tooling/                # symlink to ops-Tooling repo
 ```
 
 ---

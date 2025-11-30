@@ -5,6 +5,7 @@ import { initVideoBackground, initVideoToggle } from './modules/videoBackground'
 import { initCarousels } from './modules/carousel';
 import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
+import { initPerformanceMode } from './modules/performanceMode';
 
 /**
  * Initialize all application modules
@@ -27,10 +28,34 @@ function initApp(): void {
 
   // Initialize gallery view toggle
   initGalleryToggle();
+
+  // Initialize performance/fast mode toggle
+  initPerformanceMode();
 }
 
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', initApp);
+// Declare Swiper as global
+declare const Swiper: unknown;
+
+// Initialize when DOM is ready and Swiper is loaded
+function startApp(): void {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(initApp);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if Swiper is already loaded
+  if (typeof Swiper !== 'undefined') {
+    startApp();
+  } else {
+    // Wait for Swiper to load (max 5s timeout, then init anyway for non-carousel features)
+    const timeout = setTimeout(startApp, 5000);
+    window.addEventListener('swiperReady', () => {
+      clearTimeout(timeout);
+      startApp();
+    });
+  }
+});
 
 // Export for potential external use
 export { initApp };

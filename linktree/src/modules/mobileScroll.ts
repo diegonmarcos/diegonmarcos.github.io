@@ -20,12 +20,12 @@ function throttle<T extends (...args: unknown[]) => void>(func: T, limit: number
 }
 
 /**
- * Check if device is mobile (touch capability or narrow screen)
+ * Check if device is mobile (narrow screen only - ignore touch capability)
  */
 function isMobileDevice(): boolean {
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const isNarrowScreen = window.innerWidth <= 768;
-  return isTouchDevice || isNarrowScreen;
+  // Only check screen width, not touch capability
+  // This prevents scroll handlers on touchscreen laptops
+  return window.innerWidth <= 768;
 }
 
 /**
@@ -75,11 +75,11 @@ export function initMobileScrollSelection(): void {
 
   const throttledSelect = throttle(
     () => selectCarouselByScroll(professionalRow, personalRow),
-    100
+    150  // Increased throttle to reduce layout thrashing
   );
 
   if (isMobileDevice()) {
-    window.addEventListener('scroll', throttledSelect);
+    window.addEventListener('scroll', throttledSelect, { passive: true });
     // Initial selection on load
     setTimeout(() => selectCarouselByScroll(professionalRow, personalRow), 100);
   }
@@ -89,5 +89,5 @@ export function initMobileScrollSelection(): void {
     if (isMobileDevice()) {
       selectCarouselByScroll(professionalRow, personalRow);
     }
-  }, 200));
+  }, 200), { passive: true });
 }

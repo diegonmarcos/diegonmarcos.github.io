@@ -68,21 +68,28 @@
     <meta name="twitter:description" content="Product & Software Engineer, Venture Capital & Portfolio Manager Analyst, Civil Engineer B.Sc. | Berlin, Germany">
     <meta name="twitter:image" content="https://diegonmarcos.github.io/linktree/public/linktree_thumbnail.png">
     <meta name="twitter:image:alt" content="Diego Nepomuceno Marcos - Professional Links">
-    <!-- Matomo Tag Manager -->
+    <!-- Matomo Tag Manager (with 3s timeout) -->
     <script>
       var _mtm = window._mtm = window._mtm || [];
       _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       (function() {
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js'; s.parentNode.insertBefore(g,s);
+        g.async=true;
+        g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js';
+        // Timeout: remove script if not loaded in 3 seconds
+        var timeout = setTimeout(function() { g.remove(); }, 3000);
+        g.onload = function() { clearTimeout(timeout); };
+        g.onerror = function() { clearTimeout(timeout); g.remove(); };
+        s.parentNode.insertBefore(g,s);
       })();
     </script>
     <!-- End Matomo Tag Manager -->
 
     <link rel="stylesheet" href="style.css">
 
-    <!-- Swiper.js CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <!-- Swiper.js CSS (non-blocking) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 </head>
 <body>
     <video autoplay muted loop playsinline id="background-video" poster="public/images/background_static.jpg">
@@ -359,16 +366,29 @@
             <button id="video-toggle" class="icon-btn active" title="Video Background">
                 <img src="public/icons/video.svg" alt="Video">
             </button>
+            <button id="lite-toggle" class="icon-btn" title="Lite Mode">
+                <img src="public/icons/bolt.svg" alt="Lite">
+            </button>
         </div>
 
     </div>
 
-    <!-- Swiper.js JS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- Swiper.js JS (with timeout fallback) -->
+    <script>
+      (function() {
+        var s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+        s.async = true;
+        var timeout = setTimeout(function() { s.remove(); console.warn('Swiper CDN timeout'); }, 5000);
+        s.onload = function() { clearTimeout(timeout); window.dispatchEvent(new Event('swiperReady')); };
+        s.onerror = function() { clearTimeout(timeout); s.remove(); };
+        document.body.appendChild(s);
+      })();
+    </script>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 
     <!-- Matomo Page Tracking -->
-    <script src="public/matomo.js"></script>
+    <script src="public/matomo.js" async></script>
 </body>
 </html>

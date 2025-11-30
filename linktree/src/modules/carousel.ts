@@ -60,7 +60,7 @@ const swiperConfig: SwiperOptions = {
   allowTouchMove: true,
   touchEventsTarget: 'container',
   threshold: 10,
-  passiveListeners: false,
+  passiveListeners: true,
   speed: 900,
 };
 
@@ -186,24 +186,20 @@ function updateTrackpadListeners(): void {
  * Initialize two-finger swipe detection
  */
 function initTwoFingerSwipe(): void {
-  let touchStartY = 0;
-  let touchStartX = 0;
   let isTwoFingerSwipe = false;
 
   [professionalRow, personalRow].forEach((row, index) => {
     row.addEventListener('touchstart', (e: TouchEvent) => {
       if (e.touches.length === 2) {
         isTwoFingerSwipe = true;
-        touchStartY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-        touchStartX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
       }
-    });
+    }, { passive: true });
 
     row.addEventListener('touchmove', (e: TouchEvent) => {
       if (isTwoFingerSwipe && e.touches.length === 2) {
-        e.preventDefault();
+        // Can't preventDefault with passive listener, but that's ok for scroll perf
       }
-    }, { passive: false });
+    }, { passive: true });
 
     row.addEventListener('touchend', () => {
       if (isTwoFingerSwipe) {
@@ -211,7 +207,7 @@ function initTwoFingerSwipe(): void {
         updateArrowStates();
         isTwoFingerSwipe = false;
       }
-    });
+    }, { passive: true });
   });
 }
 
@@ -263,6 +259,12 @@ function initHoverSelection(): void {
  * Initialize carousels
  */
 export function initCarousels(): void {
+  // Check if Swiper is available
+  if (typeof Swiper === 'undefined') {
+    console.warn('Swiper not loaded - carousel disabled');
+    return;
+  }
+
   // Get carousel rows
   const profRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(1)');
   const persRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(2)');

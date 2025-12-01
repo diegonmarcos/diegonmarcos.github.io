@@ -12,9 +12,25 @@
 (function() {
   'use strict';
 
-  if (typeof _paq === 'undefined') {
-    console.warn('Matomo not loaded - tracking disabled');
+  // Skip tracking on file:// protocol or localhost
+  if (window.location.protocol === 'file:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1') {
     return;
+  }
+
+  // Check if Matomo is loaded
+  if (typeof _paq === 'undefined') {
+    return;
+  }
+
+  // Safe push wrapper to prevent errors
+  function track(args) {
+    try {
+      _paq.push(args);
+    } catch (e) {
+      // Silently ignore tracking errors
+    }
   }
 
   // Helper: Get link category
@@ -41,41 +57,45 @@
 
   // Click tracking
   document.addEventListener('click', function(e) {
-    var target = e.target.closest('a, button');
-    if (!target) return;
+    try {
+      var target = e.target.closest('a, button');
+      if (!target) return;
 
-    // Social icon clicks
-    if (target.closest('.social-icons') || target.classList.contains('social-icon')) {
-      var platform = target.getAttribute('title') || target.textContent.trim() || 'Unknown';
-      var url = target.href || 'no-url';
+      // Social icon clicks
+      if (target.closest('.social-icons') || target.classList.contains('social-icon')) {
+        var platform = target.getAttribute('title') || target.textContent.trim() || 'Unknown';
+        var url = target.href || 'no-url';
 
-      _paq.push(['trackEvent', 'Social', 'Icon Click', platform, url]);
-    }
+        track(['trackEvent', 'Social', 'Icon Click', platform, url]);
+      }
 
-    // Main link clicks (Professional/Personal sections)
-    else if (target.closest('.links-container') && target.classList.contains('link-item')) {
-      var category = getLinkCategory(target);
-      var subsection = getLinkSubsection(target);
-      var linkText = target.textContent.trim();
-      var linkUrl = target.href || target.getAttribute('data-href') || 'no-url';
+      // Main link clicks (Professional/Personal sections)
+      else if (target.closest('.links-container') && target.classList.contains('link-item')) {
+        var category = getLinkCategory(target);
+        var subsection = getLinkSubsection(target);
+        var linkText = target.textContent.trim();
+        var linkUrl = target.href || target.getAttribute('data-href') || 'no-url';
 
-      var eventName = subsection ? category + ' - ' + subsection + ' - ' + linkText : category + ' - ' + linkText;
+        var eventName = subsection ? category + ' - ' + subsection + ' - ' + linkText : category + ' - ' + linkText;
 
-      _paq.push(['trackEvent', 'Linktree', 'Link Click', eventName, linkUrl]);
-    }
+        track(['trackEvent', 'Linktree', 'Link Click', eventName, linkUrl]);
+      }
 
-    // Collapsible "more" buttons
-    else if (target.classList.contains('more-btn') || target.textContent.includes('more')) {
-      var section = getLinkCategory(target);
-      var isExpanded = target.getAttribute('aria-expanded') === 'true';
-      var action = isExpanded ? 'Collapse' : 'Expand';
+      // Collapsible "more" buttons
+      else if (target.classList.contains('more-btn') || target.textContent.includes('more')) {
+        var section = getLinkCategory(target);
+        var isExpanded = target.getAttribute('aria-expanded') === 'true';
+        var action = isExpanded ? 'Collapse' : 'Expand';
 
-      _paq.push(['trackEvent', 'Linktree', 'More Button', section + ' - ' + action]);
-    }
+        track(['trackEvent', 'Linktree', 'More Button', section + ' - ' + action]);
+      }
 
-    // vCard download
-    else if (target.href && target.href.endsWith('.vcf')) {
-      _paq.push(['trackEvent', 'Download', 'vCard', 'Contact Card']);
+      // vCard download
+      else if (target.href && target.href.endsWith('.vcf')) {
+        track(['trackEvent', 'Download', 'vCard', 'Contact Card']);
+      }
+    } catch (e) {
+      // Silently ignore click tracking errors
     }
   });
 
@@ -83,22 +103,26 @@
   var sectionsSeen = {};
 
   function trackSectionVisibility() {
-    var sections = document.querySelectorAll('.link-section');
+    try {
+      var sections = document.querySelectorAll('.link-section');
 
-    sections.forEach(function(section) {
-      var sectionTitle = section.querySelector('.section-title');
-      var sectionName = sectionTitle ? sectionTitle.textContent.trim() : 'Unknown';
+      sections.forEach(function(section) {
+        var sectionTitle = section.querySelector('.section-title');
+        var sectionName = sectionTitle ? sectionTitle.textContent.trim() : 'Unknown';
 
-      if (!sectionsSeen[sectionName]) {
-        var rect = section.getBoundingClientRect();
-        var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!sectionsSeen[sectionName]) {
+          var rect = section.getBoundingClientRect();
+          var isVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-        if (isVisible) {
-          sectionsSeen[sectionName] = true;
-          _paq.push(['trackEvent', 'Engagement', 'Section Viewed', sectionName]);
+          if (isVisible) {
+            sectionsSeen[sectionName] = true;
+            track(['trackEvent', 'Engagement', 'Section Viewed', sectionName]);
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      // Silently ignore visibility tracking errors
+    }
   }
 
   // Track section visibility on scroll

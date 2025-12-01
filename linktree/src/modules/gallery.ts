@@ -1,6 +1,6 @@
 // Gallery view toggle module
 
-import { getElementById, querySelectorAll, addClass, removeClass, setCSSProperty, hasClass } from '../utils/dom';
+import { getElementById, querySelectorAll, addClass, removeClass, setCSSProperty } from '../utils/dom';
 
 let galleryEnabled = false;
 

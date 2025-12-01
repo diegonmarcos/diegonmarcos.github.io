@@ -68,11 +68,17 @@
     <meta name="twitter:description" content="Product & Software Engineer, Venture Capital & Portfolio Manager Analyst, Civil Engineer B.Sc. | Berlin, Germany">
     <meta name="twitter:image" content="https://diegonmarcos.github.io/linktree/public/linktree_thumbnail.png">
     <meta name="twitter:image:alt" content="Diego Nepomuceno Marcos - Professional Links">
-    <!-- Matomo Tag Manager (with 3s timeout) -->
+    <!-- Matomo Tag Manager (with 3s timeout, disabled on file:// and localhost) -->
     <script>
-      var _mtm = window._mtm = window._mtm || [];
-      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
       (function() {
+        // Skip analytics on local development
+        if (window.location.protocol === 'file:' ||
+            window.location.hostname === 'localhost' ||
+            window.location.hostname === '127.0.0.1') {
+          return;
+        }
+        var _mtm = window._mtm = window._mtm || [];
+        _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
         g.async=true;
         g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js';

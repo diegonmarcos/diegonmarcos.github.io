@@ -1,15 +1,15 @@
 // Carousel module - Swiper.js integration
 
 import { querySelector, addClass, removeClass } from '../utils/dom';
-import type { CarouselType, Swiper, SwiperOptions } from '../types';
+import type { CarouselType, SwiperOptions, Swiper as SwiperInstance } from '../types';
 
-// Declare global Swiper
-declare const Swiper: new (selector: string, options: SwiperOptions) => import('../types').Swiper;
+// Declare global Swiper constructor
+declare const Swiper: new (selector: string, options: SwiperOptions) => SwiperInstance;
 
 // State
 let selectedCarousel: CarouselType = 'professional';
-let professionalSwiper: import('../types').Swiper;
-let personalSwiper: import('../types').Swiper;
+let professionalSwiper: SwiperInstance;
+let personalSwiper: SwiperInstance;
 let professionalRow: HTMLElement;
 let personalRow: HTMLElement;
 let professionalPrev: HTMLElement;
@@ -134,7 +134,7 @@ export function updateArrowStates(): void {
 /**
  * Handle trackpad swipe
  */
-function handleTrackpadSwipe(e: WheelEvent, swiper: import('../types').Swiper): void {
+function handleTrackpadSwipe(e: WheelEvent, swiper: SwiperInstance): void {
   if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
     if (!trackpadDebounce) {
       trackpadDebounce = true;

@@ -1,4 +1,4 @@
-// Mobile scroll-based carousel auto-selection
+// Scroll-based carousel auto-selection (works on both mobile and desktop)
 
 import { selectCarousel, updateArrowStates, getSelectedCarousel } from './carousel';
 import { querySelector } from '../utils/dom';
@@ -20,15 +20,6 @@ function throttle<T extends (...args: unknown[]) => void>(func: T, limit: number
 }
 
 /**
- * Check if device is mobile (narrow screen only - ignore touch capability)
- */
-function isMobileDevice(): boolean {
-  // Only check screen width, not touch capability
-  // This prevents scroll handlers on touchscreen laptops
-  return window.innerWidth <= 768;
-}
-
-/**
  * Get center Y position of a carousel
  */
 function getCarouselCenterY(carousel: HTMLElement): number {
@@ -37,10 +28,23 @@ function getCarouselCenterY(carousel: HTMLElement): number {
 }
 
 /**
+ * Check if user has scrolled past all carousels (at bottom of page)
+ */
+function isScrolledPastCarousels(personalRow: HTMLElement): boolean {
+  const rect = personalRow.getBoundingClientRect();
+  // If the bottom of the personal row is above the viewport center, user is past carousels
+  return rect.bottom < window.innerHeight / 2;
+}
+
+/**
  * Select carousel based on scroll position
+ * Works on both mobile and desktop - the carousel closest to viewport center gets selected
  */
 function selectCarouselByScroll(professionalRow: HTMLElement, personalRow: HTMLElement): void {
-  if (!isMobileDevice()) return;
+  // Don't change selection if user has scrolled past all carousels (viewing footer/controls)
+  if (isScrolledPastCarousels(personalRow)) {
+    return;
+  }
 
   const viewportCenter = window.innerHeight / 2;
   const professionalCenter = getCarouselCenterY(professionalRow);
@@ -65,7 +69,7 @@ function selectCarouselByScroll(professionalRow: HTMLElement, personalRow: HTMLE
 }
 
 /**
- * Initialize mobile scroll-based auto-selection
+ * Initialize scroll-based auto-selection (works on all devices)
  */
 export function initMobileScrollSelection(): void {
   const professionalRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(1)');
@@ -75,19 +79,17 @@ export function initMobileScrollSelection(): void {
 
   const throttledSelect = throttle(
     () => selectCarouselByScroll(professionalRow, personalRow),
-    150  // Increased throttle to reduce layout thrashing
+    150  // Throttle to reduce layout thrashing
   );
 
-  if (isMobileDevice()) {
-    window.addEventListener('scroll', throttledSelect, { passive: true });
-    // Initial selection on load
-    setTimeout(() => selectCarouselByScroll(professionalRow, personalRow), 100);
-  }
+  // Add scroll listener for all devices (mobile and desktop)
+  window.addEventListener('scroll', throttledSelect, { passive: true });
 
-  // Update on window resize (orientation change)
+  // Initial selection on load
+  setTimeout(() => selectCarouselByScroll(professionalRow, personalRow), 100);
+
+  // Update on window resize (orientation change, window resize)
   window.addEventListener('resize', throttle(() => {
-    if (isMobileDevice()) {
-      selectCarouselByScroll(professionalRow, personalRow);
-    }
+    selectCarouselByScroll(professionalRow, personalRow);
   }, 200), { passive: true });
 }

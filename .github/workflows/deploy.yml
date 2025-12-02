@@ -86,7 +86,7 @@ jobs:
         id: cache-mygames
         uses: actions/cache@v4
         with:
-          path: mygames/src/build
+          path: mygames/dist
           key: ${{ runner.os }}-mygames-${{ hashFiles('mygames/src/**') }}
 
       - name: 🔨 Build MyGames (SvelteKit)
@@ -95,10 +95,10 @@ jobs:
         continue-on-error: true
         run: |
           echo "🔨 Building MyGames SvelteKit project..."
-          cd mygames/src
+          cd mygames
           npm install
           NODE_ENV=production npm run build
-          cd ../..
+          cd ..
           echo "✅ MyGames build complete"
 
       - name: 🔨 Build Nexus (Vue 3 + Tailwind)
@@ -349,14 +349,14 @@ jobs:
             echo "⏭️  Skipping MyFeed copy (no dist directory found)"
           fi
 
-          # Copy MyGames SvelteKit build (if build exists)
-          if [ -d "mygames/src/build" ]; then
+          # Copy MyGames SvelteKit build (if dist exists)
+          if [ -d "mygames/dist" ]; then
             echo "📦 Copying MyGames SvelteKit build..."
             mkdir -p _site/mygames
-            cp -rL mygames/src/build/* _site/mygames/ 2>/dev/null || cp -r mygames/src/build/* _site/mygames/
+            cp -rL mygames/dist/* _site/mygames/ 2>/dev/null || cp -r mygames/dist/* _site/mygames/
             echo "✅ MyGames build copied to _site/mygames/"
           else
-            echo "⏭️  Skipping MyGames copy (no build directory found)"
+            echo "⏭️  Skipping MyGames copy (no dist directory found)"
           fi
 
           # Copy Nexus Vue build (if dist exists)

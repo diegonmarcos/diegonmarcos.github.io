@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes - Feed Yourself</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="Recipe collection for healthy meal planning">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegonmarcos.github.io/feed_yourself/recipes.html">
+    <meta property="og:title" content="Recipes - Feed Yourself">
+    <meta property="og:description" content="Recipe collection for healthy meal planning">
+    <meta property="og:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Recipes - Feed Yourself">
+    <meta name="twitter:description" content="Recipe collection for healthy meal planning">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}html{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased}body{min-height:100vh;background:#0a0a0a}.app-container{max-width:1200px;margin:0 auto;padding:2rem 1rem}header{text-align:center;margin-bottom:2rem}header h1{font-size:2.5rem;background:linear-gradient(to right, #00ff88, #a855f7);-webkit-background-clip:text;background-clip:text;color:rgba(0,0,0,0);margin-bottom:.5rem}header .app-subtitle{color:#888;font-size:.9rem;margin-bottom:1rem}.header-nav{display:flex;justify-content:center;gap:1rem;margin-top:1rem}.nav-link{padding:.5rem 1rem;background:rgba(20,20,20,.8);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;color:#888;text-decoration:none;font-size:.875rem;transition:all 200ms ease}.nav-link:hover{border-color:#0f8;color:#0f8}.glass-panel{background:rgba(20,20,20,.8);backdrop-filter:blur(10px);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:1.5rem}.section-title{font-size:1.25rem;font-weight:600;margin-bottom:1rem;color:#0f8}.tabs-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-btn{padding:.75rem 1.25rem;background:rgba(0,0,0,0);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;color:#888;cursor:pointer;font-size:.875rem;transition:all 200ms ease}.tab-btn:hover{border-color:#0f8;color:#0f8}.tab-btn.tab-active{background:rgba(0,255,136,.1);border-color:#0f8;color:#0f8}.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:1rem}.recipe-card{background:#141414;border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:1rem;cursor:pointer;transition:all 200ms ease}.recipe-card:hover{border-color:#0f8;transform:translateY(-2px)}.recipe-card__header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem}.recipe-card__title{font-size:1rem;font-weight:600;color:#fff}.recipe-card__time{font-size:.75rem;color:#888;background:rgba(20,20,20,.8);padding:.25rem .5rem;border-radius:4px}.recipe-card__macros{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}.recipe-card__tags{display:flex;gap:.25rem;flex-wrap:wrap}.macro{font-size:.7rem;padding:.25rem .5rem;border-radius:4px;background:rgba(20,20,20,.8)}.macro--calories{color:#fc0}.macro--protein{color:#ff6b6b}.macro--carbs{color:#4ecdc4}.macro--fat{color:#a855f7}.tag{font-size:.65rem;padding:.2rem .4rem;border-radius:4px;background:rgba(0,255,136,.1);color:#0f8}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:1000}.modal-content{background:#141414;border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:2rem;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;position:relative}.modal-content h2{font-size:1.5rem;margin-bottom:1rem;color:#0f8}.modal-content h3{font-size:1rem;margin-bottom:.5rem;color:#fff}.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.5rem;cursor:pointer;transition:color 200ms ease}.modal-close:hover{color:#0f8}.modal-macros{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}.modal-macro{background:rgba(20,20,20,.8);padding:.5rem .75rem;border-radius:.5rem;font-size:.875rem;color:#888}.modal-section{margin-bottom:1.5rem}.modal-section ul,.modal-section ol{padding-left:1.5rem;color:#888}.modal-section ul li,.modal-section ol li{margin-bottom:.5rem;line-height:1.5}.tab-view{animation:fadeIn .2s ease}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@media(max-width: 640px){header h1{font-size:1.75rem}.recipe-grid{grid-template-columns:1fr}.tabs-nav{justify-content:center}}
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+    <header>
+        <h1>Recipes</h1>
+        <div class="app-subtitle">Feed Yourself Collection</div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link">Menu Designer</a>
+            <a href="meal_designer.html" class="nav-link">Meal Designer</a>
+        </nav>
+    </header>
+
+    <section class="glass-panel">
+        <div class="section-title">Recipe Categories</div>
+
+        <div class="tabs-nav">
+            <button onclick="switchTab('breakfast')" id="btn-breakfast" class="tab-btn tab-active">
+                Breakfast
+            </button>
+            <button onclick="switchTab('lunch')" id="btn-lunch" class="tab-btn">
+                Lunch
+            </button>
+            <button onclick="switchTab('dinner')" id="btn-dinner" class="tab-btn">
+                Dinner
+            </button>
+            <button onclick="switchTab('snacks')" id="btn-snacks" class="tab-btn">
+                Snacks
+            </button>
+        </div>
+
+        <!-- Breakfast Tab -->
+        <div id="view-breakfast" class="tab-view">
+            <div class="recipe-grid" id="breakfast-recipes"></div>
+        </div>
+
+        <!-- Lunch Tab -->
+        <div id="view-lunch" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="lunch-recipes"></div>
+        </div>
+
+        <!-- Dinner Tab -->
+        <div id="view-dinner" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="dinner-recipes"></div>
+        </div>
+
+        <!-- Snacks Tab -->
+        <div id="view-snacks" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="snacks-recipes"></div>
+        </div>
+    </section>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modal-title"></h2>
+            <div class="modal-macros" id="modal-macros"></div>
+            <div class="modal-section">
+                <h3>Ingredients</h3>
+                <ul id="modal-ingredients"></ul>
+            </div>
+            <div class="modal-section">
+                <h3>Instructions</h3>
+                <ol id="modal-instructions"></ol>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+"use strict";(()=>{var s=[{id:"protein-oatmeal",name:"Protein Oatmeal",category:"breakfast",prepTime:5,cookTime:10,servings:1,calories:380,protein:28,carbs:45,fat:8,ingredients:["50g oats","1 scoop whey protein","200ml almond milk","1 tbsp honey","Handful of berries"],instructions:["Combine oats and almond milk in a pot","Cook on medium heat for 5-7 minutes","Remove from heat and let cool slightly","Stir in protein powder","Top with honey and berries"],tags:["high-protein","quick","vegetarian"]},{id:"egg-veggie-scramble",name:"Egg & Veggie Scramble",category:"breakfast",prepTime:5,cookTime:10,servings:1,calories:320,protein:24,carbs:8,fat:22,ingredients:["3 whole eggs","50g spinach","50g mushrooms","30g feta cheese","1 tsp olive oil","Salt & pepper"],instructions:["Heat olive oil in a pan","Sauté mushrooms until golden","Add spinach and cook until wilted","Beat eggs and pour into pan","Scramble gently, add feta","Season with salt and pepper"],tags:["keto","low-carb","vegetarian"]},{id:"chicken-salad-bowl",name:"Chicken Salad Bowl",category:"lunch",prepTime:10,cookTime:15,servings:1,calories:450,protein:42,carbs:25,fat:18,ingredients:["150g chicken breast","100g mixed greens","50g cherry tomatoes","30g cucumber","30g avocado","2 tbsp olive oil dressing"],instructions:["Season and grill chicken breast","Let rest for 5 minutes, then slice","Arrange greens in a bowl","Add tomatoes, cucumber, avocado","Top with sliced chicken","Drizzle with olive oil dressing"],tags:["high-protein","low-carb","meal-prep"]},{id:"tuna-wrap",name:"High-Protein Tuna Wrap",category:"lunch",prepTime:10,cookTime:0,servings:1,calories:380,protein:35,carbs:30,fat:12,ingredients:["1 can tuna (150g)","1 whole wheat wrap","2 tbsp Greek yogurt","30g lettuce","30g tomato","Lemon juice, salt, pepper"],instructions:["Drain tuna and mix with Greek yogurt","Add lemon juice, salt, pepper","Warm the wrap slightly","Layer lettuce and tomato","Add tuna mixture","Roll tightly and slice"],tags:["high-protein","quick","no-cook"]},{id:"salmon-vegetables",name:"Baked Salmon with Roasted Vegetables",category:"dinner",prepTime:10,cookTime:25,servings:1,calories:520,protein:40,carbs:20,fat:30,ingredients:["150g salmon fillet","100g broccoli","100g bell peppers","50g zucchini","2 tbsp olive oil","Garlic, herbs, lemon"],instructions:["Preheat oven to 200°C","Cut vegetables and toss with olive oil","Spread on baking sheet","Season salmon and place on vegetables","Bake for 20-25 minutes","Finish with fresh lemon"],tags:["high-protein","omega-3","one-pan"]},{id:"beef-stir-fry",name:"Beef & Vegetable Stir-Fry",category:"dinner",prepTime:15,cookTime:15,servings:2,calories:480,protein:38,carbs:25,fat:24,ingredients:["200g lean beef strips","100g broccoli","100g bell peppers","50g snap peas","2 tbsp soy sauce","1 tbsp sesame oil","Ginger, garlic"],instructions:["Slice beef into thin strips","Heat sesame oil in wok","Stir-fry beef until browned, set aside","Cook vegetables until crisp-tender","Return beef, add soy sauce","Toss with ginger and garlic"],tags:["high-protein","quick","meal-prep"]},{id:"greek-yogurt-parfait",name:"Greek Yogurt Parfait",category:"snacks",prepTime:5,cookTime:0,servings:1,calories:220,protein:18,carbs:25,fat:6,ingredients:["150g Greek yogurt","30g granola","50g mixed berries","1 tsp honey"],instructions:["Layer yogurt in a glass","Add half the granola","Add berries","Top with remaining granola","Drizzle with honey"],tags:["high-protein","quick","vegetarian"]},{id:"protein-energy-balls",name:"Protein Energy Balls",category:"snacks",prepTime:15,cookTime:0,servings:10,calories:120,protein:8,carbs:12,fat:5,ingredients:["100g oats","2 scoops protein powder","60g peanut butter","60g honey","30g dark chocolate chips"],instructions:["Mix oats and protein powder","Add peanut butter and honey","Mix until combined","Fold in chocolate chips","Roll into 10 balls","Refrigerate for 30 minutes"],tags:["high-protein","meal-prep","vegetarian"]}];var g="breakfast",l=e=>document.getElementById(`btn-${e}`),m=e=>document.getElementById(`view-${e}`),u=e=>document.getElementById(`${e}-recipes`);function b(){h(),y()}function h(){["breakfast","lunch","dinner","snacks"].forEach(a=>{let n=u(a);if(n){let i=s.filter(o=>o.category===a);n.innerHTML=i.map(f).join("")}})}function f(e){return`
+    <div class="recipe-card" onclick="openRecipeModal('${e.id}')">
+      <div class="recipe-card__header">
+        <h3 class="recipe-card__title">${e.name}</h3>
+        <div class="recipe-card__time">${e.prepTime+e.cookTime} min</div>
+      </div>
+      <div class="recipe-card__macros">
+        <span class="macro macro--calories">${e.calories} kcal</span>
+        <span class="macro macro--protein">${e.protein}g P</span>
+        <span class="macro macro--carbs">${e.carbs}g C</span>
+        <span class="macro macro--fat">${e.fat}g F</span>
+      </div>
+      <div class="recipe-card__tags">
+        ${e.tags.map(a=>`<span class="tag">${a}</span>`).join("")}
+      </div>
+    </div>
+  `}function y(){["breakfast","lunch","dinner","snacks"].forEach(a=>{let n=l(a);n&&n.addEventListener("click",()=>d(a))})}function d(e){let a=["breakfast","lunch","dinner","snacks"];a.forEach(n=>{let i=l(n);i&&i.classList.toggle("tab-active",n===e)}),a.forEach(n=>{let i=m(n);i&&(i.style.display=n===e?"block":"none")}),g=e}function k(e){let a=s.find(t=>t.id===e);if(!a)return;let n=document.getElementById("recipe-modal"),i=document.getElementById("modal-title"),o=document.getElementById("modal-macros"),r=document.getElementById("modal-ingredients"),c=document.getElementById("modal-instructions");n&&i&&o&&r&&c&&(i.textContent=a.name,o.innerHTML=`
+      <span class="modal-macro">${a.calories} kcal</span>
+      <span class="modal-macro">${a.protein}g protein</span>
+      <span class="modal-macro">${a.carbs}g carbs</span>
+      <span class="modal-macro">${a.fat}g fat</span>
+      <span class="modal-macro">${a.prepTime+a.cookTime} min</span>
+      <span class="modal-macro">${a.servings} servings</span>
+    `,r.innerHTML=a.ingredients.map(t=>`<li>${t}</li>`).join(""),c.innerHTML=a.instructions.map(t=>`<li>${t}</li>`).join(""),n.style.display="flex")}function p(){let e=document.getElementById("recipe-modal");e&&(e.style.display="none")}document.addEventListener("click",e=>{let a=document.getElementById("recipe-modal");e.target===a&&p()});window.switchTab=d;window.openRecipeModal=k;window.closeModal=p;document.addEventListener("DOMContentLoaded",b);})();
+</script>
+</body>
+</html>

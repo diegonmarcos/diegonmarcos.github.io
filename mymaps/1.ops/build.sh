@@ -65,13 +65,50 @@ check_dependencies() {
     npm install
 }
 
+# Inline CSS and JS into HTML files
+inline_assets() {
+    log_info "Inlining CSS and JS into HTML files..."
+
+    # Find all HTML files in dist
+    find "$DIST_DIR" -name "*.html" -type f | while read -r html_file; do
+        log_info "Processing: $(basename "$html_file")"
+
+        # Create temp file
+        tmp_file="${html_file}.tmp"
+        cp "$html_file" "$tmp_file"
+
+        # Inline CSS files
+        grep -oE 'href="(/mymaps)?/_next/[^"]+\.css"' "$html_file" 2>/dev/null | while read -r match; do
+            css_path=$(echo "$match" | sed 's/href="//;s/"$//' | sed 's|^/mymaps||')
+            css_file="$DIST_DIR$css_path"
+            if [ -f "$css_file" ]; then
+                css_content=$(cat "$css_file" | tr '\n' ' ' | sed 's/"/\\"/g')
+                # Replace link tag with inline style
+                sed -i "s|<link[^>]*href=\"[^\"]*$(basename "$css_file")\"[^>]*>|<style>$css_content</style>|g" "$tmp_file"
+            fi
+        done
+
+        mv "$tmp_file" "$html_file"
+    done
+
+    log_success "Assets inlined into HTML files"
+}
+
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
     check_dependencies
     cd "$PROJECT_DIR"
     npm run build
-    log_success "Build completed → dist/"
+
+    if [ -d "$DIST_DIR" ]; then
+        # Inline CSS/JS into HTML
+        inline_assets
+        log_success "Build completed → dist/"
+    else
+        log_error "Build directory not created"
+        return 1
+    fi
 }
 
 # Development server

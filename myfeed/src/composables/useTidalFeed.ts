@@ -99,29 +99,7 @@ export function useTidalFeed(options: TidalFeedOptions = { username: 'diegonmarc
         }
       }
 
-      // Fallback: Try to extract from meta tags
-      if (items.length === 0) {
-        const titleMatch = html.match(/<meta property="og:title" content="([^"]+)"/)
-        const descMatch = html.match(/<meta property="og:description" content="([^"]+)"/)
-        const imageMatch = html.match(/<meta property="og:image" content="([^"]+)"/)
-
-        if (titleMatch) {
-          items.push({
-            id: `tidal-profile-${config.username}`,
-            type: 'tidal',
-            _type: 'tidalTrack',
-            _createdAt: new Date().toISOString(),
-            title: titleMatch[1],
-            artist: config.username,
-            album: descMatch?.[1] || undefined,
-            coverUrl: imageMatch?.[1] || undefined,
-            tidalUrl: `https://tidal.com/@${config.username}`,
-            likes: 0,
-            isLiked: false,
-            isBookmarked: false,
-          })
-        }
-      }
+      // Don't use meta tag fallback - let it use the proper fallback data with 10 songs
     } catch (e) {
       console.error('Failed to parse Tidal page:', e)
     }

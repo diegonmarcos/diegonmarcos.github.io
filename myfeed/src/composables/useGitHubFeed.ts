@@ -47,6 +47,19 @@ function setCache(events: GitHubEvent[]): void {
   }
 }
 
+async function fetchCommitMessage(repoName: string, sha: string): Promise<string> {
+  try {
+    const response = await fetch(`https://api.github.com/repos/${repoName}/commits/${sha}`)
+    if (response.ok) {
+      const data = await response.json()
+      return data.commit?.message?.split('\n')[0] || ''
+    }
+  } catch (e) {
+    console.warn(`Failed to fetch commit ${sha}:`, e)
+  }
+  return ''
+}
+
 async function fetchGitHubEvents(): Promise<GitHubEvent[]> {
   // Check cache first
   const cached = getCache()
@@ -56,7 +69,7 @@ async function fetchGitHubEvents(): Promise<GitHubEvent[]> {
 
   try {
     const response = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=100`
+      `https://api.github.com/users/${GITHUB_USERNAME}/events/public?per_page=30`
     )
 
     if (!response.ok) {
@@ -66,8 +79,16 @@ async function fetchGitHubEvents(): Promise<GitHubEvent[]> {
     const data = await response.json()
     const events: GitHubEvent[] = []
 
+    // Fetch commit messages for PushEvents (limit to avoid rate limiting)
     for (const event of data) {
-      const parsed = parseGitHubEvent(event)
+      let commitMessage = ''
+
+      // For PushEvents, fetch the actual commit message
+      if (event.type === 'PushEvent' && event.payload?.head && event.repo?.name) {
+        commitMessage = await fetchCommitMessage(event.repo.name, event.payload.head)
+      }
+
+      const parsed = parseGitHubEvent(event, commitMessage)
       if (parsed) {
         events.push(parsed)
       }
@@ -85,7 +106,7 @@ async function fetchGitHubEvents(): Promise<GitHubEvent[]> {
   }
 }
 
-function parseGitHubEvent(event: any): GitHubEvent | null {
+function parseGitHubEvent(event: any, fetchedCommitMessage?: string): GitHubEvent | null {
   const base = {
     id: event.id,
     type: event.type,
@@ -96,14 +117,17 @@ function parseGitHubEvent(event: any): GitHubEvent | null {
 
   switch (event.type) {
     case 'PushEvent': {
+      const branch = event.payload?.ref?.replace('refs/heads/', '') || 'main'
+      // Use fetched commit message, or payload commits if available, or generate fallback
       const commits = event.payload?.commits || []
-      const firstCommit = commits[0]
-      const commitMessage = firstCommit?.message?.split('\n')[0] || ''
+      const message = fetchedCommitMessage ||
+                     commits[0]?.message?.split('\n')[0] ||
+                     `Push to ${branch}`
       return {
         ...base,
-        commits: commits.length,
-        message: commitMessage || `${commits.length} commit${commits.length !== 1 ? 's' : ''} to ${event.payload?.ref?.replace('refs/heads/', '') || 'main'}`,
-        branch: event.payload?.ref?.replace('refs/heads/', '') || 'main',
+        commits: event.payload?.size || commits.length || 1,
+        message,
+        branch,
       }
     }
 

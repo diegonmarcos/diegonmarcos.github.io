@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes - Feed Yourself</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="Recipe collection for healthy meal planning">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegonmarcos.github.io/feed_yourself/recipes.html">
+    <meta property="og:title" content="Recipes - Feed Yourself">
+    <meta property="og:description" content="Recipe collection for healthy meal planning">
+    <meta property="og:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Recipes - Feed Yourself">
+    <meta name="twitter:description" content="Recipe collection for healthy meal planning">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-container">
+
+    <header>
+        <h1>Recipes</h1>
+        <div class="app-subtitle">Feed Yourself Collection</div>
+        <nav class="header-nav">
+            <a href="index.html" class="nav-link">Menu Designer</a>
+            <a href="meal_designer.html" class="nav-link">Meal Designer</a>
+        </nav>
+    </header>
+
+    <section class="glass-panel">
+        <div class="section-title">Recipe Categories</div>
+
+        <div class="tabs-nav">
+            <button onclick="switchTab('breakfast')" id="btn-breakfast" class="tab-btn tab-active">
+                Breakfast
+            </button>
+            <button onclick="switchTab('lunch')" id="btn-lunch" class="tab-btn">
+                Lunch
+            </button>
+            <button onclick="switchTab('dinner')" id="btn-dinner" class="tab-btn">
+                Dinner
+            </button>
+            <button onclick="switchTab('snacks')" id="btn-snacks" class="tab-btn">
+                Snacks
+            </button>
+        </div>
+
+        <!-- Breakfast Tab -->
+        <div id="view-breakfast" class="tab-view">
+            <div class="recipe-grid" id="breakfast-recipes"></div>
+        </div>
+
+        <!-- Lunch Tab -->
+        <div id="view-lunch" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="lunch-recipes"></div>
+        </div>
+
+        <!-- Dinner Tab -->
+        <div id="view-dinner" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="dinner-recipes"></div>
+        </div>
+
+        <!-- Snacks Tab -->
+        <div id="view-snacks" class="tab-view" style="display:none;">
+            <div class="recipe-grid" id="snacks-recipes"></div>
+        </div>
+    </section>
+
+    <!-- Recipe Detail Modal -->
+    <div id="recipe-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2 id="modal-title"></h2>
+            <div class="modal-macros" id="modal-macros"></div>
+            <div class="modal-section">
+                <h3>Ingredients</h3>
+                <ul id="modal-ingredients"></ul>
+            </div>
+            <div class="modal-section">
+                <h3>Instructions</h3>
+                <ol id="modal-instructions"></ol>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

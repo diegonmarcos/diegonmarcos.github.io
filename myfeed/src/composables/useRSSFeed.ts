@@ -59,9 +59,22 @@ function parseRSSItem(item: Element, source: string): NewsItem {
   const sourceMatch = title.match(/ - ([^-]+)$/)
   const itemSource = sourceMatch ? sourceMatch[1] : source
 
-  // Extract thumbnail from description HTML (Google News includes images)
-  const imgMatch = description.match(/<img[^>]+src=["']([^"']+)["']/)
-  const thumbnail = imgMatch ? imgMatch[1] : undefined
+  // Google News RSS doesn't include images, so we use placeholder based on source
+  // Generate a consistent placeholder color/image based on the source name
+  const sourceHash = itemSource.split('').reduce((a, b) => a + b.charCodeAt(0), 0) % 10
+  const placeholderImages = [
+    'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100&h=100&fit=crop', // newspaper
+    'https://images.unsplash.com/photo-1495020689067-958852a7765e?w=100&h=100&fit=crop', // news
+    'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=100&h=100&fit=crop', // reading
+    'https://images.unsplash.com/photo-1523995462485-3d171b5c8fa9?w=100&h=100&fit=crop', // world
+    'https://images.unsplash.com/photo-1557804506-669a67965ba0?w=100&h=100&fit=crop', // business
+    'https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop', // tech
+    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', // politics
+    'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100&h=100&fit=crop', // science
+    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=100&h=100&fit=crop', // markets
+    'https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=100&h=100&fit=crop', // general
+  ]
+  const thumbnail = placeholderImages[sourceHash]
 
   // Clean description (remove HTML)
   const cleanDescription = description

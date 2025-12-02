@@ -3,24 +3,36 @@ import { showNotification } from './notification';
 import { parseSSHUrl, showSSHModal } from './ssh-modal';
 
 const serviceUrls: ServiceUrls = {
-    // Active Services (GUI URLs)
-    'analytics': 'https://analytics.diegonmarcos.com',
+    // Productivity Services
     'sync': 'https://sync.diegonmarcos.com',
-    'n8n': 'https://n8n.diegonmarcos.com',
+    'mail': '#pending',
 
-    // VPS Providers (console URLs)
+    // Machine Learning Services
+    'n8n-infra': 'https://n8n.diegonmarcos.com',
+    'n8n-ai': '#pending',
+
+    // Others Services
+    'analytics': 'https://analytics.diegonmarcos.com',
+
+    // Cloud Providers (console URLs)
     'vps-oracle': 'https://cloud.oracle.com/',
     'vps-gcloud': 'https://console.cloud.google.com/',
 
-    // VMs (SSH)
+    // SSH VMs
     'vm-webserver1': 'ssh://ubuntu@130.110.251.193',
     'vm-servicesserver1': 'ssh://ubuntu@129.151.228.66',
-    'vm-arch1': 'ssh://user@pending',
+    'vm-arm': 'ssh://ubuntu@pending',
+    'vm-gcloud': 'ssh://diego@pending',
 
-    // Under Development
-    'mail': '#pending',
+    // Infra Services
+    'npm-services': 'http://129.151.228.66:81',
+    'npm-web': 'http://130.110.251.193:81',
+    'npm-arm': '#pending',
+    'npm-gcloud': '#pending',
+    'matomo-db': '#internal',
+    'mail-db': '#pending',
     'terminal': '#pending',
-    'dashboard': '#pending'
+    'flask-cloud-dashboard': '#pending'
 };
 
 // VPS CLI install commands

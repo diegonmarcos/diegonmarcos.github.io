@@ -141,31 +141,61 @@ build_vanilla() {
     mkdir -p "$DIST_VANILLA"
     rm -rf "$DIST_VANILLA"/*
 
-    # Build CSS (Sass)
+    # Build CSS (Sass) to temp file
+    TEMP_CSS="$DIST_VANILLA/.temp.css"
     if [ -f "$VANILLA_DIR/scss/main.scss" ]; then
         log_info "Compiling Sass..."
-        npx sass "$VANILLA_DIR/scss/main.scss" "$DIST_VANILLA/styles.css" --style=compressed --no-source-map
+        npx sass "$VANILLA_DIR/scss/main.scss" "$TEMP_CSS" --style=compressed --no-source-map
     else
         log_warning "Sass entry point not found: $VANILLA_DIR/scss/main.scss"
+        touch "$TEMP_CSS"
     fi
 
-    # Build JS (TypeScript -> esbuild)
+    # Build JS (TypeScript -> esbuild) to temp file
+    TEMP_JS="$DIST_VANILLA/.temp.js"
     if [ -f "$VANILLA_DIR/typescript/main.ts" ]; then
         log_info "Bundling TypeScript..."
-        npx esbuild "$VANILLA_DIR/typescript/main.ts" --bundle --outfile="$DIST_VANILLA/script.js" --minify --target=es2015
+        npx esbuild "$VANILLA_DIR/typescript/main.ts" --bundle --minify --target=es2015 --format=iife --outfile="$TEMP_JS"
     else
         log_warning "TypeScript entry point not found: $VANILLA_DIR/typescript/main.ts"
+        touch "$TEMP_JS"
     fi
 
-    # Copy Static Assets
-    log_info "Copying assets..."
-    cp "$VANILLA_DIR"/*.html "$DIST_VANILLA/" 2>/dev/null || true
-    
-    if [ -d "$VANILLA_DIR/public" ]; then
-        cp -r "$VANILLA_DIR/public" "$DIST_VANILLA/"
+    # Inline CSS and JS into HTML files using Node.js
+    log_info "Inlining CSS and JS into HTML files..."
+    for html_file in "$VANILLA_DIR"/*.html; do
+        if [ -f "$html_file" ]; then
+            filename=$(basename "$html_file")
+            log_info "Processing $filename..."
+
+            node -e "
+const fs = require('fs');
+let html = fs.readFileSync('$html_file', 'utf8');
+const css = fs.readFileSync('$TEMP_CSS', 'utf8');
+const js = fs.readFileSync('$TEMP_JS', 'utf8');
+
+// Replace stylesheet link with inline style
+html = html.replace(/<link[^>]*rel=[\"']stylesheet[\"'][^>]*href=[\"']styles\\.css[\"'][^>]*>/gi, '<style>' + css + '</style>');
+html = html.replace(/<link[^>]*href=[\"']styles\\.css[\"'][^>]*rel=[\"']stylesheet[\"'][^>]*>/gi, '<style>' + css + '</style>');
+
+// Replace script src with inline script
+html = html.replace(/<script[^>]*src=[\"']script\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
+
+fs.writeFileSync('$DIST_VANILLA/$filename', html);
+"
+            log_success "Created single-file: $DIST_VANILLA/$filename"
+        fi
+    done
+
+    # Clean up temp files
+    rm -f "$TEMP_CSS" "$TEMP_JS"
+
+    # Copy public assets (images, etc.) - still needed for og:image references
+    if [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf "$PROJECT_DIR/public" "$DIST_VANILLA/public" 2>/dev/null || cp -r "$PROJECT_DIR/public" "$DIST_VANILLA/"
     fi
 
-    log_success "Vanilla build completed → $DIST_VANILLA"
+    log_success "Vanilla single-file build completed → $DIST_VANILLA"
 }
 
 # Dev action

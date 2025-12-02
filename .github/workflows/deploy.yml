@@ -176,6 +176,17 @@ jobs:
           cd ../..
           echo "✅ MyProfile build complete"
 
+      - name: 🔨 Build MyMovies (Vue 3)
+        id: build-mymovies
+        if: contains(steps.changed-files.outputs.all_changed_files, 'mymovies/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMovies..."
+          cd mymovies/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMovies build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -275,6 +286,13 @@ jobs:
             FAILED="$FAILED myprofile"
           elif [ "${{ steps.build-myprofile.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: MyProfile"
+          fi
+
+          if [ "${{ steps.build-mymovies.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMovies"
+            FAILED="$FAILED mymovies"
+          elif [ "${{ steps.build-mymovies.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMovies"
           fi
 
           echo "============================================"
@@ -431,6 +449,16 @@ jobs:
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no dist directory found)"
+          fi
+
+          # Copy MyMovies build (if dist exists - Vue 3 single-file)
+          if [ -d "mymovies/dist" ]; then
+            echo "📦 Copying MyMovies build..."
+            mkdir -p _site/mymovies
+            cp -rL mymovies/dist/* _site/mymovies/ 2>/dev/null || cp -r mymovies/dist/* _site/mymovies/
+            echo "✅ MyMovies build copied to _site/mymovies/"
+          else
+            echo "⏭️  Skipping MyMovies copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

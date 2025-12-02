@@ -5,10 +5,11 @@ import { fileURLToPath, URL } from 'node:url'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/nexus/',
+  root: 'src',
   plugins: [vue()],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./2.src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
   server: {
@@ -16,7 +17,8 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'dist',
+    outDir: '../dist_vue',
+    emptyOutDir: true,
     sourcemap: false,
     minify: 'esbuild'
   }

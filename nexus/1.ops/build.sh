@@ -127,19 +127,26 @@ build() {
     log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
 
-    # Build Sass and TypeScript
-    build_scss
-    build_ts
-
     # Clean and create dist directory
     rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"
 
+    # Build Sass and TypeScript (outputs to dist/)
+    build_scss
+    build_ts
+
+    # Copy source HTML to dist
+    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
+
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
 
-    # Build single-file version
+    # Build single-file version (inline CSS/JS)
     build_single_file
+
+    # Replace index.html with the inlined version
+    mv "$DIST_DIR/index_spa.html" "$DIST_DIR/index.html"
+    rm -f "$DIST_DIR/styles.css" "$DIST_DIR/script.js"
 
     log_success "Build completed → $DIST_DIR"
 }

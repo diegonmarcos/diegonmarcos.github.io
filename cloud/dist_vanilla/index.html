@@ -28,7 +28,8 @@
     <meta property="og:site_name" content="Diego Nepomuceno Marcos">
     <meta name="author" content="Diego Nepomuceno Marcos">
 
-    <link rel="stylesheet" href="styles.css">
+    <style>:root,[data-theme=minimalistic]{--bg-primary: #000000;--bg-secondary: #0a0a0a;--bg-card: #111111;--bg-card-hover: #1a1a1a;--text-primary: #ffffff;--text-secondary: #888888;--accent-primary: #ff6600;--accent-orange: #ff6600;--accent-blue: #3399ff;--accent-green: #00cc66;--accent-yellow: #ffcc00;--accent-red: #ff3333;--accent-purple: #8b5cf6;--border-color: #333333;--border-highlight: #ff6600;--shadow: rgba(0, 0, 0, 0.5);--glow: rgba(255, 102, 0, 0.3);--font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;--font-main: var(--font-mono);--border-radius: 0px;--border-radius-lg: 0px;--card-padding: 1rem;--transition-speed: 0.15s}[data-theme=blurred]{--bg-primary: #0a0e27;--bg-secondary: #151a33;--bg-card: rgba(26, 31, 58, 0.8);--bg-card-hover: rgba(35, 42, 74, 0.9);--text-primary: #e0e6ff;--text-secondary: #8b95c9;--accent-primary: #4a9eff;--accent-orange: #ff6b35;--accent-blue: #4a9eff;--accent-green: #10b981;--accent-yellow: #fbbf24;--accent-red: #ef4444;--accent-purple: #8b5cf6;--border-color: rgba(255, 255, 255, 0.1);--border-highlight: #4a9eff;--shadow: rgba(0, 0, 0, 0.3);--glow: rgba(74, 158, 255, 0.4);--font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;--font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;--border-radius: 12px;--border-radius-lg: 16px;--card-padding: 1.5rem;--transition-speed: 0.3s}*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;width:100%;overflow-x:hidden}body{font-family:var(--font-main);background:var(--bg-primary);color:var(--text-primary);min-height:100vh;padding:1rem;display:flex;flex-direction:column;font-size:13px;line-height:1.4;transition:background var(--transition-speed) ease,color var(--transition-speed) ease}@media(max-width: 768px){body{padding:.5rem;font-size:12px}}[data-theme=blurred] body{background:linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);font-size:14px;padding:2rem}@media(max-width: 768px){[data-theme=blurred] body{padding:1rem;font-size:13px}}.container{width:100%;max-width:100%;margin:0 auto;flex:1;display:flex;flex-direction:column}[data-theme=blurred] .container{max-width:1400px}#cards-view{max-width:1600px;width:100%;margin:0 auto}#tree-view{width:100%;overflow-x:auto}#architecture-view{flex:1;width:100%}@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeInDown{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}@keyframes slideIn{from{transform:translateX(400px);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes slideOut{from{transform:translateX(0);opacity:1}to{transform:translateX(400px);opacity:0}}@keyframes slideInScale{from{opacity:0;transform:scale(0.9) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}header{text-align:center;margin-bottom:1.5rem;animation:fadeInDown .6s ease-out}header h1{font-size:1.5rem;font-weight:700;color:var(--accent-primary);text-transform:uppercase;letter-spacing:2px;margin-bottom:.25rem;transition:all var(--transition-speed) ease}@media(max-width: 768px){header h1{font-size:1.2rem}}[data-theme=blurred] header{margin-bottom:3rem}[data-theme=blurred] header h1{font-size:3rem;text-transform:none;letter-spacing:normal;background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:rgba(0,0,0,0);background-clip:text}@media(max-width: 768px){[data-theme=blurred] header h1{font-size:2rem}}.subtitle{color:var(--text-secondary);font-size:.85rem;text-transform:uppercase;letter-spacing:1px;transition:all var(--transition-speed) ease}@media(max-width: 768px){.subtitle{font-size:.75rem}}[data-theme=blurred] .subtitle{font-size:1.2rem;text-transform:none;letter-spacing:normal;font-weight:300}@media(max-width: 768px){[data-theme=blurred] .subtitle{font-size:1rem}}.section-header{text-align:left;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border-color);transition:all var(--transition-speed) ease}.section-header h2{font-size:1rem;font-weight:600;color:var(--accent-primary);text-transform:uppercase;letter-spacing:1px;transition:all var(--transition-speed) ease}[data-theme=blurred] .section-header{text-align:center;margin-bottom:2rem;border-bottom:none;padding-bottom:0}[data-theme=blurred] .section-header h2{font-size:2rem;text-transform:none;letter-spacing:normal;background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));-webkit-background-clip:text;-webkit-text-fill-color:rgba(0,0,0,0);background-clip:text}.theme-toggle{position:fixed;top:1rem;right:1rem;z-index:1000;display:flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:none;background:rgba(0,0,0,0);color:var(--text-secondary);cursor:pointer;transition:all .3s ease;border-radius:50%}.theme-toggle svg{width:18px;height:18px;transition:transform .5s ease,color .3s ease}.theme-toggle .theme-label{position:absolute;right:100%;margin-right:.5rem;font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;white-space:nowrap;opacity:0;transform:translateX(10px);transition:opacity .2s ease,transform .2s ease;pointer-events:none}.theme-toggle:hover{color:var(--accent-primary);background:var(--bg-card)}.theme-toggle:hover svg{transform:rotate(180deg)}.theme-toggle:hover .theme-label{opacity:1;transform:translateX(0)}@media(max-width: 768px){.theme-toggle{width:32px;height:32px;top:.5rem;right:.5rem}.theme-toggle svg{width:16px;height:16px}.theme-toggle .theme-label{display:none}}[data-theme=blurred] .theme-toggle{color:var(--text-secondary)}[data-theme=blurred] .theme-toggle:hover{color:var(--accent-blue);background:hsla(0,0%,100%,.1);box-shadow:0 0 20px var(--glow)}[data-theme=blurred] .theme-toggle:hover svg{filter:drop-shadow(0 0 8px var(--accent-blue))}.cards-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:1rem;animation:fadeIn .8s ease-out}@media(max-width: 768px){.cards-grid{grid-template-columns:1fr 1fr;gap:.5rem}}@media(max-width: 480px){.cards-grid{grid-template-columns:1fr}}[data-theme=blurred] .cards-grid{grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:2rem}@media(max-width: 768px){[data-theme=blurred] .cards-grid{grid-template-columns:1fr;gap:1.5rem}}.card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--border-radius);padding:var(--card-padding);cursor:pointer;transition:all var(--transition-speed) ease;position:relative;text-decoration:none;display:block}@media(max-width: 768px){.card{padding:.75rem}}.card:hover{background:var(--bg-card-hover);border-color:var(--border-highlight)}.card:hover .card-icon{color:var(--accent-primary)}.card:hover h3{color:var(--accent-primary)}.card:hover .card-status.online{background:var(--accent-green);color:#000}.card.card-link{text-decoration:none;color:inherit}[data-theme=blurred] .card{border-radius:var(--border-radius-lg);overflow:hidden;backdrop-filter:blur(10px)}[data-theme=blurred] .card::before{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));opacity:0;transition:opacity .4s ease;z-index:0}[data-theme=blurred] .card::after{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);opacity:0;transition:opacity .4s ease;pointer-events:none}[data-theme=blurred] .card:hover{transform:translateY(-8px) scale(1.02);box-shadow:0 20px 60px var(--shadow),0 0 40px var(--glow);border-color:var(--accent-blue)}[data-theme=blurred] .card:hover::before{opacity:.1}[data-theme=blurred] .card:hover::after{opacity:1}[data-theme=blurred] .card:hover .card-icon{transform:scale(1.15) rotate(5deg);filter:drop-shadow(0 0 12px var(--accent-blue))}[data-theme=blurred] .card:hover h3{color:var(--accent-blue)}[data-theme=blurred] .card:hover p{color:var(--text-primary)}[data-theme=blurred] .card:hover .card-status.online{background:rgba(16,185,129,.25);color:var(--accent-green);box-shadow:0 0 15px rgba(16,185,129,.3)}[data-theme=blurred] .card>*{position:relative;z-index:1}@media(max-width: 768px){[data-theme=blurred] .card{padding:1.5rem}}.card-icon{width:32px;height:32px;margin-bottom:.75rem;color:var(--accent-blue);transition:all var(--transition-speed) ease}.card-icon svg{width:100%;height:100%}[data-theme=blurred] .card-icon{width:60px;height:60px;margin-bottom:1.5rem}.card h3{font-size:.95rem;margin-bottom:.25rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;transition:color var(--transition-speed) ease}[data-theme=blurred] .card h3{font-size:1.5rem;text-transform:none;letter-spacing:normal;margin-bottom:.75rem}.card p{color:var(--text-secondary);font-size:.8rem;margin-bottom:.75rem;transition:color var(--transition-speed) ease}[data-theme=blurred] .card p{font-size:.95rem;line-height:1.6;margin-bottom:1.5rem}.card-status{display:inline-block;padding:.2rem .5rem;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;transition:all var(--transition-speed) ease;border-radius:var(--border-radius)}.card-status.online{background:rgba(0,0,0,0);color:var(--accent-green);border:1px solid var(--accent-green)}.card-status.pending{background:rgba(0,0,0,0);color:var(--accent-yellow);border:1px solid var(--accent-yellow)}[data-theme=blurred] .card-status{padding:.4rem 1rem;font-size:.85rem;border-radius:20px}[data-theme=blurred] .card-status.online{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.3)}[data-theme=blurred] .card-status.pending{background:rgba(251,191,36,.15);border-color:rgba(251,191,36,.3)}.card-actions{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border-color)}[data-theme=blurred] .card-actions{margin-top:1rem;padding-top:1rem}.code-with-copy{display:flex;align-items:center;gap:.5rem;background:var(--bg-primary);padding:.4rem .5rem;border:1px solid var(--border-color);border-radius:var(--border-radius)}[data-theme=blurred] .code-with-copy{background:rgba(0,0,0,.3);border-radius:8px;padding:.75rem 1rem}.card-code{font-family:var(--font-mono);font-size:.75rem;color:var(--accent-orange);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}[data-theme=blurred] .card-code{color:var(--accent-green);font-size:.85rem}.copy-icon{background:none;border:none;color:var(--text-secondary);cursor:pointer;padding:.25rem;display:flex;align-items:center;justify-content:center;transition:color var(--transition-speed) ease}.copy-icon svg{width:14px;height:14px}.copy-icon:hover{color:var(--accent-primary)}.copy-icon:disabled{opacity:.3;cursor:not-allowed}.vm-buttons{display:flex;gap:.5rem;margin-top:.5rem}.vm-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:.25rem;padding:.4rem;background:var(--bg-primary);border:1px solid var(--border-color);border-radius:var(--border-radius);color:var(--text-secondary);font-family:var(--font-mono);font-size:.7rem;text-transform:uppercase;cursor:pointer;transition:all var(--transition-speed) ease}.vm-btn svg{width:12px;height:12px}.vm-btn:hover:not(:disabled){border-color:var(--accent-primary);color:var(--accent-primary)}.vm-btn:disabled{opacity:.3;cursor:not-allowed}[data-theme=blurred] .vm-btn{border-radius:8px;padding:.5rem .75rem;backdrop-filter:blur(5px);background:hsla(0,0%,100%,.05)}[data-theme=blurred] .vm-btn:hover:not(:disabled){background:rgba(74,158,255,.1);border-color:var(--accent-blue);color:var(--accent-blue);box-shadow:0 0 15px rgba(74,158,255,.2)}.card:nth-child(1){animation:fadeIn .4s ease-out .1s backwards}.card:nth-child(2){animation:fadeIn .4s ease-out .2s backwards}.card:nth-child(3){animation:fadeIn .4s ease-out .3s backwards}.card:nth-child(4){animation:fadeIn .4s ease-out .4s backwards}.card:nth-child(5){animation:fadeIn .4s ease-out .5s backwards}.card:nth-child(6){animation:fadeIn .4s ease-out .6s backwards}.card:nth-child(7){animation:fadeIn .4s ease-out .7s backwards}.card:nth-child(8){animation:fadeIn .4s ease-out .8s backwards}.card:nth-child(9){animation:fadeIn .4s ease-out .9s backwards}.card:nth-child(10){animation:fadeIn .4s ease-out 1s backwards}.view-toggle{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}[data-theme=blurred] .view-toggle{gap:.75rem}.tree-controls{display:flex;justify-content:center;gap:.5rem;margin-bottom:1rem;padding-top:.5rem}.tree-ctrl-btn{display:flex;align-items:center;gap:.25rem;padding:.3rem .6rem;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;cursor:pointer;transition:all var(--transition-speed) ease;border-radius:var(--border-radius)}.tree-ctrl-btn svg{width:12px;height:12px}.tree-ctrl-btn:hover{border-color:var(--accent-primary);color:var(--accent-primary)}[data-theme=blurred] .tree-ctrl-btn{border-radius:15px;backdrop-filter:blur(10px);background:hsla(0,0%,100%,.05)}[data-theme=blurred] .tree-ctrl-btn:hover{background:hsla(0,0%,100%,.1);border-color:var(--accent-blue);color:var(--accent-blue)}.view-btn{display:flex;align-items:center;gap:.25rem;padding:.4rem .8rem;border:1px solid var(--border-color);background:var(--bg-card);color:var(--text-secondary);font-family:var(--font-mono);font-size:.8rem;text-transform:uppercase;cursor:pointer;transition:all var(--transition-speed) ease;border-radius:var(--border-radius)}.view-btn svg{width:14px;height:14px}.view-btn:hover{border-color:var(--accent-primary);color:var(--text-primary)}.view-btn.active{background:var(--accent-primary);border-color:var(--accent-primary);color:#000}[data-theme=blurred] .view-btn{border-radius:20px;padding:.5rem 1rem;backdrop-filter:blur(10px);background:hsla(0,0%,100%,.05);text-transform:none}[data-theme=blurred] .view-btn:hover{background:hsla(0,0%,100%,.1);border-color:var(--accent-blue)}[data-theme=blurred] .view-btn.active{background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));border-color:rgba(0,0,0,0);color:#fff}.view-group{display:flex;flex-direction:column;align-items:center;gap:.35rem}.view-group-label{font-size:.6rem;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);opacity:.6}.view-group-buttons{display:flex;gap:.25rem}[data-theme=blurred] .view-group-label{font-size:.65rem;letter-spacing:1.5px;opacity:.5}[data-theme=blurred] .view-group-buttons{gap:.5rem}.view-separator{width:1px;height:40px;background:var(--border-color);margin:0 .75rem;opacity:.4;align-self:center}[data-theme=blurred] .view-separator{background:linear-gradient(180deg, transparent, var(--border-color), transparent);height:50px;opacity:.3;margin:0 1.5rem}.view-content{display:none}.view-content.active{display:block}#tree-view{width:100%}.tree-container{display:flex;flex-direction:column;gap:1rem;padding:.5rem 0;width:100%}.tree-vps{display:flex;flex-direction:row;align-items:flex-start;gap:1rem;width:100%}.tree-vps>.tree-node.vps-node{flex:0 0 180px;min-width:180px}.tree-vps>.tree-children{flex:1;margin-left:0;padding-left:0;border-left:none;margin-top:0;margin-bottom:0}.tree-vps>.tree-children.expanded{margin-top:0;margin-bottom:0}.tree-siblings{display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}.tree-sibling-column{flex:0 0 auto;min-width:180px;max-width:220px}.tree-section-divider{width:100%;display:flex;align-items:center;gap:1rem;margin:.75rem 0}.tree-section-divider::before,.tree-section-divider::after{content:"";flex:1;height:1px;background:var(--border-color)}.tree-section-divider .divider-label{font-size:.65rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;padding:.2rem .6rem;background:var(--bg-card);border:1px solid var(--border-color)}.tree-node{margin:.15rem 0}.tree-node.vps-node .node-header{background:var(--bg-card);border:1px solid var(--accent-orange);border-left:3px solid var(--accent-orange);padding:.5rem .75rem;font-size:.9rem}.tree-node.vm-node .node-header{background:var(--bg-card);border:1px solid var(--border-color);border-left:3px solid var(--accent-blue);padding:.4rem .6rem}.tree-node.os-node .node-header{background:var(--bg-secondary);border:1px solid var(--border-color);border-left:3px solid #00bcd4;padding:.35rem .5rem;font-size:.8rem}.tree-node.container-node .node-header{background:var(--bg-secondary);border:1px solid var(--border-color);border-left:3px solid var(--accent-yellow);padding:.35rem .5rem;font-size:.85rem}.tree-node.service-node .node-header{background:var(--bg-primary);border:1px solid var(--border-color);padding:.3rem .5rem;font-size:.8rem}.tree-node.service-node.clickable{cursor:pointer}.tree-node.service-node.clickable:hover .node-header{background:var(--bg-card-hover);border-color:var(--accent-orange)}.node-config{font-size:.65rem;color:var(--text-secondary);background:var(--bg-primary);padding:.1rem .4rem;border:1px solid var(--border-color);margin-left:.3rem;white-space:nowrap}.node-header{display:flex;align-items:center;gap:.4rem;transition:all .15s ease;cursor:pointer;flex-wrap:wrap;min-width:0}.node-header:hover{background:var(--bg-card-hover)}.expand-icon{font-size:.65rem;color:var(--text-secondary);transition:transform .15s ease;width:10px}.expand-icon.expanded{transform:rotate(90deg)}.node-icon{font-size:.9rem}.node-title{font-weight:500;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:1;min-width:0;text-transform:uppercase;font-size:.8rem;letter-spacing:.3px}.node-subtitle{font-size:.75rem;color:var(--text-secondary);white-space:nowrap}.node-port{font-family:var(--font-mono);font-size:.7rem;color:var(--accent-orange);background:var(--bg-primary);border:1px solid var(--border-color);padding:.1rem .3rem;white-space:nowrap;flex-shrink:0}.node-badge{font-size:.65rem;padding:.1rem .4rem;font-weight:600;margin-left:auto;white-space:nowrap;flex-shrink:0;text-transform:uppercase;letter-spacing:.3px}.node-badge.online{background:rgba(0,0,0,0);color:var(--accent-green);border:1px solid var(--accent-green)}.node-badge.pending{background:rgba(0,0,0,0);color:var(--accent-yellow);border:1px solid var(--accent-yellow)}.tree-children{margin-left:.75rem;padding-left:.5rem;border-left:1px solid var(--border-color);max-height:0;overflow:hidden;opacity:0;transition:max-height .2s ease,opacity .15s ease,margin .15s ease}.tree-children.expanded{max-height:2000px;opacity:1;margin-top:.25rem;margin-bottom:.25rem}.tree-siblings .tree-children{margin-left:.4rem;padding-left:.4rem}.tree-vps>.tree-children{border-left:none}.vm-node+.tree-children{border-left-color:var(--accent-blue)}.os-node+.tree-children{border-left-color:#00bcd4}.container-node+.tree-children{border-left-color:var(--accent-yellow)}[data-theme=blurred] .tree-container{gap:1.5rem}[data-theme=blurred] .tree-section-divider{width:100%;display:flex;align-items:center;gap:1rem;margin:1rem 0}[data-theme=blurred] .tree-section-divider::before,[data-theme=blurred] .tree-section-divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg, transparent, var(--border-color), transparent)}[data-theme=blurred] .tree-section-divider .divider-label{font-size:.7rem;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;padding:.3rem .8rem;background:hsla(0,0%,100%,.05);border:1px solid var(--border-color);border-radius:12px;backdrop-filter:blur(10px)}[data-theme=blurred] .tree-node.vps-node .node-header{background:hsla(0,0%,100%,.05);backdrop-filter:blur(15px);border:1px solid hsla(0,0%,100%,.1);border-left:3px solid var(--accent-blue);border-radius:12px;padding:.6rem 1rem}[data-theme=blurred] .tree-node.vm-node .node-header{background:hsla(0,0%,100%,.03);backdrop-filter:blur(10px);border:1px solid hsla(0,0%,100%,.08);border-left:3px solid var(--accent-purple);border-radius:10px;padding:.5rem .8rem}[data-theme=blurred] .tree-node.os-node .node-header{background:hsla(0,0%,100%,.02);backdrop-filter:blur(8px);border:1px solid hsla(0,0%,100%,.06);border-left:3px solid var(--accent-cyan);border-radius:8px;padding:.4rem .7rem;font-size:.8rem}[data-theme=blurred] .tree-node.container-node .node-header{background:hsla(0,0%,100%,.02);backdrop-filter:blur(8px);border:1px solid hsla(0,0%,100%,.06);border-left:3px solid var(--accent-yellow);border-radius:8px}[data-theme=blurred] .tree-node.service-node .node-header{background:hsla(0,0%,100%,.02);backdrop-filter:blur(5px);border:1px solid hsla(0,0%,100%,.05);border-radius:6px}[data-theme=blurred] .tree-node.service-node .node-header:hover{background:hsla(0,0%,100%,.08);border-color:var(--accent-blue)}[data-theme=blurred] .tree-node.service-node.clickable:hover .node-header{background:rgba(74,158,255,.15);border-color:var(--accent-blue)}[data-theme=blurred] .node-badge{border-radius:10px;backdrop-filter:blur(5px)}[data-theme=blurred] .node-badge.online{background:rgba(46,204,113,.15);border-color:rgba(46,204,113,.5)}[data-theme=blurred] .node-badge.pending{background:rgba(241,196,15,.15);border-color:rgba(241,196,15,.5)}[data-theme=blurred] .node-port{background:hsla(0,0%,100%,.05);border-color:hsla(0,0%,100%,.1);border-radius:4px;color:var(--accent-cyan)}[data-theme=blurred] .tree-children{border-left-color:hsla(0,0%,100%,.1)}[data-theme=blurred] .vm-node+.tree-children{border-left-color:rgba(138,43,226,.3)}[data-theme=blurred] .os-node+.tree-children{border-left-color:rgba(0,188,212,.3)}[data-theme=blurred] .container-node+.tree-children{border-left-color:rgba(241,196,15,.3)}[data-theme=blurred] .node-config{font-size:.65rem;color:var(--text-secondary);background:hsla(0,0%,100%,.03);padding:.1rem .4rem;border-radius:4px;margin-left:.3rem}.ssh-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;z-index:2000;animation:fadeIn .3s ease-out}.ssh-modal{background:var(--bg-card);border-radius:16px;padding:2.5rem;max-width:600px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.5);border:1px solid rgba(74,158,255,.3);animation:slideInScale .3s ease-out}@media(max-width: 768px){.ssh-modal{padding:1.5rem}}.ssh-modal h3{color:var(--accent-blue);margin-bottom:1.5rem;font-size:1.5rem}.ssh-command{background:rgba(0,0,0,.3);border-radius:8px;padding:1rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(74,158,255,.2)}@media(max-width: 768px){.ssh-command{flex-direction:column;align-items:stretch}}.ssh-command code{flex:1;color:var(--accent-green);font-family:"Courier New",monospace;font-size:.9rem;word-break:break-all}.copy-btn{padding:.5rem 1rem;background:var(--accent-blue);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500;transition:all .3s ease;white-space:nowrap}@media(max-width: 768px){.copy-btn{width:100%}}.copy-btn:hover{background:var(--accent-purple);transform:scale(1.05)}.ssh-instruction{color:var(--text-secondary);margin-bottom:1rem;font-size:1rem}.ssh-options{display:flex;gap:1rem;margin-bottom:1.5rem}@media(max-width: 768px){.ssh-options{flex-direction:column}}.ssh-option-btn{flex:1;padding:1rem;background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:1rem;transition:all .3s ease}.ssh-option-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(74,158,255,.4)}.close-modal-btn{width:100%;padding:.75rem;background:hsla(0,0%,100%,.1);color:var(--text-primary);border:1px solid hsla(0,0%,100%,.2);border-radius:8px;cursor:pointer;font-weight:500;transition:all .3s ease}.close-modal-btn:hover{background:hsla(0,0%,100%,.15);border-color:hsla(0,0%,100%,.3)}.notification{position:fixed;top:20px;right:20px;background:linear-gradient(135deg, var(--accent-blue), var(--accent-purple));color:#fff;padding:1rem 1.5rem;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:1000;animation:slideIn .3s ease-out;font-weight:500}.notification.closing{animation:slideOut .3s ease-out}
+</style>
     <script>
       // Apply saved theme immediately to prevent flash
       (function() {
@@ -115,23 +116,12 @@
         <!-- Cards View -->
         <div id="cards-view" class="view-content active">
 
-            <!-- Services Section -->
+            <!-- Productivity Services Section -->
             <section class="section-header">
-                <h2>Services</h2>
+                <h2>Productivity Services</h2>
             </section>
 
             <div class="cards-grid">
-                <div class="card" data-service="analytics">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                        </svg>
-                    </div>
-                    <h3>Matomo Analytics</h3>
-                    <p>analytics.diegonmarcos.com</p>
-                    <div class="card-status online">Online</div>
-                </div>
-
                 <div class="card" data-service="sync">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -145,22 +135,71 @@
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="n8n">
+                <div class="card" data-service="mail">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h3>mailserver</h3>
+                    <p>mail.diegonmarcos.com</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+            </div>
+
+            <!-- Machine Learning Services Section -->
+            <section class="section-header" style="margin-top: 4rem;">
+                <h2>Machine Learning Services</h2>
+            </section>
+
+            <div class="cards-grid">
+                <div class="card" data-service="n8n-infra">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"/>
                             <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
                         </svg>
                     </div>
-                    <h3>n8n Orchestrator</h3>
+                    <h3>n8n-Infra</h3>
                     <p>n8n.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="n8n-ai">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                        </svg>
+                    </div>
+                    <h3>n8n-AI</h3>
+                    <p>ai.diegonmarcos.com</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+            </div>
+
+            <!-- Others Services Section -->
+            <section class="section-header" style="margin-top: 4rem;">
+                <h2>Others Services</h2>
+            </section>
+
+            <div class="cards-grid">
+                <div class="card" data-service="analytics">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                        </svg>
+                    </div>
+                    <h3>matomo-app</h3>
+                    <p>analytics.diegonmarcos.com</p>
                     <div class="card-status online">Online</div>
                 </div>
             </div>
 
-            <!-- VPS Section -->
+            <!-- Cloud Providers Section -->
             <section class="section-header" style="margin-top: 4rem;">
-                <h2>VPS</h2>
+                <h2>Cloud Providers</h2>
             </section>
 
             <div class="cards-grid">
@@ -171,7 +210,7 @@
                             <path d="M12 6v6l4 2"/>
                         </svg>
                     </div>
-                    <h3>Oracle Cloud</h3>
+                    <h3>OCloud-Management</h3>
                     <p>Console & OCI CLI</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
@@ -195,7 +234,7 @@
                             <path d="M2 12l10 5 10-5"/>
                         </svg>
                     </div>
-                    <h3>Google Cloud</h3>
+                    <h3>Gcloud_Management</h3>
                     <p>Console & gcloud CLI</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
@@ -212,13 +251,13 @@
                 </div>
             </div>
 
-            <!-- VMs Section -->
+            <!-- SSH VMs Section -->
             <section class="section-header" style="margin-top: 4rem;">
-                <h2>VMs</h2>
+                <h2>SSH VMs</h2>
             </section>
 
             <div class="cards-grid">
-                <div class="card" data-service="vm-webserver1-proxy">
+                <div class="card" data-service="vm-webserver1">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -227,8 +266,8 @@
                             <circle cx="12" cy="10" r="3" fill="currentColor"/>
                         </svg>
                     </div>
-                    <h3>Oracle/web-server-1</h3>
-                    <p>Matomo, Syncthing, NPM</p>
+                    <h3>SSH-VM-Oracle_Web_Server_1</h3>
+                    <p>n8n-Infra, Syncthing, DevOps_Dashboard</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
                             <code class="card-code">ssh ubuntu@130.110.251.193</code>
@@ -237,20 +276,10 @@
                             </button>
                         </div>
                     </div>
-                    <div class="vm-buttons">
-                        <button class="vm-btn" data-url="http://130.110.251.193:81" title="Nginx Proxy Manager">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                            Proxy
-                        </button>
-                        <button class="vm-btn" data-url="https://cloud.oracle.com/networking/vcns" title="Oracle Security Lists">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-                            Firewall
-                        </button>
-                    </div>
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="vm-servicesserver1-proxy">
+                <div class="card" data-service="vm-servicesserver1">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -259,8 +288,8 @@
                             <circle cx="12" cy="10" r="3" fill="currentColor"/>
                         </svg>
                     </div>
-                    <h3>Oracle/services-server-1</h3>
-                    <p>n8n Orchestrator, NPM</p>
+                    <h3>SSH-VM-Oracle_Services_Serv</h3>
+                    <p>matomo-app, matomo-db</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
                             <code class="card-code">ssh ubuntu@129.151.228.66</code>
@@ -269,20 +298,32 @@
                             </button>
                         </div>
                     </div>
-                    <div class="vm-buttons">
-                        <button class="vm-btn" data-url="http://129.151.228.66:81" title="Nginx Proxy Manager">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                            Proxy
-                        </button>
-                        <button class="vm-btn" data-url="https://cloud.oracle.com/networking/vcns" title="Oracle Security Lists">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-                            Firewall
-                        </button>
-                    </div>
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="vm-arch1-pending">
+                <div class="card" data-service="vm-arm">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <circle cx="12" cy="10" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>SSH-VM-Oracle_Flex_ARM_Server</h3>
+                    <p>n8n-AI</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh ubuntu@[pending]</code>
+                            <button class="copy-icon" data-copy="ssh ubuntu@[pending]" title="Copy SSH command" disabled>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status pending">Dev</div>
+                </div>
+
+                <div class="card" data-service="vm-gcloud">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="3" width="20" height="14" rx="2"/>
@@ -291,46 +332,106 @@
                             <path d="M7 10l5-5 5 5M12 5v8" stroke-width="2.5"/>
                         </svg>
                     </div>
-                    <h3>GCloud/Arch1</h3>
-                    <p>arch-server</p>
+                    <h3>SSH-VM-GCloud_microe2Linux_1</h3>
+                    <p>mailserver, mail-db, Web_Shell_Terminal</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
-                            <code class="card-code">ssh user@[pending]</code>
-                            <button class="copy-icon" data-copy="ssh user@[pending]" title="Copy SSH command" disabled>
+                            <code class="card-code">gcloud compute ssh arch-1</code>
+                            <button class="copy-icon" data-copy="gcloud compute ssh arch-1 --zone us-central1-a" title="Copy SSH command" disabled>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
                             </button>
                         </div>
                     </div>
-                    <div class="vm-buttons">
-                        <button class="vm-btn" disabled title="Pending">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-                            Proxy
-                        </button>
-                        <button class="vm-btn" data-url="https://console.cloud.google.com/networking/firewalls" title="GCloud Firewall">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="10" rx="2"/><circle cx="12" cy="16" r="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-                            Firewall
-                        </button>
-                    </div>
-                    <div class="card-status pending">Pending</div>
+                    <div class="card-status pending">Dev</div>
                 </div>
             </div>
 
-            <!-- Under Development Section -->
+            <!-- Infra Services Section -->
             <section class="section-header" style="margin-top: 4rem;">
-                <h2>Under Development</h2>
+                <h2>Infra Services</h2>
             </section>
 
             <div class="cards-grid">
-                <div class="card" data-service="mail">
+                <div class="card" data-service="npm-services">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
                         </svg>
                     </div>
-                    <h3>Mail</h3>
-                    <p>Email server</p>
-                    <div class="card-status pending">Pending</div>
+                    <h3>NPM-VM-Oracle_Services_Serv</h3>
+                    <p>129.151.228.66:81</p>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" data-url="http://129.151.228.66:81" title="Nginx Proxy Manager">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            Open
+                        </button>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="npm-web">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>NPM-VM-Oracle_Web_Server_1</h3>
+                    <p>130.110.251.193:81</p>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" data-url="http://130.110.251.193:81" title="Nginx Proxy Manager">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            Open
+                        </button>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="npm-arm">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>NPM-VM-Oracle_Flex_ARM_Server</h3>
+                    <p>[pending]:81</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+
+                <div class="card" data-service="npm-gcloud">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>NPM-VM-Gcloud</h3>
+                    <p>[pending]:81</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+
+                <div class="card" data-service="matomo-db">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                        </svg>
+                    </div>
+                    <h3>matomo-db</h3>
+                    <p>MariaDB :3306</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="mail-db">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                        </svg>
+                    </div>
+                    <h3>mail-db</h3>
+                    <p>SQLite</p>
+                    <div class="card-status pending">Dev</div>
                 </div>
 
                 <div class="card" data-service="terminal">
@@ -340,12 +441,12 @@
                             <line x1="12" y1="19" x2="20" y2="19"/>
                         </svg>
                     </div>
-                    <h3>OS Terminal</h3>
+                    <h3>Web_Shell_Terminal</h3>
                     <p>Web-based terminal</p>
-                    <div class="card-status pending">Pending</div>
+                    <div class="card-status pending">Dev</div>
                 </div>
 
-                <div class="card" data-service="dashboard">
+                <div class="card" data-service="flask-cloud-dashboard">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="3" width="7" height="7"/>
@@ -354,9 +455,9 @@
                             <rect x="3" y="14" width="7" height="7"/>
                         </svg>
                     </div>
-                    <h3>DevOps Dashboard</h3>
-                    <p>Operations monitoring</p>
-                    <div class="card-status pending">Pending</div>
+                    <h3>Flask-Cloud_Dashboard</h3>
+                    <p>Python Flask/Streamlit</p>
+                    <div class="card-status pending">Dev</div>
                 </div>
 
                 <a href="https://linktree.diegonmarcos.com" target="_blank" class="card card-link" data-service="linktree">
@@ -395,161 +496,7 @@
                 <!-- VPS IaaS Section -->
                 <!-- ═══════════════════════════════════════════════════════════ -->
                 <div class="tree-section-divider">
-                    <span class="divider-label">VPS IaaS (Raw)</span>
-                </div>
-
-                <!-- Oracle Cloud VPS -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🟠</span>
-                            <span class="node-title">Oracle Cloud</span>
-                            <span class="node-badge online">Always Free</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <!-- web-server-1 Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">web-server-1</span>
-                                        <span class="node-config">ARM64 A1.Micro</span>
-                                        <span class="node-badge online">Online</span>
-                                    </div>
-                                </div>
-                                <div class="tree-children expanded">
-                                    <!-- OS Layer -->
-                                    <div class="tree-node os-node" data-expanded="true">
-                                        <div class="node-header">
-                                            <span class="expand-icon expanded">▶</span>
-                                            <span class="node-icon">🐧</span>
-                                            <span class="node-title">Ubuntu 24.04</span>
-                                            <span class="node-subtitle">130.110.251.193</span>
-                                        </div>
-                                    </div>
-                                    <div class="tree-children expanded">
-                                        <div class="tree-node service-node clickable" data-service="analytics">
-                                            <div class="node-header">
-                                                <span class="node-icon">📊</span>
-                                                <span class="node-title">Matomo</span>
-                                                <span class="node-port">:8080</span>
-                                                <span class="node-badge online">Online</span>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node service-node clickable" data-service="sync">
-                                            <div class="node-header">
-                                                <span class="node-icon">🔄</span>
-                                                <span class="node-title">Syncthing</span>
-                                                <span class="node-port">:8384</span>
-                                                <span class="node-badge online">Online</span>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node service-node">
-                                            <div class="node-header">
-                                                <span class="node-icon">🔀</span>
-                                                <span class="node-title">Nginx Proxy</span>
-                                                <span class="node-port">:80,:443,:81</span>
-                                                <span class="node-badge online">Online</span>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node service-node">
-                                            <div class="node-header">
-                                                <span class="node-icon">🗄️</span>
-                                                <span class="node-title">MariaDB</span>
-                                                <span class="node-port">:3306</span>
-                                                <span class="node-badge online">Internal</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- services-server-1 Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">services-server-1</span>
-                                        <span class="node-config">ARM64 A1.Micro</span>
-                                        <span class="node-badge online">Online</span>
-                                    </div>
-                                </div>
-                                <div class="tree-children expanded">
-                                    <!-- OS Layer -->
-                                    <div class="tree-node os-node" data-expanded="true">
-                                        <div class="node-header">
-                                            <span class="expand-icon expanded">▶</span>
-                                            <span class="node-icon">🐧</span>
-                                            <span class="node-title">Ubuntu 24.04</span>
-                                            <span class="node-subtitle">129.151.228.66</span>
-                                        </div>
-                                    </div>
-                                    <div class="tree-children expanded">
-                                        <div class="tree-node service-node clickable" data-service="n8n">
-                                            <div class="node-header">
-                                                <span class="node-icon">⚙️</span>
-                                                <span class="node-title">n8n Orchestrator</span>
-                                                <span class="node-port">:5678</span>
-                                                <span class="node-badge online">Online</span>
-                                            </div>
-                                        </div>
-                                        <div class="tree-node service-node">
-                                            <div class="node-header">
-                                                <span class="node-icon">🔀</span>
-                                                <span class="node-title">Nginx Proxy</span>
-                                                <span class="node-port">:80,:443,:81</span>
-                                                <span class="node-badge online">Online</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- VPS Flex Column (Pending) -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">VPS Flex</span>
-                                        <span class="node-config">ARM64 24GB RAM</span>
-                                        <span class="node-badge pending">Pending</span>
-                                    </div>
-                                </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node os-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🐧</span>
-                                            <span class="node-title">Ubuntu TBD</span>
-                                            <span class="node-badge pending">Planned</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Planned Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node container-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">⏳</span>
-                                        <span class="node-title">Planned Services</span>
-                                    </div>
-                                </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node service-node" data-service="mail">
-                                        <div class="node-header">
-                                            <span class="node-icon">📧</span>
-                                            <span class="node-title">Mail Server</span>
-                                            <span class="node-badge pending">Planned</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <span class="divider-label">Infra as Service VPS IaaS (Raw)</span>
                 </div>
 
                 <!-- Google Cloud VPS -->
@@ -564,23 +511,194 @@
                     </div>
                     <div class="tree-children expanded">
                         <div class="tree-siblings">
-                            <!-- Arch VM Column -->
+                            <!-- Gcloud_Management -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node service-node clickable" data-service="vps-gcloud">
+                                    <div class="node-header">
+                                        <span class="node-icon">⚙️</span>
+                                        <span class="node-title">Gcloud_Management</span>
+                                        <span class="node-badge online">Console</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- VM-GCloud_microe2_Arch_Linux_1 Column -->
                             <div class="tree-sibling-column">
                                 <div class="tree-node vm-node" data-expanded="true">
                                     <div class="node-header">
                                         <span class="expand-icon expanded">▶</span>
                                         <span class="node-icon">🖥️</span>
-                                        <span class="node-title">Arch1</span>
+                                        <span class="node-title">VM-GCloud_microe2_Arch_Linux_1</span>
                                         <span class="node-config">e2-micro</span>
-                                        <span class="node-badge pending">Pending</span>
+                                        <span class="node-badge pending">Dev</span>
                                     </div>
                                 </div>
                                 <div class="tree-children expanded">
-                                    <div class="tree-node os-node">
+                                    <div class="tree-node service-node">
                                         <div class="node-header">
-                                            <span class="node-icon">🐧</span>
-                                            <span class="node-title">Arch Linux</span>
-                                            <span class="node-badge pending">Planned</span>
+                                            <span class="node-icon">🔀</span>
+                                            <span class="node-title">NPM-VM-Gcloud</span>
+                                            <span class="node-port">:80,:443,:81</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node" data-service="mail">
+                                        <div class="node-header">
+                                            <span class="node-icon">📧</span>
+                                            <span class="node-title">mailserver</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🗄️</span>
+                                            <span class="node-title">mail-db</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node" data-service="terminal">
+                                        <div class="node-header">
+                                            <span class="node-icon">💻</span>
+                                            <span class="node-title">Web_Shell_Terminal</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Oracle Cloud VPS -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🟠</span>
+                            <span class="node-title">Oracle Cloud</span>
+                            <span class="node-badge online">Always Free</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <div class="tree-siblings">
+                            <!-- OCloud_Management -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node service-node clickable" data-service="vps-oracle">
+                                    <div class="node-header">
+                                        <span class="node-icon">⚙️</span>
+                                        <span class="node-title">OCloud-Management</span>
+                                        <span class="node-badge online">Console</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- VM-Oracle_web-server-1 Column -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node vm-node" data-expanded="true">
+                                    <div class="node-header">
+                                        <span class="expand-icon expanded">▶</span>
+                                        <span class="node-icon">🖥️</span>
+                                        <span class="node-title">VM-Oracle_web-server-1</span>
+                                        <span class="node-config">E2.1.Micro</span>
+                                        <span class="node-badge online">Online</span>
+                                    </div>
+                                </div>
+                                <div class="tree-children expanded">
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🔀</span>
+                                            <span class="node-title">NPM-VM-Oracle_Web_Server_1</span>
+                                            <span class="node-port">:80,:443,:81</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node clickable" data-service="n8n-infra">
+                                        <div class="node-header">
+                                            <span class="node-icon">⚙️</span>
+                                            <span class="node-title">n8n-Infra</span>
+                                            <span class="node-port">:5678</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node clickable" data-service="sync">
+                                        <div class="node-header">
+                                            <span class="node-icon">🔄</span>
+                                            <span class="node-title">Syncthing</span>
+                                            <span class="node-port">:8384</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node" data-service="flask-cloud-dashboard">
+                                        <div class="node-header">
+                                            <span class="node-icon">📊</span>
+                                            <span class="node-title">Flask-Cloud_Dashboard</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- VM-Oracle_services-server-1 Column -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node vm-node" data-expanded="true">
+                                    <div class="node-header">
+                                        <span class="expand-icon expanded">▶</span>
+                                        <span class="node-icon">🖥️</span>
+                                        <span class="node-title">VM-Oracle_services-server-1</span>
+                                        <span class="node-config">E2.1.Micro</span>
+                                        <span class="node-badge online">Online</span>
+                                    </div>
+                                </div>
+                                <div class="tree-children expanded">
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🔀</span>
+                                            <span class="node-title">NPM-VM-Oracle_Services_Serv</span>
+                                            <span class="node-port">:80,:443,:81</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node clickable" data-service="analytics">
+                                        <div class="node-header">
+                                            <span class="node-icon">📊</span>
+                                            <span class="node-title">matomo-app</span>
+                                            <span class="node-port">:8080</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🗄️</span>
+                                            <span class="node-title">matomo-db</span>
+                                            <span class="node-port">:3306</span>
+                                            <span class="node-badge online">Online</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- VM-Oracle_Flex_ARM_Server Column -->
+                            <div class="tree-sibling-column">
+                                <div class="tree-node vm-node" data-expanded="true">
+                                    <div class="node-header">
+                                        <span class="expand-icon expanded">▶</span>
+                                        <span class="node-icon">🖥️</span>
+                                        <span class="node-title">VM-Oracle_Flex_ARM_Server</span>
+                                        <span class="node-config">A1.Flex 24GB</span>
+                                        <span class="node-badge pending">Dev</span>
+                                    </div>
+                                </div>
+                                <div class="tree-children expanded">
+                                    <div class="tree-node service-node">
+                                        <div class="node-header">
+                                            <span class="node-icon">🔀</span>
+                                            <span class="node-title">NPM-VM-Oracle_Flex_ARM_Server</span>
+                                            <span class="node-port">:80,:443,:81</span>
+                                            <span class="node-badge pending">Dev</span>
+                                        </div>
+                                    </div>
+                                    <div class="tree-node service-node" data-service="n8n-ai">
+                                        <div class="node-header">
+                                            <span class="node-icon">🤖</span>
+                                            <span class="node-title">n8n-AI</span>
+                                            <span class="node-port">:5678</span>
+                                            <span class="node-badge pending">Dev</span>
                                         </div>
                                     </div>
                                 </div>
@@ -590,10 +708,50 @@
                 </div>
 
                 <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- PaaS Section - Managed App Host -->
+                <!-- Pay per use GPU VRAM and RAM Section -->
                 <!-- ═══════════════════════════════════════════════════════════ -->
                 <div class="tree-section-divider">
-                    <span class="divider-label">PaaS - Managed App Host</span>
+                    <span class="divider-label">Pay per use GPU VRAM and RAM</span>
+                </div>
+
+                <!-- WebAPP -->
+                <div class="tree-section-divider" style="margin-top: 1rem;">
+                    <span class="divider-label">WebAPP</span>
+                </div>
+
+                <!-- Python (Flask/Django) -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🐍</span>
+                            <span class="node-title">Python (Flask/Django)</span>
+                            <span class="node-badge pending">Planned</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <div class="tree-siblings">
+                            <div class="tree-sibling-column">
+                                <div class="tree-node service-node">
+                                    <div class="node-header">
+                                        <span class="node-icon">📊</span>
+                                        <span class="node-title">Streamlit</span>
+                                        <span class="node-badge pending">Planned</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI -->
+                <div class="tree-section-divider" style="margin-top: 1rem;">
+                    <span class="divider-label">AI</span>
+                </div>
+
+                <!-- PaaS -->
+                <div class="tree-section-divider" style="margin-top: 0.5rem; opacity: 0.7;">
+                    <span class="divider-label">PaaS</span>
                 </div>
 
                 <!-- Hugging Face Spaces -->
@@ -971,7 +1129,32 @@
         }
     </style>
 
-    <script src="script.js"></script>
+    <script>"use strict";(()=>{function u(){document.querySelectorAll(".card").forEach(e=>{e.addEventListener("mouseenter",()=>{e.style.zIndex="10"}),e.addEventListener("mouseleave",()=>{e.style.zIndex="1",e.style.transform="translateY(0) scale(1) rotateX(0) rotateY(0)"}),e.addEventListener("mousemove",n=>{let o=e.getBoundingClientRect(),i=n.clientX-o.left,s=n.clientY-o.top,m=o.width/2,C=o.height/2,H=(s-C)/10,M=(m-i)/10;e.style.transform=`
+                translateY(-12px)
+                scale(1.02)
+                perspective(1000px)
+                rotateX(${H}deg)
+                rotateY(${M}deg)
+            `})})}function p(){document.querySelectorAll(".card-status").forEach(e=>{setInterval(()=>{Math.random()>.95&&(e.style.animation="pulse 0.5s ease-in-out",setTimeout(()=>{e.style.animation=""},500))},2e3)})}function c(t){let e=document.createElement("div");e.className="notification",e.textContent=t,document.body.appendChild(e),setTimeout(()=>{e.classList.add("closing"),setTimeout(()=>e.remove(),300)},2e3)}function v(t){let e=t.match(/ssh:\/\/(.+)@(.+)/);if(!e)return null;let n=e[1],o=e[2],i=`ssh -i ~/.ssh/matomo_key ${n}@${o}`;return{username:n,host:o,command:i}}function h(t){let e=document.createElement("div");e.className="ssh-modal-overlay",e.innerHTML=`
+        <div class="ssh-modal">
+            <h3>SSH Connection to ${t.host}</h3>
+            <div class="ssh-command">
+                <code>${t.command}</code>
+                <button class="copy-btn" data-action="copy">Copy</button>
+            </div>
+            <p class="ssh-instruction">Choose how to connect:</p>
+            <div class="ssh-options">
+                <button class="ssh-option-btn" data-action="terminal">
+                    Open in Terminal
+                </button>
+                <button class="ssh-option-btn" data-action="vscode">
+                    Open in VS Code
+                </button>
+            </div>
+            <button class="close-modal-btn" data-action="close">Close</button>
+        </div>
+    `,e.addEventListener("click",n=>{let i=n.target.dataset.action;n.target===e||i==="close"?d():i==="copy"?f(t.command):i==="terminal"?$(t.command):i==="vscode"&&k(t)}),document.body.appendChild(e)}function d(){let t=document.querySelector(".ssh-modal-overlay");t&&t.remove()}function f(t){navigator.clipboard.writeText(t).then(()=>{c("SSH command copied to clipboard!")})}function $(t){let e=/Linux/.test(navigator.userAgent),n=/Mac/.test(navigator.userAgent);e?window.location.href=`gnome-terminal://execute/${encodeURIComponent(t)}`:n?window.location.href=`terminal://execute/${encodeURIComponent(t)}`:(f(t),c("Command copied! Paste it in your terminal.")),d()}function k(t){let{username:e,host:n}=t;window.open(`vscode://vscode-remote/ssh-remote+${e}@${n}/home/${e}`,"_blank"),d()}var I={sync:"https://sync.diegonmarcos.com",mail:"#pending","n8n-infra":"https://n8n.diegonmarcos.com","n8n-ai":"#pending",analytics:"https://analytics.diegonmarcos.com","vps-oracle":"https://cloud.oracle.com/","vps-gcloud":"https://console.cloud.google.com/","vm-webserver1":"ssh://ubuntu@130.110.251.193","vm-servicesserver1":"ssh://ubuntu@129.151.228.66","vm-arm":"ssh://ubuntu@pending","vm-gcloud":"ssh://diego@pending","npm-services":"http://129.151.228.66:81","npm-web":"http://130.110.251.193:81","npm-arm":"#pending","npm-gcloud":"#pending","matomo-db":"#internal","mail-db":"#pending",terminal:"#pending","flask-cloud-dashboard":"#pending"};function l(t){let e=I[t];e&&(console.log(`Navigating to ${t}: ${e}`),e.startsWith("ssh://")?N(e):e==="#pending"?c("This service is under development."):e.startsWith("http")?window.open(e,"_blank"):window.location.href=e)}function N(t){let e=v(t);if(e){if(e.host==="pending"||e.host.includes("pending")){c("This VM is not yet configured. IP address pending.");return}h(e)}}var r=["cards","tree","architecture","ai-architecture"];function g(){let t=window.location.hash.slice(1);return r.includes(t)?t:"cards"}function a(t,e=!0){let n=document.querySelectorAll(".view-btn"),o={cards:document.getElementById("cards-view"),tree:document.getElementById("tree-view"),architecture:document.getElementById("architecture-view"),"ai-architecture":document.getElementById("ai-architecture-view")};n.forEach(i=>{i.dataset.view===t?i.classList.add("active"):i.classList.remove("active")}),Object.keys(o).forEach(i=>{let s=o[i];s&&(i===t?s.classList.add("active"):s.classList.remove("active"))}),e&&window.history.pushState({view:t},"",`#${t}`)}function E(){let t=document.querySelectorAll(".view-btn"),e=g();a(e,!1),window.history.replaceState({view:e},"",`#${e}`),t.forEach(n=>{n.addEventListener("click",()=>{let o=n.dataset.view;o&&r.includes(o)&&a(o)})}),window.addEventListener("popstate",n=>{var o;(o=n.state)!=null&&o.view&&r.includes(n.state.view)?a(n.state.view,!1):a(g(),!1)})}function y(){document.querySelectorAll(".tree-node[data-expanded]").forEach(e=>{let n=e.querySelector(".node-header"),o=e.querySelector(".expand-icon"),i=e.nextElementSibling;n&&(i!=null&&i.classList.contains("tree-children"))&&n.addEventListener("click",s=>{s.stopPropagation(),e.dataset.expanded==="true"?(e.dataset.expanded="false",o==null||o.classList.remove("expanded"),i.classList.remove("expanded")):(e.dataset.expanded="true",o==null||o.classList.add("expanded"),i.classList.add("expanded"))})})}function w(){document.querySelectorAll(".tree-node.service-node.clickable").forEach(e=>{e.addEventListener("click",()=>{let n=e.dataset.service;if(n){let o=new CustomEvent("service-click",{detail:{service:n}});document.dispatchEvent(o)}})})}function V(){document.querySelectorAll(".tree-node[data-expanded]").forEach(e=>{var o;e.dataset.expanded="true",(o=e.querySelector(".expand-icon"))==null||o.classList.add("expanded");let n=e.nextElementSibling;n!=null&&n.classList.contains("tree-children")&&n.classList.add("expanded")})}function A(){document.querySelectorAll(".tree-node[data-expanded]").forEach(e=>{var o;e.dataset.expanded="false",(o=e.querySelector(".expand-icon"))==null||o.classList.remove("expanded");let n=e.nextElementSibling;n!=null&&n.classList.contains("tree-children")&&n.classList.remove("expanded")})}function S(){let t=document.getElementById("expand-all"),e=document.getElementById("collapse-all");t==null||t.addEventListener("click",V),e==null||e.addEventListener("click",A)}var b="cloud-dashboard-theme",q="minimalistic";function x(){let t=localStorage.getItem(b);return t==="minimalistic"||t==="blurred"?t:q}function L(t){document.documentElement.setAttribute("data-theme",t),localStorage.setItem(b,t),O(t)}function B(){let e=x()==="minimalistic"?"blurred":"minimalistic";L(e)}function O(t){let e=document.querySelector(".theme-label");e&&(e.textContent=t==="minimalistic"?"Blurred":"Minimalistic")}function T(){let t=x();L(t);let e=document.getElementById("theme-toggle");e&&e.addEventListener("click",B)}document.addEventListener("DOMContentLoaded",()=>{T(),u(),p(),document.querySelectorAll(".card").forEach(e=>{e.addEventListener("click",()=>{let n=e.dataset.service;n&&l(n)})}),E(),y(),w(),S(),document.addEventListener("service-click",e=>{let n=e.detail.service;n&&l(n)})});})();
+</script>
 
     <!-- Matomo Page Tracking -->
     <script src="public/matomo.js"></script>

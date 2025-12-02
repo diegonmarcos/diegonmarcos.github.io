@@ -1,19 +1,29 @@
 export type ServiceId =
-    // Active Services
-    | 'analytics'
+    // Productivity Services
     | 'sync'
-    | 'n8n'
-    // VPS Providers
+    | 'mail'
+    // Machine Learning Services
+    | 'n8n-infra'
+    | 'n8n-ai'
+    // Others Services
+    | 'analytics'
+    // Cloud Providers
     | 'vps-oracle'
     | 'vps-gcloud'
-    // VMs
+    // SSH VMs
     | 'vm-webserver1'
     | 'vm-servicesserver1'
-    | 'vm-arch1'
-    // Under Development
-    | 'mail'
+    | 'vm-arm'
+    | 'vm-gcloud'
+    // Infra Services
+    | 'npm-services'
+    | 'npm-web'
+    | 'npm-arm'
+    | 'npm-gcloud'
+    | 'matomo-db'
+    | 'mail-db'
     | 'terminal'
-    | 'dashboard';
+    | 'flask-cloud-dashboard';
 
 export type ServiceUrls = Record<ServiceId, string>;
 

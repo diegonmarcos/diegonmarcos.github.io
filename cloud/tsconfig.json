@@ -16,7 +16,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src_vanilla/src_static/typescript/**/*"
+    "src_vanilla/typescript/**/*"
   ],
   "exclude": [
     "node_modules",

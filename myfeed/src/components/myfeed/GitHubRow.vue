@@ -74,16 +74,27 @@ const timeAgo = computed(() => {
     <component :is="iconComponent" class="row__icon icon" :class="iconClass" />
     <div class="row__content">
       <div class="row__title">
-        <a :href="event.repoUrl" target="_blank" rel="noopener">{{ event.repo }}</a>
-        <span class="text-text-tertiary ml-1">{{ eventLabel }}</span>
+        {{ event.message || event.repo }}
       </div>
-      <div v-if="event.message" class="row__description">
-        {{ event.message }}
+      <div class="row__meta">
+        <a :href="event.repoUrl" target="_blank" rel="noopener" class="row__repo">{{ event.repo }}</a>
+        <span>{{ eventLabel }}</span>
+        <span class="row__time">{{ timeAgo }}</span>
       </div>
     </div>
-    <span class="row__time">{{ timeAgo }}</span>
     <a :href="event.repoUrl" target="_blank" rel="noopener" class="btn btn--ghost btn--icon">
       <ExternalLink class="w-3.5 h-3.5" />
     </a>
   </div>
 </template>
+
+<style scoped>
+.row__repo {
+  color: var(--text-link, #58a6ff);
+  text-decoration: none;
+}
+
+.row__repo:hover {
+  text-decoration: underline;
+}
+</style>

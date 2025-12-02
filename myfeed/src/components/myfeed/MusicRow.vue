@@ -9,6 +9,7 @@ interface Track {
   duration?: string
   url?: string
   isFavorite?: boolean
+  coverUrl?: string
 }
 
 interface Props {
@@ -20,7 +21,10 @@ defineProps<Props>()
 
 <template>
   <div class="row">
-    <Music class="row__icon icon icon--music" />
+    <div v-if="track.coverUrl" class="row__thumbnail">
+      <img :src="track.coverUrl" :alt="track.album || track.title" loading="lazy" />
+    </div>
+    <Music v-else class="row__icon icon icon--music" />
     <div class="row__content">
       <div class="row__title">
         {{ track.artist }} - {{ track.title }}
@@ -45,3 +49,20 @@ defineProps<Props>()
     </a>
   </div>
 </template>
+
+<style scoped>
+.row__thumbnail {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-elevated, #21262d);
+}
+
+.row__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

@@ -88,7 +88,8 @@ function refresh() {
             artist: track.artist,
             album: track.album,
             duration: track.duration,
-            url: track.url
+            url: track.tidalUrl,
+            coverUrl: track.coverUrl
           }"
         />
       </template>

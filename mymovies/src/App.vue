@@ -4,7 +4,6 @@ import { useMovies } from '@/composables/useMovies'
 import { usePlayer } from '@/composables/usePlayer'
 import AppHeader from '@/components/AppHeader.vue'
 import MovieCard from '@/components/MovieCard.vue'
-import VideoPlayer from '@/components/VideoPlayer.vue'
 import type { Movie } from '@/types/movie'
 
 const {
@@ -22,10 +21,10 @@ const {
   debouncedSearch
 } = useMovies()
 
-const { showPlayer, currentStreamUrl, openPlayer, closePlayer } = usePlayer()
+const { openTrailer } = usePlayer()
 
 const handleWatch = (movie: Movie) => {
-  openPlayer(movie)
+  openTrailer(movie)
 }
 
 onMounted(() => {
@@ -53,12 +52,11 @@ onMounted(() => {
     <main>
       <!-- Missing API Key State -->
       <div v-if="!hasApiKey" class="status-msg access-restricted">
-        <h2>⚠️ Access Restricted</h2>
+        <h2>🔑 API Key Required</h2>
         <p>Please enter your OMDb API Key above.</p>
         <p class="hint">
-          "Remember the app that brought all the movies to your 'time'?"
+          Get a free API key at <a href="https://www.omdbapi.com/apikey.aspx" target="_blank">omdbapi.com</a>
         </p>
-        <p class="sub-hint">(Type the answer in the API Key box to unlock)</p>
       </div>
 
       <!-- Loading State -->
@@ -87,13 +85,6 @@ onMounted(() => {
         />
       </div>
     </main>
-
-    <!-- Video Player Modal -->
-    <VideoPlayer
-      v-if="showPlayer"
-      :streamUrl="currentStreamUrl"
-      @close="closePlayer"
-    />
   </div>
 </template>
 
@@ -131,11 +122,11 @@ main {
       font-style: italic;
       color: var(--text-secondary);
       margin-top: 20px;
-    }
 
-    .sub-hint {
-      font-size: 0.8em;
-      color: #555;
+      a {
+        color: var(--accent-color);
+        text-decoration: underline;
+      }
     }
   }
 

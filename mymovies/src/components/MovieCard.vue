@@ -39,7 +39,7 @@ const handleImageError = (event: Event) => {
         </span>
       </div>
       <button class="watch-btn" @click="emit('watch', movie)">
-        <span>▶ Watch Now</span>
+        <span>▶ Watch Trailer</span>
       </button>
     </div>
   </div>

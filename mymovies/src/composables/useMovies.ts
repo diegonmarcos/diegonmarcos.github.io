@@ -3,8 +3,6 @@ import axios from 'axios'
 import { debounce } from 'lodash-es'
 import type { Movie, OmdbSearchResponse, OmdbDetailResponse, ViewType } from '@/types/movie'
 
-// Secret key (reversed)
-const _vault = '9b54bee4'
 
 // Curated list of IMDb IDs for home view
 const CURATED_IDS = [
@@ -18,6 +16,63 @@ const CURATED_IDS = [
   'tt20969586', // Thunderbolts
   'tt11655566', // Lilo & Stitch
   'tt10676052'  // Fantastic Four
+]
+
+// IMDb Staff's Favorite Movies of 2025 (ls4153451747)
+const MOVIES_2025_IDS = [
+  'tt27714946', // The Monkey
+  'tt14539740', // Blue Moon (Linklater)
+  'tt21064584', // One Battle After Another (PTA)
+  'tt14921174', // Warfare (Garland)
+  'tt12299608', // Mickey 17
+  'tt31193180', // Sinners
+  'tt3566834',  // A Minecraft Movie
+  'tt7181546',  // Ballerina
+  'tt20969586', // Thunderbolts
+  'tt10676052', // Fantastic Four
+  'tt14107334', // The Running Man
+  'tt11655566', // Lilo & Stitch
+  'tt6263850',  // The Gorge
+  'tt13622970', // Mission: Impossible 8
+  'tt10146532'  // Wicked Part 2
+]
+
+// IMDb Staff's Favorite Series of 2025 (ls4153258550)
+const SERIES_2025_IDS = [
+  'tt26669477', // Paradise
+  'tt14452776', // The Studio
+  'tt21216156', // The Chair Company
+  'tt5753856',  // The Rehearsal S2
+  'tt14681924', // Severance S2
+  'tt13622776', // The White Lotus S3
+  'tt11280740', // Squid Game S2
+  'tt2560140',  // Stranger Things S5
+  'tt14688458', // Daredevil: Born Again
+  'tt6468322',  // The Last of Us S2
+  'tt1190634',  // The Boys S5
+  'tt15398776', // Andor S2
+  'tt9288030',  // Reacher S3
+  'tt14452590', // The Penguin
+  'tt12809988'  // Cobra Kai S6
+]
+
+// Staff Picks - All-time favorites
+const STAFF_PICKS_IDS = [
+  'tt0111161', // The Shawshank Redemption
+  'tt0068646', // The Godfather
+  'tt0468569', // The Dark Knight
+  'tt0108052', // Schindler's List
+  'tt0167260', // Lord of the Rings: Return of the King
+  'tt0110912', // Pulp Fiction
+  'tt0137523', // Fight Club
+  'tt0109830', // Forrest Gump
+  'tt0080684', // The Empire Strikes Back
+  'tt0133093', // The Matrix
+  'tt0099685', // Goodfellas
+  'tt0816692', // Interstellar
+  'tt0120737', // Lord of the Rings: Fellowship
+  'tt0073486', // One Flew Over the Cuckoo's Nest
+  'tt1375666'  // Inception
 ]
 
 export function useMovies() {
@@ -45,13 +100,7 @@ export function useMovies() {
   const saveApiKey = () => {
     if (!tempApiKey.value) return
 
-    // Easter egg: check for secret password
-    if (tempApiKey.value.toLowerCase().trim() === 'popcorn') {
-      apiKey.value = _vault.split('').reverse().join('')
-    } else {
-      apiKey.value = tempApiKey.value
-    }
-
+    apiKey.value = tempApiKey.value.trim()
     localStorage.setItem('omdb_api_key', apiKey.value)
     tempApiKey.value = ''
     fetchHomeContent()
@@ -67,13 +116,25 @@ export function useMovies() {
     view.value = newView
     error.value = null
     movies.value = []
-    if (newView === 'home') {
-      searchQuery.value = ''
-      fetchHomeContent()
+    searchQuery.value = ''
+
+    switch (newView) {
+      case 'home':
+        fetchHomeContent()
+        break
+      case 'movies2025':
+        fetchByIds(MOVIES_2025_IDS)
+        break
+      case 'series2025':
+        fetchByIds(SERIES_2025_IDS)
+        break
+      case 'staffpicks':
+        fetchByIds(STAFF_PICKS_IDS)
+        break
     }
   }
 
-  const fetchHomeContent = async () => {
+  const fetchByIds = async (ids: string[]) => {
     if (!apiKey.value) return
 
     loading.value = true
@@ -83,7 +144,7 @@ export function useMovies() {
     try {
       const results: Movie[] = []
 
-      for (const id of CURATED_IDS) {
+      for (const id of ids) {
         try {
           const res = await api.get<OmdbDetailResponse>('', { params: { i: id } })
           if (res.data.Response === 'True') {
@@ -97,10 +158,14 @@ export function useMovies() {
       movies.value = results
     } catch (err) {
       error.value = 'Failed to load content. Check your API key.'
-      console.error('Error in fetchHomeContent:', err)
+      console.error('Error fetching by IDs:', err)
     } finally {
       loading.value = false
     }
+  }
+
+  const fetchHomeContent = async () => {
+    await fetchByIds(CURATED_IDS)
   }
 
   const searchMovies = async () => {

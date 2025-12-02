@@ -1,37 +1,19 @@
-import { ref } from 'vue'
 import type { Movie } from '@/types/movie'
 
 export function usePlayer() {
-  const showPlayer = ref(false)
-  const currentStreamUrl = ref('')
-
-  const openPlayer = (item: Movie) => {
+  const openTrailer = (item: Movie) => {
     if (!item.imdbID) {
-      alert('Cannot watch: No IMDb ID found.')
+      alert('Cannot find trailer: No IMDb ID found.')
       return
     }
 
-    // Map OMDb 'Type' to Vidsrc 'type'
-    // OMDb: 'movie', 'series', 'episode'
-    // Vidsrc: 'movie', 'tv'
-    let type = 'movie'
-    if (item.Type === 'series' || item.Type === 'episode') {
-      type = 'tv'
-    }
-
-    currentStreamUrl.value = `https://vidsrc.cc/v2/embed/${type}/${item.imdbID}`
-    showPlayer.value = true
-  }
-
-  const closePlayer = () => {
-    showPlayer.value = false
-    currentStreamUrl.value = ''
+    // Open IMDB video gallery page for this title
+    // This shows all available trailers and clips on IMDB
+    const imdbVideoUrl = `https://www.imdb.com/title/${item.imdbID}/videogallery/`
+    window.open(imdbVideoUrl, '_blank')
   }
 
   return {
-    showPlayer,
-    currentStreamUrl,
-    openPlayer,
-    closePlayer
+    openTrailer
   }
 }

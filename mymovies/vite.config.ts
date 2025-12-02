@@ -5,20 +5,21 @@ import { viteSingleFile } from 'vite-plugin-singlefile'
 export default defineConfig({
   plugins: [vue(), viteSingleFile()],
   base: '/mymovies/',
+  root: 'src',
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
     emptyOutDir: true,
   },
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@use "@/styles/abstracts" as *;`
+        api: 'modern-compiler'
       }
     }
   },
   resolve: {
     alias: {
-      '@': '/src'
+      '@': new URL('./src', import.meta.url).pathname
     }
   }
 })

@@ -44,6 +44,24 @@ const emit = defineEmits<{
           🔥 Hot
         </button>
         <button
+          :class="['secondary', { active: view === 'movies2025' }]"
+          @click="emit('setView', 'movies2025')"
+        >
+          🎬 Movies 2025
+        </button>
+        <button
+          :class="['secondary', { active: view === 'series2025' }]"
+          @click="emit('setView', 'series2025')"
+        >
+          📺 Series 2025
+        </button>
+        <button
+          :class="['secondary', { active: view === 'staffpicks' }]"
+          @click="emit('setView', 'staffpicks')"
+        >
+          ⭐ Staff Picks
+        </button>
+        <button
           :class="['secondary', { active: view === 'search' }]"
           @click="emit('setView', 'search')"
         >

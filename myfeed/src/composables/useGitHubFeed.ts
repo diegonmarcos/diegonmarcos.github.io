@@ -95,13 +95,17 @@ function parseGitHubEvent(event: any): GitHubEvent | null {
   }
 
   switch (event.type) {
-    case 'PushEvent':
+    case 'PushEvent': {
+      const commits = event.payload?.commits || []
+      const firstCommit = commits[0]
+      const commitMessage = firstCommit?.message?.split('\n')[0] || ''
       return {
         ...base,
-        commits: event.payload?.commits?.length || 0,
-        message: event.payload?.commits?.[0]?.message?.split('\n')[0] || '',
+        commits: commits.length,
+        message: commitMessage || `${commits.length} commit${commits.length !== 1 ? 's' : ''} to ${event.payload?.ref?.replace('refs/heads/', '') || 'main'}`,
         branch: event.payload?.ref?.replace('refs/heads/', '') || 'main',
       }
+    }
 
     case 'WatchEvent':
       return {
@@ -188,15 +192,64 @@ export function useGitHubFeed() {
     )
   )
 
+  // Example/fallback data
+  function useFallbackData() {
+    events.value = [
+      {
+        id: 'gh-example-001',
+        type: 'PushEvent',
+        repo: 'diegonmarcos/myproject',
+        repoUrl: 'https://github.com/diegonmarcos/myproject',
+        message: 'Fix authentication bug in login flow',
+        branch: 'main',
+        commits: 1,
+        createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        id: 'gh-example-002',
+        type: 'PushEvent',
+        repo: 'diegonmarcos/website',
+        repoUrl: 'https://github.com/diegonmarcos/website',
+        message: 'Add dark mode support',
+        branch: 'feature/dark-mode',
+        commits: 3,
+        createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        id: 'gh-example-003',
+        type: 'WatchEvent',
+        repo: 'vuejs/vue',
+        repoUrl: 'https://github.com/vuejs/vue',
+        action: 'starred',
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      },
+      {
+        id: 'gh-example-004',
+        type: 'PullRequestEvent',
+        repo: 'diegonmarcos/api',
+        repoUrl: 'https://github.com/diegonmarcos/api',
+        message: 'Implement rate limiting for API endpoints',
+        action: 'opened',
+        createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString(),
+      },
+    ]
+  }
+
   async function loadEvents() {
     loading.value = true
     error.value = null
 
     try {
-      events.value = await fetchGitHubEvents()
+      const fetchedEvents = await fetchGitHubEvents()
+      if (fetchedEvents.length > 0) {
+        events.value = fetchedEvents
+      } else {
+        useFallbackData()
+      }
     } catch (e) {
       error.value = 'Failed to load GitHub activity'
       console.error(e)
+      useFallbackData()
     } finally {
       loading.value = false
     }

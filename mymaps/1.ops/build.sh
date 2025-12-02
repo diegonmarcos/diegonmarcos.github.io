@@ -18,9 +18,9 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-DIST_DIR="$PROJECT_DIR/out"
+DIST_DIR="$PROJECT_DIR/dist"
 PROJECT_NAME="MyMaps"
-PORT="8012"
+PORT="8014"
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -50,7 +50,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s${NC}\n" "Project" "Framework" "CSS" "Language" "Dev Server"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" ":${PORT}"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next :${PORT}"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -71,7 +71,7 @@ build() {
     check_dependencies
     cd "$PROJECT_DIR"
     npm run build
-    log_success "Build completed → out/"
+    log_success "Build completed → dist/"
 }
 
 # Development server
@@ -100,7 +100,7 @@ dev() {
 clean() {
     log_info "Cleaning build artifacts..."
     rm -rf "$PROJECT_DIR/.next"
-    rm -rf "$PROJECT_DIR/out"
+    rm -rf "$DIST_DIR"
     log_success "Clean completed"
 }
 

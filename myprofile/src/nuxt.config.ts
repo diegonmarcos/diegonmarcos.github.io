@@ -33,6 +33,9 @@ export default defineNuxtConfig({
           rel: 'stylesheet',
           href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap'
         }
+      ],
+      script: [
+        { src: '/myprofile/matomo.js', defer: true }
       ]
     }
   },

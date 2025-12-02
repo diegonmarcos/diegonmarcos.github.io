@@ -95,6 +95,97 @@
 * **Client-Side (CSR):** The server sends an empty HTML shell. JS populates the DOM.
 * **Hybrid (Hydrated):** The server sends populated HTML (for SEO), then JS "wakes up" the page.
 
+
+### Build -> Render DOM -> Render DOM+CSS
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+  │                         WHO DOES THE WORK?                                   │
+  ├──────────────────────────────────────────────────────────────────────────────┤
+  │                                                                              │
+  │   BUILD TIME              SERVER TIME              CLIENT TIME               │
+  │   (Developer's PC)        (Server per request)     (User's Browser)          │
+  │                                                                              │
+  │   ┌─────────────┐         ┌─────────────┐         ┌─────────────┐           │
+  │   │ Compile     │         │ Generate    │         │ Parse HTML  │           │
+  │   │ Bundle      │         │ HTML        │         │ Execute JS  │           │
+  │   │ Minify      │         │ Fetch data  │         │ Paint CSS   │           │
+  │   │ Optimize    │         │ Render      │         │ Layout      │           │
+  │   └─────────────┘         └─────────────┘         └─────────────┘           │
+  │                                                                              │
+  │   Cost: Once              Cost: Per request        Cost: Per user            │
+  │   Paid by: You            Paid by: Server          Paid by: User's device    │
+  │                                                                              │
+  └──────────────────────────────────────────────────────────────────────────────┘
+
+  Three Types of Work
+
+  1. BUILD (Compilation)
+
+  When: Before deployment
+  Who pays: Your machine, once
+  What:
+  - TypeScript → JavaScript
+  - Sass → CSS
+  - Bundle/minify files
+  - Generate static HTML
+
+  2. RENDER (DOM Construction)
+
+  When: Page load
+  Who pays: Server OR Client
+  What: Creating the DOM tree from data
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │                     RENDER STRATEGIES                        │
+  ├─────────────────────────────────────────────────────────────┤
+  │                                                              │
+  │  SSG          "I pre-built everything, just open it"        │
+  │  (Static)      HTML ready → Browser just displays            │
+  │                Server: 0 work | Client: 0 work               │
+  │                                                              │
+  │  SSR          "Let me build this fresh for you"              │
+  │  (Server)      Server builds HTML → sends to browser         │
+  │                Server: work | Client: 0 work                 │
+  │                                                              │
+  │  CSR          "Here's the recipe, you build it"              │
+  │  (Client)      Server sends JS → Browser builds DOM          │
+  │                Server: 0 work | Client: work                 │
+  │                                                              │
+  │  Hybrid       "I'll build the important parts, you do rest"  │
+  │  (SSR+CSR)     Server sends HTML + JS hydrates               │
+  │                Server: some work | Client: some work         │
+  │                                                              │
+  └─────────────────────────────────────────────────────────────┘
+
+  3. PAINT (Visual Rendering)
+
+  When: Every frame (60fps = every 16ms)
+  Who pays: Client GPU/CPU, always
+  What: Drawing pixels on screen
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │                    BROWSER PAINT PIPELINE                    │
+  ├─────────────────────────────────────────────────────────────┤
+  │                                                              │
+  │  DOM + CSS → Layout → Paint → Composite                      │
+  │                                                              │
+  │  Layout:    "Where does each box go?"        (CPU)           │
+  │  Paint:     "What color is each pixel?"      (CPU)           │
+  │  Composite: "Layer these together"           (GPU)           │
+  │                                                              │
+  │  EXPENSIVE OPERATIONS (trigger repaint):                     │
+  │  ├── backdrop-filter: blur()   ← Your glassmorphism!        │
+  │  ├── box-shadow (large)                                      │
+  │  ├── border-radius + overflow                                │
+  │  └── opacity animations                                      │
+  │                                                              │
+  │  CHEAP OPERATIONS (GPU only):                                │
+  │  ├── transform: translate/scale/rotate                       │
+  │  └── opacity (when on own layer)                             │
+  │                                                              │
+  └─────────────────────────────────────────────────────────────┘
+
+
 ---
 
 

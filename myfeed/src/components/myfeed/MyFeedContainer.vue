@@ -21,10 +21,10 @@ const tabs = [
 const { events: githubEvents, loading: githubLoading, loadEvents: refreshGitHub } = useGitHubFeed()
 
 // Tidal feed
-const { tracks: tidalTracks, loading: tidalLoading, fetchTidalProfile: refreshTidal } = useTidalFeed()
+const { tracks: tidalTracks, isLoading: tidalLoading, fetchTidalFeed: refreshTidal } = useTidalFeed()
 
 // YouTube feed
-const { videos: youtubeVideos, loading: youtubeLoading, fetchPlaylist: refreshYouTube } = useYouTubeFeed()
+const { videos: youtubeVideos, isLoading: youtubeLoading, fetchYouTubeFeed: refreshYouTube } = useYouTubeFeed()
 
 function refresh() {
   switch (activeTab.value) {

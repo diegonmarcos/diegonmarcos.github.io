@@ -2,28 +2,38 @@
 
 This directory contains the orchestration scripts for building and developing all projects in this repository. The build system replicates the GitHub Actions workflow for local development and testing.
 
-## 📁 Structure
+## Structure
 
 ```
 /
 ├── 1.ops/
-│   ├── build_main.sh          # Main orchestrator (this is what you run)
-│   └── BUILD_SYSTEM_README.md # This file
-├── linktree/
-│   └── 1.ops/
-│       └── build.sh           # Linktree build script (static HTML/CSS/JS)
-├── cv_web/
-│   └── 1.ops/
-│       └── build.sh           # CV Web build script (Sass)
-├── myfeed/
-│   └── 1.ops/
-│       └── build.sh           # MyFeed build script (Vue 3 + Vite)
-└── mygames/
-    └── 1.1.ops/
-        └── build.sh           # MyGames build script (SvelteKit)
+│   ├── build_main.sh           # Main orchestrator (this is what you run)
+│   ├── build_main.log          # Build/dev output log
+│   ├── .build-status           # Tracks successful builds
+│   └── logs/                   # Individual project dev logs
+├── landpage/1.ops/build.sh     # Landpage (Vanilla + Sass + TypeScript)
+├── linktree/1.ops/build.sh     # Linktree (Vanilla + Sass + TypeScript)
+├── cv_web/1.ops/build.sh       # CV Web (Vanilla + Sass + TypeScript)
+├── myfeed/1.ops/build.sh       # MyFeed (Vue 3 + Vite)
+├── mygames/1.ops/build.sh      # MyGames (SvelteKit)
+├── nexus/1.ops/build.sh        # Nexus (Vanilla + Sass+TW + TypeScript)
+├── cloud/1.ops/build.sh        # Cloud (Vanilla + Sass + TypeScript)
+├── feed_yourself/1.ops/build.sh # Feed Yourself (Vanilla + Sass)
+├── others/1.ops/build.sh       # Others (Python)
+├── health_tracker/1.ops/build.sh # Health Tracker (Vanilla + Tailwind)
+├── market_watch/1.ops/build.sh # Market Watch (Vanilla + Sass + TypeScript)
+├── central_bank/1.ops/build.sh # Central Bank (Vanilla + Tailwind + TypeScript)
+├── mymaps/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
+└── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
 ```
 
-## 🚀 Quick Start
+## Quick Start
+
+### Interactive TUI Mode
+```bash
+./1.ops/build_main.sh
+```
+Running without arguments launches an interactive TUI with project status, build/live indicators, and keyboard commands.
 
 ### Build Everything
 ```bash
@@ -42,38 +52,92 @@ This directory contains the orchestration scripts for building and developing al
 
 ### Build Individual Projects
 ```bash
+./1.ops/build_main.sh build-landpage
 ./1.ops/build_main.sh build-linktree
 ./1.ops/build_main.sh build-cv-web
 ./1.ops/build_main.sh build-myfeed
 ./1.ops/build_main.sh build-mygames
+./1.ops/build_main.sh build-nexus
+./1.ops/build_main.sh build-cloud
+./1.ops/build_main.sh build-feed
+./1.ops/build_main.sh build-others
+./1.ops/build_main.sh build-health
+./1.ops/build_main.sh build-market
+./1.ops/build_main.sh build-centralbank
+./1.ops/build_main.sh build-mymaps
+./1.ops/build_main.sh build-myprofile
 ```
 
 ### Start Individual Dev Servers
 ```bash
-./1.ops/build_main.sh dev-linktree
-./1.ops/build_main.sh dev-myfeed
-./1.ops/build_main.sh dev-mygames
+./1.ops/build_main.sh dev-landpage      # :8000
+./1.ops/build_main.sh dev-linktree      # :8001
+./1.ops/build_main.sh dev-cv-web        # :8002
+./1.ops/build_main.sh dev-myfeed        # :8003
+./1.ops/build_main.sh dev-mygames       # :8004
+./1.ops/build_main.sh dev-nexus         # :8005
+./1.ops/build_main.sh dev-cloud         # :8006
+./1.ops/build_main.sh dev-feed          # :8007
+./1.ops/build_main.sh dev-others        # :8008
+./1.ops/build_main.sh dev-health        # :8009
+./1.ops/build_main.sh dev-market        # :8010
+./1.ops/build_main.sh dev-centralbank   # :8011
+./1.ops/build_main.sh dev-mymaps        # :8012
+./1.ops/build_main.sh dev-myprofile     # :8013
 ```
 
-## 📋 Main Orchestrator Commands
+## Main Orchestrator Commands
 
 The `build_main.sh` script orchestrates all sub-projects:
+
+### Build Commands
 
 | Command | Description |
 |---------|-------------|
 | `build` | Build all projects |
-| `build-root` | Build root Sass + TypeScript |
-| `build-linktree` | Build linktree (static) |
-| `build-cv-web` | Build cv_web (Sass) |
+| `build-landpage` | Build Landpage (Vanilla + Sass + TypeScript) |
+| `build-linktree` | Build Linktree (Vanilla + Sass + TypeScript) |
+| `build-cv-web` | Build CV Web (Vanilla + Sass + TypeScript) |
 | `build-myfeed` | Build MyFeed (Vue 3 + Vite) |
 | `build-mygames` | Build MyGames (SvelteKit) |
+| `build-nexus` | Build Nexus (Vanilla + Sass+TW + TypeScript) |
+| `build-cloud` | Build Cloud (Vanilla + Sass + TypeScript) |
+| `build-feed` | Build Feed Yourself (Vanilla + Sass) |
+| `build-others` | Build Others (Python) |
+| `build-health` | Build Health Tracker (Vanilla + Tailwind) |
+| `build-market` | Build Market Watch (Vanilla + Sass + TypeScript) |
+| `build-centralbank` | Build Central Bank (Vanilla + Tailwind + TypeScript) |
+| `build-mymaps` | Build MyMaps (Next.js + Sass + TypeScript) |
+| `build-myprofile` | Build MyProfile (Nuxt 4 + Sass + TypeScript) |
+
+### Dev Server Commands
+
+| Command | Description |
+|---------|-------------|
 | `dev` | Start all development servers |
-| `dev-root` | Start root Sass + TS watch |
-| `dev-linktree` | Start linktree live server |
-| `dev-myfeed` | Start MyFeed dev server |
-| `dev-mygames` | Start MyGames dev server |
+| `dev-landpage` | Landpage - npm-live :8000 |
+| `dev-linktree` | Linktree - npm-live :8001 |
+| `dev-cv-web` | CV Web - npm-live :8002 |
+| `dev-myfeed` | MyFeed - Vite :8003 |
+| `dev-mygames` | MyGames - Vite :8004 |
+| `dev-nexus` | Nexus - npm-live :8005 |
+| `dev-cloud` | Cloud - npm-live :8006 |
+| `dev-feed` | Feed Yourself - npm-live :8007 |
+| `dev-others` | Others - npm-live :8008 |
+| `dev-health` | Health Tracker - npm-live :8009 |
+| `dev-market` | Market Watch - npm-live :8010 |
+| `dev-centralbank` | Central Bank - npm-live :8011 |
+| `dev-mymaps` | MyMaps - Next.js :8012 |
+| `dev-myprofile` | MyProfile - Nuxt :8013 |
+
+### Utility Commands
+
+| Command | Description |
+|---------|-------------|
+| `list` | List running servers/watchers |
+| `kill` | Kill all dev servers |
 | `clean` | Clean all build artifacts |
-| `clean-all` | Clean all build artifacts + node_modules |
+| `clean-all` | Clean artifacts + node_modules |
 | `test` | Run all tests |
 | `help` | Show help message |
 
@@ -81,127 +145,104 @@ The `build_main.sh` script orchestrates all sub-projects:
 - `--force` or `-f`: Force rebuild (clean before build)
 - `--verbose` or `-v`: Verbose output (shows all commands)
 
-## 🔧 Individual Project Scripts
+## Port Assignments
 
-Each project has its own `build.sh` script in its `1.ops/` directory.
+| Port | Project | Server Type | Watch |
+|------|---------|-------------|-------|
+| :8000 | Landpage | npm-live | Sass, TS |
+| :8001 | Linktree | npm-live | Sass, TS |
+| :8002 | CV Web | npm-live | Sass, TS |
+| :8003 | MyFeed | Vite | HMR |
+| :8004 | MyGames | Vite | HMR |
+| :8005 | Nexus | npm-live | Sass, TS |
+| :8006 | Cloud | npm-live | Sass, TS |
+| :8007 | Feed Yourself | npm-live | Sass |
+| :8008 | Others | npm-live | - |
+| :8009 | Health Tracker | npm-live | - |
+| :8010 | Market Watch | npm-live | Sass, TS |
+| :8011 | Central Bank | npm-live | - |
+| :8012 | MyMaps | Next.js | HMR |
+| :8013 | MyProfile | Nuxt | HMR |
 
-### Linktree (Static HTML/CSS/JS)
+## TUI Mode
 
-```bash
-cd linktree/1.ops
-./build.sh <action>
+Running `./1.ops/build_main.sh` without arguments launches an interactive TUI:
+
+```
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│  PROJECTS                                                                            │
+├─────┬────────────────┬────────────┬──────────┬────────────┬───────┬────────┬────────┤
+│ #   │ Name           │ Framework  │ CSS      │ JavaScript │ Port  │ Build  │ Live   │
+├─────┼────────────────┼────────────┼──────────┼────────────┼───────┼────────┼────────┤
+│ 1   │ Landpage       │ Vanilla    │ Sass     │ TypeScript │ :8000 │ OK     │ On     │
+│ 2   │ Linktree       │ Vanilla    │ Sass     │ TypeScript │ :8001 │ OK     │ Off    │
+│ ... │ ...            │ ...        │ ...      │ ...        │ ...   │ ...    │ ...    │
+└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┴────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│  COMMANDS                                                                            │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│  B[n] Build project    D[n] Start dev server    0 All projects                       │
+│  K    Kill servers     H    Help (full docs)    Q Quit                               │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│  Examples:  D3  D11  B0  K                                                           │
+└──────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Actions:**
-- `build` - Validate HTML/CSS/JS files
-- `dev` - Start development server (http://localhost:8000)
-- `watch` - Watch files for changes
-- `clean` - Clean build artifacts
-- `lint` - Lint HTML/CSS/JS files
-- `minify` - Minify CSS and JS
-- `test` - Run validation tests
+**TUI Commands:**
+- `B[n]` - Build project n (e.g., `B1` builds Landpage, `B0` builds all)
+- `D[n]` - Start dev server for project n (e.g., `D3` starts CV Web on :8002)
+- `K` - Kill all running servers
+- `H` - Show full help documentation
+- `Q` - Quit TUI
 
-**Tech Stack:**
-- Static HTML5
-- CSS3 with glassmorphism
-- Vanilla JavaScript
-- Swiper.js (CDN)
+## Individual Project Scripts
 
----
+Each project has its own `build.sh` script in its `1.ops/` directory with common actions:
 
-### CV Web (Sass)
-
-```bash
-cd cv_web/1.ops
-./build.sh <action>
-```
-
-**Actions:**
-- `build` - Build Sass to CSS (production, compressed)
-- `dev` - Build Sass + watch for changes
-- `watch` - Watch Sass files for changes
-- `clean` - Clean build artifacts
-- `lint` - Lint Sass files
-- `test` - Run validation tests
-
-**Tech Stack:**
-- Sass/SCSS
-- Modern CSS architecture
-
-**Output:** `cv_web/style.css`
-
----
-
-### MyFeed (Vue 3 + Vite)
-
-```bash
-cd myfeed/1.ops
-./build.sh <action>
-```
-
-**Actions:**
+**Common Actions:**
 - `build` - Build for production
-- `dev` - Start Vite development server
-- `preview` - Preview production build
+- `dev` - Start development server
 - `clean` - Clean build artifacts
+- `watch` - Watch files for changes
+- `test` - Run tests (where applicable)
+
+### Framework-Specific Projects
+
+**Vue 3 (MyFeed):**
+- `preview` - Preview production build
 - `lint` - Lint Vue/JS/TS files
 - `format` - Format code with Prettier
-- `test` - Run tests
-- `test:unit` - Run unit tests
 - `typecheck` - Run TypeScript type checking
 
-**Tech Stack:**
-- Vue 3 (Composition API)
-- Vite
-- TypeScript
-- Pinia (state management)
-- Vue Router
-
-**Output:** `myfeed/dist/`
-
----
-
-### MyGames (SvelteKit)
-
-```bash
-cd mygames/1.1.ops
-./build.sh <action>
-```
-
-**Actions:**
-- `build` - Build for production (static adapter)
-- `dev` - Start SvelteKit development server
+**SvelteKit (MyGames):**
 - `preview` - Preview production build
-- `clean` - Clean build artifacts
 - `lint` - Lint Svelte/JS/TS files
 - `format` - Format code with Prettier
 - `check` - Run svelte-check for type checking
-- `test` - Run tests
-- `test:unit` - Run unit tests
 
-**Tech Stack:**
-- SvelteKit
-- TypeScript
-- Static adapter (for GitHub Pages)
-- Vite
+**Next.js (MyMaps):**
+- Standard Next.js commands via npm scripts
 
-**Project Location:** `mygames/1.3.svelte/`
-**Output:** `mygames/1.3.svelte/build/`
+**Nuxt 4 (MyProfile):**
+- Standard Nuxt commands via npm scripts
 
-## 🔄 GitHub Actions Equivalence
+## GitHub Actions Equivalence
 
 This build system replicates the GitHub Actions workflow (`.github/workflows/deploy.yml`):
 
 | GitHub Action Step | Local Command |
 |-------------------|---------------|
-| Build Root Sass | `./1.ops/build_main.sh build-root` |
-| Build CV Web Sass | `./1.ops/build_main.sh build-cv-web` |
-| Build TypeScript | `cd 1.ops && npm run ts:build` |
+| Build Landpage | `./1.ops/build_main.sh build-landpage` |
+| Build Linktree | `./1.ops/build_main.sh build-linktree` |
+| Build CV Web | `./1.ops/build_main.sh build-cv-web` |
 | Build MyFeed | `./1.ops/build_main.sh build-myfeed` |
 | Build MyGames | `./1.ops/build_main.sh build-mygames` |
+| Build MyMaps | `./1.ops/build_main.sh build-mymaps` |
+| Build MyProfile | `./1.ops/build_main.sh build-myprofile` |
 | Build All | `./1.ops/build_main.sh build` |
 
-## 🧪 Testing Locally
+## Testing Locally
 
 ### Test Full Deployment Build
 ```bash
@@ -213,46 +254,50 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 
 # Verify builds exist
 ls -lah myfeed/dist/
-ls -lah mygames/1.3.svelte/build/
-ls -lah cv_web/style.css
-ls -lah linktree/index.html
+ls -lah mygames/dist/
+ls -lah mymaps/.next/
+ls -lah myprofile/.output/
 ```
 
 ### Test Development Workflow
 ```bash
-# Option 1: Start all dev servers (requires tmux)
+# Option 1: Start all dev servers (uses tmux if available)
 ./1.ops/build_main.sh dev
 
-# Option 2: Start individual servers in separate terminals
-# Terminal 1:
-./1.ops/build_main.sh dev-root
+# Option 2: Use interactive TUI
+./1.ops/build_main.sh
 
-# Terminal 2:
-./1.ops/build_main.sh dev-linktree
-
-# Terminal 3:
-./1.ops/build_main.sh dev-myfeed
-
-# Terminal 4:
-./1.ops/build_main.sh dev-mygames
+# Option 3: Start individual servers in separate terminals
+./1.ops/build_main.sh dev-landpage   # Terminal 1
+./1.ops/build_main.sh dev-myfeed     # Terminal 2
+./1.ops/build_main.sh dev-mygames    # Terminal 3
 ```
 
-## 📦 Dependencies
+### Monitor Running Servers
+```bash
+# List all running servers
+./1.ops/build_main.sh list
+
+# Kill all servers
+./1.ops/build_main.sh kill
+```
+
+## Dependencies
 
 ### System Requirements
 - **Node.js** >= 18.x
 - **npm** >= 9.x
-- **Python 3** (for simple HTTP server)
+- **Python 3** (for simple HTTP server and Others project)
 - **Sass** (via npm)
 - **tmux** (optional, for concurrent dev servers)
-- **inotify-tools** (optional, for file watching)
 
 ### Install Dependencies
 ```bash
-# Install all npm dependencies
-cd 1.ops && npm install
-cd ../myfeed && npm install
-cd ../mygames/1.3.svelte && npm install
+# Install all npm dependencies per project
+cd myfeed && npm install
+cd ../mygames && npm install
+cd ../mymaps && npm install
+cd ../myprofile && npm install
 
 # Or use the orchestrator (recommended)
 ./1.ops/build_main.sh build  # Auto-installs deps if missing
@@ -260,61 +305,54 @@ cd ../mygames/1.3.svelte && npm install
 
 ### Optional Tools
 ```bash
+# For concurrent dev servers (recommended)
+sudo apt-get install tmux
+
 # For HTML validation
 sudo apt-get install tidy
 
 # For CSS linting
 npm install -g csslint
-
-# For file watching
-sudo apt-get install inotify-tools
-
-# For concurrent dev servers
-sudo apt-get install tmux
 ```
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Build Fails with "npm not found"
 ```bash
-# Install Node.js and npm
 sudo apt-get install nodejs npm
 ```
 
 ### "Port already in use" Error
 ```bash
-# Find and kill the process using the port
-lsof -ti:8000 | xargs kill -9
+# Kill all dev servers
+./1.ops/build_main.sh kill
 
-# Or use a different port (scripts auto-detect)
+# Or manually find and kill process
+lsof -ti:8000 | xargs kill -9
 ```
 
-### MyGames Build Path Issues
-The MyGames project is located at `mygames/1.3.svelte/`. The build script in `mygames/1.1.ops/build.sh` automatically navigates to the correct directory.
+### Check Build Logs
+```bash
+# View main build log
+tail -f 1.ops/build_main.log
+
+# View individual project logs (when using nohup mode)
+tail -f 1.ops/logs/myfeed-dev.log
+```
 
 ### Sass Compilation Errors
 ```bash
-# Reinstall Sass
-cd 1.ops
+cd <project>/1.ops
 npm install sass --save-dev
-
-# Test Sass directly
-npm run sass:build
 ```
 
 ### TypeScript Compilation Errors
 ```bash
-# Reinstall TypeScript
-cd 1.ops
+cd <project>/1.ops
 npm install typescript --save-dev
-
-# Test TypeScript directly
-npm run ts:build
 ```
 
-## 📝 Adding New Projects
-
-To add a new project to the build system:
+## Adding New Projects
 
 1. **Create the project directory structure:**
    ```bash
@@ -323,7 +361,7 @@ To add a new project to the build system:
 
 2. **Create a `build.sh` script** in `new-project/1.ops/`:
    - Copy from an existing project's `build.sh`
-   - Customize for your framework (React, Angular, etc.)
+   - Customize for your framework
    - Update `PROJECT_NAME` and `PROJECT_DIR` variables
 
 3. **Make it executable:**
@@ -331,148 +369,55 @@ To add a new project to the build system:
    chmod +x new-project/1.ops/build.sh
    ```
 
-4. **Test it:**
-   ```bash
-   ./new-project/1.ops/build.sh help
-   ./new-project/1.ops/build.sh build
-   ```
+4. **Add to main orchestrator** (`1.ops/build_main.sh`):
+   - Add URL variable (next available port)
+   - Add to `build_all()` function
+   - Add `build-new-project` case in main()
+   - Add `dev-new-project` case in main()
+   - Add to TUI menu items
+   - Add server status check in `get_running_servers()`
 
-5. **Add to main orchestrator** (`1.ops/build_main.sh`):
-   - Add `build-new-project` action
-   - Add `dev-new-project` action
-   - Include in `build_all()` function
-
-6. **Update GitHub Actions** (`.github/workflows/deploy.yml`):
+5. **Update GitHub Actions** (`.github/workflows/deploy.yml`):
    - Add build step for the new project
    - Add conditional check if needed
-   - Add copy step in deployment
 
-## 🎯 Best Practices
+## Best Practices
 
-1. **Always test locally before pushing:**
+1. **Use TUI for daily development:**
+   ```bash
+   ./1.ops/build_main.sh
+   ```
+
+2. **Always test locally before pushing:**
    ```bash
    ./1.ops/build_main.sh build
    ```
 
-2. **Use force rebuild when dependencies change:**
+3. **Use force rebuild when dependencies change:**
    ```bash
    ./1.ops/build_main.sh build --force
    ```
 
-3. **Clean before major changes:**
+4. **Clean before major changes:**
    ```bash
    ./1.ops/build_main.sh clean-all
    ```
 
-4. **Use individual build scripts for focused work:**
-   ```bash
-   cd myfeed/1.ops
-   ./build.sh dev  # Work only on MyFeed
-   ```
-
 5. **Check logs for errors:**
    - Build scripts output colored logs
-   - 🔵 Blue = Info
-   - 🟢 Green = Success
-   - 🟡 Yellow = Warning
-   - 🔴 Red = Error
+   - Blue = Info
+   - Green = Success
+   - Yellow = Warning
+   - Red = Error
 
-## 📚 Examples
-
-### Example 1: Fresh Clone Setup
-```bash
-# Clone repository
-git clone <repo-url>
-cd front-Github_io
-
-# Build everything
-./1.ops/build_main.sh build
-
-# Start development
-./1.ops/build_main.sh dev
-```
-
-### Example 2: Update Linktree Only
-```bash
-# Make changes to linktree files
-vim linktree/index.html
-
-# Test changes
-./1.ops/build_main.sh build-linktree
-
-# Start dev server
-./1.ops/build_main.sh dev-linktree
-```
-
-### Example 3: Deploy Preparation
-```bash
-# Clean everything
-./1.ops/build_main.sh clean-all
-
-# Build from scratch
-./1.ops/build_main.sh build
-
-# Run tests
-./1.ops/build_main.sh test
-
-# Commit and push
-git add .
-git commit -m "Your changes"
-git push
-```
-
-## 🔗 Related Files
+## Related Files
 
 - `.github/workflows/deploy.yml` - GitHub Actions CI/CD pipeline
-- `1.ops/package.json` - Root build dependencies
-- `myfeed/package.json` - MyFeed dependencies
-- `mygames/1.3.svelte/package.json` - MyGames dependencies
-
-## 📖 Documentation
-
-- [GitHub Actions Workflow](.github/workflows/deploy.yml)
-- [Vite Documentation](https://vitejs.dev/)
-- [SvelteKit Documentation](https://kit.svelte.dev/)
-- [Sass Documentation](https://sass-lang.com/)
+- `1.ops/build_main.log` - Build output log
+- `1.ops/.build-status` - Build status tracking
+- `1.ops/logs/` - Individual project dev logs
 
 ---
 
-
-
-
-GitHub Actions workflow for automated deployment:
-- **Trigger**: Push to `main` branch
-- **Conditional Builds**: Only rebuilds assets (Sass, TypeScript, Jekyll) if source files changed
-- **Deploy**: Builds site to `_site/` and deploys to `gh-pages` branch
-
-
----
-
-Python Map Generator (`/mymaps`)
-
-```
-/mymaps
-├──   index.html          # Menu with cards linking to maps
-├──   README.md
-├── src/
-│   ├──   mymaps.py       # Map generator script
-│   ├──   gui.py          # Tkinter GUI for configuration
-│   ├──   config.csv      # Map configuration
-│   └──   input_data.csv  # Country/region data with spheres
-└── maps/
-    └──   *.html          # Generated standalone map files
-```
-
-Workflow:
-- Edit `src/input_data.csv` with country data and sphere classifications
-- Configure `src/config.csv` for map settings (title, map type, join method)
-- Run `python3 src/mymaps.py` to generate HTML map to `maps/`
-- Or use GUI: `python3 src/gui.py`
-- Browse maps via `index.html`
-
-
----
-
-
-**Last Updated:** 2025-11-23
+**Last Updated:** 2025-12-01
 **Maintainer:** Diego Nepomuceno Marcos

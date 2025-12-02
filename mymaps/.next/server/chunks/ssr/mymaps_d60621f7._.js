@@ -1,0 +1,3 @@
+module.exports=[46233,(a,b,c)=>{"use strict";b.exports=a.r(47384).vendored.contexts.AppRouterContext},64936,(a,b,c)=>{"use strict";b.exports=a.r(47384).vendored["react-ssr"].ReactServerDOMTurbopackClient},83087,a=>{"use strict";var b=a.i(82497),c=a.i(25062);function d({config:a}){return(0,b.jsxs)(c.default,{href:`/map/${a.id}`,className:"card",children:[(0,b.jsx)("div",{className:"card__icon",children:a.icon}),(0,b.jsx)("div",{className:"card__title",children:a.title}),(0,b.jsx)("div",{className:"card__description",children:a.description}),(0,b.jsxs)("div",{className:"card__meta",children:[(0,b.jsx)("span",{children:a.type}),(0,b.jsx)("span",{children:a.mapPath})]})]})}a.s(["default",()=>d])}];
+
+//# sourceMappingURL=mymaps_d60621f7._.js.map

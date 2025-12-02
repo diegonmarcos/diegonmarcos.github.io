@@ -71,6 +71,7 @@ export interface YouTubeVideo extends BaseFeedItem {
   videoId: string
   title: string
   description?: string
+  thumbnail?: string
 
   // Channel Info
   channel: {

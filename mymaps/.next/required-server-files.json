@@ -292,7 +292,7 @@
     "turbopack": {
       "root": "/home/diego/Documents/Git/front-Github_io"
     },
-    "distDirRoot": ".next"
+    "distDirRoot": "dist"
   },
   "appDir": "/home/diego/Documents/Git/front-Github_io/mymaps",
   "relativeAppDir": "mymaps",

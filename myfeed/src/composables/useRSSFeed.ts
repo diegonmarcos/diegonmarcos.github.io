@@ -139,6 +139,57 @@ export function useRSSFeed(initialCategory: string = 'headlines') {
     { id: 'markets', label: 'Markets' },
   ]
 
+  // Example/fallback data with images
+  function useFallbackData() {
+    items.value = [
+      {
+        id: 'news-example-001',
+        title: 'Tech Giants Report Strong Quarterly Earnings',
+        description: 'Major technology companies exceeded analyst expectations with impressive revenue growth.',
+        source: 'Reuters',
+        url: 'https://reuters.com',
+        publishedAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+        thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&h=200&fit=crop',
+      },
+      {
+        id: 'news-example-002',
+        title: 'Climate Summit Reaches Historic Agreement',
+        description: 'World leaders commit to ambitious carbon reduction targets at international conference.',
+        source: 'BBC News',
+        url: 'https://bbc.com',
+        publishedAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
+        thumbnail: 'https://images.unsplash.com/photo-1569163139394-de4e4f43e4e3?w=200&h=200&fit=crop',
+      },
+      {
+        id: 'news-example-003',
+        title: 'New AI Model Breaks Performance Records',
+        description: 'Researchers unveil breakthrough in artificial intelligence capabilities.',
+        source: 'TechCrunch',
+        url: 'https://techcrunch.com',
+        publishedAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
+        thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=200&h=200&fit=crop',
+      },
+      {
+        id: 'news-example-004',
+        title: 'Space Agency Announces Mars Mission Update',
+        description: 'Latest developments in the ongoing exploration of the red planet.',
+        source: 'Space.com',
+        url: 'https://space.com',
+        publishedAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+        thumbnail: 'https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=200&h=200&fit=crop',
+      },
+      {
+        id: 'news-example-005',
+        title: 'Global Markets Rally on Economic Data',
+        description: 'Stock indices surge following positive employment and inflation reports.',
+        source: 'Bloomberg',
+        url: 'https://bloomberg.com',
+        publishedAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=200&h=200&fit=crop',
+      },
+    ]
+  }
+
   async function loadFeed(cat?: string) {
     if (cat) {
       category.value = cat
@@ -148,10 +199,16 @@ export function useRSSFeed(initialCategory: string = 'headlines') {
     error.value = null
 
     try {
-      items.value = await fetchRSSFeed(category.value)
+      const fetchedItems = await fetchRSSFeed(category.value)
+      if (fetchedItems.length > 0) {
+        items.value = fetchedItems
+      } else {
+        useFallbackData()
+      }
     } catch (e) {
       error.value = 'Failed to load news feed'
       console.error(e)
+      useFallbackData()
     } finally {
       loading.value = false
     }

@@ -1,6 +1,6 @@
 #!/bin/sh
 #=====================================
-# MYPROFILE BUILD SCRIPT
+# MYGAMES BUILD SCRIPT
 #=====================================
 # POSIX-compliant build script
 # Usage: ./1.ops/build.sh [action]
@@ -17,10 +17,10 @@ MAGENTA='\033[0;35m'
 NC='\033[0m'
 
 # Project paths
-PROJECT_DIR="$(cd "$(dirname "$0")/../src" && pwd)"
-PROJECT_NAME="MyProfile"
-PORT="8004"
-BUILD_DIR="$PROJECT_DIR/build"
+PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_NAME="MyGames"
+PORT="8013"
+BUILD_DIR="$PROJECT_DIR/dist"
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -54,7 +54,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "SvelteKit" "CSS" "TypeScript" "Vite :${PORT}" "HMR"
+    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "MyGames" "SvelteKit" "Sass" "TypeScript" "Vite :${PORT}" "HMR"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -129,7 +129,6 @@ clean() {
 
     rm -rf "$BUILD_DIR"
     rm -rf "$PROJECT_DIR/.svelte-kit"
-    rm -rf "$PROJECT_DIR/node_modules/.vite"
 
     log_success "Clean completed"
 }

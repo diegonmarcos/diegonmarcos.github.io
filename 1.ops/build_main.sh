@@ -487,6 +487,7 @@ build_all() {
     # Build each sub-project
     execute_build "linktree" "build" || _failed=$((_failed + 1))
     execute_build "cv_web" "build" || _failed=$((_failed + 1))
+    execute_build "cv_pdf" "build" || _failed=$((_failed + 1))
     execute_build "myfeed" "build" || _failed=$((_failed + 1))
     execute_build "mygames" "build" || _failed=$((_failed + 1))
     execute_build "cloud" "build" || _failed=$((_failed + 1))
@@ -517,6 +518,7 @@ clean_all_builds() {
     # Clean sub-projects
     execute_build "linktree" "clean" || true
     execute_build "cv_web" "clean" || true
+    execute_build "cv_pdf" "clean" || true
     execute_build "myfeed" "clean" || true
     execute_build "mygames" "clean" || true
     execute_build "cloud" "clean" || true
@@ -1215,7 +1217,7 @@ tui_build_all() {
     log_to_file "Starting build all..."
 
     # Build each project and mark success if successful
-    for _proj in landpage linktree cv_web myfeed mygames nexus cloud feed_yourself others health_tracker market_watch central_bank mymaps myprofile; do
+    for _proj in landpage linktree cv_web cv_pdf myfeed mygames nexus cloud feed_yourself others health_tracker market_watch central_bank mymaps myprofile; do
         _build_script="$PROJECT_ROOT/$_proj/1.ops/build.sh"
         if [ -f "$_build_script" ]; then
             log_to_file "Building: $_proj"

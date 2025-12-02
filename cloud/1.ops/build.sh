@@ -2,10 +2,10 @@
 #=====================================
 # CLOUD BUILD SCRIPT
 #=====================================
-# Supports both Vanilla and Next.js versions
-# Usage: ./1.ops/build.sh [action] [--vanilla|--nextjs]
+# Supports Vanilla and Vue 3 versions
+# Usage: ./1.ops/build.sh [action] [--vanilla|--vue]
 #
-# Default: Next.js (src_nextjs)
+# Default: Vanilla (single-file SPA)
 
 set -e
 
@@ -21,13 +21,15 @@ NC='\033[0m'
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 VANILLA_DIR="$PROJECT_DIR/src_vanilla"
-NEXTJS_DIR="$PROJECT_DIR/src_nextjs"
+VUE_DIR="$PROJECT_DIR/src_vue"
 DIST_DIR="$PROJECT_DIR/dist"
+DIST_VANILLA="$PROJECT_DIR/dist_vanilla"
+DIST_VUE="$PROJECT_DIR/dist_vue"
 PROJECT_NAME="Cloud"
 PORT="8006"
 
-# Default to Next.js
-USE_NEXTJS=true
+# Default to Vanilla (single-file SPA)
+USE_VUE=false
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -41,7 +43,7 @@ print_usage() {
     printf "${CYAN}  ${PROJECT_NAME} Build Script${NC}\n"
     printf "${BLUE}===========================================================================${NC}\n"
     printf "\n"
-    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action] [--vanilla|--nextjs]\n"
+    printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action] [--vanilla|--vue]\n"
     printf "\n"
     printf "${YELLOW}ACTIONS:${NC}\n"
     printf "  ${GREEN}build${NC}        # Build for production\n"
@@ -50,15 +52,15 @@ print_usage() {
     printf "  ${GREEN}help${NC}         # Show this help\n"
     printf "\n"
     printf "${YELLOW}OPTIONS:${NC}\n"
-    printf "  ${GREEN}--vanilla${NC}    # Use Vanilla version (src_vanilla)\n"
-    printf "  ${GREEN}--nextjs${NC}     # Use Next.js version (src_nextjs) [default]\n"
+    printf "  ${GREEN}--vanilla${NC}    # Use Vanilla version (src_vanilla) [default]\n"
+    printf "  ${GREEN}--vue${NC}        # Use Vue 3 version (src_vue)\n"
     printf "\n"
     printf "${YELLOW}VERSIONS:${NC}\n"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  %-14s\n" "Version" "Framework" "CSS" "JS" "Port"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  %-14s\n" "Next.js" "Next.js" "Tailwind" "TypeScript" ":${PORT}"
     printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  %-14s\n" "Vanilla" "Vanilla" "Sass" "TypeScript" ":${PORT}"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  %-14s\n" "Vue 3" "Vue 3" "Sass" "TypeScript" ":${PORT}"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -67,111 +69,129 @@ print_usage() {
 parse_args() {
     for arg in "$@"; do
         case "$arg" in
-            --vanilla) USE_NEXTJS=false ;;
-            --nextjs)  USE_NEXTJS=true ;;
+            --vanilla) USE_VUE=false ;;
+            --vue)     USE_VUE=true ;;
         esac
     done
 }
 
 # Check dependencies
-check_dependencies() {
-    if [ "$USE_NEXTJS" = true ]; then
-        if [ -d "$NEXTJS_DIR/node_modules" ]; then
-            return 0
-        fi
-        log_info "Installing Next.js dependencies..."
-        cd "$NEXTJS_DIR"
-        npm install
-    else
-        if [ -d "$VANILLA_DIR/src_static" ] && [ -d "$PROJECT_DIR/node_modules" ]; then
-            return 0
-        fi
-        log_info "Installing Vanilla dependencies..."
-        cd "$PROJECT_DIR"
-        npm install
+check_dependencies_vue() {
+    if [ -d "$VUE_DIR/node_modules" ]; then
+        return 0
     fi
+    log_info "Installing Vue 3 dependencies..."
+    cd "$VUE_DIR"
+    npm install
+}
+
+check_dependencies_vanilla() {
+    if [ -d "$PROJECT_DIR/node_modules" ]; then
+        return 0
+    fi
+    log_info "Installing Vanilla dependencies..."
+    cd "$PROJECT_DIR"
+    npm install
 }
 
 # Build action
 build() {
-    if [ "$USE_NEXTJS" = true ]; then
-        build_nextjs
+    if [ "$USE_VUE" = true ]; then
+        build_vue
     else
         build_vanilla
     fi
-}
 
-# Build Next.js version
-build_nextjs() {
-    log_info "Building ${PROJECT_NAME} (Next.js)..."
-    check_dependencies
-    cd "$NEXTJS_DIR"
-    npm run build
-
-    # Copy output to dist
+    # Copy chosen build to official dist/
     mkdir -p "$DIST_DIR"
     rm -rf "$DIST_DIR"/*
-    cp -r "$NEXTJS_DIR/out"/* "$DIST_DIR/"
+    if [ "$USE_VUE" = true ]; then
+        cp -r "$DIST_VUE"/* "$DIST_DIR/"
+        log_success "Copied Vue 3 build → $DIST_DIR"
+    else
+        cp -r "$DIST_VANILLA"/* "$DIST_DIR/"
+        log_success "Copied Vanilla build → $DIST_DIR"
+    fi
+}
 
-    log_success "Next.js build completed → $DIST_DIR"
+# Build Vue 3 version
+build_vue() {
+    log_info "Building ${PROJECT_NAME} (Vue 3)..."
+    check_dependencies_vue
+    cd "$VUE_DIR"
+    npm run build
+
+    # Copy public assets
+    mkdir -p "$DIST_VUE"
+    cp "$PROJECT_DIR/public"/*.png "$DIST_VUE/" 2>/dev/null || true
+    cp "$PROJECT_DIR/public"/*.jpg "$DIST_VUE/" 2>/dev/null || true
+    cp "$PROJECT_DIR/public"/matomo.js "$DIST_VUE/" 2>/dev/null || true
+
+    log_success "Vue 3 single-file build → $DIST_VUE"
 }
 
 # Build Vanilla version
 build_vanilla() {
     log_info "Building ${PROJECT_NAME} (Vanilla)..."
 
-    if [ -f "$VANILLA_DIR/1.ops/build.sh" ]; then
-        cd "$VANILLA_DIR"
-        sh 1.ops/build.sh build
+    # Ensure dependencies are installed
+    check_dependencies_vanilla
 
-        # Copy output to main dist
-        mkdir -p "$DIST_DIR"
-        rm -rf "$DIST_DIR"/*
-        cp -r "$VANILLA_DIR/dist"/* "$DIST_DIR/"
+    # Prepare dist directory
+    mkdir -p "$DIST_VANILLA"
+    rm -rf "$DIST_VANILLA"/*
 
-        log_success "Vanilla build completed → $DIST_DIR"
+    # Build CSS (Sass)
+    if [ -f "$VANILLA_DIR/scss/main.scss" ]; then
+        log_info "Compiling Sass..."
+        npx sass "$VANILLA_DIR/scss/main.scss" "$DIST_VANILLA/styles.css" --style=compressed --no-source-map
     else
-        log_error "Vanilla build script not found"
-        return 1
+        log_warning "Sass entry point not found: $VANILLA_DIR/scss/main.scss"
     fi
+
+    # Build JS (TypeScript -> esbuild)
+    if [ -f "$VANILLA_DIR/typescript/main.ts" ]; then
+        log_info "Bundling TypeScript..."
+        npx esbuild "$VANILLA_DIR/typescript/main.ts" --bundle --outfile="$DIST_VANILLA/script.js" --minify --target=es2015
+    else
+        log_warning "TypeScript entry point not found: $VANILLA_DIR/typescript/main.ts"
+    fi
+
+    # Copy Static Assets
+    log_info "Copying assets..."
+    cp "$VANILLA_DIR"/*.html "$DIST_VANILLA/" 2>/dev/null || true
+    
+    if [ -d "$VANILLA_DIR/public" ]; then
+        cp -r "$VANILLA_DIR/public" "$DIST_VANILLA/"
+    fi
+
+    log_success "Vanilla build completed → $DIST_VANILLA"
 }
 
 # Dev action
 dev() {
-    if [ "$USE_NEXTJS" = true ]; then
-        dev_nextjs
+    if [ "$USE_VUE" = true ]; then
+        dev_vue
     else
         dev_vanilla
     fi
 }
 
-# Dev Next.js version
-dev_nextjs() {
-    check_dependencies
-    cd "$NEXTJS_DIR"
+# Dev Vue 3 version
+dev_vue() {
+    check_dependencies_vue
+    cd "$VUE_DIR"
 
-    # Start Next.js dev server
-    log_info "Starting Next.js dev server..."
+    log_info "Starting Vue 3 dev server..."
+    npm run dev &
 
-    # Check if port is available
-    if command -v lsof >/dev/null 2>&1; then
-        if lsof -i ":${PORT}" >/dev/null 2>&1; then
-            log_warning "Port ${PORT} is in use. Using Next.js default port 3000"
-            npm run dev &
-        else
-            PORT=$PORT npm run dev &
-        fi
-    else
-        npm run dev &
-    fi
-
-    sleep 3
+    sleep 2
 
     printf "\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
-    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} (Next.js) STARTED${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} (Vue 3) STARTED${NC}\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
-    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:3000/cloud/${NC}\n"
+    printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "\n"
@@ -179,31 +199,41 @@ dev_nextjs() {
 
 # Dev Vanilla version
 dev_vanilla() {
-    if [ -f "$VANILLA_DIR/1.ops/build.sh" ]; then
-        cd "$VANILLA_DIR"
-        sh 1.ops/build.sh dev
-    else
-        log_error "Vanilla build script not found"
-        return 1
+    log_info "Starting Vanilla dev watchers..."
+    check_dependencies_vanilla
+    
+    mkdir -p "$DIST_VANILLA"
+
+    # Sass Watch
+    if [ -f "$VANILLA_DIR/scss/main.scss" ]; then
+        npx sass "$VANILLA_DIR/scss/main.scss" "$DIST_VANILLA/styles.css" --watch --style=expanded --source-map &
     fi
+    
+    # TS Watch
+    if [ -f "$VANILLA_DIR/typescript/main.ts" ]; then
+        npx esbuild "$VANILLA_DIR/typescript/main.ts" --bundle --outfile="$DIST_VANILLA/script.js" --watch --sourcemap &
+    fi
+
+    log_success "Watchers started. Open $DIST_VANILLA/index.html in your browser."
 }
 
 # Clean action
 clean() {
     log_info "Cleaning build artifacts..."
 
-    # Clean Next.js
-    rm -rf "$NEXTJS_DIR/.next" 2>/dev/null || true
-    rm -rf "$NEXTJS_DIR/out" 2>/dev/null || true
+    # Clean Vue 3
+    rm -rf "$VUE_DIR/node_modules/.vite" 2>/dev/null || true
+    rm -rf "$DIST_VUE"/* 2>/dev/null || true
 
     # Clean Vanilla
     if [ -f "$VANILLA_DIR/1.ops/build.sh" ]; then
         cd "$VANILLA_DIR"
         sh 1.ops/build.sh clean 2>/dev/null || true
     fi
+    rm -rf "$DIST_VANILLA"/* 2>/dev/null || true
 
-    # Clean main dist
-    rm -rf "$DIST_DIR" 2>/dev/null || true
+    # Clean official dist
+    rm -rf "$DIST_DIR"/* 2>/dev/null || true
 
     log_success "Clean completed"
 }

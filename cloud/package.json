@@ -5,14 +5,14 @@
   "main": "dist/index.html",
   "scripts": {
     "build": "npm run build:css && npm run build:js",
-    "build:css": "sass src_static/scss/main.scss dist/styles.css --style=compressed --no-source-map",
-    "build:js": "tsc && esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --minify --target=es2015",
+    "build:css": "sass src_vanilla/src_static/scss/main.scss dist_vanilla/styles.css --style=compressed --no-source-map",
+    "build:js": "tsc && esbuild src_vanilla/src_static/typescript/main.ts --bundle --outfile=dist_vanilla/script.js --minify --target=es2015",
     "dev": "npm run dev:css & npm run dev:js",
-    "dev:css": "sass src_static/scss/main.scss dist/styles.css --watch --style=expanded --source-map",
-    "dev:js": "tsc --watch & esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch --sourcemap",
-    "clean": "rm -rf dist/*.css dist/*.js dist/*.map",
-    "lint": "eslint src_static/typescript/**/*.ts",
-    "format": "prettier --write \"src_static/**/*.{ts,scss}\""
+    "dev:css": "sass src_vanilla/src_static/scss/main.scss dist_vanilla/styles.css --watch --style=expanded --source-map",
+    "dev:js": "tsc --watch & esbuild src_vanilla/src_static/typescript/main.ts --bundle --outfile=dist_vanilla/script.js --watch --sourcemap",
+    "clean": "rm -rf dist_vanilla/*.css dist_vanilla/*.js dist_vanilla/*.map",
+    "lint": "eslint src_vanilla/src_static/typescript/**/*.ts",
+    "format": "prettier --write \"src_vanilla/src_static/**/*.{ts,scss}\""
   },
   "keywords": [
     "cloud",

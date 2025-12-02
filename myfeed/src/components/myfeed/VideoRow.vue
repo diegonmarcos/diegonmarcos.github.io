@@ -36,7 +36,10 @@ const timeAgo = computed(() => {
 
 <template>
   <div class="row">
-    <Play class="row__icon icon icon--video" />
+    <div v-if="video.thumbnail" class="row__thumbnail">
+      <img :src="video.thumbnail" :alt="video.title" loading="lazy" />
+    </div>
+    <Play v-else class="row__icon icon icon--video" />
     <div class="row__content">
       <div class="row__title">
         <a :href="video.url" target="_blank" rel="noopener">{{ video.title }}</a>
@@ -55,3 +58,20 @@ const timeAgo = computed(() => {
     </a>
   </div>
 </template>
+
+<style scoped>
+.row__thumbnail {
+  flex-shrink: 0;
+  width: 64px;
+  height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-elevated, #21262d);
+}
+
+.row__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

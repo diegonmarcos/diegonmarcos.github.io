@@ -187,6 +187,7 @@ declare global {
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
   const useGeolocation: typeof import('@vueuse/core')['useGeolocation']
+  const useGitHubFeed: typeof import('./composables/useGitHubFeed')['useGitHubFeed']
   const useId: typeof import('vue')['useId']
   const useIdle: typeof import('@vueuse/core')['useIdle']
   const useImage: typeof import('@vueuse/core')['useImage']
@@ -233,6 +234,7 @@ declare global {
   const usePrevious: typeof import('@vueuse/core')['usePrevious']
   const useQuery: typeof import('@tanstack/vue-query')['useQuery']
   const useQueryClient: typeof import('@tanstack/vue-query')['useQueryClient']
+  const useRSSFeed: typeof import('./composables/useRSSFeed')['useRSSFeed']
   const useRafFn: typeof import('@vueuse/core')['useRafFn']
   const useRefHistory: typeof import('@vueuse/core')['useRefHistory']
   const useResizeObserver: typeof import('@vueuse/core')['useResizeObserver']
@@ -499,6 +501,7 @@ declare module 'vue' {
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
     readonly useGeolocation: UnwrapRef<typeof import('@vueuse/core')['useGeolocation']>
+    readonly useGitHubFeed: UnwrapRef<typeof import('./composables/useGitHubFeed')['useGitHubFeed']>
     readonly useId: UnwrapRef<typeof import('vue')['useId']>
     readonly useIdle: UnwrapRef<typeof import('@vueuse/core')['useIdle']>
     readonly useImage: UnwrapRef<typeof import('@vueuse/core')['useImage']>
@@ -545,6 +548,7 @@ declare module 'vue' {
     readonly usePrevious: UnwrapRef<typeof import('@vueuse/core')['usePrevious']>
     readonly useQuery: UnwrapRef<typeof import('@tanstack/vue-query')['useQuery']>
     readonly useQueryClient: UnwrapRef<typeof import('@tanstack/vue-query')['useQueryClient']>
+    readonly useRSSFeed: UnwrapRef<typeof import('./composables/useRSSFeed')['useRSSFeed']>
     readonly useRafFn: UnwrapRef<typeof import('@vueuse/core')['useRafFn']>
     readonly useRefHistory: UnwrapRef<typeof import('@vueuse/core')['useRefHistory']>
     readonly useResizeObserver: UnwrapRef<typeof import('@vueuse/core')['useResizeObserver']>

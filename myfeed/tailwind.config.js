@@ -8,147 +8,85 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Apple Glassy Pixel Art Palette
-        obsidian: {
-          950: '#0a0a0f',
-          900: '#1a1a2e',
-          800: '#2d2b4e',
-          700: '#3f3a6e',
-          600: '#5c52bf',
-          500: '#7b6fd4',
-          400: '#9b8ee8',
-          300: '#c4b8f5',
-          200: '#e0d8fa',
-          100: '#f0eafd',
+        // Midnight Terminal Palette
+        bg: {
+          base: '#0d1117',
+          surface: '#161b22',
+          elevated: '#21262d',
+          hover: '#30363d',
         },
-        violet: {
-          accent: '#8b5cf6',
-          glow: '#a78bfa',
+        text: {
+          primary: '#e6edf3',
+          secondary: '#8b949e',
+          tertiary: '#6e7681',
+          link: '#58a6ff',
         },
-        // Apple Colors
-        apple: {
-          blue: '#007aff',
-          green: '#34c759',
-          pink: '#ff2d55',
-          orange: '#ff9500',
-          purple: '#af52de',
+        border: {
+          default: '#30363d',
+          muted: '#21262d',
         },
-        // Pixel Art Neon
-        pixel: {
-          cyan: '#00d4ff',
-          magenta: '#ff00ff',
-          yellow: '#ffff00',
-          lime: '#00ff88',
+        accent: {
+          blue: '#58a6ff',
+          green: '#3fb950',
+          orange: '#d29922',
+          red: '#f85149',
+          purple: '#a371f7',
         },
-        amethyst: {
-          glow: '#a78bfa',
-        },
-        lavender: {
-          soft: '#c4b5fd',
-        },
-        // Grays with purple tint
+        // Keep some utility colors
         gray: {
-          950: '#0a0a10',
-          900: '#1c1c24',
-          800: '#2c2c3a',
-          700: '#3c3c50',
-          600: '#5c5c70',
-          500: '#8c8c9a',
-          400: '#acacb8',
-          300: '#c8c8d0',
-          200: '#e4e4e8',
-          100: '#f4f4f6',
+          950: '#0d1117',
+          900: '#161b22',
+          800: '#21262d',
+          700: '#30363d',
+          600: '#484f58',
+          500: '#6e7681',
+          400: '#8b949e',
+          300: '#b1bac4',
+          200: '#c9d1d9',
+          100: '#e6edf3',
         },
       },
       fontFamily: {
+        mono: [
+          'JetBrains Mono',
+          'SF Mono',
+          'Fira Code',
+          'Consolas',
+          'Monaco',
+          'monospace',
+        ],
         sans: [
           '-apple-system',
           'BlinkMacSystemFont',
-          'SF Pro Display',
           'Segoe UI',
-          'Roboto',
-          'Helvetica Neue',
+          'Noto Sans',
+          'Helvetica',
           'Arial',
           'sans-serif',
         ],
-        serif: [
-          'Charter',
-          'Georgia',
-          'Iowan Old Style',
-          'serif',
-        ],
-        mono: [
-          'SF Mono',
-          'Monaco',
-          'Cascadia Code',
-          'Consolas',
-          'monospace',
-        ],
-        pixel: [
-          'Press Start 2P',
-          'VT323',
-          'monospace',
-        ],
-        'pixel-body': [
-          'VT323',
-          'Courier New',
-          'monospace',
-        ],
       },
-      backdropBlur: {
-        xs: '2px',
-        '3xl': '40px',
+      fontSize: {
+        'xxs': ['0.6875rem', { lineHeight: '1rem' }],     // 11px
+        'xs': ['0.75rem', { lineHeight: '1.125rem' }],    // 12px
+        'sm': ['0.8125rem', { lineHeight: '1.25rem' }],   // 13px
+        'base': ['0.875rem', { lineHeight: '1.375rem' }], // 14px
+        'md': ['1rem', { lineHeight: '1.5rem' }],         // 16px
       },
-      boxShadow: {
-        'glass': '0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-        'glass-lg': '0 12px 40px rgba(0, 0, 0, 0.3)',
-        'glass-strong': '0 16px 48px rgba(0, 0, 0, 0.35), 0 0 60px rgba(139, 92, 246, 0.15)',
-        'glow-purple': '0 0 20px rgba(139, 92, 246, 0.4), 0 0 40px rgba(139, 92, 246, 0.2)',
-        'glow-cyan': '0 0 20px rgba(0, 212, 255, 0.4), 0 0 40px rgba(0, 212, 255, 0.2)',
-        'glow-mixed': '0 0 20px rgba(139, 92, 246, 0.3), 0 0 40px rgba(0, 212, 255, 0.15)',
-        'pixel': '0 0 0 2px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.3)',
-        'pixel-hover': '0 0 0 2px rgba(139, 92, 246, 0.6), 0 0 40px rgba(139, 92, 246, 0.4)',
-      },
-      animation: {
-        'shimmer': 'shimmer 2s linear infinite',
-        'pixel-pulse': 'pixel-pulse 2s ease-in-out infinite',
-        'glow': 'glow 2s ease-in-out infinite alternate',
-        'float': 'float 3s ease-in-out infinite',
-      },
-      keyframes: {
-        shimmer: {
-          '0%': { backgroundPosition: '-1000px 0' },
-          '100%': { backgroundPosition: '1000px 0' },
-        },
-        'pixel-pulse': {
-          '0%, 100%': {
-            boxShadow: '0 0 20px rgba(139, 92, 246, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.1)',
-          },
-          '50%': {
-            boxShadow: '0 0 30px rgba(139, 92, 246, 0.6), 0 0 60px rgba(0, 212, 255, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2)',
-          },
-        },
-        glow: {
-          '0%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' },
-          '100%': { boxShadow: '0 0 40px rgba(139, 92, 246, 0.5), 0 0 60px rgba(0, 212, 255, 0.2)' },
-        },
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-5px)' },
-        },
+      spacing: {
+        '0.5': '0.125rem',
+        '1.5': '0.375rem',
+        '2.5': '0.625rem',
       },
       borderRadius: {
-        'pixel': '4px',
-        'pixel-lg': '8px',
+        'sm': '0.25rem',
+        'DEFAULT': '0.375rem',
+        'md': '0.5rem',
       },
-      backgroundImage: {
-        'pixel-gradient': 'linear-gradient(135deg, rgba(139, 92, 246, 0.3) 0%, rgba(0, 212, 255, 0.2) 100%)',
-        'apple-gradient': 'linear-gradient(135deg, #8b5cf6 0%, #007aff 50%, #00d4ff 100%)',
-        'glass-gradient': 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+      boxShadow: {
+        'subtle': '0 1px 2px rgba(0, 0, 0, 0.3)',
+        'card': '0 1px 3px rgba(0, 0, 0, 0.4)',
       },
     },
   },
-  plugins: [
-    require('tailwindcss-animate'),
-  ],
+  plugins: [],
 }

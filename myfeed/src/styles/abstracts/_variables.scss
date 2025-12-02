@@ -1,74 +1,60 @@
 // ============================================
-// MYFEED VARIABLES
+// MYFEED VARIABLES - Terminal Data Dashboard
 // ============================================
-// Apple Glassy Pixel Art Color Palette
+// Midnight Terminal Color Palette
 
-// Primary Colors - Apple-inspired with pixel art influence
-$obsidian-950: #0a0a0f;    // Deep space black
-$obsidian-900: #1a1a2e;    // Dark purple-black
-$obsidian-800: #2d2b4e;    // Rich purple
-$obsidian-700: #3f3a6e;    // Medium purple
-$obsidian-600: #5c52bf;    // Vibrant purple
-$obsidian-500: #7b6fd4;    // Soft purple
-$obsidian-400: #9b8ee8;    // Light purple
-$obsidian-300: #c4b8f5;    // Pastel purple
-$obsidian-200: #e0d8fa;    // Pale purple
-$obsidian-100: #f0eafd;    // Near white
+// Background layers
+$bg-base: #0d1117;
+$bg-surface: #161b22;
+$bg-elevated: #21262d;
+$bg-hover: #30363d;
 
-// Apple Accent Colors
-$violet-accent: #8b5cf6;   // Main accent (Apple purple)
-$violet-glow: #a78bfa;     // Glow effect
-$apple-blue: #007aff;      // Apple blue
-$apple-green: #34c759;     // Apple green
-$apple-pink: #ff2d55;      // Apple pink
-$apple-orange: #ff9500;    // Apple orange
+// Text hierarchy
+$text-primary: #e6edf3;
+$text-secondary: #8b949e;
+$text-tertiary: #6e7681;
+$text-link: #58a6ff;
 
-// Pixel Art Neon Colors
-$pixel-cyan: #00d4ff;
-$pixel-magenta: #ff00ff;
-$pixel-yellow: #ffff00;
-$pixel-lime: #00ff88;
+// Accent colors (subtle)
+$accent-blue: #58a6ff;
+$accent-green: #3fb950;
+$accent-orange: #d29922;
+$accent-red: #f85149;
+$accent-purple: #a371f7;
 
-// Grays with purple tint (Apple style)
-$gray-950: #0a0a10;
-$gray-900: #1c1c24;
-$gray-800: #2c2c3a;
-$gray-700: #3c3c50;
-$gray-600: #5c5c70;
-$gray-500: #8c8c9a;
-$gray-400: #acacb8;
-$gray-300: #c8c8d0;
-$gray-200: #e4e4e8;
-$gray-100: #f4f4f6;
+// Borders
+$border-default: #30363d;
+$border-muted: #21262d;
 
-// Glass Morphism (Apple style)
-$glass-bg: rgba(30, 30, 46, 0.65);
-$glass-bg-strong: rgba(20, 20, 36, 0.85);
-$glass-border: rgba(255, 255, 255, 0.18);
-$glass-border-strong: rgba(255, 255, 255, 0.25);
-$glass-blur: 24px;
-$glass-blur-strong: 40px;
+// Grays
+$gray-950: #0d1117;
+$gray-900: #161b22;
+$gray-800: #21262d;
+$gray-700: #30363d;
+$gray-600: #484f58;
+$gray-500: #6e7681;
+$gray-400: #8b949e;
+$gray-300: #b1bac4;
+$gray-200: #c9d1d9;
+$gray-100: #e6edf3;
 
-// Pixel Art Glass
-$pixel-glass-bg: rgba(26, 26, 46, 0.7);
-$pixel-glass-border: rgba(139, 92, 246, 0.4);
-$pixel-glass-glow: rgba(139, 92, 246, 0.3);
+// Typography
+$font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+$font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', sans-serif;
+
+// Font sizes (compact)
+$text-xxs: 0.6875rem;  // 11px
+$text-xs: 0.75rem;     // 12px
+$text-sm: 0.8125rem;   // 13px
+$text-base: 0.875rem;  // 14px
+$text-md: 1rem;        // 16px
 
 // Spacing
-$container-max-width: 1400px;
-$card-gap: 20px;
+$container-max-width: 1200px;
+$row-padding: 0.5rem 0.75rem;
+$section-gap: 0.5rem;
 
 // Transitions
 $ease-smooth: cubic-bezier(0.4, 0.0, 0.2, 1);
-$ease-apple: cubic-bezier(0.25, 0.1, 0.25, 1);
+$duration-fast: 150ms;
 $duration-normal: 200ms;
-$duration-slow: 300ms;
-
-// Pixel Art Specific
-$pixel-border-width: 2px;
-$pixel-corner-size: 4px;
-
-// Typography - Pixel Art Fonts
-$font-pixel: 'Press Start 2P', 'VT323', monospace;
-$font-pixel-body: 'VT323', 'Courier New', monospace;
-$font-system: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;

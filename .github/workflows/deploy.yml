@@ -419,14 +419,14 @@ jobs:
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
           fi
 
-          # Copy MyMaps build (if out exists - Next.js static export)
-          if [ -d "mymaps/out" ]; then
+          # Copy MyMaps build (if dist exists - Next.js static export with custom distDir)
+          if [ -d "mymaps/dist" ]; then
             echo "📦 Copying MyMaps build..."
             mkdir -p _site/mymaps
-            cp -rL mymaps/out/* _site/mymaps/ 2>/dev/null || cp -r mymaps/out/* _site/mymaps/
+            cp -rL mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r mymaps/dist/* _site/mymaps/
             echo "✅ MyMaps build copied to _site/mymaps/"
           else
-            echo "⏭️  Skipping MyMaps copy (no out directory found)"
+            echo "⏭️  Skipping MyMaps copy (no dist directory found)"
           fi
 
           # Copy MyProfile build (if dist exists - Nuxt static export)

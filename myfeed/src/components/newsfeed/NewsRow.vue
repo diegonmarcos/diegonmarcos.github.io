@@ -11,6 +11,7 @@ interface NewsItem {
   url: string
   publishedAt: string
   category?: string
+  thumbnail?: string
 }
 
 interface Props {
@@ -40,7 +41,10 @@ const timeAgo = computed(() => {
     rel="noopener"
     class="row"
   >
-    <Newspaper class="row__icon icon icon--news" />
+    <div v-if="item.thumbnail" class="row__thumbnail">
+      <img :src="item.thumbnail" :alt="item.title" loading="lazy" />
+    </div>
+    <Newspaper v-else class="row__icon icon icon--news" />
     <div class="row__content">
       <div class="row__title">{{ item.title }}</div>
       <div v-if="item.description" class="row__description">
@@ -63,6 +67,21 @@ const timeAgo = computed(() => {
 
 .row:hover {
   text-decoration: none;
+}
+
+.row__thumbnail {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--bg-elevated, #21262d);
+}
+
+.row__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .row__title {

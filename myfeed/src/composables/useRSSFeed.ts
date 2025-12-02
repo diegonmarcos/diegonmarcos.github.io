@@ -9,6 +9,7 @@ export interface NewsItem {
   url: string
   publishedAt: string
   category?: string
+  thumbnail?: string
 }
 
 // CORS proxies for fetching RSS feeds
@@ -58,6 +59,10 @@ function parseRSSItem(item: Element, source: string): NewsItem {
   const sourceMatch = title.match(/ - ([^-]+)$/)
   const itemSource = sourceMatch ? sourceMatch[1] : source
 
+  // Extract thumbnail from description HTML (Google News includes images)
+  const imgMatch = description.match(/<img[^>]+src=["']([^"']+)["']/)
+  const thumbnail = imgMatch ? imgMatch[1] : undefined
+
   // Clean description (remove HTML)
   const cleanDescription = description
     .replace(/<[^>]+>/g, '')
@@ -75,6 +80,7 @@ function parseRSSItem(item: Element, source: string): NewsItem {
     source: itemSource,
     url: link,
     publishedAt: pubDate,
+    thumbnail,
   }
 }
 

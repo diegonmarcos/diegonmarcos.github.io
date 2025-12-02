@@ -23,182 +23,156 @@ jobs:
         uses: tj-actions/changed-files@v41
 
       # ============================================
-      # SASS COMPILATION (Conditional)
+      # SETUP NODE.JS
       # ============================================
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
-          cache-dependency-path: |
-            landpage/src_static/scss/package-lock.json
-            cv_web/src_static/scss/package-lock.json
-            landpage/src_static/typescript/package-lock.json
 
-      - name: 🎨 Build CSS from Sass (Landpage)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'landpage/src_static/scss/')
+      # ============================================
+      # PROJECT BUILDS (All use build.sh)
+      # ============================================
+      - name: 🔨 Build Landpage
+        id: build-landpage
+        if: contains(steps.changed-files.outputs.all_changed_files, 'landpage/')
+        continue-on-error: true
         run: |
-          echo "📁 Building Landpage Sass..."
-          cd landpage/src_static/scss
-          npm install
-          npm run sass:build
-          cd ../../..
-          echo "✅ Landpage style.css created"
+          echo "🔨 Building Landpage..."
+          cd landpage/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ Landpage build complete"
 
-      - name: 🎨 Build CSS from Sass (cv_web)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'cv_web/src_static/scss/')
+      - name: 🔨 Build CV Web
+        id: build-cv-web
+        if: contains(steps.changed-files.outputs.all_changed_files, 'cv_web/')
+        continue-on-error: true
         run: |
-          echo "📁 Building cv_web Sass..."
-          cd cv_web/src_static/scss
-          npm install
-          npm run sass:build
-          cd ../../..
-          echo "✅ cv_web/style.css created"
+          echo "🔨 Building CV Web..."
+          cd cv_web/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ CV Web build complete"
 
-      # ============================================
-      # TYPESCRIPT COMPILATION (Conditional)
-      # ============================================
-      - name: 📜 Build JS from TypeScript (Landpage)
-        if: steps.changed-files.outputs.any_changed && contains(steps.changed-files.outputs.all_changed_files, 'landpage/src_static/typescript/')
-        run: |
-          echo "📜 Building Landpage TypeScript..."
-          cd landpage/src_static/typescript
-          npm install
-          npm run ts:build
-          cd ../../..
-          echo "✅ Landpage script.js created"
-
-      # ============================================
-      # MYFEED BUILD (Vue 3 + Vite - Conditional)
-      # ============================================
-      - name: 🔨 Build MyFeed (Vue 3 + Vite)
+      - name: 🔨 Build MyFeed
         id: build-myfeed
         if: contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
         continue-on-error: true
         run: |
-          echo "🔨 Building MyFeed Vue application..."
-          cd myfeed
-          npm install
-          npm run build
-          echo "✅ MyFeed Vue build complete"
+          echo "🔨 Building MyFeed..."
+          cd myfeed/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ MyFeed build complete"
 
-      - name: ♻️ Cache MyGames Build
-        id: cache-mygames
-        uses: actions/cache@v4
-        with:
-          path: mygames/dist
-          key: ${{ runner.os }}-mygames-${{ hashFiles('mygames/src/**') }}
-
-      - name: 🔨 Build MyGames (SvelteKit)
+      - name: 🔨 Build MyGames
         id: build-mygames
         if: contains(steps.changed-files.outputs.all_changed_files, 'mygames/')
         continue-on-error: true
         run: |
-          echo "🔨 Building MyGames SvelteKit project..."
+          echo "🔨 Building MyGames..."
           cd mygames/1.ops
           bash build.sh build
           cd ../..
           echo "✅ MyGames build complete"
 
-      - name: 🔨 Build Nexus (Vue 3 + Tailwind)
+      - name: 🔨 Build Nexus
         id: build-nexus
         if: contains(steps.changed-files.outputs.all_changed_files, 'nexus/')
         continue-on-error: true
         run: |
-          echo "🔨 Building Nexus Holdings application..."
-          cd nexus
-          npm install
-          npm run build
-          cd ..
+          echo "🔨 Building Nexus..."
+          cd nexus/1.ops
+          bash build.sh build
+          cd ../..
           echo "✅ Nexus build complete"
 
-      - name: 🔨 Build Cloud Dashboard (Sass + TypeScript)
+      - name: 🔨 Build Cloud Dashboard
         id: build-cloud
         if: contains(steps.changed-files.outputs.all_changed_files, 'cloud/')
         continue-on-error: true
         run: |
           echo "🔨 Building Cloud Dashboard..."
-          cd cloud
-          npm install
-          npm run build
-          cd ..
+          cd cloud/1.ops
+          bash build.sh build
+          cd ../..
           echo "✅ Cloud Dashboard build complete"
 
-      - name: 🔨 Build Feed Yourself (Static HTML)
+      - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
         if: contains(steps.changed-files.outputs.all_changed_files, 'feed_yourself/')
         continue-on-error: true
         run: |
-          echo "🔨 Building Feed Yourself application..."
+          echo "🔨 Building Feed Yourself..."
           cd feed_yourself/1.ops
           bash build.sh build
           cd ../..
           echo "✅ Feed Yourself build complete"
 
-      - name: 🔨 Build Others Index (Python)
+      - name: 🔨 Build Others
+        id: build-others
         if: contains(steps.changed-files.outputs.all_changed_files, 'others/')
+        continue-on-error: true
         run: |
-          echo "🔨 Building Others index page..."
-          cd others
-          python3 build_index.py
-          cd ..
-          echo "✅ Others index.html generated"
+          echo "🔨 Building Others..."
+          cd others/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ Others build complete"
 
-      - name: 🔨 Build Health Tracker (Static HTML)
+      - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: contains(steps.changed-files.outputs.all_changed_files, 'health_tracker/')
         continue-on-error: true
         run: |
-          echo "🔨 Building Health Tracker application..."
+          echo "🔨 Building Health Tracker..."
           cd health_tracker/1.ops
           bash build.sh build
           cd ../..
           echo "✅ Health Tracker build complete"
 
-      - name: 🔨 Build Market Watch (Sass + TypeScript)
+      - name: 🔨 Build Market Watch
         id: build-market-watch
         if: contains(steps.changed-files.outputs.all_changed_files, 'market_watch/')
         continue-on-error: true
         run: |
-          echo "🔨 Building Market Watch Terminal..."
-          cd market_watch
-          npm install
-          npm run build
-          cd ..
+          echo "🔨 Building Market Watch..."
+          cd market_watch/1.ops
+          bash build.sh build
+          cd ../..
           echo "✅ Market Watch build complete"
 
-      - name: 🔨 Build Central Bank Forecasting (Tailwind + TypeScript)
+      - name: 🔨 Build Central Bank
         id: build-central-bank
         if: contains(steps.changed-files.outputs.all_changed_files, 'central_bank/')
         continue-on-error: true
         run: |
-          echo "🔨 Building Central Bank Forecasting..."
+          echo "🔨 Building Central Bank..."
           cd central_bank/1.ops
           bash build.sh build
           cd ../..
-          echo "✅ Central Bank Forecasting build complete"
+          echo "✅ Central Bank build complete"
 
-      - name: 🔨 Build MyMaps (Next.js + Sass)
+      - name: 🔨 Build MyMaps
         id: build-mymaps
         if: contains(steps.changed-files.outputs.all_changed_files, 'mymaps/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyMaps..."
-          cd mymaps
-          npm install
-          npm run build
-          cd ..
+          cd mymaps/1.ops
+          bash build.sh build
+          cd ../..
           echo "✅ MyMaps build complete"
 
-      - name: 🔨 Build MyProfile (Nuxt 4 + Sass)
+      - name: 🔨 Build MyProfile
         id: build-myprofile
         if: contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyProfile..."
-          cd myprofile/src
-          npm install
-          npm run generate
+          cd myprofile/1.ops
+          bash build.sh build
           cd ../..
           echo "✅ MyProfile build complete"
 
@@ -212,25 +186,39 @@ jobs:
           echo "============================================"
           FAILED=""
 
+          if [ "${{ steps.build-landpage.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Landpage"
+            FAILED="$FAILED landpage"
+          elif [ "${{ steps.build-landpage.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Landpage"
+          fi
+
+          if [ "${{ steps.build-cv-web.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: CV Web"
+            FAILED="$FAILED cv_web"
+          elif [ "${{ steps.build-cv-web.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: CV Web"
+          fi
+
           if [ "${{ steps.build-myfeed.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: MyFeed (Vue 3)"
+            echo "❌ FAILED: MyFeed"
             FAILED="$FAILED myfeed"
           elif [ "${{ steps.build-myfeed.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: MyFeed (Vue 3)"
+            echo "✅ SUCCESS: MyFeed"
           fi
 
           if [ "${{ steps.build-mygames.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: MyGames (SvelteKit)"
+            echo "❌ FAILED: MyGames"
             FAILED="$FAILED mygames"
           elif [ "${{ steps.build-mygames.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: MyGames (SvelteKit)"
+            echo "✅ SUCCESS: MyGames"
           fi
 
           if [ "${{ steps.build-nexus.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: Nexus (Vue 3)"
+            echo "❌ FAILED: Nexus"
             FAILED="$FAILED nexus"
           elif [ "${{ steps.build-nexus.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: Nexus (Vue 3)"
+            echo "✅ SUCCESS: Nexus"
           fi
 
           if [ "${{ steps.build-cloud.outcome }}" == "failure" ]; then
@@ -245,6 +233,13 @@ jobs:
             FAILED="$FAILED feed_yourself"
           elif [ "${{ steps.build-feed-yourself.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Feed Yourself"
+          fi
+
+          if [ "${{ steps.build-others.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Others"
+            FAILED="$FAILED others"
+          elif [ "${{ steps.build-others.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Others"
           fi
 
           if [ "${{ steps.build-health-tracker.outcome }}" == "failure" ]; then
@@ -262,10 +257,10 @@ jobs:
           fi
 
           if [ "${{ steps.build-central-bank.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: Central Bank Forecasting"
+            echo "❌ FAILED: Central Bank"
             FAILED="$FAILED central_bank"
           elif [ "${{ steps.build-central-bank.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: Central Bank Forecasting"
+            echo "✅ SUCCESS: Central Bank"
           fi
 
           if [ "${{ steps.build-mymaps.outcome }}" == "failure" ]; then

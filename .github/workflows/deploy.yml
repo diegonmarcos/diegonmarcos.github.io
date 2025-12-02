@@ -95,10 +95,9 @@ jobs:
         continue-on-error: true
         run: |
           echo "🔨 Building MyGames SvelteKit project..."
-          cd mygames
-          npm install
-          NODE_ENV=production npm run build
-          cd ..
+          cd mygames/1.ops
+          bash build.sh build
+          cd ../..
           echo "✅ MyGames build complete"
 
       - name: 🔨 Build Nexus (Vue 3 + Tailwind)

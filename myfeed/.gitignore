@@ -28,9 +28,8 @@ dist-ssr
 2.src/auto-imports.d.ts
 2.src/components.d.ts
 
-# Sass compiled output
-style.css
-style.css.map
+
+
 
 # Environment variables
 .env

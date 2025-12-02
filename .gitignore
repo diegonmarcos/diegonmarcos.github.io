@@ -48,9 +48,5 @@ vendor/
 # Dev mode symlinks (public folder in src_static)
 **/src_static/public
 
-# GTM API - Security (Never commit OAuth credentials!)
-.gtm/credentials.json
-.gtm/token.pickle
-.gtm/gtm_config_created.json
-.gtm/venv/
-.gtm/__pycache__/
+
+

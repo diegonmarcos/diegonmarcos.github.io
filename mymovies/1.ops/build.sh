@@ -79,6 +79,12 @@ build() {
     }
 
     if [ -d "$DIST_DIR" ]; then
+        # Copy matomo.js from public to dist
+        if [ -f "$PROJECT_DIR/public/matomo.js" ]; then
+            cp "$PROJECT_DIR/public/matomo.js" "$DIST_DIR/"
+            log_info "Copied matomo.js to dist"
+        fi
+
         log_success "Build completed → $DIST_DIR"
         log_info "Build size:"
         du -sh "$DIST_DIR"

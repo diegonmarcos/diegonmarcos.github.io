@@ -18,8 +18,10 @@
 | mygames | ✅ | ✅* | ✅ | ✅ | ✅ |
 | mymaps | ✅ | ✅* | ❌ | ❌ | ❌ |
 | myprofile | ✅ | ✅ | ✅ | ❌ | ❌ |
+| mymovies | ✅ | ✅ | ✅ | ❌ | ✅ |
 | nexus | ✅ | ✅ | ✅ | ❌ | ✅ |
 | others | ✅ | ✅ | ✅ | ✅ | ✅ |
+| json_vision | ✅ | ✅ | ✅ | ❌ | ✅ |
 
 **Legend:**
 - ✅ = Implemented
@@ -171,6 +173,15 @@
 | MyProfile | Stats | Stats section interactions |
 | MyProfile | Game Page | Game page load tracking |
 
+### mymovies
+| Event Category | Action | Description |
+|----------------|--------|-------------|
+| MyMovies | Card Click | Movie card interactions |
+| MyMovies | Watch Trailer | Trailer button clicks |
+| MyMovies | Tab Click | Tab navigation (Home, Movies 2025, Series 2025, Staff Picks) |
+| MyMovies | Search | Search functionality usage |
+| MyMovies | Scroll Depth | Scroll percentage tracking |
+
 ### nexus
 | Event Category | Action | Description |
 |----------------|--------|-------------|
@@ -182,6 +193,19 @@
 |----------------|--------|-------------|
 | Others | Card Click | Card interactions |
 | Others | Page | Page load tracking |
+
+### json_vision
+| Event Category | Action | Description |
+|----------------|--------|-------------|
+| JSONVision | Node Click | Graph node interactions |
+| JSONVision | File Open | JSON file open actions |
+| JSONVision | View Mode | View mode switches (graph/tree/split) |
+| JSONVision | Layout Change | Layout toggle (vertical/horizontal) |
+| JSONVision | Save | Manual file saves |
+| JSONVision | Folder | Folder open actions |
+| JSONVision | Editor Action | Format/Minify/Copy actions |
+| JSONVision | Tab | Tab switching |
+| JSONVision | Files Available | Files count on load |
 
 ---
 
@@ -203,8 +227,10 @@
 | mygames | `src/static/mygames_matomo.js` |
 | mymaps | `public/mymaps_matomo.js` |
 | myprofile | `public/matomo.js` |
+| mymovies | `public/matomo.js` |
 | nexus | `public/matomo.js` |
 | others | `public/matomo.js` |
+| json_vision | `public/matomo.js` |
 
 ---
 
@@ -227,7 +253,9 @@ All matomo tracking files are symlinked in:
 ├── mymusic.js -> ../../mymusic/public/matomo.js
 ├── mygames.js -> ../../mygames/src/static/mygames_matomo.js
 ├── mymaps.js -> ../../mymaps/public/mymaps_matomo.js
+├── mymovies.js -> ../../mymovies/public/matomo.js
 ├── myprofile.js -> ../../myprofile/public/matomo.js
 ├── nexus.js -> ../../nexus/public/matomo.js
-└── others.js -> ../../others/public/matomo.js
+├── others.js -> ../../others/public/matomo.js
+└── json_vision.js -> ../../json-vision/public/matomo.js
 ```

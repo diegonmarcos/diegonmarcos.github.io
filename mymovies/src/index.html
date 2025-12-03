@@ -4,11 +4,48 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MyMovies - Movie & TV Browser</title>
-  <meta name="description" content="Browse and watch movies and TV series">
+  <meta name="description" content="Browse and discover movies and TV series with curated lists from IMDb">
   <link rel="icon" type="image/svg+xml" href="/mymovies/favicon.svg">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diegonmarcos.github.io/mymovies/">
+  <meta property="og:title" content="MyMovies - Movie & TV Browser">
+  <meta property="og:description" content="Browse and discover movies and TV series with curated lists from IMDb">
+  <meta property="og:image" content="https://diegonmarcos.github.io/mymovies/social-preview.png">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://diegonmarcos.github.io/mymovies/">
+  <meta name="twitter:title" content="MyMovies - Movie & TV Browser">
+  <meta name="twitter:description" content="Browse and discover movies and TV series with curated lists from IMDb">
+  <meta name="twitter:image" content="https://diegonmarcos.github.io/mymovies/social-preview.png">
+
+  <!-- Matomo Tag Manager (with 3s timeout, disabled on file:// and localhost) -->
+  <script>
+    (function() {
+      // Skip analytics on local development
+      if (window.location.protocol === 'file:' ||
+          window.location.hostname === 'localhost' ||
+          window.location.hostname === '127.0.0.1') {
+        return;
+      }
+      var _mtm = window._mtm = window._mtm || [];
+      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js';
+      var timeout = setTimeout(function() { g.remove(); }, 3000);
+      g.onload = function() { clearTimeout(timeout); };
+      g.onerror = function() { clearTimeout(timeout); g.remove(); };
+      s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Tag Manager -->
 </head>
 <body>
   <div id="app"></div>
   <script type="module" src="./main.ts"></script>
+  <!-- Matomo Page Tracking -->
+  <script src="/mymovies/matomo.js" async></script>
 </body>
 </html>

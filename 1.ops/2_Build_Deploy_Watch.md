@@ -24,7 +24,10 @@ This directory contains the orchestration scripts for building and developing al
 ├── market_watch/1.ops/build.sh # Market Watch (Vanilla + Sass + TypeScript)
 ├── central_bank/1.ops/build.sh # Central Bank (Vanilla + Tailwind + TypeScript)
 ├── mymaps/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
-└── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
+├── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
+├── mymusic/1.ops/build.sh      # MyMusic (Vue 3 + Sass + TypeScript)
+├── mymovies/1.ops/build.sh     # MyMovies (Vue 3 + Sass + TypeScript)
+└── json-vision/1.ops/build.sh  # JSON Vision (Vue 3 + Sass + TypeScript)
 ```
 
 ## Quick Start
@@ -66,6 +69,9 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh build-centralbank
 ./1.ops/build_main.sh build-mymaps
 ./1.ops/build_main.sh build-myprofile
+./1.ops/build_main.sh build-mymusic
+./1.ops/build_main.sh build-mymovies
+./1.ops/build_main.sh build-json-vision
 ```
 
 ### Start Individual Dev Servers
@@ -82,8 +88,11 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh dev-health        # :8009
 ./1.ops/build_main.sh dev-market        # :8010
 ./1.ops/build_main.sh dev-centralbank   # :8011
-./1.ops/build_main.sh dev-mymaps        # :8012
+./1.ops/build_main.sh dev-mymaps        # :8014
 ./1.ops/build_main.sh dev-myprofile     # :8013
+./1.ops/build_main.sh dev-mymusic       # :8016
+./1.ops/build_main.sh dev-mymovies      # :8015
+./1.ops/build_main.sh dev-json-vision   # :8017
 ```
 
 ## Main Orchestrator Commands
@@ -109,6 +118,9 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `build-centralbank` | Build Central Bank (Vanilla + Tailwind + TypeScript) |
 | `build-mymaps` | Build MyMaps (Next.js + Sass + TypeScript) |
 | `build-myprofile` | Build MyProfile (Nuxt 4 + Sass + TypeScript) |
+| `build-mymusic` | Build MyMusic (Vue 3 + Sass + TypeScript) |
+| `build-mymovies` | Build MyMovies (Vue 3 + Sass + TypeScript) |
+| `build-json-vision` | Build JSON Vision (Vue 3 + Sass + TypeScript) |
 
 ### Dev Server Commands
 
@@ -127,8 +139,11 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `dev-health` | Health Tracker - npm-live :8009 |
 | `dev-market` | Market Watch - npm-live :8010 |
 | `dev-centralbank` | Central Bank - npm-live :8011 |
-| `dev-mymaps` | MyMaps - Next.js :8012 |
+| `dev-mymaps` | MyMaps - Next.js :8014 |
 | `dev-myprofile` | MyProfile - Nuxt :8013 |
+| `dev-mymusic` | MyMusic - Vite :8016 |
+| `dev-mymovies` | MyMovies - Vite :8015 |
+| `dev-json-vision` | JSON Vision - Vite :8017 |
 
 ### Utility Commands
 
@@ -161,8 +176,11 @@ The `build_main.sh` script orchestrates all sub-projects:
 | :8009 | Health Tracker | npm-live | - |
 | :8010 | Market Watch | npm-live | Sass, TS |
 | :8011 | Central Bank | npm-live | - |
-| :8012 | MyMaps | Next.js | HMR |
 | :8013 | MyProfile | Nuxt | HMR |
+| :8014 | MyMaps | Next.js | HMR |
+| :8015 | MyMovies | Vite | HMR |
+| :8016 | MyMusic | Vite | HMR |
+| :8017 | JSON Vision | Vite | HMR |
 
 ## TUI Mode
 
@@ -240,6 +258,8 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 | Build MyGames | `./1.ops/build_main.sh build-mygames` |
 | Build MyMaps | `./1.ops/build_main.sh build-mymaps` |
 | Build MyProfile | `./1.ops/build_main.sh build-myprofile` |
+| Build MyMusic | `./1.ops/build_main.sh build-mymusic` |
+| Build MyMovies | `./1.ops/build_main.sh build-mymovies` |
 | Build All | `./1.ops/build_main.sh build` |
 
 ## Testing Locally

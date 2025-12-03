@@ -168,23 +168,14 @@
         <!-- Cards View -->
         <div id="cards-view" class="view-content active">
 
-            <!-- Product & Services Section -->
+            <!-- FRONT SECTION -->
             <section class="section-header">
-                <h2>Product & Services</h2>
+                <h2>Front</h2>
             </section>
 
+            <!-- User Subsection -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User</h3>
             <div class="cards-grid">
-                <div class="card" data-service="analytics">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                        </svg>
-                    </div>
-                    <h3>matomo-app</h3>
-                    <p>analytics.diegonmarcos.com</p>
-                    <div class="card-status online">Online</div>
-                </div>
-
                 <div class="card" data-service="sync">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -193,23 +184,9 @@
                             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
                         </svg>
                     </div>
-                    <h3>Syncthing</h3>
+                    <h3>Sync</h3>
                     <p>sync.diegonmarcos.com</p>
                     <div class="card-status online">Online</div>
-                </div>
-
-                <div class="card" data-service="cloud-dashboard">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
-                        </svg>
-                    </div>
-                    <h3>Cloud_Dashboard</h3>
-                    <p>Python Flask web app</p>
-                    <div class="card-status pending">Dev</div>
                 </div>
 
                 <div class="card" data-service="mail">
@@ -219,11 +196,27 @@
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
                     </div>
-                    <h3>mailserver</h3>
+                    <h3>Mail</h3>
                     <p>mail.diegonmarcos.com</p>
                     <div class="card-status pending">Dev</div>
                 </div>
 
+                <div class="card" data-service="openvpn">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <h3>VPN</h3>
+                    <p>OpenVPN server</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+            </div>
+
+            <!-- Coder Subsection -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Coder</h3>
+            <div class="cards-grid">
                 <div class="card" data-service="terminal">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -231,20 +224,8 @@
                             <line x1="12" y1="19" x2="20" y2="19"/>
                         </svg>
                     </div>
-                    <h3>Web_Shell_Terminal</h3>
-                    <p>Web-based terminal</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-
-                <div class="card" data-service="agentic-dashboard">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                        </svg>
-                    </div>
-                    <h3>Agentic_Dashboard</h3>
-                    <p>n8n + AI agents</p>
+                    <h3>Web IDE</h3>
+                    <p>OS Shell | Flask</p>
                     <div class="card-status pending">Dev</div>
                 </div>
 
@@ -259,28 +240,57 @@
                     <div class="card-status pending">Dev</div>
                 </div>
 
-                <div class="card" data-service="openvpn">
+                <div class="card" data-service="analytics">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                         </svg>
                     </div>
-                    <h3>OpenVPN</h3>
-                    <p>VPN server</p>
+                    <h3>Analytics</h3>
+                    <p>analytics.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+
+            <!-- AI Subsection -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">AI</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="agentic-dashboard">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+                        </svg>
+                    </div>
+                    <h3>AI WebChat</h3>
+                    <p>n8n + AI agents</p>
                     <div class="card-status pending">Dev</div>
+                </div>
+
+                <div class="card" data-service="cloud-dashboard">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                    </div>
+                    <h3>Cloud Dashboard</h3>
+                    <p>cloud.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
                 </div>
             </div>
 
             <hr style="margin: 3rem 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);">
 
-            <!-- Management Section -->
+            <!-- BACK SECTION -->
             <section class="section-header">
-                <h2>Management</h2>
+                <h2>Back</h2>
             </section>
 
-            <!-- Cloud Providers Subsection -->
-            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Cloud Providers</h3>
+            <!-- Root Subsection - Cloud Providers -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Root - Cloud Providers</h3>
             <div class="cards-grid">
                 <div class="card" data-service="vps-oracle">
                     <div class="card-icon">
@@ -324,8 +334,8 @@
                 </div>
             </div>
 
-            <!-- SSH VMs Subsection -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">SSH VMs</h3>
+            <!-- Root Subsection - VMs -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Root - VMs (SSH)</h3>
             <div class="cards-grid">
                 <div class="card" data-service="vm-servicesserver1">
                     <div class="card-icon">
@@ -421,8 +431,8 @@
                 <h2>Infra Services</h2>
             </section>
 
-            <!-- NPMs Subsection -->
-            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">NPMs</h3>
+            <!-- Infra Subsection - Proxies -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Proxies (NPM)</h3>
             <div class="cards-grid">
                 <div class="card" data-service="npm-services">
                     <div class="card-icon">
@@ -475,8 +485,8 @@
                 </div>
             </div>
 
-            <!-- Databases Subsection -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Databases</h3>
+            <!-- Infra Subsection - Databases -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Databases</h3>
             <div class="cards-grid">
                 <div class="card" data-service="matomo-db">
                     <div class="card-icon">
@@ -518,8 +528,8 @@
                 </div>
             </div>
 
-            <!-- Others Subsection -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Others</h3>
+            <!-- Infra Subsection - Infra Services -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Services</h3>
             <div class="cards-grid">
                 <div class="card" data-service="n8n-server-ai">
                     <div class="card-icon">
@@ -528,9 +538,9 @@
                             <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
                         </svg>
                     </div>
-                    <h3>n8n-AI-server</h3>
+                    <h3>n8n (AI)</h3>
                     <p>ai.diegonmarcos.com</p>
-                    <div class="card-status pending">Dev</div>
+                    <div class="card-status pending">Hold</div>
                 </div>
 
                 <div class="card" data-service="flask-server">
@@ -541,9 +551,9 @@
                             <path d="M2 12l10 5 10-5"/>
                         </svg>
                     </div>
-                    <h3>Flask-server</h3>
-                    <p>Python Flask</p>
-                    <div class="card-status pending">Dev</div>
+                    <h3>Flask Server</h3>
+                    <p>Cloud Dashboard API</p>
+                    <div class="card-status online">Online</div>
                 </div>
 
                 <a href="https://linktree.diegonmarcos.com" target="_blank" class="card card-link" data-service="linktree">

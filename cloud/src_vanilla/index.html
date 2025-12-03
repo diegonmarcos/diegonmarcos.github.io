@@ -144,7 +144,7 @@
                             </svg>
                             Status
                         </button>
-                        <a href="dashboard.html" class="view-btn" title="Live API Dashboard">
+                        <a href="https://dashboard.diegonmarcos.com/" class="view-btn" title="Live API Dashboard" target="_blank">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <circle cx="12" cy="12" r="10"/>
                                 <path d="M12 6v6l4 2"/>
@@ -1317,19 +1317,40 @@
                         <table class="resources-table">
                             <thead><tr><th>Status</th><th>Service</th><th>Category</th><th>RAM</th><th>Storage</th><th>Bandwidth</th><th>Notes</th></tr></thead>
                             <tbody>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>Web</td><td>512MB-1GB</td><td>3-15GB</td><td>500MB-2GB/mo</td><td>Analytics</td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM</strong></td><td>Infra</td><td>512MB-1GB</td><td>400MB-2GB</td><td>20-80GB/mo</td><td>Reverse proxy (4x)</td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>Auto</td><td>256-512MB</td><td>500MB-2GB</td><td>1-5GB/mo</td><td>Workflows</td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Syncthing</strong></td><td>Prod</td><td>128-256MB</td><td>5-106GB</td><td>10-50GB/mo</td><td>File sync</td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>Prod</td><td>520MB-1GB</td><td>5-50GB</td><td>1-10GB/mo</td><td>Email stack</td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>Prod</td><td>264-544MB</td><td>11-15GB</td><td>2-10GB/mo</td><td>Git hosting</td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>Infra</td><td>64-128MB</td><td>50-100MB</td><td>5-50GB/mo</td><td>VPN server</td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Flask Server</strong></td><td>Infra</td><td>64-128MB</td><td>50-100MB</td><td>100-500MB/mo</td><td>Dashboard API</td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>Prod</td><td>64-128MB</td><td>50-100MB</td><td>500MB-2GB/mo</td><td>Browser shell</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>Productivity</td><td>520MB-1GB</td><td>5-50GB</td><td>1-10GB/mo</td><td>Email stack</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailserver</td><td></td><td>512MB-1GB</td><td>100-500MB</td><td>1-10GB/mo</td><td>App + config</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mail-db (SQLite)</td><td></td><td>8-32MB</td><td>5-50GB</td><td>-</td><td>Mailboxes + indexes</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM</strong></td><td>Infrastructure</td><td>512MB-1GB</td><td>400MB-2GB</td><td>20-80GB/mo</td><td>Reverse proxy (4x)</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-web</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>Oracle Web Server 1</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-services</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>Oracle Services Server 1</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-arm</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>Oracle ARM (hold)</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ npm-gcloud</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>GCloud (dev)</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>Web</td><td>512MB-1GB</td><td>3-15GB</td><td>500MB-2GB/mo</td><td>Analytics platform</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-app</td><td></td><td>256-512MB</td><td>2-5GB</td><td>500MB-2GB/mo</td><td>PHP FPM Alpine</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-db (MariaDB)</td><td></td><td>256-512MB</td><td>1-10GB</td><td>-</td><td>Grows with analytics data</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>Productivity</td><td>264-544MB</td><td>11-15GB</td><td>2-10GB/mo</td><td>Git hosting</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea</td><td></td><td>256-512MB</td><td>1-5GB</td><td>2-10GB/mo</td><td>Web + Git server</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-db (SQLite)</td><td></td><td>8-32MB</td><td>Variable</td><td>-</td><td>Embedded DB</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-repos-db</td><td></td><td>-</td><td>~10GB</td><td>-</td><td>Git repositories storage</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>Automation</td><td>256-512MB</td><td>500MB-2GB</td><td>1-5GB/mo</td><td>Workflow automation</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n</td><td></td><td>256-512MB</td><td>500MB-2GB</td><td>1-5GB/mo</td><td>Workflows + execution logs</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Sync</strong></td><td>Productivity</td><td>128-256MB</td><td>5.2-106GB</td><td>10-50GB/mo</td><td>File sync</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ syncthing</td><td></td><td>128-256MB</td><td>100-500MB</td><td>10-50GB/mo</td><td>App + config</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>100-500MB</td><td>-</td><td>File metadata index</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-files-db</td><td></td><td>-</td><td>~100GB</td><td>-</td><td>Synced files storage</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-obj-db</td><td></td><td>-</td><td>~5GB</td><td>-</td><td>Object/blob storage</td></tr>
                                 <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Redis</strong></td><td>Cache</td><td>64-256MB</td><td>100MB-1GB</td><td>-</td><td>In-memory store</td></tr>
-                                <tr class="totals-row"><td></td><td><strong>Total ON</strong></td><td></td><td>~1.4-2.8GB</td><td>~9-125GB</td><td>~32-135GB/mo</td><td></td></tr>
-                                <tr class="totals-row"><td></td><td><strong>Total DEV</strong></td><td></td><td>~900MB-1.8GB</td><td>~66-165GB</td><td>~8-72GB/mo</td><td></td></tr>
-                                <tr class="totals-row"><td></td><td><strong>Total HOLD</strong></td><td></td><td>~64-256MB</td><td>~100MB-1GB</td><td>-</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ redis</td><td></td><td>64-256MB</td><td>100MB-1GB</td><td>-</td><td>Session/cache data</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>Infrastructure</td><td>64-128MB</td><td>50-100MB</td><td>5-50GB/mo</td><td>VPN server</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ openvpn</td><td></td><td>64-128MB</td><td>50-100MB</td><td>5-50GB/mo</td><td>Client configs + certs</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Flask Server</strong></td><td>Infrastructure</td><td>64-128MB</td><td>50-100MB</td><td>100-500MB/mo</td><td>Cloud Dashboard API</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ flask-server</td><td></td><td>64-128MB</td><td>50-100MB</td><td>100-500MB/mo</td><td>Lightweight API</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>Productivity</td><td>64-128MB</td><td>50-100MB</td><td>500MB-2GB/mo</td><td>Browser shell</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ wetty/ttyd</td><td></td><td>64-128MB</td><td>50-100MB</td><td>500MB-2GB/mo</td><td>Session-based</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total ON</strong></td><td></td><td>~1.4-2.8GB</td><td>~9-125GB</td><td>~32-135GB/mo</td><td>Active services</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total DEV</strong></td><td></td><td>~900MB-1.8GB</td><td>~66-165GB</td><td>~8-72GB/mo</td><td>In development</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total HOLD</strong></td><td></td><td>~64-256MB</td><td>~100MB-1GB</td><td>-</td><td>On hold</td></tr>
+                                <tr class="totals-row total-final"><td></td><td><strong>TOTAL Non-AI</strong></td><td></td><td>~2.4-4.9GB</td><td>~75-291GB</td><td>~40-207GB/mo</td><td>All Non-AI services</td></tr>
                             </tbody>
                         </table>
                     </div>

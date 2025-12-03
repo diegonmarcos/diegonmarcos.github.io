@@ -421,6 +421,23 @@
       color: var(--accent-blue);
     }
   }
+
+  &.total-final {
+    background: var(--bg-card);
+
+    td {
+      border-top: 2px solid var(--accent-primary);
+      font-size: 0.85rem;
+    }
+
+    [data-theme="blurred"] & {
+      background: rgba(74, 158, 255, 0.1);
+
+      td {
+        border-top-color: var(--accent-blue);
+      }
+    }
+  }
 }
 
 .status-badge {

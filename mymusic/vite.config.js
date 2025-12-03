@@ -4,6 +4,12 @@ import { viteSingleFile } from 'vite-plugin-singlefile';
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue(), viteSingleFile()],
+    root: 'src',
+    publicDir: '../public',
+    build: {
+        outDir: '../dist',
+        emptyOutDir: true,
+    },
     css: {
         preprocessorOptions: {
             scss: {

@@ -21,7 +21,6 @@ const currentView = ref<'list' | 'card'>('card')
 const activeSkin = ref<'classic' | 'modern'>('classic')
 const isPlaying = ref(false)
 const currentTime = ref('00:00')
-const totalTime = ref('03:45')
 const volume = ref(80)
 const balance = ref(0)
 const currentTrack = ref({ name: 'Welcome to MyMusic', artist: 'Your Library' })
@@ -32,19 +31,9 @@ const vizBars = ref(Array(20).fill(0).map(() => Math.random() * 100))
 let vizInterval: number | null = null
 
 // --- Skin Logic ---
-const toggleSkin = () => {
-  activeSkin.value = activeSkin.value === 'classic' ? 'modern' : 'classic'
-  isMenuOpen.value = false
-}
-
 const setSkin = (skin: 'classic' | 'modern') => {
   activeSkin.value = skin
   isMenuOpen.value = false
-}
-
-// --- View Logic ---
-const toggleView = () => {
-  currentView.value = currentView.value === 'list' ? 'card' : 'list'
 }
 
 // --- Playback Simulation ---

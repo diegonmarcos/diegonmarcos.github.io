@@ -133,24 +133,43 @@ h1 {
     opacity: 0.8;
 }
 
-.header-nav {
-    text-align: center;
-    margin-top: 10px;
+// Page Tabs - Navigation between pages
+.page-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.nav-link {
-    display: inline-block;
-    color: $color-accent;
+.page-tab {
+    flex: 1;
+    max-width: 140px;
+    text-align: center;
+    color: $text-muted;
     text-decoration: none;
-    font-size: 0.85rem;
-    padding: 6px 14px;
-    border: 1px solid rgba($color-accent, 0.4);
-    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 10px;
     transition: all 0.2s ease;
+    background: transparent;
 
     &:hover {
-        background: rgba($color-accent, 0.15);
-        border-color: $color-accent;
+        color: $text-main;
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    &.active {
+        background: $color-accent;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($color-accent, 0.4);
     }
 }
 

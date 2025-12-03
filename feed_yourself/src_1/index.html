@@ -3,28 +3,760 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protein Meal Planner</title>
-    <!-- Compiled CSS from Sass -->
-    <link href="css/main.css" rel="stylesheet">
+    <title>Meal Designer - Feed Yourself</title>
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <meta name="description" content="Meal Designer - Plan your protein-optimized meals">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegonmarcos.github.io/feed_yourself/meal_designer.html">
+    <meta property="og:title" content="Meal Designer - Feed Yourself">
+    <meta property="og:description" content="Meal Designer - Plan your protein-optimized meals">
+    <meta property="og:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Meal Designer - Feed Yourself">
+    <meta name="twitter:description" content="Meal Designer - Plan your protein-optimized meals">
+    <meta name="twitter:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <!-- Matomo Tracking -->
     <script src="public/matomo.js"></script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at 50% 0%, #2c3e50, #000000 80%);
+            background-attachment: fixed;
+            color: #f5f5f7;
+            min-height: 100vh;
+            padding: 10px;
+            overflow-x: hidden;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-bottom: 80px;
+        }
+
+        /* Header - Compact */
+        header {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 3px;
+        }
+
+        .app-subtitle {
+            color: #98989d;
+            font-size: 0.75rem;
+            margin-bottom: 8px;
+        }
+
+        /* Page Tabs - Same as Menu Designer */
+        .page-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            margin-top: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-tab {
+            flex: 1;
+            max-width: 140px;
+            text-align: center;
+            color: #98989d;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            background: transparent;
+        }
+
+        .page-tab:hover {
+            color: #f5f5f7;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .page-tab.active {
+            background: #0a84ff;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(10, 132, 255, 0.4);
+        }
+
+        /* Glass Panel - Compact */
+        .glass-panel {
+            background: rgba(28, 28, 30, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 12px;
+            overflow: hidden;
+        }
+
+        /* Tabs Navigation - Compact */
+        .tabs-nav {
+            display: flex;
+            gap: 4px;
+            overflow-x: auto;
+            padding: 3px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            margin-bottom: 12px;
+        }
+
+        .tabs-nav::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            flex: 1;
+            min-width: fit-content;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            color: #98989d;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: #f5f5f7;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.tab-active {
+            background: #0a84ff;
+            color: #fff;
+            box-shadow: 0 3px 10px rgba(10, 132, 255, 0.4);
+        }
+
+        .tab-btn i { font-size: 0.8rem; }
+
+        /* Global Settings - Compact inline */
+        #global-settings {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-group label {
+            color: #98989d;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper input {
+            width: 70px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid hsla(0, 0%, 100%, 0.12);
+            color: #f5f5f7;
+            padding: 6px 8px;
+            padding-right: 24px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #0a84ff;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 6px;
+            color: #98989d;
+            font-size: 0.65rem;
+            pointer-events: none;
+        }
+
+        .result-box {
+            background: rgba(10, 132, 255, 0.15);
+            border: 1px solid rgba(10, 132, 255, 0.3);
+            border-radius: 10px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: auto;
+        }
+
+        .result-box__label {
+            color: #98989d;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+        }
+
+        .result-box__value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #0a84ff;
+        }
+
+        .result-box__unit {
+            color: #98989d;
+            font-size: 0.7rem;
+        }
+
+        .tooltip {
+            position: relative;
+            cursor: help;
+            color: #98989d;
+            font-size: 0.8rem;
+        }
+
+        .tooltip__text {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 8px;
+            background: rgba(20, 20, 22, 0.98);
+            color: #f5f5f7;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            z-index: 9999;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.15);
+            pointer-events: none;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .tooltip:hover .tooltip__text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Ensure thead can show tooltip */
+        .table thead {
+            position: relative;
+            z-index: 10;
+        }
+        .table thead th {
+            position: relative;
+            overflow: visible;
+        }
+        .card--no-padding {
+            overflow: visible;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+        }
+
+        /* Tab Views */
+        .tab-view { display: block; }
+        .tab-view.hidden { display: none; }
+
+        /* Filters - Compact */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .filter-btn {
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid hsla(0, 0%, 100%, 0.12);
+            border-radius: 16px;
+            color: #f5f5f7;
+            font-size: 0.7rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: hsla(0, 0%, 100%, 0.2);
+        }
+
+        .filter-btn.active {
+            background: #0a84ff;
+            border-color: #0a84ff;
+            color: #fff;
+        }
+
+        .filter-btn--inactive {
+            opacity: 0.6;
+        }
+
+        /* Tables - Compact & Data-Dense */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 0 -12px;
+            padding: 0 12px;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+        }
+
+        .table th {
+            text-align: left;
+            color: #98989d;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            padding: 6px 4px;
+            border-bottom: 1px solid hsla(0, 0%, 100%, 0.15);
+            white-space: nowrap;
+        }
+
+        .table th.text-right { text-align: right; }
+
+        .table td {
+            padding: 5px 4px;
+            border-bottom: 1px solid hsla(0, 0%, 100%, 0.04);
+        }
+
+        .table td.text-right { text-align: right; }
+
+        .table td.sticky {
+            position: sticky;
+            left: 0;
+            background: rgba(28, 28, 30, 0.95);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .table__category-row {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .table__category-row td {
+            font-weight: 700;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            padding: 6px 4px;
+        }
+
+        .table__category-row--slate td { color: #64748b; }
+        .table__category-row--green td { color: #30d158; }
+        .table__category-row--yellow td { color: #ff9f0a; }
+        .table__category-row--red td { color: #ff453a; }
+        .table__category-row--purple td { color: #bf5af2; }
+
+        /* Badges - Compact */
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            font-family: "SF Mono", monospace;
+        }
+
+        .badge--green { background: rgba(48, 209, 88, 0.2); color: #30d158; }
+        .badge--orange { background: rgba(255, 159, 10, 0.2); color: #ff9f0a; }
+        .badge--red { background: rgba(255, 69, 58, 0.2); color: #ff453a; }
+        .badge--blue { background: rgba(10, 132, 255, 0.2); color: #0a84ff; }
+
+        /* Bar Graph Cell for Veggie Budget */
+        .bar-cell {
+            position: relative;
+            padding: 0 !important;
+            min-width: 90px;
+            height: 24px;
+        }
+        .bar-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+        .bar-fill--blue { background: linear-gradient(90deg, rgba(10, 132, 255, 0.6), rgba(10, 132, 255, 0.3)); }
+        .bar-fill--green { background: linear-gradient(90deg, rgba(48, 209, 88, 0.6), rgba(48, 209, 88, 0.3)); }
+        .bar-fill--orange { background: linear-gradient(90deg, rgba(255, 159, 10, 0.6), rgba(255, 159, 10, 0.3)); }
+        .bar-fill--red { background: linear-gradient(90deg, rgba(255, 69, 58, 0.6), rgba(255, 69, 58, 0.3)); }
+        .bar-label {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.65rem;
+            font-weight: 600;
+            font-family: "SF Mono", monospace;
+            z-index: 1;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .bar-label--blue { color: #5ac8fa; }
+        .bar-label--green { color: #30d158; }
+        .bar-label--orange { color: #ff9f0a; }
+        .bar-label--red { color: #ff453a; }
+
+        .font-mono { font-family: "SF Mono", monospace; }
+        .text-muted { color: #6b7280; }
+
+        /* Card - Compact */
+        .card {
+            background: rgba(28, 28, 30, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .card--no-padding { padding: 0; }
+
+        .card__header {
+            padding: 10px 12px;
+            border-bottom: 1px solid hsla(0, 0%, 100%, 0.08);
+        }
+
+        .card__header h2 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .card__footer {
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 0.6rem;
+            color: #98989d;
+            border-top: 1px solid hsla(0, 0%, 100%, 0.05);
+        }
+
+        .text-xs { font-size: 0.65rem; }
+
+        /* Dashboard - Compact */
+        .dashboard {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 14px;
+            padding: 10px;
+            margin-bottom: 12px;
+        }
+
+        .dashboard__grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .dashboard__stat {
+            text-align: center;
+            min-width: 60px;
+        }
+
+        .dashboard__stat--bordered {
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 10px;
+            padding: 8px;
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .dashboard__label {
+            display: block;
+            font-size: 0.6rem;
+            color: #98989d;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .dashboard__value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: "SF Mono", monospace;
+        }
+
+        .dashboard__value--blue { color: #0a84ff; }
+        .dashboard__value--yellow { color: #ff9f0a; }
+        .dashboard__value--green { color: #30d158; }
+        .dashboard__value--red { color: #ff453a; }
+
+        .dashboard__inputs {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .dashboard__input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .dashboard__input-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            color: #f5f5f7;
+            padding: 6px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            text-align: center;
+            outline: none;
+        }
+
+        .dashboard__input-group input:focus {
+            border-color: #0a84ff;
+        }
+
+        .dashboard__input-group span {
+            font-size: 0.55rem;
+            color: #98989d;
+            text-align: center;
+        }
+
+        /* Selects - Compact */
+        #protein-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            color: #f5f5f7;
+            padding: 6px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        #protein-select:focus {
+            border-color: #0a84ff;
+        }
+
+        #protein-select option, #protein-select optgroup {
+            background: #1c1c1e;
+            color: #f5f5f7;
+        }
+
+        /* Buttons - Compact */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn--primary {
+            background: #0a84ff;
+            color: #fff;
+        }
+
+        .btn--primary:hover {
+            background: #0077ed;
+            box-shadow: 0 3px 10px rgba(10, 132, 255, 0.4);
+        }
+
+        .mt-2 { margin-top: 6px; }
+
+        /* Input highlight in table - Compact */
+        .side-input {
+            width: 55px;
+            background: rgba(10, 132, 255, 0.1);
+            border: 1px solid rgba(10, 132, 255, 0.25);
+            color: #f5f5f7;
+            padding: 4px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-align: center;
+            outline: none;
+            font-family: "SF Mono", monospace;
+        }
+
+        .side-input:focus {
+            border-color: #0a84ff;
+            background: rgba(10, 132, 255, 0.2);
+        }
+
+        .td--highlight {
+            background: rgba(10, 132, 255, 0.05);
+        }
+
+        /* Menu Tab */
+        .space-y-4 > * + * { margin-top: 16px; }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 15px;
+            color: #98989d;
+        }
+
+        .empty-state i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            opacity: 0.5;
+        }
+
+        .empty-state p {
+            font-size: 0.8rem;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Meal Card - Compact */
+        .meal-card {
+            background: rgba(28, 28, 30, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .meal-card__header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            border-bottom: 1px solid hsla(0, 0%, 100%, 0.08);
+        }
+
+        .meal-card__title {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .meal-card__kcal-badge {
+            background: rgba(10, 132, 255, 0.2);
+            color: #0a84ff;
+            padding: 4px 10px;
+            border-radius: 16px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .meal-card .table tfoot td {
+            font-weight: 700;
+            border-top: 1px solid hsla(0, 0%, 100%, 0.1);
+            padding-top: 8px;
+        }
+
+        .text-orange { color: #ff9f0a; }
+        .text-blue { color: #0a84ff; }
+        .text-green { color: #30d158; }
+        .text-purple { color: #bf5af2; }
+
+        .th--blue { color: #0a84ff !important; }
+        .th--orange { color: #ff9f0a !important; }
+        .th--green { color: #30d158 !important; }
+        .th--highlight { background: rgba(10, 132, 255, 0.08); }
+
+        /* Footer - Compact */
+        .footer-linktree {
+            position: fixed;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .linktree-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            background: rgba(28, 28, 30, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid hsla(0, 0%, 100%, 0.1);
+            border-radius: 50px;
+            color: #f5f5f7;
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .linktree-btn:hover {
+            background: rgba(10, 132, 255, 0.2);
+            border-color: #0a84ff;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <!-- Header -->
-        <header class="header">
-            <div>
-                <h1>Meal Designer</h1>
-                <nav class="header-nav">
-                    <a href="index.html" class="nav-link">Menu Selector</a>
-                    <a href="recipes.html" class="nav-link">Recipes</a>
-                </nav>
-            </div>
+        <header>
+            <h1>Feed Yourself</h1>
+            <div class="app-subtitle">Nutrition Planning Suite</div>
+            <nav class="page-tabs">
+                <a href="index.html" class="page-tab">Menu Designer</a>
+                <a href="meal_designer.html" class="page-tab active">Meal Designer</a>
+                <a href="recipes.html" class="page-tab">Recipes</a>
+            </nav>
         </header>
 
         <!-- Tabs Navigation -->
@@ -36,58 +768,44 @@
                 <i class="fas fa-table"></i>Nutritionals
             </button>
             <button onclick="switchTab('calculator')" id="btn-calculator" class="tab-btn">
-                <i class="fas fa-utensils"></i>Sides Kcal Calculator
+                <i class="fas fa-utensils"></i>Sides Calculator
             </button>
             <button onclick="switchTab('menu')" id="btn-menu" class="tab-btn">
                 <i class="fas fa-receipt"></i>Menu
             </button>
         </div>
 
-        <!-- SHARED GLOBAL SETTINGS -->
-        <div id="global-settings" class="card">
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-3 items-end">
-
-                <!-- Input: Target Protein -->
-                <div class="form-group">
-                    <label>Target Protein / Meal</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="targetProtein" value="35">
-                        <span class="input-suffix">g</span>
-                    </div>
+        <!-- SHARED GLOBAL SETTINGS - Compact inline -->
+        <div id="global-settings" class="glass-panel">
+            <div class="form-group">
+                <label>Protein/Meal</label>
+                <div class="input-wrapper">
+                    <input type="number" id="targetProtein" value="35">
+                    <span class="input-suffix">g</span>
                 </div>
+            </div>
 
-                <!-- Input: Daily Calories -->
-                <div class="form-group">
-                    <label>Daily Calorie Goal</label>
-                    <div class="input-wrapper">
-                        <input type="number" id="dailyCalories" value="2200">
-                        <span class="input-suffix">kcal</span>
-                    </div>
+            <div class="form-group">
+                <label>Daily Kcal</label>
+                <div class="input-wrapper" style="width:100px;">
+                    <input type="number" id="dailyCalories" value="2200" style="width:100px;">
+                    <span class="input-suffix">kcal</span>
                 </div>
+            </div>
 
-                <!-- Result: Max Cals -->
-                <div class="result-box col-span-2 md:col-span-1">
-                    <div class="result-box__content">
-                        <span class="result-box__label">Meal Limit</span>
-                        <div class="flex items-baseline gap-1">
-                            <span id="mealLimitDisplay" class="result-box__value">733</span>
-                            <span class="result-box__unit">kcal</span>
-                        </div>
-                    </div>
-
-                    <!-- Info Icon -->
-                    <div class="tooltip">
-                        <i class="fas fa-info-circle"></i>
-                        <span class="tooltip__text">Calculations assume 3 meals per day.</span>
-                    </div>
+            <div class="result-box">
+                <span class="result-box__label">Meal Limit</span>
+                <span id="mealLimitDisplay" class="result-box__value">733</span>
+                <span class="result-box__unit">kcal</span>
+                <div class="tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip__text">Daily ÷ 3 meals</span>
                 </div>
-
             </div>
         </div>
 
-        <!-- TAB 1: PROTEIN CALCULATOR (Meal Planner) -->
+        <!-- TAB 1: PROTEIN CALCULATOR -->
         <div id="view-planner" class="tab-view">
-            <!-- Filters -->
             <div class="filters" id="categoryFilters">
                 <button onclick="filterTable('all')" class="filter-btn active">All</button>
                 <button onclick="filterTable('Powders')" class="filter-btn filter-btn--inactive">Powders</button>
@@ -96,46 +814,102 @@
                 <button onclick="filterTable('Meat/Fish')" class="filter-btn filter-btn--inactive">Meat/Fish</button>
             </div>
 
-            <!-- Calculator Table -->
-            <div class="card card--no-padding card--rounded-lg">
+            <div class="card card--no-padding">
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                             <tr>
                                 <th class="sticky">Food Source</th>
-                                <th class="text-right">Side Dish Budget</th>
-                                <th class="text-right">Amount Required</th>
-                                <th class="text-right">Total Calories</th>
-                                <th class="text-right hidden md:table-cell">Efficiency</th>
-                                <th class="text-right hidden lg:table-cell">Base Prot/100g</th>
+                                <th class="text-right th--green" style="position:relative;">
+                                    Veggie Budget
+                                    <div class="tooltip" style="display:inline-block;margin-left:4px;vertical-align:middle;">
+                                        <i class="fas fa-info-circle" style="font-size:0.6rem;cursor:help;"></i>
+                                        <span class="tooltip__text" style="width:220px;white-space:normal;text-align:left;font-weight:normal;text-transform:none;">
+                                            Grams of veggies you can add.<br><br>
+                                            <strong>Formula:</strong><br>
+                                            (Side Budget - 15ml oil) ÷ 35kcal/100g<br><br>
+                                            <em style="color:#98989d;">15ml olive oil = 133kcal<br>
+                                            Broccoli avg = 35kcal/100g</em>
+                                        </span>
+                                    </div>
+                                </th>
+                                <th class="text-right">Side Budget</th>
+                                <th class="text-right">Amount</th>
+                                <th class="text-right">Kcal</th>
+                                <th class="text-right">Kcal/g Prot</th>
+                                <th class="text-right">Prot/100g</th>
                             </tr>
                         </thead>
                         <tbody id="tableBody"></tbody>
                     </table>
                 </div>
                 <div class="card__footer">
-                    * Negative Budget = Protein source alone exceeds meal calorie limit.
+                    Veggie Budget = (Side Budget - 133kcal oil) ÷ 35kcal/100g broccoli. Negative = over limit.
+                </div>
+            </div>
+
+            <!-- Custom Food Calculator -->
+            <div class="card" style="margin-top:12px;padding:12px;">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                    <i class="fas fa-plus-circle" style="color:#0a84ff;"></i>
+                    <span style="font-weight:600;font-size:0.8rem;">Custom Food Calculator</span>
+                </div>
+                <div class="custom-food-grid" style="display:grid;grid-template-columns:1fr repeat(3,80px) repeat(4,1fr);gap:8px;align-items:end;">
+                    <div class="form-group">
+                        <label style="font-size:0.6rem;">Food Name</label>
+                        <input type="text" id="customName" placeholder="My food" class="custom-input" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.12);color:#f5f5f7;padding:6px 8px;border-radius:8px;font-size:0.8rem;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:0.6rem;">Kcal/100g</label>
+                        <input type="number" id="customKcal" placeholder="100" class="custom-input" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.12);color:#f5f5f7;padding:6px 8px;border-radius:8px;font-size:0.8rem;text-align:center;">
+                    </div>
+                    <div class="form-group">
+                        <label style="font-size:0.6rem;">Prot/100g</label>
+                        <input type="number" id="customProt" placeholder="10" class="custom-input" style="width:100%;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.12);color:#f5f5f7;padding:6px 8px;border-radius:8px;font-size:0.8rem;text-align:center;">
+                    </div>
+                    <div class="form-group">
+                        <button onclick="calculateCustomFood()" class="btn btn--primary" style="width:100%;padding:6px 10px;font-size:0.7rem;">
+                            <i class="fas fa-calculator"></i> Calc
+                        </button>
+                    </div>
+                    <!-- Results -->
+                    <div class="form-group" style="text-align:center;">
+                        <label style="font-size:0.6rem;color:#30d158;">Veggie Budget</label>
+                        <div id="customVeggie" class="custom-result" style="font-family:'SF Mono',monospace;font-weight:700;font-size:0.85rem;color:#30d158;">-</div>
+                    </div>
+                    <div class="form-group" style="text-align:center;">
+                        <label style="font-size:0.6rem;">Side Budget</label>
+                        <div id="customBudget" class="custom-result" style="font-family:'SF Mono',monospace;font-weight:700;font-size:0.85rem;">-</div>
+                    </div>
+                    <div class="form-group" style="text-align:center;">
+                        <label style="font-size:0.6rem;">Amount</label>
+                        <div id="customAmount" class="custom-result" style="font-family:'SF Mono',monospace;font-weight:700;font-size:0.85rem;">-</div>
+                    </div>
+                    <div class="form-group" style="text-align:center;">
+                        <label style="font-size:0.6rem;">Total Kcal</label>
+                        <div id="customTotalKcal" class="custom-result" style="font-family:'SF Mono',monospace;font-weight:700;font-size:0.85rem;">-</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- TAB 2: NUTRITIONALS -->
         <div id="view-nutritionals" class="tab-view hidden">
-            <div class="card card--no-padding card--rounded-lg">
+            <div class="card card--no-padding">
                 <div class="card__header">
-                    <div>
-                        <h2>Nutritional Database (Per 100g)</h2>
-                        <p class="text-xs text-slate-500">Static reference values.</p>
-                    </div>
+                    <h2>Nutritional Database (Per 100g)</h2>
+                    <p class="text-xs" style="color:#98989d;">Reference values for protein sources</p>
                 </div>
                 <div class="table-wrapper">
-                    <table class="table table--nutritionals">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th class="text-left">Food Source</th>
-                                <th class="text-right th--blue">Protein (g)</th>
+                                <th style="text-align:left;">Food Source</th>
+                                <th class="text-right th--blue">Protein</th>
                                 <th class="text-right th--orange">Kcal</th>
-                                <th class="text-right">Ratio (Kcal/Prot)</th>
+                                <th class="text-right">Carbs</th>
+                                <th class="text-right">Fat</th>
+                                <th class="text-right">Kcal/Prot</th>
                             </tr>
                         </thead>
                         <tbody id="nutritionBody"></tbody>
@@ -146,10 +920,8 @@
 
         <!-- TAB 3: SIDES KCAL CALCULATOR -->
         <div id="view-calculator" class="tab-view hidden">
-            <!-- Top Dashboard -->
             <div class="dashboard">
                 <div class="dashboard__grid">
-
                     <div class="dashboard__stat">
                         <span class="dashboard__label">Meal Budget</span>
                         <span class="dashboard__value" id="calc-budget">0</span>
@@ -159,15 +931,14 @@
                         <span class="dashboard__label">Protein Source</span>
                         <select id="protein-select">
                             <option value="">-- Manual --</option>
-                            <!-- Options added by JS -->
                         </select>
                         <div class="dashboard__inputs">
                             <div class="dashboard__input-group">
-                                <input type="number" id="calc-protein-amount" readonly class="input--dark" placeholder="0">
+                                <input type="number" id="calc-protein-amount" readonly placeholder="0">
                                 <span>Amount (g)</span>
                             </div>
                             <div class="dashboard__input-group">
-                                <input type="number" id="calc-protein-kcal" value="0" class="input--dark input--dark--editable">
+                                <input type="number" id="calc-protein-kcal" value="0">
                                 <span>Kcal</span>
                             </div>
                         </div>
@@ -176,14 +947,13 @@
                         </button>
                     </div>
 
-                    <div class="dashboard__stat dashboard__stat--with-equals">
+                    <div class="dashboard__stat">
                         <span class="dashboard__label">Sides Target</span>
                         <span class="dashboard__value dashboard__value--blue" id="calc-target">0</span>
-                        <div class="dashboard__equals">=</div>
                     </div>
 
                     <div class="dashboard__stat">
-                        <span class="dashboard__label">Sides Selected</span>
+                        <span class="dashboard__label">Selected</span>
                         <span class="dashboard__value dashboard__value--yellow" id="calc-selected">0</span>
                     </div>
 
@@ -191,28 +961,24 @@
                         <span class="dashboard__label">Delta</span>
                         <span class="dashboard__value" id="calc-delta">0</span>
                     </div>
-
                 </div>
             </div>
 
-            <!-- Input Table -->
-            <div class="card card--no-padding card--rounded-lg">
+            <div class="card card--no-padding">
                 <div class="table-wrapper">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th class="sticky w-1/4">Food (Carbs/Fats)</th>
-                                <th class="text-right w-24 th--highlight">Amount (g)</th>
+                                <th class="sticky">Food (Carbs/Fats)</th>
+                                <th class="text-right th--highlight">Amount</th>
                                 <th class="text-right">Kcal</th>
                                 <th class="text-right">Carb</th>
-                                <th class="text-right hidden sm:table-cell th--muted">Kcal/100g</th>
-                                <th class="text-right hidden sm:table-cell th--muted">Carb/100g</th>
-                                <th class="text-right hidden md:table-cell th--muted">Kcal/Carb</th>
+                                <th class="text-right">Kcal/100g</th>
+                                <th class="text-right">Carb/100g</th>
+                                <th class="text-right">Kcal/Carb</th>
                             </tr>
                         </thead>
-                        <tbody id="calculatorBody">
-                            <!-- Rows inserted by JS -->
-                        </tbody>
+                        <tbody id="calculatorBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -220,11 +986,10 @@
 
         <!-- TAB 4: MENU -->
         <div id="view-menu" class="tab-view hidden">
-            <div id="menu-container" class="space-y-6">
-                <!-- Meals will be added here -->
+            <div id="menu-container" class="space-y-4">
                 <div class="empty-state" id="empty-menu-msg">
                     <i class="fas fa-utensils"></i>
-                    <p>No meals added yet. Go to "Sides Kcal Calculator" to add a meal.</p>
+                    <p>No meals added yet. Go to "Sides Calculator" to add a meal.</p>
                 </div>
             </div>
         </div>
@@ -236,7 +1001,6 @@
                 <span>My Links</span>
             </a>
         </footer>
-
     </div>
 
     <script>
@@ -289,7 +1053,6 @@
             { category: "Starches", name: "Sweet Potato (Baked)", k100: 90, c100: 21, p100: 2, f100: 0.1 },
             { category: "Starches", name: "Oats (Dry)", k100: 389, c100: 66, p100: 16.9, f100: 6.9 },
             { category: "Starches", name: "Whole Wheat Bread", k100: 265, c100: 43, p100: 13, f100: 3 },
-
             { category: "Veggies", name: "Broccoli (Steamed)", k100: 35, c100: 7, p100: 2.4, f100: 0.4 },
             { category: "Veggies", name: "Tomatoes", k100: 18, c100: 3.9, p100: 0.9, f100: 0.2 },
             { category: "Veggies", name: "Cabbage", k100: 25, c100: 6, p100: 1.3, f100: 0.1 },
@@ -300,11 +1063,9 @@
             { category: "Veggies", name: "Mixed Vegetables", k100: 60, c100: 12, p100: 3, f100: 0.5 },
             { category: "Veggies", name: "Green Beans", k100: 31, c100: 7, p100: 1.8, f100: 0.1 },
             { category: "Veggies", name: "Spinach (Raw)", k100: 23, c100: 4, p100: 2.9, f100: 0.4 },
-
             { category: "Fats/Other", name: "Olive Oil", k100: 884, c100: 0, p100: 0, f100: 100 },
             { category: "Fats/Other", name: "Avocado", k100: 160, c100: 9, p100: 2, f100: 15 },
             { category: "Fats/Other", name: "Almonds (Side)", k100: 579, c100: 22, p100: 21, f100: 50 },
-
             { category: "Fruits", name: "Banana", k100: 89, c100: 23, p100: 1.1, f100: 0.3 },
             { category: "Fruits", name: "Apple", k100: 52, c100: 14, p100: 0.3, f100: 0.2 },
             { category: "Fruits", name: "Grapes", k100: 67, c100: 17, p100: 0.6, f100: 0.4 },
@@ -313,6 +1074,12 @@
             { category: "Fruits", name: "Kaki (Persimmon)", k100: 70, c100: 19, p100: 0.6, f100: 0.2 },
             { category: "Fruits", name: "Blueberries", k100: 57, c100: 14, p100: 0.7, f100: 0.3 },
         ];
+
+        // Constants for Veggie Budget calculation
+        const OIL_ML = 15;
+        const OIL_KCAL_PER_ML = 8.84; // ~884 kcal per 100ml
+        const OIL_KCAL = OIL_ML * OIL_KCAL_PER_ML; // 133 kcal for 15ml oil
+        const BROCCOLI_KCAL_PER_100G = 35;
 
         // --- Global Variables ---
         const inputProtein = document.getElementById('targetProtein');
@@ -326,20 +1093,12 @@
         // --- Tab Switching Logic ---
         function switchTab(viewName) {
             const views = ['planner', 'nutritionals', 'calculator', 'menu'];
-
-            // Hide all views and reset button states
             views.forEach(v => {
                 document.getElementById('view-'+v).classList.add('hidden');
-                const btn = document.getElementById('btn-'+v);
-                btn.classList.remove('tab-active');
+                document.getElementById('btn-'+v).classList.remove('tab-active');
             });
-
-            // Show selected view and activate button
             document.getElementById('view-'+viewName).classList.remove('hidden');
-            const activeBtn = document.getElementById('btn-'+viewName);
-            activeBtn.classList.add('tab-active');
-
-            // Trigger lazy loading of tables
+            document.getElementById('btn-'+viewName).classList.add('tab-active');
             if(viewName === 'calculator') renderCalculator();
             if(viewName === 'menu') renderMenu();
         }
@@ -347,7 +1106,7 @@
         // --- Core Calculation Logic ---
         function getMealLimit() {
             const daily = parseFloat(inputCalories.value) || 0;
-            return Math.round(daily / 3); // Fixed to 3 meals as per requirements
+            return Math.round(daily / 3);
         }
 
         function calculateAndRender() {
@@ -355,34 +1114,36 @@
             const mealLimit = getMealLimit();
             displayLimit.innerText = mealLimit;
 
-            // --- Update Planner Table (Tab 1) ---
             const tableBody = document.getElementById('tableBody');
             tableBody.innerHTML = '';
 
-            // Calculate values for all food items
             const computedData = foodData.map(food => {
                 const amountNeeded = (targetP / food.p100) * 100;
                 const totalKcal = (amountNeeded / 100) * food.k100;
+                const sideBudget = mealLimit - totalKcal;
+                // Veggie Budget = (Side Budget - 15ml oil kcal) / broccoli kcal per 100g
+                const veggieBudget = (sideBudget - OIL_KCAL) / BROCCOLI_KCAL_PER_100G * 100;
                 return {
                     ...food,
                     amountNeeded,
                     totalKcal,
-                    budget: mealLimit - totalKcal,
+                    budget: sideBudget,
+                    veggieBudget: veggieBudget,
                     efficiency: totalKcal/targetP
                 };
             });
 
-            // Determine which categories to show
             const categories = currentFilter === 'all'
                 ? ['Powders', 'Vegan', 'Vegetarian', 'Meat/Fish']
                 : [currentFilter];
 
+            // Find max veggie budget for scaling bars (only positive values)
+            const maxVeggieBudget = Math.max(...computedData.map(d => d.veggieBudget), 1);
+
             categories.forEach(cat => {
-                // Filter and Sort by budget (highest budget first)
-                const items = computedData.filter(i => i.category === cat).sort((a,b) => b.budget - a.budget);
+                const items = computedData.filter(i => i.category === cat).sort((a,b) => b.veggieBudget - a.veggieBudget);
 
                 if(currentFilter === 'all') {
-                    // Render Category Header
                     let colorClass = 'table__category-row--slate';
                     if(cat === 'Vegan') colorClass = 'table__category-row--green';
                     if(cat === 'Vegetarian') colorClass = 'table__category-row--yellow';
@@ -391,37 +1152,51 @@
 
                     const trH = document.createElement('tr');
                     trH.className = `table__category-row ${colorClass}`;
-                    trH.innerHTML = `<td colspan="6">${cat}</td>`;
+                    trH.innerHTML = `<td colspan="7">${cat}</td>`;
                     tableBody.appendChild(trH);
                 }
 
                 items.forEach(item => {
                     const tr = document.createElement('tr');
-                    tr.className = "group";
 
-                    // Logic for badge color based on remaining budget
-                    let bClass = item.budget < 0
-                        ? "badge--red"
-                        : (item.budget < 150 ? "badge--orange" : "badge--green");
+                    // Badge color for side budget
+                    let bClass = item.budget < 0 ? "badge--red" : (item.budget < 150 ? "badge--orange" : "badge--green");
+
+                    // Bar color for veggie budget
+                    let barColor;
+                    if (item.veggieBudget < 0) barColor = "red";
+                    else if (item.veggieBudget < 200) barColor = "orange";
+                    else if (item.veggieBudget < 400) barColor = "green";
+                    else barColor = "blue";
+
+                    // Calculate bar width percentage (0-100%)
+                    const barWidth = item.veggieBudget > 0
+                        ? Math.min(100, (item.veggieBudget / maxVeggieBudget) * 100)
+                        : Math.min(100, Math.abs(item.veggieBudget) / 200 * 30); // Negative values get small red bar
 
                     tr.innerHTML = `
-                        <td class="sticky font-medium text-slate-800">${item.name}</td>
+                        <td class="sticky">${item.name}</td>
+                        <td class="bar-cell">
+                            <div class="bar-wrapper">
+                                <div class="bar-fill bar-fill--${barColor}" style="width: ${barWidth}%"></div>
+                                <span class="bar-label bar-label--${barColor}">${Math.round(item.veggieBudget)}g</span>
+                            </div>
+                        </td>
                         <td class="text-right"><span class="badge ${bClass}">${Math.round(item.budget)}</span></td>
-                        <td class="text-right font-mono text-slate-700">${Math.round(item.amountNeeded)} g</td>
-                        <td class="text-right font-mono text-slate-600">${Math.round(item.totalKcal)}</td>
-                        <td class="text-right text-slate-500 hidden md:table-cell">${item.efficiency.toFixed(1)}</td>
-                        <td class="text-right text-slate-400 hidden lg:table-cell">${item.p100}g</td>
+                        <td class="text-right font-mono">${Math.round(item.amountNeeded)}g</td>
+                        <td class="text-right font-mono text-muted">${Math.round(item.totalKcal)}</td>
+                        <td class="text-right text-muted">${item.efficiency.toFixed(1)}</td>
+                        <td class="text-right text-muted">${item.p100}g</td>
                     `;
                     tableBody.appendChild(tr);
                 });
             });
 
-            // Update other tabs dependent on global settings
             renderNutritionals();
             updateSideCalculator();
         }
 
-        // --- Nutritionals Tab Logic (Tab 2) ---
+        // --- Nutritionals Tab Logic ---
         function renderNutritionals() {
             const nutritionBody = document.getElementById('nutritionBody');
             nutritionBody.innerHTML = '';
@@ -435,23 +1210,24 @@
                 if(cat === 'Meat/Fish') colorClass = 'table__category-row--red';
                 if(cat === 'Powders') colorClass = 'table__category-row--purple';
 
-                nutritionBody.innerHTML += `<tr class="table__category-row ${colorClass}"><td colspan="4">${cat}</td></tr>`;
+                nutritionBody.innerHTML += `<tr class="table__category-row ${colorClass}"><td colspan="6">${cat}</td></tr>`;
 
                 items.forEach(item => {
                     nutritionBody.innerHTML += `
                         <tr>
-                            <td class="font-medium text-slate-700">${item.name}</td>
-                            <td class="text-right font-mono text-blue-700">${item.p100}</td>
-                            <td class="text-right font-mono text-orange-700">${item.k100}</td>
-                            <td class="text-right font-mono text-slate-500">${(item.k100/item.p100).toFixed(1)}</td>
+                            <td>${item.name}</td>
+                            <td class="text-right font-mono text-blue">${item.p100}</td>
+                            <td class="text-right font-mono text-orange">${item.k100}</td>
+                            <td class="text-right font-mono text-muted">${item.c100}</td>
+                            <td class="text-right font-mono text-muted">${item.f100}</td>
+                            <td class="text-right font-mono text-muted">${(item.k100/item.p100).toFixed(1)}</td>
                         </tr>
                     `;
                 });
             });
         }
 
-        // --- Sides Calculator Logic (Tab 3) ---
-
+        // --- Sides Calculator Logic ---
         function populateProteinSelect() {
             proteinSelect.innerHTML = '<option value="">-- Manual --</option>';
             const categories = ['Powders', 'Vegan', 'Vegetarian', 'Meat/Fish'];
@@ -459,35 +1235,28 @@
             categories.forEach(cat => {
                 const group = document.createElement('optgroup');
                 group.label = cat;
-                // Alphabetical sort within dropdown
                 const items = foodData.filter(f => f.category === cat).sort((a,b) => a.name.localeCompare(b.name));
-
                 items.forEach(food => {
                     const option = document.createElement('option');
                     option.value = food.name;
                     option.text = food.name;
                     group.appendChild(option);
                 });
-
                 if (items.length > 0) proteinSelect.appendChild(group);
             });
         }
 
         function handleProteinSelect() {
             const selectedName = proteinSelect.value;
-
-            // Clear fields if manual is selected
             if(!selectedName) {
                 document.getElementById('calc-protein-amount').value = '';
                 return;
             }
-
             const food = foodData.find(f => f.name === selectedName);
             if(food) {
                 const targetP = parseFloat(inputProtein.value) || 0;
                 const amountNeeded = (targetP / food.p100) * 100;
                 const totalKcal = (amountNeeded / 100) * food.k100;
-
                 document.getElementById('calc-protein-amount').value = Math.round(amountNeeded);
                 document.getElementById('calc-protein-kcal').value = Math.round(totalKcal);
                 updateSideCalculator();
@@ -496,7 +1265,6 @@
 
         function renderCalculator() {
             const calcBody = document.getElementById('calculatorBody');
-            // Prevent re-rendering if already populated to save input states
             if(calcBody.children.length > 0) return;
 
             ['Starches', 'Veggies', 'Fruits', 'Fats/Other'].forEach(cat => {
@@ -505,23 +1273,19 @@
                 const items = sideData.filter(i => i.category === cat);
                 items.forEach((item) => {
                     const ratio = item.c100 > 0 ? (item.k100/item.c100).toFixed(1) : "-";
-                    // Store full item data in dataset for quick retrieval
                     const itemJson = JSON.stringify(item).replace(/"/g, '&quot;');
 
                     calcBody.innerHTML += `
                         <tr>
-                            <td class="sticky font-medium text-slate-800 border-r">${item.name}</td>
+                            <td class="sticky">${item.name}</td>
                             <td class="td--highlight">
-                                <input type="number"
-                                    data-item="${itemJson}"
-                                    class="side-input"
-                                    placeholder="0" oninput="updateSideRow(this)">
+                                <input type="number" data-item="${itemJson}" class="side-input" placeholder="0" oninput="updateSideRow(this)">
                             </td>
-                            <td class="text-right font-mono text-slate-700">0</td>
-                            <td class="text-right font-mono text-slate-600">0</td>
-                            <td class="text-right text-slate-400 hidden sm:table-cell">${item.k100}</td>
-                            <td class="text-right text-slate-400 hidden sm:table-cell">${item.c100}</td>
-                            <td class="text-right text-slate-400 hidden md:table-cell">${ratio}</td>
+                            <td class="text-right font-mono">0</td>
+                            <td class="text-right font-mono text-muted">0</td>
+                            <td class="text-right text-muted">${item.k100}</td>
+                            <td class="text-right text-muted">${item.c100}</td>
+                            <td class="text-right text-muted">${ratio}</td>
                         </tr>
                     `;
                 });
@@ -532,14 +1296,10 @@
             const row = input.closest('tr');
             const data = JSON.parse(input.dataset.item);
             const val = parseFloat(input.value) || 0;
-
             const totalK = (val/100) * data.k100;
             const totalC = (val/100) * data.c100;
-
-            // Update row calculations live
             row.cells[2].innerText = Math.round(totalK);
             row.cells[3].innerText = Math.round(totalC);
-
             updateSideCalculator();
         }
 
@@ -549,7 +1309,6 @@
             const sidesTarget = budget - proteinKcal;
 
             let sidesSelected = 0;
-            // Sum up all inputs
             document.querySelectorAll('.side-input').forEach(inp => {
                 const val = parseFloat(inp.value) || 0;
                 const data = JSON.parse(inp.dataset.item);
@@ -558,7 +1317,6 @@
 
             const delta = sidesTarget - sidesSelected;
 
-            // Update Dashboard Elements
             document.getElementById('calc-budget').innerText = budget;
             document.getElementById('calc-target').innerText = sidesTarget;
             document.getElementById('calc-selected').innerText = Math.round(sidesSelected);
@@ -568,10 +1326,8 @@
             deltaEl.className = "dashboard__value " + (delta >= 0 ? "dashboard__value--green" : "dashboard__value--red");
         }
 
-        // --- Menu Tab Logic (Tab 4) ---
-
+        // --- Menu Tab Logic ---
         function addMealToMenu() {
-            // 1. Gather Protein Data
             const selectedProteinName = proteinSelect.value;
             let mealItems = [];
 
@@ -591,7 +1347,6 @@
                 }
             }
 
-            // 2. Gather Sides Data
             document.querySelectorAll('.side-input').forEach(inp => {
                 const amount = parseFloat(inp.value) || 0;
                 if (amount > 0) {
@@ -613,11 +1368,8 @@
                 return;
             }
 
-            // 3. Save to Global Array
             savedMeals.push(mealItems);
-
-            // 4. Feedback & Render
-            alert(`Meal ${savedMeals.length} added to Menu!`);
+            alert(`Meal ${savedMeals.length} added!`);
             renderMenu();
         }
 
@@ -633,10 +1385,9 @@
             container.innerHTML = '';
 
             savedMeals.forEach((meal, index) => {
-                // Calculate Meal Totals
                 let tKcal = 0, tProt = 0, tCarb = 0, tFat = 0;
-
                 let rowsHtml = '';
+
                 meal.forEach(item => {
                     tKcal += item.kcal;
                     tProt += item.prot;
@@ -645,31 +1396,28 @@
 
                     rowsHtml += `
                         <tr>
-                            <td class="font-medium text-slate-700">${item.name}</td>
-                            <td class="text-right text-slate-500">${Math.round(item.amount)}g</td>
-                            <td class="text-right text-slate-600">${Math.round(item.kcal)}</td>
-                            <td class="text-right text-slate-400">${Math.round(item.prot)}</td>
-                            <td class="text-right text-slate-400">${Math.round(item.carb)}</td>
-                            <td class="text-right text-slate-400">${Math.round(item.fat)}</td>
+                            <td>${item.name}</td>
+                            <td class="text-right text-muted">${Math.round(item.amount)}g</td>
+                            <td class="text-right">${Math.round(item.kcal)}</td>
+                            <td class="text-right">${Math.round(item.prot)}</td>
+                            <td class="text-right">${Math.round(item.carb)}</td>
+                            <td class="text-right">${Math.round(item.fat)}</td>
                         </tr>
                     `;
                 });
 
-                // Create Meal Card
                 const card = document.createElement('div');
                 card.className = "meal-card";
                 card.innerHTML = `
                     <div class="meal-card__header">
                         <h3 class="meal-card__title">Meal ${index + 1}</h3>
-                        <span class="meal-card__kcal-badge">
-                            ${Math.round(tKcal)} Kcal
-                        </span>
+                        <span class="meal-card__kcal-badge">${Math.round(tKcal)} kcal</span>
                     </div>
                     <div class="table-wrapper">
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th class="w-1/3">Item</th>
+                                    <th>Item</th>
                                     <th class="text-right">Amt</th>
                                     <th class="text-right">Kcal</th>
                                     <th class="text-right">Prot</th>
@@ -682,10 +1430,10 @@
                                 <tr>
                                     <td>TOTALS</td>
                                     <td class="text-right">-</td>
-                                    <td class="text-right text-orange-600">${Math.round(tKcal)}</td>
-                                    <td class="text-right text-blue-600">${Math.round(tProt)}</td>
-                                    <td class="text-right text-green-600">${Math.round(tCarb)}</td>
-                                    <td class="text-right text-purple-600">${Math.round(tFat)}</td>
+                                    <td class="text-right text-orange">${Math.round(tKcal)}</td>
+                                    <td class="text-right text-blue">${Math.round(tProt)}</td>
+                                    <td class="text-right text-green">${Math.round(tCarb)}</td>
+                                    <td class="text-right text-purple">${Math.round(tFat)}</td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -698,8 +1446,6 @@
         // --- Filter Logic ---
         function filterTable(category) {
             currentFilter = category;
-
-            // Update active button state
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const isActive = (category === 'all' && btn.textContent === 'All') || btn.textContent === category;
                 if (isActive) {
@@ -710,22 +1456,45 @@
                     btn.classList.add('filter-btn--inactive');
                 }
             });
-
             calculateAndRender();
         }
 
-        // --- Initialization ---
+        // --- Custom Food Calculator ---
+        function calculateCustomFood() {
+            const k100 = parseFloat(document.getElementById('customKcal').value) || 0;
+            const p100 = parseFloat(document.getElementById('customProt').value) || 0;
+            const targetP = parseFloat(inputProtein.value) || 0;
+            const mealLimit = getMealLimit();
 
-        // Event Listeners
+            if (p100 <= 0) {
+                alert('Please enter Protein/100g (must be > 0)');
+                return;
+            }
+
+            // Same calculations as the table
+            const amountNeeded = (targetP / p100) * 100;
+            const totalKcal = (amountNeeded / 100) * k100;
+            const sideBudget = mealLimit - totalKcal;
+            const veggieBudget = (sideBudget - OIL_KCAL) / BROCCOLI_KCAL_PER_100G * 100;
+
+            // Update display
+            document.getElementById('customVeggie').textContent = Math.round(veggieBudget) + 'g';
+            document.getElementById('customVeggie').style.color = veggieBudget < 0 ? '#ff453a' : (veggieBudget < 200 ? '#ff9f0a' : '#30d158');
+            document.getElementById('customBudget').textContent = Math.round(sideBudget) + ' kcal';
+            document.getElementById('customBudget').style.color = sideBudget < 0 ? '#ff453a' : (sideBudget < 150 ? '#ff9f0a' : '#f5f5f7');
+            document.getElementById('customAmount').textContent = Math.round(amountNeeded) + 'g';
+            document.getElementById('customTotalKcal').textContent = Math.round(totalKcal) + ' kcal';
+        }
+
+        // --- Initialization ---
         inputProtein.addEventListener('input', () => {
             calculateAndRender();
-            handleProteinSelect(); // Re-calculate protein needs if target changes
+            handleProteinSelect();
         });
         inputCalories.addEventListener('input', calculateAndRender);
         document.getElementById('calc-protein-kcal').addEventListener('input', updateSideCalculator);
         proteinSelect.addEventListener('change', handleProteinSelect);
 
-        // Initial Execution
         populateProteinSelect();
         renderCalculator();
         calculateAndRender();

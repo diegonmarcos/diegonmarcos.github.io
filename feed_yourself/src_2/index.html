@@ -84,7 +84,8 @@ h1{margin:0;font-size:1.8rem;letter-spacing:-0.5px;font-weight:700}
     </header>
 
     <div class="category-tabs">
-        <button class="category-tab active" data-category="salads">🥗 Salads</button>
+        <button class="category-tab active" data-category="all">📚 All</button>
+        <button class="category-tab" data-category="salads">🥗 Salads</button>
         <button class="category-tab" data-category="breads">🍞 Breads</button>
         <button class="category-tab" data-category="pies">🥧 Pies</button>
         <button class="category-tab" data-category="mains">🍲 Main Dishes</button>
@@ -369,7 +370,7 @@ const recipes = {
         {
             id: "shani-tomatoes",
             name: "Eyal Shani Tomatoes",
-            image: "20251201_192434.jpg",
+            image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&h=300&fit=crop",
             quote: "Deceptively simple dish that'll blow your mind. Crushed tomatoes, sour cream, olive oil, challah.",
             ingredients: ["Ripe tomatoes", "Sour cream or labneh", "Good olive oil", "Flaky salt", "Fresh challah"],
             instructions: ["Crush ripe tomatoes roughly", "Dollop sour cream on top", "Drizzle generously with olive oil", "Sprinkle flaky salt", "Scoop with challah"]
@@ -379,7 +380,7 @@ const recipes = {
         {
             id: "carrot-cake",
             name: "George's Birthday Carrot Cake",
-            image: "20251201_192437.jpg",
+            image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&h=300&fit=crop",
             quote: "The legendary carrot cake. Moist, spiced, loaded with pineapple and nuts.",
             ingredients: ["Grated carrots", "Crushed pineapple", "Walnuts", "Flour, sugar, eggs", "Cinnamon, nutmeg", "Cream cheese frosting"],
             instructions: ["Mix wet ingredients", "Combine dry ingredients", "Fold together gently", "Add carrots, pineapple, nuts", "Bake at 180°C", "Cool and frost generously"]
@@ -387,7 +388,7 @@ const recipes = {
         {
             id: "banana-bread",
             name: "Banana Bread",
-            image: "20251201_192441.jpg",
+            image: "https://images.unsplash.com/photo-1605466153246-30c8c3c41e40?w=400&h=300&fit=crop",
             quote: "Rescues overripe bananas. Walnuts and chocolate chips are 'optional' but not really.",
             ingredients: ["4 ripe bananas", "1/2 cup sugar", "1/2 cup butter", "2 eggs", "1.5 cups flour", "Baking soda, cinnamon", "Walnuts, chocolate chips"],
             instructions: ["Mash bananas", "Mix with sugar, butter, eggs", "Add dry ingredients", "DON'T OVERMIX", "Fold in nuts and chips", "Bake 50-60 min at 180°C"]
@@ -395,7 +396,7 @@ const recipes = {
         {
             id: "chocotorta",
             name: "Vale's Chocotorta",
-            image: "20251201_192444.jpg",
+            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
             quote: "Argentinian no-bake cake. Layers of milk-soaked cookies and dulce de leche cream cheese.",
             ingredients: ["Chocolate cookies", "Coffee or milk", "Dulce de leche", "Cream cheese", "Heavy cream"],
             instructions: ["Dip cookies in coffee/milk", "Layer in pan", "Mix dulce de leche with cream cheese", "Spread over cookies", "Repeat layers", "Freeze 4+ hours"]
@@ -403,7 +404,7 @@ const recipes = {
         {
             id: "cheesecake",
             name: "Noa's Cheesecake",
-            image: "20251201_192449.jpg",
+            image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&h=300&fit=crop",
             quote: "Aussie-style cheesecake with biscuit base. Cool in oven with door ajar for perfect texture.",
             ingredients: ["Biscuit crumbs", "Butter", "Cream cheese", "Sugar", "Eggs", "Vanilla", "Sour cream", "Berry coulis"],
             instructions: ["Make biscuit base", "Beat cream cheese smooth", "Add eggs one at a time", "Pour over base", "Bake, then cool slowly", "Top with berry coulis"]
@@ -411,7 +412,7 @@ const recipes = {
         {
             id: "matzah-brittle",
             name: "Rina's Matzah Brittle",
-            image: "20251201_192456.jpg",
+            image: "https://images.unsplash.com/photo-1548848221-0c2e497ed557?w=400&h=300&fit=crop",
             quote: "Passover treat that transcends the holiday. Caramel, chocolate, and crunchy matzah.",
             ingredients: ["Matzah sheets", "1 cup butter", "1 cup brown sugar", "Chocolate chips", "Sea salt", "Nuts (optional)"],
             instructions: ["Line pan with matzah", "Boil butter and sugar to caramel", "Pour over matzah", "Bake 5 min", "Top with chocolate chips", "Spread and add salt/nuts", "Chill and break into pieces"]
@@ -419,7 +420,7 @@ const recipes = {
         {
             id: "zucchini-bread",
             name: "George's Zucchini Bread",
-            image: "20251201_192458.jpg",
+            image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop",
             quote: "Sneaky way to eat vegetables for dessert. Don't squeeze the zucchini - that moisture is your friend.",
             ingredients: ["Grated zucchini", "3 eggs", "1 cup oil", "2 cups sugar", "3 cups flour", "Cinnamon, baking soda", "Walnuts"],
             instructions: ["Grate zucchini (don't squeeze)", "Beat eggs, oil, sugar", "Add dry ingredients", "Fold in zucchini and walnuts", "Divide into 2 loaf pans", "Bake 1 hour at 175°C"]
@@ -429,13 +430,15 @@ const recipes = {
         {
             id: "granola",
             name: "Homemade Granola",
-            image: "20251201_192502.jpg",
+            image: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=400&h=300&fit=crop",
             quote: "Costs a fortune at fancy stores but 30 minutes at home. Crunchy, nutty, customizable.",
             ingredients: ["3 cups oats", "1 cup nuts (any mix)", "1/2 cup honey/maple", "1/4 cup oil", "Cinnamon, salt", "Dried fruit (after baking)"],
             instructions: ["Mix oats and nuts", "Combine honey and oil", "Toss together with spices", "Spread on baking sheet", "Bake at 150°C for 25-30 min", "Stir halfway", "Add dried fruit when cool"]
         }
     ]
 };
+
+let showAll = true;
 
 // Category switching
 document.querySelectorAll('.category-tab').forEach(tab => {
@@ -446,9 +449,14 @@ document.querySelectorAll('.category-tab').forEach(tab => {
         document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
 
-        // Update sections
-        document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
-        document.getElementById(category).classList.add('active');
+        if (category === 'all') {
+            showAll = true;
+            document.querySelectorAll('.category-section').forEach(s => s.classList.add('active'));
+        } else {
+            showAll = false;
+            document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(category).classList.add('active');
+        }
     });
 });
 
@@ -461,7 +469,7 @@ function renderRecipes() {
         grid.innerHTML = items.map(recipe => `
             <div class="recipe-card" onclick="openModal('${category}', '${recipe.id}')">
                 <div class="recipe-card__image">
-                    <img src="${imgBase}${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">
+                    <img src="${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">
                 </div>
                 <div class="recipe-card__content">
                     <h3 class="recipe-card__title">${recipe.name}</h3>
@@ -477,7 +485,7 @@ function openModal(category, id) {
     const recipe = recipes[category].find(r => r.id === id);
     if (!recipe) return;
 
-    document.getElementById('modal-image').src = imgBase + recipe.image;
+    document.getElementById('modal-image').src = recipe.image;
     document.getElementById('modal-title').textContent = recipe.name;
     document.getElementById('modal-quote').textContent = recipe.quote;
     document.getElementById('modal-ingredients').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
@@ -502,8 +510,9 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
 });
 
-// Initialize
+// Initialize - show all sections by default
 renderRecipes();
+document.querySelectorAll('.category-section').forEach(s => s.classList.add('active'));
 </script>
 
 </body>

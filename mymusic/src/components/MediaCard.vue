@@ -10,10 +10,10 @@ const props = defineProps<{
 
 const imageError = ref(false)
 
-const getSubtitle = (item: IMusicItem) => {
-  if (item.type === 'album' && 'artistName' in item) return item.artistName
-  if (item.type === 'track' && 'artistName' in item) return item.artistName
-  if (item.type === 'artist' && 'genre' in item) return item.genre
+const getSubtitle = (item: IMusicItem): string => {
+  if (item.type === 'album' && 'artistName' in item) return (item as { artistName: string }).artistName
+  if (item.type === 'track' && 'artistName' in item) return (item as { artistName: string }).artistName
+  if (item.type === 'artist' && 'genre' in item) return (item as { genre: string }).genre || 'Unknown'
   return item.description || 'Unknown'
 }
 

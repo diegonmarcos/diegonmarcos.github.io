@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Recipes - Feed Yourself</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
     <meta name="description" content="Recipe collection for healthy meal planning">
@@ -20,7 +20,53 @@
     <meta name="twitter:description" content="Recipe collection for healthy meal planning">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}html{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#0a0a0a;color:#fff;-webkit-font-smoothing:antialiased}body{min-height:100vh;background:#0a0a0a}.app-container{max-width:1200px;margin:0 auto;padding:2rem 1rem}header{text-align:center;margin-bottom:2rem}header h1{font-size:2.5rem;background:linear-gradient(to right, #00ff88, #a855f7);-webkit-background-clip:text;background-clip:text;color:rgba(0,0,0,0);margin-bottom:.5rem}header .app-subtitle{color:#888;font-size:.9rem;margin-bottom:1rem}.header-nav{display:flex;justify-content:center;gap:1rem;margin-top:1rem}.nav-link{padding:.5rem 1rem;background:rgba(20,20,20,.8);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;color:#888;text-decoration:none;font-size:.875rem;transition:all 200ms ease}.nav-link:hover{border-color:#0f8;color:#0f8}.glass-panel{background:rgba(20,20,20,.8);backdrop-filter:blur(10px);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:1.5rem}.section-title{font-size:1.25rem;font-weight:600;margin-bottom:1rem;color:#0f8}.tabs-nav{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap}.tab-btn{padding:.75rem 1.25rem;background:rgba(0,0,0,0);border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;color:#888;cursor:pointer;font-size:.875rem;transition:all 200ms ease}.tab-btn:hover{border-color:#0f8;color:#0f8}.tab-btn.tab-active{background:rgba(0,255,136,.1);border-color:#0f8;color:#0f8}.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:1rem}.recipe-card{background:#141414;border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:1rem;cursor:pointer;transition:all 200ms ease}.recipe-card:hover{border-color:#0f8;transform:translateY(-2px)}.recipe-card__header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.75rem}.recipe-card__title{font-size:1rem;font-weight:600;color:#fff}.recipe-card__time{font-size:.75rem;color:#888;background:rgba(20,20,20,.8);padding:.25rem .5rem;border-radius:4px}.recipe-card__macros{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}.recipe-card__tags{display:flex;gap:.25rem;flex-wrap:wrap}.macro{font-size:.7rem;padding:.25rem .5rem;border-radius:4px;background:rgba(20,20,20,.8)}.macro--calories{color:#fc0}.macro--protein{color:#ff6b6b}.macro--carbs{color:#4ecdc4}.macro--fat{color:#a855f7}.tag{font-size:.65rem;padding:.2rem .4rem;border-radius:4px;background:rgba(0,255,136,.1);color:#0f8}.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;padding:1rem;z-index:1000}.modal-content{background:#141414;border:1px solid hsla(0,0%,100%,.1);border-radius:.5rem;padding:2rem;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;position:relative}.modal-content h2{font-size:1.5rem;margin-bottom:1rem;color:#0f8}.modal-content h3{font-size:1rem;margin-bottom:.5rem;color:#fff}.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:#888;font-size:1.5rem;cursor:pointer;transition:color 200ms ease}.modal-close:hover{color:#0f8}.modal-macros{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem}.modal-macro{background:rgba(20,20,20,.8);padding:.5rem .75rem;border-radius:.5rem;font-size:.875rem;color:#888}.modal-section{margin-bottom:1.5rem}.modal-section ul,.modal-section ol{padding-left:1.5rem;color:#888}.modal-section ul li,.modal-section ol li{margin-bottom:.5rem;line-height:1.5}.tab-view{animation:fadeIn .2s ease}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@media(max-width: 640px){header h1{font-size:1.75rem}.recipe-grid{grid-template-columns:1fr}.tabs-nav{justify-content:center}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(circle at 50% 0%, #2c3e50, #000000 80%);background-attachment:fixed;color:#f5f5f7;margin:0;padding:15px;min-height:100vh;overflow-x:hidden}
+.app-container{max-width:1200px;margin:0 auto;padding-bottom:100px}
+header{margin-bottom:20px;text-align:center}
+h1{margin:0;font-size:1.8rem;letter-spacing:-0.5px;font-weight:700}
+.app-subtitle{color:#98989d;font-size:.9rem;margin-top:5px}
+.page-tabs{display:flex;justify-content:center;gap:0;margin-top:15px;background:rgba(0,0,0,.3);border-radius:12px;padding:4px;border:1px solid hsla(0,0%,100%,.1);max-width:500px;margin-left:auto;margin-right:auto}
+.page-tab{flex:1;text-align:center;color:#98989d;text-decoration:none;font-size:.85rem;font-weight:600;padding:10px 15px;border-radius:10px;transition:all .2s ease;background:transparent}
+.page-tab:hover{color:#fff;background:rgba(255,255,255,.05)}
+.page-tab.active{background:#0a84ff;color:#fff;box-shadow:0 4px 12px rgba(10,132,255,.4)}
+.category-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding:10px 0;flex-wrap:wrap;justify-content:center}
+.category-tab{padding:10px 18px;font-size:.85rem;font-weight:600;background:rgba(0,0,0,.3);border:1px solid hsla(0,0%,100%,.1);border-radius:20px;color:#98989d;cursor:pointer;transition:all .2s ease;white-space:nowrap}
+.category-tab:hover{border-color:hsla(0,0%,100%,.3);color:#fff}
+.category-tab.active{background:#0a84ff;border-color:#0a84ff;color:#fff}
+.category-section{margin-bottom:30px;display:none}
+.category-section.active{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.category-title{font-size:1.3rem;font-weight:600;margin-bottom:15px;color:#fff;display:flex;align-items:center;gap:10px}
+.category-title::before{content:'';display:inline-block;width:4px;height:24px;background:#0a84ff;border-radius:2px}
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px}
+.recipe-card{background:rgba(28,28,30,.6);border:1px solid hsla(0,0%,100%,.1);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .3s ease;position:relative}
+.recipe-card:hover{border-color:#0a84ff;transform:translateY(-5px);box-shadow:0 15px 40px rgba(10,132,255,.2)}
+.recipe-card__image{width:100%;height:180px;object-fit:cover;background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);display:flex;align-items:center;justify-content:center;color:#98989d;font-size:3rem;overflow:hidden}
+.recipe-card__image img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+.recipe-card:hover .recipe-card__image img{transform:scale(1.05)}
+.recipe-card__content{padding:15px}
+.recipe-card__title{font-size:1rem;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3}
+.recipe-card__description{font-size:.8rem;color:#98989d;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.recipe-card__badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);padding:5px 10px;border-radius:8px;font-size:.7rem;font-weight:600;color:#0a84ff;text-transform:uppercase}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;padding:15px;z-index:1000;backdrop-filter:blur(10px)}
+.modal.active{display:flex}
+.modal-content{background:rgba(28,28,30,.98);border:1px solid hsla(0,0%,100%,.15);border-radius:22px;padding:0;max-width:700px;width:100%;max-height:90vh;overflow:hidden;position:relative;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-image{width:100%;height:250px;object-fit:cover}
+.modal-body{padding:25px;max-height:calc(90vh - 250px);overflow-y:auto}
+.modal-close{position:absolute;top:15px;right:15px;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:1.5rem;cursor:pointer;width:40px;height:40px;border-radius:50%;transition:all .2s;z-index:10;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:rgba(255,255,255,.2)}
+.modal-title{font-size:1.5rem;font-weight:700;margin-bottom:10px;color:#fff}
+.modal-quote{font-size:.9rem;color:#98989d;font-style:italic;margin-bottom:20px;padding-left:15px;border-left:3px solid #0a84ff}
+.modal-section{margin-bottom:20px}
+.modal-section h3{font-size:1rem;font-weight:600;color:#0a84ff;margin-bottom:10px}
+.modal-section ul,.modal-section ol{padding-left:20px;color:#d1d1d6;line-height:1.8}
+.modal-section li{margin-bottom:8px}
+.linktree-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;margin:30px auto;max-width:280px;background:linear-gradient(110deg, #3b82f6 0%, #3b82f6 40%, #60a5fa 50%, #3b82f6 60%, #3b82f6 100%);background-size:200% 100%;animation:shimmer 3s linear infinite;border:1px solid rgba(59, 130, 246, 0.5);border-radius:12px;color:#fff;text-decoration:none;font-size:.95rem;font-weight:600;transition:all .3s ease}
+.linktree-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(59, 130, 246, 0.5)}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@media(max-width:640px){.recipe-grid{grid-template-columns:1fr}.category-tabs{justify-content:flex-start}}
 </style>
 </head>
 <body>
@@ -28,59 +74,82 @@
 <div class="app-container">
 
     <header>
-        <h1>Recipes</h1>
-        <div class="app-subtitle">Feed Yourself Collection</div>
-        <nav class="header-nav">
-            <a href="index.html" class="nav-link">Menu Designer</a>
-            <a href="meal_designer.html" class="nav-link">Meal Designer</a>
+        <h1>Feed Yourself</h1>
+        <div class="app-subtitle">Nutrition Planning Suite</div>
+        <nav class="page-tabs">
+            <a href="../dist/index.html" class="page-tab">Menu Designer</a>
+            <a href="../dist/meal_designer.html" class="page-tab">Meal Designer</a>
+            <a href="index.html" class="page-tab active">Recipes</a>
         </nav>
     </header>
 
-    <section class="glass-panel">
-        <div class="section-title">Recipe Categories</div>
+    <div class="category-tabs">
+        <button class="category-tab active" data-category="salads">🥗 Salads</button>
+        <button class="category-tab" data-category="breads">🍞 Breads</button>
+        <button class="category-tab" data-category="pies">🥧 Pies</button>
+        <button class="category-tab" data-category="mains">🍲 Main Dishes</button>
+        <button class="category-tab" data-category="dips">🫕 Dips</button>
+        <button class="category-tab" data-category="desserts">🍰 Desserts</button>
+        <button class="category-tab" data-category="others">📦 Others</button>
+    </div>
 
-        <div class="tabs-nav">
-            <button onclick="switchTab('breakfast')" id="btn-breakfast" class="tab-btn tab-active">
-                Breakfast
-            </button>
-            <button onclick="switchTab('lunch')" id="btn-lunch" class="tab-btn">
-                Lunch
-            </button>
-            <button onclick="switchTab('dinner')" id="btn-dinner" class="tab-btn">
-                Dinner
-            </button>
-            <button onclick="switchTab('snacks')" id="btn-snacks" class="tab-btn">
-                Snacks
-            </button>
-        </div>
-
-        <!-- Breakfast Tab -->
-        <div id="view-breakfast" class="tab-view">
-            <div class="recipe-grid" id="breakfast-recipes"></div>
-        </div>
-
-        <!-- Lunch Tab -->
-        <div id="view-lunch" class="tab-view" style="display:none;">
-            <div class="recipe-grid" id="lunch-recipes"></div>
-        </div>
-
-        <!-- Dinner Tab -->
-        <div id="view-dinner" class="tab-view" style="display:none;">
-            <div class="recipe-grid" id="dinner-recipes"></div>
-        </div>
-
-        <!-- Snacks Tab -->
-        <div id="view-snacks" class="tab-view" style="display:none;">
-            <div class="recipe-grid" id="snacks-recipes"></div>
-        </div>
+    <!-- Salads Section -->
+    <section id="salads" class="category-section active">
+        <h2 class="category-title">Salads</h2>
+        <div class="recipe-grid" id="salads-grid"></div>
     </section>
 
-    <!-- Recipe Detail Modal -->
-    <div id="recipe-modal" class="modal" style="display:none;">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">&times;</button>
-            <h2 id="modal-title"></h2>
-            <div class="modal-macros" id="modal-macros"></div>
+    <!-- Breads Section -->
+    <section id="breads" class="category-section">
+        <h2 class="category-title">Breads</h2>
+        <div class="recipe-grid" id="breads-grid"></div>
+    </section>
+
+    <!-- Pies Section -->
+    <section id="pies" class="category-section">
+        <h2 class="category-title">Pies</h2>
+        <div class="recipe-grid" id="pies-grid"></div>
+    </section>
+
+    <!-- Main Dishes Section -->
+    <section id="mains" class="category-section">
+        <h2 class="category-title">Main Dishes</h2>
+        <div class="recipe-grid" id="mains-grid"></div>
+    </section>
+
+    <!-- Dips Section -->
+    <section id="dips" class="category-section">
+        <h2 class="category-title">Dips & Spreads</h2>
+        <div class="recipe-grid" id="dips-grid"></div>
+    </section>
+
+    <!-- Desserts Section -->
+    <section id="desserts" class="category-section">
+        <h2 class="category-title">Desserts</h2>
+        <div class="recipe-grid" id="desserts-grid"></div>
+    </section>
+
+    <!-- Others Section -->
+    <section id="others" class="category-section">
+        <h2 class="category-title">Others</h2>
+        <div class="recipe-grid" id="others-grid"></div>
+    </section>
+
+    <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn">
+        <span>LINKTREE</span>
+        <span>→</span>
+    </a>
+
+</div>
+
+<!-- Recipe Modal -->
+<div id="recipe-modal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <img id="modal-image" class="modal-image" src="" alt="">
+        <div class="modal-body">
+            <h2 id="modal-title" class="modal-title"></h2>
+            <p id="modal-quote" class="modal-quote"></p>
             <div class="modal-section">
                 <h3>Ingredients</h3>
                 <ul id="modal-ingredients"></ul>
@@ -91,34 +160,352 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-"use strict";(()=>{var s=[{id:"protein-oatmeal",name:"Protein Oatmeal",category:"breakfast",prepTime:5,cookTime:10,servings:1,calories:380,protein:28,carbs:45,fat:8,ingredients:["50g oats","1 scoop whey protein","200ml almond milk","1 tbsp honey","Handful of berries"],instructions:["Combine oats and almond milk in a pot","Cook on medium heat for 5-7 minutes","Remove from heat and let cool slightly","Stir in protein powder","Top with honey and berries"],tags:["high-protein","quick","vegetarian"]},{id:"egg-veggie-scramble",name:"Egg & Veggie Scramble",category:"breakfast",prepTime:5,cookTime:10,servings:1,calories:320,protein:24,carbs:8,fat:22,ingredients:["3 whole eggs","50g spinach","50g mushrooms","30g feta cheese","1 tsp olive oil","Salt & pepper"],instructions:["Heat olive oil in a pan","Saut� mushrooms until golden","Add spinach and cook until wilted","Beat eggs and pour into pan","Scramble gently, add feta","Season with salt and pepper"],tags:["keto","low-carb","vegetarian"]},{id:"chicken-salad-bowl",name:"Chicken Salad Bowl",category:"lunch",prepTime:10,cookTime:15,servings:1,calories:450,protein:42,carbs:25,fat:18,ingredients:["150g chicken breast","100g mixed greens","50g cherry tomatoes","30g cucumber","30g avocado","2 tbsp olive oil dressing"],instructions:["Season and grill chicken breast","Let rest for 5 minutes, then slice","Arrange greens in a bowl","Add tomatoes, cucumber, avocado","Top with sliced chicken","Drizzle with olive oil dressing"],tags:["high-protein","low-carb","meal-prep"]},{id:"tuna-wrap",name:"High-Protein Tuna Wrap",category:"lunch",prepTime:10,cookTime:0,servings:1,calories:380,protein:35,carbs:30,fat:12,ingredients:["1 can tuna (150g)","1 whole wheat wrap","2 tbsp Greek yogurt","30g lettuce","30g tomato","Lemon juice, salt, pepper"],instructions:["Drain tuna and mix with Greek yogurt","Add lemon juice, salt, pepper","Warm the wrap slightly","Layer lettuce and tomato","Add tuna mixture","Roll tightly and slice"],tags:["high-protein","quick","no-cook"]},{id:"salmon-vegetables",name:"Baked Salmon with Roasted Vegetables",category:"dinner",prepTime:10,cookTime:25,servings:1,calories:520,protein:40,carbs:20,fat:30,ingredients:["150g salmon fillet","100g broccoli","100g bell peppers","50g zucchini","2 tbsp olive oil","Garlic, herbs, lemon"],instructions:["Preheat oven to 200�C","Cut vegetables and toss with olive oil","Spread on baking sheet","Season salmon and place on vegetables","Bake for 20-25 minutes","Finish with fresh lemon"],tags:["high-protein","omega-3","one-pan"]},{id:"beef-stir-fry",name:"Beef & Vegetable Stir-Fry",category:"dinner",prepTime:15,cookTime:15,servings:2,calories:480,protein:38,carbs:25,fat:24,ingredients:["200g lean beef strips","100g broccoli","100g bell peppers","50g snap peas","2 tbsp soy sauce","1 tbsp sesame oil","Ginger, garlic"],instructions:["Slice beef into thin strips","Heat sesame oil in wok","Stir-fry beef until browned, set aside","Cook vegetables until crisp-tender","Return beef, add soy sauce","Toss with ginger and garlic"],tags:["high-protein","quick","meal-prep"]},{id:"greek-yogurt-parfait",name:"Greek Yogurt Parfait",category:"snacks",prepTime:5,cookTime:0,servings:1,calories:220,protein:18,carbs:25,fat:6,ingredients:["150g Greek yogurt","30g granola","50g mixed berries","1 tsp honey"],instructions:["Layer yogurt in a glass","Add half the granola","Add berries","Top with remaining granola","Drizzle with honey"],tags:["high-protein","quick","vegetarian"]},{id:"protein-energy-balls",name:"Protein Energy Balls",category:"snacks",prepTime:15,cookTime:0,servings:10,calories:120,protein:8,carbs:12,fat:5,ingredients:["100g oats","2 scoops protein powder","60g peanut butter","60g honey","30g dark chocolate chips"],instructions:["Mix oats and protein powder","Add peanut butter and honey","Mix until combined","Fold in chocolate chips","Roll into 10 balls","Refrigerate for 30 minutes"],tags:["high-protein","meal-prep","vegetarian"]}];var g="breakfast",l=e=>document.getElementById(`btn-${e}`),m=e=>document.getElementById(`view-${e}`),u=e=>document.getElementById(`${e}-recipes`);function b(){h(),y()}function h(){["breakfast","lunch","dinner","snacks"].forEach(a=>{let n=u(a);if(n){let i=s.filter(o=>o.category===a);n.innerHTML=i.map(f).join("")}})}function f(e){return`
-    <div class="recipe-card" onclick="openRecipeModal('${e.id}')">
-      <div class="recipe-card__header">
-        <h3 class="recipe-card__title">${e.name}</h3>
-        <div class="recipe-card__time">${e.prepTime+e.cookTime} min</div>
-      </div>
-      <div class="recipe-card__macros">
-        <span class="macro macro--calories">${e.calories} kcal</span>
-        <span class="macro macro--protein">${e.protein}g P</span>
-        <span class="macro macro--carbs">${e.carbs}g C</span>
-        <span class="macro macro--fat">${e.fat}g F</span>
-      </div>
-      <div class="recipe-card__tags">
-        ${e.tags.map(a=>`<span class="tag">${a}</span>`).join("")}
-      </div>
-    </div>
-  `}function y(){["breakfast","lunch","dinner","snacks"].forEach(a=>{let n=l(a);n&&n.addEventListener("click",()=>d(a))})}function d(e){let a=["breakfast","lunch","dinner","snacks"];a.forEach(n=>{let i=l(n);i&&i.classList.toggle("tab-active",n===e)}),a.forEach(n=>{let i=m(n);i&&(i.style.display=n===e?"block":"none")}),g=e}function k(e){let a=s.find(t=>t.id===e);if(!a)return;let n=document.getElementById("recipe-modal"),i=document.getElementById("modal-title"),o=document.getElementById("modal-macros"),r=document.getElementById("modal-ingredients"),c=document.getElementById("modal-instructions");n&&i&&o&&r&&c&&(i.textContent=a.name,o.innerHTML=`
-      <span class="modal-macro">${a.calories} kcal</span>
-      <span class="modal-macro">${a.protein}g protein</span>
-      <span class="modal-macro">${a.carbs}g carbs</span>
-      <span class="modal-macro">${a.fat}g fat</span>
-      <span class="modal-macro">${a.prepTime+a.cookTime} min</span>
-      <span class="modal-macro">${a.servings} servings</span>
-    `,r.innerHTML=a.ingredients.map(t=>`<li>${t}</li>`).join(""),c.innerHTML=a.instructions.map(t=>`<li>${t}</li>`).join(""),n.style.display="flex")}function p(){let e=document.getElementById("recipe-modal");e&&(e.style.display="none")}document.addEventListener("click",e=>{let a=document.getElementById("recipe-modal");e.target===a&&p()});window.switchTab=d;window.openRecipeModal=k;window.closeModal=p;document.addEventListener("DOMContentLoaded",b);})();
+const imgBase = "../0.spec/Images/";
+
+const recipes = {
+    salads: [
+        {
+            id: "caesar",
+            name: "Maya's Caesar Salad",
+            image: "20251201_192237.jpg",
+            quote: "A vegan twist on the classic that'll make Julius proud. Creamy, garlicky, and absolutely addictive.",
+            ingredients: ["Lettuce", "Any vegetables you want", "1 part canola oil", "1/2 part olive oil", "1.5 parts soy milk", "1 part lemon juice", "Capful of vinegar", "4-6 heads garlic", "Salt to taste"],
+            instructions: ["Blend canola oil, soy milk, and vinegar until thick like mayo", "Add lemon juice, olive oil, garlic, and salt", "Wash lettuce and vegetables", "Dress immediately before serving"]
+        },
+        {
+            id: "rice-chickpea",
+            name: "Rice & Chickpea Salad",
+            image: "20251201_192243.jpg",
+            quote: "The ultimate Middle Eastern comfort bowl with crispy fried onions on top.",
+            ingredients: ["Cooked rice", "Chickpeas", "Crispy fried onions", "Middle Eastern spices", "Fresh herbs", "Olive oil", "Lemon juice"],
+            instructions: ["Cook rice and let cool", "Mix with chickpeas", "Add spices and herbs", "Top with crispy fried onions", "Dress with olive oil and lemon"]
+        },
+        {
+            id: "cabbage",
+            name: "Noa's Cabbage Salad",
+            image: "20251201_192246.jpg",
+            quote: "Crunchy, nutty, and dangerously addictive. Asian-inspired dressing transforms humble cabbage.",
+            ingredients: ["Cabbage, shredded", "Nuts (almonds or peanuts)", "Asian dressing", "Sesame seeds", "Green onions"],
+            instructions: ["Shred cabbage finely", "Toast nuts", "Mix dressing ingredients", "Combine all and toss", "Top with sesame seeds"]
+        },
+        {
+            id: "lentil-sweet-potato",
+            name: "Lentil & Sweet Potato Salad",
+            image: "20251201_192250.jpg",
+            quote: "Sweet meets earthy in this colorful powerhouse. The silan dressing adds Israeli magic.",
+            ingredients: ["Lentils, cooked", "Sweet potato, roasted", "Silan (date syrup)", "Olive oil", "Lemon", "Fresh herbs"],
+            instructions: ["Cook lentils until tender", "Roast sweet potato cubes", "Make silan dressing", "Combine all ingredients", "Garnish with fresh herbs"]
+        }
+    ],
+    breads: [
+        {
+            id: "challah",
+            name: "Laudae's Challah",
+            image: "20251201_192252.jpg",
+            quote: "The golden, braided beauty that makes Friday nights magical. Fluffy, slightly sweet, and gorgeous.",
+            ingredients: ["500g flour", "7g dry yeast", "1/4 cup sugar", "2 eggs + 1 for wash", "1/4 cup oil", "1 cup warm water", "1 tsp salt"],
+            instructions: ["Mix yeast with warm water and sugar", "Add eggs, oil, and salt", "Gradually add flour and knead", "Let rise for 1 hour", "Braid and let rise again", "Egg wash and bake at 180°C for 30 min"]
+        },
+        {
+            id: "vegan-challah",
+            name: "Maya's Vegan Challah",
+            image: "20251201_192258.jpg",
+            quote: "Who says challah needs eggs? Plant-based beauty with whole wheat goodness.",
+            ingredients: ["Whole wheat flour", "Dry yeast", "Maple syrup", "Olive oil", "Warm water", "Salt", "Za'atar or garlic (for stuffing)"],
+            instructions: ["Mix yeast with warm water", "Add maple syrup and oil", "Knead with flour", "Let rise", "Stuff with za'atar or garlic", "Braid and bake"]
+        },
+        {
+            id: "pizza-dough",
+            name: "Vegan Pizza Dough",
+            image: "20251201_192301.jpg",
+            quote: "Four perfect pizza bases from scratch. Crispy outside, chewy inside. Friday night sorted.",
+            ingredients: ["500g flour", "7g dry yeast", "1 tsp sugar", "1.5 cups warm water", "2 tbsp olive oil", "1 tsp salt"],
+            instructions: ["Activate yeast in warm water with sugar", "Add oil and salt", "Mix in flour gradually", "Knead until smooth", "Let rise 1 hour", "Divide into 4 balls"]
+        },
+        {
+            id: "jerusalem-bagels",
+            name: "Jerusalem Bagels",
+            image: "20251201_192306.jpg",
+            quote: "Soft, sesame-covered rings of joy. Not NYC bagels - pillowy, oblong, and addictive.",
+            ingredients: ["500g flour", "10g dry yeast", "1 tbsp sugar", "1.5 cups warm water", "1 tsp salt", "Sesame seeds", "Egg wash"],
+            instructions: ["Mix yeast with water and sugar", "Add flour and salt, knead", "Let rise 1 hour", "Shape into oblong rings", "Dip in sesame seeds", "Bake at 200°C until golden"]
+        }
+    ],
+    pies: [
+        {
+            id: "cheese-onion",
+            name: "Cheese & Onion Pie",
+            image: "20251201_192309.jpg",
+            quote: "A cheesy, buttery hug in pie form. Crispy pastry meets gooey filling in the most comforting way.",
+            ingredients: ["Pie dough", "3 large onions, sliced", "200g cheese (mix of cheddar and feta)", "2 eggs", "1 cup cream", "Butter for frying", "Salt and pepper"],
+            instructions: ["Caramelize onions slowly in butter", "Prepare pie dough in pan", "Mix eggs, cream, and cheese", "Add cooled onions", "Pour into crust", "Bake at 180°C for 40 min"]
+        },
+        {
+            id: "basic-dough",
+            name: "Basic Pie Dough",
+            image: "20251201_192317.jpg",
+            quote: "The foundation of all great pies - flaky, buttery, and surprisingly easy.",
+            ingredients: ["2.5 cups flour", "200g cold butter, cubed", "1 tsp salt", "1 tbsp sugar", "6-8 tbsp ice water"],
+            instructions: ["Combine flour, salt, and sugar", "Cut in cold butter until pea-sized", "Add ice water gradually", "Form into disc", "Chill for 1 hour", "Roll out as needed"]
+        },
+        {
+            id: "sweet-potato-goat",
+            name: "Sweet Potato & Goat Cheese Pie",
+            image: "20251201_192321.jpg",
+            quote: "Creamy, sweet, tangy perfection. Pine nuts add crunch, goat cheese brings the funk.",
+            ingredients: ["Pie dough", "2 sweet potatoes, cubed", "150g goat cheese", "2 eggs", "1/2 cup cream", "Pine nuts", "Fresh thyme"],
+            instructions: ["Roast sweet potato cubes", "Pre-bake pie crust", "Mix eggs, cream, and goat cheese", "Layer sweet potato in crust", "Pour egg mixture over", "Top with pine nuts", "Bake until golden"]
+        },
+        {
+            id: "fatair",
+            name: "Fatair (Spinach Pies)",
+            image: "20251201_192328.jpg",
+            quote: "Crispy pockets of herby, lemony, sumac-kissed goodness. Perfect for sharing (or not).",
+            ingredients: ["Dough for pastries", "Fresh spinach", "Onion, diced", "Lemon juice", "Sumac", "Olive oil", "Salt"],
+            instructions: ["Make or buy dough", "Chop spinach and mix with onion", "Season with lemon, sumac, salt, oil", "Form triangular pockets", "Bake until golden and crispy"]
+        }
+    ],
+    mains: [
+        {
+            id: "dal",
+            name: "Dal",
+            image: "20251201_192335.jpg",
+            quote: "The ultimate comfort food. Spiced lentils simmered with sweet potato. India meets your kitchen.",
+            ingredients: ["2 cups lentils", "1 sweet potato, cubed", "1 potato, cubed", "1 onion", "2 tomatoes", "Garlic, ginger", "Turmeric, cumin, cinnamon", "Coconut cream"],
+            instructions: ["Soak lentils 1 hour", "Fry onion and potatoes", "Add spices and tomatoes", "Add lentils and water", "Simmer 40 minutes", "Finish with coconut cream"]
+        },
+        {
+            id: "stuffed-veg",
+            name: "Stuffed Summer Vegetables",
+            image: "20251201_192341.jpg",
+            quote: "Gorgeous eggplants and peppers with herby, lemony, lentil-rice filling. Worth every minute.",
+            ingredients: ["Eggplants and peppers", "Rice", "Lentils", "Onion", "Fresh herbs", "Lemon juice", "Olive oil", "Spices"],
+            instructions: ["Hollow out vegetables", "Make rice-lentil filling", "Season with herbs and lemon", "Stuff vegetables", "Cook slowly in sauce", "Finish in oven"]
+        },
+        {
+            id: "stuffed-zucchini",
+            name: "Stuffed Zucchini",
+            image: "20251201_192349.jpg",
+            quote: "Little green tubes of herby, lemony, rice-filled happiness. Yogurt dip takes it to unforgettable.",
+            ingredients: ["Zucchini", "Rice", "Fresh herbs", "Lemon", "Yogurt for dip", "Garlic", "Mint"],
+            instructions: ["Hollow zucchini carefully", "Prepare herbed rice filling", "Stuff zucchini", "Cook in lemony broth", "Serve with yogurt-garlic dip"]
+        },
+        {
+            id: "tofu-shawarma",
+            name: "Noa's Tofu Shawarma",
+            image: "20251201_192401.jpg",
+            quote: "The vegan shawarma that fooled carnivores. Crispy, spicy, legitimately delicious.",
+            ingredients: ["Firm tofu", "Shawarma spice mix", "Olive oil", "Lemon juice", "Garlic", "Paprika, cumin, turmeric"],
+            instructions: ["Press and slice tofu", "Make shawarma spice marinade", "Marinate tofu 30 min+", "Pan fry until crispy", "Serve in pita with hummus"]
+        },
+        {
+            id: "grape-leaves",
+            name: "Stuffed Grape Leaves",
+            image: "20251201_192405.jpg",
+            quote: "The art of rolling tiny parcels of lemony, herby rice. Tedious? Yes. Worth it? Absolutely.",
+            ingredients: ["Grape leaves", "Rice", "Fresh herbs (parsley, mint, dill)", "Lemon juice", "Olive oil", "Onion"],
+            instructions: ["Rinse grape leaves", "Make herbed rice filling", "Place filling on leaves", "Roll tightly", "Pack in pot", "Cook slowly with lemon and oil"]
+        },
+        {
+            id: "aloo-gobi",
+            name: "Aloo Gobi",
+            image: "20251201_192407.jpg",
+            quote: "The Indian classic. Humble veggies become a golden, aromatic masterpiece.",
+            ingredients: ["Cauliflower", "Potatoes", "Onion", "Tomatoes", "Turmeric, cumin, coriander", "Ginger, garlic", "Fresh cilantro"],
+            instructions: ["Cut cauliflower and potatoes", "Fry onions with spices", "Add vegetables", "Cook until tender", "Garnish with cilantro"]
+        },
+        {
+            id: "fritters",
+            name: "Chard & Eggplant Fritters",
+            image: "20251201_192413.jpg",
+            quote: "Crispy outside, tender inside, packed with hidden veggies. Healthy-ish comfort food.",
+            ingredients: ["Chard leaves", "Eggplant", "Eggs", "Flour", "Onion", "Fresh herbs", "Spices"],
+            instructions: ["Cook and chop chard", "Roast and mash eggplant", "Mix with eggs and flour", "Add herbs and spices", "Form patties and fry"]
+        },
+        {
+            id: "special-rice",
+            name: "Rice Ma Sheyesh",
+            image: "20251201_192417.jpg",
+            quote: "The 'whatever you have' rice that always turns out amazing. 3 onions per cup is the secret.",
+            ingredients: ["Rice", "3 onions per cup rice", "Raisins", "Toasted nuts", "Cinnamon, cardamom", "Olive oil or butter"],
+            instructions: ["Caramelize onions slowly", "Toast rice in oil", "Add water and spices", "Cook until fluffy", "Mix in raisins and nuts"]
+        },
+        {
+            id: "potato-mash",
+            name: "George's Potato Mash",
+            image: "20251201_192422.jpg",
+            quote: "The mashed potatoes that broke the dinner table. Creamy, garlicky, oniony perfection.",
+            ingredients: ["Potatoes", "Butter (lots)", "Cream or milk", "Garlic", "Caramelized onions", "Salt and pepper"],
+            instructions: ["Boil potatoes until tender", "Mash with butter and cream", "Add roasted garlic", "Mix in caramelized onions", "Trust your instincts"]
+        },
+        {
+            id: "bean-burgers",
+            name: "Bean Burgers",
+            image: "20251201_192424.jpg",
+            quote: "The simplest bean patty recipe that works. If it falls apart, make Hecshia instead.",
+            ingredients: ["Canned beans", "Onion", "Garlic", "Breadcrumbs", "Spices", "Egg or flax egg"],
+            instructions: ["Mash beans roughly", "Mix with aromatics and binder", "Form patties", "Fry until golden", "Serve in buns"]
+        }
+    ],
+    dips: [
+        {
+            id: "baba-ganoush",
+            name: "George's Baba Ganoush",
+            image: "20251201_192428.jpg",
+            quote: "Smoky, creamy, lemony perfection. Roast eggplants until charred and drain ALL the liquid.",
+            ingredients: ["2 large eggplants", "3 tbsp tahini", "2 garlic cloves", "Juice of 1 lemon", "Olive oil", "Salt", "Parsley"],
+            instructions: ["Char eggplants over flame until collapsed", "Scoop out flesh, drain well", "Mash with tahini and garlic", "Add lemon juice and salt", "Drizzle with olive oil", "Garnish with parsley"]
+        },
+        {
+            id: "pepper-spread",
+            name: "Roasted Pepper Spread",
+            image: "20251201_192430.jpg",
+            quote: "Sweet, smoky, utterly addictive. The oregano is non-negotiable.",
+            ingredients: ["Red peppers", "Garlic", "Olive oil", "Oregano (don't skip!)", "Salt", "Chili flakes (optional)"],
+            instructions: ["Roast peppers until charred", "Peel and remove seeds", "Blend with garlic and oil", "Season with oregano and salt", "Let flavors meld"]
+        },
+        {
+            id: "shani-tomatoes",
+            name: "Eyal Shani Tomatoes",
+            image: "20251201_192434.jpg",
+            quote: "Deceptively simple dish that'll blow your mind. Crushed tomatoes, sour cream, olive oil, challah.",
+            ingredients: ["Ripe tomatoes", "Sour cream or labneh", "Good olive oil", "Flaky salt", "Fresh challah"],
+            instructions: ["Crush ripe tomatoes roughly", "Dollop sour cream on top", "Drizzle generously with olive oil", "Sprinkle flaky salt", "Scoop with challah"]
+        }
+    ],
+    desserts: [
+        {
+            id: "carrot-cake",
+            name: "George's Birthday Carrot Cake",
+            image: "20251201_192437.jpg",
+            quote: "The legendary carrot cake. Moist, spiced, loaded with pineapple and nuts.",
+            ingredients: ["Grated carrots", "Crushed pineapple", "Walnuts", "Flour, sugar, eggs", "Cinnamon, nutmeg", "Cream cheese frosting"],
+            instructions: ["Mix wet ingredients", "Combine dry ingredients", "Fold together gently", "Add carrots, pineapple, nuts", "Bake at 180°C", "Cool and frost generously"]
+        },
+        {
+            id: "banana-bread",
+            name: "Banana Bread",
+            image: "20251201_192441.jpg",
+            quote: "Rescues overripe bananas. Walnuts and chocolate chips are 'optional' but not really.",
+            ingredients: ["4 ripe bananas", "1/2 cup sugar", "1/2 cup butter", "2 eggs", "1.5 cups flour", "Baking soda, cinnamon", "Walnuts, chocolate chips"],
+            instructions: ["Mash bananas", "Mix with sugar, butter, eggs", "Add dry ingredients", "DON'T OVERMIX", "Fold in nuts and chips", "Bake 50-60 min at 180°C"]
+        },
+        {
+            id: "chocotorta",
+            name: "Vale's Chocotorta",
+            image: "20251201_192444.jpg",
+            quote: "Argentinian no-bake cake. Layers of milk-soaked cookies and dulce de leche cream cheese.",
+            ingredients: ["Chocolate cookies", "Coffee or milk", "Dulce de leche", "Cream cheese", "Heavy cream"],
+            instructions: ["Dip cookies in coffee/milk", "Layer in pan", "Mix dulce de leche with cream cheese", "Spread over cookies", "Repeat layers", "Freeze 4+ hours"]
+        },
+        {
+            id: "cheesecake",
+            name: "Noa's Cheesecake",
+            image: "20251201_192449.jpg",
+            quote: "Aussie-style cheesecake with biscuit base. Cool in oven with door ajar for perfect texture.",
+            ingredients: ["Biscuit crumbs", "Butter", "Cream cheese", "Sugar", "Eggs", "Vanilla", "Sour cream", "Berry coulis"],
+            instructions: ["Make biscuit base", "Beat cream cheese smooth", "Add eggs one at a time", "Pour over base", "Bake, then cool slowly", "Top with berry coulis"]
+        },
+        {
+            id: "matzah-brittle",
+            name: "Rina's Matzah Brittle",
+            image: "20251201_192456.jpg",
+            quote: "Passover treat that transcends the holiday. Caramel, chocolate, and crunchy matzah.",
+            ingredients: ["Matzah sheets", "1 cup butter", "1 cup brown sugar", "Chocolate chips", "Sea salt", "Nuts (optional)"],
+            instructions: ["Line pan with matzah", "Boil butter and sugar to caramel", "Pour over matzah", "Bake 5 min", "Top with chocolate chips", "Spread and add salt/nuts", "Chill and break into pieces"]
+        },
+        {
+            id: "zucchini-bread",
+            name: "George's Zucchini Bread",
+            image: "20251201_192458.jpg",
+            quote: "Sneaky way to eat vegetables for dessert. Don't squeeze the zucchini - that moisture is your friend.",
+            ingredients: ["Grated zucchini", "3 eggs", "1 cup oil", "2 cups sugar", "3 cups flour", "Cinnamon, baking soda", "Walnuts"],
+            instructions: ["Grate zucchini (don't squeeze)", "Beat eggs, oil, sugar", "Add dry ingredients", "Fold in zucchini and walnuts", "Divide into 2 loaf pans", "Bake 1 hour at 175°C"]
+        }
+    ],
+    others: [
+        {
+            id: "granola",
+            name: "Homemade Granola",
+            image: "20251201_192502.jpg",
+            quote: "Costs a fortune at fancy stores but 30 minutes at home. Crunchy, nutty, customizable.",
+            ingredients: ["3 cups oats", "1 cup nuts (any mix)", "1/2 cup honey/maple", "1/4 cup oil", "Cinnamon, salt", "Dried fruit (after baking)"],
+            instructions: ["Mix oats and nuts", "Combine honey and oil", "Toss together with spices", "Spread on baking sheet", "Bake at 150°C for 25-30 min", "Stir halfway", "Add dried fruit when cool"]
+        }
+    ]
+};
+
+// Category switching
+document.querySelectorAll('.category-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        const category = tab.dataset.category;
+
+        // Update tabs
+        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Update sections
+        document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(category).classList.add('active');
+    });
+});
+
+// Render recipes
+function renderRecipes() {
+    for (const [category, items] of Object.entries(recipes)) {
+        const grid = document.getElementById(`${category}-grid`);
+        if (!grid) continue;
+
+        grid.innerHTML = items.map(recipe => `
+            <div class="recipe-card" onclick="openModal('${category}', '${recipe.id}')">
+                <div class="recipe-card__image">
+                    <img src="${imgBase}${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">
+                </div>
+                <div class="recipe-card__content">
+                    <h3 class="recipe-card__title">${recipe.name}</h3>
+                    <p class="recipe-card__description">${recipe.quote}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+}
+
+// Modal functions
+function openModal(category, id) {
+    const recipe = recipes[category].find(r => r.id === id);
+    if (!recipe) return;
+
+    document.getElementById('modal-image').src = imgBase + recipe.image;
+    document.getElementById('modal-title').textContent = recipe.name;
+    document.getElementById('modal-quote').textContent = recipe.quote;
+    document.getElementById('modal-ingredients').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
+    document.getElementById('modal-instructions').innerHTML = recipe.instructions.map(i => `<li>${i}</li>`).join('');
+
+    document.getElementById('recipe-modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    document.getElementById('recipe-modal').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+// Close modal on backdrop click
+document.getElementById('recipe-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'recipe-modal') closeModal();
+});
+
+// Close on escape
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+});
+
+// Initialize
+renderRecipes();
 </script>
+
 </body>
 </html>

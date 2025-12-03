@@ -90,14 +90,6 @@ const scrollToSection = (id: string) => {
           </a>
           <a
             class="tab-btn"
-            href="#sphere"
-            @click.prevent="scrollToSection('sphere')"
-          >
-            <Icon name="lucide:box" :size="14" />
-            SPHERE
-          </a>
-          <a
-            class="tab-btn"
             href="#medias"
             @click.prevent="scrollToSection('medias')"
           >
@@ -112,6 +104,14 @@ const scrollToSection = (id: string) => {
             <Icon name="lucide:terminal" :size="14" />
             TERMINAL
           </a>
+          <a
+            class="tab-btn"
+            href="#sphere"
+            @click.prevent="scrollToSection('sphere')"
+          >
+            <Icon name="lucide:box" :size="14" />
+            SPHERE
+          </a>
         </nav>
       </header>
 
@@ -125,6 +125,16 @@ const scrollToSection = (id: string) => {
         <!-- Player Section -->
         <section id="player" class="view-section">
           <PlayerView :data="data" />
+        </section>
+
+        <!-- Medias Section -->
+        <section id="medias" class="view-section">
+          <MediasView :media-links="mediaLinks" />
+        </section>
+
+        <!-- Terminal Section -->
+        <section id="terminal" class="view-section">
+          <TerminalAI />
         </section>
 
         <!-- Sphere Section -->
@@ -142,14 +152,18 @@ const scrollToSection = (id: string) => {
           />
         </section>
 
-        <!-- Medias Section -->
-        <section id="medias" class="view-section">
-          <MediasView :media-links="mediaLinks" />
-        </section>
-
-        <!-- Terminal Section -->
-        <section id="terminal" class="view-section">
-          <TerminalAI />
+        <!-- Linktree CTA -->
+        <section class="linktree-cta">
+          <a
+            href="https://linktree.diegonmarcos.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="linktree-btn shimmer"
+          >
+            <Icon name="lucide:link" :size="20" />
+            <span>LINKTREE</span>
+            <Icon name="lucide:external-link" :size="16" />
+          </a>
         </section>
       </div>
     </main>

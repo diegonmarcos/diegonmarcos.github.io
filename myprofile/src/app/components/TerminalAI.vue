@@ -9,11 +9,6 @@ const userInput = ref('')
 const isTyping = ref(false)
 const terminalRef = ref<HTMLElement | null>(null)
 
-// Goose state
-const gooseX = ref(0)
-const gooseDirection = ref(1) // 1 = right, -1 = left
-const gooseFrame = ref(0)
-
 // Coding jokes for responses
 const codingJokes = [
   "Why do programmers prefer dark mode? Because light attracts bugs!",
@@ -47,6 +42,7 @@ const generateAIGreeting = () => {
   const greetings = [
     `> INITIALIZING AI PERSONALITY MODULE...`,
     `> SCANNING VISITOR DATA...`,
+    `> READING COOKIES & ANALYTICS...`,
     ``,
     `Hello there, mysterious visitor from ${city}, ${country}!`,
     ``,
@@ -63,12 +59,32 @@ const generateAIGreeting = () => {
     ``,
     `Your browser language is '${language}'... ${language.startsWith('en') ? "English speaker! Or at least your browser thinks so." : "Ooh, international visitor! Fancy!"}`,
     ``,
+  ]
+
+  const analyticsInfo = [
+    `> ANALYTICS REPORT:`,
+    ``,
+    `Oh, and I'm also tracking your every move with Matomo analytics!`,
+    `Every click, every scroll, every hover... I see it all. 👀`,
+    ``,
+    `Your session has a unique visitor ID stored in cookies.`,
+    `Don't worry, it's self-hosted - your data stays with me, not Big Tech!`,
+    ``,
+    `I can see: page views, time spent, scroll depth, button clicks...`,
+    `Basically, I know you read this far. Impressive attention span!`,
+    ``,
+    `> FUN FACT: This site uses first-party cookies only.`,
+    `> No third-party trackers stalking you across the web!`,
+    ``,
+    `Your referrer? ${document.referrer ? `You came from: ${document.referrer}` : "Direct visit - you typed the URL yourself or used a bookmark!"}`,
+    ``,
     `> This demo shows how much data websites can collect about you.`,
+    `> All analytics here are privacy-respecting and GDPR compliant.`,
     `> Type anything below and I'll respond with programmer humor!`,
     ``,
   ]
 
-  return [...greetings, ...funnyQuestions]
+  return [...greetings, ...funnyQuestions, ...analyticsInfo]
 }
 
 // Typewriter effect
@@ -129,27 +145,9 @@ const scrollToBottom = () => {
   })
 }
 
-// Goose animation
-const animateGoose = () => {
-  const terminalWidth = terminalRef.value?.clientWidth || 600
-  const gooseWidth = 60
-
-  gooseX.value += gooseDirection.value * 2
-  gooseFrame.value = (gooseFrame.value + 1) % 2
-
-  if (gooseX.value >= terminalWidth - gooseWidth) {
-    gooseDirection.value = -1
-  } else if (gooseX.value <= 0) {
-    gooseDirection.value = 1
-  }
-}
-
 // Lifecycle
 onMounted(async () => {
   await fetchUserData()
-
-  // Start goose animation
-  setInterval(animateGoose, 100)
 
   // Show AI greeting
   const greeting = generateAIGreeting()
@@ -169,17 +167,6 @@ onMounted(async () => {
     </div>
 
     <div ref="terminalRef" class="terminal-body">
-      <!-- Goose -->
-      <div
-        class="goose"
-        :style="{
-          left: gooseX + 'px',
-          transform: gooseDirection === -1 ? 'scaleX(-1)' : 'scaleX(1)'
-        }"
-      >
-        <pre class="goose-art">{{ gooseFrame === 0 ? gooseFrame1 : gooseFrame2 }}</pre>
-      </div>
-
       <!-- Terminal lines -->
       <div v-if="isLoading" class="terminal-loading">
         <span class="blink">Scanning your digital footprint...</span>
@@ -205,26 +192,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-
-<script lang="ts">
-// Goose ASCII art frames
-const gooseFrame1 = `
-   __
-  /o \\___
- |     \\ \\
-  \\_/|__\\_\\
-     | |
-    _|_|_
-`
-
-const gooseFrame2 = `
-   __
-  /o \\___
- |     \\ \\
-  \\_/|__\\_\\
-    _| |
-     |_|_
-`
-
-export { gooseFrame1, gooseFrame2 }
-</script>

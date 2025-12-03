@@ -1,7 +1,7 @@
 // Zoom levels from 100% down to 20% (more cards fit at lower zoom)
-// Default is 40% (index 3)
+// Default is 60% (index 2)
 const ZOOM_LEVELS = [100, 80, 60, 40, 30, 20];
-const DEFAULT_ZOOM_INDEX = 3; // 40%
+const DEFAULT_ZOOM_INDEX = 2; // 60%
 const ZOOM_STORAGE_KEY = 'cloud-dashboard-zoom';
 
 let currentZoomIndex = DEFAULT_ZOOM_INDEX;

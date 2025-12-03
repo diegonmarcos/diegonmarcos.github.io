@@ -21,26 +21,16 @@
   <meta name="twitter:description" content="Browse and discover movies and TV series with curated lists from IMDb">
   <meta name="twitter:image" content="https://diegonmarcos.github.io/mymovies/social-preview.png">
 
-  <!-- Matomo Tag Manager (with 3s timeout, disabled on file:// and localhost) -->
-  <script>
-    (function() {
-      // Skip analytics on local development
-      if (window.location.protocol === 'file:' ||
-          window.location.hostname === 'localhost' ||
-          window.location.hostname === '127.0.0.1') {
-        return;
-      }
-      var _mtm = window._mtm = window._mtm || [];
-      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_62tfw1ai.js';
-      var timeout = setTimeout(function() { g.remove(); }, 3000);
-      g.onload = function() { clearTimeout(timeout); };
-      g.onerror = function() { clearTimeout(timeout); g.remove(); };
-      s.parentNode.insertBefore(g,s);
-    })();
-  </script>
-  <!-- End Matomo Tag Manager -->
+<!-- Matomo Tag Manager -->
+<script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Tag Manager -->
 </head>
 <body>
   <div id="app"></div>

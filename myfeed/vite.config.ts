@@ -9,6 +9,8 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/myfeed/',
+  root: 'src',
+  publicDir: '../public',
   plugins: [
     vue(),
 
@@ -56,11 +58,13 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': fileURLToPath(new URL('./', import.meta.url)),
     },
   },
 
   build: {
+    outDir: '../dist',
+    emptyOutDir: true,
     sourcemap: false,
     minify: 'terser',
     rollupOptions: {

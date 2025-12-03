@@ -490,6 +490,7 @@ build_all() {
     execute_build "cv_pdf" "build" || _failed=$((_failed + 1))
     execute_build "myfeed" "build" || _failed=$((_failed + 1))
     execute_build "mygames" "build" || _failed=$((_failed + 1))
+    execute_build "nexus" "build" || _failed=$((_failed + 1))
     execute_build "cloud" "build" || _failed=$((_failed + 1))
     execute_build "feed_yourself" "build" || _failed=$((_failed + 1))
     execute_build "others" "build" || _failed=$((_failed + 1))
@@ -498,6 +499,7 @@ build_all() {
     execute_build "central_bank" "build" || _failed=$((_failed + 1))
     execute_build "mymaps" "build" || _failed=$((_failed + 1))
     execute_build "myprofile" "build" || _failed=$((_failed + 1))
+    execute_build "json-vision" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -521,6 +523,7 @@ clean_all_builds() {
     execute_build "cv_pdf" "clean" || true
     execute_build "myfeed" "clean" || true
     execute_build "mygames" "clean" || true
+    execute_build "nexus" "clean" || true
     execute_build "cloud" "clean" || true
     execute_build "feed_yourself" "clean" || true
     execute_build "others" "clean" || true
@@ -529,6 +532,7 @@ clean_all_builds() {
     execute_build "central_bank" "clean" || true
     execute_build "mymaps" "clean" || true
     execute_build "myprofile" "clean" || true
+    execute_build "json-vision" "clean" || true
 
     log_success "All build artifacts cleaned"
 }

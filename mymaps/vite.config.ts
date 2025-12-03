@@ -6,13 +6,16 @@ import path from 'path';
 export default defineConfig({
   plugins: [react(), viteSingleFile()],
   base: './', // Relative paths for portability
+  root: 'src',
+  publicDir: '../public',
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
+    emptyOutDir: true,
     assetsInlineLimit: 100000000, // Force inline
   },
 });

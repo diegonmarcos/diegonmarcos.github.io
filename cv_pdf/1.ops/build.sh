@@ -91,13 +91,13 @@ build() {
             } else {
                 print $0
             }
-        }' "$PROJECT_DIR/index.html" > "$DIST_DIR/index.html"
+        }' "$PROJECT_DIR/src_static/index.html" > "$DIST_DIR/index.html"
 
         rm -f "$DIST_DIR/pdf_base64.tmp"
         log_success "PDF embedded in index.html"
     else
         log_warning "PDF file not found, copying index.html as-is"
-        cp "$PROJECT_DIR/index.html" "$DIST_DIR/index.html"
+        cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
     fi
 
     log_success "Build completed → $DIST_DIR"

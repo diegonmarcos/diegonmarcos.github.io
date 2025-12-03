@@ -11,10 +11,6 @@ header {
         letter-spacing: 2px;
         margin-bottom: 0.25rem;
         transition: all var(--transition-speed) ease;
-
-        @media (max-width: 768px) {
-            font-size: 1.2rem;
-        }
     }
 }
 
@@ -30,10 +26,6 @@ header {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-
-        @media (max-width: 768px) {
-            font-size: 2rem;
-        }
     }
 }
 
@@ -43,10 +35,6 @@ header {
     text-transform: uppercase;
     letter-spacing: 1px;
     transition: all var(--transition-speed) ease;
-
-    @media (max-width: 768px) {
-        font-size: 0.75rem;
-    }
 }
 
 [data-theme="blurred"] .subtitle {
@@ -54,10 +42,6 @@ header {
     text-transform: none;
     letter-spacing: normal;
     font-weight: 300;
-
-    @media (max-width: 768px) {
-        font-size: 1rem;
-    }
 }
 
 .section-header {
@@ -146,22 +130,6 @@ header {
             transform: translateX(0);
         }
     }
-
-    @media (max-width: 768px) {
-        width: 32px;
-        height: 32px;
-        top: 0.5rem;
-        right: 0.5rem;
-
-        svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .theme-label {
-            display: none;
-        }
-    }
 }
 
 [data-theme="blurred"] .theme-toggle {
@@ -197,12 +165,6 @@ header {
     &:hover {
         opacity: 1;
         border-color: var(--accent-primary);
-    }
-
-    @media (max-width: 768px) {
-        top: 3rem;
-        right: 0.5rem;
-        padding: 0.15rem;
     }
 }
 
@@ -246,16 +208,6 @@ header {
         opacity: 0.3;
         cursor: not-allowed;
     }
-
-    @media (max-width: 768px) {
-        width: 24px;
-        height: 24px;
-
-        svg {
-            width: 14px;
-            height: 14px;
-        }
-    }
 }
 
 [data-theme="blurred"] .zoom-btn {
@@ -274,11 +226,6 @@ header {
     min-width: 32px;
     text-align: center;
     user-select: none;
-
-    @media (max-width: 768px) {
-        font-size: 0.6rem;
-        min-width: 28px;
-    }
 }
 
 [data-theme="blurred"] .zoom-level {

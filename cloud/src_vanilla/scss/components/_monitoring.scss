@@ -506,26 +506,3 @@
   }
 }
 
-// Responsive
-@media (max-width: 768px) {
-  .vm-status-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .service-health-row {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-
-  .resources-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .resources-table {
-    font-size: 0.7rem;
-
-    th, td {
-      padding: 0.5rem 0.25rem;
-    }
-  }
-}

@@ -3,25 +3,11 @@
     grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 220px), 1fr));
     gap: calc(1rem * var(--zoom-scale, 1));
     animation: fadeIn 0.8s ease-out;
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-    }
-
-    @media (max-width: 480px) {
-        grid-template-columns: 1fr;
-    }
 }
 
 [data-theme="blurred"] .cards-grid {
     grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 280px), 1fr));
     gap: calc(2rem * var(--zoom-scale, 1));
-
-    @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
 }
 
 .card {
@@ -36,10 +22,6 @@
     display: block;
     transform-origin: center center;
     z-index: 1;
-
-    @media (max-width: 768px) {
-        padding: 0.75rem;
-    }
 
     &:hover {
         background: var(--bg-card-hover);
@@ -135,10 +117,6 @@
     & > * {
         position: relative;
         z-index: 1;
-    }
-
-    @media (max-width: 768px) {
-        padding: 1.5rem;
     }
 }
 

@@ -2,11 +2,15 @@ import { initCardEffects, initStatusPulse } from './card-effects';
 import { handleCardClick } from './service-handler';
 import { initViewToggle, initTreeExpand, initTreeServiceClick, initTreeControls } from './tree-view';
 import { initThemeSwitcher } from './theme-switcher';
+import { initZoomControl } from './zoom-control';
 import type { ServiceId } from './types';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Theme initialization (first to prevent flash)
     initThemeSwitcher();
+
+    // Zoom control initialization
+    initZoomControl();
 
     // Card view initialization
     initCardEffects();

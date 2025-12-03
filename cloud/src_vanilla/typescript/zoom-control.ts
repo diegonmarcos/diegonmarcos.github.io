@@ -81,9 +81,15 @@ function applyZoom(): void {
     const baseMinWidth = isBlurred ? 280 : 220;
     const scaledMinWidth = Math.round(baseMinWidth * scale);
 
+    // Calculate hover scale: smaller cards need bigger hover expansion
+    // At 100% zoom: hover scale = 1.5x (small expansion)
+    // At 20% zoom: hover scale = 3x (bigger expansion to be readable)
+    const hoverScale = 1 + (1 - scale) * 2.5;
+
     // Apply CSS custom property for grid
     root.style.setProperty('--card-min-width', `${scaledMinWidth}px`);
     root.style.setProperty('--zoom-scale', scale.toString());
+    root.style.setProperty('--hover-scale', hoverScale.toFixed(2));
 
     // Scale card content
     if (cardsView) {

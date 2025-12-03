@@ -6,6 +6,8 @@ export type ServiceId =
     | 'mail'            // mailserver
     | 'terminal'        // Web_Shell_Terminal
     | 'agentic-dashboard' // Agentic_Dashboard
+    | 'gitea'           // Gitea git server
+    | 'openvpn'         // OpenVPN server
     // Cloud Providers (Management)
     | 'vps-oracle'      // OCloud-Management
     | 'vps-gcloud'      // Gcloud_Management

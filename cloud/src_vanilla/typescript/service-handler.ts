@@ -10,6 +10,8 @@ const serviceUrls: ServiceUrls = {
     'mail': '#pending',                                  // mailserver
     'terminal': '#pending',                              // Web_Shell_Terminal
     'agentic-dashboard': '#pending',                     // Agentic_Dashboard
+    'gitea': '#pending',                                 // Gitea git server
+    'openvpn': '#pending',                               // OpenVPN server
 
     // Cloud Providers (Management)
     'vps-oracle': 'https://cloud.oracle.com/',           // OCloud-Management

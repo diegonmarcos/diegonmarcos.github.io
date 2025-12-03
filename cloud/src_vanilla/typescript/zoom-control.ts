@@ -1,8 +1,10 @@
-// Zoom levels from 100% down to 40% (more cards fit at lower zoom)
-const ZOOM_LEVELS = [100, 85, 70, 55, 40];
+// Zoom levels from 100% down to 20% (more cards fit at lower zoom)
+// Default is 40% (index 3)
+const ZOOM_LEVELS = [100, 80, 60, 40, 30, 20];
+const DEFAULT_ZOOM_INDEX = 3; // 40%
 const ZOOM_STORAGE_KEY = 'cloud-dashboard-zoom';
 
-let currentZoomIndex = 0;
+let currentZoomIndex = DEFAULT_ZOOM_INDEX;
 
 export function initZoomControl(): void {
     const zoomOut = document.getElementById('zoom-out');
@@ -45,7 +47,7 @@ export function initZoomControl(): void {
     });
 
     zoomReset.addEventListener('click', () => {
-        currentZoomIndex = 0;
+        currentZoomIndex = DEFAULT_ZOOM_INDEX;
         applyZoom();
         updateUI();
         saveZoom();
@@ -58,7 +60,7 @@ export function initZoomControl(): void {
         // Disable buttons at limits
         (zoomIn as HTMLButtonElement).disabled = currentZoomIndex === 0;
         (zoomOut as HTMLButtonElement).disabled = currentZoomIndex === ZOOM_LEVELS.length - 1;
-        (zoomReset as HTMLButtonElement).disabled = currentZoomIndex === 0;
+        (zoomReset as HTMLButtonElement).disabled = currentZoomIndex === DEFAULT_ZOOM_INDEX;
     }
 
     function saveZoom(): void {

@@ -30,10 +30,12 @@
     border-radius: var(--border-radius);
     padding: calc(var(--card-padding) * var(--zoom-scale, 1));
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    transition: all 0.3s ease, transform 0.3s ease;
     position: relative;
     text-decoration: none;
     display: block;
+    transform-origin: center center;
+    z-index: 1;
 
     @media (max-width: 768px) {
         padding: 0.75rem;
@@ -42,6 +44,9 @@
     &:hover {
         background: var(--bg-card-hover);
         border-color: var(--border-highlight);
+        transform: scale(2);
+        z-index: 100;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
 
         .card-icon {
             color: var(--accent-primary);
@@ -96,7 +101,7 @@
     }
 
     &:hover {
-        transform: translateY(-8px) scale(1.02);
+        transform: scale(2);
         box-shadow: 0 20px 60px var(--shadow), 0 0 40px var(--glow);
         border-color: var(--accent-blue);
 
@@ -109,7 +114,6 @@
         }
 
         .card-icon {
-            transform: scale(1.15) rotate(5deg);
             filter: drop-shadow(0 0 12px var(--accent-blue));
         }
 
@@ -227,22 +231,22 @@
 
 // Card Actions (SSH commands, buttons)
 .card-actions {
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
+    margin-top: calc(0.5rem * var(--zoom-scale, 1));
+    padding-top: calc(0.5rem * var(--zoom-scale, 1));
     border-top: 1px solid var(--border-color);
 }
 
 [data-theme="blurred"] .card-actions {
-    margin-top: 1rem;
-    padding-top: 1rem;
+    margin-top: calc(1rem * var(--zoom-scale, 1));
+    padding-top: calc(1rem * var(--zoom-scale, 1));
 }
 
 .code-with-copy {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: calc(0.5rem * var(--zoom-scale, 1));
     background: var(--bg-primary);
-    padding: 0.4rem 0.5rem;
+    padding: calc(0.4rem * var(--zoom-scale, 1)) calc(0.5rem * var(--zoom-scale, 1));
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
 }
@@ -250,12 +254,13 @@
 [data-theme="blurred"] .code-with-copy {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
-    padding: 0.75rem 1rem;
+    padding: calc(0.75rem * var(--zoom-scale, 1)) calc(1rem * var(--zoom-scale, 1));
 }
 
+// Card code: smaller than title (h3 is 0.95rem, so code is 0.65rem - ~68% of title)
 .card-code {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: calc(0.65rem * var(--zoom-scale, 1));
     color: var(--accent-orange);
     flex: 1;
     overflow: hidden;
@@ -263,9 +268,10 @@
     white-space: nowrap;
 }
 
+// Blurred theme: h3 is 1.5rem, code should be ~0.75rem (~50% of title)
 [data-theme="blurred"] .card-code {
     color: var(--accent-green);
-    font-size: 0.85rem;
+    font-size: calc(0.75rem * var(--zoom-scale, 1));
 }
 
 .copy-icon {
@@ -273,15 +279,15 @@
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 0.25rem;
+    padding: calc(0.25rem * var(--zoom-scale, 1));
     display: flex;
     align-items: center;
     justify-content: center;
     transition: color var(--transition-speed) ease;
 
     svg {
-        width: 14px;
-        height: 14px;
+        width: calc(14px * var(--zoom-scale, 1));
+        height: calc(14px * var(--zoom-scale, 1));
     }
 
     &:hover {
@@ -297,30 +303,31 @@
 // VM Buttons
 .vm-buttons {
     display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
+    gap: calc(0.5rem * var(--zoom-scale, 1));
+    margin-top: calc(0.5rem * var(--zoom-scale, 1));
 }
 
+// VM button text: smaller than title (h3 is 0.95rem, btn is 0.55rem - ~58% of title)
 .vm-btn {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.25rem;
-    padding: 0.4rem;
+    gap: calc(0.25rem * var(--zoom-scale, 1));
+    padding: calc(0.4rem * var(--zoom-scale, 1));
     background: var(--bg-primary);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius);
     color: var(--text-secondary);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: calc(0.55rem * var(--zoom-scale, 1));
     text-transform: uppercase;
     cursor: pointer;
     transition: all var(--transition-speed) ease;
 
     svg {
-        width: 12px;
-        height: 12px;
+        width: calc(12px * var(--zoom-scale, 1));
+        height: calc(12px * var(--zoom-scale, 1));
     }
 
     &:hover:not(:disabled) {
@@ -336,9 +343,10 @@
 
 [data-theme="blurred"] .vm-btn {
     border-radius: 8px;
-    padding: 0.5rem 0.75rem;
+    padding: calc(0.5rem * var(--zoom-scale, 1)) calc(0.75rem * var(--zoom-scale, 1));
     backdrop-filter: blur(5px);
     background: rgba(255, 255, 255, 0.05);
+    font-size: calc(0.6rem * var(--zoom-scale, 1));
 
     &:hover:not(:disabled) {
         background: rgba(74, 158, 255, 0.1);

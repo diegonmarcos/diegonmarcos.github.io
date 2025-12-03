@@ -9,6 +9,8 @@ async function buildSPA() {
   await build({
     configFile: false,
     base: '/myfeed/',
+    root: 'src', // Set root to src directory
+    publicDir: '../public', // Public assets relative to project root
     plugins: [
       (await import('@vitejs/plugin-vue')).default(),
       viteSingleFile()
@@ -19,7 +21,7 @@ async function buildSPA() {
       }
     },
     build: {
-      outDir: 'dist',
+      outDir: '../dist', // Output to project root's dist folder
       sourcemap: false,
       minify: 'terser',
       emptyOutDir: true

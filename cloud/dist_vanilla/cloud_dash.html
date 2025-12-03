@@ -4,6 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Dashboard | Live Monitoring</title>
+
+    <!-- Matomo Tag Manager -->
+    <script>
+      var _mtm = window._mtm = window._mtm || [];
+      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      (function() {
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Tag Manager -->
+
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Dashboard-specific styles */
@@ -57,16 +69,6 @@
             align-items: center;
         }
 
-        .api-url-input {
-            padding: 0.5rem 1rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            width: 300px;
-        }
 
         .refresh-btn {
             display: flex;
@@ -315,14 +317,9 @@
             border-radius: 12px;
         }
 
-        .service-status.healthy {
+        .service-status.on {
             background: rgba(74, 222, 128, 0.15);
             color: var(--accent-green);
-        }
-
-        .service-status.error {
-            background: rgba(248, 113, 113, 0.15);
-            color: var(--accent-red);
         }
 
         .service-status.dev {
@@ -330,7 +327,12 @@
             color: var(--accent-blue);
         }
 
-        .service-status.na {
+        .service-status.hold {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        .service-status.tbd {
             background: rgba(156, 163, 175, 0.15);
             color: var(--text-tertiary);
         }
@@ -514,9 +516,6 @@
                 <h1>Live Monitoring Dashboard</h1>
             </div>
             <div class="dashboard-controls">
-                <input type="text" class="api-url-input" id="api-url"
-                       value="http://130.110.251.193:5000/api"
-                       placeholder="API URL">
                 <label class="auto-refresh-toggle">
                     <input type="checkbox" id="auto-refresh" checked>
                     Auto-refresh (30s)
@@ -616,15 +615,9 @@
 
     <script>
         // Configuration
-        let apiUrl = document.getElementById('api-url').value;
+        const apiUrl = 'http://130.110.251.193:5000/api';
         let autoRefreshInterval = null;
         let isLoading = false;
-
-        // Update API URL when input changes
-        document.getElementById('api-url').addEventListener('change', function() {
-            apiUrl = this.value;
-            refreshAll();
-        });
 
         // Auto-refresh toggle
         document.getElementById('auto-refresh').addEventListener('change', function() {
@@ -760,9 +753,10 @@
                 totalCount += cat.services.length;
                 cat.services.forEach(svc => {
                     const statusClass = svc.status.toLowerCase();
-                    const statusIcon = svc.status === 'HEALTHY' ? '●' :
-                                      svc.status === 'ERROR' ? '✖' :
-                                      svc.status === 'DEV' ? '◑' : '-';
+                    const statusIcon = svc.status === 'on' ? '●' :
+                                      svc.status === 'dev' ? '◑' :
+                                      svc.status === 'hold' ? '◐' :
+                                      svc.status === 'tbd' ? '○' : '-';
 
                     html += `
                         <div class="service-row">

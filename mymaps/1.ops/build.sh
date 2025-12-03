@@ -129,8 +129,8 @@ main() {
         build)      build ;;
         dev)        dev ;;
         clean)      clean ;;
-        help|-h|--help) print_usage ;;;
-        *)          print_usage ;;;
+        help|-h|--help) print_usage ;;
+        *)          print_usage ;;
     esac
 }
 

@@ -6,7 +6,7 @@ set -e
 
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="JSON Vision"
-PORT="8016"
+PORT="8017"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

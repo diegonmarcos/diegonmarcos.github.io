@@ -15,11 +15,13 @@
 | **MarketWatch**   | Financial market tracker        | **Type 3** (Private Dashboard) | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyGames**       | Retro games collection          | **Type 2** (Browser Tool)      | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
-| **MyMaps**        | Strategic map viewer            | **Type 4** (Public Platform)   | **Next.js**   | Hybrid (SSR/Hydration)   | No              | Yes     |
+| **MyMaps**        | Strategic map viewer            | **Type 2** (Browser Tool)      | **React+Vite** | Client-Side (CSR)        | Yes             | Yes     |
+| **MyMovies**      | Movie & TV series browser       | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyMusic**       | Winamp-style music library      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 | **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
 | **Others**        | Python tools & scripts          | **Scripts**                    | **Python**    | Server-Side (Static SSG) | Yes             | No      |
+| **JSON Vision**   | Visual JSON editor & graph      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 
 ---
 
@@ -38,11 +40,13 @@
 | **MarketWatch**   | Vanilla       | Sass     | TypeScript     |
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
 | **MyGames**       | SvelteKit     | Sass     | TypeScript     |
-| **MyMaps**        | Next.js       | Sass     | TypeScript     |
+| **MyMaps**        | React+Vite    | Sass     | TypeScript     |
+| **MyMovies**      | Vue 3         | Sass     | TypeScript     |
 | **MyMusic**       | Vue 3         | Sass     | TypeScript     |
 | **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
 | **Others**        | Python 3.11+  | -        | -              |
+| **JSON Vision**   | Vue 3         | Sass     | TypeScript     |
 
 ---
 
@@ -61,11 +65,13 @@
 | **MarketWatch**   | npm-live :8010        | Sass, TS   |
 | **MyFeed**        | Vite :8003            | HMR        |
 | **MyGames**       | Vite :8013            | HMR        |
-| **MyMaps**        | Next :8014            | HMR        |
+| **MyMaps**        | Vite :8014            | HMR        |
+| **MyMovies**      | Vite :8015            | HMR        |
 | **MyMusic**       | Vite :8016            | HMR        |
 | **MyProfile**     | Vite :8004            | HMR        |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
 | **Others**        | npm-live :8008        | -          |
+| **JSON Vision**   | Vite :8017            | HMR        |
 
 ---
 
@@ -86,7 +92,8 @@
 * **Vanilla:** Zero dependencies. Used for Type 1 (Static) or high-performance dashboards. Default choice.
 * **Vue 3:** Used for complex Type 3 applications requiring state management (MyFeed).
 * **SvelteKit:** Used for Type 2/4 Hybrid applications needing SEO + interactivity (MyGames, MyProfile).
-* **Next.js:** React-based framework for Type 4 applications with SSR/SSG capabilities (MyMaps).
+* **React+Vite:** Used for Type 2/3 SPAs requiring client-side rendering with modern tooling (MyMaps).
+* **Next.js:** React-based framework for Type 4 applications with SSR/SSG capabilities.
 
 ### CSS Strategy
 * **Sass:** The default styling engine for custom designs. (Landpage, Linktree, CV Web, CV PDF, Cloud, MarketWatch, Feed Yourself, MyFeed, MyGames, MyMaps, MyProfile)

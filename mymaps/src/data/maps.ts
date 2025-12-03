@@ -106,6 +106,18 @@ export const MAPS: MapData[] = [
     },
     countries: enrichCountryData(globalCountries),
   },
+  {
+    config: {
+      id: 'city-analysis',
+      title: 'My RoadTrip',
+      description: 'Cities visited vs. planned along my road trip.',
+      mapPath: 'city_map/doc.kml',
+      joinBy: 'hc-key', // Not used for KML but kept for type safety
+      icon: '🏙️',
+      type: 'City',
+    },
+    countries: [], // No country data needed for this map
+  },
 ];
 
 export function getMapById(id: string): MapData | undefined {

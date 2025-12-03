@@ -187,6 +187,28 @@ jobs:
           cd ../..
           echo "✅ MyMovies build complete"
 
+      - name: 🔨 Build MyMusic (Vue 3)
+        id: build-mymusic
+        if: contains(steps.changed-files.outputs.all_changed_files, 'mymusic/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMusic..."
+          cd mymusic/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMusic build complete"
+
+      - name: 🔨 Build JSON Vision (Vue 3)
+        id: build-json-vision
+        if: contains(steps.changed-files.outputs.all_changed_files, 'json-vision/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building JSON Vision..."
+          cd json-vision/1.ops
+          bash build.sh build
+          cd ../..
+          echo "✅ JSON Vision build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -293,6 +315,20 @@ jobs:
             FAILED="$FAILED mymovies"
           elif [ "${{ steps.build-mymovies.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: MyMovies"
+          fi
+
+          if [ "${{ steps.build-mymusic.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMusic"
+            FAILED="$FAILED mymusic"
+          elif [ "${{ steps.build-mymusic.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMusic"
+          fi
+
+          if [ "${{ steps.build-json-vision.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: JSON Vision"
+            FAILED="$FAILED json-vision"
+          elif [ "${{ steps.build-json-vision.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: JSON Vision"
           fi
 
           echo "============================================"
@@ -459,6 +495,26 @@ jobs:
             echo "✅ MyMovies build copied to _site/mymovies/"
           else
             echo "⏭️  Skipping MyMovies copy (no dist directory found)"
+          fi
+
+          # Copy MyMusic build (if dist exists - Vue 3 single-file)
+          if [ -d "mymusic/dist" ]; then
+            echo "📦 Copying MyMusic build..."
+            mkdir -p _site/mymusic
+            cp -rL mymusic/dist/* _site/mymusic/ 2>/dev/null || cp -r mymusic/dist/* _site/mymusic/
+            echo "✅ MyMusic build copied to _site/mymusic/"
+          else
+            echo "⏭️  Skipping MyMusic copy (no dist directory found)"
+          fi
+
+          # Copy JSON Vision build (if dist exists - Vue 3 single-file)
+          if [ -d "json-vision/dist" ]; then
+            echo "📦 Copying JSON Vision build..."
+            mkdir -p _site/json-vision
+            cp -rL json-vision/dist/* _site/json-vision/ 2>/dev/null || cp -r json-vision/dist/* _site/json-vision/
+            echo "✅ JSON Vision build copied to _site/json-vision/"
+          else
+            echo "⏭️  Skipping JSON Vision copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

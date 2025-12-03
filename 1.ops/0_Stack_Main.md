@@ -16,6 +16,7 @@
 | **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyGames**       | Retro games collection          | **Type 2** (Browser Tool)      | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 | **MyMaps**        | Strategic map viewer            | **Type 4** (Public Platform)   | **Next.js**   | Hybrid (SSR/Hydration)   | No              | Yes     |
+| **MyMusic**       | Winamp-style music library      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 | **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
 | **Others**        | Python tools & scripts          | **Scripts**                    | **Python**    | Server-Side (Static SSG) | Yes             | No      |
@@ -38,6 +39,7 @@
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
 | **MyGames**       | SvelteKit     | Sass     | TypeScript     |
 | **MyMaps**        | Next.js       | Sass     | TypeScript     |
+| **MyMusic**       | Vue 3         | Sass     | TypeScript     |
 | **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
 | **Others**        | Python 3.11+  | -        | -              |
@@ -60,6 +62,7 @@
 | **MyFeed**        | Vite :8003            | HMR        |
 | **MyGames**       | Vite :8013            | HMR        |
 | **MyMaps**        | Next :8014            | HMR        |
+| **MyMusic**       | Vite :8016            | HMR        |
 | **MyProfile**     | Vite :8004            | HMR        |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
 | **Others**        | npm-live :8008        | -          |

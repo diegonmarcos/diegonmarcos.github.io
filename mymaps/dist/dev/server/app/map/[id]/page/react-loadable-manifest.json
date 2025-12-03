@@ -1,0 +1,11 @@
+{
+  "[project]/mymaps/src/components/CityMap.tsx [app-client] (ecmascript, next/dynamic entry)": {
+    "id": "[project]/mymaps/src/components/CityMap.tsx [app-client] (ecmascript, next/dynamic entry)",
+    "files": [
+      "static/chunks/e2c5a_885d16d7._.js",
+      "static/chunks/mymaps_src_components_CityMap_tsx_2acdc811._.js",
+      "static/chunks/e2c5a_leaflet_dist_leaflet_9a165fc6.css",
+      "static/chunks/mymaps_src_components_CityMap_tsx_e7a30c55._.js"
+    ]
+  }
+}

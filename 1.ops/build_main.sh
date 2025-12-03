@@ -64,8 +64,10 @@ URL_OTHERS="http://localhost:8008/"
 URL_HEALTH="http://localhost:8009/"
 URL_MARKET="http://localhost:8010/"
 URL_CENTRALBANK="http://localhost:8011/"
-URL_MYMAPS="http://localhost:8012/"
+URL_MYMAPS="http://localhost:8014/mymaps/"
 URL_MYPROFILE="http://localhost:8013/"
+URL_MYMUSIC="http://localhost:8016/"
+URL_MYMOVIES="http://localhost:8015/"
 
 # Initialize log file with timestamp
 init_log() {
@@ -187,12 +189,20 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Central Bank       ${BLUE}${URL_CENTRALBANK}${NC}\n"
         _count=$((_count + 1))
     fi
-    if pgrep -f "next.*dev.*8012" >/dev/null 2>&1 || pgrep -f "mymaps.*next" >/dev/null 2>&1; then
+    if pgrep -f "next.*dev.*8014" >/dev/null 2>&1 || pgrep -f "mymaps.*next" >/dev/null 2>&1; then
         _servers="${_servers}  ${CYAN}*${NC} MyMaps (Next.js)   ${BLUE}${URL_MYMAPS}${NC}\n"
         _count=$((_count + 1))
     fi
     if pgrep -f "nuxt.*dev.*8013" >/dev/null 2>&1 || pgrep -f "myprofile.*nuxt" >/dev/null 2>&1; then
         _servers="${_servers}  ${CYAN}*${NC} MyProfile (Nuxt)   ${BLUE}${URL_MYPROFILE}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "mymusic.*vite" >/dev/null 2>&1 || pgrep -f "vite.*mymusic" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyMusic (Vite)     ${BLUE}${URL_MYMUSIC}${NC}\n"
+        _count=$((_count + 1))
+    fi
+    if pgrep -f "mymovies.*vite" >/dev/null 2>&1 || pgrep -f "vite.*mymovies" >/dev/null 2>&1; then
+        _servers="${_servers}  ${CYAN}*${NC} MyMovies (Vite)    ${BLUE}${URL_MYMOVIES}${NC}\n"
         _count=$((_count + 1))
     fi
     # Generic live-server check (fallback for other ports)
@@ -256,7 +266,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -274,6 +284,8 @@ get_running_servers() {
                     build-centralbank) _servers="${_servers}  ${GREEN}*${NC} Central Bank (tmux) ${BLUE}${URL_CENTRALBANK}${NC}\n" ;;
                     build-mymaps) _servers="${_servers}  ${GREEN}*${NC} MyMaps (tmux)      ${BLUE}${URL_MYMAPS}${NC}\n" ;;
                     build-myprofile) _servers="${_servers}  ${GREEN}*${NC} MyProfile (tmux)   ${BLUE}${URL_MYPROFILE}${NC}\n" ;;
+                    build-mymusic) _servers="${_servers}  ${GREEN}*${NC} MyMusic (tmux)     ${BLUE}${URL_MYMUSIC}${NC}\n" ;;
+                    build-mymovies) _servers="${_servers}  ${GREEN}*${NC} MyMovies (tmux)    ${BLUE}${URL_MYMOVIES}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -332,6 +344,8 @@ print_usage() {
     printf "  ${GREEN}build-centralbank${NC}  # Central Bank - Vanilla + Tailwind + TypeScript\n"
     printf "  ${GREEN}build-mymaps${NC}       # MyMaps - Next.js + Sass + TypeScript\n"
     printf "  ${GREEN}build-myprofile${NC}    # MyProfile - Nuxt 4 + Sass + TypeScript\n"
+    printf "  ${GREEN}build-mymusic${NC}      # MyMusic - Vue 3 + Sass + TypeScript\n"
+    printf "  ${GREEN}build-mymovies${NC}     # MyMovies - Vue 3 + Sass + TypeScript\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -347,8 +361,10 @@ print_usage() {
     printf "  ${GREEN}dev-health${NC}         # Health Tracker - npm-live :8009\n"
     printf "  ${GREEN}dev-market${NC}         # Market Watch - npm-live :8010\n"
     printf "  ${GREEN}dev-centralbank${NC}    # Central Bank - npm-live :8011\n"
-    printf "  ${GREEN}dev-mymaps${NC}         # MyMaps - Next.js :8012\n"
+    printf "  ${GREEN}dev-mymaps${NC}         # MyMaps - Next.js :8014\n"
     printf "  ${GREEN}dev-myprofile${NC}      # MyProfile - Nuxt :8013\n"
+    printf "  ${GREEN}dev-mymusic${NC}        # MyMusic - Vite :8016\n"
+    printf "  ${GREEN}dev-mymovies${NC}       # MyMovies - Vite :8015\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -376,8 +392,10 @@ print_usage() {
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "HealthTracker" "Vanilla" "Tailwind" "Vanilla" "npm-live :8009" "-"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MarketWatch" "Vanilla" "Sass" "TypeScript" "npm-live :8010" "Sass, TS"
     printf "  ${CYAN}%-13s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-15s${NC}  ${YELLOW}%s${NC}\n" "CentralBank" "Vanilla" "Tailwind" "TypeScript" "npm-live :8011" "-"
-    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next.js :8012" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next.js :8014" "HMR"
     printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "Nuxt 4" "Sass" "TypeScript" "Vite :8013" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMusic" "Vue 3" "Sass" "TypeScript" "Vite :8016" "HMR"
+    printf "  ${CYAN}%-13s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-15s${NC}  ${YELLOW}%s${NC}\n" "MyMovies" "Vue 3" "Sass" "TypeScript" "Vite :8015" "HMR"
     printf "${BLUE}------------------------------------------------------------------------------------------------------${NC}\n"
 
     # Show status box in help
@@ -498,6 +516,8 @@ build_all() {
     execute_build "central_bank" "build" || _failed=$((_failed + 1))
     execute_build "mymaps" "build" || _failed=$((_failed + 1))
     execute_build "myprofile" "build" || _failed=$((_failed + 1))
+    execute_build "mymusic" "build" || _failed=$((_failed + 1))
+    execute_build "mymovies" "build" || _failed=$((_failed + 1))
 
     if [ "$_failed" -eq 0 ]; then
         log_success "All builds completed successfully!"
@@ -529,6 +549,8 @@ clean_all_builds() {
     execute_build "central_bank" "clean" || true
     execute_build "mymaps" "clean" || true
     execute_build "myprofile" "clean" || true
+    execute_build "mymusic" "clean" || true
+    execute_build "mymovies" "clean" || true
 
     log_success "All build artifacts cleaned"
 }
@@ -621,6 +643,8 @@ dev_all() {
         tmux new-session -d -s build-centralbank "cd $PROJECT_ROOT/central_bank/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-mymaps "cd $PROJECT_ROOT/mymaps/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/myprofile/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-mymusic "cd $PROJECT_ROOT/mymusic/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-mymovies "cd $PROJECT_ROOT/mymovies/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -699,6 +723,12 @@ dev_all() {
 
         log_info "Starting myprofile..."
         nohup sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
+
+        log_info "Starting mymusic..."
+        nohup sh "$PROJECT_ROOT/mymusic/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymusic-dev.log" 2>&1 &
+
+        log_info "Starting mymovies..."
+        nohup sh "$PROJECT_ROOT/mymovies/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymovies-dev.log" 2>&1 &
 
         sleep 3  # Give servers time to start
 
@@ -812,6 +842,18 @@ dev_single() {
             print_server_started "MyProfile" "$_url"
             wait
             ;;
+        mymusic)
+            execute_build "mymusic" "dev" &
+            sleep 2
+            print_server_started "MyMusic" "$_url"
+            wait
+            ;;
+        mymovies)
+            execute_build "mymovies" "dev" &
+            sleep 2
+            print_server_started "MyMovies" "$_url"
+            wait
+            ;;
     esac
 }
 
@@ -823,7 +865,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -977,6 +1019,7 @@ Feed Yourself (Vanilla+Sass)|build-feed
 Others (Python)|build-others
 Health Tracker (Vanilla+TW)|build-health
 Market Watch (Vanilla+Sass+TS)|build-market
+MyMusic (Vue 3)|build-mymusic
 ─────────────────────────────|
 DEV ALL|dev
 ─────────────────────────────|
@@ -991,6 +1034,7 @@ Feed Yourself :8007|dev-feed
 Others :8008|dev-others
 Health Tracker :8009|dev-health
 Market Watch :8010|dev-market
+MyMusic :8016|dev-mymusic
 ─────────────────────────────|
 List Servers|list
 Kill Servers|kill
@@ -1217,7 +1261,7 @@ tui_build_all() {
     log_to_file "Starting build all..."
 
     # Build each project and mark success if successful
-    for _proj in landpage linktree cv_web cv_pdf myfeed mygames nexus cloud feed_yourself others health_tracker market_watch central_bank mymaps myprofile; do
+    for _proj in landpage linktree cv_web cv_pdf myfeed mygames nexus cloud feed_yourself others health_tracker market_watch central_bank mymaps myprofile mymusic mymovies; do
         _build_script="$PROJECT_ROOT/$_proj/1.ops/build.sh"
         if [ -f "$_build_script" ]; then
             log_to_file "Building: $_proj"
@@ -1265,8 +1309,10 @@ tui_simple() {
         _s10=$(get_status 'pgrep -f "live-server.*8009"')
         _s11=$(get_status 'pgrep -f "live-server.*8010"')
         _s12=$(get_status 'pgrep -f "live-server.*8011"')
-        _s13=$(get_status 'pgrep -f "next.*dev.*8012" || pgrep -f "mymaps.*next"')
+        _s13=$(get_status 'pgrep -f "next.*dev.*8014" || pgrep -f "mymaps.*next"')
         _s14=$(get_status 'pgrep -f "nuxt.*dev.*8013" || pgrep -f "myprofile.*nuxt"')
+        _s15=$(get_status 'pgrep -f "mymusic.*vite" || pgrep -f "vite.*mymusic"')
+        _s16=$(get_status 'pgrep -f "mymovies.*vite" || pgrep -f "vite.*mymovies"')
 
         # Check build statuses
         _b1=$(get_build_status "landpage")
@@ -1283,6 +1329,8 @@ tui_simple() {
         _b12=$(get_build_status "central_bank")
         _b13=$(get_build_status "mymaps")
         _b14=$(get_build_status "myprofile")
+        _b15=$(get_build_status "mymusic")
+        _b16=$(get_build_status "mymovies")
 
         # Table 1: Full project details
         printf "${BLUE}┌──────────────────────────────────────────────────────────────────────────────────────┐${NC}\n"
@@ -1302,8 +1350,10 @@ tui_simple() {
         printf "${BLUE}│${NC} ${GREEN}10${NC}  ${BLUE}│${NC} Health Tracker ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} :8009 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b10" "$_s10"
         printf "${BLUE}│${NC} ${GREEN}11${NC}  ${BLUE}│${NC} Market Watch   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8010 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b11" "$_s11"
         printf "${BLUE}│${NC} ${GREEN}12${NC}  ${BLUE}│${NC} Central Bank   ${BLUE}│${NC} Vanilla    ${BLUE}│${NC} Tailwind ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8011 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b12" "$_s12"
-        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8012 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b13" "$_s13"
+        printf "${BLUE}│${NC} ${GREEN}13${NC}  ${BLUE}│${NC} MyMaps         ${BLUE}│${NC} Next.js    ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8014 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b13" "$_s13"
         printf "${BLUE}│${NC} ${GREEN}14${NC}  ${BLUE}│${NC} MyProfile      ${BLUE}│${NC} Nuxt 4     ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8013 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b14" "$_s14"
+        printf "${BLUE}│${NC} ${GREEN}15${NC}  ${BLUE}│${NC} MyMusic        ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8016 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b15" "$_s15"
+        printf "${BLUE}│${NC} ${GREEN}16${NC}  ${BLUE}│${NC} MyMovies       ${BLUE}│${NC} Vue 3      ${BLUE}│${NC} Sass     ${BLUE}│${NC} TypeScript ${BLUE}│${NC} :8015 ${BLUE}│${NC} %b   ${BLUE}│${NC} %b    ${BLUE}│${NC}\n" "$_b16" "$_s16"
         printf "${BLUE}└─────┴────────────────┴────────────┴──────────┴────────────┴───────┴────────┴────────┘${NC}\n"
 
         # Server status
@@ -1349,6 +1399,8 @@ tui_simple() {
             b12)               _cmd="build-centralbank"; _last_msg="Building Central Bank" ;;
             b13)               _cmd="build-mymaps"; _last_msg="Building MyMaps" ;;
             b14)               _cmd="build-myprofile"; _last_msg="Building MyProfile" ;;
+            b15)               _cmd="build-mymusic"; _last_msg="Building MyMusic" ;;
+            b16)               _cmd="build-mymovies"; _last_msg="Building MyMovies" ;;
             # Dev commands
             d|d0)              _cmd="dev"; _last_msg="Starting all dev servers..." ;;
             d1)                _cmd="dev-landpage"; _last_msg="Started Landpage :8000" ;;
@@ -1363,8 +1415,10 @@ tui_simple() {
             d10)               _cmd="dev-health"; _last_msg="Started Health Tracker :8009" ;;
             d11)               _cmd="dev-market"; _last_msg="Started Market Watch :8010" ;;
             d12)               _cmd="dev-centralbank"; _last_msg="Started Central Bank :8011" ;;
-            d13)               _cmd="dev-mymaps"; _last_msg="Started MyMaps :8012" ;;
+            d13)               _cmd="dev-mymaps"; _last_msg="Started MyMaps :8014" ;;
             d14)               _cmd="dev-myprofile"; _last_msg="Started MyProfile :8013" ;;
+            d15)               _cmd="dev-mymusic"; _last_msg="Started MyMusic :8016" ;;
+            d16)               _cmd="dev-mymovies"; _last_msg="Started MyMovies :8015" ;;
             # Utility commands
             k|kill)            _cmd="kill"; _last_msg="Killed all servers" ;;
             c|clean)           _cmd="clean"; _last_msg="Cleaned build artifacts" ;;
@@ -1408,6 +1462,8 @@ tui_simple() {
             dev-centralbank) log_to_file "Starting dev: central_bank"; sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-mymaps)      log_to_file "Starting dev: mymaps"; sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-myprofile)   log_to_file "Starting dev: myprofile"; sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mymusic)     log_to_file "Starting dev: mymusic"; sh "$PROJECT_ROOT/mymusic/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mymovies)    log_to_file "Starting dev: mymovies"; sh "$PROJECT_ROOT/mymovies/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev)             log_to_file "Starting dev: all"; dev_all >> "$LOG_FILE" 2>&1 & ;;
             kill)            log_to_file "Killing all servers"; kill_servers >> "$LOG_FILE" 2>&1 ;;
             build-landpage)    log_to_file "Building: landpage"; (sh "$PROJECT_ROOT/landpage/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "landpage") & ;;
@@ -1424,6 +1480,8 @@ tui_simple() {
             build-centralbank) log_to_file "Building: central_bank"; (sh "$PROJECT_ROOT/central_bank/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "central_bank") & ;;
             build-mymaps)      log_to_file "Building: mymaps"; (sh "$PROJECT_ROOT/mymaps/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "mymaps") & ;;
             build-myprofile)   log_to_file "Building: myprofile"; (sh "$PROJECT_ROOT/myprofile/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "myprofile") & ;;
+            build-mymusic)     log_to_file "Building: mymusic"; (sh "$PROJECT_ROOT/mymusic/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "mymusic") & ;;
+            build-mymovies)    log_to_file "Building: mymovies"; (sh "$PROJECT_ROOT/mymovies/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "mymovies") & ;;
             build)             log_to_file "Building: all"; tui_build_all & ;;
             clean)             log_to_file "Cleaning all"; clean_all_builds >> "$LOG_FILE" 2>&1; clear_all_build_status ;;
         esac
@@ -1521,6 +1579,12 @@ main() {
         build-myprofile)
             execute_build "myprofile" "build"
             ;;
+        build-mymusic)
+            execute_build "mymusic" "build"
+            ;;
+        build-mymovies)
+            execute_build "mymovies" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -1565,6 +1629,12 @@ main() {
             ;;
         dev-myprofile)
             dev_single "myprofile" "$URL_MYPROFILE"
+            ;;
+        dev-mymusic)
+            dev_single "mymusic" "$URL_MYMUSIC"
+            ;;
+        dev-mymovies)
+            dev_single "mymovies" "$URL_MYMOVIES"
             ;;
         list)
             list_servers

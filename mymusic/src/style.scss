@@ -1,0 +1,223 @@
+/* Winamp Font - Simulating the bitmap look */
+@font-face {
+  font-family: 'PixelOperator';
+  src: url('https://cdn.jsdelivr.net/npm/pixel-operator-font@1.0.0/fonts/PixelOperator.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PixelOperatorBold';
+  src: url('https://cdn.jsdelivr.net/npm/pixel-operator-font@1.0.0/fonts/PixelOperator-Bold.woff2') format('woff2');
+  font-weight: bold;
+  font-style: normal;
+}
+
+:root {
+  /* --- CLASSIC SKIN (Winamp 2.x Default) --- */
+  /* Colors */
+  --wa-bg-dark: #202020;
+  --wa-bg-grey: #404040;
+  --wa-bg-light: #c0c0c0;
+  --wa-title-bg-active: linear-gradient(to right, #000080, #0000e0 50%, #000080);
+  --wa-title-bg-inactive: #404040;
+  --wa-green: #00e000;
+  --wa-gold: #d0c000;
+  --wa-text-normal: #00e000;
+  
+  /* Borders (Bevels) */
+  --wa-border-outset: 
+    inset 1px 1px 0px #ffffff, 
+    inset -1px -1px 0px #000000;
+  --wa-border-inset: 
+    inset 1px 1px 0px #000000, 
+    inset -1px -1px 0px #ffffff;
+  
+  /* Dimensions */
+  --wa-win-width: 275px; /* Standard Winamp width */
+  --wa-title-height: 14px;
+  
+  /* Fonts */
+  --wa-font-main: 'PixelOperator', 'Courier New', monospace;
+  --wa-font-bold: 'PixelOperatorBold', 'Courier New', monospace;
+  --wa-font-nums: 'PixelOperator', monospace;
+  
+  /* Global Overrides */
+  --skin-bg-color: #202020;
+  --skin-main-color: #00e000;
+  --skin-font-family: var(--wa-font-main);
+}
+
+/* --- MODERN SKIN (reAMP / Mac Style) --- */
+.skin-modern {
+  --wa-bg-dark: #2b2b2b;
+  --wa-bg-grey: #3a3a3a;
+  --wa-bg-light: #505050;
+  --wa-title-bg-active: linear-gradient(to bottom, #4a4a4a, #2a2a2a);
+  --wa-title-bg-inactive: #2a2a2a;
+  --wa-green: #00aaff;
+  --wa-gold: #ff9900;
+  --wa-text-normal: #ffffff;
+  
+  --wa-border-outset: none;
+  --wa-border-inset: none;
+  
+  --skin-bg-color: #2b2b2b;
+  --skin-main-color: #ffffff;
+  --skin-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  /* Crucial for the crisp pixel look */
+  image-rendering: pixelated; 
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  background-color: #000; /* Desktop background */
+  background-image: radial-gradient(#333 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--skin-main-color);
+  font-family: var(--wa-font-main);
+  padding: 20px;
+  height: 100vh;
+  overflow: hidden; /* App handles scrolling internally */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Custom Scrollbar for that 90s feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #202020; 
+}
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0; 
+  border: 2px solid #fff;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  box-shadow: inset 1px 1px 0 #fff;
+}
+::-webkit-scrollbar-button {
+  background: #c0c0c0;
+  width: 10px;
+  height: 10px;
+  border: 1px solid #000;
+  border-top-color: #fff;
+  border-left-color: #fff;
+}
+
+/* Utility Classes for Winamp UI Elements */
+.wa-window {
+  background-color: var(--wa-bg-dark);
+  position: relative;
+  padding: 0;
+  border: none; /* We build borders manually for control */
+  box-shadow: 
+    inset 1px 1px 0 #c0c0c0,
+    inset -1px -1px 0 #000,
+    0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* The "Frame" around the window content */
+.wa-frame {
+  border-top: 1px solid #c0c0c0;
+  border-left: 1px solid #c0c0c0;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+  padding: 2px;
+}
+
+.wa-title-bar {
+  height: 18px; /* Standard Classic Height */
+  background: var(--wa-title-bg-active);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2px;
+  margin-bottom: 2px;
+  cursor: grab;
+  border-bottom: 1px solid #000;
+}
+
+.skin-modern .wa-title-bar {
+    border-radius: 4px 4px 0 0;
+}
+
+.wa-title-text {
+  font-family: var(--wa-font-bold);
+  font-size: 9px;
+  color: white;
+  letter-spacing: 0.5px;
+  padding-left: 2px;
+  text-shadow: 1px 1px 0 #000;
+  flex-grow: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wa-btn-small {
+  width: 9px;
+  height: 9px;
+  background: #c0c0c0;
+  border: 1px solid #fff;
+  border-right-color: #000;
+  border-bottom-color: #000;
+  margin-left: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  line-height: 1;
+  color: #000;
+  padding: 0;
+}
+.wa-btn-small:active {
+  border: 1px solid #000;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.wa-display-area {
+  background: #000;
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  margin-bottom: 5px;
+  padding: 2px;
+}
+
+.wa-text-green {
+  color: var(--wa-green);
+  font-family: var(--wa-font-nums);
+}
+.wa-text-gold {
+  color: var(--wa-gold);
+  font-family: var(--wa-font-nums);
+}
+
+.skin-modern .wa-window {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border-radius: 6px;
+    background-color: var(--wa-bg-dark);
+    border: 1px solid #333;
+}

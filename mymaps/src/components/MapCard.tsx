@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { MapConfig } from '@/data/types';
 
 interface MapCardProps {
@@ -9,7 +9,7 @@ interface MapCardProps {
 
 export default function MapCard({ config }: MapCardProps) {
   return (
-    <Link href={`/map/${config.id}`} className="card">
+    <Link to={`/map/${config.id}`} className="card">
       <div className="card__icon">{config.icon}</div>
       <div className="card__title">{config.title}</div>
       <div className="card__description">{config.description}</div>

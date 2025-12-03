@@ -1,6 +1,6 @@
 #!/bin/sh
 #=====================================
-# MYMAPS BUILD SCRIPT
+# MYMAPS BUILD SCRIPT (Vite SPA)
 #=====================================
 # POSIX-compliant build script
 # Usage: ./1.ops/build.sh [action]
@@ -37,10 +37,10 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Build for production (static export)\n"
+    printf "  ${GREEN}build${NC}        # Build for production (Single File SPA)\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
-    printf "  ${GREEN}dev${NC}          # Start Next.js dev server :${PORT}\n"
+    printf "  ${GREEN}dev${NC}          # Start Vite dev server :${PORT}\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
@@ -50,7 +50,7 @@ print_usage() {
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s${NC}\n" "Project" "Framework" "CSS" "Language" "Dev Server"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "MyMaps" "Next.js" "Sass" "TypeScript" "Next :${PORT}"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "MyMaps" "React+Vite" "Sass" "TypeScript" "Vite :${PORT}"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -65,46 +65,24 @@ check_dependencies() {
     npm install
 }
 
-# Inline CSS and JS into HTML files
-inline_assets() {
-    log_info "Inlining CSS and JS into HTML files..."
-
-    # Find all HTML files in dist
-    find "$DIST_DIR" -name "*.html" -type f | while read -r html_file; do
-        log_info "Processing: $(basename "$html_file")"
-
-        # Create temp file
-        tmp_file="${html_file}.tmp"
-        cp "$html_file" "$tmp_file"
-
-        # Inline CSS files
-        grep -oE 'href="(/mymaps)?/_next/[^"]+\.css"' "$html_file" 2>/dev/null | while read -r match; do
-            css_path=$(echo "$match" | sed 's/href="//;s/"$//' | sed 's|^/mymaps||')
-            css_file="$DIST_DIR$css_path"
-            if [ -f "$css_file" ]; then
-                css_content=$(cat "$css_file" | tr '\n' ' ' | sed 's/"/\\"/g')
-                # Replace link tag with inline style
-                sed -i "s|<link[^>]*href=\"[^\"]*$(basename "$css_file")\"[^>]*>|<style>$css_content</style>|g" "$tmp_file"
-            fi
-        done
-
-        mv "$tmp_file" "$html_file"
-    done
-
-    log_success "Assets inlined into HTML files"
-}
-
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
     check_dependencies
     cd "$PROJECT_DIR"
-    npm run build
+
+    # Clean existing build artifacts
+    rm -rf "$DIST_DIR"
+
+    # Compile TypeScript
+    # npm run typecheck # Optional, if scripts are set up
+
+    # Build with Vite
+    npx vite build
 
     if [ -d "$DIST_DIR" ]; then
-        # Inline CSS/JS into HTML
-        inline_assets
         log_success "Build completed → dist/"
+        log_info "Single File SPA generated at dist/index.html"
     else
         log_error "Build directory not created"
         return 1
@@ -116,8 +94,11 @@ dev() {
     check_dependencies
     cd "$PROJECT_DIR"
 
-    # Start Next.js dev server in background
-    nohup npm run dev -- -p $PORT > /dev/null 2>&1 &
+    # Create logs directory
+    mkdir -p "$PROJECT_DIR/1.ops/logs"
+
+    # Start Vite dev server in background
+    nohup npx vite --port $PORT > "$PROJECT_DIR/1.ops/logs/server.log" 2>&1 &
 
     # Give server time to start
     sleep 2
@@ -136,7 +117,6 @@ dev() {
 # Clean
 clean() {
     log_info "Cleaning build artifacts..."
-    rm -rf "$PROJECT_DIR/.next"
     rm -rf "$DIST_DIR"
     log_success "Clean completed"
 }
@@ -149,8 +129,8 @@ main() {
         build)      build ;;
         dev)        dev ;;
         clean)      clean ;;
-        help|-h|--help) print_usage ;;
-        *)          print_usage ;;
+        help|-h|--help) print_usage ;;;
+        *)          print_usage ;;;
     esac
 }
 

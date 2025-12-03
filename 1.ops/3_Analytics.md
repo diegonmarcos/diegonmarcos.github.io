@@ -14,6 +14,7 @@
 | linktree | ✅ | ✅ | ✅ | ✅ | ✅ |
 | market_watch | ✅ | ✅ | ✅ | ✅ | ✅ |
 | myfeed | ✅ | ✅ | ✅ | ✅ | ✅ |
+| mymusic | ✅ | ✅ | ✅ | ✅ | ✅ |
 | mygames | ✅ | ✅* | ✅ | ✅ | ✅ |
 | mymaps | ✅ | ✅* | ❌ | ❌ | ❌ |
 | myprofile | ✅ | ✅ | ✅ | ❌ | ❌ |
@@ -132,6 +133,13 @@
 | MyFeed | Sort | Sort order changes |
 | MyFeed | Scroll Depth | Scroll percentage tracking |
 
+### mymusic
+| Event Category | Action | Description |
+|----------------|--------|-------------|
+| MyMusic | Card Click | Media card interactions |
+| MyMusic | Navigation | Winamp controls/nav |
+| MyMusic | Scroll Depth | Scroll percentage tracking |
+
 ### mygames
 | Event Category | Action | Description |
 |----------------|--------|-------------|
@@ -191,6 +199,7 @@
 | linktree | `public/matomo.js` |
 | market_watch | `public/matomo.js` |
 | myfeed | `public/matomo.js` |
+| mymusic | `public/matomo.js` |
 | mygames | `src/static/mygames_matomo.js` |
 | mymaps | `public/mymaps_matomo.js` |
 | myprofile | `public/matomo.js` |
@@ -215,6 +224,7 @@ All matomo tracking files are symlinked in:
 ├── linktree.js -> ../../linktree/public/matomo.js
 ├── market_watch.js -> ../../market_watch/public/matomo.js
 ├── myfeed.js -> ../../myfeed/public/matomo.js
+├── mymusic.js -> ../../mymusic/public/matomo.js
 ├── mygames.js -> ../../mygames/src/static/mygames_matomo.js
 ├── mymaps.js -> ../../mymaps/public/mymaps_matomo.js
 ├── myprofile.js -> ../../myprofile/public/matomo.js

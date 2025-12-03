@@ -2,7 +2,7 @@
  * Tree View functionality for Cloud Dashboard
  */
 
-const validViews = ['cards', 'tree', 'architecture', 'ai-architecture'] as const;
+const validViews = ['cards', 'tree', 'architecture', 'ai-architecture', 'monitoring', 'resources'] as const;
 type ViewName = typeof validViews[number];
 
 function getViewFromHash(): ViewName {
@@ -16,7 +16,9 @@ function switchToView(viewName: ViewName, pushState: boolean = true): void {
         'cards': document.getElementById('cards-view'),
         'tree': document.getElementById('tree-view'),
         'architecture': document.getElementById('architecture-view'),
-        'ai-architecture': document.getElementById('ai-architecture-view')
+        'ai-architecture': document.getElementById('ai-architecture-view'),
+        'monitoring': document.getElementById('monitoring-view'),
+        'resources': document.getElementById('resources-view')
     };
 
     // Update button states

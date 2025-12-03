@@ -134,6 +134,35 @@
                         </button>
                     </div>
                 </div>
+                <span class="view-separator"></span>
+                <div class="view-group">
+                    <span class="view-group-label">Monitoring</span>
+                    <div class="view-group-buttons">
+                        <button class="view-btn" data-view="monitoring">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                            Status
+                        </button>
+                        <a href="dashboard.html" class="view-btn" title="Live API Dashboard">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            Live
+                        </a>
+                        <button class="view-btn" data-view="resources">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <path d="M8 21h8"/>
+                                <path d="M12 17v4"/>
+                                <path d="M6 8h4"/>
+                                <path d="M6 11h8"/>
+                            </svg>
+                            Resources
+                        </button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -1139,6 +1168,201 @@
         <!-- AI Architecture View -->
         <div id="ai-architecture-view" class="view-content">
             <iframe src="ai-arch.html" style="width: 100%; height: 85vh; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
+        </div>
+
+        <!-- Monitoring View -->
+        <div id="monitoring-view" class="view-content">
+            <section class="section-header">
+                <h2>Live Monitoring</h2>
+            </section>
+            <div class="monitoring-grid">
+                <div class="monitoring-section">
+                    <h3 class="monitoring-section-title">VM Status</h3>
+                    <div class="vm-status-grid">
+                        <div class="vm-status-card">
+                            <div class="vm-status-header">
+                                <span class="vm-icon">🖥️</span>
+                                <span class="vm-name">Oracle Web Server 1</span>
+                                <span class="vm-status-indicator online"></span>
+                            </div>
+                            <div class="vm-status-details">
+                                <div class="vm-stat"><span class="stat-label">IP</span><span class="stat-value">130.110.251.193</span></div>
+                                <div class="vm-stat"><span class="stat-label">Type</span><span class="stat-value">E2.1.Micro</span></div>
+                                <div class="vm-stat"><span class="stat-label">Services</span><span class="stat-value">n8n, Syncthing, Flask</span></div>
+                            </div>
+                        </div>
+                        <div class="vm-status-card">
+                            <div class="vm-status-header">
+                                <span class="vm-icon">🖥️</span>
+                                <span class="vm-name">Oracle Services Server 1</span>
+                                <span class="vm-status-indicator online"></span>
+                            </div>
+                            <div class="vm-status-details">
+                                <div class="vm-stat"><span class="stat-label">IP</span><span class="stat-value">129.151.228.66</span></div>
+                                <div class="vm-stat"><span class="stat-label">Type</span><span class="stat-value">E2.1.Micro</span></div>
+                                <div class="vm-stat"><span class="stat-label">Services</span><span class="stat-value">Matomo, MariaDB</span></div>
+                            </div>
+                        </div>
+                        <div class="vm-status-card">
+                            <div class="vm-status-header">
+                                <span class="vm-icon">🖥️</span>
+                                <span class="vm-name">Oracle ARM Server</span>
+                                <span class="vm-status-indicator pending"></span>
+                            </div>
+                            <div class="vm-status-details">
+                                <div class="vm-stat"><span class="stat-label">IP</span><span class="stat-value">pending</span></div>
+                                <div class="vm-stat"><span class="stat-label">Type</span><span class="stat-value">A1.Flex 24GB</span></div>
+                                <div class="vm-stat"><span class="stat-label">Services</span><span class="stat-value">n8n AI (planned)</span></div>
+                            </div>
+                        </div>
+                        <div class="vm-status-card">
+                            <div class="vm-status-header">
+                                <span class="vm-icon">🖥️</span>
+                                <span class="vm-name">GCloud Arch Linux 1</span>
+                                <span class="vm-status-indicator pending"></span>
+                            </div>
+                            <div class="vm-status-details">
+                                <div class="vm-stat"><span class="stat-label">IP</span><span class="stat-value">pending</span></div>
+                                <div class="vm-stat"><span class="stat-label">Type</span><span class="stat-value">e2-micro</span></div>
+                                <div class="vm-stat"><span class="stat-label">Services</span><span class="stat-value">Mail, Terminal</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="monitoring-section">
+                    <h3 class="monitoring-section-title">Service Health</h3>
+                    <div class="service-health-grid">
+                        <div class="service-health-row"><span class="service-name">Matomo Analytics</span><span class="service-url">analytics.diegonmarcos.com</span><span class="service-status online">Healthy</span></div>
+                        <div class="service-health-row"><span class="service-name">Syncthing</span><span class="service-url">sync.diegonmarcos.com</span><span class="service-status online">Healthy</span></div>
+                        <div class="service-health-row"><span class="service-name">n8n Automation</span><span class="service-url">n8n.diegonmarcos.com</span><span class="service-status online">Healthy</span></div>
+                        <div class="service-health-row"><span class="service-name">NPM (Web)</span><span class="service-url">130.110.251.193:81</span><span class="service-status online">Healthy</span></div>
+                        <div class="service-health-row"><span class="service-name">NPM (Services)</span><span class="service-url">129.151.228.66:81</span><span class="service-status online">Healthy</span></div>
+                        <div class="service-health-row"><span class="service-name">Cloud Dashboard</span><span class="service-url">cloud.diegonmarcos.com</span><span class="service-status pending">Dev</span></div>
+                        <div class="service-health-row"><span class="service-name">Mail Server</span><span class="service-url">mail.diegonmarcos.com</span><span class="service-status pending">Dev</span></div>
+                        <div class="service-health-row"><span class="service-name">Git Server</span><span class="service-url">git.diegonmarcos.com</span><span class="service-status pending">Dev</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources View -->
+        <div id="resources-view" class="view-content">
+            <section class="section-header">
+                <h2>Resource Allocation</h2>
+            </section>
+
+            <!-- Basic (Non-AI) Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Basic (Non-AI)</h3>
+                <div class="resources-summary">
+                    <div class="summary-card">
+                        <h4>Services Total</h4>
+                        <div class="summary-stats">
+                            <div class="summary-stat"><span class="stat-icon">💾</span><span class="stat-label">RAM</span><span class="stat-value">2.4 - 4.9 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">💿</span><span class="stat-label">Storage</span><span class="stat-value">75 - 291 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">📡</span><span class="stat-label">Bandwidth</span><span class="stat-value">40 - 207 GB/mo</span></div>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <h4>VMs Total</h4>
+                        <div class="summary-stats">
+                            <div class="summary-stat"><span class="stat-icon">💾</span><span class="stat-label">RAM</span><span class="stat-value">3.2 - 8.2 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">💿</span><span class="stat-label">Storage</span><span class="stat-value">40 - 180 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">📡</span><span class="stat-label">Bandwidth</span><span class="stat-value">40 - 165 GB/mo</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resources-section">
+                    <h3 class="resources-section-title">Services</h3>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead><tr><th>Status</th><th>Service</th><th>Category</th><th>RAM</th><th>Storage</th><th>Bandwidth</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>Web</td><td>512MB-1GB</td><td>3-15GB</td><td>500MB-2GB/mo</td><td>Analytics</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM</strong></td><td>Infra</td><td>512MB-1GB</td><td>400MB-2GB</td><td>20-80GB/mo</td><td>Reverse proxy (4x)</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>Auto</td><td>256-512MB</td><td>500MB-2GB</td><td>1-5GB/mo</td><td>Workflows</td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Syncthing</strong></td><td>Prod</td><td>128-256MB</td><td>5-106GB</td><td>10-50GB/mo</td><td>File sync</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>Prod</td><td>520MB-1GB</td><td>5-50GB</td><td>1-10GB/mo</td><td>Email stack</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>Prod</td><td>264-544MB</td><td>11-15GB</td><td>2-10GB/mo</td><td>Git hosting</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>Infra</td><td>64-128MB</td><td>50-100MB</td><td>5-50GB/mo</td><td>VPN server</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Flask Server</strong></td><td>Infra</td><td>64-128MB</td><td>50-100MB</td><td>100-500MB/mo</td><td>Dashboard API</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>Prod</td><td>64-128MB</td><td>50-100MB</td><td>500MB-2GB/mo</td><td>Browser shell</td></tr>
+                                <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Redis</strong></td><td>Cache</td><td>64-256MB</td><td>100MB-1GB</td><td>-</td><td>In-memory store</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total ON</strong></td><td></td><td>~1.4-2.8GB</td><td>~9-125GB</td><td>~32-135GB/mo</td><td></td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total DEV</strong></td><td></td><td>~900MB-1.8GB</td><td>~66-165GB</td><td>~8-72GB/mo</td><td></td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total HOLD</strong></td><td></td><td>~64-256MB</td><td>~100MB-1GB</td><td>-</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="resources-section">
+                    <h3 class="resources-section-title">VMs</h3>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead><tr><th>Status</th><th>VM</th><th>Services</th><th>RAM</th><th>Storage</th><th>Bandwidth</th></tr></thead>
+                            <tbody>
+                                <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Web Server 1</strong></td><td>n8n, Syncthing, Flask, NPM, VPN, Gitea</td><td>800MB-1.5GB</td><td>5-15GB</td><td>20-80GB/mo</td></tr>
+                                <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Services Server 1</strong></td><td>Matomo, MariaDB, NPM</td><td>600MB-1.2GB</td><td>5-15GB</td><td>5-20GB/mo</td></tr>
+                                <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>GCloud Arch 1</strong></td><td>Mail, Terminal, NPM, SQLite</td><td>800MB-1.5GB</td><td>10-50GB</td><td>5-15GB/mo</td></tr>
+                                <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Generic VPS</strong></td><td>Variable services</td><td>1-4GB</td><td>20-100GB</td><td>10-50GB/mo</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total ON</strong></td><td></td><td>~1.4-2.7GB</td><td>~10-30GB</td><td>~25-100GB/mo</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total DEV</strong></td><td></td><td>~1.8-5.5GB</td><td>~30-150GB</td><td>~15-65GB/mo</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Section -->
+            <div class="resources-category ai-category">
+                <h3 class="resources-category-title">AI</h3>
+                <div class="resources-summary">
+                    <div class="summary-card ai-card">
+                        <h4>Services Total</h4>
+                        <div class="summary-stats">
+                            <div class="summary-stat"><span class="stat-icon">💾</span><span class="stat-label">RAM</span><span class="stat-value">1.3 - 48.5 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">💿</span><span class="stat-label">Storage</span><span class="stat-value">3 - 20 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">📡</span><span class="stat-label">Bandwidth</span><span class="stat-value">5 - 20 GB/mo</span></div>
+                        </div>
+                    </div>
+                    <div class="summary-card ai-card">
+                        <h4>VMs Total</h4>
+                        <div class="summary-stats">
+                            <div class="summary-stat"><span class="stat-icon">💾</span><span class="stat-label">RAM</span><span class="stat-value">14 - 56 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">💿</span><span class="stat-label">Storage</span><span class="stat-value">55 - 220 GB</span></div>
+                            <div class="summary-stat"><span class="stat-icon">📡</span><span class="stat-label">Bandwidth</span><span class="stat-value">30 - 140 GB/mo</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resources-section ai-section">
+                    <h3 class="resources-section-title">Services</h3>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead><tr><th>Status</th><th>Service</th><th>Category</th><th>RAM</th><th>Storage</th><th>Bandwidth</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr class="service-row ai-service"><td><span class="status-badge hold">HOLD</span></td><td><strong>n8n (AI)</strong></td><td>ML</td><td>1.3-48GB</td><td>3-20GB</td><td>5-20GB/mo</td><td>AI Agentic workflows</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai</td><td></td><td>1-48GB</td><td>2-10GB</td><td>5-20GB/mo</td><td>LLM context + workflows</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-db (PostgreSQL)</td><td></td><td>256-512MB</td><td>1-10GB</td><td>-</td><td>Varies by usage</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total HOLD</strong></td><td></td><td>~1.3-48.5GB</td><td>~3-20GB</td><td>~5-20GB/mo</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="resources-section ai-section">
+                    <h3 class="resources-section-title">VMs</h3>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead><tr><th>Status</th><th>VM</th><th>Services</th><th>RAM</th><th>Storage</th><th>Bandwidth</th></tr></thead>
+                            <tbody>
+                                <tr class="vm-row ai-vm"><td><span class="status-badge hold">HOLD</span></td><td><strong>Oracle ARM Server</strong></td><td>n8n (AI), NPM, PostgreSQL</td><td>6-24GB</td><td>5-20GB</td><td>10-40GB/mo</td></tr>
+                                <tr class="vm-row ai-vm"><td><span class="status-badge dev">DEV</span></td><td><strong>Generic VPS (AI)</strong></td><td>LLM inference, AI workloads</td><td>8-32GB</td><td>50-200GB</td><td>20-100GB/mo</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total HOLD</strong></td><td></td><td>~6-24GB</td><td>~5-20GB</td><td>~10-40GB/mo</td></tr>
+                                <tr class="totals-row"><td></td><td><strong>Total DEV</strong></td><td></td><td>~8-32GB</td><td>~50-200GB</td><td>~20-100GB/mo</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

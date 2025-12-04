@@ -253,19 +253,22 @@ dev() {
     cd "$PROJECT_DIR"
     mkdir -p "$DIST_DIR"
 
-    # Start Sass watch for all folders in background
-    nohup npx sass "$SRC_0/scss/main.scss:$DIST_DIR/style0.css" "$SRC_1/scss/main.scss:$DIST_DIR/style1.css" "$SRC_2/scss/main.scss:$DIST_DIR/style2.css" --watch --style=expanded > /dev/null 2>&1 &
+    # Start Sass watch for all folders in background (setsid for new session)
+    setsid npx sass "$SRC_0/scss/main.scss:$DIST_DIR/style0.css" "$SRC_1/scss/main.scss:$DIST_DIR/style1.css" "$SRC_2/scss/main.scss:$DIST_DIR/style2.css" --watch --style=expanded > /dev/null 2>&1 &
 
     # Start TypeScript watch for src_0 and src_2
     if [ -f "$SRC_0/typescript/main.ts" ]; then
-        nohup npx esbuild "$SRC_0/typescript/main.ts" --bundle --outfile="$DIST_DIR/script0.js" --target=es2020 --watch=forever > /dev/null 2>&1 &
+        setsid npx esbuild "$SRC_0/typescript/main.ts" --bundle --outfile="$DIST_DIR/script0.js" --target=es2020 --watch=forever > /dev/null 2>&1 &
     fi
     if [ -f "$SRC_2/typescript/main.ts" ]; then
-        nohup npx esbuild "$SRC_2/typescript/main.ts" --bundle --outfile="$DIST_DIR/script2.js" --target=es2020 --watch=forever > /dev/null 2>&1 &
+        setsid npx esbuild "$SRC_2/typescript/main.ts" --bundle --outfile="$DIST_DIR/script2.js" --target=es2020 --watch=forever > /dev/null 2>&1 &
     fi
 
-    # Start live-server in background
-    nohup npx live-server dist --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+    # Start live-server in background (setsid creates new session, survives parent exit)
+    setsid npx live-server dist --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+
+    # Wait a moment for server to start
+    sleep 2
 
     # Print URL and return control
     printf "\n"

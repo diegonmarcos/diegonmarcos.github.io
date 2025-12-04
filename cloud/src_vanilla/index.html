@@ -88,14 +88,35 @@
                 <div class="view-group">
                     <span class="view-group-label">Services</span>
                     <div class="view-group-buttons">
-                        <button class="view-btn active" data-view="cards">
+                        <button class="view-btn active" data-view="cards-front">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="3" width="7" height="7"/>
                                 <rect x="14" y="3" width="7" height="7"/>
                                 <rect x="3" y="14" width="7" height="7"/>
                                 <rect x="14" y="14" width="7" height="7"/>
                             </svg>
-                            Cards
+                            Cards-F
+                        </button>
+                        <button class="view-btn" data-view="cards-back">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7"/>
+                                <rect x="14" y="3" width="7" height="7"/>
+                                <rect x="3" y="14" width="7" height="7"/>
+                                <rect x="14" y="14" width="7" height="7"/>
+                            </svg>
+                            Cards-B
+                        </button>
+                        <button class="view-btn" data-view="list-front">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                            </svg>
+                            List-F
+                        </button>
+                        <button class="view-btn" data-view="list-back">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+                            </svg>
+                            List-B
                         </button>
                     </div>
                 </div>
@@ -156,26 +177,19 @@
                             </svg>
                             Tree
                         </button>
-                        <button class="view-btn" data-view="monitoring">
+                        <a href="cloud_dash.html" class="view-btn" title="Status List (Live API)">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                             </svg>
                             List
-                        </button>
-                        <a href="https://dashboard.diegonmarcos.com/" class="view-btn" title="Live API Dashboard" target="_blank">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                            Live
                         </a>
                     </div>
                 </div>
             </div>
         </header>
 
-        <!-- Cards View -->
-        <div id="cards-view" class="view-content active">
+        <!-- Cards Front View -->
+        <div id="cards-front-view" class="view-content active">
 
             <!-- FRONT SECTION -->
             <section class="section-header">
@@ -276,22 +290,22 @@
                     <div class="card-status pending">Dev</div>
                 </div>
 
-                <div class="card" data-service="cloud-dashboard">
+                <div class="card" data-service="ai-cli">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="7" height="7"/>
-                            <rect x="14" y="3" width="7" height="7"/>
-                            <rect x="14" y="14" width="7" height="7"/>
-                            <rect x="3" y="14" width="7" height="7"/>
+                            <polyline points="4 17 10 11 4 5"/>
+                            <line x1="12" y1="19" x2="20" y2="19"/>
                         </svg>
                     </div>
-                    <h3>Cloud Dashboard</h3>
-                    <p>cloud.diegonmarcos.com</p>
-                    <div class="card-status online">Online</div>
+                    <h3>AI CLI</h3>
+                    <p>Claude Code + Agents</p>
+                    <div class="card-status pending">Dev</div>
                 </div>
             </div>
+        </div><!-- End Cards Front View -->
 
-            <hr style="margin: 3rem 0; border: none; border-top: 1px solid rgba(255,255,255,0.1);">
+        <!-- Cards Back View -->
+        <div id="cards-back-view" class="view-content">
 
             <!-- BACK SECTION -->
             <section class="section-header">
@@ -433,238 +447,258 @@
                     </div>
                     <div class="card-status pending">Dev</div>
                 </div>
-            </div>
 
-            <!-- Infra Services Section -->
-            <section class="section-header" style="margin-top: 3rem;">
-                <h2>Infra Services</h2>
-            </section>
-
-            <!-- Infra Subsection - Proxies -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Proxies (NPM)</h3>
-            <div class="cards-grid">
-                <div class="card" data-service="npm-services">
+                <div class="card">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <circle cx="12" cy="10" r="3" fill="currentColor"/>
                         </svg>
                     </div>
+                    <h3>SSH-VM-Generic_VPS_0_Infra</h3>
+                    <p>TBD</p>
+                    <div class="card-status pending">TBD</div>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <circle cx="12" cy="10" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>SSH-VM-Generic_VPS_1_AI</h3>
+                    <p>TBD</p>
+                    <div class="card-status pending">TBD</div>
+                </div>
+            </div>
+
+            <!-- Infra Section -->
+            <section class="section-header" style="margin-top: 3rem;">
+                <h2>Infra</h2>
+            </section>
+
+            <!-- Infra - User Services (SSH) -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Services (SSH)</h3>
+            <div class="cards-grid">
+                <div class="card"><h3>Sync-app</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Mail-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>VPN-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Web_ide-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Gitlab-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Analytics-app</h3><div class="card-status online">Online</div></div>
+            </div>
+
+            <!-- Infra - Data Bases (SSH) -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Data Bases (SSH)</h3>
+            <div class="cards-grid">
+                <div class="card"><h3>sync_server-db</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>sync_files-db</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>sync_obj-db</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>mail-server-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>mail-obj-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>git_server-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>git_repo-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>matomo-db</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>n8n_ai-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>n8n_infra-db</h3><div class="card-status online">Online</div></div>
+            </div>
+
+            <!-- Infra - Infra Services (SSH) -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra Services (SSH)</h3>
+            <div class="cards-grid">
+                <div class="card"><h3>n8n-AI-server</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>n8n-Infra-server</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Flask-server</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Redis-server</h3><div class="card-status pending">Dev</div></div>
+            </div>
+
+            <!-- Infra - Proxies (Web and SSH) -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Proxies (Web and SSH)</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="npm-services">
                     <h3>NPM-VM-Oracle_Services_Serv</h3>
                     <p>129.151.228.66:81</p>
                     <div class="vm-buttons">
-                        <button class="vm-btn" data-url="http://129.151.228.66:81" title="Nginx Proxy Manager">Open</button>
+                        <button class="vm-btn" data-url="http://129.151.228.66:81" title="Open NPM">Open</button>
                     </div>
                     <div class="card-status online">Online</div>
                 </div>
-
                 <div class="card" data-service="npm-web">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
                     <h3>NPM-VM-Oracle_Web_Server_1</h3>
                     <p>130.110.251.193:81</p>
                     <div class="vm-buttons">
-                        <button class="vm-btn" data-url="http://130.110.251.193:81" title="Nginx Proxy Manager">Open</button>
+                        <button class="vm-btn" data-url="http://130.110.251.193:81" title="Open NPM">Open</button>
                     </div>
                     <div class="card-status online">Online</div>
                 </div>
-
-                <div class="card" data-service="npm-arm">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <h3>NPM-VM-Oracle_Flex_ARM_Server</h3>
-                    <p>[pending]:81</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-
-                <div class="card" data-service="npm-gcloud">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <h3>NPM-VM-Gcloud</h3>
-                    <p>[pending]:81</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+                <div class="card"><h3>NPM-VM-Oracle_Flex_ARM_Server</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>NPM-VM-Gcloud</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>NPM-VM-Generic_VPS</h3><div class="card-status pending">TBD</div></div>
             </div>
+        </div><!-- End Cards Back View -->
 
-            <!-- Infra Subsection - Databases -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Databases</h3>
-            <div class="cards-grid">
-                <div class="card" data-service="matomo-db">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                        </svg>
-                    </div>
-                    <h3>matomo-db</h3>
-                    <p>MariaDB :3306</p>
-                    <div class="card-status online">Online</div>
-                </div>
-
-                <div class="card" data-service="mail-db">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                        </svg>
-                    </div>
-                    <h3>mail-db</h3>
-                    <p>SQLite</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-
-                <div class="card" data-service="n8n-ai-db">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                        </svg>
-                    </div>
-                    <h3>n8n-AI_db</h3>
-                    <p>SQLite/PostgreSQL</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-            </div>
-
-            <!-- Infra Subsection - Infra Services -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infra - Services</h3>
-            <div class="cards-grid">
-                <div class="card" data-service="n8n-server-ai">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="3"/>
-                            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
-                        </svg>
-                    </div>
-                    <h3>n8n (AI)</h3>
-                    <p>ai.diegonmarcos.com</p>
-                    <div class="card-status pending">Hold</div>
-                </div>
-
-                <div class="card" data-service="flask-server">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                    </div>
-                    <h3>Flask Server</h3>
-                    <p>Cloud Dashboard API</p>
-                    <div class="card-status online">Online</div>
-                </div>
-
-                <a href="https://linktree.diegonmarcos.com" target="_blank" class="card card-link" data-service="linktree">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                        </svg>
-                    </div>
-                    <h3>Linktree</h3>
-                    <p>linktree.diegonmarcos.com</p>
-                    <div class="card-status online">Visit</div>
-                </a>
-            </div>
-        </div><!-- End Cards View -->
-
-        <!-- Tree View -->
+        <!-- Tree View (Status Tree) -->
         <div id="tree-view" class="view-content">
             <div class="tree-controls">
-                <button class="tree-ctrl-btn" id="expand-all">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="6 9 12 15 18 9"/>
-                    </svg>
-                    Expand All
-                </button>
-                <button class="tree-ctrl-btn" id="collapse-all">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="18 15 12 9 6 15"/>
-                    </svg>
-                    Collapse All
-                </button>
+                <div class="tree-controls-group">
+                    <button class="tree-ctrl-btn" id="expand-all">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                        Expand
+                    </button>
+                    <button class="tree-ctrl-btn" id="collapse-all">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="18 15 12 9 6 15"/>
+                        </svg>
+                        Collapse
+                    </button>
+                </div>
+                <span class="tree-controls-sep"></span>
+                <div class="tree-controls-group">
+                    <button class="tree-filter-btn active" data-filter="all">All</button>
+                    <button class="tree-filter-btn" data-filter="on">On</button>
+                    <button class="tree-filter-btn" data-filter="offline">Offline</button>
+                </div>
             </div>
             <div class="tree-container">
 
                 <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- VPS IaaS Section -->
+                <!-- IaaS - Self-Hosted VPS -->
                 <!-- ═══════════════════════════════════════════════════════════ -->
                 <div class="tree-section-divider">
-                    <span class="divider-label">Infra as Service VPS IaaS (Raw)</span>
+                    <span class="divider-label">IaaS - Self-Hosted VPS</span>
                 </div>
 
-                <!-- Google Cloud VPS -->
+                <!-- Google Cloud -->
                 <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
+                    <div class="tree-node vps-node" data-expanded="true" data-mode="dev">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
                             <span class="node-icon">🔵</span>
                             <span class="node-title">Google Cloud</span>
-                            <span class="node-badge online">Active</span>
+                            <span class="node-badge dev">dev</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <!-- Gcloud_Management -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node clickable" data-service="vps-gcloud">
-                                    <div class="node-header">
-                                        <span class="node-icon">⚙️</span>
-                                        <span class="node-title">Gcloud_Management</span>
-                                        <span class="node-badge online">Console</span>
-                                    </div>
-                                </div>
+                        <div class="tree-node service-node" data-mode="on">
+                            <div class="node-header">
+                                <span class="node-title">[CLI] gcloud</span>
+                                <span class="node-badge on">on</span>
+                                <button class="node-copy-btn" data-copy="gcloud compute instances list" title="Copy CLI">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
                             </div>
-                            <!-- SSH-VM-GCloud_microe2Linux_1 Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">SSH-VM-GCloud_microe2Linux_1</span>
-                                        <span class="node-config">e2-micro</span>
-                                        <span class="node-badge pending">Dev</span>
+                        </div>
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="dev">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: GCloud_microe2Linux_1</span>
+                                <span class="node-badge dev">dev</span>
+                                <button class="node-copy-btn" data-copy="gcloud compute ssh arch-1 --zone us-central1-a" title="Copy SSH">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">mail-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">terminal-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">npm-gcloud</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔀</span>
-                                            <span class="node-title">NPM-VM-Gcloud</span>
-                                            <span class="node-port">:80,:443,:81</span>
-                                            <span class="node-badge pending">Dev</span>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">mail-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node service-node" data-service="mail">
-                                        <div class="node-header">
-                                            <span class="node-icon">📧</span>
-                                            <span class="node-title">mailserver</span>
-                                            <span class="node-badge pending">Dev</span>
-                                        </div>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
                                     </div>
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🗄️</span>
-                                            <span class="node-title">mail-db</span>
-                                            <span class="node-badge pending">Dev</span>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">Arch Linux</div>
+                                                <div class="os-ip">us-central1-a</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" data-copy="gcloud compute ssh arch-1 --zone us-central1-a" title="Copy SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="tree-node service-node" data-service="terminal">
-                                        <div class="node-header">
-                                            <span class="node-icon">💻</span>
-                                            <span class="node-title">Web_Shell_Terminal</span>
-                                            <span class="node-badge pending">Dev</span>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">bridge</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (10GB)</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -673,196 +707,623 @@
                     </div>
                 </div>
 
-                <!-- Oracle Cloud VPS -->
+                <!-- Oracle Cloud -->
                 <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
+                    <div class="tree-node vps-node" data-expanded="true" data-mode="on">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
                             <span class="node-icon">🟠</span>
                             <span class="node-title">Oracle Cloud</span>
-                            <span class="node-badge online">Always Free</span>
+                            <span class="node-badge on">on</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <!-- OCloud_Management -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node clickable" data-service="vps-oracle">
-                                    <div class="node-header">
-                                        <span class="node-icon">⚙️</span>
-                                        <span class="node-title">OCloud-Management</span>
-                                        <span class="node-badge online">Console</span>
-                                    </div>
-                                </div>
+                        <div class="tree-node service-node" data-mode="on">
+                            <div class="node-header">
+                                <span class="node-title">[CLI] oci</span>
+                                <span class="node-badge on">on</span>
+                                <button class="node-copy-btn" data-copy="oci compute instance list --compartment-id $OCI_COMPARTMENT_ID" title="Copy CLI">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
                             </div>
-                            <!-- SSH-VM-Oracle_Web_Server_1 Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">SSH-VM-Oracle_Web_Server_1</span>
-                                        <span class="node-config">E2.1.Micro</span>
-                                        <span class="node-badge online">Online</span>
+                        </div>
+
+                        <!-- VM: Oracle_Web_Server_1 -->
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="on">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: Oracle_Web_Server_1</span>
+                                <span class="node-badge on">on</span>
+                                <button class="node-copy-btn" data-copy="ssh ubuntu@130.110.251.193" title="Copy SSH">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
                                     </div>
-                                </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔀</span>
-                                            <span class="node-title">NPM-VM-Oracle_Web_Server_1</span>
-                                            <span class="node-port">:80,:443,:81</span>
-                                            <span class="node-badge online">Online</span>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Front</div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">cloud-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="https://dashboard.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="tree-node service-node" data-expanded="true">
-                                        <div class="node-header">
-                                            <span class="expand-icon expanded">▶</span>
-                                            <span class="node-icon">⚙️</span>
-                                            <span class="node-title">n8n-server</span>
-                                            <span class="node-port">:5678</span>
-                                            <span class="node-badge online">Online</span>
-                                        </div>
-                                        <div class="tree-children expanded" style="margin-left: 1.5rem;">
-                                            <div class="tree-node service-node clickable" data-service="n8n-infra">
-                                                <div class="node-header">
-                                                    <span class="node-icon">🔧</span>
-                                                    <span class="node-title">Infra</span>
-                                                    <span class="node-badge online">Online</span>
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">sync-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="https://sync.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">n8n-infra-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="https://n8n.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">cloud-api</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">npm-oracle-web</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="http://130.110.251.193:81" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">git-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="https://git.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">vpn-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="hold">
+                                                <span class="vm-item-status hold"></span>
+                                                <span class="vm-item-name">cache-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node service-node clickable" data-service="sync">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔄</span>
-                                            <span class="node-title">Syncthing</span>
-                                            <span class="node-port">:8384</span>
-                                            <span class="node-badge online">Online</span>
-                                        </div>
+                                </div>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
                                     </div>
-                                    <div class="tree-node service-node" data-expanded="true">
-                                        <div class="node-header">
-                                            <span class="expand-icon expanded">▶</span>
-                                            <span class="node-icon">🐍</span>
-                                            <span class="node-title">Flask-server</span>
-                                            <span class="node-badge pending">Dev</span>
-                                        </div>
-                                        <div class="tree-children expanded" style="margin-left: 1.5rem;">
-                                            <div class="tree-node service-node" data-service="flask-cloud-dashboard">
-                                                <div class="node-header">
-                                                    <span class="node-icon">📊</span>
-                                                    <span class="node-title">Cloud_Dashboard.py</span>
-                                                    <span class="node-badge pending">Dev</span>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">sync-index-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
                                                 </div>
                                             </div>
-                                            <div class="tree-node service-node">
-                                                <div class="node-header">
-                                                    <span class="node-icon">🗄️</span>
-                                                    <span class="node-title">Cloud_Dashboard-db</span>
-                                                    <span class="node-badge pending">Dev</span>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">n8n-infra-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">git-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node service-node clickable" data-service="gitea">
-                                        <div class="node-header">
-                                            <span class="node-icon">📦</span>
-                                            <span class="node-title">Gitea</span>
-                                            <span class="node-port">:3000</span>
-                                            <span class="node-badge pending">Dev</span>
-                                        </div>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
                                     </div>
-                                    <div class="tree-node service-node clickable" data-service="openvpn">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔒</span>
-                                            <span class="node-title">OpenVPN</span>
-                                            <span class="node-port">:1194</span>
-                                            <span class="node-badge pending">Dev</span>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">Ubuntu 22.04</div>
+                                                <div class="os-ip">130.110.251.193</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" data-copy="ssh ubuntu@130.110.251.193" title="Copy SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">web_network</span>
+                                                <span class="os-tag tag-network">matomo_network</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (47GB)</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- SSH-VM-Oracle_Services_Serv Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">SSH-VM-Oracle_Services_Serv</span>
-                                        <span class="node-config">E2.1.Micro</span>
-                                        <span class="node-badge online">Online</span>
+                        </div>
+
+                        <!-- VM: Oracle_Services_Serv -->
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="on">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: Oracle_Services_Serv</span>
+                                <span class="node-badge on">on</span>
+                                <button class="node-copy-btn" data-copy="ssh ubuntu@129.151.228.66" title="Copy SSH">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">analytics-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="https://analytics.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">npm-oracle-services</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status online" title="Online"></span>
+                                                    <button class="vm-action-btn btn-url" data-url="http://129.151.228.66:81" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔀</span>
-                                            <span class="node-title">NPM-VM-Oracle_Services_Serv</span>
-                                            <span class="node-port">:80,:443,:81</span>
-                                            <span class="node-badge online">Online</span>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="on">
+                                                <span class="vm-item-status on"></span>
+                                                <span class="vm-item-name">analytics-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="dev">
+                                                <span class="vm-item-status dev"></span>
+                                                <span class="vm-item-name">cloud-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node service-node clickable" data-service="analytics">
-                                        <div class="node-header">
-                                            <span class="node-icon">📊</span>
-                                            <span class="node-title">matomo-app</span>
-                                            <span class="node-port">:8080</span>
-                                            <span class="node-badge online">Online</span>
-                                        </div>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
                                     </div>
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🗄️</span>
-                                            <span class="node-title">matomo-db</span>
-                                            <span class="node-port">:3306</span>
-                                            <span class="node-badge online">Online</span>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">Ubuntu 22.04</div>
+                                                <div class="os-ip">129.151.228.66</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" data-copy="ssh ubuntu@129.151.228.66" title="Copy SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🗄️</span>
-                                            <span class="node-title">Cloud_Dashboard-db</span>
-                                            <span class="node-badge pending">Dev</span>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">matomo_network</span>
+                                                <span class="os-tag tag-network">npm_network</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (47GB)</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- SSH-VM-Oracle_Flex_ARM_Server Column -->
-                            <div class="tree-sibling-column">
-                                <div class="tree-node vm-node" data-expanded="true">
-                                    <div class="node-header">
-                                        <span class="expand-icon expanded">▶</span>
-                                        <span class="node-icon">🖥️</span>
-                                        <span class="node-title">SSH-VM-Oracle_Flex_ARM_Server</span>
-                                        <span class="node-config">A1.Flex 24GB</span>
-                                        <span class="node-badge pending">Dev</span>
+                        </div>
+
+                        <!-- VM: Oracle_Flex_ARM -->
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="hold">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: Oracle_Flex_ARM</span>
+                                <span class="node-badge hold">hold</span>
+                                <button class="node-copy-btn" data-copy="ssh ubuntu@[pending]" title="Copy SSH" disabled>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="hold">
+                                                <span class="vm-item-status hold"></span>
+                                                <span class="vm-item-name">n8n-ai-app</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="hold">
+                                                <span class="vm-item-status hold"></span>
+                                                <span class="vm-item-name">npm-oracle-arm</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="tree-children expanded">
-                                    <div class="tree-node service-node">
-                                        <div class="node-header">
-                                            <span class="node-icon">🔀</span>
-                                            <span class="node-title">NPM-VM-Oracle_Flex_ARM_Server</span>
-                                            <span class="node-port">:80,:443,:81</span>
-                                            <span class="node-badge pending">Dev</span>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="hold">
+                                                <span class="vm-item-status hold"></span>
+                                                <span class="vm-item-name">n8n-ai-db</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="tree-node service-node" data-expanded="true">
-                                        <div class="node-header">
-                                            <span class="expand-icon expanded">▶</span>
-                                            <span class="node-icon">⚙️</span>
-                                            <span class="node-title">n8n-server</span>
-                                            <span class="node-port">:5678</span>
-                                            <span class="node-badge pending">Dev</span>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">Ubuntu ARM (hold)</div>
+                                                <div class="os-ip">[pending]</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
                                         </div>
-                                        <div class="tree-children expanded" style="margin-left: 1.5rem;">
-                                            <div class="tree-node service-node" data-service="n8n-ai">
-                                                <div class="node-header">
-                                                    <span class="node-icon">🤖</span>
-                                                    <span class="node-title">AI Agentic</span>
-                                                    <span class="node-badge pending">Dev</span>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">ai_network (tbd)</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (tbd)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generic VPS (TBD) -->
+                <div class="tree-vps">
+                    <div class="tree-node vps-node" data-expanded="true" data-mode="tbd">
+                        <div class="node-header">
+                            <span class="expand-icon expanded">▶</span>
+                            <span class="node-icon">🖥️</span>
+                            <span class="node-title">Generic VPS (TBD)</span>
+                            <span class="node-badge tbd">tbd</span>
+                        </div>
+                    </div>
+                    <div class="tree-children expanded">
+                        <!-- VM: Generic_Infra -->
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="tbd">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: Generic_Infra</span>
+                                <span class="node-badge tbd">tbd</span>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">(TBD)</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
                                                 </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">NPM Proxy</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">(TBD)</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">(TBD)</div>
+                                                <div class="os-ip">[pending]</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">(tbd)</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (tbd)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VM: Generic_AI -->
+                        <div class="tree-node vm-node" data-expanded="true" data-mode="tbd">
+                            <div class="node-header">
+                                <span class="expand-icon expanded">▶</span>
+                                <span class="node-title">VM: Generic_AI</span>
+                                <span class="node-badge tbd">tbd</span>
+                            </div>
+                        </div>
+                        <div class="tree-children expanded" style="margin-left: 1rem;">
+                            <!-- VM Card Grid: Services | Data | OS -->
+                            <div class="vm-card-grid">
+                                <!-- SERVICES BOX -->
+                                <div class="vm-box box-services">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">⚡</span> Services
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">(TBD)</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">NPM Proxy</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- DATA BOX -->
+                                <div class="vm-box box-data">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🗄️</span> Data
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-box-section">
+                                            <div class="vm-box-section-label">Back</div>
+                                            <div class="vm-item" data-mode="tbd">
+                                                <span class="vm-item-status tbd"></span>
+                                                <span class="vm-item-name">(TBD)</span>
+                                                <div class="vm-item-actions">
+                                                    <span class="vm-live-status unknown" title="Status unknown"></span>
+                                                    <button class="vm-action-btn btn-url" disabled title="No URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
+                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- OS BOX -->
+                                <div class="vm-box box-os">
+                                    <div class="vm-box-header">
+                                        <span class="box-icon">🖥️</span> OS
+                                    </div>
+                                    <div class="vm-box-content">
+                                        <div class="vm-os-info">
+                                            <span class="os-icon">🐧</span>
+                                            <div class="os-details">
+                                                <div class="os-name">(TBD)</div>
+                                                <div class="os-ip">[pending]</div>
+                                            </div>
+                                            <div class="vm-item-actions">
+                                                <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">🐳</span> Docker Networks
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-network">(tbd)</span>
+                                            </div>
+                                        </div>
+                                        <div class="os-subsection">
+                                            <div class="os-subsection-header">
+                                                <span class="subsection-icon">💾</span> HD Partitions
+                                            </div>
+                                            <div class="os-subsection-items">
+                                                <span class="os-tag tag-partition">/ (tbd)</span>
                                             </div>
                                         </div>
                                     </div>
@@ -873,18 +1334,13 @@
                 </div>
 
                 <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- Pay per use GPU VRAM and RAM Section -->
+                <!-- PaaS - Pay-per-Use -->
                 <!-- ═══════════════════════════════════════════════════════════ -->
                 <div class="tree-section-divider">
-                    <span class="divider-label">Pay per use GPU VRAM and RAM</span>
+                    <span class="divider-label">PaaS - Pay-per-Use</span>
                 </div>
 
                 <!-- WebAPP -->
-                <div class="tree-section-divider" style="margin-top: 1rem;">
-                    <span class="divider-label">WebAPP</span>
-                </div>
-
-                <!-- Python (Flask/Django) -->
                 <div class="tree-vps">
                     <div class="tree-node vps-node" data-expanded="true">
                         <div class="node-header">
@@ -895,321 +1351,102 @@
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">📊</span>
-                                        <span class="node-title">Streamlit</span>
-                                        <span class="node-badge pending">Planned</span>
-                                    </div>
-                                </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header">
+                                <span class="node-title">Streamlit</span>
+                                <span class="node-badge pending">TBD</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- AI -->
+                <!-- AI Section -->
                 <div class="tree-section-divider" style="margin-top: 1rem;">
                     <span class="divider-label">AI</span>
                 </div>
 
                 <!-- PaaS -->
-                <div class="tree-section-divider" style="margin-top: 0.5rem; opacity: 0.7;">
-                    <span class="divider-label">PaaS</span>
-                </div>
-
-                <!-- Hugging Face Spaces -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🤗</span>
-                            <span class="node-title">Hugging Face</span>
-                            <span class="node-config">Spaces</span>
-                            <span class="node-badge pending">Planned</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🚀</span>
-                                        <span class="node-title">Gradio Apps</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Koyeb / Railway / Render -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🚂</span>
-                            <span class="node-title">Koyeb / Railway / Render</span>
-                            <span class="node-config">App Hosting</span>
-                            <span class="node-badge pending">Planned</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">📦</span>
-                                        <span class="node-title">Container Apps</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- FaaS Section - Agent Logic Host (Serverless GPU) -->
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <div class="tree-section-divider">
-                    <span class="divider-label">FaaS - Agent Logic Host (Serverless GPU)</span>
-                </div>
-
-                <!-- Google Cloud Serverless -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🔵</span>
-                            <span class="node-title">Google Cloud</span>
-                            <span class="node-config">Functions</span>
-                            <span class="node-badge online">Active</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">⚡</span>
-                                        <span class="node-title">Cloud Function</span>
-                                        <span class="node-badge online">Active</span>
-                                    </div>
-                                </div>
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">📨</span>
-                                        <span class="node-title">Pub/Sub</span>
-                                        <span class="node-badge online">Active</span>
-                                    </div>
-                                </div>
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">💰</span>
-                                        <span class="node-title">Budget Alert</span>
-                                        <span class="node-badge online">Active</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">⚡</span>
-                            <span class="node-title">Modal</span>
-                            <span class="node-config">Serverless GPU</span>
-                            <span class="node-badge pending">Planned</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🎮</span>
-                                        <span class="node-title">GPU Functions</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Beam.cloud / RunPod -->
                 <div class="tree-vps">
                     <div class="tree-node vps-node" data-expanded="true">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
                             <span class="node-icon">☁️</span>
-                            <span class="node-title">Beam / RunPod</span>
-                            <span class="node-config">Serverless</span>
+                            <span class="node-title">PaaS</span>
                             <span class="node-badge pending">Planned</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🎮</span>
-                                        <span class="node-title">GPU Inference</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Hugging Face Spaces</span><span class="node-badge pending">TBD</span></div>
+                        </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Koyeb/Railway/Render</span><span class="node-badge pending">TBD</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- MaaS Section - The Brain / API (Inference-as-a-Service) -->
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <div class="tree-section-divider">
-                    <span class="divider-label">MaaS - The Brain / API (Inference)</span>
-                </div>
-
-                <!-- Hugging Face Serverless API -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🤗</span>
-                            <span class="node-title">Hugging Face</span>
-                            <span class="node-config">Serverless API</span>
-                            <span class="node-badge pending">Planned</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🧠</span>
-                                        <span class="node-title">Inference API</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Groq -->
+                <!-- FaaS -->
                 <div class="tree-vps">
                     <div class="tree-node vps-node" data-expanded="true">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
                             <span class="node-icon">⚡</span>
-                            <span class="node-title">Groq</span>
-                            <span class="node-config">LPU Inference</span>
+                            <span class="node-title">FaaS</span>
                             <span class="node-badge pending">Planned</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🚀</span>
-                                        <span class="node-title">Fast LLM API</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Google Cloud Functions</span><span class="node-badge online">Active</span></div>
+                        </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Modal</span><span class="node-badge pending">TBD</span></div>
+                        </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Beam/RunPod</span><span class="node-badge pending">TBD</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Together AI / OpenRouter -->
+                <!-- MaaS -->
                 <div class="tree-vps">
                     <div class="tree-node vps-node" data-expanded="true">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🔀</span>
-                            <span class="node-title">Together AI / OpenRouter</span>
-                            <span class="node-config">Multi-Model</span>
+                            <span class="node-icon">🧠</span>
+                            <span class="node-title">MaaS</span>
                             <span class="node-badge pending">Planned</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🧠</span>
-                                        <span class="node-title">LLM Router</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Hugging Face API</span><span class="node-badge pending">TBD</span></div>
+                        </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Groq</span><span class="node-badge pending">TBD</span></div>
+                        </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Together AI/OpenRouter</span><span class="node-badge pending">TBD</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <!-- AaaS Section - Agent Sandbox (Agent Infrastructure) -->
-                <!-- ═══════════════════════════════════════════════════════════ -->
-                <div class="tree-section-divider">
-                    <span class="divider-label">AaaS - Agent Sandbox (Agent Infra)</span>
-                </div>
-
-                <!-- E2B -->
+                <!-- AaaS -->
                 <div class="tree-vps">
                     <div class="tree-node vps-node" data-expanded="true">
                         <div class="node-header">
                             <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">📦</span>
-                            <span class="node-title">E2B</span>
-                            <span class="node-config">Code Execution</span>
+                            <span class="node-icon">🤖</span>
+                            <span class="node-title">AaaS</span>
                             <span class="node-badge pending">Planned</span>
                         </div>
                     </div>
                     <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🔒</span>
-                                        <span class="node-title">Sandboxed Runtime</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">E2B</span><span class="node-badge pending">TBD</span></div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Relevance AI -->
-                <div class="tree-vps">
-                    <div class="tree-node vps-node" data-expanded="true">
-                        <div class="node-header">
-                            <span class="expand-icon expanded">▶</span>
-                            <span class="node-icon">🦾</span>
-                            <span class="node-title">Relevance AI</span>
-                            <span class="node-config">Agent Platform</span>
-                            <span class="node-badge pending">Planned</span>
-                        </div>
-                    </div>
-                    <div class="tree-children expanded">
-                        <div class="tree-siblings">
-                            <div class="tree-sibling-column">
-                                <div class="tree-node service-node">
-                                    <div class="node-header">
-                                        <span class="node-icon">🤖</span>
-                                        <span class="node-title">AI Agents</span>
-                                        <span class="node-badge pending">TBD</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="tree-node service-node">
+                            <div class="node-header"><span class="node-title">Relevance AI</span><span class="node-badge pending">TBD</span></div>
                         </div>
                     </div>
                 </div>
@@ -1227,57 +1464,124 @@
             <iframe src="ai-arch.html" style="width: 100%; height: 85vh; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
         </div>
 
-        <!-- Monitoring View -->
-        <div id="monitoring-view" class="view-content">
+        <!-- Backlog View -->
+        <div id="backlog-view" class="view-content">
             <section class="section-header">
-                <h2>Live Status</h2>
+                <h2>Backlog</h2>
+            </section>
+            <div class="backlog-container" style="padding: 2rem;">
+                <p style="color: var(--text-secondary); text-align: center;">Task backlog and planning - Coming soon</p>
+            </div>
+        </div>
+
+        <!-- List Front View -->
+        <div id="list-front-view" class="view-content">
+            <section class="section-header">
+                <h2>Front</h2>
             </section>
 
-            <!-- Basic (Non-AI) Section -->
+            <!-- User Subsection -->
             <div class="resources-category">
-                <h3 class="resources-category-title">Basic (Non-AI)</h3>
+                <h3 class="resources-category-title">User</h3>
                 <div class="resources-section">
-                    <h3 class="resources-section-title">Services</h3>
                     <div class="resources-table-container">
                         <table class="resources-table status-table">
                             <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
                             <tbody>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Sync</strong></td><td>sync.diegonmarcos.com</td><td>:8384</td><td>128-256MB</td><td>5.2-106GB</td><td><span class="health-badge online">Healthy</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ syncthing</td><td></td><td>130.110.251.193:8384</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>-</td><td>100-500MB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-files-db</td><td></td><td>-</td><td>-</td><td>~100GB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ sync-obj-db</td><td></td><td>-</td><td>-</td><td>~5GB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>mail.diegonmarcos.com</td><td>-</td><td>520MB-1GB</td><td>5-50GB</td><td><span class="health-badge pending">Dev</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ mailserver</td><td></td><td>:25,:587,:993</td><td>512MB-1GB</td><td>100-500MB</td><td></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ mail-db (SQLite)</td><td></td><td>-</td><td>8-32MB</td><td>5-50GB</td><td></td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>-</td><td>:1194</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge pending">Dev</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ openvpn</td><td></td><td>130.110.251.193:1194</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coder Subsection -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Coder</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table status-table">
+                            <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>terminal.diegonmarcos.com</td><td>:7681</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge pending">Dev</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ wetty/ttyd</td><td></td><td>-</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>git.diegonmarcos.com</td><td>:3000</td><td>264-544MB</td><td>11-15GB</td><td><span class="health-badge pending">Dev</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea</td><td></td><td>130.110.251.193:3000</td><td>256-512MB</td><td>1-5GB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-db (SQLite)</td><td></td><td>-</td><td>8-32MB</td><td>Variable</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-repos-db</td><td></td><td>-</td><td>-</td><td>~10GB</td><td></td></tr>
+                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>analytics.diegonmarcos.com</td><td>:8080</td><td>512MB-1GB</td><td>3-15GB</td><td><span class="health-badge online">Healthy</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-app</td><td></td><td>129.151.228.66:8080</td><td>256-512MB</td><td>2-5GB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-db (MariaDB)</td><td></td><td>:3306</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Subsection -->
+            <div class="resources-category ai-category">
+                <h3 class="resources-category-title">AI</h3>
+                <div class="resources-section ai-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table status-table">
+                            <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr class="service-row ai-service"><td><span class="status-badge hold">HOLD</span></td><td><strong>AI WebChat</strong></td><td>ai.diegonmarcos.com</td><td>:5679</td><td>1.3-48GB</td><td>3-20GB</td><td><span class="health-badge pending">Hold</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai</td><td></td><td>pending</td><td>1-48GB</td><td>2-10GB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-db (PostgreSQL)</td><td></td><td>:5432</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
+                                <tr class="service-row ai-service"><td><span class="status-badge dev">DEV</span></td><td><strong>AI CLI</strong></td><td>-</td><td>-</td><td>-</td><td>-</td><td><span class="health-badge pending">Dev</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ Claude Code + Agents</td><td></td><td>-</td><td>-</td><td>-</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- List Back View -->
+        <div id="list-back-view" class="view-content">
+            <section class="section-header">
+                <h2>Back</h2>
+            </section>
+
+            <!-- Infra Subsection -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Infra</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table status-table">
+                            <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                            <tbody>
                                 <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM</strong></td><td>-</td><td>:80,:443,:81</td><td>512MB-1GB</td><td>400MB-2GB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-web</td><td></td><td>130.110.251.193:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-services</td><td></td><td>129.151.228.66:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-arm</td><td></td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge pending">Hold</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-gcloud</td><td></td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>analytics.diegonmarcos.com</td><td>:8080</td><td>512MB-1GB</td><td>3-15GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-app</td><td></td><td>129.151.228.66:8080</td><td>256-512MB</td><td>2-5GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ matomo-db (MariaDB)</td><td></td><td>:3306</td><td>256-512MB</td><td>1-10GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>git.diegonmarcos.com</td><td>:3000</td><td>264-544MB</td><td>11-15GB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ gitea</td><td></td><td>130.110.251.193:3000</td><td>256-512MB</td><td>1-5GB</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-db (SQLite)</td><td></td><td>-</td><td>8-32MB</td><td>Variable</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ gitea-repos-db</td><td></td><td>-</td><td>-</td><td>~10GB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>n8n.diegonmarcos.com</td><td>:5678</td><td>256-512MB</td><td>500MB-2GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ n8n</td><td></td><td>130.110.251.193:5678</td><td>256-512MB</td><td>500MB-2GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Sync</strong></td><td>sync.diegonmarcos.com</td><td>:8384</td><td>128-256MB</td><td>5.2-106GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ syncthing</td><td></td><td>130.110.251.193:8384</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>-</td><td>100-500MB</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ sync-files-db</td><td></td><td>-</td><td>-</td><td>~100GB</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ sync-obj-db</td><td></td><td>-</td><td>-</td><td>~5GB</td><td></td></tr>
-                                <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Redis</strong></td><td>-</td><td>:6379</td><td>64-256MB</td><td>100MB-1GB</td><td><span class="health-badge pending">Hold</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ redis</td><td></td><td>-</td><td>64-256MB</td><td>100MB-1GB</td><td></td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>-</td><td>:1194</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ openvpn</td><td></td><td>130.110.251.193:1194</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ n8n</td><td></td><td>130.110.251.193:5678</td><td>256-512MB</td><td>500MB-2GB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Flask Server</strong></td><td>cloud.diegonmarcos.com</td><td>:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ flask-server</td><td></td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>terminal.diegonmarcos.com</td><td>:7681</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ wetty/ttyd</td><td></td><td>-</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
+                                <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Redis</strong></td><td>-</td><td>:6379</td><td>64-256MB</td><td>100MB-1GB</td><td><span class="health-badge pending">Hold</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ redis</td><td></td><td>-</td><td>64-256MB</td><td>100MB-1GB</td><td></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+
+            <!-- VMs Subsection -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">VMs</h3>
                 <div class="resources-section">
-                    <h3 class="resources-section-title">VMs</h3>
                     <div class="resources-table-container">
                         <table class="resources-table status-table">
                             <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
@@ -1290,26 +1594,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
-
-            <!-- AI Section -->
-            <div class="resources-category ai-category">
-                <h3 class="resources-category-title">AI</h3>
                 <div class="resources-section ai-section">
-                    <h3 class="resources-section-title">Services</h3>
-                    <div class="resources-table-container">
-                        <table class="resources-table status-table">
-                            <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
-                            <tbody>
-                                <tr class="service-row ai-service"><td><span class="status-badge hold">HOLD</span></td><td><strong>n8n (AI)</strong></td><td>ai.diegonmarcos.com</td><td>:5679</td><td>1.3-48GB</td><td>3-20GB</td><td><span class="health-badge pending">Hold</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai</td><td></td><td>pending</td><td>1-48GB</td><td>2-10GB</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-db (PostgreSQL)</td><td></td><td>:5432</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="resources-section ai-section">
-                    <h3 class="resources-section-title">VMs</h3>
+                    <h3 class="resources-section-title">AI VMs</h3>
                     <div class="resources-table-container">
                         <table class="resources-table status-table">
                             <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>

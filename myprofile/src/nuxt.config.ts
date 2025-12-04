@@ -35,7 +35,14 @@ export default defineNuxtConfig({
         }
       ],
       script: [
-        { src: '/myprofile/matomo.js', defer: true }
+        {
+          innerHTML: `var _mtm = window._mtm = window._mtm || [];
+_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+(function() {
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+})();`
+        }
       ]
     }
   },

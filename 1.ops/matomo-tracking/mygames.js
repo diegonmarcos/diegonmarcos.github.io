@@ -1,1 +1,1 @@
-../../mygames/src/static/mygames_matomo.js
+../../mygames/static/mygames_matomo.js

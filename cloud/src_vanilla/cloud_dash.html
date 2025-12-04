@@ -18,72 +18,45 @@
 
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Main Header Navigation */
-        .main-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .main-header h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.25rem;
-        }
-
-        .main-header .subtitle {
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
-        }
-
         /* Dashboard-specific styles */
-        .dashboard-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
         }
 
         .dashboard-title {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
-        .dashboard-title h1 {
-            font-size: 1.8rem;
+        .dashboard-title h2 {
             margin: 0;
+            font-size: 1.2rem;
         }
 
-        .dashboard-title .status-dot {
-            width: 12px;
-            height: 12px;
+        .status-dot {
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: var(--accent-green);
             animation: pulse 2s infinite;
         }
 
-        .dashboard-title .status-dot.disconnected {
+        .status-dot.disconnected {
             background: var(--accent-red);
             animation: none;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--accent-green); }
+            50% { opacity: 0.6; box-shadow: 0 0 8px var(--accent-green); }
         }
 
         .dashboard-controls {
@@ -92,23 +65,35 @@
             align-items: center;
         }
 
+        .auto-refresh-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .auto-refresh-toggle input {
+            accent-color: var(--accent-primary);
+        }
 
         .refresh-btn {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
             background: var(--accent-primary);
             border: none;
             border-radius: var(--border-radius);
             color: #000;
             cursor: pointer;
             font-weight: 600;
+            font-size: 0.8rem;
             transition: all 0.2s;
         }
 
         .refresh-btn:hover {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .refresh-btn.loading svg {
@@ -120,400 +105,66 @@
             to { transform: rotate(360deg); }
         }
 
-        .auto-refresh-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        .auto-refresh-toggle input {
-            accent-color: var(--accent-primary);
-        }
-
-        /* Grid Layout */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 1.5rem;
-        }
-
-        /* Section Cards */
-        .dashboard-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: rgba(255, 255, 255, 0.02);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .section-header h2 {
-            margin: 0;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .section-header .count-badge {
-            background: var(--accent-primary);
-            color: #000;
-            padding: 0.2rem 0.6rem;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            font-weight: 600;
-        }
-
-        .section-body {
-            padding: 1rem;
-        }
-
-        /* VM Status Cards */
-        .vm-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .vm-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            transition: all 0.2s;
-        }
-
-        .vm-card:hover {
-            border-color: var(--accent-primary);
-        }
-
-        .vm-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .vm-name {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-
-        .vm-status {
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
-        }
-
-        .vm-status.online {
-            background: rgba(74, 222, 128, 0.15);
-            color: var(--accent-green);
-        }
-
-        .vm-status.offline {
-            background: rgba(248, 113, 113, 0.15);
-            color: var(--accent-red);
-        }
-
-        .vm-status.pending {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-
-        .vm-status.no-ssh {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-
-        .vm-details {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.5rem;
-            font-size: 0.8rem;
-        }
-
-        .vm-detail {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .vm-detail-label {
-            color: var(--text-tertiary);
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-
-        .vm-detail-value {
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-        }
-
-        .ram-bar {
-            height: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 2px;
-            margin-top: 0.75rem;
-            overflow: hidden;
-        }
-
-        .ram-bar-fill {
-            height: 100%;
-            background: var(--accent-green);
-            border-radius: 2px;
-            transition: width 0.3s;
-        }
-
-        .ram-bar-fill.warning {
-            background: var(--accent-yellow);
-        }
-
-        .ram-bar-fill.danger {
-            background: var(--accent-red);
-        }
-
-        /* Service Status List */
-        .service-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .service-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 1rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-
-        .service-row:hover {
-            border-color: var(--accent-primary);
-        }
-
-        .service-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-
-        .service-name {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .service-url {
+        .last-updated {
             font-size: 0.75rem;
             color: var(--text-tertiary);
-            font-family: var(--font-mono);
         }
 
-        .service-url a {
-            color: var(--accent-blue);
-            text-decoration: none;
-        }
-
-        .service-url a:hover {
-            text-decoration: underline;
-        }
-
-        .service-status {
-            display: flex;
+        /* Live status badge that gets updated by JS */
+        .live-status {
+            display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            font-size: 0.8rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
+            gap: 0.3rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
         }
 
-        .service-status.on {
-            background: rgba(74, 222, 128, 0.15);
-            color: var(--accent-green);
-        }
-
-        .service-status.dev {
-            background: rgba(96, 165, 250, 0.15);
-            color: var(--accent-blue);
-        }
-
-        .service-status.hold {
-            background: rgba(251, 191, 36, 0.15);
-            color: var(--accent-yellow);
-        }
-
-        .service-status.tbd {
+        .live-status.checking {
             background: rgba(156, 163, 175, 0.15);
             color: var(--text-tertiary);
         }
 
-        /* Container Status */
-        .container-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .container-row {
-            display: grid;
-            grid-template-columns: 1fr auto auto;
-            gap: 1rem;
-            padding: 0.6rem 1rem;
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            font-size: 0.85rem;
-            align-items: center;
-        }
-
-        .container-name {
-            font-family: var(--font-mono);
-            color: var(--text-primary);
-        }
-
-        .container-status {
-            font-size: 0.75rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        .container-status.up {
+        .live-status.online {
             background: rgba(74, 222, 128, 0.15);
             color: var(--accent-green);
         }
 
-        .container-status.exited {
+        .live-status.offline {
             background: rgba(248, 113, 113, 0.15);
             color: var(--accent-red);
         }
 
-        .container-ports {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            font-family: var(--font-mono);
+        .live-status.pending {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
         }
 
-        /* Error/Loading states */
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            color: var(--text-tertiary);
+        .live-status.dev {
+            background: rgba(96, 165, 250, 0.15);
+            color: var(--accent-blue);
         }
 
-        .error-message {
-            background: rgba(248, 113, 113, 0.1);
-            border: 1px solid var(--accent-red);
-            border-radius: 8px;
-            padding: 1rem;
-            color: var(--accent-red);
-            text-align: center;
+        .live-status.hold {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
         }
 
-        .empty-state {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-tertiary);
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
         }
 
-        /* Last updated */
-        .last-updated {
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
+        .live-status.online .live-dot {
+            animation: pulse-dot 2s ease-in-out infinite;
         }
 
-        /* Quick Commands Section */
-        .commands-section {
-            grid-column: 1 / -1;
-        }
-
-        .command-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1rem;
-        }
-
-        .command-card {
-            background: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-        }
-
-        .command-title {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-        }
-
-        .command-code {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .command-code code {
-            flex: 1;
-            background: var(--bg-tertiary);
-            padding: 0.5rem 0.75rem;
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            overflow-x: auto;
-        }
-
-        .copy-btn {
-            background: none;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 0.5rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-        }
-
-        .copy-btn.copied {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-        }
-
-        /* Back link */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            transition: color 0.2s;
-        }
-
-        .back-link:hover {
-            color: var(--accent-primary);
+        @keyframes pulse-dot {
+            0%, 100% { box-shadow: 0 0 2px currentColor; }
+            50% { box-shadow: 0 0 6px currentColor; }
         }
     </style>
     <script>
@@ -525,7 +176,7 @@
     </script>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="container">
         <header class="main-header">
             <h1>Cloud Services Dashboard</h1>
             <p class="subtitle">Manage your infrastructure</p>
@@ -533,104 +184,47 @@
                 <div class="view-group">
                     <span class="view-group-label">Services</span>
                     <div class="view-group-buttons">
-                        <a href="index.html" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"/>
-                                <rect x="14" y="3" width="7" height="7"/>
-                                <rect x="3" y="14" width="7" height="7"/>
-                                <rect x="14" y="14" width="7" height="7"/>
-                            </svg>
-                            Cards
-                        </a>
+                        <a href="index.html#cards-front" class="view-btn">Cards-F</a>
+                        <a href="index.html#cards-back" class="view-btn">Cards-B</a>
+                        <a href="index.html#list-front" class="view-btn">List-F</a>
+                        <a href="index.html#list-back" class="view-btn">List-B</a>
                     </div>
                 </div>
                 <span class="view-separator"></span>
                 <div class="view-group">
                     <span class="view-group-label">Architecture</span>
                     <div class="view-group-buttons">
-                        <a href="index.html#resources" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="2" y="3" width="20" height="14" rx="2"/>
-                                <path d="M8 21h8"/>
-                                <path d="M12 17v4"/>
-                                <path d="M6 8h4"/>
-                                <path d="M6 11h8"/>
-                            </svg>
-                            Resources
-                        </a>
-                        <a href="arch.html" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="3" y1="9" x2="21" y2="9"/>
-                                <line x1="9" y1="21" x2="9" y2="9"/>
-                            </svg>
-                            Server
-                        </a>
-                        <a href="ai-arch.html" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="3"/>
-                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                            </svg>
-                            AI
-                        </a>
+                        <a href="index.html#resources" class="view-btn">Resources</a>
+                        <a href="arch.html" class="view-btn">Server</a>
+                        <a href="ai-arch.html" class="view-btn">AI</a>
                     </div>
                 </div>
                 <span class="view-separator"></span>
                 <div class="view-group">
                     <span class="view-group-label">Monitoring</span>
                     <div class="view-group-buttons">
-                        <a href="index.html#backlog" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            Backlog
-                        </a>
-                        <a href="index.html#tree" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v6"/>
-                                <path d="M12 8L6 14"/>
-                                <path d="M12 8l6 6"/>
-                                <circle cx="12" cy="2" r="2"/>
-                                <circle cx="6" cy="16" r="2"/>
-                                <circle cx="18" cy="16" r="2"/>
-                                <path d="M6 18v4"/>
-                                <path d="M18 18v4"/>
-                            </svg>
-                            Tree
-                        </a>
-                        <a href="index.html#monitoring" class="view-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                            </svg>
-                            List
-                        </a>
-                        <span class="view-btn active">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                            Live
-                        </span>
+                        <a href="index.html#backlog" class="view-btn">Backlog</a>
+                        <a href="index.html#tree" class="view-btn">Tree</a>
+                        <span class="view-btn active">List</span>
                     </div>
                 </div>
             </div>
         </header>
 
+        <!-- Dashboard Controls -->
         <div class="dashboard-header">
             <div class="dashboard-title">
                 <div class="status-dot" id="connection-status"></div>
-                <h1>Live Monitoring</h1>
+                <h2>Live Monitoring</h2>
             </div>
             <div class="dashboard-controls">
+                <span class="last-updated">Last: <span id="last-updated">--:--:--</span></span>
                 <label class="auto-refresh-toggle">
                     <input type="checkbox" id="auto-refresh" checked>
-                    Auto-refresh (30s)
+                    Auto (30s)
                 </label>
                 <button class="refresh-btn" id="refresh-btn" onclick="refreshAll()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M23 4v6h-6M1 20v-6h6"/>
                         <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
                     </svg>
@@ -639,87 +233,101 @@
             </div>
         </div>
 
-        <div class="dashboard-grid">
-            <!-- VMs Section -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="2" y="3" width="20" height="14" rx="2"/>
-                            <path d="M8 21h8M12 17v4"/>
-                        </svg>
-                        Virtual Machines
-                        <span class="count-badge" id="vm-count">0</span>
-                    </h2>
-                </div>
-                <div class="section-body">
-                    <div class="vm-list" id="vm-list">
-                        <div class="loading-spinner">Loading VMs...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Services Section -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                            <path d="M2 17l10 5 10-5"/>
-                            <path d="M2 12l10 5 10-5"/>
-                        </svg>
-                        Services
-                        <span class="count-badge" id="service-count">0</span>
-                    </h2>
-                </div>
-                <div class="section-body">
-                    <div class="service-list" id="service-list">
-                        <div class="loading-spinner">Loading Services...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Containers Section -->
-            <div class="dashboard-section">
-                <div class="section-header">
-                    <h2>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                            <path d="M3 9h18M9 21V9"/>
-                        </svg>
-                        Docker Containers
-                        <span class="count-badge" id="container-count">0</span>
-                    </h2>
-                </div>
-                <div class="section-body">
-                    <div class="container-list" id="container-list">
-                        <div class="loading-spinner">Loading Containers...</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Commands Section -->
-            <div class="dashboard-section commands-section">
-                <div class="section-header">
-                    <h2>
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="4 17 10 11 4 5"/>
-                            <line x1="12" y1="19" x2="20" y2="19"/>
-                        </svg>
-                        Quick Commands
-                    </h2>
-                </div>
-                <div class="section-body">
-                    <div class="command-grid" id="command-grid">
-                        <div class="loading-spinner">Loading Commands...</div>
-                    </div>
+        <!-- VMs Section - Back/Infra -->
+        <div class="resources-category">
+            <h3 class="resources-category-title">VMs</h3>
+            <div class="resources-section">
+                <div class="resources-table-container">
+                    <table class="resources-table status-table">
+                        <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Web Server 1</strong></td><td>130.110.251.193</td><td>ssh ubuntu@130.110.251.193</td><td>800MB-1.5GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-web-server-1"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Services Server 1</strong></td><td>129.151.228.66</td><td>ssh ubuntu@129.151.228.66</td><td>600MB-1.2GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-services-server-1"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>GCloud Arch 1</strong></td><td>pending</td><td>-</td><td>800MB-1.5GB</td><td>10-50GB</td><td><span class="live-status pending" data-vm="gcloud-arch-1"><span class="live-dot"></span>Pending</span></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Oracle ARM Server</strong></td><td>pending</td><td>-</td><td>6-24GB</td><td>5-20GB</td><td><span class="live-status hold" data-vm="oracle-arm-server"><span class="live-dot"></span>Hold</span></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div class="last-updated">
-            Last updated: <span id="last-updated">Never</span>
+        <!-- User Services -->
+        <div class="resources-category">
+            <h3 class="resources-category-title">User Services</h3>
+            <div class="resources-section">
+                <div class="resources-table-container">
+                    <table class="resources-table status-table">
+                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Sync</strong></td><td>sync.diegonmarcos.com</td><td>130.110.251.193:8384</td><td>128-256MB</td><td>5.2-106GB</td><td><span class="live-status checking" data-service="sync-app"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ syncthing</td><td></td><td>:8384</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>-</td><td>100-500MB</td><td></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>mail.diegonmarcos.com</td><td>-</td><td>520MB-1GB</td><td>5-50GB</td><td><span class="live-status dev" data-service="mail-app"><span class="live-dot"></span>Dev</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>-</td><td>:1194</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status dev" data-service="vpn-app"><span class="live-dot"></span>Dev</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+
+        <!-- Coder Services -->
+        <div class="resources-category">
+            <h3 class="resources-category-title">Coder Services</h3>
+            <div class="resources-section">
+                <div class="resources-table-container">
+                    <table class="resources-table status-table">
+                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>analytics.diegonmarcos.com</td><td>129.151.228.66:8080</td><td>512MB-1GB</td><td>3-15GB</td><td><span class="live-status checking" data-service="analytics-app"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ matomo-app</td><td></td><td>:8080</td><td>256-512MB</td><td>2-5GB</td><td></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ matomo-db (MariaDB)</td><td></td><td>:3306</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Cloud Dashboard</strong></td><td>cloud.diegonmarcos.com</td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status checking" data-service="cloud-app"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>git.diegonmarcos.com</td><td>:3000</td><td>264-544MB</td><td>11-15GB</td><td><span class="live-status dev" data-service="git-app"><span class="live-dot"></span>Dev</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>terminal.diegonmarcos.com</td><td>:7681</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status dev" data-service="terminal-app"><span class="live-dot"></span>Dev</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Services -->
+        <div class="resources-category">
+            <h3 class="resources-category-title">AI Services</h3>
+            <div class="resources-section">
+                <div class="resources-table-container">
+                    <table class="resources-table status-table">
+                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>n8n (AI)</strong></td><td>ai.diegonmarcos.com</td><td>-</td><td>1.3-48GB</td><td>3-20GB</td><td><span class="live-status hold" data-service="n8n-ai-app"><span class="live-dot"></span>Hold</span></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-app</td><td></td><td>:5678</td><td>1-48GB</td><td>2-10GB</td><td></td></tr>
+                            <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-db (PostgreSQL)</td><td></td><td>-</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infra Services -->
+        <div class="resources-category">
+            <h3 class="resources-category-title">Infra Services</h3>
+            <div class="resources-section">
+                <div class="resources-table-container">
+                    <table class="resources-table status-table">
+                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <tbody>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM (Oracle Web)</strong></td><td>-</td><td>130.110.251.193:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status checking" data-service="npm-oracle-web"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM (Oracle Services)</strong></td><td>-</td><td>129.151.228.66:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status checking" data-service="npm-oracle-services"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>NPM (Oracle ARM)</strong></td><td>-</td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status hold" data-service="npm-oracle-arm"><span class="live-dot"></span>Hold</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>NPM (GCloud)</strong></td><td>-</td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status dev" data-service="npm-gcloud"><span class="live-dot"></span>Dev</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>n8n.diegonmarcos.com</td><td>130.110.251.193:5678</td><td>256-512MB</td><td>500MB-2GB</td><td><span class="live-status checking" data-service="n8n-infra-app"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Cloud Dashboard API</strong></td><td>-</td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status checking" data-service="cloud-api"><span class="live-dot"></span>Checking...</span></td></tr>
+                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Redis</strong></td><td>-</td><td>:6379</td><td>64-256MB</td><td>100MB-1GB</td><td><span class="live-status dev" data-service="cache-app"><span class="live-dot"></span>Dev</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -749,18 +357,13 @@
             }
         }
 
-        // API Calls
-        async function fetchAPI(endpoint) {
-            try {
-                const response = await fetch(`${apiUrl}${endpoint}`);
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                return await response.json();
-            } catch (error) {
-                console.error(`API Error (${endpoint}):`, error);
-                throw error;
-            }
+        // Update a single status badge
+        function updateStatus(element, status, label) {
+            element.className = 'live-status ' + status;
+            element.innerHTML = `<span class="live-dot"></span>${label}`;
         }
 
+        // Fetch API and update status badges
         async function refreshAll() {
             if (isLoading) return;
             isLoading = true;
@@ -770,218 +373,62 @@
             refreshBtn.classList.add('loading');
 
             try {
-                // Fetch dashboard summary (includes health checks)
-                const summary = await fetchAPI('/dashboard/summary');
+                const response = await fetch(`${apiUrl}/dashboard/summary`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
 
                 connectionStatus.classList.remove('disconnected');
 
-                renderVMs(summary.vms);
-                renderServices(summary.services);
+                // Update VM statuses
+                data.vms.forEach(cat => {
+                    cat.vms.forEach(vm => {
+                        const el = document.querySelector(`[data-vm="${vm.id}"]`);
+                        if (el) {
+                            const status = vm.status.toLowerCase().replace(' ', '-');
+                            const statusMap = {
+                                'online': { class: 'online', label: 'Online' },
+                                'offline': { class: 'offline', label: 'Offline' },
+                                'no-ssh': { class: 'pending', label: 'No SSH' },
+                                'pending': { class: 'pending', label: 'Pending' }
+                            };
+                            const s = statusMap[status] || { class: 'checking', label: vm.status };
+                            updateStatus(el, s.class, s.label);
+                        }
+                    });
+                });
 
-                // Fetch containers for online VMs
-                await fetchContainers(summary.vms);
-
-                // Fetch quick commands
-                await fetchQuickCommands();
+                // Update Service statuses
+                data.services.forEach(cat => {
+                    cat.services.forEach(svc => {
+                        const el = document.querySelector(`[data-service="${svc.id}"]`);
+                        if (el) {
+                            const statusMap = {
+                                'healthy': { class: 'online', label: 'Healthy' },
+                                'error': { class: 'offline', label: 'Error' },
+                                'development': { class: 'dev', label: 'Dev' },
+                                'hold': { class: 'hold', label: 'Hold' },
+                                'tbd': { class: 'pending', label: 'TBD' },
+                                'no_url': { class: 'pending', label: 'N/A' }
+                            };
+                            const s = statusMap[svc.health_status] || { class: 'checking', label: svc.health_status };
+                            updateStatus(el, s.class, s.label);
+                        }
+                    });
+                });
 
                 document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
             } catch (error) {
+                console.error('API Error:', error);
                 connectionStatus.classList.add('disconnected');
-                showError('vm-list', 'Failed to connect to API');
-                showError('service-list', 'Failed to connect to API');
-                showError('container-list', 'Failed to connect to API');
+
+                // Mark all checking statuses as offline
+                document.querySelectorAll('.live-status.checking').forEach(el => {
+                    updateStatus(el, 'offline', 'Error');
+                });
             } finally {
                 refreshBtn.classList.remove('loading');
                 isLoading = false;
             }
-        }
-
-        function showError(containerId, message) {
-            document.getElementById(containerId).innerHTML = `
-                <div class="error-message">${message}</div>
-            `;
-        }
-
-        // Render VMs
-        function renderVMs(vmCategories) {
-            const container = document.getElementById('vm-list');
-            let totalCount = 0;
-            let html = '';
-
-            vmCategories.forEach(cat => {
-                totalCount += cat.vms.length;
-                cat.vms.forEach(vm => {
-                    const statusClass = vm.status.toLowerCase().replace(' ', '-');
-                    const ramPercent = vm.ram_percent !== '-' ? parseInt(vm.ram_percent) : 0;
-                    const ramClass = ramPercent > 80 ? 'danger' : ramPercent > 60 ? 'warning' : '';
-
-                    html += `
-                        <div class="vm-card">
-                            <div class="vm-card-header">
-                                <span class="vm-name">${vm.name}</span>
-                                <span class="vm-status ${statusClass}">
-                                    <span>${vm.status === 'ONLINE' ? '●' : vm.status === 'PENDING' ? '◐' : '○'}</span>
-                                    ${vm.status}
-                                </span>
-                            </div>
-                            <div class="vm-details">
-                                <div class="vm-detail">
-                                    <span class="vm-detail-label">IP</span>
-                                    <span class="vm-detail-value">${vm.ip || '-'}</span>
-                                </div>
-                                <div class="vm-detail">
-                                    <span class="vm-detail-label">Type</span>
-                                    <span class="vm-detail-value">${vm.instanceType || '-'}</span>
-                                </div>
-                                <div class="vm-detail">
-                                    <span class="vm-detail-label">RAM</span>
-                                    <span class="vm-detail-value">${vm.ram_percent !== '-' ? vm.ram_percent + '%' : '-'}</span>
-                                </div>
-                            </div>
-                            ${vm.ram_percent !== '-' ? `
-                                <div class="ram-bar">
-                                    <div class="ram-bar-fill ${ramClass}" style="width: ${ramPercent}%"></div>
-                                </div>
-                            ` : ''}
-                        </div>
-                    `;
-                });
-            });
-
-            container.innerHTML = html || '<div class="empty-state">No VMs found</div>';
-            document.getElementById('vm-count').textContent = totalCount;
-        }
-
-        // Render Services
-        function renderServices(serviceCategories) {
-            const container = document.getElementById('service-list');
-            let totalCount = 0;
-            let html = '';
-
-            serviceCategories.forEach(cat => {
-                totalCount += cat.services.length;
-                cat.services.forEach(svc => {
-                    const statusClass = svc.status.toLowerCase();
-                    const statusIcon = svc.status === 'on' ? '●' :
-                                      svc.status === 'dev' ? '◑' :
-                                      svc.status === 'hold' ? '◐' :
-                                      svc.status === 'tbd' ? '○' : '-';
-
-                    html += `
-                        <div class="service-row">
-                            <div class="service-info">
-                                <span class="service-name">${svc.name}</span>
-                                <span class="service-url">
-                                    ${svc.url ? `<a href="${svc.url}" target="_blank">${svc.url.replace('https://', '').replace('http://', '')}</a>` : '-'}
-                                </span>
-                            </div>
-                            <span class="service-status ${statusClass}">
-                                <span>${statusIcon}</span>
-                                ${svc.status}
-                            </span>
-                        </div>
-                    `;
-                });
-            });
-
-            container.innerHTML = html || '<div class="empty-state">No services found</div>';
-            document.getElementById('service-count').textContent = totalCount;
-        }
-
-        // Fetch and render containers
-        async function fetchContainers(vmCategories) {
-            const container = document.getElementById('container-list');
-            let html = '';
-            let totalCount = 0;
-
-            for (const cat of vmCategories) {
-                for (const vm of cat.vms) {
-                    if (vm.status === 'ONLINE') {
-                        try {
-                            const data = await fetchAPI(`/vms/${vm.id.replace('oracle-', '').replace('gcloud-', '')}/containers`);
-                            if (data.containers) {
-                                data.containers.forEach(c => {
-                                    totalCount++;
-                                    const statusClass = c.status.includes('Up') ? 'up' : 'exited';
-                                    html += `
-                                        <div class="container-row">
-                                            <span class="container-name">${c.name}</span>
-                                            <span class="container-status ${statusClass}">${c.status}</span>
-                                            <span class="container-ports">${c.ports || '-'}</span>
-                                        </div>
-                                    `;
-                                });
-                            }
-                        } catch (e) {
-                            // Skip VM if containers can't be fetched
-                        }
-                    }
-                }
-            }
-
-            container.innerHTML = html || '<div class="empty-state">No containers found</div>';
-            document.getElementById('container-count').textContent = totalCount;
-        }
-
-        // Fetch and render quick commands
-        async function fetchQuickCommands() {
-            const container = document.getElementById('command-grid');
-
-            try {
-                const config = await fetchAPI('/config');
-                const commands = config.quickCommands || {};
-                let html = '';
-
-                // SSH Commands
-                if (commands.ssh) {
-                    Object.entries(commands.ssh).forEach(([vm, cmd]) => {
-                        html += createCommandCard(`SSH: ${vm}`, cmd);
-                    });
-                }
-
-                // Docker Commands
-                if (commands.docker) {
-                    Object.entries(commands.docker).forEach(([name, cmd]) => {
-                        html += createCommandCard(`Docker: ${name}`, cmd);
-                    });
-                }
-
-                // Monitoring Commands
-                if (commands.monitoring) {
-                    Object.entries(commands.monitoring).forEach(([name, cmd]) => {
-                        html += createCommandCard(`Monitor: ${name}`, cmd);
-                    });
-                }
-
-                container.innerHTML = html || '<div class="empty-state">No commands configured</div>';
-            } catch (e) {
-                container.innerHTML = '<div class="error-message">Failed to load commands</div>';
-            }
-        }
-
-        function createCommandCard(title, command) {
-            const id = 'cmd-' + Math.random().toString(36).substr(2, 9);
-            return `
-                <div class="command-card">
-                    <div class="command-title">${title}</div>
-                    <div class="command-code">
-                        <code>${command}</code>
-                        <button class="copy-btn" onclick="copyCommand(this, '${command.replace(/'/g, "\\'")}')">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2"/>
-                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function copyCommand(btn, command) {
-            navigator.clipboard.writeText(command).then(() => {
-                btn.classList.add('copied');
-                setTimeout(() => btn.classList.remove('copied'), 2000);
-            });
         }
 
         // Initialize

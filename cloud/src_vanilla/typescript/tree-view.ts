@@ -2,22 +2,25 @@
  * Tree View functionality for Cloud Dashboard
  */
 
-const validViews = ['cards', 'tree', 'architecture', 'ai-architecture', 'monitoring', 'resources'] as const;
+const validViews = ['cards-front', 'cards-back', 'list-front', 'list-back', 'tree', 'architecture', 'ai-architecture', 'backlog', 'resources'] as const;
 type ViewName = typeof validViews[number];
 
 function getViewFromHash(): ViewName {
     const hash = window.location.hash.slice(1);
-    return validViews.includes(hash as ViewName) ? (hash as ViewName) : 'cards';
+    return validViews.includes(hash as ViewName) ? (hash as ViewName) : 'cards-front';
 }
 
 function switchToView(viewName: ViewName, pushState: boolean = true): void {
     const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
     const views: Record<string, HTMLElement | null> = {
-        'cards': document.getElementById('cards-view'),
+        'cards-front': document.getElementById('cards-front-view'),
+        'cards-back': document.getElementById('cards-back-view'),
         'tree': document.getElementById('tree-view'),
         'architecture': document.getElementById('architecture-view'),
         'ai-architecture': document.getElementById('ai-architecture-view'),
-        'monitoring': document.getElementById('monitoring-view'),
+        'backlog': document.getElementById('backlog-view'),
+        'list-front': document.getElementById('list-front-view'),
+        'list-back': document.getElementById('list-back-view'),
         'resources': document.getElementById('resources-view')
     };
 
@@ -152,4 +155,23 @@ export function initTreeControls(): void {
 
     expandAllBtn?.addEventListener('click', expandAllTreeNodes);
     collapseAllBtn?.addEventListener('click', collapseAllTreeNodes);
+}
+
+export function initTreeFilter(): void {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('.tree-filter-btn');
+    const treeContainer = document.querySelector<HTMLElement>('.tree-container');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Update active state
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Apply filter to tree container
+            const filter = btn.dataset.filter || 'all';
+            if (treeContainer) {
+                treeContainer.dataset.filter = filter;
+            }
+        });
+    });
 }

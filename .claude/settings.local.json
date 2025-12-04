@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tmux list-sessions:*)",
+      "Bash(bash -c 'PROJECT_ROOT=\"\"$(cd \"\"$(dirname \"\"${BASH_SOURCE[0]}\"\")/..\"\" && pwd)\"\"; echo \"\"PROJECT_ROOT: $PROJECT_ROOT\"\"')",
+      "Bash(bash:*)",
+      "Bash(timeout 3 bash:*)",
+      "Bash(timeout 5 bash:*)",
+      "Bash(pkill:*)",
+      "Bash(curl -sL https://analytics.diegonmarcos.com)",
+      "Bash(curl -I http://129.151.229.21)",
+      "Bash(ping:*)",
+      "Bash(dig:*)",
+      "Bash(curl -I http://130.110.251.193:8080)",
+      "Bash(npm init:*)",
+      "Bash(npm install:*)",
+      "Bash(cat:*)",
+      "Bash(jq:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(npm run build:*)",
+      "Bash(find:*)",
+      "Bash(sh:*)",
+      "Bash(pgrep:*)",
+      "Bash(./1.ops/build_main.sh kill:*)",
+      "Bash(timeout 5 sh:*)",
+      "Bash(timeout 10 sh:*)",
+      "Bash(curl:*)",
+      "Bash(./1.ops/build_main.sh:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

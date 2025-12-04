@@ -111,6 +111,103 @@
             color: var(--text-tertiary);
         }
 
+        /* GitHub OAuth Login */
+        .github-login-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: #24292e;
+            border: 1px solid #444;
+            border-radius: var(--border-radius);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .github-login-btn:hover {
+            background: #2f363d;
+            border-color: #666;
+        }
+
+        .github-login-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .github-login-btn.logged-in {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #000;
+        }
+
+        .user-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .logout-btn {
+            padding: 0.2rem 0.4rem;
+            background: transparent;
+            border: 1px solid currentColor;
+            border-radius: 4px;
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.65rem;
+            margin-left: 0.5rem;
+        }
+
+        .logout-btn:hover {
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Reboot Button */
+        .reboot-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.6rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            font-size: 0.7rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            opacity: 0.5;
+        }
+
+        .reboot-btn svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        .reboot-btn.enabled {
+            opacity: 1;
+            cursor: pointer;
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .reboot-btn.enabled:hover {
+            background: var(--accent-orange);
+            color: #000;
+        }
+
+        .reboot-btn.loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        .reboot-btn.success {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
         /* Live status badge that gets updated by JS */
         .live-status {
             display: inline-flex;
@@ -231,6 +328,12 @@
                     </svg>
                     Refresh
                 </button>
+                <button class="github-login-btn" id="github-login-btn" onclick="handleGitHubLogin()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span id="github-login-text">Login</span>
+                </button>
             </div>
         </div>
 
@@ -240,12 +343,12 @@
             <div class="resources-section">
                 <div class="resources-table-container">
                     <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th><th>Action</th></tr></thead>
                         <tbody>
-                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Web Server 1</strong></td><td>130.110.251.193</td><td>ssh ubuntu@130.110.251.193</td><td>800MB-1.5GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-web-server-1"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Services Server 1</strong></td><td>129.151.228.66</td><td>ssh ubuntu@129.151.228.66</td><td>600MB-1.2GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-services-server-1"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>GCloud Arch 1</strong></td><td>pending</td><td>-</td><td>800MB-1.5GB</td><td>10-50GB</td><td><span class="live-status pending" data-vm="gcloud-arch-1"><span class="live-dot"></span>Pending</span></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Oracle ARM Server</strong></td><td>pending</td><td>-</td><td>6-24GB</td><td>5-20GB</td><td><span class="live-status hold" data-vm="oracle-arm-server"><span class="live-dot"></span>Hold</span></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Web Server 1</strong></td><td>130.110.251.193</td><td>ssh ubuntu@130.110.251.193</td><td>800MB-1.5GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-web-server-1"><span class="live-dot"></span>Checking...</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-web-server-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Services Server 1</strong></td><td>129.151.228.66</td><td>ssh ubuntu@129.151.228.66</td><td>600MB-1.2GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-services-server-1"><span class="live-dot"></span>Checking...</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-services-server-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>GCloud Arch 1</strong></td><td>pending</td><td>-</td><td>800MB-1.5GB</td><td>10-50GB</td><td><span class="live-status pending" data-vm="gcloud-arch-1"><span class="live-dot"></span>Pending</span></td><td><button class="reboot-btn" data-vm-reboot="gcloud-arch-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
+                            <tr class="vm-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Oracle ARM Server</strong></td><td>pending</td><td>-</td><td>6-24GB</td><td>5-20GB</td><td><span class="live-status hold" data-vm="oracle-arm-server"><span class="live-dot"></span>Hold</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-arm-server" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -334,8 +437,19 @@
     <script>
         // Configuration
         const apiUrl = 'http://130.110.251.193:5000/api';
+
+        // GitHub OAuth Configuration
+        // 1. Create OAuth App: https://github.com/settings/developers
+        // 2. Set Homepage URL: https://cloud.diegonmarcos.com
+        // 3. Set Callback URL: https://cloud.diegonmarcos.com/cloud_dash.html
+        // 4. Copy Client ID below, set Client Secret in backend env GITHUB_CLIENT_SECRET
+        const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
+        const GITHUB_REDIRECT_URI = 'https://cloud.diegonmarcos.com/cloud_dash.html';
+
         let autoRefreshInterval = null;
         let isLoading = false;
+        let isLoggedIn = false;
+        let githubUser = null;
 
         // Auto-refresh toggle
         document.getElementById('auto-refresh').addEventListener('change', function() {
@@ -432,8 +546,159 @@
             }
         }
 
+        // GitHub OAuth Functions
+        function handleGitHubLogin() {
+            if (isLoggedIn) {
+                // Logout
+                logout();
+            } else {
+                // Login - redirect to GitHub OAuth
+                const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(GITHUB_REDIRECT_URI)}&scope=read:user`;
+                window.location.href = authUrl;
+            }
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            githubUser = null;
+            localStorage.removeItem('github_token');
+            localStorage.removeItem('github_user');
+            updateLoginUI();
+            updateRebootButtons();
+        }
+
+        function updateLoginUI() {
+            const btn = document.getElementById('github-login-btn');
+            const text = document.getElementById('github-login-text');
+
+            if (isLoggedIn && githubUser) {
+                btn.classList.add('logged-in');
+                btn.innerHTML = `
+                    <img src="${githubUser.avatar_url}" alt="" class="user-avatar">
+                    <span>${githubUser.login}</span>
+                    <button class="logout-btn" onclick="event.stopPropagation(); logout();">Logout</button>
+                `;
+            } else {
+                btn.classList.remove('logged-in');
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span>Login</span>
+                `;
+            }
+        }
+
+        function updateRebootButtons() {
+            const buttons = document.querySelectorAll('.reboot-btn');
+            buttons.forEach(btn => {
+                if (isLoggedIn) {
+                    btn.disabled = false;
+                    btn.classList.add('enabled');
+                } else {
+                    btn.disabled = true;
+                    btn.classList.remove('enabled');
+                }
+            });
+        }
+
+        async function handleOAuthCallback() {
+            // Check for error in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+
+            if (error) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                alert('GitHub login failed: ' + error);
+                return;
+            }
+
+            // The backend callback already stored token in localStorage via JavaScript redirect
+            // Just clean up the URL if there's a code param (shouldn't happen but just in case)
+            const code = urlParams.get('code');
+            if (code) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
+
+        function checkExistingLogin() {
+            const token = localStorage.getItem('github_token');
+            const user = localStorage.getItem('github_user');
+
+            if (token && user) {
+                try {
+                    githubUser = JSON.parse(user);
+                    isLoggedIn = true;
+                    updateLoginUI();
+                    updateRebootButtons();
+                } catch (e) {
+                    logout();
+                }
+            }
+        }
+
+        // Reboot VM function
+        async function rebootVM(vmId) {
+            if (!isLoggedIn) {
+                alert('Please login with GitHub to reboot VMs');
+                return;
+            }
+
+            const btn = document.querySelector(`[data-vm-reboot="${vmId}"]`);
+            if (!btn || btn.classList.contains('loading')) return;
+
+            if (!confirm(`Are you sure you want to reboot ${vmId}?`)) return;
+
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            try {
+                const token = localStorage.getItem('github_token');
+                const response = await fetch(`${apiUrl}/vm/${vmId}/reboot`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    btn.classList.remove('loading');
+                    btn.classList.add('success');
+                    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Rebooting`;
+
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        btn.classList.add('enabled');
+                        btn.disabled = false;
+                        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot`;
+                    }, 3000);
+                } else {
+                    throw new Error(await response.text());
+                }
+            } catch (error) {
+                console.error('Reboot error:', error);
+                alert(`Reboot failed: ${error.message}`);
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        // Add click handlers to reboot buttons
+        function initRebootButtons() {
+            document.querySelectorAll('.reboot-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const vmId = btn.getAttribute('data-vm-reboot');
+                    if (vmId) rebootVM(vmId);
+                });
+            });
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            checkExistingLogin();
+            handleOAuthCallback();
+            initRebootButtons();
             refreshAll();
             if (document.getElementById('auto-refresh').checked) {
                 startAutoRefresh();

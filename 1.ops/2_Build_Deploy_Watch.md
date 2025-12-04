@@ -1,4 +1,40 @@
-# Build System Documentation
+# Build, Deploy & Watch System
+
+> **Document Type**: CI/CD & Build Specification
+> **Version**: 2.0.0 | **Updated**: 2025-12-04
+> **Parent**: `0_Stack_Main.md`
+
+## Overview
+
+This document defines the **build system, CI/CD pipeline, and development servers** for all projects. The local build system replicates the GitHub Actions workflow.
+
+### CI/CD Pipeline
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| **GitHub Actions** | `.github/workflows/deploy.yml` | Automated deployment to GitHub Pages |
+| **Main Orchestrator** | `1.ops/build_main.sh` | Local build/dev server management |
+| **Project Scripts** | `<project>/1.ops/build.sh` | Per-project build commands |
+
+### Build Requirements
+
+All projects must:
+1. Build successfully with `./1.ops/build.sh build`
+2. Output to `dist/` directory
+3. Pass GitHub Actions pipeline
+4. Include Matomo tracking (see `3_Analytics.md`)
+
+### Project-Specific Build Notes
+
+| Project | Build Tool | Special Notes |
+|---------|------------|---------------|
+| **Cloud** | Sass + esbuild | Also has Flask API backend in `/back-System/cloud/` |
+| **MyGames** | SvelteKit + Vite | Static adapter for GitHub Pages |
+| **MyProfile** | Nuxt | Generates static site |
+
+---
+
+## Build System Documentation
 
 This directory contains the orchestration scripts for building and developing all projects in this repository. The build system replicates the GitHub Actions workflow for local development and testing.
 

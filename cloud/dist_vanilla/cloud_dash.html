@@ -352,6 +352,527 @@
                 transform: translateY(0);
             }
         }
+
+        /* Cost Sub-tabs */
+        .cost-subtabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 0 1.5rem 0;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        [data-theme=blurred] .cost-subtabs {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 12px;
+            padding: 0.75rem;
+        }
+
+        .cost-subtab-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: calc(var(--border-radius) - 2px);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cost-subtab-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .cost-subtab-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        [data-theme=blurred] .cost-subtab-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
+        }
+
+        .cost-subtab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .cost-subtab-content.active {
+            display: block;
+        }
+
+        /* Status Sub-tabs (Frontend/Backend) */
+        .status-subtabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 0 1rem 0;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        [data-theme=blurred] .status-subtabs {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 12px;
+            padding: 0.75rem;
+        }
+
+        .status-subtab-btn {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: calc(var(--border-radius) - 2px);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .status-subtab-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        .status-subtab-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        [data-theme=blurred] .status-subtab-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(74, 158, 255, 0.3);
+        }
+
+        .status-subtab-content {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .status-subtab-content.active {
+            display: block;
+        }
+
+        /* View Toggle (Cards/List) */
+        .view-toggle-inline {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 0 1rem 0;
+            justify-content: flex-end;
+        }
+
+        .view-toggle-btn {
+            padding: 0.4rem 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn:hover {
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .view-toggle-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        [data-theme=blurred] .view-toggle-btn.active {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            border-color: transparent;
+            color: #fff;
+        }
+
+        /* ============================================
+           COST TAB STYLES
+           ============================================ */
+
+        .cost-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cost-summary-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all var(--transition-speed) ease;
+        }
+
+        .cost-summary-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        [data-theme=blurred] .cost-summary-card {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 16px;
+        }
+
+        [data-theme=blurred] .cost-summary-card:hover {
+            background: rgba(35, 42, 74, 0.8);
+            border-color: var(--accent-blue);
+            box-shadow: 0 8px 32px var(--glow);
+        }
+
+        .cost-card-icon {
+            color: var(--accent-primary);
+            flex-shrink: 0;
+        }
+
+        [data-theme=blurred] .cost-card-icon {
+            color: var(--accent-blue);
+        }
+
+        .cost-card-content {
+            flex: 1;
+        }
+
+        .cost-card-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .cost-card-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+        }
+
+        .cost-card-sublabel {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .cost-block-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .cost-block-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        [data-theme=blurred] .cost-block-row {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .cost-block-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .cost-block-value {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-family: var(--font-mono);
+        }
+
+        .model-distribution-bar {
+            height: 40px;
+            display: flex;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            background: var(--bg-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .model-dist-segment {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .model-opus {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+        }
+
+        .model-sonnet {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .model-haiku {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+
+        .model-distribution-legend {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .model-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+
+        [data-theme=blurred] .model-legend-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .model-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .model-legend-dot.model-opus {
+            background: #8b5cf6;
+        }
+
+        .model-legend-dot.model-sonnet {
+            background: #3b82f6;
+        }
+
+        .model-legend-dot.model-haiku {
+            background: #10b981;
+        }
+
+        .model-legend-label {
+            flex: 1;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .model-legend-value {
+            font-weight: 600;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .model-legend-percent {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-left: 0.5rem;
+        }
+
+        /* ============================================
+           PERFORMANCE TAB STYLES
+           ============================================ */
+
+        .vm-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .vm-metric-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+
+        [data-theme=blurred] .vm-metric-card {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 16px;
+        }
+
+        .vm-metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .vm-metric-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .vm-metric-ip {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .metric-gauges {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .gauge {
+            text-align: center;
+        }
+
+        .gauge-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--gauge-color, var(--accent-primary)) calc(var(--gauge-percent, 0) * 1%),
+                var(--bg-secondary) 0
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            position: relative;
+        }
+
+        .gauge-circle::before {
+            content: '';
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-card);
+        }
+
+        .gauge-value {
+            position: relative;
+            z-index: 1;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .gauge-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .capacity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+
+        .capacity-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 1rem;
+        }
+
+        [data-theme=blurred] .capacity-card {
+            backdrop-filter: blur(10px);
+            background: rgba(26, 31, 58, 0.6);
+            border-radius: 12px;
+        }
+
+        .capacity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .capacity-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .capacity-status {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .status-ok { background: rgba(81, 207, 102, 0.2); color: #51cf66; }
+        .status-warning { background: rgba(255, 193, 7, 0.2); color: #ffc107; }
+        .status-danger { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .status-dev { background: rgba(74, 158, 255, 0.2); color: #4a9eff; }
+        .status-hold { background: rgba(134, 142, 150, 0.2); color: #868e96; }
+
+        .capacity-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .capacity-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .capacity-fill[data-level="ok"] {
+            background: linear-gradient(90deg, #51cf66, #69db7c);
+        }
+        .capacity-fill[data-level="warning"] {
+            background: linear-gradient(90deg, #ffc107, #ffdd57);
+        }
+        .capacity-fill[data-level="danger"] {
+            background: linear-gradient(90deg, #ff6b6b, #ff8787);
+        }
+
+        .capacity-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .table-separator td {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .table-total td {
+            background: var(--bg-secondary);
+            font-weight: 600;
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+        }
     </style>
     <script>
         // Apply saved theme immediately
@@ -370,28 +891,48 @@
                 <div class="view-group">
                     <span class="view-group-label">Services</span>
                     <div class="view-group-buttons">
-                        <a href="index.html#cards-front" class="view-btn">Cards-F</a>
-                        <a href="index.html#cards-back" class="view-btn">Cards-B</a>
-                        <a href="index.html#list-front" class="view-btn">List-F</a>
-                        <a href="index.html#list-back" class="view-btn">List-B</a>
+                        <a href="index.html#frontend" class="view-btn">Front</a>
+                        <a href="index.html#backend" class="view-btn">Back</a>
                     </div>
                 </div>
                 <span class="view-separator"></span>
                 <div class="view-group">
                     <span class="view-group-label">Architecture</span>
                     <div class="view-group-buttons">
-                        <a href="index.html#resources" class="view-btn">Resources</a>
-                        <a href="arch.html" class="view-btn">Server</a>
-                        <a href="ai-arch.html" class="view-btn">AI</a>
+                        <a href="index.html#resources" class="view-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <path d="M8 21h8"/>
+                                <path d="M12 17v4"/>
+                                <path d="M6 8h4"/>
+                                <path d="M6 11h8"/>
+                            </svg>
+                            Resources
+                        </a>
+                        <a href="index.html#architecture" class="view-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                <line x1="9" y1="21" x2="9" y2="9"/>
+                            </svg>
+                            Server
+                        </a>
+                        <a href="index.html#ai-architecture" class="view-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                            </svg>
+                            AI
+                        </a>
                     </div>
                 </div>
                 <span class="view-separator"></span>
                 <div class="view-group">
                     <span class="view-group-label">Monitoring</span>
                     <div class="view-group-buttons">
-                        <a href="index.html#backlog" class="view-btn">Backlog</a>
-                        <a href="index.html#tree" class="view-btn">Tree</a>
-                        <span class="view-btn active">List</span>
+                        <button class="view-btn active" data-dash-tab="status">Status</button>
+                        <button class="view-btn" data-dash-tab="performance">Performance</button>
+                        <button class="view-btn" data-dash-tab="cost">Cost</button>
                     </div>
                 </div>
             </div>
@@ -425,16 +966,10 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="dashboard-tabs">
-            <button class="tab-btn active" data-tab="status">Status</button>
-            <button class="tab-btn" data-tab="performance">Performance</button>
-            <button class="tab-btn" data-tab="cost">Cost</button>
-        </div>
-
         <!-- Status Tab Content -->
         <div id="status-tab" class="tab-content active">
-        <!-- VMs Section - Back/Infra -->
+
+        <!-- VMs Section -->
         <div class="resources-category">
             <h3 class="resources-category-title">VMs</h3>
             <div class="resources-section">
@@ -528,31 +1063,379 @@
                 </div>
             </div>
         </div>
+
         </div><!-- End Status Tab -->
 
         <!-- Performance Tab Content -->
         <div id="performance-tab" class="tab-content">
+            <!-- VM Metrics Section -->
             <div class="resources-category">
-                <h3 class="resources-category-title">Performance Metrics</h3>
+                <h3 class="resources-category-title">VM Resources</h3>
+                <div class="vm-metrics-grid" id="vm-metrics-grid">
+                    <!-- Will be populated by JavaScript -->
+                    <div class="loading-placeholder">Loading VM metrics...</div>
+                </div>
+            </div>
+
+            <!-- Capacity Assessment -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Capacity Assessment</h3>
+                <div class="capacity-grid">
+                    <div class="capacity-card" id="cap-oracle-web">
+                        <div class="capacity-header">
+                            <span class="capacity-name">Oracle Web 1</span>
+                            <span class="capacity-status status-warning">AT LIMIT</span>
+                        </div>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 85%" data-level="warning"></div>
+                        </div>
+                        <div class="capacity-details">
+                            <span>~850MB / 1024MB RAM</span>
+                            <span>8 services</span>
+                        </div>
+                    </div>
+
+                    <div class="capacity-card" id="cap-oracle-svc">
+                        <div class="capacity-header">
+                            <span class="capacity-name">Oracle Services 1</span>
+                            <span class="capacity-status status-warning">CLOSE</span>
+                        </div>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 70%" data-level="warning"></div>
+                        </div>
+                        <div class="capacity-details">
+                            <span>~700MB / 1024MB RAM</span>
+                            <span>4 services</span>
+                        </div>
+                    </div>
+
+                    <div class="capacity-card" id="cap-gcloud">
+                        <div class="capacity-header">
+                            <span class="capacity-name">GCloud Arch 1</span>
+                            <span class="capacity-status status-dev">DEV</span>
+                        </div>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 0%" data-level="ok"></div>
+                        </div>
+                        <div class="capacity-details">
+                            <span>0MB / 1024MB RAM</span>
+                            <span>4 services planned</span>
+                        </div>
+                    </div>
+
+                    <div class="capacity-card" id="cap-arm">
+                        <div class="capacity-header">
+                            <span class="capacity-name">Oracle ARM</span>
+                            <span class="capacity-status status-hold">HOLD</span>
+                        </div>
+                        <div class="capacity-bar">
+                            <div class="capacity-fill" style="width: 0%" data-level="ok"></div>
+                        </div>
+                        <div class="capacity-details">
+                            <span>0GB / 24GB RAM</span>
+                            <span>AI workloads (pending)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Container Metrics Table -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Container Metrics</h3>
                 <div class="resources-section">
-                    <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                        Performance monitoring coming soon...
-                    </p>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Container</th>
+                                    <th>VM</th>
+                                    <th>CPU</th>
+                                    <th>Memory</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="container-metrics-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">
+                                        Loading container metrics...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Estimates -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Resource Planning</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>RAM (Min-Max)</th>
+                                    <th>Storage</th>
+                                    <th>Bandwidth</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Non-AI Services</strong></td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                    <td>1.4 - 2.8 GB</td>
+                                    <td>9 - 125 GB</td>
+                                    <td>32 - 135 GB/mo</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span class="status-badge dev">DEV</span></td>
+                                    <td>0.9 - 1.8 GB</td>
+                                    <td>66 - 165 GB</td>
+                                    <td>8 - 72 GB/mo</td>
+                                </tr>
+                                <tr class="table-separator">
+                                    <td><strong>AI Services</strong></td>
+                                    <td><span class="status-badge hold">HOLD</span></td>
+                                    <td>1.3 - 48 GB</td>
+                                    <td>3 - 20 GB</td>
+                                    <td>5 - 20 GB/mo</td>
+                                </tr>
+                                <tr class="table-total">
+                                    <td><strong>TOTAL (All)</strong></td>
+                                    <td>-</td>
+                                    <td><strong>3.6 - 52.6 GB</strong></td>
+                                    <td>78 - 310 GB</td>
+                                    <td>45 - 227 GB/mo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Cost Tab Content -->
         <div id="cost-tab" class="tab-content">
-            <div class="resources-category">
-                <h3 class="resources-category-title">Cost Analysis</h3>
-                <div class="resources-section">
-                    <p style="color: var(--text-secondary); text-align: center; padding: 2rem;">
-                        Cost tracking coming soon...
-                    </p>
+            <!-- Cost Sub-tabs -->
+            <div class="cost-subtabs">
+                <button class="cost-subtab-btn active" data-subtab="cost-ai">AI Costs</button>
+                <button class="cost-subtab-btn" data-subtab="cost-infra">Infrastructure</button>
+            </div>
+
+            <!-- AI Cost Sub-tab -->
+            <div id="cost-ai" class="cost-subtab-content active">
+            <!-- AI Summary Cards -->
+            <div class="cost-summary-grid">
+                <div class="cost-summary-card">
+                    <div class="cost-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <div class="cost-card-content">
+                        <div class="cost-card-label">AI Today</div>
+                        <div class="cost-card-value" id="cost-ai-today">$0.00</div>
+                        <div class="cost-card-sublabel" id="cost-ai-today-sub">Loading...</div>
+                    </div>
+                </div>
+                <div class="cost-summary-card">
+                    <div class="cost-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
+                            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
+                            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>
+                        </svg>
+                    </div>
+                    <div class="cost-card-content">
+                        <div class="cost-card-label">Current Session</div>
+                        <div class="cost-card-value" id="cost-session">$0.00</div>
+                        <div class="cost-card-sublabel" id="cost-session-sub">This 5h block</div>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <!-- Current 5h Block Details -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Current 5-Hour Block</h3>
+                <div class="resources-section">
+                    <div class="cost-block-details">
+                        <div class="cost-block-row">
+                            <span class="cost-block-label">Block Start:</span>
+                            <span class="cost-block-value" id="block-start">--:--</span>
+                        </div>
+                        <div class="cost-block-row">
+                            <span class="cost-block-label">Time Remaining:</span>
+                            <span class="cost-block-value" id="block-remaining">--:--</span>
+                        </div>
+                        <div class="cost-block-row">
+                            <span class="cost-block-label">Burn Rate:</span>
+                            <span class="cost-block-value" id="block-burn-rate">$0.00/hr</span>
+                        </div>
+                        <div class="cost-block-row">
+                            <span class="cost-block-label">Projected Total:</span>
+                            <span class="cost-block-value" id="block-projection">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Distribution -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">AI Model Distribution (Today)</h3>
+                <div class="resources-section">
+                    <div class="model-distribution-bar" id="model-dist-bar">
+                        <div class="model-dist-segment model-opus" style="width: 0%" id="model-opus-bar"></div>
+                        <div class="model-dist-segment model-sonnet" style="width: 0%" id="model-sonnet-bar"></div>
+                        <div class="model-dist-segment model-haiku" style="width: 0%" id="model-haiku-bar"></div>
+                    </div>
+                    <div class="model-distribution-legend">
+                        <div class="model-legend-item">
+                            <span class="model-legend-dot model-opus"></span>
+                            <span class="model-legend-label">Opus</span>
+                            <span class="model-legend-value" id="model-opus-cost">$0.00</span>
+                            <span class="model-legend-percent" id="model-opus-pct">0%</span>
+                        </div>
+                        <div class="model-legend-item">
+                            <span class="model-legend-dot model-sonnet"></span>
+                            <span class="model-legend-label">Sonnet</span>
+                            <span class="model-legend-value" id="model-sonnet-cost">$0.00</span>
+                            <span class="model-legend-percent" id="model-sonnet-pct">0%</span>
+                        </div>
+                        <div class="model-legend-item">
+                            <span class="model-legend-dot model-haiku"></span>
+                            <span class="model-legend-label">Haiku</span>
+                            <span class="model-legend-value" id="model-haiku-cost">$0.00</span>
+                            <span class="model-legend-percent" id="model-haiku-pct">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Summary -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Monthly Summary</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthly-cost-table">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">
+                                        Loading monthly data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Breakdown (Last 14 Days) -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Daily Breakdown (Last 14 Days)</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                    <th>Trend</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daily-cost-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                        Loading daily data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            </div><!-- End AI Cost Sub-tab -->
+
+            <!-- Infrastructure Cost Sub-tab -->
+            <div id="cost-infra" class="cost-subtab-content">
+            <!-- Infrastructure Summary Card -->
+            <div class="cost-summary-grid">
+                <div class="cost-summary-card">
+                    <div class="cost-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3z"/>
+                            <path d="M3 9h18M9 21V9"/>
+                        </svg>
+                    </div>
+                    <div class="cost-card-content">
+                        <div class="cost-card-label">Total Infrastructure</div>
+                        <div class="cost-card-value" id="cost-infra-total">$0.00</div>
+                        <div class="cost-card-sublabel">Oracle + GCloud (Free Tier)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Providers -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Infrastructure Providers</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Provider</th>
+                                    <th>Tier</th>
+                                    <th>Monthly Cost</th>
+                                    <th>Services</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Oracle Cloud</strong></td>
+                                    <td>Free Tier (Always)</td>
+                                    <td>$0.00</td>
+                                    <td>3 VMs (2 Micro, 1 ARM pending)</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Google Cloud</strong></td>
+                                    <td>Free Tier (e2-micro)</td>
+                                    <td>$0.00</td>
+                                    <td>1 VM (planned)</td>
+                                    <td><span class="status-badge dev">Dev</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Anthropic API</strong></td>
+                                    <td>Pay-as-you-go</td>
+                                    <td id="anthropic-monthly-cost">$0.00</td>
+                                    <td>Claude 3.x Models</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div><!-- End Infrastructure Cost Sub-tab -->
+
+        </div><!-- End Cost Tab -->
 
     </div>
 
@@ -817,22 +1700,232 @@
             });
         }
 
-        // Tab Switching
+        // ============================================
+        // COST TAB FUNCTIONS
+        // ============================================
+
+        async function loadCostData() {
+            try {
+                const [aiNowResp, aiDailyResp, aiMonthlyResp] = await Promise.all([
+                    fetch(`${apiUrl}/costs/ai/now`),
+                    fetch(`${apiUrl}/costs/ai/daily`),
+                    fetch(`${apiUrl}/costs/ai/monthly`)
+                ]);
+
+                const aiNowData = await aiNowResp.json();
+                const aiDailyData = await aiDailyResp.json();
+                const aiMonthlyData = await aiMonthlyResp.json();
+
+                // Update summary cards
+                if (!aiNowData.error && aiNowData.blocks && aiNowData.blocks.length > 0) {
+                    const currentBlock = aiNowData.blocks[0];
+                    document.getElementById('cost-session').textContent = `$${currentBlock.total?.toFixed(2) || '0.00'}`;
+                    document.getElementById('cost-session-sub').textContent = `Block ${currentBlock.id || 'current'}`;
+                    document.getElementById('block-start').textContent = currentBlock.period?.start || '--:--';
+                    document.getElementById('block-remaining').textContent = currentBlock.time_remaining || '--:--';
+                    document.getElementById('block-burn-rate').textContent = `$${currentBlock.burn_rate?.toFixed(2) || '0.00'}/hr`;
+                    document.getElementById('block-projection').textContent = `$${currentBlock.projected_total?.toFixed(2) || '0.00'}`;
+                }
+
+                if (!aiDailyData.error && Array.isArray(aiDailyData) && aiDailyData.length > 0) {
+                    const today = aiDailyData[0];
+                    document.getElementById('cost-ai-today').textContent = `$${today.total?.toFixed(2) || '0.00'}`;
+                    document.getElementById('cost-ai-today-sub').textContent = today.date || 'Today';
+                    updateModelDistribution(today);
+                    updateDailyTable(aiDailyData.slice(0, 14));
+                }
+
+                if (!aiMonthlyData.error && Array.isArray(aiMonthlyData)) {
+                    updateMonthlyTable(aiMonthlyData);
+                    if (aiMonthlyData.length > 0) {
+                        document.getElementById('anthropic-monthly-cost').textContent = `$${aiMonthlyData[0].total?.toFixed(2) || '0.00'}`;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading cost data:', error);
+            }
+        }
+
+        function updateModelDistribution(data) {
+            const total = data.total || 0;
+            const opusCost = data.opus || 0;
+            const sonnetCost = data.sonnet || 0;
+            const haikuCost = data.haiku || 0;
+            const opusPct = total > 0 ? (opusCost / total * 100) : 0;
+            const sonnetPct = total > 0 ? (sonnetCost / total * 100) : 0;
+            const haikuPct = total > 0 ? (haikuCost / total * 100) : 0;
+
+            document.getElementById('model-opus-bar').style.width = `${opusPct}%`;
+            document.getElementById('model-sonnet-bar').style.width = `${sonnetPct}%`;
+            document.getElementById('model-haiku-bar').style.width = `${haikuPct}%`;
+            document.getElementById('model-opus-cost').textContent = `$${opusCost.toFixed(2)}`;
+            document.getElementById('model-opus-pct').textContent = `${opusPct.toFixed(0)}%`;
+            document.getElementById('model-sonnet-cost').textContent = `$${sonnetCost.toFixed(2)}`;
+            document.getElementById('model-sonnet-pct').textContent = `${sonnetPct.toFixed(0)}%`;
+            document.getElementById('model-haiku-cost').textContent = `$${haikuCost.toFixed(2)}`;
+            document.getElementById('model-haiku-pct').textContent = `${haikuPct.toFixed(0)}%`;
+        }
+
+        function updateDailyTable(data) {
+            const tbody = document.getElementById('daily-cost-table');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No data available</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map((day, idx) => {
+                const trend = idx < data.length - 1 ? (day.total > data[idx + 1].total ? '▲' : '▼') : '-';
+                return `<tr><td>${day.date || 'N/A'}</td><td>$${day.opus?.toFixed(2) || '0.00'}</td><td>$${day.sonnet?.toFixed(2) || '0.00'}</td><td>$${day.haiku?.toFixed(2) || '0.00'}</td><td><strong>$${day.total?.toFixed(2) || '0.00'}</strong></td><td>${trend}</td></tr>`;
+            }).join('');
+        }
+
+        function updateMonthlyTable(data) {
+            const tbody = document.getElementById('monthly-cost-table');
+            if (!data || data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No data available</td></tr>';
+                return;
+            }
+            tbody.innerHTML = data.map(month => `<tr><td><strong>${month.month || 'N/A'}</strong></td><td>$${month.opus?.toFixed(2) || '0.00'}</td><td>$${month.sonnet?.toFixed(2) || '0.00'}</td><td>$${month.haiku?.toFixed(2) || '0.00'}</td><td><strong>$${month.total?.toFixed(2) || '0.00'}</strong></td></tr>`).join('');
+        }
+
+        // ============================================
+        // PERFORMANCE TAB FUNCTIONS
+        // ============================================
+
+        async function loadPerformanceData() {
+            await Promise.all([fetchVMMetrics(), fetchContainerMetrics()]);
+        }
+
+        async function fetchVMMetrics() {
+            try {
+                const response = await fetch(`${apiUrl}/metrics/vms`);
+                const data = await response.json();
+                const grid = document.getElementById('vm-metrics-grid');
+
+                if (Object.keys(data).length === 0) {
+                    grid.innerHTML = '<div class="loading-placeholder">No VM metrics available</div>';
+                    return;
+                }
+
+                grid.innerHTML = Object.entries(data).map(([vmId, vm]) => {
+                    const mem = vm.memory || {};
+                    const disk = vm.disk || {};
+                    const load = vm.load || {};
+                    const memPercent = mem.percent_used || 0;
+                    const diskPercent = disk.percent_used || 0;
+                    const loadPercent = Math.min((load.load_1m || 0) * 100, 100);
+
+                    return `<div class="vm-metric-card"><div class="vm-metric-header"><span class="vm-metric-name">${vm.name || vmId}</span><span class="vm-metric-ip">${vm.ip || 'N/A'}</span></div><div class="metric-gauges"><div class="gauge"><div class="gauge-circle" style="--gauge-percent: ${memPercent}; --gauge-color: ${getGaugeColor(memPercent)}"><span class="gauge-value">${memPercent}%</span></div><div class="gauge-label">RAM</div></div><div class="gauge"><div class="gauge-circle" style="--gauge-percent: ${diskPercent}; --gauge-color: ${getGaugeColor(diskPercent)}"><span class="gauge-value">${diskPercent}%</span></div><div class="gauge-label">Disk</div></div><div class="gauge"><div class="gauge-circle" style="--gauge-percent: ${loadPercent}; --gauge-color: ${getGaugeColor(loadPercent)}"><span class="gauge-value">${(load.load_1m || 0).toFixed(2)}</span></div><div class="gauge-label">Load</div></div></div>${vm.error ? `<div style="color: var(--accent-red); font-size: 0.75rem; margin-top: 0.5rem;">${vm.error}</div>` : ''}</div>`;
+                }).join('');
+            } catch (error) {
+                console.error('Error fetching VM metrics:', error);
+                document.getElementById('vm-metrics-grid').innerHTML = `<div class="loading-placeholder">Error: ${error.message}</div>`;
+            }
+        }
+
+        function getGaugeColor(percent) {
+            if (percent < 70) return '#51cf66';
+            if (percent < 90) return '#ffc107';
+            return '#ff6b6b';
+        }
+
+        async function fetchContainerMetrics() {
+            try {
+                const response = await fetch(`${apiUrl}/metrics/vms`);
+                const data = await response.json();
+                const tbody = document.getElementById('container-metrics-body');
+                const rows = [];
+
+                for (const [vmId, vm] of Object.entries(data)) {
+                    if (vm.containers && Array.isArray(vm.containers)) {
+                        for (const container of vm.containers) {
+                            rows.push(`<tr><td>${container.name}</td><td>${vm.name || vmId}</td><td><span class="mono">${container.cpu}</span></td><td><span class="mono">${container.memory}</span></td><td><span class="live-status online"><span class="live-dot"></span>Running</span></td></tr>`);
+                        }
+                    }
+                }
+
+                tbody.innerHTML = rows.length > 0 ? rows.join('') : '<tr><td colspan="5" style="text-align: center;">No container data available</td></tr>';
+            } catch (error) {
+                console.error('Error fetching container metrics:', error);
+            }
+        }
+
+        // Tab Switching with Lazy Loading
         function initTabs() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
+            const headerButtons = document.querySelectorAll('[data-dash-tab]');
             const tabContents = document.querySelectorAll('.tab-content');
+            const loadedTabs = { status: true };
 
-            tabButtons.forEach(btn => {
+            function switchTab(targetTab) {
+                // Update header buttons and tab contents
+                headerButtons.forEach(b => b.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+
+                // Activate the selected tab
+                document.querySelectorAll(`[data-dash-tab="${targetTab}"]`).forEach(b => b.classList.add('active'));
+                document.getElementById(`${targetTab}-tab`).classList.add('active');
+
+                if (!loadedTabs[targetTab]) {
+                    loadedTabs[targetTab] = true;
+                    if (targetTab === 'cost') loadCostData();
+                    else if (targetTab === 'performance') loadPerformanceData();
+                }
+            }
+
+            // Handle header monitoring buttons
+            headerButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    const targetTab = btn.getAttribute('data-tab');
+                    const targetTab = btn.getAttribute('data-dash-tab');
+                    switchTab(targetTab);
+                });
+            });
+        }
 
-                    // Remove active class from all buttons and contents
-                    tabButtons.forEach(b => b.classList.remove('active'));
-                    tabContents.forEach(c => c.classList.remove('active'));
+        // Cost Sub-tab Switching
+        function initCostSubtabs() {
+            const subtabButtons = document.querySelectorAll('.cost-subtab-btn');
+            const subtabContents = document.querySelectorAll('.cost-subtab-content');
 
-                    // Add active class to clicked button and corresponding content
+            subtabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetSubtab = btn.getAttribute('data-subtab');
+                    subtabButtons.forEach(b => b.classList.remove('active'));
+                    subtabContents.forEach(c => c.classList.remove('active'));
                     btn.classList.add('active');
-                    document.getElementById(`${targetTab}-tab`).classList.add('active');
+                    document.getElementById(targetSubtab).classList.add('active');
+                });
+            });
+        }
+
+        // Status Sub-tab Switching (Frontend/Backend)
+        function initStatusSubtabs() {
+            const subtabButtons = document.querySelectorAll('.status-subtab-btn');
+            const subtabContents = document.querySelectorAll('.status-subtab-content');
+
+            subtabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetSubtab = btn.getAttribute('data-subtab');
+                    subtabButtons.forEach(b => b.classList.remove('active'));
+                    subtabContents.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(targetSubtab).classList.add('active');
+                });
+            });
+        }
+
+        // View Toggle (Cards/List) - Note: This is a placeholder
+        // Actual cards view implementation would require additional HTML structure
+        function initViewToggles() {
+            const toggleGroups = document.querySelectorAll('.view-toggle-inline');
+
+            toggleGroups.forEach(group => {
+                const buttons = group.querySelectorAll('.view-toggle-btn');
+                buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        buttons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        // View switching logic would go here
+                        // For now, just toggle the active state
+                    });
                 });
             });
         }
@@ -843,6 +1936,7 @@
             handleOAuthCallback();
             initRebootButtons();
             initTabs();
+            initCostSubtabs();
             refreshAll();
             if (document.getElementById('auto-refresh').checked) {
                 startAutoRefresh();

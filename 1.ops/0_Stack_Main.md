@@ -1,4 +1,30 @@
+# Web Development Stack & Standards
 
+> **Document Type**: Master Stack Specification
+> **Version**: 2.0.0 | **Updated**: 2025-12-04
+
+## Overview
+
+This document defines the **technology stack, frameworks, and build strategies** for all web projects in this repository. All web developers must follow these standards.
+
+### Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `0_Stack_Main.md` (this file) | Technology stack & framework decisions |
+| `1_Folder_Structure.md` | Project structure & file organization |
+| `2_Build_Deploy_Watch.md` | Build scripts, CI/CD, dev servers |
+| `3_Analytics.md` | Matomo tracking & meta tags |
+
+### Project-Specific Specifications
+
+Some projects have additional specifications in their backend repos:
+
+| Project | Additional Spec Location | Description |
+|---------|--------------------------|-------------|
+| **Cloud** | `/back-System/cloud/0.spec/Cloud-spec_.md` | Full infrastructure spec with API endpoints, OAuth, frontend views |
+
+---
 
 ## 1. Stack Definition
 

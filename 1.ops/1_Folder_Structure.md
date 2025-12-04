@@ -1,3 +1,30 @@
+# Folder Structure Specification
+
+> **Document Type**: Project Organization Standard
+> **Version**: 2.0.0 | **Updated**: 2025-12-04
+> **Parent**: `0_Stack_Main.md`
+
+## Overview
+
+This document defines the **folder structure and file organization** for all projects. Consistency across projects enables shared tooling and CI/CD pipelines.
+
+### Key Rules
+
+1. **Source files**: Always in `src_vanilla/`, `src_static/`, or `src/` (framework-specific)
+2. **Build output**: Always in `dist/` or `dist_vanilla/`
+3. **NO HTML in project root**: HTML only in `src_*/` or `dist/`
+4. **Ops scripts**: Always in `<project>/1.ops/`
+5. **Public assets**: Always in `public/`
+
+### Project-Specific Structure Notes
+
+| Project | Special Structure | Reason |
+|---------|-------------------|--------|
+| **Cloud** | `src_vanilla/` + symlink from `/back-System/cloud/0.spec/front-cloud/` | Backend spec references frontend |
+| **MyGames** | `src/lib/` (SvelteKit) | Framework convention |
+| **MyFeed** | `2.src/` | Legacy naming |
+
+---
 
 # Actual Project Structure
 

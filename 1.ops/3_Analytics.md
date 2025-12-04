@@ -1,4 +1,68 @@
-# Analytics & Meta Tags Documentation
+# Analytics & Meta Tags Specification
+
+> **Document Type**: Analytics Implementation Standard
+> **Version**: 2.0.0 | **Updated**: 2025-12-04
+> **Parent**: `0_Stack_Main.md`
+
+## Overview
+
+This document defines the **Matomo analytics tracking and social meta tags** requirements for all projects. Every project must include Matomo tracking for privacy-respecting analytics.
+
+### Matomo Configuration
+
+| Setting | Value |
+|---------|-------|
+| **Matomo Server** | `https://analytics.diegonmarcos.com` |
+| **Container ID** | `62tfw1ai` (v6 - Proxy Tracking) |
+| **Container Script** | `container_odwLIyPV.js` |
+| **Privacy** | Cookie-less, GDPR-compliant, self-hosted, respects DNT |
+
+---
+
+## Required: MTM Container Header
+
+**Every HTML page MUST include this in the `<head>` section:**
+
+```html
+<!-- Matomo Tag Manager -->
+<script>
+var _mtm = window._mtm = window._mtm || [];
+_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+(function() {
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+  s.parentNode.insertBefore(g,s);
+})();
+</script>
+<!-- End Matomo Tag Manager -->
+```
+
+### Automatic Tracking (via MTM Container v6)
+
+The container automatically tracks:
+- Page views
+- Scroll depth (25%, 50%, 75%, 100%)
+- Outbound links
+- File downloads
+
+### Custom Event Tracking
+
+For custom events, use the Matomo `_paq` array:
+
+```javascript
+// Check if Matomo is loaded
+if (typeof _paq !== 'undefined') {
+  _paq.push(['trackEvent', 'Category', 'Action', 'Name', Value]);
+}
+```
+
+**Example categories by project:**
+- `CV` → Download, View Source
+- `CV UI` → Theme Toggle, Font Size, Language
+- `Linktree` → Link Click, More Button
+- `Cloud` → Service Click, Status Check
+
+---
 
 ## Table 1: Integration Status
 

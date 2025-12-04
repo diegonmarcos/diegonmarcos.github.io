@@ -89,36 +89,8 @@
                 <div class="view-group">
                     <span class="view-group-label">Services</span>
                     <div class="view-group-buttons">
-                        <button class="view-btn active" data-view="cards-front">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"/>
-                                <rect x="14" y="3" width="7" height="7"/>
-                                <rect x="3" y="14" width="7" height="7"/>
-                                <rect x="14" y="14" width="7" height="7"/>
-                            </svg>
-                            Cards-F
-                        </button>
-                        <button class="view-btn" data-view="cards-back">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="7" height="7"/>
-                                <rect x="14" y="3" width="7" height="7"/>
-                                <rect x="3" y="14" width="7" height="7"/>
-                                <rect x="14" y="14" width="7" height="7"/>
-                            </svg>
-                            Cards-B
-                        </button>
-                        <button class="view-btn" data-view="list-front">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
-                            </svg>
-                            List-F
-                        </button>
-                        <button class="view-btn" data-view="list-back">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
-                            </svg>
-                            List-B
-                        </button>
+                        <button class="view-btn active" data-category="frontend">Front</button>
+                        <button class="view-btn" data-category="backend">Back</button>
                     </div>
                 </div>
                 <span class="view-separator"></span>
@@ -156,34 +128,9 @@
                 <div class="view-group">
                     <span class="view-group-label">Monitoring</span>
                     <div class="view-group-buttons">
-                        <button class="view-btn" data-view="backlog">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                <polyline points="14 2 14 8 20 8"/>
-                                <line x1="16" y1="13" x2="8" y2="13"/>
-                                <line x1="16" y1="17" x2="8" y2="17"/>
-                            </svg>
-                            Backlog
-                        </button>
-                        <button class="view-btn" data-view="tree">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 2v6"/>
-                                <path d="M12 8L6 14"/>
-                                <path d="M12 8l6 6"/>
-                                <circle cx="12" cy="2" r="2"/>
-                                <circle cx="6" cy="16" r="2"/>
-                                <circle cx="18" cy="16" r="2"/>
-                                <path d="M6 18v4"/>
-                                <path d="M18 18v4"/>
-                            </svg>
-                            Tree
-                        </button>
-                        <a href="cloud_dash.html" class="view-btn" title="Status List (Live API)">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                            </svg>
-                            List
-                        </a>
+                        <a href="cloud_dash.html#status" class="view-btn">Status</a>
+                        <a href="cloud_dash.html#performance" class="view-btn">Performance</a>
+                        <a href="cloud_dash.html#cost" class="view-btn">Cost</a>
                     </div>
                 </div>
             </div>
@@ -191,6 +138,11 @@
 
         <!-- Cards Front View -->
         <div id="cards-front-view" class="view-content active">
+            <!-- View Toggle Inside Frontend -->
+            <div class="inline-view-toggle">
+                <button class="view-btn active" data-frontend-view="cards">Cards</button>
+                <button class="view-btn" data-frontend-view="list">List</button>
+            </div>
 
             <!-- FRONT SECTION -->
             <section class="section-header">
@@ -307,6 +259,12 @@
 
         <!-- Cards Back View -->
         <div id="cards-back-view" class="view-content">
+
+            <!-- View Toggle Inside Backend -->
+            <div class="inline-view-toggle">
+                <button class="view-btn active" data-backend-view="cards">Cards</button>
+                <button class="view-btn" data-backend-view="list">List</button>
+            </div>
 
             <!-- BACK SECTION -->
             <section class="section-header">
@@ -1768,6 +1726,95 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+
+        /* View Content Display */
+        .view-content {
+            display: none;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        /* List View */
+        .view-content.list-view .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .view-content.list-view .card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            gap: 1rem;
+        }
+
+        .view-content.list-view .card-icon {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+        }
+
+        .view-content.list-view .card h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            flex: 0 0 180px;
+        }
+
+        .view-content.list-view .card p {
+            font-size: 0.85rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        .view-content.list-view .card-status {
+            margin-left: auto;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+        }
+
+        .view-content.list-view .card-code,
+        .view-content.list-view .code-with-copy {
+            font-size: 0.8rem;
+        }
+
+        .view-content.list-view .card-actions {
+            margin-left: auto;
+        }
+
+        /* Inline View Toggle for Frontend/Backend */
+        .inline-view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 0 1.5rem 0;
+            justify-content: flex-end;
+            padding: 0 1rem;
+        }
+
+        .inline-view-toggle .view-btn {
+            padding: 0.5rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .inline-view-toggle .view-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        .inline-view-toggle .view-btn:hover:not(.active) {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
         .cloud-footer {
             text-align: center;
             padding: 1.5rem 1rem;
@@ -1817,6 +1864,68 @@
             box-shadow: 0 0 25px rgba(74, 158, 255, 0.6);
         }
     </style>
+
+    <script>
+        // Navigation and View Toggle Handler
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle Front/Back category switching
+            const categoryButtons = document.querySelectorAll('[data-category]');
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const category = this.getAttribute('data-category');
+
+                    // Update active button
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Show/hide views
+                    if (category === 'frontend') {
+                        document.getElementById('cards-front-view').classList.add('active');
+                        document.getElementById('cards-back-view').classList.remove('active');
+                    } else if (category === 'backend') {
+                        document.getElementById('cards-front-view').classList.remove('active');
+                        document.getElementById('cards-back-view').classList.add('active');
+                    }
+                });
+            });
+
+            // Handle Frontend inline Cards/List toggle
+            const frontendView = document.getElementById('cards-front-view');
+            const frontendToggle = document.querySelectorAll('#cards-front-view .inline-view-toggle .view-btn');
+            frontendToggle.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const viewType = this.getAttribute('data-frontend-view');
+                    frontendToggle.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Toggle list-view class
+                    if (viewType === 'list') {
+                        frontendView.classList.add('list-view');
+                    } else {
+                        frontendView.classList.remove('list-view');
+                    }
+                });
+            });
+
+            // Handle Backend inline Cards/List toggle
+            const backendView = document.getElementById('cards-back-view');
+            const backendToggle = document.querySelectorAll('#cards-back-view .inline-view-toggle .view-btn');
+            backendToggle.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const viewType = this.getAttribute('data-backend-view');
+                    backendToggle.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Toggle list-view class
+                    if (viewType === 'list') {
+                        backendView.classList.add('list-view');
+                    } else {
+                        backendView.classList.remove('list-view');
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>"use strict";(()=>{function g(){document.querySelectorAll(".card").forEach(e=>{e.addEventListener("mouseenter",()=>{e.style.zIndex="10"}),e.addEventListener("mouseleave",()=>{e.style.zIndex="1",e.style.transform="translateY(0) scale(1) rotateX(0) rotateY(0)"}),e.addEventListener("mousemove",o=>{let n=e.getBoundingClientRect(),i=o.clientX-n.left,s=o.clientY-n.top,a=n.width/2,r=n.height/2,q=(s-r)/10,N=(a-i)/10;e.style.transform=`
                 translateY(-12px)

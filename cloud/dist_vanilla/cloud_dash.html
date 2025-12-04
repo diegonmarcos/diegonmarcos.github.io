@@ -444,7 +444,8 @@
         // 3. Set Callback URL: https://cloud.diegonmarcos.com/cloud_dash.html
         // 4. Copy Client ID below, set Client Secret in backend env GITHUB_CLIENT_SECRET
         const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
-        const GITHUB_REDIRECT_URI = 'https://cloud.diegonmarcos.com/cloud_dash.html';
+        // Use current page URL as redirect (works for both github.io and custom domain)
+        const GITHUB_REDIRECT_URI = window.location.href.split('?')[0];
 
         let autoRefreshInterval = null;
         let isLoading = false;

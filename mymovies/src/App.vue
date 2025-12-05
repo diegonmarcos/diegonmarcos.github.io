@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
 import { useMovies } from '@/composables/useMovies'
 import { usePlayer } from '@/composables/usePlayer'
 import AppHeader from '@/components/AppHeader.vue'
@@ -17,7 +16,6 @@ const {
   saveApiKey,
   clearApiKey,
   setView,
-  fetchHomeContent,
   debouncedSearch
 } = useMovies()
 
@@ -26,12 +24,6 @@ const { openTrailer } = usePlayer()
 const handleWatch = (movie: Movie) => {
   openTrailer(movie)
 }
-
-onMounted(() => {
-  if (hasApiKey.value) {
-    fetchHomeContent()
-  }
-})
 </script>
 
 <template>

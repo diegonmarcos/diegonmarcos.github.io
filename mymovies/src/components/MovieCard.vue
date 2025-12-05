@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { Movie } from '@/types/movie'
 
 defineProps<{
@@ -9,6 +10,8 @@ const emit = defineEmits<{
   watch: [movie: Movie]
 }>()
 
+const copied = ref(false)
+
 const getImageUrl = (posterUrl: string): string => {
   return posterUrl && posterUrl !== 'N/A'
     ? posterUrl
@@ -18,6 +21,18 @@ const getImageUrl = (posterUrl: string): string => {
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement
   target.src = 'https://via.placeholder.com/300x450?text=No+Poster'
+}
+
+const copyImdbId = async (imdbId: string) => {
+  try {
+    await navigator.clipboard.writeText(imdbId)
+    copied.value = true
+    setTimeout(() => {
+      copied.value = false
+    }, 2000)
+  } catch (err) {
+    console.error('Failed to copy:', err)
+  }
 }
 </script>
 
@@ -40,6 +55,10 @@ const handleImageError = (event: Event) => {
       </div>
       <button class="watch-btn" @click="emit('watch', movie)">
         <span>▶ Watch Trailer</span>
+      </button>
+      <button class="copy-btn" @click="copyImdbId(movie.imdbID)">
+        <span v-if="!copied">📋 Copy IMDb ID</span>
+        <span v-else>✓ Copied!</span>
       </button>
     </div>
   </div>
@@ -115,6 +134,26 @@ const handleImageError = (event: Event) => {
 
   &:hover {
     background-color: var(--accent-hover);
+  }
+}
+
+.copy-btn {
+  width: 100%;
+  padding: 8px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #555;
   }
 }
 </style>

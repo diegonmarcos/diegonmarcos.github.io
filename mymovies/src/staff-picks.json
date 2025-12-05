@@ -1,0 +1,92 @@
+[
+  {
+    "name": "The Shawshank Redemption",
+    "year": 1994,
+    "imdbId": "tt0111161",
+    "category": "Drama"
+  },
+  {
+    "name": "The Godfather",
+    "year": 1972,
+    "imdbId": "tt0068646",
+    "category": "Crime"
+  },
+  {
+    "name": "The Dark Knight",
+    "year": 2008,
+    "imdbId": "tt0468569",
+    "category": "Action"
+  },
+  {
+    "name": "Schindler's List",
+    "year": 1993,
+    "imdbId": "tt0108052",
+    "category": "Drama"
+  },
+  {
+    "name": "Lord of the Rings: Return of the King",
+    "year": 2003,
+    "imdbId": "tt0167260",
+    "category": "Fantasy"
+  },
+  {
+    "name": "Pulp Fiction",
+    "year": 1994,
+    "imdbId": "tt0110912",
+    "category": "Crime"
+  },
+  {
+    "name": "Fight Club",
+    "year": 1999,
+    "imdbId": "tt0137523",
+    "category": "Drama"
+  },
+  {
+    "name": "Forrest Gump",
+    "year": 1994,
+    "imdbId": "tt0109830",
+    "category": "Drama"
+  },
+  {
+    "name": "The Empire Strikes Back",
+    "year": 1980,
+    "imdbId": "tt0080684",
+    "category": "Sci-Fi"
+  },
+  {
+    "name": "The Matrix",
+    "year": 1999,
+    "imdbId": "tt0133093",
+    "category": "Sci-Fi"
+  },
+  {
+    "name": "Goodfellas",
+    "year": 1990,
+    "imdbId": "tt0099685",
+    "category": "Crime"
+  },
+  {
+    "name": "Interstellar",
+    "year": 2014,
+    "imdbId": "tt0816692",
+    "category": "Sci-Fi"
+  },
+  {
+    "name": "Lord of the Rings: Fellowship",
+    "year": 2001,
+    "imdbId": "tt0120737",
+    "category": "Fantasy"
+  },
+  {
+    "name": "One Flew Over the Cuckoo's Nest",
+    "year": 1975,
+    "imdbId": "tt0073486",
+    "category": "Drama"
+  },
+  {
+    "name": "Inception",
+    "year": 2010,
+    "imdbId": "tt1375666",
+    "category": "Sci-Fi"
+  }
+]

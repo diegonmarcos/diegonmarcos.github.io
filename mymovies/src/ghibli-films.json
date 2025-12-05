@@ -1,0 +1,114 @@
+[
+  {
+    "name": "Spirited Away",
+    "year": 2001,
+    "description": "Oscar-winning film about a girl navigating a magical bathhouse filled with spirits and challenges",
+    "imdbId": "tt0245429",
+    "category": "Fantasy",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "My Neighbor Totoro",
+    "year": 1988,
+    "description": "Beloved family film featuring two sisters who encounter friendly forest spirits in rural Japan",
+    "imdbId": "tt0096283",
+    "category": "Family",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Howl's Moving Castle",
+    "year": 2004,
+    "description": "Fantasy romance about a young woman cursed to age rapidly who meets a mysterious wizard",
+    "imdbId": "tt0212205",
+    "category": "Fantasy",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Princess Mononoke",
+    "year": 1997,
+    "description": "Epic tale of conflict between humans and nature in a fantasy world inspired by medieval Japan",
+    "imdbId": "tt0119698",
+    "category": "Action",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Kiki's Delivery Service",
+    "year": 1989,
+    "description": "Coming-of-age story about a young witch starting her independent life in a new city",
+    "imdbId": "tt0097814",
+    "category": "Family",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Castle in the Sky",
+    "year": 1986,
+    "description": "Adventure film about a boy and girl searching for a legendary floating castle while evading sky pirates",
+    "imdbId": "tt0092067",
+    "category": "Adventure",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Nausicaä of the Valley of the Wind",
+    "year": 1984,
+    "description": "Post-apocalyptic adventure about a princess fighting to prevent war in a world overtaken by toxic jungles",
+    "imdbId": "tt0087544",
+    "category": "Adventure",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Porco Rosso",
+    "year": 1992,
+    "description": "Fantasy film about a pig pilot who uses his flying skills to protect innocent people from sky pirates",
+    "imdbId": "tt0104652",
+    "category": "Fantasy",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Grave of the Fireflies",
+    "year": 1988,
+    "description": "Tragic war drama following two siblings struggling to survive during the final months of World War II",
+    "imdbId": "tt0095327",
+    "category": "Drama",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "The Wind Rises",
+    "year": 2013,
+    "description": "Historical drama about an aircraft designer pursuing his passion while Japan prepares for war",
+    "imdbId": "tt2013293",
+    "category": "Drama",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Ponyo",
+    "year": 2008,
+    "description": "Fantasy film about a magical goldfish who wants to become human and her connection with a young boy",
+    "imdbId": "tt0876563",
+    "category": "Fantasy",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Arrietty",
+    "year": 2010,
+    "description": "Adventure about tiny people living secretly under the floorboards and their relationship with a human girl",
+    "imdbId": "tt1568921",
+    "category": "Adventure",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "Tales from Earthsea",
+    "year": 2006,
+    "description": "Fantasy adventure based on Ursula K. Le Guin's series about a young wizard and the balance between worlds",
+    "imdbId": "tt0499296",
+    "category": "Fantasy",
+    "studio": "Studio Ghibli"
+  },
+  {
+    "name": "My Father's Dragon",
+    "year": 2022,
+    "description": "Adventure film about a boy who discovers his father's journey to rescue a dragon on a mysterious island",
+    "imdbId": "tt14981654",
+    "category": "Adventure",
+    "studio": "Studio Ghibli"
+  }
+]

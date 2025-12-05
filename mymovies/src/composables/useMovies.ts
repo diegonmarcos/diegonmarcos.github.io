@@ -75,6 +75,22 @@ const STAFF_PICKS_IDS = [
   'tt1375666'  // Inception
 ]
 
+// Studio Ghibli Films
+const GHIBLI_IDS = [
+  'tt0245429', // Spirited Away
+  'tt0096283', // My Neighbor Totoro
+  'tt0212205', // Howl's Moving Castle
+  'tt0119698', // Princess Mononoke
+  'tt0097814', // Kiki's Delivery Service
+  'tt0092067', // Castle in the Sky
+  'tt0087544', // Nausicaä of the Valley of the Wind
+  'tt0104652', // Porco Rosso
+  'tt0095327', // Grave of the Fireflies
+  'tt2013293', // The Wind Rises
+  'tt0876563', // Ponyo
+  'tt1568921'  // Arrietty
+]
+
 export function useMovies() {
   const apiKey = ref(localStorage.getItem('omdb_api_key') || '')
   const tempApiKey = ref('')
@@ -83,6 +99,17 @@ export function useMovies() {
   const error = ref<string | null>(null)
   const searchQuery = ref('')
   const view = ref<ViewType>('home')
+
+  // Cache for all lists - stores fetched movies by list name
+  const cache = ref<Record<string, Movie[]>>({
+    home: [],
+    movies2025: [],
+    series2025: [],
+    staffpicks: [],
+    ghibli: []
+  })
+
+  const isCacheLoaded = ref(false)
 
   const hasApiKey = computed(() => !!apiKey.value)
 
@@ -103,43 +130,58 @@ export function useMovies() {
     apiKey.value = tempApiKey.value.trim()
     localStorage.setItem('omdb_api_key', apiKey.value)
     tempApiKey.value = ''
-    fetchHomeContent()
+
+    // Fetch all lists once
+    fetchAllLists()
   }
 
   const clearApiKey = () => {
     apiKey.value = ''
     localStorage.removeItem('omdb_api_key')
     movies.value = []
+    cache.value = {
+      home: [],
+      movies2025: [],
+      series2025: [],
+      staffpicks: [],
+      ghibli: []
+    }
+    isCacheLoaded.value = false
   }
 
   const setView = (newView: ViewType) => {
     view.value = newView
     error.value = null
-    movies.value = []
     searchQuery.value = ''
 
+    // If cache is loaded and it's not search view, use cached data
+    if (isCacheLoaded.value && newView !== 'search') {
+      movies.value = cache.value[newView] || []
+      return
+    }
+
+    // Otherwise fetch (this shouldn't happen for list views after initial load)
     switch (newView) {
       case 'home':
-        fetchHomeContent()
+        movies.value = cache.value.home
         break
       case 'movies2025':
-        fetchByIds(MOVIES_2025_IDS)
+        movies.value = cache.value.movies2025
         break
       case 'series2025':
-        fetchByIds(SERIES_2025_IDS)
+        movies.value = cache.value.series2025
         break
       case 'staffpicks':
-        fetchByIds(STAFF_PICKS_IDS)
+        movies.value = cache.value.staffpicks
+        break
+      case 'ghibli':
+        movies.value = cache.value.ghibli
         break
     }
   }
 
-  const fetchByIds = async (ids: string[]) => {
-    if (!apiKey.value) return
-
-    loading.value = true
-    error.value = null
-    movies.value = []
+  const fetchByIds = async (ids: string[]): Promise<Movie[]> => {
+    if (!apiKey.value) return []
 
     try {
       const results: Movie[] = []
@@ -155,17 +197,48 @@ export function useMovies() {
         }
       }
 
-      movies.value = results
+      return results
     } catch (err) {
-      error.value = 'Failed to load content. Check your API key.'
       console.error('Error fetching by IDs:', err)
-    } finally {
-      loading.value = false
+      return []
     }
   }
 
-  const fetchHomeContent = async () => {
-    await fetchByIds(CURATED_IDS)
+  const fetchAllLists = async () => {
+    if (!apiKey.value) return
+
+    loading.value = true
+    error.value = null
+
+    try {
+      // Fetch all lists in parallel
+      const [home, movies2025, series2025, staffpicks, ghibli] = await Promise.all([
+        fetchByIds(CURATED_IDS),
+        fetchByIds(MOVIES_2025_IDS),
+        fetchByIds(SERIES_2025_IDS),
+        fetchByIds(STAFF_PICKS_IDS),
+        fetchByIds(GHIBLI_IDS)
+      ])
+
+      // Store in cache
+      cache.value = {
+        home,
+        movies2025,
+        series2025,
+        staffpicks,
+        ghibli
+      }
+
+      isCacheLoaded.value = true
+
+      // Display home by default
+      movies.value = cache.value.home
+    } catch (err) {
+      error.value = 'Failed to load content. Check your API key.'
+      console.error('Error fetching all lists:', err)
+    } finally {
+      loading.value = false
+    }
   }
 
   const searchMovies = async () => {
@@ -199,6 +272,11 @@ export function useMovies() {
     if (searchQuery.value) searchMovies()
   }, 500)
 
+  // If API key exists on load, fetch all lists
+  if (apiKey.value && !isCacheLoaded.value) {
+    fetchAllLists()
+  }
+
   return {
     apiKey,
     tempApiKey,
@@ -208,10 +286,10 @@ export function useMovies() {
     error,
     searchQuery,
     view,
+    isCacheLoaded,
     saveApiKey,
     clearApiKey,
     setView,
-    fetchHomeContent,
     searchMovies,
     debouncedSearch
   }

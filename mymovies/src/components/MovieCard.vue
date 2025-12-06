@@ -8,6 +8,7 @@ defineProps<{
 
 const emit = defineEmits<{
   watch: [movie: Movie]
+  webplayer: [movie: Movie]
 }>()
 
 const copied = ref(false)
@@ -55,6 +56,9 @@ const copyImdbId = async (imdbId: string) => {
       </div>
       <button class="watch-btn" @click="emit('watch', movie)">
         <span>▶ Watch Trailer</span>
+      </button>
+      <button class="webplayer-btn" @click="emit('webplayer', movie)">
+        <span>🎬 Web Player</span>
       </button>
       <button class="copy-btn" @click="copyImdbId(movie.imdbID)">
         <span v-if="!copied">📋 Copy IMDb ID</span>
@@ -134,6 +138,27 @@ const copyImdbId = async (imdbId: string) => {
 
   &:hover {
     background-color: var(--accent-hover);
+  }
+}
+
+.webplayer-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #1d4ed8;
   }
 }
 

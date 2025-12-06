@@ -1,6 +1,10 @@
+import { ref } from 'vue'
 import type { Movie } from '@/types/movie'
 
 export function usePlayer() {
+  const showPlayer = ref(false)
+  const currentMovie = ref<Movie | null>(null)
+
   const openTrailer = (item: Movie) => {
     if (!item.imdbID) {
       alert('Cannot find trailer: No IMDb ID found.')
@@ -13,7 +17,31 @@ export function usePlayer() {
     window.open(imdbVideoUrl, '_blank')
   }
 
+  const openWebPlayer = (item: Movie) => {
+    if (!item.imdbID) {
+      alert('Cannot watch: No IMDb ID found.')
+      return
+    }
+
+    // Set default streamer if not provided
+    if (!item.streamer) {
+      item.streamer = 'vids'
+    }
+
+    currentMovie.value = item
+    showPlayer.value = true
+  }
+
+  const closeWebPlayer = () => {
+    showPlayer.value = false
+    currentMovie.value = null
+  }
+
   return {
-    openTrailer
+    showPlayer,
+    currentMovie,
+    openTrailer,
+    openWebPlayer,
+    closeWebPlayer
   }
 }

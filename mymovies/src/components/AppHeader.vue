@@ -15,6 +15,7 @@ const emit = defineEmits<{
   clearKey: []
   setView: [view: ViewType]
   search: []
+  openWebPlayer: []
 }>()
 </script>
 
@@ -31,7 +32,10 @@ const emit = defineEmits<{
           placeholder="Enter OMDb API Key"
         />
         <button v-if="!hasApiKey" @click="emit('saveKey')">Save Key</button>
-        <button v-else class="secondary" @click="emit('clearKey')">Change Key</button>
+        <div v-else class="key-actions">
+          <button class="secondary" @click="emit('clearKey')">Change Key</button>
+          <button class="webplayer-btn" @click="emit('openWebPlayer')">🎬 Web Player</button>
+        </div>
       </div>
     </div>
 
@@ -113,6 +117,28 @@ h1 {
   display: flex;
   gap: 10px;
   align-items: center;
+}
+
+.key-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.webplayer-btn {
+  padding: 6px 12px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
 }
 
 input[type='text'] {

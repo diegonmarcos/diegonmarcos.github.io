@@ -10,6 +10,7 @@ export interface Movie {
   Director?: string
   Actors?: string
   Runtime?: string
+  streamer?: string
 }
 
 export interface OmdbSearchResponse {

@@ -3,6 +3,7 @@ import { useMovies } from '@/composables/useMovies'
 import { usePlayer } from '@/composables/usePlayer'
 import AppHeader from '@/components/AppHeader.vue'
 import MovieCard from '@/components/MovieCard.vue'
+import WebPlayer from '@/components/WebPlayer.vue'
 import type { Movie } from '@/types/movie'
 
 const {
@@ -19,10 +20,60 @@ const {
   debouncedSearch
 } = useMovies()
 
-const { openTrailer } = usePlayer()
+const {
+  showPlayer,
+  currentMovie,
+  openTrailer,
+  openWebPlayer,
+  closeWebPlayer
+} = usePlayer()
 
 const handleWatch = (movie: Movie) => {
   openTrailer(movie)
+}
+
+const handleWebPlayer = (movie: Movie) => {
+  openWebPlayer(movie)
+}
+
+// Popular movie IMDb IDs for random selection
+const popularMovieIds = [
+  'tt0111161', // The Shawshank Redemption
+  'tt0068646', // The Godfather
+  'tt0468569', // The Dark Knight
+  'tt0071562', // The Godfather Part II
+  'tt0050083', // 12 Angry Men
+  'tt0108052', // Schindler's List
+  'tt0167260', // The Lord of the Rings: The Return of the King
+  'tt0110912', // Pulp Fiction
+  'tt0120737', // The Lord of the Rings: The Fellowship of the Ring
+  'tt0109830', // Forrest Gump
+  'tt1375666', // Inception
+  'tt0167261', // The Lord of the Rings: The Two Towers
+  'tt0073486', // One Flew Over the Cuckoo's Nest
+  'tt0099685', // Goodfellas
+  'tt0133093', // The Matrix
+  'tt0047478', // Seven Samurai
+  'tt0114369', // Se7en
+  'tt0317248', // City of God
+  'tt0102926', // The Silence of the Lambs
+  'tt0038650', // It's a Wonderful Life
+]
+
+const handleOpenWebPlayerFromHeader = () => {
+  // Pick a random movie ID
+  const randomId = popularMovieIds[Math.floor(Math.random() * popularMovieIds.length)]
+
+  // Create a dummy movie object
+  const dummyMovie: Movie = {
+    imdbID: randomId,
+    Title: 'Random Movie',
+    Year: '2024',
+    Type: 'movie',
+    Poster: 'N/A'
+  }
+
+  openWebPlayer(dummyMovie)
 }
 </script>
 
@@ -39,6 +90,7 @@ const handleWatch = (movie: Movie) => {
       @clearKey="clearApiKey"
       @setView="setView"
       @search="debouncedSearch"
+      @openWebPlayer="handleOpenWebPlayerFromHeader"
     />
 
     <main>
@@ -74,9 +126,19 @@ const handleWatch = (movie: Movie) => {
           :key="movie.imdbID"
           :movie="movie"
           @watch="handleWatch"
+          @webplayer="handleWebPlayer"
         />
       </div>
     </main>
+
+    <!-- Web Player Overlay -->
+    <WebPlayer
+      v-if="showPlayer && currentMovie"
+      :imdbId="currentMovie.imdbID"
+      :movieType="currentMovie.Type"
+      :title="currentMovie.Title"
+      @close="closeWebPlayer"
+    />
   </div>
 </template>
 

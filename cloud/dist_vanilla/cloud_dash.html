@@ -2407,54 +2407,85 @@
             <!-- Cloud Infrastructure Costs -->
             <div class="resources-category">
                 <h3 class="resources-category-title">
-                    <span>☁️ Cloud Infrastructure Costs</span>
-                    <span id="cloud-costs-updated" style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;"></span>
+                    <span>Cloud Infrastructure Costs</span>
+                    <span id="cloud-costs-updated" style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal; margin-left: 1rem;"></span>
                 </h3>
 
-                <!-- Cloud Cost Summary Cards -->
-                <div class="ai-cost-hero" id="cloud-cost-hero">
+                <!-- Hero Stats Row -->
+                <div class="ai-cost-hero" style="margin-bottom: 1.5rem;">
                     <div class="ai-hero-card">
-                        <div class="ai-hero-label">Total This Month</div>
+                        <div class="ai-hero-label">This Month</div>
                         <div class="ai-hero-value" id="cloud-total-month">€0.00</div>
                         <div class="ai-hero-sub" id="cloud-month-label">December 2025</div>
                     </div>
                     <div class="ai-hero-card">
+                        <div class="ai-hero-label">Projected</div>
+                        <div class="ai-hero-value" id="cloud-projected" style="color: var(--accent-orange);">€0.00</div>
+                        <div class="ai-hero-sub">Full month estimate</div>
+                    </div>
+                    <div class="ai-hero-card">
                         <div class="ai-hero-label">Year to Date</div>
                         <div class="ai-hero-value" id="cloud-ytd">€0.00</div>
-                        <div class="ai-hero-sub">2025</div>
+                        <div class="ai-hero-sub">2025 Total</div>
                     </div>
                     <div class="ai-hero-card">
                         <div class="ai-hero-label">Free Tier Savings</div>
                         <div class="ai-hero-value" id="cloud-savings" style="color: var(--success);">€0.00</div>
-                        <div class="ai-hero-sub">Estimated</div>
+                        <div class="ai-hero-sub">vs. Market Price</div>
                     </div>
                 </div>
 
-                <!-- Provider Breakdown -->
-                <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Provider Breakdown</h4>
-                    <div id="cloud-providers-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                        <!-- Provider cards rendered by JS -->
+                <!-- Provider Donut + Stats Row -->
+                <div class="resources-section" style="display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items: start;">
+                    <!-- Donut Chart -->
+                    <div class="ai-donut-container">
+                        <svg viewBox="0 0 100 100" class="ai-donut-svg">
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg-tertiary)" stroke-width="12"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#F80000" stroke-width="12"
+                                    stroke-dasharray="251" stroke-dashoffset="0" class="cloud-donut-oci"
+                                    transform="rotate(-90 50 50)"/>
+                            <circle cx="50" cy="50" r="40" fill="none" stroke="#4285F4" stroke-width="12"
+                                    stroke-dasharray="0 251" stroke-dashoffset="0" class="cloud-donut-gcp"
+                                    transform="rotate(-90 50 50)"/>
+                        </svg>
+                        <div class="ai-donut-center">
+                            <div class="ai-donut-value" id="cloud-donut-total">€0.83</div>
+                            <div class="ai-donut-label">Total</div>
+                        </div>
+                    </div>
+
+                    <!-- Provider Cards -->
+                    <div id="cloud-providers-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                        <!-- Rendered by JS -->
                     </div>
                 </div>
 
-                <!-- Monthly Service Details Table -->
+                <!-- Monthly Comparison Chart -->
                 <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Service Details (Current Month)</h4>
+                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Monthly Cost Trend</h4>
+                    <div id="cloud-monthly-bars" class="ai-weekly-bars" style="height: 120px;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Service Details Table -->
+                <div class="resources-section">
+                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Service Breakdown (Current Month)</h4>
                     <div class="resources-table-container">
-                        <table class="resources-table" id="cloud-services-table">
+                        <table class="resources-table ai-table" id="cloud-services-table">
                             <thead>
                                 <tr>
                                     <th>Provider</th>
                                     <th>Service</th>
+                                    <th>Description</th>
                                     <th>Usage</th>
                                     <th>Cost</th>
-                                    <th>Free Tier</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody id="cloud-services-tbody">
                                 <tr>
-                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
                                         Loading cloud costs data...
                                     </td>
                                 </tr>
@@ -2463,11 +2494,19 @@
                     </div>
                 </div>
 
-                <!-- Free Tier Limits -->
+                <!-- Free Tier Usage with Progress Bars -->
                 <div class="resources-section">
                     <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Free Tier Usage</h4>
-                    <div id="cloud-free-tier-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                        <!-- Free tier cards rendered by JS -->
+                    <div id="cloud-free-tier-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+
+                <!-- Market Comparison Card -->
+                <div class="resources-section">
+                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Market Comparison</h4>
+                    <div id="cloud-market-comparison" style="background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-primary);">
+                        <!-- Rendered by JS -->
                     </div>
                 </div>
             </div>
@@ -3737,28 +3776,77 @@
                 updatedEl.textContent = `Updated: ${date.toLocaleDateString()}`;
             }
 
+            // Use totals (new structure) or summary (old structure) for backwards compatibility
+            const totals = data.totals || data.summary || {};
+
             // Update hero cards
             const totalMonth = document.getElementById('cloud-total-month');
+            const projected = document.getElementById('cloud-projected');
             const ytd = document.getElementById('cloud-ytd');
             const savings = document.getElementById('cloud-savings');
             const monthLabel = document.getElementById('cloud-month-label');
 
-            if (totalMonth) totalMonth.textContent = `€${data.summary.totalMonthly.toFixed(2)}`;
-            if (ytd) ytd.textContent = `€${data.summary.totalYTD.toFixed(2)}`;
-            if (savings) savings.textContent = `€${data.summary.freeTierSavings.toFixed(2)}`;
+            if (totalMonth) totalMonth.textContent = `€${(totals.totalMonthly || 0).toFixed(2)}`;
+            if (projected) projected.textContent = `€${(totals.projectedMonthly || 0).toFixed(2)}`;
+            if (ytd) ytd.textContent = `€${(totals.totalYTD || 0).toFixed(2)}`;
+            if (savings) savings.textContent = `€${(totals.freeTierSavings || 0).toFixed(2)}`;
             if (monthLabel) {
                 const currentMonth = new Date().toLocaleString('en-US', { month: 'long', year: 'numeric' });
                 monthLabel.textContent = currentMonth;
             }
 
+            // Update donut chart
+            renderCloudDonut(data.providers, totals.totalMonthly || 0);
+
             // Render provider breakdown cards
             renderCloudProviderCards(data.providers);
+
+            // Render monthly trend bars
+            renderCloudMonthlyBars(data.monthly || []);
 
             // Render service details table
             renderCloudServicesTable(data.providers);
 
             // Render free tier usage
             renderFreeTierUsage(data.providers);
+
+            // Render market comparison
+            renderMarketComparison(data.marketComparison);
+        }
+
+        function renderCloudDonut(providers, total) {
+            const ociCircle = document.querySelector('.cloud-donut-oci');
+            const gcpCircle = document.querySelector('.cloud-donut-gcp');
+            const donutTotal = document.getElementById('cloud-donut-total');
+
+            if (!ociCircle || !gcpCircle) return;
+
+            // Calculate provider costs
+            const ociCost = providers?.oci?.monthly?.[0]?.totalCost || 0;
+            const gcpCost = providers?.gcloud?.monthly?.[0]?.totalCost || 0;
+            const actualTotal = ociCost + gcpCost || 0.01; // Prevent division by zero
+
+            // Calculate percentages
+            const ociPercent = (ociCost / actualTotal) * 100;
+            const gcpPercent = (gcpCost / actualTotal) * 100;
+
+            // SVG circle properties (circumference = 2 * PI * 40 ≈ 251)
+            const circumference = 251;
+            const ociDash = (ociPercent / 100) * circumference;
+            const gcpDash = (gcpPercent / 100) * circumference;
+
+            // Set OCI segment
+            ociCircle.style.strokeDasharray = `${ociDash} ${circumference}`;
+            ociCircle.style.strokeDashoffset = '0';
+
+            // Set GCP segment (starts where OCI ends)
+            gcpCircle.style.strokeDasharray = `${gcpDash} ${circumference}`;
+            gcpCircle.style.strokeDashoffset = `-${ociDash}`;
+
+            // Update center value
+            if (donutTotal) {
+                donutTotal.textContent = `€${actualTotal.toFixed(2)}`;
+            }
         }
 
         function renderCloudProviderCards(providers) {
@@ -3771,25 +3859,64 @@
                 const prevMonth = provider.monthly[1];
                 const trend = prevMonth ? (currentMonth.totalCost - prevMonth.totalCost) : 0;
                 const trendIcon = trend > 0 ? '▲' : trend < 0 ? '▼' : '—';
-                const trendColor = trend > 0 ? 'var(--warning)' : trend < 0 ? 'var(--success)' : 'var(--text-secondary)';
+                const trendColor = trend > 0 ? 'var(--accent-red)' : trend < 0 ? 'var(--accent-green)' : 'var(--text-secondary)';
+                const instanceCount = provider.instances?.length || 0;
+                const region = provider.region || 'N/A';
 
                 html += `
-                <div style="background: var(--bg-tertiary); border-radius: 8px; padding: 1rem; border-left: 4px solid ${provider.color};">
+                <div style="background: var(--bg-secondary); border-radius: 12px; padding: 1.25rem; border-left: 4px solid ${provider.color}; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                        <div style="font-weight: 600; color: var(--text-primary);">${provider.name}</div>
-                        ${provider.freeTier ? '<span class="status-badge on" style="font-size: 0.65rem;">Free Tier</span>' : ''}
+                        <div>
+                            <div style="font-weight: 700; font-size: 1.1rem; color: var(--text-primary);">${provider.shortName || provider.name}</div>
+                            <div style="font-size: 0.7rem; color: var(--text-secondary);">${provider.name}</div>
+                        </div>
+                        ${provider.freeTier ? `<span class="status-badge on" style="font-size: 0.65rem;">${provider.freeTierLabel || 'Free Tier'}</span>` : ''}
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <div style="font-size: 1.5rem; font-weight: bold; color: ${provider.color};">€${currentMonth.totalCost.toFixed(2)}</div>
-                        <div style="font-size: 0.75rem; color: ${trendColor};">${trendIcon} €${Math.abs(trend).toFixed(2)}</div>
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.75rem;">
+                        <div style="font-size: 2rem; font-weight: bold; color: ${provider.color};">€${currentMonth.totalCost.toFixed(2)}</div>
+                        <div style="font-size: 0.8rem; color: ${trendColor}; font-weight: 600;">${trendIcon} €${Math.abs(trend).toFixed(2)}</div>
                     </div>
-                    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-secondary);">
-                        ${currentMonth.services.length} services • ${currentMonth.month}
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.75rem; color: var(--text-secondary); padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
+                        <div><strong>${instanceCount}</strong> instance${instanceCount !== 1 ? 's' : ''}</div>
+                        <div style="text-align: right;">${region}</div>
+                        <div><strong>${currentMonth.services.length}</strong> services</div>
+                        <div style="text-align: right;">${currentMonth.month}</div>
                     </div>
-                    ${provider.authRequired ? '<div style="margin-top: 0.5rem; font-size: 0.7rem; color: var(--warning);">⚠️ Requires auth for live data</div>' : ''}
+                    ${provider.authRequired ? '<div style="margin-top: 0.75rem; font-size: 0.7rem; color: var(--accent-yellow); background: rgba(255,200,0,0.1); padding: 0.4rem 0.6rem; border-radius: 6px;">⚠️ ${provider.authMessage || "Requires auth for live data"}</div>' : ''}
                 </div>
                 `;
             }
+            container.innerHTML = html;
+        }
+
+        function renderCloudMonthlyBars(monthly) {
+            const container = document.getElementById('cloud-monthly-bars');
+            if (!container || !monthly || !monthly.length) return;
+
+            // Get last 6 months or available data
+            const months = monthly.slice(0, 6).reverse();
+            const maxCost = Math.max(...months.map(m => m.totalCost), 1);
+
+            let html = '';
+            months.forEach((month, i) => {
+                const heightPercent = (month.totalCost / maxCost) * 100;
+                const ociPercent = month.breakdown?.oci ? (month.breakdown.oci / month.totalCost) * 100 : 100;
+                const gcpPercent = month.breakdown?.gcloud ? (month.breakdown.gcloud / month.totalCost) * 100 : 0;
+
+                html += `
+                <div class="ai-bar-group" style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+                    <div style="width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end;">
+                        <div style="height: ${Math.max(heightPercent, 5)}%; min-height: 4px; display: flex; flex-direction: column; border-radius: 4px 4px 0 0; overflow: hidden;">
+                            <div style="height: ${ociPercent}%; background: linear-gradient(180deg, #F80000, #cc0000);"></div>
+                            <div style="height: ${gcpPercent}%; background: linear-gradient(180deg, #4285F4, #2a5db0);"></div>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.7rem; color: var(--text-secondary);">${month.label?.split(' ')[0]?.substring(0,3) || month.month}</div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-primary);">€${month.totalCost.toFixed(2)}</div>
+                </div>
+                `;
+            });
+
             container.innerHTML = html;
         }
 
@@ -3804,20 +3931,25 @@
                 for (const service of currentMonth.services) {
                     const freeTierBadge = service.freeUsed
                         ? '<span class="status-badge on" style="font-size: 0.65rem;">Free</span>'
-                        : '<span class="status-badge off" style="font-size: 0.65rem;">Paid</span>';
+                        : '<span class="status-badge" style="font-size: 0.65rem; background: rgba(255,100,100,0.15); color: var(--accent-red); border: 1px solid var(--accent-red);">Paid</span>';
+
+                    const costDisplay = service.cost > 0
+                        ? `<span style="color: var(--accent-orange);">€${service.cost.toFixed(2)}</span>`
+                        : '<span style="color: var(--accent-green);">€0.00</span>';
 
                     html += `
                     <tr>
-                        <td><span style="color: ${provider.color}; font-weight: 500;">${key.toUpperCase()}</span></td>
-                        <td>${service.name}</td>
-                        <td>${service.usage.toFixed(2)} ${service.unit}</td>
-                        <td style="font-weight: 600;">€${service.cost.toFixed(2)}</td>
+                        <td><span style="color: ${provider.color}; font-weight: 600;">${provider.shortName || key.toUpperCase()}</span></td>
+                        <td style="font-weight: 500;">${service.name}</td>
+                        <td style="font-size: 0.75rem; color: var(--text-secondary);">${service.description || '—'}</td>
+                        <td><code style="background: var(--bg-tertiary); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.75rem;">${service.usage?.toFixed(2) || 0} ${service.unit || ''}</code></td>
+                        <td style="font-weight: 600;">${costDisplay}</td>
                         <td>${freeTierBadge}</td>
                     </tr>
                     `;
                 }
             }
-            tbody.innerHTML = html || '<tr><td colspan="5" style="text-align: center;">No data available</td></tr>';
+            tbody.innerHTML = html || '<tr><td colspan="6" style="text-align: center;">No data available</td></tr>';
         }
 
         function renderFreeTierUsage(providers) {
@@ -3828,22 +3960,68 @@
             for (const [key, provider] of Object.entries(providers)) {
                 if (!provider.freeTierLimits) continue;
 
-                html += `<div style="background: var(--bg-tertiary); border-radius: 8px; padding: 1rem;">
-                    <div style="font-weight: 600; color: ${provider.color}; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border-primary); padding-bottom: 0.5rem;">
-                        ${provider.name}
+                html += `<div style="background: var(--bg-secondary); border-radius: 12px; padding: 1.25rem; border-left: 4px solid ${provider.color};">
+                    <div style="font-weight: 700; font-size: 1rem; color: ${provider.color}; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>${provider.shortName || provider.name}</span>
+                        <span style="font-size: 0.7rem; color: var(--text-secondary); font-weight: normal;">${provider.freeTierLabel || 'Free Tier'}</span>
                     </div>`;
 
                 for (const [service, limits] of Object.entries(provider.freeTierLimits)) {
+                    const percent = limits.percentage || 0;
+                    const barColor = percent >= 90 ? 'var(--accent-red)' : percent >= 70 ? 'var(--accent-yellow)' : 'var(--accent-green)';
+
                     html += `
-                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.5rem;">
-                        <span style="color: var(--text-secondary);">${service}</span>
-                        <span style="color: var(--text-primary);">${limits.used} / ${limits.limit}</span>
+                    <div style="margin-bottom: 1rem;">
+                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.4rem;">
+                            <span style="color: var(--text-primary); font-weight: 500;">${service}</span>
+                            <span style="color: var(--text-secondary);">${limits.used} / ${limits.limit}</span>
+                        </div>
+                        <div style="height: 8px; background: var(--bg-tertiary); border-radius: 4px; overflow: hidden;">
+                            <div style="height: 100%; width: ${percent}%; background: ${barColor}; border-radius: 4px; transition: width 0.3s ease;"></div>
+                        </div>
+                        ${limits.note ? `<div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">${limits.note}</div>` : ''}
                     </div>`;
                 }
 
                 html += `</div>`;
             }
             container.innerHTML = html || '<div style="color: var(--text-secondary);">No free tier data available</div>';
+        }
+
+        function renderMarketComparison(comparison) {
+            const container = document.getElementById('cloud-market-comparison');
+            if (!container || !comparison) return;
+
+            const actualCost = comparison.actualCost || 0;
+            const awsCost = comparison.equivalentAWS?.monthly || 0;
+            const azureCost = comparison.equivalentAzure?.monthly || 0;
+            const savings = comparison.savings || 0;
+            const savingsPercent = comparison.savingsPercent || 0;
+
+            container.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div style="text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Your Cost</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--accent-green);">€${actualCost.toFixed(2)}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">OCI + GCP Free Tiers</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">AWS Equivalent</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--accent-orange);">€${awsCost.toFixed(2)}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">${comparison.equivalentAWS?.description || 't3.medium + EBS'}</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Azure Equivalent</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--accent-blue);">€${azureCost.toFixed(2)}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary);">${comparison.equivalentAzure?.description || 'B2s + SSD'}</div>
+                    </div>
+                    <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, rgba(0,200,100,0.1), rgba(0,150,80,0.1)); border-radius: 8px; border: 1px solid var(--accent-green);">
+                        <div style="font-size: 0.75rem; color: var(--accent-green); margin-bottom: 0.5rem;">Your Savings</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--accent-green);">€${savings.toFixed(2)}</div>
+                        <div style="font-size: 0.8rem; font-weight: 600; color: var(--accent-green);">${savingsPercent}% saved</div>
+                    </div>
+                </div>
+            `;
         }
 
         // ============================================

@@ -1912,498 +1912,6 @@
 
             <!-- Infrastructure Cost Sub-tab -->
             <div id="cost-infra" class="cost-subtab-content active">
-            <!-- Infrastructure Summary Card -->
-            <div class="cost-summary-grid">
-                <div class="cost-summary-card">
-                    <div class="cost-card-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 3h18v18H3z"/>
-                            <path d="M3 9h18M9 21V9"/>
-                        </svg>
-                    </div>
-                    <div class="cost-card-content">
-                        <div class="cost-card-label">Total Infrastructure</div>
-                        <div class="cost-card-value" id="cost-infra-total">~$5-7/mo</div>
-                        <div class="cost-card-sublabel">3 Free + 1 Paid (Dormant)</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- VM Cost Breakdown -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">VM Cost Breakdown</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>VM</th>
-                                    <th>Provider</th>
-                                    <th>Tier</th>
-                                    <th>vCPU</th>
-                                    <th>RAM</th>
-                                    <th>Storage</th>
-                                    <th>Fixed/mo</th>
-                                    <th>GB/hr</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>OCI Ampere 1</strong></td>
-                                    <td>Oracle Cloud</td>
-                                    <td>Always Free</td>
-                                    <td>4 ARM</td>
-                                    <td>24GB</td>
-                                    <td>200GB</td>
-                                    <td>$0.00</td>
-                                    <td>-</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>OCI Ampere 2</strong></td>
-                                    <td>Oracle Cloud</td>
-                                    <td>Always Free</td>
-                                    <td>4 ARM</td>
-                                    <td>24GB</td>
-                                    <td>100GB</td>
-                                    <td>$0.00</td>
-                                    <td>-</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>OCI E4.Flex</strong></td>
-                                    <td>Oracle Cloud</td>
-                                    <td>Paid</td>
-                                    <td>2 AMD</td>
-                                    <td>16GB</td>
-                                    <td>100GB</td>
-                                    <td>~$5-7</td>
-                                    <td>$0.0096</td>
-                                    <td><span class="status-badge pending">Dormant</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GCP e2-micro</strong></td>
-                                    <td>Google Cloud</td>
-                                    <td>Free Tier</td>
-                                    <td>0.25</td>
-                                    <td>1GB</td>
-                                    <td>30GB</td>
-                                    <td>$0.00</td>
-                                    <td>-</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr class="totals-row">
-                                    <td><strong>Total</strong></td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>10.25</td>
-                                    <td>65GB</td>
-                                    <td>430GB</td>
-                                    <td><strong>~$5-7</strong></td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Infrastructure Providers Summary -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Provider Summary</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Provider</th>
-                                    <th>Tier</th>
-                                    <th>Monthly Cost</th>
-                                    <th>VMs</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Oracle Cloud</strong></td>
-                                    <td>Always Free</td>
-                                    <td>$0.00</td>
-                                    <td>2</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Oracle Cloud</strong></td>
-                                    <td>Paid (E4.Flex)</td>
-                                    <td>~$5-7</td>
-                                    <td>1</td>
-                                    <td><span class="status-badge pending">Dormant</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Google Cloud</strong></td>
-                                    <td>Free Tier</td>
-                                    <td>$0.00</td>
-                                    <td>1</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr class="totals-row">
-                                    <td><strong>Total</strong></td>
-                                    <td>-</td>
-                                    <td><strong>~$5-7</strong></td>
-                                    <td>4</td>
-                                    <td>-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Additional Costs -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Additional Costs</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Service</th>
-                                    <th>Provider</th>
-                                    <th>Type</th>
-                                    <th>Monthly Cost</th>
-                                    <th>Notes</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Domain</strong></td>
-                                    <td>Cloudflare</td>
-                                    <td>DNS + Registrar</td>
-                                    <td>~$1/mo</td>
-                                    <td>diegonmarcos.com</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>GitHub Pages</strong></td>
-                                    <td>GitHub</td>
-                                    <td>Static Hosting</td>
-                                    <td>$0.00</td>
-                                    <td>Free tier</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Cloudflare Tunnel</strong></td>
-                                    <td>Cloudflare</td>
-                                    <td>Tunnel + SSL</td>
-                                    <td>$0.00</td>
-                                    <td>Free tier</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Bitwarden</strong></td>
-                                    <td>Bitwarden EU</td>
-                                    <td>Password Manager</td>
-                                    <td>$0.00</td>
-                                    <td>Free tier</td>
-                                </tr>
-                                <tr class="totals-row">
-                                    <td><strong>Total Additional</strong></td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td><strong>~$1</strong></td>
-                                    <td>-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Wake-on-Demand Usage Calculator -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Wake-on-Demand Usage Calculator (OCI E4.Flex)</h3>
-                <div class="resources-section">
-                    <div class="wake-calculator">
-                        <div class="wake-calc-grid">
-                            <div class="wake-calc-input">
-                                <label for="wake-hours">Hours Running (this month)</label>
-                                <input type="number" id="wake-hours" min="0" max="744" value="0" step="1">
-                                <span class="wake-calc-hint">Max 744 hrs/month</span>
-                            </div>
-                            <div class="wake-calc-input">
-                                <label for="wake-bandwidth">Bandwidth Used (GB)</label>
-                                <input type="number" id="wake-bandwidth" min="0" max="10000" value="0" step="0.1">
-                                <span class="wake-calc-hint">First 10TB free/mo</span>
-                            </div>
-                        </div>
-                        <div class="wake-calc-results">
-                            <div class="wake-calc-row">
-                                <span class="wake-calc-label">Compute Cost</span>
-                                <span class="wake-calc-rate">(<span id="wake-hours-display">0</span> hrs × $0.0096/hr)</span>
-                                <span class="wake-calc-value" id="wake-compute-cost">$0.00</span>
-                            </div>
-                            <div class="wake-calc-row">
-                                <span class="wake-calc-label">Storage Cost</span>
-                                <span class="wake-calc-rate">(100GB Boot @ $0.0255/GB/mo)</span>
-                                <span class="wake-calc-value">$2.55</span>
-                            </div>
-                            <div class="wake-calc-row">
-                                <span class="wake-calc-label">Bandwidth Cost</span>
-                                <span class="wake-calc-rate">(<span id="wake-bw-display">0</span> GB @ $0.0085/GB after 10TB)</span>
-                                <span class="wake-calc-value" id="wake-bandwidth-cost">$0.00</span>
-                            </div>
-                            <div class="wake-calc-row wake-calc-total">
-                                <span class="wake-calc-label">Total This Month</span>
-                                <span class="wake-calc-rate"></span>
-                                <span class="wake-calc-value" id="wake-total-cost">$2.55</span>
-                            </div>
-                        </div>
-                        <div class="wake-calc-note">
-                            Rates: OCPU = $0.0096/hr, Storage = $0.0255/GB/mo, Egress = $0.0085/GB (after 10TB free)
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </div><!-- End Infrastructure Cost Sub-tab -->
-
-            <!-- AI Cost Sub-tab -->
-            <div id="cost-ai" class="cost-subtab-content">
-
-            <!-- AI Cost Hero Summary -->
-            <div class="ai-cost-hero">
-                <div class="ai-cost-hero-main">
-                    <div class="ai-hero-total">
-                        <span class="ai-hero-label">Total AI Spend (All Time)</span>
-                        <span class="ai-hero-value" id="ai-total-spend">$1,679.87</span>
-                        <span class="ai-hero-tokens" id="ai-total-tokens">1.97B tokens processed</span>
-                    </div>
-                </div>
-                <div class="ai-cost-hero-cards">
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-card-value" id="ai-month-spend">$953.86</div>
-                        <div class="ai-hero-card-label">This Month</div>
-                        <div class="ai-hero-card-sub" id="ai-month-days">Dec 2025 (8 days)</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-card-value" id="ai-week-spend">$335.69</div>
-                        <div class="ai-hero-card-label">This Week</div>
-                        <div class="ai-hero-card-sub">Week of Dec 7</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-card-value" id="ai-today-spend">$88.91</div>
-                        <div class="ai-hero-card-label">Today</div>
-                        <div class="ai-hero-card-sub" id="ai-today-date">Dec 8, 2025</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-card-value" id="ai-avg-daily">$76.36</div>
-                        <div class="ai-hero-card-label">Avg Daily</div>
-                        <div class="ai-hero-card-sub">Last 21 days</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Daily Cost Bar Chart -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Daily Cost Trend (Last 21 Days)</h3>
-                <div class="resources-section">
-                    <div class="ai-bar-chart" id="ai-daily-chart">
-                        <!-- Bars will be rendered by JS -->
-                    </div>
-                    <div class="ai-chart-legend">
-                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #a855f7;"></span>Opus</span>
-                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #3b82f6;"></span>Sonnet</span>
-                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #22c55e;"></span>Haiku</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Model Distribution Donut -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Model Cost Distribution (All Time)</h3>
-                <div class="resources-section">
-                    <div class="ai-donut-container">
-                        <div class="ai-donut-chart">
-                            <svg viewBox="0 0 100 100" class="ai-donut-svg">
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1a2e" stroke-width="15"/>
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="15"
-                                    stroke-dasharray="205 251" stroke-dashoffset="0" class="ai-donut-opus"/>
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="15"
-                                    stroke-dasharray="43 251" stroke-dashoffset="-205" class="ai-donut-sonnet"/>
-                                <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="15"
-                                    stroke-dasharray="3 251" stroke-dashoffset="-248" class="ai-donut-haiku"/>
-                            </svg>
-                            <div class="ai-donut-center">
-                                <span class="ai-donut-value">$1,679</span>
-                                <span class="ai-donut-label">Total</span>
-                            </div>
-                        </div>
-                        <div class="ai-donut-legend">
-                            <div class="ai-donut-legend-item">
-                                <span class="ai-donut-legend-dot" style="background: #a855f7;"></span>
-                                <span class="ai-donut-legend-name">Claude Opus 4.5</span>
-                                <span class="ai-donut-legend-value">$1,372.18</span>
-                                <span class="ai-donut-legend-pct">81.7%</span>
-                            </div>
-                            <div class="ai-donut-legend-item">
-                                <span class="ai-donut-legend-dot" style="background: #3b82f6;"></span>
-                                <span class="ai-donut-legend-name">Claude Sonnet 4.5</span>
-                                <span class="ai-donut-legend-value">$287.32</span>
-                                <span class="ai-donut-legend-pct">17.1%</span>
-                            </div>
-                            <div class="ai-donut-legend-item">
-                                <span class="ai-donut-legend-dot" style="background: #22c55e;"></span>
-                                <span class="ai-donut-legend-name">Claude Haiku 4.5</span>
-                                <span class="ai-donut-legend-value">$19.82</span>
-                                <span class="ai-donut-legend-pct">1.2%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Token Usage Statistics -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Token Usage Statistics</h3>
-                <div class="resources-section">
-                    <div class="ai-token-grid">
-                        <div class="ai-token-card">
-                            <div class="ai-token-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                                </svg>
-                            </div>
-                            <div class="ai-token-content">
-                                <div class="ai-token-value" id="ai-input-tokens">1.12M</div>
-                                <div class="ai-token-label">Input Tokens</div>
-                                <div class="ai-token-bar">
-                                    <div class="ai-token-bar-fill" style="width: 0.06%; background: #4ade80;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ai-token-card">
-                            <div class="ai-token-icon" style="color: #f472b6;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                    <polyline points="7 10 12 15 17 10"/>
-                                    <line x1="12" y1="15" x2="12" y2="3"/>
-                                </svg>
-                            </div>
-                            <div class="ai-token-content">
-                                <div class="ai-token-value" id="ai-output-tokens">3.25M</div>
-                                <div class="ai-token-label">Output Tokens</div>
-                                <div class="ai-token-bar">
-                                    <div class="ai-token-bar-fill" style="width: 0.16%; background: #f472b6;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ai-token-card">
-                            <div class="ai-token-icon" style="color: #fbbf24;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/>
-                                    <circle cx="12" cy="12" r="4"/>
-                                </svg>
-                            </div>
-                            <div class="ai-token-content">
-                                <div class="ai-token-value" id="ai-cache-create">152.9M</div>
-                                <div class="ai-token-label">Cache Creation</div>
-                                <div class="ai-token-bar">
-                                    <div class="ai-token-bar-fill" style="width: 7.75%; background: #fbbf24;"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ai-token-card">
-                            <div class="ai-token-icon" style="color: #2dd4bf;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.342a2 2 0 0 0-.602-1.43l-4.44-4.342A2 2 0 0 0 13.56 2H6a2 2 0 0 0-2 2z"/>
-                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                                </svg>
-                            </div>
-                            <div class="ai-token-content">
-                                <div class="ai-token-value" id="ai-cache-read">1.82B</div>
-                                <div class="ai-token-label">Cache Read (92%)</div>
-                                <div class="ai-token-bar">
-                                    <div class="ai-token-bar-fill" style="width: 92%; background: #2dd4bf;"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Weekly Breakdown -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Weekly Cost Breakdown</h3>
-                <div class="resources-section">
-                    <div class="ai-weekly-bars" id="ai-weekly-chart">
-                        <!-- Generated by JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Session Cost Breakdown -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Top Projects by Cost</h3>
-                <div class="resources-section">
-                    <div class="ai-session-list" id="ai-session-list">
-                        <!-- Generated by JS -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Monthly Cost Table -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Monthly Summary</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Month</th>
-                                    <th>Opus</th>
-                                    <th>Sonnet</th>
-                                    <th>Haiku</th>
-                                    <th>Total</th>
-                                    <th>Visual</th>
-                                </tr>
-                            </thead>
-                            <tbody id="monthly-cost-table">
-                                <tr>
-                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
-                                        Loading monthly data...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Daily Cost Table with Visual Bars -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Daily Cost Log (Last 21 Days)</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Opus</th>
-                                    <th>Sonnet</th>
-                                    <th>Haiku</th>
-                                    <th>Total</th>
-                                    <th>Visual</th>
-                                </tr>
-                            </thead>
-                            <tbody id="daily-cost-table">
-                                <tr>
-                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
-                                        Loading daily data...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
             <!-- Cloud Infrastructure Costs - Super Enhanced -->
             <div class="resources-category">
                 <h3 class="resources-category-title">
@@ -2785,6 +2293,249 @@
                     </div>
                 </div>
             </div>
+            </div><!-- End Infrastructure Cost Sub-tab -->
+
+            <!-- AI Cost Sub-tab -->
+            <div id="cost-ai" class="cost-subtab-content">
+
+            <!-- AI Cost Hero Summary -->
+            <div class="ai-cost-hero">
+                <div class="ai-cost-hero-main">
+                    <div class="ai-hero-total">
+                        <span class="ai-hero-label">Total AI Spend (All Time)</span>
+                        <span class="ai-hero-value" id="ai-total-spend">$1,679.87</span>
+                        <span class="ai-hero-tokens" id="ai-total-tokens">1.97B tokens processed</span>
+                    </div>
+                </div>
+                <div class="ai-cost-hero-cards">
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-month-spend">$953.86</div>
+                        <div class="ai-hero-card-label">This Month</div>
+                        <div class="ai-hero-card-sub" id="ai-month-days">Dec 2025 (8 days)</div>
+                    </div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-week-spend">$335.69</div>
+                        <div class="ai-hero-card-label">This Week</div>
+                        <div class="ai-hero-card-sub">Week of Dec 7</div>
+                    </div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-today-spend">$88.91</div>
+                        <div class="ai-hero-card-label">Today</div>
+                        <div class="ai-hero-card-sub" id="ai-today-date">Dec 8, 2025</div>
+                    </div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-avg-daily">$76.36</div>
+                        <div class="ai-hero-card-label">Avg Daily</div>
+                        <div class="ai-hero-card-sub">Last 21 days</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Cost Bar Chart -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Daily Cost Trend (Last 21 Days)</h3>
+                <div class="resources-section">
+                    <div class="ai-bar-chart" id="ai-daily-chart">
+                        <!-- Bars will be rendered by JS -->
+                    </div>
+                    <div class="ai-chart-legend">
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #a855f7;"></span>Opus</span>
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #3b82f6;"></span>Sonnet</span>
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #22c55e;"></span>Haiku</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Distribution Donut -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Model Cost Distribution (All Time)</h3>
+                <div class="resources-section">
+                    <div class="ai-donut-container">
+                        <div class="ai-donut-chart">
+                            <svg viewBox="0 0 100 100" class="ai-donut-svg">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1a2e" stroke-width="15"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="15"
+                                    stroke-dasharray="205 251" stroke-dashoffset="0" class="ai-donut-opus"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="15"
+                                    stroke-dasharray="43 251" stroke-dashoffset="-205" class="ai-donut-sonnet"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="15"
+                                    stroke-dasharray="3 251" stroke-dashoffset="-248" class="ai-donut-haiku"/>
+                            </svg>
+                            <div class="ai-donut-center">
+                                <span class="ai-donut-value">$1,679</span>
+                                <span class="ai-donut-label">Total</span>
+                            </div>
+                        </div>
+                        <div class="ai-donut-legend">
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #a855f7;"></span>
+                                <span class="ai-donut-legend-name">Claude Opus 4.5</span>
+                                <span class="ai-donut-legend-value">$1,372.18</span>
+                                <span class="ai-donut-legend-pct">81.7%</span>
+                            </div>
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #3b82f6;"></span>
+                                <span class="ai-donut-legend-name">Claude Sonnet 4.5</span>
+                                <span class="ai-donut-legend-value">$287.32</span>
+                                <span class="ai-donut-legend-pct">17.1%</span>
+                            </div>
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #22c55e;"></span>
+                                <span class="ai-donut-legend-name">Claude Haiku 4.5</span>
+                                <span class="ai-donut-legend-value">$19.82</span>
+                                <span class="ai-donut-legend-pct">1.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Usage Statistics -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Token Usage Statistics</h3>
+                <div class="resources-section">
+                    <div class="ai-token-grid">
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-input-tokens">1.12M</div>
+                                <div class="ai-token-label">Input Tokens</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 0.06%; background: #4ade80;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #f472b6;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-output-tokens">3.25M</div>
+                                <div class="ai-token-label">Output Tokens</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 0.16%; background: #f472b6;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #fbbf24;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/>
+                                    <circle cx="12" cy="12" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-cache-create">152.9M</div>
+                                <div class="ai-token-label">Cache Creation</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 7.75%; background: #fbbf24;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #2dd4bf;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.342a2 2 0 0 0-.602-1.43l-4.44-4.342A2 2 0 0 0 13.56 2H6a2 2 0 0 0-2 2z"/>
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-cache-read">1.82B</div>
+                                <div class="ai-token-label">Cache Read (92%)</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 92%; background: #2dd4bf;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Breakdown -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Weekly Cost Breakdown</h3>
+                <div class="resources-section">
+                    <div class="ai-weekly-bars" id="ai-weekly-chart">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session Cost Breakdown -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Top Projects by Cost</h3>
+                <div class="resources-section">
+                    <div class="ai-session-list" id="ai-session-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Cost Table -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Monthly Summary</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                    <th>Visual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthly-cost-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                        Loading monthly data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Cost Table with Visual Bars -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Daily Cost Log (Last 21 Days)</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                    <th>Visual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daily-cost-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                        Loading daily data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
 
             <!-- AI Model Pricing Reference -->
             <div class="resources-category">

@@ -2251,7 +2251,9 @@
         // =================================================================
         // STATE
         // =================================================================
-        let dataSourceMode = localStorage.getItem('dataSourceMode') || 'api';
+        // Force local mode on GitHub Pages (no API available)
+        const isGitHubPages = window.location.hostname.includes('github.io');
+        let dataSourceMode = isGitHubPages ? 'local' : (localStorage.getItem('dataSourceMode') || 'local');
         let autoRefreshInterval = null;
         let isLoading = false;
         let isLoggedIn = false;

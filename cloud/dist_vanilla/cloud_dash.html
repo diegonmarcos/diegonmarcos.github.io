@@ -1247,6 +1247,446 @@
             border-radius: 8px;
         }
 
+        /* ==================== AI Cost Visualizations ==================== */
+        .ai-cost-hero {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .ai-cost-hero-main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .ai-cost-hero-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-cost-hero-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a855f7, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .ai-cost-hero-period {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .ai-cost-hero-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        .ai-cost-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .ai-cost-card-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ai-cost-card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ai-cost-card-delta {
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .ai-cost-card-delta.positive { color: #ff6b6b; }
+        .ai-cost-card-delta.negative { color: #51cf66; }
+
+        /* Charts Section */
+        .ai-charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .ai-charts-section { grid-template-columns: 1fr; }
+        }
+
+        .ai-chart-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .ai-chart-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Donut Chart */
+        .ai-donut-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .ai-donut-container { flex-direction: column; }
+        }
+
+        .ai-donut-chart {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            flex-shrink: 0;
+        }
+
+        .ai-donut-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .ai-donut-svg circle {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+        }
+
+        .ai-donut-bg {
+            stroke: var(--bg-tertiary);
+        }
+
+        .ai-donut-opus { stroke: #a855f7; }
+        .ai-donut-sonnet { stroke: #3b82f6; }
+        .ai-donut-haiku { stroke: #22c55e; }
+
+        .ai-donut-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .ai-donut-value {
+            display: block;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .ai-donut-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .ai-donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .ai-donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .ai-donut-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .ai-donut-legend-name {
+            flex: 1;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .ai-donut-legend-value {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ai-donut-legend-pct {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            min-width: 45px;
+            text-align: right;
+        }
+
+        /* Token Stats Grid */
+        .ai-token-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .ai-token-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .ai-token-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4ade80;
+            flex-shrink: 0;
+        }
+
+        .ai-token-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .ai-token-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ai-token-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .ai-token-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-token-bar {
+            height: 4px;
+            background: var(--bg-secondary);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .ai-token-bar-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        /* Bar Chart */
+        .ai-bar-chart {
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 4px;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            max-width: 50px;
+        }
+
+        .ai-bar-fill {
+            width: 100%;
+            background: linear-gradient(180deg, #a855f7 0%, #3b82f6 100%);
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+            transition: height 0.3s ease;
+        }
+
+        .ai-bar-label {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .ai-bar-value {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Weekly Bars */
+        .ai-weekly-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem 0;
+        }
+
+        .ai-weekly-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 80px;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ai-weekly-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .ai-weekly-bar {
+            height: 24px;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .ai-weekly-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+        }
+
+        .ai-weekly-value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        /* Session List */
+        .ai-session-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .ai-session-item {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            align-items: center;
+        }
+
+        .ai-session-name {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ai-session-tokens {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .ai-session-cost {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--accent-primary);
+            text-align: right;
+        }
+
+        /* AI Tables */
+        .ai-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ai-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-table td {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ai-table tr:hover {
+            background: var(--bg-hover);
+        }
+
+        .ai-table .cost {
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--accent-primary);
+        }
+
+        .ai-mini-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+            min-width: 80px;
+        }
+
+        .ai-mini-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #3b82f6);
+            border-radius: 3px;
+        }
+
         /* VM Actions (for Status page) */
         .vm-actions-inline {
             display: flex;
@@ -1409,6 +1849,12 @@
                                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                             </svg>
                             AI
+                        </a>
+                        <a href="index.html#security-architecture" class="view-btn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            Security
                         </a>
                     </div>
                 </div>
@@ -1773,58 +2219,240 @@
 
             <!-- AI Cost Sub-tab -->
             <div id="cost-ai" class="cost-subtab-content">
-            <!-- AI Summary Cards -->
-            <div class="cost-summary-grid">
-                <div class="cost-summary-card">
-                    <div class="cost-card-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <path d="M12 6v6l4 2"/>
-                        </svg>
-                    </div>
-                    <div class="cost-card-content">
-                        <div class="cost-card-label">AI Today</div>
-                        <div class="cost-card-value" id="cost-ai-today">$0.00</div>
-                        <div class="cost-card-sublabel" id="cost-ai-today-sub">Loading...</div>
+
+            <!-- AI Cost Hero Summary -->
+            <div class="ai-cost-hero">
+                <div class="ai-cost-hero-main">
+                    <div class="ai-hero-total">
+                        <span class="ai-hero-label">Total AI Spend (All Time)</span>
+                        <span class="ai-hero-value" id="ai-total-spend">$1,679.87</span>
+                        <span class="ai-hero-tokens" id="ai-total-tokens">1.97B tokens processed</span>
                     </div>
                 </div>
-                <div class="cost-summary-card">
-                    <div class="cost-card-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/>
-                            <path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/>
-                            <path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/>
-                        </svg>
+                <div class="ai-cost-hero-cards">
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-month-spend">$953.86</div>
+                        <div class="ai-hero-card-label">This Month</div>
+                        <div class="ai-hero-card-sub" id="ai-month-days">Dec 2025 (8 days)</div>
                     </div>
-                    <div class="cost-card-content">
-                        <div class="cost-card-label">Current Session</div>
-                        <div class="cost-card-value" id="cost-session">$0.00</div>
-                        <div class="cost-card-sublabel" id="cost-session-sub">This 5h block</div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-week-spend">$335.69</div>
+                        <div class="ai-hero-card-label">This Week</div>
+                        <div class="ai-hero-card-sub">Week of Dec 7</div>
+                    </div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-today-spend">$88.91</div>
+                        <div class="ai-hero-card-label">Today</div>
+                        <div class="ai-hero-card-sub" id="ai-today-date">Dec 8, 2025</div>
+                    </div>
+                    <div class="ai-hero-card">
+                        <div class="ai-hero-card-value" id="ai-avg-daily">$76.36</div>
+                        <div class="ai-hero-card-label">Avg Daily</div>
+                        <div class="ai-hero-card-sub">Last 21 days</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Current 5h Block Details -->
+            <!-- Daily Cost Bar Chart -->
             <div class="resources-category">
-                <h3 class="resources-category-title">Current 5-Hour Block</h3>
+                <h3 class="resources-category-title">Daily Cost Trend (Last 21 Days)</h3>
                 <div class="resources-section">
-                    <div class="cost-block-details">
-                        <div class="cost-block-row">
-                            <span class="cost-block-label">Block Start:</span>
-                            <span class="cost-block-value" id="block-start">--:--</span>
+                    <div class="ai-bar-chart" id="ai-daily-chart">
+                        <!-- Bars will be rendered by JS -->
+                    </div>
+                    <div class="ai-chart-legend">
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #a855f7;"></span>Opus</span>
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #3b82f6;"></span>Sonnet</span>
+                        <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #22c55e;"></span>Haiku</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Model Distribution Donut -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Model Cost Distribution (All Time)</h3>
+                <div class="resources-section">
+                    <div class="ai-donut-container">
+                        <div class="ai-donut-chart">
+                            <svg viewBox="0 0 100 100" class="ai-donut-svg">
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1a2e" stroke-width="15"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#a855f7" stroke-width="15"
+                                    stroke-dasharray="205 251" stroke-dashoffset="0" class="ai-donut-opus"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#3b82f6" stroke-width="15"
+                                    stroke-dasharray="43 251" stroke-dashoffset="-205" class="ai-donut-sonnet"/>
+                                <circle cx="50" cy="50" r="40" fill="none" stroke="#22c55e" stroke-width="15"
+                                    stroke-dasharray="3 251" stroke-dashoffset="-248" class="ai-donut-haiku"/>
+                            </svg>
+                            <div class="ai-donut-center">
+                                <span class="ai-donut-value">$1,679</span>
+                                <span class="ai-donut-label">Total</span>
+                            </div>
                         </div>
-                        <div class="cost-block-row">
-                            <span class="cost-block-label">Time Remaining:</span>
-                            <span class="cost-block-value" id="block-remaining">--:--</span>
+                        <div class="ai-donut-legend">
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #a855f7;"></span>
+                                <span class="ai-donut-legend-name">Claude Opus 4.5</span>
+                                <span class="ai-donut-legend-value">$1,372.18</span>
+                                <span class="ai-donut-legend-pct">81.7%</span>
+                            </div>
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #3b82f6;"></span>
+                                <span class="ai-donut-legend-name">Claude Sonnet 4.5</span>
+                                <span class="ai-donut-legend-value">$287.32</span>
+                                <span class="ai-donut-legend-pct">17.1%</span>
+                            </div>
+                            <div class="ai-donut-legend-item">
+                                <span class="ai-donut-legend-dot" style="background: #22c55e;"></span>
+                                <span class="ai-donut-legend-name">Claude Haiku 4.5</span>
+                                <span class="ai-donut-legend-value">$19.82</span>
+                                <span class="ai-donut-legend-pct">1.2%</span>
+                            </div>
                         </div>
-                        <div class="cost-block-row">
-                            <span class="cost-block-label">Burn Rate:</span>
-                            <span class="cost-block-value" id="block-burn-rate">$0.00/hr</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Token Usage Statistics -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Token Usage Statistics</h3>
+                <div class="resources-section">
+                    <div class="ai-token-grid">
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-input-tokens">1.12M</div>
+                                <div class="ai-token-label">Input Tokens</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 0.06%; background: #4ade80;"></div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="cost-block-row">
-                            <span class="cost-block-label">Projected Total:</span>
-                            <span class="cost-block-value" id="block-projection">$0.00</span>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #f472b6;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-output-tokens">3.25M</div>
+                                <div class="ai-token-label">Output Tokens</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 0.16%; background: #f472b6;"></div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #fbbf24;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83"/>
+                                    <circle cx="12" cy="12" r="4"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-cache-create">152.9M</div>
+                                <div class="ai-token-label">Cache Creation</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 7.75%; background: #fbbf24;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ai-token-card">
+                            <div class="ai-token-icon" style="color: #2dd4bf;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.342a2 2 0 0 0-.602-1.43l-4.44-4.342A2 2 0 0 0 13.56 2H6a2 2 0 0 0-2 2z"/>
+                                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                                </svg>
+                            </div>
+                            <div class="ai-token-content">
+                                <div class="ai-token-value" id="ai-cache-read">1.82B</div>
+                                <div class="ai-token-label">Cache Read (92%)</div>
+                                <div class="ai-token-bar">
+                                    <div class="ai-token-bar-fill" style="width: 92%; background: #2dd4bf;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Breakdown -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Weekly Cost Breakdown</h3>
+                <div class="resources-section">
+                    <div class="ai-weekly-bars" id="ai-weekly-chart">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Session Cost Breakdown -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Top Projects by Cost</h3>
+                <div class="resources-section">
+                    <div class="ai-session-list" id="ai-session-list">
+                        <!-- Generated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly Cost Table -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Monthly Summary</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                    <th>Visual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthly-cost-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                        Loading monthly data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Cost Table with Visual Bars -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Daily Cost Log (Last 21 Days)</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Opus</th>
+                                    <th>Sonnet</th>
+                                    <th>Haiku</th>
+                                    <th>Total</th>
+                                    <th>Visual</th>
+                                </tr>
+                            </thead>
+                            <tbody id="daily-cost-table">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                        Loading daily data...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1885,15 +2513,6 @@
                                     <td>API</td>
                                     <td><span class="status-badge pending">Planned</span></td>
                                 </tr>
-                                <tr>
-                                    <td>Google</td>
-                                    <td><strong>Gemini 1.5 Pro</strong></td>
-                                    <td>$1.25</td>
-                                    <td>$5.00</td>
-                                    <td>$0.31</td>
-                                    <td>API</td>
-                                    <td><span class="status-badge pending">Planned</span></td>
-                                </tr>
                                 <tr><td colspan="7" style="background: var(--bg-tertiary); font-weight: bold;">Local (Self-hosted)</td></tr>
                                 <tr>
                                     <td>Local</td>
@@ -1903,93 +2522,6 @@
                                     <td>-</td>
                                     <td>Local</td>
                                     <td><span class="status-badge dev">Dev</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Model Distribution -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Claude Model Distribution (Today)</h3>
-                <div class="resources-section">
-                    <div class="model-distribution-bar" id="model-dist-bar">
-                        <div class="model-dist-segment model-opus" style="width: 0%" id="model-opus-bar"></div>
-                        <div class="model-dist-segment model-sonnet" style="width: 0%" id="model-sonnet-bar"></div>
-                        <div class="model-dist-segment model-haiku" style="width: 0%" id="model-haiku-bar"></div>
-                    </div>
-                    <div class="model-distribution-legend">
-                        <div class="model-legend-item">
-                            <span class="model-legend-dot model-opus"></span>
-                            <span class="model-legend-label">Opus 4.5</span>
-                            <span class="model-legend-value" id="model-opus-cost">$0.00</span>
-                            <span class="model-legend-percent" id="model-opus-pct">0%</span>
-                        </div>
-                        <div class="model-legend-item">
-                            <span class="model-legend-dot model-sonnet"></span>
-                            <span class="model-legend-label">Sonnet 4.5</span>
-                            <span class="model-legend-value" id="model-sonnet-cost">$0.00</span>
-                            <span class="model-legend-percent" id="model-sonnet-pct">0%</span>
-                        </div>
-                        <div class="model-legend-item">
-                            <span class="model-legend-dot model-haiku"></span>
-                            <span class="model-legend-label">Haiku 4.5</span>
-                            <span class="model-legend-value" id="model-haiku-cost">$0.00</span>
-                            <span class="model-legend-percent" id="model-haiku-pct">0%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Monthly Summary -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Monthly Summary</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Month</th>
-                                    <th>Opus</th>
-                                    <th>Sonnet</th>
-                                    <th>Haiku</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="monthly-cost-table">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">
-                                        Loading monthly data...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Daily Breakdown (Last 14 Days) -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Daily Breakdown (Last 14 Days)</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Opus</th>
-                                    <th>Sonnet</th>
-                                    <th>Haiku</th>
-                                    <th>Total</th>
-                                    <th>Trend</th>
-                                </tr>
-                            </thead>
-                            <tbody id="daily-cost-table">
-                                <tr>
-                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
-                                        Loading daily data...
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -2353,6 +2885,7 @@
 
     <!-- Load local data as fallback (generated by cloud_dash.py --export js) -->
     <script src="cloud_dash_data.js"></script>
+    <script src="ccusage_data.js"></script>
 
     <script>
         // =================================================================
@@ -2935,73 +3468,250 @@
         // ============================================
 
         async function loadCostData() {
+            // Use CCUSAGE_DATA if available (local JSON export)
+            if (typeof CCUSAGE_DATA !== 'undefined') {
+                loadCostDataFromCcusage();
+                return;
+            }
+            // Fallback to API
             try {
-                const [aiNowResp, aiDailyResp, aiMonthlyResp] = await Promise.all([
-                    fetch(`${apiUrl}/costs/ai/now`),
+                const [aiDailyResp, aiMonthlyResp] = await Promise.all([
                     fetch(`${apiUrl}/costs/ai/daily`),
                     fetch(`${apiUrl}/costs/ai/monthly`)
                 ]);
-
-                const aiNowData = await aiNowResp.json();
                 const aiDailyData = await aiDailyResp.json();
                 const aiMonthlyData = await aiMonthlyResp.json();
-
-                // Update summary cards
-                if (!aiNowData.error && aiNowData.blocks && aiNowData.blocks.length > 0) {
-                    const currentBlock = aiNowData.blocks[0];
-                    document.getElementById('cost-session').textContent = `$${currentBlock.total?.toFixed(2) || '0.00'}`;
-                    document.getElementById('cost-session-sub').textContent = `Block ${currentBlock.id || 'current'}`;
-                    document.getElementById('block-start').textContent = currentBlock.period?.start || '--:--';
-                    document.getElementById('block-remaining').textContent = currentBlock.time_remaining || '--:--';
-                    document.getElementById('block-burn-rate').textContent = `$${currentBlock.burn_rate?.toFixed(2) || '0.00'}/hr`;
-                    document.getElementById('block-projection').textContent = `$${currentBlock.projected_total?.toFixed(2) || '0.00'}`;
-                }
-
-                if (!aiDailyData.error && Array.isArray(aiDailyData) && aiDailyData.length > 0) {
-                    const today = aiDailyData[0];
-                    document.getElementById('cost-ai-today').textContent = `$${today.total?.toFixed(2) || '0.00'}`;
-                    document.getElementById('cost-ai-today-sub').textContent = today.date || 'Today';
-                    updateModelDistribution(today);
-                    updateDailyTable(aiDailyData.slice(0, 14));
-                }
-
-                if (!aiMonthlyData.error && Array.isArray(aiMonthlyData)) {
-                    updateMonthlyTable(aiMonthlyData);
-                    if (aiMonthlyData.length > 0) {
-                        document.getElementById('anthropic-monthly-cost').textContent = `$${aiMonthlyData[0].total?.toFixed(2) || '0.00'}`;
-                    }
-                }
+                if (!aiDailyData.error && Array.isArray(aiDailyData)) updateDailyTable(aiDailyData);
+                if (!aiMonthlyData.error && Array.isArray(aiMonthlyData)) updateMonthlyTable(aiMonthlyData);
             } catch (error) {
                 console.error('Error loading cost data:', error);
             }
         }
 
-        function updateModelDistribution(data) {
-            const total = data.total || 0;
-            const opusCost = data.opus || 0;
-            const sonnetCost = data.sonnet || 0;
-            const haikuCost = data.haiku || 0;
-            const opusPct = total > 0 ? (opusCost / total * 100) : 0;
-            const sonnetPct = total > 0 ? (sonnetCost / total * 100) : 0;
-            const haikuPct = total > 0 ? (haikuCost / total * 100) : 0;
+        function loadCostDataFromCcusage() {
+            const data = CCUSAGE_DATA;
 
-            document.getElementById('model-opus-bar').style.width = `${opusPct}%`;
-            document.getElementById('model-sonnet-bar').style.width = `${sonnetPct}%`;
-            document.getElementById('model-haiku-bar').style.width = `${haikuPct}%`;
-            document.getElementById('model-opus-cost').textContent = `$${opusCost.toFixed(2)}`;
-            document.getElementById('model-opus-pct').textContent = `${opusPct.toFixed(0)}%`;
-            document.getElementById('model-sonnet-cost').textContent = `$${sonnetCost.toFixed(2)}`;
-            document.getElementById('model-sonnet-pct').textContent = `${sonnetPct.toFixed(0)}%`;
-            document.getElementById('model-haiku-cost').textContent = `$${haikuCost.toFixed(2)}`;
-            document.getElementById('model-haiku-pct').textContent = `${haikuPct.toFixed(0)}%`;
+            // Update hero section totals
+            const heroValue = document.querySelector('.ai-cost-hero-value');
+            if (heroValue) heroValue.textContent = `$${data.totals.totalCost.toFixed(2)}`;
+
+            // Update hero cards
+            const today = data.daily[0];
+            const thisMonth = data.monthly[0];
+            const lastMonth = data.monthly[1];
+
+            updateHeroCards(today, thisMonth, lastMonth);
+            updateDonutChart(data.modelStats, data.totals.totalCost);
+            updateTokenStats(data.totals);
+            updateDailyBarChart(data.daily.slice(0, 14));
+            updateWeeklyBars(data.weekly);
+            updateSessionList(data.sessions);
+            updateDailyTableFromCcusage(data.daily.slice(0, 14));
+            updateMonthlyTableFromCcusage(data.monthly);
+        }
+
+        function updateHeroCards(today, thisMonth, lastMonth) {
+            const cards = document.querySelectorAll('.ai-cost-card');
+            if (cards[0]) {
+                cards[0].querySelector('.ai-cost-card-value').textContent = `$${today?.totalCost?.toFixed(2) || '0.00'}`;
+            }
+            if (cards[1]) {
+                cards[1].querySelector('.ai-cost-card-value').textContent = `$${thisMonth?.totalCost?.toFixed(2) || '0.00'}`;
+            }
+            if (cards[2] && lastMonth) {
+                cards[2].querySelector('.ai-cost-card-value').textContent = `$${lastMonth?.totalCost?.toFixed(2) || '0.00'}`;
+            }
+            if (cards[3]) {
+                const avgDaily = thisMonth ? (thisMonth.totalCost / new Date().getDate()) : 0;
+                cards[3].querySelector('.ai-cost-card-value').textContent = `$${avgDaily.toFixed(2)}`;
+            }
+        }
+
+        function updateDonutChart(modelStats, total) {
+            // Update SVG donut segments
+            const circumference = 251; // 2 * PI * 40
+            let offset = 0;
+
+            const opus = modelStats['claude-opus-4-5-20251101'];
+            const sonnet = modelStats['claude-sonnet-4-5-20250929'];
+            const haiku = modelStats['claude-haiku-4-5-20251001'];
+
+            const opusPct = opus ? opus.percentOfTotal / 100 : 0;
+            const sonnetPct = sonnet ? sonnet.percentOfTotal / 100 : 0;
+            const haikuPct = haiku ? haiku.percentOfTotal / 100 : 0;
+
+            const opusCircle = document.querySelector('.ai-donut-opus');
+            const sonnetCircle = document.querySelector('.ai-donut-sonnet');
+            const haikuCircle = document.querySelector('.ai-donut-haiku');
+
+            if (opusCircle) {
+                opusCircle.setAttribute('stroke-dasharray', `${opusPct * circumference} ${circumference}`);
+                opusCircle.setAttribute('stroke-dashoffset', `${-offset}`);
+                offset += opusPct * circumference;
+            }
+            if (sonnetCircle) {
+                sonnetCircle.setAttribute('stroke-dasharray', `${sonnetPct * circumference} ${circumference}`);
+                sonnetCircle.setAttribute('stroke-dashoffset', `${-offset}`);
+                offset += sonnetPct * circumference;
+            }
+            if (haikuCircle) {
+                haikuCircle.setAttribute('stroke-dasharray', `${haikuPct * circumference} ${circumference}`);
+                haikuCircle.setAttribute('stroke-dashoffset', `${-offset}`);
+            }
+
+            // Update center
+            const centerValue = document.querySelector('.ai-donut-value');
+            if (centerValue) centerValue.textContent = `$${total.toFixed(0)}`;
+
+            // Update legend
+            const legendItems = document.querySelectorAll('.ai-donut-legend-item');
+            if (legendItems[0] && opus) {
+                legendItems[0].querySelector('.ai-donut-legend-value').textContent = `$${opus.totalCost.toFixed(2)}`;
+                legendItems[0].querySelector('.ai-donut-legend-pct').textContent = `${opus.percentOfTotal.toFixed(1)}%`;
+            }
+            if (legendItems[1] && sonnet) {
+                legendItems[1].querySelector('.ai-donut-legend-value').textContent = `$${sonnet.totalCost.toFixed(2)}`;
+                legendItems[1].querySelector('.ai-donut-legend-pct').textContent = `${sonnet.percentOfTotal.toFixed(1)}%`;
+            }
+            if (legendItems[2] && haiku) {
+                legendItems[2].querySelector('.ai-donut-legend-value').textContent = `$${haiku.totalCost.toFixed(2)}`;
+                legendItems[2].querySelector('.ai-donut-legend-pct').textContent = `${haiku.percentOfTotal.toFixed(1)}%`;
+            }
+        }
+
+        function updateTokenStats(totals) {
+            const formatTokens = (n) => {
+                if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+                if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+                if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
+                return n.toString();
+            };
+
+            const total = totals.totalTokens || 1;
+            const inputPct = (totals.inputTokens / total) * 100;
+            const outputPct = (totals.outputTokens / total) * 100;
+            const cacheCreatePct = (totals.cacheCreationTokens / total) * 100;
+            const cacheReadPct = (totals.cacheReadTokens / total) * 100;
+
+            const tokenCards = document.querySelectorAll('.ai-token-card');
+            if (tokenCards[0]) {
+                tokenCards[0].querySelector('.ai-token-value').textContent = formatTokens(totals.inputTokens);
+                tokenCards[0].querySelector('.ai-token-bar-fill').style.width = `${Math.min(inputPct * 10, 100)}%`;
+            }
+            if (tokenCards[1]) {
+                tokenCards[1].querySelector('.ai-token-value').textContent = formatTokens(totals.outputTokens);
+                tokenCards[1].querySelector('.ai-token-bar-fill').style.width = `${Math.min(outputPct * 10, 100)}%`;
+            }
+            if (tokenCards[2]) {
+                tokenCards[2].querySelector('.ai-token-value').textContent = formatTokens(totals.cacheCreationTokens);
+                tokenCards[2].querySelector('.ai-token-bar-fill').style.width = `${Math.min(cacheCreatePct, 100)}%`;
+            }
+            if (tokenCards[3]) {
+                tokenCards[3].querySelector('.ai-token-value').textContent = formatTokens(totals.cacheReadTokens);
+                tokenCards[3].querySelector('.ai-token-label').textContent = `Cache Read (${cacheReadPct.toFixed(0)}%)`;
+                tokenCards[3].querySelector('.ai-token-bar-fill').style.width = `${Math.min(cacheReadPct, 100)}%`;
+            }
+        }
+
+        function updateDailyBarChart(dailyData) {
+            const container = document.querySelector('.ai-bar-chart');
+            if (!container) return;
+
+            const maxCost = Math.max(...dailyData.map(d => d.totalCost));
+            container.innerHTML = dailyData.map(day => {
+                const height = maxCost > 0 ? (day.totalCost / maxCost) * 160 : 4;
+                const dateShort = new Date(day.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                return `<div class="ai-bar">
+                    <div class="ai-bar-value">$${day.totalCost.toFixed(0)}</div>
+                    <div class="ai-bar-fill" style="height: ${height}px;"></div>
+                    <div class="ai-bar-label">${dateShort}</div>
+                </div>`;
+            }).reverse().join('');
+        }
+
+        function updateWeeklyBars(weeklyData) {
+            const container = document.querySelector('.ai-weekly-bars');
+            if (!container) return;
+
+            const maxCost = Math.max(...weeklyData.map(w => w.totalCost));
+            container.innerHTML = weeklyData.map(week => {
+                const width = maxCost > 0 ? (week.totalCost / maxCost) * 100 : 0;
+                const weekLabel = `Week ${new Date(week.week).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+                return `<div class="ai-weekly-row">
+                    <div class="ai-weekly-label">${weekLabel}</div>
+                    <div class="ai-weekly-bar"><div class="ai-weekly-bar-fill" style="width: ${width}%;"></div></div>
+                    <div class="ai-weekly-value">$${week.totalCost.toFixed(2)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateSessionList(sessions) {
+            const container = document.querySelector('.ai-session-list');
+            if (!container) return;
+
+            const formatTokens = (n) => {
+                if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+                if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+                if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+                return n.toString();
+            };
+
+            container.innerHTML = sessions.sort((a, b) => b.totalCost - a.totalCost).map(s => {
+                return `<div class="ai-session-item">
+                    <div class="ai-session-name" title="${s.sessionId}">${s.projectPath || s.sessionId}</div>
+                    <div class="ai-session-tokens">${formatTokens(s.totalTokens)}</div>
+                    <div class="ai-session-cost">$${s.totalCost.toFixed(2)}</div>
+                </div>`;
+            }).join('');
+        }
+
+        function updateDailyTableFromCcusage(dailyData) {
+            const tbody = document.getElementById('daily-cost-table');
+            if (!tbody || !dailyData) return;
+
+            const maxCost = Math.max(...dailyData.map(d => d.totalCost));
+            tbody.innerHTML = dailyData.map((day, idx) => {
+                const opusCost = day.modelBreakdowns?.find(m => m.modelName.includes('opus'))?.cost || 0;
+                const sonnetCost = day.modelBreakdowns?.find(m => m.modelName.includes('sonnet'))?.cost || 0;
+                const haikuCost = day.modelBreakdowns?.find(m => m.modelName.includes('haiku'))?.cost || 0;
+                const barWidth = maxCost > 0 ? (day.totalCost / maxCost) * 100 : 0;
+                const trend = idx < dailyData.length - 1 ? (day.totalCost > dailyData[idx + 1].totalCost ? '▲' : '▼') : '-';
+                return `<tr>
+                    <td>${day.date}</td>
+                    <td>$${opusCost.toFixed(2)}</td>
+                    <td>$${sonnetCost.toFixed(2)}</td>
+                    <td>$${haikuCost.toFixed(2)}</td>
+                    <td class="cost">$${day.totalCost.toFixed(2)}</td>
+                    <td><div class="ai-mini-bar"><div class="ai-mini-bar-fill" style="width: ${barWidth}%;"></div></div></td>
+                    <td>${trend}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function updateMonthlyTableFromCcusage(monthlyData) {
+            const tbody = document.getElementById('monthly-cost-table');
+            if (!tbody || !monthlyData) return;
+
+            const maxCost = Math.max(...monthlyData.map(m => m.totalCost));
+            tbody.innerHTML = monthlyData.map(month => {
+                const opusCost = month.modelBreakdowns?.find(m => m.modelName.includes('opus'))?.cost || 0;
+                const sonnetCost = month.modelBreakdowns?.find(m => m.modelName.includes('sonnet'))?.cost || 0;
+                const haikuCost = month.modelBreakdowns?.find(m => m.modelName.includes('haiku'))?.cost || 0;
+                const barWidth = maxCost > 0 ? (month.totalCost / maxCost) * 100 : 0;
+                return `<tr>
+                    <td>${month.month}</td>
+                    <td>$${opusCost.toFixed(2)}</td>
+                    <td>$${sonnetCost.toFixed(2)}</td>
+                    <td>$${haikuCost.toFixed(2)}</td>
+                    <td class="cost">$${month.totalCost.toFixed(2)}</td>
+                    <td><div class="ai-mini-bar"><div class="ai-mini-bar-fill" style="width: ${barWidth}%;"></div></div></td>
+                </tr>`;
+            }).join('');
         }
 
         function updateDailyTable(data) {
             const tbody = document.getElementById('daily-cost-table');
-            if (!data || data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No data available</td></tr>';
-                return;
-            }
+            if (!tbody || !data || data.length === 0) return;
             tbody.innerHTML = data.map((day, idx) => {
                 const trend = idx < data.length - 1 ? (day.total > data[idx + 1].total ? '▲' : '▼') : '-';
                 return `<tr><td>${day.date || 'N/A'}</td><td>$${day.opus?.toFixed(2) || '0.00'}</td><td>$${day.sonnet?.toFixed(2) || '0.00'}</td><td>$${day.haiku?.toFixed(2) || '0.00'}</td><td><strong>$${day.total?.toFixed(2) || '0.00'}</strong></td><td>${trend}</td></tr>`;
@@ -3272,9 +3982,13 @@
             const headerButtons = document.querySelectorAll('[data-dash-tab]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { status: true };
-            const validTabs = ['status', 'performance', 'cost', 'security'];
+            const validTabs = ['status', 'resources', 'cost', 'security'];
+            // Map legacy tab names to new names
+            const tabAliases = { 'performance': 'resources' };
 
             function switchTab(targetTab) {
+                // Handle legacy tab names
+                if (tabAliases[targetTab]) targetTab = tabAliases[targetTab];
                 // Update header buttons and tab contents
                 headerButtons.forEach(b => b.classList.remove('active'));
                 tabContents.forEach(c => c.classList.remove('active'));
@@ -3303,14 +4017,14 @@
 
             // Handle URL hash on page load
             const hash = window.location.hash.slice(1);
-            if (hash && validTabs.includes(hash)) {
+            if (hash && (validTabs.includes(hash) || tabAliases[hash])) {
                 switchTab(hash);
             }
 
             // Handle hash changes (browser back/forward)
             window.addEventListener('hashchange', () => {
                 const newHash = window.location.hash.slice(1);
-                if (newHash && validTabs.includes(newHash)) {
+                if (newHash && (validTabs.includes(newHash) || tabAliases[newHash])) {
                     switchTab(newHash);
                 }
             });

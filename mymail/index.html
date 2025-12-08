@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyMail - Secure Email</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --aurora-1: #00d9ff;
+            --aurora-2: #7b2ff7;
+            --aurora-3: #f107a3;
+            --aurora-4: #00ff88;
+            --glass-bg: rgba(10, 15, 30, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            background: #0a0f1e;
+            position: relative;
+        }
+
+        /* Cosmic Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(0, 217, 255, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(123, 47, 247, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(241, 7, 163, 0.1) 0%, transparent 60%),
+                linear-gradient(180deg, #0a0f1e 0%, #1a1f3e 50%, #0a0f1e 100%);
+        }
+
+        /* Animated aurora waves */
+        .aurora-waves {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+            opacity: 0.6;
+        }
+
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: -50%;
+            background: linear-gradient(
+                45deg,
+                transparent 40%,
+                rgba(0, 217, 255, 0.1) 45%,
+                rgba(123, 47, 247, 0.15) 50%,
+                rgba(241, 7, 163, 0.1) 55%,
+                transparent 60%
+            );
+            animation: aurora-wave 12s ease-in-out infinite;
+        }
+
+        .wave:nth-child(2) {
+            animation-delay: -4s;
+            animation-duration: 15s;
+            background: linear-gradient(
+                -45deg,
+                transparent 40%,
+                rgba(0, 255, 136, 0.1) 45%,
+                rgba(0, 217, 255, 0.15) 50%,
+                rgba(123, 47, 247, 0.1) 55%,
+                transparent 60%
+            );
+        }
+
+        .wave:nth-child(3) {
+            animation-delay: -8s;
+            animation-duration: 18s;
+            background: linear-gradient(
+                30deg,
+                transparent 40%,
+                rgba(241, 7, 163, 0.1) 45%,
+                rgba(0, 255, 136, 0.12) 50%,
+                rgba(0, 217, 255, 0.1) 55%,
+                transparent 60%
+            );
+        }
+
+        @keyframes aurora-wave {
+            0%, 100% {
+                transform: translateX(-20%) translateY(-20%) rotate(0deg);
+            }
+            50% {
+                transform: translateX(20%) translateY(20%) rotate(180deg);
+            }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            animation: float-particle 20s linear infinite;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+                transform: translateY(80vh) translateX(10px) scale(1);
+            }
+            90% {
+                opacity: 1;
+                transform: translateY(10vh) translateX(-10px) scale(1);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 3D rotating mesh */
+        .mesh-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            z-index: 1;
+            perspective: 1000px;
+        }
+
+        .mesh {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 50%;
+            animation: rotate-mesh 30s linear infinite;
+        }
+
+        .mesh:nth-child(2) {
+            transform: rotateX(60deg);
+            animation-duration: 25s;
+            animation-direction: reverse;
+            border-color: rgba(123, 47, 247, 0.1);
+        }
+
+        .mesh:nth-child(3) {
+            transform: rotateY(60deg);
+            animation-duration: 35s;
+            border-color: rgba(241, 7, 163, 0.1);
+        }
+
+        @keyframes rotate-mesh {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(360deg); }
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Login card */
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 48px 44px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow:
+                0 0 60px rgba(0, 217, 255, 0.1),
+                0 0 120px rgba(123, 47, 247, 0.05),
+                inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            animation: card-glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes card-glow {
+            0% {
+                box-shadow:
+                    0 0 60px rgba(0, 217, 255, 0.1),
+                    0 0 120px rgba(123, 47, 247, 0.05),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            }
+            100% {
+                box-shadow:
+                    0 0 80px rgba(123, 47, 247, 0.15),
+                    0 0 160px rgba(241, 7, 163, 0.08),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        /* Logo area */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .logo {
+            width: 88px;
+            height: 88px;
+            background: linear-gradient(135deg, rgba(0, 217, 255, 0.2), rgba(123, 47, 247, 0.2));
+            border-radius: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            position: relative;
+            animation: logo-float 4s ease-in-out infinite;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 26px;
+            background: linear-gradient(135deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+            z-index: -1;
+            opacity: 0.5;
+            animation: rotate-border 4s linear infinite;
+        }
+
+        @keyframes rotate-border {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes logo-float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .logo svg {
+            width: 44px;
+            height: 44px;
+            filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5));
+        }
+
+        .app-name {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, rgba(0, 217, 255, 0.9) 50%, rgba(123, 47, 247, 0.9) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .app-tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Mail info section */
+        .mail-info {
+            background: rgba(0, 217, 255, 0.05);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 28px;
+        }
+
+        .mail-address {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .mail-address svg {
+            width: 20px;
+            height: 20px;
+            color: var(--aurora-1);
+        }
+
+        .mail-address span {
+            color: var(--aurora-1);
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 28px 0;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        .divider span {
+            padding: 0 20px;
+        }
+
+        /* Access buttons */
+        .access-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .access-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 28px;
+            border: none;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .access-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .access-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .access-btn svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        /* Webmail button */
+        .btn-webmail {
+            background: linear-gradient(135deg, var(--aurora-1) 0%, var(--aurora-2) 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-webmail:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 217, 255, 0.4);
+        }
+
+        /* Authelia button */
+        .btn-authelia {
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.8) 0%, rgba(241, 7, 163, 0.8) 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(123, 47, 247, 0.3);
+        }
+
+        .btn-authelia:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(123, 47, 247, 0.4);
+        }
+
+        /* Email client config */
+        .client-config {
+            margin-top: 32px;
+            padding-top: 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .config-title {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .config-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .config-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .config-value {
+            font-size: 12px;
+            color: var(--aurora-1);
+            font-family: 'SF Mono', 'Monaco', monospace;
+        }
+
+        /* Security badge */
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 10px 18px;
+            background: rgba(0, 255, 136, 0.08);
+            border: 1px solid rgba(0, 255, 136, 0.15);
+            border-radius: 24px;
+            color: var(--aurora-4);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .security-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 20;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: var(--aurora-1);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 36px 28px;
+                border-radius: 24px;
+            }
+
+            .app-name {
+                font-size: 26px;
+            }
+
+            .logo {
+                width: 72px;
+                height: 72px;
+            }
+
+            .logo svg {
+                width: 36px;
+                height: 36px;
+            }
+
+            .access-btn {
+                padding: 16px 24px;
+                font-size: 14px;
+            }
+
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mesh-container {
+                width: 300px;
+                height: 300px;
+            }
+
+            .footer {
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Aurora Background -->
+    <div class="aurora-bg"></div>
+
+    <!-- Animated aurora waves -->
+    <div class="aurora-waves">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- 3D Rotating mesh -->
+    <div class="mesh-container">
+        <div class="mesh"></div>
+        <div class="mesh"></div>
+        <div class="mesh"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="login-card">
+            <div class="logo-container">
+                <div class="logo">
+                    <!-- Mail icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--aurora-1)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                </div>
+                <h1 class="app-name">MyMail</h1>
+                <p class="app-tagline">Secure private email</p>
+            </div>
+
+            <div class="mail-info">
+                <div class="mail-address">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/>
+                    </svg>
+                    <span>me@diegonmarcos.com</span>
+                </div>
+            </div>
+
+            <div class="divider">
+                <span>Access your inbox</span>
+            </div>
+
+            <div class="access-buttons">
+                <!-- Webmail Button -->
+                <a href="https://mail.diegonmarcos.com" class="access-btn btn-webmail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="2" y1="12" x2="22" y2="12"/>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                    </svg>
+                    Open Webmail
+                </a>
+
+                <!-- Authelia 2FA Button -->
+                <a href="https://auth.diegonmarcos.com/?rd=https://mail.diegonmarcos.com/" class="access-btn btn-authelia">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        <circle cx="12" cy="16" r="1"/>
+                    </svg>
+                    Secure Access (2FA)
+                </a>
+            </div>
+
+            <div class="client-config">
+                <div class="config-title">Email Client Settings</div>
+                <div class="config-grid">
+                    <div class="config-item">
+                        <div class="config-label">IMAP</div>
+                        <div class="config-value">:993 SSL</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">SMTP</div>
+                        <div class="config-value">:587 TLS</div>
+                    </div>
+                </div>
+                <div class="config-grid" style="margin-top: 12px;">
+                    <div class="config-item" style="grid-column: 1 / -1;">
+                        <div class="config-label">Server</div>
+                        <div class="config-value">mail.diegonmarcos.com</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="security-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <polyline points="9 12 12 15 16 10"/>
+                </svg>
+                End-to-end encrypted
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="https://cloud.diegonmarcos.com">cloud.diegonmarcos.com</a>
+    </div>
+
+    <script>
+        // Generate floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['#00d9ff', '#7b2ff7', '#f107a3', '#00ff88'];
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = Math.random() * 4 + 2;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+
+                particle.style.cssText = `
+                    left: ${left}%;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: ${color};
+                    box-shadow: 0 0 ${size * 2}px ${color};
+                    animation-delay: -${delay}s;
+                    animation-duration: ${duration}s;
+                `;
+
+                container.appendChild(particle);
+            }
+        }
+
+        // Mouse parallax effect on mesh
+        document.addEventListener('mousemove', (e) => {
+            const meshContainer = document.querySelector('.mesh-container');
+            const x = (e.clientX / window.innerWidth - 0.5) * 30;
+            const y = (e.clientY / window.innerHeight - 0.5) * 30;
+
+            meshContainer.style.transform = `translate(-50%, -50%) rotateX(${y}deg) rotateY(${x}deg)`;
+        });
+
+        // Initialize
+        createParticles();
+    </script>
+</body>
+</html>

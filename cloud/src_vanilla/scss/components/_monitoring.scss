@@ -506,3 +506,147 @@
   }
 }
 
+// Wake-on-Demand Usage Calculator
+.wake-calculator {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-top: 1rem;
+
+  [data-theme="blurred"] & {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+  }
+}
+
+.wake-calc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.wake-calc-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    [data-theme="blurred"] & {
+      text-transform: none;
+    }
+  }
+
+  input {
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    transition: all var(--transition-speed) ease;
+
+    &:focus {
+      outline: none;
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--glow);
+    }
+
+    [data-theme="blurred"] & {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+
+      &:focus {
+        border-color: var(--accent-blue);
+      }
+    }
+  }
+
+  .wake-calc-hint {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+  }
+}
+
+.wake-calc-results {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.wake-calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  align-items: center;
+  font-size: 0.85rem;
+
+  .wake-calc-label {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .wake-calc-rate {
+    color: var(--text-secondary);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .wake-calc-value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-align: right;
+    min-width: 70px;
+  }
+
+  &.wake-calc-total {
+    border-top: 1px solid var(--border-color);
+    padding-top: 0.75rem;
+    margin-top: 0.25rem;
+
+    .wake-calc-label {
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .wake-calc-value {
+      font-size: 1.1rem;
+      color: var(--accent-green);
+    }
+
+    [data-theme="blurred"] & {
+      .wake-calc-label {
+        color: var(--accent-blue);
+      }
+    }
+  }
+}
+
+.wake-calc-note {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  border-left: 3px solid var(--accent-yellow);
+
+  [data-theme="blurred"] & {
+    background: rgba(251, 191, 36, 0.05);
+    border-radius: 8px;
+  }
+}
+

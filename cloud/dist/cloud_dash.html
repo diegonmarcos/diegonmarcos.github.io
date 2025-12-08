@@ -1609,6 +1609,52 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Wake-on-Demand Usage Calculator -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Wake-on-Demand Usage Calculator (OCI E4.Flex)</h3>
+                <div class="resources-section">
+                    <div class="wake-calculator">
+                        <div class="wake-calc-grid">
+                            <div class="wake-calc-input">
+                                <label for="wake-hours">Hours Running (this month)</label>
+                                <input type="number" id="wake-hours" min="0" max="744" value="0" step="1">
+                                <span class="wake-calc-hint">Max 744 hrs/month</span>
+                            </div>
+                            <div class="wake-calc-input">
+                                <label for="wake-bandwidth">Bandwidth Used (GB)</label>
+                                <input type="number" id="wake-bandwidth" min="0" max="10000" value="0" step="0.1">
+                                <span class="wake-calc-hint">First 10TB free/mo</span>
+                            </div>
+                        </div>
+                        <div class="wake-calc-results">
+                            <div class="wake-calc-row">
+                                <span class="wake-calc-label">Compute Cost</span>
+                                <span class="wake-calc-rate">(<span id="wake-hours-display">0</span> hrs × $0.0096/hr)</span>
+                                <span class="wake-calc-value" id="wake-compute-cost">$0.00</span>
+                            </div>
+                            <div class="wake-calc-row">
+                                <span class="wake-calc-label">Storage Cost</span>
+                                <span class="wake-calc-rate">(100GB Boot @ $0.0255/GB/mo)</span>
+                                <span class="wake-calc-value">$2.55</span>
+                            </div>
+                            <div class="wake-calc-row">
+                                <span class="wake-calc-label">Bandwidth Cost</span>
+                                <span class="wake-calc-rate">(<span id="wake-bw-display">0</span> GB @ $0.0085/GB after 10TB)</span>
+                                <span class="wake-calc-value" id="wake-bandwidth-cost">$0.00</span>
+                            </div>
+                            <div class="wake-calc-row wake-calc-total">
+                                <span class="wake-calc-label">Total This Month</span>
+                                <span class="wake-calc-rate"></span>
+                                <span class="wake-calc-value" id="wake-total-cost">$2.55</span>
+                            </div>
+                        </div>
+                        <div class="wake-calc-note">
+                            Rates: OCPU = $0.0096/hr, Storage = $0.0255/GB/mo, Egress = $0.0085/GB (after 10TB free)
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div><!-- End Infrastructure Cost Sub-tab -->
 
             <!-- AI Cost Sub-tab -->

@@ -108,4 +108,53 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Wake-on-Demand Calculator
+    initWakeCalculator();
 });
+
+// Wake-on-Demand Usage Calculator
+function initWakeCalculator() {
+    const hoursInput = document.getElementById('wake-hours') as HTMLInputElement;
+    const bandwidthInput = document.getElementById('wake-bandwidth') as HTMLInputElement;
+
+    if (!hoursInput || !bandwidthInput) return;
+
+    // OCI E4.Flex pricing
+    const COMPUTE_RATE = 0.0096;  // $/hr per OCPU (1 OCPU, 16GB RAM)
+    const STORAGE_COST = 2.55;    // Fixed: 100GB boot @ $0.0255/GB/mo
+    const BANDWIDTH_RATE = 0.0085; // $/GB (after first 10TB free)
+
+    function calculate() {
+        const hours = parseFloat(hoursInput.value) || 0;
+        const bandwidth = parseFloat(bandwidthInput.value) || 0;
+
+        // Compute cost
+        const computeCost = hours * COMPUTE_RATE;
+
+        // Bandwidth cost (first 10TB free per month)
+        const bandwidthCost = bandwidth * BANDWIDTH_RATE;
+
+        // Total
+        const totalCost = computeCost + STORAGE_COST + bandwidthCost;
+
+        // Update display
+        const hoursDisplay = document.getElementById('wake-hours-display');
+        const bwDisplay = document.getElementById('wake-bw-display');
+        const computeEl = document.getElementById('wake-compute-cost');
+        const bandwidthEl = document.getElementById('wake-bandwidth-cost');
+        const totalEl = document.getElementById('wake-total-cost');
+
+        if (hoursDisplay) hoursDisplay.textContent = hours.toString();
+        if (bwDisplay) bwDisplay.textContent = bandwidth.toString();
+        if (computeEl) computeEl.textContent = `$${computeCost.toFixed(2)}`;
+        if (bandwidthEl) bandwidthEl.textContent = `$${bandwidthCost.toFixed(2)}`;
+        if (totalEl) totalEl.textContent = `$${totalCost.toFixed(2)}`;
+    }
+
+    hoursInput.addEventListener('input', calculate);
+    bandwidthInput.addEventListener('input', calculate);
+
+    // Initial calculation
+    calculate();
+}

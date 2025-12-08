@@ -2404,109 +2404,384 @@
                 </div>
             </div>
 
-            <!-- Cloud Infrastructure Costs -->
+            <!-- Cloud Infrastructure Costs - Super Enhanced -->
             <div class="resources-category">
                 <h3 class="resources-category-title">
                     <span>Cloud Infrastructure Costs</span>
                     <span id="cloud-costs-updated" style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal; margin-left: 1rem;"></span>
                 </h3>
 
-                <!-- Hero Stats Row -->
-                <div class="ai-cost-hero" style="margin-bottom: 1.5rem;">
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-label">This Month</div>
-                        <div class="ai-hero-value" id="cloud-total-month">€0.00</div>
-                        <div class="ai-hero-sub" id="cloud-month-label">December 2025</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-label">Projected</div>
-                        <div class="ai-hero-value" id="cloud-projected" style="color: var(--accent-orange);">€0.00</div>
-                        <div class="ai-hero-sub">Full month estimate</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-label">Year to Date</div>
-                        <div class="ai-hero-value" id="cloud-ytd">€0.00</div>
-                        <div class="ai-hero-sub">2025 Total</div>
-                    </div>
-                    <div class="ai-hero-card">
-                        <div class="ai-hero-label">Free Tier Savings</div>
-                        <div class="ai-hero-value" id="cloud-savings" style="color: var(--success);">€0.00</div>
-                        <div class="ai-hero-sub">vs. Market Price</div>
-                    </div>
-                </div>
-
-                <!-- Provider Donut + Stats Row -->
-                <div class="resources-section" style="display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items: start;">
-                    <!-- Donut Chart -->
-                    <div class="ai-donut-container">
-                        <svg viewBox="0 0 100 100" class="ai-donut-svg">
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="var(--bg-tertiary)" stroke-width="12"/>
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="#F80000" stroke-width="12"
-                                    stroke-dasharray="251" stroke-dashoffset="0" class="cloud-donut-oci"
-                                    transform="rotate(-90 50 50)"/>
-                            <circle cx="50" cy="50" r="40" fill="none" stroke="#4285F4" stroke-width="12"
-                                    stroke-dasharray="0 251" stroke-dashoffset="0" class="cloud-donut-gcp"
-                                    transform="rotate(-90 50 50)"/>
-                        </svg>
-                        <div class="ai-donut-center">
-                            <div class="ai-donut-value" id="cloud-donut-total">€0.83</div>
-                            <div class="ai-donut-label">Total</div>
+                <!-- Big Hero Banner (like AI Costs) -->
+                <div class="ai-cost-hero">
+                    <div class="ai-cost-hero-main">
+                        <div class="ai-hero-total">
+                            <span class="ai-hero-label">Total Cloud Spend (All Time)</span>
+                            <span class="ai-hero-value" id="cloud-all-time-spend">€0.83</span>
+                            <span class="ai-hero-tokens" id="cloud-total-resources">2 VMs running across 2 providers</span>
                         </div>
                     </div>
-
-                    <!-- Provider Cards -->
-                    <div id="cloud-providers-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
-                        <!-- Rendered by JS -->
+                    <div class="ai-cost-hero-cards">
+                        <div class="ai-hero-card">
+                            <div class="ai-hero-card-value" id="cloud-total-month">€0.83</div>
+                            <div class="ai-hero-card-label">This Month</div>
+                            <div class="ai-hero-card-sub" id="cloud-month-label">Dec 2025 (8 days)</div>
+                        </div>
+                        <div class="ai-hero-card">
+                            <div class="ai-hero-card-value" id="cloud-projected" style="color: var(--accent-orange);">€3.22</div>
+                            <div class="ai-hero-card-label">Projected</div>
+                            <div class="ai-hero-card-sub">Full month estimate</div>
+                        </div>
+                        <div class="ai-hero-card">
+                            <div class="ai-hero-card-value" id="cloud-ytd">€0.83</div>
+                            <div class="ai-hero-card-label">Year to Date</div>
+                            <div class="ai-hero-card-sub">2025 Total</div>
+                        </div>
+                        <div class="ai-hero-card">
+                            <div class="ai-hero-card-value" id="cloud-savings" style="color: var(--success);">€44.17</div>
+                            <div class="ai-hero-card-label">Savings</div>
+                            <div class="ai-hero-card-sub">98% vs Market</div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Monthly Comparison Chart -->
-                <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Monthly Cost Trend</h4>
-                    <div id="cloud-monthly-bars" class="ai-weekly-bars" style="height: 120px;">
-                        <!-- Rendered by JS -->
+                <!-- Provider Distribution Donut (like AI Costs model distribution) -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Provider Cost Distribution (Current Month)</h3>
+                    <div class="resources-section">
+                        <div class="ai-donut-container">
+                            <div class="ai-donut-chart">
+                                <svg viewBox="0 0 100 100" class="ai-donut-svg">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#1a1a2e" stroke-width="15"/>
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#F80000" stroke-width="15"
+                                        stroke-dasharray="251 251" stroke-dashoffset="0" class="cloud-donut-oci"
+                                        transform="rotate(-90 50 50)"/>
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="#4285F4" stroke-width="15"
+                                        stroke-dasharray="0 251" stroke-dashoffset="-251" class="cloud-donut-gcp"
+                                        transform="rotate(-90 50 50)"/>
+                                </svg>
+                                <div class="ai-donut-center">
+                                    <span class="ai-donut-value" id="cloud-donut-total">€0.83</span>
+                                    <span class="ai-donut-label">Total</span>
+                                </div>
+                            </div>
+                            <div class="ai-donut-legend" id="cloud-donut-legend">
+                                <div class="ai-donut-legend-item">
+                                    <span class="ai-donut-legend-dot" style="background: #F80000;"></span>
+                                    <span class="ai-donut-legend-name">Oracle Cloud (OCI)</span>
+                                    <span class="ai-donut-legend-value" id="cloud-oci-cost">€0.83</span>
+                                    <span class="ai-donut-legend-pct" id="cloud-oci-pct">100%</span>
+                                </div>
+                                <div class="ai-donut-legend-item">
+                                    <span class="ai-donut-legend-dot" style="background: #4285F4;"></span>
+                                    <span class="ai-donut-legend-name">Google Cloud (GCP)</span>
+                                    <span class="ai-donut-legend-value" id="cloud-gcp-cost">€0.00</span>
+                                    <span class="ai-donut-legend-pct" id="cloud-gcp-pct">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instance Cards (like Token Usage Statistics) -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Active Instances</h3>
+                    <div class="resources-section">
+                        <div class="ai-token-grid" id="cloud-instance-cards">
+                            <!-- OCI Instance -->
+                            <div class="ai-token-card">
+                                <div class="ai-token-icon" style="color: #F80000;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                        <line x1="8" y1="21" x2="16" y2="21"/>
+                                        <line x1="12" y1="17" x2="12" y2="21"/>
+                                    </svg>
+                                </div>
+                                <div class="ai-token-content">
+                                    <div class="ai-token-value">arm-1</div>
+                                    <div class="ai-token-label">OCI VM.Standard.A1.Flex</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">4 OCPU | 24 GB RAM | ARM64</div>
+                                    <div class="ai-token-bar">
+                                        <div class="ai-token-bar-fill" style="width: 100%; background: linear-gradient(90deg, #F80000, #ff4444);"></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
+                                        <span style="color: var(--success);">Running</span>
+                                        <span>€0.83/mo</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- GCP Instance -->
+                            <div class="ai-token-card">
+                                <div class="ai-token-icon" style="color: #4285F4;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                        <line x1="8" y1="21" x2="16" y2="21"/>
+                                        <line x1="12" y1="17" x2="12" y2="21"/>
+                                    </svg>
+                                </div>
+                                <div class="ai-token-content">
+                                    <div class="ai-token-value">arch-1</div>
+                                    <div class="ai-token-label">GCP e2-micro</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">0.25 vCPU | 1 GB RAM | x86</div>
+                                    <div class="ai-token-bar">
+                                        <div class="ai-token-bar-fill" style="width: 100%; background: linear-gradient(90deg, #4285F4, #66aaff);"></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
+                                        <span style="color: var(--success);">Running</span>
+                                        <span style="color: #2dd4bf;">Free Tier</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Storage Card -->
+                            <div class="ai-token-card">
+                                <div class="ai-token-icon" style="color: #fbbf24;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                    </svg>
+                                </div>
+                                <div class="ai-token-content">
+                                    <div class="ai-token-value">~50 GB</div>
+                                    <div class="ai-token-label">Block Storage</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Boot volumes + data</div>
+                                    <div class="ai-token-bar">
+                                        <div class="ai-token-bar-fill" style="width: 25%; background: #fbbf24;"></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
+                                        <span>25% of 200 GB limit</span>
+                                        <span style="color: #2dd4bf;">Free Tier</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Network Card -->
+                            <div class="ai-token-card">
+                                <div class="ai-token-icon" style="color: #22c55e;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                                    </svg>
+                                </div>
+                                <div class="ai-token-content">
+                                    <div class="ai-token-value">< 1 GB</div>
+                                    <div class="ai-token-label">Network Egress</div>
+                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Outbound data transfer</div>
+                                    <div class="ai-token-bar">
+                                        <div class="ai-token-bar-fill" style="width: 0.01%; background: #22c55e;"></div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
+                                        <span>0.01% of 10 TB limit</span>
+                                        <span style="color: #2dd4bf;">Free Tier</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monthly Cost Bar Chart (like AI Daily Cost) -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Monthly Cost Trend</h3>
+                    <div class="resources-section">
+                        <div class="ai-bar-chart" id="cloud-monthly-chart" style="height: 150px; display: flex; align-items: flex-end; gap: 0.5rem; padding: 1rem 0;">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div class="ai-chart-legend">
+                            <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #F80000;"></span>OCI</span>
+                            <span class="ai-legend-item"><span class="ai-legend-dot" style="background: #4285F4;"></span>GCP</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Service Details Table -->
-                <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Service Breakdown (Current Month)</h4>
-                    <div class="resources-table-container">
-                        <table class="resources-table ai-table" id="cloud-services-table">
-                            <thead>
-                                <tr>
-                                    <th>Provider</th>
-                                    <th>Service</th>
-                                    <th>Description</th>
-                                    <th>Usage</th>
-                                    <th>Cost</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="cloud-services-tbody">
-                                <tr>
-                                    <td colspan="6" style="text-align: center; color: var(--text-secondary);">
-                                        Loading cloud costs data...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Service Breakdown (Current Month)</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table" id="cloud-services-table">
+                                <thead>
+                                    <tr>
+                                        <th>Provider</th>
+                                        <th>Service</th>
+                                        <th>Description</th>
+                                        <th>Usage</th>
+                                        <th>Cost</th>
+                                        <th>Visual</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cloud-services-tbody">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: var(--text-secondary);">
+                                            Loading cloud costs data...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Free Tier Usage with Progress Bars -->
-                <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Free Tier Usage</h4>
-                    <div id="cloud-free-tier-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1rem;">
-                        <!-- Rendered by JS -->
+                <!-- Free Tier Usage (like Weekly Breakdown) -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Free Tier Utilization</h3>
+                    <div class="resources-section">
+                        <div id="cloud-free-tier-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+                            <!-- OCI Free Tier -->
+                            <div style="background: var(--bg-tertiary); border-radius: 12px; padding: 1rem; border-left: 4px solid #F80000;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                    <div style="width: 32px; height: 32px; background: #F80000; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="18" height="18">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">Oracle Cloud (OCI)</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Always Free Tier</div>
+                                    </div>
+                                </div>
+                                <div id="oci-free-tier-bars">
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Compute (ARM)</span><span style="color: var(--accent-orange);">100%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 100%; background: linear-gradient(90deg, #F80000, #ff6666); border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">4 OCPU + 24 GB of 4 OCPU + 24 GB</div>
+                                    </div>
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Block Storage</span><span style="color: var(--success);">25%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 25%; background: #22c55e; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">~50 GB of 200 GB</div>
+                                    </div>
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Object Storage</span><span style="color: var(--success);">1%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 1%; background: #22c55e; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">< 1 GB of 20 GB</div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>VCN Egress</span><span style="color: var(--success);">0%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 0.01%; background: #22c55e; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">< 1 GB of 10 TB/month</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- GCP Free Tier -->
+                            <div style="background: var(--bg-tertiary); border-radius: 12px; padding: 1rem; border-left: 4px solid #4285F4;">
+                                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                                    <div style="width: 32px; height: 32px; background: #4285F4; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="18" height="18">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600; color: var(--text-primary);">Google Cloud (GCP)</div>
+                                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Free Tier</div>
+                                    </div>
+                                </div>
+                                <div id="gcp-free-tier-bars">
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Compute Engine</span><span style="color: var(--accent-orange);">100%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 100%; background: linear-gradient(90deg, #4285F4, #66aaff); border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">1 e2-micro of 1 e2-micro (730 hrs/mo)</div>
+                                    </div>
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Cloud Storage</span><span style="color: var(--success);">10%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 10%; background: #22c55e; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">< 1 GB of 5 GB</div>
+                                    </div>
+                                    <div style="margin-bottom: 0.75rem;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Cloud DNS</span><span style="color: var(--success);">4%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 4%; background: #22c55e; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">1 zone of 25 zones</div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                            <span>Network Egress</span><span style="color: var(--accent-orange);">50%</span>
+                                        </div>
+                                        <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
+                                            <div style="height: 100%; width: 50%; background: #fbbf24; border-radius: 4px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">~0.5 GB of 1 GB/month</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Market Comparison Card -->
-                <div class="resources-section">
-                    <h4 style="margin: 0 0 1rem 0; color: var(--text-primary);">Market Comparison</h4>
-                    <div id="cloud-market-comparison" style="background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%); border-radius: 12px; padding: 1.5rem; border: 1px solid var(--border-primary);">
-                        <!-- Rendered by JS -->
+                <!-- Market Comparison (Enhanced) -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Market Comparison</h3>
+                    <div class="resources-section">
+                        <div id="cloud-market-comparison" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, var(--bg-tertiary) 100%); border-radius: 12px; padding: 1.5rem; border: 1px solid rgba(34, 197, 94, 0.3);">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; align-items: center;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 2.5rem; font-weight: 700; color: var(--success);">98%</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.9rem;">Cost Savings</div>
+                                </div>
+                                <div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                            <span style="color: var(--text-secondary);">Your Cost</span>
+                                            <span style="font-weight: 600; color: var(--success);">€0.83/mo</span>
+                                        </div>
+                                        <div style="height: 12px; background: var(--bg-secondary); border-radius: 6px; overflow: hidden;">
+                                            <div style="height: 100%; width: 2%; background: linear-gradient(90deg, #22c55e, #4ade80); border-radius: 6px;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-bottom: 1rem;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                            <span style="color: var(--text-secondary);">AWS Equivalent</span>
+                                            <span style="color: #ff6b6b;">€45.00/mo</span>
+                                        </div>
+                                        <div style="height: 12px; background: var(--bg-secondary); border-radius: 6px; overflow: hidden;">
+                                            <div style="height: 100%; width: 100%; background: linear-gradient(90deg, #ff6b6b, #ff8888); border-radius: 6px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.25rem;">t3.medium + 50GB EBS</div>
+                                    </div>
+                                    <div>
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.25rem;">
+                                            <span style="color: var(--text-secondary);">Azure Equivalent</span>
+                                            <span style="color: #f472b6;">€42.00/mo</span>
+                                        </div>
+                                        <div style="height: 12px; background: var(--bg-secondary); border-radius: 6px; overflow: hidden;">
+                                            <div style="height: 100%; width: 93%; background: linear-gradient(90deg, #f472b6, #f9a8d4); border-radius: 6px;"></div>
+                                        </div>
+                                        <div style="font-size: 0.7rem; color: var(--text-tertiary); margin-top: 0.25rem;">B2s + 50GB SSD</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: center; padding: 1rem; background: var(--bg-secondary); border-radius: 8px;">
+                                    <div style="font-size: 1.5rem; font-weight: 600; color: var(--success);">€44.17</div>
+                                    <div style="color: var(--text-secondary); font-size: 0.8rem;">Monthly Savings</div>
+                                    <div style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-tertiary);">€530/year saved</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -3338,15 +3338,15 @@
             initCostSubtabs();
 
             // Render tables from CONFIG (JSON is source of truth!)
-            if (dataSourceMode === 'api') {
-                // API mode: fetch config from API to render tables
+            // ALWAYS render from local CONFIG first (creates DOM elements)
+            if (typeof CONFIG !== 'undefined') {
+                renderTablesFromConfig();
+            }
+
+            // Only try API if NOT on GitHub Pages AND mode is API
+            if (!isGitHubPages && dataSourceMode === 'api') {
                 await fetchConfigFromAPI();
                 checkDevServerStatus();
-            } else {
-                // Local mode: use local CONFIG from cloud_dash_data.js
-                if (typeof CONFIG !== 'undefined') {
-                    renderTablesFromConfig();
-                }
             }
 
             refreshAll(); // Always refresh on page load (either from API or Local)

@@ -203,6 +203,13 @@
     gap: 0.5rem;
 }
 
+// Group active state - underline all buttons in active group
+.view-group.group-active .view-btn {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+}
+
 // View Separator
 .view-separator {
     width: 1px;

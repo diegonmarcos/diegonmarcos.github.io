@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Zoom control initialization
     initZoomControl();
 
+    // View group active state initialization
+    initViewGroupActive();
+
     // Card view initialization
     initCardEffects();
     initStatusPulse();
@@ -157,4 +160,25 @@ function initWakeCalculator() {
 
     // Initial calculation
     calculate();
+}
+
+// View Group Active State - underlines all buttons in the active group
+function initViewGroupActive() {
+    const viewToggle = document.querySelector('.view-toggle');
+    if (!viewToggle) return;
+
+    const viewGroups = viewToggle.querySelectorAll<HTMLElement>('.view-group');
+
+    // Add click listeners to all view buttons within groups
+    viewGroups.forEach(group => {
+        const buttons = group.querySelectorAll<HTMLElement>('.view-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove group-active from all groups
+                viewGroups.forEach(g => g.classList.remove('group-active'));
+                // Add group-active to this button's parent group
+                group.classList.add('group-active');
+            });
+        });
+    });
 }

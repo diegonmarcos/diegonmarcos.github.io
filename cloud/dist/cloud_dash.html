@@ -2968,6 +2968,7 @@
             const headerButtons = document.querySelectorAll('[data-dash-tab]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { status: true };
+            const validTabs = ['status', 'performance', 'cost', 'security'];
 
             function switchTab(targetTab) {
                 // Update header buttons and tab contents
@@ -2977,6 +2978,9 @@
                 // Activate the selected tab
                 document.querySelectorAll(`[data-dash-tab="${targetTab}"]`).forEach(b => b.classList.add('active'));
                 document.getElementById(`${targetTab}-tab`).classList.add('active');
+
+                // Update URL hash
+                window.history.replaceState(null, null, `#${targetTab}`);
 
                 if (!loadedTabs[targetTab]) {
                     loadedTabs[targetTab] = true;
@@ -2991,6 +2995,20 @@
                     const targetTab = btn.getAttribute('data-dash-tab');
                     switchTab(targetTab);
                 });
+            });
+
+            // Handle URL hash on page load
+            const hash = window.location.hash.slice(1);
+            if (hash && validTabs.includes(hash)) {
+                switchTab(hash);
+            }
+
+            // Handle hash changes (browser back/forward)
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash.slice(1);
+                if (newHash && validTabs.includes(newHash)) {
+                    switchTab(newHash);
+                }
             });
         }
 

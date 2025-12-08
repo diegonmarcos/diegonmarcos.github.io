@@ -181,6 +181,13 @@ html = html.replace(/<link[^>]*href=[\"']styles\\.css[\"'][^>]*rel=[\"']styleshe
 // Replace script src with inline script
 html = html.replace(/<script[^>]*src=[\"']script\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
 
+// Inline cloud_dash_data.js (CONFIG data from Python export)
+const dataJsPath = '$VANILLA_DIR/cloud_dash_data.js';
+if (fs.existsSync(dataJsPath)) {
+    const dataJs = fs.readFileSync(dataJsPath, 'utf8');
+    html = html.replace(/<script[^>]*src=[\"']cloud_dash_data\\.js[\"'][^>]*><\\/script>/gi, '<script>' + dataJs + '</script>');
+}
+
 fs.writeFileSync('$DIST_VANILLA/$filename', html);
 "
             log_success "Created single-file: $DIST_VANILLA/$filename"

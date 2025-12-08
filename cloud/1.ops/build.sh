@@ -181,12 +181,14 @@ html = html.replace(/<link[^>]*href=[\"']styles\\.css[\"'][^>]*rel=[\"']styleshe
 // Replace script src with inline script
 html = html.replace(/<script[^>]*src=[\"']script\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
 
-// Copy cloud_dash_data.js as external file (CONFIG data from Python export)
-// Keep <script src="cloud_dash_data.js"> in HTML - allows updating data without rebuilding HTML
-const dataJsPath = '$VANILLA_DIR/cloud_dash_data.js';
-if (fs.existsSync(dataJsPath)) {
-    fs.copyFileSync(dataJsPath, '$DIST_VANILLA/cloud_dash_data.js');
-}
+// Copy data JS files as external files (allows updating data without rebuilding HTML)
+const dataFiles = ['cloud_dash_data.js', 'ccusage_data.js', 'cloud_costs_data.js'];
+dataFiles.forEach(file => {
+    const srcPath = '$VANILLA_DIR/' + file;
+    if (fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, '$DIST_VANILLA/' + file);
+    }
+});
 
 fs.writeFileSync('$DIST_VANILLA/$filename', html);
 "

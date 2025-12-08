@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback | MyPhotos</title>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            color: #fff;
+        }
+        .callback-container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .error { color: #ff6b6b; }
+        .success { color: #34d399; }
+    </style>
+</head>
+<body>
+    <div class="callback-container">
+        <div class="spinner" id="spinner"></div>
+        <h2 id="status">Authenticating...</h2>
+        <p id="message">Please wait while we complete the authentication.</p>
+    </div>
+
+    <script>
+        // OAuth callback handler for MyPhotos
+        (async function() {
+            const params = new URLSearchParams(window.location.search);
+            const code = params.get('code');
+            const state = params.get('state');
+            const storedState = sessionStorage.getItem('oauth_state');
+
+            const spinner = document.getElementById('spinner');
+            const statusEl = document.getElementById('status');
+            const messageEl = document.getElementById('message');
+
+            function showError(msg) {
+                spinner.style.display = 'none';
+                statusEl.textContent = 'Authentication Failed';
+                statusEl.className = 'error';
+                messageEl.textContent = msg;
+            }
+
+            function showSuccess(username) {
+                spinner.style.display = 'none';
+                statusEl.textContent = 'Success!';
+                statusEl.className = 'success';
+                messageEl.textContent = `Welcome, ${username}! Redirecting to photos...`;
+            }
+
+            if (!code) {
+                showError('No authorization code received.');
+                return;
+            }
+
+            if (state !== storedState) {
+                showError('Invalid state parameter. Please try again.');
+                return;
+            }
+
+            try {
+                // Exchange code for token via API
+                const response = await fetch('https://api.diegonmarcos.com/auth/github/callback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        code,
+                        redirect_uri: 'https://diegonmarcos.github.io/myphotos/oauth-callback.html'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.access_token && data.user) {
+                    // Store auth data
+                    localStorage.setItem('photos_github_token', data.access_token);
+                    localStorage.setItem('photos_github_user', JSON.stringify(data.user));
+
+                    showSuccess(data.user.login);
+
+                    // Redirect to photos app
+                    setTimeout(() => {
+                        window.location.href = 'https://photos.diegonmarcos.com/library/';
+                    }, 1500);
+                } else {
+                    showError(data.error || 'Failed to complete authentication.');
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+                console.error('OAuth error:', error);
+            }
+        })();
+    </script>
+</body>
+</html>

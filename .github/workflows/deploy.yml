@@ -349,8 +349,8 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
-          # Copy cv_pdf and others (no build needed)
-          cp -r cv_pdf/ others/ _site/ 2>/dev/null || true
+          # Copy cv_pdf, others, myphotos, and mymail (no build needed - static sites)
+          cp -r cv_pdf/ others/ myphotos/ mymail/ _site/ 2>/dev/null || true
 
           # Copy Linktree build (if dist exists)
           if [ -d "linktree/dist" ]; then

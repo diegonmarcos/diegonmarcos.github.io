@@ -1399,12 +1399,220 @@
         <div id="cost-tab" class="tab-content">
             <!-- Cost Sub-tabs -->
             <div class="cost-subtabs">
-                <button class="cost-subtab-btn active" data-subtab="cost-ai">AI Costs</button>
-                <button class="cost-subtab-btn" data-subtab="cost-infra">Infrastructure</button>
+                <button class="cost-subtab-btn active" data-subtab="cost-infra">Infrastructure</button>
+                <button class="cost-subtab-btn" data-subtab="cost-ai">AI Costs</button>
             </div>
 
+            <!-- Infrastructure Cost Sub-tab -->
+            <div id="cost-infra" class="cost-subtab-content active">
+            <!-- Infrastructure Summary Card -->
+            <div class="cost-summary-grid">
+                <div class="cost-summary-card">
+                    <div class="cost-card-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3h18v18H3z"/>
+                            <path d="M3 9h18M9 21V9"/>
+                        </svg>
+                    </div>
+                    <div class="cost-card-content">
+                        <div class="cost-card-label">Total Infrastructure</div>
+                        <div class="cost-card-value" id="cost-infra-total">~$5-7/mo</div>
+                        <div class="cost-card-sublabel">3 Free + 1 Paid (Dormant)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VM Cost Breakdown -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">VM Cost Breakdown</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>Provider</th>
+                                    <th>Tier</th>
+                                    <th>vCPU</th>
+                                    <th>RAM</th>
+                                    <th>Storage</th>
+                                    <th>Fixed/mo</th>
+                                    <th>GB/hr</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>OCI Ampere 1</strong></td>
+                                    <td>Oracle Cloud</td>
+                                    <td>Always Free</td>
+                                    <td>4 ARM</td>
+                                    <td>24GB</td>
+                                    <td>200GB</td>
+                                    <td>$0.00</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OCI Ampere 2</strong></td>
+                                    <td>Oracle Cloud</td>
+                                    <td>Always Free</td>
+                                    <td>4 ARM</td>
+                                    <td>24GB</td>
+                                    <td>100GB</td>
+                                    <td>$0.00</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OCI E4.Flex</strong></td>
+                                    <td>Oracle Cloud</td>
+                                    <td>Paid</td>
+                                    <td>2 AMD</td>
+                                    <td>16GB</td>
+                                    <td>100GB</td>
+                                    <td>~$5-7</td>
+                                    <td>$0.0096</td>
+                                    <td><span class="status-badge pending">Dormant</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GCP e2-micro</strong></td>
+                                    <td>Google Cloud</td>
+                                    <td>Free Tier</td>
+                                    <td>0.25</td>
+                                    <td>1GB</td>
+                                    <td>30GB</td>
+                                    <td>$0.00</td>
+                                    <td>-</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr class="totals-row">
+                                    <td><strong>Total</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>10.25</td>
+                                    <td>65GB</td>
+                                    <td>430GB</td>
+                                    <td><strong>~$5-7</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Providers Summary -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Provider Summary</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Provider</th>
+                                    <th>Tier</th>
+                                    <th>Monthly Cost</th>
+                                    <th>VMs</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Oracle Cloud</strong></td>
+                                    <td>Always Free</td>
+                                    <td>$0.00</td>
+                                    <td>2</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Oracle Cloud</strong></td>
+                                    <td>Paid (E4.Flex)</td>
+                                    <td>~$5-7</td>
+                                    <td>1</td>
+                                    <td><span class="status-badge pending">Dormant</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Google Cloud</strong></td>
+                                    <td>Free Tier</td>
+                                    <td>$0.00</td>
+                                    <td>1</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr class="totals-row">
+                                    <td><strong>Total</strong></td>
+                                    <td>-</td>
+                                    <td><strong>~$5-7</strong></td>
+                                    <td>4</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Costs -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Additional Costs</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Provider</th>
+                                    <th>Type</th>
+                                    <th>Monthly Cost</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Domain</strong></td>
+                                    <td>Cloudflare</td>
+                                    <td>DNS + Registrar</td>
+                                    <td>~$1/mo</td>
+                                    <td>diegonmarcos.com</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>GitHub Pages</strong></td>
+                                    <td>GitHub</td>
+                                    <td>Static Hosting</td>
+                                    <td>$0.00</td>
+                                    <td>Free tier</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloudflare Tunnel</strong></td>
+                                    <td>Cloudflare</td>
+                                    <td>Tunnel + SSL</td>
+                                    <td>$0.00</td>
+                                    <td>Free tier</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Bitwarden</strong></td>
+                                    <td>Bitwarden EU</td>
+                                    <td>Password Manager</td>
+                                    <td>$0.00</td>
+                                    <td>Free tier</td>
+                                </tr>
+                                <tr class="totals-row">
+                                    <td><strong>Total Additional</strong></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td><strong>~$1</strong></td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div><!-- End Infrastructure Cost Sub-tab -->
+
             <!-- AI Cost Sub-tab -->
-            <div id="cost-ai" class="cost-subtab-content active">
+            <div id="cost-ai" class="cost-subtab-content">
             <!-- AI Summary Cards -->
             <div class="cost-summary-grid">
                 <div class="cost-summary-card">
@@ -1461,9 +1669,90 @@
                 </div>
             </div>
 
+            <!-- AI Model Pricing Reference -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">AI Model Pricing Reference</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Provider</th>
+                                    <th>Model</th>
+                                    <th>Input $/1M</th>
+                                    <th>Output $/1M</th>
+                                    <th>Cache Read</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td colspan="7" style="background: var(--bg-tertiary); font-weight: bold;">Anthropic (Claude)</td></tr>
+                                <tr>
+                                    <td>Anthropic</td>
+                                    <td><strong>Claude Opus 4.5</strong></td>
+                                    <td>$15.00</td>
+                                    <td>$75.00</td>
+                                    <td>$1.50</td>
+                                    <td>API</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Anthropic</td>
+                                    <td><strong>Claude Sonnet 4.5</strong></td>
+                                    <td>$3.00</td>
+                                    <td>$15.00</td>
+                                    <td>$0.30</td>
+                                    <td>API</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Anthropic</td>
+                                    <td><strong>Claude Haiku 4.5</strong></td>
+                                    <td>$0.80</td>
+                                    <td>$4.00</td>
+                                    <td>$0.08</td>
+                                    <td>API</td>
+                                    <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr><td colspan="7" style="background: var(--bg-tertiary); font-weight: bold;">Google (Gemini)</td></tr>
+                                <tr>
+                                    <td>Google</td>
+                                    <td><strong>Gemini 2.0 Flash</strong></td>
+                                    <td>$0.10</td>
+                                    <td>$0.40</td>
+                                    <td>$0.025</td>
+                                    <td>API</td>
+                                    <td><span class="status-badge pending">Planned</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Google</td>
+                                    <td><strong>Gemini 1.5 Pro</strong></td>
+                                    <td>$1.25</td>
+                                    <td>$5.00</td>
+                                    <td>$0.31</td>
+                                    <td>API</td>
+                                    <td><span class="status-badge pending">Planned</span></td>
+                                </tr>
+                                <tr><td colspan="7" style="background: var(--bg-tertiary); font-weight: bold;">Local (Self-hosted)</td></tr>
+                                <tr>
+                                    <td>Local</td>
+                                    <td><strong>DeepSeek R1</strong></td>
+                                    <td>$0.00</td>
+                                    <td>$0.00</td>
+                                    <td>-</td>
+                                    <td>Local</td>
+                                    <td><span class="status-badge dev">Dev</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- Model Distribution -->
             <div class="resources-category">
-                <h3 class="resources-category-title">AI Model Distribution (Today)</h3>
+                <h3 class="resources-category-title">Claude Model Distribution (Today)</h3>
                 <div class="resources-section">
                     <div class="model-distribution-bar" id="model-dist-bar">
                         <div class="model-dist-segment model-opus" style="width: 0%" id="model-opus-bar"></div>
@@ -1473,19 +1762,19 @@
                     <div class="model-distribution-legend">
                         <div class="model-legend-item">
                             <span class="model-legend-dot model-opus"></span>
-                            <span class="model-legend-label">Opus</span>
+                            <span class="model-legend-label">Opus 4.5</span>
                             <span class="model-legend-value" id="model-opus-cost">$0.00</span>
                             <span class="model-legend-percent" id="model-opus-pct">0%</span>
                         </div>
                         <div class="model-legend-item">
                             <span class="model-legend-dot model-sonnet"></span>
-                            <span class="model-legend-label">Sonnet</span>
+                            <span class="model-legend-label">Sonnet 4.5</span>
                             <span class="model-legend-value" id="model-sonnet-cost">$0.00</span>
                             <span class="model-legend-percent" id="model-sonnet-pct">0%</span>
                         </div>
                         <div class="model-legend-item">
                             <span class="model-legend-dot model-haiku"></span>
-                            <span class="model-legend-label">Haiku</span>
+                            <span class="model-legend-label">Haiku 4.5</span>
                             <span class="model-legend-value" id="model-haiku-cost">$0.00</span>
                             <span class="model-legend-percent" id="model-haiku-pct">0%</span>
                         </div>
@@ -1549,76 +1838,6 @@
             </div>
 
             </div><!-- End AI Cost Sub-tab -->
-
-            <!-- Infrastructure Cost Sub-tab -->
-            <div id="cost-infra" class="cost-subtab-content">
-            <!-- Infrastructure Summary Card -->
-            <div class="cost-summary-grid">
-                <div class="cost-summary-card">
-                    <div class="cost-card-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 3h18v18H3z"/>
-                            <path d="M3 9h18M9 21V9"/>
-                        </svg>
-                    </div>
-                    <div class="cost-card-content">
-                        <div class="cost-card-label">Total Infrastructure</div>
-                        <div class="cost-card-value" id="cost-infra-total">~$5-7</div>
-                        <div class="cost-card-sublabel">3 Free + 1 Paid (Dormant)</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Infrastructure Providers -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Infrastructure Providers</h3>
-                <div class="resources-section">
-                    <div class="resources-table-container">
-                        <table class="resources-table">
-                            <thead>
-                                <tr>
-                                    <th>Provider</th>
-                                    <th>Tier</th>
-                                    <th>Monthly Cost</th>
-                                    <th>Services</th>
-                                    <th>Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Oracle Cloud</strong></td>
-                                    <td>Always Free</td>
-                                    <td>$0.00</td>
-                                    <td>2 VMs</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Oracle Cloud</strong></td>
-                                    <td>Paid (E4.Flex)</td>
-                                    <td>~$5-7</td>
-                                    <td>1 VM</td>
-                                    <td><span class="status-badge on">Dormant</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Google Cloud</strong></td>
-                                    <td>Free Tier</td>
-                                    <td>$0.00</td>
-                                    <td>1 VM</td>
-                                    <td><span class="status-badge on">Active</span></td>
-                                </tr>
-                                <tr class="totals-row">
-                                    <td><strong>Total</strong></td>
-                                    <td>-</td>
-                                    <td><strong>~$5-7</strong></td>
-                                    <td>4</td>
-                                    <td>-</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            </div><!-- End Infrastructure Cost Sub-tab -->
 
         </div><!-- End Cost Tab -->
 

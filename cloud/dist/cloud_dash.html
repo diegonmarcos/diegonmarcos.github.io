@@ -31,6 +31,9 @@
             border-radius: var(--border-radius);
         }
 
+        /* Wake-on-Demand Button Styles */
+        .wake-btn{display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;background:var(--bg-secondary);border:1px solid var(--accent-green);border-radius:var(--border-radius);color:var(--accent-green);font-size:.7rem;font-weight:600;cursor:pointer;transition:all .2s ease}.wake-btn:hover:not(:disabled){background:var(--accent-green);color:#000}.wake-btn:disabled{opacity:.5;cursor:not-allowed;border-color:var(--border-color);color:var(--text-secondary)}.wake-btn svg{width:12px;height:12px}.wake-btn .spinner{width:12px;height:12px;border:2px solid rgba(0,0,0,0);border-top-color:currentColor;border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}[data-theme=blurred] .wake-btn{border-radius:8px;background:rgba(16,185,129,.1)}[data-theme=blurred] .wake-btn:hover:not(:disabled){background:var(--accent-green);box-shadow:0 0 15px rgba(16,185,129,.3)}.vm-dormant{background:rgba(255,200,0,.02)}[data-theme=blurred] .vm-dormant{background:rgba(255,200,0,.05)}
+
         .dashboard-title {
             display: flex;
             align-items: center;
@@ -76,6 +79,55 @@
 
         .auto-refresh-toggle input {
             accent-color: var(--accent-primary);
+        }
+
+        /* API Toggle Switch */
+        .api-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.3rem 0.6rem;
+            border-radius: var(--border-radius);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+
+        .api-toggle:hover {
+            border-color: var(--accent-primary);
+        }
+
+        .api-toggle input {
+            display: none;
+        }
+
+        .api-toggle-label {
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .api-toggle input:checked + .api-toggle-label {
+            color: var(--accent-green);
+        }
+
+        .api-toggle input:checked + .api-toggle-label::before {
+            content: "● ";
+        }
+
+        .api-toggle input:not(:checked) + .api-toggle-label {
+            color: var(--accent-orange);
+        }
+
+        .api-toggle input:not(:checked) + .api-toggle-label::before {
+            content: "○ ";
+        }
+
+        [data-theme=blurred] .api-toggle {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
         }
 
         .refresh-btn {
@@ -873,6 +925,235 @@
             padding: 2rem;
             color: var(--text-secondary);
         }
+
+        /* Performance Page Styles */
+        .percentage-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .percentage-bar {
+            flex: 1;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            min-width: 100px;
+        }
+
+        .percentage-fill {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+
+        .percentage-fill[data-level="ok"] {
+            background: linear-gradient(90deg, #51cf66, #69db7c);
+        }
+
+        .percentage-fill[data-level="warning"] {
+            background: linear-gradient(90deg, #ffc107, #ffdd57);
+        }
+
+        .percentage-fill[data-level="danger"] {
+            background: linear-gradient(90deg, #ff6b6b, #ff8787);
+        }
+
+        .percentage-text {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 45px;
+            text-align: right;
+        }
+
+        .percentage-labels {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resource-value {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .percentage-labels .percentage-text {
+            font-size: 0.75rem;
+            color: var(--accent-blue);
+        }
+
+        .resource-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .resource-value {
+            font-family: var(--font-mono);
+            font-weight: 600;
+        }
+
+        .resource-percent {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .kill-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--accent-red);
+            border-radius: var(--border-radius);
+            color: var(--accent-red);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .kill-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .kill-btn:hover:not(:disabled) {
+            background: var(--accent-red);
+            color: #000;
+        }
+
+        .kill-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        [data-theme=blurred] .kill-btn {
+            border-radius: 12px;
+        }
+
+        [data-theme=blurred] .kill-btn:hover:not(:disabled) {
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+        }
+
+        /* VM Actions (for Status page) */
+        .vm-actions-inline {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .vm-action-btn {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0;
+        }
+
+        .vm-action-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .vm-action-btn:hover:not(:disabled) {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .vm-action-btn.btn-ssh:hover {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .vm-action-btn.btn-url:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        .vm-action-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .ip-address {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        /* Hierarchical Services Table (Status page) */
+        .services-hierarchical .service-parent-row {
+            background: var(--bg-card);
+            font-weight: 500;
+        }
+
+        .services-hierarchical .service-child-row {
+            background: var(--bg-secondary);
+        }
+
+        .services-hierarchical .service-child-row td {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .child-service-name {
+            padding-left: 2rem;
+            color: var(--text-secondary);
+        }
+
+        [data-theme=blurred] .services-hierarchical .service-child-row {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .live-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.75rem;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--text-secondary);
+            opacity: 0.4;
+        }
+
+        .live-status.checking .live-dot {
+            animation: pulse-checking 2s ease-in-out infinite;
+        }
+
+        .live-status.online .live-dot {
+            background: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green);
+            opacity: 1;
+        }
+
+        .live-status.offline .live-dot {
+            background: var(--accent-red);
+            box-shadow: 0 0 6px var(--accent-red);
+            opacity: 1;
+        }
+
+        @keyframes pulse-checking {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+        }
     </style>
     <script>
         // Apply saved theme immediately
@@ -945,6 +1226,10 @@
                 <h2>Live Monitoring</h2>
             </div>
             <div class="dashboard-controls">
+                <label class="api-toggle" title="Toggle between API (online) and Local JS (offline)">
+                    <input type="checkbox" id="api-toggle" checked>
+                    <span class="api-toggle-label">API</span>
+                </label>
                 <span class="last-updated">Last: <span id="last-updated">--:--:--</span></span>
                 <label class="auto-refresh-toggle">
                     <input type="checkbox" id="auto-refresh" checked>
@@ -975,90 +1260,34 @@
             <div class="resources-section">
                 <div class="resources-table-container">
                     <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>VM</th><th>IP</th><th>SSH</th><th>RAM</th><th>Storage</th><th>Status</th><th>Action</th></tr></thead>
-                        <tbody>
-                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Web Server 1</strong></td><td>130.110.251.193</td><td>ssh ubuntu@130.110.251.193</td><td>800MB-1.5GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-web-server-1"><span class="live-dot"></span>Checking...</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-web-server-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge on">ON</span></td><td><strong>Oracle Services Server 1</strong></td><td>129.151.228.66</td><td>ssh ubuntu@129.151.228.66</td><td>600MB-1.2GB</td><td>5-15GB</td><td><span class="live-status checking" data-vm="oracle-services-server-1"><span class="live-dot"></span>Checking...</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-services-server-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge dev">DEV</span></td><td><strong>GCloud Arch 1</strong></td><td>pending</td><td>-</td><td>800MB-1.5GB</td><td>10-50GB</td><td><span class="live-status pending" data-vm="gcloud-arch-1"><span class="live-dot"></span>Pending</span></td><td><button class="reboot-btn" data-vm-reboot="gcloud-arch-1" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
-                            <tr class="vm-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Oracle ARM Server</strong></td><td>pending</td><td>-</td><td>6-24GB</td><td>5-20GB</td><td><span class="live-status hold" data-vm="oracle-arm-server"><span class="live-dot"></span>Hold</span></td><td><button class="reboot-btn" data-vm-reboot="oracle-arm-server" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>Reboot</button></td></tr>
-                        </tbody>
+                        <thead><tr><th>Mode</th><th>Host</th><th>VM</th><th>IP</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="vms-tbody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- User Services -->
+        <!-- Services Section -->
         <div class="resources-category">
-            <h3 class="resources-category-title">User Services</h3>
+            <h3 class="resources-category-title">Services</h3>
             <div class="resources-section">
                 <div class="resources-table-container">
-                    <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Sync</strong></td><td>sync.diegonmarcos.com</td><td>130.110.251.193:8384</td><td>128-256MB</td><td>5.2-106GB</td><td><span class="live-status checking" data-service="sync-app"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ syncthing</td><td></td><td>:8384</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>-</td><td>100-500MB</td><td></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>mail.diegonmarcos.com</td><td>-</td><td>520MB-1GB</td><td>5-50GB</td><td><span class="live-status dev" data-service="mail-app"><span class="live-dot"></span>Dev</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>-</td><td>:1194</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status dev" data-service="vpn-app"><span class="live-dot"></span>Dev</span></td></tr>
-                        </tbody>
+                    <table class="resources-table status-table services-hierarchical">
+                        <thead><tr><th>VM</th><th>Name</th><th>URL</th><th>IP:PORT</th><th>Proxy Name</th><th>STATUS</th></tr></thead>
+                        <tbody id="services-tbody"></tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- Coder Services -->
+        <!-- Backlog Section -->
         <div class="resources-category">
-            <h3 class="resources-category-title">Coder Services</h3>
+            <h3 class="resources-category-title">Backlog (DEV/HOLD)</h3>
             <div class="resources-section">
                 <div class="resources-table-container">
                     <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Matomo</strong></td><td>analytics.diegonmarcos.com</td><td>129.151.228.66:8080</td><td>512MB-1GB</td><td>3-15GB</td><td><span class="live-status checking" data-service="analytics-app"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ matomo-app</td><td></td><td>:8080</td><td>256-512MB</td><td>2-5GB</td><td></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ matomo-db (MariaDB)</td><td></td><td>:3306</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Cloud Dashboard</strong></td><td>cloud.diegonmarcos.com</td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status checking" data-service="cloud-app"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Gitea</strong></td><td>git.diegonmarcos.com</td><td>:3000</td><td>264-544MB</td><td>11-15GB</td><td><span class="live-status dev" data-service="git-app"><span class="live-dot"></span>Dev</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Web Terminal</strong></td><td>terminal.diegonmarcos.com</td><td>:7681</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status dev" data-service="terminal-app"><span class="live-dot"></span>Dev</span></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- AI Services -->
-        <div class="resources-category">
-            <h3 class="resources-category-title">AI Services</h3>
-            <div class="resources-section">
-                <div class="resources-table-container">
-                    <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>n8n (AI)</strong></td><td>ai.diegonmarcos.com</td><td>-</td><td>1.3-48GB</td><td>3-20GB</td><td><span class="live-status hold" data-service="n8n-ai-app"><span class="live-dot"></span>Hold</span></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-app</td><td></td><td>:5678</td><td>1-48GB</td><td>2-10GB</td><td></td></tr>
-                            <tr class="component-row"><td></td><td class="component-name">↳ n8n-ai-db (PostgreSQL)</td><td></td><td>-</td><td>256-512MB</td><td>1-10GB</td><td></td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Infra Services -->
-        <div class="resources-category">
-            <h3 class="resources-category-title">Infra Services</h3>
-            <div class="resources-section">
-                <div class="resources-table-container">
-                    <table class="resources-table status-table">
-                        <thead><tr><th>Mode</th><th>Service</th><th>URL</th><th>IP:Port</th><th>RAM</th><th>Storage</th><th>Status</th></tr></thead>
-                        <tbody>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM (Oracle Web)</strong></td><td>-</td><td>130.110.251.193:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status checking" data-service="npm-oracle-web"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM (Oracle Services)</strong></td><td>-</td><td>129.151.228.66:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status checking" data-service="npm-oracle-services"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>NPM (Oracle ARM)</strong></td><td>-</td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status hold" data-service="npm-oracle-arm"><span class="live-dot"></span>Hold</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>NPM (GCloud)</strong></td><td>-</td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="live-status dev" data-service="npm-gcloud"><span class="live-dot"></span>Dev</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>n8n.diegonmarcos.com</td><td>130.110.251.193:5678</td><td>256-512MB</td><td>500MB-2GB</td><td><span class="live-status checking" data-service="n8n-infra-app"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Cloud Dashboard API</strong></td><td>-</td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="live-status checking" data-service="cloud-api"><span class="live-dot"></span>Checking...</span></td></tr>
-                            <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Redis</strong></td><td>-</td><td>:6379</td><td>64-256MB</td><td>100MB-1GB</td><td><span class="live-status dev" data-service="cache-app"><span class="live-dot"></span>Dev</span></td></tr>
-                        </tbody>
+                        <thead><tr><th>Service</th><th>Status</th><th>VM</th><th>Notes</th></tr></thead>
+                        <tbody id="backlog-tbody"></tbody>
                     </table>
                 </div>
             </div>
@@ -1068,105 +1297,53 @@
 
         <!-- Performance Tab Content -->
         <div id="performance-tab" class="tab-content">
-            <!-- VM Metrics Section -->
+            <!-- VM Resources Section -->
             <div class="resources-category">
                 <h3 class="resources-category-title">VM Resources</h3>
-                <div class="vm-metrics-grid" id="vm-metrics-grid">
-                    <!-- Will be populated by JavaScript -->
-                    <div class="loading-placeholder">Loading VM metrics...</div>
-                </div>
-            </div>
-
-            <!-- Capacity Assessment -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Capacity Assessment</h3>
-                <div class="capacity-grid">
-                    <div class="capacity-card" id="cap-oracle-web">
-                        <div class="capacity-header">
-                            <span class="capacity-name">Oracle Web 1</span>
-                            <span class="capacity-status status-warning">AT LIMIT</span>
-                        </div>
-                        <div class="capacity-bar">
-                            <div class="capacity-fill" style="width: 85%" data-level="warning"></div>
-                        </div>
-                        <div class="capacity-details">
-                            <span>~850MB / 1024MB RAM</span>
-                            <span>8 services</span>
-                        </div>
-                    </div>
-
-                    <div class="capacity-card" id="cap-oracle-svc">
-                        <div class="capacity-header">
-                            <span class="capacity-name">Oracle Services 1</span>
-                            <span class="capacity-status status-warning">CLOSE</span>
-                        </div>
-                        <div class="capacity-bar">
-                            <div class="capacity-fill" style="width: 70%" data-level="warning"></div>
-                        </div>
-                        <div class="capacity-details">
-                            <span>~700MB / 1024MB RAM</span>
-                            <span>4 services</span>
-                        </div>
-                    </div>
-
-                    <div class="capacity-card" id="cap-gcloud">
-                        <div class="capacity-header">
-                            <span class="capacity-name">GCloud Arch 1</span>
-                            <span class="capacity-status status-dev">DEV</span>
-                        </div>
-                        <div class="capacity-bar">
-                            <div class="capacity-fill" style="width: 0%" data-level="ok"></div>
-                        </div>
-                        <div class="capacity-details">
-                            <span>0MB / 1024MB RAM</span>
-                            <span>4 services planned</span>
-                        </div>
-                    </div>
-
-                    <div class="capacity-card" id="cap-arm">
-                        <div class="capacity-header">
-                            <span class="capacity-name">Oracle ARM</span>
-                            <span class="capacity-status status-hold">HOLD</span>
-                        </div>
-                        <div class="capacity-bar">
-                            <div class="capacity-fill" style="width: 0%" data-level="ok"></div>
-                        </div>
-                        <div class="capacity-details">
-                            <span>0GB / 24GB RAM</span>
-                            <span>AI workloads (pending)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Container Metrics Table -->
-            <div class="resources-category">
-                <h3 class="resources-category-title">Container Metrics</h3>
                 <div class="resources-section">
                     <div class="resources-table-container">
-                        <table class="resources-table">
+                        <table class="resources-table performance-table">
                             <thead>
                                 <tr>
-                                    <th>Container</th>
                                     <th>VM</th>
-                                    <th>CPU</th>
-                                    <th>Memory</th>
-                                    <th>Status</th>
+                                    <th>RAM (Available)</th>
+                                    <th>RAM % Used</th>
+                                    <th>Storage (Available)</th>
+                                    <th>Storage % Used</th>
                                 </tr>
                             </thead>
-                            <tbody id="container-metrics-body">
-                                <tr>
-                                    <td colspan="5" style="text-align: center; color: var(--text-secondary);">
-                                        Loading container metrics...
-                                    </td>
-                                </tr>
+                            <tbody id="performance-vms-tbody">
+                                <tr><td colspan="5" class="loading-placeholder">Loading VM metrics...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <!-- Resource Estimates -->
+            <!-- Service Resources Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Service Resources</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table performance-table">
+                            <thead>
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>RAM</th>
+                                    <th>Storage</th>
+                                    <th>VRAM</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performance-services-tbody">
+                                <tr><td colspan="5" class="loading-placeholder">Loading service metrics...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Planning (Keep existing estimates) -->
             <div class="resources-category">
                 <h3 class="resources-category-title">Resource Planning</h3>
                 <div class="resources-section">
@@ -1385,8 +1562,8 @@
                     </div>
                     <div class="cost-card-content">
                         <div class="cost-card-label">Total Infrastructure</div>
-                        <div class="cost-card-value" id="cost-infra-total">$0.00</div>
-                        <div class="cost-card-sublabel">Oracle + GCloud (Free Tier)</div>
+                        <div class="cost-card-value" id="cost-infra-total">~$5-7</div>
+                        <div class="cost-card-sublabel">3 Free + 1 Paid (Dormant)</div>
                     </div>
                 </div>
             </div>
@@ -1409,24 +1586,31 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Oracle Cloud</strong></td>
-                                    <td>Free Tier (Always)</td>
+                                    <td>Always Free</td>
                                     <td>$0.00</td>
-                                    <td>3 VMs (2 Micro, 1 ARM pending)</td>
+                                    <td>2 VMs</td>
                                     <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Oracle Cloud</strong></td>
+                                    <td>Paid (E4.Flex)</td>
+                                    <td>~$5-7</td>
+                                    <td>1 VM</td>
+                                    <td><span class="status-badge on">Dormant</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Google Cloud</strong></td>
-                                    <td>Free Tier (e2-micro)</td>
+                                    <td>Free Tier</td>
                                     <td>$0.00</td>
-                                    <td>1 VM (planned)</td>
-                                    <td><span class="status-badge dev">Dev</span></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Anthropic API</strong></td>
-                                    <td>Pay-as-you-go</td>
-                                    <td id="anthropic-monthly-cost">$0.00</td>
-                                    <td>Claude 3.x Models</td>
+                                    <td>1 VM</td>
                                     <td><span class="status-badge on">Active</span></td>
+                                </tr>
+                                <tr class="totals-row">
+                                    <td><strong>Total</strong></td>
+                                    <td>-</td>
+                                    <td><strong>~$5-7</strong></td>
+                                    <td>4</td>
+                                    <td>-</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1439,53 +1623,263 @@
 
     </div>
 
-    <script>
-        // Configuration
-        const apiUrl = 'http://130.110.251.193:5000/api';
+    <!-- Load local data as fallback (generated by cloud_dash.py --export js) -->
+    <script src="cloud_dash_data.js"></script>
 
-        // GitHub OAuth Configuration
-        // 1. Create OAuth App: https://github.com/settings/developers
-        // 2. Set Homepage URL: https://cloud.diegonmarcos.com
-        // 3. Set Callback URL: https://cloud.diegonmarcos.com/cloud_dash.html
-        // 4. Copy Client ID below, set Client Secret in backend env GITHUB_CLIENT_SECRET
+    <script>
+        // =================================================================
+        // CONFIGURATION
+        // =================================================================
+        const apiUrl = 'http://84.235.234.87:5000/api';
         const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
-        // Use current page URL as redirect (works for both github.io and custom domain)
         const GITHUB_REDIRECT_URI = window.location.href.split('?')[0];
 
+        // =================================================================
+        // STATE
+        // =================================================================
+        let dataSourceMode = localStorage.getItem('dataSourceMode') || 'api';
         let autoRefreshInterval = null;
         let isLoading = false;
         let isLoggedIn = false;
         let githubUser = null;
 
-        // Auto-refresh toggle
-        document.getElementById('auto-refresh').addEventListener('change', function() {
-            if (this.checked) {
-                startAutoRefresh();
-            } else {
-                stopAutoRefresh();
+        // =================================================================
+        // DATA SOURCE TOGGLE (API / LOCAL)
+        // Simple: API mode fetches from server, Local mode uses CONFIG from .js file
+        // =================================================================
+
+        // Initialize UI on page load
+        (function init() {
+            const toggle = document.getElementById('api-toggle');
+            const label = document.querySelector('.api-toggle-label');
+
+            toggle.checked = (dataSourceMode === 'api');
+            label.textContent = (dataSourceMode === 'api') ? 'API' : 'Local';
+
+            if (dataSourceMode === 'local') {
+                document.getElementById('connection-status').classList.add('disconnected');
             }
+        })();
+
+        // Toggle change handler
+        document.getElementById('api-toggle').addEventListener('change', function() {
+            dataSourceMode = this.checked ? 'api' : 'local';
+            localStorage.setItem('dataSourceMode', dataSourceMode);
+            document.querySelector('.api-toggle-label').textContent = this.checked ? 'API' : 'Local';
         });
 
-        function startAutoRefresh() {
-            stopAutoRefresh();
-            autoRefreshInterval = setInterval(refreshAll, 30000);
+        // =================================================================
+        // RENDER TABLES FROM CONFIG (JSON is source of truth!)
+        // =================================================================
+        function renderTablesFromConfig() {
+            if (typeof CONFIG === 'undefined') {
+                console.error('CONFIG not loaded');
+                return;
+            }
+
+            // ===== RENDER VMs TABLE =====
+            const vmsTbody = document.getElementById('vms-tbody');
+            if (vmsTbody) {
+                vmsTbody.innerHTML = '';
+                Object.values(CONFIG.virtualMachines || {}).forEach(vm => {
+                    const statusBadge = vm.status === 'active' ? 'on' : vm.status === 'pending' ? 'tbd' : vm.status === 'hold' ? 'hold' : 'dev';
+                    const provider = CONFIG.providers?.[vm.provider];
+                    const hostName = provider?.name || vm.provider || 'Unknown';
+                    const ip = vm.network?.publicIp || 'pending';
+
+                    // Actions column with SSH copy and URL open buttons
+                    const sshCommand = vm.ssh?.command || `ssh ${vm.ssh?.user || 'root'}@${ip}`;
+                    const consoleUrl = vm.ociInstanceId ? `https://cloud.oracle.com/compute/instances/${vm.ociInstanceId}` : (provider?.consoleUrl || '');
+
+                    vmsTbody.innerHTML += `
+                        <tr class="vm-row">
+                            <td><span class="status-badge ${statusBadge}">${statusBadge.toUpperCase()}</span></td>
+                            <td>${hostName}</td>
+                            <td><strong>${vm.name}</strong></td>
+                            <td><code class="ip-address">${ip}</code></td>
+                            <td><span class="live-status checking" data-vm="${vm.id}"><span class="live-dot"></span>Checking...</span></td>
+                            <td>
+                                <div class="vm-actions-inline">
+                                    <button class="vm-action-btn btn-ssh" onclick="copyToClipboard('${sshCommand.replace(/'/g, "\\'")}', 'SSH command copied!')" title="Copy SSH command">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                        </svg>
+                                    </button>
+                                    <button class="vm-action-btn btn-url" onclick="window.open('${consoleUrl}', '_blank')" ${!consoleUrl ? 'disabled' : ''} title="Open cloud console">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                            <polyline points="15 3 21 3 21 9"/>
+                                            <line x1="10" y1="14" x2="21" y2="3"/>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`;
+                });
+            }
+
+            // ===== RENDER SERVICES TABLE (UNIFIED HIERARCHICAL) =====
+            const servicesTbody = document.getElementById('services-tbody');
+            const backlogTbody = document.getElementById('backlog-tbody');
+
+            if (servicesTbody && backlogTbody) {
+                servicesTbody.innerHTML = '';
+                backlogTbody.innerHTML = '';
+
+                // Get all parent services (those without parentService property)
+                const parentServices = Object.values(CONFIG.services || {})
+                    .filter(svc => !svc.parentService);
+
+                parentServices.forEach(parent => {
+                    // Skip if DEV/HOLD - goes to backlog
+                    if (parent.status === 'dev' || parent.status === 'hold') {
+                        const vm = CONFIG.virtualMachines?.[parent.vmId];
+                        backlogTbody.innerHTML += `
+                            <tr>
+                                <td><strong>${parent.displayName || parent.name}</strong></td>
+                                <td><span class="status-badge ${parent.status}">${parent.status.toUpperCase()}</span></td>
+                                <td>${vm?.name || 'TBD'}</td>
+                                <td>${parent.notes || '-'}</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    // Get child services
+                    const children = Object.values(CONFIG.services || {})
+                        .filter(svc => svc.parentService === parent.id);
+
+                    const vm = CONFIG.virtualMachines?.[parent.vmId];
+                    const vmName = vm?.name || '-';
+
+                    // Find the NPM proxy serving this service
+                    const npmService = Object.values(CONFIG.services || {})
+                        .find(svc => svc.vmId === vm?.id && svc.id.includes('npm'));
+                    const proxyName = npmService?.displayName || npmService?.name || '-';
+
+                    const url = parent.urls?.gui || parent.urls?.api || parent.network?.domain || '-';
+                    const ip = vm?.network?.publicIp || '-';
+
+                    // Parent row
+                    const appChild = children.find(c => c.id.endsWith('-app'));
+                    const statusServiceId = appChild?.id || parent.id;
+
+                    servicesTbody.innerHTML += `
+                        <tr class="service-parent-row">
+                            <td><strong>${vmName}</strong></td>
+                            <td><strong>${parent.displayName || parent.name}</strong></td>
+                            <td>${url !== '-' ? `<a href="${url}" target="_blank" style="color: var(--accent-blue)">${url}</a>` : '-'}</td>
+                            <td>-</td>
+                            <td>${proxyName}</td>
+                            <td><span class="live-status checking" data-service="${statusServiceId}"><span class="live-dot"></span>Checking...</span></td>
+                        </tr>
+                    `;
+
+                    // Child rows (indented)
+                    children.forEach(child => {
+                        const port = child.network?.proxyAddress?.split(':')[1] || '-';
+                        const ipPort = port !== '-' ? `${ip}:${port}` : '-';
+
+                        servicesTbody.innerHTML += `
+                            <tr class="service-child-row">
+                                <td></td>
+                                <td class="child-service-name">↳ ${child.displayName || child.name}</td>
+                                <td>-</td>
+                                <td><code>${ipPort}</code></td>
+                                <td>-</td>
+                                <td><span class="status-badge ${child.status}">${child.status.toUpperCase()}</span></td>
+                            </tr>
+                        `;
+                    });
+                });
+            }
+
+            console.log('Tables rendered from CONFIG');
         }
 
-        function stopAutoRefresh() {
-            if (autoRefreshInterval) {
-                clearInterval(autoRefreshInterval);
-                autoRefreshInterval = null;
+        function copyToClipboard(text, message) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(message || 'Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy:', err);
+            });
+        }
+
+        // =================================================================
+        // REFRESH FUNCTION
+        // API mode: fetch from server
+        // Local mode: re-render from CONFIG (no page reload)
+        // =================================================================
+        function refreshAll() {
+            if (dataSourceMode === 'local') {
+                fetchFromLocal();
+            } else {
+                fetchFromAPI();
             }
         }
 
-        // Update a single status badge
-        function updateStatus(element, status, label) {
-            element.className = 'live-status ' + status;
-            element.innerHTML = `<span class="live-dot"></span>${label}`;
+        function fetchFromLocal() {
+            console.log('fetchFromLocal() called');
+            const connectionStatus = document.getElementById('connection-status');
+            connectionStatus.classList.add('disconnected');
+
+            if (typeof CONFIG === 'undefined') {
+                console.error('CONFIG not loaded - cloud_dash_data.js missing');
+                document.getElementById('last-updated').textContent = 'No local data';
+                return;
+            }
+
+            console.log('CONFIG loaded, virtualMachines:', Object.keys(CONFIG.virtualMachines || {}));
+            console.log('CONFIG loaded, services:', Object.keys(CONFIG.services || {}));
+
+            // Convert CONFIG to API-like format
+            // Note: JSON has "Online" (capital O) not "online"
+            const data = {
+                vms: [{
+                    category: 'All VMs',
+                    vms: Object.values(CONFIG.virtualMachines || {}).map(vm => ({
+                        id: vm.id,
+                        status: vm.runtimeStatus?.Online ? 'Online' : (vm.status === 'pending' ? 'Pending' : 'Offline')
+                    }))
+                }],
+                services: [{
+                    category: 'All Services',
+                    services: Object.values(CONFIG.services || {})
+                        .filter(svc => svc.parentService)
+                        .map(svc => ({
+                            id: svc.id,
+                            health_status: svc.status === 'on' ? 'healthy' :
+                                           svc.status === 'dev' ? 'development' :
+                                           svc.status === 'hold' ? 'hold' : 'tbd'
+                        }))
+                }]
+            };
+
+            console.log('Data for updateDashboard:', JSON.stringify(data, null, 2));
+            try {
+                updateDashboard(data);
+            } catch (e) {
+                console.error('updateDashboard ERROR:', e);
+            }
+            document.getElementById('last-updated').textContent = new Date().toLocaleTimeString() + ' (local)';
+            console.log('fetchFromLocal() completed');
         }
 
-        // Fetch API and update status badges
-        async function refreshAll() {
+        // Fetch full config from API and render tables (for API mode without local JS file)
+        async function fetchConfigFromAPI() {
+            try {
+                const response = await fetch(`${apiUrl}/config`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const config = await response.json();
+                window.CONFIG = config;
+                renderTablesFromConfig();
+            } catch (error) {
+                console.error('Failed to fetch config from API:', error);
+            }
+        }
+
+        async function fetchFromAPI() {
             if (isLoading) return;
             isLoading = true;
 
@@ -1496,63 +1890,87 @@
             try {
                 const response = await fetch(`${apiUrl}/dashboard/summary`);
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const data = await response.json();
+                const apiData = await response.json();
 
+                // API already returns data in the correct format for updateDashboard()
+                // Format: { vms: [{category, vms: [{id, status}]}], services: [{category, services: [{id, health_status}]}] }
                 connectionStatus.classList.remove('disconnected');
-
-                // Update VM statuses
-                data.vms.forEach(cat => {
-                    cat.vms.forEach(vm => {
-                        const el = document.querySelector(`[data-vm="${vm.id}"]`);
-                        if (el) {
-                            const status = vm.status.toLowerCase().replace(' ', '-');
-                            const statusMap = {
-                                'online': { class: 'online', label: 'Online' },
-                                'offline': { class: 'offline', label: 'Offline' },
-                                'no-ssh': { class: 'pending', label: 'No SSH' },
-                                'pending': { class: 'pending', label: 'Pending' }
-                            };
-                            const s = statusMap[status] || { class: 'checking', label: vm.status };
-                            updateStatus(el, s.class, s.label);
-                        }
-                    });
-                });
-
-                // Update Service statuses
-                data.services.forEach(cat => {
-                    cat.services.forEach(svc => {
-                        const el = document.querySelector(`[data-service="${svc.id}"]`);
-                        if (el) {
-                            const statusMap = {
-                                'healthy': { class: 'online', label: 'Healthy' },
-                                'error': { class: 'offline', label: 'Error' },
-                                'development': { class: 'dev', label: 'Dev' },
-                                'hold': { class: 'hold', label: 'Hold' },
-                                'tbd': { class: 'pending', label: 'TBD' },
-                                'no_url': { class: 'pending', label: 'N/A' }
-                            };
-                            const s = statusMap[svc.health_status] || { class: 'checking', label: svc.health_status };
-                            updateStatus(el, s.class, s.label);
-                        }
-                    });
-                });
-
+                updateDashboard(apiData);
                 document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
             } catch (error) {
                 console.error('API Error:', error);
                 connectionStatus.classList.add('disconnected');
-
-                // Mark all checking statuses as offline
-                document.querySelectorAll('.live-status.checking').forEach(el => {
-                    updateStatus(el, 'offline', 'Error');
-                });
+                document.getElementById('last-updated').textContent = 'API Error';
             } finally {
                 refreshBtn.classList.remove('loading');
                 isLoading = false;
             }
         }
 
+        function updateDashboard(data) {
+            console.log('updateDashboard() called with', data.vms[0]?.vms?.length, 'VMs and', data.services[0]?.services?.length, 'services');
+
+            // Update VM statuses
+            data.vms.forEach(cat => {
+                cat.vms.forEach(vm => {
+                    const el = document.querySelector(`[data-vm="${vm.id}"]`);
+                    console.log(`VM ${vm.id}: element found = ${!!el}, status = ${vm.status}`);
+                    if (el) {
+                        const status = vm.status.toLowerCase().replace(' ', '-');
+                        const statusMap = {
+                            'online': { class: 'online', label: 'Online' },
+                            'offline': { class: 'offline', label: 'Offline' },
+                            'no-ssh': { class: 'pending', label: 'No SSH' },
+                            'pending': { class: 'pending', label: 'Pending' }
+                        };
+                        const s = statusMap[status] || { class: 'checking', label: vm.status };
+                        el.className = 'live-status ' + s.class;
+                        el.innerHTML = `<span class="live-dot"></span>${s.label}`;
+                    }
+                });
+            });
+
+            // Update Service statuses
+            data.services.forEach(cat => {
+                cat.services.forEach(svc => {
+                    const el = document.querySelector(`[data-service="${svc.id}"]`);
+                    console.log(`Service ${svc.id}: element found = ${!!el}, status = ${svc.health_status}`);
+                    if (el) {
+                        const statusMap = {
+                            'healthy': { class: 'online', label: 'Healthy' },
+                            'error': { class: 'offline', label: 'Error' },
+                            'development': { class: 'dev', label: 'Dev' },
+                            'hold': { class: 'hold', label: 'Hold' },
+                            'tbd': { class: 'pending', label: 'TBD' },
+                            'no_url': { class: 'pending', label: 'N/A' }
+                        };
+                        const s = statusMap[svc.health_status] || { class: 'checking', label: svc.health_status };
+                        el.className = 'live-status ' + s.class;
+                        el.innerHTML = `<span class="live-dot"></span>${s.label}`;
+                    }
+                });
+            });
+            console.log('updateDashboard() completed');
+        }
+
+        // =================================================================
+        // AUTO-REFRESH
+        // API mode: fetch every 30s
+        // Local mode: reload page every 30s
+        // =================================================================
+        document.getElementById('auto-refresh').addEventListener('change', function() {
+            if (this.checked) {
+                autoRefreshInterval = setInterval(refreshAll, 30000);
+            } else {
+                clearInterval(autoRefreshInterval);
+                autoRefreshInterval = null;
+            }
+        });
+
+
+        // =================================================================
         // GitHub OAuth Functions
+        // =================================================================
         function handleGitHubLogin() {
             if (isLoggedIn) {
                 // Logout
@@ -1701,6 +2119,88 @@
         }
 
         // ============================================
+        // WAKE-ON-DEMAND FUNCTIONS
+        // ============================================
+
+        async function checkDevServerStatus() {
+            try {
+                const resp = await fetch(`${apiUrl}/wake/status`);
+                const data = await resp.json();
+
+                const statusEl = document.getElementById('dev-server-status');
+                const textEl = document.getElementById('dev-server-status-text');
+                const wakeBtn = document.getElementById('wake-dev-btn');
+
+                if (data.state === 'RUNNING') {
+                    statusEl.className = 'live-status online';
+                    textEl.textContent = 'Running';
+                    wakeBtn.disabled = true;
+                    wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Running';
+                } else if (data.state === 'STOPPED') {
+                    statusEl.className = 'live-status offline';
+                    textEl.textContent = 'Sleeping';
+                    wakeBtn.disabled = false;
+                    wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                } else {
+                    statusEl.className = 'live-status checking';
+                    textEl.textContent = data.state || 'Unknown';
+                }
+            } catch (e) {
+                console.error('Failed to check dev server status:', e);
+            }
+        }
+
+        async function wakeDevServer() {
+            const wakeBtn = document.getElementById('wake-dev-btn');
+            const statusEl = document.getElementById('dev-server-status');
+            const textEl = document.getElementById('dev-server-status-text');
+
+            wakeBtn.disabled = true;
+            wakeBtn.innerHTML = '<span class="spinner"></span> Waking...';
+            statusEl.className = 'live-status checking';
+            textEl.textContent = 'Waking...';
+
+            try {
+                const resp = await fetch(`${apiUrl}/wake/trigger`, { method: 'POST' });
+                const data = await resp.json();
+
+                if (data.success) {
+                    // Poll for running status
+                    let attempts = 0;
+                    const maxAttempts = 24; // 2 minutes (24 * 5s)
+
+                    const checkInterval = setInterval(async () => {
+                        attempts++;
+                        const statusResp = await fetch(`${apiUrl}/wake/status`);
+                        const statusData = await statusResp.json();
+
+                        if (statusData.state === 'RUNNING') {
+                            clearInterval(checkInterval);
+                            statusEl.className = 'live-status online';
+                            textEl.textContent = 'Running';
+                            wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Running';
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(checkInterval);
+                            statusEl.className = 'live-status checking';
+                            textEl.textContent = 'Timeout';
+                            wakeBtn.disabled = false;
+                            wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                        }
+                    }, 5000);
+                } else {
+                    throw new Error(data.message || 'Wake failed');
+                }
+            } catch (e) {
+                console.error('Failed to wake dev server:', e);
+                alert(`Failed to wake dev server: ${e.message}`);
+                wakeBtn.disabled = false;
+                wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                statusEl.className = 'live-status offline';
+                textEl.textContent = 'Sleeping';
+            }
+        }
+
+        // ============================================
         // COST TAB FUNCTIONS
         // ============================================
 
@@ -1792,7 +2292,11 @@
         // ============================================
 
         async function loadPerformanceData() {
-            await Promise.all([fetchVMMetrics(), fetchContainerMetrics()]);
+            await Promise.all([
+                loadPerformanceVMsTable(),
+                loadPerformanceServicesTable(),
+                fetchContainerMetrics()
+            ]);
         }
 
         async function fetchVMMetrics() {
@@ -1847,6 +2351,267 @@
             } catch (error) {
                 console.error('Error fetching container metrics:', error);
             }
+        }
+
+        // Performance Page Functions
+        async function loadPerformanceVMsTable() {
+            const tbody = document.getElementById('performance-vms-tbody');
+            if (!tbody) return;
+
+            try {
+                if (dataSourceMode === 'api') {
+                    const response = await fetch(`${apiUrl}/metrics/vms`);
+                    const data = await response.json();
+
+                    tbody.innerHTML = '';
+                    for (const [vmId, vm] of Object.entries(data)) {
+                        const ramTotal = vm.memory?.total || 0;
+                        const ramUsed = vm.memory?.used || 0;
+                        const ramPercent = ramTotal > 0 ? ((ramUsed / ramTotal) * 100).toFixed(1) : '0.0';
+
+                        const storageTotal = vm.disk?.total || 0;
+                        const storageUsed = vm.disk?.used || 0;
+                        const storagePercent = storageTotal > 0 ? ((storageUsed / storageTotal) * 100).toFixed(1) : '0.0';
+
+                        tbody.innerHTML += `
+                            <tr>
+                                <td><strong>${vm.name || vmId}</strong></td>
+                                <td>${formatBytes(ramTotal)}</td>
+                                <td>
+                                    <div class="percentage-cell">
+                                        <div class="percentage-bar">
+                                            <div class="percentage-fill" style="width: ${ramPercent}%"
+                                                 data-level="${getUsageLevel(ramPercent)}"></div>
+                                        </div>
+                                        <span class="percentage-text">${ramPercent}%</span>
+                                    </div>
+                                </td>
+                                <td>${formatBytes(storageTotal)}</td>
+                                <td>
+                                    <div class="percentage-cell">
+                                        <div class="percentage-bar">
+                                            <div class="percentage-fill" style="width: ${storagePercent}%"
+                                                 data-level="${getUsageLevel(storagePercent)}"></div>
+                                        </div>
+                                        <span class="percentage-text">${storagePercent}%</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                } else {
+                    // Local mode - use CONFIG data
+                    tbody.innerHTML = '';
+                    if (typeof CONFIG !== 'undefined' && CONFIG.virtualMachines) {
+                        Object.values(CONFIG.virtualMachines).forEach(vm => {
+                            const ramTotal = vm.specs?.ram || '-';
+                            const storageTotal = vm.specs?.storage || '-';
+
+                            tbody.innerHTML += `
+                                <tr>
+                                    <td><strong>${vm.name}</strong></td>
+                                    <td>${ramTotal}</td>
+                                    <td><span class="text-secondary">N/A (local mode)</span></td>
+                                    <td>${storageTotal}</td>
+                                    <td><span class="text-secondary">N/A (local mode)</span></td>
+                                </tr>
+                            `;
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading VM performance metrics:', error);
+                tbody.innerHTML = '<tr><td colspan="5" class="error-placeholder">Failed to load VM metrics</td></tr>';
+            }
+        }
+
+        async function loadPerformanceServicesTable() {
+            const tbody = document.getElementById('performance-services-tbody');
+            if (!tbody) return;
+
+            try {
+                if (dataSourceMode === 'api') {
+                    // Fetch both services and VM metrics
+                    const [servicesResponse, vmsResponse] = await Promise.all([
+                        fetch(`${apiUrl}/metrics/services`),
+                        fetch(`${apiUrl}/metrics/vms`)
+                    ]);
+                    const services = await servicesResponse.json();
+                    const vmsMetrics = await vmsResponse.json();
+
+                    // Group services by VM
+                    const servicesByVM = {};
+                    services.forEach(svc => {
+                        if (!servicesByVM[svc.vm_id]) {
+                            servicesByVM[svc.vm_id] = [];
+                        }
+                        servicesByVM[svc.vm_id].push(svc);
+                    });
+
+                    // Sort services within each VM by RAM usage (descending)
+                    Object.values(servicesByVM).forEach(vmServices => {
+                        vmServices.sort((a, b) => b.ram - a.ram);
+                    });
+
+                    tbody.innerHTML = '';
+                    const isLoggedIn = localStorage.getItem('github_token');
+
+                    // Render each VM group
+                    for (const [vmId, vmServices] of Object.entries(servicesByVM)) {
+                        const vm = CONFIG?.virtualMachines?.[vmId];
+                        const vmMetrics = vmsMetrics[vmId] || {};
+                        const vmName = vm?.name || vmId;
+
+                        // VM Header Row
+                        tbody.innerHTML += `
+                            <tr class="vm-group-header">
+                                <td colspan="5">
+                                    <strong>${vmName}</strong> —
+                                    Total: ${formatBytes(vmMetrics.memory?.total || 0)} RAM,
+                                    ${formatBytes(vmMetrics.disk?.total || 0)} Storage
+                                    <span style="margin-left: 1rem; color: var(--text-secondary);">
+                                        (${vmMetrics.memory?.percent_used || 0}% RAM used,
+                                        ${vmMetrics.disk?.percent_used || 0}% Disk used)
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+
+                        // Service Rows (sorted by RAM)
+                        vmServices.forEach(svc => {
+                            const vmRam = vmMetrics.memory?.total || 0;
+                            const vmStorage = vmMetrics.disk?.total || 0;
+                            const ramPercent = vmRam > 0 ? ((svc.ram / vmRam) * 100).toFixed(1) : '0';
+                            const storagePercent = vmStorage > 0 ? ((svc.storage / vmStorage) * 100).toFixed(1) : '0';
+
+                            const killBtn = isLoggedIn ?
+                                `<button class="kill-btn" onclick="killService('${svc.id}')" title="Kill container">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <line x1="15" y1="9" x2="9" y2="15"/>
+                                        <line x1="9" y1="9" x2="15" y2="15"/>
+                                    </svg>
+                                    Kill
+                                </button>` :
+                                `<button class="kill-btn" disabled title="Login required">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                    Locked
+                                </button>`;
+
+                            tbody.innerHTML += `
+                                <tr class="vm-service-row">
+                                    <td style="padding-left: 2rem;">↳ ${svc.name}</td>
+                                    <td>
+                                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${formatBytes(svc.ram)}</span>
+                                            <div class="percentage-cell">
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill" style="width: ${ramPercent}%"
+                                                         data-level="${getUsageLevel(ramPercent)}"></div>
+                                                </div>
+                                                <span class="percentage-text">${ramPercent}%</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div style="display: flex; flex-direction: column; gap: 0.25rem;">
+                                            <span style="font-size: 0.8rem; color: var(--text-secondary);">${formatBytes(svc.storage)}</span>
+                                            <div class="percentage-cell">
+                                                <div class="percentage-bar">
+                                                    <div class="percentage-fill" style="width: ${storagePercent}%"
+                                                         data-level="${getUsageLevel(storagePercent)}"></div>
+                                                </div>
+                                                <span class="percentage-text">${storagePercent}%</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>${formatBytes(svc.vram || 0)}</td>
+                                    <td>${killBtn}</td>
+                                </tr>
+                            `;
+                        });
+                    }
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-secondary" style="text-align: center;">API mode required for live metrics</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading service performance metrics:', error);
+                tbody.innerHTML = '<tr><td colspan="5" class="error-placeholder">Failed to load service metrics</td></tr>';
+            }
+        }
+
+        async function killService(serviceId) {
+            const isLoggedIn = localStorage.getItem('github_token');
+            if (!isLoggedIn) {
+                alert('Please login to kill services');
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to kill ${serviceId}? This will stop the container.`)) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('github_token');
+                const response = await fetch(`${apiUrl}/service/${serviceId}/kill`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    showNotification(`${serviceId} killed successfully`);
+                    setTimeout(() => loadPerformanceServicesTable(), 1000);
+                } else {
+                    const error = await response.text();
+                    throw new Error(error);
+                }
+            } catch (error) {
+                alert(`Failed to kill service: ${error.message}`);
+            }
+        }
+
+        function formatBytes(bytes) {
+            if (!bytes || bytes === 0) return '0 B';
+            const k = 1024;
+            const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function parseResourceValue(value) {
+            if (!value) return 0;
+            if (typeof value === 'number') return value;
+            const match = value.match(/(\d+(?:\.\d+)?)\s*([KMGT]?B)/i);
+            if (!match) return 0;
+            const num = parseFloat(match[1]);
+            const unit = match[2].toUpperCase();
+            const multipliers = { 'B': 1, 'KB': 1024, 'MB': 1024*1024, 'GB': 1024*1024*1024, 'TB': 1024*1024*1024*1024 };
+            return num * (multipliers[unit] || 1);
+        }
+
+        function getUsageLevel(percent) {
+            const p = parseFloat(percent);
+            if (p < 60) return 'ok';
+            if (p < 80) return 'warning';
+            return 'danger';
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('closing');
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
         }
 
         // Tab Switching with Lazy Loading
@@ -1931,15 +2696,30 @@
         }
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             checkExistingLogin();
             handleOAuthCallback();
             initRebootButtons();
             initTabs();
             initCostSubtabs();
-            refreshAll();
+
+            // Render tables from CONFIG (JSON is source of truth!)
+            if (dataSourceMode === 'api') {
+                // API mode: fetch config from API to render tables
+                await fetchConfigFromAPI();
+                checkDevServerStatus();
+            } else {
+                // Local mode: use local CONFIG from cloud_dash_data.js
+                if (typeof CONFIG !== 'undefined') {
+                    renderTablesFromConfig();
+                }
+            }
+
+            refreshAll(); // Always refresh on page load (either from API or Local)
+
+            // Start auto-refresh if enabled
             if (document.getElementById('auto-refresh').checked) {
-                startAutoRefresh();
+                autoRefreshInterval = setInterval(refreshAll, 30000);
             }
         });
     </script>

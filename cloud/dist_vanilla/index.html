@@ -149,10 +149,36 @@
                 <h2>Front</h2>
             </section>
 
-            <!-- User Subsection -->
-            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User</h3>
+            <!-- User Productivity Subsection -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Productivity</h3>
             <div class="cards-grid">
-                <div class="card" data-service="sync">
+                <div class="card" data-service="mail" data-url="https://mail.diegonmarcos.com">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <h3>Mail</h3>
+                    <p>mail.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="calendar" data-url="https://cal.diegonmarcos.com">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <h3>Calendar</h3>
+                    <p>cal.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="sync" data-url="https://sync.diegonmarcos.com">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="23 4 23 10 17 10"/>
@@ -165,15 +191,30 @@
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="mail">
+                <div class="card" data-service="photos" data-url="https://photos.diegonmarcos.com">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                            <polyline points="22,6 12,13 2,6"/>
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
                         </svg>
                     </div>
-                    <h3>Mail</h3>
-                    <p>mail.diegonmarcos.com</p>
+                    <h3>Photos</h3>
+                    <p>photos.diegonmarcos.com</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+            </div>
+
+            <!-- User Security Subsection -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Security</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="vault">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Vault</h3>
+                    <p>Bitwarden / Vaultwarden</p>
                     <div class="card-status pending">Dev</div>
                 </div>
 
@@ -444,8 +485,11 @@
             <!-- Infra - User Services (SSH) -->
             <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Services (SSH)</h3>
             <div class="cards-grid">
+                <div class="card"><h3>Mail-app</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Calendar-app</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>Sync-app</h3><div class="card-status online">Online</div></div>
-                <div class="card"><h3>Mail-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Photos-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Vault-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>VPN-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Web_ide-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Gitlab-app</h3><div class="card-status pending">Dev</div></div>
@@ -458,7 +502,7 @@
                 <div class="card"><h3>sync_server-db</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>sync_files-db</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>sync_obj-db</h3><div class="card-status online">Online</div></div>
-                <div class="card"><h3>mail-server-db</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>mail-server-db</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>mail-obj-db</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>git_server-db</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>git_repo-db</h3><div class="card-status pending">Dev</div></div>

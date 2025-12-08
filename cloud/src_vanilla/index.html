@@ -1968,10 +1968,32 @@
                     }
                 });
             });
+
+            // Handle card clicks - open data-url in new tab
+            const cardsWithUrl = document.querySelectorAll('.card[data-url]');
+            cardsWithUrl.forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+
+            // Handle button clicks with data-url
+            const btnsWithUrl = document.querySelectorAll('button[data-url], .btn-url[data-url]');
+            btnsWithUrl.forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const url = this.getAttribute('data-url');
+                    if (url) {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
         });
     </script>
-
-    <script src="script.js"></script>
 
     <!-- Matomo Page Tracking -->
     <script src="public/matomo.js"></script>

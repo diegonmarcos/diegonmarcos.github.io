@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPhotos - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --github: #24292f;
+            --github-hover: #32383f;
+            --authelia: #0ea5e9;
+            --authelia-hover: #0284c7;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Carousel Background */
+        .carousel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide:nth-child(1) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+        }
+
+        .carousel-slide:nth-child(2) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #f093fb 100%);
+        }
+
+        .carousel-slide:nth-child(3) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #43e97b 100%);
+        }
+
+        .carousel-slide:nth-child(4) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 50%, #fa709a 100%);
+        }
+
+        .carousel-slide:nth-child(5) {
+            background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 50%, #a6c1ee 100%);
+        }
+
+        /* Animated shapes overlay */
+        .shapes-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: -150px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            bottom: 10%;
+            right: 5%;
+            animation-delay: -5s;
+        }
+
+        .shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 40%;
+            left: 5%;
+            animation-delay: -10s;
+        }
+
+        .shape:nth-child(4) {
+            width: 250px;
+            height: 250px;
+            bottom: -100px;
+            left: 30%;
+            animation-delay: -15s;
+        }
+
+        .shape:nth-child(5) {
+            width: 180px;
+            height: 180px;
+            top: 20%;
+            right: 15%;
+            animation-delay: -7s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translateY(-30px) rotate(5deg) scale(1.05);
+            }
+            50% {
+                transform: translateY(20px) rotate(-5deg) scale(0.95);
+            }
+            75% {
+                transform: translateY(-15px) rotate(3deg) scale(1.02);
+            }
+        }
+
+        /* Dark overlay for readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Login card */
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.25),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo area */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px 10px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        .logo svg {
+            width: 48px;
+            height: 48px;
+        }
+
+        .app-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.5px;
+        }
+
+        .app-tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 32px 0;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        }
+
+        .divider span {
+            padding: 0 16px;
+        }
+
+        /* Login buttons */
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .login-btn:hover::before {
+            left: 100%;
+        }
+
+        .login-btn svg {
+            width: 22px;
+            height: 22px;
+            flex-shrink: 0;
+        }
+
+        /* GitHub button */
+        .btn-github {
+            background: var(--github);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-github:hover {
+            background: var(--github-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Authelia button */
+        .btn-authelia {
+            background: linear-gradient(135deg, var(--authelia) 0%, #0369a1 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-authelia:hover {
+            background: linear-gradient(135deg, var(--authelia-hover) 0%, #075985 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+        }
+
+        /* Security badge */
+        .security-info {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            color: #34d399;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .security-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Carousel indicators */
+        .carousel-indicators {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            display: flex;
+            gap: 10px;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .indicator.active {
+            background: #fff;
+            transform: scale(1.3);
+        }
+
+        .indicator:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Footer */
+        .footer {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 20;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 32px 24px;
+                border-radius: 20px;
+            }
+
+            .app-name {
+                font-size: 24px;
+            }
+
+            .logo {
+                width: 64px;
+                height: 64px;
+            }
+
+            .logo svg {
+                width: 36px;
+                height: 36px;
+            }
+
+            .login-btn {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            .footer {
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Carousel Background -->
+    <div class="carousel">
+        <div class="carousel-slide active"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+    </div>
+
+    <!-- Floating shapes -->
+    <div class="shapes-overlay">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Dark overlay -->
+    <div class="overlay"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="login-card">
+            <div class="logo-container">
+                <div class="logo">
+                    <!-- Camera/Photo icon -->
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                        <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                </div>
+                <h1 class="app-name">MyPhotos</h1>
+                <p class="app-tagline">Your memories, beautifully organized</p>
+            </div>
+
+            <div class="divider">
+                <span>Sign in to continue</span>
+            </div>
+
+            <div class="login-buttons">
+                <!-- GitHub OAuth Button -->
+                <a href="#" onclick="startGitHubOAuth()" class="login-btn btn-github">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Continue with GitHub
+                </a>
+
+                <!-- Authelia 2FA Button -->
+                <a href="https://auth.diegonmarcos.com/?rd=https://photos.diegonmarcos.com/" class="login-btn btn-authelia">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        <circle cx="12" cy="16" r="1"/>
+                    </svg>
+                    Continue with Authelia 2FA
+                </a>
+            </div>
+
+            <div class="security-info">
+                <div class="security-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                    Secured with encryption
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Carousel indicators -->
+    <div class="carousel-indicators">
+        <div class="indicator active" data-slide="0"></div>
+        <div class="indicator" data-slide="1"></div>
+        <div class="indicator" data-slide="2"></div>
+        <div class="indicator" data-slide="3"></div>
+        <div class="indicator" data-slide="4"></div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <a href="https://cloud.diegonmarcos.com">cloud.diegonmarcos.com</a>
+    </div>
+
+    <script>
+        // GitHub OAuth configuration
+        const GITHUB_CLIENT_ID = 'Ov23liKzAXxNm61g6wWu'; // Your GitHub OAuth App Client ID
+        const GITHUB_REDIRECT_URI = 'https://diegonmarcos.github.io/myphotos/oauth-callback.html';
+        const GITHUB_SCOPE = 'read:user';
+
+        function startGitHubOAuth() {
+            // Generate random state for CSRF protection
+            const state = Math.random().toString(36).substring(2, 15);
+            sessionStorage.setItem('oauth_state', state);
+
+            const authUrl = `https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(GITHUB_REDIRECT_URI)}&scope=${GITHUB_SCOPE}&state=${state}`;
+            window.location.href = authUrl;
+        }
+
+        // Carousel functionality
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.indicator');
+        let currentSlide = 0;
+        let autoSlideInterval;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            indicators[currentSlide].classList.remove('active');
+
+            currentSlide = index;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+
+            slides[currentSlide].classList.add('active');
+            indicators[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        // Auto-advance carousel
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 2000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // Click handlers for indicators
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                stopAutoSlide();
+                goToSlide(index);
+                startAutoSlide();
+            });
+        });
+
+        // Start auto-sliding
+        startAutoSlide();
+
+        // Pause on hover over login card
+        const loginCard = document.querySelector('.login-card');
+        loginCard.addEventListener('mouseenter', stopAutoSlide);
+        loginCard.addEventListener('mouseleave', startAutoSlide);
+
+        // Add subtle parallax to shapes on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            shapes.forEach((shape, i) => {
+                const factor = (i + 1) * 0.5;
+                shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

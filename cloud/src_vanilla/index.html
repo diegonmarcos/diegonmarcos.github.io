@@ -148,22 +148,9 @@
                 <h2>Front</h2>
             </section>
 
-            <!-- User Subsection -->
-            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User</h3>
+            <!-- User Productivity Subsection -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Productivity</h3>
             <div class="cards-grid">
-                <div class="card" data-service="sync">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="23 4 23 10 17 10"/>
-                            <polyline points="1 20 1 14 7 14"/>
-                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
-                        </svg>
-                    </div>
-                    <h3>Sync</h3>
-                    <p>sync.diegonmarcos.com</p>
-                    <div class="card-status online">Online</div>
-                </div>
-
                 <div class="card" data-service="mail">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -188,6 +175,46 @@
                     <h3>Calendar</h3>
                     <p>mail.diegonmarcos.com/calendar</p>
                     <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="sync">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <polyline points="1 20 1 14 7 14"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                    </div>
+                    <h3>Sync</h3>
+                    <p>sync.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="photos">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <h3>Photos</h3>
+                    <p>photos.diegonmarcos.com</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
+            </div>
+
+            <!-- User Security Subsection -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Security</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="vault">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                    </div>
+                    <h3>Vault</h3>
+                    <p>Bitwarden / Vaultwarden</p>
+                    <div class="card-status pending">Dev</div>
                 </div>
 
                 <div class="card" data-service="openvpn">
@@ -457,9 +484,11 @@
             <!-- Infra - User Services (SSH) -->
             <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Services (SSH)</h3>
             <div class="cards-grid">
-                <div class="card"><h3>Sync-app</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>Mail-app</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>Calendar-app</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Sync-app</h3><div class="card-status online">Online</div></div>
+                <div class="card"><h3>Photos-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Vault-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>VPN-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Web_ide-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Gitlab-app</h3><div class="card-status pending">Dev</div></div>

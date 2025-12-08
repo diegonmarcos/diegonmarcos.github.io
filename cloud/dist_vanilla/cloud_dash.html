@@ -81,55 +81,6 @@
             accent-color: var(--accent-primary);
         }
 
-        /* API Toggle Switch */
-        .api-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0.3rem 0.6rem;
-            border-radius: var(--border-radius);
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            transition: all 0.2s ease;
-        }
-
-        .api-toggle:hover {
-            border-color: var(--accent-primary);
-        }
-
-        .api-toggle input {
-            display: none;
-        }
-
-        .api-toggle-label {
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .api-toggle input:checked + .api-toggle-label {
-            color: var(--accent-green);
-        }
-
-        .api-toggle input:checked + .api-toggle-label::before {
-            content: "● ";
-        }
-
-        .api-toggle input:not(:checked) + .api-toggle-label {
-            color: var(--accent-orange);
-        }
-
-        .api-toggle input:not(:checked) + .api-toggle-label::before {
-            content: "○ ";
-        }
-
-        [data-theme=blurred] .api-toggle {
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-        }
-
         .refresh-btn {
             display: flex;
             align-items: center;
@@ -1878,10 +1829,6 @@
                 <h2>Live Monitoring</h2>
             </div>
             <div class="dashboard-controls">
-                <label class="api-toggle" title="Toggle between API (online) and Local JS (offline)">
-                    <input type="checkbox" id="api-toggle" checked>
-                    <span class="api-toggle-label">API</span>
-                </label>
                 <span class="last-updated">Last: <span id="last-updated">--:--:--</span></span>
                 <label class="auto-refresh-toggle">
                     <input type="checkbox" id="auto-refresh" checked>
@@ -2967,38 +2914,15 @@
         // =================================================================
         // STATE
         // =================================================================
-        // Force local mode on GitHub Pages (no API available)
         const isGitHubPages = window.location.hostname.includes('github.io');
-        let dataSourceMode = isGitHubPages ? 'local' : (localStorage.getItem('dataSourceMode') || 'local');
         let autoRefreshInterval = null;
         let isLoading = false;
         let isLoggedIn = false;
         let githubUser = null;
 
         // =================================================================
-        // DATA SOURCE TOGGLE (API / LOCAL)
-        // Simple: API mode fetches from server, Local mode uses CONFIG from .js file
+        // DATA SOURCE: Try API first, fallback to local .js files
         // =================================================================
-
-        // Initialize UI on page load
-        (function init() {
-            const toggle = document.getElementById('api-toggle');
-            const label = document.querySelector('.api-toggle-label');
-
-            toggle.checked = (dataSourceMode === 'api');
-            label.textContent = (dataSourceMode === 'api') ? 'API' : 'Local';
-
-            if (dataSourceMode === 'local') {
-                document.getElementById('connection-status').classList.add('disconnected');
-            }
-        })();
-
-        // Toggle change handler
-        document.getElementById('api-toggle').addEventListener('change', function() {
-            dataSourceMode = this.checked ? 'api' : 'local';
-            localStorage.setItem('dataSourceMode', dataSourceMode);
-            document.querySelector('.api-toggle-label').textContent = this.checked ? 'API' : 'Local';
-        });
 
         // =================================================================
         // RENDER TABLES FROM CONFIG (JSON is source of truth!)
@@ -3140,15 +3064,10 @@
 
         // =================================================================
         // REFRESH FUNCTION
-        // API mode: fetch from server
-        // Local mode: re-render from CONFIG (no page reload)
+        // Single mode: Try API first, fallback to local .js files on error
         // =================================================================
         function refreshAll() {
-            if (dataSourceMode === 'local') {
-                fetchFromLocal();
-            } else {
-                fetchFromAPI();
-            }
+            fetchFromAPI();  // Always try API first, falls back to local on error
         }
 
         function fetchFromLocal() {
@@ -3231,8 +3150,10 @@
                 document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
             } catch (error) {
                 console.error('API Error:', error);
+                console.log('Falling back to local .js files...');
                 connectionStatus.classList.add('disconnected');
-                document.getElementById('last-updated').textContent = 'API Error';
+                // Fallback to local data on API error
+                fetchFromLocal();
             } finally {
                 refreshBtn.classList.remove('loading');
                 isLoading = false;
@@ -4287,18 +4208,18 @@
             initCostSubtabs();
 
             // Render tables from CONFIG (JSON is source of truth!)
-            // ALWAYS render from local CONFIG first (creates DOM elements)
+            // Render from local CONFIG first (creates DOM elements)
             if (typeof CONFIG !== 'undefined') {
                 renderTablesFromConfig();
             }
 
-            // Only try API if NOT on GitHub Pages AND mode is API
-            if (!isGitHubPages && dataSourceMode === 'api') {
-                await fetchConfigFromAPI();
+            // Check dev server status if not on GitHub Pages
+            if (!isGitHubPages) {
                 checkDevServerStatus();
             }
 
-            refreshAll(); // Always refresh on page load (either from API or Local)
+            // Refresh data: tries API first, falls back to local .js files on error
+            refreshAll();
 
             // Start auto-refresh if enabled
             if (document.getElementById('auto-refresh').checked) {

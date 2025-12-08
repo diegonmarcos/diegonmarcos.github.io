@@ -3123,14 +3123,31 @@
             console.log('CONFIG loaded, virtualMachines:', Object.keys(CONFIG.virtualMachines || {}));
             console.log('CONFIG loaded, services:', Object.keys(CONFIG.services || {}));
 
+            // Helper function to determine VM status
+            // Priority: 1. Live runtimeStatus from API  2. Static status from config
+            function getVMStatus(vm) {
+                // Check if we have live runtime status from API
+                const liveStatus = CONFIG.runtimeStatus?.vms?.[vm.id];
+                if (liveStatus?.Online !== undefined) {
+                    return liveStatus.Online ? 'Online' : 'Offline';
+                }
+                // Fall back to static config status
+                switch (vm.status) {
+                    case 'active': return 'Online';  // Config says VM should be running
+                    case 'pending': return 'Pending';
+                    case 'hold': return 'Hold';
+                    case 'tbd': return 'TBD';
+                    default: return 'Unknown';
+                }
+            }
+
             // Convert CONFIG to API-like format
-            // Note: JSON has "Online" (capital O) not "online"
             const data = {
                 vms: [{
                     category: 'All VMs',
                     vms: Object.values(CONFIG.virtualMachines || {}).map(vm => ({
                         id: vm.id,
-                        status: vm.runtimeStatus?.Online ? 'Online' : (vm.status === 'pending' ? 'Pending' : 'Offline')
+                        status: getVMStatus(vm)
                     }))
                 }],
                 services: [{
@@ -3152,7 +3169,9 @@
             } catch (e) {
                 console.error('updateDashboard ERROR:', e);
             }
-            document.getElementById('last-updated').textContent = new Date().toLocaleTimeString() + ' (local)';
+            // Show config lastUpdated timestamp if available, otherwise current time
+            const configDate = CONFIG.lastUpdated ? `Config: ${CONFIG.lastUpdated}` : '';
+            document.getElementById('last-updated').textContent = new Date().toLocaleTimeString() + ' (local)' + (configDate ? ` | ${configDate}` : '');
             console.log('fetchFromLocal() completed');
         }
 
@@ -3213,7 +3232,10 @@
                             'online': { class: 'online', label: 'Online' },
                             'offline': { class: 'offline', label: 'Offline' },
                             'no-ssh': { class: 'pending', label: 'No SSH' },
-                            'pending': { class: 'pending', label: 'Pending' }
+                            'pending': { class: 'pending', label: 'Pending' },
+                            'hold': { class: 'hold', label: 'Hold' },
+                            'tbd': { class: 'pending', label: 'TBD' },
+                            'unknown': { class: 'pending', label: 'Unknown' }
                         };
                         const s = statusMap[status] || { class: 'checking', label: vm.status };
                         el.className = 'live-status ' + s.class;

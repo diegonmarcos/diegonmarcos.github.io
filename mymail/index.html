@@ -469,6 +469,37 @@
             font-size: 12px;
             color: var(--aurora-1);
             font-family: 'SF Mono', 'Monaco', monospace;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+        }
+
+        .copy-btn:hover {
+            opacity: 1;
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .copy-btn svg {
+            width: 12px;
+            height: 12px;
+            stroke: var(--aurora-1);
+        }
+
+        .copy-btn.copied svg {
+            stroke: var(--aurora-4);
         }
 
         /* Security badge */
@@ -640,33 +671,33 @@
                 <div class="config-grid">
                     <div class="config-item">
                         <div class="config-label">IMAP</div>
-                        <div class="config-value">:993 SSL</div>
+                        <div class="config-value"><span data-copy="993">:993 SSL</span><button class="copy-btn" onclick="copyValue(this, '993')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                     <div class="config-item">
                         <div class="config-label">SMTP</div>
-                        <div class="config-value">:587 TLS</div>
+                        <div class="config-value"><span data-copy="587">:587 TLS</span><button class="copy-btn" onclick="copyValue(this, '587')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
                 <div class="config-grid" style="margin-top: 12px;">
                     <div class="config-item" style="grid-column: 1 / -1;">
                         <div class="config-label">Mail Server</div>
-                        <div class="config-value">mail.diegonmarcos.com</div>
+                        <div class="config-value"><span>mail.diegonmarcos.com</span><button class="copy-btn" onclick="copyValue(this, 'mail.diegonmarcos.com')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
                 <div class="config-grid" style="margin-top: 12px;">
                     <div class="config-item">
                         <div class="config-label">CalDAV</div>
-                        <div class="config-value">:5232</div>
+                        <div class="config-value"><span data-copy="5232">:5232</span><button class="copy-btn" onclick="copyValue(this, '5232')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                     <div class="config-item">
                         <div class="config-label">CardDAV</div>
-                        <div class="config-value">:5232</div>
+                        <div class="config-value"><span data-copy="5232">:5232</span><button class="copy-btn" onclick="copyValue(this, '5232')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
                 <div class="config-grid" style="margin-top: 12px;">
                     <div class="config-item" style="grid-column: 1 / -1;">
                         <div class="config-label">Calendar Server</div>
-                        <div class="config-value">cal.diegonmarcos.com</div>
+                        <div class="config-value"><span>cal.diegonmarcos.com</span><button class="copy-btn" onclick="copyValue(this, 'cal.diegonmarcos.com')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
             </div>
@@ -724,6 +755,14 @@
 
             meshContainer.style.transform = `translate(-50%, -50%) rotateX(${y}deg) rotateY(${x}deg)`;
         });
+
+        // Copy to clipboard function
+        function copyValue(btn, value) {
+            navigator.clipboard.writeText(value).then(() => {
+                btn.classList.add('copied');
+                setTimeout(() => btn.classList.remove('copied'), 1500);
+            });
+        }
 
         // Initialize
         createParticles();

@@ -1214,6 +1214,7 @@
                         <button class="view-btn active" data-dash-tab="status">Status</button>
                         <button class="view-btn" data-dash-tab="performance">Performance</button>
                         <button class="view-btn" data-dash-tab="cost">Cost</button>
+                        <button class="view-btn" data-dash-tab="security">Security</button>
                     </div>
                 </div>
             </div>
@@ -1620,6 +1621,354 @@
             </div><!-- End Infrastructure Cost Sub-tab -->
 
         </div><!-- End Cost Tab -->
+
+        <!-- Security Tab Content -->
+        <div id="security-tab" class="tab-content">
+            <!-- Security Services Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Security Services</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Type</th>
+                                    <th>Description</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>MyVault</strong></td>
+                                    <td>Password Manager</td>
+                                    <td>Bitwarden EU - Secure credential storage</td>
+                                    <td>vault.bitwarden.eu (SaaS)</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Authelia</strong></td>
+                                    <td>2FA Gateway</td>
+                                    <td>TOTP authentication for protected services</td>
+                                    <td>GCP Micro 1 (34.55.55.234:9091)</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OAuth2 Proxy</strong></td>
+                                    <td>Admin Auth</td>
+                                    <td>GitHub OAuth2 for cloud_dash, photos, mail</td>
+                                    <td>GCP Micro 1</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>NPM + SSL</strong></td>
+                                    <td>TLS Termination</td>
+                                    <td>Let's Encrypt certificates with auto-renewal</td>
+                                    <td>GCP Micro 1 (Central NPM)</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Docker Networks</strong></td>
+                                    <td>Network Isolation</td>
+                                    <td>Segmented: public_net, private_net, db_bridge</td>
+                                    <td>OCI Flex 1</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>SSH Keys</strong></td>
+                                    <td>Access Control</td>
+                                    <td>Key-based auth for all VMs - no passwords</td>
+                                    <td>All VMs</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloud Firewalls</strong></td>
+                                    <td>Network Security</td>
+                                    <td>OCI Security Lists + GCP Firewall Rules</td>
+                                    <td>OCI + GCP</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gmail SMTP Relay</strong></td>
+                                    <td>Notifications</td>
+                                    <td>App Password auth for Authelia alerts</td>
+                                    <td>Gmail (SaaS)</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Layers Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Security Layers</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Layer</th>
+                                    <th>Components</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1. Network Edge</strong></td>
+                                    <td>Cloud Firewalls, UFW, Fail2Ban</td>
+                                    <td>Block unauthorized access at perimeter</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2. Traffic Routing</strong></td>
+                                    <td>NPM Proxy, TLS/SSL, Rate Limiting</td>
+                                    <td>Secure transport and HTTPS termination</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3. Authentication</strong></td>
+                                    <td>Authelia 2FA, OAuth 2.0 (GitHub)</td>
+                                    <td>Verify identity with multi-factor auth</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4. Application</strong></td>
+                                    <td>Docker Networks, Container Isolation</td>
+                                    <td>Limit blast radius with segmentation</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5. Data</strong></td>
+                                    <td>Encrypted volumes, Separate DBs</td>
+                                    <td>Protect data at rest</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Docker Networks Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Docker Network Segmentation</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>Network Name</th>
+                                    <th>Subnet</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>oci-f-micro_1</td>
+                                    <td>mail_network</td>
+                                    <td>172.20.0.0/24</td>
+                                    <td>Mail services (Stalwart)</td>
+                                </tr>
+                                <tr>
+                                    <td>oci-f-micro_2</td>
+                                    <td>matomo_network</td>
+                                    <td>172.21.0.0/24</td>
+                                    <td>Analytics stack</td>
+                                </tr>
+                                <tr>
+                                    <td>gcp-f-micro_1</td>
+                                    <td>proxy_network</td>
+                                    <td>172.23.0.0/24</td>
+                                    <td>NPM proxy + Authelia</td>
+                                </tr>
+                                <tr>
+                                    <td>oci-p-flex_1</td>
+                                    <td>dev_network</td>
+                                    <td>172.24.0.0/24</td>
+                                    <td>Dev services (n8n, sync, git)</td>
+                                </tr>
+                                <tr>
+                                    <td>oci-f-arm_1</td>
+                                    <td>ai_network</td>
+                                    <td>172.22.0.0/24</td>
+                                    <td>AI services (future)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VPN Tunneling Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">VPN & Tunneling</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>Protocol</th>
+                                    <th>Port</th>
+                                    <th>Purpose</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>WireGuard Tunnel</strong></td>
+                                    <td>WireGuard</td>
+                                    <td>51820/UDP</td>
+                                    <td>GCP to OCI secure tunnel for backend services</td>
+                                    <td><span class="status-badge on">ON</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>OpenVPN</strong></td>
+                                    <td>OpenVPN</td>
+                                    <td>1194/UDP</td>
+                                    <td>Client VPN for admin access</td>
+                                    <td><span class="status-badge dev">DEV</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cloudflare Tunnel</strong></td>
+                                    <td>cloudflared</td>
+                                    <td>-</td>
+                                    <td>Zero-trust access (alternative)</td>
+                                    <td><span class="status-badge hold">HOLD</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Authelia 2FA Flow Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Authelia 2FA Flow</h3>
+                <div class="resources-section" style="font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; white-space: pre; overflow-x: auto; padding: 1.5rem; background: var(--bg-secondary);">Browser Request: photos.diegonmarcos.com
+        |
+        v
++-----------------+
+|   CLOUDFLARE    |  DNS: 34.55.55.234 (GCP)
++-----------------+
+        |
+        v
++-----------------+
+|   GCP NPM       |  Nginx Proxy Manager
+|   auth_request  |---> Authelia (localhost:9091)
++-----------------+           |
+        |                     v
+        |            [No Session?]
+        |                     |
+        v                     v
+  REDIRECT 302     auth.diegonmarcos.com
+        |                (Login + TOTP)
+        |                     |
+        v                     v
+[Cookie Set]      authelia_session cookie
+        |          (domain: diegonmarcos.com)
+        v
++-----------------+
+|  WireGuard VPN  |  10.0.0.1 -> 10.0.0.2
++-----------------+
+        |
+        v
++-----------------+
+|  OCI PhotoView  |  Backend service
++-----------------+</div>
+            </div>
+
+            <!-- SSO Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">SSO Across Subdomains</h3>
+                <div class="resources-section">
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">Single Sign-On via shared Authelia session cookie (domain: diegonmarcos.com)</p>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Protected Subdomain</th>
+                                    <th>Service</th>
+                                    <th>Auth Level</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>photos.diegonmarcos.com</td>
+                                    <td>PhotoView / Lychee</td>
+                                    <td>2FA (TOTP)</td>
+                                    <td><span class="status-badge on">Protected</span></td>
+                                </tr>
+                                <tr>
+                                    <td>cloud.diegonmarcos.com</td>
+                                    <td>Cloud Dashboard</td>
+                                    <td>OAuth2 (GitHub)</td>
+                                    <td><span class="status-badge on">Protected</span></td>
+                                </tr>
+                                <tr>
+                                    <td>n8n.diegonmarcos.com</td>
+                                    <td>n8n Workflows</td>
+                                    <td>2FA (TOTP)</td>
+                                    <td><span class="status-badge dev">DEV</span></td>
+                                </tr>
+                                <tr>
+                                    <td>sync.diegonmarcos.com</td>
+                                    <td>Syncthing</td>
+                                    <td>Basic Auth</td>
+                                    <td><span class="status-badge on">Protected</span></td>
+                                </tr>
+                                <tr>
+                                    <td>mail.diegonmarcos.com</td>
+                                    <td>Stalwart Admin</td>
+                                    <td>2FA (TOTP)</td>
+                                    <td><span class="status-badge on">Protected</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API OAuth Section -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">API OAuth Integration</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Application</th>
+                                    <th>OAuth Provider</th>
+                                    <th>Scopes</th>
+                                    <th>Purpose</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Cloud Dashboard</strong></td>
+                                    <td>GitHub OAuth2</td>
+                                    <td>read:user, workflow</td>
+                                    <td>Admin authentication, workflow dispatch</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MyPhotos</strong></td>
+                                    <td>GitHub OAuth2</td>
+                                    <td>read:user</td>
+                                    <td>Access control for photo gallery</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>MyMail</strong></td>
+                                    <td>GitHub OAuth2</td>
+                                    <td>read:user</td>
+                                    <td>Admin panel authentication</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div><!-- End Security Tab -->
 
     </div>
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1200, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title> Cloud Services Dashboard | Infrastructure & AI Management</title>
     <meta name="description" content="Manage your cloud infrastructure, VPS instances, and AI services in one unified dashboard">
 
@@ -2038,6 +2038,33 @@
     <script>
         // Navigation and View Toggle Handler
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Desktop Mode: Scale page to fit mobile screens
+            function applyMobileScaling() {
+                const desktopWidth = 1200;
+                const screenWidth = window.innerWidth;
+
+                if (screenWidth < desktopWidth) {
+                    const scale = screenWidth / desktopWidth;
+                    document.body.style.width = desktopWidth + 'px';
+                    document.body.style.minWidth = desktopWidth + 'px';
+                    document.body.style.transform = 'scale(' + scale + ')';
+                    document.body.style.transformOrigin = 'top left';
+                    document.documentElement.style.width = screenWidth + 'px';
+                    document.documentElement.style.overflowX = 'hidden';
+                } else {
+                    document.body.style.width = '';
+                    document.body.style.minWidth = '';
+                    document.body.style.transform = '';
+                    document.body.style.transformOrigin = '';
+                    document.documentElement.style.width = '';
+                    document.documentElement.style.overflowX = '';
+                }
+            }
+
+            // Apply on load and resize
+            applyMobileScaling();
+            window.addEventListener('resize', applyMobileScaling);
+
             // Handle Front/Back category switching
             const categoryButtons = document.querySelectorAll('[data-category]');
             categoryButtons.forEach(btn => {

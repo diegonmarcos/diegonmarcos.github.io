@@ -11,9 +11,9 @@ html, body {
 }
 
 html {
-    // Force desktop layout - viewport is fixed at 1200px in meta tag
-    // Browser handles scaling automatically for mobile
-    min-width: 1200px;
+    // Desktop mode forced via JavaScript scaling on mobile
+    // Keep min-width for desktop browsers
+    min-width: 100%;
 }
 
 body {
@@ -21,7 +21,7 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     min-height: 100vh;
-    min-width: 1200px;
+    // Width controlled by JavaScript for mobile scaling
     padding: 0.5rem;
     display: flex;
     flex-direction: column;

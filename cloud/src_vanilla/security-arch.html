@@ -861,8 +861,8 @@
     <div class="main-container">
         <!-- Header -->
         <div class="diagram-header">
-            <h1>Security Architecture <span class="version-badge">v1.0</span></h1>
-            <p class="subtitle">Defense in Depth - Multi-Layer Security Stack</p>
+            <h1>Security Architecture <span class="version-badge">v2.0</span></h1>
+            <p class="subtitle">Defense in Depth - Triple Auth (OAuth2 + TOTP + Passkey)</p>
         </div>
 
         <!-- Legend -->
@@ -939,8 +939,9 @@
                     <div class="ring ring-4">
                         <span class="ring-label">Layer 4: Auth</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--auth-color);">Authelia 2FA</span>
-                            <span class="service-chip active" style="color: var(--auth-color);">OAuth2</span>
+                            <span class="service-chip active" style="color: var(--auth-color);">GitHub OAuth</span>
+                            <span class="service-chip active" style="color: var(--auth-color);">TOTP</span>
+                            <span class="service-chip active" style="color: var(--auth-color);">Passkey</span>
                         </div>
                     </div>
 
@@ -1039,16 +1040,17 @@
                     <span class="conn-label">Forward Auth</span>
                 </div>
 
-                <!-- Authelia -->
+                <!-- Triple Auth -->
                 <div class="flow-layer">
                     <div class="flow-layer-box fl-auth">
                         <span class="fl-icon">🔑</span>
-                        <span class="fl-label">2FA</span>
-                        <div class="fl-name">Authelia</div>
-                        <div class="fl-desc">"TOTP + Password"</div>
+                        <span class="fl-label">Triple Auth</span>
+                        <div class="fl-name">OAuth2 + Authelia</div>
+                        <div class="fl-desc">"Passwordless SSO"</div>
                         <div class="providers-row">
+                            <span class="provider-chip active">GitHub SSO</span>
                             <span class="provider-chip active">TOTP</span>
-                            <span class="provider-chip active">LDAP</span>
+                            <span class="provider-chip active">Passkey</span>
                         </div>
                     </div>
                 </div>
@@ -1182,11 +1184,12 @@
                         <span>Auth</span>
                     </div>
                     <div class="stack-content">
-                        <div class="sc-title">Multi-Factor Authentication</div>
-                        <div class="sc-mental">"Identity verification" - Password + TOTP for sensitive services</div>
+                        <div class="sc-title">Triple Auth - Passwordless SSO</div>
+                        <div class="sc-mental">"Identity verification" - GitHub OAuth (primary) + TOTP/Passkey (backup)</div>
                         <div class="stack-providers">
-                            <span class="sp-item active">🔐 Authelia 2FA (TOTP)</span>
-                            <span class="sp-item active">🔗 OAuth2 Proxy (GitHub)</span>
+                            <span class="sp-item active">🔗 OAuth2 Proxy (GitHub SSO)</span>
+                            <span class="sp-item active">🔐 Authelia TOTP (Backup)</span>
+                            <span class="sp-item active">🔑 Authelia WebAuthn/Passkey</span>
                             <span class="sp-item active">🔑 SSH Key-Only Auth</span>
                         </div>
                     </div>
@@ -1352,16 +1355,16 @@
                         </div>
                         <div class="attack-step">
                             <span class="step-num">2</span>
-                            <span>NPM forwards request to Authelia</span>
-                        </div>
-                        <div class="attack-step">
-                            <span class="step-num">3</span>
-                            <span>Password stolen via phishing</span>
+                            <span>NPM forwards to OAuth2 Proxy</span>
                         </div>
                         <div class="attack-step blocked">
-                            <span class="step-num">4</span>
-                            <span>TOTP code required - attacker doesn't have device</span>
+                            <span class="step-num">3</span>
+                            <span>GitHub OAuth requires 2FA - attacker blocked</span>
                             <span class="block-badge">BLOCKED</span>
+                        </div>
+                        <div class="attack-step" style="opacity: 0.5;">
+                            <span class="step-num">4</span>
+                            <span>Backup: Authelia TOTP/Passkey also requires 2FA</span>
                         </div>
                     </div>
                 </div>
@@ -1479,18 +1482,26 @@
                         <td class="status-active">Active</td>
                     </tr>
                     <tr>
-                        <td>Authelia</td>
+                        <td>OAuth2 Proxy</td>
                         <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
-                        <td>2FA/SSO</td>
-                        <td>TOTP-based authentication portal</td>
+                        <td>OAuth SSO</td>
+                        <td>GitHub OAuth (Primary) - 2FA via GitHub</td>
                         <td>GCP Micro 1</td>
                         <td class="status-active">Active</td>
                     </tr>
                     <tr>
-                        <td>OAuth2 Proxy</td>
+                        <td>Authelia TOTP</td>
                         <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
-                        <td>OAuth</td>
-                        <td>GitHub OAuth for dashboard admin</td>
+                        <td>2FA Backup</td>
+                        <td>Time-based OTP (Backup auth method)</td>
+                        <td>GCP Micro 1</td>
+                        <td class="status-active">Active</td>
+                    </tr>
+                    <tr>
+                        <td>Authelia WebAuthn</td>
+                        <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
+                        <td>Passkey</td>
+                        <td>FIDO2/WebAuthn passwordless auth</td>
                         <td>GCP Micro 1</td>
                         <td class="status-active">Active</td>
                     </tr>

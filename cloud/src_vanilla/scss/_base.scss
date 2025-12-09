@@ -11,23 +11,9 @@ html, body {
 }
 
 html {
-    // Force desktop layout - minimum width of 1200px
+    // Force desktop layout - viewport is fixed at 1200px in meta tag
+    // Browser handles scaling automatically for mobile
     min-width: 1200px;
-}
-
-// Mobile: force desktop view with scaling
-@media (max-width: 1200px) {
-    html {
-        min-width: 1200px;
-    }
-
-    body {
-        transform-origin: top left;
-        // Scale to fit viewport width
-        transform: scale(calc(100vw / 1200));
-        width: 1200px;
-        min-width: 1200px;
-    }
 }
 
 body {
@@ -36,11 +22,10 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     min-width: 1200px;
-    padding: 1rem;
+    padding: 0.5rem;
     display: flex;
     flex-direction: column;
-    // Auto-scale font with viewport: min 12px, preferred 0.9vw, max 14px
-    font-size: clamp(12px, 0.9vw, 14px);
+    font-size: 13px;
     line-height: 1.4;
     transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
 }
@@ -48,8 +33,8 @@ body {
 // Blurred theme: gradient background
 [data-theme="blurred"] body {
     background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    font-size: clamp(13px, 1vw, 15px);
-    padding: 2rem;
+    font-size: 14px;
+    padding: 1rem;
 }
 
 .container {

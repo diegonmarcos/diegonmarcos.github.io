@@ -15,6 +15,21 @@ html {
     min-width: 1200px;
 }
 
+// Mobile: force desktop view with scaling
+@media (max-width: 1200px) {
+    html {
+        min-width: 1200px;
+    }
+
+    body {
+        transform-origin: top left;
+        // Scale to fit viewport width
+        transform: scale(calc(100vw / 1200));
+        width: 1200px;
+        min-width: 1200px;
+    }
+}
+
 body {
     font-family: var(--font-main);
     background: var(--bg-primary);
@@ -47,7 +62,7 @@ body {
 }
 
 [data-theme="blurred"] .container {
-    max-width: 1400px;
+    max-width: 100%;
 }
 
 #cards-view {

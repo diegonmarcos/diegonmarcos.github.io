@@ -462,7 +462,7 @@
                         </svg>
                     </div>
                     <h3>SSH-VM-GCloud_microe2Linux_1</h3>
-                    <p>mailserver, mail-db, Web_Shell_Terminal</p>
+                    <p>Mailu (8 containers), Terminal</p>
                     <div class="card-actions">
                         <div class="code-with-copy">
                             <code class="card-code">gcloud compute ssh arch-1</code>
@@ -514,7 +514,7 @@
                 <div class="card"><h3>Mail-app</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>Calendar-app</h3><div class="card-status online">Online</div></div>
                 <div class="card"><h3>Sync-app</h3><div class="card-status online">Online</div></div>
-                <div class="card"><h3>Photos-app</h3><div class="card-status pending">Dev</div></div>
+                <div class="card"><h3>Photoprism-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Vault-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>VPN-app</h3><div class="card-status pending">Dev</div></div>
                 <div class="card"><h3>Web_ide-app</h3><div class="card-status pending">Dev</div></div>
@@ -1527,9 +1527,11 @@
                                 <tr class="component-row"><td></td><td class="component-name">↳ sync-index-db</td><td></td><td>-</td><td>-</td><td>100-500MB</td><td></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ sync-files-db</td><td></td><td>-</td><td>-</td><td>~100GB</td><td></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ sync-obj-db</td><td></td><td>-</td><td>-</td><td>~5GB</td><td></td></tr>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>mail.diegonmarcos.com</td><td>-</td><td>520MB-1GB</td><td>5-50GB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ mailserver</td><td></td><td>:25,:587,:993</td><td>512MB-1GB</td><td>100-500MB</td><td></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ mail-db (SQLite)</td><td></td><td>-</td><td>8-32MB</td><td>5-50GB</td><td></td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mailu Mail Suite</strong></td><td>mail.diegonmarcos.com</td><td>-</td><td>1-2GB</td><td>5-50GB</td><td><span class="health-badge pending">Dev</span></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-front</td><td></td><td>:25,:587,:993,:80,:443</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-admin</td><td></td><td>-</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-imap/smtp</td><td></td><td>-</td><td>256-512MB</td><td>5-50GB</td><td></td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-webmail</td><td></td><td>-</td><td>128-256MB</td><td>100-500MB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>OpenVPN</strong></td><td>-</td><td>:1194</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge pending">Dev</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ openvpn</td><td></td><td>130.110.251.193:1194</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
                             </tbody>
@@ -1676,9 +1678,11 @@
                         <table class="resources-table">
                             <thead><tr><th>Mode</th><th>Service</th><th>Category</th><th>RAM</th><th>Storage</th><th>Bandwidth</th><th>Notes</th></tr></thead>
                             <tbody>
-                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mail Server</strong></td><td>Productivity</td><td>520MB-1GB</td><td>5-50GB</td><td>1-10GB/mo</td><td>Email stack</td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ mailserver</td><td></td><td>512MB-1GB</td><td>100-500MB</td><td>1-10GB/mo</td><td>App + config</td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ mail-db (SQLite)</td><td></td><td>8-32MB</td><td>5-50GB</td><td>-</td><td>Mailboxes + indexes</td></tr>
+                                <tr class="service-row"><td><span class="status-badge dev">DEV</span></td><td><strong>Mailu Mail Suite</strong></td><td>Productivity</td><td>1-2GB</td><td>5-50GB</td><td>1-10GB/mo</td><td>8-container mail suite</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-front</td><td></td><td>128-256MB</td><td>100-500MB</td><td>1-5GB/mo</td><td>Nginx frontend</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-admin</td><td></td><td>128-256MB</td><td>100-500MB</td><td>-</td><td>Admin panel</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-imap/smtp</td><td></td><td>256-512MB</td><td>5-50GB</td><td>1-5GB/mo</td><td>Dovecot + Postfix</td></tr>
+                                <tr class="component-row"><td></td><td class="component-name">↳ mailu-webmail</td><td></td><td>128-256MB</td><td>100-500MB</td><td>-</td><td>Roundcube</td></tr>
                                 <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>NPM</strong></td><td>Infrastructure</td><td>512MB-1GB</td><td>400MB-2GB</td><td>20-80GB/mo</td><td>Reverse proxy (4x)</td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-web</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>Oracle Web Server 1</td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-services</td><td></td><td>128-256MB</td><td>100-500MB</td><td>5-20GB/mo</td><td>Oracle Services Server 1</td></tr>
@@ -2059,6 +2063,54 @@
                         window.open(url, '_blank');
                     }
                 });
+            });
+
+            // Handle view switching (Architecture, Resources, etc.)
+            const viewButtons = document.querySelectorAll('[data-view]');
+            const allViews = document.querySelectorAll('.view-content');
+
+            function showView(viewName) {
+                // Hide all views
+                allViews.forEach(v => v.classList.remove('active'));
+                // Show selected view
+                const targetView = document.getElementById(viewName + '-view');
+                if (targetView) {
+                    targetView.classList.add('active');
+                }
+                // Update button states
+                viewButtons.forEach(b => {
+                    if (b.getAttribute('data-view') === viewName) {
+                        b.classList.add('active');
+                    } else {
+                        b.classList.remove('active');
+                    }
+                });
+                // Update URL hash
+                history.replaceState(null, '', '#' + viewName);
+            }
+
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const viewName = this.getAttribute('data-view');
+                    showView(viewName);
+                });
+            });
+
+            // Handle initial hash or default view
+            const hash = window.location.hash.slice(1);
+            const validViews = ['cards-front', 'cards-back', 'tree', 'resources', 'architecture', 'ai-architecture', 'security-architecture', 'backlog', 'list-front', 'list-back'];
+            if (hash && validViews.includes(hash)) {
+                // Remove initial active class from cards-front-view first
+                document.getElementById('cards-front-view')?.classList.remove('active');
+                showView(hash);
+            }
+
+            // Handle hash changes
+            window.addEventListener('hashchange', function() {
+                const newHash = window.location.hash.slice(1);
+                if (validViews.includes(newHash)) {
+                    showView(newHash);
+                }
             });
         });
     </script>

@@ -65,7 +65,7 @@ type DataMode = 'local' | 'api';
 let currentMode: DataMode = 'local';
 
 // API base URL
-const API_BASE = 'http://84.235.234.87:5000/api';
+const API_BASE = 'http://34.55.55.234:5000/api';
 
 // Check if LOCAL_DATA is available
 declare const LOCAL_DATA: InfrastructureData | undefined;

@@ -89,7 +89,7 @@ const LOCAL_DATA = {
         "internal": []
       },
       "status": "active",
-      "notes": "Mail services only (docker-mailserver)",
+      "notes": "Mailu Mail Suite (8 containers)",
       "availability": "24/7",
       "runtimeStatus": {
         "online": false,

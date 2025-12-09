@@ -1932,7 +1932,7 @@
                         </div>
                         <div class="container-desc">Postfix + Dovecot mail stack</div>
                         <div class="container-tech">
-                            <span class="tech-tag">docker-mailserver</span>
+                            <span class="tech-tag">Mailu</span>
                             <span class="tech-tag">DKIM</span>
                             <span class="tech-tag">SPF</span>
                         </div>
@@ -1997,7 +1997,7 @@
                     <span class="network-icon">📧</span>
                     <div>
                         <div class="network-name">mail_net</div>
-                        <div class="network-members">mailserver, mail-db</div>
+                        <div class="network-members">mailu-front, mailu-admin, mailu-imap</div>
                     </div>
                     <div class="network-isolation" title="Isolated">🚫</div>
                 </div>
@@ -2698,7 +2698,7 @@ ufw allow 993/tcp   # IMAPS</code></pre>
 
                 <h4>Phase 4: Mail Services</h4>
                 <ul>
-                    <li>⬜ Deploy docker-mailserver</li>
+                    <li>⬜ Deploy Mailu mail suite</li>
                     <li>⬜ Configure DNS (MX, SPF, DKIM)</li>
                     <li>⬜ Setup mail.diegonmarcos.com</li>
                     <li>⬜ Test email delivery</li>

@@ -146,6 +146,34 @@
             color: #000;
         }
 
+        /* Authelia TOTP Button */
+        .authelia-login-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.8rem;
+            background: #1a237e;
+            border: 1px solid #3949ab;
+            border-radius: var(--border-radius);
+            color: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .authelia-login-btn:hover {
+            background: #283593;
+            border-color: #5c6bc0;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
         .user-avatar {
             width: 20px;
             height: 20px;
@@ -1680,6 +1708,25 @@
             color: var(--accent-blue);
         }
 
+        .vm-action-btn.btn-reset:hover {
+            border-color: var(--accent-orange);
+            color: var(--accent-orange);
+        }
+
+        .vm-action-btn.btn-reset.loading {
+            animation: spin 1s linear infinite;
+        }
+
+        .vm-action-btn.btn-reset.success {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .vm-action-btn:disabled {
             opacity: 0.3;
             cursor: not-allowed;
@@ -1713,6 +1760,51 @@
 
         [data-theme=blurred] .services-hierarchical .service-child-row {
             background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Resource Usage Bars (Performance tab) */
+        .usage-bar {
+            display: inline-block;
+            width: 60px;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        .usage-fill {
+            display: block;
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .usage-val {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+        }
+
+        .usage-bar-sm {
+            display: inline-block;
+            width: 40px;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+            vertical-align: middle;
+            margin-right: 0.35rem;
+            opacity: 0.8;
+        }
+
+        #vm-resources-oci-p-flex_1 .service-row,
+        #vm-resources-oci-f-micro_1 .service-row,
+        #vm-resources-oci-f-micro_2 .service-row,
+        #vm-resources-gcp-f-micro_1 .service-row {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
         }
 
         .live-status {
@@ -1811,7 +1903,7 @@
                 </div>
                 <span class="view-separator"></span>
                 <div class="view-group">
-                    <span class="view-group-label">Monitoring</span>
+                    <span class="view-group-label">Resources</span>
                     <div class="view-group-buttons">
                         <button class="view-btn active" data-dash-tab="status">Status</button>
                         <button class="view-btn" data-dash-tab="resources">Resources</button>
@@ -1841,12 +1933,22 @@
                     </svg>
                     Refresh
                 </button>
-                <button class="github-login-btn" id="github-login-btn" onclick="handleGitHubLogin()">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-                    </svg>
-                    <span id="github-login-text">Login</span>
-                </button>
+                <div class="auth-buttons">
+                    <!-- GitHub SSO (PRIMARY - via OAuth2 Proxy) -->
+                    <a href="https://auth.diegonmarcos.com/oauth2/start?rd=https://cloud.diegonmarcos.com/cloud_dash.html" class="github-login-btn" title="Login with GitHub SSO (Primary)">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        <span>GitHub SSO</span>
+                    </a>
+                    <!-- Authelia TOTP (BACKUP - Local 2FA) -->
+                    <a href="https://auth.diegonmarcos.com/authelia/" class="authelia-login-btn" title="Backup: Local TOTP 2FA">
+                        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                        </svg>
+                        <span>TOTP</span>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -1896,9 +1998,247 @@
 
         <!-- Resources Tab Content (htop-style) -->
         <div id="resources-tab" class="tab-content">
-            <!-- htop-style Resource Monitor -->
-            <div id="resources-monitor" class="htop-monitor">
-                <div class="htop-loading">Loading resource data...</div>
+            <!-- VM Summary -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">VM Overview</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">VM</th>
+                                    <th style="width: 16%;">CPU</th>
+                                    <th style="width: 16%;">RAM</th>
+                                    <th style="width: 16%;">Storage</th>
+                                    <th style="width: 16%;">VRAM</th>
+                                    <th style="width: 16%;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="vm-row">
+                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #F80000; border-radius: 50%; margin-right: 0.5rem;"></span>OCI Paid Flex 1</td>
+                                    <td>2 vCPU</td>
+                                    <td>3.6 / 8 GB</td>
+                                    <td>165 / 242 GB</td>
+                                    <td>-</td>
+                                    <td><span class="health-badge healthy">Active</span></td>
+                                </tr>
+                                <tr class="vm-row">
+                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #F80000; border-radius: 50%; margin-right: 0.5rem;"></span>OCI Free Micro 1</td>
+                                    <td>1 OCPU</td>
+                                    <td>0.6 / 1 GB</td>
+                                    <td>13 / 47 GB</td>
+                                    <td>-</td>
+                                    <td><span class="health-badge healthy">Active</span></td>
+                                </tr>
+                                <tr class="vm-row">
+                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #F80000; border-radius: 50%; margin-right: 0.5rem;"></span>OCI Free Micro 2</td>
+                                    <td>1 OCPU</td>
+                                    <td>0.55 / 1 GB</td>
+                                    <td>9 / 47 GB</td>
+                                    <td>-</td>
+                                    <td><span class="health-badge healthy">Active</span></td>
+                                </tr>
+                                <tr class="vm-row">
+                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #4285F4; border-radius: 50%; margin-right: 0.5rem;"></span>GCP Free Micro 1</td>
+                                    <td>0.25 vCPU</td>
+                                    <td>0.7 / 1 GB</td>
+                                    <td>6 / 30 GB</td>
+                                    <td>-</td>
+                                    <td><span class="health-badge healthy">Active</span></td>
+                                </tr>
+                                <tr class="vm-row" style="opacity: 0.6;">
+                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #F80000; border-radius: 50%; margin-right: 0.5rem;"></span>OCI Free ARM 1</td>
+                                    <td>4 OCPU</td>
+                                    <td>- / 24 GB</td>
+                                    <td>- / 200 GB</td>
+                                    <td>-</td>
+                                    <td><span class="health-badge pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resource Usage by VM (Detailed) -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Service Breakdown by VM</h3>
+
+                <!-- OCI Paid Flex 1 -->
+                <div class="resources-section" style="margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                        OCI Paid Flex 1
+                        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 8 GB RAM, 242 GB)</span>
+                    </h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Name</th>
+                                    <th style="width: 17%;">CPU</th>
+                                    <th style="width: 17%;">RAM</th>
+                                    <th style="width: 17%;">Storage</th>
+                                    <th style="width: 17%;">VRAM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="totals-row" style="background: var(--bg-tertiary); font-size: 0.8rem; color: var(--text-secondary);">
+                                    <td>Absolute</td>
+                                    <td>2 vCPU</td>
+                                    <td>3.6 / 8 GB</td>
+                                    <td>165 / 242 GB</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                    <td>VM Total</td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 15%; background: var(--accent-blue);"></span></span> <span class="usage-val">15%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 45%; background: var(--accent-green);"></span></span> <span class="usage-val">45%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 68%; background: var(--accent-orange);"></span></span> <span class="usage-val">68%</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="service-row"><td class="component-name">↳ syncthing</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-green);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 41%; background: var(--accent-orange);"></span></span> <span class="usage-val">41%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ photoprism</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 21%; background: var(--accent-orange);"></span></span> <span class="usage-val">21%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ n8n-infra</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-green);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-orange);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ gitea</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-green);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-orange);"></span></span> <span class="usage-val">4%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ radicale</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ cryptpad</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-orange);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ flask-api</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ vaultwarden</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ terminal</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ redis</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-green);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ openvpn</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-green);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- OCI Free Micro 1 -->
+                <div class="resources-section" style="margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                        OCI Free Micro 1
+                        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 1 GB RAM, 47 GB)</span>
+                    </h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Name</th>
+                                    <th style="width: 17%;">CPU</th>
+                                    <th style="width: 17%;">RAM</th>
+                                    <th style="width: 17%;">Storage</th>
+                                    <th style="width: 17%;">VRAM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="totals-row" style="background: var(--bg-tertiary); font-size: 0.8rem; color: var(--text-secondary);">
+                                    <td>Absolute</td>
+                                    <td>1 OCPU</td>
+                                    <td>0.6 / 1 GB</td>
+                                    <td>13 / 47 GB</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                    <td>VM Total</td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 60%; background: var(--accent-orange);"></span></span> <span class="usage-val">60%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 27%; background: var(--accent-green);"></span></span> <span class="usage-val">27%</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-imap</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 20%; background: var(--accent-orange);"></span></span> <span class="usage-val">20%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-admin</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-orange);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-webmail</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-green);"></span></span> <span class="usage-val">4%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-smtp</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-front</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-orange);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td>-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- OCI Free Micro 2 -->
+                <div class="resources-section" style="margin-bottom: 1.5rem;">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                        OCI Free Micro 2
+                        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 1 GB RAM, 47 GB)</span>
+                    </h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Name</th>
+                                    <th style="width: 17%;">CPU</th>
+                                    <th style="width: 17%;">RAM</th>
+                                    <th style="width: 17%;">Storage</th>
+                                    <th style="width: 17%;">VRAM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="totals-row" style="background: var(--bg-tertiary); font-size: 0.8rem; color: var(--text-secondary);">
+                                    <td>Absolute</td>
+                                    <td>1 OCPU</td>
+                                    <td>0.55 / 1 GB</td>
+                                    <td>9 / 47 GB</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                    <td>VM Total</td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 10%; background: var(--accent-blue);"></span></span> <span class="usage-val">10%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 55%; background: var(--accent-orange);"></span></span> <span class="usage-val">55%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-green);"></span></span> <span class="usage-val">20%</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="service-row"><td class="component-name">↳ matomo-db</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 30%; background: var(--accent-orange);"></span></span> <span class="usage-val">30%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ matomo-app</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- GCP Free Micro 1 -->
+                <div class="resources-section">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span style="width: 8px; height: 8px; background: #4285F4; border-radius: 50%;"></span>
+                        GCP Free Micro 1
+                        <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(0.25 vCPU, 1 GB RAM, 30 GB)</span>
+                    </h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 32%;">Name</th>
+                                    <th style="width: 17%;">CPU</th>
+                                    <th style="width: 17%;">RAM</th>
+                                    <th style="width: 17%;">Storage</th>
+                                    <th style="width: 17%;">VRAM</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="totals-row" style="background: var(--bg-tertiary); font-size: 0.8rem; color: var(--text-secondary);">
+                                    <td>Absolute</td>
+                                    <td>0.25 vCPU</td>
+                                    <td>0.7 / 1 GB</td>
+                                    <td>6 / 30 GB</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                    <td>VM Total</td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-blue);"></span></span> <span class="usage-val">20%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 70%; background: var(--accent-orange);"></span></span> <span class="usage-val">70%</span></td>
+                                    <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-green);"></span></span> <span class="usage-val">20%</span></td>
+                                    <td>-</td>
+                                </tr>
+                                <tr class="service-row"><td class="component-name">↳ npm</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-blue);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-green);"></span></span> <span class="usage-val">10%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ authelia</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-orange);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ authelia-redis</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-green);"></span></span> <span class="usage-val">3%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ wireguard</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ oauth2-proxy</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1990,99 +2330,146 @@
                     </div>
                 </div>
 
-                <!-- Instance Cards (like Token Usage Statistics) -->
+                <!-- Resource Usage by VM -->
                 <div class="resources-category">
-                    <h3 class="resources-category-title">Active Instances</h3>
+                    <h3 class="resources-category-title">Resource Usage by VM</h3>
+
+                    <!-- OCI Paid Flex 1 -->
+                    <div class="resources-section" style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                            OCI Paid Flex 1
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 8 GB RAM, 242 GB)</span>
+                        </h4>
+                        <div class="resources-table-container">
+                            <table class="resources-table" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Name</th>
+                                        <th style="width: 20%;">CPU</th>
+                                        <th style="width: 20%;">RAM</th>
+                                        <th style="width: 20%;">Storage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vm-resources-oci-p-flex_1">
+                                    <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                        <td>VM</td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 15%; background: var(--accent-blue);"></span></span> <span class="usage-val">15%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 45%; background: var(--accent-green);"></span></span> <span class="usage-val">45%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 68%; background: var(--accent-orange);"></span></span> <span class="usage-val">68%</span></td>
+                                    </tr>
+                                    <tr class="service-row"><td class="component-name">↳ n8n-infra</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-green);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-orange);"></span></span> <span class="usage-val">1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ syncthing</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-green);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 41%; background: var(--accent-orange);"></span></span> <span class="usage-val">41%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ flask-api</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ photoprism</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 21%; background: var(--accent-orange);"></span></span> <span class="usage-val">21%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ radicale</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ gitea</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-green);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-orange);"></span></span> <span class="usage-val">4%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ vaultwarden</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ terminal</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ cryptpad</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-orange);"></span></span> <span class="usage-val">1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ openvpn</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-green);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ redis</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-green);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- OCI Free Micro 1 -->
+                    <div class="resources-section" style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                            OCI Free Micro 1
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 1 GB RAM, 47 GB)</span>
+                        </h4>
+                        <div class="resources-table-container">
+                            <table class="resources-table" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Name</th>
+                                        <th style="width: 20%;">CPU</th>
+                                        <th style="width: 20%;">RAM</th>
+                                        <th style="width: 20%;">Storage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vm-resources-oci-f-micro_1">
+                                    <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                        <td>VM</td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 60%; background: var(--accent-orange);"></span></span> <span class="usage-val">60%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 27%; background: var(--accent-green);"></span></span> <span class="usage-val">27%</span></td>
+                                    </tr>
+                                    <tr class="service-row"><td class="component-name">↳ mailu-front</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-orange);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ mailu-admin</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-orange);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ mailu-imap</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 20%; background: var(--accent-orange);"></span></span> <span class="usage-val">20%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ mailu-smtp</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ mailu-webmail</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-green);"></span></span> <span class="usage-val">4%</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- OCI Free Micro 2 -->
+                    <div class="resources-section" style="margin-bottom: 1.5rem;">
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 8px; height: 8px; background: #F80000; border-radius: 50%;"></span>
+                            OCI Free Micro 2
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(1 OCPU, 1 GB RAM, 47 GB)</span>
+                        </h4>
+                        <div class="resources-table-container">
+                            <table class="resources-table" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Name</th>
+                                        <th style="width: 20%;">CPU</th>
+                                        <th style="width: 20%;">RAM</th>
+                                        <th style="width: 20%;">Storage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vm-resources-oci-f-micro_2">
+                                    <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                        <td>VM</td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 10%; background: var(--accent-blue);"></span></span> <span class="usage-val">10%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 55%; background: var(--accent-orange);"></span></span> <span class="usage-val">55%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-green);"></span></span> <span class="usage-val">20%</span></td>
+                                    </tr>
+                                    <tr class="service-row"><td class="component-name">↳ matomo-app</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ matomo-db</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 30%; background: var(--accent-orange);"></span></span> <span class="usage-val">30%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- GCP Free Micro 1 -->
                     <div class="resources-section">
-                        <div class="ai-token-grid" id="cloud-instance-cards">
-                            <!-- OCI Instance -->
-                            <div class="ai-token-card">
-                                <div class="ai-token-icon" style="color: #F80000;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                        <line x1="8" y1="21" x2="16" y2="21"/>
-                                        <line x1="12" y1="17" x2="12" y2="21"/>
-                                    </svg>
-                                </div>
-                                <div class="ai-token-content">
-                                    <div class="ai-token-value">arm-1</div>
-                                    <div class="ai-token-label">OCI VM.Standard.A1.Flex</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">4 OCPU | 24 GB RAM | ARM64</div>
-                                    <div class="ai-token-bar">
-                                        <div class="ai-token-bar-fill" style="width: 100%; background: linear-gradient(90deg, #F80000, #ff4444);"></div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
-                                        <span style="color: var(--success);">Running</span>
-                                        <span>€0.83/mo</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- GCP Instance -->
-                            <div class="ai-token-card">
-                                <div class="ai-token-icon" style="color: #4285F4;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
-                                        <line x1="8" y1="21" x2="16" y2="21"/>
-                                        <line x1="12" y1="17" x2="12" y2="21"/>
-                                    </svg>
-                                </div>
-                                <div class="ai-token-content">
-                                    <div class="ai-token-value">arch-1</div>
-                                    <div class="ai-token-label">GCP e2-micro</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">0.25 vCPU | 1 GB RAM | x86</div>
-                                    <div class="ai-token-bar">
-                                        <div class="ai-token-bar-fill" style="width: 100%; background: linear-gradient(90deg, #4285F4, #66aaff);"></div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
-                                        <span style="color: var(--success);">Running</span>
-                                        <span style="color: #2dd4bf;">Free Tier</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Storage Card -->
-                            <div class="ai-token-card">
-                                <div class="ai-token-icon" style="color: #fbbf24;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
-                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
-                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
-                                    </svg>
-                                </div>
-                                <div class="ai-token-content">
-                                    <div class="ai-token-value">~50 GB</div>
-                                    <div class="ai-token-label">Block Storage</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Boot volumes + data</div>
-                                    <div class="ai-token-bar">
-                                        <div class="ai-token-bar-fill" style="width: 25%; background: #fbbf24;"></div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
-                                        <span>25% of 200 GB limit</span>
-                                        <span style="color: #2dd4bf;">Free Tier</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Network Card -->
-                            <div class="ai-token-card">
-                                <div class="ai-token-icon" style="color: #22c55e;">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <line x1="2" y1="12" x2="22" y2="12"/>
-                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-                                    </svg>
-                                </div>
-                                <div class="ai-token-content">
-                                    <div class="ai-token-value">< 1 GB</div>
-                                    <div class="ai-token-label">Network Egress</div>
-                                    <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.25rem;">Outbound data transfer</div>
-                                    <div class="ai-token-bar">
-                                        <div class="ai-token-bar-fill" style="width: 0.01%; background: #22c55e;"></div>
-                                    </div>
-                                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 0.25rem;">
-                                        <span>0.01% of 10 TB limit</span>
-                                        <span style="color: #2dd4bf;">Free Tier</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                            <span style="width: 8px; height: 8px; background: #4285F4; border-radius: 50%;"></span>
+                            GCP Free Micro 1
+                            <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(0.25 vCPU, 1 GB RAM, 30 GB)</span>
+                        </h4>
+                        <div class="resources-table-container">
+                            <table class="resources-table" style="font-size: 0.85rem;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40%;">Name</th>
+                                        <th style="width: 20%;">CPU</th>
+                                        <th style="width: 20%;">RAM</th>
+                                        <th style="width: 20%;">Storage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vm-resources-gcp-f-micro_1">
+                                    <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
+                                        <td>VM</td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-blue);"></span></span> <span class="usage-val">20%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 70%; background: var(--accent-orange);"></span></span> <span class="usage-val">70%</span></td>
+                                        <td><span class="usage-bar"><span class="usage-fill" style="width: 35%; background: var(--accent-green);"></span></span> <span class="usage-val">35%</span></td>
+                                    </tr>
+                                    <tr class="service-row"><td class="component-name">↳ npm</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-blue);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-green);"></span></span> <span class="usage-val">10%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ authelia</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-orange);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ authelia-redis</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-green);"></span></span> <span class="usage-val">3%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ wireguard</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td></tr>
+                                    <tr class="service-row"><td class="component-name">↳ oauth2-proxy</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -2164,7 +2551,7 @@
                                         <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
                                             <div style="height: 100%; width: 25%; background: #22c55e; border-radius: 4px;"></div>
                                         </div>
-                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">~50 GB of 200 GB</div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">~94 GB of 200 GB (2x47 GB free micro)</div>
                                     </div>
                                     <div style="margin-bottom: 0.75rem;">
                                         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
@@ -2757,7 +3144,7 @@
                                     <td>oci-f-micro_1</td>
                                     <td>mail_network</td>
                                     <td>172.20.0.0/24</td>
-                                    <td>Mail services (Stalwart)</td>
+                                    <td>Mail services (Mailu)</td>
                                 </tr>
                                 <tr>
                                     <td>oci-f-micro_2</td>
@@ -2864,7 +3251,7 @@
         |
         v
 +-----------------+
-|  OCI PhotoView  |  Backend service
+|  OCI Photoprism |  Backend service (10.0.0.2:2342)
 +-----------------+</div>
             </div>
 
@@ -2886,7 +3273,7 @@
                             <tbody>
                                 <tr>
                                     <td>photos.diegonmarcos.com</td>
-                                    <td>PhotoView / Lychee</td>
+                                    <td>Photoprism Gallery</td>
                                     <td>2FA (TOTP)</td>
                                     <td><span class="status-badge on">Protected</span></td>
                                 </tr>
@@ -2910,7 +3297,7 @@
                                 </tr>
                                 <tr>
                                     <td>mail.diegonmarcos.com</td>
-                                    <td>Stalwart Admin</td>
+                                    <td>Mailu Admin</td>
                                     <td>2FA (TOTP)</td>
                                     <td><span class="status-badge on">Protected</span></td>
                                 </tr>
@@ -2972,7 +3359,7 @@
         // =================================================================
         // CONFIGURATION
         // =================================================================
-        const apiUrl = 'http://84.235.234.87:5000/api';
+        const apiUrl = 'http://34.55.55.234:5000/api';
         const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
         const GITHUB_REDIRECT_URI = window.location.href.split('?')[0];
 
@@ -3032,6 +3419,12 @@
                                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                                             <polyline points="15 3 21 3 21 9"/>
                                             <line x1="10" y1="14" x2="21" y2="3"/>
+                                        </svg>
+                                    </button>
+                                    <button class="vm-action-btn btn-reset" data-vm-reset="${vm.id}" onclick="resetVM('${vm.id}')" title="Reset VM (reboot if running, start if stopped)">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M23 4v6h-6M1 20v-6h6"/>
+                                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
                                         </svg>
                                     </button>
                                 </div>
@@ -3456,6 +3849,52 @@
                     if (vmId) rebootVM(vmId);
                 });
             });
+        }
+
+        // Reset VM function (reboot if running, start if stopped)
+        async function resetVM(vmId) {
+            if (!isLoggedIn) {
+                alert('Please login with GitHub to reset VMs');
+                return;
+            }
+
+            const btn = document.querySelector(`[data-vm-reset="${vmId}"]`);
+            if (!btn || btn.classList.contains('loading')) return;
+
+            if (!confirm(`Reset ${vmId}?\n\nThis will reboot if running, or start if stopped.`)) return;
+
+            btn.classList.add('loading');
+
+            try {
+                const token = localStorage.getItem('github_token');
+                const response = await fetch(`${apiUrl}/vm/${vmId}/reset`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    btn.classList.remove('loading');
+                    btn.classList.add('success');
+
+                    // Show appropriate message based on action taken
+                    const action = data.action || 'reset';
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        alert(`VM ${vmId}: ${action === 'started' ? 'Starting up...' : 'Rebooting...'}`);
+                    }, 500);
+                } else {
+                    throw new Error(data.error || 'Reset failed');
+                }
+            } catch (error) {
+                console.error('Reset error:', error);
+                alert(`Reset failed: ${error.message}`);
+                btn.classList.remove('loading');
+            }
         }
 
         // ============================================

@@ -95,7 +95,7 @@ const CONFIG = {
         "monthly": 0,
         "currency": "USD"
       },
-      "notes": "Stalwart Mail Server - 24/7 FREE"
+      "notes": "Mailu Mail Suite (8 containers) - 24/7 FREE"
     },
     "oci-f-micro_2": {
       "id": "oci-f-micro_2",
@@ -209,7 +209,7 @@ const CONFIG = {
       "specs": {
         "cpu": "1 OCPU (2 vCPU)",
         "ram": "8 GB",
-        "storage": "100 GB"
+        "storage": "242 GB"
       },
       "network": {
         "publicIp": "84.235.234.87",
@@ -516,19 +516,23 @@ const CONFIG = {
     "mail": {
       "id": "mail",
       "name": "mail",
-      "displayName": "Stalwart Mail",
+      "displayName": "Mailu Mail Suite",
       "category": "user-productivity",
       "vmId": "oci-f-micro_1",
       "childServices": [
-        "mail-app",
-        "mail-db"
+        "mailu-front",
+        "mailu-admin",
+        "mailu-imap",
+        "mailu-smtp",
+        "mailu-webmail"
       ],
       "network": {
         "domain": "mail.diegonmarcos.com",
         "directAccess": true
       },
       "urls": {
-        "admin": "http://130.110.251.193:8080",
+        "admin": "https://mail.diegonmarcos.com/admin",
+        "webmail": "https://mail.diegonmarcos.com/webmail",
         "imap": "mail.diegonmarcos.com:993",
         "smtp": "mail.diegonmarcos.com:587"
       },
@@ -548,37 +552,56 @@ const CONFIG = {
         }
       }
     },
-    "mail-app": {
-      "id": "mail-app",
-      "name": "mail-app",
-      "displayName": "Stalwart Server",
+    "mailu-front": {
+      "id": "mailu-front",
+      "name": "mailu-front",
+      "displayName": "Mailu Nginx",
       "parentService": "mail",
       "category": "user",
       "vmId": "oci-f-micro_1",
-      "network": {
-        "ports": {
-          "smtp": 587,
-          "imaps": 993,
-          "admin": 8080
-        }
-      },
-      "technology": {
-        "image": "stalwartlabs/stalwart",
-        "version": "latest"
-      },
+      "technology": {"image": "ghcr.io/mailu/nginx", "version": "2024.06"},
       "status": "on"
     },
-    "mail-db": {
-      "id": "mail-db",
-      "name": "mail-db",
-      "displayName": "Stalwart DB",
+    "mailu-admin": {
+      "id": "mailu-admin",
+      "name": "mailu-admin",
+      "displayName": "Mailu Admin",
       "parentService": "mail",
-      "category": "infra-db",
+      "category": "user",
       "vmId": "oci-f-micro_1",
-      "technology": {
-        "type": "RocksDB",
-        "embedded": true
-      },
+      "technology": {"image": "ghcr.io/mailu/admin", "version": "2024.06"},
+      "status": "on"
+    },
+    "mailu-imap": {
+      "id": "mailu-imap",
+      "name": "mailu-imap",
+      "displayName": "Mailu IMAP (Dovecot)",
+      "parentService": "mail",
+      "category": "user",
+      "vmId": "oci-f-micro_1",
+      "network": {"ports": {"imaps": 993}},
+      "technology": {"image": "ghcr.io/mailu/dovecot", "version": "2024.06"},
+      "status": "on"
+    },
+    "mailu-smtp": {
+      "id": "mailu-smtp",
+      "name": "mailu-smtp",
+      "displayName": "Mailu SMTP (Postfix)",
+      "parentService": "mail",
+      "category": "user",
+      "vmId": "oci-f-micro_1",
+      "network": {"ports": {"smtp": 25, "submission": 587}},
+      "technology": {"image": "ghcr.io/mailu/postfix", "version": "2024.06"},
+      "status": "on"
+    },
+    "mailu-webmail": {
+      "id": "mailu-webmail",
+      "name": "mailu-webmail",
+      "displayName": "Mailu Webmail (Roundcube)",
+      "parentService": "mail",
+      "category": "user",
+      "vmId": "oci-f-micro_1",
+      "technology": {"image": "ghcr.io/mailu/webmail", "version": "2024.06"},
       "status": "on"
     },
     "vpn": {
@@ -1186,6 +1209,46 @@ const CONFIG = {
       },
       "status": "on"
     },
+    "wireguard": {
+      "id": "wireguard",
+      "name": "wireguard",
+      "displayName": "WireGuard VPN",
+      "category": "infra-vpn",
+      "vmId": "gcp-f-micro_1",
+      "network": {
+        "port": 51820,
+        "protocol": "UDP",
+        "tunnel": {
+          "gcp": "10.0.0.1",
+          "oci": "10.0.0.2"
+        }
+      },
+      "technology": {
+        "image": "linuxserver/wireguard",
+        "version": "latest"
+      },
+      "status": "on",
+      "notes": "GCP to OCI tunnel for backend services"
+    },
+    "oauth2-proxy": {
+      "id": "oauth2-proxy",
+      "name": "oauth2-proxy",
+      "displayName": "OAuth2 Proxy",
+      "category": "infra-auth",
+      "vmId": "gcp-f-micro_1",
+      "network": {
+        "internalPort": 4180
+      },
+      "urls": {
+        "start": "https://auth.diegonmarcos.com/oauth2/start"
+      },
+      "technology": {
+        "image": "quay.io/oauth2-proxy/oauth2-proxy",
+        "version": "latest"
+      },
+      "status": "on",
+      "notes": "GitHub SSO for protected services"
+    },
     "cache": {
       "id": "cache",
       "name": "cache",
@@ -1433,7 +1496,7 @@ const CONFIG = {
       "vmId": "oci-f-micro_1",
       "driver": "bridge",
       "subnet": "172.20.0.0/24",
-      "purpose": "Mail services (Stalwart)"
+      "purpose": "Mail services (Mailu)"
     },
     "matomo_network": {
       "vmId": "oci-f-micro_2",
@@ -1483,7 +1546,7 @@ const CONFIG = {
       {
         "port": 8080,
         "protocol": "TCP",
-        "service": "Stalwart Admin",
+        "service": "Mailu Admin",
         "direction": "ingress"
       }
     ],
@@ -1627,7 +1690,7 @@ const CONFIG = {
       {
         "port": 8080,
         "protocol": "TCP",
-        "service": "PhotoView",
+        "service": "Photoprism",
         "direction": "internal"
       }
     ]

@@ -1485,17 +1485,23 @@
 
         <!-- Architecture View -->
         <div id="architecture-view" class="view-content">
-            <iframe src="arch.html" style="width: 100%; height: 85vh; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
+            <div class="iframe-desktop-wrapper">
+                <iframe src="arch.html" class="desktop-iframe"></iframe>
+            </div>
         </div>
 
         <!-- AI Architecture View -->
         <div id="ai-architecture-view" class="view-content">
-            <iframe src="ai-arch.html" style="width: 100%; height: 85vh; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
+            <div class="iframe-desktop-wrapper">
+                <iframe src="ai-arch.html" class="desktop-iframe"></iframe>
+            </div>
         </div>
 
         <!-- Security Architecture View -->
         <div id="security-architecture-view" class="view-content">
-            <iframe src="security-arch.html" style="width: 100%; height: 85vh; border: none; border-radius: 12px; background: #0a0a0f;"></iframe>
+            <div class="iframe-desktop-wrapper">
+                <iframe src="security-arch.html" class="desktop-iframe"></iframe>
+            </div>
         </div>
 
         <!-- Backlog View -->
@@ -1850,6 +1856,54 @@
 
         .view-content.active {
             display: block;
+        }
+
+        /* Desktop-forced iframe wrapper for architecture views */
+        .iframe-desktop-wrapper {
+            width: 100%;
+            height: 85vh;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #0a0a0f;
+        }
+
+        .desktop-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+            background: #0a0a0f;
+        }
+
+        /* Mobile: force desktop view with scaling */
+        @media (max-width: 768px) {
+            .iframe-desktop-wrapper {
+                width: 100%;
+                height: 70vh;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .desktop-iframe {
+                width: 1200px;
+                height: 800px;
+                transform: scale(0.35);
+                transform-origin: top left;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .desktop-iframe {
+                width: 1200px;
+                height: 900px;
+                transform: scale(0.7);
+                transform-origin: top left;
+            }
+
+            .iframe-desktop-wrapper {
+                height: 70vh;
+                overflow: auto;
+            }
         }
 
         /* List View */

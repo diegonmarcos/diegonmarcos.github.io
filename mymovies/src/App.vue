@@ -14,10 +14,14 @@ const {
   error,
   searchQuery,
   view,
+  bulkInput,
+  showBulkInput,
   saveApiKey,
   clearApiKey,
   setView,
-  debouncedSearch
+  debouncedSearch,
+  toggleBulkInput,
+  fetchBulk
 } = useMovies()
 
 const {
@@ -61,10 +65,7 @@ const popularMovieIds = [
 ]
 
 const handleOpenWebPlayerFromHeader = () => {
-  // Pick a random movie ID
   const randomId = popularMovieIds[Math.floor(Math.random() * popularMovieIds.length)]
-
-  // Create a dummy movie object
   const dummyMovie: Movie = {
     imdbID: randomId,
     Title: 'Random Movie',
@@ -72,51 +73,63 @@ const handleOpenWebPlayerFromHeader = () => {
     Type: 'movie',
     Poster: 'N/A'
   }
-
   openWebPlayer(dummyMovie)
 }
 </script>
 
 <template>
+  <!-- Scorsese Noir Animated Background -->
+  <div class="scene-bg">
+    <div class="city-silhouette"></div>
+    <div class="spotlight"></div>
+    <div class="spotlight-2"></div>
+    <div class="blinds"></div>
+    <div class="rain"></div>
+    <div class="rain-2"></div>
+    <div class="fog"></div>
+    <div class="fog-2"></div>
+    <div class="neon-glow"></div>
+    <div class="neon-glow-2"></div>
+    <div class="neon-glow-3"></div>
+    <div class="window-lights"></div>
+  </div>
+
   <div id="app">
     <AppHeader
       :hasApiKey="hasApiKey"
       :tempApiKey="tempApiKey"
       :view="view"
       :searchQuery="searchQuery"
+      :bulkInput="bulkInput"
+      :showBulkInput="showBulkInput"
       @update:tempApiKey="tempApiKey = $event"
       @update:searchQuery="searchQuery = $event"
+      @update:bulkInput="bulkInput = $event"
       @saveKey="saveApiKey"
       @clearKey="clearApiKey"
       @setView="setView"
       @search="debouncedSearch"
       @openWebPlayer="handleOpenWebPlayerFromHeader"
+      @toggleBulkInput="toggleBulkInput"
+      @fetchBulk="fetchBulk"
     />
 
     <main>
-      <!-- Missing API Key State -->
-      <div v-if="!hasApiKey" class="status-msg access-restricted">
-        <h2>🔑 API Key Required</h2>
-        <p>Please enter your OMDb API Key above.</p>
-        <p class="hint">
-          Get a free API key at <a href="https://www.omdbapi.com/apikey.aspx" target="_blank">omdbapi.com</a>
-        </p>
-      </div>
-
       <!-- Loading State -->
-      <div v-else-if="loading" class="status-msg">
+      <div v-if="loading" class="status-msg loading">
         <div class="spinner"></div>
-        <p>Fetching data...</p>
+        <p>LOADING...</p>
       </div>
 
       <!-- Error State -->
       <div v-else-if="error" class="status-msg error">
-        {{ error }}
+        <p>{{ error }}</p>
       </div>
 
       <!-- Empty State -->
-      <div v-else-if="movies.length === 0 && !loading" class="status-msg">
-        No results found.
+      <div v-else-if="movies.length === 0 && !loading" class="status-msg empty">
+        <p>NO RESULTS FOUND</p>
+        <span class="hint">Try a different search or select a category</span>
       </div>
 
       <!-- Content Grid -->
@@ -150,7 +163,9 @@ const handleOpenWebPlayerFromHeader = () => {
 #app {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 24px 40px;
+  position: relative;
+  z-index: 1;
 }
 
 main {
@@ -160,48 +175,64 @@ main {
 .media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 25px;
+  gap: 24px;
 }
 
 .status-msg {
   text-align: center;
-  padding: 50px;
-  font-size: 1.2em;
-  color: var(--text-secondary);
+  padding: 80px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 
-  &.access-restricted {
-    color: var(--accent-color);
-
-    .hint {
-      font-style: italic;
-      color: var(--text-secondary);
-      margin-top: 20px;
-
-      a {
-        color: var(--accent-color);
-        text-decoration: underline;
-      }
-    }
+  p {
+    font-family: 'Bebas Neue', 'Oswald', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    margin: 0;
   }
 
-  &.error {
-    color: #ff6b6b;
+  &.loading p {
+    color: var(--noir-silver);
+  }
+
+  &.error p {
+    color: var(--noir-crimson);
+  }
+
+  &.empty .hint {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
   }
 }
 
 .spinner {
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-left-color: var(--accent-color);
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--noir-smoke);
+  border-top-color: var(--noir-red);
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 768px) {
+  #app {
+    padding: 0 16px 24px;
+  }
+
+  .media-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
   }
 }
 </style>

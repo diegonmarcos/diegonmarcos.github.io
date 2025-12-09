@@ -25,4 +25,7 @@ export interface OmdbDetailResponse extends Movie {
   Error?: string
 }
 
-export type ViewType = 'home' | 'search' | 'movies2025' | 'series2025' | 'staffpicks' | 'ghibli'
+export type ViewType =
+  | 'home' | 'search' | 'movies2025' | 'series2025' | 'staffpicks' | 'ghibli'
+  | 'spielberg' | 'scorsese' | 'streep' | 'nicholson' | 'hepburn' | 'eastwood'
+  | 'bulk'

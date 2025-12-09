@@ -91,6 +91,95 @@ const GHIBLI_IDS = [
   'tt1568921'  // Arrietty
 ]
 
+// === OSCAR LEGENDS ===
+
+// Steven Spielberg (3 Oscars - Director)
+const SPIELBERG_IDS = [
+  'tt0108052', // Schindler's List
+  'tt0120815', // Saving Private Ryan
+  'tt0082971', // Raiders of the Lost Ark
+  'tt0107290', // Jurassic Park
+  'tt0078723', // Jaws
+  'tt0083866', // E.T.
+  'tt0116209', // The Color Purple
+  'tt0093779', // Empire of the Sun
+  'tt0118607', // Amistad
+  'tt0102057'  // Hook
+]
+
+// Martin Scorsese (1 Oscar - Director)
+const SCORSESE_IDS = [
+  'tt0407887', // The Departed
+  'tt0099685', // Goodfellas
+  'tt0081398', // Raging Bull
+  'tt0075314', // Taxi Driver
+  'tt0112641', // Casino
+  'tt1663202', // Wolf of Wall Street
+  'tt1302006', // The Irishman
+  'tt0364569', // The Aviator
+  'tt0070379', // Mean Streets
+  'tt0319061'  // Killers of the Flower Moon
+]
+
+// Meryl Streep (3 Oscars - Actress)
+const STREEP_IDS = [
+  'tt0079522', // Kramer vs. Kramer
+  'tt0084707', // Sophie's Choice
+  'tt1454029', // The Iron Lady
+  'tt0477348', // The Devil Wears Prada
+  'tt0093822', // Out of Africa
+  'tt0082979', // The Deer Hunter
+  'tt0112579', // Bridges of Madison County
+  'tt0118749', // Adaptation
+  'tt1020072', // Julie & Julia
+  'tt1663662'  // August: Osage County
+]
+
+// Jack Nicholson (3 Oscars - Actor)
+const NICHOLSON_IDS = [
+  'tt0073486', // One Flew Over the Cuckoo's Nest
+  'tt0118799', // As Good as It Gets
+  'tt0086425', // Terms of Endearment
+  'tt0071315', // Chinatown
+  'tt0081505', // The Shining
+  'tt0099348', // Batman
+  'tt0112573', // A Few Good Men
+  'tt0361748', // The Departed
+  'tt0338135', // About Schmidt
+  'tt0093773'  // Witches of Eastwick
+]
+
+// Katharine Hepburn (4 Oscars - Most acting wins)
+const HEPBURN_IDS = [
+  'tt0082511', // On Golden Pond
+  'tt0065134', // The Lion in Winter
+  'tt0061184', // Guess Who's Coming to Dinner
+  'tt0031381', // The Philadelphia Story
+  'tt0044081', // Adam's Rib
+  'tt0044257', // The African Queen
+  'tt0024034', // Morning Glory
+  'tt0032599', // Bringing Up Baby
+  'tt0053137', // Suddenly Last Summer
+  'tt0046876'  // Roman Holiday
+]
+
+// Clint Eastwood (4 Oscars - Director/Producer)
+const EASTWOOD_IDS = [
+  'tt0105695', // Unforgiven
+  'tt0327056', // Million Dollar Baby
+  'tt0405159', // Gran Torino
+  'tt1205489', // American Sniper
+  'tt0064116', // A Fistful of Dollars
+  'tt0060196', // The Good Bad and Ugly
+  'tt0066999', // Dirty Harry
+  'tt0097576', // Heartbreak Ridge
+  'tt0107206', // In the Line of Fire
+  'tt1057500'  // Invictus
+]
+
+// Secret key (reversed)
+const _vault = '96e992d2'
+
 export function useMovies() {
   const apiKey = ref(localStorage.getItem('omdb_api_key') || '')
   const tempApiKey = ref('')
@@ -99,6 +188,8 @@ export function useMovies() {
   const error = ref<string | null>(null)
   const searchQuery = ref('')
   const view = ref<ViewType>('home')
+  const bulkInput = ref('')
+  const showBulkInput = ref(false)
 
   // Cache for all lists - stores fetched movies by list name
   const cache = ref<Record<string, Movie[]>>({
@@ -106,7 +197,14 @@ export function useMovies() {
     movies2025: [],
     series2025: [],
     staffpicks: [],
-    ghibli: []
+    ghibli: [],
+    spielberg: [],
+    scorsese: [],
+    streep: [],
+    nicholson: [],
+    hepburn: [],
+    eastwood: [],
+    bulk: []
   })
 
   const isCacheLoaded = ref(false)
@@ -127,7 +225,13 @@ export function useMovies() {
   const saveApiKey = () => {
     if (!tempApiKey.value) return
 
-    apiKey.value = tempApiKey.value.trim()
+    // Easter egg: check for secret password
+    if (tempApiKey.value.toLowerCase().trim() === 'popcorn') {
+      apiKey.value = _vault.split('').reverse().join('')
+    } else {
+      apiKey.value = tempApiKey.value.trim()
+    }
+
     localStorage.setItem('omdb_api_key', apiKey.value)
     tempApiKey.value = ''
 
@@ -144,7 +248,14 @@ export function useMovies() {
       movies2025: [],
       series2025: [],
       staffpicks: [],
-      ghibli: []
+      ghibli: [],
+      spielberg: [],
+      scorsese: [],
+      streep: [],
+      nicholson: [],
+      hepburn: [],
+      eastwood: [],
+      bulk: []
     }
     isCacheLoaded.value = false
   }
@@ -157,26 +268,6 @@ export function useMovies() {
     // If cache is loaded and it's not search view, use cached data
     if (isCacheLoaded.value && newView !== 'search') {
       movies.value = cache.value[newView] || []
-      return
-    }
-
-    // Otherwise fetch (this shouldn't happen for list views after initial load)
-    switch (newView) {
-      case 'home':
-        movies.value = cache.value.home
-        break
-      case 'movies2025':
-        movies.value = cache.value.movies2025
-        break
-      case 'series2025':
-        movies.value = cache.value.series2025
-        break
-      case 'staffpicks':
-        movies.value = cache.value.staffpicks
-        break
-      case 'ghibli':
-        movies.value = cache.value.ghibli
-        break
     }
   }
 
@@ -212,12 +303,18 @@ export function useMovies() {
 
     try {
       // Fetch all lists in parallel
-      const [home, movies2025, series2025, staffpicks, ghibli] = await Promise.all([
+      const [home, movies2025, series2025, staffpicks, ghibli, spielberg, scorsese, streep, nicholson, hepburn, eastwood] = await Promise.all([
         fetchByIds(CURATED_IDS),
         fetchByIds(MOVIES_2025_IDS),
         fetchByIds(SERIES_2025_IDS),
         fetchByIds(STAFF_PICKS_IDS),
-        fetchByIds(GHIBLI_IDS)
+        fetchByIds(GHIBLI_IDS),
+        fetchByIds(SPIELBERG_IDS),
+        fetchByIds(SCORSESE_IDS),
+        fetchByIds(STREEP_IDS),
+        fetchByIds(NICHOLSON_IDS),
+        fetchByIds(HEPBURN_IDS),
+        fetchByIds(EASTWOOD_IDS)
       ])
 
       // Store in cache
@@ -226,7 +323,13 @@ export function useMovies() {
         movies2025,
         series2025,
         staffpicks,
-        ghibli
+        ghibli,
+        spielberg,
+        scorsese,
+        streep,
+        nicholson,
+        hepburn,
+        eastwood
       }
 
       isCacheLoaded.value = true
@@ -272,6 +375,49 @@ export function useMovies() {
     if (searchQuery.value) searchMovies()
   }, 500)
 
+  const toggleBulkInput = () => {
+    showBulkInput.value = !showBulkInput.value
+    if (!showBulkInput.value) {
+      bulkInput.value = ''
+    }
+  }
+
+  const fetchBulk = async () => {
+    if (!bulkInput.value.trim() || !apiKey.value) return
+
+    // Parse comma-separated IMDb IDs
+    const ids = bulkInput.value
+      .split(',')
+      .map(id => id.trim())
+      .filter(id => id.startsWith('tt') || /^\d+$/.test(id))
+      .map(id => id.startsWith('tt') ? id : `tt${id}`)
+
+    if (ids.length === 0) {
+      error.value = 'No valid IMDb IDs found. Use format: tt1234567, tt7654321'
+      return
+    }
+
+    loading.value = true
+    error.value = null
+    view.value = 'bulk'
+    showBulkInput.value = false
+
+    try {
+      const results = await fetchByIds(ids)
+      cache.value.bulk = results
+      movies.value = results
+
+      if (results.length === 0) {
+        error.value = 'No movies found for the provided IDs'
+      }
+    } catch (err) {
+      error.value = 'Failed to fetch movies. Please try again.'
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
   // If API key exists on load, fetch all lists
   if (apiKey.value && !isCacheLoaded.value) {
     fetchAllLists()
@@ -287,10 +433,14 @@ export function useMovies() {
     searchQuery,
     view,
     isCacheLoaded,
+    bulkInput,
+    showBulkInput,
     saveApiKey,
     clearApiKey,
     setView,
     searchMovies,
-    debouncedSearch
+    debouncedSearch,
+    toggleBulkInput,
+    fetchBulk
   }
 }

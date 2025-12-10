@@ -497,6 +497,88 @@
             100% { left: 100%; }
         }
 
+        /* Wake Server button */
+        .btn-wake {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-wake:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+
+        .btn-wake.waking {
+            animation: pulse-wake 1.5s infinite;
+        }
+
+        .btn-wake.success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-wake.error {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes pulse-wake {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .wake-status {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 8px;
+            text-align: center;
+            min-height: 18px;
+        }
+
+        /* Server status indicator */
+        .server-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding: 10px 16px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6b7280;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+        }
+
+        .status-dot.checking {
+            background: #f59e0b;
+            animation: pulse-dot 1s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.9); }
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .login-card {
@@ -571,6 +653,12 @@
                 <span>Sign in to continue</span>
             </div>
 
+            <!-- Server Status Indicator -->
+            <div class="server-status" id="server-status">
+                <div class="status-dot checking" id="status-dot"></div>
+                <span id="status-text">Checking server status...</span>
+            </div>
+
             <div class="login-buttons">
                 <!-- GitHub OAuth Button (PRIMARY - via OAuth2 Proxy) -->
                 <a href="https://auth.diegonmarcos.com/oauth2/start?rd=https://photosapp.diegonmarcos.com/" class="login-btn btn-github">
@@ -589,6 +677,23 @@
                     </svg>
                     Authelia 2FA
                 </a>
+
+                <!-- Wake Server Button (if server is dormant) -->
+                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="display: none;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <span id="wake-btn-text">Wake Photo Server</span>
+                </button>
+                <div id="wake-status" class="wake-status"></div>
             </div>
 
             <div class="security-info">
@@ -705,6 +810,164 @@
                 shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
             });
         });
+
+        // Wake Server functionality
+        const CLOUD_API = 'https://cloud.diegonmarcos.com/api';
+        const wakeBtn = document.getElementById('wake-btn');
+        const wakeBtnText = document.getElementById('wake-btn-text');
+        const wakeStatus = document.getElementById('wake-status');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+
+        function updateStatusIndicator(state, message) {
+            statusDot.className = 'status-dot';
+            if (state === 'RUNNING') {
+                statusDot.classList.add('online');
+                statusText.textContent = message || 'Server Online';
+            } else if (state === 'STOPPED' || state === 'STOPPING') {
+                statusDot.classList.add('offline');
+                statusText.textContent = message || 'Server Offline (Sleeping)';
+            } else if (state === 'STARTING') {
+                statusDot.classList.add('checking');
+                statusText.textContent = message || 'Server Starting...';
+            } else {
+                statusDot.classList.add('checking');
+                statusText.textContent = message || 'Checking...';
+            }
+        }
+
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${CLOUD_API}/wake/status`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                const data = await response.json();
+
+                if (data.state === 'STOPPED' || data.state === 'STOPPING') {
+                    // Server is dormant, show wake button
+                    updateStatusIndicator('STOPPED');
+                    wakeBtn.style.display = 'flex';
+                    wakeStatus.textContent = 'Photo server is sleeping. Wake it up to access your photos.';
+                } else if (data.state === 'STARTING') {
+                    // Server is waking up
+                    updateStatusIndicator('STARTING');
+                    wakeBtn.style.display = 'flex';
+                    wakeBtn.classList.add('waking');
+                    wakeBtnText.textContent = 'Starting...';
+                    wakeStatus.textContent = 'Server is waking up, please wait...';
+                    // Check again in 10 seconds
+                    setTimeout(checkServerStatus, 10000);
+                } else if (data.state === 'RUNNING') {
+                    // Server is running, hide wake button
+                    updateStatusIndicator('RUNNING');
+                    wakeBtn.style.display = 'none';
+                    wakeStatus.textContent = '';
+                } else {
+                    // Unknown state
+                    updateStatusIndicator('UNKNOWN', 'Status Unknown');
+                    wakeBtn.style.display = 'none';
+                }
+            } catch (error) {
+                // API might not be available
+                console.log('Wake status check failed:', error);
+                updateStatusIndicator('UNKNOWN', 'Could not check status');
+                wakeBtn.style.display = 'none';
+            }
+        }
+
+        async function wakeServer() {
+            wakeBtn.classList.add('waking');
+            wakeBtn.disabled = true;
+            wakeBtnText.textContent = 'Waking up...';
+            wakeStatus.textContent = 'Sending wake signal to photo server...';
+            updateStatusIndicator('STARTING', 'Waking Server...');
+
+            try {
+                const response = await fetch(`${CLOUD_API}/wake/trigger`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    wakeBtn.classList.remove('waking');
+                    wakeBtn.classList.add('success');
+                    wakeBtnText.textContent = 'Server Starting!';
+                    wakeStatus.textContent = `Estimated wake time: ${data.estimatedWakeTime || 60} seconds. Page will refresh automatically.`;
+                    updateStatusIndicator('STARTING', 'Server Starting...');
+
+                    // Poll for server to be ready
+                    pollServerReady();
+                } else {
+                    wakeBtn.classList.remove('waking');
+                    wakeBtn.classList.add('error');
+                    wakeBtnText.textContent = 'Wake Failed';
+                    wakeStatus.textContent = data.message || 'Failed to wake server. Try again.';
+                    updateStatusIndicator('STOPPED', 'Wake Failed');
+
+                    // Reset button after 3 seconds
+                    setTimeout(() => {
+                        wakeBtn.classList.remove('error');
+                        wakeBtn.disabled = false;
+                        wakeBtnText.textContent = 'Wake Photo Server';
+                    }, 3000);
+                }
+            } catch (error) {
+                wakeBtn.classList.remove('waking');
+                wakeBtn.classList.add('error');
+                wakeBtnText.textContent = 'Connection Error';
+                wakeStatus.textContent = 'Could not reach the wake service. Please try again.';
+                updateStatusIndicator('UNKNOWN', 'Connection Error');
+
+                setTimeout(() => {
+                    wakeBtn.classList.remove('error');
+                    wakeBtn.disabled = false;
+                    wakeBtnText.textContent = 'Wake Photo Server';
+                }, 3000);
+            }
+        }
+
+        async function pollServerReady() {
+            let attempts = 0;
+            const maxAttempts = 12; // 2 minutes max (12 * 10 seconds)
+
+            const poll = async () => {
+                attempts++;
+                try {
+                    const response = await fetch(`${CLOUD_API}/wake/status`);
+                    const data = await response.json();
+
+                    if (data.state === 'RUNNING') {
+                        updateStatusIndicator('RUNNING', 'Server Online!');
+                        wakeStatus.textContent = 'Server is ready! Refreshing page...';
+                        setTimeout(() => window.location.reload(), 1500);
+                        return;
+                    }
+                } catch (e) {
+                    // Ignore errors during polling
+                }
+
+                if (attempts < maxAttempts) {
+                    updateStatusIndicator('STARTING', `Starting... (${attempts * 10}s)`);
+                    wakeStatus.textContent = `Server starting... (${attempts * 10}s)`;
+                    setTimeout(poll, 10000);
+                } else {
+                    updateStatusIndicator('UNKNOWN', 'Taking longer than expected');
+                    wakeStatus.textContent = 'Server taking longer than expected. Try refreshing manually.';
+                    wakeBtn.disabled = false;
+                    wakeBtnText.textContent = 'Check Status';
+                }
+            };
+
+            setTimeout(poll, 10000);
+        }
+
+        // Check server status on page load
+        checkServerStatus();
     </script>
 </body>
 </html>

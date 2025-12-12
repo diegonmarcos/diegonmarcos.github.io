@@ -811,8 +811,8 @@
             });
         });
 
-        // Wake Server functionality
-        const CLOUD_API = 'https://api.diegonmarcos.com';
+        // Wake Server functionality - Direct check to photo server
+        const PHOTO_SERVER_URL = 'https://photos.diegonmarcos.com';
         const wakeBtn = document.getElementById('wake-btn');
         const wakeBtnText = document.getElementById('wake-btn-text');
         const wakeStatus = document.getElementById('wake-status');
@@ -838,137 +838,80 @@
 
         async function checkServerStatus() {
             try {
-                const response = await fetch(`${CLOUD_API}/wake/status`, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                const data = await response.json();
+                // Try to reach the photo server directly
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-                if (data.state === 'STOPPED' || data.state === 'STOPPING') {
-                    // Server is dormant, show wake button
-                    updateStatusIndicator('STOPPED');
-                    wakeBtn.style.display = 'flex';
-                    wakeStatus.textContent = 'Photo server is sleeping. Wake it up to access your photos.';
-                } else if (data.state === 'STARTING') {
-                    // Server is waking up
-                    updateStatusIndicator('STARTING');
-                    wakeBtn.style.display = 'flex';
-                    wakeBtn.classList.add('waking');
-                    wakeBtnText.textContent = 'Starting...';
-                    wakeStatus.textContent = 'Server is waking up, please wait...';
-                    // Check again in 10 seconds
-                    setTimeout(checkServerStatus, 10000);
-                } else if (data.state === 'RUNNING') {
-                    // Server is running, hide wake button
-                    updateStatusIndicator('RUNNING');
-                    wakeBtn.style.display = 'none';
-                    wakeStatus.textContent = '';
-                } else {
-                    // Unknown state
-                    updateStatusIndicator('UNKNOWN', 'Status Unknown');
-                    wakeBtn.style.display = 'none';
-                }
+                const response = await fetch(PHOTO_SERVER_URL, {
+                    method: 'HEAD',
+                    mode: 'no-cors', // Allow checking even without CORS
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                // If we get here, server is reachable (no-cors means we can't check status, but fetch succeeds)
+                updateStatusIndicator('RUNNING', 'Server Online');
+                wakeBtn.style.display = 'none';
+                wakeStatus.textContent = '';
             } catch (error) {
-                // API might not be available - show wake button anyway
-                console.log('Wake status check failed:', error);
-                updateStatusIndicator('UNKNOWN', 'Could not check status');
-                wakeBtn.style.display = 'flex';
-                wakeStatus.textContent = 'API unavailable. Try waking the server manually.';
+                // Server not reachable - likely sleeping
+                console.log('Photo server check:', error.name);
+                if (error.name === 'AbortError') {
+                    updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
+                    wakeBtn.style.display = 'flex';
+                    wakeStatus.textContent = 'Photo server is sleeping. Contact admin to wake it.';
+                } else {
+                    updateStatusIndicator('STOPPED', 'Server Offline');
+                    wakeBtn.style.display = 'flex';
+                    wakeStatus.textContent = 'Photo server is not responding.';
+                }
             }
         }
 
         async function wakeServer() {
+            // Since we don't have a wake API yet, show instructions
             wakeBtn.classList.add('waking');
-            wakeBtn.disabled = true;
-            wakeBtnText.textContent = 'Waking up...';
-            wakeStatus.textContent = 'Sending wake signal to photo server...';
-            updateStatusIndicator('STARTING', 'Waking Server...');
+            wakeBtnText.textContent = 'Checking...';
+            wakeStatus.textContent = 'Checking server status...';
 
+            // Re-check if server came online
             try {
-                const response = await fetch(`${CLOUD_API}/wake/trigger`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+                await fetch(PHOTO_SERVER_URL, {
+                    method: 'HEAD',
+                    mode: 'no-cors',
+                    signal: controller.signal
                 });
-                const data = await response.json();
+                clearTimeout(timeoutId);
 
-                if (data.success) {
-                    wakeBtn.classList.remove('waking');
-                    wakeBtn.classList.add('success');
-                    wakeBtnText.textContent = 'Server Starting!';
-                    wakeStatus.textContent = `Estimated wake time: ${data.estimatedWakeTime || 60} seconds. Page will refresh automatically.`;
-                    updateStatusIndicator('STARTING', 'Server Starting...');
-
-                    // Poll for server to be ready
-                    pollServerReady();
-                } else {
-                    wakeBtn.classList.remove('waking');
-                    wakeBtn.classList.add('error');
-                    wakeBtnText.textContent = 'Wake Failed';
-                    wakeStatus.textContent = data.message || 'Failed to wake server. Try again.';
-                    updateStatusIndicator('STOPPED', 'Wake Failed');
-
-                    // Reset button after 3 seconds
-                    setTimeout(() => {
-                        wakeBtn.classList.remove('error');
-                        wakeBtn.disabled = false;
-                        wakeBtnText.textContent = 'Wake Photo Server';
-                    }, 3000);
-                }
+                // Server is online!
+                wakeBtn.classList.remove('waking');
+                wakeBtn.classList.add('success');
+                wakeBtnText.textContent = 'Server Online!';
+                updateStatusIndicator('RUNNING', 'Server Online');
+                wakeStatus.textContent = 'Server is now available. Refreshing...';
+                setTimeout(() => window.location.reload(), 1500);
             } catch (error) {
+                // Still offline - show manual wake instructions
                 wakeBtn.classList.remove('waking');
                 wakeBtn.classList.add('error');
-                wakeBtnText.textContent = 'Connection Error';
-                wakeStatus.textContent = 'Could not reach the wake service. Please try again.';
-                updateStatusIndicator('UNKNOWN', 'Connection Error');
+                wakeBtnText.textContent = 'Server Sleeping';
+                updateStatusIndicator('STOPPED', 'Server Offline');
+                wakeStatus.textContent = 'Server is in sleep mode. Run: vm-control.sh wake';
 
                 setTimeout(() => {
                     wakeBtn.classList.remove('error');
-                    wakeBtn.disabled = false;
-                    wakeBtnText.textContent = 'Wake Photo Server';
+                    wakeBtnText.textContent = 'Check Again';
                 }, 3000);
             }
         }
 
-        async function pollServerReady() {
-            let attempts = 0;
-            const maxAttempts = 12; // 2 minutes max (12 * 10 seconds)
-
-            const poll = async () => {
-                attempts++;
-                try {
-                    const response = await fetch(`${CLOUD_API}/wake/status`);
-                    const data = await response.json();
-
-                    if (data.state === 'RUNNING') {
-                        updateStatusIndicator('RUNNING', 'Server Online!');
-                        wakeStatus.textContent = 'Server is ready! Refreshing page...';
-                        setTimeout(() => window.location.reload(), 1500);
-                        return;
-                    }
-                } catch (e) {
-                    // Ignore errors during polling
-                }
-
-                if (attempts < maxAttempts) {
-                    updateStatusIndicator('STARTING', `Starting... (${attempts * 10}s)`);
-                    wakeStatus.textContent = `Server starting... (${attempts * 10}s)`;
-                    setTimeout(poll, 10000);
-                } else {
-                    updateStatusIndicator('UNKNOWN', 'Taking longer than expected');
-                    wakeStatus.textContent = 'Server taking longer than expected. Try refreshing manually.';
-                    wakeBtn.disabled = false;
-                    wakeBtnText.textContent = 'Check Status';
-                }
-            };
-
-            setTimeout(poll, 10000);
-        }
-
         // Check server status on page load
         checkServerStatus();
+        // Re-check every 30 seconds
+        setInterval(checkServerStatus, 30000);
     </script>
 </body>
 </html>

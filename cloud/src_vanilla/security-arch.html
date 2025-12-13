@@ -16,6 +16,7 @@
     </script>
     <!-- End Matomo Tag Manager -->
 
+    <link rel="stylesheet" href="styles.css">
     <style>
         /* ============================================
            ROOT VARIABLES & THEME
@@ -860,8 +861,29 @@
 <body>
     <div class="main-container">
         <!-- Header -->
-        <div class="diagram-header">
-            <h1>Security Architecture <span class="version-badge">v2.0</span></h1>
+        <header class="diagram-header">
+            <h1>Cloud Portal</h1>
+            <p class="subtitle">Security Architecture</p>
+            <!-- Level 1: Main Navigation Links -->
+            <div class="nav-level1">
+                <a href="index.html" class="nav-main-btn">Products</a>
+                <a href="cloudcontrol.html" class="nav-main-btn">Cloud Control</a>
+                <a href="security-arch.html" class="nav-main-btn active">Architecture</a>
+            </div>
+            <!-- Level 2: Architecture Sub-tabs -->
+            <div class="nav-level2 active" id="nav-architecture">
+                <span class="view-btn active">Security</span>
+                <a href="arch.html" class="view-btn">Service</a>
+                <a href="infra-arch.html" class="view-btn">Infra</a>
+                <a href="data-api-arch.html" class="view-btn">Collectors & Data</a>
+                <a href="mcps-arch.html" class="view-btn">MCPs</a>
+                <a href="ai-arch.html" class="view-btn">AI</a>
+            </div>
+        </header>
+
+        <!-- Architecture Title -->
+        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+            <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, var(--edge-color), var(--firewall-color), var(--proxy-color), var(--auth-color), var(--network-color), var(--container-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Security Architecture <span class="version-badge">v2.0</span></h2>
             <p class="subtitle">Defense in Depth - Triple Auth (OAuth2 + TOTP + Passkey)</p>
         </div>
 

@@ -1968,30 +1968,10 @@
             </div>
         </div>
 
-        <!-- Services Section -->
+        <!-- Services Section (Grouped by VM) -->
         <div class="resources-category">
             <h3 class="resources-category-title">Services</h3>
-            <div class="resources-section">
-                <div class="resources-table-container">
-                    <table class="resources-table status-table services-hierarchical">
-                        <thead><tr><th>VM</th><th>Name</th><th>URL</th><th>IP:PORT</th><th>Proxy Name</th><th>STATUS</th></tr></thead>
-                        <tbody id="services-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- Backlog Section -->
-        <div class="resources-category">
-            <h3 class="resources-category-title">Backlog (DEV/HOLD)</h3>
-            <div class="resources-section">
-                <div class="resources-table-container">
-                    <table class="resources-table status-table">
-                        <thead><tr><th>Service</th><th>Status</th><th>VM</th><th>Notes</th></tr></thead>
-                        <tbody id="backlog-tbody"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div id="services-by-vm-container"></div>
         </div>
 
         </div><!-- End Status Tab -->
@@ -3433,79 +3413,94 @@
                 });
             }
 
-            // ===== RENDER SERVICES TABLE (UNIFIED HIERARCHICAL) =====
-            const servicesTbody = document.getElementById('services-tbody');
-            const backlogTbody = document.getElementById('backlog-tbody');
+            // ===== RENDER SERVICES BY VM (GROUPED HIERARCHICAL) =====
+            const servicesByVmContainer = document.getElementById('services-by-vm-container');
 
-            if (servicesTbody && backlogTbody) {
-                servicesTbody.innerHTML = '';
-                backlogTbody.innerHTML = '';
+            if (servicesByVmContainer) {
+                servicesByVmContainer.innerHTML = '';
 
-                // Get all parent services (those without parentService property)
+                // Get all parent services (those without parentService property and not DEV/HOLD)
                 const parentServices = Object.values(CONFIG.services || {})
-                    .filter(svc => !svc.parentService);
+                    .filter(svc => !svc.parentService && svc.status !== 'dev' && svc.status !== 'hold');
+
+                // Group services by VM
+                const servicesByVm = {};
 
                 parentServices.forEach(parent => {
-                    // Skip if DEV/HOLD - goes to backlog
-                    if (parent.status === 'dev' || parent.status === 'hold') {
-                        const vm = CONFIG.virtualMachines?.[parent.vmId];
-                        backlogTbody.innerHTML += `
-                            <tr>
-                                <td><strong>${parent.displayName || parent.name}</strong></td>
-                                <td><span class="status-badge ${parent.status}">${parent.status.toUpperCase()}</span></td>
-                                <td>${vm?.name || 'TBD'}</td>
-                                <td>${parent.notes || '-'}</td>
-                            </tr>
-                        `;
-                        return;
+                    const vmId = parent.vmId || 'unknown';
+                    if (!servicesByVm[vmId]) {
+                        servicesByVm[vmId] = [];
                     }
+                    servicesByVm[vmId].push(parent);
+                });
 
-                    // Get child services
-                    const children = Object.values(CONFIG.services || {})
-                        .filter(svc => svc.parentService === parent.id);
+                // Render services grouped by VM
+                Object.entries(servicesByVm).forEach(([vmId, services]) => {
+                    const vm = CONFIG.virtualMachines?.[vmId];
+                    const vmName = vm?.name || vmId;
+                    const vmIp = vm?.network?.publicIp || '-';
 
-                    const vm = CONFIG.virtualMachines?.[parent.vmId];
-                    const vmName = vm?.name || '-';
-
-                    // Find the NPM proxy serving this service
+                    // Find the NPM proxy on this VM
                     const npmService = Object.values(CONFIG.services || {})
-                        .find(svc => svc.vmId === vm?.id && svc.id.includes('npm'));
+                        .find(svc => svc.vmId === vmId && svc.id.includes('npm'));
                     const proxyName = npmService?.displayName || npmService?.name || '-';
 
-                    const url = parent.urls?.gui || parent.urls?.api || parent.network?.domain || '-';
-                    const ip = vm?.network?.publicIp || '-';
+                    // Create VM section
+                    let vmHtml = `
+                        <div class="resources-section" style="margin-bottom: 1.5rem;">
+                            <h4 style="color: var(--text-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                                <span style="width: 10px; height: 10px; background: ${vm?.host?.includes('oracle') || vm?.host?.includes('oci') ? '#F80000' : '#4285F4'}; border-radius: 50%;"></span>
+                                ${vmName}
+                                <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: normal;">(${vmIp} | Proxy: ${proxyName})</span>
+                            </h4>
+                            <div class="resources-table-container">
+                                <table class="resources-table status-table">
+                                    <thead><tr><th>Service</th><th>URL</th><th>IP:PORT</th><th>STATUS</th></tr></thead>
+                                    <tbody>`;
 
-                    // Parent row
-                    const appChild = children.find(c => c.id.endsWith('-app'));
-                    const statusServiceId = appChild?.id || parent.id;
+                    services.forEach(parent => {
+                        // Get child services
+                        const children = Object.values(CONFIG.services || {})
+                            .filter(svc => svc.parentService === parent.id);
 
-                    servicesTbody.innerHTML += `
-                        <tr class="service-parent-row">
-                            <td><strong>${vmName}</strong></td>
-                            <td><strong>${parent.displayName || parent.name}</strong></td>
-                            <td>${url !== '-' ? `<a href="${url}" target="_blank" style="color: var(--accent-blue)">${url}</a>` : '-'}</td>
-                            <td>-</td>
-                            <td>${proxyName}</td>
-                            <td><span class="live-status checking" data-service="${statusServiceId}"><span class="live-dot"></span>Checking...</span></td>
-                        </tr>
-                    `;
+                        const url = parent.urls?.gui || parent.urls?.api || parent.network?.domain || '-';
 
-                    // Child rows (indented)
-                    children.forEach(child => {
-                        const port = child.network?.proxyAddress?.split(':')[1] || '-';
-                        const ipPort = port !== '-' ? `${ip}:${port}` : '-';
+                        // Parent row
+                        const appChild = children.find(c => c.id.endsWith('-app'));
+                        const statusServiceId = appChild?.id || parent.id;
 
-                        servicesTbody.innerHTML += `
-                            <tr class="service-child-row">
-                                <td></td>
-                                <td class="child-service-name">↳ ${child.displayName || child.name}</td>
+                        vmHtml += `
+                            <tr class="service-parent-row">
+                                <td><strong>${parent.displayName || parent.name}</strong></td>
+                                <td>${url !== '-' ? `<a href="${url}" target="_blank" style="color: var(--accent-blue)">${url}</a>` : '-'}</td>
                                 <td>-</td>
-                                <td><code>${ipPort}</code></td>
-                                <td>-</td>
-                                <td><span class="status-badge ${child.status}">${child.status.toUpperCase()}</span></td>
+                                <td><span class="live-status checking" data-service="${statusServiceId}"><span class="live-dot"></span>Checking...</span></td>
                             </tr>
                         `;
+
+                        // Child rows (indented)
+                        children.forEach(child => {
+                            const port = child.network?.proxyAddress?.split(':')[1] || '-';
+                            const ipPort = port !== '-' ? `${vmIp}:${port}` : '-';
+
+                            vmHtml += `
+                                <tr class="service-child-row">
+                                    <td class="child-service-name">↳ ${child.displayName || child.name}</td>
+                                    <td>-</td>
+                                    <td><code>${ipPort}</code></td>
+                                    <td><span class="status-badge ${child.status}">${child.status.toUpperCase()}</span></td>
+                                </tr>
+                            `;
+                        });
                     });
+
+                    vmHtml += `
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>`;
+
+                    servicesByVmContainer.innerHTML += vmHtml;
                 });
             }
 

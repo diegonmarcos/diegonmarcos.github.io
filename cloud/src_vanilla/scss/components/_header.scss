@@ -44,6 +44,41 @@ header {
     font-weight: 300;
 }
 
+// Header Banner
+.header-banner {
+    width: 100%;
+    max-width: 800px;
+    margin: 0.5rem auto;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+
+    svg {
+        width: 100%;
+        height: auto;
+        max-height: 80px;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
+[data-theme="blurred"] .header-banner {
+    opacity: 0.9;
+    margin: 1rem auto;
+
+    svg {
+        max-height: 100px;
+        filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.2));
+    }
+
+    &:hover {
+        svg {
+            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+        }
+    }
+}
+
 .section-header {
     text-align: left;
     margin-bottom: 1rem;
@@ -230,4 +265,140 @@ header {
 
 [data-theme="blurred"] .zoom-level {
     font-size: 0.7rem;
+}
+
+// Two-Level Navigation
+.nav-level1 {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0 0.75rem 0;
+}
+
+.nav-main-btn {
+    padding: 0.6rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: var(--accent-primary);
+        color: var(--text-primary);
+    }
+
+    &.active {
+        border-color: var(--accent-primary);
+        background: var(--accent-primary);
+        color: var(--bg-primary);
+    }
+}
+
+[data-theme="blurred"] .nav-main-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+
+    &:hover {
+        border-color: var(--accent-blue);
+        background: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 0 15px var(--glow);
+    }
+
+    &.active {
+        background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 0 20px var(--glow);
+    }
+}
+
+.nav-level2 {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+
+    &.active {
+        display: flex;
+    }
+}
+
+[data-theme="blurred"] .nav-level2 {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+
+// Architecture dropdown
+.view-btn-group {
+    position: relative;
+
+    .view-btn-dropdown {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 100;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding: 0.5rem;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        min-width: 100%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    &:hover .view-btn-dropdown {
+        display: flex;
+    }
+}
+
+[data-theme="blurred"] .view-btn-group .view-btn-dropdown {
+    background: rgba(26, 31, 58, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+// Level 3 Navigation (for C3 sub-items)
+.nav-level3 {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    margin-top: -0.5rem;
+}
+
+.nav-level3-group {
+    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+[data-theme="blurred"] .nav-level3 {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
 }

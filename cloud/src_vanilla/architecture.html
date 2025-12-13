@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architecture | Cloud Portal</title>
+    <meta name="description" content="Cloud Architecture - Security, Server, AI & MCPs, and Data & API diagrams">
+
+    <!-- Matomo Tag Manager -->
+    <script>
+      var _mtm = window._mtm = window._mtm || [];
+      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      (function() {
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Tag Manager -->
+
+    <link rel="stylesheet" href="styles.css">
+    <script>
+      (function() {
+        var theme = localStorage.getItem('cloud-dashboard-theme') || 'blurred';
+        document.documentElement.setAttribute('data-theme', theme);
+      })();
+    </script>
+
+    <style>
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+
+        .arch-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 2rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+        }
+
+        .arch-card:hover {
+            border-color: var(--accent-primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 40px var(--shadow);
+        }
+
+        [data-theme="blurred"] .arch-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 40px var(--glow);
+        }
+
+        .arch-card-icon {
+            width: 64px;
+            height: 64px;
+            color: var(--accent-primary);
+        }
+
+        [data-theme="blurred"] .arch-card-icon {
+            color: var(--accent-blue);
+        }
+
+        .arch-card h2 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .arch-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .arch-card.coming-soon {
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .arch-card.coming-soon:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--border-color);
+        }
+
+        .arch-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+        }
+
+        .arch-badge.online {
+            background: rgba(0, 204, 102, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+
+        .arch-badge.pending {
+            background: rgba(255, 204, 0, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="theme-toggle" title="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span class="theme-label">Blurred</span>
+    </button>
+
+    <div class="container">
+        <header>
+            <h1>Cloud Portal</h1>
+            <!-- Cloud Infrastructure Banner -->
+            <div class="header-banner">
+                <svg viewBox="0 0 800 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:rgba(56,189,248,0.1)"/>
+                            <stop offset="50%" style="stop-color:rgba(139,92,246,0.15)"/>
+                            <stop offset="100%" style="stop-color:rgba(56,189,248,0.1)"/>
+                        </linearGradient>
+                        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:rgba(56,189,248,0.3)"/>
+                            <stop offset="50%" style="stop-color:rgba(139,92,246,0.5)"/>
+                            <stop offset="100%" style="stop-color:rgba(56,189,248,0.3)"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M50 60 L150 40 L250 70 L350 35 L450 60 L550 30 L650 55 L750 45" stroke="url(#lineGrad)" stroke-width="1.5" fill="none" opacity="0.6"/>
+                    <path d="M50 80 L150 90 L250 75 L350 95 L450 80 L550 100 L650 85 L750 90" stroke="url(#lineGrad)" stroke-width="1.5" fill="none" opacity="0.4"/>
+                    <circle cx="150" cy="40" r="8" fill="rgba(56,189,248,0.8)" opacity="0.9"/>
+                    <circle cx="350" cy="35" r="10" fill="rgba(139,92,246,0.8)" opacity="0.9"/>
+                    <circle cx="550" cy="30" r="7" fill="rgba(56,189,248,0.8)" opacity="0.9"/>
+                    <circle cx="250" cy="70" r="6" fill="rgba(56,189,248,0.6)" opacity="0.8"/>
+                    <circle cx="450" cy="60" r="9" fill="rgba(139,92,246,0.7)" opacity="0.85"/>
+                    <circle cx="650" cy="55" r="7" fill="rgba(56,189,248,0.7)" opacity="0.85"/>
+                    <rect x="140" y="75" width="20" height="30" rx="2" fill="rgba(56,189,248,0.3)" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
+                    <line x1="143" y1="82" x2="157" y2="82" stroke="rgba(56,189,248,0.8)" stroke-width="1"/>
+                    <line x1="143" y1="88" x2="157" y2="88" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
+                    <rect x="340" y="70" width="20" height="30" rx="2" fill="rgba(139,92,246,0.3)" stroke="rgba(139,92,246,0.6)" stroke-width="1"/>
+                    <line x1="343" y1="77" x2="357" y2="77" stroke="rgba(139,92,246,0.8)" stroke-width="1"/>
+                    <line x1="343" y1="83" x2="357" y2="83" stroke="rgba(139,92,246,0.6)" stroke-width="1"/>
+                    <rect x="540" y="65" width="20" height="30" rx="2" fill="rgba(56,189,248,0.3)" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
+                    <line x1="543" y1="72" x2="557" y2="72" stroke="rgba(56,189,248,0.8)" stroke-width="1"/>
+                    <line x1="543" y1="78" x2="557" y2="78" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
+                    <circle cx="350" cy="35" r="15" fill="none" stroke="rgba(139,92,246,0.4)" stroke-width="1" opacity="0.5"/>
+                    <circle cx="450" cy="60" r="14" fill="none" stroke="rgba(139,92,246,0.3)" stroke-width="1" opacity="0.4"/>
+                </svg>
+            </div>
+            <p class="subtitle">Architecture Diagrams</p>
+            <!-- Level 1: Main Navigation Links -->
+            <div class="nav-level1">
+                <a href="index.html" class="nav-main-btn">Products</a>
+                <a href="cloudcontrol.html" class="nav-main-btn">Cloud Control</a>
+                <a href="security-arch.html" class="nav-main-btn active">Architecture</a>
+            </div>
+            <!-- Level 2: Architecture Sub-pages -->
+            <div class="nav-level2 active" id="nav-architecture">
+                <a href="security-arch.html" class="view-btn">Security</a>
+                <a href="arch.html" class="view-btn">Service</a>
+                <a href="infra-arch.html" class="view-btn">Infra</a>
+                <a href="data-api-arch.html" class="view-btn">Collectors & Data</a>
+                <a href="mcps-arch.html" class="view-btn">MCPs</a>
+                <a href="ai-arch.html" class="view-btn">AI</a>
+            </div>
+        </header>
+
+        <div class="arch-grid">
+            <!-- B00) Security Architecture -->
+            <a href="security-arch.html" class="arch-card">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <h2>Security</h2>
+                <p>Defense-in-depth security model with authentication, firewall, and network isolation</p>
+                <span class="arch-badge online">Available</span>
+            </a>
+
+            <!-- B01) Service Architecture -->
+            <a href="arch.html" class="arch-card">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/>
+                    <path d="M8 21h8"/>
+                    <path d="M12 17v4"/>
+                    <path d="M6 8h4"/>
+                    <path d="M6 11h8"/>
+                </svg>
+                <h2>Service</h2>
+                <p>Application services, Docker containers, and service orchestration</p>
+                <span class="arch-badge online">Available</span>
+            </a>
+
+            <!-- B02) Infra Architecture -->
+            <a href="infra-arch.html" class="arch-card coming-soon">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="2" y="2" width="20" height="8" rx="2"/>
+                    <rect x="2" y="14" width="20" height="8" rx="2"/>
+                    <path d="M6 6h.01M6 18h.01"/>
+                </svg>
+                <h2>Infra</h2>
+                <p>VPS infrastructure, cloud providers, network topology, and resource management</p>
+                <span class="arch-badge pending">Coming Soon</span>
+            </a>
+
+            <!-- B03) Collectors & Data Architecture -->
+            <a href="data-api-arch.html" class="arch-card coming-soon">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                    <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/>
+                </svg>
+                <h2>Collectors & Data</h2>
+                <p>Data collectors, API gateway, storage, caching, and backup infrastructure</p>
+                <span class="arch-badge pending">Coming Soon</span>
+            </a>
+
+            <!-- B04) MCPs Architecture -->
+            <a href="mcps-arch.html" class="arch-card coming-soon">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+                <h2>MCPs</h2>
+                <p>Model Context Protocols for AI agent integration and tool orchestration</p>
+                <span class="arch-badge pending">Coming Soon</span>
+            </a>
+
+            <!-- B05) AI Architecture -->
+            <a href="ai-arch.html" class="arch-card">
+                <svg class="arch-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
+                    <path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                </svg>
+                <h2>AI</h2>
+                <p>AI agents, LLM integrations, and intelligent automation infrastructure</p>
+                <span class="arch-badge online">Available</span>
+            </a>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

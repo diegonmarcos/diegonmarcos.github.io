@@ -19,9 +19,13 @@
     transition: all 0.3s ease, transform 0.3s ease;
     position: relative;
     text-decoration: none;
-    display: block;
+    display: flex;
+    flex-direction: column;
     transform-origin: center center;
     z-index: 1;
+    // Uniform card sizing
+    min-height: calc(120px * var(--zoom-scale, 1));
+    height: calc(120px * var(--zoom-scale, 1));
 
     &:hover {
         background: var(--bg-card-hover);
@@ -55,6 +59,9 @@
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     backdrop-filter: blur(10px);
+    // Uniform card sizing for blurred theme
+    min-height: calc(180px * var(--zoom-scale, 1));
+    height: calc(180px * var(--zoom-scale, 1));
 
     &::before {
         content: '';
@@ -177,6 +184,7 @@
     letter-spacing: 0.5px;
     transition: all var(--transition-speed) ease;
     border-radius: var(--border-radius);
+    margin-top: auto; // Push to bottom of flex container
 
     &.online {
         background: transparent;
@@ -204,6 +212,29 @@
     &.pending {
         background: rgba(251, 191, 36, 0.15);
         border-color: rgba(251, 191, 36, 0.3);
+    }
+}
+
+// Placeholder Cards (for empty categories)
+.card-placeholder {
+    border-style: dashed;
+    opacity: 0.6;
+
+    &:hover {
+        opacity: 0.8;
+        transform: none;
+    }
+}
+
+[data-theme="blurred"] .card-placeholder {
+    border-style: dashed;
+    background: rgba(255, 255, 255, 0.02);
+    opacity: 0.5;
+
+    &:hover {
+        opacity: 0.7;
+        transform: none;
+        box-shadow: none;
     }
 }
 

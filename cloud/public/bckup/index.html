@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Cloud Portal</title>
-    <meta name="description" content="Cloud Products - Productivity tools, security, AI models, and more">
+    <title> Cloud Services Dashboard | Infrastructure & AI Management</title>
+    <meta name="description" content="Manage your cloud infrastructure, VPS instances, and AI services in one unified dashboard">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -56,118 +56,129 @@
         <span class="theme-label">Blurred</span>
     </button>
 
+    <!-- Zoom Controls -->
+    <div class="zoom-controls" id="zoom-controls">
+        <button class="zoom-btn" id="zoom-out" title="Zoom out (fit more cards)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+                <path d="M8 11h6"/>
+            </svg>
+        </button>
+        <span class="zoom-level" id="zoom-level">100%</span>
+        <button class="zoom-btn" id="zoom-in" title="Zoom in">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+                <path d="M11 8v6M8 11h6"/>
+            </svg>
+        </button>
+        <button class="zoom-btn" id="zoom-reset" title="Reset zoom">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+            </svg>
+        </button>
+    </div>
     <div class="container">
         <header>
-            <h1>Cloud Portal</h1>
-            <!-- Cloud Infrastructure Banner -->
-            <div class="header-banner">
-                <svg viewBox="0 0 800 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Background gradient -->
-                    <defs>
-                        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:rgba(56,189,248,0.1)"/>
-                            <stop offset="50%" style="stop-color:rgba(139,92,246,0.15)"/>
-                            <stop offset="100%" style="stop-color:rgba(56,189,248,0.1)"/>
-                        </linearGradient>
-                        <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:rgba(56,189,248,0.3)"/>
-                            <stop offset="50%" style="stop-color:rgba(139,92,246,0.5)"/>
-                            <stop offset="100%" style="stop-color:rgba(56,189,248,0.3)"/>
-                        </linearGradient>
-                    </defs>
-                    <!-- Connection lines -->
-                    <path d="M50 60 L150 40 L250 70 L350 35 L450 60 L550 30 L650 55 L750 45" stroke="url(#lineGrad)" stroke-width="1.5" fill="none" opacity="0.6"/>
-                    <path d="M50 80 L150 90 L250 75 L350 95 L450 80 L550 100 L650 85 L750 90" stroke="url(#lineGrad)" stroke-width="1.5" fill="none" opacity="0.4"/>
-                    <!-- Cloud nodes -->
-                    <circle cx="150" cy="40" r="8" fill="rgba(56,189,248,0.8)" opacity="0.9"/>
-                    <circle cx="350" cy="35" r="10" fill="rgba(139,92,246,0.8)" opacity="0.9"/>
-                    <circle cx="550" cy="30" r="7" fill="rgba(56,189,248,0.8)" opacity="0.9"/>
-                    <circle cx="250" cy="70" r="6" fill="rgba(56,189,248,0.6)" opacity="0.8"/>
-                    <circle cx="450" cy="60" r="9" fill="rgba(139,92,246,0.7)" opacity="0.85"/>
-                    <circle cx="650" cy="55" r="7" fill="rgba(56,189,248,0.7)" opacity="0.85"/>
-                    <!-- Server icons -->
-                    <rect x="140" y="75" width="20" height="30" rx="2" fill="rgba(56,189,248,0.3)" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
-                    <line x1="143" y1="82" x2="157" y2="82" stroke="rgba(56,189,248,0.8)" stroke-width="1"/>
-                    <line x1="143" y1="88" x2="157" y2="88" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
-                    <rect x="340" y="70" width="20" height="30" rx="2" fill="rgba(139,92,246,0.3)" stroke="rgba(139,92,246,0.6)" stroke-width="1"/>
-                    <line x1="343" y1="77" x2="357" y2="77" stroke="rgba(139,92,246,0.8)" stroke-width="1"/>
-                    <line x1="343" y1="83" x2="357" y2="83" stroke="rgba(139,92,246,0.6)" stroke-width="1"/>
-                    <rect x="540" y="65" width="20" height="30" rx="2" fill="rgba(56,189,248,0.3)" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
-                    <line x1="543" y1="72" x2="557" y2="72" stroke="rgba(56,189,248,0.8)" stroke-width="1"/>
-                    <line x1="543" y1="78" x2="557" y2="78" stroke="rgba(56,189,248,0.6)" stroke-width="1"/>
-                    <!-- Pulse rings -->
-                    <circle cx="350" cy="35" r="15" fill="none" stroke="rgba(139,92,246,0.4)" stroke-width="1" opacity="0.5"/>
-                    <circle cx="450" cy="60" r="14" fill="none" stroke="rgba(139,92,246,0.3)" stroke-width="1" opacity="0.4"/>
-                </svg>
-            </div>
-            <p class="subtitle">Products</p>
-            <!-- Level 1: Main Navigation Links -->
-            <div class="nav-level1">
-                <a href="index.html" class="nav-main-btn active">Products</a>
-                <a href="cloudcontrol.html" class="nav-main-btn">Cloud Control</a>
-                <a href="security-arch.html" class="nav-main-btn">Architecture</a>
-            </div>
-            <!-- Level 2: Product Categories -->
-            <div class="nav-level2 active" id="nav-products">
-                <button class="view-btn active" data-product-filter="all">All</button>
-                <button class="view-btn" data-product-filter="terminals">Terminals</button>
-                <button class="view-btn" data-product-filter="productivity">User Productivity</button>
-                <button class="view-btn" data-product-filter="profile">User Profile</button>
+            <h1>Cloud Services Dashboard</h1>
+            <p class="subtitle">Manage your infrastructure</p>
+            <div class="view-toggle">
+                <div class="view-group group-active">
+                    <span class="view-group-label">Services</span>
+                    <div class="view-group-buttons">
+                        <button class="view-btn active" data-category="frontend">Front</button>
+                        <button class="view-btn" data-category="backend">Back</button>
+                    </div>
+                </div>
+                <span class="view-separator"></span>
+                <div class="view-group">
+                    <span class="view-group-label">Architecture</span>
+                    <div class="view-group-buttons">
+                        <button class="view-btn" data-view="resources">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2"/>
+                                <path d="M8 21h8"/>
+                                <path d="M12 17v4"/>
+                                <path d="M6 8h4"/>
+                                <path d="M6 11h8"/>
+                            </svg>
+                            Resources
+                        </button>
+                        <button class="view-btn" data-view="architecture">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="3" y1="9" x2="21" y2="9"/>
+                                <line x1="9" y1="21" x2="9" y2="9"/>
+                            </svg>
+                            Server
+                        </button>
+                        <button class="view-btn" data-view="ai-architecture">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"/>
+                                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                            </svg>
+                            AI
+                        </button>
+                        <button class="view-btn" data-view="security-architecture">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            </svg>
+                            Security
+                        </button>
+                    </div>
+                </div>
+                <span class="view-separator"></span>
+                <div class="view-group">
+                    <span class="view-group-label">Monitoring</span>
+                    <div class="view-group-buttons">
+                        <a href="cloud_dash.html#status" class="view-btn">Status</a>
+                        <a href="cloud_dash.html#performance" class="view-btn">Performance</a>
+                        <a href="cloud_dash.html#cost" class="view-btn">Cost</a>
+                        <a href="cloud_dash.html#security" class="view-btn">Security</a>
+                    </div>
+                </div>
+                <span class="view-separator"></span>
+                <div class="view-group">
+                    <span class="view-group-label">Auth</span>
+                    <div class="view-group-buttons auth-buttons">
+                        <!-- GitHub SSO (PRIMARY - via OAuth2 Proxy) -->
+                        <a href="https://auth.diegonmarcos.com/oauth2/start?rd=https://cloud.diegonmarcos.com/" class="view-btn auth-btn github-sso" title="Login with GitHub SSO (Primary)">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                            GitHub SSO
+                        </a>
+                        <!-- Authelia TOTP (BACKUP - Local 2FA) -->
+                        <a href="https://auth.diegonmarcos.com/authelia/" class="view-btn auth-btn authelia-totp" title="Backup: Local TOTP 2FA">
+                            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                            </svg>
+                            TOTP
+                        </a>
+                    </div>
+                </div>
             </div>
         </header>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var filterBtns = document.querySelectorAll('[data-product-filter]');
-                var cards = document.querySelectorAll('.card[data-product-category]');
-                filterBtns.forEach(function(btn) {
-                    btn.onclick = function() {
-                        var filter = this.dataset.productFilter;
-                        filterBtns.forEach(function(b) { b.classList.remove('active'); });
-                        this.classList.add('active');
-                        cards.forEach(function(card) {
-                            var category = card.dataset.productCategory;
-                            card.style.display = (filter === 'all' || category === filter) ? '' : 'none';
-                        });
-                    };
-                });
-            });
-        </script>
 
-        <!-- Products Cards -->
+        <!-- Cards Front View -->
         <div id="cards-front-view" class="view-content active">
-
-            <!-- A00) Terminals -->
-            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Terminals</h3>
-            <div class="cards-grid">
-                <div class="card" data-service="vpn" data-product-category="terminals">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        </svg>
-                    </div>
-                    <h3>VPN</h3>
-                    <p>OpenVPN / WireGuard</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-
-                <div class="card" data-service="vscode-ssh" data-product-category="terminals">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="4 17 10 11 4 5"/>
-                            <line x1="12" y1="19" x2="20" y2="19"/>
-                        </svg>
-                    </div>
-                    <h3>VSCode SSH</h3>
-                    <p>Remote Development</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+            <!-- View Toggle Inside Frontend -->
+            <div class="inline-view-toggle">
+                <button class="view-btn active" data-frontend-view="cards">Cards</button>
+                <button class="view-btn" data-frontend-view="list">List</button>
             </div>
 
-            <!-- A01) User Productivity -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Productivity</h3>
+            <!-- FRONT SECTION -->
+            <section class="section-header">
+                <h2>Front</h2>
+            </section>
+
+            <!-- User Productivity Subsection -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Productivity</h3>
             <div class="cards-grid">
-                <div class="card" data-service="mail" data-url="https://diegonmarcos.github.io/mymail" data-product-category="productivity">
+                <div class="card" data-service="mail" data-url="https://diegonmarcos.github.io/mymail">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
@@ -179,7 +190,7 @@
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="calendar" data-url="https://cal.diegonmarcos.com" data-product-category="productivity">
+                <div class="card" data-service="calendar" data-url="https://cal.diegonmarcos.com">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
@@ -193,7 +204,20 @@
                     <div class="card-status online">Online</div>
                 </div>
 
-                <div class="card" data-service="photos" data-url="https://diegonmarcos.github.io/myphotos" data-product-category="productivity">
+                <div class="card" data-service="sync" data-url="https://sync.diegonmarcos.com">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <polyline points="1 20 1 14 7 14"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                    </div>
+                    <h3>Sync</h3>
+                    <p>sync.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="photos" data-url="https://photos.diegonmarcos.com">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -201,39 +225,240 @@
                         </svg>
                     </div>
                     <h3>Photos</h3>
-                    <p>myphotos landing</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
-
-                <div class="card" data-service="vault" data-product-category="productivity">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        </svg>
-                    </div>
-                    <h3>Vault</h3>
-                    <p>Bitwarden / Vaultwarden</p>
-                    <div class="card-status pending">Dev</div>
+                    <p>photos.diegonmarcos.com</p>
+                    <div class="card-status online">Online</div>
                 </div>
             </div>
 
-            <!-- A02) User Profile -->
-            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Profile</h3>
+            <!-- Coder Subsection -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Coder</h3>
             <div class="cards-grid">
-                <div class="card" data-service="linktree" data-url="https://diegonmarcos.github.io/linktree" data-product-category="profile">
+                <div class="card" data-service="analytics">
                     <div class="card-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                         </svg>
                     </div>
-                    <h3>Linktree</h3>
-                    <p>diegonmarcos.github.io/linktree</p>
+                    <h3>Analytics</h3>
+                    <p>analytics.diegonmarcos.com</p>
                     <div class="card-status online">Online</div>
                 </div>
             </div>
 
         </div><!-- End Cards Front View -->
+
+        <!-- Cards Back View -->
+        <div id="cards-back-view" class="view-content list-view">
+
+            <!-- View Toggle Inside Backend -->
+            <div class="inline-view-toggle">
+                <button class="view-btn" data-backend-view="cards">Cards</button>
+                <button class="view-btn active" data-backend-view="list">List</button>
+            </div>
+
+            <!-- BACK SECTION -->
+            <section class="section-header">
+                <h2>Back</h2>
+            </section>
+
+            <!-- Root Subsection - Cloud Providers -->
+            <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Root - Cloud Providers</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="vps-oracle">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <h3>OCloud-Management</h3>
+                    <p>Console & OCI CLI</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">oci compute instance list --compartment-id $OCI_COMPARTMENT_ID</code>
+                            <button class="copy-icon" data-copy="oci compute instance list --compartment-id $OCI_COMPARTMENT_ID" title="Copy OCI command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="vps-gcloud">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Gcloud_Management</h3>
+                    <p>Console & gcloud CLI</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">gcloud compute instances list</code>
+                            <button class="copy-icon" data-copy="gcloud compute instances list" title="Copy gcloud command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+
+            <!-- Root Subsection - VMs -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Root - VMs (SSH)</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="vm-servicesserver1">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <circle cx="12" cy="10" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>SSH-VM-Oracle_Services_Serv</h3>
+                    <p>matomo-app, matomo-db</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh ubuntu@129.151.228.66</code>
+                            <button class="copy-icon" data-copy="ssh ubuntu@129.151.228.66" title="Copy SSH command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="vm-webserver1">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <circle cx="12" cy="10" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>SSH-VM-Oracle_Paid_Flex_1</h3>
+                    <p>Syncthing, Photoprism, Cloud-API</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">ssh ubuntu@130.110.251.193</code>
+                            <button class="copy-icon" data-copy="ssh ubuntu@130.110.251.193" title="Copy SSH command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+
+                <div class="card" data-service="vm-gcloud">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                            <path d="M7 10l5-5 5 5M12 5v8" stroke-width="2.5"/>
+                        </svg>
+                    </div>
+                    <h3>SSH-VM-GCloud_Free_Micro_1</h3>
+                    <p>NPM (Central Proxy), Authelia</p>
+                    <div class="card-actions">
+                        <div class="code-with-copy">
+                            <code class="card-code">gcloud compute ssh arch-1 --zone us-central1-a</code>
+                            <button class="copy-icon" data-copy="gcloud compute ssh arch-1 --zone us-central1-a" title="Copy SSH command">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+
+            <!-- Stack Section -->
+            <section class="section-header" style="margin-top: 3rem;">
+                <h2>Stack</h2>
+            </section>
+
+            <!-- User Services Stack -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">User Services</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Mail</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Mailu (SMTP + IMAP + Webmail + Admin) + Redis</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Photos</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Photoprism + PostgreSQL</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Analytics</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Matomo + MariaDB</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Calendar</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Radicale (CalDAV/CardDAV)</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Sync</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Syncthing (P2P) + LevelDB</p>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+
+            <!-- Infrastructure Stack -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Infrastructure</h3>
+            <div class="cards-grid">
+                <div class="card" data-service="npm-central">
+                    <h3>Proxy</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">NGINX Proxy Manager + SSL (Let's Encrypt)</p>
+                    <div class="vm-buttons">
+                        <button class="vm-btn" data-url="http://34.55.55.234:81" title="Open NPM">Open</button>
+                    </div>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Auth</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Authelia (SSO/2FA) + Redis</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>VPN</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Wireguard</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>API</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Flask + Python</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Cache</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Redis (in-memory)</p>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+
+            <!-- Cloud Dashboard Stack -->
+            <h3 style="margin: 2rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">Cloud Dashboard</h3>
+            <div class="cards-grid">
+                <div class="card">
+                    <h3>Frontend</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Vanilla HTML/SCSS/TS (GitHub Pages)</p>
+                    <div class="card-status online">Online</div>
+                </div>
+                <div class="card">
+                    <h3>Backend</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Flask API + Python</p>
+                    <div class="card-status online">Online</div>
+                </div>
+            </div>
+        </div><!-- End Cards Back View -->
 
         <!-- Tree View (Status Tree) -->
         <div id="tree-view" class="view-content">

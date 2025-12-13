@@ -114,6 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Wake-on-Demand Calculator
     initWakeCalculator();
+
+    // Product filter initialization
+    initProductFilter();
 });
 
 // Wake-on-Demand Usage Calculator
@@ -162,23 +165,102 @@ function initWakeCalculator() {
     calculate();
 }
 
+// Product Filter - filters cards by product category
+function initProductFilter() {
+    const filterBtns = document.querySelectorAll<HTMLButtonElement>('[data-product-filter]');
+    const cards = document.querySelectorAll<HTMLElement>('.card[data-product-category]');
+
+    if (!filterBtns.length) return;
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const filter = btn.dataset.productFilter;
+
+            // Update active state on filter buttons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Filter cards
+            cards.forEach(card => {
+                const category = card.dataset.productCategory;
+                const isPlaceholder = card.classList.contains('card-placeholder');
+
+                if (filter === 'all') {
+                    // Show all non-placeholder cards, hide placeholders
+                    card.style.display = isPlaceholder ? 'none' : '';
+                } else {
+                    // Show only matching category
+                    if (category === filter) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
+}
+
 // View Group Active State - underlines all buttons in the active group
 function initViewGroupActive() {
     const viewToggle = document.querySelector('.view-toggle');
-    if (!viewToggle) return;
+    if (viewToggle) {
+        const viewGroups = viewToggle.querySelectorAll<HTMLElement>('.view-group');
 
-    const viewGroups = viewToggle.querySelectorAll<HTMLElement>('.view-group');
-
-    // Add click listeners to all view buttons within groups
-    viewGroups.forEach(group => {
-        const buttons = group.querySelectorAll<HTMLElement>('.view-btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                // Remove group-active from all groups
-                viewGroups.forEach(g => g.classList.remove('group-active'));
-                // Add group-active to this button's parent group
-                group.classList.add('group-active');
+        // Add click listeners to all view buttons within groups
+        viewGroups.forEach(group => {
+            const buttons = group.querySelectorAll<HTMLElement>('.view-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Remove group-active from all groups
+                    viewGroups.forEach(g => g.classList.remove('group-active'));
+                    // Add group-active to this button's parent group
+                    group.classList.add('group-active');
+                });
             });
+        });
+    }
+
+    // Two-level navigation toggle (Products vs Cloud Control Center) - always init
+    initNavLevel1Toggle();
+}
+
+// Initialize Level 1 Navigation Toggle
+function initNavLevel1Toggle() {
+    const mainBtns = document.querySelectorAll<HTMLButtonElement>('.nav-main-btn');
+    const navProducts = document.getElementById('nav-products');
+    const navC3 = document.getElementById('nav-c3');
+
+    if (!mainBtns.length) return;
+
+    mainBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const section = btn.dataset.section;
+
+            // Update active state on main buttons
+            mainBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Toggle level 2 navigation visibility
+            if (section === 'products') {
+                if (navProducts) {
+                    navProducts.classList.add('active');
+                    navProducts.style.display = 'flex';
+                }
+                if (navC3) {
+                    navC3.classList.remove('active');
+                    navC3.style.display = 'none';
+                }
+            } else if (section === 'c3') {
+                if (navC3) {
+                    navC3.classList.add('active');
+                    navC3.style.display = 'flex';
+                }
+                if (navProducts) {
+                    navProducts.classList.remove('active');
+                    navProducts.style.display = 'none';
+                }
+            }
         });
     });
 }

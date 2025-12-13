@@ -16,7 +16,6 @@
     </script>
     <!-- End Matomo Tag Manager -->
 
-    <link rel="stylesheet" href="styles.css">
     <style>
         /* ============================================
            ROOT VARIABLES & THEME
@@ -1572,25 +1571,134 @@
     <!-- ============================================
          HEADER
          ============================================ -->
-    <header class="diagram-header">
-        <h1>Cloud Portal</h1>
-        <p class="subtitle">Service Architecture</p>
-        <!-- Level 1: Main Navigation Links -->
-        <div class="nav-level1">
-            <a href="index.html" class="nav-main-btn">Products</a>
-            <a href="cloudcontrol.html" class="nav-main-btn">Cloud Control</a>
-            <a href="security-arch.html" class="nav-main-btn active">Architecture</a>
+    <div class="diagram-header">
+        <h1>Cloud Control Center</h1>
+        <p class="subtitle">Server Architecture</p>
+        <!-- Level 1: Main Sections (3 buttons) -->
+        <div style="display: flex; justify-content: center; gap: 0.5rem; margin: 1rem 0 0.75rem 0;">
+            <button class="nav-main-btn" data-section="products" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-muted); cursor: pointer; transition: all 0.3s ease;">Products</button>
+            <button class="nav-main-btn" data-section="c3" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-muted); cursor: pointer; transition: all 0.3s ease;">Cloud Control Center</button>
+            <button class="nav-main-btn active" data-section="architecture" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 20px; background: linear-gradient(135deg, var(--public-color), var(--private-color)); color: #000; border: none; cursor: pointer;">Architecture</button>
         </div>
-        <!-- Level 2: Architecture Sub-tabs -->
-        <div class="nav-level2 active" id="nav-architecture">
-            <a href="security-arch.html" class="view-btn">Security</a>
-            <span class="view-btn active">Service</span>
-            <a href="infra-arch.html" class="view-btn">Infra</a>
-            <a href="data-api-arch.html" class="view-btn">Collectors & Data</a>
-            <a href="mcps-arch.html" class="view-btn">MCPs</a>
-            <a href="ai-arch.html" class="view-btn">AI</a>
+        <!-- Level 2: Sub-tabs for Products -->
+        <div id="nav-products" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.75rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+            <a href="index.html" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">All</a>
+            <a href="index.html?filter=terminals" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">Terminals</a>
+            <a href="index.html?filter=productivity" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">User Productivity</a>
+            <a href="index.html?filter=security" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">User Security</a>
+            <a href="index.html?filter=profile" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">User Profile</a>
+            <a href="index.html?filter=ai" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">User AIs Models</a>
         </div>
-    </header>
+        <!-- Level 2: Sub-tabs for Cloud Control Center -->
+        <div id="nav-c3" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.75rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+            <button class="view-btn" data-c3-group="operation-dashs" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--text-main); border: none;">Operation Dashs</button>
+            <button class="view-btn" data-c3-group="infra-services" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--text-main); border: none;">Infra Services Access</button>
+            <button class="view-btn" data-c3-group="infra-resources" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; font-size: 12px; cursor: pointer; color: var(--text-main); border: none;">Infra Resources</button>
+        </div>
+        <!-- Level 3: Sub-tabs for C3 groups -->
+        <div id="nav-c3-level3" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.75rem; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; margin-top: -0.5rem;">
+            <div class="nav-level3-group" id="c3-operation-dashs" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
+                <a href="cloud_dash.html#monitor" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Monitor</a>
+                <a href="cloud_dash.html#orchestrate" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Orchestrate</a>
+                <a href="cloud_dash.html#cost" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Cost</a>
+                <a href="cloud_dash.html#security" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Security</a>
+            </div>
+            <div class="nav-level3-group" id="c3-infra-services" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
+                <a href="cloud_dash.html#infra-security" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Security</a>
+                <a href="cloud_dash.html#infra-audit" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Audit</a>
+                <a href="cloud_dash.html#infra-data" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Data & API & Cache</a>
+            </div>
+            <div class="nav-level3-group" id="c3-infra-resources" style="display: none; flex-wrap: wrap; justify-content: center; gap: 0.5rem;">
+                <a href="cloud_dash.html#infra-resources" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px;">Hosts/VMs/Services</a>
+            </div>
+        </div>
+        <!-- Level 2: Sub-tabs for Architecture (Active) -->
+        <div id="nav-architecture" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; padding: 0.75rem; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;">
+            <a href="security-arch.html" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">Security</a>
+            <span style="padding: 6px 12px; background: var(--public-color); color: #000; border-radius: 6px; font-size: 12px; font-weight: 600;">Server</span>
+            <a href="ai-arch.html" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">AI & MCPs</a>
+            <a href="data-api-arch.html" class="view-btn" style="padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 6px; text-decoration: none; color: var(--text-main); font-size: 12px; transition: all 0.2s;">Data & API</a>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nav toggle - Products vs C3 vs Architecture (3 sections)
+            document.querySelectorAll('.nav-main-btn').forEach(function(btn) {
+                btn.onclick = function() {
+                    var section = this.dataset.section;
+
+                    // Remove active from all Level 1 buttons
+                    document.querySelectorAll('.nav-main-btn').forEach(function(b) {
+                        b.classList.remove('active');
+                        b.style.background = 'rgba(255,255,255,0.05)';
+                        b.style.color = 'var(--text-muted)';
+                        b.style.border = '1px solid rgba(255,255,255,0.2)';
+                    });
+                    this.classList.add('active');
+                    this.style.background = 'linear-gradient(135deg, var(--public-color), var(--private-color))';
+                    this.style.color = '#000';
+                    this.style.border = 'none';
+
+                    // Hide all Level 2 navs
+                    var navProducts = document.getElementById('nav-products');
+                    var navC3 = document.getElementById('nav-c3');
+                    var navArch = document.getElementById('nav-architecture');
+                    var navC3Level3 = document.getElementById('nav-c3-level3');
+
+                    [navProducts, navC3, navArch].forEach(function(nav) {
+                        if (nav) {
+                            nav.style.display = 'none';
+                        }
+                    });
+
+                    // Hide Level 3 nav
+                    if (navC3Level3) {
+                        navC3Level3.style.display = 'none';
+                        document.querySelectorAll('.nav-level3-group').forEach(function(g) {
+                            g.style.display = 'none';
+                        });
+                    }
+
+                    // Show selected Level 2
+                    var selectedNav = document.getElementById('nav-' + section);
+                    if (selectedNav) {
+                        selectedNav.style.display = 'flex';
+                    }
+
+                    // Reset C3 group active states
+                    document.querySelectorAll('[data-c3-group]').forEach(function(b) {
+                        b.style.background = 'rgba(255,255,255,0.1)';
+                    });
+                };
+            });
+
+            // C3 Level 2 group buttons - show Level 3 items
+            document.querySelectorAll('[data-c3-group]').forEach(function(btn) {
+                btn.onclick = function() {
+                    var group = this.dataset.c3Group;
+
+                    // Update button styles
+                    document.querySelectorAll('[data-c3-group]').forEach(function(b) {
+                        b.style.background = 'rgba(255,255,255,0.1)';
+                    });
+                    this.style.background = 'rgba(255,255,255,0.25)';
+
+                    // Hide all Level 3 groups
+                    document.querySelectorAll('.nav-level3-group').forEach(function(g) {
+                        g.style.display = 'none';
+                    });
+
+                    // Show Level 3 container and selected group
+                    var level3Container = document.getElementById('nav-c3-level3');
+                    var selectedGroup = document.getElementById('c3-' + group);
+                    if (level3Container && selectedGroup) {
+                        level3Container.style.display = 'flex';
+                        selectedGroup.style.display = 'flex';
+                    }
+                };
+            });
+        });
+    </script>
 
     <!-- Original Architecture Title -->
     <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">

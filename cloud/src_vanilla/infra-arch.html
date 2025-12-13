@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infra Architecture</title>
+
+    <!-- Matomo Tag Manager -->
+    <script>
+      var _mtm = window._mtm = window._mtm || [];
+      _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+      (function() {
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Tag Manager -->
+
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg-color: #0a0a0f;
+            --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
+            --text-main: #e8e8f0;
+            --text-muted: #8888a0;
+            --infra-color: #e74c3c;
+            --server-color: #3498db;
+            --network-color: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .diagram-header {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .diagram-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--infra-color), var(--server-color), var(--network-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--infra-color);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 10px;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            padding: 100px 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            margin-top: 20px;
+        }
+
+        .placeholder-content h2 {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+
+        .placeholder-content p {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <header class="diagram-header">
+        <h1>Cloud Portal</h1>
+        <p class="subtitle">Infra Architecture</p>
+        <!-- Level 1: Main Navigation Links -->
+        <div class="nav-level1">
+            <a href="index.html" class="nav-main-btn">Products</a>
+            <a href="cloudcontrol.html" class="nav-main-btn">Cloud Control</a>
+            <a href="security-arch.html" class="nav-main-btn active">Architecture</a>
+        </div>
+        <!-- Level 2: Architecture Sub-tabs -->
+        <div class="nav-level2 active" id="nav-architecture">
+            <a href="security-arch.html" class="view-btn">Security</a>
+            <a href="arch.html" class="view-btn">Service</a>
+            <span class="view-btn active">Infra</span>
+            <a href="data-api-arch.html" class="view-btn">Collectors & Data</a>
+            <a href="mcps-arch.html" class="view-btn">MCPs</a>
+            <a href="ai-arch.html" class="view-btn">AI</a>
+        </div>
+    </header>
+
+    <!-- Architecture Title -->
+    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+        <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, var(--infra-color), var(--server-color), var(--network-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Infrastructure Architecture <span class="version-badge">v1.0</span></h2>
+        <p class="subtitle">VPS Infrastructure, Cloud Providers, Network Topology & Resource Management</p>
+    </div>
+
+    <!-- Placeholder Content -->
+    <div class="placeholder-content">
+        <h2>Coming Soon</h2>
+        <p>Infrastructure architecture diagram will be added here.</p>
+    </div>
+
+</div>
+
+</body>
+</html>

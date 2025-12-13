@@ -811,8 +811,8 @@
             });
         });
 
-        // Wake Server functionality - Direct check to photo server
-        const PHOTO_SERVER_URL = 'https://photos.diegonmarcos.com';
+        // Wake Server functionality - Uses /health endpoint to check backend
+        const HEALTH_URL = 'https://photos.diegonmarcos.com/health';
         const wakeBtn = document.getElementById('wake-btn');
         const wakeBtnText = document.getElementById('wake-btn-text');
         const wakeStatus = document.getElementById('wake-status');
@@ -838,68 +838,75 @@
 
         async function checkServerStatus() {
             try {
-                // Try to reach the photo server directly
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-                const response = await fetch(PHOTO_SERVER_URL, {
-                    method: 'HEAD',
-                    mode: 'no-cors', // Allow checking even without CORS
+                const response = await fetch(HEALTH_URL, {
+                    method: 'GET',
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
 
-                // If we get here, server is reachable (no-cors means we can't check status, but fetch succeeds)
-                updateStatusIndicator('RUNNING', 'Server Online');
-                wakeBtn.style.display = 'none';
-                wakeStatus.textContent = '';
-            } catch (error) {
-                // Server not reachable - likely sleeping
-                console.log('Photo server check:', error.name);
-                if (error.name === 'AbortError') {
+                if (response.ok) {
+                    // Backend is online
+                    updateStatusIndicator('RUNNING', 'Server Online');
+                    wakeBtn.style.display = 'none';
+                    wakeStatus.textContent = '';
+                } else {
+                    // Backend is offline (503)
                     updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
                     wakeBtn.style.display = 'flex';
-                    wakeStatus.textContent = 'Photo server is sleeping. Contact admin to wake it.';
-                } else {
-                    updateStatusIndicator('STOPPED', 'Server Offline');
-                    wakeBtn.style.display = 'flex';
-                    wakeStatus.textContent = 'Photo server is not responding.';
+                    wakeStatus.textContent = 'Photo server is sleeping.';
                 }
+            } catch (error) {
+                console.log('Health check error:', error.name);
+                updateStatusIndicator('STOPPED', 'Server Offline');
+                wakeBtn.style.display = 'flex';
+                wakeStatus.textContent = 'Could not reach server.';
             }
         }
 
         async function wakeServer() {
-            // Since we don't have a wake API yet, show instructions
             wakeBtn.classList.add('waking');
             wakeBtnText.textContent = 'Checking...';
             wakeStatus.textContent = 'Checking server status...';
 
-            // Re-check if server came online
             try {
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-                await fetch(PHOTO_SERVER_URL, {
-                    method: 'HEAD',
-                    mode: 'no-cors',
+                const response = await fetch(HEALTH_URL, {
+                    method: 'GET',
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
 
-                // Server is online!
-                wakeBtn.classList.remove('waking');
-                wakeBtn.classList.add('success');
-                wakeBtnText.textContent = 'Server Online!';
-                updateStatusIndicator('RUNNING', 'Server Online');
-                wakeStatus.textContent = 'Server is now available. Refreshing...';
-                setTimeout(() => window.location.reload(), 1500);
+                if (response.ok) {
+                    // Server is online!
+                    wakeBtn.classList.remove('waking');
+                    wakeBtn.classList.add('success');
+                    wakeBtnText.textContent = 'Server Online!';
+                    updateStatusIndicator('RUNNING', 'Server Online');
+                    wakeStatus.textContent = 'Server is available. Refreshing...';
+                    setTimeout(() => window.location.reload(), 1500);
+                } else {
+                    // Still offline
+                    wakeBtn.classList.remove('waking');
+                    wakeBtn.classList.add('error');
+                    wakeBtnText.textContent = 'Server Sleeping';
+                    updateStatusIndicator('STOPPED', 'Server Offline');
+                    wakeStatus.textContent = 'Run: vm-control.sh wake';
+
+                    setTimeout(() => {
+                        wakeBtn.classList.remove('error');
+                        wakeBtnText.textContent = 'Check Again';
+                    }, 3000);
+                }
             } catch (error) {
-                // Still offline - show manual wake instructions
                 wakeBtn.classList.remove('waking');
                 wakeBtn.classList.add('error');
-                wakeBtnText.textContent = 'Server Sleeping';
-                updateStatusIndicator('STOPPED', 'Server Offline');
-                wakeStatus.textContent = 'Server is in sleep mode. Run: vm-control.sh wake';
+                wakeBtnText.textContent = 'Check Failed';
+                wakeStatus.textContent = 'Could not reach server.';
 
                 setTimeout(() => {
                     wakeBtn.classList.remove('error');

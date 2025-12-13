@@ -811,8 +811,10 @@
             });
         });
 
-        // Wake Server functionality - Uses /health endpoint to check backend
+        // Wake Server functionality - Uses /health endpoint and Wake API
         const HEALTH_URL = 'https://photos.diegonmarcos.com/health';
+        const WAKE_API_STATUS = 'https://api.diegonmarcos.com/api/wake/status';
+        const WAKE_API_TRIGGER = 'https://api.diegonmarcos.com/api/wake/trigger';
         const wakeBtn = document.getElementById('wake-btn');
         const wakeBtnText = document.getElementById('wake-btn-text');
         const wakeStatus = document.getElementById('wake-status');
@@ -868,49 +870,79 @@
 
         async function wakeServer() {
             wakeBtn.classList.add('waking');
-            wakeBtnText.textContent = 'Checking...';
-            wakeStatus.textContent = 'Checking server status...';
+            wakeBtnText.textContent = 'Waking...';
+            wakeStatus.textContent = 'Sending wake command to server...';
 
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
-
-                const response = await fetch(HEALTH_URL, {
-                    method: 'GET',
-                    signal: controller.signal
+                // First, trigger the wake API
+                const wakeResponse = await fetch(WAKE_API_TRIGGER, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
                 });
-                clearTimeout(timeoutId);
+                const wakeData = await wakeResponse.json();
 
-                if (response.ok) {
-                    // Server is online!
-                    wakeBtn.classList.remove('waking');
-                    wakeBtn.classList.add('success');
-                    wakeBtnText.textContent = 'Server Online!';
-                    updateStatusIndicator('RUNNING', 'Server Online');
-                    wakeStatus.textContent = 'Server is available. Refreshing...';
-                    setTimeout(() => window.location.reload(), 1500);
+                if (wakeData.success) {
+                    wakeStatus.textContent = 'Wake command sent! Waiting for server...';
+                    updateStatusIndicator('STARTING', 'Server Starting...');
+
+                    // Poll for server to come online (check every 5s for up to 90s)
+                    let attempts = 0;
+                    const maxAttempts = 18;
+
+                    const pollInterval = setInterval(async () => {
+                        attempts++;
+                        wakeStatus.textContent = `Waiting for server... (${attempts * 5}s)`;
+
+                        try {
+                            const healthResponse = await fetch(HEALTH_URL, {
+                                method: 'GET',
+                                signal: AbortSignal.timeout(4000)
+                            });
+
+                            if (healthResponse.ok) {
+                                clearInterval(pollInterval);
+                                wakeBtn.classList.remove('waking');
+                                wakeBtn.classList.add('success');
+                                wakeBtnText.textContent = 'Server Online!';
+                                updateStatusIndicator('RUNNING', 'Server Online');
+                                wakeStatus.textContent = 'Server is ready! Refreshing...';
+                                setTimeout(() => window.location.reload(), 1500);
+                            }
+                        } catch (e) {
+                            // Still waiting
+                        }
+
+                        if (attempts >= maxAttempts) {
+                            clearInterval(pollInterval);
+                            wakeBtn.classList.remove('waking');
+                            wakeBtn.classList.add('error');
+                            wakeBtnText.textContent = 'Still Starting...';
+                            wakeStatus.textContent = 'Server is taking longer than expected. Try again in a minute.';
+                            setTimeout(() => {
+                                wakeBtn.classList.remove('error');
+                                wakeBtnText.textContent = 'Wake Server';
+                            }, 5000);
+                        }
+                    }, 5000);
                 } else {
-                    // Still offline
+                    // Wake failed
                     wakeBtn.classList.remove('waking');
                     wakeBtn.classList.add('error');
-                    wakeBtnText.textContent = 'Server Sleeping';
-                    updateStatusIndicator('STOPPED', 'Server Offline');
-                    wakeStatus.textContent = 'Run: vm-control.sh wake';
-
+                    wakeBtnText.textContent = 'Wake Failed';
+                    wakeStatus.textContent = wakeData.message || 'Could not wake server.';
                     setTimeout(() => {
                         wakeBtn.classList.remove('error');
-                        wakeBtnText.textContent = 'Check Again';
+                        wakeBtnText.textContent = 'Try Again';
                     }, 3000);
                 }
             } catch (error) {
                 wakeBtn.classList.remove('waking');
                 wakeBtn.classList.add('error');
-                wakeBtnText.textContent = 'Check Failed';
-                wakeStatus.textContent = 'Could not reach server.';
-
+                wakeBtnText.textContent = 'Error';
+                wakeStatus.textContent = 'Could not reach wake API.';
                 setTimeout(() => {
                     wakeBtn.classList.remove('error');
-                    wakeBtnText.textContent = 'Check Again';
+                    wakeBtnText.textContent = 'Try Again';
                 }, 3000);
             }
         }

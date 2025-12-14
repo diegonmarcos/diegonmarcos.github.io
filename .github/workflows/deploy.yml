@@ -474,10 +474,10 @@ jobs:
           fi
 
           # Copy Cloud Dashboard build (if dist exists)
-          if [ -d "a_Cloud/dist" ]; then
+          if [ -d "a_Cloud/cloud/dist" ]; then
             echo "📦 Copying Cloud Dashboard build..."
             mkdir -p _site/cloud
-            cp -rL a_Cloud/dist/* _site/cloud/ 2>/dev/null || cp -r a_Cloud/dist/* _site/cloud/
+            cp -rL a_Cloud/cloud/dist/* _site/cloud/ 2>/dev/null || cp -r a_Cloud/cloud/dist/* _site/cloud/
             echo "✅ Cloud Dashboard build copied to _site/cloud/"
           else
             echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"

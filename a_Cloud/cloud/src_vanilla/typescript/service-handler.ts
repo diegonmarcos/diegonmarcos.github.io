@@ -20,23 +20,19 @@ const serviceUrls: ServiceUrls = {
     // SSH VMs (Management)
     'vm-servicesserver1': 'ssh://ubuntu@129.151.228.66', // SSH-VM-Oracle_Services_Serv
     'vm-webserver1': 'ssh://ubuntu@130.110.251.193',     // SSH-VM-Oracle_Web_Server_1
-    'vm-arm': 'ssh://ubuntu@pending',                    // SSH-VM-Oracle_Flex_ARM_Server
     'vm-gcloud': 'ssh://diego@pending',                  // SSH-VM-GCloud_microe2Linux_1
 
     // NPMs (Infra Services)
     'npm-services': 'http://129.151.228.66:81',          // NPM-VM-Oracle_Services_Serv
     'npm-web': 'http://130.110.251.193:81',              // NPM-VM-Oracle_Web_Server_1
-    'npm-arm': '#pending',                               // NPM-VM-Oracle_Flex_ARM_Server
     'npm-gcloud': '#pending',                            // NPM-VM-Gcloud
 
     // Databases (Infra Services)
     'matomo-db': '#internal',                            // matomo-db
     'mail-db': '#pending',                               // mail-db
-    'n8n-ai-db': '#pending',                             // n8n-AI_db
 
     // Others (Infra Services)
     'n8n-infra': 'https://n8n.diegonmarcos.com',         // n8n-server (Infra)
-    'n8n-ai': '#pending',                                // n8n-AI-server
     'flask-server': '#pending',                          // Flask-server
     'flask-cloud-dashboard': '#pending',                 // Flask-Cloud_Dashboard
     'linktree': 'https://linktree.diegonmarcos.com'      // Linktree

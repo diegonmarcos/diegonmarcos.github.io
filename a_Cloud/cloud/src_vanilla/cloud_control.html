@@ -394,24 +394,32 @@
         }
 
         /* Type category cards for By Type view */
+        .infra-type-table-wrapper {
+            overflow-x: auto;
+            margin: 0 -1rem;
+            padding: 0 1rem;
+        }
+
         .infra-type-table {
-            width: 100%;
+            width: max-content;
+            min-width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
         }
 
         .infra-type-table th,
         .infra-type-table td {
-            padding: 0.75rem 0.5rem;
+            padding: 0.5rem 0.75rem;
             text-align: left;
             border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
         }
 
         .infra-type-table th {
             color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             letter-spacing: 0.5px;
             background: var(--bg-secondary);
         }
@@ -2162,30 +2170,6 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="vm-row" style="opacity: 0.6;">
-                                    <td><span style="display: inline-block; width: 8px; height: 8px; background: #F80000; border-radius: 50%; margin-right: 0.5rem;"></span>OCI Free ARM 1</td>
-                                    <td>4 OCPU</td>
-                                    <td>- / 24 GB</td>
-                                    <td>- / 200 GB</td>
-                                    <td>-</td>
-                                    <td><span class="health-badge pending">Pending</span></td>
-                                    <td>
-                                        <div class="vm-actions-inline">
-                                            <button class="vm-action-btn btn-url" disabled title="VM pending">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                            </button>
-                                            <button class="vm-action-btn btn-ssh" disabled title="VM pending">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                                            </button>
-                                            <button class="vm-action-btn btn-reset" disabled title="VM pending">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                                            </button>
-                                            <button class="vm-action-btn btn-shutdown" disabled title="VM pending">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -2727,12 +2711,12 @@
                                 <div id="oci-free-tier-bars">
                                     <div style="margin-bottom: 0.75rem;">
                                         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
-                                            <span>Compute (ARM)</span><span style="color: var(--accent-orange);">100%</span>
+                                            <span>Compute (ARM)</span><span style="color: var(--text-secondary);">0%</span>
                                         </div>
                                         <div style="height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden;">
-                                            <div style="height: 100%; width: 100%; background: linear-gradient(90deg, #F80000, #ff6666); border-radius: 4px;"></div>
+                                            <div style="height: 100%; width: 0%; background: linear-gradient(90deg, #22c55e, #4ade80); border-radius: 4px;"></div>
                                         </div>
-                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">4 OCPU + 24 GB of 4 OCPU + 24 GB</div>
+                                        <div style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.25rem;">0 of 4 OCPU + 24 GB (Available)</div>
                                     </div>
                                     <div style="margin-bottom: 0.75rem;">
                                         <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
@@ -3354,12 +3338,6 @@
                                     <td>172.24.0.0/24</td>
                                     <td>Dev services (n8n, sync, git)</td>
                                 </tr>
-                                <tr>
-                                    <td>oci-f-arm_1</td>
-                                    <td>ai_network</td>
-                                    <td>172.22.0.0/24</td>
-                                    <td>AI services (future)</td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -3622,10 +3600,32 @@
     </div>
 
     <!-- Load local data as fallback (generated by export_cloud_control_data.py) -->
-    <script src="../a_Cloud/api/monitor.js"></script>
-    <script src="../a_Cloud/api/costs_infra.js"></script>
-    <script src="../a_Cloud/api/costs_ai.js"></script>
-    <script src="../a_Cloud/api/infrastructure.js"></script>
+    <script src="../../api/src/monitor.js"></script>
+    <script src="../../api/src/costs_infra.js"></script>
+    <script src="../../api/src/costs_ai.js"></script>
+    <script src="../../api/src/infrastructure.js"></script>
+
+    <!-- Adapter: Map exported variable names to what the code expects -->
+    <script>
+        // Map COSTS_INFRA to CLOUD_COSTS_DATA format expected by the code
+        if (typeof COSTS_INFRA !== 'undefined') {
+            window.CLOUD_COSTS_DATA = {
+                lastUpdated: COSTS_INFRA.timestamp,
+                costs: COSTS_INFRA.costs,
+                totals: {
+                    totalMonthly: Object.values(COSTS_INFRA.costs || {}).reduce((sum, p) => sum + (p.monthly || 0), 0),
+                    projectedMonthly: Object.values(COSTS_INFRA.costs || {}).reduce((sum, p) => sum + (p.monthly || 0), 0),
+                    totalYTD: Object.values(COSTS_INFRA.costs || {}).reduce((sum, p) => sum + (p.monthly || 0) * 12, 0),
+                    freeTierSavings: 150 // Estimated free tier value
+                },
+                providers: COSTS_INFRA.costs
+            };
+        }
+        // Map COSTS_AI if needed
+        if (typeof COSTS_AI !== 'undefined') {
+            window.AI_COSTS_DATA = COSTS_AI;
+        }
+    </script>
 
     <script>
         // =================================================================
@@ -3658,6 +3658,25 @@
             if (!DATA) {
                 console.error('INFRASTRUCTURE/CONFIG not loaded');
                 return;
+            }
+
+            // Transform INFRASTRUCTURE format (arrays) to CONFIG format (objects keyed by ID)
+            // INFRASTRUCTURE has: vms[], services[]
+            // CONFIG expects: virtualMachines{}, services{}
+            if (DATA.vms && Array.isArray(DATA.vms)) {
+                DATA.virtualMachines = {};
+                DATA.vms.forEach(vm => {
+                    DATA.virtualMachines[vm.id] = vm;
+                });
+                console.log('Transformed vms[] to virtualMachines{}:', Object.keys(DATA.virtualMachines));
+            }
+            if (DATA.services && Array.isArray(DATA.services)) {
+                const servicesObj = {};
+                DATA.services.forEach(svc => {
+                    servicesObj[svc.id] = svc;
+                });
+                DATA.services = servicesObj;
+                console.log('Transformed services[] to services{}:', Object.keys(DATA.services));
             }
 
             // For convenience, also expose as CONFIG
@@ -5052,10 +5071,18 @@
         // INFRASTRUCTURE TAB (Status View)
         // ============================================
         function loadInfraData() {
-            if (typeof CONFIG === 'undefined') return;
+            console.log('loadInfraData() CALLED');
+            try {
+            if (typeof CONFIG === 'undefined') {
+                console.error('loadInfraData: CONFIG is undefined');
+                return;
+            }
+            console.log('loadInfraData: CONFIG.virtualMachines =', CONFIG.virtualMachines);
+            console.log('loadInfraData: CONFIG.services =', CONFIG.services);
 
             // Populate VMs table
             const vmsTbody = document.getElementById('infra-vms-tbody');
+            console.log('loadInfraData: vmsTbody element =', vmsTbody);
             if (vmsTbody) {
                 vmsTbody.innerHTML = '';
                 Object.values(CONFIG.virtualMachines || {}).forEach(vm => {
@@ -5063,7 +5090,9 @@
                     const provider = CONFIG.providers?.[vm.provider];
                     const hostName = provider?.name || vm.provider || 'Unknown';
                     const ip = vm.network?.publicIp || 'pending';
-                    const os = vm.specs?.os || vm.os || '-';
+                    // Handle os as object {name, version} or string
+                    const osObj = vm.os || {};
+                    const os = typeof osObj === 'string' ? osObj : (osObj.name ? `${osObj.name} ${osObj.version || ''}`.trim() : '-');
                     const sshCommand = vm.ssh?.command || `ssh ${vm.ssh?.user || 'root'}@${ip}`;
                     const consoleUrl = vm.ociInstanceId ? `https://cloud.oracle.com/compute/instances/${vm.ociInstanceId}` : (provider?.consoleUrl || '');
 
@@ -5127,6 +5156,10 @@
                     html += `</tbody></table></div></div>`;
                     servicesContainer.innerHTML += html;
                 });
+            }
+            console.log('loadInfraData() COMPLETED');
+            } catch (e) {
+                console.error('loadInfraData() ERROR:', e);
             }
         }
 
@@ -5211,7 +5244,7 @@
                 }
 
                 let html = `
-                    <div class="resources-table-container">
+                    <div class="infra-type-table-wrapper">
                         <table class="infra-type-table">
                             <thead><tr><th>Service</th><th>VM</th><th>URL</th><th>IP:Port</th><th>Container</th><th>Brief</th></tr></thead>
                             <tbody>`;
@@ -5394,15 +5427,16 @@
             checkExistingLogin();
             handleOAuthCallback();
             initRebootButtons();
+
+            // Render tables from CONFIG/INFRASTRUCTURE FIRST (before initTabs which may switch tabs)
+            // This ensures CONFIG is set before any tab tries to use it
+            if (typeof INFRASTRUCTURE !== 'undefined' || typeof CONFIG !== 'undefined') {
+                renderTablesFromConfig();
+            }
+
             initTabs();
             initCostSubtabs();
             initInfraViewToggle();
-
-            // Render tables from CONFIG (JSON is source of truth!)
-            // Render from local CONFIG first (creates DOM elements)
-            if (typeof CONFIG !== 'undefined') {
-                renderTablesFromConfig();
-            }
 
             // Check dev server status if not on GitHub Pages
             if (!isGitHubPages) {

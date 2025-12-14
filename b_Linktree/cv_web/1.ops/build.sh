@@ -60,13 +60,12 @@ print_usage() {
 
 # Check dependencies
 check_dependencies() {
-    if [ -d "$PROJECT_DIR/1.ops/node_modules" ]; then
+    if [ -d "$PROJECT_DIR/node_modules" ]; then
         return 0
     fi
     log_info "Installing dependencies..."
-    cd "$PROJECT_DIR/1.ops"
-    npm install
     cd "$PROJECT_DIR"
+    npm install
 }
 
 # Build TypeScript

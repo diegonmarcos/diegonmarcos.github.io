@@ -21,7 +21,7 @@ PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="MyProfile"
 PORT="8013"
 NUXT_DIR="$PROJECT_DIR/src"
-DIST_DIR="$NUXT_DIR/.output"
+DIST_DIR="$PROJECT_DIR/dist"
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -139,7 +139,7 @@ preview() {
 clean() {
     log_info "Cleaning build artifacts..."
 
-    rm -rf "$NUXT_DIR/.output"
+    rm -rf "$DIST_DIR"
     rm -rf "$NUXT_DIR/.nuxt"
     rm -rf "$NUXT_DIR/node_modules/.vite"
 

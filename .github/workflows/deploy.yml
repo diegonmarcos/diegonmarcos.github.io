@@ -36,7 +36,7 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/landpage/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Landpage..."
           cd b_Linktree/landpage/1.ops
@@ -47,7 +47,7 @@ jobs:
       - name: 🔨 Build Linktree
         id: build-linktree
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/linktree/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Linktree..."
           cd b_Linktree/linktree/1.ops
@@ -58,7 +58,7 @@ jobs:
       - name: 🔨 Build CV Web
         id: build-cv-web
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/cv_web/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building CV Web..."
           cd b_Linktree/cv_web/1.ops
@@ -69,7 +69,7 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/myfeed/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyFeed..."
           cd b_Linktree/myfeed/1.ops
@@ -80,7 +80,7 @@ jobs:
       - name: 🔨 Build MyGames
         id: build-mygames
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mygames/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyGames..."
           cd b_Linktree/mygames/1.ops
@@ -91,7 +91,7 @@ jobs:
       - name: 🔨 Build Nexus
         id: build-nexus
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/nexus/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Nexus..."
           cd b_Linktree/nexus/1.ops
@@ -102,7 +102,7 @@ jobs:
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/cloud/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Cloud Dashboard..."
           cd a_Cloud/cloud/1.ops
@@ -113,7 +113,7 @@ jobs:
       - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/feed_yourself/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Feed Yourself..."
           cd b_Linktree/feed_yourself/1.ops
@@ -124,7 +124,7 @@ jobs:
       - name: 🔨 Build Others
         id: build-others
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/others/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Others..."
           cd b_Linktree/others/1.ops
@@ -135,7 +135,7 @@ jobs:
       - name: 🔨 Build MyMail
         id: build-mymail
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/mymail/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyMail..."
           cd a_Cloud/mymail/1.ops
@@ -146,7 +146,7 @@ jobs:
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/myphotos/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyPhotos..."
           cd a_Cloud/myphotos/1.ops
@@ -157,7 +157,7 @@ jobs:
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/health_tracker/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Health Tracker..."
           cd b_Linktree/health_tracker/1.ops
@@ -168,7 +168,7 @@ jobs:
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/market_watch/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Market Watch..."
           cd b_Linktree/market_watch/1.ops
@@ -179,7 +179,7 @@ jobs:
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/central_bank/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building Central Bank..."
           cd b_Linktree/central_bank/1.ops
@@ -190,7 +190,7 @@ jobs:
       - name: 🔨 Build MyMaps
         id: build-mymaps
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymaps/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyMaps..."
           cd b_Linktree/mymaps/1.ops
@@ -201,7 +201,7 @@ jobs:
       - name: 🔨 Build MyProfile
         id: build-myprofile
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/myprofile/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyProfile..."
           cd b_Linktree/myprofile/1.ops
@@ -212,7 +212,7 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymovies/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyMovies..."
           cd b_Linktree/mymovies/1.ops
@@ -223,7 +223,7 @@ jobs:
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymusic/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building MyMusic..."
           cd b_Linktree/mymusic/1.ops
@@ -234,7 +234,7 @@ jobs:
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/json-vision/')
-        continue-on-error: true
+        continue-on-error: false
         run: |
           echo "🔨 Building JSON Vision..."
           cd b_Linktree/json-vision/1.ops

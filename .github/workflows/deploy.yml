@@ -35,200 +35,211 @@ jobs:
       # ============================================
       - name: 🔨 Build Landpage
         id: build-landpage
-        if: contains(steps.changed-files.outputs.all_changed_files, 'landpage/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/landpage/')
         continue-on-error: true
         run: |
           echo "🔨 Building Landpage..."
-          cd landpage/1.ops
+          cd b_Linktree/landpage/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Landpage build complete"
+
+      - name: 🔨 Build Linktree
+        id: build-linktree
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/linktree/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Linktree..."
+          cd b_Linktree/linktree/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ Linktree build complete"
 
       - name: 🔨 Build CV Web
         id: build-cv-web
-        if: contains(steps.changed-files.outputs.all_changed_files, 'cv_web/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/cv_web/')
         continue-on-error: true
         run: |
           echo "🔨 Building CV Web..."
-          cd cv_web/1.ops
+          cd b_Linktree/cv_web/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ CV Web build complete"
 
       - name: 🔨 Build MyFeed
         id: build-myfeed
-        if: contains(steps.changed-files.outputs.all_changed_files, 'myfeed/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/myfeed/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyFeed..."
-          cd myfeed/1.ops
+          cd b_Linktree/myfeed/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyFeed build complete"
 
       - name: 🔨 Build MyGames
         id: build-mygames
-        if: contains(steps.changed-files.outputs.all_changed_files, 'mygames/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mygames/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyGames..."
-          cd mygames/1.ops
+          cd b_Linktree/mygames/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyGames build complete"
 
       - name: 🔨 Build Nexus
         id: build-nexus
-        if: contains(steps.changed-files.outputs.all_changed_files, 'nexus/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/nexus/')
         continue-on-error: true
         run: |
           echo "🔨 Building Nexus..."
-          cd nexus/1.ops
+          cd b_Linktree/nexus/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Nexus build complete"
 
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
-        if: contains(steps.changed-files.outputs.all_changed_files, 'cloud/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/cloud/')
         continue-on-error: true
         run: |
           echo "🔨 Building Cloud Dashboard..."
-          cd cloud/1.ops
+          cd a_Cloud/cloud/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Cloud Dashboard build complete"
 
       - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
-        if: contains(steps.changed-files.outputs.all_changed_files, 'feed_yourself/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/feed_yourself/')
         continue-on-error: true
         run: |
           echo "🔨 Building Feed Yourself..."
-          cd feed_yourself/1.ops
+          cd b_Linktree/feed_yourself/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Feed Yourself build complete"
 
       - name: 🔨 Build Others
         id: build-others
-        if: contains(steps.changed-files.outputs.all_changed_files, 'others/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/others/')
         continue-on-error: true
         run: |
           echo "🔨 Building Others..."
-          cd others/1.ops
+          cd b_Linktree/others/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Others build complete"
 
       - name: 🔨 Build MyMail
         id: build-mymail
-        if: contains(steps.changed-files.outputs.all_changed_files, 'mymail/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/mymail/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyMail..."
-          cd mymail/1.ops
+          cd a_Cloud/mymail/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyMail build complete"
 
       - name: 🔨 Build MyPhotos
         id: build-myphotos
-        if: contains(steps.changed-files.outputs.all_changed_files, 'myphotos/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/myphotos/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyPhotos..."
-          cd myphotos/1.ops
+          cd a_Cloud/myphotos/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyPhotos build complete"
 
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
-        if: contains(steps.changed-files.outputs.all_changed_files, 'health_tracker/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/health_tracker/')
         continue-on-error: true
         run: |
           echo "🔨 Building Health Tracker..."
-          cd health_tracker/1.ops
+          cd b_Linktree/health_tracker/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Health Tracker build complete"
 
       - name: 🔨 Build Market Watch
         id: build-market-watch
-        if: contains(steps.changed-files.outputs.all_changed_files, 'market_watch/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/market_watch/')
         continue-on-error: true
         run: |
           echo "🔨 Building Market Watch..."
-          cd market_watch/1.ops
+          cd b_Linktree/market_watch/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Market Watch build complete"
 
       - name: 🔨 Build Central Bank
         id: build-central-bank
-        if: contains(steps.changed-files.outputs.all_changed_files, 'central_bank/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/central_bank/')
         continue-on-error: true
         run: |
           echo "🔨 Building Central Bank..."
-          cd central_bank/1.ops
+          cd b_Linktree/central_bank/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ Central Bank build complete"
 
       - name: 🔨 Build MyMaps
         id: build-mymaps
-        if: contains(steps.changed-files.outputs.all_changed_files, 'mymaps/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymaps/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyMaps..."
-          cd mymaps/1.ops
+          cd b_Linktree/mymaps/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyMaps build complete"
 
       - name: 🔨 Build MyProfile
         id: build-myprofile
-        if: contains(steps.changed-files.outputs.all_changed_files, 'myprofile/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/myprofile/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyProfile..."
-          cd myprofile/1.ops
+          cd b_Linktree/myprofile/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyProfile build complete"
 
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
-        if: contains(steps.changed-files.outputs.all_changed_files, 'mymovies/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymovies/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyMovies..."
-          cd mymovies/1.ops
+          cd b_Linktree/mymovies/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyMovies build complete"
 
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
-        if: contains(steps.changed-files.outputs.all_changed_files, 'mymusic/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymusic/')
         continue-on-error: true
         run: |
           echo "🔨 Building MyMusic..."
-          cd mymusic/1.ops
+          cd b_Linktree/mymusic/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ MyMusic build complete"
 
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
-        if: contains(steps.changed-files.outputs.all_changed_files, 'json-vision/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/json-vision/')
         continue-on-error: true
         run: |
           echo "🔨 Building JSON Vision..."
-          cd json-vision/1.ops
+          cd b_Linktree/json-vision/1.ops
           bash build.sh build
-          cd ../..
+          cd ../../..
           echo "✅ JSON Vision build complete"
 
       # ============================================
@@ -246,6 +257,13 @@ jobs:
             FAILED="$FAILED landpage"
           elif [ "${{ steps.build-landpage.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Landpage"
+          fi
+
+          if [ "${{ steps.build-linktree.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Linktree"
+            FAILED="$FAILED b_Linktree"
+          elif [ "${{ steps.build-linktree.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Linktree"
           fi
 
           if [ "${{ steps.build-cv-web.outcome }}" == "failure" ]; then
@@ -278,7 +296,7 @@ jobs:
 
           if [ "${{ steps.build-cloud.outcome }}" == "failure" ]; then
             echo "❌ FAILED: Cloud Dashboard"
-            FAILED="$FAILED cloud"
+            FAILED="$FAILED a_Cloud"
           elif [ "${{ steps.build-cloud.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Cloud Dashboard"
           fi
@@ -372,184 +390,184 @@ jobs:
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
           # Copy cv_pdf, others (no build needed - static sites)
-          cp -r cv_pdf/ others/ _site/ 2>/dev/null || true
+          cp -r b_Linktree/cv_pdf/ others/ _site/ 2>/dev/null || true
 
           # Copy MyMail build (if dist exists)
-          if [ -d "mymail/dist" ]; then
+          if [ -d "a_Cloud/mymail/dist" ]; then
             echo "📦 Copying MyMail build..."
             mkdir -p _site/mymail
-            cp -r mymail/dist/* _site/mymail/
+            cp -r a_Cloud/mymail/dist/* _site/mymail/
             echo "✅ MyMail build copied to _site/mymail/"
           fi
 
           # Copy MyPhotos build (if dist exists)
-          if [ -d "myphotos/dist" ]; then
+          if [ -d "a_Cloud/myphotos/dist" ]; then
             echo "📦 Copying MyPhotos build..."
             mkdir -p _site/myphotos
-            cp -r myphotos/dist/* _site/myphotos/
+            cp -r a_Cloud/myphotos/dist/* _site/myphotos/
             echo "✅ MyPhotos build copied to _site/myphotos/"
           fi
 
           # Copy Linktree build (if dist exists)
-          if [ -d "linktree/dist" ]; then
+          if [ -d "b_Linktree/dist" ]; then
             echo "📦 Copying Linktree build..."
             mkdir -p _site/linktree
             # Use -L to dereference symlinks (dist may contain symlinks to public/)
-            cp -rL linktree/dist/* _site/linktree/ 2>/dev/null || cp -r linktree/dist/* _site/linktree/
-            cp -r linktree/public/* _site/linktree/ 2>/dev/null || true
+            cp -rL b_Linktree/dist/* _site/linktree/ 2>/dev/null || cp -r b_Linktree/dist/* _site/linktree/
+            cp -r b_Linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
           fi
 
           # Copy CV Web build (if dist exists)
-          if [ -d "cv_web/dist" ]; then
+          if [ -d "b_Linktree/cv_web/dist" ]; then
             echo "📦 Copying CV Web build..."
             mkdir -p _site/cv_web
             # Use -L to dereference symlinks (dist contains symlinks to public/)
-            cp -rL cv_web/dist/* _site/cv_web/ 2>/dev/null || cp -r cv_web/dist/* _site/cv_web/
-            cp -r cv_web/public/* _site/cv_web/ 2>/dev/null || true
+            cp -rL b_Linktree/cv_web/dist/* _site/cv_web/ 2>/dev/null || cp -r b_Linktree/cv_web/dist/* _site/cv_web/
+            cp -r b_Linktree/cv_web/public/* _site/cv_web/ 2>/dev/null || true
             echo "✅ CV Web build copied to _site/cv_web/"
           fi
 
           # Copy Landpage (main landing page)
-          if [ -d "landpage/dist" ]; then
+          if [ -d "b_Linktree/landpage/dist" ]; then
             echo "📦 Copying Landpage build..."
             mkdir -p _site/landpage
             # Use -L to dereference symlinks (dist contains symlinks to public/)
-            cp -rL landpage/dist/* _site/landpage/ 2>/dev/null || cp -r landpage/dist/* _site/landpage/
+            cp -rL b_Linktree/landpage/dist/* _site/landpage/ 2>/dev/null || cp -r b_Linktree/landpage/dist/* _site/landpage/
             echo "✅ Landpage build copied to _site/landpage/"
-          elif [ -d "landpage/src_static" ]; then
+          elif [ -d "b_Linktree/landpage/src_static" ]; then
             echo "📦 Copying Landpage src_static..."
             mkdir -p _site/landpage
-            cp landpage/src_static/index.html landpage/src_static/style.css landpage/src_static/script.js _site/landpage/ 2>/dev/null || true
-            cp -r landpage/public _site/landpage/ 2>/dev/null || true
+            cp b_Linktree/landpage/src_static/index.html landpage/src_static/style.css landpage/src_static/script.js _site/landpage/ 2>/dev/null || true
+            cp -r b_Linktree/landpage/public _site/landpage/ 2>/dev/null || true
             echo "✅ Landpage src_static copied to _site/landpage/"
           fi
 
           # Copy MyFeed Vue build (if dist exists)
-          if [ -d "myfeed/dist" ]; then
+          if [ -d "b_Linktree/myfeed/dist" ]; then
             echo "📦 Copying MyFeed Vue build..."
             mkdir -p _site/myfeed
-            cp -rL myfeed/dist/* _site/myfeed/ 2>/dev/null || cp -r myfeed/dist/* _site/myfeed/
+            cp -rL b_Linktree/myfeed/dist/* _site/myfeed/ 2>/dev/null || cp -r b_Linktree/myfeed/dist/* _site/myfeed/
             echo "✅ MyFeed Vue build copied to _site/myfeed/"
           else
             echo "⏭️  Skipping MyFeed copy (no dist directory found)"
           fi
 
           # Copy MyGames SvelteKit build (if dist exists)
-          if [ -d "mygames/dist" ]; then
+          if [ -d "b_Linktree/mygames/dist" ]; then
             echo "📦 Copying MyGames SvelteKit build..."
             mkdir -p _site/mygames
-            cp -rL mygames/dist/* _site/mygames/ 2>/dev/null || cp -r mygames/dist/* _site/mygames/
+            cp -rL b_Linktree/mygames/dist/* _site/mygames/ 2>/dev/null || cp -r b_Linktree/mygames/dist/* _site/mygames/
             echo "✅ MyGames build copied to _site/mygames/"
           else
             echo "⏭️  Skipping MyGames copy (no dist directory found)"
           fi
 
           # Copy Nexus Vue build (if dist exists)
-          if [ -d "nexus/dist" ]; then
+          if [ -d "b_Linktree/nexus/dist" ]; then
             echo "📦 Copying Nexus Holdings build..."
             mkdir -p _site/nexus
-            cp -rL nexus/dist/* _site/nexus/ 2>/dev/null || cp -r nexus/dist/* _site/nexus/
+            cp -rL b_Linktree/nexus/dist/* _site/nexus/ 2>/dev/null || cp -r b_Linktree/nexus/dist/* _site/nexus/
             echo "✅ Nexus build copied to _site/nexus/"
           else
             echo "⏭️  Skipping Nexus copy (no dist directory found)"
           fi
 
           # Copy Cloud Dashboard build (if dist exists)
-          if [ -d "cloud/dist" ]; then
+          if [ -d "a_Cloud/dist" ]; then
             echo "📦 Copying Cloud Dashboard build..."
             mkdir -p _site/cloud
-            cp -rL cloud/dist/* _site/cloud/ 2>/dev/null || cp -r cloud/dist/* _site/cloud/
+            cp -rL a_Cloud/dist/* _site/cloud/ 2>/dev/null || cp -r a_Cloud/dist/* _site/cloud/
             echo "✅ Cloud Dashboard build copied to _site/cloud/"
           else
             echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"
           fi
 
           # Copy Feed Yourself build (if dist exists)
-          if [ -d "feed_yourself/dist" ]; then
+          if [ -d "b_Linktree/feed_yourself/dist" ]; then
             echo "📦 Copying Feed Yourself build..."
             mkdir -p _site/feed_yourself
-            cp -rL feed_yourself/dist/* _site/feed_yourself/ 2>/dev/null || cp -r feed_yourself/dist/* _site/feed_yourself/
+            cp -rL b_Linktree/feed_yourself/dist/* _site/feed_yourself/ 2>/dev/null || cp -r b_Linktree/feed_yourself/dist/* _site/feed_yourself/
             echo "✅ Feed Yourself build copied to _site/feed_yourself/"
           else
             echo "⏭️  Skipping Feed Yourself copy (no dist directory found)"
           fi
 
           # Copy Health Tracker build (if dist exists)
-          if [ -d "health_tracker/dist" ]; then
+          if [ -d "b_Linktree/health_tracker/dist" ]; then
             echo "📦 Copying Health Tracker build..."
             mkdir -p _site/health_tracker
-            cp -rL health_tracker/dist/* _site/health_tracker/ 2>/dev/null || cp -r health_tracker/dist/* _site/health_tracker/
+            cp -rL b_Linktree/health_tracker/dist/* _site/health_tracker/ 2>/dev/null || cp -r b_Linktree/health_tracker/dist/* _site/health_tracker/
             echo "✅ Health Tracker build copied to _site/health_tracker/"
           else
             echo "⏭️  Skipping Health Tracker copy (no dist directory found)"
           fi
 
           # Copy Market Watch build (if dist exists)
-          if [ -d "market_watch/dist" ]; then
+          if [ -d "b_Linktree/market_watch/dist" ]; then
             echo "📦 Copying Market Watch build..."
             mkdir -p _site/market_watch
-            cp -rL market_watch/dist/* _site/market_watch/ 2>/dev/null || cp -r market_watch/dist/* _site/market_watch/
+            cp -rL b_Linktree/market_watch/dist/* _site/market_watch/ 2>/dev/null || cp -r b_Linktree/market_watch/dist/* _site/market_watch/
             echo "✅ Market Watch build copied to _site/market_watch/"
           else
             echo "⏭️  Skipping Market Watch copy (no dist directory found)"
           fi
 
           # Copy Central Bank Forecasting build (if dist exists)
-          if [ -d "central_bank/dist" ]; then
+          if [ -d "b_Linktree/central_bank/dist" ]; then
             echo "📦 Copying Central Bank Forecasting build..."
             mkdir -p _site/central_bank
-            cp -rL central_bank/dist/* _site/central_bank/ 2>/dev/null || cp -r central_bank/dist/* _site/central_bank/
+            cp -rL b_Linktree/central_bank/dist/* _site/central_bank/ 2>/dev/null || cp -r b_Linktree/central_bank/dist/* _site/central_bank/
             echo "✅ Central Bank Forecasting build copied to _site/central_bank/"
           else
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
           fi
 
           # Copy MyMaps build (if dist exists - Next.js static export with custom distDir)
-          if [ -d "mymaps/dist" ]; then
+          if [ -d "b_Linktree/mymaps/dist" ]; then
             echo "📦 Copying MyMaps build..."
             mkdir -p _site/mymaps
-            cp -rL mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r mymaps/dist/* _site/mymaps/
+            cp -rL b_Linktree/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r b_Linktree/mymaps/dist/* _site/mymaps/
             echo "✅ MyMaps build copied to _site/mymaps/"
           else
             echo "⏭️  Skipping MyMaps copy (no dist directory found)"
           fi
 
           # Copy MyProfile build (if dist exists - Nuxt static export)
-          if [ -d "myprofile/dist" ]; then
+          if [ -d "b_Linktree/myprofile/dist" ]; then
             echo "📦 Copying MyProfile build..."
             mkdir -p _site/myprofile
-            cp -rL myprofile/dist/* _site/myprofile/ 2>/dev/null || cp -r myprofile/dist/* _site/myprofile/
+            cp -rL b_Linktree/myprofile/dist/* _site/myprofile/ 2>/dev/null || cp -r b_Linktree/myprofile/dist/* _site/myprofile/
             echo "✅ MyProfile build copied to _site/myprofile/"
           else
             echo "⏭️  Skipping MyProfile copy (no dist directory found)"
           fi
 
           # Copy MyMovies build (if dist exists - Vue 3 single-file)
-          if [ -d "mymovies/dist" ]; then
+          if [ -d "b_Linktree/mymovies/dist" ]; then
             echo "📦 Copying MyMovies build..."
             mkdir -p _site/mymovies
-            cp -rL mymovies/dist/* _site/mymovies/ 2>/dev/null || cp -r mymovies/dist/* _site/mymovies/
+            cp -rL b_Linktree/mymovies/dist/* _site/mymovies/ 2>/dev/null || cp -r b_Linktree/mymovies/dist/* _site/mymovies/
             echo "✅ MyMovies build copied to _site/mymovies/"
           else
             echo "⏭️  Skipping MyMovies copy (no dist directory found)"
           fi
 
           # Copy MyMusic build (if dist exists - Vue 3 single-file)
-          if [ -d "mymusic/dist" ]; then
+          if [ -d "b_Linktree/mymusic/dist" ]; then
             echo "📦 Copying MyMusic build..."
             mkdir -p _site/mymusic
-            cp -rL mymusic/dist/* _site/mymusic/ 2>/dev/null || cp -r mymusic/dist/* _site/mymusic/
+            cp -rL b_Linktree/mymusic/dist/* _site/mymusic/ 2>/dev/null || cp -r b_Linktree/mymusic/dist/* _site/mymusic/
             echo "✅ MyMusic build copied to _site/mymusic/"
           else
             echo "⏭️  Skipping MyMusic copy (no dist directory found)"
           fi
 
           # Copy JSON Vision build (if dist exists - Vue 3 single-file)
-          if [ -d "json-vision/dist" ]; then
+          if [ -d "b_Linktree/json-vision/dist" ]; then
             echo "📦 Copying JSON Vision build..."
             mkdir -p _site/json-vision
-            cp -rL json-vision/dist/* _site/json-vision/ 2>/dev/null || cp -r json-vision/dist/* _site/json-vision/
+            cp -rL b_Linktree/json-vision/dist/* _site/json-vision/ 2>/dev/null || cp -r b_Linktree/json-vision/dist/* _site/json-vision/
             echo "✅ JSON Vision build copied to _site/json-vision/"
           else
             echo "⏭️  Skipping JSON Vision copy (no dist directory found)"

@@ -35,14 +35,14 @@ This document defines the **folder structure and file organization** for all pro
 ├── 1.ops/
 
                         # Projects
+├── a_Cloud/
+├── b_Linktree/
 ├── central_bank/
-├── cloud/
 ├── cv_pdf/
 ├── cv_web/
 ├── feed_yourself/
 ├── health_tracker/
 ├── landpage/
-├── linktree/
 ├── market_watch/
 ├── myfeed/
 ├── mygames/

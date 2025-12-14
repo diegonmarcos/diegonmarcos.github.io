@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: Cloud Control API
+  description: |
+    RESTful API for monitoring and managing cloud infrastructure.
+
+    **Features:**
+    - Real-time VM and service status monitoring
+    - Infrastructure cost tracking
+    - AI service usage and costs
+    - Complete infrastructure details
+
+    **Data Source:** All endpoints read from `cloud_dash.json` (single source of truth)
+
+    **Fallback:** Static `.js` files are available as offline fallback in the same directory.
+  version: 1.0.0
+  contact:
+    name: Diego Nepomuceno Marcos
+    email: diego@diegonmarcos.com
+    url: https://diegonmarcos.com
+  license:
+    name: Private
+
+servers:
+  - url: http://34.55.55.234:5000/api
+    description: Production API (GCloud Arch 1)
+  - url: http://localhost:5000/api
+    description: Local Development
+
+tags:
+  - name: Monitor
+    description: Live monitoring of VMs and services
+  - name: Costs
+    description: Infrastructure and AI costs
+  - name: Infrastructure
+    description: Complete infrastructure configuration
+
+paths:
+  /cloud_control/monitor:
+    get:
+      tags:
+        - Monitor
+      summary: Get VM and service status
+      description: |
+        Returns real-time status of all VMs and services grouped by category.
+
+        **Use Case:** Dashboard monitoring page (#monitor)
+
+        **Status Values:**
+        - VMs: `Online`, `Offline`, `Dormant`, `Pending`, `Hold`, `TBD`
+        - Services: `healthy`, `error`, `development`, `hold`, `tbd`
+
+        **Fallback:** `monitor.js` → `MONITOR` variable
+      operationId: getMonitor
+      responses:
+        '200':
+          description: Successful response with VM and service status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vms:
+                    type: array
+                    description: VMs grouped by category
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                          example: services
+                        categoryName:
+                          type: string
+                          example: Services
+                        vms:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: oci-f-micro_1
+                              name:
+                                type: string
+                                example: OCI Free Micro 1
+                              ip:
+                                type: string
+                                example: 130.110.251.193
+                              instanceType:
+                                type: string
+                                example: VM.Standard.E2.1.Micro
+                              provider:
+                                type: string
+                                example: oracle
+                              status:
+                                type: string
+                                enum: [Online, Offline, Dormant, Pending, Hold, TBD, Unknown]
+                                example: Online
+                  services:
+                    type: array
+                    description: Services grouped by category
+                    items:
+                      type: object
+                      properties:
+                        category:
+                          type: string
+                          example: user-productivity
+                        categoryName:
+                          type: string
+                          example: User Productivity
+                        services:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                                example: matomo
+                              name:
+                                type: string
+                                example: Matomo Analytics
+                              url:
+                                type: string
+                                example: https://analytics.diegonmarcos.com
+                              vmId:
+                                type: string
+                                example: oci-f-micro_1
+                              health_status:
+                                type: string
+                                enum: [healthy, error, development, hold, tbd, no_url]
+                                example: healthy
+              examples:
+                success:
+                  summary: Example response
+                  value:
+                    vms:
+                      - category: services
+                        categoryName: Services
+                        vms:
+                          - id: oci-f-micro_1
+                            name: OCI Free Micro 1
+                            ip: 130.110.251.193
+                            instanceType: VM.Standard.E2.1.Micro
+                            provider: oracle
+                            status: Online
+                          - id: oci-p-flex_1
+                            name: OCI Paid Flex 1
+                            ip: 84.235.234.87
+                            instanceType: VM.Standard.E4.Flex
+                            provider: oracle
+                            status: Dormant
+                    services:
+                      - category: user-productivity
+                        categoryName: User Productivity
+                        services:
+                          - id: matomo
+                            name: Matomo Analytics
+                            url: https://analytics.diegonmarcos.com
+                            vmId: oci-f-micro_1
+                            health_status: healthy
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /cloud_control/costs_infra:
+    get:
+      tags:
+        - Costs
+      summary: Get infrastructure costs
+      description: |
+        Returns monthly costs for all cloud providers (Oracle, GCloud, Cloudflare, etc.)
+
+        **Use Case:** Infrastructure costs page (#costs_infra)
+
+        **Fallback:** `costs_infra.js` → `COSTS_INFRA` variable
+      operationId: getCostsInfra
+      responses:
+        '200':
+          description: Infrastructure costs by provider
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  costs:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        tier:
+                          type: string
+                        monthly:
+                          type: number
+                        resources:
+                          type: object
+                  timestamp:
+                    type: string
+                    example: "2025-12-07"
+              examples:
+                success:
+                  summary: Example response
+                  value:
+                    costs:
+                      oracle:
+                        name: Oracle Cloud
+                        tier: always-free
+                        monthly: 0
+                        paidVms:
+                          oci-p-flex_1:
+                            monthly: 5.5
+                            hourly: 0.037
+                        resources:
+                          vms: "2x E2.1.Micro (free) + 1x E4.Flex (paid)"
+                          storage: "200GB block"
+                          bandwidth: "10TB egress"
+                      gcloud:
+                        name: Google Cloud
+                        tier: free-tier
+                        monthly: 0
+                        resources:
+                          vms: "1x e2-micro"
+                          storage: "30GB standard"
+                          bandwidth: "1GB egress"
+                    timestamp: "2025-12-07"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /cloud_control/costs_ai:
+    get:
+      tags:
+        - Costs
+      summary: Get AI service costs
+      description: |
+        Returns AI service usage and costs (Claude, OpenAI, etc.)
+
+        **Use Case:** AI costs page (#costs_ai)
+
+        **Fallback:** `costs_ai.js` → `COSTS_AI` variable
+      operationId: getCostsAI
+      responses:
+        '200':
+          description: AI service costs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  costs:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        plan:
+                          type: string
+                        monthlyBudget:
+                          type: number
+                        usage:
+                          type: object
+                  timestamp:
+                    type: string
+              examples:
+                success:
+                  summary: Example response
+                  value:
+                    costs:
+                      claude:
+                        name: Claude (Anthropic)
+                        plan: max5x
+                        monthlyBudget: 100.0
+                        usage:
+                          currentMonth: 45.23
+                          lastMonth: 89.50
+                    timestamp: "2025-12-07"
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /cloud_control/infrastructure:
+    get:
+      tags:
+        - Infrastructure
+      summary: Get complete infrastructure details
+      description: |
+        Returns comprehensive infrastructure configuration including VMs, services,
+        providers, domains, networks, and firewall rules.
+
+        **Use Case:** Infrastructure details page (#infrastructure)
+
+        **Fallback:** `infrastructure.js` → `INFRASTRUCTURE` variable
+      operationId: getInfrastructure
+      responses:
+        '200':
+          description: Complete infrastructure configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vms:
+                    type: array
+                    description: All virtual machines with full details
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        provider:
+                          type: string
+                        category:
+                          type: string
+                        instanceType:
+                          type: string
+                        status:
+                          type: string
+                        network:
+                          type: object
+                          properties:
+                            publicIp:
+                              type: string
+                            privateIp:
+                              type: string
+                        os:
+                          type: object
+                        availability:
+                          type: string
+                  services:
+                    type: array
+                    description: All services with full details
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        category:
+                          type: string
+                        vmId:
+                          type: string
+                        status:
+                          type: string
+                        urls:
+                          type: object
+                        docker:
+                          type: object
+                  providers:
+                    type: object
+                    description: Cloud provider configurations
+                  domains:
+                    type: object
+                    description: Domain and DNS configurations
+                  dockerNetworks:
+                    type: object
+                    description: Docker network configurations
+                  firewallRules:
+                    type: object
+                    description: Firewall and security rules
+                  objectStorage:
+                    type: object
+                    description: Object storage configurations
+                  vmCategories:
+                    type: object
+                    description: VM category definitions
+                  serviceCategories:
+                    type: object
+                    description: Service category definitions
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Failed to load configuration
+      required:
+        - error
+
+  securitySchemes:
+    GitHubOAuth:
+      type: oauth2
+      description: GitHub OAuth for admin actions (reboot, etc.)
+      flows:
+        authorizationCode:
+          authorizationUrl: https://github.com/login/oauth/authorize
+          tokenUrl: https://github.com/login/oauth/access_token
+          scopes:
+            read:user: Read user profile
+
+security: []
+
+externalDocs:
+  description: Cloud Infrastructure Specification
+  url: https://github.com/diegonmarcos/back-System/blob/main/cloud/1.ops/Cloud-spec_.md

@@ -15,8 +15,8 @@
   },
   "servers": [
     {
-      "url": "http://34.55.55.234:5000/api",
-      "description": "Production API (GCloud Arch 1)"
+      "url": "https://api.diegonmarcos.com/api",
+      "description": "Production API"
     },
     {
       "url": "http://localhost:5000/api",

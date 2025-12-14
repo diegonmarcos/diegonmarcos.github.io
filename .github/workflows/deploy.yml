@@ -390,7 +390,7 @@ jobs:
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
           # Copy cv_pdf, others (no build needed - static sites)
-          cp -r b_Linktree/cv_pdf/ others/ _site/ 2>/dev/null || true
+          cp -r b_Linktree/cv_pdf/ b_Linktree/others/ _site/ 2>/dev/null || true
 
           # Copy MyMail build (if dist exists)
           if [ -d "a_Cloud/mymail/dist" ]; then
@@ -409,12 +409,12 @@ jobs:
           fi
 
           # Copy Linktree build (if dist exists)
-          if [ -d "b_Linktree/dist" ]; then
+          if [ -d "b_Linktree/linktree/dist" ]; then
             echo "📦 Copying Linktree build..."
             mkdir -p _site/linktree
             # Use -L to dereference symlinks (dist may contain symlinks to public/)
-            cp -rL b_Linktree/dist/* _site/linktree/ 2>/dev/null || cp -r b_Linktree/dist/* _site/linktree/
-            cp -r b_Linktree/public/* _site/linktree/ 2>/dev/null || true
+            cp -rL b_Linktree/linktree/dist/* _site/linktree/ 2>/dev/null || cp -r b_Linktree/linktree/dist/* _site/linktree/
+            cp -r b_Linktree/linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
           fi
 

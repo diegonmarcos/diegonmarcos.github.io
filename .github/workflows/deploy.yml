@@ -483,6 +483,16 @@ jobs:
             echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"
           fi
 
+          # Copy API Docs (Swagger UI) - static files, no build needed
+          if [ -d "a_Cloud/api/src" ]; then
+            echo "📦 Copying API Docs (Swagger UI)..."
+            mkdir -p _site/api
+            cp -rL a_Cloud/api/src/* _site/api/ 2>/dev/null || cp -r a_Cloud/api/src/* _site/api/
+            echo "✅ API Docs copied to _site/api/"
+          else
+            echo "⏭️  Skipping API Docs copy (no src directory found)"
+          fi
+
           # Copy Feed Yourself build (if dist exists)
           if [ -d "b_Linktree/feed_yourself/dist" ]; then
             echo "📦 Copying Feed Yourself build..."

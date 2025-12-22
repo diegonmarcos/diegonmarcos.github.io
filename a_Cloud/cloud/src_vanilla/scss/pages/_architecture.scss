@@ -1026,7 +1026,6 @@
                 }
 
         /* AI DIAGRAM STYLES - scoped */
-        #section-ai {
                 #section-ai {
                     --bg-color: #0a0a0f;
                     --bg-gradient: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #0a0a0f 100%);
@@ -2844,5 +2843,3 @@
             &.network { color: var(--network-color); }
             &.container { color: var(--container-color); }
         }
-
-}

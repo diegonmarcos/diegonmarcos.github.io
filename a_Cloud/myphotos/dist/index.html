@@ -183,7 +183,7 @@
             border-radius: 24px;
             padding: 48px 40px;
             width: 100%;
-            max-width: 420px;
+            max-width: 520px;
             box-shadow:
                 0 25px 50px rgba(0, 0, 0, 0.25),
                 inset 0 1px 1px rgba(255, 255, 255, 0.1);
@@ -579,6 +579,126 @@
             50% { opacity: 0.7; transform: scale(0.9); }
         }
 
+        /* Action section */
+        .action-section {
+            margin: 24px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons .login-btn {
+            flex: 1;
+            padding: 14px 20px;
+        }
+
+        .btn-app {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-app:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-config {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4);
+        }
+
+        .btn-config:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.5);
+        }
+
+        /* Tools section */
+        .tools-section {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tools-title {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tool-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .tool-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tool-btn.coming-soon {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-btn[data-auth="authelia-sso"].active,
+        .auth-btn[data-auth="authelia-2fa"].active {
+            background: rgba(14, 165, 233, 0.2);
+            border-color: var(--authelia);
+            color: var(--authelia);
+        }
+
+        .auth-btn[data-auth="github"].active {
+            background: rgba(36, 41, 47, 0.4);
+            border-color: #57606a;
+            color: #fff;
+        }
+
+        /* Server control section (bottom) */
+        .server-control {
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
         /* Responsive */
         @media (max-width: 480px) {
             .login-card {
@@ -649,37 +769,88 @@
                 <p class="app-tagline">Your memories, beautifully organized</p>
             </div>
 
-            <div class="divider">
-                <span>Sign in to continue</span>
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <div class="action-buttons">
+                    <a id="go-app-btn" class="login-btn btn-app" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg><span id="tool-name-app">Photoprism</span> App</a>
+                    <a id="go-config-btn" class="login-btn btn-config" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg><span id="tool-name-config">Photoprism</span> Config</a>
+                </div>
             </div>
 
-            <!-- Server Status Indicator -->
-            <div class="server-status" id="server-status">
-                <div class="status-dot checking" id="status-dot"></div>
-                <span id="status-text">Checking server status...</span>
+            <!-- Select Tool -->
+            <div class="tools-section">
+                <div class="tools-title">Select Tool</div>
+                <div class="tools-grid">
+                    <button class="tool-btn active" data-tool="photoprism" data-url="https://photos.diegonmarcos.com/" data-config-url="https://photos.diegonmarcos.com/settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                        Photoprism
+                    </button>
+                    <button class="tool-btn coming-soon" data-tool="immich" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        Immich
+                    </button>
+                </div>
             </div>
 
-            <div class="login-buttons">
-                <!-- GitHub OAuth Button (via OAuth2 Proxy) -->
-                <a href="https://photos.diegonmarcos.com/oauth2/start?rd=https://photos.diegonmarcos.com/" class="login-btn btn-github">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    Sign in with GitHub
-                </a>
+            <!-- Auth SSO -->
+            <div class="tools-section">
+                <div class="tools-title">Auth SSO (OIDC+OAuth2)</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn active" data-auth="authelia-sso" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <circle cx="12" cy="16" r="1"/>
+                        </svg>
+                        Authelia SSO
+                    </button>
+                    <button class="tool-btn auth-btn" data-auth="github" data-auth-prefix="https://photos.diegonmarcos.com/oauth2/start?rd=">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub SSO
+                    </button>
+                </div>
+            </div>
 
-                <!-- Authelia 2FA Button (Local TOTP) -->
-                <a href="https://auth.diegonmarcos.com/authelia/?rd=https://photos.diegonmarcos.com/" class="login-btn btn-authelia">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
-                    Authelia 2FA
-                </a>
+            <!-- Auth 2FA -->
+            <div class="tools-section">
+                <div class="tools-title">Auth 2FA</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn" data-auth="authelia-2fa" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        Authelia 2FA
+                    </button>
+                </div>
+            </div>
 
-                <!-- Wake Server Button -->
-                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()">
+            <!-- Server Control (Bottom) -->
+            <div class="server-control">
+                <div class="tools-title">Server Status</div>
+                <div class="server-status" id="server-status">
+                    <div class="status-dot checking" id="status-dot"></div>
+                    <span id="status-text">Checking server status...</span>
+                </div>
+                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="width: 100%; margin-top: 12px;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="5"/>
                         <line x1="12" y1="1" x2="12" y2="3"/>
@@ -719,13 +890,6 @@
 
     <!-- Footer Navigation -->
     <div class="footer-nav">
-        <a href="https://cloud.diegonmarcos.com" class="footer-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            Dashboard
-        </a>
         <a href="https://linktree.diegonmarcos.com" class="shimmer-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
@@ -733,6 +897,12 @@
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             </svg>
             Linktree
+        </a>
+        <a href="https://cloud.diegonmarcos.com" class="footer-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+            Cloud
         </a>
     </div>
 
@@ -947,10 +1117,53 @@
             }
         }
 
+        // Tool and Auth selection handling
+        let selectedTool = document.querySelector('.tool-btn[data-tool].active');
+        let selectedAuth = document.querySelector('.auth-btn.active');
+
+        // Tool selection
+        document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedTool = this;
+                updateActionButtons();
+            });
+        });
+
+        // Auth selection (mutual exclusivity across both SSO and 2FA sections)
+        document.querySelectorAll('.auth-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                document.querySelectorAll('.auth-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedAuth = this;
+                updateActionButtons();
+            });
+        });
+
+        // Update action button names and hrefs
+        function updateActionButtons() {
+            const toolName = selectedTool ? selectedTool.textContent.trim() : 'Photoprism';
+            document.getElementById('tool-name-app').textContent = toolName;
+            document.getElementById('tool-name-config').textContent = toolName;
+
+            // Update hrefs
+            const appUrl = selectedTool ? selectedTool.dataset.url : '#';
+            const configUrl = selectedTool ? selectedTool.dataset.configUrl : '#';
+            const authPrefix = selectedAuth ? selectedAuth.dataset.authPrefix : '';
+
+            document.getElementById('go-app-btn').href = authPrefix ? authPrefix + encodeURIComponent(appUrl) : appUrl;
+            document.getElementById('go-config-btn').href = authPrefix ? authPrefix + encodeURIComponent(configUrl) : configUrl;
+        }
+
         // Check server status on page load
         checkServerStatus();
         // Re-check every 30 seconds
         setInterval(checkServerStatus, 30000);
+        // Initialize action buttons
+        updateActionButtons();
     </script>
 </body>
 </html>

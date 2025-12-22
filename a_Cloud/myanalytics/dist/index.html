@@ -378,6 +378,57 @@
             cursor: not-allowed;
         }
 
+        /* Action section */
+        .action-section {
+            margin: 24px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons .login-btn {
+            flex: 1;
+        }
+
+        .btn-go-open {
+            background: linear-gradient(135deg, var(--data-green) 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-go-open:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-config {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-config:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Auth button colors */
+        .auth-btn[data-auth="authelia"].active {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--data-purple);
+            color: var(--data-purple);
+        }
+
+        .auth-btn[data-auth="github"].active {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #fff;
+            color: #fff;
+        }
+
         /* Security badge */
         .security-info {
             margin-top: 24px;
@@ -591,65 +642,92 @@
                 </div>
             </div>
 
-            <div class="divider">
-                <span>Sign in to continue</span>
-            </div>
-
-            <div class="login-buttons">
-                <!-- Authelia 2FA Button -->
-                <a href="https://auth.diegonmarcos.com/authelia/?rd=https://analytics.diegonmarcos.com/" class="login-btn btn-authelia">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
-                    Authelia 2FA Login
-                </a>
-
-                <!-- Direct Matomo Button -->
-                <a href="https://analytics.diegonmarcos.com/" class="login-btn btn-matomo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    Go to Matomo Dashboard
-                </a>
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <div class="action-buttons">
+                    <a id="go-app-btn" class="login-btn btn-go-open" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg><span id="tool-name-app">Matomo</span> App</a>
+                    <a id="go-config-btn" class="login-btn btn-config" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg><span id="tool-name-config">Matomo</span> Config</a>
+                </div>
             </div>
 
             <!-- Analytics Tools -->
             <div class="tools-section">
-                <div class="tools-title">Analytics Tools</div>
+                <div class="tools-title">Select Tool</div>
                 <div class="tools-grid">
-                    <a href="https://analytics.diegonmarcos.com/" class="tool-btn active">
+                    <button class="tool-btn active" data-tool="matomo" data-url="https://analytics.diegonmarcos.com/" data-config-url="https://analytics.diegonmarcos.com/index.php?module=CoreAdminHome&action=home">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <path d="M12 16v-4"/>
                             <path d="M12 8h.01"/>
                         </svg>
                         Matomo
-                    </a>
-                    <span class="tool-btn coming-soon">
+                    </button>
+                    <button class="tool-btn coming-soon" data-tool="plausible" disabled>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M12 20V10"/>
                             <path d="M18 20V4"/>
                             <path d="M6 20v-4"/>
                         </svg>
                         Plausible
-                    </span>
-                    <span class="tool-btn coming-soon">
+                    </button>
+                    <button class="tool-btn coming-soon" data-tool="umami" disabled>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
                         </svg>
                         Umami
-                    </span>
-                    <span class="tool-btn coming-soon">
+                    </button>
+                    <button class="tool-btn coming-soon" data-tool="custom" disabled>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="3" y="3" width="18" height="18" rx="2"/>
                             <path d="M3 9h18"/>
                             <path d="M9 21V9"/>
                         </svg>
                         Custom
-                    </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Auth SSO -->
+            <div class="tools-section">
+                <div class="tools-title">Auth SSO (OIDC+OAuth2)</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn active" data-auth="authelia-sso" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <circle cx="12" cy="16" r="1"/>
+                        </svg>
+                        Authelia SSO
+                    </button>
+                    <button class="tool-btn auth-btn coming-soon" data-auth="github" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        GitHub SSO
+                    </button>
+                </div>
+            </div>
+
+            <!-- Auth 2FA -->
+            <div class="tools-section">
+                <div class="tools-title">Auth 2FA</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn" data-auth="authelia-2fa" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        Authelia 2FA
+                    </button>
                 </div>
             </div>
 
@@ -667,13 +745,6 @@
 
     <!-- Footer Navigation -->
     <div class="footer-nav">
-        <a href="https://cloud.diegonmarcos.com" class="footer-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            Dashboard
-        </a>
         <a href="https://linktree.diegonmarcos.com" class="shimmer-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
@@ -682,16 +753,57 @@
             </svg>
             Linktree
         </a>
-        <a href="https://diegonmarcos.github.io/myphotos/" class="footer-link">
+        <a href="https://cloud.diegonmarcos.com" class="footer-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                <circle cx="12" cy="13" r="4"/>
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
             </svg>
-            Photos
+            Cloud
         </a>
     </div>
 
     <script>
+        // Tool and Auth selection state
+        let selectedTool = document.querySelector('.tool-btn[data-tool].active');
+        let selectedAuth = document.querySelector('.auth-btn.active');
+
+        // Tool selection handler
+        document.querySelectorAll('.tool-btn[data-tool]:not(.coming-soon)').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedTool = btn;
+                updateActionButtons();
+            });
+        });
+
+        // Auth selection handler
+        document.querySelectorAll('.auth-btn:not(.coming-soon)').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.auth-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedAuth = btn;
+                updateActionButtons();
+            });
+        });
+
+        // Update action button names and hrefs
+        function updateActionButtons() {
+            const toolName = selectedTool ? selectedTool.textContent.trim() : 'Matomo';
+            document.getElementById('tool-name-app').textContent = toolName;
+            document.getElementById('tool-name-config').textContent = toolName;
+
+            // Update hrefs
+            const appUrl = selectedTool ? selectedTool.dataset.url : '#';
+            const configUrl = selectedTool ? selectedTool.dataset.configUrl : '#';
+            const authPrefix = selectedAuth ? selectedAuth.dataset.authPrefix : '';
+
+            document.getElementById('go-app-btn').href = authPrefix ? authPrefix + encodeURIComponent(appUrl) : appUrl;
+            document.getElementById('go-config-btn').href = authPrefix ? authPrefix + encodeURIComponent(configUrl) : configUrl;
+        }
+
+        // Initialize action buttons
+        updateActionButtons();
+
         // Add subtle parallax to floating charts on mouse move
         document.addEventListener('mousemove', (e) => {
             const charts = document.querySelectorAll('.chart-element');

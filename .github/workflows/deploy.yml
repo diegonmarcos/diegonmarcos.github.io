@@ -154,6 +154,17 @@ jobs:
           cd ../../..
           echo "✅ MyPhotos build complete"
 
+      - name: 🔨 Build MyAnalytics
+        id: build-myanalytics
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/myanalytics/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building MyAnalytics..."
+          cd a_Cloud/myanalytics/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ MyAnalytics build complete"
+
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/health_tracker/')
@@ -415,6 +426,14 @@ jobs:
             mkdir -p _site/myphotos
             cp -r a_Cloud/myphotos/dist/* _site/myphotos/
             echo "✅ MyPhotos build copied to _site/myphotos/"
+          fi
+
+          # Copy MyAnalytics build (if dist exists)
+          if [ -d "a_Cloud/myanalytics/dist" ]; then
+            echo "📦 Copying MyAnalytics build..."
+            mkdir -p _site/myanalytics
+            cp -r a_Cloud/myanalytics/dist/* _site/myanalytics/
+            echo "✅ MyAnalytics build copied to _site/myanalytics/"
           fi
 
           # Copy Linktree build (if dist exists)

@@ -178,8 +178,9 @@ const js = fs.readFileSync('$TEMP_JS', 'utf8');
 html = html.replace(/<link[^>]*rel=[\"']stylesheet[\"'][^>]*href=[\"']styles\\.css[\"'][^>]*>/gi, '<style>' + css + '</style>');
 html = html.replace(/<link[^>]*href=[\"']styles\\.css[\"'][^>]*rel=[\"']stylesheet[\"'][^>]*>/gi, '<style>' + css + '</style>');
 
-// Replace script src with inline script
+// Replace script src with inline script (handles both script.js and main.js)
 html = html.replace(/<script[^>]*src=[\"']script\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
+html = html.replace(/<script[^>]*src=[\"']main\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
 
 // Copy data JS files as external files (allows updating data without rebuilding HTML)
 const dataFiles = ['cloud_dash_data.js', 'ccusage_data.js', 'cloud_costs_data.js'];

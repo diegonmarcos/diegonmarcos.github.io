@@ -5,6 +5,121 @@ import { initThemeSwitcher } from './theme-switcher';
 import { initZoomControl } from './zoom-control';
 import type { ServiceId } from './types';
 
+// Architecture page modal info - global function for onclick handlers
+declare global {
+    interface Window {
+        openModal: (modalId: string) => void;
+        closeModal: () => void;
+    }
+}
+
+// Modal info content for architecture diagrams
+const modalContent: Record<string, { title: string; content: string }> = {
+    ssh: {
+        title: 'SSH Access (Port 22)',
+        content: `<p><strong>Key-Only Authentication</strong></p>
+            <ul>
+                <li>Password auth disabled</li>
+                <li>Root login disabled</li>
+                <li>Ed25519/RSA keys only</li>
+                <li>Fail2ban protection</li>
+            </ul>`
+    },
+    http: {
+        title: 'HTTP Redirect (Port 80)',
+        content: `<p><strong>Automatic HTTPS Redirect</strong></p>
+            <ul>
+                <li>301 redirect to HTTPS</li>
+                <li>HSTS headers enabled</li>
+                <li>No plain HTTP content</li>
+            </ul>`
+    },
+    https: {
+        title: 'HTTPS Traffic (Port 443)',
+        content: `<p><strong>TLS 1.3 Encryption</strong></p>
+            <ul>
+                <li>Let's Encrypt certificates</li>
+                <li>Auto-renewal via certbot</li>
+                <li>A+ SSL Labs rating</li>
+                <li>OCSP stapling enabled</li>
+            </ul>`
+    },
+    mail: {
+        title: 'Mail Ports (25/587/993)',
+        content: `<p><strong>Mailu Mail Server</strong></p>
+            <ul>
+                <li>SMTP: 25 (relay), 587 (submission)</li>
+                <li>IMAPS: 993 (encrypted)</li>
+                <li>SPF, DKIM, DMARC configured</li>
+                <li>Rspamd anti-spam</li>
+            </ul>`
+    },
+    firewall: {
+        title: 'Cloud Firewall',
+        content: `<p><strong>Defense in Depth</strong></p>
+            <ul>
+                <li>OCI/GCP Security Lists</li>
+                <li>UFW on host</li>
+                <li>Docker network isolation</li>
+                <li>Default deny inbound</li>
+            </ul>`
+    },
+    server: {
+        title: 'Server Host',
+        content: `<p><strong>Hardened Linux Host</strong></p>
+            <ul>
+                <li>Unattended security updates</li>
+                <li>Minimal attack surface</li>
+                <li>Docker isolation</li>
+                <li>Log monitoring</li>
+            </ul>`
+    },
+    nginx: {
+        title: 'Nginx Proxy Manager',
+        content: `<p><strong>Reverse Proxy</strong></p>
+            <ul>
+                <li>SSL termination</li>
+                <li>Virtual hosts routing</li>
+                <li>Rate limiting</li>
+                <li>Security headers</li>
+            </ul>`
+    }
+};
+
+window.openModal = function(modalId: string) {
+    const info = modalContent[modalId];
+    if (!info) return;
+
+    // Remove existing modal if any
+    const existing = document.getElementById('info-modal');
+    if (existing) existing.remove();
+
+    // Create modal
+    const modal = document.createElement('div');
+    modal.id = 'info-modal';
+    modal.className = 'arch-modal';
+    modal.innerHTML = `
+        <div class="arch-modal-backdrop" onclick="closeModal()"></div>
+        <div class="arch-modal-content">
+            <button class="arch-modal-close" onclick="closeModal()">&times;</button>
+            <h3>${info.title}</h3>
+            ${info.content}
+        </div>
+    `;
+    document.body.appendChild(modal);
+
+    // Animate in
+    requestAnimationFrame(() => modal.classList.add('active'));
+};
+
+window.closeModal = function() {
+    const modal = document.getElementById('info-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        setTimeout(() => modal.remove(), 200);
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Theme initialization (first to prevent flash)
     initThemeSwitcher();

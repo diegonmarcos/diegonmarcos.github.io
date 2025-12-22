@@ -1,0 +1,226 @@
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Auth Buttons Styling */
+        .auth-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .auth-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .auth-btn.github-sso {
+            background: #24292e !important;
+            border-color: #444 !important;
+        }
+
+        .auth-btn.github-sso:hover {
+            background: #2f363d !important;
+            border-color: #666 !important;
+        }
+
+        .auth-btn.authelia-totp {
+            background: #1a237e !important;
+            border-color: #3949ab !important;
+        }
+
+        .auth-btn.authelia-totp:hover {
+            background: #283593 !important;
+            border-color: #5c6bc0 !important;
+        }
+
+        /* View Content Display */
+        .view-content {
+            display: none;
+        }
+
+        .view-content.active {
+            display: block;
+        }
+
+        /* Desktop-forced iframe wrapper for architecture views */
+        .iframe-desktop-wrapper {
+            width: 100%;
+            height: 85vh;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #0a0a0f;
+        }
+
+        .desktop-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+            background: #0a0a0f;
+        }
+
+        /* Mobile: force desktop view with scaling */
+        @media (max-width: 768px) {
+            .iframe-desktop-wrapper {
+                width: 100%;
+                height: 70vh;
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .desktop-iframe {
+                width: 1200px;
+                height: 800px;
+                transform: scale(0.35);
+                transform-origin: top left;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .desktop-iframe {
+                width: 1200px;
+                height: 900px;
+                transform: scale(0.7);
+                transform-origin: top left;
+            }
+
+            .iframe-desktop-wrapper {
+                height: 70vh;
+                overflow: auto;
+            }
+        }
+
+        /* List View */
+        .view-content.list-view .cards-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .view-content.list-view .card {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            gap: 1rem;
+        }
+
+        .view-content.list-view .card-icon {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+        }
+
+        .view-content.list-view .card h3 {
+            font-size: 0.95rem;
+            margin: 0;
+            flex: 0 0 180px;
+        }
+
+        .view-content.list-view .card p {
+            font-size: 0.85rem;
+            margin: 0;
+            flex: 1;
+        }
+
+        .view-content.list-view .card-status {
+            margin-left: auto;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.75rem;
+        }
+
+        .view-content.list-view .card-code,
+        .view-content.list-view .code-with-copy {
+            font-size: 0.8rem;
+        }
+
+        .view-content.list-view .card-actions {
+            margin-left: auto;
+        }
+
+        /* Inline View Toggle for Frontend/Backend */
+        .inline-view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin: 0 0 1.5rem 0;
+            justify-content: flex-end;
+            padding: 0 1rem;
+        }
+
+        .inline-view-toggle .view-btn {
+            padding: 0.5rem 1.2rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
+
+        .inline-view-toggle .view-btn.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #000;
+        }
+
+        .inline-view-toggle .view-btn:hover:not(.active) {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .cloud-footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .linktree-footer-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: linear-gradient(110deg, #ff6600 0%, #ff6600 40%, #ffaa66 50%, #ff6600 60%, #ff6600 100%);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+            border: 1px solid var(--accent-primary);
+            border-radius: var(--border-radius);
+            color: #000;
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease;
+        }
+        .linktree-footer-btn:hover {
+            animation: shimmer 1.5s linear infinite;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+        }
+        .link-icon { font-size: 1rem; }
+        .link-text { font-weight: 600; }
+        .link-arrow {
+            width: 14px;
+            height: 14px;
+            opacity: 0.7;
+        }
+        .linktree-footer-btn:hover .link-arrow {
+            opacity: 1;
+        }
+        [data-theme="blurred"] .linktree-footer-btn {
+            border-radius: 20px;
+            background: linear-gradient(110deg, #4a9eff 0%, #4a9eff 40%, #a0cfff 50%, #4a9eff 60%, #4a9eff 100%);
+            background-size: 200% 100%;
+            border-color: var(--accent-blue);
+            color: #fff;
+        }
+        [data-theme="blurred"] .linktree-footer-btn:hover {
+            box-shadow: 0 0 25px rgba(74, 158, 255, 0.6);
+        }

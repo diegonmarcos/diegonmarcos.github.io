@@ -19,9 +19,10 @@ header {
     margin-bottom: 1.5rem;
 
     h1 {
-        font-size: 2rem;
-        text-transform: none;
-        letter-spacing: normal;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 700;
         background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -343,6 +344,21 @@ header {
     backdrop-filter: blur(10px);
 }
 
+// Nav divider for grouping buttons
+.nav-divider {
+    width: 1px;
+    height: 20px;
+    background: var(--border-color);
+    margin: 0 0.25rem;
+    opacity: 0.5;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+[data-theme="blurred"] .nav-divider {
+    background: rgba(255, 255, 255, 0.15);
+}
+
 // Architecture dropdown
 .view-btn-group {
     position: relative;
@@ -401,4 +417,49 @@ header {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     backdrop-filter: blur(10px);
+}
+
+// Level 3 Wrapper (title + subtitle + optional sub-nav)
+.nav-level3-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.nav-level3-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+}
+
+.nav-level3-subtitle {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    margin: 0 0 0.75rem 0;
+    text-align: center;
+}
+
+[data-theme="blurred"] .nav-level3-wrapper {
+    border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="blurred"] .nav-level3-title {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+[data-theme="blurred"] .nav-level3-subtitle {
+    color: var(--text-secondary);
+    opacity: 0.8;
 }

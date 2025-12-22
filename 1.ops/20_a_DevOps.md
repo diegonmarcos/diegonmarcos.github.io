@@ -47,23 +47,28 @@ This directory contains the orchestration scripts for building and developing al
 │   ├── build_main.log          # Build/dev output log
 │   ├── .build-status           # Tracks successful builds
 │   └── logs/                   # Individual project dev logs
-├── landpage/1.ops/build.sh     # Landpage (Vanilla + Sass + TypeScript)
-├── linktree/1.ops/build.sh     # Linktree (Vanilla + Sass + TypeScript)
-├── cv_web/1.ops/build.sh       # CV Web (Vanilla + Sass + TypeScript)
-├── myfeed/1.ops/build.sh       # MyFeed (Vue 3 + Vite)
-├── mygames/1.ops/build.sh      # MyGames (SvelteKit)
-├── nexus/1.ops/build.sh        # Nexus (Vanilla + Sass+TW + TypeScript)
-├── cloud/1.ops/build.sh        # Cloud (Vanilla + Sass + TypeScript)
-├── feed_yourself/1.ops/build.sh # Feed Yourself (Vanilla + Sass)
-├── others/1.ops/build.sh       # Others (Python)
-├── health_tracker/1.ops/build.sh # Health Tracker (Vanilla + Tailwind)
-├── market_watch/1.ops/build.sh # Market Watch (Vanilla + Sass + TypeScript)
-├── central_bank/1.ops/build.sh # Central Bank (Vanilla + Tailwind + TypeScript)
-├── mymaps/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
-├── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
-├── mymusic/1.ops/build.sh      # MyMusic (Vue 3 + Sass + TypeScript)
-├── mymovies/1.ops/build.sh     # MyMovies (Vue 3 + Sass + TypeScript)
-└── json-vision/1.ops/build.sh  # JSON Vision (Vue 3 + Sass + TypeScript)
+├── b_Linktree/
+│   ├── landpage/1.ops/build.sh     # Landpage (Vanilla + Sass + TypeScript)
+│   ├── linktree/1.ops/build.sh     # Linktree (Vanilla + Sass + TypeScript)
+│   ├── cv_web/1.ops/build.sh       # CV Web (Vanilla + Sass + TypeScript)
+│   ├── myfeed/1.ops/build.sh       # MyFeed (Vue 3 + Vite)
+│   ├── mygames/1.ops/build.sh      # MyGames (SvelteKit)
+│   ├── nexus/1.ops/build.sh        # Nexus (Vanilla + Sass+TW + TypeScript)
+│   ├── feed_yourself/1.ops/build.sh # Feed Yourself (Vanilla + Sass)
+│   ├── others/1.ops/build.sh       # Others (Python)
+│   ├── health_tracker/1.ops/build.sh # Health Tracker (Vanilla + Tailwind)
+│   ├── market_watch/1.ops/build.sh # Market Watch (Vanilla + Sass + TypeScript)
+│   ├── central_bank/1.ops/build.sh # Central Bank (Vanilla + Tailwind + TypeScript)
+│   ├── mymaps/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
+│   ├── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
+│   ├── mymusic/1.ops/build.sh      # MyMusic (Vue 3 + Sass + TypeScript)
+│   ├── mymovies/1.ops/build.sh     # MyMovies (Vue 3 + Sass + TypeScript)
+│   └── json-vision/1.ops/build.sh  # JSON Vision (Vue 3 + Sass + TypeScript)
+├── a_Cloud/
+│   ├── cloud/1.ops/build.sh        # Cloud Dashboard (Vanilla + Sass + TypeScript)
+│   ├── mymail/1.ops/build.sh       # MyMail (Vanilla + Sass + TypeScript)
+│   ├── myphotos/1.ops/build.sh     # MyPhotos (Vanilla + Sass + TypeScript)
+│   └── myanalytics/1.ops/build.sh  # MyAnalytics (Vanilla + Sass + TypeScript)
 ```
 
 ## Quick Start
@@ -108,6 +113,9 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh build-mymusic
 ./1.ops/build_main.sh build-mymovies
 ./1.ops/build_main.sh build-json-vision
+./1.ops/build_main.sh build-mymail
+./1.ops/build_main.sh build-myphotos
+./1.ops/build_main.sh build-myanalytics
 ```
 
 ### Start Individual Dev Servers
@@ -124,11 +132,14 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh dev-health        # :8009
 ./1.ops/build_main.sh dev-market        # :8010
 ./1.ops/build_main.sh dev-centralbank   # :8011
-./1.ops/build_main.sh dev-mymaps        # :8014
 ./1.ops/build_main.sh dev-myprofile     # :8013
-./1.ops/build_main.sh dev-mymusic       # :8016
+./1.ops/build_main.sh dev-mymaps        # :8014
 ./1.ops/build_main.sh dev-mymovies      # :8015
+./1.ops/build_main.sh dev-mymusic       # :8016
 ./1.ops/build_main.sh dev-json-vision   # :8017
+./1.ops/build_main.sh dev-mymail        # :8018
+./1.ops/build_main.sh dev-myphotos      # :8019
+./1.ops/build_main.sh dev-myanalytics   # :8020
 ```
 
 ## Main Orchestrator Commands
@@ -157,6 +168,9 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `build-mymusic` | Build MyMusic (Vue 3 + Sass + TypeScript) |
 | `build-mymovies` | Build MyMovies (Vue 3 + Sass + TypeScript) |
 | `build-json-vision` | Build JSON Vision (Vue 3 + Sass + TypeScript) |
+| `build-mymail` | Build MyMail (Vanilla + Sass + TypeScript) |
+| `build-myphotos` | Build MyPhotos (Vanilla + Sass + TypeScript) |
+| `build-myanalytics` | Build MyAnalytics (Vanilla + Sass + TypeScript) |
 
 ### Dev Server Commands
 
@@ -180,6 +194,9 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `dev-mymusic` | MyMusic - Vite :8016 |
 | `dev-mymovies` | MyMovies - Vite :8015 |
 | `dev-json-vision` | JSON Vision - Vite :8017 |
+| `dev-mymail` | MyMail - npm-live :8018 |
+| `dev-myphotos` | MyPhotos - npm-live :8019 |
+| `dev-myanalytics` | MyAnalytics - npm-live :8020 |
 
 ### Utility Commands
 
@@ -217,6 +234,9 @@ The `build_main.sh` script orchestrates all sub-projects:
 | :8015 | MyMovies | Vite | HMR |
 | :8016 | MyMusic | Vite | HMR |
 | :8017 | JSON Vision | Vite | HMR |
+| :8018 | MyMail | npm-live | Sass, TS |
+| :8019 | MyPhotos | npm-live | Sass, TS |
+| :8020 | MyAnalytics | npm-live | Sass, TS |
 
 ## TUI Mode
 
@@ -296,6 +316,9 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 | Build MyProfile | `./1.ops/build_main.sh build-myprofile` |
 | Build MyMusic | `./1.ops/build_main.sh build-mymusic` |
 | Build MyMovies | `./1.ops/build_main.sh build-mymovies` |
+| Build MyMail | `./1.ops/build_main.sh build-mymail` |
+| Build MyPhotos | `./1.ops/build_main.sh build-myphotos` |
+| Build MyAnalytics | `./1.ops/build_main.sh build-myanalytics` |
 | Build All | `./1.ops/build_main.sh build` |
 
 ## Testing Locally
@@ -475,5 +498,5 @@ npm install typescript --save-dev
 
 ---
 
-**Last Updated:** 2025-12-01
+**Last Updated:** 2025-12-22
 **Maintainer:** Diego Nepomuceno Marcos

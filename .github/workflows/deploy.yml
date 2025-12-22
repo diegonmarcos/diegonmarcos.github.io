@@ -382,6 +382,27 @@ jobs:
             echo "✅ SUCCESS: JSON Vision"
           fi
 
+          if [ "${{ steps.build-mymail.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMail"
+            FAILED="$FAILED mymail"
+          elif [ "${{ steps.build-mymail.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMail"
+          fi
+
+          if [ "${{ steps.build-myphotos.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyPhotos"
+            FAILED="$FAILED myphotos"
+          elif [ "${{ steps.build-myphotos.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyPhotos"
+          fi
+
+          if [ "${{ steps.build-myanalytics.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyAnalytics"
+            FAILED="$FAILED myanalytics"
+          elif [ "${{ steps.build-myanalytics.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyAnalytics"
+          fi
+
           echo "============================================"
 
           if [ -n "$FAILED" ]; then

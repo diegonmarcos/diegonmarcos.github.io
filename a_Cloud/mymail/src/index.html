@@ -212,7 +212,7 @@
             border-radius: 28px;
             padding: 48px 44px;
             width: 100%;
-            max-width: 440px;
+            max-width: 520px;
             box-shadow:
                 0 0 60px rgba(0, 217, 255, 0.1),
                 0 0 120px rgba(123, 47, 247, 0.05),
@@ -431,6 +431,80 @@
         .btn-authelia:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(123, 47, 247, 0.4);
+        }
+
+        /* Action section */
+        .action-section {
+            margin: 24px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons .access-btn {
+            flex: 1;
+            padding: 14px 20px;
+        }
+
+        /* Tools section */
+        .tools-section {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tool-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tool-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .tool-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .tool-btn.active {
+            background: rgba(0, 217, 255, 0.2);
+            border-color: var(--aurora-1);
+            color: var(--aurora-1);
+        }
+
+        .tool-btn.coming-soon {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .auth-btn[data-auth="authelia-sso"].active,
+        .auth-btn[data-auth="authelia-2fa"].active {
+            background: rgba(123, 47, 247, 0.2);
+            border-color: var(--aurora-2);
+            color: var(--aurora-2);
         }
 
         /* Email client config */
@@ -718,37 +792,78 @@
                 </div>
             </div>
 
-            <div class="divider">
-                <span>Access your inbox</span>
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <div class="action-buttons">
+                    <a id="go-app-btn" class="access-btn btn-webmail" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg><span id="tool-name-app">Mailu</span> App</a>
+                    <a id="go-config-btn" class="access-btn btn-config" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg><span id="tool-name-config">Mailu</span> Config</a>
+                </div>
             </div>
 
-            <div class="access-buttons">
-                <!-- Authelia 2FA Button -->
-                <a href="https://auth.diegonmarcos.com/authelia/?rd=https://mailapp.diegonmarcos.com/webmail/" class="access-btn btn-authelia">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
-                    Sign in with Authelia
-                </a>
+            <!-- Select Tool -->
+            <div class="tools-section">
+                <div class="config-title">Select Tool</div>
+                <div class="tools-grid">
+                    <button class="tool-btn active" data-tool="mailu" data-url="https://mail.diegonmarcos.com/webmail/" data-config-url="https://mail.diegonmarcos.com/admin/">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                        Mailu
+                    </button>
+                    <button class="tool-btn coming-soon" data-tool="roundcube" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 16v-4"/>
+                            <path d="M12 8h.01"/>
+                        </svg>
+                        Roundcube
+                    </button>
+                </div>
+            </div>
 
-                <!-- GitHub OAuth Button -->
-                <a href="https://auth.diegonmarcos.com/oauth2/start?rd=https://mailapp.diegonmarcos.com/webmail/" class="access-btn btn-webmail">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                    </svg>
-                    Sign in with GitHub
-                </a>
+            <!-- Auth SSO -->
+            <div class="tools-section">
+                <div class="config-title">Auth SSO (OIDC+OAuth2)</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn active" data-auth="authelia-sso" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            <circle cx="12" cy="16" r="1"/>
+                        </svg>
+                        Authelia SSO
+                    </button>
+                    <button class="tool-btn auth-btn coming-soon" data-auth="github" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+                        </svg>
+                        GitHub SSO
+                    </button>
+                </div>
+            </div>
 
-                <!-- Mailu Admin/Config Button -->
-                <a href="https://auth.diegonmarcos.com/authelia/?rd=https://mailapp.diegonmarcos.com/admin/" class="access-btn btn-config">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"/>
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                    </svg>
-                    Server Config (Mailu)
-                </a>
+            <!-- Auth 2FA -->
+            <div class="tools-section">
+                <div class="config-title">Auth 2FA</div>
+                <div class="tools-grid">
+                    <button class="tool-btn auth-btn" data-auth="authelia-2fa" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        Authelia 2FA
+                    </button>
+                </div>
             </div>
 
             <div class="client-config">
@@ -803,13 +918,6 @@
 
     <!-- Footer Navigation -->
     <div class="footer-nav">
-        <a href="https://cloud.diegonmarcos.com" class="footer-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-            Dashboard
-        </a>
         <a href="https://linktree.diegonmarcos.com" class="shimmer-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"/>
@@ -817,6 +925,12 @@
                 <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
             </svg>
             Linktree
+        </a>
+        <a href="https://cloud.diegonmarcos.com" class="footer-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+            Cloud
         </a>
     </div>
 
@@ -867,8 +981,50 @@
             });
         }
 
+        // Tool and Auth selection handling
+        let selectedTool = document.querySelector('.tool-btn[data-tool].active');
+        let selectedAuth = document.querySelector('.auth-btn.active');
+
+        // Tool selection
+        document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedTool = this;
+                updateActionButtons();
+            });
+        });
+
+        // Auth selection (mutual exclusivity across both SSO and 2FA sections)
+        document.querySelectorAll('.auth-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.disabled) return;
+                document.querySelectorAll('.auth-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedAuth = this;
+                updateActionButtons();
+            });
+        });
+
+        // Update action button names and hrefs
+        function updateActionButtons() {
+            const toolName = selectedTool ? selectedTool.textContent.trim() : 'Mailu';
+            document.getElementById('tool-name-app').textContent = toolName;
+            document.getElementById('tool-name-config').textContent = toolName;
+
+            // Update hrefs
+            const appUrl = selectedTool ? selectedTool.dataset.url : '#';
+            const configUrl = selectedTool ? selectedTool.dataset.configUrl : '#';
+            const authPrefix = selectedAuth ? selectedAuth.dataset.authPrefix : '';
+
+            document.getElementById('go-app-btn').href = authPrefix ? authPrefix + encodeURIComponent(appUrl) : appUrl;
+            document.getElementById('go-config-btn').href = authPrefix ? authPrefix + encodeURIComponent(configUrl) : configUrl;
+        }
+
         // Initialize
         createParticles();
+        updateActionButtons();
     </script>
 </body>
 </html>

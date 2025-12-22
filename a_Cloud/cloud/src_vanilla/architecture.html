@@ -93,24 +93,24 @@
             <div class="diagram-embed">
     <div class="main-container">
         <!-- Security Architecture Master Title -->
-        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;">
-            <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, var(--edge-color), var(--firewall-color), var(--proxy-color), var(--auth-color), var(--network-color), var(--container-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Security Architecture <span class="version-badge">v2.1</span></h2>
+        <div class="sec-header">
+            <h2 class="sec-title">Security Architecture <span class="version-badge">v2.1</span></h2>
             <p class="subtitle">Defense in Depth - OIDC Passwordless Front Gate (GitHub SSO + TOTP + Passkey + VPN)</p>
         </div>
 
         <!-- Security Sub-Navigation -->
-        <div style="display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;">
-            <a href="#sec-vps" style="padding: 12px 24px; background: linear-gradient(135deg, var(--public-color), var(--private-color)); color: #000; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px;">1) Secure VPS Arch</a>
-            <a href="#sec-cloud" style="padding: 12px 24px; background: linear-gradient(135deg, var(--auth-color), var(--container-color)); color: #000; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13px;">2) Cloud Security Arch</a>
+        <div class="sec-nav">
+            <a href="#sec-vps" class="sec-nav-btn vps">1) Secure VPS Arch</a>
+            <a href="#sec-cloud" class="sec-nav-btn cloud">2) Cloud Security Arch</a>
         </div>
 
         <!-- ============================================
              SECTION 1: SECURE VPS ARCHITECTURE
              ============================================ -->
-        <div id="sec-vps" style="margin-bottom: 40px;">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h3 style="font-size: 20px; font-weight: 700; color: var(--public-color); margin-bottom: 8px;">1) Secure VPS Architecture</h3>
-                <p style="color: #8888a0; font-size: 12px;">Single VPS Security Model - Network Isolation & Container Hardening</p>
+        <div id="sec-vps" class="sec-vps">
+            <div class="sec-intro">
+                <h3 class="sec-intro-title public">1) Secure VPS Architecture</h3>
+                <p class="sec-intro-desc">Single VPS Security Model - Network Isolation & Container Hardening</p>
             </div>
 
     <!-- ============================================
@@ -118,7 +118,7 @@
          ============================================ -->
     <div class="internet-zone">
         <div class="cloud-icon">☁️</div>
-        <div style="font-size: 18px; font-weight: bold; margin: 10px 0;">Internet Traffic</div>
+        <div class="internet-label">Internet Traffic</div>
 
         <div class="traffic-labels">
             <div class="traffic-type">
@@ -238,10 +238,10 @@
         <button class="info-btn" onclick="openModal('firewall')">i</button>
     </div>
 
-    <div class="arrow-stream" style="height: 30px;">
-        <span class="arrow-particle" style="color: var(--success-color);">✓</span>
-        <span class="arrow-particle" style="color: var(--success-color);">✓</span>
-        <span class="arrow-particle" style="color: var(--success-color);">✓</span>
+    <div class="arrow-stream arrow-stream-short">
+        <span class="arrow-particle text-success">✓</span>
+        <span class="arrow-particle text-success">✓</span>
+        <span class="arrow-particle text-success">✓</span>
     </div>
 
     <!-- ============================================
@@ -290,7 +290,7 @@
             <div class="ssh-target">
                 <div class="icon">🐧</div>
                 <div>Ubuntu 24.04</div>
-                <div style="color: var(--ssh-color);">Host OS</div>
+                <div class="text-ssh">Host OS</div>
             </div>
         </div>
 
@@ -548,7 +548,7 @@
                 </div>
             </div>
 
-            <div class="security-comment" style="margin-top: 15px;">
+            <div class="security-comment" class="mt-3">
                 <strong>⚠️ NETWORK ISOLATION:</strong> Containers in <code>private_net</code> cannot reach <code>public_net</code> and vice versa.
                 A compromised Matomo container <strong>CANNOT</strong> access NextCloud or Mail data.
             </div>
@@ -561,40 +561,40 @@
         <!-- ============================================
              SECTION 2: CLOUD SECURITY ARCHITECTURE
              ============================================ -->
-        <div id="sec-cloud" style="padding: 20px; background: rgba(255,255,255,0.01); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h3 style="font-size: 20px; font-weight: 700; color: var(--auth-color); margin-bottom: 8px;">2) Cloud Security Architecture</h3>
-                <p style="color: #8888a0; font-size: 12px;">Multi-Cloud Security Model - Defense in Depth with OIDC Passwordless</p>
+        <div id="sec-cloud" class="arch-card-lg">
+            <div class="sec-intro">
+                <h3 class="sec-intro-title auth">2) Cloud Security Architecture</h3>
+                <p class="sec-intro-desc">Multi-Cloud Security Model - Defense in Depth with OIDC Passwordless</p>
             </div>
 
         <!-- Legend -->
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--edge-color);"></div>
+                <div class="legend-dot edge"></div>
                 <span>Edge Security</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--firewall-color);"></div>
+                <div class="legend-dot firewall"></div>
                 <span>Host Firewall</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--proxy-color);"></div>
+                <div class="legend-dot proxy"></div>
                 <span>TLS/Proxy</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--auth-color);"></div>
+                <div class="legend-dot auth"></div>
                 <span>Authentication</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--network-color);"></div>
+                <div class="legend-dot network"></div>
                 <span>Network Isolation</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--container-color);"></div>
+                <div class="legend-dot container"></div>
                 <span>Container Security</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--vpn-color);"></div>
+                <div class="legend-dot vpn"></div>
                 <span>VPN Tunnel</span>
             </div>
         </div>
@@ -611,9 +611,9 @@
                     <div class="ring ring-1">
                         <span class="ring-label">Layer 1: Edge Security</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--edge-color);">OCI Security Lists</span>
-                            <span class="service-chip active" style="color: var(--edge-color);">GCP Firewall</span>
-                            <span class="service-chip" style="color: var(--edge-color);">Cloudflare</span>
+                            <span class="service-chip active" class="edge">OCI Security Lists</span>
+                            <span class="service-chip active" class="edge">GCP Firewall</span>
+                            <span class="service-chip" class="edge">Cloudflare</span>
                         </div>
                     </div>
 
@@ -621,9 +621,9 @@
                     <div class="ring ring-2">
                         <span class="ring-label">Layer 2: Host Firewall</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--firewall-color);">UFW</span>
-                            <span class="service-chip active" style="color: var(--firewall-color);">Fail2Ban</span>
-                            <span class="service-chip active" style="color: var(--firewall-color);">iptables</span>
+                            <span class="service-chip active" class="firewall">UFW</span>
+                            <span class="service-chip active" class="firewall">Fail2Ban</span>
+                            <span class="service-chip active" class="firewall">iptables</span>
                         </div>
                     </div>
 
@@ -631,9 +631,9 @@
                     <div class="ring ring-3">
                         <span class="ring-label">Layer 3: TLS/Proxy</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--proxy-color);">NPM</span>
-                            <span class="service-chip active" style="color: var(--proxy-color);">Let's Encrypt</span>
-                            <span class="service-chip active" style="color: var(--proxy-color);">HSTS</span>
+                            <span class="service-chip active" class="proxy">NPM</span>
+                            <span class="service-chip active" class="proxy">Let's Encrypt</span>
+                            <span class="service-chip active" class="proxy">HSTS</span>
                         </div>
                     </div>
 
@@ -641,9 +641,9 @@
                     <div class="ring ring-4">
                         <span class="ring-label">Layer 4: Auth</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--auth-color);">GitHub OAuth</span>
-                            <span class="service-chip active" style="color: var(--auth-color);">TOTP</span>
-                            <span class="service-chip active" style="color: var(--auth-color);">Passkey</span>
+                            <span class="service-chip active" class="auth-color">GitHub OAuth</span>
+                            <span class="service-chip active" class="auth-color">TOTP</span>
+                            <span class="service-chip active" class="auth-color">Passkey</span>
                         </div>
                     </div>
 
@@ -651,7 +651,7 @@
                     <div class="ring ring-5">
                         <span class="ring-label">Layer 5: Network</span>
                         <div class="ring-services">
-                            <span class="service-chip active" style="color: var(--network-color);">Docker</span>
+                            <span class="service-chip active" class="network">Docker</span>
                         </div>
                     </div>
 
@@ -1121,9 +1121,9 @@
         <!-- ============================================
              OIDC AUTHENTICATION FLOW
              ============================================ -->
-        <div style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
+        <div class="arch-card-lg">
             <div class="diagram-title" style="text-align: center; margin-bottom: 20px;">OIDC Passwordless Authentication Flow</div>
-            <svg viewBox="0 0 900 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+            <svg viewBox="0 0 900 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="img-full">
                 <!-- Background -->
                 <rect x="10" y="10" width="880" height="260" rx="12" fill="rgba(10,10,15,0.8)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
 
@@ -1206,25 +1206,25 @@
 
             <!-- Auth Methods Summary -->
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px;">
-                <div style="background: rgba(165,94,234,0.1); border-radius: 8px; padding: 12px; border: 1px solid rgba(165,94,234,0.3); text-align: center;">
-                    <div style="font-size: 20px; margin-bottom: 6px;">🔗</div>
-                    <div style="color: #a55eea; font-size: 10px; font-weight: 600;">GitHub SSO</div>
-                    <div style="color: #8888a0; font-size: 8px;">Primary (OIDC)</div>
+                <div class="arch-card-highlight">
+                    <div class="icon-xl">🔗</div>
+                    <div class="ai-provider-label">GitHub SSO</div>
+                    <div class="text-muted fs-xs">Primary (OIDC)</div>
                 </div>
-                <div style="background: rgba(165,94,234,0.1); border-radius: 8px; padding: 12px; border: 1px solid rgba(165,94,234,0.3); text-align: center;">
-                    <div style="font-size: 20px; margin-bottom: 6px;">📱</div>
-                    <div style="color: #a55eea; font-size: 10px; font-weight: 600;">TOTP 2FA</div>
-                    <div style="color: #8888a0; font-size: 8px;">Backup Method</div>
+                <div class="arch-card-highlight">
+                    <div class="icon-xl">📱</div>
+                    <div class="ai-provider-label">TOTP 2FA</div>
+                    <div class="text-muted fs-xs">Backup Method</div>
                 </div>
-                <div style="background: rgba(165,94,234,0.1); border-radius: 8px; padding: 12px; border: 1px solid rgba(165,94,234,0.3); text-align: center;">
-                    <div style="font-size: 20px; margin-bottom: 6px;">🔑</div>
-                    <div style="color: #a55eea; font-size: 10px; font-weight: 600;">Passkey</div>
-                    <div style="color: #8888a0; font-size: 8px;">WebAuthn/FIDO2</div>
+                <div class="arch-card-highlight">
+                    <div class="icon-xl">🔑</div>
+                    <div class="ai-provider-label">Passkey</div>
+                    <div class="text-muted fs-xs">WebAuthn/FIDO2</div>
                 </div>
                 <div style="background: rgba(0,206,201,0.1); border-radius: 8px; padding: 12px; border: 1px solid rgba(0,206,201,0.3); text-align: center;">
-                    <div style="font-size: 20px; margin-bottom: 6px;">🔒</div>
+                    <div class="icon-xl">🔒</div>
                     <div style="color: #00cec9; font-size: 10px; font-weight: 600;">VPN Tunnel</div>
-                    <div style="color: #8888a0; font-size: 8px;">Cross-VM Access</div>
+                    <div class="text-muted fs-xs">Cross-VM Access</div>
                 </div>
             </div>
         </div>
@@ -1361,7 +1361,7 @@
             <div class="diagram-embed">
                 <div class="main-container">
                     <!-- Infrastructure Title -->
-                    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="sec-box">
                         <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #38bdf8, #8b5cf6, #f39c12, #00d084); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Infrastructure Architecture <span class="version-badge">v2.0</span></h2>
                         <p class="subtitle">Multi-Cloud Topology - GCP + Oracle Cloud + Cloudflare</p>
                     </div>
@@ -1387,8 +1387,8 @@
                     </div>
 
                     <!-- Network Topology Diagram -->
-                    <div style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-                        <svg viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                    <div class="arch-card-lg">
+                        <svg viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg" class="img-full">
                             <!-- Background -->
                             <rect x="10" y="10" width="880" height="480" rx="12" fill="rgba(10,10,15,0.8)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
 
@@ -1478,11 +1478,11 @@
                     </div>
 
                     <!-- VM Capacity Table -->
-                    <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-                        <h3 style="color: #e8e8f0; font-size: 14px; margin-bottom: 15px;">VM Capacity & Headroom</h3>
-                        <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                    <div class="arch-card">
+                        <h3 class="ai-intro">VM Capacity & Headroom</h3>
+                        <table class="arch-table">
                             <thead>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <tr class="th-highlight">
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">Host</th>
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">VM</th>
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">IP</th>
@@ -1549,14 +1549,14 @@
                     </div>
 
                     <!-- Two Column: Costs + SSH Access -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div class="grid-2">
                         <!-- Monthly Costs -->
                         <div style="background: rgba(0,208,132,0.08); border-radius: 12px; padding: 20px; border: 1px solid rgba(0,208,132,0.3);">
                             <h3 style="color: #00d084; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                                 Monthly Costs
                             </h3>
-                            <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                            <table class="arch-table">
                                 <tbody>
                                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">gcp-f-micro_1</td>
@@ -1599,52 +1599,52 @@
 
                         <!-- SSH Access -->
                         <div style="background: rgba(139,92,246,0.08); border-radius: 12px; padding: 20px; border: 1px solid rgba(139,92,246,0.3);">
-                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h3 class="ai-desc">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                                 SSH Access
                             </h3>
                             <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #8888a0; line-height: 1.8;">
-                                <div style="margin-bottom: 8px;">
+                                <div class="mb-2">
                                     <span style="color: #38bdf8;">gcp-f-micro_1:</span><br/>
-                                    <code style="color: #e8e8f0;">gcloud compute ssh arch-1 --zone=us-central1-a</code>
+                                    <code class="text-main">gcloud compute ssh arch-1 --zone=us-central1-a</code>
                                 </div>
-                                <div style="margin-bottom: 8px;">
-                                    <span style="color: #f39c12;">oci-f-micro_1:</span><br/>
-                                    <code style="color: #e8e8f0;">ssh ubuntu@130.110.251.193</code>
+                                <div class="mb-2">
+                                    <span class="text-warning">oci-f-micro_1:</span><br/>
+                                    <code class="text-main">ssh ubuntu@130.110.251.193</code>
                                 </div>
-                                <div style="margin-bottom: 8px;">
-                                    <span style="color: #f39c12;">oci-f-micro_2:</span><br/>
-                                    <code style="color: #e8e8f0;">ssh ubuntu@129.151.228.66</code>
+                                <div class="mb-2">
+                                    <span class="text-warning">oci-f-micro_2:</span><br/>
+                                    <code class="text-main">ssh ubuntu@129.151.228.66</code>
                                 </div>
                                 <div>
-                                    <span style="color: #f39c12;">oci-p-flex_1:</span><br/>
-                                    <code style="color: #e8e8f0;">ssh ubuntu@84.235.234.87</code>
+                                    <span class="text-warning">oci-p-flex_1:</span><br/>
+                                    <code class="text-main">ssh ubuntu@84.235.234.87</code>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Service Distribution -->
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div class="grid-4">
                         <div style="background: rgba(56,189,248,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(56,189,248,0.3); text-align: center;">
                             <div style="font-size: 28px; margin-bottom: 8px; color: #38bdf8;">4</div>
                             <div style="color: #38bdf8; font-size: 11px; font-weight: 600; margin-bottom: 4px;">VMs Total</div>
-                            <div style="color: #8888a0; font-size: 9px;">3 Free + 1 Paid</div>
+                            <div class="text-muted fs-sm">3 Free + 1 Paid</div>
                         </div>
                         <div style="background: rgba(0,208,132,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(0,208,132,0.3); text-align: center;">
                             <div style="font-size: 28px; margin-bottom: 8px; color: #00d084;">11GB</div>
                             <div style="color: #00d084; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Total RAM</div>
-                            <div style="color: #8888a0; font-size: 9px;">42% headroom</div>
+                            <div class="text-muted fs-sm">42% headroom</div>
                         </div>
                         <div style="background: rgba(243,156,18,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(243,156,18,0.3); text-align: center;">
                             <div style="font-size: 28px; margin-bottom: 8px; color: #f39c12;">224GB</div>
-                            <div style="color: #f39c12; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Total Storage</div>
-                            <div style="color: #8888a0; font-size: 9px;">62GB allocated</div>
+                            <div class="ai-model-label">Total Storage</div>
+                            <div class="text-muted fs-sm">62GB allocated</div>
                         </div>
                         <div style="background: rgba(139,92,246,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(139,92,246,0.3); text-align: center;">
                             <div style="font-size: 28px; margin-bottom: 8px; color: #8b5cf6;">$6.50</div>
                             <div style="color: #8b5cf6; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Monthly Cost</div>
-                            <div style="color: #8888a0; font-size: 9px;">~$78/year</div>
+                            <div class="text-muted fs-sm">~$78/year</div>
                         </div>
                     </div>
 
@@ -1657,7 +1657,7 @@
             <div class="diagram-embed">
                 <div class="main-container">
                     <!-- Data Knowledge Center Title -->
-                    <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div class="sec-box">
                         <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #f39c12, #3498db, #9b59b6, #00d084); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">Data Knowledge Center <span class="version-badge">v1.0</span></h2>
                         <p class="subtitle">Unified execution engine - Raw data access for Humans (REST) & AI Agents (MCP)</p>
                     </div>
@@ -1683,8 +1683,8 @@
                     </div>
 
                     <!-- Architecture Overview Diagram -->
-                    <div style="background: rgba(255,255,255,0.02); border-radius: 16px; padding: 30px 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-                        <svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+                    <div class="arch-card-lg">
+                        <svg viewBox="0 0 800 400" fill="none" xmlns="http://www.w3.org/2000/svg" class="img-full">
                             <!-- Background -->
                             <rect x="10" y="10" width="780" height="380" rx="12" fill="rgba(10,10,15,0.8)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
 
@@ -1759,16 +1759,16 @@
                     </div>
 
                     <!-- Two Column Layout: MCP Resources & Tools -->
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+                    <div class="grid-2">
                         <!-- MCP Resources (Read) -->
                         <div style="background: rgba(139,92,246,0.08); border-radius: 12px; padding: 20px; border: 1px solid rgba(139,92,246,0.3);">
-                            <h3 style="color: #8b5cf6; font-size: 14px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                            <h3 class="ai-desc">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                                 RESOURCES (Read) - AI Knowledge & Context
                             </h3>
-                            <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                            <table class="arch-table">
                                 <thead>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <tr class="th-highlight">
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Resource</th>
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Purpose</th>
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Stack</th>
@@ -1820,9 +1820,9 @@
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
                                 TOOLS (Act) - AI Actions & Commands
                             </h3>
-                            <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                            <table class="arch-table">
                                 <thead>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <tr class="th-highlight">
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Tool</th>
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Purpose</th>
                                         <th style="text-align: left; padding: 8px 4px; color: #8888a0;">Stack</th>
@@ -1855,11 +1855,11 @@
                     </div>
 
                     <!-- Data Pipeline Table -->
-                    <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-                        <h3 style="color: #e8e8f0; font-size: 14px; margin-bottom: 15px;">Data Pipeline</h3>
-                        <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+                    <div class="arch-card">
+                        <h3 class="ai-intro">Data Pipeline</h3>
+                        <table class="arch-table">
                             <thead>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                <tr class="th-highlight">
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">Stage</th>
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">Input</th>
                                     <th style="text-align: left; padding: 10px 8px; color: #8888a0;">Output</th>
@@ -1896,60 +1896,60 @@
                     </div>
 
                     <!-- Project Structure -->
-                    <div style="background: rgba(255,255,255,0.02); border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 25px;">
-                        <h3 style="color: #e8e8f0; font-size: 14px; margin-bottom: 15px;">Project Structure</h3>
+                    <div class="arch-card">
+                        <h3 class="ai-intro">Project Structure</h3>
                         <pre style="font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 11px; color: #8888a0; line-height: 1.6; margin: 0; overflow-x: auto;">
-<span style="color: #f39c12;">/data-knowledge-center</span>
-├── main.py                      <span style="color: #555566;"># Entry point</span>
-├── config.py                    <span style="color: #555566;"># Environment & DB paths</span>
+<span class="text-warning">/data-knowledge-center</span>
+├── main.py                      <span class="text-dim"># Entry point</span>
+├── config.py                    <span class="text-dim"># Environment & DB paths</span>
 │
-├── <span style="color: #f39c12;">/collectors</span>                  <span style="color: #555566;"># [INGEST] Data collection</span>
-│   ├── public_apis.py           <span style="color: #555566;"># External API fetchers</span>
-│   ├── local_servers.py         <span style="color: #555566;"># Internal service polling</span>
-│   └── scheduled_jobs.py        <span style="color: #555566;"># Cron-based collection</span>
+├── <span class="text-warning">/collectors</span>                  <span class="text-dim"># [INGEST] Data collection</span>
+│   ├── public_apis.py           <span class="text-dim"># External API fetchers</span>
+│   ├── local_servers.py         <span class="text-dim"># Internal service polling</span>
+│   └── scheduled_jobs.py        <span class="text-dim"># Cron-based collection</span>
 │
-├── <span style="color: #3498db;">/converters</span>                  <span style="color: #555566;"># [TRANSFORM] Data processing</span>
-│   ├── db_to_json.py            <span style="color: #555566;"># Database exports</span>
-│   ├── json_to_md.py            <span style="color: #555566;"># Markdown generation</span>
-│   └── json_to_csv.py           <span style="color: #555566;"># CSV exports</span>
+├── <span style="color: #3498db;">/converters</span>                  <span class="text-dim"># [TRANSFORM] Data processing</span>
+│   ├── db_to_json.py            <span class="text-dim"># Database exports</span>
+│   ├── json_to_md.py            <span class="text-dim"># Markdown generation</span>
+│   └── json_to_csv.py           <span class="text-dim"># CSV exports</span>
 │
-├── <span style="color: #9b59b6;">/core</span>                        <span style="color: #555566;"># [LOGIC] Central engine</span>
-│   ├── registry.py              <span style="color: #555566;"># Tool whitelist</span>
-│   ├── dispatcher.py            <span style="color: #555566;"># Universal executor</span>
+├── <span style="color: #9b59b6;">/core</span>                        <span class="text-dim"># [LOGIC] Central engine</span>
+│   ├── registry.py              <span class="text-dim"># Tool whitelist</span>
+│   ├── dispatcher.py            <span class="text-dim"># Universal executor</span>
 │   ├── /database
-│   │   ├── vector_store.py      <span style="color: #555566;"># ChromaDB client</span>
-│   │   └── sql_db.py            <span style="color: #555566;"># PostgreSQL client</span>
+│   │   ├── vector_store.py      <span class="text-dim"># ChromaDB client</span>
+│   │   └── sql_db.py            <span class="text-dim"># PostgreSQL client</span>
 │   └── /tools
-│       ├── search.py            <span style="color: #555566;"># Vector search logic</span>
-│       ├── scraper.py           <span style="color: #555566;"># External data fetch</span>
-│       └── analysis.py          <span style="color: #555566;"># Pandas processing</span>
+│       ├── search.py            <span class="text-dim"># Vector search logic</span>
+│       ├── scraper.py           <span class="text-dim"># External data fetch</span>
+│       └── analysis.py          <span class="text-dim"># Pandas processing</span>
 │
-└── <span style="color: #00d084;">/interfaces</span>                  <span style="color: #555566;"># [SERVE] Access layer</span>
-    ├── api_routes.py            <span style="color: #555566;"># REST API (FastAPI)</span>
-    └── mcp_server.py            <span style="color: #555566;"># MCP Server</span></pre>
+└── <span style="color: #00d084;">/interfaces</span>                  <span class="text-dim"># [SERVE] Access layer</span>
+    ├── api_routes.py            <span class="text-dim"># REST API (FastAPI)</span>
+    └── mcp_server.py            <span class="text-dim"># MCP Server</span></pre>
                     </div>
 
                     <!-- Design Principles -->
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div class="grid-4">
                         <div style="background: rgba(243,156,18,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(243,156,18,0.3); text-align: center;">
-                            <div style="font-size: 24px; margin-bottom: 8px;">🔀</div>
-                            <div style="color: #f39c12; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Separation</div>
-                            <div style="color: #8888a0; font-size: 9px;">Logic isolated from interfaces</div>
+                            <div class="icon-lg">🔀</div>
+                            <div class="ai-model-label">Separation</div>
+                            <div class="text-muted fs-sm">Logic isolated from interfaces</div>
                         </div>
                         <div style="background: rgba(52,152,219,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(52,152,219,0.3); text-align: center;">
-                            <div style="font-size: 24px; margin-bottom: 8px;">👥</div>
+                            <div class="icon-lg">👥</div>
                             <div style="color: #3498db; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Dual Access</div>
-                            <div style="color: #8888a0; font-size: 9px;">Humans (REST) + AI (MCP)</div>
+                            <div class="text-muted fs-sm">Humans (REST) + AI (MCP)</div>
                         </div>
                         <div style="background: rgba(155,89,182,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(155,89,182,0.3); text-align: center;">
-                            <div style="font-size: 24px; margin-bottom: 8px;">🔒</div>
+                            <div class="icon-lg">🔒</div>
                             <div style="color: #9b59b6; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Security First</div>
-                            <div style="color: #8888a0; font-size: 9px;">Whitelist, audit, no cred exposure</div>
+                            <div class="text-muted fs-sm">Whitelist, audit, no cred exposure</div>
                         </div>
                         <div style="background: rgba(0,208,132,0.1); border-radius: 10px; padding: 15px; border: 1px solid rgba(0,208,132,0.3); text-align: center;">
-                            <div style="font-size: 24px; margin-bottom: 8px;">🧩</div>
+                            <div class="icon-lg">🧩</div>
                             <div style="color: #00d084; font-size: 11px; font-weight: 600; margin-bottom: 4px;">Extensibility</div>
-                            <div style="color: #8888a0; font-size: 9px;">Add collectors without core changes</div>
+                            <div class="text-muted fs-sm">Add collectors without core changes</div>
                         </div>
                     </div>
 
@@ -1961,7 +1961,7 @@
         <div class="arch-section" id="section-ai">
             <div class="diagram-embed">
         <!-- Original AI Architecture Title -->
-        <div style="text-align: center; padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+        <div class="sec-box">
             <h2 style="font-size: 24px; font-weight: 700; background: linear-gradient(90deg, var(--orchestrator-color), var(--brain-color), var(--logic-color), var(--sandbox-color)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px;">AI Infrastructure Architecture <span class="version-badge">v1.0</span></h2>
             <p class="subtitle">Serverless AI Stack - From Orchestration to Execution</p>
         </div>

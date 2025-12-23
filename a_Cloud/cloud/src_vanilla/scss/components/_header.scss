@@ -520,3 +520,36 @@ header {
         background: rgba(255, 255, 255, 0.1);
     }
 }
+
+// Inline Grid Selector (inside page content)
+.grid-selector-inline {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.grid-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 0.25rem;
+}
+
+.grid-btn-inline {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    min-width: auto;
+}
+
+[data-theme="blurred"] .grid-selector-inline {
+    background: transparent;
+}
+
+[data-theme="blurred"] .grid-label {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}

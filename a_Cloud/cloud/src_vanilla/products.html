@@ -111,51 +111,6 @@
                 <button class="view-btn active" data-page="products">Products</button>
                 <button class="view-btn" data-page="connect">Connect</button>
                 <button class="view-btn" data-page="features">Features</button>
-                <span class="nav-divider"></span>
-                <!-- Grid Size Selector -->
-                <div class="grid-selector">
-                    <button class="grid-btn" data-grid="2" title="2x2 Grid">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                            <rect x="3" y="3" width="8" height="8" rx="1"/>
-                            <rect x="13" y="3" width="8" height="8" rx="1"/>
-                            <rect x="3" y="13" width="8" height="8" rx="1"/>
-                            <rect x="13" y="13" width="8" height="8" rx="1"/>
-                        </svg>
-                    </button>
-                    <button class="grid-btn active" data-grid="3" title="3x3 Grid">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                            <rect x="2" y="2" width="5" height="5" rx="1"/>
-                            <rect x="9.5" y="2" width="5" height="5" rx="1"/>
-                            <rect x="17" y="2" width="5" height="5" rx="1"/>
-                            <rect x="2" y="9.5" width="5" height="5" rx="1"/>
-                            <rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
-                            <rect x="17" y="9.5" width="5" height="5" rx="1"/>
-                            <rect x="2" y="17" width="5" height="5" rx="1"/>
-                            <rect x="9.5" y="17" width="5" height="5" rx="1"/>
-                            <rect x="17" y="17" width="5" height="5" rx="1"/>
-                        </svg>
-                    </button>
-                    <button class="grid-btn" data-grid="4" title="4x4 Grid">
-                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-                            <rect x="2" y="2" width="4" height="4" rx="0.5"/>
-                            <rect x="7.5" y="2" width="4" height="4" rx="0.5"/>
-                            <rect x="13" y="2" width="4" height="4" rx="0.5"/>
-                            <rect x="18.5" y="2" width="4" height="4" rx="0.5"/>
-                            <rect x="2" y="7.5" width="4" height="4" rx="0.5"/>
-                            <rect x="7.5" y="7.5" width="4" height="4" rx="0.5"/>
-                            <rect x="13" y="7.5" width="4" height="4" rx="0.5"/>
-                            <rect x="18.5" y="7.5" width="4" height="4" rx="0.5"/>
-                            <rect x="2" y="13" width="4" height="4" rx="0.5"/>
-                            <rect x="7.5" y="13" width="4" height="4" rx="0.5"/>
-                            <rect x="13" y="13" width="4" height="4" rx="0.5"/>
-                            <rect x="18.5" y="13" width="4" height="4" rx="0.5"/>
-                            <rect x="2" y="18.5" width="4" height="4" rx="0.5"/>
-                            <rect x="7.5" y="18.5" width="4" height="4" rx="0.5"/>
-                            <rect x="13" y="18.5" width="4" height="4" rx="0.5"/>
-                            <rect x="18.5" y="18.5" width="4" height="4" rx="0.5"/>
-                        </svg>
-                    </button>
-                </div>
             </div>
             <!-- Level 3: Dynamic Title -->
             <div class="nav-level3-wrapper">
@@ -198,16 +153,22 @@
                     btn.onclick = function() { showPage(this.dataset.page); };
                 });
 
-                // Grid size control
+                // Grid size control - handles multiple selectors across pages
                 var savedGrid = localStorage.getItem('cloud-grid-cols') || '3';
                 document.documentElement.style.setProperty('--grid-cols', savedGrid);
-                document.querySelector('[data-grid="' + savedGrid + '"]')?.classList.add('active');
+
+                // Update all grid buttons to show active state
+                gridBtns.forEach(function(btn) {
+                    btn.classList.toggle('active', btn.dataset.grid === savedGrid);
+                });
 
                 gridBtns.forEach(function(btn) {
                     btn.onclick = function() {
                         var cols = this.dataset.grid;
-                        gridBtns.forEach(function(b) { b.classList.remove('active'); });
-                        this.classList.add('active');
+                        // Update all grid buttons across all pages
+                        gridBtns.forEach(function(b) {
+                            b.classList.toggle('active', b.dataset.grid === cols);
+                        });
                         document.documentElement.style.setProperty('--grid-cols', cols);
                         localStorage.setItem('cloud-grid-cols', cols);
                     };
@@ -218,6 +179,13 @@
         <!-- Products Page -->
         <div id="products-page" class="view-content active">
             <div class="page-container">
+                <!-- Grid Size Selector -->
+                <div class="grid-selector-inline">
+                    <span class="grid-label">Grid:</span>
+                    <button class="view-btn grid-btn-inline" data-grid="2">2x2</button>
+                    <button class="view-btn grid-btn-inline active" data-grid="3">3x3</button>
+                    <button class="view-btn grid-btn-inline" data-grid="4">4x4</button>
+                </div>
 
             <!-- AI -->
             <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">AI</h3>
@@ -231,8 +199,7 @@
                     </div>
                     <h3>Chat Multi-Model</h3>
                     <p>Multi-provider AI Chat</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+</div>
 
                 <div class="card" data-service="myterminal" data-product-category="ai">
                     <div class="card-icon">
@@ -243,8 +210,7 @@
                     </div>
                     <h3>MyTerminal</h3>
                     <p>AI-powered Terminal</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+</div>
             </div>
 
             <!-- Productivity -->
@@ -259,7 +225,6 @@
                     </div>
                     <h3>Mail</h3>
                     <p>mymail landing</p>
-                    <div class="card-status online">Online</div>
                 </div>
 
                 <div class="card" data-service="calendar" data-url="https://cal.diegonmarcos.com" data-product-category="productivity">
@@ -273,7 +238,6 @@
                     </div>
                     <h3>Calendar</h3>
                     <p>cal.diegonmarcos.com</p>
-                    <div class="card-status online">Online</div>
                 </div>
 
             </div>
@@ -290,8 +254,7 @@
                     </div>
                     <h3>Photos</h3>
                     <p>myphotos landing</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+</div>
 
                 <div class="card" data-service="music" data-product-category="media">
                     <div class="card-icon">
@@ -303,8 +266,7 @@
                     </div>
                     <h3>Music</h3>
                     <p>Navidrome / Jellyfin</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+</div>
             </div>
 
             <!-- Section Divider -->
@@ -322,7 +284,6 @@
                     </div>
                     <h3>Linktree</h3>
                     <p>diegonmarcos.github.io/linktree</p>
-                    <div class="card-status online">Online</div>
                 </div>
             </div>
 
@@ -338,8 +299,7 @@
                     </div>
                     <h3>City Map Services</h3>
                     <p>Maps, Transport, Weather</p>
-                    <div class="card-status pending">Dev</div>
-                </div>
+</div>
             </div>
 
             </div><!-- End page-container -->
@@ -348,6 +308,13 @@
         <!-- Connect Page -->
         <div id="connect-page" class="view-content" style="display: none;">
             <div class="page-container">
+                <!-- Grid Size Selector -->
+                <div class="grid-selector-inline">
+                    <span class="grid-label">Grid:</span>
+                    <button class="view-btn grid-btn-inline" data-grid="2">2x2</button>
+                    <button class="view-btn grid-btn-inline active" data-grid="3">3x3</button>
+                    <button class="view-btn grid-btn-inline" data-grid="4">4x4</button>
+                </div>
                 <div class="cards-grid">
                     <div class="card" data-service="cloud-app" data-url="https://diegonmarcos.github.io/cloud">
                         <div class="card-icon">
@@ -357,7 +324,6 @@
                         </div>
                         <h3>Cloud App</h3>
                         <p>Cloud Dashboard</p>
-                        <div class="card-status online">Active</div>
                     </div>
 
                     <div class="card" data-service="vpn">
@@ -369,7 +335,6 @@
                         </div>
                         <h3>VPN</h3>
                         <p>WireGuard VPN</p>
-                        <div class="card-status online">Active</div>
                     </div>
 
                     <div class="card" data-service="vault">
@@ -380,7 +345,6 @@
                         </div>
                         <h3>Vault</h3>
                         <p>Bitwarden / Vaultwarden</p>
-                        <div class="card-status pending">Dev</div>
                     </div>
 
                     <div class="card" data-service="api-endpoints" data-url="https://diegonmarcos.github.io/cloud/api">
@@ -392,7 +356,6 @@
                         </div>
                         <h3>API Endpoints</h3>
                         <p>REST API Documentation</p>
-                        <div class="card-status online">Active</div>
                     </div>
 
                     <div class="card" data-service="mcp-tools" data-url="https://diegonmarcos.github.io/cloud/mcp">
@@ -403,7 +366,6 @@
                         </div>
                         <h3>MCP Tools</h3>
                         <p>Model Context Protocol</p>
-                        <div class="card-status pending">Dev</div>
                     </div>
                 </div>
             </div><!-- End page-container -->

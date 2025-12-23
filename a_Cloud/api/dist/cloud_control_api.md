@@ -1,7 +1,7 @@
 # Cloud Control API Reference
 
 > **Version**: 1.0.0
-> **Generated**: 2025-12-23 17:14
+> **Generated**: 2025-12-23 17:32
 > **Source**: `cloud_control_api.json`
 
 This document is auto-generated from `cloud_control_api.json` using `cloud_json_md.py`.
@@ -49,7 +49,7 @@ Do not edit manually - changes will be overwritten.
 | Category       | Description                                                  | Endpoints |
 | -------------- | ------------------------------------------------------------ | --------- |
 | health         | API health and status checks                                 | 2         |
-| vmControl      | Virtual machine runtime operations                           | 3         |
+| vmControl      | Virtual machine control via cloud provider APIs (OCI/GCloud) | 5         |
 | serviceControl | Service runtime operations                                   | 4         |
 | domainStatus   | Domain runtime status                                        | 2         |
 | topology       | Infrastructure topology data (for cloud_control_topology.md) | 8         |
@@ -75,16 +75,18 @@ Do not edit manually - changes will be overwritten.
 
 ### VMCONTROL
 
-*Virtual machine runtime operations*
+*Virtual machine control via cloud provider APIs (OCI/GCloud)*
 
-**Source**: `cloud_control.monitor.vmStatus`
+**Source**: `cloud_control.monitor.vmStatus + OCI/GCloud CLI`
 
 
-| Method | Path                 | Auth  | Description                              |
-| ------ | -------------------- | ----- | ---------------------------------------- |
-| `GET`  | `/vms/{vmId}/status` | read  | Get live VM status (runtime data)        |
-| `POST` | `/vms/{vmId}/start`  | admin | Start a stopped VM (wake-on-demand only) |
-| `POST` | `/vms/{vmId}/stop`   | admin | Stop a running VM (wake-on-demand only)  |
+| Method | Path                 | Auth  | Description                                                                         |
+| ------ | -------------------- | ----- | ----------------------------------------------------------------------------------- |
+| `GET`  | `/vms/{vmId}/status` | read  | Get live VM status (runtime data)                                                   |
+| `POST` | `/vms/{vmId}/start`  | admin | Start a stopped VM via cloud provider API (OCI instance_action START)               |
+| `POST` | `/vms/{vmId}/stop`   | admin | Stop a running VM via cloud provider API (OCI instance_action STOP)                 |
+| `POST` | `/vms/{vmId}/reboot` | admin | Graceful reboot VM via cloud provider API (OCI instance_action SOFTRESET)           |
+| `POST` | `/vms/{vmId}/reset`  | admin | Hard reset VM via cloud provider API (OCI instance_action RESET) - use with caution |
 
 ### SERVICECONTROL
 
@@ -200,9 +202,12 @@ Do not edit manually - changes will be overwritten.
 
 ### vmControl
 
-| Endpoint | Curl Command                                                                                         |
-| -------- | ---------------------------------------------------------------------------------------------------- |
-| start    | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1/start` |
+| Endpoint | Curl Command                                                                                           |
+| -------- | ------------------------------------------------------------------------------------------------------ |
+| start    | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1/start`   |
+| stop     | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1/stop`    |
+| reboot   | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reboot` |
+| reset    | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reset`  |
 
 ## Schemas
 

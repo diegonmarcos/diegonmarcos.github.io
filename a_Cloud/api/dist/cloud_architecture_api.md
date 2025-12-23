@@ -1,7 +1,7 @@
 # Cloud Architecture API Reference
 
 > **Version**: 1.0.0
-> **Generated**: 2025-12-23 17:14
+> **Generated**: 2025-12-23 17:32
 > **Source**: `cloud_architecture_api.json`
 
 This document is auto-generated from `cloud_architecture_api.json` using `cloud_json_md.py`.

@@ -30,7 +30,7 @@
     },
     {
       "name": "vmControl",
-      "description": "Virtual machine runtime operations"
+      "description": "Virtual machine control via cloud provider APIs (OCI/GCloud)"
     },
     {
       "name": "serviceControl",
@@ -148,7 +148,7 @@
         "tags": [
           "vmControl"
         ],
-        "summary": "Start a stopped VM (wake-on-demand only)",
+        "summary": "Start a stopped VM via cloud provider API (OCI instance_action START)",
         "operationId": "vmControl_start",
         "responses": {
           "200": {
@@ -187,8 +187,86 @@
         "tags": [
           "vmControl"
         ],
-        "summary": "Stop a running VM (wake-on-demand only)",
+        "summary": "Stop a running VM via cloud provider API (OCI instance_action STOP)",
         "operationId": "vmControl_stop",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/vms/{vmId}/reboot": {
+      "post": {
+        "tags": [
+          "vmControl"
+        ],
+        "summary": "Graceful reboot VM via cloud provider API (OCI instance_action SOFTRESET)",
+        "operationId": "vmControl_reboot",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/vms/{vmId}/reset": {
+      "post": {
+        "tags": [
+          "vmControl"
+        ],
+        "summary": "Hard reset VM via cloud provider API (OCI instance_action RESET) - use with caution",
+        "operationId": "vmControl_reset",
         "responses": {
           "200": {
             "description": "Successful response",

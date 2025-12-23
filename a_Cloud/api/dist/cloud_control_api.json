@@ -79,8 +79,9 @@
     },
 
     "vmControl": {
-      "_description": "Virtual machine runtime operations",
-      "_source": "cloud_control.monitor.vmStatus",
+      "_description": "Virtual machine control via cloud provider APIs (OCI/GCloud)",
+      "_source": "cloud_control.monitor.vmStatus + OCI/GCloud CLI",
+      "_note": "These actions use cloud provider APIs, not SSH commands inside VMs",
 
       "status": {
         "method": "GET",
@@ -104,19 +105,21 @@
         "method": "POST",
         "path": "/vms/{vmId}/start",
         "auth": "admin",
-        "description": "Start a stopped VM (wake-on-demand only)",
+        "description": "Start a stopped VM via cloud provider API (OCI instance_action START)",
         "params": {
-          "vmId": {"type": "string", "required": true, "allowed": ["oci-p-flex_1"]}
+          "vmId": {"type": "string", "required": true, "enum": ["oci-f-micro_1", "oci-f-micro_2", "oci-p-flex_1", "gcp-f-micro_1"]}
         },
         "response": {
           "success": true,
           "vmId": "oci-p-flex_1",
           "state": "starting",
+          "provider": "oracle",
+          "action": "START",
           "estimatedReadySeconds": 60
         },
         "errors": {
           "400": "VM already running",
-          "403": "VM not in allowed list (only wake-on-demand VMs)",
+          "403": "Insufficient permissions",
           "500": "Cloud provider API error"
         },
         "curl": "curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1/start"
@@ -126,15 +129,71 @@
         "method": "POST",
         "path": "/vms/{vmId}/stop",
         "auth": "admin",
-        "description": "Stop a running VM (wake-on-demand only)",
+        "description": "Stop a running VM via cloud provider API (OCI instance_action STOP)",
         "params": {
-          "vmId": {"type": "string", "required": true, "allowed": ["oci-p-flex_1"]}
+          "vmId": {"type": "string", "required": true, "enum": ["oci-f-micro_1", "oci-f-micro_2", "oci-p-flex_1", "gcp-f-micro_1"]}
         },
         "response": {
           "success": true,
           "vmId": "oci-p-flex_1",
-          "state": "stopping"
-        }
+          "state": "stopping",
+          "provider": "oracle",
+          "action": "STOP"
+        },
+        "errors": {
+          "400": "VM already stopped",
+          "403": "Insufficient permissions",
+          "500": "Cloud provider API error"
+        },
+        "curl": "curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1/stop"
+      },
+
+      "reboot": {
+        "method": "POST",
+        "path": "/vms/{vmId}/reboot",
+        "auth": "admin",
+        "description": "Graceful reboot VM via cloud provider API (OCI instance_action SOFTRESET)",
+        "params": {
+          "vmId": {"type": "string", "required": true, "enum": ["oci-f-micro_1", "oci-f-micro_2", "oci-p-flex_1", "gcp-f-micro_1"]}
+        },
+        "response": {
+          "success": true,
+          "vmId": "oci-f-micro_1",
+          "state": "rebooting",
+          "provider": "oracle",
+          "action": "SOFTRESET",
+          "estimatedReadySeconds": 120
+        },
+        "errors": {
+          "400": "VM not running",
+          "403": "Insufficient permissions",
+          "500": "Cloud provider API error"
+        },
+        "curl": "curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reboot"
+      },
+
+      "reset": {
+        "method": "POST",
+        "path": "/vms/{vmId}/reset",
+        "auth": "admin",
+        "description": "Hard reset VM via cloud provider API (OCI instance_action RESET) - use with caution",
+        "params": {
+          "vmId": {"type": "string", "required": true, "enum": ["oci-f-micro_1", "oci-f-micro_2", "oci-p-flex_1", "gcp-f-micro_1"]}
+        },
+        "response": {
+          "success": true,
+          "vmId": "oci-f-micro_1",
+          "state": "resetting",
+          "provider": "oracle",
+          "action": "RESET",
+          "warning": "Hard reset - may cause data loss"
+        },
+        "errors": {
+          "400": "VM not running",
+          "403": "Insufficient permissions",
+          "500": "Cloud provider API error"
+        },
+        "curl": "curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reset"
       }
     },
 

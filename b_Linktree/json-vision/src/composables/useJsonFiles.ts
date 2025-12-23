@@ -2,6 +2,11 @@ import { ref, computed, watch } from 'vue'
 import type { OpenDoc, Notification } from '@/types/json'
 import { useDebounce } from './useDebounce'
 
+// Check if File System Access API is available (requires secure context)
+const hasFileSystemAccess = typeof window !== 'undefined'
+  && 'showDirectoryPicker' in window
+  && window.isSecureContext
+
 export function useJsonFiles() {
   const files = ref<string[]>([])
   const openDocs = ref<OpenDoc[]>([])
@@ -11,9 +16,11 @@ export function useJsonFiles() {
   const error = ref<string | null>(null)
   const notification = ref<Notification | null>(null)
   const isSaving = ref(false)
+  const useFallback = ref(!hasFileSystemAccess)
 
   const dirHandle = ref<FileSystemDirectoryHandle | null>(null)
   const fileHandles: Record<string, FileSystemFileHandle> = {}
+  const fallbackFileContents: Record<string, string> = {}
 
   const debouncedInput = useDebounce(input, 1000)
 
@@ -27,6 +34,7 @@ export function useJsonFiles() {
   }
 
   const handleOpenFolder = async () => {
+    if (useFallback.value) return // Use file input fallback instead
     try {
       const handle = await window.showDirectoryPicker({ mode: 'readwrite' })
       dirHandle.value = handle
@@ -35,6 +43,29 @@ export function useJsonFiles() {
     } catch (err) {
       console.error(err)
     }
+  }
+
+  const handleFallbackFiles = async (fileList: FileList | null) => {
+    if (!fileList || fileList.length === 0) return
+
+    const jsonFiles = Array.from(fileList).filter(f => f.name.endsWith('.json'))
+    if (jsonFiles.length === 0) {
+      showNotification('No JSON files selected', true)
+      return
+    }
+
+    // Clear previous fallback data
+    Object.keys(fallbackFileContents).forEach(k => delete fallbackFileContents[k])
+
+    const newFiles: string[] = []
+    for (const file of jsonFiles) {
+      const text = await file.text()
+      newFiles.push(file.name)
+      fallbackFileContents[file.name] = text
+    }
+
+    files.value = newFiles.sort()
+    showNotification(`Loaded ${jsonFiles.length} JSON file(s)`)
   }
 
   const refreshFileList = async (handle: FileSystemDirectoryHandle) => {
@@ -67,11 +98,19 @@ export function useJsonFiles() {
     }
 
     try {
-      const handle = fileHandles[filename]
-      if (!handle) throw new Error('File handle not found')
+      let text: string
 
-      const file = await handle.getFile()
-      const text = await file.text()
+      if (useFallback.value) {
+        // Fallback mode: read from cached content
+        text = fallbackFileContents[filename]
+        if (!text) throw new Error('File content not found')
+      } else {
+        // File System Access API mode
+        const handle = fileHandles[filename]
+        if (!handle) throw new Error('File handle not found')
+        const file = await handle.getFile()
+        text = await file.text()
+      }
 
       const newDoc: OpenDoc = { filename, content: text, originalContent: text }
       openDocs.value.push(newDoc)
@@ -96,8 +135,24 @@ export function useJsonFiles() {
   const handleSaveFile = async (contentToSave: string, silent = false) => {
     if (activeDocIndex.value === -1) return
     const doc = openDocs.value[activeDocIndex.value]
-    const handle = fileHandles[doc.filename]
 
+    if (useFallback.value) {
+      // Fallback mode: download the file instead
+      if (!silent) {
+        const blob = new Blob([contentToSave], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement('a')
+        a.href = url
+        a.download = doc.filename
+        a.click()
+        URL.revokeObjectURL(url)
+        openDocs.value[activeDocIndex.value].originalContent = contentToSave
+        showNotification(`Downloaded ${doc.filename}`)
+      }
+      return
+    }
+
+    const handle = fileHandles[doc.filename]
     if (!handle) {
       if (!silent) showNotification('Cannot save: File handle lost', true)
       return
@@ -201,7 +256,9 @@ export function useJsonFiles() {
     error,
     notification,
     isSaving,
+    useFallback,
     handleOpenFolder,
+    handleFallbackFiles,
     handleOpenFile,
     handleCloseTab,
     handleSaveFile,

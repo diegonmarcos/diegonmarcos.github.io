@@ -1,17 +1,36 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { OpenDoc } from '@/types/json'
 
 defineProps<{
   files: string[]
   openDocs: OpenDoc[]
   width: number
+  useFallback: boolean
 }>()
 
 const emit = defineEmits<{
   openFolder: []
   openFile: [filename: string]
+  fallbackFiles: [files: FileList | null]
   'update:width': [value: number]
 }>()
+
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const handleOpenClick = () => {
+  emit('openFolder')
+}
+
+const triggerFileInput = () => {
+  fileInputRef.value?.click()
+}
+
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  emit('fallbackFiles', target.files)
+  target.value = '' // Reset to allow re-selecting same files
+}
 
 let isResizing = false
 let startX = 0
@@ -42,9 +61,23 @@ const stopResize = () => {
 
 <template>
   <aside class="sidebar" :style="{ width: `${width}px` }">
+    <!-- Hidden file input for fallback mode -->
+    <input
+      ref="fileInputRef"
+      type="file"
+      accept=".json"
+      multiple
+      style="display: none"
+      @change="handleFileChange"
+    />
+
     <div class="sidebar-header">
       <span class="sidebar-title">JSON Files</span>
-      <button class="open-folder-btn" title="Open Local Folder" @click="emit('openFolder')">
+      <button
+        class="open-folder-btn"
+        :title="useFallback ? 'Select JSON Files' : 'Open Local Folder'"
+        @click="useFallback ? triggerFileInput() : handleOpenClick()"
+      >
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
@@ -58,7 +91,12 @@ const stopResize = () => {
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
         <div class="empty-text">
-          Click "Open" to select your <code>jsons/</code> folder
+          <template v-if="useFallback">
+            Click "Open" to select JSON files
+          </template>
+          <template v-else>
+            Click "Open" to select your <code>jsons/</code> folder
+          </template>
         </div>
       </div>
 

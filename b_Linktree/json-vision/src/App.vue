@@ -10,8 +10,8 @@ import GraphView from '@/components/GraphView.vue'
 import TreeView from '@/components/TreeView.vue'
 
 const {
-  files, openDocs, activeDocIndex, input, parsedData, error, notification, isSaving,
-  handleOpenFolder, handleOpenFile, handleCloseTab, handleSaveFile,
+  files, openDocs, activeDocIndex, input, parsedData, error, notification, isSaving, useFallback,
+  handleOpenFolder, handleFallbackFiles, handleOpenFile, handleCloseTab, handleSaveFile,
   updateInput, handleFormat, handleMinify, handleCopy, handleCopyPath, showNotification
 } = useJsonFiles()
 
@@ -48,8 +48,10 @@ const handleEdit = (path: string, key: string, value: unknown) => {
         :files="files"
         :open-docs="openDocs"
         :width="sidebarWidth"
+        :use-fallback="useFallback"
         @open-folder="handleOpenFolder"
         @open-file="handleOpenFile"
+        @fallback-files="handleFallbackFiles"
         @update:width="sidebarWidth = $event"
       />
 

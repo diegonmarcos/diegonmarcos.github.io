@@ -108,6 +108,19 @@
                     <button class="view-btn" data-dash-tab="audit-logs">Logs</button>
                 </div>
             </div>
+            <!-- Level 3: Orchestrate title -->
+            <div class="nav-level3-wrapper" id="nav-orchestrate" style="display: none;">
+                <h2 class="nav-level3-title">Orchestrate</h2>
+                <p class="nav-level3-subtitle">Docker Container Management</p>
+            </div>
+            <!-- Level 3: Cost title with sub-tabs -->
+            <div class="nav-level3-wrapper" id="nav-cost" style="display: none;">
+                <h2 class="nav-level3-title">Cost</h2>
+                <div class="nav-level3">
+                    <button class="view-btn active" data-subtab="cost-infra">Infrastructure</button>
+                    <button class="view-btn" data-subtab="cost-ai">AI Costs</button>
+                </div>
+            </div>
         </header>
 
         <!-- Status Tab Content (hidden) -->
@@ -699,10 +712,6 @@
 
         <!-- Orchestrate Tab Content (Dockge Docker Management) -->
         <div id="orchestrate-tab" class="tab-content">
-            <!-- Orchestrate Title -->
-            <div class="nav-level3-wrapper" style="display: flex;">
-                <h2 class="nav-level3-title">Orchestrate</h2>
-            </div>
             <div class="resources-category">
                 <h3 class="resources-category-title">Docker Container Management</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 1rem;">Manage Docker containers across VMs using Dockge</p>
@@ -762,15 +771,6 @@
 
         <!-- Cost Tab Content -->
         <div id="cost-tab" class="tab-content">
-            <!-- Cost Title + Sub-tabs -->
-            <div class="nav-level3-wrapper" style="display: flex;">
-                <h2 class="nav-level3-title">Cost</h2>
-                <div class="nav-level3">
-                    <button class="view-btn active" data-subtab="cost-infra">Infrastructure</button>
-                    <button class="view-btn" data-subtab="cost-ai">AI Costs</button>
-                </div>
-            </div>
-
             <!-- Infrastructure Cost Sub-tab -->
             <div id="cost-infra" class="cost-subtab-content active">
             <!-- Cloud Infrastructure Costs - Super Enhanced -->
@@ -4528,9 +4528,13 @@
                 const navTopology = document.getElementById('nav-topology');
                 const navMonitor = document.getElementById('nav-monitor');
                 const navAudit = document.getElementById('nav-audit');
+                const navOrchestrate = document.getElementById('nav-orchestrate');
+                const navCost = document.getElementById('nav-cost');
                 if (navTopology) navTopology.style.display = 'none';
                 if (navMonitor) navMonitor.style.display = 'none';
                 if (navAudit) navAudit.style.display = 'none';
+                if (navOrchestrate) navOrchestrate.style.display = 'none';
+                if (navCost) navCost.style.display = 'none';
             }
 
             function switchTab(targetTab) {
@@ -4571,6 +4575,14 @@
                         const navAudit = document.getElementById('nav-audit');
                         if (navAudit) navAudit.style.display = 'flex';
                         document.querySelector('[data-dash-parent="audit"]')?.classList.add('active');
+                    } else if (targetTab === 'orchestrate') {
+                        const navOrchestrate = document.getElementById('nav-orchestrate');
+                        if (navOrchestrate) navOrchestrate.style.display = 'flex';
+                        document.querySelector('[data-dash-tab="orchestrate"]')?.classList.add('active');
+                    } else if (targetTab === 'cost') {
+                        const navCost = document.getElementById('nav-cost');
+                        if (navCost) navCost.style.display = 'flex';
+                        document.querySelector('[data-dash-tab="cost"]')?.classList.add('active');
                     }
 
                     // Update URL hash
@@ -4627,7 +4639,7 @@
 
         // Cost Sub-tab Switching
         function initCostSubtabs() {
-            const subtabButtons = document.querySelectorAll('#cost-tab [data-subtab]');
+            const subtabButtons = document.querySelectorAll('#nav-cost [data-subtab]');
             const subtabContents = document.querySelectorAll('.cost-subtab-content');
 
             subtabButtons.forEach(btn => {

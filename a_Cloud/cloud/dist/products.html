@@ -119,6 +119,8 @@
                 <button class="view-btn" data-product-filter="city">My City Services</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-product-filter="cloud">Cloud Connect</button>
+                <span class="nav-divider"></span>
+                <button class="view-btn" id="nav-features-btn">Features</button>
             </div>
             <!-- Level 3: Products Title -->
             <div class="nav-level3-wrapper">
@@ -128,6 +130,7 @@
         </header>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Product category filtering
                 var filterBtns = document.querySelectorAll('[data-product-filter]');
                 var cards = document.querySelectorAll('.card[data-product-category]');
                 filterBtns.forEach(function(btn) {
@@ -140,6 +143,40 @@
                             card.style.display = (filter === 'all' || category === filter) ? '' : 'none';
                         });
                     };
+                });
+
+                // Products / Features page switching
+                var featuresBtn = document.getElementById('nav-features-btn');
+                var filterBtns = document.querySelectorAll('[data-product-filter]');
+                var navLevel3 = document.querySelector('.nav-level3-wrapper');
+                var productsContent = document.getElementById('cards-front-view');
+                var featuresContent = document.getElementById('features-page');
+
+                function showProducts() {
+                    featuresBtn.classList.remove('active');
+                    navLevel3.querySelector('.nav-level3-title').textContent = 'Products';
+                    navLevel3.querySelector('.nav-level3-subtitle').textContent = 'Service Catalog';
+                    productsContent.style.display = '';
+                    featuresContent.style.display = 'none';
+                }
+
+                function showFeatures() {
+                    // Remove active from all filter buttons
+                    filterBtns.forEach(function(btn) { btn.classList.remove('active'); });
+                    featuresBtn.classList.add('active');
+                    navLevel3.querySelector('.nav-level3-title').textContent = 'Features';
+                    navLevel3.querySelector('.nav-level3-subtitle').textContent = 'Cloud Portal Capabilities';
+                    productsContent.style.display = 'none';
+                    featuresContent.style.display = '';
+                }
+
+                featuresBtn.onclick = function() { showFeatures(); };
+
+                // When any filter button is clicked, show products
+                filterBtns.forEach(function(btn) {
+                    btn.addEventListener('click', function() {
+                        showProducts();
+                    });
                 });
             });
         </script>
@@ -322,6 +359,300 @@
             </div>
 
         </div><!-- End Cards Front View -->
+
+        <!-- Features Page -->
+        <div id="features-page" style="display: none; padding: 1rem;">
+
+            <!-- Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                <div style="background: linear-gradient(135deg, rgba(74,158,255,0.15), rgba(74,158,255,0.05)); border: 1px solid rgba(74,158,255,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">4</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">VMs</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">20+</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Services</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05)); border: 1px solid rgba(139,92,246,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">2</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Cloud Providers</div>
+                </div>
+                <div style="background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05)); border: 1px solid rgba(251,191,36,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">24/7</div>
+                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Uptime</div>
+                </div>
+            </div>
+
+            <!-- Portal Features Section -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="color: rgba(74,158,255,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                    Portal Features
+                </h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Feature</th>
+                            <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500; width: 80px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Multi-page Navigation</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Products, Cloud Control, Architecture views</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Theme System</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Blurred, Dark, Minimalistic modes with persistence</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Category Filtering</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">AI, Productivity, Media, Me, City, Cloud Connect</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Responsive Design</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Mobile-first, works on all screen sizes</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Single-File Build</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">CSS/JS inlined, no external dependencies</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Offline Capable</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Works without network after first load</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Infrastructure Section -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="color: rgba(16,185,129,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    Infrastructure
+                </h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Component</th>
+                            <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500; width: 80px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Oracle Cloud VMs</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">3 instances (2x Micro, 1x Flex A1)</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Google Cloud VMs</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">1 instance (e2-micro)</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Nginx Proxy Manager</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Reverse proxy with SSL certificates</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Authelia 2FA</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Two-factor authentication gateway</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Cloudflare DNS</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">DNS management with proxy protection</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Docker Networks</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Isolated container networks per VM</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Backend Services Section -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <h3 style="color: rgba(139,92,246,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                    Backend Services
+                </h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                    <!-- Column 1 -->
+                    <div>
+                        <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; padding-left: 0.5rem;">Core Services</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Flask REST API</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Redis Cache</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">SQLite Database</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">MariaDB</span></div>
+                        </div>
+                    </div>
+                    <!-- Column 2 -->
+                    <div>
+                        <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; padding-left: 0.5rem;">Mail Services</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Mailu SMTP/IMAP</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Roundcube Webmail</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Rspamd Anti-Spam</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">ClamAV Antivirus</span></div>
+                        </div>
+                    </div>
+                    <!-- Column 3 -->
+                    <div>
+                        <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; padding-left: 0.5rem;">Media & Sync</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Photoprism Gallery</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Syncthing P2P Sync</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #10b981; font-size: 0.8rem;">&#10003;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Radicale CalDAV</span></div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.5rem;"><span style="color: #fbbf24; font-size: 0.8rem;">&#9679;</span><span style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Vaultwarden</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics & Monitoring Section -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem;">
+                <h3 style="color: rgba(251,191,36,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                    Analytics & Monitoring
+                </h3>
+                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Service</th>
+                            <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500; width: 80px;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Matomo Analytics</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Privacy-first, GDPR compliant web analytics</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">n8n Automation</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Workflow automation and integrations</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #fbbf24;">&#9679;</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 0.5rem;">
+                                <div style="color: rgba(255,255,255,0.9);">Health Checks API</div>
+                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Real-time service status monitoring</div>
+                            </td>
+                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Comparison Table -->
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem;">
+                <h3 style="color: rgba(239,68,68,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M8 3H3v5M3 16v5h5M21 16v5h-5M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/></svg>
+                    Comparison: Self-Hosted vs Big Cloud
+                </h3>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 500px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid rgba(255,255,255,0.1);">
+                                <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Feature</th>
+                                <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(74,158,255,0.9); font-weight: 600;">This Portal</th>
+                                <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Google Cloud</th>
+                                <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">AWS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Monthly Cost</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: #10b981; font-weight: 600;">~$5.50</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.6);">$50-200+</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.6);">$50-200+</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Data Privacy</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; Full Control</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">Shared</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">Shared</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Email Service</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; Self-hosted</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">$6/user/mo</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">SES only</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Photo Storage</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; Unlimited</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">15GB free</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">S3 costs</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Analytics</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; GDPR Ready</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">GA4 (tracks)</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">-</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">File Sync</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; P2P Sync</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">Drive</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.5);">-</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">2FA Auth</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; Authelia</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0.6rem 0.5rem; color: rgba(255,255,255,0.8);">Vendor Lock-in</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003; None</span></td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: #ef4444;">High</td>
+                                <td style="text-align: center; padding: 0.6rem 0.5rem; color: #ef4444;">High</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- End Features Page -->
 
         <!-- Tree View (Status Tree) -->
         <div id="tree-view" class="view-content">

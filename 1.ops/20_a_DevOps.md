@@ -498,5 +498,173 @@ npm install typescript --save-dev
 
 ---
 
-**Last Updated:** 2025-12-22
+## Infrastructure Rules (Cloudflare + Nginx)
+
+This section documents the Cloudflare DNS and NPM (Nginx Proxy Manager) configurations for front-end projects that require backend services.
+
+### DNS Records (Cloudflare)
+
+| Subdomain | Type | Target | Proxied | Purpose |
+|-----------|------|--------|---------|---------|
+| `analytics` | A | 34.55.55.234 | Yes | Matomo analytics |
+| `photos` | A | 34.55.55.234 | Yes | Photoprism gallery |
+| `cloud` | A | 34.55.55.234 | Yes | Cloud dashboard |
+| `auth` | A | 34.55.55.234 | Yes | Authelia SSO |
+| `sync` | A | 34.55.55.234 | Yes | Syncthing |
+| `mail` | A | 34.55.55.234 | Yes | Mailu mail |
+| `proxy` | A | 34.55.55.234 | Yes | NPM admin (OIDC protected) |
+
+**Note:** All A records point to GCP NPM (34.55.55.234) which reverse-proxies to Oracle VMs.
+
+### NPM Proxy Hosts
+
+| Domain | Backend | Port | Auth | Notes |
+|--------|---------|------|------|-------|
+| `analytics.diegonmarcos.com` | 130.110.251.193 | 8081 | Authelia 2FA | Matomo at root |
+| `photos.diegonmarcos.com` | 84.235.234.87 | 2342 | Authelia 2FA | Photoprism |
+| `cloud.diegonmarcos.com` | GitHub Pages | - | None | Static dashboard |
+| `auth.diegonmarcos.com` | localhost | 9091 | - | Authelia itself |
+| `sync.diegonmarcos.com` | 84.235.234.87 | 8384 | Authelia 2FA | Syncthing |
+| `mail.diegonmarcos.com` | 130.110.251.193 | 443 | Mailu auth | Mailu webmail |
+| `proxy.diegonmarcos.com` | localhost | 81 | OIDC (oauth2-proxy) | NPM admin |
+
+### Nginx Configurations
+
+#### Analytics (Matomo)
+
+```nginx
+# analytics.diegonmarcos.com
+# Public: /matomo.js, /matomo.php, /js/* (tracking endpoints)
+# Protected: /* (everything else via Authelia)
+
+location = /matomo.js {
+    proxy_pass http://130.110.251.193:8081/matomo.js;
+}
+
+location = /matomo.php {
+    proxy_pass http://130.110.251.193:8081/matomo.php;
+}
+
+location /js/ {
+    proxy_pass http://130.110.251.193:8081/js/;
+}
+
+location / {
+    auth_request /authelia-verify;
+    error_page 401 =302 https://auth.diegonmarcos.com/authelia/?rd=$scheme://$http_host$request_uri;
+    proxy_pass http://130.110.251.193:8081;
+}
+```
+
+#### Photos (Photoprism)
+
+```nginx
+# photos.diegonmarcos.com
+# All routes protected via Authelia
+
+location / {
+    auth_request /authelia-verify;
+    error_page 401 =302 https://auth.diegonmarcos.com/authelia/?rd=$scheme://$http_host$request_uri;
+    proxy_pass http://84.235.234.87:2342;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+}
+```
+
+#### Proxy (NPM Admin with OIDC)
+
+```nginx
+# proxy.diegonmarcos.com
+# Full OIDC authentication via oauth2-proxy + Authelia
+
+location /oauth2/ {
+    proxy_pass http://oauth2-proxy-npm:4180;
+}
+
+location = /oauth2/auth {
+    proxy_pass http://oauth2-proxy-npm:4180;
+    proxy_pass_request_body off;
+}
+
+location / {
+    auth_request /oauth2/auth;
+    error_page 401 = /oauth2/sign_in;
+    proxy_pass http://npm:81;
+}
+```
+
+#### Authelia Verify Endpoint (Common)
+
+```nginx
+# Used by all Authelia-protected services
+location = /authelia-verify {
+    internal;
+    proxy_pass http://authelia:9091/api/verify;
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_set_header X-Original-URL $scheme://$http_host$request_uri;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Forwarded-Host $http_host;
+    proxy_set_header X-Forwarded-URI $request_uri;
+    proxy_set_header X-Forwarded-For $remote_addr;
+    proxy_set_header Cookie $http_cookie;  # Critical for session
+}
+```
+
+### Authentication Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         AUTHENTICATION FLOWS                             │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  AUTHELIA 2FA (Forward Auth):                                            │
+│  ┌──────────┐    ┌─────────┐    ┌──────────┐    ┌─────────────┐         │
+│  │  Browser │───►│   NPM   │───►│ Authelia │───►│   Backend   │         │
+│  └──────────┘    │nginx    │    │ verify   │    │ (Matomo,    │         │
+│       │          │auth_req │    │ session  │    │  Photoprism)│         │
+│       │          └─────────┘    └──────────┘    └─────────────┘         │
+│       │               │              │                                   │
+│       │          401 if no      ✓ if cookie                             │
+│       │          session        valid                                    │
+│       └──────────────────────────────┘                                   │
+│              Redirect to Authelia login                                  │
+│                                                                          │
+│  OIDC (oauth2-proxy):                                                    │
+│  ┌──────────┐    ┌─────────────┐    ┌──────────┐    ┌──────────┐        │
+│  │  Browser │───►│oauth2-proxy │───►│ Authelia │───►│   NPM    │        │
+│  └──────────┘    │(port 4180)  │    │  OIDC    │    │  Admin   │        │
+│       │          └─────────────┘    │ Provider │    │ (port 81)│        │
+│       │               │             └──────────┘    └──────────┘        │
+│       │          Exchange code                                           │
+│       │          for JWT token                                           │
+│       └──────────────────────────────────────────────────────────────────┘
+│                                                                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Front-End Integration
+
+Projects in `a_Cloud/` that connect to protected backends:
+
+| Project | Backend Service | Auth Method | Login Page |
+|---------|-----------------|-------------|------------|
+| myanalytics | Matomo | Authelia 2FA | GitHub Pages → Authelia |
+| myphotos | Photoprism | Authelia 2FA | GitHub Pages → Authelia |
+| cloud | Cloud API | Authelia 2FA | GitHub Pages → Authelia |
+| mymail | Mailu | Mailu native | Mailu login |
+
+### Common Issues
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| Login loop | Cookie path mismatch | Serve app at root, not subpath |
+| 502 Bad Gateway | Backend unreachable | Check Docker network, VM connectivity |
+| 401 after login | Cookie not forwarded | Add `proxy_set_header Cookie $http_cookie` |
+| CORS errors | Missing headers | Add `Access-Control-Allow-Origin` |
+
+---
+
+**Last Updated:** 2025-12-23
 **Maintainer:** Diego Nepomuceno Marcos

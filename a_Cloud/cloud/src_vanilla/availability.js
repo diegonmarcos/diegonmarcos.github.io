@@ -52,12 +52,6 @@ const AVAILABILITY = {
         "latency_ms": 1457.67
       },
       {
-        "url": "https://sync.diegonmarcos.com",
-        "status": "up",
-        "code": 200,
-        "latency_ms": 1202.96
-      },
-      {
         "url": "https://n8n.diegonmarcos.com",
         "status": "up",
         "code": 200,
@@ -94,12 +88,6 @@ const AVAILABILITY = {
         "status": "ok",
         "days_left": 83,
         "expires": "2026-03-09T00:09:37"
-      },
-      {
-        "domain": "sync.diegonmarcos.com",
-        "status": "ok",
-        "days_left": 83,
-        "expires": "2026-03-09T13:36:12"
       },
       {
         "domain": "n8n.diegonmarcos.com",

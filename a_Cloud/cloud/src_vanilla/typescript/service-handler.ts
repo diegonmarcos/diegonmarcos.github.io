@@ -5,7 +5,6 @@ import { parseSSHUrl, showSSHModal } from './ssh-modal';
 const serviceUrls: ServiceUrls = {
     // Product & Services
     'analytics': 'https://analytics.diegonmarcos.com',  // matomo-app
-    'sync': 'https://sync.diegonmarcos.com',            // Syncthing
     'cloud-dashboard': '#pending',                       // Cloud_Dashboard
     'mail': '#pending',                                  // mailserver
     'terminal': '#pending',                              // Web_Shell_Terminal

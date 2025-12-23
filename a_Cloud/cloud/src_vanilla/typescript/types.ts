@@ -1,7 +1,6 @@
 export type ServiceId =
     // Product & Services
     | 'analytics'       // matomo-app
-    | 'sync'            // Syncthing
     | 'cloud-dashboard' // Cloud_Dashboard
     | 'mail'            // mailserver
     | 'terminal'        // Web_Shell_Terminal

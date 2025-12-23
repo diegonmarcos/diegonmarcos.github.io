@@ -47,8 +47,8 @@
     text-align: center;
     transform-origin: center center;
     z-index: 1;
-    // Uniform card sizing - fixed aspect ratio
-    aspect-ratio: 1 / 1;
+    // Uniform card sizing - rectangular aspect ratio (wider than tall)
+    aspect-ratio: 4 / 3;
     min-height: 0;
 
     &:hover {
@@ -84,7 +84,7 @@
     overflow: hidden;
     backdrop-filter: blur(10px);
     // Uniform card sizing - same aspect ratio as base
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     min-height: 0;
 
     &::before {

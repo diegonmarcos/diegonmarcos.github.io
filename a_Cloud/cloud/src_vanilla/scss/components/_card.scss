@@ -1,7 +1,7 @@
-// Grid layout with configurable columns via --grid-cols (default: 3)
+// Grid layout with configurable columns via --grid-cols (default: 2)
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
+    grid-template-columns: repeat(var(--grid-cols, 2), 1fr);
     gap: calc(1.5rem * var(--zoom-scale, 1));
     animation: fadeIn 0.8s ease-out;
     width: 100%;
@@ -449,7 +449,7 @@
 // Categories container - CSS Grid for folder layout
 .categories-row {
     display: grid;
-    grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
+    grid-template-columns: repeat(var(--grid-cols, 2), 1fr);
     gap: 1rem;
     width: 100%;
     transition: grid-template-columns 0.3s ease;

@@ -11,7 +11,8 @@ function getViewFromHash(): ViewName {
 }
 
 function switchToView(viewName: ViewName, pushState: boolean = true): void {
-    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
+    // Only target buttons with data-view attribute
+    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn[data-view]');
     const views: Record<string, HTMLElement | null> = {
         'cards-front': document.getElementById('cards-front-view'),
         'cards-back': document.getElementById('cards-back-view'),
@@ -52,7 +53,11 @@ function switchToView(viewName: ViewName, pushState: boolean = true): void {
 }
 
 export function initViewToggle(): void {
-    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn');
+    // Only work with buttons that have data-view attribute (not data-page)
+    const viewButtons = document.querySelectorAll<HTMLButtonElement>('.view-btn[data-view]');
+
+    // Skip if no view buttons with data-view exist (products page uses data-page instead)
+    if (viewButtons.length === 0) return;
 
     // Set initial view from hash
     const initialView = getViewFromHash();

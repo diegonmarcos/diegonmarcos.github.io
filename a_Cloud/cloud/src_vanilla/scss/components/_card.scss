@@ -11,25 +11,7 @@
     gap: calc(2rem * var(--zoom-scale, 1));
 }
 
-// Mobile: reduce columns on smaller screens
-@media (max-width: 1200px) {
-    .cards-grid {
-        grid-template-columns: repeat(min(var(--grid-cols, 3), 3), 1fr);
-    }
-}
-
-@media (max-width: 900px) {
-    .cards-grid {
-        grid-template-columns: repeat(min(var(--grid-cols, 3), 2), 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .cards-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-}
+// Mobile: same as desktop (no responsive column reduction)
 
 .card {
     background: var(--bg-card);
@@ -402,83 +384,104 @@
 .card:nth-child(9) { animation: fadeIn 0.4s ease-out 0.9s backwards; }
 .card:nth-child(10) { animation: fadeIn 0.4s ease-out 1s backwards; }
 
-// Category sections - wrapper for h3 + cards-grid pairs
+// Category sections (folders) with border
 .category-section {
-    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.02);
+    container-type: inline-size;
+
+    // Cards inside folders: always 2 per row
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    // Cards inside folders: smaller sizing and text overflow handling
+    .card {
+        padding: 0.3rem;
+
+        h3 {
+            font-size: 0.65rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        p {
+            font-size: 0.55rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            margin-bottom: 0;
+        }
+    }
+
+    .card-icon {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 0.2rem;
+    }
+
+    .card-status {
+        display: none; // Hide status in folder cards to save space
+    }
+}
+
+[data-theme="blurred"] .category-section {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(5px);
 }
 
 .category-title {
-    margin: 1rem 0 0.5rem 0.5rem;
+    margin: 0 0 0.5rem 0.25rem;
     color: rgba(255, 255, 255, 0.7);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-// Categories container - allows inline flow in 4x4 mode
+// Categories container - CSS Grid for folder layout
 .categories-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
     gap: 1rem;
     width: 100%;
+    transition: grid-template-columns 0.3s ease;
+}
 
-    .category-section {
-        flex: 1 1 auto;
-        min-width: 300px;
+// Grid mode scaling - adjust folder card sizes based on folders per row
+// 2 folders per row = larger cards
+html[data-grid-cols="2"] .category-section {
+    .card-icon {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 0.3rem;
+    }
+    .card h3 {
+        font-size: 0.8rem;
+    }
+    .card p {
+        font-size: 0.65rem;
     }
 }
 
-// 4x4 grid mode: smaller icons and text, inline categories
-html[data-grid-cols="4"] {
+// 4 folders per row = smaller cards
+html[data-grid-cols="4"] .category-section {
     .card-icon {
-        width: 20px !important;
-        height: 20px !important;
-        margin-bottom: 0.25rem !important;
+        width: 14px;
+        height: 14px;
+        margin-bottom: 0.15rem;
     }
-
     .card h3 {
-        font-size: 0.7rem !important;
-        margin-bottom: 0.15rem !important;
+        font-size: 0.5rem;
     }
-
     .card p {
-        font-size: 0.6rem !important;
-        margin-bottom: 0 !important;
-    }
-
-    .categories-row .category-section {
-        min-width: 200px;
-    }
-}
-
-html[data-grid-cols="4"][data-theme="blurred"] {
-    .card-icon {
-        width: 24px !important;
-        height: 24px !important;
-        margin-bottom: 0.35rem !important;
-    }
-
-    .card h3 {
-        font-size: 0.8rem !important;
-    }
-
-    .card p {
-        font-size: 0.65rem !important;
-    }
-}
-
-// 2x2 grid mode: larger icons and text
-html[data-grid-cols="2"] {
-    .card-icon {
-        width: 40px;
-        height: 40px;
-        margin-bottom: 0.5rem;
-    }
-
-    .card h3 {
-        font-size: 1rem;
-    }
-
-    .card p {
-        font-size: 0.85rem;
+        font-size: 0.4rem;
     }
 }

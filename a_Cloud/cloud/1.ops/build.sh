@@ -183,7 +183,11 @@ html = html.replace(/<script[^>]*src=[\"']script\\.js[\"'][^>]*><\\/script>/gi, 
 html = html.replace(/<script[^>]*src=[\"']main\\.js[\"'][^>]*><\\/script>/gi, '<script>' + js + '</script>');
 
 // Copy data JS files as external files (allows updating data without rebuilding HTML)
-const dataFiles = ['cloud_dash_data.js', 'ccusage_data.js', 'cloud_costs_data.js'];
+const dataFiles = [
+    'cloud_dash_data.js', 'ccusage_data.js', 'cloud_costs_data.js',
+    'monitor.js', 'costs.js', 'availability.js', 'security.js',
+    'performance.js', 'docker.js', 'web.js'
+];
 dataFiles.forEach(file => {
     const srcPath = '$VANILLA_DIR/' + file;
     if (fs.existsSync(srcPath)) {

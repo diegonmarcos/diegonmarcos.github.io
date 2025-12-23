@@ -3019,7 +3019,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vm/${vmId}/reboot`, {
+                const response = await fetch(`${apiUrl}/vms/${vmId}/reboot`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -3075,7 +3075,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vm/${vmId}/reset`, {
+                const response = await fetch(`${apiUrl}/vms/${vmId}/reset`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -3121,7 +3121,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vm/${vmId}/stop`, {
+                const response = await fetch(`${apiUrl}/vms/${vmId}/stop`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -3149,31 +3149,45 @@
         }
 
         // ============================================
-        // WAKE-ON-DEMAND FUNCTIONS
+        // WAKE-ON-DEMAND FUNCTIONS (uses Cloud Control API)
+        // VM: oci-p-flex_1 (Photoprism/Syncthing/Radicale server)
         // ============================================
+        const WAKE_VM_ID = 'oci-p-flex_1';
 
         async function checkDevServerStatus() {
             try {
-                const resp = await fetch(`${apiUrl}/wake/status`);
+                const resp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/status`);
                 const data = await resp.json();
 
                 const statusEl = document.getElementById('dev-server-status');
                 const textEl = document.getElementById('dev-server-status-text');
                 const wakeBtn = document.getElementById('wake-dev-btn');
 
-                if (data.state === 'RUNNING') {
+                // API returns state from OCI: RUNNING, STOPPED, STARTING, STOPPING, etc.
+                const state = data.state || data.status || 'UNKNOWN';
+
+                if (state === 'RUNNING') {
                     statusEl.className = 'live-status online';
                     textEl.textContent = 'Running';
                     wakeBtn.disabled = true;
                     wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Running';
-                } else if (data.state === 'STOPPED') {
+                } else if (state === 'STOPPED') {
                     statusEl.className = 'live-status offline';
                     textEl.textContent = 'Sleeping';
                     wakeBtn.disabled = false;
                     wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                } else if (state === 'STARTING') {
+                    statusEl.className = 'live-status checking';
+                    textEl.textContent = 'Starting...';
+                    wakeBtn.disabled = true;
+                    wakeBtn.innerHTML = '<span class="spinner"></span> Starting...';
+                } else if (state === 'STOPPING') {
+                    statusEl.className = 'live-status checking';
+                    textEl.textContent = 'Stopping...';
+                    wakeBtn.disabled = true;
                 } else {
                     statusEl.className = 'live-status checking';
-                    textEl.textContent = data.state || 'Unknown';
+                    textEl.textContent = state;
                 }
             } catch (e) {
                 console.error('Failed to check dev server status:', e);
@@ -3188,41 +3202,56 @@
             wakeBtn.disabled = true;
             wakeBtn.innerHTML = '<span class="spinner"></span> Waking...';
             statusEl.className = 'live-status checking';
-            textEl.textContent = 'Waking...';
+            textEl.textContent = 'Starting VM...';
 
             try {
-                const resp = await fetch(`${apiUrl}/wake/trigger`, { method: 'POST' });
+                const token = localStorage.getItem('github_token');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const resp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/start`, {
+                    method: 'POST',
+                    headers: headers
+                });
                 const data = await resp.json();
 
-                if (data.success) {
+                if (resp.ok || data.success) {
+                    textEl.textContent = 'VM Starting...';
                     // Poll for running status
                     let attempts = 0;
                     const maxAttempts = 24; // 2 minutes (24 * 5s)
 
                     const checkInterval = setInterval(async () => {
                         attempts++;
-                        const statusResp = await fetch(`${apiUrl}/wake/status`);
-                        const statusData = await statusResp.json();
+                        textEl.textContent = `Starting... (${attempts * 5}s)`;
 
-                        if (statusData.state === 'RUNNING') {
-                            clearInterval(checkInterval);
-                            statusEl.className = 'live-status online';
-                            textEl.textContent = 'Running';
-                            wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Running';
-                        } else if (attempts >= maxAttempts) {
-                            clearInterval(checkInterval);
-                            statusEl.className = 'live-status checking';
-                            textEl.textContent = 'Timeout';
-                            wakeBtn.disabled = false;
-                            wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                        try {
+                            const statusResp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/status`);
+                            const statusData = await statusResp.json();
+                            const state = statusData.state || statusData.status;
+
+                            if (state === 'RUNNING') {
+                                clearInterval(checkInterval);
+                                statusEl.className = 'live-status online';
+                                textEl.textContent = 'Running';
+                                wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Running';
+                            } else if (attempts >= maxAttempts) {
+                                clearInterval(checkInterval);
+                                statusEl.className = 'live-status checking';
+                                textEl.textContent = 'Timeout';
+                                wakeBtn.disabled = false;
+                                wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
+                            }
+                        } catch (pollError) {
+                            console.error('Poll error:', pollError);
                         }
                     }, 5000);
                 } else {
-                    throw new Error(data.message || 'Wake failed');
+                    throw new Error(data.error || data.message || 'Start failed');
                 }
             } catch (e) {
                 console.error('Failed to wake dev server:', e);
-                alert(`Failed to wake dev server: ${e.message}`);
+                alert(`Failed to start VM: ${e.message}`);
                 wakeBtn.disabled = false;
                 wakeBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Wake';
                 statusEl.className = 'live-status offline';

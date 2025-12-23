@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Cloud Control | Cloud Portal</title>
 
     <!-- Matomo Tag Manager -->
@@ -26,6 +26,14 @@
     </script>
 </head>
 <body>
+    <button class="theme-toggle" id="theme-toggle" title="Switch theme">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <span class="theme-label">Blurred</span>
+    </button>
+
     <div class="container">
         <header class="main-header">
             <h1>Cloud Portal</h1>
@@ -4725,5 +4733,37 @@
             </div>
         </div>
     </div>
+
+    <!-- Mobile Desktop Mode -->
+    <script>
+        (function() {
+            function applyMobileScaling() {
+                const desktopWidth = 1200;
+                const screenWidth = window.innerWidth;
+
+                if (screenWidth < desktopWidth) {
+                    const scale = screenWidth / desktopWidth;
+                    document.body.style.width = desktopWidth + 'px';
+                    document.body.style.minWidth = desktopWidth + 'px';
+                    document.body.style.transform = 'scale(' + scale + ')';
+                    document.body.style.transformOrigin = 'top left';
+                    document.documentElement.style.width = screenWidth + 'px';
+                    document.documentElement.style.overflowX = 'hidden';
+                } else {
+                    document.body.style.width = '';
+                    document.body.style.minWidth = '';
+                    document.body.style.transform = '';
+                    document.body.style.transformOrigin = '';
+                    document.documentElement.style.width = '';
+                    document.documentElement.style.overflowX = '';
+                }
+            }
+            applyMobileScaling();
+            window.addEventListener('resize', applyMobileScaling);
+        })();
+    </script>
+
+    <!-- TypeScript compiled bundle (zoom, theme, card effects) -->
+    <script src="script.js"></script>
 </body>
 </html>

@@ -3,11 +3,25 @@
     grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 220px), 1fr));
     gap: calc(1rem * var(--zoom-scale, 1));
     animation: fadeIn 0.8s ease-out;
+    width: 100%;
 }
 
 [data-theme="blurred"] .cards-grid {
     grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 280px), 1fr));
     gap: calc(2rem * var(--zoom-scale, 1));
+}
+
+// Mobile: ensure proper grid on smaller screens
+@media (max-width: 768px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+        gap: 0.75rem;
+    }
+
+    [data-theme="blurred"] .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+        gap: 1rem;
+    }
 }
 
 .card {
@@ -23,9 +37,9 @@
     flex-direction: column;
     transform-origin: center center;
     z-index: 1;
-    // Uniform card sizing
+    // Uniform card sizing - use min-height for flexibility
     min-height: calc(120px * var(--zoom-scale, 1));
-    height: calc(120px * var(--zoom-scale, 1));
+    height: auto;
 
     &:hover {
         background: var(--bg-card-hover);
@@ -59,9 +73,9 @@
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     backdrop-filter: blur(10px);
-    // Uniform card sizing for blurred theme
+    // Uniform card sizing for blurred theme - use min-height for flexibility
     min-height: calc(180px * var(--zoom-scale, 1));
-    height: calc(180px * var(--zoom-scale, 1));
+    height: auto;
 
     &::before {
         content: '';

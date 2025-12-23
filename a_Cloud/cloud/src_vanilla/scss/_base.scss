@@ -4,13 +4,9 @@
     box-sizing: border-box;
 }
 
-html, body {
+html {
     height: 100%;
     width: 100%;
-    overflow-x: auto;
-}
-
-html {
     // Desktop mode forced via JavaScript scaling on mobile
     // Keep min-width for desktop browsers
     min-width: 100%;
@@ -20,7 +16,8 @@ body {
     font-family: var(--font-main);
     background: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 100vh;
+    min-height: 100%;
+    width: 100%;
     // Width controlled by JavaScript for mobile scaling
     padding: 0.5rem;
     display: flex;
@@ -28,6 +25,9 @@ body {
     font-size: 13px;
     line-height: 1.4;
     transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+    // Mobile: allow vertical scrolling, no horizontal overflow
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 // Blurred theme: gradient background
@@ -44,6 +44,8 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
+    // Ensure container doesn't clip content
+    overflow: visible;
 }
 
 [data-theme="blurred"] .container {

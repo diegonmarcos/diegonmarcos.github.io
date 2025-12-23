@@ -1,25 +1,32 @@
+// Grid layout with configurable columns via --grid-cols (default: 3)
 .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 220px), 1fr));
-    gap: calc(1rem * var(--zoom-scale, 1));
+    grid-template-columns: repeat(var(--grid-cols, 3), 1fr);
+    gap: calc(1.5rem * var(--zoom-scale, 1));
     animation: fadeIn 0.8s ease-out;
     width: 100%;
 }
 
 [data-theme="blurred"] .cards-grid {
-    grid-template-columns: repeat(auto-fit, minmax(var(--card-min-width, 280px), 1fr));
     gap: calc(2rem * var(--zoom-scale, 1));
 }
 
-// Mobile: ensure proper grid on smaller screens
-@media (max-width: 768px) {
+// Mobile: reduce columns on smaller screens
+@media (max-width: 1200px) {
     .cards-grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
-        gap: 0.75rem;
+        grid-template-columns: repeat(min(var(--grid-cols, 3), 3), 1fr);
     }
+}
 
-    [data-theme="blurred"] .cards-grid {
-        grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+@media (max-width: 900px) {
+    .cards-grid {
+        grid-template-columns: repeat(min(var(--grid-cols, 3), 2), 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .cards-grid {
+        grid-template-columns: 1fr;
         gap: 1rem;
     }
 }
@@ -35,11 +42,14 @@
     text-decoration: none;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     transform-origin: center center;
     z-index: 1;
-    // Uniform card sizing - use min-height for flexibility
-    min-height: calc(120px * var(--zoom-scale, 1));
-    height: auto;
+    // Uniform card sizing - fixed aspect ratio
+    aspect-ratio: 1 / 1;
+    min-height: 0;
 
     &:hover {
         background: var(--bg-card-hover);
@@ -73,9 +83,9 @@
     border-radius: var(--border-radius-lg);
     overflow: hidden;
     backdrop-filter: blur(10px);
-    // Uniform card sizing for blurred theme - use min-height for flexibility
-    min-height: calc(180px * var(--zoom-scale, 1));
-    height: auto;
+    // Uniform card sizing - same aspect ratio as base
+    aspect-ratio: 1 / 1;
+    min-height: 0;
 
     &::before {
         content: '';

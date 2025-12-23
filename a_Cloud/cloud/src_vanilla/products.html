@@ -182,6 +182,7 @@
 
         <!-- Products Cards -->
         <div id="cards-front-view" class="view-content active">
+            <div class="page-container">
 
             <!-- AI -->
             <h3 style="margin: 1rem 0 0.5rem 1rem; color: rgba(255,255,255,0.7); font-size: 0.9rem;">AI</h3>
@@ -345,12 +346,37 @@
                     <p>Bitwarden / Vaultwarden</p>
                     <div class="card-status pending">Dev</div>
                 </div>
+
+                <div class="card" data-service="api-endpoints" data-url="https://diegonmarcos.github.io/cloud/api" data-product-category="cloud">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <path d="M8 10h8M8 14h4"/>
+                        </svg>
+                    </div>
+                    <h3>API Endpoints</h3>
+                    <p>REST API Documentation</p>
+                    <div class="card-status online">Active</div>
+                </div>
+
+                <div class="card" data-service="mcp-tools" data-url="https://diegonmarcos.github.io/cloud/mcp" data-product-category="cloud">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <h3>MCP Tools</h3>
+                    <p>Model Context Protocol</p>
+                    <div class="card-status pending">Dev</div>
+                </div>
             </div>
 
+            </div><!-- End page-container -->
         </div><!-- End Cards Front View -->
 
         <!-- Features Page -->
         <div id="features-page" style="display: none; padding: 1rem;">
+            <div class="page-container">
 
             <!-- Summary Cards -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
@@ -634,6 +660,7 @@
                 </div>
             </div>
 
+            </div><!-- End page-container -->
         </div><!-- End Features Page -->
 
         <!-- Tree View (Status Tree) -->

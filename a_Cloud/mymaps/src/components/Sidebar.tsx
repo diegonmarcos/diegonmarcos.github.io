@@ -7,6 +7,8 @@ interface SidebarProps {
   selectedId: string | null;
   onSelect: (id: string) => void;
   onFileUpload: (file: File) => void;
+  onHomeClick: () => void;
+  showHome: boolean;
 }
 
 const TYPE_ICONS: Record<string, JSX.Element> = {
@@ -39,7 +41,7 @@ const TYPE_ICONS: Record<string, JSX.Element> = {
   ),
 };
 
-export default function Sidebar({ maps, selectedId, onSelect, onFileUpload }: SidebarProps) {
+export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHomeClick, showHome }: SidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -97,6 +99,17 @@ export default function Sidebar({ maps, selectedId, onSelect, onFileUpload }: Si
       </div>
 
       <nav className="sidebar-nav">
+        <button
+          className={`home-link ${showHome ? 'active' : ''}`}
+          onClick={onHomeClick}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          <span>Home</span>
+        </button>
+
         <div className="nav-section">
           <h3>My Maps</h3>
           <ul className="map-list">

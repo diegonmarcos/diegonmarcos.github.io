@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import Home from './components/Home';
 import MapViewer from './components/MapViewer';
 import Sidebar from './components/Sidebar';
 import Legend from './components/Legend';
@@ -16,7 +17,8 @@ interface MapState {
 
 export default function App() {
   const maps = getAllMaps();
-  const [selectedMapId, setSelectedMapId] = useState<string | null>(maps[0]?.id ?? null);
+  const [showHome, setShowHome] = useState(true);
+  const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
   const [customMaps, setCustomMaps] = useState<MapConfig[]>([]);
 
   const [state, setState] = useState<MapState>({
@@ -71,6 +73,12 @@ export default function App() {
 
   const handleMapSelect = useCallback((id: string) => {
     setSelectedMapId(id);
+    setShowHome(false);
+  }, []);
+
+  const handleHomeClick = useCallback(() => {
+    setShowHome(true);
+    setSelectedMapId(null);
   }, []);
 
   const handleFileUpload = useCallback(async (file: File) => {
@@ -120,6 +128,13 @@ export default function App() {
 
   const basePath = config?.filePath?.replace(/[^/]+$/, '').replace(/\/$/, '') || '';
 
+  const handleExplore = useCallback(() => {
+    setShowHome(false);
+    if (maps.length > 0) {
+      setSelectedMapId(maps[0].id);
+    }
+  }, [maps]);
+
   return (
     <div className="app">
       <Sidebar
@@ -127,23 +142,27 @@ export default function App() {
         selectedId={selectedMapId}
         onSelect={handleMapSelect}
         onFileUpload={handleFileUpload}
+        onHomeClick={handleHomeClick}
+        showHome={showHome}
       />
 
       <main className="main-content">
-        {loading && (
+        {showHome && <Home onExplore={handleExplore} />}
+
+        {!showHome && loading && (
           <div className="loading-overlay">
             <div className="spinner" />
             <p>Loading map...</p>
           </div>
         )}
 
-        {error && (
+        {!showHome && error && (
           <div className="error-overlay">
             <p>{error}</p>
           </div>
         )}
 
-        {!loading && !error && config && (
+        {!showHome && !loading && !error && config && (
           <>
             <div className="map-info">
               <h1>{config.name}</h1>
@@ -172,7 +191,7 @@ export default function App() {
           </>
         )}
 
-        {!loading && !error && !config && (
+        {!showHome && !loading && !error && !config && (
           <div className="empty-state">
             <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />

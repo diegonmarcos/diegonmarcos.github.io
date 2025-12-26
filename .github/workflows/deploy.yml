@@ -165,6 +165,17 @@ jobs:
           cd ../../..
           echo "✅ MyAnalytics build complete"
 
+      - name: 🔨 Build MyDrive
+        id: build-mydrive
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/mydrive/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building MyDrive..."
+          cd a_Cloud/mydrive/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ MyDrive build complete"
+
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/health_tracker/')
@@ -403,6 +414,13 @@ jobs:
             echo "✅ SUCCESS: MyAnalytics"
           fi
 
+          if [ "${{ steps.build-mydrive.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyDrive"
+            FAILED="$FAILED mydrive"
+          elif [ "${{ steps.build-mydrive.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyDrive"
+          fi
+
           echo "============================================"
 
           if [ -n "$FAILED" ]; then
@@ -455,6 +473,14 @@ jobs:
             mkdir -p _site/myanalytics
             cp -r a_Cloud/myanalytics/dist/* _site/myanalytics/
             echo "✅ MyAnalytics build copied to _site/myanalytics/"
+          fi
+
+          # Copy MyDrive build (if dist exists)
+          if [ -d "a_Cloud/mydrive/dist" ]; then
+            echo "📦 Copying MyDrive build..."
+            mkdir -p _site/mydrive
+            cp -r a_Cloud/mydrive/dist/* _site/mydrive/
+            echo "✅ MyDrive build copied to _site/mydrive/"
           fi
 
           # Copy Linktree build (if dist exists)

@@ -312,11 +312,12 @@
                         <table class="resources-table" style="font-size: 0.85rem;">
                             <thead>
                                 <tr>
-                                    <th style="width: 32%;">Name</th>
-                                    <th style="width: 17%;">CPU</th>
-                                    <th style="width: 17%;">RAM</th>
-                                    <th style="width: 17%;">Storage</th>
-                                    <th style="width: 17%;">VRAM</th>
+                                    <th style="width: 28%;">Name</th>
+                                    <th style="width: 14%;">CPU</th>
+                                    <th style="width: 14%;">RAM</th>
+                                    <th style="width: 14%;">Storage</th>
+                                    <th style="width: 14%;">VRAM</th>
+                                    <th style="width: 16%;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -326,6 +327,7 @@
                                     <td>3.6 / 8 GB</td>
                                     <td>165 / 242 GB</td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
                                     <td>VM Total</td>
@@ -333,9 +335,10 @@
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 45%; background: var(--accent-green);"></span></span> <span class="usage-val">45%</span></td>
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 68%; background: var(--accent-orange);"></span></span> <span class="usage-val">68%</span></td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
-                                                                <tr class="service-row"><td class="component-name">↳ photoprism</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 21%; background: var(--accent-orange);"></span></span> <span class="usage-val">21%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ calendar</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ photoprism</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 21%; background: var(--accent-orange);"></span></span> <span class="usage-val">21%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-p-flex_1', 'photoprism')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ radicale</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-orange);"></span></span> <span class="usage-val">&lt;1%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-p-flex_1', 'radicale')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -352,11 +355,12 @@
                         <table class="resources-table" style="font-size: 0.85rem;">
                             <thead>
                                 <tr>
-                                    <th style="width: 32%;">Name</th>
-                                    <th style="width: 17%;">CPU</th>
-                                    <th style="width: 17%;">RAM</th>
-                                    <th style="width: 17%;">Storage</th>
-                                    <th style="width: 17%;">VRAM</th>
+                                    <th style="width: 28%;">Name</th>
+                                    <th style="width: 14%;">CPU</th>
+                                    <th style="width: 14%;">RAM</th>
+                                    <th style="width: 14%;">Storage</th>
+                                    <th style="width: 14%;">VRAM</th>
+                                    <th style="width: 16%;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -366,6 +370,7 @@
                                     <td>0.6 / 1 GB</td>
                                     <td>13 / 47 GB</td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
                                     <td>VM Total</td>
@@ -373,12 +378,13 @@
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 60%; background: var(--accent-orange);"></span></span> <span class="usage-val">60%</span></td>
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 27%; background: var(--accent-green);"></span></span> <span class="usage-val">27%</span></td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
-                                <tr class="service-row"><td class="component-name">↳ mailu-imap</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 20%; background: var(--accent-orange);"></span></span> <span class="usage-val">20%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ mailu-admin</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-orange);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ mailu-webmail</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-green);"></span></span> <span class="usage-val">4%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ mailu-smtp</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ mailu-front</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-orange);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-imap</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-blue);"></span></span> <span class="usage-val">2%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 20%; background: var(--accent-orange);"></span></span> <span class="usage-val">20%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_1', 'mailu-imap')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-admin</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 12%; background: var(--accent-orange);"></span></span> <span class="usage-val">12%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_1', 'mailu-admin')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-webmail</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 0%; background: var(--accent-blue);"></span></span> <span class="usage-val">&lt;1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 4%; background: var(--accent-green);"></span></span> <span class="usage-val">4%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_1', 'mailu-webmail')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-smtp</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_1', 'mailu-smtp')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ mailu-front</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-orange);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 2%; background: var(--accent-green);"></span></span> <span class="usage-val">2%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_1', 'mailu-front')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -395,11 +401,12 @@
                         <table class="resources-table" style="font-size: 0.85rem;">
                             <thead>
                                 <tr>
-                                    <th style="width: 32%;">Name</th>
-                                    <th style="width: 17%;">CPU</th>
-                                    <th style="width: 17%;">RAM</th>
-                                    <th style="width: 17%;">Storage</th>
-                                    <th style="width: 17%;">VRAM</th>
+                                    <th style="width: 28%;">Name</th>
+                                    <th style="width: 14%;">CPU</th>
+                                    <th style="width: 14%;">RAM</th>
+                                    <th style="width: 14%;">Storage</th>
+                                    <th style="width: 14%;">VRAM</th>
+                                    <th style="width: 16%;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -409,6 +416,7 @@
                                     <td>0.55 / 1 GB</td>
                                     <td>9 / 47 GB</td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
                                     <td>VM Total</td>
@@ -416,9 +424,10 @@
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 55%; background: var(--accent-orange);"></span></span> <span class="usage-val">55%</span></td>
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-green);"></span></span> <span class="usage-val">20%</span></td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
-                                <tr class="service-row"><td class="component-name">↳ matomo-db</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 30%; background: var(--accent-orange);"></span></span> <span class="usage-val">30%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ matomo-app</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ matomo-db</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 30%; background: var(--accent-orange);"></span></span> <span class="usage-val">30%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-green);"></span></span> <span class="usage-val">15%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_2', 'matomo-db')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ matomo</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('oci-f-micro_2', 'matomo')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -435,11 +444,12 @@
                         <table class="resources-table" style="font-size: 0.85rem;">
                             <thead>
                                 <tr>
-                                    <th style="width: 32%;">Name</th>
-                                    <th style="width: 17%;">CPU</th>
-                                    <th style="width: 17%;">RAM</th>
-                                    <th style="width: 17%;">Storage</th>
-                                    <th style="width: 17%;">VRAM</th>
+                                    <th style="width: 28%;">Name</th>
+                                    <th style="width: 14%;">CPU</th>
+                                    <th style="width: 14%;">RAM</th>
+                                    <th style="width: 14%;">Storage</th>
+                                    <th style="width: 14%;">VRAM</th>
+                                    <th style="width: 16%;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -449,6 +459,7 @@
                                     <td>0.7 / 1 GB</td>
                                     <td>6 / 30 GB</td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
                                 <tr class="vm-row" style="background: var(--bg-card); font-weight: 600;">
                                     <td>VM Total</td>
@@ -456,11 +467,12 @@
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 70%; background: var(--accent-orange);"></span></span> <span class="usage-val">70%</span></td>
                                     <td><span class="usage-bar"><span class="usage-fill" style="width: 20%; background: var(--accent-green);"></span></span> <span class="usage-val">20%</span></td>
                                     <td>-</td>
+                                    <td>-</td>
                                 </tr>
-                                <tr class="service-row"><td class="component-name">↳ npm</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-blue);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-green);"></span></span> <span class="usage-val">10%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ authelia</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-orange);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ flask-api</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
-                                <tr class="service-row"><td class="component-name">↳ wireguard</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td></tr>
+                                <tr class="service-row"><td class="component-name">↳ npm</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 8%; background: var(--accent-blue);"></span></span> <span class="usage-val">8%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 25%; background: var(--accent-orange);"></span></span> <span class="usage-val">25%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-green);"></span></span> <span class="usage-val">10%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('gcp-f-micro_1', 'npm')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ authelia</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 3%; background: var(--accent-blue);"></span></span> <span class="usage-val">3%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 15%; background: var(--accent-orange);"></span></span> <span class="usage-val">15%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-green);"></span></span> <span class="usage-val">5%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('gcp-f-micro_1', 'authelia')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ cloud-api</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-blue);"></span></span> <span class="usage-val">1%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('gcp-f-micro_1', 'cloud-api')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                <tr class="service-row"><td class="component-name">↳ wireguard</td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 5%; background: var(--accent-blue);"></span></span> <span class="usage-val">5%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 10%; background: var(--accent-orange);"></span></span> <span class="usage-val">10%</span></td><td><span class="usage-bar-sm"><span class="usage-fill" style="width: 1%; background: var(--accent-green);"></span></span> <span class="usage-val">1%</span></td><td>-</td><td><button class="vm-action-btn btn-reset" onclick="restartContainer('gcp-f-micro_1', 'wireguard')" title="Restart container"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -3781,6 +3793,49 @@
             } catch (error) {
                 console.error('Shutdown error:', error);
                 alert(`Shutdown failed: ${error.message}`);
+                btn.classList.remove('loading');
+            }
+        }
+
+        // Restart container function
+        async function restartContainer(vmId, containerName) {
+            if (!isLoggedIn) {
+                alert('Please login with GitHub to restart containers');
+                return;
+            }
+
+            const btn = event.target.closest('.vm-action-btn');
+            if (!btn || btn.classList.contains('loading')) return;
+
+            if (!confirm(`Restart container "${containerName}" on ${vmId}?`)) return;
+
+            btn.classList.add('loading');
+
+            try {
+                const token = localStorage.getItem('github_token');
+                const response = await fetch(`${apiUrl}/vms/${vmId}/containers/${containerName}/restart`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    btn.classList.remove('loading');
+                    btn.classList.add('success');
+                    setTimeout(() => {
+                        btn.classList.remove('success');
+                        alert(`Container ${containerName} restarted successfully`);
+                    }, 500);
+                } else {
+                    throw new Error(data.error || 'Restart failed');
+                }
+            } catch (error) {
+                console.error('Container restart error:', error);
+                alert(`Restart failed: ${error.message}`);
                 btn.classList.remove('loading');
             }
         }

@@ -211,11 +211,11 @@ jobs:
 
       - name: 🔨 Build MyMaps
         id: build-mymaps
-        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/mymaps/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Cloud/mymaps/')
         continue-on-error: false
         run: |
           echo "🔨 Building MyMaps..."
-          cd b_Linktree/mymaps/1.ops
+          cd a_Cloud/mymaps/1.ops
           bash build.sh build
           cd ../../..
           echo "✅ MyMaps build complete"
@@ -608,11 +608,11 @@ jobs:
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
           fi
 
-          # Copy MyMaps build (if dist exists - Next.js static export with custom distDir)
-          if [ -d "b_Linktree/mymaps/dist" ]; then
+          # Copy MyMaps build (if dist exists - React+Vite single-file)
+          if [ -d "a_Cloud/mymaps/dist" ]; then
             echo "📦 Copying MyMaps build..."
             mkdir -p _site/mymaps
-            cp -rL b_Linktree/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r b_Linktree/mymaps/dist/* _site/mymaps/
+            cp -rL a_Cloud/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r a_Cloud/mymaps/dist/* _site/mymaps/
             echo "✅ MyMaps build copied to _site/mymaps/"
           else
             echo "⏭️  Skipping MyMaps copy (no dist directory found)"

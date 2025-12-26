@@ -83,13 +83,13 @@
             <div class="nav-level2 active" id="nav-cloudcontrol">
                 <button class="view-btn" data-dash-parent="topology">Topology</button>
                 <span class="nav-divider"></span>
-                <button class="view-btn active" data-dash-parent="monitor">Monitor</button>
-                <span class="nav-divider"></span>
-                <button class="view-btn" data-dash-parent="audit">Audit</button>
+                <button class="view-btn active" data-dash-parent="monitor">Monitor & Audit</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="orchestrate">Orchestrate</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="cost">Cost</button>
+                <span class="nav-divider"></span>
+                <button class="view-btn" data-dash-tab="apps">Apps</button>
             </div>
             <!-- Level 3: Sub-navigation for Topology -->
             <div class="nav-level3-wrapper" id="nav-topology" style="display: none;">
@@ -98,20 +98,15 @@
                     <button class="view-btn active" data-topology-cat="app">App</button>
                     <button class="view-btn" data-topology-cat="data">Data</button>
                     <button class="view-btn" data-topology-cat="containers">Containers</button>
+                    <button class="view-btn" data-topology-cat="security">Security</button>
                 </div>
             </div>
-            <!-- Level 3: Sub-navigation for Monitor -->
+            <!-- Level 3: Sub-navigation for Monitor & Audit -->
             <div class="nav-level3-wrapper" id="nav-monitor" style="display: flex;">
-                <h2 class="nav-level3-title">Monitor</h2>
+                <h2 class="nav-level3-title">Monitor & Audit</h2>
                 <div class="nav-level3">
                     <button class="view-btn active" data-dash-tab="resources">Infra</button>
                     <button class="view-btn" data-dash-tab="security">Security</button>
-                </div>
-            </div>
-            <!-- Level 3: Sub-navigation for Audit -->
-            <div class="nav-level3-wrapper" id="nav-audit" style="display: none;">
-                <h2 class="nav-level3-title">Audit</h2>
-                <div class="nav-level3">
                     <button class="view-btn" data-dash-tab="audit-analytics">Analytics</button>
                     <button class="view-btn" data-dash-tab="audit-logs">Logs</button>
                 </div>
@@ -128,6 +123,11 @@
                     <button class="view-btn active" data-subtab="cost-infra">Infrastructure</button>
                     <button class="view-btn" data-subtab="cost-ai">AI Costs</button>
                 </div>
+            </div>
+            <!-- Level 3: Apps title -->
+            <div class="nav-level3-wrapper" id="nav-apps" style="display: none;">
+                <h2 class="nav-level3-title">Apps</h2>
+                <p class="nav-level3-subtitle">Cloud Management Applications</p>
             </div>
         </header>
 
@@ -470,21 +470,243 @@
 
         <!-- Audit Analytics Tab Content -->
         <div id="audit-analytics-tab" class="tab-content">
+            <!-- Matomo Analytics Card -->
             <div class="resources-category">
-                <h3 class="resources-category-title">Audit Analytics</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Website analytics and visitor tracking</p>
-
-                <div class="cards-grid" style="max-width: 180px;">
-                    <a href="https://analytics.diegonmarcos.com" target="_blank" class="card card-link" style="text-decoration: none; padding: 1rem; text-align: center;">
-                        <div class="card-icon" style="width: 32px; height: 32px; margin: 0 auto 0.5rem;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 20V10M12 20V4M6 20v-6"/>
-                            </svg>
+                <h3 class="resources-category-title">Analytics Platform</h3>
+                <div class="apps-cards-grid" style="max-width: 400px;">
+                    <a href="https://analytics.diegonmarcos.com" target="_blank" class="app-card" style="text-decoration: none;">
+                        <div class="app-card-header">
+                            <div class="app-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 20V10M12 20V4M6 20v-6"/>
+                                </svg>
+                            </div>
+                            <h3 class="app-card-title">Matomo Analytics</h3>
                         </div>
-                        <h3 style="font-size: 0.85rem; margin-bottom: 0.25rem;">Matomo</h3>
-                        <p style="font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Analytics</p>
-                        <div class="card-status online" style="font-size: 0.65rem; padding: 0.15rem 0.5rem;">Online</div>
+                        <div class="app-card-body">
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Features</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot" style="background: #22c55e;"></span>Privacy-focused tracking</li>
+                                    <li><span class="app-card-dot" style="background: #3b82f6;"></span>GDPR compliant</li>
+                                    <li><span class="app-card-dot" style="background: #a855f7;"></span>Self-hosted on OCI</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="app-card-footer">
+                            <span class="app-card-badge live">Online</span>
+                            <span class="app-card-status">analytics.diegonmarcos.com</span>
+                        </div>
                     </a>
+                </div>
+            </div>
+
+            <!-- Cloud Pages Analytics Example -->
+            <div class="resources-category" style="margin-top: 2rem;">
+                <h3 class="resources-category-title">Cloud Pages Analytics</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Visitor metrics for Cloud Portal pages (example data)</p>
+
+                <!-- Summary Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-blue);">2,847</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Total Visits</div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-green);">1,523</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Unique Visitors</div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-purple);">4:32</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Avg. Duration</div>
+                    </div>
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-orange);">32%</div>
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase;">Bounce Rate</div>
+                    </div>
+                </div>
+
+                <!-- Pages Table -->
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%;">Page</th>
+                                    <th style="width: 15%;">Views</th>
+                                    <th style="width: 15%;">Unique</th>
+                                    <th style="width: 15%;">Avg. Time</th>
+                                    <th style="width: 20%;">Traffic</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <span style="width: 8px; height: 8px; background: var(--accent-blue); border-radius: 50%;"></span>
+                                            <span>/cloud/</span>
+                                        </div>
+                                    </td>
+                                    <td>1,247</td>
+                                    <td>892</td>
+                                    <td>3:45</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <div style="flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                                                <div style="width: 100%; height: 100%; background: var(--accent-blue); border-radius: 3px;"></div>
+                                            </div>
+                                            <span style="font-size: 0.75rem; color: var(--text-secondary);">44%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <span style="width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%;"></span>
+                                            <span>/cloud/cloud_control</span>
+                                        </div>
+                                    </td>
+                                    <td>623</td>
+                                    <td>445</td>
+                                    <td>5:12</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <div style="flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                                                <div style="width: 50%; height: 100%; background: var(--accent-green); border-radius: 3px;"></div>
+                                            </div>
+                                            <span style="font-size: 0.75rem; color: var(--text-secondary);">22%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <span style="width: 8px; height: 8px; background: var(--accent-purple); border-radius: 50%;"></span>
+                                            <span>/cloud/architecture</span>
+                                        </div>
+                                    </td>
+                                    <td>512</td>
+                                    <td>398</td>
+                                    <td>4:28</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <div style="flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                                                <div style="width: 41%; height: 100%; background: var(--accent-purple); border-radius: 3px;"></div>
+                                            </div>
+                                            <span style="font-size: 0.75rem; color: var(--text-secondary);">18%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <span style="width: 8px; height: 8px; background: var(--accent-orange); border-radius: 50%;"></span>
+                                            <span>/cloud/products</span>
+                                        </div>
+                                    </td>
+                                    <td>465</td>
+                                    <td>312</td>
+                                    <td>2:56</td>
+                                    <td>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <div style="flex: 1; height: 6px; background: var(--bg-secondary); border-radius: 3px; overflow: hidden;">
+                                                <div style="width: 37%; height: 100%; background: var(--accent-orange); border-radius: 3px;"></div>
+                                            </div>
+                                            <span style="font-size: 0.75rem; color: var(--text-secondary);">16%</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Traffic Chart -->
+                <div class="resources-section" style="margin-top: 1.5rem;">
+                    <h4 style="font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem;">Visits Over Time (Last 7 Days)</h4>
+                    <div style="display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; padding: 0.5rem 0;">
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 45%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Mon</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 62%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Tue</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 78%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Wed</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 55%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Thu</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 92%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Fri</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 100%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Sat</span>
+                        </div>
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.25rem;">
+                            <div style="width: 100%; background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple)); border-radius: 4px 4px 0 0; height: 68%;"></div>
+                            <span style="font-size: 0.65rem; color: var(--text-secondary);">Sun</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Traffic Sources -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                    <!-- Device Breakdown -->
+                    <div class="resources-section">
+                        <h4 style="font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem;">Device Type</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    <span>Desktop</span><span style="color: var(--accent-blue);">68%</span>
+                                </div>
+                                <div style="background: var(--bg-tertiary); border-radius: 4px; height: 8px; overflow: hidden;">
+                                    <div style="width: 68%; height: 100%; background: var(--accent-blue);"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    <span>Mobile</span><span style="color: var(--accent-green);">24%</span>
+                                </div>
+                                <div style="background: var(--bg-tertiary); border-radius: 4px; height: 8px; overflow: hidden;">
+                                    <div style="width: 24%; height: 100%; background: var(--accent-green);"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.25rem;">
+                                    <span>Tablet</span><span style="color: var(--accent-orange);">8%</span>
+                                </div>
+                                <div style="background: var(--bg-tertiary); border-radius: 4px; height: 8px; overflow: hidden;">
+                                    <div style="width: 8%; height: 100%; background: var(--accent-orange);"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top Referrers -->
+                    <div class="resources-section">
+                        <h4 style="font-size: 0.85rem; color: var(--text-primary); margin-bottom: 1rem;">Top Referrers</h4>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 4px;">
+                                <span style="font-size: 0.8rem;">Direct / None</span>
+                                <span style="font-size: 0.8rem; color: var(--accent-blue); font-weight: 600;">892</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 4px;">
+                                <span style="font-size: 0.8rem;">github.com</span>
+                                <span style="font-size: 0.8rem; color: var(--accent-green); font-weight: 600;">423</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem; background: var(--bg-tertiary); border-radius: 4px;">
+                                <span style="font-size: 0.8rem;">diegonmarcos.com</span>
+                                <span style="font-size: 0.8rem; color: var(--accent-purple); font-weight: 600;">208</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1522,6 +1744,105 @@
 
         </div><!-- End Cost Tab -->
 
+        <!-- Apps Tab Content -->
+        <div id="apps-tab" class="tab-content">
+            <div class="apps-cards-grid">
+                <!-- Cloud Monitor Card -->
+                <div class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <h3 class="app-card-title">Cloud Monitor</h3>
+                    </div>
+                    <div class="app-card-body">
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Infra</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot healthy"></span>Health Status</li>
+                                <li><span class="app-card-dot perf"></span>Performance Metrics</li>
+                            </ul>
+                        </div>
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Security</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot sync"></span>Sync Status</li>
+                                <li><span class="app-card-dot sauron"></span>Sauron (Intrusion Detection)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <span class="app-card-badge live">Live Data</span>
+                        <span class="app-card-status">Coming Soon</span>
+                    </div>
+                </div>
+
+                <!-- Cloud Debug Card -->
+                <div class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                            </svg>
+                        </div>
+                        <h3 class="app-card-title">Cloud Debug</h3>
+                    </div>
+                    <div class="app-card-body">
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Topology Tables</h4>
+                            <p class="app-card-desc">Visual infrastructure topology with relationships</p>
+                        </div>
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Library of Commands</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot ssh"></span>SSH Commands</li>
+                                <li><span class="app-card-dot docker"></span>Docker Commands</li>
+                                <li><span class="app-card-dot system"></span>System Commands</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <span class="app-card-badge tools">Dev Tools</span>
+                        <span class="app-card-status">Coming Soon</span>
+                    </div>
+                </div>
+
+                <!-- Cloud Audit Sync Card -->
+                <div class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                        </div>
+                        <h3 class="app-card-title">Cloud Audit Sync</h3>
+                    </div>
+                    <div class="app-card-body">
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Data Collectors</h4>
+                            <p class="app-card-desc">Automated infrastructure data collection agents</p>
+                        </div>
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Consolidation</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot logs"></span>Log Aggregation</li>
+                                <li><span class="app-card-dot info"></span>Info Consolidation</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <span class="app-card-badge audit">Audit</span>
+                        <span class="app-card-status">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Apps Tab -->
+
         <!-- Monitor Security Tab Content -->
         <div id="security-tab" class="tab-content">
             <!-- VM Public Ports Audit -->
@@ -2471,6 +2792,323 @@
                             <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-orange);">4</div>
                             <div style="font-size: 0.75rem; color: var(--text-secondary);">VMs with Docker</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECURITY VIEW - Security Topology & Access Points -->
+        <div id="infra-security-view" class="infra-view-content" style="display: none;">
+            <!-- Security Layers Diagram -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Defense in Depth Model</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">"Blast Radius Containment" - Assume any public-facing service can be compromised. Design so a breach cannot spread.</p>
+
+                <div class="security-layers-diagram">
+                    <!-- Layer 1: Network Edge -->
+                    <div class="security-layer" style="--layer-color: #ef4444;">
+                        <div class="security-layer-header">
+                            <div class="security-layer-badge">Layer 1</div>
+                            <h4 class="security-layer-title">Network Edge</h4>
+                        </div>
+                        <div class="security-layer-content">
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #f97316;"></span>
+                                <span>Oracle Cloud Security Lists</span>
+                                <span class="security-tag">Firewall</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #f97316;"></span>
+                                <span>GCP Firewall Rules</span>
+                                <span class="security-tag">Firewall</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #22c55e;"></span>
+                                <span>UFW (Host Level)</span>
+                                <span class="security-tag">Default: DROP</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #3b82f6;"></span>
+                                <span>Fail2Ban</span>
+                                <span class="security-tag">Brute Force Protection</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 2: Traffic Routing -->
+                    <div class="security-layer" style="--layer-color: #f97316;">
+                        <div class="security-layer-header">
+                            <div class="security-layer-badge">Layer 2</div>
+                            <h4 class="security-layer-title">Traffic Routing</h4>
+                        </div>
+                        <div class="security-layer-content">
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #8b5cf6;"></span>
+                                <span>Cloudflare DNS + DDoS</span>
+                                <span class="security-tag">Edge Protection</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #22c55e;"></span>
+                                <span>NPM TLS Termination</span>
+                                <span class="security-tag">Let's Encrypt</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #3b82f6;"></span>
+                                <span>HTTP → HTTPS Redirect</span>
+                                <span class="security-tag">Forced SSL</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #eab308;"></span>
+                                <span>Rate Limiting</span>
+                                <span class="security-tag">Abuse Prevention</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #06b6d4;"></span>
+                                <span>Security Headers</span>
+                                <span class="security-tag">HSTS, CSP, X-Frame</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 3: Application Isolation -->
+                    <div class="security-layer" style="--layer-color: #eab308;">
+                        <div class="security-layer-header">
+                            <div class="security-layer-badge">Layer 3</div>
+                            <h4 class="security-layer-title">Application Isolation</h4>
+                        </div>
+                        <div class="security-layer-content">
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #3b82f6;"></span>
+                                <span>Docker Networks</span>
+                                <span class="security-tag">No Cross-Talk</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #8b5cf6;"></span>
+                                <span>Container User Namespaces</span>
+                                <span class="security-tag">UID Isolation</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #22c55e;"></span>
+                                <span>127.0.0.1 Binding</span>
+                                <span class="security-tag">UFW Bypass Prevention</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #f97316;"></span>
+                                <span>Resource Limits</span>
+                                <span class="security-tag">CPU, Memory Caps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Layer 4: Data Protection -->
+                    <div class="security-layer" style="--layer-color: #22c55e;">
+                        <div class="security-layer-header">
+                            <div class="security-layer-badge">Layer 4</div>
+                            <h4 class="security-layer-title">Data Protection</h4>
+                        </div>
+                        <div class="security-layer-content">
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #3b82f6;"></span>
+                                <span>Separate Volumes per Service</span>
+                                <span class="security-tag">Isolation</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #8b5cf6;"></span>
+                                <span>Database per Service</span>
+                                <span class="security-tag">No Shared DBs</span>
+                            </div>
+                            <div class="security-component">
+                                <span class="security-dot" style="background: #22c55e;"></span>
+                                <span>Encrypted Backups</span>
+                                <span class="security-tag">At Rest</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Access Points -->
+            <div class="resources-category" style="margin-top: 2rem;">
+                <h3 class="resources-category-title">Access Points</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+
+                    <!-- User Access -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <div class="app-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="12" cy="7" r="4"/>
+                                </svg>
+                            </div>
+                            <h3 class="app-card-title">User Access</h3>
+                        </div>
+                        <div class="app-card-body">
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Public Services (HTTPS)</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot" style="background: #22c55e;"></span>Web Apps → Cloudflare → NPM → Service</li>
+                                    <li><span class="app-card-dot" style="background: #3b82f6;"></span>Protected Apps → + Authelia 2FA Gate</li>
+                                    <li><span class="app-card-dot" style="background: #8b5cf6;"></span>Email → Webmail via SSO</li>
+                                </ul>
+                            </div>
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Authentication Flow</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot" style="background: #f97316;"></span>Password + TOTP (Authelia)</li>
+                                    <li><span class="app-card-dot" style="background: #06b6d4;"></span>Session Cookie (*.diegonmarcos.com)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="app-card-footer">
+                            <span class="app-card-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">HTTPS Only</span>
+                            <span class="app-card-status">auth.diegonmarcos.com</span>
+                        </div>
+                    </div>
+
+                    <!-- Developer/Admin Access -->
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <div class="app-card-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                    <line x1="8" y1="21" x2="16" y2="21"/>
+                                    <line x1="12" y1="17" x2="12" y2="21"/>
+                                </svg>
+                            </div>
+                            <h3 class="app-card-title">Developer/Admin Access</h3>
+                        </div>
+                        <div class="app-card-body">
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">SSH Access (Key-Only)</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot" style="background: #22c55e;"></span>OCI VMs: ssh -i ~/.ssh/id_rsa ubuntu@IP</li>
+                                    <li><span class="app-card-dot" style="background: #3b82f6;"></span>GCP VMs: gcloud compute ssh arch-1</li>
+                                    <li><span class="app-card-dot" style="background: #ef4444;"></span>No Password Auth (Disabled)</li>
+                                </ul>
+                            </div>
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Admin Panels</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot" style="background: #8b5cf6;"></span>NPM: proxy.diegonmarcos.com (2FA)</li>
+                                    <li><span class="app-card-dot" style="background: #f97316;"></span>Mailu Admin: mail.diegonmarcos.com/admin</li>
+                                    <li><span class="app-card-dot" style="background: #06b6d4;"></span>Matomo: analytics.diegonmarcos.com</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="app-card-footer">
+                            <span class="app-card-badge" style="background: rgba(249, 115, 22, 0.15); color: #f97316;">SSH + 2FA</span>
+                            <span class="app-card-status">Key-based only</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Flow Diagram -->
+            <div class="resources-category" style="margin-top: 2rem;">
+                <h3 class="resources-category-title">Traffic Flow</h3>
+                <div class="resources-section">
+                    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.6; overflow-x: auto;">
+<pre style="margin: 0; color: var(--text-primary);">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              INTERNET                                         │
+│         HTTP(80) │ HTTPS(443) │ SSH(22) │ SMTP(25,465,587) │ IMAP(993)       │
+└────────────────────────────────────────────────────────────────────────────-─┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     CLOUDFLARE (DNS + DDoS + SSL)                            │
+│                   *.diegonmarcos.com → Origin IPs                            │
+└────────────────────────────────────────────────────────────────────────────-─┘
+                                        │
+            ┌───────────────────────────┼───────────────────────────┐
+            ▼                           ▼                           ▼
+┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
+│   OCI Firewall    │     │   GCP Firewall    │     │   OCI Firewall    │
+│   (Security List) │     │   (VPC Rules)     │     │   (Security List) │
+└─────────┬─────────┘     └─────────┬─────────┘     └─────────┬─────────┘
+          │                         │                         │
+          ▼                         ▼                         ▼
+┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
+│   UFW (Host)      │     │   UFW (Host)      │     │   UFW (Host)      │
+│   Default: DROP   │     │   Default: DROP   │     │   Default: DROP   │
+└─────────┬─────────┘     └─────────┬─────────┘     └─────────┬─────────┘
+          │                         │                         │
+          ▼                         ▼                         ▼
+┌───────────────────┐     ┌───────────────────┐     ┌───────────────────┐
+│  oci-f-micro_1    │     │  gcp-f-micro_1    │     │  oci-f-micro_2    │
+│  Mailu (Mail)     │     │  NPM + Authelia   │     │  Matomo           │
+│  :443, :993, :465 │     │  :80, :443        │     │  :8080 (internal) │
+└───────────────────┘     └─────────┬─────────┘     └───────────────────┘
+                                    │
+                          ┌─────────┴─────────┐
+                          ▼                   ▼
+                  ┌─────────────┐     ┌─────────────┐
+                  │  Authelia   │     │  Services   │
+                  │  2FA Check  │────▶│  (Docker)   │
+                  │  TOTP/Pass  │     │  127.0.0.1  │
+                  └─────────────┘     └─────────────┘
+</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security Checklist -->
+            <div class="resources-category" style="margin-top: 2rem;">
+                <h3 class="resources-category-title">Security Checklist</h3>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table" style="font-size: 0.85rem;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 50%;">Security Control</th>
+                                    <th style="width: 15%;">Status</th>
+                                    <th style="width: 35%;">Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>All containers bind to 127.0.0.1 or internal network</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>Prevents Docker UFW bypass</td>
+                                </tr>
+                                <tr>
+                                    <td>WireGuard tunnel for cross-VM communication</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>GCP ↔ Oracle encrypted</td>
+                                </tr>
+                                <tr>
+                                    <td>Authelia 2FA on sensitive services</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>Photoprism, admin panels</td>
+                                </tr>
+                                <tr>
+                                    <td>UFW enabled with default deny</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>All VMs</td>
+                                </tr>
+                                <tr>
+                                    <td>SSH key-only authentication</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>No passwords</td>
+                                </tr>
+                                <tr>
+                                    <td>Let's Encrypt SSL on all domains</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>Auto-renewal via NPM</td>
+                                </tr>
+                                <tr>
+                                    <td>Database ports never exposed publicly</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>Internal networks only</td>
+                                </tr>
+                                <tr>
+                                    <td>Public DNS (Google/Cloudflare) on all VMs</td>
+                                    <td><span class="status-badge on">✓</span></td>
+                                    <td>Prevents ISP DNS poisoning</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -4320,9 +4958,11 @@
             const dataView = document.getElementById('infra-data-view');
             // Containers views
             const containersView = document.getElementById('infra-containers-view');
+            // Security views
+            const securityView = document.getElementById('infra-security-view');
 
             // Hide all views
-            [byVmView, byTypeView, treeByVmView, treeByTypeView, dataView, containersView].forEach(v => {
+            [byVmView, byTypeView, treeByVmView, treeByTypeView, dataView, containersView, securityView].forEach(v => {
                 if (v) {
                     v.style.display = 'none';
                     v.classList.remove('active');
@@ -4338,6 +4978,10 @@
                 // Containers category - show containers view (list only for now)
                 containersView.style.display = 'block';
                 containersView.classList.add('active');
+            } else if (currentCategory === 'security') {
+                // Security category - show security topology view
+                securityView.style.display = 'block';
+                securityView.classList.add('active');
             } else {
                 // App category - respect display mode and group mode
                 if (currentDisplayMode === 'list') {
@@ -4519,7 +5163,7 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'orchestrate', 'cost', 'security', 'infra', 'audit-analytics', 'audit-logs'];
+            const validTabs = ['status', 'resources', 'orchestrate', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
@@ -4527,21 +5171,21 @@
                 'infra': 'topology',
                 'resources': 'monitor',
                 'security': 'monitor',
-                'audit-analytics': 'audit',
-                'audit-logs': 'audit'
+                'audit-analytics': 'monitor',
+                'audit-logs': 'monitor'
             };
 
             function hideAllLevel3Navs() {
                 const navTopology = document.getElementById('nav-topology');
                 const navMonitor = document.getElementById('nav-monitor');
-                const navAudit = document.getElementById('nav-audit');
                 const navOrchestrate = document.getElementById('nav-orchestrate');
                 const navCost = document.getElementById('nav-cost');
+                const navApps = document.getElementById('nav-apps');
                 if (navTopology) navTopology.style.display = 'none';
                 if (navMonitor) navMonitor.style.display = 'none';
-                if (navAudit) navAudit.style.display = 'none';
                 if (navOrchestrate) navOrchestrate.style.display = 'none';
                 if (navCost) navCost.style.display = 'none';
+                if (navApps) navApps.style.display = 'none';
             }
 
             function switchTab(targetTab) {
@@ -4578,10 +5222,6 @@
                         const navMonitor = document.getElementById('nav-monitor');
                         if (navMonitor) navMonitor.style.display = 'flex';
                         document.querySelector('[data-dash-parent="monitor"]')?.classList.add('active');
-                    } else if (parentGroup === 'audit') {
-                        const navAudit = document.getElementById('nav-audit');
-                        if (navAudit) navAudit.style.display = 'flex';
-                        document.querySelector('[data-dash-parent="audit"]')?.classList.add('active');
                     } else if (targetTab === 'orchestrate') {
                         const navOrchestrate = document.getElementById('nav-orchestrate');
                         if (navOrchestrate) navOrchestrate.style.display = 'flex';
@@ -4590,6 +5230,10 @@
                         const navCost = document.getElementById('nav-cost');
                         if (navCost) navCost.style.display = 'flex';
                         document.querySelector('[data-dash-tab="cost"]')?.classList.add('active');
+                    } else if (targetTab === 'apps') {
+                        const navApps = document.getElementById('nav-apps');
+                        if (navApps) navApps.style.display = 'flex';
+                        document.querySelector('[data-dash-tab="apps"]')?.classList.add('active');
                     }
 
                     // Update URL hash
@@ -4614,7 +5258,6 @@
                     // Switch to the first tab in this group
                     if (parentGroup === 'topology') switchTab('infra');
                     else if (parentGroup === 'monitor') switchTab('resources');
-                    else if (parentGroup === 'audit') switchTab('audit-analytics');
                 });
             });
 

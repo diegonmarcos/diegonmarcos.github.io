@@ -79,7 +79,7 @@ export default function HighchartsMap({ config }: HighchartsMapProps) {
         chartRef.current = window.Highcharts.mapChart(containerRef.current, {
           chart: {
             map: window.Highcharts.maps[mapKey],
-            backgroundColor: 'transparent',
+            backgroundColor: '#0d1117',
           },
           title: { text: '' },
           mapNavigation: {
@@ -125,8 +125,8 @@ export default function HighchartsMap({ config }: HighchartsMapProps) {
               data: chartData,
               joinBy: ['hc-key', 'code'],
               name: 'Geopolitical',
-              nullColor: 'rgba(44, 44, 44, 0.8)',
-              borderColor: 'rgba(255, 255, 255, 0.15)',
+              nullColor: '#161b22',
+              borderColor: 'rgba(255, 255, 255, 0.1)',
               borderWidth: 0.5,
               states: {
                 hover: {

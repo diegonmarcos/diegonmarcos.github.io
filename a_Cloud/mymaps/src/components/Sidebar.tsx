@@ -9,6 +9,8 @@ interface SidebarProps {
   onFileUpload: (file: File) => void;
   onHomeClick: () => void;
   showHome: boolean;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 const TYPE_ICONS: Record<string, JSX.Element> = {
@@ -41,7 +43,7 @@ const TYPE_ICONS: Record<string, JSX.Element> = {
   ),
 };
 
-export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHomeClick, showHome }: SidebarProps) {
+export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHomeClick, showHome, collapsed, onToggleCollapse }: SidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -83,7 +85,7 @@ export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHo
 
   return (
     <aside
-      className={`sidebar ${isDragging ? 'dragging' : ''}`}
+      className={`sidebar ${isDragging ? 'dragging' : ''} ${collapsed ? 'collapsed' : ''}`}
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
@@ -94,36 +96,51 @@ export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHo
             <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
             <circle cx="12" cy="9" r="2.5" />
           </svg>
-          <span>MyMaps</span>
+          {!collapsed && <span>MyMaps</span>}
         </div>
+        <button className="collapse-btn" onClick={onToggleCollapse} title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {collapsed ? (
+              <polyline points="9 18 15 12 9 6" />
+            ) : (
+              <polyline points="15 18 9 12 15 6" />
+            )}
+          </svg>
+        </button>
       </div>
 
       <nav className="sidebar-nav">
         <button
           className={`home-link ${showHome ? 'active' : ''}`}
           onClick={onHomeClick}
+          title="Home"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
             <polyline points="9 22 9 12 15 12 15 22" />
           </svg>
-          <span>Home</span>
+          {!collapsed && <span>Home</span>}
         </button>
 
         <div className="nav-section">
-          <h3>My Maps</h3>
+          {!collapsed && <h3>My Maps</h3>}
           <ul className="map-list">
             {predefinedMaps.map(map => (
               <li key={map.id}>
                 <button
                   className={`map-item ${selectedId === map.id ? 'active' : ''}`}
                   onClick={() => onSelect(map.id)}
+                  title={map.name}
                 >
                   <span className="map-icon">
                     {TYPE_ICONS[map.type] || TYPE_ICONS.kml}
                   </span>
-                  <span className="map-name">{map.name}</span>
-                  <span className="map-type">{map.type.toUpperCase()}</span>
+                  {!collapsed && (
+                    <>
+                      <span className="map-name">{map.name}</span>
+                      <span className="map-type">{map.type.toUpperCase()}</span>
+                    </>
+                  )}
                 </button>
               </li>
             ))}
@@ -132,19 +149,24 @@ export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHo
 
         {customMaps.length > 0 && (
           <div className="nav-section">
-            <h3>Uploaded</h3>
+            {!collapsed && <h3>Uploaded</h3>}
             <ul className="map-list">
               {customMaps.map(map => (
                 <li key={map.id}>
                   <button
                     className={`map-item ${selectedId === map.id ? 'active' : ''}`}
                     onClick={() => onSelect(map.id)}
+                    title={map.name}
                   >
                     <span className="map-icon">
                       {TYPE_ICONS[map.type] || TYPE_ICONS.kml}
                     </span>
-                    <span className="map-name">{map.name}</span>
-                    <span className="map-type">{map.type.toUpperCase()}</span>
+                    {!collapsed && (
+                      <>
+                        <span className="map-name">{map.name}</span>
+                        <span className="map-type">{map.type.toUpperCase()}</span>
+                      </>
+                    )}
                   </button>
                 </li>
               ))}
@@ -164,19 +186,22 @@ export default function Sidebar({ maps, selectedId, onSelect, onFileUpload, onHo
         <button
           className="upload-btn"
           onClick={() => fileInputRef.current?.click()}
+          title="Upload map file"
         >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="17 8 12 3 7 8" />
             <line x1="12" y1="3" x2="12" y2="15" />
           </svg>
-          <span>Upload Map</span>
+          {!collapsed && <span>Upload Map</span>}
         </button>
-        <p className="upload-hint">
-          Drop files here or click to browse
-          <br />
-          <small>KML, KMZ, CSV, GeoJSON</small>
-        </p>
+        {!collapsed && (
+          <p className="upload-hint">
+            Drop files here or click to browse
+            <br />
+            <small>KML, KMZ, CSV, GeoJSON</small>
+          </p>
+        )}
       </div>
 
       {isDragging && (

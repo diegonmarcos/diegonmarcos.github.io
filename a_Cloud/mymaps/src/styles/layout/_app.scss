@@ -12,6 +12,11 @@
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: margin-left 0.2s ease;
+
+  .sidebar-collapsed & {
+    margin-left: 60px;
+  }
 }
 
 .map-info {

@@ -20,6 +20,7 @@ export default function App() {
   const [showHome, setShowHome] = useState(true);
   const [selectedMapId, setSelectedMapId] = useState<string | null>(null);
   const [customMaps, setCustomMaps] = useState<MapConfig[]>([]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const [state, setState] = useState<MapState>({
     config: null,
@@ -129,14 +130,15 @@ export default function App() {
   const basePath = config?.filePath?.replace(/[^/]+$/, '').replace(/\/$/, '') || '';
 
   const handleExplore = useCallback(() => {
-    setShowHome(false);
     if (maps.length > 0) {
+      setState(prev => ({ ...prev, loading: true, error: null }));
       setSelectedMapId(maps[0].id);
     }
+    setShowHome(false);
   }, [maps]);
 
   return (
-    <div className="app">
+    <div className={`app ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
       <Sidebar
         maps={[...maps, ...customMaps]}
         selectedId={selectedMapId}
@@ -144,6 +146,8 @@ export default function App() {
         onFileUpload={handleFileUpload}
         onHomeClick={handleHomeClick}
         showHome={showHome}
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(prev => !prev)}
       />
 
       <main className="main-content">

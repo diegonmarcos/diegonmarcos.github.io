@@ -1,5 +1,7 @@
 @use '../abstracts' as *;
 
+$sidebar-collapsed-width: 60px;
+
 .sidebar {
   position: fixed;
   left: 0;
@@ -11,27 +13,57 @@
   display: flex;
   flex-direction: column;
   z-index: $z-header;
-  transition: transform $transition-base;
+  transition: width $transition-base;
 
   &.dragging {
     border-color: $color-primary;
+  }
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
   }
 }
 
 .sidebar-header {
   padding: $spacing-lg;
   border-bottom: 1px solid $color-border;
+  @include flex-row(space-between, center, $spacing-sm);
 
   .logo {
     @include flex-row(flex-start, center, $spacing-sm);
     color: $color-text;
     font-weight: 600;
     font-size: $font-size-lg;
+    overflow: hidden;
 
     svg {
       width: 28px;
       height: 28px;
+      flex-shrink: 0;
       color: $color-primary;
+    }
+  }
+
+  .collapse-btn {
+    @include flex-center;
+    width: 28px;
+    height: 28px;
+    background: transparent;
+    border: none;
+    border-radius: $radius-sm;
+    color: $color-text-secondary;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all $transition-fast;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: $color-bg-tertiary;
+      color: $color-text;
     }
   }
 }
@@ -60,6 +92,7 @@
   svg {
     width: 22px;
     height: 22px;
+    flex-shrink: 0;
     color: $color-primary;
   }
 
@@ -73,6 +106,11 @@
     background: linear-gradient(135deg, rgba($color-primary, 0.2) 0%, rgba($color-secondary, 0.2) 100%);
     border-color: $color-primary;
     color: $color-primary;
+  }
+
+  .sidebar.collapsed & {
+    justify-content: center;
+    padding: $spacing-sm;
   }
 }
 
@@ -150,6 +188,11 @@
     padding: 0.15em 0.4em;
     border-radius: $radius-sm;
   }
+
+  .sidebar.collapsed & {
+    justify-content: center;
+    padding: $spacing-sm;
+  }
 }
 
 .sidebar-footer {
@@ -169,6 +212,7 @@
     svg {
       width: 18px;
       height: 18px;
+      flex-shrink: 0;
     }
 
     &:hover {
@@ -184,6 +228,13 @@
 
     small {
       opacity: 0.7;
+    }
+  }
+
+  .sidebar.collapsed & {
+    .upload-btn {
+      padding: $spacing-sm;
+      justify-content: center;
     }
   }
 }

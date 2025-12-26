@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Home from './components/Home';
 import MapViewer from './components/MapViewer';
+import HighchartsMap from './components/HighchartsMap';
 import Sidebar from './components/Sidebar';
 import Legend from './components/Legend';
 import { getAllMaps, loadPredefinedMap, extractCategories, createCustomMapConfig } from './utils/mapLoader';
@@ -44,6 +45,18 @@ export default function App() {
         loading: false,
         error: 'Map not found',
       }));
+      return;
+    }
+
+    // Highcharts maps don't need to load GeoJSON - they load their own data
+    if (config.type === 'highcharts') {
+      setState({
+        config,
+        geojson: null,
+        icons: new Map(),
+        loading: false,
+        error: null,
+      });
       return;
     }
 
@@ -176,20 +189,31 @@ export default function App() {
                   {geojson.features.length} locations
                 </span>
               )}
+              {config.type === 'highcharts' && config.countries && (
+                <span className="feature-count">
+                  {config.countries.length} countries
+                </span>
+              )}
             </div>
 
             <div className="map-container">
-              <MapViewer
-                geojson={geojson}
-                icons={icons}
-                center={config.center}
-                zoom={config.zoom}
-                showUserLocation={true}
-                basePath={basePath}
-              />
+              {config.type === 'highcharts' ? (
+                <HighchartsMap config={config} />
+              ) : (
+                <>
+                  <MapViewer
+                    geojson={geojson}
+                    icons={icons}
+                    center={config.center}
+                    zoom={config.zoom}
+                    showUserLocation={true}
+                    basePath={basePath}
+                  />
 
-              {legendItems.length > 0 && (
-                <Legend items={legendItems} title="Categories" />
+                  {legendItems.length > 0 && (
+                    <Legend items={legendItems} title="Categories" />
+                  )}
+                </>
               )}
             </div>
           </>

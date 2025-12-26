@@ -1,27 +1,41 @@
 import type { MapConfig, GeoJSONFeatureCollection } from '../types';
 import { loadMapFile, detectFileType, parseKML, parseKMZ, parseCSV } from './parsers';
+import { GEOPOLITICAL_COUNTRIES } from '../data/geopolitical';
 // @ts-ignore - virtual module generated at build time
 import { EMBEDDED_MAPS } from 'virtual:embedded-maps';
 
 // Predefined maps from the maps directory
 export const PREDEFINED_MAPS: MapConfig[] = [
+  // KML/Leaflet Maps (with pins/icons)
   {
     id: 'city-map',
-    name: 'Cities I Have Visited',
-    description: 'Cities visited vs. planned - my personal travel map',
+    name: 'Cities RoadMap',
+    description: 'Cities visited vs. planned - my personal travel map with pins',
     type: 'kml',
     filePath: 'maps/city_map/city_maps.kml',
     center: [48.8566, 2.3522],
     zoom: 4,
   },
+  // Highcharts Geopolitical Maps (painted countries)
   {
-    id: 'world-order',
-    name: 'World Order',
-    description: 'Geopolitical regions and spheres of influence',
-    type: 'kmz',
-    filePath: 'maps/world_order.kmz',
+    id: 'world-strategic',
+    name: 'World Strategic View',
+    description: 'Global geopolitical alignments and spheres of influence',
+    type: 'highcharts',
+    mapPath: 'custom/world',
     center: [20, 0],
     zoom: 2,
+    countries: GEOPOLITICAL_COUNTRIES,
+  },
+  {
+    id: 'europe-focus',
+    name: 'European Theater',
+    description: 'Focus on European NATO members and Russian influence',
+    type: 'highcharts',
+    mapPath: 'custom/europe',
+    center: [50, 10],
+    zoom: 4,
+    countries: GEOPOLITICAL_COUNTRIES,
   },
 ];
 

@@ -1,0 +1,132 @@
+@use '../abstracts' as *;
+
+.highcharts-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background: $color-bg;
+}
+
+.highcharts-container {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  transition: opacity 0.3s ease;
+}
+
+.map-loading,
+.map-error {
+  position: absolute;
+  inset: 0;
+  @include flex-col(center, center, $spacing-md);
+  background: $color-bg;
+  z-index: 10;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  .hint {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+  }
+}
+
+.map-error {
+  p:first-child {
+    color: $color-error;
+    font-size: $font-size-lg;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Sphere Legend
+.sphere-legend {
+  position: absolute;
+  bottom: $spacing-lg;
+  left: $spacing-lg;
+  background: rgba($color-bg-secondary, 0.95);
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $spacing-md;
+  max-width: 400px;
+  backdrop-filter: blur(8px);
+  z-index: 100;
+
+  h4 {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-text;
+    margin: 0 0 $spacing-sm;
+    padding-bottom: $spacing-xs;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-md;
+
+    @media (max-width: $breakpoint-md) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .legend-section {
+    h5 {
+      font-size: $font-size-xs;
+      font-weight: 600;
+      margin: 0 0 $spacing-xs;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  .legend-item {
+    @include flex-row(flex-start, center, $spacing-xs);
+    font-size: $font-size-xs;
+    color: $color-text-secondary;
+    margin-bottom: 2px;
+
+    .color-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// Mobile adjustments
+@media (max-width: $breakpoint-md) {
+  .sphere-legend {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin: $spacing-md;
+    max-width: none;
+  }
+
+  .highcharts-map-container {
+    @include flex-col(flex-start, stretch, 0);
+  }
+
+  .highcharts-container {
+    flex: 1;
+    min-height: 400px;
+  }
+}

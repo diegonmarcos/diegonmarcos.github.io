@@ -37,8 +37,8 @@ clean() {
 }
 
 dev() {
-    log_info "Starting dev server on :8020..."
-    cd "${PROJECT_DIR}/src" && python3 -m http.server 8020
+    log_info "Starting dev server on :8021..."
+    cd "${PROJECT_DIR}/src" && python3 -m http.server 8021
 }
 
 case "${1:-build}" in

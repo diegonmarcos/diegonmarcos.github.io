@@ -71,6 +71,7 @@ URL_MYMOVIES="http://localhost:8015/"
 URL_MYMAIL="http://localhost:8018/"
 URL_MYPHOTOS="http://localhost:8019/"
 URL_MYANALYTICS="http://localhost:8020/"
+URL_MYDRIVE="http://localhost:8021/"
 
 # Initialize log file with timestamp
 init_log() {
@@ -269,7 +270,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-mydrive; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -292,6 +293,7 @@ get_running_servers() {
                     build-mymail) _servers="${_servers}  ${GREEN}*${NC} MyMail (tmux)      ${BLUE}${URL_MYMAIL}${NC}\n" ;;
                     build-myphotos) _servers="${_servers}  ${GREEN}*${NC} MyPhotos (tmux)    ${BLUE}${URL_MYPHOTOS}${NC}\n" ;;
                     build-myanalytics) _servers="${_servers}  ${GREEN}*${NC} MyAnalytics (tmux) ${BLUE}${URL_MYANALYTICS}${NC}\n" ;;
+                    build-mydrive) _servers="${_servers}  ${GREEN}*${NC} MyDrive (tmux)     ${BLUE}${URL_MYDRIVE}${NC}\n" ;;
                 esac
                 _count=$((_count + 1))
             fi
@@ -355,6 +357,7 @@ print_usage() {
     printf "  ${GREEN}build-mymail${NC}       # MyMail - Vanilla (static copy)\n"
     printf "  ${GREEN}build-myphotos${NC}     # MyPhotos - Vanilla (static copy)\n"
     printf "  ${GREEN}build-myanalytics${NC}  # MyAnalytics - Vanilla (static copy)\n"
+    printf "  ${GREEN}build-mydrive${NC}      # MyDrive - Vanilla (static copy)\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}                # All - Start all servers\n"
@@ -377,6 +380,7 @@ print_usage() {
     printf "  ${GREEN}dev-mymail${NC}         # MyMail - Python :8018\n"
     printf "  ${GREEN}dev-myphotos${NC}       # MyPhotos - Python :8019\n"
     printf "  ${GREEN}dev-myanalytics${NC}    # MyAnalytics - Python :8020\n"
+    printf "  ${GREEN}dev-mydrive${NC}        # MyDrive - Python :8021\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}list${NC}               # List running servers/watchers\n"
@@ -660,6 +664,7 @@ dev_all() {
         tmux new-session -d -s build-mymail "cd $PROJECT_ROOT/a_Cloud/mymail/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-myphotos "cd $PROJECT_ROOT/a_Cloud/myphotos/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-myanalytics "cd $PROJECT_ROOT/a_Cloud/myanalytics/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-mydrive "cd $PROJECT_ROOT/a_Cloud/mydrive/1.ops && sh build.sh dev" 2>/dev/null || true
 
         log_success "All servers started in tmux sessions!"
         printf "\n"
@@ -683,6 +688,7 @@ dev_all() {
         printf "  ${CYAN}%-15s${NC}  %s\n" "MyMail" "$URL_MYMAIL"
         printf "  ${CYAN}%-15s${NC}  %s\n" "MyPhotos" "$URL_MYPHOTOS"
         printf "  ${CYAN}%-15s${NC}  %s\n" "MyAnalytics" "$URL_MYANALYTICS"
+        printf "  ${CYAN}%-15s${NC}  %s\n" "MyDrive" "$URL_MYDRIVE"
         printf "${GREEN}============================================================${NC}\n"
         printf "\n"
         log_info "Tmux Sessions: build-landpage, build-linktree, etc."
@@ -883,7 +889,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-mydrive; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -1422,6 +1428,7 @@ tui_simple() {
             b17)               _cmd="build-mymail"; _last_msg="Building MyMail" ;;
             b18)               _cmd="build-myphotos"; _last_msg="Building MyPhotos" ;;
             b19)               _cmd="build-myanalytics"; _last_msg="Building MyAnalytics" ;;
+            b20)               _cmd="build-mydrive"; _last_msg="Building MyDrive" ;;
             # Dev commands
             d|d0)              _cmd="dev"; _last_msg="Starting all dev servers..." ;;
             d1)                _cmd="dev-landpage"; _last_msg="Started Landpage :8000" ;;
@@ -1443,6 +1450,7 @@ tui_simple() {
             d17)               _cmd="dev-mymail"; _last_msg="Started MyMail :8018" ;;
             d18)               _cmd="dev-myphotos"; _last_msg="Started MyPhotos :8019" ;;
             d19)               _cmd="dev-myanalytics"; _last_msg="Started MyAnalytics :8020" ;;
+            d20)               _cmd="dev-mydrive"; _last_msg="Started MyDrive :8021" ;;
             # Utility commands
             k|kill)            _cmd="kill"; _last_msg="Killed all servers" ;;
             c|clean)           _cmd="clean"; _last_msg="Cleaned build artifacts" ;;
@@ -1491,6 +1499,7 @@ tui_simple() {
             dev-mymail)      log_to_file "Starting dev: mymail"; sh "$PROJECT_ROOT/a_Cloud/mymail/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-myphotos)    log_to_file "Starting dev: myphotos"; sh "$PROJECT_ROOT/a_Cloud/myphotos/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-myanalytics) log_to_file "Starting dev: myanalytics"; sh "$PROJECT_ROOT/a_Cloud/myanalytics/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mydrive)     log_to_file "Starting dev: mydrive"; sh "$PROJECT_ROOT/a_Cloud/mydrive/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev)             log_to_file "Starting dev: all"; dev_all >> "$LOG_FILE" 2>&1 & ;;
             kill)            log_to_file "Killing all servers"; kill_servers >> "$LOG_FILE" 2>&1 ;;
             build-landpage)    log_to_file "Building: landpage"; (sh "$PROJECT_ROOT/b_Linktree/landpage/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/landpage") & ;;
@@ -1512,6 +1521,7 @@ tui_simple() {
             build-mymail)      log_to_file "Building: mymail"; (sh "$PROJECT_ROOT/a_Cloud/mymail/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "a_Cloud/mymail") & ;;
             build-myphotos)    log_to_file "Building: myphotos"; (sh "$PROJECT_ROOT/a_Cloud/myphotos/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "a_Cloud/myphotos") & ;;
             build-myanalytics) log_to_file "Building: myanalytics"; (sh "$PROJECT_ROOT/a_Cloud/myanalytics/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "a_Cloud/myanalytics") & ;;
+            build-mydrive)     log_to_file "Building: mydrive"; (sh "$PROJECT_ROOT/a_Cloud/mydrive/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "a_Cloud/mydrive") & ;;
             build)             log_to_file "Building: all"; tui_build_all & ;;
             clean)             log_to_file "Cleaning all"; clean_all_builds >> "$LOG_FILE" 2>&1; clear_all_build_status ;;
         esac
@@ -1624,6 +1634,9 @@ main() {
         build-myanalytics)
             execute_build "a_Cloud/myanalytics" "build"
             ;;
+        build-mydrive)
+            execute_build "a_Cloud/mydrive" "build"
+            ;;
         dev)
             dev_all "$_verbose"
             ;;
@@ -1683,6 +1696,9 @@ main() {
             ;;
         dev-myanalytics)
             dev_single "a_Cloud/myanalytics" "$URL_MYANALYTICS"
+            ;;
+        dev-mydrive)
+            dev_single "a_Cloud/mydrive" "$URL_MYDRIVE"
             ;;
         list)
             list_servers

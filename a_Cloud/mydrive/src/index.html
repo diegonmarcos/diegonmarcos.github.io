@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyDrive - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --github: #24292f;
+            --github-hover: #32383f;
+            --authelia: #0ea5e9;
+            --authelia-hover: #0284c7;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --sheets: #0f9d58;
+            --docs: #4285f4;
+            --media: #ea4335;
+            --files: #fbbc04;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Carousel Background */
+        .carousel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+        }
+
+        .carousel-slide:nth-child(1) {
+            background: linear-gradient(135deg, #4285f4 0%, #0f9d58 50%, #fbbc04 100%);
+        }
+
+        .carousel-slide:nth-child(2) {
+            background: linear-gradient(135deg, #0f9d58 0%, #34a853 50%, #4285f4 100%);
+        }
+
+        .carousel-slide:nth-child(3) {
+            background: linear-gradient(135deg, #ea4335 0%, #fbbc04 50%, #0f9d58 100%);
+        }
+
+        .carousel-slide:nth-child(4) {
+            background: linear-gradient(135deg, #fbbc04 0%, #ea4335 50%, #4285f4 100%);
+        }
+
+        .carousel-slide:nth-child(5) {
+            background: linear-gradient(135deg, #4285f4 0%, #ea4335 50%, #0f9d58 100%);
+        }
+
+        /* Animated shapes overlay */
+        .shapes-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) { width: 300px; height: 300px; top: -150px; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 200px; height: 200px; bottom: 10%; right: 5%; animation-delay: -5s; }
+        .shape:nth-child(3) { width: 150px; height: 150px; top: 40%; left: 5%; animation-delay: -10s; }
+        .shape:nth-child(4) { width: 250px; height: 250px; bottom: -100px; left: 30%; animation-delay: -15s; }
+        .shape:nth-child(5) { width: 180px; height: 180px; top: 20%; right: 15%; animation-delay: -7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(5deg) scale(1.05); }
+            50% { transform: translateY(20px) rotate(-5deg) scale(0.95); }
+            75% { transform: translateY(-15px) rotate(3deg) scale(1.02); }
+        }
+
+        /* Dark overlay for readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        /* Login card */
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 620px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Logo area */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .logo {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
+            border-radius: 18px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 0 0 rgba(255, 255, 255, 0.4); }
+            50% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), 0 0 20px 10px rgba(255, 255, 255, 0.1); }
+        }
+
+        .logo svg { width: 42px; height: 42px; }
+        .app-name { font-size: 26px; font-weight: 700; color: #fff; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); }
+        .app-tagline { font-size: 13px; color: rgba(255, 255, 255, 0.7); margin-top: 6px; }
+
+        /* Action buttons */
+        .action-section { margin: 20px 0; }
+        .action-buttons { display: flex; gap: 10px; }
+
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .login-btn:hover::before { left: 100%; }
+        .login-btn svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .action-buttons .login-btn { flex: 1; }
+
+        .btn-app {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+        .btn-app:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
+        }
+
+        .btn-config {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(107, 114, 128, 0.4);
+        }
+        .btn-config:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.5);
+        }
+
+        /* Category tabs */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            flex: 1;
+            min-width: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab svg { width: 18px; height: 18px; }
+
+        .category-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .category-tab.active[data-category="sheets"] {
+            background: rgba(15, 157, 88, 0.25);
+            border-color: var(--sheets);
+            color: #34d399;
+        }
+        .category-tab.active[data-category="docs"] {
+            background: rgba(66, 133, 244, 0.25);
+            border-color: var(--docs);
+            color: #60a5fa;
+        }
+        .category-tab.active[data-category="media"] {
+            background: rgba(234, 67, 53, 0.25);
+            border-color: var(--media);
+            color: #f87171;
+        }
+        .category-tab.active[data-category="files"] {
+            background: rgba(251, 188, 4, 0.25);
+            border-color: var(--files);
+            color: #fbbf24;
+        }
+
+        /* Tools section */
+        .tools-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tools-title {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Service options table */
+        .service-table {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .service-table.active { display: flex; }
+
+        .service-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .service-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .service-option.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--primary);
+        }
+
+        .service-option .radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-option.active .radio {
+            border-color: var(--primary);
+        }
+
+        .service-option.active .radio::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .service-info { flex: 1; }
+        .service-name { font-size: 14px; font-weight: 600; color: #fff; }
+        .service-desc { font-size: 11px; color: rgba(255, 255, 255, 0.6); margin-top: 2px; }
+
+        .service-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .service-icon svg { width: 18px; height: 18px; stroke: currentColor; }
+
+        /* Category-specific active colors */
+        [data-category="sheets"] .service-option.active {
+            background: rgba(15, 157, 88, 0.2);
+            border-color: var(--sheets);
+        }
+        [data-category="sheets"] .service-option.active .radio { border-color: var(--sheets); }
+        [data-category="sheets"] .service-option.active .radio::after { background: var(--sheets); }
+
+        [data-category="docs"] .service-option.active {
+            background: rgba(66, 133, 244, 0.2);
+            border-color: var(--docs);
+        }
+        [data-category="docs"] .service-option.active .radio { border-color: var(--docs); }
+        [data-category="docs"] .service-option.active .radio::after { background: var(--docs); }
+
+        [data-category="media"] .service-option.active {
+            background: rgba(234, 67, 53, 0.2);
+            border-color: var(--media);
+        }
+        [data-category="media"] .service-option.active .radio { border-color: var(--media); }
+        [data-category="media"] .service-option.active .radio::after { background: var(--media); }
+
+        [data-category="files"] .service-option.active {
+            background: rgba(251, 188, 4, 0.2);
+            border-color: var(--files);
+        }
+        [data-category="files"] .service-option.active .radio { border-color: var(--files); }
+        [data-category="files"] .service-option.active .radio::after { background: var(--files); }
+
+        .service-option.coming-soon {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .coming-soon-badge {
+            font-size: 9px;
+            padding: 2px 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Auth section */
+        .auth-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .auth-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auth-btn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .auth-btn svg { width: 16px; height: 16px; }
+
+        .auth-btn.active[data-auth="authelia-sso"],
+        .auth-btn.active[data-auth="authelia-2fa"] {
+            background: rgba(14, 165, 233, 0.2);
+            border-color: var(--authelia);
+            color: var(--authelia);
+        }
+
+        .auth-btn.active[data-auth="github"] {
+            background: rgba(36, 41, 47, 0.4);
+            border-color: #57606a;
+            color: #fff;
+        }
+
+        /* Server control section */
+        .server-control {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px 14px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 20px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #6b7280;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .status-dot.online { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.6); }
+        .status-dot.offline { background: #ef4444; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+        .status-dot.checking { background: #f59e0b; animation: pulse-dot 1s infinite; }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(0.9); }
+        }
+
+        .btn-wake {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+        }
+        .btn-wake:hover {
+            background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.5);
+        }
+        .btn-wake.waking { animation: pulse-wake 1.5s infinite; }
+        .btn-wake.success { background: linear-gradient(135deg, #10b981 0%, #059669 100%); box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4); }
+        .btn-wake.error { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
+
+        @keyframes pulse-wake { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        .wake-status {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 6px;
+            text-align: center;
+            min-height: 16px;
+        }
+
+        /* Security badge */
+        .security-info {
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 20px;
+            color: #34d399;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .security-badge svg { width: 14px; height: 14px; }
+
+        /* Footer navigation */
+        .footer-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 20;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+        }
+
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .footer-link svg { width: 14px; height: 14px; }
+
+        .shimmer-btn {
+            position: relative;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            background: linear-gradient(135deg, #4285f4 0%, #0f9d58 50%, #fbbc04 100%);
+            background-size: 200% 200%;
+            animation: gradient-shift 3s ease infinite;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .shimmer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        .shimmer-btn:hover { transform: translateY(-3px) scale(1.02); }
+        .shimmer-btn svg { width: 16px; height: 16px; }
+
+        @keyframes gradient-shift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-card { padding: 28px 20px; border-radius: 20px; }
+            .app-name { font-size: 22px; }
+            .logo { width: 60px; height: 60px; }
+            .logo svg { width: 34px; height: 34px; }
+            .category-tabs { gap: 6px; }
+            .category-tab { padding: 10px 12px; font-size: 12px; min-width: 70px; }
+            .auth-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Carousel Background -->
+    <div class="carousel">
+        <div class="carousel-slide active"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+        <div class="carousel-slide"></div>
+    </div>
+
+    <!-- Floating shapes -->
+    <div class="shapes-overlay">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Dark overlay -->
+    <div class="overlay"></div>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="login-card">
+            <div class="logo-container">
+                <div class="logo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#4285f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        <line x1="12" y1="11" x2="12" y2="17"/>
+                        <line x1="9" y1="14" x2="15" y2="14"/>
+                    </svg>
+                </div>
+                <h1 class="app-name">MyDrive</h1>
+                <p class="app-tagline">Documents, sheets & media - your way</p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-section">
+                <div class="action-buttons">
+                    <a id="go-app-btn" class="login-btn btn-app" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/>
+                            <line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                        <span id="tool-name-app">Ethercalc</span>
+                    </a>
+                    <a id="go-config-btn" class="login-btn btn-config" href="#">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                        Config
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="sheets">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="18" height="18" rx="2"/>
+                        <line x1="3" y1="9" x2="21" y2="9"/>
+                        <line x1="3" y1="15" x2="21" y2="15"/>
+                        <line x1="9" y1="3" x2="9" y2="21"/>
+                        <line x1="15" y1="3" x2="15" y2="21"/>
+                    </svg>
+                    Sheets
+                </button>
+                <button class="category-tab" data-category="docs">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                    </svg>
+                    Docs
+                </button>
+                <button class="category-tab" data-category="media">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Media
+                </button>
+                <button class="category-tab" data-category="files">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Files
+                </button>
+            </div>
+
+            <!-- Service Options Tables -->
+            <div class="tools-section">
+                <!-- SHEETS OPTIONS -->
+                <div class="service-table active" data-category="sheets">
+                    <div class="service-option active" data-name="Ethercalc" data-url="https://sheets.diegonmarcos.com/" data-config="https://sheets.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Ethercalc</div>
+                            <div class="service-desc">Real-time collaborative spreadsheets</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="OnlyOffice Sheets" data-url="https://office.diegonmarcos.com/spreadsheet" data-config="https://office.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M12 3v18"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">OnlyOffice Sheets</div>
+                            <div class="service-desc">Full office suite with Excel-like editor</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Luckysheet" data-url="https://luckysheet.diegonmarcos.com/" data-config="https://luckysheet.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Luckysheet</div>
+                            <div class="service-desc">Feature-rich web-based spreadsheet</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="NocoDB" data-url="https://nocodb.diegonmarcos.com/" data-config="https://nocodb.diegonmarcos.com/dashboard">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">NocoDB</div>
+                            <div class="service-desc">Airtable alternative - database as spreadsheet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DOCS OPTIONS -->
+                <div class="service-table" data-category="docs">
+                    <div class="service-option active" data-name="Etherpad" data-url="https://docs.diegonmarcos.com/" data-config="https://docs.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Etherpad</div>
+                            <div class="service-desc">Real-time collaborative text editor</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="OnlyOffice Docs" data-url="https://office.diegonmarcos.com/document" data-config="https://office.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">OnlyOffice Docs</div>
+                            <div class="service-desc">Full office suite with Word-like editor</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="CryptPad" data-url="https://cryptpad.diegonmarcos.com/" data-config="https://cryptpad.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">CryptPad</div>
+                            <div class="service-desc">End-to-end encrypted collaborative docs</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="HedgeDoc" data-url="https://hedgedoc.diegonmarcos.com/" data-config="https://hedgedoc.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">HedgeDoc</div>
+                            <div class="service-desc">Collaborative markdown editor (CodiMD)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MEDIA OPTIONS -->
+                <div class="service-table" data-category="media">
+                    <div class="service-option active" data-name="Jellyfin" data-url="https://media.diegonmarcos.com/" data-config="https://media.diegonmarcos.com/web/index.html#!/dashboard">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Jellyfin</div>
+                            <div class="service-desc">Media server - Netflix-like experience</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Navidrome" data-url="https://music.diegonmarcos.com/" data-config="https://music.diegonmarcos.com/app">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Navidrome</div>
+                            <div class="service-desc">Music streaming server - Spotify-like</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Ampache" data-url="https://ampache.diegonmarcos.com/" data-config="https://ampache.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Ampache</div>
+                            <div class="service-desc">Web-based audio/video streaming</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="PeerTube" data-url="https://peertube.diegonmarcos.com/" data-config="https://peertube.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">PeerTube</div>
+                            <div class="service-desc">Decentralized video hosting platform</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILES OPTIONS -->
+                <div class="service-table" data-category="files">
+                    <div class="service-option active" data-name="Filebrowser" data-url="https://files.diegonmarcos.com/" data-config="https://files.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Filebrowser</div>
+                            <div class="service-desc">Simple and fast file manager</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Nextcloud" data-url="https://nextcloud.diegonmarcos.com/" data-config="https://nextcloud.diegonmarcos.com/settings/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Nextcloud</div>
+                            <div class="service-desc">Full cloud suite - files, calendar, contacts</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Seafile" data-url="https://seafile.diegonmarcos.com/" data-config="https://seafile.diegonmarcos.com/sys/seafadmin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Seafile</div>
+                            <div class="service-desc">Enterprise file sync and share</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="ownCloud" data-url="https://owncloud.diegonmarcos.com/" data-config="https://owncloud.diegonmarcos.com/settings/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 16v.01"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">ownCloud</div>
+                            <div class="service-desc">File hosting and sharing platform</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Auth SSO -->
+            <div class="tools-section">
+                <div class="tools-title">Authentication</div>
+                <div class="auth-grid">
+                    <button class="auth-btn active" data-auth="authelia-sso" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                        Authelia SSO
+                    </button>
+                    <button class="auth-btn" data-auth="github" data-auth-prefix="">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        GitHub SSO
+                    </button>
+                    <button class="auth-btn" data-auth="authelia-2fa" data-auth-prefix="https://auth.diegonmarcos.com/authelia/?rd=">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                        Authelia 2FA
+                    </button>
+                    <button class="auth-btn" data-auth="direct" data-auth-prefix="">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        Direct Access
+                    </button>
+                </div>
+            </div>
+
+            <!-- Server Control -->
+            <div class="server-control">
+                <div class="tools-title">Server Status</div>
+                <div class="server-status" id="server-status">
+                    <div class="status-dot checking" id="status-dot"></div>
+                    <span id="status-text">Checking server status...</span>
+                </div>
+                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="width: 100%; margin-top: 10px;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <span id="wake-btn-text">Wake Drive Server</span>
+                </button>
+                <div id="wake-status" class="wake-status"></div>
+            </div>
+
+            <div class="security-info">
+                <div class="security-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                    Secured with encryption
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Navigation -->
+    <div class="footer-nav">
+        <a href="https://linktree.diegonmarcos.com" class="shimmer-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            Linktree
+        </a>
+        <a href="https://cloud.diegonmarcos.com" class="footer-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+            Cloud
+        </a>
+    </div>
+
+    <script>
+        // Carousel functionality
+        const slides = document.querySelectorAll('.carousel-slide');
+        let currentSlide = 0;
+        let autoSlideInterval;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            if (currentSlide >= slides.length) currentSlide = 0;
+            if (currentSlide < 0) currentSlide = slides.length - 1;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function nextSlide() { goToSlide(currentSlide + 1); }
+        function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 2000); }
+        function stopAutoSlide() { clearInterval(autoSlideInterval); }
+
+        startAutoSlide();
+
+        const loginCard = document.querySelector('.login-card');
+        loginCard.addEventListener('mouseenter', stopAutoSlide);
+        loginCard.addEventListener('mouseleave', startAutoSlide);
+
+        // Parallax shapes
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            shapes.forEach((shape, i) => {
+                const factor = (i + 1) * 0.5;
+                shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            });
+        });
+
+        // Category tab switching
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const serviceTables = document.querySelectorAll('.service-table');
+
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const category = this.dataset.category;
+
+                // Update tabs
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update tables
+                serviceTables.forEach(table => {
+                    table.classList.remove('active');
+                    if (table.dataset.category === category) {
+                        table.classList.add('active');
+                    }
+                });
+
+                // Update action buttons
+                updateActionButtons();
+            });
+        });
+
+        // Service option selection
+        serviceTables.forEach(table => {
+            const options = table.querySelectorAll('.service-option:not(.coming-soon)');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    options.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    updateActionButtons();
+                });
+            });
+        });
+
+        // Auth selection
+        const authBtns = document.querySelectorAll('.auth-btn');
+        authBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                authBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                updateActionButtons();
+            });
+        });
+
+        // Update action buttons
+        function updateActionButtons() {
+            const activeTable = document.querySelector('.service-table.active');
+            const activeService = activeTable ? activeTable.querySelector('.service-option.active') : null;
+            const activeAuth = document.querySelector('.auth-btn.active');
+
+            const serviceName = activeService ? activeService.dataset.name : 'Service';
+            const serviceUrl = activeService ? activeService.dataset.url : '#';
+            const configUrl = activeService ? activeService.dataset.config : '#';
+            const authPrefix = activeAuth ? activeAuth.dataset.authPrefix : '';
+
+            document.getElementById('tool-name-app').textContent = serviceName;
+            document.getElementById('go-app-btn').href = authPrefix ? authPrefix + encodeURIComponent(serviceUrl) : serviceUrl;
+            document.getElementById('go-config-btn').href = authPrefix ? authPrefix + encodeURIComponent(configUrl) : configUrl;
+        }
+
+        // Wake Server functionality
+        const CLOUD_API = 'https://api.diegonmarcos.com';
+        const VM_STATUS_URL = `${CLOUD_API}/api/wake/status`;
+        const VM_START_URL = `${CLOUD_API}/api/wake/trigger`;
+        const wakeBtn = document.getElementById('wake-btn');
+        const wakeBtnText = document.getElementById('wake-btn-text');
+        const wakeStatus = document.getElementById('wake-status');
+        const statusDot = document.getElementById('status-dot');
+        const statusText = document.getElementById('status-text');
+
+        function updateStatusIndicator(state, message) {
+            statusDot.className = 'status-dot';
+            if (state === 'RUNNING') {
+                statusDot.classList.add('online');
+                statusText.textContent = message || 'Server Online';
+            } else if (state === 'STOPPED' || state === 'STOPPING') {
+                statusDot.classList.add('offline');
+                statusText.textContent = message || 'Server Offline (Sleeping)';
+            } else if (state === 'STARTING') {
+                statusDot.classList.add('checking');
+                statusText.textContent = message || 'Server Starting...';
+            } else {
+                statusDot.classList.add('checking');
+                statusText.textContent = message || 'Checking...';
+            }
+        }
+
+        async function checkServerStatus() {
+            try {
+                const statusResponse = await fetch(VM_STATUS_URL, {
+                    method: 'GET',
+                    signal: AbortSignal.timeout(8000)
+                });
+
+                if (statusResponse.ok) {
+                    const data = await statusResponse.json();
+                    const vmState = data.state || data.status;
+
+                    if (vmState === 'RUNNING') {
+                        updateStatusIndicator('RUNNING', 'Server Online');
+                        wakeBtn.style.display = 'none';
+                        wakeStatus.textContent = '';
+                    } else if (vmState === 'STARTING') {
+                        updateStatusIndicator('STARTING', 'Server Starting...');
+                        wakeBtn.style.display = 'none';
+                        wakeStatus.textContent = 'VM is starting up...';
+                    } else {
+                        updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
+                        wakeBtn.style.display = 'flex';
+                        wakeStatus.textContent = 'Drive server is sleeping.';
+                    }
+                } else {
+                    throw new Error('API unavailable');
+                }
+            } catch (error) {
+                console.log('Status check error:', error.message);
+                updateStatusIndicator('STOPPED', 'Status Unknown');
+                wakeBtn.style.display = 'flex';
+                wakeStatus.textContent = 'Could not check server status.';
+            }
+        }
+
+        async function wakeServer() {
+            wakeBtn.classList.add('waking');
+            wakeBtnText.textContent = 'Starting VM...';
+            wakeStatus.textContent = 'Sending wake command...';
+
+            try {
+                const startResponse = await fetch(VM_START_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (startResponse.ok) {
+                    wakeStatus.textContent = 'VM starting! Waiting for services...';
+                    updateStatusIndicator('STARTING', 'VM Starting...');
+
+                    let attempts = 0;
+                    const maxAttempts = 24;
+
+                    const pollInterval = setInterval(async () => {
+                        attempts++;
+                        wakeStatus.textContent = `Starting up... (${attempts * 5}s)`;
+
+                        try {
+                            const statusResponse = await fetch(VM_STATUS_URL);
+                            if (statusResponse.ok) {
+                                const statusData = await statusResponse.json();
+                                const vmState = statusData.state || statusData.status;
+
+                                if (vmState === 'RUNNING') {
+                                    clearInterval(pollInterval);
+                                    wakeBtn.classList.remove('waking');
+                                    wakeBtn.classList.add('success');
+                                    wakeBtnText.textContent = 'Server Online!';
+                                    updateStatusIndicator('RUNNING', 'Server Online');
+                                    wakeStatus.textContent = 'Server is ready!';
+                                    setTimeout(() => window.location.reload(), 1500);
+                                    return;
+                                }
+                            }
+                        } catch (e) {}
+
+                        if (attempts >= maxAttempts) {
+                            clearInterval(pollInterval);
+                            wakeBtn.classList.remove('waking');
+                            wakeBtn.classList.add('error');
+                            wakeBtnText.textContent = 'Still Starting...';
+                            wakeStatus.textContent = 'Server is taking longer than expected.';
+                            setTimeout(() => {
+                                wakeBtn.classList.remove('error');
+                                wakeBtnText.textContent = 'Wake Drive Server';
+                            }, 5000);
+                        }
+                    }, 5000);
+                } else {
+                    const errorData = await startResponse.json().catch(() => ({}));
+                    wakeBtn.classList.remove('waking');
+                    wakeBtn.classList.add('error');
+                    wakeBtnText.textContent = 'Start Failed';
+                    wakeStatus.textContent = errorData.error || 'Could not start VM.';
+                    setTimeout(() => {
+                        wakeBtn.classList.remove('error');
+                        wakeBtnText.textContent = 'Try Again';
+                    }, 3000);
+                }
+            } catch (error) {
+                wakeBtn.classList.remove('waking');
+                wakeBtn.classList.add('error');
+                wakeBtnText.textContent = 'Error';
+                wakeStatus.textContent = 'Could not reach Cloud API.';
+                setTimeout(() => {
+                    wakeBtn.classList.remove('error');
+                    wakeBtnText.textContent = 'Try Again';
+                }, 3000);
+            }
+        }
+
+        // Initialize
+        checkServerStatus();
+        setInterval(checkServerStatus, 30000);
+        updateActionButtons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+@use '../abstracts' as *;
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: $color-bg;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: $sidebar-width;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.map-info {
+  padding: $spacing-md $spacing-lg;
+  background: $color-bg-secondary;
+  border-bottom: 1px solid $color-border;
+
+  h1 {
+    font-size: $font-size-xl;
+    margin: 0 0 $spacing-xs;
+  }
+
+  p {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin: 0;
+  }
+
+  .feature-count {
+    display: inline-block;
+    margin-top: $spacing-xs;
+    font-size: $font-size-xs;
+    font-family: $font-family-mono;
+    color: $color-text-muted;
+    background: $color-bg-tertiary;
+    padding: 0.2em 0.5em;
+    border-radius: $radius-sm;
+  }
+}
+
+.map-container {
+  flex: 1;
+  position: relative;
+  min-height: 400px;
+}
+
+.loading-overlay,
+.error-overlay,
+.empty-state {
+  @include flex-col(center, center, $spacing-md);
+  position: absolute;
+  inset: 0;
+  background: $color-bg;
+}
+
+.loading-overlay {
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    color: $color-text-secondary;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-overlay {
+  p {
+    color: $color-error;
+    font-size: $font-size-lg;
+  }
+}
+
+.empty-state {
+  svg {
+    color: $color-text-muted;
+  }
+
+  p {
+    color: $color-text-secondary;
+    text-align: center;
+  }
+}
+
+// Responsive
+@media (max-width: #{$breakpoint-md - 1px}) {
+  .app {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .map-container {
+    height: calc(100vh - 350px);
+    min-height: 300px;
+  }
+}

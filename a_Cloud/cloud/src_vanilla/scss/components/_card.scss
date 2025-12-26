@@ -485,3 +485,94 @@ html[data-grid-cols="4"] .category-section {
         font-size: 0.4rem;
     }
 }
+
+// Channels section (shown below folders when Feed is clicked)
+.channels-section {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: transparent;
+    border-top: 1px solid var(--border-color);
+    border-radius: 0;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.channels-title {
+    margin: 0 0 1rem 0;
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.channels-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+
+    th, td {
+        padding: 0.4rem 0.5rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+        color: var(--text-secondary);
+        font-weight: 500;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+    }
+
+    td {
+        color: var(--text-primary);
+    }
+
+    td:first-child {
+        width: 24px;
+        text-align: center;
+    }
+
+    td:last-child {
+        text-align: right;
+        width: 60px;
+    }
+
+    .lock-icon {
+        font-size: 0.7rem;
+        opacity: 0.7;
+    }
+}
+
+.open-btn {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.65rem;
+    color: var(--accent-blue);
+    text-decoration: none;
+    border: 1px solid var(--accent-blue);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: var(--accent-blue);
+        color: #000;
+    }
+}
+
+[data-theme="blurred"] .channels-section {
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.channel-admin-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover {
+        color: var(--accent-blue);
+    }
+}

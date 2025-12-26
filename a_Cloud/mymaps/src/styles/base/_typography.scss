@@ -1,0 +1,49 @@
+@use '../abstracts' as *;
+
+h1 {
+  font-size: $font-size-3xl;
+  margin-bottom: $spacing-md;
+}
+
+h2 {
+  font-size: $font-size-2xl;
+  margin-bottom: $spacing-md;
+}
+
+h3 {
+  font-size: $font-size-xl;
+  margin-bottom: $spacing-sm;
+}
+
+h4 {
+  font-size: $font-size-lg;
+  margin-bottom: $spacing-sm;
+}
+
+p {
+  margin-bottom: $spacing-md;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.text-muted {
+  color: $color-text-muted;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-center {
+  text-align: center;
+}
+
+code {
+  font-family: $font-family-mono;
+  font-size: $font-size-sm;
+  background: $color-bg-tertiary;
+  padding: 0.2em 0.4em;
+  border-radius: $radius-sm;
+}

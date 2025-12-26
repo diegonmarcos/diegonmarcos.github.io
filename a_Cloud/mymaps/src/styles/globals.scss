@@ -1,0 +1,9 @@
+// ITCSS Architecture
+// 1. Settings/Abstracts - Variables, mixins (no CSS output)
+// 2. Base - Reset, typography, elements
+// 3. Layout - Page structure, header, footer
+// 4. Components - UI components
+
+@use 'base';
+@use 'layout';
+@use 'components';

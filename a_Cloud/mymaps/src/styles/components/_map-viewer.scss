@@ -1,0 +1,131 @@
+@use '../abstracts' as *;
+
+.map-viewer {
+  height: 100%;
+  width: 100%;
+  border-radius: $radius-md;
+  overflow: hidden;
+  border: 1px solid $color-border;
+
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+    background: $color-bg-secondary;
+  }
+
+  // Dark mode overrides for Leaflet
+  .leaflet-control-zoom {
+    border: 1px solid $color-border !important;
+
+    a {
+      background: $color-surface !important;
+      color: $color-text !important;
+      border-bottom-color: $color-border !important;
+
+      &:hover {
+        background: $color-bg-tertiary !important;
+      }
+    }
+  }
+
+  .leaflet-control-attribution {
+    background: rgba($color-bg, 0.8) !important;
+    color: $color-text-muted !important;
+
+    a {
+      color: $color-primary !important;
+    }
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: $color-surface;
+    color: $color-text;
+    border-radius: $radius-md;
+    box-shadow: $shadow-lg;
+  }
+
+  .leaflet-popup-tip {
+    background: $color-surface;
+  }
+
+  .leaflet-popup-close-button {
+    color: $color-text-secondary !important;
+
+    &:hover {
+      color: $color-text !important;
+    }
+  }
+
+  .map-popup {
+    h4 {
+      margin: 0 0 $spacing-xs;
+      color: $color-text;
+    }
+
+    .popup-description {
+      font-size: $font-size-sm;
+      color: $color-text-secondary;
+    }
+  }
+}
+
+// Map container on detail page
+.map-container {
+  position: relative;
+  height: calc(100vh - 200px);
+  min-height: 400px;
+  border-radius: $radius-md;
+  overflow: hidden;
+
+  @include mq(md) {
+    height: calc(100vh - 180px);
+  }
+}
+
+.map-header {
+  margin-bottom: $spacing-md;
+
+  h1 {
+    margin-bottom: $spacing-xs;
+  }
+
+  p {
+    color: $color-text-secondary;
+    margin-bottom: $spacing-sm;
+  }
+
+  .feature-count {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    font-family: $font-family-mono;
+  }
+}
+
+// Custom map preview
+.custom-map-preview {
+  margin-top: $spacing-lg;
+  @include card;
+  padding: $spacing-lg;
+
+  .preview-header {
+    @include flex-row(space-between, center);
+    margin-bottom: $spacing-md;
+
+    h3 {
+      margin: 0;
+    }
+  }
+
+  .preview-stats {
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    margin-bottom: $spacing-md;
+  }
+
+  .preview-map {
+    height: 400px;
+    border-radius: $radius-md;
+    overflow: hidden;
+    margin-bottom: $spacing-md;
+  }
+}

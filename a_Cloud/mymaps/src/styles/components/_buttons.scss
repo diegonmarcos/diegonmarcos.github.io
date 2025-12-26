@@ -1,0 +1,36 @@
+@use '../abstracts' as *;
+
+.btn {
+  @include btn-base;
+  @include focus-visible;
+
+  &--primary {
+    background: $color-primary;
+    color: white;
+
+    &:hover {
+      background: $color-primary-dark;
+    }
+  }
+
+  &--secondary {
+    background: $color-bg-tertiary;
+    color: $color-text;
+    border: 1px solid $color-border;
+
+    &:hover {
+      background: $color-surface;
+      border-color: $color-border-light;
+    }
+  }
+
+  &--ghost {
+    background: transparent;
+    color: $color-text-secondary;
+
+    &:hover {
+      background: $color-bg-tertiary;
+      color: $color-text;
+    }
+  }
+}

@@ -178,6 +178,17 @@
                 });
             });
         </script>
+        <script>
+            function showFeedChannels() {
+                var section = document.getElementById('feed-channels-section');
+                if (section.style.display === 'none') {
+                    section.style.display = 'block';
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    section.style.display = 'none';
+                }
+            }
+        </script>
 
         <!-- Products Page -->
         <div id="products-page" class="view-content active">
@@ -233,7 +244,7 @@
                             <h3>Mail&Cal</h3>
                             <p>mymail landing</p>
                         </div>
-                        <div class="card" data-service="feed" data-product-category="inbox">
+                        <div class="card" data-service="feed" data-product-category="inbox" onclick="showFeedChannels()">
                             <div class="card-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M4 11a9 9 0 0 1 9 9"/>
@@ -242,7 +253,7 @@
                                 </svg>
                             </div>
                             <h3>Feed</h3>
-                            <p>RSS / News aggregator</p>
+                            <p>RSS / Push Notifications</p>
                         </div>
                     </div>
                 </div>
@@ -271,6 +282,16 @@
                             </div>
                             <h3>Drive&Suite</h3>
                             <p>mydrive landing</p>
+                        </div>
+                        <div class="card" data-service="maps" data-url="../mymaps/dist/index.html" data-product-category="object-files">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                    <circle cx="12" cy="9" r="2.5"/>
+                                </svg>
+                            </div>
+                            <h3>Maps</h3>
+                            <p>mymaps viewer</p>
                         </div>
                     </div>
                 </div>
@@ -338,6 +359,27 @@
             </div>
 
             </div><!-- End page-container -->
+
+            <!-- Feed Channels Section (shown when Feed card is clicked) -->
+            <div id="feed-channels-section" class="channels-section" style="display: none;">
+                <h3 class="channels-title">Feed Channels</h3>
+                <table class="channels-table">
+                    <thead><tr><th></th><th>Channel</th><th>URL</th><th></th></tr></thead>
+                    <tbody>
+                        <tr><td class="lock-icon">🌐</td><td>public</td><td>rss.diegonmarcos.com/public</td><td><a href="https://rss.diegonmarcos.com/public" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🌐</td><td>github</td><td>rss.diegonmarcos.com/github</td><td><a href="https://rss.diegonmarcos.com/github" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>alerts</td><td>rss.diegonmarcos.com/alerts</td><td><a href="https://rss.diegonmarcos.com/alerts" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>backup</td><td>rss.diegonmarcos.com/backup</td><td><a href="https://rss.diegonmarcos.com/backup" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>home</td><td>rss.diegonmarcos.com/home</td><td><a href="https://rss.diegonmarcos.com/home" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>cron</td><td>rss.diegonmarcos.com/cron</td><td><a href="https://rss.diegonmarcos.com/cron" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>deploy</td><td>rss.diegonmarcos.com/deploy</td><td><a href="https://rss.diegonmarcos.com/deploy" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>security</td><td>rss.diegonmarcos.com/security</td><td><a href="https://rss.diegonmarcos.com/security" target="_blank" class="open-btn">Open</a></td></tr>
+                        <tr><td class="lock-icon">🔒</td><td>test</td><td>rss.diegonmarcos.com/test</td><td><a href="https://rss.diegonmarcos.com/test" target="_blank" class="open-btn">Open</a></td></tr>
+                    </tbody>
+                </table>
+                <a href="https://rss.diegonmarcos.com" target="_blank" class="channel-admin-link">Open ntfy Dashboard →</a>
+            </div>
+
         </div><!-- End Products Page -->
 
         <!-- Connect Page -->

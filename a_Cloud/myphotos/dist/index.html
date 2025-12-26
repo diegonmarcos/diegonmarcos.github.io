@@ -981,10 +981,11 @@
             });
         });
 
-        // Wake Server functionality - Uses /health endpoint and Wake API
-        const HEALTH_URL = 'https://photos.diegonmarcos.com/health';
-        const WAKE_API_STATUS = 'https://api.diegonmarcos.com/api/wake/status';
-        const WAKE_API_TRIGGER = 'https://api.diegonmarcos.com/api/wake/trigger';
+        // Wake Server functionality - Uses Cloud Control API
+        // VM: oci-p-flex_1 (Photoprism server)
+        const CLOUD_API = 'https://api.diegonmarcos.com';
+        const VM_STATUS_URL = `${CLOUD_API}/api/wake/status`;
+        const VM_START_URL = `${CLOUD_API}/api/wake/trigger`;
         const wakeBtn = document.getElementById('wake-btn');
         const wakeBtnText = document.getElementById('wake-btn-text');
         const wakeStatus = document.getElementById('wake-status');
@@ -1010,73 +1011,99 @@
 
         async function checkServerStatus() {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-                const response = await fetch(HEALTH_URL, {
+                // First check VM status via Cloud API
+                const statusResponse = await fetch(VM_STATUS_URL, {
                     method: 'GET',
-                    signal: controller.signal
+                    signal: AbortSignal.timeout(8000)
                 });
-                clearTimeout(timeoutId);
 
-                if (response.ok) {
-                    // Backend is online
-                    updateStatusIndicator('RUNNING', 'Server Online');
-                    wakeBtn.style.display = 'none';
-                    wakeStatus.textContent = '';
+                if (statusResponse.ok) {
+                    const data = await statusResponse.json();
+                    const vmState = data.state || data.status;
+
+                    if (vmState === 'RUNNING') {
+                        // VM is running - assume services are available
+                        updateStatusIndicator('RUNNING', 'Server Online');
+                        wakeBtn.style.display = 'none';
+                        wakeStatus.textContent = '';
+                    } else if (vmState === 'STARTING') {
+                        updateStatusIndicator('STARTING', 'Server Starting...');
+                        wakeBtn.style.display = 'none';
+                        wakeStatus.textContent = 'VM is starting up...';
+                    } else {
+                        // STOPPED or other
+                        updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
+                        wakeBtn.style.display = 'flex';
+                        wakeStatus.textContent = 'Photo server is sleeping.';
+                    }
                 } else {
-                    // Backend is offline (503)
-                    updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
-                    wakeBtn.style.display = 'flex';
-                    wakeStatus.textContent = 'Photo server is sleeping.';
+                    // API error, fallback to health check
+                    throw new Error('API unavailable');
                 }
             } catch (error) {
-                console.log('Health check error:', error.name);
-                updateStatusIndicator('STOPPED', 'Server Offline');
+                // Cloud API unavailable - show unknown state
+                console.log('Status check error:', error.message);
+                updateStatusIndicator('UNKNOWN', 'Status Unknown');
                 wakeBtn.style.display = 'flex';
-                wakeStatus.textContent = 'Could not reach server.';
+                wakeStatus.textContent = 'Unable to check server status.';
             }
         }
 
         async function wakeServer() {
             wakeBtn.classList.add('waking');
-            wakeBtnText.textContent = 'Waking...';
-            wakeStatus.textContent = 'Sending wake command to server...';
+            wakeBtnText.textContent = 'Starting VM...';
+            wakeStatus.textContent = 'Sending wake command...';
 
             try {
-                // First, trigger the wake API
-                const wakeResponse = await fetch(WAKE_API_TRIGGER, {
+                // Trigger VM start via Cloud Control API
+                const startResponse = await fetch(VM_START_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
-                const wakeData = await wakeResponse.json();
 
-                if (wakeData.success) {
-                    wakeStatus.textContent = 'Wake command sent! Waiting for server...';
-                    updateStatusIndicator('STARTING', 'Server Starting...');
+                if (startResponse.ok) {
+                    const startData = await startResponse.json();
+                    wakeStatus.textContent = 'VM starting! Waiting for services...';
+                    updateStatusIndicator('STARTING', 'VM Starting...');
 
-                    // Poll for server to come online (check every 5s for up to 90s)
+                    // Poll for server to come online (check every 5s for up to 120s)
                     let attempts = 0;
-                    const maxAttempts = 18;
+                    const maxAttempts = 24;
 
                     const pollInterval = setInterval(async () => {
                         attempts++;
-                        wakeStatus.textContent = `Waiting for server... (${attempts * 5}s)`;
+                        wakeStatus.textContent = `Starting up... (${attempts * 5}s)`;
 
                         try {
-                            const healthResponse = await fetch(HEALTH_URL, {
-                                method: 'GET',
-                                signal: AbortSignal.timeout(4000)
-                            });
+                            // Check VM status via API
+                            const statusResponse = await fetch(VM_STATUS_URL);
+                            if (statusResponse.ok) {
+                                const statusData = await statusResponse.json();
+                                const vmState = statusData.state || statusData.status;
 
-                            if (healthResponse.ok) {
-                                clearInterval(pollInterval);
-                                wakeBtn.classList.remove('waking');
-                                wakeBtn.classList.add('success');
-                                wakeBtnText.textContent = 'Server Online!';
-                                updateStatusIndicator('RUNNING', 'Server Online');
-                                wakeStatus.textContent = 'Server is ready! Refreshing...';
-                                setTimeout(() => window.location.reload(), 1500);
+                                if (vmState === 'RUNNING') {
+                                    // VM is running, now check if app is responding
+                                    try {
+                                        const healthResponse = await fetch(HEALTH_URL, {
+                                            method: 'GET',
+                                            signal: AbortSignal.timeout(4000)
+                                        });
+
+                                        if (healthResponse.ok) {
+                                            clearInterval(pollInterval);
+                                            wakeBtn.classList.remove('waking');
+                                            wakeBtn.classList.add('success');
+                                            wakeBtnText.textContent = 'Server Online!';
+                                            updateStatusIndicator('RUNNING', 'Server Online');
+                                            wakeStatus.textContent = 'Server is ready! Refreshing...';
+                                            setTimeout(() => window.location.reload(), 1500);
+                                            return;
+                                        }
+                                    } catch (e) {
+                                        // App not ready yet, VM is running but services starting
+                                        wakeStatus.textContent = `VM running, services starting... (${attempts * 5}s)`;
+                                    }
+                                }
                             }
                         } catch (e) {
                             // Still waiting
@@ -1090,16 +1117,17 @@
                             wakeStatus.textContent = 'Server is taking longer than expected. Try again in a minute.';
                             setTimeout(() => {
                                 wakeBtn.classList.remove('error');
-                                wakeBtnText.textContent = 'Wake Server';
+                                wakeBtnText.textContent = 'Wake Photo Server';
                             }, 5000);
                         }
                     }, 5000);
                 } else {
-                    // Wake failed
+                    // Start failed
+                    const errorData = await startResponse.json().catch(() => ({}));
                     wakeBtn.classList.remove('waking');
                     wakeBtn.classList.add('error');
-                    wakeBtnText.textContent = 'Wake Failed';
-                    wakeStatus.textContent = wakeData.message || 'Could not wake server.';
+                    wakeBtnText.textContent = 'Start Failed';
+                    wakeStatus.textContent = errorData.error || errorData.message || 'Could not start VM.';
                     setTimeout(() => {
                         wakeBtn.classList.remove('error');
                         wakeBtnText.textContent = 'Try Again';
@@ -1109,7 +1137,7 @@
                 wakeBtn.classList.remove('waking');
                 wakeBtn.classList.add('error');
                 wakeBtnText.textContent = 'Error';
-                wakeStatus.textContent = 'Could not reach wake API.';
+                wakeStatus.textContent = 'Could not reach Cloud API.';
                 setTimeout(() => {
                     wakeBtn.classList.remove('error');
                     wakeBtnText.textContent = 'Try Again';

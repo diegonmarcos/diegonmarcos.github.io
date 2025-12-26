@@ -983,7 +983,6 @@
 
         // Wake Server functionality - Uses Cloud Control API
         // VM: oci-p-flex_1 (Photoprism server)
-        const HEALTH_URL = 'https://photos.diegonmarcos.com/health';
         const CLOUD_API = 'https://api.diegonmarcos.com';
         const VM_STATUS_URL = `${CLOUD_API}/api/wake/status`;
         const VM_START_URL = `${CLOUD_API}/api/wake/trigger`;
@@ -1023,26 +1022,10 @@
                     const vmState = data.state || data.status;
 
                     if (vmState === 'RUNNING') {
-                        // VM is running, now verify app health
-                        try {
-                            const healthResponse = await fetch(HEALTH_URL, {
-                                method: 'GET',
-                                signal: AbortSignal.timeout(5000)
-                            });
-                            if (healthResponse.ok) {
-                                updateStatusIndicator('RUNNING', 'Server Online');
-                                wakeBtn.style.display = 'none';
-                                wakeStatus.textContent = '';
-                            } else {
-                                updateStatusIndicator('STARTING', 'VM Running, Services Starting...');
-                                wakeBtn.style.display = 'none';
-                                wakeStatus.textContent = 'Services are starting up...';
-                            }
-                        } catch (e) {
-                            updateStatusIndicator('STARTING', 'VM Running, Services Starting...');
-                            wakeBtn.style.display = 'none';
-                            wakeStatus.textContent = 'Services are starting up...';
-                        }
+                        // VM is running - assume services are available
+                        updateStatusIndicator('RUNNING', 'Server Online');
+                        wakeBtn.style.display = 'none';
+                        wakeStatus.textContent = '';
                     } else if (vmState === 'STARTING') {
                         updateStatusIndicator('STARTING', 'Server Starting...');
                         wakeBtn.style.display = 'none';
@@ -1058,27 +1041,11 @@
                     throw new Error('API unavailable');
                 }
             } catch (error) {
-                // Fallback: try direct health check
-                try {
-                    const healthResponse = await fetch(HEALTH_URL, {
-                        method: 'GET',
-                        signal: AbortSignal.timeout(5000)
-                    });
-                    if (healthResponse.ok) {
-                        updateStatusIndicator('RUNNING', 'Server Online');
-                        wakeBtn.style.display = 'none';
-                        wakeStatus.textContent = '';
-                    } else {
-                        updateStatusIndicator('STOPPED', 'Server Offline');
-                        wakeBtn.style.display = 'flex';
-                        wakeStatus.textContent = 'Photo server is sleeping.';
-                    }
-                } catch (e) {
-                    console.log('Status check error:', error.message);
-                    updateStatusIndicator('STOPPED', 'Server Offline');
-                    wakeBtn.style.display = 'flex';
-                    wakeStatus.textContent = 'Could not reach server.';
-                }
+                // Cloud API unavailable - show unknown state
+                console.log('Status check error:', error.message);
+                updateStatusIndicator('UNKNOWN', 'Status Unknown');
+                wakeBtn.style.display = 'flex';
+                wakeStatus.textContent = 'Unable to check server status.';
             }
         }
 

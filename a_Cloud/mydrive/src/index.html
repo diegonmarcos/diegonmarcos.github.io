@@ -1130,37 +1130,22 @@
     </div>
 
     <script>
-        // Carousel functionality
-        const slides = document.querySelectorAll('.carousel-slide');
-        let currentSlide = 0;
-        let autoSlideInterval;
-
-        function goToSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = index;
-            if (currentSlide >= slides.length) currentSlide = 0;
-            if (currentSlide < 0) currentSlide = slides.length - 1;
-            slides[currentSlide].classList.add('active');
-        }
-
-        function nextSlide() { goToSlide(currentSlide + 1); }
-        function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 2000); }
-        function stopAutoSlide() { clearInterval(autoSlideInterval); }
-
-        startAutoSlide();
-
-        const loginCard = document.querySelector('.login-card');
-        loginCard.addEventListener('mouseenter', stopAutoSlide);
-        loginCard.addEventListener('mouseleave', startAutoSlide);
-
-        // Parallax shapes
+        // Parallax effect for floating document icons
         document.addEventListener('mousemove', (e) => {
-            const shapes = document.querySelectorAll('.shape');
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            shapes.forEach((shape, i) => {
-                const factor = (i + 1) * 0.5;
-                shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            const docs = document.querySelectorAll('.doc-icon');
+            const glows = document.querySelectorAll('.glow-spot');
+            const x = (e.clientX / window.innerWidth - 0.5) * 30;
+            const y = (e.clientY / window.innerHeight - 0.5) * 30;
+
+            docs.forEach((doc, i) => {
+                const factor = (i % 4 + 1) * 0.4;
+                const rotateAmount = x * 0.1 * factor;
+                doc.style.transform = `translate(${x * factor}px, ${y * factor}px) rotate(${rotateAmount}deg)`;
+            });
+
+            glows.forEach((glow, i) => {
+                const factor = (i + 1) * 0.15;
+                glow.style.transform = `translate(${x * factor}px, ${y * factor}px) scale(${1 + Math.abs(x * 0.002)})`;
             });
         });
 

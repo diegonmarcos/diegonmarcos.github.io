@@ -34,56 +34,32 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            background: linear-gradient(145deg, #1a1f35 0%, #0d1220 50%, #151a2e 100%);
         }
 
-        /* Carousel Background */
-        .carousel {
+        /* Isometric Grid Background */
+        .iso-grid {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
+            background:
+                linear-gradient(30deg, transparent 49.5%, rgba(66, 133, 244, 0.03) 49.5%, rgba(66, 133, 244, 0.03) 50.5%, transparent 50.5%),
+                linear-gradient(150deg, transparent 49.5%, rgba(15, 157, 88, 0.03) 49.5%, rgba(15, 157, 88, 0.03) 50.5%, transparent 50.5%),
+                linear-gradient(90deg, transparent 49.5%, rgba(251, 188, 4, 0.02) 49.5%, rgba(251, 188, 4, 0.02) 50.5%, transparent 50.5%);
+            background-size: 60px 35px, 60px 35px, 60px 35px;
+            animation: gridPulse 8s ease-in-out infinite;
         }
 
-        .carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            background-size: cover;
-            background-position: center;
+        @keyframes gridPulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
         }
 
-        .carousel-slide.active {
-            opacity: 1;
-        }
-
-        .carousel-slide:nth-child(1) {
-            background: linear-gradient(135deg, #4285f4 0%, #0f9d58 50%, #fbbc04 100%);
-        }
-
-        .carousel-slide:nth-child(2) {
-            background: linear-gradient(135deg, #0f9d58 0%, #34a853 50%, #4285f4 100%);
-        }
-
-        .carousel-slide:nth-child(3) {
-            background: linear-gradient(135deg, #ea4335 0%, #fbbc04 50%, #0f9d58 100%);
-        }
-
-        .carousel-slide:nth-child(4) {
-            background: linear-gradient(135deg, #fbbc04 0%, #ea4335 50%, #4285f4 100%);
-        }
-
-        .carousel-slide:nth-child(5) {
-            background: linear-gradient(135deg, #4285f4 0%, #ea4335 50%, #0f9d58 100%);
-        }
-
-        /* Animated shapes overlay */
-        .shapes-overlay {
+        /* Floating Documents Container */
+        .floating-docs {
             position: fixed;
             top: 0;
             left: 0;
@@ -94,24 +70,152 @@
             overflow: hidden;
         }
 
-        .shape {
+        /* Document Icons */
+        .doc-icon {
             position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            animation: float 20s infinite ease-in-out;
+            opacity: 0.15;
+            animation: docFloat 25s infinite ease-in-out;
         }
 
-        .shape:nth-child(1) { width: 300px; height: 300px; top: -150px; left: 10%; animation-delay: 0s; }
-        .shape:nth-child(2) { width: 200px; height: 200px; bottom: 10%; right: 5%; animation-delay: -5s; }
-        .shape:nth-child(3) { width: 150px; height: 150px; top: 40%; left: 5%; animation-delay: -10s; }
-        .shape:nth-child(4) { width: 250px; height: 250px; bottom: -100px; left: 30%; animation-delay: -15s; }
-        .shape:nth-child(5) { width: 180px; height: 180px; top: 20%; right: 15%; animation-delay: -7s; }
+        .doc-icon svg {
+            filter: drop-shadow(0 4px 20px currentColor);
+        }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            25% { transform: translateY(-30px) rotate(5deg) scale(1.05); }
-            50% { transform: translateY(20px) rotate(-5deg) scale(0.95); }
-            75% { transform: translateY(-15px) rotate(3deg) scale(1.02); }
+        /* Sheets - Green */
+        .doc-icon.sheets { color: #0f9d58; }
+        .doc-icon.sheets:nth-child(1) { width: 80px; top: 5%; left: 8%; animation-delay: 0s; }
+        .doc-icon.sheets:nth-child(2) { width: 50px; bottom: 15%; right: 12%; animation-delay: -8s; }
+
+        /* Docs - Blue */
+        .doc-icon.docs { color: #4285f4; }
+        .doc-icon.docs:nth-child(3) { width: 70px; top: 25%; right: 5%; animation-delay: -4s; }
+        .doc-icon.docs:nth-child(4) { width: 45px; bottom: 35%; left: 5%; animation-delay: -12s; }
+
+        /* Media - Red */
+        .doc-icon.media { color: #ea4335; }
+        .doc-icon.media:nth-child(5) { width: 60px; top: 60%; left: 12%; animation-delay: -6s; }
+        .doc-icon.media:nth-child(6) { width: 55px; top: 10%; right: 20%; animation-delay: -18s; }
+
+        /* Files - Yellow */
+        .doc-icon.files { color: #fbbc04; }
+        .doc-icon.files:nth-child(7) { width: 65px; bottom: 8%; left: 25%; animation-delay: -10s; }
+        .doc-icon.files:nth-child(8) { width: 75px; top: 45%; right: 8%; animation-delay: -14s; }
+
+        @keyframes docFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 0.12;
+            }
+            25% {
+                transform: translateY(-40px) rotate(8deg) scale(1.1);
+                opacity: 0.18;
+            }
+            50% {
+                transform: translateY(20px) rotate(-5deg) scale(0.95);
+                opacity: 0.1;
+            }
+            75% {
+                transform: translateY(-25px) rotate(3deg) scale(1.05);
+                opacity: 0.15;
+            }
+        }
+
+        /* Animated connection lines */
+        .connection-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .connection-lines svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .connection-line {
+            stroke-dasharray: 8, 12;
+            stroke-dashoffset: 0;
+            animation: dashMove 20s linear infinite;
+        }
+
+        @keyframes dashMove {
+            to { stroke-dashoffset: -100; }
+        }
+
+        /* Paper texture overlay */
+        .paper-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Glow spots */
+        .glow-spots {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glow-spot {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: glowPulse 10s ease-in-out infinite;
+        }
+
+        .glow-spot:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: rgba(66, 133, 244, 0.08);
+            top: -15%;
+            left: -10%;
+            animation-delay: 0s;
+        }
+
+        .glow-spot:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: rgba(15, 157, 88, 0.06);
+            bottom: -10%;
+            right: -5%;
+            animation-delay: -3s;
+        }
+
+        .glow-spot:nth-child(3) {
+            width: 350px;
+            height: 350px;
+            background: rgba(251, 188, 4, 0.05);
+            top: 40%;
+            right: 20%;
+            animation-delay: -6s;
+        }
+
+        .glow-spot:nth-child(4) {
+            width: 300px;
+            height: 300px;
+            background: rgba(234, 67, 53, 0.04);
+            bottom: 20%;
+            left: 15%;
+            animation-delay: -8s;
+        }
+
+        @keyframes glowPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.6; }
         }
 
         /* Dark overlay for readability */
@@ -121,7 +225,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
             z-index: 2;
         }
 
@@ -644,23 +748,77 @@
     </style>
 </head>
 <body>
-    <!-- Carousel Background -->
-    <div class="carousel">
-        <div class="carousel-slide active"></div>
-        <div class="carousel-slide"></div>
-        <div class="carousel-slide"></div>
-        <div class="carousel-slide"></div>
-        <div class="carousel-slide"></div>
+    <!-- Isometric Grid Background -->
+    <div class="iso-grid"></div>
+
+    <!-- Glow Spots -->
+    <div class="glow-spots">
+        <div class="glow-spot"></div>
+        <div class="glow-spot"></div>
+        <div class="glow-spot"></div>
+        <div class="glow-spot"></div>
     </div>
 
-    <!-- Floating shapes -->
-    <div class="shapes-overlay">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
+    <!-- Connection Lines -->
+    <div class="connection-lines">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path class="connection-line" d="M10,20 Q30,10 50,25 T90,15" stroke="rgba(66,133,244,0.1)" stroke-width="0.2" fill="none"/>
+            <path class="connection-line" d="M5,50 Q25,40 45,55 T95,45" stroke="rgba(15,157,88,0.1)" stroke-width="0.2" fill="none" style="animation-delay: -5s"/>
+            <path class="connection-line" d="M15,80 Q35,70 55,85 T85,75" stroke="rgba(251,188,4,0.1)" stroke-width="0.2" fill="none" style="animation-delay: -10s"/>
+            <path class="connection-line" d="M0,35 Q20,45 40,30 T80,40" stroke="rgba(234,67,53,0.08)" stroke-width="0.2" fill="none" style="animation-delay: -15s"/>
+        </svg>
     </div>
+
+    <!-- Floating Document Icons -->
+    <div class="floating-docs">
+        <!-- Sheets icons -->
+        <div class="doc-icon sheets">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/>
+            </svg>
+        </div>
+        <div class="doc-icon sheets">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/>
+            </svg>
+        </div>
+        <!-- Docs icons -->
+        <div class="doc-icon docs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+        </div>
+        <div class="doc-icon docs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+        </div>
+        <!-- Media icons -->
+        <div class="doc-icon media">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+        </div>
+        <div class="doc-icon media">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/>
+            </svg>
+        </div>
+        <!-- Files icons -->
+        <div class="doc-icon files">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+        </div>
+        <div class="doc-icon files">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Paper texture -->
+    <div class="paper-texture"></div>
 
     <!-- Dark overlay -->
     <div class="overlay"></div>
@@ -972,37 +1130,22 @@
     </div>
 
     <script>
-        // Carousel functionality
-        const slides = document.querySelectorAll('.carousel-slide');
-        let currentSlide = 0;
-        let autoSlideInterval;
-
-        function goToSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = index;
-            if (currentSlide >= slides.length) currentSlide = 0;
-            if (currentSlide < 0) currentSlide = slides.length - 1;
-            slides[currentSlide].classList.add('active');
-        }
-
-        function nextSlide() { goToSlide(currentSlide + 1); }
-        function startAutoSlide() { autoSlideInterval = setInterval(nextSlide, 2000); }
-        function stopAutoSlide() { clearInterval(autoSlideInterval); }
-
-        startAutoSlide();
-
-        const loginCard = document.querySelector('.login-card');
-        loginCard.addEventListener('mouseenter', stopAutoSlide);
-        loginCard.addEventListener('mouseleave', startAutoSlide);
-
-        // Parallax shapes
+        // Parallax effect for floating document icons
         document.addEventListener('mousemove', (e) => {
-            const shapes = document.querySelectorAll('.shape');
-            const x = (e.clientX / window.innerWidth - 0.5) * 20;
-            const y = (e.clientY / window.innerHeight - 0.5) * 20;
-            shapes.forEach((shape, i) => {
-                const factor = (i + 1) * 0.5;
-                shape.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            const docs = document.querySelectorAll('.doc-icon');
+            const glows = document.querySelectorAll('.glow-spot');
+            const x = (e.clientX / window.innerWidth - 0.5) * 30;
+            const y = (e.clientY / window.innerHeight - 0.5) * 30;
+
+            docs.forEach((doc, i) => {
+                const factor = (i % 4 + 1) * 0.4;
+                const rotateAmount = x * 0.1 * factor;
+                doc.style.transform = `translate(${x * factor}px, ${y * factor}px) rotate(${rotateAmount}deg)`;
+            });
+
+            glows.forEach((glow, i) => {
+                const factor = (i + 1) * 0.15;
+                glow.style.transform = `translate(${x * factor}px, ${y * factor}px) scale(${1 + Math.abs(x * 0.002)})`;
             });
         });
 

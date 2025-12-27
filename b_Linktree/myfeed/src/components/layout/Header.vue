@@ -2,12 +2,12 @@
 import { Search } from 'lucide-vue-next'
 
 interface Props {
-  activeSection: 'myfeed' | 'newsfeed'
+  activeSection: 'myfeed' | 'newsfeed' | 'cloudfeed'
   searchQuery?: string
 }
 
 interface Emits {
-  (e: 'update:activeSection', value: 'myfeed' | 'newsfeed'): void
+  (e: 'update:activeSection', value: 'myfeed' | 'newsfeed' | 'cloudfeed'): void
   (e: 'update:searchQuery', value: string): void
 }
 
@@ -34,6 +34,13 @@ defineEmits<Emits>()
           @click="$emit('update:activeSection', 'newsfeed')"
         >
           NewsFeed
+        </button>
+        <button
+          class="section-tab"
+          :class="{ 'section-tab--active': activeSection === 'cloudfeed' }"
+          @click="$emit('update:activeSection', 'cloudfeed')"
+        >
+          CloudFeed
         </button>
       </nav>
 

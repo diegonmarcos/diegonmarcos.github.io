@@ -1,4 +1,4 @@
-import { initCardEffects, initStatusPulse } from './card-effects';
+import { initCardEffects, initAppCardEffects, initStatusPulse } from './card-effects';
 import { handleCardClick } from './service-handler';
 import { initViewToggle, initTreeExpand, initTreeServiceClick, initTreeControls, initTreeFilter } from './tree-view';
 import { initThemeSwitcher } from './theme-switcher';
@@ -132,6 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Card view initialization
     initCardEffects();
+    initAppCardEffects();
     initStatusPulse();
 
     const cards = document.querySelectorAll<HTMLElement>('.card');

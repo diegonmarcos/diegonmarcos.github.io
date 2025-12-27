@@ -178,19 +178,6 @@
                 });
             });
         </script>
-        <script>
-            function showFeedChannels() {
-                var section = document.getElementById('feed-channels-section');
-                if (section.style.display === 'none') {
-                    section.style.display = 'block';
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                } else {
-                    section.style.display = 'none';
-                }
-            }
-        </script>
-
-        <!-- Products Page -->
         <div id="products-page" class="view-content active">
             <div class="page-container">
                 <!-- Grid Size Selector -->
@@ -201,196 +188,256 @@
                     <button class="view-btn grid-btn-inline" data-grid="4">4x4</button>
                 </div>
 
-            <!-- All Categories in One Grid -->
-            <div class="categories-row">
-                <!-- AI Folder -->
-                <div class="category-section">
-                    <h3 class="category-title">AI</h3>
-                    <div class="cards-grid">
-                        <div class="card" data-service="chat-multimodel" data-product-category="ai">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                                    <path d="M8 9h8M8 13h6"/>
-                                </svg>
+            <!-- Work Profile Section -->
+            <div class="profile-section work-profile">
+                <h2 class="profile-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    </svg>
+                    Work Profile
+                </h2>
+                <div class="categories-row">
+                    <!-- AI Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">AI</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="chat-multimodel" data-product-category="ai">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                        <path d="M8 9h8M8 13h6"/>
+                                    </svg>
+                                </div>
+                                <h3>Chat Multi-Model</h3>
+                                <p>Multi-provider AI Chat</p>
                             </div>
-                            <h3>Chat Multi-Model</h3>
-                            <p>Multi-provider AI Chat</p>
+                            <div class="card" data-service="myterminal" data-product-category="ai">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="4 17 10 11 4 5"/>
+                                        <line x1="12" y1="19" x2="20" y2="19"/>
+                                    </svg>
+                                </div>
+                                <h3>WebIDE</h3>
+                                <p>AI powered Terminal File Explorer and IDE</p>
+                            </div>
                         </div>
-                        <div class="card" data-service="myterminal" data-product-category="ai">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="4 17 10 11 4 5"/>
-                                    <line x1="12" y1="19" x2="20" y2="19"/>
-                                </svg>
+                    </div>
+
+                    <!-- Inbox Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">Inbox</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="mail" data-url="https://diegonmarcos.github.io/mymail" data-product-category="inbox">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <polyline points="22,6 12,13 2,6"/>
+                                    </svg>
+                                </div>
+                                <h3>Mail&Cal</h3>
+                                <p>mymail landing</p>
                             </div>
-                            <h3>WebIDE</h3>
-                            <p>AI powered Terminal File Explorer and IDE</p>
+                            <div class="card" data-service="myfeed" data-url="https://diegonmarcos.github.io/myfeed" data-product-category="inbox">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 11a9 9 0 0 1 9 9"/>
+                                        <path d="M4 4a16 16 0 0 1 16 16"/>
+                                        <circle cx="5" cy="19" r="1"/>
+                                    </svg>
+                                </div>
+                                <h3>MyFeed</h3>
+                                <p>RSS / News Dashboard</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Productivity Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">Productivity</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="drive" data-url="https://diegonmarcos.github.io/mydrive" data-product-category="productivity">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                                        <line x1="12" y1="11" x2="12" y2="17"/>
+                                        <line x1="9" y1="14" x2="15" y2="14"/>
+                                    </svg>
+                                </div>
+                                <h3>Drive&Suite</h3>
+                                <p>mydrive landing</p>
+                            </div>
+                            <div class="card" data-service="jsonvision" data-url="https://diegonmarcos.github.io/json-vision" data-product-category="productivity">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                        <polyline points="14 2 14 8 20 8"/>
+                                        <line x1="16" y1="13" x2="8" y2="13"/>
+                                        <line x1="16" y1="17" x2="8" y2="17"/>
+                                    </svg>
+                                </div>
+                                <h3>JSON Vision</h3>
+                                <p>JSON Viewer & Editor</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DEV Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">DEV</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="api-endpoints" data-url="https://diegonmarcos.github.io/cloud/api" data-product-category="dev">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                        <path d="M8 10h8M8 14h4"/>
+                                    </svg>
+                                </div>
+                                <h3>API Endpoints</h3>
+                                <p>REST API Documentation</p>
+                            </div>
+                            <div class="card" data-service="mcp-tools" data-url="https://diegonmarcos.github.io/cloud/mcp" data-product-category="dev">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                    </svg>
+                                </div>
+                                <h3>MCP Tools</h3>
+                                <p>Model Context Protocol</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Inbox Folder -->
-                <div class="category-section">
-                    <h3 class="category-title">Inbox</h3>
-                    <div class="cards-grid">
-                        <div class="card" data-service="mail" data-url="https://diegonmarcos.github.io/mymail" data-product-category="inbox">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                    <polyline points="22,6 12,13 2,6"/>
-                                </svg>
+            <!-- Personal Profile Section -->
+            <div class="profile-section personal-profile">
+                <h2 class="profile-title">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Personal Profile
+                </h2>
+                <div class="categories-row">
+                    <!-- MY TOOLS Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">MY TOOLS</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="centralbank" data-url="https://diegonmarcos.github.io/central_bank" data-product-category="tools">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="12" y1="1" x2="12" y2="23"/>
+                                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                    </svg>
+                                </div>
+                                <h3>Central Bank</h3>
+                                <p>Currency Tools</p>
                             </div>
-                            <h3>Mail&Cal</h3>
-                            <p>mymail landing</p>
-                        </div>
-                        <div class="card" data-service="feed" data-product-category="inbox" onclick="showFeedChannels()">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 11a9 9 0 0 1 9 9"/>
-                                    <path d="M4 4a16 16 0 0 1 16 16"/>
-                                    <circle cx="5" cy="19" r="1"/>
-                                </svg>
+                            <div class="card" data-service="marketwatch" data-url="https://diegonmarcos.github.io/market_watch" data-product-category="tools">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                                    </svg>
+                                </div>
+                                <h3>Market Watch</h3>
+                                <p>Stock & Crypto Tracker</p>
                             </div>
-                            <h3>Feed</h3>
-                            <p>RSS / Push Notifications</p>
+                            <div class="card" data-service="healthtracker" data-url="https://diegonmarcos.github.io/health_tracker" data-product-category="tools">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                    </svg>
+                                </div>
+                                <h3>Health Tracker</h3>
+                                <p>Fitness & Health</p>
+                            </div>
+                            <div class="card" data-service="feedyourself" data-url="https://diegonmarcos.github.io/feed_yourself" data-product-category="tools">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+                                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+                                        <line x1="6" y1="1" x2="6" y2="4"/>
+                                        <line x1="10" y1="1" x2="10" y2="4"/>
+                                        <line x1="14" y1="1" x2="14" y2="4"/>
+                                    </svg>
+                                </div>
+                                <h3>Feed Yourself</h3>
+                                <p>Recipe & Meal Planner</p>
+                            </div>
+                            <div class="card" data-service="maps" data-url="https://diegonmarcos.github.io/mymaps" data-product-category="tools">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                        <circle cx="12" cy="10" r="3"/>
+                                    </svg>
+                                </div>
+                                <h3>Maps</h3>
+                                <p>Maps & Transport</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Productivity Folder -->
-                <div class="category-section">
-                    <h3 class="category-title">Productivity</h3>
-                    <div class="cards-grid">
-                        <div class="card" data-service="drive" data-url="https://diegonmarcos.github.io/mydrive" data-product-category="productivity">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                                    <line x1="12" y1="11" x2="12" y2="17"/>
-                                    <line x1="9" y1="14" x2="15" y2="14"/>
-                                </svg>
+                    <!-- ENTERTAINMENT Folder -->
+                    <div class="category-section">
+                        <h3 class="category-title">ENTERTAINMENT</h3>
+                        <div class="cards-grid">
+                            <div class="card" data-service="mygames" data-url="https://diegonmarcos.github.io/mygames" data-product-category="entertainment">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="6" width="20" height="12" rx="2"/>
+                                        <line x1="6" y1="12" x2="10" y2="12"/>
+                                        <line x1="8" y1="10" x2="8" y2="14"/>
+                                        <circle cx="17" cy="10" r="1"/>
+                                        <circle cx="15" cy="13" r="1"/>
+                                    </svg>
+                                </div>
+                                <h3>MyGames</h3>
+                                <p>Browser Games</p>
                             </div>
-                            <h3>Drive&Suite</h3>
-                            <p>mydrive landing</p>
-                        </div>
-                        <div class="card" data-service="photos" data-url="https://diegonmarcos.github.io/myphotos" data-product-category="productivity">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
-                                    <circle cx="12" cy="13" r="4"/>
-                                </svg>
+                            <div class="card" data-service="myvideos" data-url="https://diegonmarcos.github.io/myvideos" data-product-category="entertainment">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polygon points="5 3 19 12 5 21 5 3"/>
+                                    </svg>
+                                </div>
+                                <h3>MyVideos</h3>
+                                <p>Video Streaming</p>
                             </div>
-                            <h3>Photos</h3>
-                            <p>myphotos landing</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Media Folder -->
-                <div class="category-section">
-                    <h3 class="category-title">Media</h3>
-                    <div class="cards-grid">
-                        <div class="card" data-service="music" data-product-category="media">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M9 18V5l12-2v13"/>
-                                    <circle cx="6" cy="18" r="3"/>
-                                    <circle cx="18" cy="16" r="3"/>
-                                </svg>
+                            <div class="card" data-service="mymovies" data-url="https://diegonmarcos.github.io/mymovies" data-product-category="entertainment">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
+                                        <line x1="7" y1="2" x2="7" y2="22"/>
+                                        <line x1="17" y1="2" x2="17" y2="22"/>
+                                        <line x1="2" y1="12" x2="22" y2="12"/>
+                                        <line x1="2" y1="7" x2="7" y2="7"/>
+                                        <line x1="2" y1="17" x2="7" y2="17"/>
+                                        <line x1="17" y1="17" x2="22" y2="17"/>
+                                        <line x1="17" y1="7" x2="22" y2="7"/>
+                                    </svg>
+                                </div>
+                                <h3>MyMovies</h3>
+                                <p>Movie Collection</p>
                             </div>
-                            <h3>Music</h3>
-                            <p>Navidrome / Jellyfin</p>
-                        </div>
-                        <div class="card" data-service="videos" data-product-category="media">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/>
-                                    <line x1="7" y1="2" x2="7" y2="22"/>
-                                    <line x1="17" y1="2" x2="17" y2="22"/>
-                                    <line x1="2" y1="12" x2="22" y2="12"/>
-                                    <line x1="2" y1="7" x2="7" y2="7"/>
-                                    <line x1="2" y1="17" x2="7" y2="17"/>
-                                    <line x1="17" y1="17" x2="22" y2="17"/>
-                                    <line x1="17" y1="7" x2="22" y2="7"/>
-                                </svg>
+                            <div class="card" data-service="mymusic" data-url="https://diegonmarcos.github.io/mymusic" data-product-category="entertainment">
+                                <div class="card-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M9 18V5l12-2v13"/>
+                                        <circle cx="6" cy="18" r="3"/>
+                                        <circle cx="18" cy="16" r="3"/>
+                                    </svg>
+                                </div>
+                                <h3>MyMusic</h3>
+                                <p>Music Streaming</p>
                             </div>
-                            <h3>Videos&Movies</h3>
-                            <p>Jellyfin / Plex</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tools Folder -->
-                <div class="category-section">
-                    <h3 class="category-title">Tools</h3>
-                    <div class="cards-grid">
-                        <div class="card" data-service="linktree" data-url="https://diegonmarcos.github.io/linktree" data-product-category="tools">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                                </svg>
-                            </div>
-                            <h3>Linktree</h3>
-                            <p>diegonmarcos.github.io/linktree</p>
-                        </div>
-                        <div class="card" data-service="maps" data-product-category="tools">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-                                    <circle cx="12" cy="10" r="3"/>
-                                </svg>
-                            </div>
-                            <h3>Maps</h3>
-                            <p>Maps, Transport</p>
-                        </div>
-                        <div class="card" data-service="api-endpoints" data-url="https://diegonmarcos.github.io/cloud/api" data-product-category="tools">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                                    <path d="M8 10h8M8 14h4"/>
-                                </svg>
-                            </div>
-                            <h3>API Endpoints</h3>
-                            <p>REST API Documentation</p>
-                        </div>
-                        <div class="card" data-service="mcp-tools" data-url="https://diegonmarcos.github.io/cloud/mcp" data-product-category="tools">
-                            <div class="card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                </svg>
-                            </div>
-                            <h3>MCP Tools</h3>
-                            <p>Model Context Protocol</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             </div><!-- End page-container -->
-
-            <!-- Feed Channels Section (shown when Feed card is clicked) -->
-            <div id="feed-channels-section" class="channels-section" style="display: none;">
-                <h3 class="channels-title">Feed Channels</h3>
-                <table class="channels-table">
-                    <thead><tr><th></th><th>Channel</th><th>URL</th><th></th></tr></thead>
-                    <tbody>
-                        <tr><td class="lock-icon">🌐</td><td>public</td><td>rss.diegonmarcos.com/public</td><td><a href="https://rss.diegonmarcos.com/public" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🌐</td><td>github</td><td>rss.diegonmarcos.com/github</td><td><a href="https://rss.diegonmarcos.com/github" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>alerts</td><td>rss.diegonmarcos.com/alerts</td><td><a href="https://rss.diegonmarcos.com/alerts" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>backup</td><td>rss.diegonmarcos.com/backup</td><td><a href="https://rss.diegonmarcos.com/backup" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>home</td><td>rss.diegonmarcos.com/home</td><td><a href="https://rss.diegonmarcos.com/home" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>cron</td><td>rss.diegonmarcos.com/cron</td><td><a href="https://rss.diegonmarcos.com/cron" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>deploy</td><td>rss.diegonmarcos.com/deploy</td><td><a href="https://rss.diegonmarcos.com/deploy" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>security</td><td>rss.diegonmarcos.com/security</td><td><a href="https://rss.diegonmarcos.com/security" target="_blank" class="open-btn">Open</a></td></tr>
-                        <tr><td class="lock-icon">🔒</td><td>test</td><td>rss.diegonmarcos.com/test</td><td><a href="https://rss.diegonmarcos.com/test" target="_blank" class="open-btn">Open</a></td></tr>
-                    </tbody>
-                </table>
-                <a href="feed_docs.html" class="channel-admin-link">Documentation</a>
-                <span style="color: var(--text-secondary); margin: 0 0.5rem;">|</span>
-                <a href="https://rss.diegonmarcos.com" target="_blank" class="channel-admin-link">Open Dashboard →</a>
-            </div>
-
         </div><!-- End Products Page -->
 
         <!-- Apps Page -->

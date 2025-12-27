@@ -1,0 +1,58 @@
+// ============================================
+// SECTIONS
+// ============================================
+// Main content section layout
+
+// Curriculum two-column layout
+.curriculum-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.curriculum-column {
+    h3.collapser {
+        margin-top: 0;
+    }
+}
+
+// Skills three-column layout
+.skills-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+
+    @media screen and (max-width: 900px) {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+.skills-column {
+    background: linear-gradient(135deg, rgba(40, 40, 40, 0.6), rgba(25, 25, 25, 0.8));
+    border: 1px solid #3c3c3c;
+    border-radius: 8px;
+    padding: 1rem;
+
+    h4 {
+        color: #9966cc;
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+        font-size: 1em;
+    }
+
+    ul {
+        margin: 0;
+        font-size: 0.9em;
+    }
+
+    li {
+        margin-bottom: 0.3rem;
+    }
+}

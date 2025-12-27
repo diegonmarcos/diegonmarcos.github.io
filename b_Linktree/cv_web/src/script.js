@@ -497,3 +497,4 @@
   }
   document.addEventListener("DOMContentLoaded", initApp);
 })();
+//# sourceMappingURL=script.js.map

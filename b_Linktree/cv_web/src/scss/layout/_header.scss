@@ -13,6 +13,10 @@
   align-items: center;
   text-align: center;
   box-sizing: border-box;
+  // Break out of body max-width to use full viewport
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  padding: 0 5vw;
 }
 
 .header-content {

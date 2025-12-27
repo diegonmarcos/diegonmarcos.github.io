@@ -109,7 +109,7 @@ build_single_file() {
     # Create symlinks for media assets
     ln -sf ../public "$DIST_DIR/public"
 
-    _html_file="$PROJECT_DIR/src_static/index.html"
+    _html_file="$PROJECT_DIR/src/index.html"
     _css_file="$PROJECT_DIR/style.css"
     _js_file="$PROJECT_DIR/script.js"
     _matomo_file="$PROJECT_DIR/public/matomo.js"
@@ -173,19 +173,19 @@ dev() {
     cd "$PROJECT_DIR"
 
     # Create symlink to public folder if it doesn't exist
-    if [ ! -e "src_static/public" ] && [ -d "$PROJECT_DIR/public" ]; then
-        ln -sf ../public src_static/public
-        log_info "Created symlink: src_static/public -> ../public"
+    if [ ! -e "src/public" ] && [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf ../public src/public
+        log_info "Created symlink: src/public -> ../public"
     fi
 
     # Start TypeScript/esbuild watch in background (use --watch=forever for daemon mode)
-    nohup npx esbuild src/main.ts --bundle --outfile=src_static/script.js --format=iife --target=es2020 --sourcemap --watch=forever > /dev/null 2>&1 &
+    nohup npx esbuild src/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch=forever > /dev/null 2>&1 &
 
-    # Start Sass watch in background (outputs to src_static/style.css)
+    # Start Sass watch in background (outputs to src/style.css)
     nohup npm run watch:css > /dev/null 2>&1 &
 
-    # Start live-server from src_static directory
-    nohup npx live-server src_static --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+    # Start live-server from src directory
+    nohup npx live-server src --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"

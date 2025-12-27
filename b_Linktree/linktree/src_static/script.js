@@ -599,7 +599,7 @@
     document.documentElement.style.scrollSnapType = "none";
     window.addEventListener("scroll", () => {
       clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(handleScrollEnd, 150);
+      scrollTimeout = setTimeout(handleScrollEnd, 500);
     }, { passive: true });
   }
 

@@ -1020,7 +1020,7 @@
                             <span>Cloud firewall drops all non-whitelisted ports</span>
                             <span class="block-badge">BLOCKED</span>
                         </div>
-                        <div class="attack-step" style="opacity: 0.4;">
+                        <div class="attack-step dimmed">
                             <span class="step-num">3</span>
                             <span>Only 22, 80, 443, 587, 993 visible</span>
                         </div>
@@ -1064,7 +1064,7 @@
                             <span>GitHub OAuth requires 2FA - attacker blocked</span>
                             <span class="block-badge">BLOCKED</span>
                         </div>
-                        <div class="attack-step" style="opacity: 0.5;">
+                        <div class="attack-step faded">
                             <span class="step-num">4</span>
                             <span>Backup: Authelia TOTP/Passkey also requires 2FA</span>
                         </div>
@@ -1122,7 +1122,7 @@
              OIDC AUTHENTICATION FLOW
              ============================================ -->
         <div class="arch-card-lg">
-            <div class="diagram-title" style="text-align: center; margin-bottom: 20px;">OIDC Passwordless Authentication Flow</div>
+            <div class="diagram-title diagram-title-centered">OIDC Passwordless Authentication Flow</div>
             <svg viewBox="0 0 900 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="img-full">
                 <!-- Background -->
                 <rect x="10" y="10" width="880" height="260" rx="12" fill="rgba(10,10,15,0.8)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
@@ -1205,7 +1205,7 @@
             </svg>
 
             <!-- Auth Methods Summary -->
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px;">
+            <div class="grid-4-mt">
                 <div class="arch-card-highlight">
                     <div class="icon-xl">🔗</div>
                     <div class="ai-provider-label">GitHub SSO</div>
@@ -1221,9 +1221,9 @@
                     <div class="ai-provider-label">Passkey</div>
                     <div class="text-muted fs-xs">WebAuthn/FIDO2</div>
                 </div>
-                <div style="background: rgba(0,206,201,0.1); border-radius: 8px; padding: 12px; border: 1px solid rgba(0,206,201,0.3); text-align: center;">
+                <div class="box-vpn">
                     <div class="icon-xl">🔒</div>
-                    <div style="color: #00cec9; font-size: 10px; font-weight: 600;">VPN Tunnel</div>
+                    <div class="text-vpn">VPN Tunnel</div>
                     <div class="text-muted fs-xs">Cross-VM Access</div>
                 </div>
             </div>
@@ -1248,7 +1248,7 @@
                 <tbody>
                     <tr>
                         <td>OCI Security Lists</td>
-                        <td><span class="layer-badge" style="background: var(--edge-color); color: #fff;">Edge</span></td>
+                        <td><span class="layer-badge edge">Edge</span></td>
                         <td>Cloud Firewall</td>
                         <td>Ingress/egress rules at cloud level</td>
                         <td>Oracle Cloud</td>
@@ -1256,7 +1256,7 @@
                     </tr>
                     <tr>
                         <td>GCP Firewall Rules</td>
-                        <td><span class="layer-badge" style="background: var(--edge-color); color: #fff;">Edge</span></td>
+                        <td><span class="layer-badge edge">Edge</span></td>
                         <td>Cloud Firewall</td>
                         <td>Network tags + firewall rules</td>
                         <td>Google Cloud</td>
@@ -1264,7 +1264,7 @@
                     </tr>
                     <tr>
                         <td>UFW</td>
-                        <td><span class="layer-badge" style="background: var(--firewall-color); color: #000;">Firewall</span></td>
+                        <td><span class="layer-badge firewall">Firewall</span></td>
                         <td>Host Firewall</td>
                         <td>Default deny, explicit allow rules</td>
                         <td>All VMs</td>
@@ -1272,7 +1272,7 @@
                     </tr>
                     <tr>
                         <td>Fail2Ban</td>
-                        <td><span class="layer-badge" style="background: var(--firewall-color); color: #000;">Firewall</span></td>
+                        <td><span class="layer-badge firewall">Firewall</span></td>
                         <td>IPS</td>
                         <td>Brute force protection for SSH/Web</td>
                         <td>All VMs</td>
@@ -1280,7 +1280,7 @@
                     </tr>
                     <tr>
                         <td>NGINX Proxy Manager</td>
-                        <td><span class="layer-badge" style="background: var(--proxy-color); color: #000;">TLS</span></td>
+                        <td><span class="layer-badge proxy">TLS</span></td>
                         <td>Reverse Proxy</td>
                         <td>TLS termination, routing, headers</td>
                         <td>GCP Micro 1</td>
@@ -1288,7 +1288,7 @@
                     </tr>
                     <tr>
                         <td>Let's Encrypt</td>
-                        <td><span class="layer-badge" style="background: var(--proxy-color); color: #000;">TLS</span></td>
+                        <td><span class="layer-badge proxy">TLS</span></td>
                         <td>SSL/TLS</td>
                         <td>Auto-renewed certificates</td>
                         <td>NPM Container</td>
@@ -1296,7 +1296,7 @@
                     </tr>
                     <tr>
                         <td>OAuth2 Proxy</td>
-                        <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
+                        <td><span class="layer-badge auth">Auth</span></td>
                         <td>OAuth SSO</td>
                         <td>GitHub OAuth (Primary) - 2FA via GitHub</td>
                         <td>GCP Micro 1</td>
@@ -1304,7 +1304,7 @@
                     </tr>
                     <tr>
                         <td>Authelia TOTP</td>
-                        <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
+                        <td><span class="layer-badge auth">Auth</span></td>
                         <td>2FA Backup</td>
                         <td>Time-based OTP (Backup auth method)</td>
                         <td>GCP Micro 1</td>
@@ -1312,7 +1312,7 @@
                     </tr>
                     <tr>
                         <td>Authelia WebAuthn</td>
-                        <td><span class="layer-badge" style="background: var(--auth-color); color: #fff;">Auth</span></td>
+                        <td><span class="layer-badge auth">Auth</span></td>
                         <td>Passkey</td>
                         <td>FIDO2/WebAuthn passwordless auth</td>
                         <td>GCP Micro 1</td>
@@ -1320,7 +1320,7 @@
                     </tr>
                     <tr>
                         <td>WireGuard</td>
-                        <td><span class="layer-badge" style="background: var(--vpn-color); color: #000;">VPN</span></td>
+                        <td><span class="layer-badge vpn">VPN</span></td>
                         <td>VPN Tunnel</td>
                         <td>Secure cross-VM communication</td>
                         <td>GCP ↔ OCI</td>
@@ -1328,7 +1328,7 @@
                     </tr>
                     <tr>
                         <td>Docker Networks</td>
-                        <td><span class="layer-badge" style="background: var(--network-color); color: #000;">Network</span></td>
+                        <td><span class="layer-badge network">Network</span></td>
                         <td>Micro-segmentation</td>
                         <td>public_net, private_net, db_bridge</td>
                         <td>OCI Flex 1</td>
@@ -1336,7 +1336,7 @@
                     </tr>
                     <tr>
                         <td>SSH Key Auth</td>
-                        <td><span class="layer-badge" style="background: var(--container-color); color: #000;">Container</span></td>
+                        <td><span class="layer-badge container">Container</span></td>
                         <td>Access Control</td>
                         <td>Key-only auth, no passwords</td>
                         <td>All VMs</td>
@@ -1369,19 +1369,19 @@
                     <!-- Legend -->
                     <div class="legend">
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #38bdf8;"></div>
+                            <div class="legend-dot blue"></div>
                             <span>Google Cloud (Gateway)</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #f39c12;"></div>
+                            <div class="legend-dot orange"></div>
                             <span>Oracle Cloud (Services)</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #8b5cf6;"></div>
+                            <div class="legend-dot purple"></div>
                             <span>Cloudflare (DNS/CDN)</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #00d084;"></div>
+                            <div class="legend-dot green"></div>
                             <span>Free Tier</span>
                         </div>
                     </div>
@@ -1494,7 +1494,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #38bdf8;">GCloud</td>
                                     <td style="padding: 8px; color: #e8e8f0;">gcp-f-micro_1</td>
                                     <td style="padding: 8px; color: #8888a0;">34.55.55.234</td>
@@ -1504,7 +1504,7 @@
                                     <td style="padding: 8px; color: #00d084; text-align: center;">42%</td>
                                     <td style="padding: 8px; color: #555566;">proxy, authelia, oauth2, api</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #f39c12;">Oracle</td>
                                     <td style="padding: 8px; color: #e8e8f0;">oci-f-micro_1</td>
                                     <td style="padding: 8px; color: #8888a0;">130.110.251.193</td>
@@ -1514,7 +1514,7 @@
                                     <td style="padding: 8px; color: #00d084; text-align: center;">49%</td>
                                     <td style="padding: 8px; color: #555566;">mail-* (8 containers)</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #f39c12;">Oracle</td>
                                     <td style="padding: 8px; color: #e8e8f0;">oci-f-micro_2</td>
                                     <td style="padding: 8px; color: #8888a0;">129.151.228.66</td>
@@ -1558,32 +1558,32 @@
                             </h3>
                             <table class="arch-table">
                                 <tbody>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">gcp-f-micro_1</td>
                                         <td style="padding: 6px 4px; color: #00d084; text-align: right;">FREE</td>
                                         <td style="padding: 6px 4px; color: #555566;">24/7 gateway</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">oci-f-micro_1</td>
                                         <td style="padding: 6px 4px; color: #00d084; text-align: right;">FREE</td>
                                         <td style="padding: 6px 4px; color: #555566;">24/7 mail</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">oci-f-micro_2</td>
                                         <td style="padding: 6px 4px; color: #00d084; text-align: right;">FREE</td>
                                         <td style="padding: 6px 4px; color: #555566;">24/7 analytics</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">oci-p-flex_1</td>
                                         <td style="padding: 6px 4px; color: #f39c12; text-align: right;">~$5.50</td>
                                         <td style="padding: 6px 4px; color: #555566;">wake-on-demand</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">Cloudflare</td>
                                         <td style="padding: 6px 4px; color: #00d084; text-align: right;">FREE</td>
                                         <td style="padding: 6px 4px; color: #555566;">DNS + CDN</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">Domain</td>
                                         <td style="padding: 6px 4px; color: #8888a0; text-align: right;">~$1</td>
                                         <td style="padding: 6px 4px; color: #555566;">annual/12</td>
@@ -1665,7 +1665,7 @@
                     <!-- Legend -->
                     <div class="legend">
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #f39c12;"></div>
+                            <div class="legend-dot orange"></div>
                             <span>Collectors (Ingest)</span>
                         </div>
                         <div class="legend-item">
@@ -1677,7 +1677,7 @@
                             <span>Storage (Vector + SQL)</span>
                         </div>
                         <div class="legend-item">
-                            <div class="legend-dot" style="background: #00d084;"></div>
+                            <div class="legend-dot green"></div>
                             <span>Access Gateway</span>
                         </div>
                     </div>
@@ -1775,32 +1775,32 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">masterplan-rag</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Knowledge Retrieval</td>
                                         <td style="padding: 6px 4px; color: #555566;">ChromaDB</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">file-navigator</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Codebase Navigation</td>
                                         <td style="padding: 6px 4px; color: #555566;">Python3</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">git-integration</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">History Query</td>
                                         <td style="padding: 6px 4px; color: #555566;">GitPython</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">secrets-manager</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Credential Paths</td>
                                         <td style="padding: 6px 4px; color: #555566;">Python3</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">emails</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Mail Archive</td>
                                         <td style="padding: 6px 4px; color: #555566;">ChromaDB + IMAP</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">photos</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Photo Metadata</td>
                                         <td style="padding: 6px 4px; color: #555566;">ChromaDB + API</td>
@@ -1829,17 +1829,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">cloud-cli</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Cloud Commands</td>
                                         <td style="padding: 6px 4px; color: #555566;">gcloud + oci CLI</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">docker-manager</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Service Control</td>
                                         <td style="padding: 6px 4px; color: #555566;">Docker SDK</td>
                                     </tr>
-                                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                    <tr class="tr-border">
                                         <td style="padding: 6px 4px; color: #e8e8f0;">build-orchestrator</td>
                                         <td style="padding: 6px 4px; color: #8888a0;">Build Automation</td>
                                         <td style="padding: 6px 4px; color: #555566;">Shell + Python3</td>
@@ -1867,19 +1867,19 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #f39c12; font-weight: 600;">Collect</td>
                                     <td style="padding: 8px; color: #e8e8f0;">Public APIs, Local DBs</td>
                                     <td style="padding: 8px; color: #8888a0;">Raw data</td>
                                     <td style="padding: 8px; color: #555566;">Python, IMAP, REST</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #3498db; font-weight: 600;">Convert</td>
                                     <td style="padding: 8px; color: #e8e8f0;">Raw data</td>
                                     <td style="padding: 8px; color: #8888a0;">JSON, MD, CSV</td>
                                     <td style="padding: 8px; color: #555566;">Pandas, custom scripts</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <tr class="tr-border">
                                     <td style="padding: 8px; color: #9b59b6; font-weight: 600;">Store</td>
                                     <td style="padding: 8px; color: #e8e8f0;">Processed data</td>
                                     <td style="padding: 8px; color: #8888a0;">Indexed records</td>
@@ -1969,23 +1969,23 @@
         <!-- Legend -->
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--orchestrator-color);"></div>
+                <div class="legend-dot orchestrator"></div>
                 <span>PaaS - Orchestrator</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--brain-color);"></div>
+                <div class="legend-dot brain"></div>
                 <span>MaaS - Brain/API</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--logic-color);"></div>
+                <div class="legend-dot logic"></div>
                 <span>FaaS - Logic/GPU</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--sandbox-color);"></div>
+                <div class="legend-dot sandbox"></div>
                 <span>AaaS - Agent Sandbox</span>
             </div>
             <div class="legend-item">
-                <div class="legend-dot" style="background: var(--memory-color);"></div>
+                <div class="legend-dot memory"></div>
                 <span>Database - Memory</span>
             </div>
         </div>
@@ -2232,25 +2232,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr class="tr-border">
                         <td style="padding: 12px;"><span style="background: var(--iaas-color); color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">IaaS</span></td>
                         <td style="padding: 12px; color: var(--text-muted);">"Raw VPS"</td>
                         <td style="padding: 12px;">Infrastructure-as-a-Service</td>
                         <td style="padding: 12px; color: var(--text-muted);">Vast.ai, Oracle (Free), DigitalOcean</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr class="tr-border">
                         <td style="padding: 12px;"><span style="background: var(--orchestrator-color); color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">PaaS</span></td>
                         <td style="padding: 12px; color: var(--text-muted);">"Managed App Host"</td>
                         <td style="padding: 12px;">Platform-as-a-Service</td>
                         <td style="padding: 12px; color: var(--text-muted);">HuggingFace Spaces, Koyeb, Railway, Render</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr class="tr-border">
                         <td style="padding: 12px;"><span style="background: var(--logic-color); color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">FaaS</span></td>
                         <td style="padding: 12px; color: var(--text-muted);">"Agent Logic Host"</td>
                         <td style="padding: 12px;">Serverless GPU</td>
                         <td style="padding: 12px; color: var(--text-muted);">Modal, Beam.cloud, RunPod Serverless</td>
                     </tr>
-                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <tr class="tr-border">
                         <td style="padding: 12px;"><span style="background: var(--brain-color); color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 600; font-size: 11px;">MaaS</span></td>
                         <td style="padding: 12px; color: var(--text-muted);">"The Brain / API"</td>
                         <td style="padding: 12px;">Inference-as-a-Service</td>

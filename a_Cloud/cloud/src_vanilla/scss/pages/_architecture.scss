@@ -2843,3 +2843,133 @@
             &.network { color: var(--network-color); }
             &.container { color: var(--container-color); }
         }
+
+        // Layer badge color variants
+        .layer-badge {
+            &.edge { background: var(--edge-color); color: #fff; }
+            &.firewall { background: var(--firewall-color); color: #000; }
+            &.proxy { background: var(--proxy-color); color: #000; }
+            &.auth { background: var(--auth-color); color: #fff; }
+            &.vpn { background: var(--vpn-color); color: #000; }
+            &.network { background: var(--network-color); color: #000; }
+            &.container { background: var(--container-color); color: #000; }
+        }
+
+        // Additional legend dot variants
+        .legend-dot {
+            &.blue { background: #38bdf8; }
+            &.orange { background: #f39c12; }
+            &.purple { background: #8b5cf6; }
+            &.green { background: #00d084; }
+            &.orchestrator { background: var(--orchestrator-color); }
+            &.brain { background: var(--brain-color); }
+            &.logic { background: var(--logic-color); }
+            &.sandbox { background: var(--sandbox-color); }
+            &.memory { background: var(--memory-color); }
+        }
+
+        // Attack step opacity variants
+        .attack-step {
+            &.dimmed { opacity: 0.4; }
+            &.faded { opacity: 0.5; }
+        }
+
+        // Diagram title
+        .diagram-title-centered {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        // Gradient titles
+        .gradient-title {
+            font-size: 24px;
+            font-weight: 700;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .gradient-title--infra {
+            background: linear-gradient(90deg, #38bdf8, #8b5cf6, #f39c12, #00d084);
+        }
+
+        .gradient-title--ai {
+            background: linear-gradient(90deg, var(--orchestrator-color), var(--brain-color), var(--logic-color), var(--sandbox-color));
+        }
+
+        // Grid with margin
+        .grid-4-mt {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        // Box styles
+        .box-vpn {
+            background: rgba(0,206,201,0.1);
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid rgba(0,206,201,0.3);
+            text-align: center;
+        }
+
+        .box-oracle {
+            background: rgba(243,156,18,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(243,156,18,0.3);
+            text-align: center;
+        }
+
+        .box-green {
+            background: rgba(0,208,132,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(0,208,132,0.3);
+            text-align: center;
+        }
+
+        .box-purple-lg {
+            background: rgba(139,92,246,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(139,92,246,0.3);
+        }
+
+        .box-green-lg {
+            background: rgba(0,208,132,0.08);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(0,208,132,0.3);
+        }
+
+        // VPN text
+        .text-vpn {
+            color: #00cec9;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        // Section header green
+        .section-header-green {
+            color: #00d084;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        // Code tree colors
+        .code-purple { color: #9b59b6; }
+        .code-blue { color: #3498db; }
+        .code-green { color: #00d084; }
+
+        // Table full width
+        .table-full {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }

@@ -2539,3 +2539,113 @@
         [data-theme="blurred"] .security-tag {
             background: rgba(255, 255, 255, 0.08);
         }
+
+        // Security dot colors
+        .security-dot {
+            &.green { background: #22c55e; }
+            &.blue { background: #3b82f6; }
+            &.red { background: #F80000; }
+            &.yellow { background: #fbbf24; }
+        }
+
+        // Resources section margin
+        .resources-section {
+            &.mb-lg { margin-bottom: 1.5rem; }
+        }
+
+        // Resources category margin-top
+        .resources-category {
+            &.mt-xl { margin-top: 2rem; }
+        }
+
+        // Section header styling
+        .section-h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        // Card box
+        .card-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        // Table font sizes
+        .resources-table {
+            &.fs-sm { font-size: 0.8rem; }
+            &.fs-md { font-size: 0.85rem; }
+        }
+
+        // Code font size
+        code.fs-xs { font-size: 0.7rem; }
+
+        // Status dot
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            &.red { background: #F80000; }
+            &.green { background: #22c55e; }
+            &.yellow { background: #fbbf24; }
+        }
+
+        // Progress bar container
+        .progress-container {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        // Flex utilities
+        .flex-between-sm {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .flex-center-gap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flex-col-center {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        // Margin utilities
+        .mb-sm { margin-bottom: 0.75rem; }
+
+        // VM/Totals row styles
+        .vm-row {
+            background: var(--bg-card);
+            font-weight: 600;
+        }
+
+        .totals-row {
+            background: var(--bg-tertiary);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        // Table header widths
+        .th-name { width: 28%; }
+        .th-name-lg { width: 40%; }
+        .th-cpu { width: 14%; }
+        .th-ram { width: 14%; }
+        .th-vram { width: 14%; }
+        .th-storage { width: 14%; }
+        .th-storage-lg { width: 20%; }
+        .th-actions { width: 16%; }

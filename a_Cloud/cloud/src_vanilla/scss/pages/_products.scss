@@ -543,3 +543,157 @@
         .apps-cards-grid--narrow {
             max-width: 450px;
         }
+
+        /* Backend Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .services-column-title {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .services-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .service-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.5rem;
+        }
+
+        .service-icon {
+            font-size: 0.8rem;
+        }
+
+        .service-icon--success { color: #10b981; }
+        .service-icon--warning { color: #fbbf24; }
+        .service-icon--error { color: #ef4444; }
+
+        .service-name {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+        }
+
+        /* Feature Section Title Color Variants */
+        .feature-section__title--purple { color: rgba(139,92,246,0.9); }
+        .feature-section__title--yellow { color: rgba(251,191,36,0.9); }
+        .feature-section__title--red { color: rgba(239,68,68,0.9); }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 500px;
+
+            thead tr {
+                border-bottom: 2px solid rgba(255,255,255,0.1);
+            }
+
+            th {
+                padding: 0.75rem 0.5rem;
+                font-weight: 500;
+            }
+
+            th.text-left {
+                text-align: left;
+                color: rgba(255,255,255,0.5);
+            }
+
+            th.text-center {
+                text-align: center;
+            }
+
+            th.highlight {
+                color: rgba(74,158,255,0.9);
+                font-weight: 600;
+            }
+
+            th.muted {
+                color: rgba(255,255,255,0.5);
+            }
+
+            td {
+                padding: 0.6rem 0.5rem;
+            }
+
+            td.text-center {
+                text-align: center;
+            }
+
+            tr {
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            tr:last-child {
+                border-bottom: none;
+            }
+        }
+
+        .comparison-cell {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .comparison-value--success {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .comparison-value--muted {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .comparison-value--dim {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .comparison-value--danger {
+            color: #ef4444;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        /* Spacing utilities for feature sections */
+        .feature-section--mt {
+            margin-top: 1.5rem;
+        }
+
+        /* Tree children indentation */
+        .tree-children.expanded {
+            margin-left: 1rem;
+        }
+
+        /* Tree section divider spacing */
+        .tree-section-divider--mt {
+            margin-top: 1rem;
+        }
+
+        /* Architecture/Backlog placeholder sections */
+        .placeholder-section {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .placeholder-text {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .placeholder-link {
+            display: inline-block;
+            text-decoration: none;
+        }

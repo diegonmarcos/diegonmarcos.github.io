@@ -443,10 +443,10 @@
         <!-- Apps Page -->
         <div id="apps-page" class="view-content">
             <div class="page-container">
-                <div class="apps-cards-grid" style="max-width: 450px;">
-                    <a href="https://diegonmarcos.github.io/cloud" target="_blank" class="app-card" style="text-decoration: none;">
+                <div class="apps-cards-grid apps-cards-grid--narrow">
+                    <a href="https://diegonmarcos.github.io/cloud" target="_blank" class="app-card">
                         <div class="app-card-header">
-                            <div class="app-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                            <div class="app-card-icon app-card-icon--blue">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
                                 </svg>
@@ -457,21 +457,21 @@
                             <div class="app-card-section">
                                 <h4 class="app-card-section-title">Tools</h4>
                                 <ul class="app-card-list">
-                                    <li><span class="app-card-dot" style="background: #22c55e;"></span>VPN Connection</li>
-                                    <li><span class="app-card-dot" style="background: #8b5cf6;"></span>Vault Access</li>
+                                    <li><span class="app-card-dot app-card-dot--green"></span>VPN Connection</li>
+                                    <li><span class="app-card-dot app-card-dot--purple"></span>Vault Access</li>
                                 </ul>
                             </div>
                             <div class="app-card-section">
                                 <h4 class="app-card-section-title">Features</h4>
                                 <ul class="app-card-list">
-                                    <li><span class="app-card-dot" style="background: #3b82f6;"></span>Mesh Network</li>
-                                    <li><span class="app-card-dot" style="background: #f59e0b;"></span>Split Tunneling</li>
-                                    <li><span class="app-card-dot" style="background: #06b6d4;"></span>Config Files Local AutoSetup</li>
+                                    <li><span class="app-card-dot app-card-dot--blue"></span>Mesh Network</li>
+                                    <li><span class="app-card-dot app-card-dot--yellow"></span>Split Tunneling</li>
+                                    <li><span class="app-card-dot app-card-dot--cyan"></span>Config Files Local AutoSetup</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="app-card-footer">
-                            <span class="app-card-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">Desktop App</span>
+                            <span class="app-card-badge app-card-badge--blue">Desktop App</span>
                             <span class="app-card-status">Download</span>
                         </div>
                     </a>
@@ -480,144 +480,144 @@
         </div><!-- End Apps Page -->
 
         <!-- Features Page -->
-        <div id="features-page" class="view-content" style="padding: 1rem;">
+        <div id="features-page" class="view-content">
             <div class="page-container">
 
             <!-- Summary Cards -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-                <div style="background: linear-gradient(135deg, rgba(74,158,255,0.15), rgba(74,158,255,0.05)); border: 1px solid rgba(74,158,255,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">4</div>
-                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">VMs</div>
+            <div class="summary-cards-grid">
+                <div class="summary-card summary-card--blue">
+                    <div class="summary-card__value">4</div>
+                    <div class="summary-card__label">VMs</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">20+</div>
-                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Services</div>
+                <div class="summary-card summary-card--green">
+                    <div class="summary-card__value">20+</div>
+                    <div class="summary-card__label">Services</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05)); border: 1px solid rgba(139,92,246,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">2</div>
-                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Cloud Providers</div>
+                <div class="summary-card summary-card--purple">
+                    <div class="summary-card__value">2</div>
+                    <div class="summary-card__label">Cloud Providers</div>
                 </div>
-                <div style="background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05)); border: 1px solid rgba(251,191,36,0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
-                    <div style="font-size: 2rem; margin-bottom: 0.5rem;">24/7</div>
-                    <div style="color: rgba(255,255,255,0.7); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Uptime</div>
+                <div class="summary-card summary-card--yellow">
+                    <div class="summary-card__value">24/7</div>
+                    <div class="summary-card__label">Uptime</div>
                 </div>
             </div>
 
             <!-- Portal Features Section -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                <h3 style="color: rgba(74,158,255,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <div class="feature-section">
+                <h3 class="feature-section__title feature-section__title--blue">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
                     Portal Features
                 </h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <table class="feature-table">
                     <thead>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Feature</th>
-                            <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500; width: 80px;">Status</th>
+                        <tr>
+                            <th>Feature</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Multi-page Navigation</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Products, Cloud Control, Architecture views</div>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Multi-page Navigation</div>
+                                <div class="feature-desc">Products, Cloud Control, Architecture views</div>
                             </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Theme System</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Blurred, Dark, Minimalistic modes with persistence</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Category Filtering</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">AI, Productivity, Media, Me, City, Cloud Connect</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Responsive Design</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Mobile-first, works on all screen sizes</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Single-File Build</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">CSS/JS inlined, no external dependencies</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
                         </tr>
                         <tr>
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Offline Capable</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Works without network after first load</div>
+                            <td>
+                                <div class="feature-name">Theme System</div>
+                                <div class="feature-desc">Blurred, Dark, Minimalistic modes with persistence</div>
                             </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Category Filtering</div>
+                                <div class="feature-desc">AI, Productivity, Media, Me, City, Cloud Connect</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Responsive Design</div>
+                                <div class="feature-desc">Mobile-first, works on all screen sizes</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Single-File Build</div>
+                                <div class="feature-desc">CSS/JS inlined, no external dependencies</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Offline Capable</div>
+                                <div class="feature-desc">Works without network after first load</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
             <!-- Infrastructure Section -->
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-                <h3 style="color: rgba(16,185,129,0.9); font-size: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <div class="feature-section">
+                <h3 class="feature-section__title feature-section__title--green">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                     Infrastructure
                 </h3>
-                <table style="width: 100%; border-collapse: collapse; font-size: 0.85rem;">
+                <table class="feature-table">
                     <thead>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
-                            <th style="text-align: left; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500;">Component</th>
-                            <th style="text-align: center; padding: 0.75rem 0.5rem; color: rgba(255,255,255,0.5); font-weight: 500; width: 80px;">Status</th>
+                        <tr>
+                            <th>Component</th>
+                            <th class="text-center">Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Oracle Cloud VMs</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">3 instances (2x Micro, 1x Flex A1)</div>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Oracle Cloud VMs</div>
+                                <div class="feature-desc">3 instances (2x Micro, 1x Flex A1)</div>
                             </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Google Cloud VMs</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">1 instance (e2-micro)</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Nginx Proxy Manager</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Reverse proxy with SSL certificates</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Authelia 2FA</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Two-factor authentication gateway</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Cloudflare DNS</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">DNS management with proxy protection</div>
-                            </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
                         </tr>
                         <tr>
-                            <td style="padding: 0.6rem 0.5rem;">
-                                <div style="color: rgba(255,255,255,0.9);">Docker Networks</div>
-                                <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 0.2rem;">Isolated container networks per VM</div>
+                            <td>
+                                <div class="feature-name">Google Cloud VMs</div>
+                                <div class="feature-desc">1 instance (e2-micro)</div>
                             </td>
-                            <td style="text-align: center; padding: 0.6rem 0.5rem;"><span style="color: #10b981;">&#10003;</span></td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Nginx Proxy Manager</div>
+                                <div class="feature-desc">Reverse proxy with SSL certificates</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Authelia 2FA</div>
+                                <div class="feature-desc">Two-factor authentication gateway</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Cloudflare DNS</div>
+                                <div class="feature-desc">DNS management with proxy protection</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="feature-name">Docker Networks</div>
+                                <div class="feature-desc">Isolated container networks per VM</div>
+                            </td>
+                            <td class="text-center"><span class="check-icon">&#10003;</span></td>
                         </tr>
                     </tbody>
                 </table>

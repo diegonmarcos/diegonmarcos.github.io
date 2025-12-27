@@ -390,19 +390,156 @@
         }
 
         .work-profile {
-            border-color: rgba(239, 68, 68, 0.2);
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.05), rgba(239, 68, 68, 0.02));
-
-            .profile-title {
-                color: #f87171;
-            }
-        }
-
-        .personal-profile {
             border-color: rgba(59, 130, 246, 0.2);
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(59, 130, 246, 0.02));
 
             .profile-title {
                 color: #60a5fa;
             }
+        }
+
+        .personal-profile {
+            border-color: rgba(168, 85, 247, 0.2);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.05), rgba(168, 85, 247, 0.02));
+
+            .profile-title {
+                color: #c084fc;
+            }
+        }
+
+        /* Features Page Styles */
+        #features-page {
+            padding: 1rem;
+        }
+
+        .summary-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 1px solid;
+        }
+
+        .summary-card--blue {
+            background: linear-gradient(135deg, rgba(74,158,255,0.15), rgba(74,158,255,0.05));
+            border-color: rgba(74,158,255,0.3);
+        }
+
+        .summary-card--green {
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.05));
+            border-color: rgba(16,185,129,0.3);
+        }
+
+        .summary-card--purple {
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(139,92,246,0.05));
+            border-color: rgba(139,92,246,0.3);
+        }
+
+        .summary-card--yellow {
+            background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(251,191,36,0.05));
+            border-color: rgba(251,191,36,0.3);
+        }
+
+        .summary-card__value {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card__label {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-section__title {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            &--blue { color: rgba(74,158,255,0.9); }
+            &--green { color: rgba(16,185,129,0.9); }
+            &--purple { color: rgba(139,92,246,0.9); }
+            &--yellow { color: rgba(251,191,36,0.9); }
+        }
+
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+
+            th {
+                text-align: left;
+                padding: 0.75rem 0.5rem;
+                color: rgba(255,255,255,0.5);
+                font-weight: 500;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            th.text-center {
+                text-align: center;
+                width: 80px;
+            }
+
+            td {
+                padding: 0.6rem 0.5rem;
+            }
+
+            td.text-center {
+                text-align: center;
+            }
+
+            tr {
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+        }
+
+        .feature-name {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .feature-desc {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            margin-top: 0.2rem;
+        }
+
+        .check-icon {
+            color: #10b981;
+        }
+
+        /* App Card Color Modifiers */
+        .app-card-icon--blue {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+        }
+
+        .app-card-dot--green { background: #22c55e; }
+        .app-card-dot--purple { background: #8b5cf6; }
+        .app-card-dot--blue { background: #3b82f6; }
+        .app-card-dot--yellow { background: #f59e0b; }
+        .app-card-dot--cyan { background: #06b6d4; }
+
+        .app-card-badge--blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .apps-cards-grid--narrow {
+            max-width: 450px;
         }

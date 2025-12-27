@@ -84,3 +84,28 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
 }
+
+// Utility classes
+.link-accent {
+    color: var(--accent-blue);
+}
+
+.text-muted {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.text-secondary {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.text-primary {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.text-success {
+    color: #10b981;
+}
+
+.text-center {
+    text-align: center;
+}

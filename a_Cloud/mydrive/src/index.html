@@ -25,8 +25,34 @@
             --glass-border: rgba(255, 255, 255, 0.2);
             --sheets: #0f9d58;
             --docs: #4285f4;
-            --media: #ea4335;
-            --files: #fbbc04;
+            --photos: #e91e63;
+            --slides: #ff5722;
+            --files: #9c27b0;
+            /* Photo service colors */
+            --photoprism: #ff9500;
+            --immich: #4250af;
+            --lychee: #1abc9c;
+            --piwigo: #ff7700;
+            /* Slides service colors */
+            --revealjs: #f2a03d;
+            --slidev: #3ab0a2;
+            --marp: #0288d1;
+            --impress: #7b1fa2;
+            /* Sheets service colors */
+            --ethercalc: #0f9d58;
+            --onlyoffice-sheets: #ff6f00;
+            --luckysheet: #00bcd4;
+            --nocodb: #7c4dff;
+            /* Docs service colors */
+            --etherpad: #4285f4;
+            --onlyoffice-docs: #2196f3;
+            --cryptpad: #673ab7;
+            --hedgedoc: #009688;
+            /* Files service colors */
+            --filebrowser: #9c27b0;
+            --nextcloud: #0082c9;
+            --seafile: #f57c00;
+            --owncloud: #1976d2;
         }
 
         body {
@@ -46,16 +72,23 @@
             height: 100%;
             z-index: 0;
             background:
-                linear-gradient(30deg, transparent 49.5%, rgba(66, 133, 244, 0.03) 49.5%, rgba(66, 133, 244, 0.03) 50.5%, transparent 50.5%),
-                linear-gradient(150deg, transparent 49.5%, rgba(15, 157, 88, 0.03) 49.5%, rgba(15, 157, 88, 0.03) 50.5%, transparent 50.5%),
-                linear-gradient(90deg, transparent 49.5%, rgba(251, 188, 4, 0.02) 49.5%, rgba(251, 188, 4, 0.02) 50.5%, transparent 50.5%);
-            background-size: 60px 35px, 60px 35px, 60px 35px;
-            animation: gridPulse 8s ease-in-out infinite;
+                linear-gradient(30deg, transparent 49.5%, rgba(66, 133, 244, 0.06) 49.5%, rgba(66, 133, 244, 0.06) 50.5%, transparent 50.5%),
+                linear-gradient(150deg, transparent 49.5%, rgba(15, 157, 88, 0.06) 49.5%, rgba(15, 157, 88, 0.06) 50.5%, transparent 50.5%),
+                linear-gradient(90deg, transparent 49.5%, rgba(233, 30, 99, 0.05) 49.5%, rgba(233, 30, 99, 0.05) 50.5%, transparent 50.5%),
+                linear-gradient(60deg, transparent 49.5%, rgba(255, 87, 34, 0.05) 49.5%, rgba(255, 87, 34, 0.05) 50.5%, transparent 50.5%),
+                linear-gradient(120deg, transparent 49.5%, rgba(156, 39, 176, 0.04) 49.5%, rgba(156, 39, 176, 0.04) 50.5%, transparent 50.5%);
+            background-size: 50px 30px, 50px 30px, 50px 30px, 50px 30px, 50px 30px;
+            animation: gridPulse 3s ease-in-out infinite, gridShift 8s linear infinite;
         }
 
         @keyframes gridPulse {
-            0%, 100% { opacity: 0.6; }
+            0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
+        }
+
+        @keyframes gridShift {
+            0% { background-position: 0 0, 0 0, 0 0, 0 0, 0 0; }
+            100% { background-position: 50px 30px, -50px 30px, 25px -15px, -25px 15px, 50px -30px; }
         }
 
         /* Floating Documents Container */
@@ -73,12 +106,12 @@
         /* Document Icons */
         .doc-icon {
             position: absolute;
-            opacity: 0.15;
-            animation: docFloat 25s infinite ease-in-out;
+            opacity: 0.2;
+            animation: docFloat 12s infinite ease-in-out;
         }
 
         .doc-icon svg {
-            filter: drop-shadow(0 4px 20px currentColor);
+            filter: drop-shadow(0 4px 25px currentColor);
         }
 
         /* Sheets - Green */
@@ -91,32 +124,37 @@
         .doc-icon.docs:nth-child(3) { width: 70px; top: 25%; right: 5%; animation-delay: -4s; }
         .doc-icon.docs:nth-child(4) { width: 45px; bottom: 35%; left: 5%; animation-delay: -12s; }
 
-        /* Media - Red */
-        .doc-icon.media { color: #ea4335; }
-        .doc-icon.media:nth-child(5) { width: 60px; top: 60%; left: 12%; animation-delay: -6s; }
-        .doc-icon.media:nth-child(6) { width: 55px; top: 10%; right: 20%; animation-delay: -18s; }
+        /* Photos - Pink */
+        .doc-icon.photos { color: #e91e63; }
+        .doc-icon.photos:nth-child(5) { width: 60px; top: 60%; left: 12%; animation-delay: -6s; }
+        .doc-icon.photos:nth-child(6) { width: 55px; top: 10%; right: 20%; animation-delay: -18s; }
 
-        /* Files - Yellow */
-        .doc-icon.files { color: #fbbc04; }
-        .doc-icon.files:nth-child(7) { width: 65px; bottom: 8%; left: 25%; animation-delay: -10s; }
-        .doc-icon.files:nth-child(8) { width: 75px; top: 45%; right: 8%; animation-delay: -14s; }
+        /* Slides - Orange */
+        .doc-icon.slides { color: #ff5722; }
+        .doc-icon.slides:nth-child(7) { width: 65px; bottom: 25%; right: 15%; animation-delay: -3s; }
+        .doc-icon.slides:nth-child(8) { width: 50px; top: 35%; left: 3%; animation-delay: -9s; }
+
+        /* Files - Purple */
+        .doc-icon.files { color: #9c27b0; }
+        .doc-icon.files:nth-child(9) { width: 55px; bottom: 8%; left: 25%; animation-delay: -10s; }
+        .doc-icon.files:nth-child(10) { width: 70px; top: 45%; right: 8%; animation-delay: -14s; }
 
         @keyframes docFloat {
             0%, 100% {
                 transform: translateY(0) rotate(0deg) scale(1);
-                opacity: 0.12;
+                opacity: 0.15;
             }
             25% {
-                transform: translateY(-40px) rotate(8deg) scale(1.1);
-                opacity: 0.18;
+                transform: translateY(-50px) rotate(12deg) scale(1.15);
+                opacity: 0.25;
             }
             50% {
-                transform: translateY(20px) rotate(-5deg) scale(0.95);
-                opacity: 0.1;
+                transform: translateY(30px) rotate(-8deg) scale(0.9);
+                opacity: 0.12;
             }
             75% {
-                transform: translateY(-25px) rotate(3deg) scale(1.05);
-                opacity: 0.15;
+                transform: translateY(-35px) rotate(5deg) scale(1.1);
+                opacity: 0.2;
             }
         }
 
@@ -139,7 +177,7 @@
         .connection-line {
             stroke-dasharray: 8, 12;
             stroke-dashoffset: 0;
-            animation: dashMove 20s linear infinite;
+            animation: dashMove 8s linear infinite;
         }
 
         @keyframes dashMove {
@@ -173,49 +211,65 @@
         .glow-spot {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            animation: glowPulse 10s ease-in-out infinite;
+            filter: blur(60px);
+            animation: glowPulse 3s ease-in-out infinite, glowMove 12s ease-in-out infinite;
         }
 
         .glow-spot:nth-child(1) {
-            width: 500px;
-            height: 500px;
-            background: rgba(66, 133, 244, 0.08);
+            width: 550px;
+            height: 550px;
+            background: rgba(66, 133, 244, 0.25);
             top: -15%;
             left: -10%;
             animation-delay: 0s;
         }
 
         .glow-spot:nth-child(2) {
-            width: 400px;
-            height: 400px;
-            background: rgba(15, 157, 88, 0.06);
+            width: 500px;
+            height: 500px;
+            background: rgba(15, 157, 88, 0.22);
             bottom: -10%;
             right: -5%;
-            animation-delay: -3s;
+            animation-delay: -1s;
         }
 
         .glow-spot:nth-child(3) {
-            width: 350px;
-            height: 350px;
-            background: rgba(251, 188, 4, 0.05);
+            width: 450px;
+            height: 450px;
+            background: rgba(233, 30, 99, 0.18);
             top: 40%;
             right: 20%;
-            animation-delay: -6s;
+            animation-delay: -2s;
         }
 
         .glow-spot:nth-child(4) {
-            width: 300px;
-            height: 300px;
-            background: rgba(234, 67, 53, 0.04);
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 87, 34, 0.18);
             bottom: 20%;
             left: 15%;
-            animation-delay: -8s;
+            animation-delay: -3s;
+        }
+
+        .glow-spot:nth-child(5) {
+            width: 420px;
+            height: 420px;
+            background: rgba(156, 39, 176, 0.15);
+            top: 60%;
+            right: 5%;
+            animation-delay: -2.5s;
         }
 
         @keyframes glowPulse {
             0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.6; }
+            50% { transform: scale(1.4); opacity: 0.7; }
+        }
+
+        @keyframes glowMove {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(40px, -30px); }
+            50% { transform: translate(-30px, 40px); }
+            75% { transform: translate(20px, 20px); }
         }
 
         /* Dark overlay for readability */
@@ -235,10 +289,12 @@
             z-index: 10;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
             padding-bottom: 80px;
+            gap: 16px;
         }
 
         /* Login card */
@@ -253,6 +309,56 @@
             max-width: 620px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.1);
             animation: slideUp 0.8s ease-out;
+        }
+
+        /* Config card */
+        .config-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 24px 28px;
+            width: 100%;
+            max-width: 620px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            animation: slideUp 0.8s ease-out 0.2s both;
+        }
+
+        .config-card .tools-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .config-card .tools-section + .tools-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .config-card .server-control {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+        }
+
+        .config-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .config-title svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
         }
 
         @keyframes slideUp {
@@ -351,8 +457,21 @@
         .category-tabs {
             display: flex;
             gap: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
             flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .category-tabs-row2 {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .category-tabs-row2 .category-tab {
+            flex: none;
+            min-width: 120px;
         }
 
         .category-tab {
@@ -378,8 +497,35 @@
 
         .category-tab:hover:not(.active) {
             background: rgba(255, 255, 255, 0.1);
-            color: #fff;
         }
+
+        /* Category tab colors (always visible) */
+        .category-tab[data-category="files"] {
+            color: #ce93d8;
+            border-color: rgba(156, 39, 176, 0.4);
+        }
+        .category-tab[data-category="sheets"] {
+            color: #81c784;
+            border-color: rgba(15, 157, 88, 0.4);
+        }
+        .category-tab[data-category="docs"] {
+            color: #64b5f6;
+            border-color: rgba(66, 133, 244, 0.4);
+        }
+        .category-tab[data-category="photos"] {
+            color: #f48fb1;
+            border-color: rgba(233, 30, 99, 0.4);
+        }
+        .category-tab[data-category="slides"] {
+            color: #ffab91;
+            border-color: rgba(255, 87, 34, 0.4);
+        }
+
+        .category-tab:hover:not(.active)[data-category="files"] { background: rgba(156, 39, 176, 0.15); }
+        .category-tab:hover:not(.active)[data-category="sheets"] { background: rgba(15, 157, 88, 0.15); }
+        .category-tab:hover:not(.active)[data-category="docs"] { background: rgba(66, 133, 244, 0.15); }
+        .category-tab:hover:not(.active)[data-category="photos"] { background: rgba(233, 30, 99, 0.15); }
+        .category-tab:hover:not(.active)[data-category="slides"] { background: rgba(255, 87, 34, 0.15); }
 
         .category-tab.active[data-category="sheets"] {
             background: rgba(15, 157, 88, 0.25);
@@ -391,15 +537,20 @@
             border-color: var(--docs);
             color: #60a5fa;
         }
-        .category-tab.active[data-category="media"] {
-            background: rgba(234, 67, 53, 0.25);
-            border-color: var(--media);
-            color: #f87171;
+        .category-tab.active[data-category="photos"] {
+            background: rgba(233, 30, 99, 0.25);
+            border-color: var(--photos);
+            color: #f472b6;
+        }
+        .category-tab.active[data-category="slides"] {
+            background: rgba(255, 87, 34, 0.25);
+            border-color: var(--slides);
+            color: #ff8a65;
         }
         .category-tab.active[data-category="files"] {
-            background: rgba(251, 188, 4, 0.25);
+            background: rgba(156, 39, 176, 0.25);
             border-color: var(--files);
-            color: #fbbf24;
+            color: #ce93d8;
         }
 
         /* Tools section */
@@ -504,15 +655,28 @@
         [data-category="docs"] .service-option.active .radio { border-color: var(--docs); }
         [data-category="docs"] .service-option.active .radio::after { background: var(--docs); }
 
-        [data-category="media"] .service-option.active {
-            background: rgba(234, 67, 53, 0.2);
-            border-color: var(--media);
+        [data-category="photos"] .service-option.active {
+            background: rgba(233, 30, 99, 0.2);
+            border-color: var(--photos);
         }
-        [data-category="media"] .service-option.active .radio { border-color: var(--media); }
-        [data-category="media"] .service-option.active .radio::after { background: var(--media); }
+        [data-category="photos"] .service-option.active .radio { border-color: var(--photos); }
+        [data-category="photos"] .service-option.active .radio::after { background: var(--photos); }
+
+        /* Plain service icon colors */
+        .service-icon {
+            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-category="slides"] .service-option.active {
+            background: rgba(255, 87, 34, 0.2);
+            border-color: var(--slides);
+        }
+        [data-category="slides"] .service-option.active .radio { border-color: var(--slides); }
+        [data-category="slides"] .service-option.active .radio::after { background: var(--slides); }
 
         [data-category="files"] .service-option.active {
-            background: rgba(251, 188, 4, 0.2);
+            background: rgba(156, 39, 176, 0.2);
             border-color: var(--files);
         }
         [data-category="files"] .service-option.active .radio { border-color: var(--files); }
@@ -757,15 +921,17 @@
         <div class="glow-spot"></div>
         <div class="glow-spot"></div>
         <div class="glow-spot"></div>
+        <div class="glow-spot"></div>
     </div>
 
     <!-- Connection Lines -->
     <div class="connection-lines">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-            <path class="connection-line" d="M10,20 Q30,10 50,25 T90,15" stroke="rgba(66,133,244,0.1)" stroke-width="0.2" fill="none"/>
-            <path class="connection-line" d="M5,50 Q25,40 45,55 T95,45" stroke="rgba(15,157,88,0.1)" stroke-width="0.2" fill="none" style="animation-delay: -5s"/>
-            <path class="connection-line" d="M15,80 Q35,70 55,85 T85,75" stroke="rgba(251,188,4,0.1)" stroke-width="0.2" fill="none" style="animation-delay: -10s"/>
-            <path class="connection-line" d="M0,35 Q20,45 40,30 T80,40" stroke="rgba(234,67,53,0.08)" stroke-width="0.2" fill="none" style="animation-delay: -15s"/>
+            <path class="connection-line" d="M10,20 Q30,10 50,25 T90,15" stroke="rgba(66,133,244,0.15)" stroke-width="0.25" fill="none"/>
+            <path class="connection-line" d="M5,50 Q25,40 45,55 T95,45" stroke="rgba(15,157,88,0.15)" stroke-width="0.25" fill="none" style="animation-delay: -2s"/>
+            <path class="connection-line" d="M15,80 Q35,70 55,85 T85,75" stroke="rgba(233,30,99,0.12)" stroke-width="0.25" fill="none" style="animation-delay: -4s"/>
+            <path class="connection-line" d="M0,35 Q20,45 40,30 T80,40" stroke="rgba(255,87,34,0.12)" stroke-width="0.25" fill="none" style="animation-delay: -6s"/>
+            <path class="connection-line" d="M20,65 Q40,55 60,70 T100,60" stroke="rgba(156,39,176,0.1)" stroke-width="0.25" fill="none" style="animation-delay: -3s"/>
         </svg>
     </div>
 
@@ -793,15 +959,26 @@
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
             </svg>
         </div>
-        <!-- Media icons -->
-        <div class="doc-icon media">
+        <!-- Photos icons -->
+        <div class="doc-icon photos">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <polygon points="5 3 19 12 5 21 5 3"/>
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
             </svg>
         </div>
-        <div class="doc-icon media">
+        <div class="doc-icon photos">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/>
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>
+            </svg>
+        </div>
+        <!-- Slides icons -->
+        <div class="doc-icon slides">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+            </svg>
+        </div>
+        <div class="doc-icon slides">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
         </div>
         <!-- Files icons -->
@@ -859,7 +1036,17 @@
                 </div>
             </div>
 
-            <!-- Category Tabs -->
+            <!-- Category Tabs Row 1 - Files -->
+            <div class="category-tabs-row2">
+                <button class="category-tab" data-category="files">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Files
+                </button>
+            </div>
+
+            <!-- Category Tabs Row 2 -->
             <div class="category-tabs">
                 <button class="category-tab active" data-category="sheets">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -880,17 +1067,21 @@
                     </svg>
                     Docs
                 </button>
-                <button class="category-tab" data-category="media">
+                <button class="category-tab" data-category="slides">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="5 3 19 12 5 21 5 3"/>
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
                     </svg>
-                    Media
+                    Slides
                 </button>
-                <button class="category-tab" data-category="files">
+                <button class="category-tab" data-category="photos">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                        <circle cx="8.5" cy="8.5" r="1.5"/>
+                        <polyline points="21 15 16 10 5 21"/>
                     </svg>
-                    Files
+                    Photos
                 </button>
             </div>
 
@@ -900,7 +1091,7 @@
                 <div class="service-table active" data-category="sheets">
                     <div class="service-option active" data-name="Ethercalc" data-url="https://sheets.diegonmarcos.com/" data-config="https://sheets.diegonmarcos.com/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>
+                        <div class="service-icon ethercalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Ethercalc</div>
                             <div class="service-desc">Real-time collaborative spreadsheets</div>
@@ -908,7 +1099,7 @@
                     </div>
                     <div class="service-option" data-name="OnlyOffice Sheets" data-url="https://office.diegonmarcos.com/spreadsheet" data-config="https://office.diegonmarcos.com/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M12 3v18"/></svg></div>
+                        <div class="service-icon onlyoffice-sheets"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M12 3v18"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">OnlyOffice Sheets</div>
                             <div class="service-desc">Full office suite with Excel-like editor</div>
@@ -916,7 +1107,7 @@
                     </div>
                     <div class="service-option" data-name="Luckysheet" data-url="https://luckysheet.diegonmarcos.com/" data-config="https://luckysheet.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
+                        <div class="service-icon luckysheet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Luckysheet</div>
                             <div class="service-desc">Feature-rich web-based spreadsheet</div>
@@ -924,7 +1115,7 @@
                     </div>
                     <div class="service-option" data-name="NocoDB" data-url="https://nocodb.diegonmarcos.com/" data-config="https://nocodb.diegonmarcos.com/dashboard">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
+                        <div class="service-icon nocodb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">NocoDB</div>
                             <div class="service-desc">Airtable alternative - database as spreadsheet</div>
@@ -936,7 +1127,7 @@
                 <div class="service-table" data-category="docs">
                     <div class="service-option active" data-name="Etherpad" data-url="https://docs.diegonmarcos.com/" data-config="https://docs.diegonmarcos.com/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+                        <div class="service-icon etherpad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Etherpad</div>
                             <div class="service-desc">Real-time collaborative text editor</div>
@@ -944,7 +1135,7 @@
                     </div>
                     <div class="service-option" data-name="OnlyOffice Docs" data-url="https://office.diegonmarcos.com/document" data-config="https://office.diegonmarcos.com/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                        <div class="service-icon onlyoffice-docs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">OnlyOffice Docs</div>
                             <div class="service-desc">Full office suite with Word-like editor</div>
@@ -952,7 +1143,7 @@
                     </div>
                     <div class="service-option" data-name="CryptPad" data-url="https://cryptpad.diegonmarcos.com/" data-config="https://cryptpad.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+                        <div class="service-icon cryptpad"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">CryptPad</div>
                             <div class="service-desc">End-to-end encrypted collaborative docs</div>
@@ -960,7 +1151,7 @@
                     </div>
                     <div class="service-option" data-name="HedgeDoc" data-url="https://hedgedoc.diegonmarcos.com/" data-config="https://hedgedoc.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                        <div class="service-icon hedgedoc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">HedgeDoc</div>
                             <div class="service-desc">Collaborative markdown editor (CodiMD)</div>
@@ -968,38 +1159,74 @@
                     </div>
                 </div>
 
-                <!-- MEDIA OPTIONS -->
-                <div class="service-table" data-category="media">
-                    <div class="service-option active" data-name="Jellyfin" data-url="https://media.diegonmarcos.com/" data-config="https://media.diegonmarcos.com/web/index.html#!/dashboard">
+                <!-- PHOTOS OPTIONS -->
+                <div class="service-table" data-category="photos">
+                    <div class="service-option active" data-name="PhotoPrism" data-url="https://photos.app.diegonmarcos.com/" data-config="https://photos.app.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg></div>
+                        <div class="service-icon photoprism"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg></div>
                         <div class="service-info">
-                            <div class="service-name">Jellyfin</div>
-                            <div class="service-desc">Media server - Netflix-like experience</div>
+                            <div class="service-name">PhotoPrism</div>
+                            <div class="service-desc">AI-powered photo management app</div>
                         </div>
                     </div>
-                    <div class="service-option" data-name="Navidrome" data-url="https://music.diegonmarcos.com/" data-config="https://music.diegonmarcos.com/app">
+                    <div class="service-option" data-name="Immich" data-url="https://immich.diegonmarcos.com/" data-config="https://immich.diegonmarcos.com/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M8 17V5l12-2v12"/></svg></div>
+                        <div class="service-icon immich"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
                         <div class="service-info">
-                            <div class="service-name">Navidrome</div>
-                            <div class="service-desc">Music streaming server - Spotify-like</div>
+                            <div class="service-name">Immich</div>
+                            <div class="service-desc">Google Photos alternative with mobile app</div>
                         </div>
                     </div>
-                    <div class="service-option" data-name="Ampache" data-url="https://ampache.diegonmarcos.com/" data-config="https://ampache.diegonmarcos.com/admin">
+                    <div class="service-option" data-name="Lychee" data-url="https://lychee.diegonmarcos.com/" data-config="https://lychee.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></div>
+                        <div class="service-icon lychee"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
                         <div class="service-info">
-                            <div class="service-name">Ampache</div>
-                            <div class="service-desc">Web-based audio/video streaming</div>
+                            <div class="service-name">Lychee</div>
+                            <div class="service-desc">Beautiful photo management gallery</div>
                         </div>
                     </div>
-                    <div class="service-option" data-name="PeerTube" data-url="https://peertube.diegonmarcos.com/" data-config="https://peertube.diegonmarcos.com/admin">
+                    <div class="service-option" data-name="Piwigo" data-url="https://piwigo.diegonmarcos.com/" data-config="https://piwigo.diegonmarcos.com/admin.php">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
+                        <div class="service-icon piwigo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><rect x="4" y="8" width="5" height="4"/><rect x="11" y="8" width="5" height="4"/><rect x="4" y="12" width="5" height="4"/><rect x="11" y="12" width="5" height="4"/></svg></div>
                         <div class="service-info">
-                            <div class="service-name">PeerTube</div>
-                            <div class="service-desc">Decentralized video hosting platform</div>
+                            <div class="service-name">Piwigo</div>
+                            <div class="service-desc">Photo gallery for organizations</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLIDES OPTIONS -->
+                <div class="service-table" data-category="slides">
+                    <div class="service-option active" data-name="Reveal.js" data-url="https://slides.diegonmarcos.com/" data-config="https://slides.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon revealjs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Reveal.js</div>
+                            <div class="service-desc">HTML presentation framework</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Slidev" data-url="https://slidev.diegonmarcos.com/" data-config="https://slidev.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon slidev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Slidev</div>
+                            <div class="service-desc">Developer-friendly markdown presentations</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Marp" data-url="https://marp.diegonmarcos.com/" data-config="https://marp.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon marp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Marp</div>
+                            <div class="service-desc">Markdown to slide deck converter</div>
+                        </div>
+                    </div>
+                    <div class="service-option" data-name="Impress.js" data-url="https://impress.diegonmarcos.com/" data-config="https://impress.diegonmarcos.com/admin">
+                        <div class="radio"></div>
+                        <div class="service-icon impress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Impress.js</div>
+                            <div class="service-desc">3D CSS presentations with Prezi-like effects</div>
                         </div>
                     </div>
                 </div>
@@ -1008,7 +1235,7 @@
                 <div class="service-table" data-category="files">
                     <div class="service-option active" data-name="Filebrowser" data-url="https://files.diegonmarcos.com/" data-config="https://files.diegonmarcos.com/settings">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+                        <div class="service-icon filebrowser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Filebrowser</div>
                             <div class="service-desc">Simple and fast file manager</div>
@@ -1016,7 +1243,7 @@
                     </div>
                     <div class="service-option" data-name="Nextcloud" data-url="https://nextcloud.diegonmarcos.com/" data-config="https://nextcloud.diegonmarcos.com/settings/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
+                        <div class="service-icon nextcloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Nextcloud</div>
                             <div class="service-desc">Full cloud suite - files, calendar, contacts</div>
@@ -1024,7 +1251,7 @@
                     </div>
                     <div class="service-option" data-name="Seafile" data-url="https://seafile.diegonmarcos.com/" data-config="https://seafile.diegonmarcos.com/sys/seafadmin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
+                        <div class="service-icon seafile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">Seafile</div>
                             <div class="service-desc">Enterprise file sync and share</div>
@@ -1032,13 +1259,34 @@
                     </div>
                     <div class="service-option" data-name="ownCloud" data-url="https://owncloud.diegonmarcos.com/" data-config="https://owncloud.diegonmarcos.com/settings/admin">
                         <div class="radio"></div>
-                        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 16v.01"/></svg></div>
+                        <div class="service-icon owncloud"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 16v.01"/></svg></div>
                         <div class="service-info">
                             <div class="service-name">ownCloud</div>
                             <div class="service-desc">File hosting and sharing platform</div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="security-info">
+                <div class="security-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <polyline points="9 12 12 15 16 10"/>
+                    </svg>
+                    Secured with encryption
+                </div>
+            </div>
+        </div>
+
+        <!-- Config Card -->
+        <div class="config-card">
+            <div class="config-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Configuration
             </div>
 
             <!-- Auth SSO -->
@@ -1076,36 +1324,28 @@
             </div>
 
             <!-- Server Control -->
-            <div class="server-control">
-                <div class="tools-title">Server Status</div>
-                <div class="server-status" id="server-status">
-                    <div class="status-dot checking" id="status-dot"></div>
-                    <span id="status-text">Checking server status...</span>
-                </div>
-                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="width: 100%; margin-top: 10px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="12" cy="12" r="5"/>
-                        <line x1="12" y1="1" x2="12" y2="3"/>
-                        <line x1="12" y1="21" x2="12" y2="23"/>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                        <line x1="1" y1="12" x2="3" y2="12"/>
-                        <line x1="21" y1="12" x2="23" y2="12"/>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                    </svg>
-                    <span id="wake-btn-text">Wake Drive Server</span>
-                </button>
-                <div id="wake-status" class="wake-status"></div>
-            </div>
-
-            <div class="security-info">
-                <div class="security-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                        <polyline points="9 12 12 15 16 10"/>
-                    </svg>
-                    Secured with encryption
+            <div class="tools-section">
+                <div class="server-control">
+                    <div class="tools-title">Server Status</div>
+                    <div class="server-status" id="server-status">
+                        <div class="status-dot checking" id="status-dot"></div>
+                        <span id="status-text">Checking server status...</span>
+                    </div>
+                    <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="width: 100%; margin-top: 10px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/>
+                            <line x1="12" y1="1" x2="12" y2="3"/>
+                            <line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/>
+                            <line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        <span id="wake-btn-text">Wake Drive Server</span>
+                    </button>
+                    <div id="wake-status" class="wake-status"></div>
                 </div>
             </div>
         </div>
@@ -1150,14 +1390,14 @@
         });
 
         // Category tab switching
-        const categoryTabs = document.querySelectorAll('.category-tab');
+        const categoryTabs = document.querySelectorAll('.category-tabs .category-tab, .category-tabs-row2 .category-tab');
         const serviceTables = document.querySelectorAll('.service-table');
 
         categoryTabs.forEach(tab => {
             tab.addEventListener('click', function() {
                 const category = this.dataset.category;
 
-                // Update tabs
+                // Update tabs (both rows)
                 categoryTabs.forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
 

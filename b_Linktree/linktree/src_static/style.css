@@ -395,6 +395,18 @@ hr {
   width: 20px;
   height: 20px;
 }
+.links-grid.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+.links-grid.grid-3 .link {
+  padding: 0.65rem 0.4rem 0.65rem 2rem;
+  font-size: 0.8rem;
+}
+.links-grid.grid-3 .link .icon {
+  left: 0.4rem;
+  width: 18px;
+  height: 18px;
+}
 .links-grid.grid-4 {
   grid-template-columns: repeat(4, 1fr);
 }

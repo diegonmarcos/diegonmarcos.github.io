@@ -448,6 +448,21 @@ hr {
         }
     }
 
+    &.grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+
+        .link {
+            padding: 0.65rem 0.4rem 0.65rem 2rem;
+            font-size: 0.8rem;
+
+            .icon {
+                left: 0.4rem;
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+
     &.grid-4 {
         grid-template-columns: repeat(4, 1fr);
 

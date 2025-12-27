@@ -6,6 +6,7 @@ import { initCarousels } from './modules/carousel';
 import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
+import { initSmoothSnap } from './modules/smoothSnap';
 
 /**
  * Initialize all application modules
@@ -31,6 +32,9 @@ function initApp(): void {
 
   // Initialize performance/fast mode toggle
   initPerformanceMode();
+
+  // Initialize smooth scroll snap
+  initSmoothSnap();
 }
 
 // Declare Swiper as global

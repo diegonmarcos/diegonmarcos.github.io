@@ -155,21 +155,6 @@
   var personalNext;
   var trackpadDebounce = false;
   var TRACKPAD_DEBOUNCE_TIME = 300;
-  function updateSwiperHeight(swiper, animate = true) {
-    const activeSlide = swiper.slides[swiper.activeIndex];
-    if (!activeSlide)
-      return;
-    const linkSection = activeSlide.querySelector(".link-section");
-    if (!linkSection)
-      return;
-    const height = linkSection.offsetHeight;
-    if (swiper.wrapperEl) {
-      swiper.wrapperEl.style.height = `${height}px`;
-    }
-  }
-  function initAutoHeight(swiper) {
-    setTimeout(() => updateSwiperHeight(swiper, false), 100);
-  }
   var swiperConfig = {
     effect: "creative",
     grabCursor: true,
@@ -377,10 +362,6 @@
       pagination: {
         el: ".professional-pagination",
         clickable: true
-      },
-      on: {
-        init: (swiper) => initAutoHeight(swiper),
-        slideChange: (swiper) => updateSwiperHeight(swiper)
       }
     });
     personalSwiper = new Swiper(".personal-swiper", {
@@ -392,10 +373,6 @@
       pagination: {
         el: ".personal-pagination",
         clickable: true
-      },
-      on: {
-        init: (swiper) => initAutoHeight(swiper),
-        slideChange: (swiper) => updateSwiperHeight(swiper)
       }
     });
     addClass(professionalRow, "selected");
@@ -560,6 +537,72 @@
     });
   }
 
+  // src/modules/smoothSnap.ts
+  var isScrolling = false;
+  var scrollTimeout;
+  var SCROLL_DURATION = 800;
+  function smoothScrollTo(targetY, duration) {
+    const startY = window.scrollY;
+    const difference = targetY - startY;
+    const startTime = performance.now();
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      window.scrollTo(0, startY + difference * easeProgress);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        isScrolling = false;
+      }
+    }
+    isScrolling = true;
+    requestAnimationFrame(step);
+  }
+  function findNearestSnapPoint() {
+    const header = document.querySelector("header");
+    const professionalSection = document.querySelector(".professional-section");
+    const personalSection = document.querySelector(".personal-section");
+    const snapPoints = [];
+    if (header) {
+      snapPoints.push(header.getBoundingClientRect().top + window.scrollY);
+    }
+    if (professionalSection) {
+      snapPoints.push(professionalSection.getBoundingClientRect().top + window.scrollY);
+    }
+    if (personalSection) {
+      snapPoints.push(personalSection.getBoundingClientRect().top + window.scrollY);
+    }
+    const currentScroll = window.scrollY;
+    let nearest = snapPoints[0];
+    let minDistance = Math.abs(currentScroll - nearest);
+    for (const point of snapPoints) {
+      const distance = Math.abs(currentScroll - point);
+      if (distance < minDistance) {
+        minDistance = distance;
+        nearest = point;
+      }
+    }
+    return nearest;
+  }
+  function handleScrollEnd() {
+    if (isScrolling)
+      return;
+    const nearestSnap = findNearestSnapPoint();
+    const currentScroll = window.scrollY;
+    const threshold = 50;
+    if (Math.abs(currentScroll - nearestSnap) > threshold) {
+      smoothScrollTo(nearestSnap, SCROLL_DURATION);
+    }
+  }
+  function initSmoothSnap() {
+    document.documentElement.style.scrollSnapType = "none";
+    window.addEventListener("scroll", () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(handleScrollEnd, 150);
+    }, { passive: true });
+  }
+
   // src/main.ts
   function initApp() {
     initCollapsibleSections();
@@ -569,6 +612,7 @@
     initMobileScrollSelection();
     initGalleryToggle();
     initPerformanceMode();
+    initSmoothSnap();
   }
   function startApp() {
     requestAnimationFrame(() => {

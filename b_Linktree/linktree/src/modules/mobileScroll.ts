@@ -72,8 +72,8 @@ function selectCarouselByScroll(professionalRow: HTMLElement, personalRow: HTMLE
  * Initialize scroll-based auto-selection (works on all devices)
  */
 export function initMobileScrollSelection(): void {
-  const professionalRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(1)');
-  const personalRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(2)');
+  const professionalRow = querySelector<HTMLElement>('.professional-section .carousel-row');
+  const personalRow = querySelector<HTMLElement>('.personal-section .carousel-row');
 
   if (!professionalRow || !personalRow) return;
 

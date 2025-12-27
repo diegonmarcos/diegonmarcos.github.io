@@ -22,6 +22,34 @@ let trackpadDebounce = false;
 const TRACKPAD_DEBOUNCE_TIME = 300;
 
 /**
+ * Update container height to match active slide
+ */
+function updateSwiperHeight(swiper: SwiperInstance, animate = true): void {
+  const activeSlide = swiper.slides[swiper.activeIndex];
+  if (!activeSlide) return;
+
+  // Get the link-section inside the active slide
+  const linkSection = activeSlide.querySelector('.link-section') as HTMLElement;
+  if (!linkSection) return;
+
+  // Measure the actual content height
+  const height = linkSection.offsetHeight;
+
+  // Apply height to the wrapper with transition
+  if (swiper.wrapperEl) {
+    swiper.wrapperEl.style.height = `${height}px`;
+  }
+}
+
+/**
+ * Initialize auto-height for a swiper instance
+ */
+function initAutoHeight(swiper: SwiperInstance): void {
+  // Set initial height after swiper is ready
+  setTimeout(() => updateSwiperHeight(swiper, false), 100);
+}
+
+/**
  * Common Swiper configuration
  */
 const swiperConfig: SwiperOptions = {
@@ -266,8 +294,8 @@ export function initCarousels(): void {
   }
 
   // Get carousel rows
-  const profRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(1)');
-  const persRow = querySelector<HTMLElement>('.carousel-row:nth-of-type(2)');
+  const profRow = querySelector<HTMLElement>('.professional-section .carousel-row');
+  const persRow = querySelector<HTMLElement>('.personal-section .carousel-row');
 
   if (!profRow || !persRow) return;
 
@@ -287,7 +315,7 @@ export function initCarousels(): void {
   personalPrev = persPrev;
   personalNext = persNext;
 
-  // Initialize Swiper instances
+  // Initialize Swiper instances with auto-height events
   professionalSwiper = new Swiper('.professional-swiper', {
     ...swiperConfig,
     navigation: {
@@ -297,6 +325,10 @@ export function initCarousels(): void {
     pagination: {
       el: '.professional-pagination',
       clickable: true,
+    },
+    on: {
+      init: (swiper: SwiperInstance) => initAutoHeight(swiper),
+      slideChange: (swiper: SwiperInstance) => updateSwiperHeight(swiper),
     },
   });
 
@@ -309,6 +341,10 @@ export function initCarousels(): void {
     pagination: {
       el: '.personal-pagination',
       clickable: true,
+    },
+    on: {
+      init: (swiper: SwiperInstance) => initAutoHeight(swiper),
+      slideChange: (swiper: SwiperInstance) => updateSwiperHeight(swiper),
     },
   });
 

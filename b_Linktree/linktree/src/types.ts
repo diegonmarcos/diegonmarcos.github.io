@@ -8,6 +8,11 @@ declare class Swiper {
   allowTouchMove: boolean;
   enable(): void;
   disable(): void;
+  slides: HTMLElement[];
+  activeIndex: number;
+  realIndex: number;
+  wrapperEl: HTMLElement;
+  el: HTMLElement;
 }
 
 interface SwiperOptions {
@@ -17,6 +22,7 @@ interface SwiperOptions {
   slidesPerView?: number;
   spaceBetween?: number;
   loop?: boolean;
+  autoHeight?: boolean;
   creativeEffect?: SwiperCreativeEffect;
   keyboard?: SwiperKeyboard;
   touchRatio?: number;
@@ -64,7 +70,9 @@ interface SwiperPagination {
 }
 
 interface SwiperEvents {
-  init?: () => void;
+  init?: (swiper: Swiper) => void;
+  slideChange?: (swiper: Swiper) => void;
+  slideChangeTransitionEnd?: (swiper: Swiper) => void;
   touchStart?: (swiper: Swiper, event: TouchEvent) => void;
   touchMove?: (swiper: Swiper, event: TouchEvent) => void;
 }

@@ -85,8 +85,6 @@
                 <span class="nav-divider"></span>
                 <button class="view-btn active" data-dash-parent="monitor">Monitor & Audit</button>
                 <span class="nav-divider"></span>
-                <button class="view-btn" data-dash-tab="orchestrate">Orchestrate</button>
-                <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="cost">Cost</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="apps">Apps</button>
@@ -110,11 +108,6 @@
                     <button class="view-btn" data-dash-tab="audit-analytics">Analytics</button>
                     <button class="view-btn" data-dash-tab="audit-logs">Logs</button>
                 </div>
-            </div>
-            <!-- Level 3: Orchestrate title -->
-            <div class="nav-level3-wrapper" id="nav-orchestrate" style="display: none;">
-                <h2 class="nav-level3-title">Orchestrate</h2>
-                <p class="nav-level3-subtitle">Docker Container Management</p>
             </div>
             <!-- Level 3: Cost title with sub-tabs -->
             <div class="nav-level3-wrapper" id="nav-cost" style="display: none;">
@@ -950,65 +943,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Orchestrate Tab Content (Dockge Docker Management) -->
-        <div id="orchestrate-tab" class="tab-content">
-            <div class="resources-category">
-                <h3 class="resources-category-title">Docker Container Management</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Manage Docker containers across VMs using Dockge</p>
-
-                <div class="resources-section">
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-                        <!-- OCI Paid Flex 1 Dockge -->
-                        <div class="dockge-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                            <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                <span style="width: 10px; height: 10px; background: #F80000; border-radius: 50%;"></span>
-                                OCI Paid Flex 1
-                            </h4>
-                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">84.235.234.87 - Main production server</p>
-                            <a href="https://dockge.diegonmarcos.com" target="_blank" class="vm-action-btn btn-url" style="display: inline-flex; padding: 0.5rem 1rem; text-decoration: none;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 0.5rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                Open Dockge
-                            </a>
-                        </div>
-
-                        <!-- GCP Arch 1 Dockge -->
-                        <div class="dockge-card" style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem;">
-                            <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
-                                <span style="width: 10px; height: 10px; background: #4285F4; border-radius: 50%;"></span>
-                                GCP Free Micro 1
-                            </h4>
-                            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 1rem;">34.55.55.234 - NPM Proxy & Services</p>
-                            <a href="https://dockge-gcp.diegonmarcos.com" target="_blank" class="vm-action-btn btn-url" style="display: inline-flex; padding: 0.5rem 1rem; text-decoration: none;">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px; margin-right: 0.5rem;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                                Open Dockge
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="resources-category" style="margin-top: 1.5rem;">
-                <h3 class="resources-category-title">Quick Actions</h3>
-                <div class="resources-section">
-                    <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
-                        <button class="vm-action-btn" style="padding: 0.5rem 1rem;" onclick="window.open('https://dockge.diegonmarcos.com', '_blank')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
-                            View All Stacks
-                        </button>
-                        <button class="vm-action-btn" style="padding: 0.5rem 1rem;" onclick="alert('Feature coming soon: Pull latest images')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            Pull Images
-                        </button>
-                        <button class="vm-action-btn" style="padding: 0.5rem 1rem;" onclick="alert('Feature coming soon: Restart all containers')">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                            Restart All
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div><!-- End Orchestrate Tab -->
 
         <!-- Cost Tab Content -->
         <div id="cost-tab" class="tab-content">
@@ -5218,7 +5152,7 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'orchestrate', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs'];
+            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
@@ -5233,12 +5167,10 @@
             function hideAllLevel3Navs() {
                 const navTopology = document.getElementById('nav-topology');
                 const navMonitor = document.getElementById('nav-monitor');
-                const navOrchestrate = document.getElementById('nav-orchestrate');
                 const navCost = document.getElementById('nav-cost');
                 const navApps = document.getElementById('nav-apps');
                 if (navTopology) navTopology.style.display = 'none';
                 if (navMonitor) navMonitor.style.display = 'none';
-                if (navOrchestrate) navOrchestrate.style.display = 'none';
                 if (navCost) navCost.style.display = 'none';
                 if (navApps) navApps.style.display = 'none';
             }
@@ -5277,10 +5209,6 @@
                         const navMonitor = document.getElementById('nav-monitor');
                         if (navMonitor) navMonitor.style.display = 'flex';
                         document.querySelector('[data-dash-parent="monitor"]')?.classList.add('active');
-                    } else if (targetTab === 'orchestrate') {
-                        const navOrchestrate = document.getElementById('nav-orchestrate');
-                        if (navOrchestrate) navOrchestrate.style.display = 'flex';
-                        document.querySelector('[data-dash-tab="orchestrate"]')?.classList.add('active');
                     } else if (targetTab === 'cost') {
                         const navCost = document.getElementById('nav-cost');
                         if (navCost) navCost.style.display = 'flex';
@@ -5392,6 +5320,45 @@
             });
         }
 
+        // App Card Tilt Effect (water board physics)
+        function initAppCardTilt() {
+            const appCards = document.querySelectorAll('.app-card');
+            const intensity = 8;
+            const scale = 1.01;
+            const lift = 8;
+
+            appCards.forEach(card => {
+                card.style.transition = 'transform 0.15s ease-out';
+
+                card.addEventListener('mouseenter', () => {
+                    card.style.zIndex = '10';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.zIndex = '1';
+                    card.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
+                });
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / intensity;
+                    const rotateY = (centerX - x) / intensity;
+
+                    card.style.transform = `
+                        translateY(-${lift}px)
+                        scale(${scale})
+                        perspective(1000px)
+                        rotateX(${rotateX}deg)
+                        rotateY(${rotateY}deg)
+                    `;
+                });
+            });
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             checkExistingLogin();
@@ -5408,6 +5375,7 @@
             initCostSubtabs();
             initInfraViewToggle();
             initAutoRefresh();
+            initAppCardTilt();
 
             // Check dev server status if not on GitHub Pages
             if (!isGitHubPages) {

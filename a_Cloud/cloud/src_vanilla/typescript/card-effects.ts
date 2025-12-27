@@ -1,3 +1,42 @@
+interface TiltOptions {
+    intensity?: number;
+    scale?: number;
+    lift?: number;
+}
+
+function initTiltEffect(card: HTMLElement, options: TiltOptions = {}): void {
+    const { intensity = 10, scale = 1.02, lift = 12 } = options;
+
+    card.addEventListener('mouseenter', () => {
+        card.style.zIndex = '10';
+    });
+
+    card.addEventListener('mouseleave', () => {
+        card.style.zIndex = '1';
+        card.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
+    });
+
+    card.addEventListener('mousemove', (e: MouseEvent) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = (y - centerY) / intensity;
+        const rotateY = (centerX - x) / intensity;
+
+        card.style.transform = `
+            translateY(-${lift}px)
+            scale(${scale})
+            perspective(1000px)
+            rotateX(${rotateX}deg)
+            rotateY(${rotateY}deg)
+        `;
+    });
+}
+
 export function initCardEffects(): void {
     const cards = document.querySelectorAll<HTMLElement>('.card');
 
@@ -20,34 +59,15 @@ export function initCardEffects(): void {
             card.appendChild(link);
         }
 
-        card.addEventListener('mouseenter', () => {
-            card.style.zIndex = '10';
-        });
+        initTiltEffect(card);
+    });
+}
 
-        card.addEventListener('mouseleave', () => {
-            card.style.zIndex = '1';
-            card.style.transform = 'translateY(0) scale(1) rotateX(0) rotateY(0)';
-        });
+export function initAppCardEffects(): void {
+    const appCards = document.querySelectorAll<HTMLElement>('.app-card');
 
-        card.addEventListener('mousemove', (e: MouseEvent) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-
-            card.style.transform = `
-                translateY(-12px)
-                scale(1.02)
-                perspective(1000px)
-                rotateX(${rotateX}deg)
-                rotateY(${rotateY}deg)
-            `;
-        });
+    appCards.forEach(card => {
+        initTiltEffect(card, { intensity: 8, scale: 1.01, lift: 8 });
     });
 }
 

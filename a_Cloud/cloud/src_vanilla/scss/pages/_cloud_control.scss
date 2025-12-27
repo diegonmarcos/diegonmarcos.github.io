@@ -2280,13 +2280,14 @@
             border: 1px solid var(--border-color);
             border-radius: 12px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: transform 0.15s ease-out, border-color 0.2s ease, box-shadow 0.2s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         .app-card:hover {
             border-color: var(--accent-blue);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
         }
 
         [data-theme="blurred"] .app-card {

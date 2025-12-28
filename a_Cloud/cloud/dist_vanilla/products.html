@@ -110,8 +110,9 @@
             <!-- Level 2: Page Tabs -->
             <div class="nav-level2 active" id="nav-products">
                 <button class="view-btn active" data-page="products">Products</button>
-                <button class="view-btn" data-page="apps">Apps</button>
                 <button class="view-btn" data-page="features">Features</button>
+                <span class="nav-divider"></span>
+                <button class="view-btn" data-page="apps">Apps</button>
             </div>
             <!-- Level 3: Dynamic Title -->
             <div class="nav-level3-wrapper">
@@ -444,8 +445,10 @@
         <!-- Apps Page -->
         <div id="apps-page" class="view-content">
             <div class="page-container">
-                <div class="apps-cards-grid apps-cards-grid--narrow">
-                    <a href="https://diegonmarcos.github.io/cloud" target="_blank" class="app-card">
+                <div class="apps-cards-grid">
+                    <!-- Row 1: Cloud App (Centered) -->
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: center;">
+                    <a href="https://diegonmarcos.github.io/cloud" target="_blank" class="app-card" style="max-width: 400px; width: 400px;">
                         <div class="app-card-header">
                             <div class="app-card-icon app-card-icon--blue">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -454,20 +457,28 @@
                             </div>
                             <h3 class="app-card-title">Cloud App</h3>
                         </div>
+                        <p style="color: var(--text-secondary); font-size: 0.85rem; padding: 0 1rem; margin-bottom: 0.5rem;">Desktop application for secure cloud access, VPN management and system monitoring.</p>
                         <div class="app-card-body">
                             <div class="app-card-section">
                                 <h4 class="app-card-section-title">Tools</h4>
                                 <ul class="app-card-list">
                                     <li><span class="app-card-dot app-card-dot--green"></span>VPN Connection</li>
                                     <li><span class="app-card-dot app-card-dot--purple"></span>Vault Access</li>
+                                    <li><span class="app-card-dot app-card-dot--cyan"></span>System Health Check</li>
                                 </ul>
                             </div>
                             <div class="app-card-section">
-                                <h4 class="app-card-section-title">Features</h4>
+                                <h4 class="app-card-section-title">Network</h4>
                                 <ul class="app-card-list">
                                     <li><span class="app-card-dot app-card-dot--blue"></span>Mesh Network</li>
                                     <li><span class="app-card-dot app-card-dot--yellow"></span>Split Tunneling</li>
-                                    <li><span class="app-card-dot app-card-dot--cyan"></span>Config Files Local AutoSetup</li>
+                                </ul>
+                            </div>
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Setup</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot app-card-dot--cyan"></span>Config Files AutoSetup</li>
+                                    <li><span class="app-card-dot app-card-dot--green"></span>Local Environment</li>
                                 </ul>
                             </div>
                         </div>
@@ -476,6 +487,7 @@
                             <span class="app-card-status">Download</span>
                         </div>
                     </a>
+                    </div><!-- End Row 1 -->
                 </div>
             </div><!-- End page-container -->
         </div><!-- End Apps Page -->

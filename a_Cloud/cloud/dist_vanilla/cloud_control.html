@@ -84,9 +84,9 @@
             <div class="nav-level2 active" id="nav-cloudcontrol">
                 <button class="view-btn" data-dash-parent="topology">Topology</button>
                 <span class="nav-divider"></span>
-                <button class="view-btn active" data-dash-parent="monitor">Monitor & Audit</button>
-                <span class="nav-divider"></span>
-                <button class="view-btn" data-dash-tab="cost">Cost</button>
+                <button class="view-btn active" data-dash-parent="health">Health</button>
+                <button class="view-btn" data-dash-parent="security-parent">Security</button>
+                <button class="view-btn" data-dash-parent="management">Management</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="apps">Apps</button>
             </div>
@@ -94,28 +94,38 @@
             <div class="nav-level3-wrapper" id="nav-topology" style="display: none;">
                 <h2 class="nav-level3-title">Topology</h2>
                 <div class="nav-level3">
-                    <button class="view-btn active" data-topology-cat="app">App</button>
+                    <button class="view-btn active" data-topology-cat="app">Apps</button>
                     <button class="view-btn" data-topology-cat="data">Data</button>
                     <button class="view-btn" data-topology-cat="containers">Containers</button>
                     <button class="view-btn" data-topology-cat="security">Security</button>
+                    <button class="view-btn" data-topology-cat="others">Others</button>
                 </div>
             </div>
-            <!-- Level 3: Sub-navigation for Monitor & Audit -->
-            <div class="nav-level3-wrapper" id="nav-monitor" style="display: flex;">
-                <h2 class="nav-level3-title">Monitor & Audit</h2>
+            <!-- Level 3: Sub-navigation for Health -->
+            <div class="nav-level3-wrapper" id="nav-health" style="display: flex;">
+                <h2 class="nav-level3-title">Health</h2>
                 <div class="nav-level3">
-                    <button class="view-btn active" data-dash-tab="resources">Infra</button>
-                    <button class="view-btn" data-dash-tab="security">Security</button>
+                    <button class="view-btn active" data-dash-tab="resources">Metrics</button>
+                    <button class="view-btn" data-dash-tab="health-audit">Audit</button>
+                </div>
+            </div>
+            <!-- Level 3: Sub-navigation for Security -->
+            <div class="nav-level3-wrapper" id="nav-security-parent" style="display: none;">
+                <h2 class="nav-level3-title">Security</h2>
+                <div class="nav-level3">
+                    <button class="view-btn active" data-dash-tab="security">Metrics</button>
+                    <button class="view-btn" data-dash-tab="security-audit">Audit</button>
                     <button class="view-btn" data-dash-tab="audit-analytics">Analytics</button>
-                    <button class="view-btn" data-dash-tab="audit-logs">Logs</button>
                 </div>
             </div>
-            <!-- Level 3: Cost title with sub-tabs -->
-            <div class="nav-level3-wrapper" id="nav-cost" style="display: none;">
-                <h2 class="nav-level3-title">Cost</h2>
+            <!-- Level 3: Sub-navigation for Management -->
+            <div class="nav-level3-wrapper" id="nav-management" style="display: none;">
+                <h2 class="nav-level3-title">Management</h2>
                 <div class="nav-level3">
-                    <button class="view-btn active" data-subtab="cost-infra">Infrastructure</button>
-                    <button class="view-btn" data-subtab="cost-ai">AI Costs</button>
+                    <button class="view-btn active" data-dash-tab="cost-infra">Cost Infra</button>
+                    <button class="view-btn" data-dash-tab="cost-ai">Cost AI</button>
+                    <button class="view-btn" data-dash-tab="capacity">Capacity</button>
+                    <button class="view-btn" data-dash-tab="management-audit">Audit</button>
                 </div>
             </div>
             <!-- Level 3: Apps title -->
@@ -945,10 +955,8 @@
             </div>
         </div>
 
-        <!-- Cost Tab Content -->
-        <div id="cost-tab" class="tab-content">
-            <!-- Infrastructure Cost Sub-tab -->
-            <div id="cost-infra" class="cost-subtab-content active">
+        <!-- Cost Infra Tab Content -->
+        <div id="cost-infra-tab" class="tab-content">
             <!-- Cloud Infrastructure Costs - Super Enhanced -->
             <div class="resources-category">
                 <h3 class="resources-category-title">
@@ -1371,10 +1379,10 @@
                     </div>
                 </div>
             </div>
-            </div><!-- End Infrastructure Cost Sub-tab -->
+        </div><!-- End Cost Infra Tab -->
 
-            <!-- AI Cost Sub-tab -->
-            <div id="cost-ai" class="cost-subtab-content">
+        <!-- Cost AI Tab Content -->
+        <div id="cost-ai-tab" class="tab-content">
 
             <!-- AI Cost Hero Summary -->
             <div class="ai-cost-hero">
@@ -1687,36 +1695,44 @@
                 </div>
             </div>
 
-            </div><!-- End AI Cost Sub-tab -->
-
-        </div><!-- End Cost Tab -->
+        </div><!-- End Cost AI Tab -->
 
         <!-- Apps Tab Content -->
         <div id="apps-tab" class="tab-content">
             <div class="apps-cards-grid">
-                <!-- Cloud Monitor Card -->
-                <div class="app-card">
+                <!-- Row 1: Cloud Observability (Centered) -->
+                <div style="grid-column: 1 / -1; display: flex; justify-content: center;">
+                <!-- Cloud Observability Card -->
+                <div class="app-card" style="max-width: 400px;">
                     <div class="app-card-header">
                         <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                             </svg>
                         </div>
-                        <h3 class="app-card-title">Cloud Monitor</h3>
+                        <h3 class="app-card-title">Cloud Observability</h3>
                     </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; padding: 0 1rem; margin-bottom: 0.5rem;">Engine for Health, Security and Ops metrics collection and analysis.</p>
                     <div class="app-card-body">
                         <div class="app-card-section">
-                            <h4 class="app-card-section-title">Infra</h4>
+                            <h4 class="app-card-section-title">Health</h4>
                             <ul class="app-card-list">
-                                <li><span class="app-card-dot healthy"></span>Health Status</li>
-                                <li><span class="app-card-dot perf"></span>Performance Metrics</li>
+                                <li><span class="app-card-dot healthy"></span>Infrastructure Metrics</li>
+                                <li><span class="app-card-dot perf"></span>Performance Monitoring</li>
                             </ul>
                         </div>
                         <div class="app-card-section">
                             <h4 class="app-card-section-title">Security</h4>
                             <ul class="app-card-list">
-                                <li><span class="app-card-dot sync"></span>Sync Status</li>
+                                <li><span class="app-card-dot sync"></span>Threat Detection</li>
                                 <li><span class="app-card-dot sauron"></span>Sauron (Intrusion Detection)</li>
+                            </ul>
+                        </div>
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Ops</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot healthy"></span>System Events</li>
+                                <li><span class="app-card-dot perf"></span>Audit Logs</li>
                             </ul>
                         </div>
                     </div>
@@ -1725,7 +1741,10 @@
                         <span class="app-card-status">Coming Soon</span>
                     </div>
                 </div>
+                </div><!-- End Row 1 -->
 
+                <!-- Row 2: Debug, Collectors, Processors -->
+                <div style="grid-column: 1 / -1; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
                 <!-- Cloud Debug Card -->
                 <div class="app-card">
                     <div class="app-card-header">
@@ -1757,7 +1776,7 @@
                     </div>
                 </div>
 
-                <!-- Cloud Audit Sync Card -->
+                <!-- Cloud Collectors Card -->
                 <div class="app-card">
                     <div class="app-card-header">
                         <div class="app-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
@@ -1767,28 +1786,163 @@
                                 <line x1="12" y1="3" x2="12" y2="15"/>
                             </svg>
                         </div>
-                        <h3 class="app-card-title">Cloud Audit Sync</h3>
+                        <h3 class="app-card-title">Cloud Collectors</h3>
                     </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; padding: 0 1rem; margin-bottom: 0.5rem;">Agents that collect metrics, logs, profiling and metadata from infrastructure.</p>
                     <div class="app-card-body">
                         <div class="app-card-section">
-                            <h4 class="app-card-section-title">Data Collectors</h4>
-                            <p class="app-card-desc">Automated infrastructure data collection agents</p>
-                        </div>
-                        <div class="app-card-section">
-                            <h4 class="app-card-section-title">Consolidation</h4>
+                            <h4 class="app-card-section-title">Data Sources</h4>
                             <ul class="app-card-list">
-                                <li><span class="app-card-dot logs"></span>Log Aggregation</li>
-                                <li><span class="app-card-dot info"></span>Info Consolidation</li>
+                                <li><span class="app-card-dot perf"></span>Metrics</li>
+                                <li><span class="app-card-dot logs"></span>Logs</li>
+                                <li><span class="app-card-dot info"></span>Profiling</li>
+                                <li><span class="app-card-dot sync"></span>Metadata</li>
                             </ul>
                         </div>
                     </div>
                     <div class="app-card-footer">
-                        <span class="app-card-badge audit">Audit</span>
+                        <span class="app-card-badge audit">Collection</span>
                         <span class="app-card-status">Coming Soon</span>
                     </div>
                 </div>
+
+                <!-- Cloud Processors Card -->
+                <div class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </div>
+                        <h3 class="app-card-title">Cloud Processors</h3>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.85rem; padding: 0 1rem; margin-bottom: 0.5rem;">Scripts that clean, organize, convert and store collected data.</p>
+                    <div class="app-card-body">
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Pipeline</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot healthy"></span>Clean & Validate</li>
+                                <li><span class="app-card-dot info"></span>Organize & Normalize</li>
+                                <li><span class="app-card-dot perf"></span>Convert & Transform</li>
+                                <li><span class="app-card-dot sync"></span>Store & Index</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <span class="app-card-badge live">ETL</span>
+                        <span class="app-card-status">Coming Soon</span>
+                    </div>
+                </div>
+                </div><!-- End Row 2 -->
             </div>
         </div><!-- End Apps Tab -->
+
+        <!-- Capacity Tab Content (Management) -->
+        <div id="capacity-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Capacity Planning</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Resource allocation and capacity forecasting</p>
+                <div class="card-box" style="text-align: center; padding: 3rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                    <div style="font-size: 1.2rem; color: var(--text-primary); margin-bottom: 0.5rem;">Coming Soon</div>
+                    <div style="font-size: 0.85rem; color: var(--text-secondary);">Capacity planning and resource forecasting will be available here.</div>
+                </div>
+            </div>
+        </div><!-- End Capacity Tab -->
+
+        <!-- Health Audit Tab Content -->
+        <div id="health-audit-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Health Audit Logs</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Infrastructure health events and system status history</p>
+                <div class="resources-section mb-lg">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-green);">847</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Health Events (24h)</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-blue);">99.2%</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Uptime</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-yellow);">3</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Warnings</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-red);">0</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Critical</div>
+                        </div>
+                    </div>
+                    <div class="card-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">Health audit logs will be displayed here with infrastructure-specific filtering.</div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Health Audit Tab -->
+
+        <!-- Security Audit Tab Content -->
+        <div id="security-audit-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Security Audit Logs</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Security events, access attempts, and threat detection history</p>
+                <div class="resources-section mb-lg">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-purple);">312</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Security Events (24h)</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-red);">47</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Blocked Attempts</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-green);">265</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Successful Auth</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-orange);">8</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Suspicious IPs</div>
+                        </div>
+                    </div>
+                    <div class="card-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">Security audit logs will be displayed here with security-specific filtering.</div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Security Audit Tab -->
+
+        <!-- Management Audit Tab Content -->
+        <div id="management-audit-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Management Audit Logs</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Administrative actions, cost events, and management operations</p>
+                <div class="resources-section mb-lg">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-blue);">88</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Admin Actions (24h)</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-green);">24</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Cost Updates</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-purple);">12</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Config Changes</div>
+                        </div>
+                        <div class="card-box">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--accent-yellow);">2</div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Alerts Triggered</div>
+                        </div>
+                    </div>
+                    <div class="card-box" style="text-align: center; padding: 2rem;">
+                        <div style="font-size: 0.9rem; color: var(--text-secondary);">Management audit logs will be displayed here with admin-specific filtering.</div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Management Audit Tab -->
 
         <!-- Monitor Security Tab Content -->
         <div id="security-tab" class="tab-content">
@@ -5153,26 +5307,34 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs'];
+            const validTabs = ['status', 'resources', 'cost-infra', 'cost-ai', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity', 'health-audit', 'security-audit', 'management-audit'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
             const tabToParent = {
                 'infra': 'topology',
-                'resources': 'monitor',
-                'security': 'monitor',
-                'audit-analytics': 'monitor',
-                'audit-logs': 'monitor'
+                'resources': 'health',
+                'health-audit': 'health',
+                'security': 'security-parent',
+                'security-audit': 'security-parent',
+                'audit-analytics': 'security-parent',
+                'audit-logs': 'health',
+                'cost-infra': 'management',
+                'cost-ai': 'management',
+                'capacity': 'management',
+                'management-audit': 'management'
             };
 
             function hideAllLevel3Navs() {
                 const navTopology = document.getElementById('nav-topology');
-                const navMonitor = document.getElementById('nav-monitor');
-                const navCost = document.getElementById('nav-cost');
+                const navHealth = document.getElementById('nav-health');
+                const navSecurityParent = document.getElementById('nav-security-parent');
+                const navManagement = document.getElementById('nav-management');
                 const navApps = document.getElementById('nav-apps');
                 if (navTopology) navTopology.style.display = 'none';
-                if (navMonitor) navMonitor.style.display = 'none';
-                if (navCost) navCost.style.display = 'none';
+                if (navHealth) navHealth.style.display = 'none';
+                if (navSecurityParent) navSecurityParent.style.display = 'none';
+                if (navManagement) navManagement.style.display = 'none';
                 if (navApps) navApps.style.display = 'none';
             }
 
@@ -5206,14 +5368,18 @@
                         const navTopology = document.getElementById('nav-topology');
                         if (navTopology) navTopology.style.display = 'flex';
                         document.querySelector('[data-dash-parent="topology"]')?.classList.add('active');
-                    } else if (parentGroup === 'monitor') {
-                        const navMonitor = document.getElementById('nav-monitor');
-                        if (navMonitor) navMonitor.style.display = 'flex';
-                        document.querySelector('[data-dash-parent="monitor"]')?.classList.add('active');
-                    } else if (targetTab === 'cost') {
-                        const navCost = document.getElementById('nav-cost');
-                        if (navCost) navCost.style.display = 'flex';
-                        document.querySelector('[data-dash-tab="cost"]')?.classList.add('active');
+                    } else if (parentGroup === 'health') {
+                        const navHealth = document.getElementById('nav-health');
+                        if (navHealth) navHealth.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="health"]')?.classList.add('active');
+                    } else if (parentGroup === 'security-parent') {
+                        const navSecurityParent = document.getElementById('nav-security-parent');
+                        if (navSecurityParent) navSecurityParent.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="security-parent"]')?.classList.add('active');
+                    } else if (parentGroup === 'management') {
+                        const navManagement = document.getElementById('nav-management');
+                        if (navManagement) navManagement.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="management"]')?.classList.add('active');
                     } else if (targetTab === 'apps') {
                         const navApps = document.getElementById('nav-apps');
                         if (navApps) navApps.style.display = 'flex';
@@ -5225,7 +5391,7 @@
 
                     if (!loadedTabs[targetTab]) {
                         loadedTabs[targetTab] = true;
-                        if (targetTab === 'cost') loadCostData();
+                        if (targetTab === 'cost-infra' || targetTab === 'cost-ai') loadCostData();
                         else if (targetTab === 'resources') loadResourcesData();
                         else if (targetTab === 'infra') loadInfraData();
                     }
@@ -5234,14 +5400,16 @@
                 }
             }
 
-            // Handle parent buttons (Topology, Monitor, Audit) - click switches to first child tab
+            // Handle parent buttons (Topology, Health, Security, Management) - click switches to first child tab
             parentButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     const parentGroup = btn.getAttribute('data-dash-parent');
                     // Switch to the first tab in this group
                     if (parentGroup === 'topology') switchTab('infra');
-                    else if (parentGroup === 'monitor') switchTab('resources');
+                    else if (parentGroup === 'health') switchTab('resources');
+                    else if (parentGroup === 'security-parent') switchTab('security');
+                    else if (parentGroup === 'management') switchTab('cost-infra');
                 });
             });
 
@@ -5273,7 +5441,7 @@
 
         // Cost Sub-tab Switching
         function initCostSubtabs() {
-            const subtabButtons = document.querySelectorAll('#nav-cost [data-subtab]');
+            const subtabButtons = document.querySelectorAll('.cost-subtabs-nav [data-subtab]');
             const subtabContents = document.querySelectorAll('.cost-subtab-content');
 
             subtabButtons.forEach(btn => {
@@ -5373,7 +5541,6 @@
             }
 
             initTabs();
-            initCostSubtabs();
             initInfraViewToggle();
             initAutoRefresh();
             initAppCardTilt();

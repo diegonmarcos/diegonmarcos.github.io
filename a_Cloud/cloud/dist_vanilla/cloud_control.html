@@ -25,6 +25,37 @@
             document.documentElement.setAttribute('data-theme', theme);
         })();
     </script>
+    <!-- Mermaid.js for diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: 'dark',
+                themeVariables: {
+                    primaryColor: '#1a1a2e',
+                    primaryTextColor: '#e0e6ff',
+                    primaryBorderColor: '#4a9eff',
+                    lineColor: '#4a9eff',
+                    secondaryColor: '#151a33',
+                    tertiaryColor: '#0a0e27'
+                },
+                flowchart: { curve: 'basis', padding: 20 }
+            });
+            window.renderMermaidDiagrams = function() {
+                const containers = document.querySelectorAll('.mermaid-container:not([data-rendered])');
+                containers.forEach(c => {
+                    if (c.offsetParent !== null) {
+                        const pre = c.querySelector('pre.mermaid');
+                        if (pre && !pre.hasAttribute('data-processed')) {
+                            mermaid.run({ nodes: [pre] });
+                            c.setAttribute('data-rendered', 'true');
+                        }
+                    }
+                });
+            };
+        });
+    </script>
 </head>
 <body>
     <button class="theme-toggle" id="theme-toggle" title="Switch theme">
@@ -650,258 +681,112 @@
                 </div>
             </div><!-- End LIST VIEW - BY TYPE -->
 
-            <!-- TREE VIEW - BY VM - Diagram Style -->
+            <!-- TREE VIEW - BY VM - Mermaid Diagram -->
             <div id="health-tree-by-vm" class="health-view-content" style="display: none;">
-                <div class="tree-diagram">
-                    <div class="tree-diagram-root">
-                        <span class="tree-diagram-title">Services by VM</span>
-                        <span class="tree-diagram-badge">8 services</span>
-                    </div>
-                    <div class="tree-diagram-trunk">
-                        <!-- OCI Paid Flex 1 -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: #F80000;">●</span>
-                                <span class="branch-name">OCI Paid Flex 1</span>
-                                <span class="branch-count">(2)</span>
-                                <span class="health-badge healthy">Healthy</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">photoprism</span>
-                                    <span class="leaf-metrics">CPU: 5% | RAM: 15% | Disk: 68%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">radicale</span>
-                                    <span class="leaf-metrics">CPU: &lt;1% | RAM: 1% | Disk: &lt;1%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- OCI Free Micro 1 -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: #F80000;">●</span>
-                                <span class="branch-name">OCI Free Micro 1</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge warning">Warning</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status warning">●</span>
-                                    <span class="leaf-name">mailu</span>
-                                    <span class="leaf-metrics">CPU: 3% | RAM: 60% | Disk: 28%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- OCI Free Micro 2 -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: #F80000;">●</span>
-                                <span class="branch-name">OCI Free Micro 2</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge warning">Warning</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status warning">●</span>
-                                    <span class="leaf-name">matomo</span>
-                                    <span class="leaf-metrics">CPU: 8% | RAM: 55% | Disk: 19%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- GCP Free Micro 1 -->
-                        <div class="tree-branch last">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">└──</span>
-                                <span class="branch-icon" style="color: #4285F4;">●</span>
-                                <span class="branch-name">GCP Free Micro 1</span>
-                                <span class="branch-count">(4)</span>
-                                <span class="health-badge healthy">Healthy</span>
-                            </div>
-                            <div class="tree-branch-children last">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">    ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">npm</span>
-                                    <span class="leaf-metrics">CPU: 10% | RAM: 40% | Disk: 5%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">    ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">authelia</span>
-                                    <span class="leaf-metrics">CPU: 3% | RAM: 15% | Disk: 5%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">    ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">cloud-api</span>
-                                    <span class="leaf-metrics">CPU: 1% | RAM: 10% | Disk: 1%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">    └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">ntfy</span>
-                                    <span class="leaf-metrics">CPU: 1% | RAM: 10% | Disk: 1%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+flowchart TD
+    subgraph VM["Services by VM"]
+        direction TB
+
+        subgraph OCI1["🔴 OCI Paid Flex 1"]
+            direction LR
+            OCI1_photo["📷 photoprism<br/>CPU: 5% | RAM: 15%"]
+            OCI1_rad["📅 radicale<br/>CPU: &lt;1% | RAM: 1%"]
+        end
+
+        subgraph OCI2["🔴 OCI Free Micro 1"]
+            direction LR
+            OCI2_mail["📧 mailu<br/>CPU: 3% | RAM: 60%"]
+        end
+
+        subgraph OCI3["🔴 OCI Free Micro 2"]
+            direction LR
+            OCI3_mat["📊 matomo<br/>CPU: 8% | RAM: 55%"]
+        end
+
+        subgraph GCP1["🔵 GCP Free Micro 1"]
+            direction LR
+            GCP1_npm["🌐 npm<br/>CPU: 10% | RAM: 40%"]
+            GCP1_auth["🔐 authelia<br/>CPU: 3% | RAM: 15%"]
+            GCP1_api["⚡ cloud-api<br/>CPU: 1% | RAM: 10%"]
+            GCP1_ntfy["🔔 ntfy<br/>CPU: 1% | RAM: 10%"]
+        end
+    end
+
+    classDef ociBox fill:#2d1810,stroke:#F80000,stroke-width:2px,color:#fff
+    classDef gcpBox fill:#102040,stroke:#4285F4,stroke-width:2px,color:#fff
+    classDef serviceNode fill:#1a1a2e,stroke:#10b981,stroke-width:1px,color:#e0e6ff,font-size:12px
+    classDef warningNode fill:#1a1a2e,stroke:#ff6b35,stroke-width:1px,color:#e0e6ff,font-size:12px
+
+    class OCI1,OCI2,OCI3 ociBox
+    class GCP1 gcpBox
+    class OCI1_photo,OCI1_rad,GCP1_npm,GCP1_auth,GCP1_api,GCP1_ntfy serviceNode
+    class OCI2_mail,OCI3_mat warningNode
+                    </pre>
                 </div>
             </div><!-- End TREE VIEW - BY VM -->
 
-            <!-- TREE VIEW - BY TYPE (App Purpose) - Diagram Style -->
+            <!-- TREE VIEW - BY TYPE (App Purpose) - Mermaid Diagram -->
             <div id="health-tree-by-type" class="health-view-content" style="display: none;">
-                <div class="tree-diagram">
-                    <div class="tree-diagram-root">
-                        <span class="tree-diagram-title">Services by Type</span>
-                        <span class="tree-diagram-badge">9 services</span>
-                    </div>
-                    <div class="tree-diagram-trunk">
-                        <!-- Security Branch -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: var(--accent-red);">●</span>
-                                <span class="branch-name">Security</span>
-                                <span class="branch-count">(2)</span>
-                                <span class="health-badge healthy">Online</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">authelia</span>
-                                    <span class="leaf-host">GCP Free Micro 1</span>
-                                    <span class="leaf-metrics">CPU: 2% | RAM: 25%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">wireguard</span>
-                                    <span class="leaf-host">OCI Paid Flex 1</span>
-                                    <span class="leaf-metrics">CPU: 1% | RAM: 5%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Analytics Branch -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: var(--accent-blue);">●</span>
-                                <span class="branch-name">Analytics</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge healthy">Online</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">matomo</span>
-                                    <span class="leaf-host">OCI Free Micro 2</span>
-                                    <span class="leaf-metrics">CPU: 8% | RAM: 55%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Web/Proxy Branch -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: var(--accent-cyan);">●</span>
-                                <span class="branch-name">Web / Proxy</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge healthy">Online</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">npm</span>
-                                    <span class="leaf-host">GCP Free Micro 1</span>
-                                    <span class="leaf-metrics">CPU: 10% | RAM: 40%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Mail Branch -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: var(--accent-orange);">●</span>
-                                <span class="branch-name">Mail</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge warning">High RAM</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status warning">●</span>
-                                    <span class="leaf-name">mailu</span>
-                                    <span class="leaf-host">OCI Free Micro 1</span>
-                                    <span class="leaf-metrics">CPU: 3% | RAM: 60%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Data/Storage Branch -->
-                        <div class="tree-branch">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">├──</span>
-                                <span class="branch-icon" style="color: var(--accent-purple);">●</span>
-                                <span class="branch-name">Data / Storage</span>
-                                <span class="branch-count">(3)</span>
-                                <span class="health-badge healthy">Online</span>
-                            </div>
-                            <div class="tree-branch-children">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">photoprism</span>
-                                    <span class="leaf-host">OCI Paid Flex 1</span>
-                                    <span class="leaf-metrics">CPU: 5% | RAM: 15%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   ├──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">syncthing</span>
-                                    <span class="leaf-host">OCI Paid Flex 1</span>
-                                    <span class="leaf-metrics">CPU: 2% | RAM: 8%</span>
-                                </div>
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">│   └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">radicale</span>
-                                    <span class="leaf-host">OCI Paid Flex 1</span>
-                                    <span class="leaf-metrics">CPU: 1% | RAM: 5%</span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Notifications Branch -->
-                        <div class="tree-branch last">
-                            <div class="tree-branch-header">
-                                <span class="branch-connector">└──</span>
-                                <span class="branch-icon" style="color: var(--accent-green);">●</span>
-                                <span class="branch-name">Notifications</span>
-                                <span class="branch-count">(1)</span>
-                                <span class="health-badge healthy">Online</span>
-                            </div>
-                            <div class="tree-branch-children last">
-                                <div class="tree-leaf-item">
-                                    <span class="leaf-connector">    └──</span>
-                                    <span class="leaf-status online">●</span>
-                                    <span class="leaf-name">ntfy</span>
-                                    <span class="leaf-host">GCP Free Micro 1</span>
-                                    <span class="leaf-metrics">CPU: 1% | RAM: 10%</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mermaid-container">
+                    <pre class="mermaid">
+flowchart TD
+    subgraph TYPE["Services by Type"]
+        direction TB
+
+        subgraph SEC["🔒 Security"]
+            direction LR
+            SEC_auth["🔐 authelia<br/>GCP | CPU: 2% | RAM: 25%"]
+            SEC_wg["🛡️ wireguard<br/>OCI | CPU: 1% | RAM: 5%"]
+        end
+
+        subgraph ANA["📊 Analytics"]
+            direction LR
+            ANA_mat["📈 matomo<br/>OCI | CPU: 8% | RAM: 55%"]
+        end
+
+        subgraph WEB["🌐 Web / Proxy"]
+            direction LR
+            WEB_npm["🔀 npm<br/>GCP | CPU: 10% | RAM: 40%"]
+        end
+
+        subgraph MAIL["📧 Mail"]
+            direction LR
+            MAIL_mailu["✉️ mailu<br/>OCI | CPU: 3% | RAM: 60%"]
+        end
+
+        subgraph DATA["💾 Data / Storage"]
+            direction LR
+            DATA_photo["📷 photoprism<br/>OCI | CPU: 5% | RAM: 15%"]
+            DATA_sync["🔄 syncthing<br/>OCI | CPU: 2% | RAM: 8%"]
+            DATA_cal["📅 radicale<br/>OCI | CPU: 1% | RAM: 5%"]
+        end
+
+        subgraph NOTIF["🔔 Notifications"]
+            direction LR
+            NOTIF_ntfy["📣 ntfy<br/>GCP | CPU: 1% | RAM: 10%"]
+        end
+    end
+
+    classDef secBox fill:#1a1025,stroke:#ef4444,stroke-width:2px,color:#fff
+    classDef anaBox fill:#0f1a2e,stroke:#4a9eff,stroke-width:2px,color:#fff
+    classDef webBox fill:#0a1f1f,stroke:#06b6d4,stroke-width:2px,color:#fff
+    classDef mailBox fill:#1f1a0a,stroke:#ff6b35,stroke-width:2px,color:#fff
+    classDef dataBox fill:#1a0a25,stroke:#8b5cf6,stroke-width:2px,color:#fff
+    classDef notifBox fill:#0a1f0a,stroke:#10b981,stroke-width:2px,color:#fff
+    classDef serviceNode fill:#1a1a2e,stroke:#10b981,stroke-width:1px,color:#e0e6ff,font-size:11px
+    classDef warningNode fill:#1a1a2e,stroke:#ff6b35,stroke-width:1px,color:#e0e6ff,font-size:11px
+
+    class SEC secBox
+    class ANA anaBox
+    class WEB webBox
+    class MAIL mailBox
+    class DATA dataBox
+    class NOTIF notifBox
+    class SEC_auth,SEC_wg,WEB_npm,DATA_photo,DATA_sync,DATA_cal,NOTIF_ntfy serviceNode
+    class ANA_mat,MAIL_mailu warningNode
+                    </pre>
                 </div>
             </div><!-- End TREE VIEW - BY TYPE -->
 
@@ -5520,6 +5405,10 @@
             if (views[viewKey]) {
                 views[viewKey].style.display = 'block';
                 views[viewKey].classList.add('active');
+                // Render Mermaid diagrams if this is a tree view
+                if (healthDisplayMode === 'tree' && typeof window.renderMermaidDiagrams === 'function') {
+                    setTimeout(window.renderMermaidDiagrams, 100);
+                }
             }
         }
 

@@ -108,6 +108,19 @@
                     <button class="view-btn active" data-dash-tab="resources">Metrics</button>
                     <button class="view-btn" data-dash-tab="health-audit">Audit</button>
                 </div>
+                <div class="view-mode-controls" style="margin-left: auto;">
+                    <span class="view-mode-label">View:</span>
+                    <div class="view-mode-group">
+                        <button class="view-mode-btn active" data-display-mode="tree" title="Tree View">Tree</button>
+                        <button class="view-mode-btn" data-display-mode="list" title="List View">List</button>
+                    </div>
+                    <span class="view-mode-separator">|</span>
+                    <span class="view-mode-label">Group:</span>
+                    <div class="view-mode-group">
+                        <button class="view-mode-btn active" data-group-mode="by-vm" title="Group by VM">VM</button>
+                        <button class="view-mode-btn" data-group-mode="by-type" title="Group by Type">Type</button>
+                    </div>
+                </div>
             </div>
             <!-- Level 3: Sub-navigation for Security -->
             <div class="nav-level3-wrapper" id="nav-security-parent" style="display: none;">
@@ -181,6 +194,9 @@
 
         <!-- Resources Tab Content (htop-style) -->
         <div id="resources-tab" class="tab-content active">
+
+            <!-- LIST VIEW - BY VM (Default) -->
+            <div id="health-list-by-vm" class="health-view-content active">
             <!-- VM Summary -->
             <div class="resources-category">
                 <h3 class="resources-category-title">VM Overview</h3>
@@ -482,6 +498,478 @@
                     </div>
                 </div>
             </div>
+            </div><!-- End LIST VIEW - BY VM -->
+
+            <!-- LIST VIEW - BY TYPE (App Purpose) -->
+            <div id="health-list-by-type" class="health-view-content" style="display: none;">
+                <!-- Security Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Security</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>authelia</td><td>GCP Free Micro 1</td><td>2%</td><td>25%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                    <tr><td>wireguard</td><td>OCI Paid Flex 1</td><td>1%</td><td>5%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Analytics</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>matomo</td><td>OCI Free Micro 2</td><td>8%</td><td>55%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Web/Proxy Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Web / Proxy</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>npm</td><td>GCP Free Micro 1</td><td>10%</td><td>40%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mail Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Mail</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>mailu</td><td>OCI Free Micro 1</td><td>3%</td><td>60%</td><td><span class="health-badge warning">High RAM</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data/Storage Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Data / Storage</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>photoprism</td><td>OCI Paid Flex 1</td><td>5%</td><td>15%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                    <tr><td>syncthing</td><td>OCI Paid Flex 1</td><td>2%</td><td>8%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                    <tr><td>radicale</td><td>OCI Paid Flex 1</td><td>1%</td><td>5%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Section -->
+                <div class="resources-category">
+                    <h3 class="resources-category-title">Notifications</h3>
+                    <div class="resources-section">
+                        <div class="resources-table-container">
+                            <table class="resources-table fs-md">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%;">Service</th>
+                                        <th style="width: 20%;">VM</th>
+                                        <th style="width: 15%;">CPU</th>
+                                        <th style="width: 15%;">RAM</th>
+                                        <th style="width: 15%;">Status</th>
+                                        <th style="width: 15%;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>ntfy</td><td>GCP Free Micro 1</td><td>1%</td><td>10%</td><td><span class="health-badge healthy">Online</span></td><td><button class="vm-action-btn btn-reset" title="Restart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></button></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End LIST VIEW - BY TYPE -->
+
+            <!-- TREE VIEW - BY VM -->
+            <div id="health-tree-by-vm" class="health-view-content" style="display: none;">
+                <div class="tree-container">
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: #F80000;"></span>
+                            <span class="tree-label">OCI Paid Flex 1</span>
+                            <span class="tree-badge">2 services</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">Healthy</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">photoprism</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 5%</span>
+                                        <span class="tree-metric">RAM: 15%</span>
+                                        <span class="tree-metric">Disk: 68%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">radicale</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: &lt;1%</span>
+                                        <span class="tree-metric">RAM: 1%</span>
+                                        <span class="tree-metric">Disk: &lt;1%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: #F80000;"></span>
+                            <span class="tree-label">OCI Free Micro 1</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge warning" style="margin-left: auto;">Warning</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-orange);"></span>
+                                    <span class="tree-label">mailu</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 3%</span>
+                                        <span class="tree-metric">RAM: 60%</span>
+                                        <span class="tree-metric">Disk: 28%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: #F80000;"></span>
+                            <span class="tree-label">OCI Free Micro 2</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge warning" style="margin-left: auto;">Warning</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-orange);"></span>
+                                    <span class="tree-label">matomo</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 8%</span>
+                                        <span class="tree-metric">RAM: 55%</span>
+                                        <span class="tree-metric">Disk: 19%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: #4285F4;"></span>
+                            <span class="tree-label">GCP Free Micro 1</span>
+                            <span class="tree-badge">4 services</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">Healthy</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">npm</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 10%</span>
+                                        <span class="tree-metric">RAM: 40%</span>
+                                        <span class="tree-metric">Disk: 5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">authelia</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 3%</span>
+                                        <span class="tree-metric">RAM: 15%</span>
+                                        <span class="tree-metric">Disk: 5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">cloud-api</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 1%</span>
+                                        <span class="tree-metric">RAM: 10%</span>
+                                        <span class="tree-metric">Disk: 1%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">wireguard</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 5%</span>
+                                        <span class="tree-metric">RAM: 10%</span>
+                                        <span class="tree-metric">Disk: 1%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End TREE VIEW - BY VM -->
+
+            <!-- TREE VIEW - BY TYPE (App Purpose) -->
+            <div id="health-tree-by-type" class="health-view-content" style="display: none;">
+                <div class="tree-container">
+                    <!-- Security -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-red);"></span>
+                            <span class="tree-label">Security</span>
+                            <span class="tree-badge">2 services</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">All Online</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">authelia</span>
+                                    <span class="tree-sublabel">GCP Free Micro 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 2%</span>
+                                        <span class="tree-metric">RAM: 25%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">wireguard</span>
+                                    <span class="tree-sublabel">OCI Paid Flex 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 1%</span>
+                                        <span class="tree-metric">RAM: 5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-blue);"></span>
+                            <span class="tree-label">Analytics</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">Online</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">matomo</span>
+                                    <span class="tree-sublabel">OCI Free Micro 2</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 8%</span>
+                                        <span class="tree-metric">RAM: 55%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web / Proxy -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-cyan);"></span>
+                            <span class="tree-label">Web / Proxy</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">Online</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">npm</span>
+                                    <span class="tree-sublabel">GCP Free Micro 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 10%</span>
+                                        <span class="tree-metric">RAM: 40%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mail -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-orange);"></span>
+                            <span class="tree-label">Mail</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge warning" style="margin-left: auto;">High RAM</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-orange);"></span>
+                                    <span class="tree-label">mailu</span>
+                                    <span class="tree-sublabel">OCI Free Micro 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 3%</span>
+                                        <span class="tree-metric">RAM: 60%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data / Storage -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-purple);"></span>
+                            <span class="tree-label">Data / Storage</span>
+                            <span class="tree-badge">3 services</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">All Online</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">photoprism</span>
+                                    <span class="tree-sublabel">OCI Paid Flex 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 5%</span>
+                                        <span class="tree-metric">RAM: 15%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">syncthing</span>
+                                    <span class="tree-sublabel">OCI Paid Flex 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 2%</span>
+                                        <span class="tree-metric">RAM: 8%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">radicale</span>
+                                    <span class="tree-sublabel">OCI Paid Flex 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 1%</span>
+                                        <span class="tree-metric">RAM: 5%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="tree-node tree-root">
+                        <div class="tree-node-header" onclick="toggleTreeNode(this)">
+                            <span class="tree-expand">▼</span>
+                            <span class="tree-icon" style="background: var(--accent-green);"></span>
+                            <span class="tree-label">Notifications</span>
+                            <span class="tree-badge">1 service</span>
+                            <span class="health-badge healthy" style="margin-left: auto;">Online</span>
+                        </div>
+                        <div class="tree-children">
+                            <div class="tree-node tree-leaf">
+                                <div class="tree-node-content">
+                                    <span class="tree-icon-sm" style="background: var(--accent-green);"></span>
+                                    <span class="tree-label">ntfy</span>
+                                    <span class="tree-sublabel">GCP Free Micro 1</span>
+                                    <div class="tree-metrics">
+                                        <span class="tree-metric">CPU: 1%</span>
+                                        <span class="tree-metric">RAM: 10%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End TREE VIEW - BY TYPE -->
+
         </div>
 
         <!-- Audit Analytics Tab Content -->
@@ -5046,6 +5534,72 @@
             renderTypeTable('infra-type-others', categorized['others']);
         }
 
+        // Health view toggle (Tree/List + By VM/By Type)
+        let healthDisplayMode = 'list'; // 'tree' or 'list'
+        let healthGroupMode = 'by-vm'; // 'by-vm' or 'by-type'
+
+        function initHealthViewToggle() {
+            const healthNav = document.getElementById('nav-health');
+            if (!healthNav) return;
+
+            const displayBtns = healthNav.querySelectorAll('.view-mode-btn[data-display-mode]');
+            const groupBtns = healthNav.querySelectorAll('.view-mode-btn[data-group-mode]');
+
+            displayBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    healthDisplayMode = this.dataset.displayMode;
+                    displayBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    updateHealthView();
+                });
+            });
+
+            groupBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    healthGroupMode = this.dataset.groupMode;
+                    groupBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    updateHealthView();
+                });
+            });
+        }
+
+        function updateHealthView() {
+            const views = {
+                'list-by-vm': document.getElementById('health-list-by-vm'),
+                'list-by-type': document.getElementById('health-list-by-type'),
+                'tree-by-vm': document.getElementById('health-tree-by-vm'),
+                'tree-by-type': document.getElementById('health-tree-by-type')
+            };
+
+            // Hide all views
+            Object.values(views).forEach(v => {
+                if (v) {
+                    v.style.display = 'none';
+                    v.classList.remove('active');
+                }
+            });
+
+            // Show the selected view
+            const viewKey = `${healthDisplayMode}-${healthGroupMode}`;
+            if (views[viewKey]) {
+                views[viewKey].style.display = 'block';
+                views[viewKey].classList.add('active');
+            }
+        }
+
+        // Tree node toggle function
+        window.toggleTreeNode = function(header) {
+            const node = header.parentElement;
+            const children = node.querySelector('.tree-children');
+            const expand = header.querySelector('.tree-expand');
+            if (children) {
+                const isCollapsed = children.style.display === 'none';
+                children.style.display = isCollapsed ? 'block' : 'none';
+                if (expand) expand.textContent = isCollapsed ? '▼' : '▶';
+            }
+        };
+
         // Infrastructure view toggle (Category + Tree/List + By VM/By Type)
         let currentCategory = 'app'; // 'app', 'data', or 'containers'
         let currentDisplayMode = 'list'; // 'tree' or 'list'
@@ -5542,6 +6096,7 @@
 
             initTabs();
             initInfraViewToggle();
+            initHealthViewToggle();
             initAutoRefresh();
             initAppCardTilt();
 

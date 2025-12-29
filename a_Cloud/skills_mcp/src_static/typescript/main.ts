@@ -1575,53 +1575,66 @@ function renderGraph(): void {
   graphSvg.addEventListener('mouseup', () => { isPanning = false; });
   graphSvg.addEventListener('mouseleave', () => { isPanning = false; });
 
+  // Boundary padding
+  const padding = 50;
+  const minX = padding;
+  const maxX = width - padding;
+  const minY = padding;
+  const maxY = height - padding;
+
   // Simple force simulation
   function tick() {
     // Apply forces
     allNodes.forEach(node => {
       if ((node as any).fx !== null) return;
 
-      // Center gravity
+      // Stronger center gravity to keep nodes together
       const dx = centerX - node.x;
       const dy = centerY - node.y;
-      node.x += dx * 0.001;
-      node.y += dy * 0.001;
+      node.x += dx * 0.008;
+      node.y += dy * 0.008;
 
-      // Node repulsion
+      // Node repulsion (reduced force)
       allNodes.forEach(other => {
         if (node === other) return;
         const ddx = node.x - other.x;
         const ddy = node.y - other.y;
         const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
-        const minDist = node.type === 'mcp' ? 80 : 60;
+        const minDist = node.type === 'mcp' ? 60 : 45;
         if (dist < minDist) {
-          const force = (minDist - dist) / dist * 0.5;
+          const force = (minDist - dist) / dist * 0.3;
           node.x += ddx * force;
           node.y += ddy * force;
         }
       });
+
+      // Boundary constraint - keep nodes within view
+      node.x = Math.max(minX, Math.min(maxX, node.x));
+      node.y = Math.max(minY, Math.min(maxY, node.y));
     });
 
-    // Edge attraction
+    // Edge attraction (reduced)
     edges.forEach(edge => {
       const dx = edge.to.x - edge.from.x;
       const dy = edge.to.y - edge.from.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      const targetDist = 180;
-      const force = (dist - targetDist) / dist * 0.02;
+      const targetDist = 120;
+      const force = (dist - targetDist) / dist * 0.01;
 
       if ((edge.from as any).fx === null) {
         edge.from.x += dx * force;
         edge.from.y += dy * force;
       }
       if ((edge.to as any).fx === null) {
-        edge.to.x -= dx * force * 0.2;
-        edge.to.y -= dy * force * 0.2;
+        edge.to.x -= dx * force * 0.1;
+        edge.to.y -= dy * force * 0.1;
       }
     });
 
-    // Update positions
+    // Update positions (with boundary enforcement)
     allNodes.forEach(node => {
+      node.x = Math.max(minX, Math.min(maxX, node.x));
+      node.y = Math.max(minY, Math.min(maxY, node.y));
       const g = nodeElements.get(node.id);
       if (g) {
         g.setAttribute('transform', `translate(${node.x}, ${node.y})`);

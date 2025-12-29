@@ -658,6 +658,16 @@ jobs:
             echo "⏭️  Skipping JSON Vision copy (no dist directory found)"
           fi
 
+          # Copy Skills & MCP Docs build (if dist exists)
+          if [ -d "a_Cloud/skills_mcp/dist" ]; then
+            echo "📦 Copying Skills & MCP Docs build..."
+            mkdir -p _site/skills_mcp
+            cp -rL a_Cloud/skills_mcp/dist/* _site/skills_mcp/ 2>/dev/null || cp -r a_Cloud/skills_mcp/dist/* _site/skills_mcp/
+            echo "✅ Skills & MCP Docs build copied to _site/skills_mcp/"
+          else
+            echo "⏭️  Skipping Skills & MCP Docs copy (no dist directory found)"
+          fi
+
           echo "✅ All files prepared for deployment"
 
           # Remove any broken symlinks that could cause tar to fail

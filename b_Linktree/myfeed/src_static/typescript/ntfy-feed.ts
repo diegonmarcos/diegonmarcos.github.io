@@ -89,6 +89,131 @@ let vmFilter = '';
 let serviceFilter = '';
 let refreshInterval: ReturnType<typeof setInterval> | null = null;
 let useApiMode = true;
+let useDemoMode = false;
+
+// Demo data when no API/ntfy available
+const DEMO_ALERTS: Alert[] = [
+  {
+    id: 1,
+    timestamp: new Date(Date.now() - 5 * 60000).toISOString(),
+    vm: 'gcp-arch',
+    service: 'ssh',
+    topic: 'auth',
+    title: 'SSH: 3 failed logins',
+    message: '[gcp-arch] 3 failed SSH login attempts from 192.168.1.100',
+    priority: 'high',
+    tags: 'warning,lock',
+    log_cmd: "journalctl -u sshd --since '30s ago' --no-pager",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-1',
+  },
+  {
+    id: 2,
+    timestamp: new Date(Date.now() - 15 * 60000).toISOString(),
+    vm: 'oci-flex',
+    service: 'docker',
+    topic: 'system',
+    title: 'Docker: container crash',
+    message: '[oci-flex] Container photoprism exited with code 137 (OOM)',
+    priority: 'high',
+    tags: 'whale,warning',
+    log_cmd: "journalctl -u docker --since '5m ago' | grep -E 'died|killed|OOM'",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-2',
+  },
+  {
+    id: 3,
+    timestamp: new Date(Date.now() - 30 * 60000).toISOString(),
+    vm: 'gcp-arch',
+    service: 'collector',
+    topic: 'system',
+    title: 'Collector started',
+    message: '[gcp-arch] Log collector is now active',
+    priority: 'low',
+    tags: 'rocket',
+    log_cmd: '',
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-3',
+  },
+  {
+    id: 4,
+    timestamp: new Date(Date.now() - 45 * 60000).toISOString(),
+    vm: 'oci-micro-1',
+    service: 'mailu',
+    topic: 'system',
+    title: 'Mail queue warning',
+    message: '[oci-micro-1] Mail queue has 15 pending messages',
+    priority: 'default',
+    tags: 'email',
+    log_cmd: "docker logs mailu-front --since '1h' | grep -i queue",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-4',
+  },
+  {
+    id: 5,
+    timestamp: new Date(Date.now() - 2 * 3600000).toISOString(),
+    vm: 'oci-flex',
+    service: 'sauron',
+    topic: 'sauron',
+    title: 'Malware detected: oci-flex',
+    message: 'YARA rule webshell_php matched in /watch/docker-volumes/uploads/shell.php',
+    priority: 'urgent',
+    tags: 'biohazard,skull',
+    log_cmd: "docker logs sauron --since '1h'",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-5',
+  },
+  {
+    id: 6,
+    timestamp: new Date(Date.now() - 3 * 3600000).toISOString(),
+    vm: 'gcp-arch',
+    service: 'authelia',
+    topic: 'auth',
+    title: 'Authelia: 2FA bypass attempt',
+    message: '[gcp-arch] Failed 2FA verification for user admin from 10.0.0.55',
+    priority: 'high',
+    tags: 'warning,shield',
+    log_cmd: "docker logs authelia --since '1h' | grep -i failed",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-6',
+  },
+  {
+    id: 7,
+    timestamp: new Date(Date.now() - 60000).toISOString(),
+    vm: 'gcp-arch',
+    service: 'npm',
+    topic: 'system',
+    title: 'NPM: SSL certificate renewed',
+    message: '[gcp-arch] Let\'s Encrypt certificate renewed for *.diegonmarcos.com',
+    priority: 'default',
+    tags: 'certificate,check',
+    log_cmd: '',
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-7',
+  },
+  {
+    id: 8,
+    timestamp: new Date(Date.now() - 10 * 60000).toISOString(),
+    vm: 'oci-micro-2',
+    service: 'system',
+    topic: 'system',
+    title: 'Critical: Disk space low',
+    message: '[oci-micro-2] Root partition at 95% capacity',
+    priority: 'urgent',
+    tags: 'rotating_light',
+    log_cmd: "df -h / && du -sh /var/log/*",
+    log_path: '',
+    acknowledged: 0,
+    ntfy_id: 'demo-8',
+  },
+];
 
 // ============ HELPERS ============
 
@@ -237,7 +362,7 @@ async function fetchFromApi(): Promise<boolean> {
   }
 }
 
-async function fetchFromNtfy(): Promise<void> {
+async function fetchFromNtfy(): Promise<boolean> {
   const topics = ['system', 'auth', 'sauron'];
   const allMessages: NtfyMessage[] = [];
 
@@ -261,6 +386,11 @@ async function fetchFromNtfy(): Promise<void> {
     }
   }
 
+  // If no messages found, return false to trigger demo mode
+  if (allMessages.length === 0) {
+    return false;
+  }
+
   // Convert ntfy messages to alerts format
   alerts = allMessages.map((msg, index) => ({
     id: index,
@@ -278,6 +408,18 @@ async function fetchFromNtfy(): Promise<void> {
     ntfy_id: msg.id,
   })).sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
+  generateStatsFromAlerts();
+  return true;
+}
+
+function loadDemoData(): void {
+  useDemoMode = true;
+  alerts = DEMO_ALERTS;
+  generateStatsFromAlerts();
+  console.log('CloudFeed: Loaded demo data (API/ntfy unavailable)');
+}
+
+function generateStatsFromAlerts(): void {
   // Generate stats from alerts
   stats = {
     total: alerts.length,
@@ -537,7 +679,15 @@ function populateFilters(): void {
 function updateLastUpdate(): void {
   const el = document.getElementById('last-update');
   if (el) {
-    el.textContent = `Updated ${formatTime(new Date().toISOString())}`;
+    const modeIndicator = useDemoMode ? ' [DEMO]' : useApiMode ? '' : ' [ntfy]';
+    el.textContent = `Updated ${formatTime(new Date().toISOString())}${modeIndicator}`;
+  }
+
+  // Update live indicator for demo mode
+  const liveIndicator = document.getElementById('live-indicator');
+  if (liveIndicator && useDemoMode) {
+    liveIndicator.innerHTML = '<span class="pulse"></span> DEMO';
+    liveIndicator.classList.add('demo');
   }
 }
 
@@ -558,15 +708,26 @@ function setLoading(loading: boolean): void {
 async function fetchAll(): Promise<void> {
   setLoading(true);
 
-  // Try API first
-  const apiSuccess = await fetchFromApi();
-
-  if (!apiSuccess) {
-    // Fallback to ntfy
-    useApiMode = false;
-    await fetchFromNtfy();
+  // If running from file://, skip network requests and use demo data
+  if (window.location.protocol === 'file:') {
+    loadDemoData();
   } else {
-    useApiMode = true;
+    // Try API first
+    const apiSuccess = await fetchFromApi();
+
+    if (apiSuccess) {
+      useApiMode = true;
+      useDemoMode = false;
+    } else {
+      // Fallback to ntfy
+      useApiMode = false;
+      const ntfySuccess = await fetchFromNtfy();
+
+      if (!ntfySuccess) {
+        // Fallback to demo data
+        loadDemoData();
+      }
+    }
   }
 
   // Render everything

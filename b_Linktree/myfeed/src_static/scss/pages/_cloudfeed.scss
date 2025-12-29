@@ -82,6 +82,16 @@ $svc-system: #64748b;
       animation: none;
     }
   }
+
+  &.demo {
+    background: rgba($accent-yellow, 0.15);
+    border-color: rgba($accent-yellow, 0.3);
+    color: $accent-yellow;
+
+    .pulse {
+      background: $accent-yellow;
+    }
+  }
 }
 
 @keyframes pulse {
@@ -375,11 +385,26 @@ $svc-system: #64748b;
 // =========================================
 .alert-feed {
   padding: 0 1.5rem;
-  @include flex-col(flex-start, stretch, 0.75rem);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+
+  @media (max-width: $bp-xl) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: $bp-lg) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: $bp-sm) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .loading-state {
   @include flex-col(center, center, 1rem);
+  grid-column: 1 / -1;
   padding: 3rem;
   color: $text-tertiary;
 
@@ -395,6 +420,7 @@ $svc-system: #64748b;
 
 .empty-state {
   @include flex-col(center, center, 0.5rem);
+  grid-column: 1 / -1;
   padding: 3rem;
   text-align: center;
   color: $text-tertiary;

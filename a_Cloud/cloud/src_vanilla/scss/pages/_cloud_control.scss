@@ -2766,3 +2766,79 @@
         .th-storage { width: 14%; }
         .th-storage-lg { width: 20%; }
         .th-actions { width: 16%; }
+
+        /* ============================================
+           PROFILING TAB STYLES
+           ============================================ */
+
+        .profiling-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .profiling-summary-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .profiling-summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .profiling-summary-value--green { color: var(--accent-green); }
+        .profiling-summary-value--blue { color: var(--accent-blue); }
+        .profiling-summary-value--yellow { color: var(--accent-yellow); }
+        .profiling-summary-value--purple { color: var(--accent-purple); }
+        .profiling-summary-value--orange { color: var(--accent-orange); }
+        .profiling-summary-value--red { color: var(--accent-red); }
+
+        .profiling-summary-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .profiling-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .profiling-section-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .profiling-section-desc {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .profiling-code {
+            background: var(--bg-tertiary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+
+        .profiling-timestamp {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+
+        .text-green { color: var(--accent-green); }
+        .text-blue { color: var(--accent-blue); }
+        .text-yellow { color: var(--accent-yellow); }
+        .text-orange { color: var(--accent-orange); }
+        .text-red { color: var(--accent-red); }
+        .text-purple { color: var(--accent-purple); }
+
+        .status-badge--slow {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }

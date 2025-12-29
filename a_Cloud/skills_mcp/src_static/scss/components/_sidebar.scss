@@ -1,0 +1,137 @@
+// ============================================
+// SIDEBAR COMPONENT
+// ============================================
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: $sidebar-width;
+  height: 100vh;
+  background: $color-bg-secondary;
+  border-right: 1px solid $color-border;
+  @include flex-col;
+  z-index: $z-sidebar;
+  overflow: hidden;
+
+  @media (max-width: $breakpoint-lg) {
+    transform: translateX(-100%);
+    transition: transform $transition-base;
+
+    &.is-open {
+      transform: translateX(0);
+    }
+  }
+
+  &__header {
+    padding: $spacing-lg;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__logo {
+    @include flex-row(flex-start, center, $spacing-sm);
+
+    svg {
+      width: 32px;
+      height: 32px;
+      color: $color-accent-cyan;
+    }
+
+    span {
+      font-size: $font-size-lg;
+      font-weight: $font-weight-bold;
+      color: $color-text-primary;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-md 0;
+    @include custom-scrollbar;
+  }
+
+  &__section {
+    margin-bottom: $spacing-md;
+  }
+
+  &__section-title {
+    padding: $spacing-sm $spacing-lg;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text-muted;
+  }
+
+  &__link {
+    display: block;
+    padding: $spacing-sm $spacing-lg;
+    padding-left: $spacing-xl;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    transition: all $transition-fast;
+    border-left: 2px solid transparent;
+
+    &:hover {
+      background: rgba($color-accent-blue, 0.1);
+      color: $color-text-primary;
+    }
+
+    &.is-active {
+      background: rgba($color-accent-blue, 0.15);
+      color: $color-accent-blue;
+      border-left-color: $color-accent-blue;
+    }
+  }
+
+  &__footer {
+    padding: $spacing-md $spacing-lg;
+    border-top: 1px solid $color-border;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+
+    a {
+      color: $color-accent-blue;
+    }
+  }
+}
+
+// Mobile toggle
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  bottom: $spacing-lg;
+  right: $spacing-lg;
+  width: 48px;
+  height: 48px;
+  @include flex-center;
+  background: $color-accent-blue;
+  border-radius: 50%;
+  color: white;
+  z-index: $z-header;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: $breakpoint-lg) {
+    display: flex;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: calc($z-sidebar - 1);
+
+  @media (max-width: $breakpoint-lg) {
+    &.is-visible {
+      display: block;
+    }
+  }
+}

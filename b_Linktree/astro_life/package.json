@@ -11,12 +11,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/icon": "^1.0.0",
-    "three": "^0.160.0"
+    "@nuxt/icon": "^1.0.0"
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.11.4",
-    "@types/three": "^0.160.0",
     "nuxt": "^3.10.0",
     "sass": "^1.70.0",
     "typescript": "^5.3.3",

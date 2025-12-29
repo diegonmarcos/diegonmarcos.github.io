@@ -1,0 +1,77 @@
+// ============================================
+// CODE BLOCK COMPONENT
+// ============================================
+
+.code-block {
+  position: relative;
+  background: $color-bg-code;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  &__header {
+    @include flex-row(space-between, center);
+    padding: $spacing-sm $spacing-md;
+    background: rgba(white, 0.03);
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__lang {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__copy {
+    @include flex-center;
+    padding: $spacing-xs $spacing-sm;
+    background: transparent;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+    transition: all $transition-fast;
+
+    &:hover {
+      background: $color-bg-card;
+      color: $color-text-primary;
+    }
+
+    &.is-copied {
+      background: $color-accent-green;
+      border-color: $color-accent-green;
+      color: $color-bg-primary;
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+      margin-right: $spacing-xs;
+    }
+  }
+
+  &__content {
+    padding: $spacing-md;
+    overflow-x: auto;
+    @include custom-scrollbar;
+
+    code {
+      background: transparent;
+      padding: 0;
+      color: $color-text-primary;
+      font-size: $font-size-sm;
+      line-height: 1.6;
+    }
+  }
+}
+
+// Syntax highlighting (basic)
+.code-block code {
+  .string { color: $color-accent-green; }
+  .keyword { color: $color-accent-purple; }
+  .function { color: $color-accent-blue; }
+  .comment { color: $color-text-muted; font-style: italic; }
+  .number { color: $color-accent-orange; }
+  .property { color: $color-accent-cyan; }
+}

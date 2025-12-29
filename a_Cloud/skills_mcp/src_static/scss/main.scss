@@ -1,0 +1,31 @@
+// ============================================
+// SKILLS & MCP TOOLS DOCS - MAIN SCSS
+// ============================================
+// ITCSS Architecture
+
+// 1. Settings - Variables, config
+@import 'settings/variables';
+
+// 2. Tools - Mixins, functions
+@import 'tools/mixins';
+
+// 3. Generic - Reset, normalize
+@import 'generic/reset';
+
+// 4. Elements - Base HTML elements
+@import 'elements/base';
+
+// 5. Objects - Layout patterns
+@import 'objects/layout';
+
+// 6. Components - UI components
+@import 'components/sidebar';
+@import 'components/header';
+@import 'components/endpoint';
+@import 'components/code-block';
+@import 'components/badge';
+@import 'components/search';
+@import 'components/graph';
+
+// 7. Utilities - Helper classes
+@import 'utilities/helpers';

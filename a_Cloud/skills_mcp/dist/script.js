@@ -1,4 +1,4 @@
-(()=>{var L=(e,a,t)=>new Promise((r,s)=>{var o=l=>{try{c(t.next(l))}catch(i){s(i)}},d=l=>{try{c(t.throw(l))}catch(i){s(i)}},c=l=>l.done?r(l.value):Promise.resolve(l.value).then(o,d);c((t=t.apply(e,a)).next())});var A=document.querySelector(".sidebar"),S=document.querySelector(".sidebar-toggle"),f=document.querySelector(".sidebar-overlay"),m=document.querySelector(".search__input"),T=document.querySelectorAll(".filter-btn"),D=document.querySelector(".endpoint-list"),b=document.querySelector(".sidebar__nav"),_="all",g="",v=[{id:"read",type:"mcp",name:"Read",path:"Read",summary:"Read file contents",description:"Reads a file from the local filesystem. Supports text files, images (PNG, JPG), PDFs, and Jupyter notebooks (.ipynb). Returns content with line numbers.",category:"File Operations",parameters:[{name:"file_path",type:"string",required:!0,description:"The absolute path to the file to read"},{name:"offset",type:"number",required:!1,description:"Line number to start reading from"},{name:"limit",type:"number",required:!1,description:"Number of lines to read (default: 2000)"}],example:`// Read entire file
+(()=>{var P=(e,a,t)=>new Promise((s,r)=>{var o=l=>{try{c(t.next(l))}catch(i){r(i)}},d=l=>{try{c(t.throw(l))}catch(i){r(i)}},c=l=>l.done?s(l.value):Promise.resolve(l.value).then(o,d);c((t=t.apply(e,a)).next())});var A=document.querySelector(".sidebar"),q=document.querySelector(".sidebar-toggle"),f=document.querySelector(".sidebar-overlay"),m=document.querySelector(".search__input"),E=document.querySelectorAll(".filter-btn"),I=document.querySelector(".endpoint-list"),b=document.querySelector(".sidebar__nav"),_="all",g="",v=[{id:"read",type:"mcp",name:"Read",path:"Read",summary:"Read file contents",description:"Reads a file from the local filesystem. Supports text files, images (PNG, JPG), PDFs, and Jupyter notebooks (.ipynb). Returns content with line numbers.",category:"File Operations",parameters:[{name:"file_path",type:"string",required:!0,description:"The absolute path to the file to read"},{name:"offset",type:"number",required:!1,description:"Line number to start reading from"},{name:"limit",type:"number",required:!1,description:"Number of lines to read (default: 2000)"}],example:`// Read entire file
 Read({ file_path: "/path/to/file.ts" })
 
 // Read specific lines (for large files)
@@ -91,71 +91,103 @@ LSP({
     { content: "Implement auth", status: "in_progress", activeForm: "Implementing auth" },
     { content: "Write tests", status: "pending", activeForm: "Writing tests" }
   ]
-})`},{id:"enter-plan-mode",type:"mcp",name:"EnterPlanMode",path:"EnterPlanMode",summary:"Start planning mode",description:"Enter plan mode for non-trivial implementations. Explore codebase and design approach before coding. Requires user approval.",category:"Planning",parameters:[]},{id:"exit-plan-mode",type:"mcp",name:"ExitPlanMode",path:"ExitPlanMode",summary:"Exit planning mode",description:"Signal completion of planning phase. Plan should already be written to the plan file.",category:"Planning",parameters:[]}],w=[{id:"skill-pdf",type:"skill",name:"PDF",path:"pdf",summary:"PDF document processing",description:"Extract text and tables from PDFs, create new PDFs, merge/split documents, handle form fields, and analyze PDF content.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],example:`"Use the PDF skill to extract all form fields from /path/to/document.pdf"
+})`},{id:"enter-plan-mode",type:"mcp",name:"EnterPlanMode",path:"EnterPlanMode",summary:"Start planning mode",description:"Enter plan mode for non-trivial implementations. Explore codebase and design approach before coding. Requires user approval.",category:"Planning",parameters:[]},{id:"exit-plan-mode",type:"mcp",name:"ExitPlanMode",path:"ExitPlanMode",summary:"Exit planning mode",description:"Signal completion of planning phase. Plan should already be written to the plan file.",category:"Planning",parameters:[]}],w=[{id:"skill-pdf",type:"skill",name:"PDF",path:"pdf",summary:"PDF manipulation toolkit",description:"Comprehensive PDF toolkit: extract text/tables with pdfplumber, OCR scanned docs with pytesseract, create PDFs with reportlab, merge/split with pypdf/qpdf, rotate pages, add watermarks, encrypt/decrypt, and fill form fields.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"Libraries",type:"Python",required:!0,description:"pypdf, pdfplumber, reportlab, pytesseract, pdf2image, pandas"},{name:"CLI Tools",type:"Bash",required:!1,description:"pdftotext, qpdf, pdftk (poppler-utils)"}],example:`"Extract the table from page 3 of report.pdf and convert to CSV"
 
-"Use the PDF skill to merge invoice1.pdf and invoice2.pdf into combined.pdf"
+"Merge invoice1.pdf and invoice2.pdf, then add a watermark"
 
-"Extract the table on page 3 of the report.pdf"`},{id:"skill-docx",type:"skill",name:"DOCX",path:"docx",summary:"Word document handling",description:"Create, edit, and analyze Microsoft Word documents. Supports tracked changes, formatting, styles, tables, and document conversion.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],example:`"Use the DOCX skill to create a professional report from this outline"
+"OCR this scanned document and extract all text with layout preservation"
 
-"Convert the markdown file to a formatted Word document with our brand styles"
+"Fill out the form fields in application.pdf programmatically"`},{id:"skill-docx",type:"skill",name:"DOCX",path:"docx",summary:"Word document manipulation",description:"Comprehensive Word document handling: text extraction via pandoc, raw XML access for comments/formatting/media, document creation with docx-js, tracked changes (redlining) with OOXML, and visualization via LibreOffice PDF conversion.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"pandoc",type:"CLI",required:!0,description:"Text extraction with tracked changes"},{name:"docx (npm)",type:"Node.js",required:!0,description:"Document creation"},{name:"LibreOffice",type:"CLI",required:!1,description:"PDF/image conversion"},{name:"defusedxml",type:"Python",required:!1,description:"Secure XML parsing for OOXML"}],example:`"Extract text preserving tracked changes from contract.docx"
 
-"Extract all comments and tracked changes from the contract.docx"`},{id:"skill-xlsx",type:"skill",name:"XLSX",path:"xlsx",summary:"Excel spreadsheet handling",description:"Create, edit, and analyze Excel spreadsheets. Supports formulas, formatting, charts, pivot tables, and data analysis.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],example:`"Use the XLSX skill to analyze the sales data in Q4_report.xlsx"
+"Create a Word document with proper styles from this markdown"
 
-"Create an Excel spreadsheet with monthly revenue calculations and charts"
+"Implement tracked changes for minimal, precise edits only"
 
-"Extract data from Sheet2 and create a summary pivot table"`},{id:"skill-pptx",type:"skill",name:"PPTX",path:"pptx",summary:"PowerPoint presentations",description:"Create and edit PowerPoint presentations. Supports layouts, templates, charts, animations, speaker notes, and automated slide generation.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],example:`"Use the PPTX skill to create a 10-slide presentation from these bullet points"
+"Convert the DOCX to images for visual review"`},{id:"skill-xlsx",type:"skill",name:"XLSX",path:"xlsx",summary:"Excel spreadsheet operations",description:"Comprehensive spreadsheet operations: create/edit with formulas using openpyxl, data analysis with pandas, formula recalculation via LibreOffice recalc.py, financial model standards with color coding (blue=inputs, black=formulas).",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"pandas",type:"Python",required:!0,description:"Data analysis and manipulation"},{name:"openpyxl",type:"Python",required:!0,description:"Complex formatting and formulas"},{name:"recalc.py",type:"Script",required:!0,description:"LibreOffice formula recalculation"},{name:"Zero formula errors",type:"Validation",required:!0,description:"No #REF!, #DIV/0!, #VALUE!, #N/A, #NAME?"}],example:`"Create a financial model with dynamic formulas (never hardcode values)"
 
-"Add a chart showing quarterly growth to slide 5 of the deck"
+"Analyze Q4 sales data and create pivot summary"
 
-"Convert this markdown outline into a professional presentation"`},{id:"skill-algorithmic-art",type:"skill",name:"Algorithmic Art",path:"algorithmic-art",summary:"Generative art with p5.js",description:"Create generative and algorithmic art using p5.js. Supports seeded randomness, particle systems, fractals, and creative coding patterns.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Bash"],example:`"Use the algorithmic art skill to create a generative particle system"
+"Validate all formulas and fix any #REF! errors"
 
-"Create a fractal tree animation with customizable parameters"
+"Apply financial formatting: blue for inputs, black for calculations"`},{id:"skill-pptx",type:"skill",name:"PPTX",path:"pptx",summary:"PowerPoint presentations",description:"Full PowerPoint support: create from HTML via html2pptx, edit via OOXML manipulation, use templates with inventory.py, thumbnail generation, slide rearrangement. Supports web-safe fonts only, two-column layouts preferred, validate with thumbnails.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"html2pptx",type:"Script",required:!0,description:"Convert HTML slides to PPTX"},{name:"ooxml scripts",type:"Python",required:!0,description:"unpack.py, pack.py, validate.py"},{name:"inventory.py",type:"Script",required:!1,description:"Template text inventory"},{name:"thumbnail.py",type:"Script",required:!0,description:"Generate slide grids for validation"},{name:"Sharp",type:"Node.js",required:!1,description:"Rasterize gradients/icons to PNG"}],example:`"Create presentation from HTML (720pt \xD7 405pt slides for 16:9)"
 
-"Generate abstract art using Perlin noise and geometric shapes"`},{id:"skill-canvas-design",type:"skill",name:"Canvas Design",path:"canvas-design",summary:"Visual design (PNG/PDF)",description:"Design visual art and graphics. Outputs in PNG and PDF formats. Supports layouts, compositions, and visual hierarchies.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Bash"],example:`"Use canvas design to create a social media banner for our product launch"
+"Edit existing deck: unpack \u2192 modify XML \u2192 validate \u2192 pack"
 
-"Design an infographic showing our company milestones"
+"Use template: extract inventory, rearrange slides, replace text"
 
-"Create a visual diagram of the system architecture"`},{id:"skill-slack-gif",type:"skill",name:"Slack GIF Creator",path:"slack-gif-creator",summary:"Animated GIFs for Slack",description:"Create animated GIFs optimized for Slack. Handles size limits, frame rates, and Slack-specific formatting requirements.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Bash"],example:`"Create a celebration GIF for our team Slack channel"
+"Generate thumbnail grid to check for layout issues"`},{id:"skill-algorithmic-art",type:"skill",name:"Algorithmic Art",path:"algorithmic-art",summary:"Generative art with p5.js",description:"Create generative and algorithmic art using p5.js. Supports seeded randomness for reproducibility, particle systems, fractals, Perlin noise, and creative coding patterns. Outputs as HTML with embedded canvas.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write"],example:`"Create a generative particle system with seeded randomness"
 
-"Make an animated loading spinner GIF optimized for Slack"
+"Build a fractal tree animation with adjustable branching angle"
 
-"Generate a reaction GIF from this sequence of images"`},{id:"skill-theme-factory",type:"skill",name:"Theme Factory",path:"theme-factory",summary:"Theme generation",description:"Generate and customize themes for applications. Creates consistent color palettes, typography scales, and design tokens.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Read"],example:`"Create a dark theme based on our brand colors"
+"Generate abstract art using layered Perlin noise fields"
 
-"Generate a complete design token system for our React app"
+"Create an interactive piece responding to mouse movement"`},{id:"skill-canvas-design",type:"skill",name:"Canvas Design",path:"canvas-design",summary:"Visual art creation (PNG/PDF)",description:"Two-step design process: 1) Create a design philosophy/aesthetic movement (4-6 paragraphs), 2) Express it visually. 90% visual, 10% text. Museum/magazine quality with expert craftsmanship. Subtle conceptual references, not literal.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Read"],parameters:[{name:"Design Philosophy",type:"Markdown",required:!0,description:"Name movement, articulate visual essence"},{name:"Canvas Expression",type:"PDF/PNG",required:!0,description:"Visual output with minimal text"},{name:"canvas-fonts",type:"Directory",required:!1,description:"Available fonts for typography"}],example:`"Create poster with 'Brutalist Joy' aesthetic movement"
 
-"Create light and dark theme variants with proper contrast ratios"`},{id:"skill-frontend-design",type:"skill",name:"Frontend Design",path:"frontend-design",summary:"Bold UI/UX design",description:"Instructs Claude to avoid generic aesthetics and make bold design decisions. Emphasizes unique, memorable user interfaces.",category:"Development",source:"anthropics/skills",requiredMcp:["Write","Read","Glob"],example:`"Use frontend design skill to create a unique landing page - avoid generic templates"
+"Design infographic following 'Chromatic Language' philosophy"
 
-"Design a memorable dashboard UI with distinctive visual identity"
+"Make museum-quality visual: dense patterns, limited palette, thin fonts"
 
-"Create an unconventional but usable navigation system"`},{id:"skill-web-artifacts",type:"skill",name:"Web Artifacts Builder",path:"web-artifacts-builder",summary:"Build HTML artifacts",description:"Build complex HTML artifacts using React, Tailwind CSS, and shadcn/ui components. Creates interactive web components.",category:"Development",source:"anthropics/skills",requiredMcp:["Write","Bash"],example:`"Build an interactive data table component with sorting and filtering"
+"Refine existing composition - make it more pristine, not busier"`},{id:"skill-slack-gif",type:"skill",name:"Slack GIF Creator",path:"slack-gif-creator",summary:"Animated GIFs for Slack",description:"Create Slack-optimized GIFs using GIFBuilder, validators, and easing functions. Emoji: 128x128, 10-30fps, 48-128 colors, <3s. Message: 480x480. PIL for drawing, built-in animations: shake, pulse, bounce, spin, fade, zoom, particles.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Write","Bash"],parameters:[{name:"GIFBuilder",type:"Python class",required:!0,description:"Assemble and optimize GIFs"},{name:"validators",type:"Python module",required:!0,description:"validate_gif(), is_slack_ready()"},{name:"easing",type:"Python module",required:!0,description:"interpolate() with 7 easing types"},{name:"pillow/imageio",type:"Python",required:!0,description:"pip install pillow imageio numpy"}],example:`"Create 128x128 emoji GIF with bounce animation"
 
-"Create a form wizard artifact with validation and progress indicator"
+"Make celebration GIF: optimize_for_emoji=True, num_colors=48"
 
-"Build a dashboard widget showing real-time metrics"`},{id:"skill-mcp-builder",type:"skill",name:"MCP Builder",path:"mcp-builder",summary:"Create MCP servers",description:"Guide for creating Model Context Protocol (MCP) servers. Helps integrate external APIs and services with Claude.",category:"Development",source:"anthropics/skills",requiredMcp:["Write","Read","Bash","Glob"],example:`"Use MCP builder to create a server for our internal API"
+"Build particle burst animation with elastic_out easing"
 
-"Build an MCP server that connects to PostgreSQL database"
+"Validate GIF is Slack-ready before uploading"`},{id:"skill-theme-factory",type:"skill",name:"Theme Factory",path:"theme-factory",summary:"Professional theme styling",description:"Apply 10 curated themes to artifacts (slides, docs, HTML). Themes include: Ocean Depths, Sunset Boulevard, Forest Canopy, Modern Minimalist, Golden Hour, Arctic Frost, Desert Rose, Tech Innovation, Botanical Garden, Midnight Galaxy.",category:"Design & Creative",source:"anthropics/skills",requiredMcp:["Read","Write"],parameters:[{name:"theme-showcase.pdf",type:"PDF",required:!0,description:"Visual preview of all 10 themes"},{name:"themes/",type:"Directory",required:!0,description:"Theme files with colors and fonts"}],example:`"Show theme-showcase.pdf for user to select visually"
 
-"Create an MCP server for Jira integration"`},{id:"skill-webapp-testing",type:"skill",name:"WebApp Testing",path:"webapp-testing",summary:"Test with Playwright",description:"Test local web applications using Playwright. Supports E2E testing, visual regression, and accessibility testing.",category:"Development",source:"anthropics/skills",requiredMcp:["Read","Write","Bash","mcp__playwright"],example:`"Use webapp testing to create E2E tests for the login flow"
+"Apply 'Tech Innovation' theme to the presentation"
 
-"Test the checkout process and capture screenshots of each step"
+"Generate custom theme based on user brand description"
 
-"Run accessibility tests on all form components"`},{id:"skill-brand-guidelines",type:"skill",name:"Brand Guidelines",path:"brand-guidelines",summary:"Apply brand identity",description:"Apply official brand colors, typography, voice, and visual guidelines. Ensures consistent brand representation across outputs.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read"],example:`"Apply our brand guidelines to this marketing copy"
+"Style landing page with 'Midnight Galaxy' color palette"`},{id:"skill-frontend-design",type:"skill",name:"Frontend Design",path:"frontend-design",summary:"Production-grade bold UI",description:'Create distinctive, production-grade frontends avoiding "AI aesthetics". Process: Purpose \u2192 Tone (pick extreme: brutalist, maximalist, retro-futuristic, etc.) \u2192 Constraints \u2192 Differentiation. Avoid: Inter/Roboto, purple gradients, predictable layouts.',category:"Development",source:"anthropics/skills",requiredMcp:["Write","Read","Glob"],parameters:[{name:"Typography",type:"Guideline",required:!0,description:"Distinctive fonts, not Arial/Inter/Roboto"},{name:"Motion",type:"Guideline",required:!1,description:"CSS animations, orchestrated reveals"},{name:"Backgrounds",type:"Guideline",required:!1,description:"Gradient meshes, noise, geometric patterns"}],example:`"Create landing page with 'Brutalist/raw' aesthetic"
 
-"Ensure this document follows our brand voice and tone"
+"Design dashboard avoiding generic AI patterns"
 
-"Check if these colors match our brand palette"`},{id:"skill-internal-comms",type:"skill",name:"Internal Comms",path:"internal-comms",summary:"Internal communications",description:"Write internal communications: status reports, newsletters, FAQs, announcements, and team updates.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read","Write"],example:`"Write a weekly status report for the engineering team"
+"Build UI with asymmetric layout and grid-breaking elements"
 
-"Create an FAQ document for the new PTO policy"
+"Add dramatic shadows, custom cursors, grain overlays"`},{id:"skill-web-artifacts",type:"skill",name:"Web Artifacts Builder",path:"web-artifacts-builder",summary:"React + Tailwind + shadcn/ui",description:'Build elaborate multi-component artifacts: React 18 + TypeScript + Vite + Parcel bundling + Tailwind CSS + 40+ shadcn/ui components. Init \u2192 Edit \u2192 Bundle to single bundle.html. Avoid "AI slop" (centered layouts, purple gradients, rounded corners).',category:"Development",source:"anthropics/skills",requiredMcp:["Write","Bash"],parameters:[{name:"init-artifact.sh",type:"Script",required:!0,description:"Initialize React project with all deps"},{name:"bundle-artifact.sh",type:"Script",required:!0,description:"Parcel bundle to single HTML"},{name:"Node 18+",type:"Runtime",required:!0,description:"Required for Vite version pinning"}],example:`"bash scripts/init-artifact.sh my-dashboard"
 
-"Draft an announcement for the upcoming company event"`},{id:"skill-doc-coauthoring",type:"skill",name:"Doc Co-authoring",path:"doc-coauthoring",summary:"Collaborative writing",description:"Collaborative document authoring with tracked changes, comments, and revision management.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read","Write","Edit"],example:`"Help me co-author this proposal with tracked changes"
+"Build artifact using shadcn/ui components from ui.shadcn.com/docs"
 
-"Review this document and add comments for improvement"
+"bash scripts/bundle-artifact.sh \u2192 outputs bundle.html"
 
-"Merge my edits with the team's revisions"`},{id:"skill-creator",type:"skill",name:"Skill Creator",path:"skill-creator",summary:"Create new skills",description:"Interactive tool that guides users through building new custom skills via Q&A. Generates proper SKILL.md structure.",category:"Skill Creation",source:"anthropics/skills",requiredMcp:["Write","Read","AskUserQuestion"],example:`"Use the skill creator to help me build a custom skill for our deployment process"
+"Share bundle.html as Claude artifact"`},{id:"skill-mcp-builder",type:"skill",name:"MCP Builder",path:"mcp-builder",summary:"Create MCP servers",description:"Guide for building Model Context Protocol (MCP) servers to extend Claude with external tools. Research API \u2192 Implement server \u2192 Test with Bash \u2192 Package. Integrates databases, APIs, and services.",category:"Development",source:"anthropics/skills",requiredMcp:["Write","Read","Bash","Glob","WebSearch"],example:`"Create MCP server for PostgreSQL database queries"
 
-"Create a new skill for our code review workflow"
+"Build Jira integration MCP with issue creation/updates"
 
-"Build a skill that enforces our testing standards"`}],x=[{id:"skill-playwright",type:"skill",name:"Playwright Automation",path:"playwright-skill",summary:"Browser automation",description:"General-purpose browser automation using Playwright. Navigate, interact, screenshot, and scrape web pages.",category:"Community Skills",source:"community",requiredMcp:["Bash","Write","mcp__playwright"],example:`"Use Playwright to scrape product prices from this e-commerce site"
+"Make MCP server for internal REST API"
+
+"Test MCP server locally before configuring in Claude"`},{id:"skill-webapp-testing",type:"skill",name:"WebApp Testing",path:"webapp-testing",summary:"Playwright E2E testing",description:"Test local web applications using Playwright MCP. E2E testing, visual regression, accessibility testing. Requires Playwright MCP server configured. Capture screenshots, interact with pages, validate flows.",category:"Development",source:"anthropics/skills",requiredMcp:["Read","Write","Bash","mcp__playwright"],parameters:[{name:"Playwright MCP",type:"MCP Server",required:!0,description:"Browser automation capability"}],example:`"Test login flow with invalid credentials handling"
+
+"Capture screenshots at each checkout step"
+
+"Run accessibility audit on all form components"
+
+"Visual regression test comparing to baseline screenshots"`},{id:"skill-brand-guidelines",type:"skill",name:"Brand Guidelines",path:"brand-guidelines",summary:"Apply Anthropic brand styling",description:"Apply official brand identity: Colors (Dark #141413, Light #faf9f5, Orange #d97757, Blue #6a9bcc, Green #788c5d), Typography (Headings: Poppins, Body: Lora). Smart font application to 24pt+ headings, automatic fallbacks.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read","Write"],parameters:[{name:"Main Colors",type:"Hex",required:!0,description:"#141413 (dark), #faf9f5 (light), #b0aea5 (mid gray)"},{name:"Accents",type:"Hex",required:!0,description:"#d97757 (orange), #6a9bcc (blue), #788c5d (green)"},{name:"Fonts",type:"Typography",required:!0,description:"Poppins (headings), Lora (body)"}],example:`"Apply Anthropic brand colors to this presentation"
+
+"Style document with Poppins headings and Lora body text"
+
+"Use accent colors for shapes: orange, blue, green cycling"
+
+"Ensure text colors have proper contrast on backgrounds"`},{id:"skill-internal-comms",type:"skill",name:"Internal Comms",path:"internal-comms",summary:"Status reports & newsletters",description:"Write internal communications with company formats: 3P updates (Progress/Plans/Problems), company newsletters, FAQ responses, status reports, leadership updates, incident reports. Load guideline files from examples/ directory.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read","Write"],parameters:[{name:"3p-updates.md",type:"Template",required:!1,description:"Progress/Plans/Problems format"},{name:"company-newsletter.md",type:"Template",required:!1,description:"Newsletter format"},{name:"faq-answers.md",type:"Template",required:!1,description:"FAQ response format"},{name:"general-comms.md",type:"Template",required:!1,description:"Fallback template"}],example:`"Write 3P update following examples/3p-updates.md format"
+
+"Create company newsletter for product launch"
+
+"Draft FAQ responses for the new benefits policy"
+
+"Write incident report following company template"`},{id:"skill-doc-coauthoring",type:"skill",name:"Doc Co-authoring",path:"doc-coauthoring",summary:"Three-stage collaborative writing",description:"Structured 3-stage workflow: 1) Context Gathering (meta-questions, info dumping), 2) Refinement (clarify\u2192brainstorm\u2192curate\u2192draft\u2192iterate per section), 3) Reader Testing (sub-agent tests with fresh context). For PRDs, specs, proposals, RFCs.",category:"Communication",source:"anthropics/skills",requiredMcp:["Read","Write","Edit","Task","AskUserQuestion"],parameters:[{name:"Stage 1",type:"Workflow",required:!0,description:"Context gathering: doc type, audience, impact, constraints"},{name:"Stage 2",type:"Workflow",required:!0,description:"Section-by-section: clarify \u2192 brainstorm \u2192 curate \u2192 draft"},{name:"Stage 3",type:"Workflow",required:!0,description:"Reader testing with fresh sub-agent"}],example:`"Co-author this PRD using the three-stage workflow"
+
+"Stage 2: Let's brainstorm options for the Requirements section"
+
+"Use str_replace for surgical edits, never reprint whole doc"
+
+"Stage 3: Test document with sub-agent asking reader questions"`},{id:"skill-creator",type:"skill",name:"Skill Creator",path:"skill-creator",summary:"Build custom skills",description:"Create effective skills: SKILL.md (frontmatter + instructions), bundled resources (scripts/, references/, assets/). Progressive disclosure: metadata (100 words) \u2192 SKILL.md (<5k words) \u2192 resources (as-needed). Init \u2192 Edit \u2192 Package \u2192 Iterate.",category:"Skill Creation",source:"anthropics/skills",requiredMcp:["Write","Read","Bash","AskUserQuestion"],parameters:[{name:"init_skill.py",type:"Script",required:!0,description:"Create skeleton skill directory"},{name:"package_skill.py",type:"Script",required:!0,description:"Validate and package to .skill file"},{name:"SKILL.md",type:"Markdown",required:!0,description:"YAML frontmatter + instructions (<500 lines)"}],example:`"scripts/init_skill.py my-skill --path ./skills/"
+
+"Create scripts/ for reusable, deterministic code"
+
+"Add references/ for documentation loaded as-needed"
+
+"scripts/package_skill.py ./skills/my-skill \u2192 my-skill.skill"`}],x=[{id:"skill-playwright",type:"skill",name:"Playwright Automation",path:"playwright-skill",summary:"Browser automation",description:"General-purpose browser automation using Playwright. Navigate, interact, screenshot, and scrape web pages.",category:"Community Skills",source:"community",requiredMcp:["Bash","Write","mcp__playwright"],example:`"Use Playwright to scrape product prices from this e-commerce site"
 
 "Automate filling out this form and submitting it"
 
@@ -179,7 +211,7 @@ LSP({
 
 "Discover hidden directories on the target application"
 
-"Test for authentication bypass vulnerabilities"`}],F=[...v,...w,...x];function B(){A.classList.toggle("is-open"),f.classList.toggle("is-visible")}function q(){A.classList.remove("is-open"),f.classList.remove("is-visible")}function H(e){e.classList.toggle("is-open")}function I(){return F.filter(e=>{let a=_==="all"||e.type===_,t=g===""||e.name.toLowerCase().includes(g)||e.summary.toLowerCase().includes(g)||e.path.toLowerCase().includes(g)||e.category.toLowerCase().includes(g)||e.description&&e.description.toLowerCase().includes(g);return a&&t})}function z(e){let a=e.parameters&&e.parameters.length>0?`
+"Test for authentication bypass vulnerabilities"`}],R=[...v,...w,...x];function B(){A.classList.toggle("is-open"),f.classList.toggle("is-visible")}function S(){A.classList.remove("is-open"),f.classList.remove("is-visible")}function $(e){e.classList.toggle("is-open")}function H(){return R.filter(e=>{let a=_==="all"||e.type===_,t=g===""||e.name.toLowerCase().includes(g)||e.summary.toLowerCase().includes(g)||e.path.toLowerCase().includes(g)||e.category.toLowerCase().includes(g)||e.description&&e.description.toLowerCase().includes(g);return a&&t})}function N(e){let a=e.parameters&&e.parameters.length>0?`
     <h4 class="endpoint__section-title">Parameters</h4>
     <table class="params-table">
       <thead>
@@ -206,11 +238,11 @@ LSP({
     <div class="tags">
       ${e.requiredMcp.map(o=>`<span class="badge badge--mcp">${o}</span>`).join("")}
     </div>
-  `:"",r=e.source?`
+  `:"",s=e.source?`
     <div class="mt-md text-xs text-muted">
       Source: <a href="https://github.com/${e.source}" target="_blank">${e.source}</a>
     </div>
-  `:"",s=e.example?`
+  `:"",r=e.example?`
     <h4 class="endpoint__section-title">Example</h4>
     <div class="code-block">
       <div class="code-block__header">
@@ -224,7 +256,7 @@ LSP({
         </button>
       </div>
       <div class="code-block__content">
-        <code>${O(e.example)}</code>
+        <code>${j(e.example)}</code>
       </div>
     </div>
   `:"";return`
@@ -243,49 +275,49 @@ LSP({
         <p class="endpoint__description">${e.description}</p>
         ${t}
         ${a}
-        ${s}
         ${r}
+        ${s}
       </div>
     </article>
-  `}function C(){let e=I(),a=U(e),t="";for(let[r,s]of Object.entries(a)){let o=s[0].type==="mcp"?"tools":"skills";t+=`
-      <section class="section" id="section-${k(r)}">
+  `}function C(){let e=H(),a=z(e),t="";for(let[s,r]of Object.entries(a)){let o=r[0].type==="mcp"?"tools":"skills";t+=`
+      <section class="section" id="section-${k(s)}">
         <div class="section__title">
-          <h2>${r}</h2>
-          <span class="badge badge--${s[0].type}">${s.length} ${o}</span>
+          <h2>${s}</h2>
+          <span class="badge badge--${r[0].type}">${r.length} ${o}</span>
         </div>
-        ${s.map(z).join("")}
+        ${r.map(N).join("")}
       </section>
     `}e.length===0&&(t=`
       <div class="text-center text-muted mt-lg">
         <p>No results found for "${g}"</p>
       </div>
-    `),D.innerHTML=t,j()}function N(){let e=[...new Set(v.map(s=>s.category))],a=[...new Set(w.map(s=>s.category))],t=[...new Set(x.map(s=>s.category))],r=`
+    `),I.innerHTML=t,V()}function O(){let e=[...new Set(v.map(r=>r.category))],a=[...new Set(w.map(r=>r.category))],t=[...new Set(x.map(r=>r.category))],s=`
     <div class="sidebar__section">
       <div class="sidebar__section-title">MCP Tools</div>
-      ${e.map(s=>`
-        <a href="#section-${k(s)}" class="sidebar__link">${s}</a>
+      ${e.map(r=>`
+        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
       `).join("")}
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-title">Official Skills</div>
-      ${a.map(s=>`
-        <a href="#section-${k(s)}" class="sidebar__link">${s}</a>
+      ${a.map(r=>`
+        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
       `).join("")}
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-title">Community Skills</div>
-      ${t.map(s=>`
-        <a href="#section-${k(s)}" class="sidebar__link">${s}</a>
+      ${t.map(r=>`
+        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
       `).join("")}
     </div>
-  `;b.innerHTML=r}function U(e){return e.reduce((a,t)=>(a[t.category]||(a[t.category]=[]),a[t.category].push(t),a),{})}function k(e){return e.toLowerCase().replace(/\s+/g,"-").replace(/[^\w-]/g,"")}function O(e){return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\n/g,"<br>")}function j(){document.querySelectorAll(".code-block__copy").forEach(e=>{e.addEventListener("click",a=>L(this,null,function*(){a.stopPropagation();let t=decodeURIComponent(e.dataset.code||"");yield navigator.clipboard.writeText(t),e.classList.add("is-copied"),e.textContent="Copied!",setTimeout(()=>{e.classList.remove("is-copied"),e.innerHTML=`
+  `;b.innerHTML=s}function z(e){return e.reduce((a,t)=>(a[t.category]||(a[t.category]=[]),a[t.category].push(t),a),{})}function k(e){return e.toLowerCase().replace(/\s+/g,"-").replace(/[^\w-]/g,"")}function j(e){return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\n/g,"<br>")}function V(){document.querySelectorAll(".code-block__copy").forEach(e=>{e.addEventListener("click",a=>P(null,null,function*(){a.stopPropagation();let t=decodeURIComponent(e.dataset.code||"");yield navigator.clipboard.writeText(t),e.classList.add("is-copied"),e.textContent="Copied!",setTimeout(()=>{e.classList.remove("is-copied"),e.innerHTML=`
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
             <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
           </svg>
           Copy
-        `},2e3)}))})}window.toggleEndpoint=H;var M=document.getElementById("list-view"),E=document.getElementById("graph-view"),h=document.getElementById("graph-svg"),y=document.getElementById("graph-tooltip"),W=document.querySelectorAll(".view-tab"),P=document.getElementById("filters-container"),$="list";function V(e){$=e,W.forEach(a=>{a.classList.toggle("is-active",a.dataset.view===e)}),e==="list"?(M.classList.remove("hidden"),E.classList.add("hidden"),P.style.display="flex"):(M.classList.add("hidden"),E.classList.remove("hidden"),P.style.display="none",G())}function G(){let e=h.clientWidth||900,a=h.clientHeight||500,t=v.map((i,n)=>({id:i.id,name:i.name,type:"mcp",x:150,y:50+n*(a-100)/v.length,connections:[]})),r=[...w,...x].map((i,n)=>({id:i.id,name:i.name,type:"skill",x:e-150,y:50+n*(a-100)/(w.length+x.length),connections:i.requiredMcp||[]})),s=[...t,...r],o=[];r.forEach(i=>{i.connections.forEach(n=>{let p=t.find(u=>u.name===n||u.name.toLowerCase()===n.toLowerCase());p&&o.push({from:i,to:p})})}),h.innerHTML="";let d=document.createElementNS("http://www.w3.org/2000/svg","defs");d.innerHTML=`
+        `},2e3)}))})}window.toggleEndpoint=$;var T=document.getElementById("list-view"),L=document.getElementById("graph-view"),h=document.getElementById("graph-svg"),y=document.getElementById("graph-tooltip"),F=document.querySelectorAll(".view-tab"),M=document.getElementById("filters-container"),G="list";function U(e){G=e,F.forEach(a=>{a.classList.toggle("is-active",a.dataset.view===e)}),e==="list"?(T.classList.remove("hidden"),L.classList.add("hidden"),M.style.display="flex"):(T.classList.add("hidden"),L.classList.remove("hidden"),M.style.display="none",D())}function D(){let e=h.clientWidth||900,a=h.clientHeight||500,t=v.map((i,n)=>({id:i.id,name:i.name,type:"mcp",x:150,y:50+n*(a-100)/v.length,connections:[]})),s=[...w,...x].map((i,n)=>({id:i.id,name:i.name,type:"skill",x:e-150,y:50+n*(a-100)/(w.length+x.length),connections:i.requiredMcp||[]})),r=[...t,...s],o=[];s.forEach(i=>{i.connections.forEach(n=>{let p=t.find(u=>u.name===n||u.name.toLowerCase()===n.toLowerCase());p&&o.push({from:i,to:p})})}),h.innerHTML="";let d=document.createElementNS("http://www.w3.org/2000/svg","defs");d.innerHTML=`
     <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
       <polygon points="0 0, 10 3.5, 0 7" fill="#4d4d7a" />
     </marker>
-  `,h.appendChild(d),o.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","path"),p=(i.from.x+i.to.x)/2,u=`M ${i.from.x} ${i.from.y} Q ${p} ${(i.from.y+i.to.y)/2} ${i.to.x} ${i.to.y}`;n.setAttribute("d",u),n.setAttribute("class","graph-edge"),n.setAttribute("data-from",i.from.id),n.setAttribute("data-to",i.to.id),h.appendChild(n)}),s.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","g");n.setAttribute("class",`graph-node graph-node--${i.type}`),n.setAttribute("data-id",i.id),n.setAttribute("transform",`translate(${i.x}, ${i.y})`);let p=document.createElementNS("http://www.w3.org/2000/svg","circle");p.setAttribute("r",i.type==="mcp"?"20":"16"),p.setAttribute("cx","0"),p.setAttribute("cy","0");let u=document.createElementNS("http://www.w3.org/2000/svg","text");u.setAttribute("dy","4"),u.textContent=i.name.length>8?i.name.substring(0,7)+"...":i.name,n.appendChild(p),n.appendChild(u),n.addEventListener("mouseenter",R=>X(R,i)),n.addEventListener("mouseleave",Q),n.addEventListener("click",()=>K(i,o)),h.appendChild(n)});let c=document.createElementNS("http://www.w3.org/2000/svg","text");c.setAttribute("x","150"),c.setAttribute("y","25"),c.setAttribute("text-anchor","middle"),c.setAttribute("fill","#22d3ee"),c.setAttribute("font-size","14"),c.setAttribute("font-weight","600"),c.textContent="MCP TOOLS",h.appendChild(c);let l=document.createElementNS("http://www.w3.org/2000/svg","text");l.setAttribute("x",String(e-150)),l.setAttribute("y","25"),l.setAttribute("text-anchor","middle"),l.setAttribute("fill","#a855f7"),l.setAttribute("font-size","14"),l.setAttribute("font-weight","600"),l.textContent="SKILLS",h.appendChild(l)}function X(e,a){let t=F.find(c=>c.id===a.id);if(!t)return;let r=`<div class="graph-tooltip__type">${a.type.toUpperCase()}</div>`;r+=`<div class="graph-tooltip__title">${t.name}</div>`,r+=`<div>${t.summary}</div>`,t.requiredMcp&&t.requiredMcp.length>0&&(r+=`<div class="graph-tooltip__deps">Requires: ${t.requiredMcp.join(", ")}</div>`),y.innerHTML=r,y.classList.add("is-visible");let s=E.getBoundingClientRect(),o=e.clientX-s.left+10,d=e.clientY-s.top+10;y.style.left=`${o}px`,y.style.top=`${d}px`}function Q(){y.classList.remove("is-visible")}function K(e,a){document.querySelectorAll(".graph-node").forEach(r=>r.classList.remove("is-highlighted")),document.querySelectorAll(".graph-edge").forEach(r=>r.classList.remove("is-highlighted"));let t=document.querySelector(`[data-id="${e.id}"]`);t==null||t.classList.add("is-highlighted"),a.forEach(r=>{if(r.from.id===e.id||r.to.id===e.id){let s=document.querySelector(`[data-from="${r.from.id}"][data-to="${r.to.id}"]`);s==null||s.classList.add("is-highlighted");let o=r.from.id===e.id?r.to.id:r.from.id,d=document.querySelector(`[data-id="${o}"]`);d==null||d.classList.add("is-highlighted")}})}document.addEventListener("DOMContentLoaded",()=>{N(),C(),S==null||S.addEventListener("click",B),f==null||f.addEventListener("click",q),m==null||m.addEventListener("input",e=>{g=e.target.value.toLowerCase(),C()}),document.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&e.key==="k"&&(e.preventDefault(),m==null||m.focus()),e.key==="Escape"&&(q(),m==null||m.blur())}),T.forEach(e=>{e.addEventListener("click",()=>{T.forEach(a=>a.classList.remove("is-active")),e.classList.add("is-active"),_=e.dataset.filter,C()})}),W.forEach(e=>{e.addEventListener("click",()=>{V(e.dataset.view)})}),b==null||b.addEventListener("click",e=>{e.target.closest(".sidebar__link")&&q()}),window.addEventListener("resize",()=>{$==="graph"&&G()})});})();
+  `,h.appendChild(d),o.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","path"),p=(i.from.x+i.to.x)/2,u=`M ${i.from.x} ${i.from.y} Q ${p} ${(i.from.y+i.to.y)/2} ${i.to.x} ${i.to.y}`;n.setAttribute("d",u),n.setAttribute("class","graph-edge"),n.setAttribute("data-from",i.from.id),n.setAttribute("data-to",i.to.id),h.appendChild(n)}),r.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","g");n.setAttribute("class",`graph-node graph-node--${i.type}`),n.setAttribute("data-id",i.id),n.setAttribute("transform",`translate(${i.x}, ${i.y})`);let p=document.createElementNS("http://www.w3.org/2000/svg","circle");p.setAttribute("r",i.type==="mcp"?"20":"16"),p.setAttribute("cx","0"),p.setAttribute("cy","0");let u=document.createElementNS("http://www.w3.org/2000/svg","text");u.setAttribute("dy","4"),u.textContent=i.name.length>8?i.name.substring(0,7)+"...":i.name,n.appendChild(p),n.appendChild(u),n.addEventListener("mouseenter",W=>X(W,i)),n.addEventListener("mouseleave",Q),n.addEventListener("click",()=>K(i,o)),h.appendChild(n)});let c=document.createElementNS("http://www.w3.org/2000/svg","text");c.setAttribute("x","150"),c.setAttribute("y","25"),c.setAttribute("text-anchor","middle"),c.setAttribute("fill","#22d3ee"),c.setAttribute("font-size","14"),c.setAttribute("font-weight","600"),c.textContent="MCP TOOLS",h.appendChild(c);let l=document.createElementNS("http://www.w3.org/2000/svg","text");l.setAttribute("x",String(e-150)),l.setAttribute("y","25"),l.setAttribute("text-anchor","middle"),l.setAttribute("fill","#a855f7"),l.setAttribute("font-size","14"),l.setAttribute("font-weight","600"),l.textContent="SKILLS",h.appendChild(l)}function X(e,a){let t=R.find(c=>c.id===a.id);if(!t)return;let s=`<div class="graph-tooltip__type">${a.type.toUpperCase()}</div>`;s+=`<div class="graph-tooltip__title">${t.name}</div>`,s+=`<div>${t.summary}</div>`,t.requiredMcp&&t.requiredMcp.length>0&&(s+=`<div class="graph-tooltip__deps">Requires: ${t.requiredMcp.join(", ")}</div>`),y.innerHTML=s,y.classList.add("is-visible");let r=L.getBoundingClientRect(),o=e.clientX-r.left+10,d=e.clientY-r.top+10;y.style.left=`${o}px`,y.style.top=`${d}px`}function Q(){y.classList.remove("is-visible")}function K(e,a){document.querySelectorAll(".graph-node").forEach(s=>s.classList.remove("is-highlighted")),document.querySelectorAll(".graph-edge").forEach(s=>s.classList.remove("is-highlighted"));let t=document.querySelector(`[data-id="${e.id}"]`);t==null||t.classList.add("is-highlighted"),a.forEach(s=>{if(s.from.id===e.id||s.to.id===e.id){let r=document.querySelector(`[data-from="${s.from.id}"][data-to="${s.to.id}"]`);r==null||r.classList.add("is-highlighted");let o=s.from.id===e.id?s.to.id:s.from.id,d=document.querySelector(`[data-id="${o}"]`);d==null||d.classList.add("is-highlighted")}})}document.addEventListener("DOMContentLoaded",()=>{O(),C(),q==null||q.addEventListener("click",B),f==null||f.addEventListener("click",S),m==null||m.addEventListener("input",e=>{g=e.target.value.toLowerCase(),C()}),document.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&e.key==="k"&&(e.preventDefault(),m==null||m.focus()),e.key==="Escape"&&(S(),m==null||m.blur())}),E.forEach(e=>{e.addEventListener("click",()=>{E.forEach(a=>a.classList.remove("is-active")),e.classList.add("is-active"),_=e.dataset.filter,C()})}),F.forEach(e=>{e.addEventListener("click",()=>{U(e.dataset.view)})}),b==null||b.addEventListener("click",e=>{e.target.closest(".sidebar__link")&&S()}),window.addEventListener("resize",()=>{G==="graph"&&D()})});})();

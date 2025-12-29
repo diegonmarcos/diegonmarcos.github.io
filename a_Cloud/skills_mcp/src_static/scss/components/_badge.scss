@@ -1,0 +1,48 @@
+// ============================================
+// BADGE COMPONENT
+// ============================================
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  &--mcp {
+    background: rgba($color-type-mcp, 0.15);
+    color: $color-type-mcp;
+    border: 1px solid rgba($color-type-mcp, 0.3);
+  }
+
+  &--skill {
+    background: rgba($color-type-skill, 0.15);
+    color: $color-type-skill;
+    border: 1px solid rgba($color-type-skill, 0.3);
+  }
+
+  &--required {
+    background: rgba($color-accent-orange, 0.15);
+    color: $color-accent-orange;
+    border: 1px solid rgba($color-accent-orange, 0.3);
+  }
+
+  &--optional {
+    background: rgba($color-text-muted, 0.15);
+    color: $color-text-muted;
+    border: 1px solid rgba($color-text-muted, 0.3);
+  }
+
+  &--new {
+    background: rgba($color-accent-green, 0.15);
+    color: $color-accent-green;
+    border: 1px solid rgba($color-accent-green, 0.3);
+  }
+}
+
+// Tag list
+.tags {
+  @include flex-row(flex-start, center, $spacing-xs);
+  flex-wrap: wrap;
+}

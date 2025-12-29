@@ -668,6 +668,16 @@ jobs:
             echo "⏭️  Skipping Skills & MCP Docs copy (no dist directory found)"
           fi
 
+          # Copy Astro Life build (if dist exists - Nuxt static single-file)
+          if [ -d "b_Linktree/astro_life/dist" ]; then
+            echo "📦 Copying Astro Life build..."
+            mkdir -p _site/astro_life
+            cp -rL b_Linktree/astro_life/dist/* _site/astro_life/ 2>/dev/null || cp -r b_Linktree/astro_life/dist/* _site/astro_life/
+            echo "✅ Astro Life build copied to _site/astro_life/"
+          else
+            echo "⏭️  Skipping Astro Life copy (no dist directory found)"
+          fi
+
           echo "✅ All files prepared for deployment"
 
           # Remove any broken symlinks that could cause tar to fail

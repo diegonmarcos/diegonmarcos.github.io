@@ -778,104 +778,281 @@ const officialSkills: Endpoint[] = [
 ];
 
 // ============================================
-// Data - Community/Popular Skills
+// Data - Community Skills (Diego's Custom Agents)
 // ============================================
 const communitySkills: Endpoint[] = [
+  // === ENGINEERING ===
   {
-    id: 'skill-playwright',
+    id: 'agent-frontend-dev',
     type: 'skill',
-    name: 'Playwright Automation',
-    path: 'playwright-skill',
-    summary: 'Browser automation',
-    description: 'General-purpose browser automation using Playwright. Navigate, interact, screenshot, and scrape web pages.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Bash', 'Write', 'mcp__playwright'],
-    example: `"Use Playwright to scrape product prices from this e-commerce site"
-
-"Automate filling out this form and submitting it"
-
-"Take screenshots of our app at different viewport sizes"`
+    name: 'Frontend Developer',
+    path: 'frontend-developer',
+    summary: 'UI/UX implementation specialist',
+    description: 'Specialized agent for building user-facing code and interfaces. React, Vue, Svelte expertise. Focuses on component architecture, state management, and responsive design.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Edit', 'Glob', 'Grep', 'Bash']
   },
   {
-    id: 'skill-ios-simulator',
+    id: 'agent-backend-arch',
     type: 'skill',
-    name: 'iOS Simulator',
-    path: 'ios-simulator-skill',
-    summary: 'iOS app testing',
-    description: 'Build and test iOS applications through simulator automation. Launch apps, interact with UI, capture screenshots.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Bash', 'Write', 'Read'],
-    example: `"Build and run the app in iOS Simulator"
-
-"Test the onboarding flow on iPhone 15 Pro simulator"
-
-"Capture screenshots of all screens for App Store submission"`
+    name: 'Backend Architect',
+    path: 'backend-architect',
+    summary: 'Server-side & system design',
+    description: 'Handles server-side logic, API design, and system infrastructure. Database modeling, microservices, and scalability patterns.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Edit', 'Bash', 'Grep']
   },
   {
-    id: 'skill-d3js',
+    id: 'agent-mobile-builder',
     type: 'skill',
-    name: 'D3.js Visualizations',
-    path: 'claude-d3js-skill',
-    summary: 'Data visualizations',
-    description: 'Create interactive data visualizations using D3.js. Charts, graphs, maps, and custom visual representations.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Write', 'Read'],
-    example: `"Create an interactive bar chart showing monthly sales"
-
-"Build a force-directed graph of our team structure"
-
-"Visualize geographic data on an interactive map"`
+    name: 'Mobile App Builder',
+    path: 'mobile-app-builder',
+    summary: 'iOS/Android development',
+    description: 'Specialized in iOS/Android application development. Swift, Kotlin, React Native, Flutter. App Store optimization and mobile-specific UX.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Edit', 'Bash']
   },
   {
-    id: 'skill-scientific',
+    id: 'agent-ai-engineer',
     type: 'skill',
-    name: 'Scientific Computing',
-    path: 'claude-scientific-skills',
-    summary: 'Scientific libraries',
-    description: 'Scientific computing with NumPy, Pandas, SciPy, and database integration. Data analysis and research workflows.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Bash', 'Write', 'Read'],
-    example: `"Analyze this CSV with statistical methods"
-
-"Run regression analysis on the experimental data"
-
-"Process and visualize the research dataset"`
+    name: 'AI Engineer',
+    path: 'ai-engineer',
+    summary: 'ML models & AI integration',
+    description: 'Manages machine learning models and AI integration. Prompt engineering, model fine-tuning, RAG pipelines, and AI workflow automation.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Bash', 'WebSearch', 'WebFetch']
   },
   {
-    id: 'skill-web-assets',
+    id: 'agent-devops',
     type: 'skill',
-    name: 'Web Asset Generator',
-    path: 'web-asset-generator',
-    summary: 'Generate web assets',
-    description: 'Generate favicons, app icons, social media images, and other web assets at all required sizes.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Write', 'Bash'],
-    example: `"Generate all favicon sizes from our logo"
-
-"Create Open Graph images for each blog post"
-
-"Generate PWA icons at all required dimensions"`
+    name: 'DevOps Automator',
+    path: 'devops-automator',
+    summary: 'CI/CD & infrastructure',
+    description: 'Focuses on deployment pipelines, workflow automation, Docker, Kubernetes, and infrastructure as code.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Bash', 'Read', 'Write', 'Edit']
   },
   {
-    id: 'skill-ffuf',
+    id: 'agent-prototyper',
     type: 'skill',
-    name: 'FFUF Web Fuzzing',
-    path: 'ffuf-web-fuzzing',
-    summary: 'Security testing',
-    description: 'Web fuzzing and penetration testing guidance using FFUF. Directory discovery, parameter fuzzing, authenticated testing.',
-    category: 'Community Skills',
-    source: 'community',
-    requiredMcp: ['Bash', 'Read', 'Write'],
-    example: `"Fuzz the API endpoints for hidden parameters"
+    name: 'Rapid Prototyper',
+    path: 'rapid-prototyper',
+    summary: 'Quick MVPs & POCs',
+    description: 'Designed for building quick MVPs and proof-of-concepts. Fast iteration, minimal viable features, rapid validation.',
+    category: 'Engineering Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Bash', 'Read']
+  },
 
-"Discover hidden directories on the target application"
+  // === PRODUCT ===
+  {
+    id: 'agent-trend-research',
+    type: 'skill',
+    name: 'Trend Researcher',
+    path: 'trend-researcher',
+    summary: 'Market & industry analysis',
+    description: 'Analyzes market shifts and industry movements. Competitive intelligence, emerging technology tracking, and opportunity identification.',
+    category: 'Product Agents',
+    source: 'community/diego',
+    requiredMcp: ['WebSearch', 'WebFetch', 'Read', 'Write']
+  },
+  {
+    id: 'agent-feedback-synth',
+    type: 'skill',
+    name: 'Feedback Synthesizer',
+    path: 'feedback-synthesizer',
+    summary: 'User data interpretation',
+    description: 'Aggregates and interprets user reviews, feedback data, and behavioral metrics. Sentiment analysis and actionable insights.',
+    category: 'Product Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Grep']
+  },
+  {
+    id: 'agent-sprint-prior',
+    type: 'skill',
+    name: 'Sprint Prioritizer',
+    path: 'sprint-prioritizer',
+    summary: 'Roadmap & task management',
+    description: 'Manages the product roadmap and task urgency. Sprint planning, backlog grooming, and priority frameworks.',
+    category: 'Product Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'TodoWrite']
+  },
 
-"Test for authentication bypass vulnerabilities"`
+  // === MARKETING ===
+  {
+    id: 'agent-tiktok',
+    type: 'skill',
+    name: 'TikTok Strategist',
+    path: 'tiktok-strategist',
+    summary: 'Short-form video strategy',
+    description: 'Short-form video strategy and trends. Viral hooks, trend analysis, and content calendar for TikTok.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['WebSearch', 'Write', 'Read']
+  },
+  {
+    id: 'agent-instagram',
+    type: 'skill',
+    name: 'Instagram Curator',
+    path: 'instagram-curator',
+    summary: 'Visual branding & aesthetics',
+    description: 'Visual branding and aesthetic feed management. Grid planning, story strategy, and engagement optimization.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Read', 'WebSearch']
+  },
+  {
+    id: 'agent-twitter',
+    type: 'skill',
+    name: 'Twitter Engager',
+    path: 'twitter-engager',
+    summary: 'Real-time community & threads',
+    description: 'Focuses on real-time community interaction and threads. Trend hijacking, engagement tactics, and viral tweet patterns.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'WebSearch', 'Read']
+  },
+  {
+    id: 'agent-reddit',
+    type: 'skill',
+    name: 'Reddit Community Builder',
+    path: 'reddit-community-builder',
+    summary: 'Subreddit & organic growth',
+    description: 'Navigates niche subreddits and organic growth. Community rules awareness, authentic engagement, and karma building.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['WebSearch', 'WebFetch', 'Write']
+  },
+  {
+    id: 'agent-aso',
+    type: 'skill',
+    name: 'App Store Optimizer',
+    path: 'app-store-optimizer',
+    summary: 'ASO & marketplace visibility',
+    description: 'Focuses on ASO and visibility in app marketplaces. Keyword optimization, screenshot design, and review management.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['WebSearch', 'Write', 'Read']
+  },
+  {
+    id: 'agent-content',
+    type: 'skill',
+    name: 'Content Creator',
+    path: 'content-creator',
+    summary: 'Copywriting & asset production',
+    description: 'General copywriting and asset production. Blog posts, landing pages, email campaigns, and marketing collateral.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Read', 'WebSearch']
+  },
+  {
+    id: 'agent-growth',
+    type: 'skill',
+    name: 'Growth Hacker',
+    path: 'growth-hacker',
+    summary: 'Viral loops & user acquisition',
+    description: 'Specialized in viral loops and rapid user acquisition. A/B testing frameworks, referral programs, and growth experiments.',
+    category: 'Marketing Agents',
+    source: 'community/diego',
+    requiredMcp: ['WebSearch', 'Write', 'Read', 'Bash']
+  },
+
+  // === DESIGN ===
+  {
+    id: 'agent-ui-designer',
+    type: 'skill',
+    name: 'UI Designer',
+    path: 'ui-designer',
+    summary: 'Visual interface & layout',
+    description: 'Focuses on the visual interface and layout. Component libraries, design systems, and pixel-perfect implementation.',
+    category: 'Design Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Read', 'Glob']
+  },
+  {
+    id: 'agent-ux-researcher',
+    type: 'skill',
+    name: 'UX Researcher',
+    path: 'ux-researcher',
+    summary: 'User journeys & pain points',
+    description: 'Analyzes user journeys and pain points. Usability testing, heuristic evaluation, and user interview synthesis.',
+    category: 'Design Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'WebSearch']
+  },
+  {
+    id: 'agent-brand-guardian',
+    type: 'skill',
+    name: 'Brand Guardian',
+    path: 'brand-guardian',
+    summary: 'Voice, colors & consistency',
+    description: 'Ensures consistency in voice, colors, and logos. Brand guidelines enforcement and style guide maintenance.',
+    category: 'Design Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Glob']
+  },
+  {
+    id: 'agent-visual-story',
+    type: 'skill',
+    name: 'Visual Storyteller',
+    path: 'visual-storyteller',
+    summary: 'Narrative-driven graphics',
+    description: 'Creates narrative-driven graphic content. Infographics, presentations, and visual communication.',
+    category: 'Design Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Read']
+  },
+  {
+    id: 'agent-whimsy',
+    type: 'skill',
+    name: 'Whimsy Injector',
+    path: 'whimsy-injector',
+    summary: 'Delight & easter eggs',
+    description: 'Adds personality, easter eggs, and "delight" features to the product. Micro-interactions, loading states, and surprise moments.',
+    category: 'Design Agents',
+    source: 'community/diego',
+    requiredMcp: ['Write', 'Read', 'Edit']
+  },
+
+  // === PROJECT MANAGEMENT ===
+  {
+    id: 'agent-experiment',
+    type: 'skill',
+    name: 'Experiment Tracker',
+    path: 'experiment-tracker',
+    summary: 'A/B tests & data trials',
+    description: 'Monitors A/B tests and data-driven trials. Experiment design, statistical significance, and result documentation.',
+    category: 'Project Management Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'Grep']
+  },
+  {
+    id: 'agent-shipper',
+    type: 'skill',
+    name: 'Project Shipper',
+    path: 'project-shipper',
+    summary: 'Deadlines & delivery',
+    description: 'Focused on meeting deadlines and final delivery. Release checklists, blocker resolution, and launch coordination.',
+    category: 'Project Management Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'TodoWrite', 'Bash']
+  },
+  {
+    id: 'agent-producer',
+    type: 'skill',
+    name: 'Studio Producer',
+    path: 'studio-producer',
+    summary: 'Multi-disciplinary coordination',
+    description: 'High-level coordination of multi-disciplinary creative tasks. Resource allocation, timeline management, and stakeholder communication.',
+    category: 'Project Management Agents',
+    source: 'community/diego',
+    requiredMcp: ['Read', 'Write', 'TodoWrite', 'Task']
   }
 ];
 
@@ -1030,21 +1207,33 @@ function renderSidebarNav(): void {
 
   let html = `
     <div class="sidebar__section">
-      <div class="sidebar__section-title">MCP Tools</div>
-      ${mcpCategories.map(cat => `
-        <a href="#section-${slugify(cat)}" class="sidebar__link">${cat}</a>
-      `).join('')}
-    </div>
-    <div class="sidebar__section">
-      <div class="sidebar__section-title">Official Skills</div>
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--skill">S</span>
+        Official Skills
+      </div>
+      <div class="sidebar__subtitle">Anthropic</div>
       ${officialSkillCategories.map(cat => `
-        <a href="#section-${slugify(cat)}" class="sidebar__link">${cat}</a>
+        <a href="#section-${slugify(cat)}" class="sidebar__link sidebar__link--skill">${cat}</a>
       `).join('')}
     </div>
     <div class="sidebar__section">
-      <div class="sidebar__section-title">Community Skills</div>
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--community">C</span>
+        Community Skills
+      </div>
+      <div class="sidebar__subtitle">Custom Agents</div>
       ${communitySkillCategories.map(cat => `
-        <a href="#section-${slugify(cat)}" class="sidebar__link">${cat}</a>
+        <a href="#section-${slugify(cat)}" class="sidebar__link sidebar__link--community">${cat}</a>
+      `).join('')}
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--mcp">T</span>
+        MCP Tools
+      </div>
+      <div class="sidebar__subtitle">Built-in Capabilities</div>
+      ${mcpCategories.map(cat => `
+        <a href="#section-${slugify(cat)}" class="sidebar__link sidebar__link--mcp">${cat}</a>
       `).join('')}
     </div>
   `;
@@ -1137,38 +1326,66 @@ function switchView(view: 'list' | 'graph'): void {
   }
 }
 
+// Force simulation state
+let simulation: any = null;
+let transform = { x: 0, y: 0, k: 1 };
+
 function renderGraph(): void {
   const width = graphSvg.clientWidth || 900;
-  const height = graphSvg.clientHeight || 500;
+  const height = graphSvg.clientHeight || 600;
+  const centerX = width / 2;
+  const centerY = height / 2;
 
-  // Build nodes
-  const mcpNodes: GraphNode[] = mcpTools.map((tool, i) => ({
-    id: tool.id,
-    name: tool.name,
-    type: 'mcp' as const,
-    x: 150,
-    y: 50 + (i * (height - 100) / mcpTools.length),
-    connections: []
-  }));
+  // Build nodes with initial positions in a circular layout
+  const mcpNodes: GraphNode[] = mcpTools.map((tool, i) => {
+    const angle = (i / mcpTools.length) * Math.PI * 2;
+    const radius = 120;
+    return {
+      id: tool.id,
+      name: tool.name,
+      type: 'mcp' as const,
+      x: centerX + Math.cos(angle) * radius,
+      y: centerY + Math.sin(angle) * radius,
+      connections: [],
+      vx: 0,
+      vy: 0,
+      fx: null,
+      fy: null
+    };
+  });
 
-  const skillNodes: GraphNode[] = [...officialSkills, ...communitySkills].map((skill, i) => ({
-    id: skill.id,
-    name: skill.name,
-    type: 'skill' as const,
-    x: width - 150,
-    y: 50 + (i * (height - 100) / (officialSkills.length + communitySkills.length)),
-    connections: skill.requiredMcp || []
-  }));
+  const allSkills = [...officialSkills, ...communitySkills];
+  const skillNodes: GraphNode[] = allSkills.map((skill, i) => {
+    const angle = (i / allSkills.length) * Math.PI * 2 + Math.PI / 4;
+    const radius = 280 + Math.random() * 80;
+    return {
+      id: skill.id,
+      name: skill.name,
+      type: 'skill' as const,
+      x: centerX + Math.cos(angle) * radius,
+      y: centerY + Math.sin(angle) * radius,
+      connections: skill.requiredMcp || [],
+      vx: 0,
+      vy: 0,
+      fx: null,
+      fy: null,
+      isOfficial: officialSkills.includes(skill)
+    };
+  });
 
   const allNodes = [...mcpNodes, ...skillNodes];
 
   // Build edges
-  const edges: { from: GraphNode; to: GraphNode }[] = [];
+  interface Edge { from: GraphNode; to: GraphNode; strength: number }
+  const edges: Edge[] = [];
   skillNodes.forEach(skill => {
     skill.connections.forEach(mcpName => {
-      const mcpNode = mcpNodes.find(m => m.name === mcpName || m.name.toLowerCase() === mcpName.toLowerCase());
+      const mcpNode = mcpNodes.find(m =>
+        m.name === mcpName ||
+        m.name.toLowerCase() === mcpName.toLowerCase()
+      );
       if (mcpNode) {
-        edges.push({ from: skill, to: mcpNode });
+        edges.push({ from: skill, to: mcpNode, strength: 0.3 });
       }
     });
   });
@@ -1176,74 +1393,242 @@ function renderGraph(): void {
   // Clear SVG
   graphSvg.innerHTML = '';
 
-  // Create defs for arrow markers
+  // Create container group for zoom/pan
+  const container = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  container.setAttribute('class', 'graph-container-inner');
+  graphSvg.appendChild(container);
+
+  // Create defs for gradients and filters
   const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
   defs.innerHTML = `
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#4d4d7a" />
-    </marker>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="mcp-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </radialGradient>
+    <radialGradient id="skill-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </radialGradient>
+    <radialGradient id="community-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </radialGradient>
   `;
   graphSvg.appendChild(defs);
 
-  // Draw edges
+  // Draw edges first (behind nodes)
+  const edgeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  edgeGroup.setAttribute('class', 'graph-edges');
+  container.appendChild(edgeGroup);
+
+  const edgeElements: SVGPathElement[] = [];
   edges.forEach(edge => {
     const line = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    const midX = (edge.from.x + edge.to.x) / 2;
-    const d = `M ${edge.from.x} ${edge.from.y} Q ${midX} ${(edge.from.y + edge.to.y) / 2} ${edge.to.x} ${edge.to.y}`;
-    line.setAttribute('d', d);
     line.setAttribute('class', 'graph-edge');
     line.setAttribute('data-from', edge.from.id);
     line.setAttribute('data-to', edge.to.id);
-    graphSvg.appendChild(line);
+    line.setAttribute('fill', 'none');
+    line.setAttribute('stroke', 'rgba(148, 163, 184, 0.15)');
+    line.setAttribute('stroke-width', '1');
+    edgeGroup.appendChild(line);
+    edgeElements.push(line);
   });
 
   // Draw nodes
+  const nodeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+  nodeGroup.setAttribute('class', 'graph-nodes');
+  container.appendChild(nodeGroup);
+
+  const nodeElements: Map<string, SVGGElement> = new Map();
   allNodes.forEach(node => {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    g.setAttribute('class', `graph-node graph-node--${node.type}`);
+    const isOfficial = (node as any).isOfficial !== false;
+    const nodeClass = node.type === 'mcp' ? 'graph-node--mcp' :
+                      (isOfficial ? 'graph-node--skill' : 'graph-node--community');
+    g.setAttribute('class', `graph-node ${nodeClass}`);
     g.setAttribute('data-id', node.id);
-    g.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+    g.style.cursor = 'pointer';
 
+    // Node circle
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('r', node.type === 'mcp' ? '20' : '16');
+    const radius = node.type === 'mcp' ? 24 : 18;
+    circle.setAttribute('r', String(radius));
     circle.setAttribute('cx', '0');
     circle.setAttribute('cy', '0');
 
+    if (node.type === 'mcp') {
+      circle.setAttribute('fill', 'url(#mcp-gradient)');
+    } else if (isOfficial) {
+      circle.setAttribute('fill', 'url(#skill-gradient)');
+    } else {
+      circle.setAttribute('fill', 'url(#community-gradient)');
+    }
+    circle.setAttribute('filter', 'url(#glow)');
+
+    // Node label
     const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    text.setAttribute('dy', '4');
-    text.textContent = node.name.length > 8 ? node.name.substring(0, 7) + '...' : node.name;
+    text.setAttribute('y', String(radius + 14));
+    text.setAttribute('text-anchor', 'middle');
+    text.setAttribute('fill', '#e2e8f0');
+    text.setAttribute('font-size', '10');
+    text.setAttribute('font-weight', '500');
+    text.textContent = node.name.length > 12 ? node.name.substring(0, 11) + '…' : node.name;
 
     g.appendChild(circle);
     g.appendChild(text);
 
-    // Hover events
+    // Events
     g.addEventListener('mouseenter', (e) => showTooltip(e, node));
     g.addEventListener('mouseleave', hideTooltip);
     g.addEventListener('click', () => highlightConnections(node, edges));
 
-    graphSvg.appendChild(g);
+    // Dragging
+    let isDragging = false;
+    g.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      (node as any).fx = node.x;
+      (node as any).fy = node.y;
+      e.stopPropagation();
+    });
+
+    nodeGroup.appendChild(g);
+    nodeElements.set(node.id, g);
   });
 
-  // Add labels
-  const mcpLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  mcpLabel.setAttribute('x', '150');
-  mcpLabel.setAttribute('y', '25');
-  mcpLabel.setAttribute('text-anchor', 'middle');
-  mcpLabel.setAttribute('fill', '#22d3ee');
-  mcpLabel.setAttribute('font-size', '14');
-  mcpLabel.setAttribute('font-weight', '600');
-  mcpLabel.textContent = 'MCP TOOLS';
-  graphSvg.appendChild(mcpLabel);
+  // Mouse move for dragging
+  graphSvg.addEventListener('mousemove', (e) => {
+    const rect = graphSvg.getBoundingClientRect();
+    const mouseX = (e.clientX - rect.left - transform.x) / transform.k;
+    const mouseY = (e.clientY - rect.top - transform.y) / transform.k;
 
-  const skillLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-  skillLabel.setAttribute('x', String(width - 150));
-  skillLabel.setAttribute('y', '25');
-  skillLabel.setAttribute('text-anchor', 'middle');
-  skillLabel.setAttribute('fill', '#a855f7');
-  skillLabel.setAttribute('font-size', '14');
-  skillLabel.setAttribute('font-weight', '600');
-  skillLabel.textContent = 'SKILLS';
-  graphSvg.appendChild(skillLabel);
+    allNodes.forEach(node => {
+      if ((node as any).fx !== null) {
+        node.x = mouseX;
+        node.y = mouseY;
+        (node as any).fx = mouseX;
+        (node as any).fy = mouseY;
+      }
+    });
+  });
+
+  graphSvg.addEventListener('mouseup', () => {
+    allNodes.forEach(node => {
+      (node as any).fx = null;
+      (node as any).fy = null;
+    });
+  });
+
+  // Zoom and pan
+  let isPanning = false;
+  let startX = 0, startY = 0;
+
+  graphSvg.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+    transform.k = Math.max(0.3, Math.min(3, transform.k * delta));
+    container.setAttribute('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
+  });
+
+  graphSvg.addEventListener('mousedown', (e) => {
+    if (e.target === graphSvg || (e.target as Element).classList.contains('graph-container-inner')) {
+      isPanning = true;
+      startX = e.clientX - transform.x;
+      startY = e.clientY - transform.y;
+    }
+  });
+
+  graphSvg.addEventListener('mousemove', (e) => {
+    if (isPanning) {
+      transform.x = e.clientX - startX;
+      transform.y = e.clientY - startY;
+      container.setAttribute('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.k})`);
+    }
+  });
+
+  graphSvg.addEventListener('mouseup', () => { isPanning = false; });
+  graphSvg.addEventListener('mouseleave', () => { isPanning = false; });
+
+  // Simple force simulation
+  function tick() {
+    // Apply forces
+    allNodes.forEach(node => {
+      if ((node as any).fx !== null) return;
+
+      // Center gravity
+      const dx = centerX - node.x;
+      const dy = centerY - node.y;
+      node.x += dx * 0.001;
+      node.y += dy * 0.001;
+
+      // Node repulsion
+      allNodes.forEach(other => {
+        if (node === other) return;
+        const ddx = node.x - other.x;
+        const ddy = node.y - other.y;
+        const dist = Math.sqrt(ddx * ddx + ddy * ddy) || 1;
+        const minDist = node.type === 'mcp' ? 80 : 60;
+        if (dist < minDist) {
+          const force = (minDist - dist) / dist * 0.5;
+          node.x += ddx * force;
+          node.y += ddy * force;
+        }
+      });
+    });
+
+    // Edge attraction
+    edges.forEach(edge => {
+      const dx = edge.to.x - edge.from.x;
+      const dy = edge.to.y - edge.from.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const targetDist = 180;
+      const force = (dist - targetDist) / dist * 0.02;
+
+      if ((edge.from as any).fx === null) {
+        edge.from.x += dx * force;
+        edge.from.y += dy * force;
+      }
+      if ((edge.to as any).fx === null) {
+        edge.to.x -= dx * force * 0.2;
+        edge.to.y -= dy * force * 0.2;
+      }
+    });
+
+    // Update positions
+    allNodes.forEach(node => {
+      const g = nodeElements.get(node.id);
+      if (g) {
+        g.setAttribute('transform', `translate(${node.x}, ${node.y})`);
+      }
+    });
+
+    // Update edges
+    edges.forEach((edge, i) => {
+      const line = edgeElements[i];
+      const dx = edge.to.x - edge.from.x;
+      const dy = edge.to.y - edge.from.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const midX = (edge.from.x + edge.to.x) / 2;
+      const midY = (edge.from.y + edge.to.y) / 2;
+      const offset = Math.min(30, dist * 0.1);
+      const perpX = -dy / dist * offset;
+      const perpY = dx / dist * offset;
+
+      line.setAttribute('d',
+        `M ${edge.from.x} ${edge.from.y} Q ${midX + perpX} ${midY + perpY} ${edge.to.x} ${edge.to.y}`
+      );
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  tick();
 }
 
 function showTooltip(e: MouseEvent, node: GraphNode): void {
@@ -1272,24 +1657,52 @@ function hideTooltip(): void {
   graphTooltip.classList.remove('is-visible');
 }
 
-function highlightConnections(node: GraphNode, edges: { from: GraphNode; to: GraphNode }[]): void {
+function highlightConnections(node: GraphNode, edges: { from: GraphNode; to: GraphNode; strength?: number }[]): void {
   // Reset all
-  document.querySelectorAll('.graph-node').forEach(n => n.classList.remove('is-highlighted'));
-  document.querySelectorAll('.graph-edge').forEach(e => e.classList.remove('is-highlighted'));
+  document.querySelectorAll('.graph-node').forEach(n => {
+    n.classList.remove('is-highlighted', 'is-dimmed');
+  });
+  document.querySelectorAll('.graph-edge').forEach(e => {
+    e.classList.remove('is-highlighted');
+    (e as SVGElement).style.stroke = 'rgba(148, 163, 184, 0.15)';
+    (e as SVGElement).style.strokeWidth = '1';
+  });
+
+  // Find connected nodes
+  const connectedIds = new Set<string>();
+  connectedIds.add(node.id);
+
+  edges.forEach(edge => {
+    if (edge.from.id === node.id) {
+      connectedIds.add(edge.to.id);
+    } else if (edge.to.id === node.id) {
+      connectedIds.add(edge.from.id);
+    }
+  });
 
   // Highlight current node
   const currentNodeEl = document.querySelector(`[data-id="${node.id}"]`);
   currentNodeEl?.classList.add('is-highlighted');
 
-  // Highlight connected edges and nodes
+  // Dim non-connected nodes, highlight connected
+  document.querySelectorAll('.graph-node').forEach(n => {
+    const nodeId = n.getAttribute('data-id');
+    if (nodeId && !connectedIds.has(nodeId)) {
+      n.classList.add('is-dimmed');
+    } else if (nodeId && nodeId !== node.id) {
+      n.classList.add('is-highlighted');
+    }
+  });
+
+  // Highlight connected edges
   edges.forEach(edge => {
     if (edge.from.id === node.id || edge.to.id === node.id) {
-      const edgeEl = document.querySelector(`[data-from="${edge.from.id}"][data-to="${edge.to.id}"]`);
-      edgeEl?.classList.add('is-highlighted');
-
-      const connectedId = edge.from.id === node.id ? edge.to.id : edge.from.id;
-      const connectedNode = document.querySelector(`[data-id="${connectedId}"]`);
-      connectedNode?.classList.add('is-highlighted');
+      const edgeEl = document.querySelector(`[data-from="${edge.from.id}"][data-to="${edge.to.id}"]`) as SVGElement;
+      if (edgeEl) {
+        edgeEl.classList.add('is-highlighted');
+        edgeEl.style.stroke = node.type === 'mcp' ? '#22d3ee' : '#a855f7';
+        edgeEl.style.strokeWidth = '2';
+      }
     }
   });
 }

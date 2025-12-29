@@ -1,109 +1,839 @@
-// CloudFeed Page Styles
+// CloudFeed - Central Alert System Dashboard
 // =========================================
+
+// Priority colors
+$priority-critical: #dc2626;
+$priority-high: #ea580c;
+$priority-default: #3b82f6;
+$priority-low: #6b7280;
+
+// Status colors
+$status-online: #22c55e;
+$status-offline: #ef4444;
+$status-degraded: #f59e0b;
+
+// Service badge colors
+$svc-npm: #238636;
+$svc-authelia: #9333ea;
+$svc-docker: #2496ed;
+$svc-ssh: #6366f1;
+$svc-mailu: #f97316;
+$svc-sauron: #dc2626;
+$svc-system: #64748b;
 
 .cloudfeed {
   min-height: 100vh;
   @include flex-col(flex-start, stretch, 0);
+  padding-bottom: 2rem;
 
-  &__content {
+  &.central-alerts {
+    background: linear-gradient(180deg, $bg-primary 0%, darken($bg-primary, 2%) 100%);
+  }
+}
+
+// =========================================
+// Dashboard Header
+// =========================================
+.dashboard-header {
+  @include flex-row(space-between, center, 1rem);
+  flex-wrap: wrap;
+  padding: 1rem 1.5rem;
+  background: $bg-secondary;
+  border-bottom: 1px solid $border-default;
+}
+
+.dashboard-title {
+  @include flex-row(flex-start, center, 0.75rem);
+
+  h1 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: $text-primary;
+  }
+}
+
+.live-indicator {
+  @include flex-row(flex-start, center, 0.4rem);
+  padding: 0.25rem 0.6rem;
+  background: rgba($status-online, 0.15);
+  border: 1px solid rgba($status-online, 0.3);
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: $status-online;
+
+  .pulse {
+    width: 8px;
+    height: 8px;
+    background: $status-online;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  &.offline {
+    background: rgba($status-offline, 0.15);
+    border-color: rgba($status-offline, 0.3);
+    color: $status-offline;
+
+    .pulse {
+      background: $status-offline;
+      animation: none;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+.dashboard-controls {
+  @include flex-row(flex-end, center, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.time-filter {
+  padding: 0.4rem 0.75rem;
+  background: $bg-tertiary;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  color: $text-primary;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:hover { background: $bg-hover; }
+  &:focus { outline: none; border-color: $accent-blue; }
+}
+
+.refresh-btn {
+  @include flex-row(center, center, 0.4rem);
+  padding: 0.4rem 0.75rem;
+  background: $bg-tertiary;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  color: $text-secondary;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $bg-hover;
+    color: $text-primary;
+  }
+
+  &.loading #refresh-icon {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.last-update {
+  font-size: 0.7rem;
+  color: $text-tertiary;
+}
+
+// =========================================
+// Alert Counters
+// =========================================
+.alert-counters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1.5rem;
+
+  @media (max-width: $bp-md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: $bp-sm) {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
     padding: 1rem;
   }
 }
 
-.feed-header {
-  @include flex-row(space-between, center, 0.5rem);
-  margin-bottom: 1rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid $border-muted;
+.counter-card {
+  @include flex-col(center, center, 0.25rem);
+  padding: 1.25rem 1rem;
+  background: $bg-secondary;
+  border-radius: 12px;
+  border: 1px solid $border-default;
+  transition: all 0.2s;
 
-  .header-left {
-    @include flex-row(flex-start, baseline, 0.75rem);
-
-    h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin: 0;
-    }
-
-    .last-update {
-      font-size: 0.7rem;
-      color: $text-tertiary;
-    }
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  .header-right {
-    @include flex-row(flex-end, center, 0.5rem);
+  .counter-icon {
+    font-size: 1.5rem;
+    opacity: 0.8;
+  }
+
+  .counter-value {
+    font-size: 2rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .counter-label {
+    font-size: 0.75rem;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &.critical {
+    border-color: rgba($priority-critical, 0.4);
+    background: linear-gradient(135deg, $bg-secondary, rgba($priority-critical, 0.1));
+    .counter-icon, .counter-value { color: $priority-critical; }
+  }
+
+  &.high {
+    border-color: rgba($priority-high, 0.4);
+    background: linear-gradient(135deg, $bg-secondary, rgba($priority-high, 0.1));
+    .counter-icon, .counter-value { color: $priority-high; }
+  }
+
+  &.default {
+    border-color: rgba($priority-default, 0.4);
+    background: linear-gradient(135deg, $bg-secondary, rgba($priority-default, 0.1));
+    .counter-icon, .counter-value { color: $priority-default; }
+  }
+
+  &.total {
+    border-color: rgba($text-secondary, 0.3);
+    .counter-icon, .counter-value { color: $text-primary; }
   }
 }
 
-.section-title {
-  font-size: 1rem;
+// =========================================
+// Status Grid (VM & Services)
+// =========================================
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 0 1.5rem 1.5rem;
+
+  @media (max-width: $bp-md) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.status-section {
+  background: $bg-secondary;
+  border-radius: 12px;
+  border: 1px solid $border-default;
+  padding: 1rem;
+}
+
+.status-title {
+  font-size: 0.85rem;
   font-weight: 600;
+  color: $text-secondary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   margin-bottom: 0.75rem;
-  color: $text-primary;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid $border-muted;
+}
+
+.status-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+}
+
+.status-card {
   @include flex-row(flex-start, center, 0.5rem);
+  padding: 0.6rem 0.75rem;
+  background: $bg-tertiary;
+  border-radius: 8px;
+  border: 1px solid $border-muted;
+  font-size: 0.8rem;
 
-  .section-count {
-    padding: 0.15rem 0.5rem;
-    background: $bg-tertiary;
-    border-radius: 4px;
-    font-size: 0.7rem;
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+
+    &.online { background: $status-online; box-shadow: 0 0 6px $status-online; }
+    &.offline { background: $status-offline; }
+    &.degraded { background: $status-degraded; animation: pulse 2s infinite; }
+  }
+
+  .status-name {
     font-weight: 500;
-    color: $text-secondary;
-  }
-}
-
-.apps-section,
-.jornald-section {
-  margin-bottom: 1.5rem;
-}
-
-.channels-table-section {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid $border-muted;
-}
-
-// Message details (expanded)
-.message-details {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid $border-muted;
-
-  .tags {
-    @include flex-row(flex-start, center, 0.25rem);
-    flex-wrap: wrap;
-    margin-bottom: 0.3rem;
+    color: $text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .tag {
-    font-size: 0.5rem;
-    padding: 0.1rem 0.4rem;
-    background: $bg-tertiary;
-    border-radius: 4px;
-    color: $text-secondary;
-  }
-
-  .meta {
-    @include flex-row(flex-start, center, 0.5rem);
-    font-size: 0.5rem;
+  .status-meta {
+    margin-left: auto;
+    font-size: 0.65rem;
     color: $text-tertiary;
   }
 }
 
-// API mode placeholder
-.api-mode {
+// =========================================
+// Alert Categories & Filters
+// =========================================
+.alert-categories {
+  padding: 0 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.category-tabs {
+  @include flex-row(flex-start, center, 0.5rem);
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  color: $text-secondary;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $bg-tertiary;
+    color: $text-primary;
+  }
+
+  &.active {
+    background: $accent-blue;
+    border-color: $accent-blue;
+    color: #fff;
+  }
+
+  // Category-specific active colors
+  &[data-category="security"].active {
+    background: $svc-sauron;
+    border-color: $svc-sauron;
+  }
+
+  &[data-category="health"].active {
+    background: $status-online;
+    border-color: $status-online;
+  }
+
+  &[data-category="debug"].active {
+    background: $accent-purple;
+    border-color: $accent-purple;
+  }
+}
+
+.alert-filters {
+  @include flex-row(flex-start, center, 0.75rem);
+  flex-wrap: wrap;
+}
+
+.search-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+  padding: 0.5rem 1rem;
+  background: $bg-tertiary;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  color: $text-primary;
+  font-size: 0.85rem;
+
+  &::placeholder { color: $text-tertiary; }
+  &:focus { outline: none; border-color: $accent-blue; }
+}
+
+.filter-select {
+  padding: 0.5rem 0.75rem;
+  background: $bg-tertiary;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  color: $text-primary;
+  font-size: 0.8rem;
+  cursor: pointer;
+
+  &:focus { outline: none; border-color: $accent-blue; }
+}
+
+// =========================================
+// Alert Feed
+// =========================================
+.alert-feed {
+  padding: 0 1.5rem;
+  @include flex-col(flex-start, stretch, 0.75rem);
+}
+
+.loading-state {
   @include flex-col(center, center, 1rem);
+  padding: 3rem;
+  color: $text-tertiary;
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid $border-default;
+    border-top-color: $accent-blue;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+.empty-state {
+  @include flex-col(center, center, 0.5rem);
   padding: 3rem;
   text-align: center;
   color: $text-tertiary;
 
-  .icon {
+  .empty-icon {
     font-size: 3rem;
     opacity: 0.5;
   }
+}
 
-  p {
-    max-width: 400px;
+// =========================================
+// Alert Card
+// =========================================
+.alert-card {
+  background: $bg-secondary;
+  border-radius: 10px;
+  border: 1px solid $border-default;
+  overflow: hidden;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $border-primary;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   }
+
+  // Priority border indicator
+  &.priority-urgent, &.priority-critical {
+    border-left: 4px solid $priority-critical;
+    .alert-priority { background: rgba($priority-critical, 0.2); color: $priority-critical; }
+  }
+
+  &.priority-high {
+    border-left: 4px solid $priority-high;
+    .alert-priority { background: rgba($priority-high, 0.2); color: $priority-high; }
+  }
+
+  &.priority-default {
+    border-left: 4px solid $priority-default;
+    .alert-priority { background: rgba($priority-default, 0.2); color: $priority-default; }
+  }
+
+  &.priority-low {
+    border-left: 4px solid $priority-low;
+    .alert-priority { background: rgba($priority-low, 0.2); color: $priority-low; }
+  }
+
+  &.acknowledged {
+    opacity: 0.6;
+    .alert-header { background: $bg-tertiary; }
+  }
+}
+
+.alert-header {
+  @include flex-row(space-between, center, 0.5rem);
+  padding: 0.75rem 1rem;
+  background: $bg-elevated;
+  border-bottom: 1px solid $border-muted;
+}
+
+.alert-meta {
+  @include flex-row(flex-start, center, 0.5rem);
+  flex-wrap: wrap;
+}
+
+.alert-priority {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.alert-vm {
+  padding: 0.2rem 0.5rem;
+  background: $bg-tertiary;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  color: $text-secondary;
+  font-family: $font-mono;
+}
+
+.alert-service {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+
+  &.service-npm { background: $svc-npm; }
+  &.service-authelia { background: $svc-authelia; }
+  &.service-docker { background: $svc-docker; }
+  &.service-ssh { background: $svc-ssh; }
+  &.service-mailu { background: $svc-mailu; }
+  &.service-sauron { background: $svc-sauron; }
+  &.service-system { background: $svc-system; }
+  &.service-collector { background: $accent-purple; }
+}
+
+.alert-time {
+  font-size: 0.7rem;
+  color: $text-tertiary;
+  white-space: nowrap;
+}
+
+.alert-body {
+  padding: 1rem;
+}
+
+.alert-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: $text-primary;
+  margin-bottom: 0.5rem;
+}
+
+.alert-message {
+  font-size: 0.85rem;
+  color: $text-secondary;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.alert-tags {
+  @include flex-row(flex-start, center, 0.35rem);
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+
+  .tag {
+    padding: 0.15rem 0.4rem;
+    background: $bg-tertiary;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    color: $text-secondary;
+  }
+}
+
+// Log Command Section
+.alert-log-cmd {
+  @include flex-row(space-between, center, 0.5rem);
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: $bg-primary;
+  border-radius: 6px;
+  border: 1px solid $border-muted;
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $accent-blue;
+    word-break: break-all;
+    flex: 1;
+  }
+}
+
+.copy-btn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  background: $bg-tertiary;
+  border: 1px solid $border-default;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $accent-blue;
+    border-color: $accent-blue;
+    color: #fff;
+  }
+
+  &.copied {
+    background: $status-online;
+    border-color: $status-online;
+    color: #fff;
+  }
+}
+
+.alert-actions {
+  @include flex-row(flex-end, center, 0.5rem);
+  padding: 0.5rem 1rem;
+  border-top: 1px solid $border-muted;
+}
+
+.ack-btn {
+  padding: 0.35rem 0.75rem;
+  background: transparent;
+  border: 1px solid $border-default;
+  border-radius: 4px;
+  color: $text-secondary;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $status-online;
+    border-color: $status-online;
+    color: #fff;
+  }
+}
+
+// =========================================
+// Alert Legend
+// =========================================
+.alert-legend {
+  margin: 1.5rem 1.5rem 0;
+  background: $bg-secondary;
+  border: 1px solid $border-default;
+  border-radius: 10px;
+
+  summary {
+    padding: 1rem;
+    font-weight: 600;
+    color: $text-secondary;
+    cursor: pointer;
+
+    &:hover { color: $text-primary; }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $border-muted;
+  }
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.legend-section {
+  h4 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 0.75rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    @include flex-col(flex-start, stretch, 0.5rem);
+  }
+
+  li {
+    @include flex-row(flex-start, center, 0.5rem);
+    font-size: 0.8rem;
+    color: $text-secondary;
+  }
+}
+
+.badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+
+  &.auth { background: $svc-ssh; }
+  &.ssh { background: $svc-authelia; }
+  &.sauron { background: $svc-sauron; }
+  &.system { background: $svc-system; }
+  &.docker { background: $svc-docker; }
+  &.npm { background: $svc-npm; }
+  &.mailu { background: $svc-mailu; }
+}
+
+.priority-badge {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.urgent { background: rgba($priority-critical, 0.2); color: $priority-critical; }
+  &.high { background: rgba($priority-high, 0.2); color: $priority-high; }
+  &.default { background: rgba($priority-default, 0.2); color: $priority-default; }
+  &.low { background: rgba($priority-low, 0.2); color: $priority-low; }
+}
+
+// =========================================
+// Matrix Section
+// =========================================
+.matrix-section {
+  margin: 1rem 1.5rem;
+  background: $bg-secondary;
+  border: 1px solid $border-default;
+  border-radius: 10px;
+
+  summary {
+    padding: 1rem;
+    font-weight: 600;
+    color: $text-secondary;
+    cursor: pointer;
+
+    &:hover { color: $text-primary; }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $border-muted;
+  }
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid $border-muted;
+  }
+
+  th {
+    background: $bg-tertiary;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
+  }
+
+  td {
+    color: $text-secondary;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  tr:hover td {
+    background: $bg-tertiary;
+  }
+}
+
+.service-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #fff;
+
+  &.npm { background: $svc-npm; }
+  &.authelia { background: $svc-authelia; }
+  &.docker { background: $svc-docker; }
+  &.ssh { background: $svc-ssh; }
+  &.mailu { background: $svc-mailu; }
+  &.sauron { background: $svc-sauron; }
+}
+
+// =========================================
+// API Reference
+// =========================================
+.api-reference {
+  margin: 1rem 1.5rem;
+  background: $bg-secondary;
+  border: 1px solid $border-default;
+  border-radius: 10px;
+
+  summary {
+    padding: 1rem;
+    font-weight: 600;
+    color: $text-secondary;
+    cursor: pointer;
+
+    &:hover { color: $text-primary; }
+  }
+
+  &[open] summary {
+    border-bottom: 1px solid $border-muted;
+  }
+}
+
+.api-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.api-item {
+  @include flex-col(flex-start, stretch, 0.5rem);
+
+  strong {
+    font-size: 0.8rem;
+    color: $text-primary;
+  }
+
+  code {
+    font-family: $font-mono;
+    font-size: 0.75rem;
+    color: $accent-blue;
+    background: $bg-primary;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    word-break: break-all;
+  }
+}
+
+// =========================================
+// Toast Notification
+// =========================================
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.75rem 1.25rem;
+  background: $bg-elevated;
+  border: 1px solid $border-default;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  &.success {
+    border-color: $status-online;
+    .toast-message { color: $status-online; }
+  }
+
+  &.error {
+    border-color: $status-offline;
+    .toast-message { color: $status-offline; }
+  }
+}
+
+.toast-message {
+  font-size: 0.85rem;
+  color: $text-primary;
 }

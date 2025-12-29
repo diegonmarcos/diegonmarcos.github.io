@@ -544,6 +544,16 @@
             max-width: 450px;
         }
 
+        .apps-cards-grid--centered {
+            display: flex;
+            justify-content: center;
+        }
+
+        .apps-cards-grid--centered .app-card {
+            max-width: 400px;
+            width: 100%;
+        }
+
         /* Backend Services Grid */
         .services-grid {
             display: grid;

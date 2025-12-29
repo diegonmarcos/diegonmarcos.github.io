@@ -1169,3 +1169,227 @@
         display: none;
     }
 }
+
+// ============================================
+// GRAPH MAPS GRID LAYOUT
+// ============================================
+
+.graph-maps-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 1rem 0;
+}
+
+.graph-map-section {
+    width: 100%;
+}
+
+// ============================================
+// ORG CHART TREE (Box style with connectors)
+// ============================================
+
+.org-tree {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+// Level container (horizontal row of nodes)
+.ot-level {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ot-root-level {
+    margin-bottom: 0;
+}
+
+.ot-provider-level {
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.ot-vm-level {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+// Branch container (provider + its VMs)
+.ot-branch {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+// Vertical connector line
+.ot-connector-down {
+    width: 2px;
+    height: 12px;
+    background: var(--border-color);
+    margin: 0 auto;
+}
+
+// Node box
+.ot-node {
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-card);
+    text-align: center;
+    min-width: 120px;
+    max-width: 180px;
+}
+
+.ot-node-title {
+    padding: 0.35rem 0.5rem;
+    font-weight: 600;
+    font-size: 0.7rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    border-radius: 4px 4px 0 0;
+}
+
+.ot-node-sub {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ot-node-items {
+    padding: 0.3rem;
+    text-align: left;
+}
+
+// Root node
+.ot-root {
+    border-color: var(--accent-primary);
+
+    .ot-node-title {
+        color: var(--accent-primary);
+        background: rgba(56, 189, 248, 0.1);
+    }
+}
+
+// Provider node
+.ot-provider {
+    border-color: var(--accent-blue);
+    min-width: 110px;
+
+    .ot-node-title {
+        background: rgba(56, 189, 248, 0.1);
+    }
+}
+
+// VM node
+.ot-vm {
+    min-width: 120px;
+    max-width: 160px;
+}
+
+// Category node
+.ot-category {
+    min-width: 140px;
+    max-width: 200px;
+}
+
+// Item inside a node
+.ot-item {
+    padding: 0.15rem 0.3rem;
+    border-radius: 3px;
+    margin-bottom: 0.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.6rem;
+
+    &:hover {
+        background: var(--bg-card-hover);
+    }
+
+    a {
+        color: var(--accent-blue);
+        text-decoration: none;
+        font-size: 0.6rem;
+        opacity: 0.7;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.ot-item-meta {
+    font-size: 0.6rem;
+    color: var(--text-secondary);
+    margin-left: auto;
+}
+
+.ot-svc {
+    color: var(--accent-green);
+}
+
+.ot-db {
+    color: var(--accent-purple);
+}
+
+.ot-empty {
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+}
+
+// ============================================
+// BLURRED THEME
+// ============================================
+
+[data-theme="blurred"] {
+    .org-tree {
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+
+    .ot-node {
+        background: rgba(255, 255, 255, 0.03);
+        border-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(5px);
+    }
+
+    .ot-node-title {
+        background: rgba(255, 255, 255, 0.05);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .ot-node-sub {
+        border-bottom-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .ot-connector-down {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .ot-root {
+        border-color: var(--accent-primary);
+
+        .ot-node-title {
+            background: rgba(56, 189, 248, 0.15);
+        }
+    }
+
+    .ot-provider {
+        border-color: rgba(56, 189, 248, 0.4);
+
+        .ot-node-title {
+            background: rgba(56, 189, 248, 0.1);
+        }
+    }
+
+    .ot-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+}

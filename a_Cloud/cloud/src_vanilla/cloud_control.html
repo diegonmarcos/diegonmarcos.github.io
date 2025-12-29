@@ -83,9 +83,9 @@
             <div class="nav-level2 active" id="nav-cloudcontrol">
                 <button class="view-btn" data-dash-parent="topology">Topology</button>
                 <span class="nav-divider"></span>
-                <button class="view-btn active" data-dash-parent="monitor">Monitor & Audit</button>
-                <span class="nav-divider"></span>
-                <button class="view-btn" data-dash-tab="cost">Cost</button>
+                <button class="view-btn active" data-dash-parent="health">Health</button>
+                <button class="view-btn" data-dash-parent="security">Security</button>
+                <button class="view-btn" data-dash-parent="ops">Ops</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="apps">Apps</button>
             </div>
@@ -93,26 +93,59 @@
             <div class="nav-level3-wrapper" id="nav-topology" style="display: none;">
                 <h2 class="nav-level3-title">Topology</h2>
                 <div class="nav-level3">
-                    <button class="view-btn active" data-topology-cat="app">App</button>
-                    <button class="view-btn" data-topology-cat="data">Data</button>
-                    <button class="view-btn" data-topology-cat="containers">Containers</button>
+                    <button class="view-btn active" data-topology-cat="resource">Resource</button>
                     <button class="view-btn" data-topology-cat="security">Security</button>
                 </div>
             </div>
-            <!-- Level 3: Sub-navigation for Monitor & Audit -->
-            <div class="nav-level3-wrapper" id="nav-monitor" style="display: flex;">
-                <h2 class="nav-level3-title">Monitor & Audit</h2>
+            <!-- Level 4: Sub-navigation for Resource (under Topology) -->
+            <div class="nav-level4-wrapper" id="nav-resource" style="display: none;">
+                <div class="nav-level4">
+                    <button class="view-btn active" data-resource-view="graphs">Graphs</button>
+                    <button class="view-btn" data-resource-view="tables">Tables</button>
+                </div>
+            </div>
+            <!-- Level 5: Sub-navigation for Tables (under Resource) -->
+            <div class="nav-level5-wrapper" id="nav-resource-tables" style="display: none;">
+                <div class="nav-level5">
+                    <button class="view-btn active" data-table-view="app">App</button>
+                    <button class="view-btn" data-table-view="data">Data</button>
+                    <button class="view-btn" data-table-view="containers">Containers</button>
+                </div>
+            </div>
+            <!-- Level 4: Sub-navigation for Security (under Topology) -->
+            <div class="nav-level4-wrapper" id="nav-security-topo" style="display: none;">
+                <div class="nav-level4">
+                    <button class="view-btn active" data-security-view="graphs">Graphs</button>
+                    <button class="view-btn" data-security-view="table">Table</button>
+                </div>
+            </div>
+            <!-- Level 3: Sub-navigation for Health -->
+            <div class="nav-level3-wrapper" id="nav-health" style="display: flex;">
+                <h2 class="nav-level3-title">Health</h2>
                 <div class="nav-level3">
                     <button class="view-btn active" data-dash-tab="resources">Infra</button>
-                    <button class="view-btn" data-dash-tab="security">Security</button>
+                </div>
+            </div>
+            <!-- Level 3: Sub-navigation for Security -->
+            <div class="nav-level3-wrapper" id="nav-security" style="display: none;">
+                <h2 class="nav-level3-title">Security</h2>
+                <div class="nav-level3">
+                    <button class="view-btn active" data-dash-tab="security">Security</button>
                     <button class="view-btn" data-dash-tab="audit-analytics">Analytics</button>
                     <button class="view-btn" data-dash-tab="audit-logs">Logs</button>
                 </div>
             </div>
-            <!-- Level 3: Cost title with sub-tabs -->
-            <div class="nav-level3-wrapper" id="nav-cost" style="display: none;">
-                <h2 class="nav-level3-title">Cost</h2>
+            <!-- Level 3: Sub-navigation for Ops -->
+            <div class="nav-level3-wrapper" id="nav-ops" style="display: none;">
+                <h2 class="nav-level3-title">Ops</h2>
                 <div class="nav-level3">
+                    <button class="view-btn active" data-dash-tab="cost">Cost</button>
+                    <button class="view-btn" data-dash-tab="capacity">Capacity</button>
+                </div>
+            </div>
+            <!-- Level 4: Cost sub-tabs (under Ops) -->
+            <div class="nav-level4-wrapper" id="nav-cost-subtabs" style="display: none;">
+                <div class="nav-level4">
                     <button class="view-btn active" data-subtab="cost-infra">Infrastructure</button>
                     <button class="view-btn" data-subtab="cost-ai">AI Costs</button>
                 </div>
@@ -1690,41 +1723,102 @@
 
         </div><!-- End Cost Tab -->
 
+        <!-- Capacity Tab Content -->
+        <div id="capacity-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Capacity Management</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Resource allocation and capacity planning</p>
+                <div class="resources-section">
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>VM</th>
+                                    <th>CPU</th>
+                                    <th>RAM</th>
+                                    <th>Storage</th>
+                                    <th>Usage</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>gcp-f-micro_1</strong></td>
+                                    <td>0.25 vCPU</td>
+                                    <td>1 GB</td>
+                                    <td>30 GB</td>
+                                    <td>~60%</td>
+                                    <td><span class="status-badge on">OK</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>oci-f-micro_1</strong></td>
+                                    <td>1 OCPU</td>
+                                    <td>1 GB</td>
+                                    <td>47 GB</td>
+                                    <td>~40%</td>
+                                    <td><span class="status-badge on">OK</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>oci-f-micro_2</strong></td>
+                                    <td>1 OCPU</td>
+                                    <td>1 GB</td>
+                                    <td>47 GB</td>
+                                    <td>~35%</td>
+                                    <td><span class="status-badge on">OK</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>oci-p-flex_1</strong></td>
+                                    <td>1 OCPU</td>
+                                    <td>8 GB</td>
+                                    <td>100 GB</td>
+                                    <td>~25%</td>
+                                    <td><span class="status-badge" style="background: rgba(251,191,36,0.15); color: var(--accent-yellow);">DORMANT</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Capacity Tab -->
+
         <!-- Apps Tab Content -->
         <div id="apps-tab" class="tab-content">
             <div class="apps-cards-grid">
-                <!-- Cloud Monitor Card -->
-                <div class="app-card">
-                    <div class="app-card-header">
-                        <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-                            </svg>
+                <!-- Row 1: Cloud Monitor (Centered) -->
+                <div class="apps-card-row--centered">
+                    <div class="app-card">
+                        <div class="app-card-header">
+                            <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                                </svg>
+                            </div>
+                            <h3 class="app-card-title">Cloud Monitor</h3>
                         </div>
-                        <h3 class="app-card-title">Cloud Monitor</h3>
-                    </div>
-                    <div class="app-card-body">
-                        <div class="app-card-section">
-                            <h4 class="app-card-section-title">Infra</h4>
-                            <ul class="app-card-list">
-                                <li><span class="app-card-dot healthy"></span>Health Status</li>
-                                <li><span class="app-card-dot perf"></span>Performance Metrics</li>
-                            </ul>
+                        <div class="app-card-body">
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Infra</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot healthy"></span>Health Status</li>
+                                    <li><span class="app-card-dot perf"></span>Performance Metrics</li>
+                                </ul>
+                            </div>
+                            <div class="app-card-section">
+                                <h4 class="app-card-section-title">Security</h4>
+                                <ul class="app-card-list">
+                                    <li><span class="app-card-dot sync"></span>Sync Status</li>
+                                    <li><span class="app-card-dot sauron"></span>Sauron (Intrusion Detection)</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="app-card-section">
-                            <h4 class="app-card-section-title">Security</h4>
-                            <ul class="app-card-list">
-                                <li><span class="app-card-dot sync"></span>Sync Status</li>
-                                <li><span class="app-card-dot sauron"></span>Sauron (Intrusion Detection)</li>
-                            </ul>
+                        <div class="app-card-footer">
+                            <span class="app-card-badge live">Live Data</span>
+                            <span class="app-card-status">Coming Soon</span>
                         </div>
-                    </div>
-                    <div class="app-card-footer">
-                        <span class="app-card-badge live">Live Data</span>
-                        <span class="app-card-status">Coming Soon</span>
                     </div>
                 </div>
 
+                <!-- Row 2: Cloud Debug, Cloud Audit Sync, Cloud Collectors -->
                 <!-- Cloud Debug Card -->
                 <div class="app-card">
                     <div class="app-card-header">
@@ -1770,8 +1864,8 @@
                     </div>
                     <div class="app-card-body">
                         <div class="app-card-section">
-                            <h4 class="app-card-section-title">Data Collectors</h4>
-                            <p class="app-card-desc">Automated infrastructure data collection agents</p>
+                            <h4 class="app-card-section-title">Data Sync</h4>
+                            <p class="app-card-desc">Automated infrastructure data synchronization</p>
                         </div>
                         <div class="app-card-section">
                             <h4 class="app-card-section-title">Consolidation</h4>
@@ -1783,6 +1877,40 @@
                     </div>
                     <div class="app-card-footer">
                         <span class="app-card-badge audit">Audit</span>
+                        <span class="app-card-status">Coming Soon</span>
+                    </div>
+                </div>
+
+                <!-- Cloud Collectors Card -->
+                <div class="app-card">
+                    <div class="app-card-header">
+                        <div class="app-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12"/>
+                            </svg>
+                        </div>
+                        <h3 class="app-card-title">Cloud Collectors</h3>
+                    </div>
+                    <div class="app-card-body">
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Data Agents</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot" style="background: #10b981;"></span>VM Metrics</li>
+                                <li><span class="app-card-dot" style="background: #f59e0b;"></span>Container Stats</li>
+                            </ul>
+                        </div>
+                        <div class="app-card-section">
+                            <h4 class="app-card-section-title">Sources</h4>
+                            <ul class="app-card-list">
+                                <li><span class="app-card-dot" style="background: #3b82f6;"></span>Cloud APIs</li>
+                                <li><span class="app-card-dot" style="background: #8b5cf6;"></span>SSH Probes</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="app-card-footer">
+                        <span class="app-card-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">Collectors</span>
                         <span class="app-card-status">Coming Soon</span>
                     </div>
                 </div>
@@ -2183,24 +2311,15 @@
         <!-- Infrastructure Tab Content (Status View) -->
         <div id="infra-tab" class="tab-content">
 
-        <!-- View Mode Controls (distinct from navigation) -->
-        <div class="view-mode-controls">
-            <span class="view-mode-label">View:</span>
-            <div class="view-mode-group">
-                <button class="view-mode-btn" data-display-mode="tree" title="Tree View">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="5" r="3"/><line x1="12" y1="8" x2="12" y2="14"/><line x1="12" y1="14" x2="6" y2="20"/><line x1="12" y1="14" x2="18" y2="20"/><circle cx="6" cy="20" r="2"/><circle cx="18" cy="20" r="2"/></svg>
-                </button>
-                <button class="view-mode-btn active" data-display-mode="list" title="List View">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-                </button>
-            </div>
-            <span class="view-mode-separator">|</span>
+        <!-- View Mode Controls (for App/Data/Containers/Security views) -->
+        <div class="view-mode-controls" id="list-view-controls">
             <span class="view-mode-label">Group:</span>
             <div class="view-mode-group">
                 <button class="view-mode-btn active" data-group-mode="by-vm" title="Group by VM">VM</button>
                 <button class="view-mode-btn" data-group-mode="by-type" title="Group by Type">Type</button>
             </div>
         </div>
+
 
         <!-- BY VM VIEW -->
         <div id="infra-by-vm-view" class="infra-view-content active">
@@ -2272,17 +2391,68 @@
             </div>
         </div>
 
-        <!-- TREE VIEW - BY VM -->
-        <div id="infra-tree-by-vm-view" class="infra-view-content" style="display: none;">
-            <div class="tree-container" id="tree-by-vm-container">
-                <!-- Tree will be rendered here by JavaScript -->
+        <!-- GRAPH VIEW - RESOURCES (App Allocation + Database Design) -->
+        <div id="infra-resource-graphs-view" class="infra-view-content" style="display: none;">
+            <div class="graph-maps-grid">
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-app-container">
+                        <!-- App Allocation Map rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-database-container">
+                        <!-- Database Design Map rendered by JS -->
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- TREE VIEW - BY TYPE -->
-        <div id="infra-tree-by-type-view" class="infra-view-content" style="display: none;">
-            <div class="tree-container" id="tree-by-type-container">
-                <!-- Tree will be rendered here by JavaScript -->
+        <!-- GRAPH VIEW - SECURITY (6 Security Design Maps) -->
+        <div id="infra-security-graphs-view" class="infra-view-content" style="display: none;">
+            <div class="graph-maps-grid">
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-auth-flow-container">
+                        <!-- Authentication Flow rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-authz-flow-container">
+                        <!-- Authorization Flow rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-network-protection-container">
+                        <!-- Network Protection rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-data-protection-container">
+                        <!-- Data Protection rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-threat-protection-container">
+                        <!-- Threat Protection rendered by JS -->
+                    </div>
+                </div>
+                <div class="graph-map-section">
+                    <div class="org-tree" id="graph-observability-container">
+                        <!-- Observability rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECURITY TABLE VIEW - Security Features List -->
+        <div id="infra-security-table-view" class="infra-view-content" style="display: none;">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Security Features</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Comprehensive list of security controls and features</p>
+                <div class="resources-table-container">
+                    <table class="resources-table fs-sm" id="security-features-table">
+                        <!-- Rendered by JS -->
+                    </table>
+                </div>
             </div>
         </div>
 
@@ -4891,37 +5061,31 @@
             renderTypeTable('infra-type-others', categorized['others']);
         }
 
-        // Infrastructure view toggle (Category + Tree/List + By VM/By Type)
-        let currentCategory = 'app'; // 'app', 'data', or 'containers'
-        let currentDisplayMode = 'list'; // 'tree' or 'list'
+        // Infrastructure view toggle (Category + Group Mode)
+        let currentCategory = 'resource'; // 'resource' or 'security'
         let currentGroupMode = 'by-vm'; // 'by-vm' or 'by-type'
         let byTypeLoaded = false;
-        let treeByVmLoaded = false;
-        let treeByTypeLoaded = false;
 
         function initInfraViewToggle() {
-            // Category toggle in nav-level3 (App / Data / Containers)
+            // Category toggle in nav-level3 (Resource / Security)
             const categoryBtns = document.querySelectorAll('[data-topology-cat]');
-            // View mode controls (Tree/List, By VM/By Type)
-            const displayBtns = document.querySelectorAll('.view-mode-btn[data-display-mode]');
+            // Group mode controls (By VM / By Type) for tables
             const groupBtns = document.querySelectorAll('.view-mode-btn[data-group-mode]');
+            // Control panels
+            const listViewControls = document.getElementById('list-view-controls');
 
-            // Category toggle (App / Data / Containers) - from nav-level3
+            // Category toggle (Resource / Security) - from nav-level3
             categoryBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     currentCategory = this.dataset.topologyCat;
                     categoryBtns.forEach(b => b.classList.remove('active'));
                     this.classList.add('active');
-                    updateInfraView();
-                });
-            });
-
-            // Display mode toggle (Tree/List)
-            displayBtns.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    currentDisplayMode = this.dataset.displayMode;
-                    displayBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
+                    // Toggle control panels visibility (only for Resource/Tables/App)
+                    if (currentCategory === 'resource' && currentResourceView === 'tables' && currentTableView === 'app') {
+                        listViewControls.style.display = 'flex';
+                    } else {
+                        listViewControls.style.display = 'none';
+                    }
                     updateInfraView();
                 });
             });
@@ -4935,215 +5099,895 @@
                     updateInfraView();
                 });
             });
+
+            // Resource view toggle (Graphs / Tables)
+            const resourceViewBtns = document.querySelectorAll('[data-resource-view]');
+            resourceViewBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentResourceView = this.dataset.resourceView;
+                    resourceViewBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // Show table sub-nav when Tables is selected
+                    const navResourceTables = document.getElementById('nav-resource-tables');
+                    if (navResourceTables) {
+                        navResourceTables.style.display = currentResourceView === 'tables' ? 'flex' : 'none';
+                    }
+                    // Show list controls only for App table
+                    const listViewControls = document.getElementById('list-view-controls');
+                    if (listViewControls) {
+                        listViewControls.style.display = (currentResourceView === 'tables' && currentTableView === 'app') ? 'flex' : 'none';
+                    }
+                    updateInfraView();
+                });
+            });
+
+            // Table view toggle (App / Data / Containers) under Resource/Tables
+            const tableViewBtns = document.querySelectorAll('[data-table-view]');
+            tableViewBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentTableView = this.dataset.tableView;
+                    tableViewBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // Show list controls only for App table
+                    const listViewControls = document.getElementById('list-view-controls');
+                    if (listViewControls) {
+                        listViewControls.style.display = currentTableView === 'app' ? 'flex' : 'none';
+                    }
+                    updateInfraView();
+                });
+            });
+
+            // Security view toggle (Graphs / Table)
+            const securityViewBtns = document.querySelectorAll('[data-security-view]');
+            securityViewBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentSecurityView = this.dataset.securityView;
+                    securityViewBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    updateInfraView();
+                });
+            });
         }
 
+        // Track current views
+        let currentResourceView = 'graphs'; // 'graphs' or 'tables'
+        let currentTableView = 'app'; // 'app', 'data', 'containers'
+        let currentSecurityView = 'graphs'; // 'graphs' or 'table'
+        let resourceGraphsLoaded = false;
+        let securityGraphsLoaded = false;
+        let securityTableLoaded = false;
+
         function updateInfraView() {
-            // App views
+            // Resource Graphs views
+            const resourceGraphsView = document.getElementById('infra-resource-graphs-view');
+            // Resource Tables views
             const byVmView = document.getElementById('infra-by-vm-view');
             const byTypeView = document.getElementById('infra-by-type-view');
-            const treeByVmView = document.getElementById('infra-tree-by-vm-view');
-            const treeByTypeView = document.getElementById('infra-tree-by-type-view');
-            // Data views
             const dataView = document.getElementById('infra-data-view');
-            // Containers views
             const containersView = document.getElementById('infra-containers-view');
             // Security views
-            const securityView = document.getElementById('infra-security-view');
+            const securityGraphsView = document.getElementById('infra-security-graphs-view');
+            const securityTableView = document.getElementById('infra-security-table-view');
+            // Nav level 4
+            const navResource = document.getElementById('nav-resource');
+            const navSecurityTopo = document.getElementById('nav-security-topo');
+            const navResourceTables = document.getElementById('nav-resource-tables');
 
             // Hide all views
-            [byVmView, byTypeView, treeByVmView, treeByTypeView, dataView, containersView, securityView].forEach(v => {
+            [resourceGraphsView, byVmView, byTypeView, dataView, containersView, securityGraphsView, securityTableView].forEach(v => {
                 if (v) {
                     v.style.display = 'none';
                     v.classList.remove('active');
                 }
             });
 
+            // Show/hide nav-level4 based on category
+            if (navResource) navResource.style.display = currentCategory === 'resource' ? 'flex' : 'none';
+            if (navSecurityTopo) navSecurityTopo.style.display = currentCategory === 'security' ? 'flex' : 'none';
+            if (navResourceTables) navResourceTables.style.display = (currentCategory === 'resource' && currentResourceView === 'tables') ? 'flex' : 'none';
+
             // Show the appropriate view based on category
-            if (currentCategory === 'data') {
-                // Data category - show data view (list only for now)
-                dataView.style.display = 'block';
-                dataView.classList.add('active');
-            } else if (currentCategory === 'containers') {
-                // Containers category - show containers view (list only for now)
-                containersView.style.display = 'block';
-                containersView.classList.add('active');
-            } else if (currentCategory === 'security') {
-                // Security category - show security topology view
-                securityView.style.display = 'block';
-                securityView.classList.add('active');
-            } else {
-                // App category - respect display mode and group mode
-                if (currentDisplayMode === 'list') {
-                    if (currentGroupMode === 'by-vm') {
-                        byVmView.style.display = 'block';
-                        byVmView.classList.add('active');
-                    } else {
-                        byTypeView.style.display = 'block';
-                        byTypeView.classList.add('active');
-                        if (!byTypeLoaded) {
-                            loadInfraByTypeData();
-                            byTypeLoaded = true;
+            if (currentCategory === 'resource') {
+                if (currentResourceView === 'graphs') {
+                    resourceGraphsView.style.display = 'block';
+                    resourceGraphsView.classList.add('active');
+                    if (!resourceGraphsLoaded) {
+                        renderAppAllocationMap();
+                        renderDatabaseDesignMap();
+                        resourceGraphsLoaded = true;
+                    }
+                } else if (currentResourceView === 'tables') {
+                    // Show table based on currentTableView
+                    if (currentTableView === 'app') {
+                        if (currentGroupMode === 'by-vm') {
+                            byVmView.style.display = 'block';
+                            byVmView.classList.add('active');
+                        } else {
+                            byTypeView.style.display = 'block';
+                            byTypeView.classList.add('active');
+                            if (!byTypeLoaded) {
+                                loadInfraByTypeData();
+                                byTypeLoaded = true;
+                            }
                         }
-                    }
-                } else {
-                    // Tree view
-                    if (currentGroupMode === 'by-vm') {
-                        treeByVmView.style.display = 'block';
-                    treeByVmView.classList.add('active');
-                    if (!treeByVmLoaded) {
-                        renderTreeByVM();
-                        treeByVmLoaded = true;
-                    }
-                } else {
-                    treeByTypeView.style.display = 'block';
-                    treeByTypeView.classList.add('active');
-                    if (!treeByTypeLoaded) {
-                        renderTreeByType();
-                        treeByTypeLoaded = true;
+                    } else if (currentTableView === 'data') {
+                        dataView.style.display = 'block';
+                        dataView.classList.add('active');
+                    } else if (currentTableView === 'containers') {
+                        containersView.style.display = 'block';
+                        containersView.classList.add('active');
                     }
                 }
+            } else if (currentCategory === 'security') {
+                if (currentSecurityView === 'graphs') {
+                    securityGraphsView.style.display = 'block';
+                    securityGraphsView.classList.add('active');
+                    if (!securityGraphsLoaded) {
+                        renderAuthenticationFlowGraph();
+                        renderAuthorizationFlowGraph();
+                        renderNetworkProtectionGraph();
+                        renderDataProtectionGraph();
+                        renderThreatProtectionGraph();
+                        renderObservabilityGraph();
+                        securityGraphsLoaded = true;
+                    }
+                } else if (currentSecurityView === 'table') {
+                    securityTableView.style.display = 'block';
+                    securityTableView.classList.add('active');
+                    if (!securityTableLoaded) {
+                        renderSecurityFeaturesTable();
+                        securityTableLoaded = true;
+                    }
                 }
             }
         }
 
-        // Render Tree View - By VM
-        function renderTreeByVM() {
+        // Render App Allocation Map (Org Chart Box Style)
+        function renderAppAllocationMap() {
             if (typeof CONFIG === 'undefined' || !CONFIG.virtualMachines) {
                 window.CONFIG = FALLBACK_INFRASTRUCTURE;
             }
 
-            const container = document.getElementById('tree-by-vm-container');
+            const container = document.getElementById('graph-app-container');
             if (!container) return;
 
             const vms = Object.values(CONFIG.virtualMachines || {});
             const services = Object.values(CONFIG.services || {});
+            const databases = Object.values(CONFIG.databases || {});
+            const providers = CONFIG.providers || {};
+
+            // Group VMs by provider
+            const vmsByProvider = {};
+            vms.forEach(vm => {
+                const key = vm.provider || 'unknown';
+                if (!vmsByProvider[key]) vmsByProvider[key] = [];
+                vmsByProvider[key].push(vm);
+            });
 
             let html = `
-                <div class="tree-root">
-                    <div class="tree-root-node">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15a4 4 0 0 0 4 4h9a5 5 0 1 0-.9-9.9 7 7 0 1 0-13.1 5.9z"/></svg>
-                        Infrastructure
-                    </div>
-                    <div class="tree-connector-vertical"></div>
-                    <div class="tree-branches">`;
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">☁️ APP ALLOCATION</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">`;
 
-            vms.forEach(vm => {
-                const vmServices = services.filter(svc => svc.vmId === vm.id && svc.status === 'on');
-                const ip = vm.network?.publicIp || 'pending';
-                const provider = CONFIG.providers?.[vm.provider];
-                const hostName = provider?.name || vm.provider || '';
+            const providerKeys = Object.keys(vmsByProvider);
+            providerKeys.forEach((providerKey, pIdx) => {
+                const provider = providers[providerKey];
+                const providerName = provider?.name || providerKey;
+                const providerIcon = providerKey === 'oracle' ? '🟠' : providerKey === 'gcloud' ? '🔵' : '⚪';
 
                 html += `
-                    <div class="tree-branch">
-                        <div class="tree-branch-connector"></div>
-                        <div class="tree-node tree-node-vm">
-                            <div class="tree-node-title">${vm.name}</div>
-                            <div class="tree-node-subtitle">${hostName}</div>
-                            <div class="tree-node-ip">${ip}</div>
-                        </div>
-                        <div class="tree-children">
-                            <div class="tree-child-connector"></div>`;
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">${providerIcon} ${providerName.toUpperCase()}</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">`;
 
-                vmServices.forEach(svc => {
-                    const url = svc.urls?.gui || svc.urls?.api || '';
+                const providerVms = vmsByProvider[providerKey];
+                providerVms.forEach(vm => {
+                    const vmServices = services.filter(svc => svc.vmId === vm.id && svc.status === 'on');
+                    const vmDatabases = databases.filter(db => db.vmId === vm.id);
+                    const ip = vm.network?.publicIp || 'pending';
+
                     html += `
-                        <div class="tree-leaf">
-                            <span class="tree-leaf-name">${svc.displayName || svc.name}</span>
-                            ${url ? `<a href="${url}" target="_blank" class="tree-leaf-url">${url.replace('https://', '')}</a>` : '<span class="tree-leaf-badge">internal</span>'}
-                        </div>`;
-                });
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🖥️ ${vm.name}</div>
+                            <div class="ot-node-sub">${ip}</div>
+                            <div class="ot-node-items">`;
 
-                if (vmServices.length === 0) {
-                    html += `<div class="tree-leaf"><span class="tree-leaf-name" style="color: var(--text-secondary); font-style: italic;">No active services</span></div>`;
-                }
+                    vmServices.forEach(svc => {
+                        const url = svc.urls?.gui || svc.urls?.api || '';
+                        html += `<div class="ot-item ot-svc">⚡ ${svc.displayName || svc.name}${url ? ` <a href="${url}" target="_blank">↗</a>` : ''}</div>`;
+                    });
+
+                    vmDatabases.forEach(db => {
+                        html += `<div class="ot-item ot-db">🗄️ ${db.displayName || db.name || db.type}</div>`;
+                    });
+
+                    if (vmServices.length === 0 && vmDatabases.length === 0) {
+                        html += `<div class="ot-item ot-empty">No services</div>`;
+                    }
+
+                    html += `</div></div>`;
+                });
 
                 html += `</div></div>`;
             });
 
-            html += `</div></div>`;
+            html += `</div>`;
             container.innerHTML = html;
         }
 
-        // Render Tree View - By Type
-        function renderTreeByType() {
-            if (typeof CONFIG === 'undefined' || !CONFIG.virtualMachines) {
-                window.CONFIG = FALLBACK_INFRASTRUCTURE;
-            }
-
-            const container = document.getElementById('tree-by-type-container');
+        // Render Database Design Map (Org Chart Box Style)
+        function renderDatabaseDesignMap() {
+            const container = document.getElementById('graph-database-container');
             if (!container) return;
 
-            const services = Object.values(CONFIG.services || {});
-            const vms = CONFIG.virtualMachines || {};
-
-            // Define type categories with icons
-            const typeCategories = [
-                { key: 'security', name: 'Security', icon: '🔐', keywords: ['backup', 'security', 'vault', 'encryption'] },
-                { key: 'auth-proxy', name: 'Auth & Proxy', icon: '🛡️', keywords: ['proxy', 'npm', 'nginx', 'authelia', 'auth', 'oauth', 'vpn', 'tunnel'] },
-                { key: 'audit', name: 'Audit & Analytics', icon: '📊', keywords: ['matomo', 'analytics', 'audit', 'log', 'monitor'] },
-                { key: 'data-api', name: 'Data & API', icon: '⚡', keywords: ['api', 'flask', 'cache', 'redis', 'db', 'database', 'mcp', 'postgres', 'mysql', 'maria'] },
-                { key: 'others', name: 'Other Services', icon: '📦', keywords: [] }
-            ];
-
-            // Categorize services
-            const categorized = {};
-            typeCategories.forEach(cat => categorized[cat.key] = []);
-
-            services.forEach(svc => {
-                if (svc.status !== 'on') return;
-                const svcText = `${svc.category || ''} ${svc.name || ''} ${svc.displayName || ''} ${svc.id || ''}`.toLowerCase();
-
-                let matched = false;
-                for (const cat of typeCategories) {
-                    if (cat.keywords.length > 0 && cat.keywords.some(k => svcText.includes(k))) {
-                        categorized[cat.key].push(svc);
-                        matched = true;
-                        break;
-                    }
-                }
-                if (!matched) categorized['others'].push(svc);
-            });
+            // Static database configuration
+            const dbData = {
+                sqlite: [
+                    { name: 'authelia-db', vm: 'gcp-f-micro_1', path: '/data/authelia/db.sqlite3', size: '~5 MB', service: 'Authelia' },
+                    { name: 'npm-db', vm: 'gcp-f-micro_1', path: '/data/npm/database.sqlite', size: '~10 MB', service: 'NPM' }
+                ],
+                mysql: [
+                    { name: 'matomo-db', vm: 'oci-f-micro_2', path: '/data/mysql/', size: '~500 MB', service: 'Matomo' },
+                    { name: 'photoprism-db', vm: 'oci-p-flex_1', path: '/data/photoprism/mysql/', size: '~2 GB', service: 'Photoprism' }
+                ],
+                redis: [
+                    { name: 'authelia-redis', vm: 'gcp-f-micro_1', path: 'in-memory', size: '~50 MB', service: 'Authelia' }
+                ]
+            };
 
             let html = `
-                <div class="tree-root">
-                    <div class="tree-root-node">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-                        Service Types
-                    </div>
-                    <div class="tree-connector-vertical"></div>
-                    <div class="tree-branches">`;
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🗄️ DATABASE DESIGN</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">`;
 
-            typeCategories.forEach(cat => {
-                const catServices = categorized[cat.key];
-                if (catServices.length === 0) return;
-
+            // SQLite
+            html += `
+            <div class="ot-branch">
+                <div class="ot-node ot-provider">
+                    <div class="ot-node-title">📄 SQLITE</div>
+                    <div class="ot-node-sub">${dbData.sqlite.length} databases</div>
+                </div>
+                <div class="ot-connector-down"></div>
+                <div class="ot-level ot-vm-level">`;
+            dbData.sqlite.forEach(db => {
                 html += `
-                    <div class="tree-branch">
-                        <div class="tree-branch-connector"></div>
-                        <div class="tree-node tree-node-type">
-                            <div class="tree-node-title">${cat.icon} ${cat.name}</div>
-                            <div class="tree-node-subtitle">${catServices.length} service${catServices.length > 1 ? 's' : ''}</div>
+                    <div class="ot-node ot-vm">
+                        <div class="ot-node-title">${db.name}</div>
+                        <div class="ot-node-sub">${db.vm}</div>
+                        <div class="ot-node-items">
+                            <div class="ot-item ot-db">📍 ${db.path}</div>
+                            <div class="ot-item ot-svc">📏 ${db.size}</div>
+                            <div class="ot-item ot-svc">⚡ ${db.service}</div>
                         </div>
-                        <div class="tree-children">
-                            <div class="tree-child-connector"></div>`;
+                    </div>`;
+            });
+            html += `</div></div>`;
 
-                catServices.forEach(svc => {
-                    const vm = vms[svc.vmId];
-                    const vmName = vm?.name || '';
-                    const url = svc.urls?.gui || svc.urls?.api || '';
-                    html += `
-                        <div class="tree-leaf">
-                            <span class="tree-leaf-name">${svc.displayName || svc.name}</span>
-                            <span class="tree-leaf-badge">${vmName}</span>
-                            ${url ? `<a href="${url}" target="_blank" class="tree-leaf-url">${url.replace('https://', '')}</a>` : ''}
-                        </div>`;
-                });
+            // MySQL
+            html += `
+            <div class="ot-branch">
+                <div class="ot-node ot-provider">
+                    <div class="ot-node-title">🐬 MYSQL</div>
+                    <div class="ot-node-sub">${dbData.mysql.length} databases</div>
+                </div>
+                <div class="ot-connector-down"></div>
+                <div class="ot-level ot-vm-level">`;
+            dbData.mysql.forEach(db => {
+                html += `
+                    <div class="ot-node ot-vm">
+                        <div class="ot-node-title">${db.name}</div>
+                        <div class="ot-node-sub">${db.vm}</div>
+                        <div class="ot-node-items">
+                            <div class="ot-item ot-db">📍 ${db.path}</div>
+                            <div class="ot-item ot-svc">📏 ${db.size}</div>
+                            <div class="ot-item ot-svc">⚡ ${db.service}</div>
+                        </div>
+                    </div>`;
+            });
+            html += `</div></div>`;
 
-                html += `</div></div>`;
+            // Redis
+            html += `
+            <div class="ot-branch">
+                <div class="ot-node ot-provider">
+                    <div class="ot-node-title">🔴 REDIS</div>
+                    <div class="ot-node-sub">${dbData.redis.length} instance</div>
+                </div>
+                <div class="ot-connector-down"></div>
+                <div class="ot-level ot-vm-level">`;
+            dbData.redis.forEach(db => {
+                html += `
+                    <div class="ot-node ot-vm">
+                        <div class="ot-node-title">${db.name}</div>
+                        <div class="ot-node-sub">${db.vm}</div>
+                        <div class="ot-node-items">
+                            <div class="ot-item ot-db">📍 ${db.path}</div>
+                            <div class="ot-item ot-svc">📏 ${db.size}</div>
+                            <div class="ot-item ot-svc">⚡ ${db.service}</div>
+                        </div>
+                    </div>`;
+            });
+            html += `</div></div>`;
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // ==========================================
+        // SECURITY DESIGN GRAPHS (6 Purpose-Based)
+        // ==========================================
+
+        // 1. AUTHENTICATION FLOW - "Who are you?"
+        function renderAuthenticationFlowGraph() {
+            const container = document.getElementById('graph-auth-flow-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🔑 AUTHENTICATION FLOW</div>
+                    <div class="ot-node-sub">"Who are you?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">📥 REQUEST</div>
+                        <div class="ot-node-sub">User Access</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔀 NPM</div>
+                            <div class="ot-node-sub">Forward Auth</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🚦 Auth Check</div>
+                                <div class="ot-item ot-svc">🔄 Redirect</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🛡️ AUTHELIA</div>
+                        <div class="ot-node-sub">gcp-f-micro_1</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔐 Login Portal</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">👤 Username/Password</div>
+                                <div class="ot-item ot-svc">📱 2FA/TOTP</div>
+                                <div class="ot-item ot-svc">🔑 WebAuthn</div>
+                            </div>
+                        </div>
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🎫 Session</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-db">🍪 Cookie</div>
+                                <div class="ot-item ot-db">🔗 JWT Token</div>
+                                <div class="ot-item ot-db">⏱️ TTL Expiry</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔗 SSO/OIDC</div>
+                        <div class="ot-node-sub">Single Sign-On</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🌐 Providers</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔐 OIDC Flow</div>
+                                <div class="ot-item ot-svc">📜 ID Token</div>
+                                <div class="ot-item ot-svc">🔄 Refresh Token</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // 2. AUTHORIZATION FLOW - "What can you access?"
+        function renderAuthorizationFlowGraph() {
+            const container = document.getElementById('graph-authz-flow-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🎫 AUTHORIZATION FLOW</div>
+                    <div class="ot-node-sub">"What can you access?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">📋 ACCESS POLICY</div>
+                        <div class="ot-node-sub">Authelia Rules</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔒 Protection Levels</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🟢 bypass (public)</div>
+                                <div class="ot-item ot-svc">🟡 one_factor</div>
+                                <div class="ot-item ot-svc">🔴 two_factor</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">👥 RBAC</div>
+                        <div class="ot-node-sub">Role-Based</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🏷️ User Groups</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">👑 admins</div>
+                                <div class="ot-item ot-svc">👤 users</div>
+                                <div class="ot-item ot-svc">🔧 dev</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🌐 DOMAIN RULES</div>
+                        <div class="ot-node-sub">Per-Service</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔐 Protected</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">📸 photos.app → 2FA</div>
+                                <div class="ot-item ot-svc">🔀 proxy → admins</div>
+                                <div class="ot-item ot-svc">📊 analytics → 2FA</div>
+                            </div>
+                        </div>
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🌍 Public</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">📧 mail → bypass</div>
+                                <div class="ot-item ot-svc">🔔 ntfy → bypass</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // 3. NETWORK PROTECTION - "How is traffic secured?"
+        function renderNetworkProtectionGraph() {
+            const container = document.getElementById('graph-network-protection-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🌐 NETWORK PROTECTION</div>
+                    <div class="ot-node-sub">"How is traffic secured?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">☁️ EDGE</div>
+                        <div class="ot-node-sub">Cloudflare</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🛡️ WAF</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🚫 DDoS Protection</div>
+                                <div class="ot-item ot-svc">🤖 Bot Management</div>
+                                <div class="ot-item ot-svc">🔒 SSL/TLS</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🧱 FIREWALL</div>
+                        <div class="ot-node-sub">Cloud + UFW</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📋 Ingress Rules</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔹 22 SSH</div>
+                                <div class="ot-item ot-svc">🔹 80/443 HTTP/S</div>
+                                <div class="ot-item ot-svc">🔹 51820 WireGuard</div>
+                            </div>
+                        </div>
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📋 Egress Rules</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔸 Default Allow</div>
+                                <div class="ot-item ot-svc">🔸 DNS (53)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔗 VPN MESH</div>
+                        <div class="ot-node-sub">WireGuard</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🌟 GCP Hub</div>
+                            <div class="ot-node-sub">10.0.0.1</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔹 OCI Dev (10.0.0.2)</div>
+                                <div class="ot-item ot-svc">🔹 OCI Web (10.0.0.3)</div>
+                                <div class="ot-item ot-svc">🔹 OCI Svc (10.0.0.4)</div>
+                                <div class="ot-item ot-svc">🔹 Local (10.0.0.5)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🏗️ SEGMENTATION</div>
+                        <div class="ot-node-sub">Docker Networks</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔒 Isolated Subnets</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-db">proxy (172.23.0.0/24)</div>
+                                <div class="ot-item ot-db">mail (172.20.0.0/24)</div>
+                                <div class="ot-item ot-db">matomo (172.21.0.0/24)</div>
+                                <div class="ot-item ot-db">dev (172.24.0.0/24)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // 4. DATA PROTECTION - "How is data secured?"
+        function renderDataProtectionGraph() {
+            const container = document.getElementById('graph-data-protection-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🔒 DATA PROTECTION</div>
+                    <div class="ot-node-sub">"How is data secured?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔐 IN TRANSIT</div>
+                        <div class="ot-node-sub">TLS Encryption</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📜 Let's Encrypt</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔒 TLS 1.3</div>
+                                <div class="ot-item ot-svc">🔄 Auto-Renew</div>
+                                <div class="ot-item ot-svc">🌐 Wildcard Certs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">💾 AT REST</div>
+                        <div class="ot-node-sub">Storage Encryption</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🗄️ Volumes</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-db">🔐 Block Storage (OCI)</div>
+                                <div class="ot-item ot-db">🔐 Persistent Disk (GCP)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔄 SYNC</div>
+                        <div class="ot-node-sub">Syncthing</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📁 File Sync</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔒 E2E Encrypted</div>
+                                <div class="ot-item ot-svc">🔑 Device Keys</div>
+                                <div class="ot-item ot-svc">📋 Version History</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">💼 BACKUP</div>
+                        <div class="ot-node-sub">Recovery</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📦 Strategy</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🗓️ Daily Snapshots</div>
+                                <div class="ot-item ot-svc">🔄 DB Dumps</div>
+                                <div class="ot-item ot-svc">☁️ Off-site Copy</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // 5. THREAT PROTECTION - "How do we stop attacks?"
+        function renderThreatProtectionGraph() {
+            const container = document.getElementById('graph-threat-protection-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">🛡️ THREAT PROTECTION</div>
+                    <div class="ot-node-sub">"How do we stop attacks?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🦠 ANTIVIRUS</div>
+                        <div class="ot-node-sub">YARA Rules</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">👁️ Sauron</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">📡 inotify Watch</div>
+                                <div class="ot-item ot-svc">🔍 Pattern Match</div>
+                                <div class="ot-item ot-svc">🚨 Alert & Quarantine</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔬 CONTAINER SCAN</div>
+                        <div class="ot-node-sub">Image Security</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🐳 Docker</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">📋 Official Images</div>
+                                <div class="ot-item ot-svc">🔒 Non-root User</div>
+                                <div class="ot-item ot-svc">📌 Pinned Versions</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🚫 RATE LIMITING</div>
+                        <div class="ot-node-sub">Abuse Prevention</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">⏱️ Limits</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔄 Cloudflare Rules</div>
+                                <div class="ot-item ot-svc">🔐 Auth Attempts</div>
+                                <div class="ot-item ot-svc">📧 SMTP Throttle</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔐 SECRETS</div>
+                        <div class="ot-node-sub">Credential Safety</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">🔑 Management</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">📁 .env Files</div>
+                                <div class="ot-item ot-svc">🔒 Docker Secrets</div>
+                                <div class="ot-item ot-svc">🚫 No Git Commits</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // 6. OBSERVABILITY - "How do we see what's happening?"
+        function renderObservabilityGraph() {
+            const container = document.getElementById('graph-observability-container');
+            if (!container) return;
+
+            const html = `
+            <div class="ot-level ot-root-level">
+                <div class="ot-node ot-root">
+                    <div class="ot-node-title">📊 OBSERVABILITY</div>
+                    <div class="ot-node-sub">"How do we see what's happening?"</div>
+                </div>
+            </div>
+            <div class="ot-connector-down"></div>
+            <div class="ot-level ot-provider-level">
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">📋 LOGGING</div>
+                        <div class="ot-node-sub">Centralized</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📝 Sources</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🐳 Docker Logs</div>
+                                <div class="ot-item ot-svc">🖥️ Syslog</div>
+                                <div class="ot-item ot-svc">🔀 NPM Access Logs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">📈 ANALYTICS</div>
+                        <div class="ot-node-sub">Matomo</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📊 oci-f-micro_2</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">👁️ Page Views</div>
+                                <div class="ot-item ot-svc">👤 Visitors</div>
+                                <div class="ot-item ot-svc">🌍 Geo Data</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">🔔 ALERTING</div>
+                        <div class="ot-node-sub">ntfy</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">📱 Push Notifications</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🚨 Security Events</div>
+                                <div class="ot-item ot-svc">⚠️ System Alerts</div>
+                                <div class="ot-item ot-svc">📧 Email Fallback</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ot-branch">
+                    <div class="ot-node ot-provider">
+                        <div class="ot-node-title">📊 METRICS</div>
+                        <div class="ot-node-sub">Health Checks</div>
+                    </div>
+                    <div class="ot-connector-down"></div>
+                    <div class="ot-level ot-vm-level">
+                        <div class="ot-node ot-vm">
+                            <div class="ot-node-title">💓 Uptime</div>
+                            <div class="ot-node-items">
+                                <div class="ot-item ot-svc">🔄 Service Status</div>
+                                <div class="ot-item ot-svc">💾 Resource Usage</div>
+                                <div class="ot-item ot-svc">📉 Response Times</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            container.innerHTML = html;
+        }
+
+        // Render Security Features Table
+        function renderSecurityFeaturesTable() {
+            const table = document.getElementById('security-features-table');
+            if (!table) return;
+
+            const securityFeatures = [
+                { category: 'Authentication', feature: 'Authelia 2FA', description: 'Multi-factor authentication gateway', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Authentication', feature: 'OIDC/SSO', description: 'Single Sign-On via OpenID Connect', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Authentication', feature: 'Session Management', description: 'Encrypted session tokens with Redis', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Authorization', feature: 'RBAC Policies', description: 'Role-based access control rules', location: 'Authelia Config', status: 'Active' },
+                { category: 'Authorization', feature: 'Domain-based Rules', description: 'Per-domain access policies', location: 'NPM/Authelia', status: 'Active' },
+                { category: 'Network', feature: 'Cloudflare Proxy', description: 'Edge DDoS protection and CDN', location: 'Cloud Edge', status: 'Active' },
+                { category: 'Network', feature: 'Cloud Firewalls', description: 'OCI/GCP ingress rules', location: 'All VMs', status: 'Active' },
+                { category: 'Network', feature: 'UFW Host Firewall', description: 'Local iptables rules', location: 'All VMs', status: 'Active' },
+                { category: 'Network', feature: 'Docker Network Isolation', description: 'Bridge network segmentation', location: 'All VMs', status: 'Active' },
+                { category: 'Network', feature: 'TLS/SSL Termination', description: 'Let\'s Encrypt certificates via NPM', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Data Protection', feature: 'TLS 1.3 In Transit', description: 'Encrypted data transmission', location: 'All Services', status: 'Active' },
+                { category: 'Data Protection', feature: 'Database Encryption', description: 'SQLite/PostgreSQL encryption at rest', location: 'All VMs', status: 'Active' },
+                { category: 'Data Protection', feature: 'Syncthing E2E', description: 'End-to-end file sync encryption', location: 'oci-p-flex_1', status: 'Active' },
+                { category: 'Threat Protection', feature: 'NPM Block Exploits', description: 'Common exploit pattern blocking', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Threat Protection', feature: 'Rate Limiting', description: 'Request throttling per IP', location: 'NPM/Cloudflare', status: 'Active' },
+                { category: 'Threat Protection', feature: 'Secrets Management', description: 'Environment variables isolation', location: 'Docker Compose', status: 'Active' },
+                { category: 'Observability', feature: 'Matomo Analytics', description: 'Privacy-focused web analytics', location: 'oci-f-micro_2', status: 'Active' },
+                { category: 'Observability', feature: 'ntfy Alerting', description: 'Push notification for events', location: 'gcp-f-micro_1', status: 'Active' },
+                { category: 'Observability', feature: 'Docker Logging', description: 'Container log aggregation', location: 'All VMs', status: 'Active' },
+                { category: 'Observability', feature: 'Access Logs', description: 'NPM request logging', location: 'gcp-f-micro_1', status: 'Active' }
+            ];
+
+            let html = `
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Feature</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>`;
+
+            securityFeatures.forEach(item => {
+                const statusClass = item.status === 'Active' ? 'status-active' : 'status-inactive';
+                html += `
+                    <tr>
+                        <td><span class="category-badge">${item.category}</span></td>
+                        <td>${item.feature}</td>
+                        <td>${item.description}</td>
+                        <td><code>${item.location}</code></td>
+                        <td><span class="${statusClass}">${item.status}</span></td>
+                    </tr>`;
             });
 
-            html += `</div></div>`;
-            container.innerHTML = html;
+            html += '</tbody>';
+            table.innerHTML = html;
         }
 
         // Tab Switching with Lazy Loading
@@ -5152,27 +5996,41 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs'];
+            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
             const tabToParent = {
                 'infra': 'topology',
-                'resources': 'monitor',
-                'security': 'monitor',
-                'audit-analytics': 'monitor',
-                'audit-logs': 'monitor'
+                'resources': 'health',
+                'security': 'security',
+                'audit-analytics': 'security',
+                'audit-logs': 'security',
+                'cost': 'ops',
+                'capacity': 'ops'
             };
 
             function hideAllLevel3Navs() {
                 const navTopology = document.getElementById('nav-topology');
-                const navMonitor = document.getElementById('nav-monitor');
-                const navCost = document.getElementById('nav-cost');
+                const navHealth = document.getElementById('nav-health');
+                const navSecurity = document.getElementById('nav-security');
+                const navOps = document.getElementById('nav-ops');
                 const navApps = document.getElementById('nav-apps');
+                const navGraph = document.getElementById('nav-graph');
+                const navResource = document.getElementById('nav-resource');
+                const navSecurityTopo = document.getElementById('nav-security-topo');
+                const navResourceTables = document.getElementById('nav-resource-tables');
+                const navCostSubtabs = document.getElementById('nav-cost-subtabs');
                 if (navTopology) navTopology.style.display = 'none';
-                if (navMonitor) navMonitor.style.display = 'none';
-                if (navCost) navCost.style.display = 'none';
+                if (navHealth) navHealth.style.display = 'none';
+                if (navSecurity) navSecurity.style.display = 'none';
+                if (navOps) navOps.style.display = 'none';
                 if (navApps) navApps.style.display = 'none';
+                if (navGraph) navGraph.style.display = 'none';
+                if (navResource) navResource.style.display = 'none';
+                if (navSecurityTopo) navSecurityTopo.style.display = 'none';
+                if (navResourceTables) navResourceTables.style.display = 'none';
+                if (navCostSubtabs) navCostSubtabs.style.display = 'none';
             }
 
             function switchTab(targetTab) {
@@ -5205,14 +6063,38 @@
                         const navTopology = document.getElementById('nav-topology');
                         if (navTopology) navTopology.style.display = 'flex';
                         document.querySelector('[data-dash-parent="topology"]')?.classList.add('active');
-                    } else if (parentGroup === 'monitor') {
-                        const navMonitor = document.getElementById('nav-monitor');
-                        if (navMonitor) navMonitor.style.display = 'flex';
-                        document.querySelector('[data-dash-parent="monitor"]')?.classList.add('active');
-                    } else if (targetTab === 'cost') {
-                        const navCost = document.getElementById('nav-cost');
-                        if (navCost) navCost.style.display = 'flex';
-                        document.querySelector('[data-dash-tab="cost"]')?.classList.add('active');
+                        // Show Level 4 navigation based on current category
+                        if (currentCategory === 'resource') {
+                            const navResource = document.getElementById('nav-resource');
+                            if (navResource) navResource.style.display = 'flex';
+                            // Show Level 5 if Tables is selected
+                            if (currentResourceView === 'tables') {
+                                const navResourceTables = document.getElementById('nav-resource-tables');
+                                if (navResourceTables) navResourceTables.style.display = 'flex';
+                            }
+                        } else if (currentCategory === 'security') {
+                            const navSecurityTopo = document.getElementById('nav-security-topo');
+                            if (navSecurityTopo) navSecurityTopo.style.display = 'flex';
+                        }
+                        // Trigger view update
+                        updateInfraView();
+                    } else if (parentGroup === 'health') {
+                        const navHealth = document.getElementById('nav-health');
+                        if (navHealth) navHealth.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="health"]')?.classList.add('active');
+                    } else if (parentGroup === 'security') {
+                        const navSecurity = document.getElementById('nav-security');
+                        if (navSecurity) navSecurity.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="security"]')?.classList.add('active');
+                    } else if (parentGroup === 'ops') {
+                        const navOps = document.getElementById('nav-ops');
+                        if (navOps) navOps.style.display = 'flex';
+                        document.querySelector('[data-dash-parent="ops"]')?.classList.add('active');
+                        // Show cost sub-tabs if cost tab is selected
+                        if (targetTab === 'cost') {
+                            const navCostSubtabs = document.getElementById('nav-cost-subtabs');
+                            if (navCostSubtabs) navCostSubtabs.style.display = 'flex';
+                        }
                     } else if (targetTab === 'apps') {
                         const navApps = document.getElementById('nav-apps');
                         if (navApps) navApps.style.display = 'flex';
@@ -5233,14 +6115,16 @@
                 }
             }
 
-            // Handle parent buttons (Topology, Monitor, Audit) - click switches to first child tab
+            // Handle parent buttons (Topology, Health, Security, Ops) - click switches to first child tab
             parentButtons.forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.preventDefault();
                     const parentGroup = btn.getAttribute('data-dash-parent');
                     // Switch to the first tab in this group
                     if (parentGroup === 'topology') switchTab('infra');
-                    else if (parentGroup === 'monitor') switchTab('resources');
+                    else if (parentGroup === 'health') switchTab('resources');
+                    else if (parentGroup === 'security') switchTab('security');
+                    else if (parentGroup === 'ops') switchTab('cost');
                 });
             });
 

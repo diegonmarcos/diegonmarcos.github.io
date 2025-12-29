@@ -2165,6 +2165,112 @@
             color: var(--accent-blue);
         }
 
+        // Level 4 Navigation (same as Level 3)
+        .nav-level4 {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+        }
+
+        .nav-level4 .view-btn {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+
+        .nav-level4 .view-btn:hover {
+            opacity: 1;
+        }
+
+        .nav-level4 .view-btn.active {
+            opacity: 1;
+            border-color: var(--accent-primary);
+        }
+
+        [data-theme="blurred"] .nav-level4 {
+            background: transparent;
+            border: none;
+        }
+
+        [data-theme="blurred"] .nav-level4 .view-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+        }
+
+        [data-theme="blurred"] .nav-level4 .view-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        [data-theme="blurred"] .nav-level4 .view-btn.active {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        // Level 5 Navigation (same as Level 4)
+        .nav-level5 {
+            display: inline-flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+        }
+
+        .nav-level5 .view-btn {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+
+        .nav-level5 .view-btn:hover {
+            opacity: 1;
+        }
+
+        .nav-level5 .view-btn.active {
+            opacity: 1;
+            border-color: var(--accent-primary);
+        }
+
+        [data-theme="blurred"] .nav-level5 {
+            background: transparent;
+            border: none;
+        }
+
+        [data-theme="blurred"] .nav-level5 .view-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 6px;
+        }
+
+        [data-theme="blurred"] .nav-level5 .view-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        [data-theme="blurred"] .nav-level5 .view-btn.active {
+            background: rgba(56, 189, 248, 0.1);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
         /* View Mode Controls - filter/toggle style, NOT navigation */
         .view-mode-controls {
             display: inline-flex;
@@ -2273,6 +2379,17 @@
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
             padding: 1rem 0;
+        }
+
+        .apps-card-row--centered {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .apps-card-row--centered .app-card {
+            max-width: 400px;
+            width: 100%;
         }
 
         .app-card {

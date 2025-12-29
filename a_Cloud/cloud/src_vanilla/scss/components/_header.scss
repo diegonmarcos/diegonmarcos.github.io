@@ -355,8 +355,22 @@ header {
     flex-shrink: 0;
 }
 
+.nav-divider-small {
+    width: 1px;
+    height: 12px;
+    background: var(--border-color);
+    margin: 0 0.5rem;
+    opacity: 0.3;
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
 [data-theme="blurred"] .nav-divider {
     background: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="blurred"] .nav-divider-small {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 // Architecture dropdown
@@ -462,6 +476,55 @@ header {
 [data-theme="blurred"] .nav-level3-subtitle {
     color: var(--text-secondary);
     opacity: 0.8;
+}
+
+// Level 4 Navigation (for Graph sub-items: Resources / Security)
+.nav-level4-wrapper {
+    display: none;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.nav-level4 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+[data-theme="blurred"] .nav-level4 {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.nav-level5-wrapper {
+    display: none;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.nav-level5 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+[data-theme="blurred"] .nav-level5 {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
 }
 
 // Grid Size Selector

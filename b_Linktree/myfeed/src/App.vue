@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import Header from './components/layout/Header.vue'
 import MyFeedContainer from './components/myfeed/MyFeedContainer.vue'
 import NewsFeedContainer from './components/newsfeed/NewsFeedContainer.vue'
-import CloudFeedContainer from './components/cloudfeed/CloudFeedContainer.vue'
+import CloudFeedWrapper from './components/cloudfeed/CloudFeedWrapper.vue'
 
 const activeSection = ref<'myfeed' | 'newsfeed' | 'cloudfeed'>('myfeed')
 const searchQuery = ref('')
@@ -27,8 +27,8 @@ const searchQuery = ref('')
       <!-- NewsFeed Section -->
       <NewsFeedContainer v-else-if="activeSection === 'newsfeed'" />
 
-      <!-- CloudFeed Section -->
-      <CloudFeedContainer v-else-if="activeSection === 'cloudfeed'" />
+      <!-- CloudFeed Section (with API/RSS toggle) -->
+      <CloudFeedWrapper v-else-if="activeSection === 'cloudfeed'" />
     </main>
 
     <!-- Linktree Button (Fixed Corner) -->

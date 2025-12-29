@@ -1,0 +1,109 @@
+// CloudFeed Page Styles
+// =========================================
+
+.cloudfeed {
+  min-height: 100vh;
+  @include flex-col(flex-start, stretch, 0);
+
+  &__content {
+    padding: 1rem;
+  }
+}
+
+.feed-header {
+  @include flex-row(space-between, center, 0.5rem);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid $border-muted;
+
+  .header-left {
+    @include flex-row(flex-start, baseline, 0.75rem);
+
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .last-update {
+      font-size: 0.7rem;
+      color: $text-tertiary;
+    }
+  }
+
+  .header-right {
+    @include flex-row(flex-end, center, 0.5rem);
+  }
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: $text-primary;
+  @include flex-row(flex-start, center, 0.5rem);
+
+  .section-count {
+    padding: 0.15rem 0.5rem;
+    background: $bg-tertiary;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: $text-secondary;
+  }
+}
+
+.apps-section,
+.jornald-section {
+  margin-bottom: 1.5rem;
+}
+
+.channels-table-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid $border-muted;
+}
+
+// Message details (expanded)
+.message-details {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid $border-muted;
+
+  .tags {
+    @include flex-row(flex-start, center, 0.25rem);
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+
+  .tag {
+    font-size: 0.5rem;
+    padding: 0.1rem 0.4rem;
+    background: $bg-tertiary;
+    border-radius: 4px;
+    color: $text-secondary;
+  }
+
+  .meta {
+    @include flex-row(flex-start, center, 0.5rem);
+    font-size: 0.5rem;
+    color: $text-tertiary;
+  }
+}
+
+// API mode placeholder
+.api-mode {
+  @include flex-col(center, center, 1rem);
+  padding: 3rem;
+  text-align: center;
+  color: $text-tertiary;
+
+  .icon {
+    font-size: 3rem;
+    opacity: 0.5;
+  }
+
+  p {
+    max-width: 400px;
+  }
+}

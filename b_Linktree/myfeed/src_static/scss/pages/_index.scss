@@ -1,0 +1,84 @@
+// Index Page Styles
+// =========================================
+
+.landing {
+  min-height: 100vh;
+  @include flex-col(flex-start, stretch, 0);
+
+  &__hero {
+    @include flex-col(center, center, 1.5rem);
+    padding: 4rem 2rem;
+    text-align: center;
+    background: linear-gradient(135deg, $bg-secondary 0%, $bg-primary 100%);
+    border-bottom: 1px solid $border-default;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, $text-primary 0%, $accent-blue 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__subtitle {
+    font-size: 1rem;
+    color: $text-secondary;
+    max-width: 500px;
+  }
+
+  &__nav {
+    @include flex-row(center, center, 1rem);
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  &__link {
+    @include flex-col(center, center, 0.5rem);
+    padding: 1.5rem 2rem;
+    background: $bg-secondary;
+    border: 1px solid $border-default;
+    border-radius: 12px;
+    color: $text-primary;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    min-width: 200px;
+
+    &:hover {
+      background: $bg-tertiary;
+      border-color: $accent-blue;
+      transform: translateY(-2px);
+      text-decoration: none;
+    }
+
+    .icon {
+      font-size: 2rem;
+    }
+
+    span {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .link-desc {
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: $text-tertiary;
+      text-align: center;
+    }
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding: 1rem;
+    text-align: center;
+    border-top: 1px solid $border-muted;
+    color: $text-tertiary;
+    font-size: 0.75rem;
+
+    a {
+      color: $accent-blue;
+    }
+  }
+}

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AppsFeed | Personal App Aggregator</title>
+  <meta name="description" content="Personal app feed aggregator - GitHub, YouTube, Last.fm, Reddit, Letterboxd and more">
+  <link rel="icon" type="image/png" href="./public/favicon.png">
+
+  <!-- Matomo Tag Manager -->
+  <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="appsfeed">
+    <header class="app-header">
+      <div class="header__inner">
+        <div class="header__logo"><a href="index.html">MyFeed</a></div>
+        <nav class="header__nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="appsfeed.html" class="nav-link active">AppsFeed</a>
+          <a href="newsfeed.html" class="nav-link">NewsFeed</a>
+          <a href="cloudfeed.html" class="nav-link">CloudFeed</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="feed-header">
+      <div class="header-left">
+        <h2>Apps Feed</h2>
+        <span class="last-update" id="apps-last-update"></span>
+      </div>
+      <div class="header-right">
+        <button class="refresh-btn" id="appsfeed-refresh">
+          <span id="apps-refresh-icon">&#8635;</span>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div id="error-banner" class="error-banner" style="display: none;"></div>
+
+    <!-- Apps Grid - 4 columns -->
+    <div class="channels-grid" id="apps-channels">
+      <!-- GitHub -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #238636">
+          <div class="channel-info">
+            <h3>GitHub</h3>
+            <span class="channel-desc">Public activity feed</span>
+          </div>
+          <span class="channel-count" style="background: #238636" id="github-count">0</span>
+        </div>
+        <div class="messages-container" id="github-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://github.com/diegonmarcos" target="_blank">Profile</a>
+          <a href="https://github.com/diegonmarcos.atom" target="_blank">Atom</a>
+        </div>
+      </div>
+
+      <!-- YouTube -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #ff0000">
+          <div class="channel-info">
+            <h3>YouTube</h3>
+            <span class="channel-desc">Subscriptions & uploads</span>
+          </div>
+          <span class="channel-count" style="background: #ff0000" id="youtube-count">0</span>
+        </div>
+        <div class="messages-container" id="youtube-feed">
+          <div class="empty-state">Configure channel ID</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://youtube.com" target="_blank">YouTube</a>
+        </div>
+      </div>
+
+      <!-- Last.fm -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #d51007">
+          <div class="channel-info">
+            <h3>Last.fm</h3>
+            <span class="channel-desc">Recent scrobbles</span>
+          </div>
+          <span class="channel-count" style="background: #d51007" id="lastfm-count">0</span>
+        </div>
+        <div class="messages-container" id="lastfm-feed">
+          <div class="empty-state">Configure username</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://last.fm" target="_blank">Last.fm</a>
+        </div>
+      </div>
+
+      <!-- Reddit -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #ff4500">
+          <div class="channel-info">
+            <h3>Reddit</h3>
+            <span class="channel-desc">Posts & comments</span>
+          </div>
+          <span class="channel-count" style="background: #ff4500" id="reddit-count">0</span>
+        </div>
+        <div class="messages-container" id="reddit-feed">
+          <div class="empty-state">Configure username</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://reddit.com" target="_blank">Reddit</a>
+        </div>
+      </div>
+
+      <!-- Letterboxd -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #00d735">
+          <div class="channel-info">
+            <h3>Letterboxd</h3>
+            <span class="channel-desc">Film diary</span>
+          </div>
+          <span class="channel-count" style="background: #00d735" id="letterboxd-count">0</span>
+        </div>
+        <div class="messages-container" id="letterboxd-feed">
+          <div class="empty-state">Configure username</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://letterboxd.com" target="_blank">Letterboxd</a>
+        </div>
+      </div>
+
+      <!-- Mastodon -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #6364ff">
+          <div class="channel-info">
+            <h3>Mastodon</h3>
+            <span class="channel-desc">Public toots</span>
+          </div>
+          <span class="channel-count" style="background: #6364ff" id="mastodon-count">0</span>
+        </div>
+        <div class="messages-container" id="mastodon-feed">
+          <div class="empty-state">Configure instance</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://mastodon.social" target="_blank">Mastodon</a>
+        </div>
+      </div>
+
+      <!-- Goodreads -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #553b08">
+          <div class="channel-info">
+            <h3>Goodreads</h3>
+            <span class="channel-desc">Reading updates</span>
+          </div>
+          <span class="channel-count" style="background: #553b08" id="goodreads-count">0</span>
+        </div>
+        <div class="messages-container" id="goodreads-feed">
+          <div class="empty-state">Configure user ID</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://goodreads.com" target="_blank">Goodreads</a>
+        </div>
+      </div>
+
+      <!-- DEV.to -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #0a0a0a">
+          <div class="channel-info">
+            <h3>DEV.to</h3>
+            <span class="channel-desc">Articles</span>
+          </div>
+          <span class="channel-count" style="background: #0a0a0a" id="devto-count">0</span>
+        </div>
+        <div class="messages-container" id="devto-feed">
+          <div class="empty-state">Configure username</div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://dev.to" target="_blank">DEV.to</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudFeed | Service Monitoring</title>
+  <meta name="description" content="Cloud notifications and service monitoring via ntfy">
+  <link rel="icon" type="image/png" href="./public/favicon.png">
+
+  <!-- Matomo Tag Manager -->
+  <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="cloudfeed">
+    <header class="app-header">
+      <div class="header__inner">
+        <div class="header__logo"><a href="index.html">MyFeed</a></div>
+        <nav class="header__nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="appsfeed.html" class="nav-link">AppsFeed</a>
+          <a href="newsfeed.html" class="nav-link">NewsFeed</a>
+          <a href="cloudfeed.html" class="nav-link active">CloudFeed</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="mode-toggle">
+      <button class="mode-btn" data-mode="api">API</button>
+      <button class="mode-btn active" data-mode="rss">RSS (Direct)</button>
+    </div>
+
+    <!-- API Mode (placeholder) -->
+    <div id="api-mode" class="cloudfeed__content" style="display: none;">
+      <div class="api-mode">
+        <span class="icon">&#9881;</span>
+        <p>API mode requires a backend server. Use RSS mode for direct ntfy access.</p>
+      </div>
+    </div>
+
+    <!-- RSS Mode -->
+    <div id="rss-mode" class="cloudfeed__content">
+      <div class="feed-header">
+        <div class="header-left">
+          <h2>Cloud Feed (RSS)</h2>
+          <span class="last-update" id="last-update"></span>
+        </div>
+        <div class="header-right">
+          <button class="refresh-btn" id="cloudfeed-refresh">
+            <span id="refresh-icon">&#8635;</span>
+            Refresh
+          </button>
+          <a href="https://rss.diegonmarcos.com" target="_blank" class="ntfy-link">ntfy</a>
+        </div>
+      </div>
+
+      <div id="error-banner" class="error-banner" style="display: none;"></div>
+
+      <!-- Apps Section -->
+      <div class="apps-section">
+        <h3 class="section-title">Apps <span class="section-count" id="apps-count">0</span></h3>
+        <div class="channels-grid apps-grid" id="apps-channels"></div>
+      </div>
+
+      <!-- JornalD Section -->
+      <div class="jornald-section">
+        <h3 class="section-title">JornalD <span class="section-count" id="jornald-count">0</span></h3>
+
+        <!-- Service Matrix Table (Collapsible) -->
+        <details class="matrix-section">
+          <summary>Service Monitoring Matrix</summary>
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Health (What)</th>
+                <th>Health (How)</th>
+                <th>Security (Who)</th>
+              </tr>
+            </thead>
+            <tbody id="matrix-body">
+              <tr>
+                <td><span class="service-badge" style="background: #f85149;">NPM</span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Proxy errors, SSL renewal</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Response times, connections</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">sauron</span><span class="cell-desc">Access logs, blocked requests</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="service-badge" style="background: #a371f7;">Authelia</span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Config reload, failures</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Auth latency</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">auth</span><span class="cell-desc">Login attempts, 2FA events</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="service-badge" style="background: #2496ed;">Docker</span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Container start/stop/crash</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Memory/CPU per container</span></span></td>
+                <td><span class="cell-empty">-</span></td>
+              </tr>
+              <tr>
+                <td><span class="service-badge" style="background: #3fb950;">SSH</span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Connection events</span></span></td>
+                <td><span class="cell-empty">-</span></td>
+                <td><span class="cell-content"><span class="cell-topic">auth</span><span class="cell-desc">User logins, failed attempts</span></span></td>
+              </tr>
+              <tr>
+                <td><span class="service-badge" style="background: #d29922;">Mailu</span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Queue errors, delivery fails</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">system</span><span class="cell-desc">Queue size, delivery time</span></span></td>
+                <td><span class="cell-content"><span class="cell-topic">auth</span><span class="cell-desc">Auth attempts, relay denies</span></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </details>
+
+        <div class="channels-grid jornald-grid" id="jornald-channels"></div>
+      </div>
+
+      <!-- Channels Reference Table -->
+      <details class="channels-table-section">
+        <summary>All ntfy Channels</summary>
+        <table class="channels-table">
+          <thead>
+            <tr>
+              <th>Channel</th>
+              <th>Category</th>
+              <th>JSON</th>
+              <th>SSE</th>
+              <th>WebSocket</th>
+            </tr>
+          </thead>
+          <tbody id="channels-table-body"></tbody>
+        </table>
+      </details>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

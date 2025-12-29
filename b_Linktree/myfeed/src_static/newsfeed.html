@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NewsFeed | World, Tech, Science, Markets</title>
+  <meta name="description" content="News aggregator - World, Tech, Science, Markets from Google News">
+  <link rel="icon" type="image/png" href="./public/favicon.png">
+
+  <!-- Matomo Tag Manager -->
+  <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="newsfeed">
+    <header class="app-header">
+      <div class="header__inner">
+        <div class="header__logo"><a href="index.html">MyFeed</a></div>
+        <nav class="header__nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="appsfeed.html" class="nav-link">AppsFeed</a>
+          <a href="newsfeed.html" class="nav-link active">NewsFeed</a>
+          <a href="cloudfeed.html" class="nav-link">CloudFeed</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="feed-header">
+      <div class="header-left">
+        <h2>News Feed</h2>
+        <span class="last-update" id="news-last-update"></span>
+      </div>
+      <div class="header-right">
+        <button class="refresh-btn" id="newsfeed-refresh">
+          <span id="news-refresh-icon">&#8635;</span>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <div id="error-banner" class="error-banner" style="display: none;"></div>
+
+    <!-- News Grid - 4 columns -->
+    <div class="channels-grid" id="news-channels">
+      <!-- World -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #58a6ff">
+          <div class="channel-info">
+            <h3>World</h3>
+            <span class="channel-desc">Global headlines</span>
+          </div>
+          <span class="channel-count" style="background: #58a6ff" id="world-count">0</span>
+        </div>
+        <div class="messages-container" id="world-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx1YlY4U0FtVnVHZ0pWVXlnQVAB" target="_blank">Google News</a>
+        </div>
+      </div>
+
+      <!-- Tech -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #a371f7">
+          <div class="channel-info">
+            <h3>Tech</h3>
+            <span class="channel-desc">Technology news</span>
+          </div>
+          <span class="channel-count" style="background: #a371f7" id="tech-count">0</span>
+        </div>
+        <div class="messages-container" id="tech-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGRqTVhZU0FtVnVHZ0pWVXlnQVAB" target="_blank">Google News</a>
+        </div>
+      </div>
+
+      <!-- Science -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #3fb950">
+          <div class="channel-info">
+            <h3>Science</h3>
+            <span class="channel-desc">Science & research</span>
+          </div>
+          <span class="channel-count" style="background: #3fb950" id="science-count">0</span>
+        </div>
+        <div class="messages-container" id="science-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRFp0Y1RjU0FtVnVHZ0pWVXlnQVAB" target="_blank">Google News</a>
+        </div>
+      </div>
+
+      <!-- Markets -->
+      <div class="channel-card">
+        <div class="channel-header" style="border-color: #d29922">
+          <div class="channel-info">
+            <h3>Markets</h3>
+            <span class="channel-desc">Business & finance</span>
+          </div>
+          <span class="channel-count" style="background: #d29922" id="markets-count">0</span>
+        </div>
+        <div class="messages-container" id="markets-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://news.google.com/topics/CAAqJggKIiBDQkFTRWdvSUwyMHZNRGx6TVdZU0FtVnVHZ0pWVXlnQVAB" target="_blank">Google News</a>
+        </div>
+      </div>
+
+      <!-- Hacker News -->
+      <div class="channel-card">
+        <div class="channel-header hn" style="border-color: #ff6600">
+          <div class="channel-info">
+            <h3>Hacker News</h3>
+            <span class="channel-desc">Top stories (50+ pts)</span>
+          </div>
+          <span class="channel-count" style="background: #ff6600" id="hn-count">0</span>
+        </div>
+        <div class="messages-container" id="hn-feed">
+          <div class="loading-state"><div class="skeleton-row"></div><div class="skeleton-row"></div></div>
+        </div>
+        <div class="channel-footer">
+          <a href="https://news.ycombinator.com" target="_blank">HN</a>
+          <a href="https://hnrss.org" target="_blank">RSS</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

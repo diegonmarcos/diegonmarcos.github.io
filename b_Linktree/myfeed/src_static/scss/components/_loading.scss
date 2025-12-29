@@ -1,0 +1,54 @@
+// Loading Component
+// =========================================
+
+.loading-state {
+  @include flex-col(flex-start, stretch, 0.4rem);
+  padding: 0.5rem;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $bg-tertiary 25%,
+    $bg-hover 50%,
+    $bg-tertiary 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 4px;
+}
+
+.skeleton-msg {
+  height: 50px;
+  @extend .skeleton;
+}
+
+.skeleton-row {
+  height: 60px;
+  @extend .skeleton;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.error-banner {
+  padding: 0.5rem 0.75rem;
+  background: rgba($accent-red, 0.1);
+  border: 1px solid rgba($accent-red, 0.4);
+  border-radius: 6px;
+  color: $accent-red;
+  margin: 1rem;
+  font-size: 0.75rem;
+}
+
+.time-group {
+  padding: 0.5rem 1rem;
+  background: $bg-tertiary;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $text-tertiary;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

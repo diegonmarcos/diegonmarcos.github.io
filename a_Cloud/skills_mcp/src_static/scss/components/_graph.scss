@@ -61,30 +61,30 @@
 // Graph nodes
 .graph-node {
   cursor: pointer;
-  transition: transform $transition-fast;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  transition: opacity $transition-fast;
 
   circle {
-    stroke-width: 2;
     transition: all $transition-fast;
   }
 
   &--mcp circle {
-    fill: rgba($color-type-mcp, 0.8);
-    stroke: $color-type-mcp;
+    fill: url(#mcp-gradient);
   }
 
   &--skill circle {
-    fill: rgba($color-type-skill, 0.8);
-    stroke: $color-type-skill;
+    fill: url(#skill-gradient);
+  }
+
+  &--community circle {
+    fill: url(#community-gradient);
   }
 
   &.is-highlighted circle {
-    stroke-width: 3;
-    filter: drop-shadow(0 0 8px currentColor);
+    filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
+  }
+
+  &.is-dimmed {
+    opacity: 0.2;
   }
 
   text {
@@ -127,29 +127,49 @@
 }
 
 .graph-legend__dot {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 
   &--mcp {
-    background: $color-type-mcp;
+    background: linear-gradient(135deg, #67e8f9, #06b6d4);
   }
 
   &--skill {
-    background: $color-type-skill;
+    background: linear-gradient(135deg, #c084fc, #a855f7);
+  }
+
+  &--community {
+    background: linear-gradient(135deg, #34d399, #10b981);
   }
 }
 
 .graph-legend__line {
   width: 24px;
   height: 2px;
-  background: $color-border-light;
+  background: linear-gradient(90deg, transparent, $color-border-light, transparent);
+}
+
+// Graph controls
+.graph-controls {
+  @include flex-row(center, center, $spacing-lg);
+  margin-top: $spacing-sm;
+  padding: $spacing-sm;
+
+  span {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    padding: $spacing-xs $spacing-sm;
+    background: $color-bg-tertiary;
+    border-radius: $border-radius-sm;
+  }
 }
 
 // Graph info
 .graph-info {
   text-align: center;
-  margin-top: $spacing-md;
+  margin-top: $spacing-sm;
   color: $color-text-muted;
   font-size: $font-size-sm;
 }

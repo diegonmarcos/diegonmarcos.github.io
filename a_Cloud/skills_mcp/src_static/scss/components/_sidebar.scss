@@ -61,13 +61,44 @@
     font-weight: $font-weight-semibold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    color: $color-text-primary;
+    @include flex-row(flex-start, center, $spacing-sm);
+  }
+
+  &__subtitle {
+    padding: 0 $spacing-lg;
+    padding-left: calc($spacing-lg + 24px);
+    font-size: 10px;
     color: $color-text-muted;
+    margin-bottom: $spacing-xs;
+  }
+
+  &__icon {
+    width: 18px;
+    height: 18px;
+    @include flex-center;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: $font-weight-bold;
+    color: white;
+
+    &--skill {
+      background: linear-gradient(135deg, #c084fc, #a855f7);
+    }
+
+    &--community {
+      background: linear-gradient(135deg, #34d399, #10b981);
+    }
+
+    &--mcp {
+      background: linear-gradient(135deg, #67e8f9, #06b6d4);
+    }
   }
 
   &__link {
     display: block;
-    padding: $spacing-sm $spacing-lg;
-    padding-left: $spacing-xl;
+    padding: $spacing-xs $spacing-lg;
+    padding-left: calc($spacing-lg + 24px);
     font-size: $font-size-sm;
     color: $color-text-secondary;
     transition: all $transition-fast;
@@ -82,6 +113,18 @@
       background: rgba($color-accent-blue, 0.15);
       color: $color-accent-blue;
       border-left-color: $color-accent-blue;
+    }
+
+    &--skill:hover {
+      background: rgba(#a855f7, 0.1);
+    }
+
+    &--community:hover {
+      background: rgba(#10b981, 0.1);
+    }
+
+    &--mcp:hover {
+      background: rgba(#06b6d4, 0.1);
     }
   }
 

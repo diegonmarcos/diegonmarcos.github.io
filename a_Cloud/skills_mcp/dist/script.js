@@ -1,4 +1,4 @@
-(()=>{var P=(e,a,t)=>new Promise((s,r)=>{var o=l=>{try{c(t.next(l))}catch(i){r(i)}},d=l=>{try{c(t.throw(l))}catch(i){r(i)}},c=l=>l.done?s(l.value):Promise.resolve(l.value).then(o,d);c((t=t.apply(e,a)).next())});var A=document.querySelector(".sidebar"),q=document.querySelector(".sidebar-toggle"),f=document.querySelector(".sidebar-overlay"),m=document.querySelector(".search__input"),E=document.querySelectorAll(".filter-btn"),I=document.querySelector(".endpoint-list"),b=document.querySelector(".sidebar__nav"),_="all",g="",v=[{id:"read",type:"mcp",name:"Read",path:"Read",summary:"Read file contents",description:"Reads a file from the local filesystem. Supports text files, images (PNG, JPG), PDFs, and Jupyter notebooks (.ipynb). Returns content with line numbers.",category:"File Operations",parameters:[{name:"file_path",type:"string",required:!0,description:"The absolute path to the file to read"},{name:"offset",type:"number",required:!1,description:"Line number to start reading from"},{name:"limit",type:"number",required:!1,description:"Number of lines to read (default: 2000)"}],example:`// Read entire file
+(()=>{var V=(t,s,a)=>new Promise((d,i)=>{var n=g=>{try{y(a.next(g))}catch(f){i(f)}},w=g=>{try{y(a.throw(g))}catch(f){i(f)}},y=g=>g.done?d(g.value):Promise.resolve(g.value).then(n,w);y((a=a.apply(t,s)).next())});var X=document.querySelector(".sidebar"),T=document.querySelector(".sidebar-toggle"),S=document.querySelector(".sidebar-overlay"),k=document.querySelector(".search__input"),j=document.querySelectorAll(".filter-btn"),te=document.querySelector(".endpoint-list"),E=document.querySelector(".sidebar__nav"),G="all",v="",C=[{id:"read",type:"mcp",name:"Read",path:"Read",summary:"Read file contents",description:"Reads a file from the local filesystem. Supports text files, images (PNG, JPG), PDFs, and Jupyter notebooks (.ipynb). Returns content with line numbers.",category:"File Operations",parameters:[{name:"file_path",type:"string",required:!0,description:"The absolute path to the file to read"},{name:"offset",type:"number",required:!1,description:"Line number to start reading from"},{name:"limit",type:"number",required:!1,description:"Number of lines to read (default: 2000)"}],example:`// Read entire file
 Read({ file_path: "/path/to/file.ts" })
 
 // Read specific lines (for large files)
@@ -91,7 +91,7 @@ LSP({
     { content: "Implement auth", status: "in_progress", activeForm: "Implementing auth" },
     { content: "Write tests", status: "pending", activeForm: "Writing tests" }
   ]
-})`},{id:"enter-plan-mode",type:"mcp",name:"EnterPlanMode",path:"EnterPlanMode",summary:"Start planning mode",description:"Enter plan mode for non-trivial implementations. Explore codebase and design approach before coding. Requires user approval.",category:"Planning",parameters:[]},{id:"exit-plan-mode",type:"mcp",name:"ExitPlanMode",path:"ExitPlanMode",summary:"Exit planning mode",description:"Signal completion of planning phase. Plan should already be written to the plan file.",category:"Planning",parameters:[]}],w=[{id:"skill-pdf",type:"skill",name:"PDF",path:"pdf",summary:"PDF manipulation toolkit",description:"Comprehensive PDF toolkit: extract text/tables with pdfplumber, OCR scanned docs with pytesseract, create PDFs with reportlab, merge/split with pypdf/qpdf, rotate pages, add watermarks, encrypt/decrypt, and fill form fields.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"Libraries",type:"Python",required:!0,description:"pypdf, pdfplumber, reportlab, pytesseract, pdf2image, pandas"},{name:"CLI Tools",type:"Bash",required:!1,description:"pdftotext, qpdf, pdftk (poppler-utils)"}],example:`"Extract the table from page 3 of report.pdf and convert to CSV"
+})`},{id:"enter-plan-mode",type:"mcp",name:"EnterPlanMode",path:"EnterPlanMode",summary:"Start planning mode",description:"Enter plan mode for non-trivial implementations. Explore codebase and design approach before coding. Requires user approval.",category:"Planning",parameters:[]},{id:"exit-plan-mode",type:"mcp",name:"ExitPlanMode",path:"ExitPlanMode",summary:"Exit planning mode",description:"Signal completion of planning phase. Plan should already be written to the plan file.",category:"Planning",parameters:[]}],A=[{id:"skill-pdf",type:"skill",name:"PDF",path:"pdf",summary:"PDF manipulation toolkit",description:"Comprehensive PDF toolkit: extract text/tables with pdfplumber, OCR scanned docs with pytesseract, create PDFs with reportlab, merge/split with pypdf/qpdf, rotate pages, add watermarks, encrypt/decrypt, and fill form fields.",category:"Document Skills",source:"anthropics/skills",requiredMcp:["Read","Write","Bash"],parameters:[{name:"Libraries",type:"Python",required:!0,description:"pypdf, pdfplumber, reportlab, pytesseract, pdf2image, pandas"},{name:"CLI Tools",type:"Bash",required:!1,description:"pdftotext, qpdf, pdftk (poppler-utils)"}],example:`"Extract the table from page 3 of report.pdf and convert to CSV"
 
 "Merge invoice1.pdf and invoice2.pdf, then add a watermark"
 
@@ -187,31 +187,7 @@ LSP({
 
 "Add references/ for documentation loaded as-needed"
 
-"scripts/package_skill.py ./skills/my-skill \u2192 my-skill.skill"`}],x=[{id:"skill-playwright",type:"skill",name:"Playwright Automation",path:"playwright-skill",summary:"Browser automation",description:"General-purpose browser automation using Playwright. Navigate, interact, screenshot, and scrape web pages.",category:"Community Skills",source:"community",requiredMcp:["Bash","Write","mcp__playwright"],example:`"Use Playwright to scrape product prices from this e-commerce site"
-
-"Automate filling out this form and submitting it"
-
-"Take screenshots of our app at different viewport sizes"`},{id:"skill-ios-simulator",type:"skill",name:"iOS Simulator",path:"ios-simulator-skill",summary:"iOS app testing",description:"Build and test iOS applications through simulator automation. Launch apps, interact with UI, capture screenshots.",category:"Community Skills",source:"community",requiredMcp:["Bash","Write","Read"],example:`"Build and run the app in iOS Simulator"
-
-"Test the onboarding flow on iPhone 15 Pro simulator"
-
-"Capture screenshots of all screens for App Store submission"`},{id:"skill-d3js",type:"skill",name:"D3.js Visualizations",path:"claude-d3js-skill",summary:"Data visualizations",description:"Create interactive data visualizations using D3.js. Charts, graphs, maps, and custom visual representations.",category:"Community Skills",source:"community",requiredMcp:["Write","Read"],example:`"Create an interactive bar chart showing monthly sales"
-
-"Build a force-directed graph of our team structure"
-
-"Visualize geographic data on an interactive map"`},{id:"skill-scientific",type:"skill",name:"Scientific Computing",path:"claude-scientific-skills",summary:"Scientific libraries",description:"Scientific computing with NumPy, Pandas, SciPy, and database integration. Data analysis and research workflows.",category:"Community Skills",source:"community",requiredMcp:["Bash","Write","Read"],example:`"Analyze this CSV with statistical methods"
-
-"Run regression analysis on the experimental data"
-
-"Process and visualize the research dataset"`},{id:"skill-web-assets",type:"skill",name:"Web Asset Generator",path:"web-asset-generator",summary:"Generate web assets",description:"Generate favicons, app icons, social media images, and other web assets at all required sizes.",category:"Community Skills",source:"community",requiredMcp:["Write","Bash"],example:`"Generate all favicon sizes from our logo"
-
-"Create Open Graph images for each blog post"
-
-"Generate PWA icons at all required dimensions"`},{id:"skill-ffuf",type:"skill",name:"FFUF Web Fuzzing",path:"ffuf-web-fuzzing",summary:"Security testing",description:"Web fuzzing and penetration testing guidance using FFUF. Directory discovery, parameter fuzzing, authenticated testing.",category:"Community Skills",source:"community",requiredMcp:["Bash","Read","Write"],example:`"Fuzz the API endpoints for hidden parameters"
-
-"Discover hidden directories on the target application"
-
-"Test for authentication bypass vulnerabilities"`}],R=[...v,...w,...x];function B(){A.classList.toggle("is-open"),f.classList.toggle("is-visible")}function S(){A.classList.remove("is-open"),f.classList.remove("is-visible")}function $(e){e.classList.toggle("is-open")}function H(){return R.filter(e=>{let a=_==="all"||e.type===_,t=g===""||e.name.toLowerCase().includes(g)||e.summary.toLowerCase().includes(g)||e.path.toLowerCase().includes(g)||e.category.toLowerCase().includes(g)||e.description&&e.description.toLowerCase().includes(g);return a&&t})}function N(e){let a=e.parameters&&e.parameters.length>0?`
+"scripts/package_skill.py ./skills/my-skill \u2192 my-skill.skill"`}],F=[{id:"agent-frontend-dev",type:"skill",name:"Frontend Developer",path:"frontend-developer",summary:"UI/UX implementation specialist",description:"Specialized agent for building user-facing code and interfaces. React, Vue, Svelte expertise. Focuses on component architecture, state management, and responsive design.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Read","Write","Edit","Glob","Grep","Bash"]},{id:"agent-backend-arch",type:"skill",name:"Backend Architect",path:"backend-architect",summary:"Server-side & system design",description:"Handles server-side logic, API design, and system infrastructure. Database modeling, microservices, and scalability patterns.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Read","Write","Edit","Bash","Grep"]},{id:"agent-mobile-builder",type:"skill",name:"Mobile App Builder",path:"mobile-app-builder",summary:"iOS/Android development",description:"Specialized in iOS/Android application development. Swift, Kotlin, React Native, Flutter. App Store optimization and mobile-specific UX.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Read","Write","Edit","Bash"]},{id:"agent-ai-engineer",type:"skill",name:"AI Engineer",path:"ai-engineer",summary:"ML models & AI integration",description:"Manages machine learning models and AI integration. Prompt engineering, model fine-tuning, RAG pipelines, and AI workflow automation.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Read","Write","Bash","WebSearch","WebFetch"]},{id:"agent-devops",type:"skill",name:"DevOps Automator",path:"devops-automator",summary:"CI/CD & infrastructure",description:"Focuses on deployment pipelines, workflow automation, Docker, Kubernetes, and infrastructure as code.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Bash","Read","Write","Edit"]},{id:"agent-prototyper",type:"skill",name:"Rapid Prototyper",path:"rapid-prototyper",summary:"Quick MVPs & POCs",description:"Designed for building quick MVPs and proof-of-concepts. Fast iteration, minimal viable features, rapid validation.",category:"Engineering Agents",source:"community/diego",requiredMcp:["Write","Bash","Read"]},{id:"agent-trend-research",type:"skill",name:"Trend Researcher",path:"trend-researcher",summary:"Market & industry analysis",description:"Analyzes market shifts and industry movements. Competitive intelligence, emerging technology tracking, and opportunity identification.",category:"Product Agents",source:"community/diego",requiredMcp:["WebSearch","WebFetch","Read","Write"]},{id:"agent-feedback-synth",type:"skill",name:"Feedback Synthesizer",path:"feedback-synthesizer",summary:"User data interpretation",description:"Aggregates and interprets user reviews, feedback data, and behavioral metrics. Sentiment analysis and actionable insights.",category:"Product Agents",source:"community/diego",requiredMcp:["Read","Write","Grep"]},{id:"agent-sprint-prior",type:"skill",name:"Sprint Prioritizer",path:"sprint-prioritizer",summary:"Roadmap & task management",description:"Manages the product roadmap and task urgency. Sprint planning, backlog grooming, and priority frameworks.",category:"Product Agents",source:"community/diego",requiredMcp:["Read","Write","TodoWrite"]},{id:"agent-tiktok",type:"skill",name:"TikTok Strategist",path:"tiktok-strategist",summary:"Short-form video strategy",description:"Short-form video strategy and trends. Viral hooks, trend analysis, and content calendar for TikTok.",category:"Marketing Agents",source:"community/diego",requiredMcp:["WebSearch","Write","Read"]},{id:"agent-instagram",type:"skill",name:"Instagram Curator",path:"instagram-curator",summary:"Visual branding & aesthetics",description:"Visual branding and aesthetic feed management. Grid planning, story strategy, and engagement optimization.",category:"Marketing Agents",source:"community/diego",requiredMcp:["Write","Read","WebSearch"]},{id:"agent-twitter",type:"skill",name:"Twitter Engager",path:"twitter-engager",summary:"Real-time community & threads",description:"Focuses on real-time community interaction and threads. Trend hijacking, engagement tactics, and viral tweet patterns.",category:"Marketing Agents",source:"community/diego",requiredMcp:["Write","WebSearch","Read"]},{id:"agent-reddit",type:"skill",name:"Reddit Community Builder",path:"reddit-community-builder",summary:"Subreddit & organic growth",description:"Navigates niche subreddits and organic growth. Community rules awareness, authentic engagement, and karma building.",category:"Marketing Agents",source:"community/diego",requiredMcp:["WebSearch","WebFetch","Write"]},{id:"agent-aso",type:"skill",name:"App Store Optimizer",path:"app-store-optimizer",summary:"ASO & marketplace visibility",description:"Focuses on ASO and visibility in app marketplaces. Keyword optimization, screenshot design, and review management.",category:"Marketing Agents",source:"community/diego",requiredMcp:["WebSearch","Write","Read"]},{id:"agent-content",type:"skill",name:"Content Creator",path:"content-creator",summary:"Copywriting & asset production",description:"General copywriting and asset production. Blog posts, landing pages, email campaigns, and marketing collateral.",category:"Marketing Agents",source:"community/diego",requiredMcp:["Write","Read","WebSearch"]},{id:"agent-growth",type:"skill",name:"Growth Hacker",path:"growth-hacker",summary:"Viral loops & user acquisition",description:"Specialized in viral loops and rapid user acquisition. A/B testing frameworks, referral programs, and growth experiments.",category:"Marketing Agents",source:"community/diego",requiredMcp:["WebSearch","Write","Read","Bash"]},{id:"agent-ui-designer",type:"skill",name:"UI Designer",path:"ui-designer",summary:"Visual interface & layout",description:"Focuses on the visual interface and layout. Component libraries, design systems, and pixel-perfect implementation.",category:"Design Agents",source:"community/diego",requiredMcp:["Write","Read","Glob"]},{id:"agent-ux-researcher",type:"skill",name:"UX Researcher",path:"ux-researcher",summary:"User journeys & pain points",description:"Analyzes user journeys and pain points. Usability testing, heuristic evaluation, and user interview synthesis.",category:"Design Agents",source:"community/diego",requiredMcp:["Read","Write","WebSearch"]},{id:"agent-brand-guardian",type:"skill",name:"Brand Guardian",path:"brand-guardian",summary:"Voice, colors & consistency",description:"Ensures consistency in voice, colors, and logos. Brand guidelines enforcement and style guide maintenance.",category:"Design Agents",source:"community/diego",requiredMcp:["Read","Write","Glob"]},{id:"agent-visual-story",type:"skill",name:"Visual Storyteller",path:"visual-storyteller",summary:"Narrative-driven graphics",description:"Creates narrative-driven graphic content. Infographics, presentations, and visual communication.",category:"Design Agents",source:"community/diego",requiredMcp:["Write","Read"]},{id:"agent-whimsy",type:"skill",name:"Whimsy Injector",path:"whimsy-injector",summary:"Delight & easter eggs",description:'Adds personality, easter eggs, and "delight" features to the product. Micro-interactions, loading states, and surprise moments.',category:"Design Agents",source:"community/diego",requiredMcp:["Write","Read","Edit"]},{id:"agent-experiment",type:"skill",name:"Experiment Tracker",path:"experiment-tracker",summary:"A/B tests & data trials",description:"Monitors A/B tests and data-driven trials. Experiment design, statistical significance, and result documentation.",category:"Project Management Agents",source:"community/diego",requiredMcp:["Read","Write","Grep"]},{id:"agent-shipper",type:"skill",name:"Project Shipper",path:"project-shipper",summary:"Deadlines & delivery",description:"Focused on meeting deadlines and final delivery. Release checklists, blocker resolution, and launch coordination.",category:"Project Management Agents",source:"community/diego",requiredMcp:["Read","Write","TodoWrite","Bash"]},{id:"agent-producer",type:"skill",name:"Studio Producer",path:"studio-producer",summary:"Multi-disciplinary coordination",description:"High-level coordination of multi-disciplinary creative tasks. Resource allocation, timeline management, and stakeholder communication.",category:"Project Management Agents",source:"community/diego",requiredMcp:["Read","Write","TodoWrite","Task"]}],Q=[...C,...A,...F];function ie(){X.classList.toggle("is-open"),S.classList.toggle("is-visible")}function R(){X.classList.remove("is-open"),S.classList.remove("is-visible")}function re(t){t.classList.toggle("is-open")}function ae(){return Q.filter(t=>{let s=G==="all"||t.type===G,a=v===""||t.name.toLowerCase().includes(v)||t.summary.toLowerCase().includes(v)||t.path.toLowerCase().includes(v)||t.category.toLowerCase().includes(v)||t.description&&t.description.toLowerCase().includes(v);return s&&a})}function se(t){let s=t.parameters&&t.parameters.length>0?`
     <h4 class="endpoint__section-title">Parameters</h4>
     <table class="params-table">
       <thead>
@@ -223,31 +199,31 @@ LSP({
         </tr>
       </thead>
       <tbody>
-        ${e.parameters.map(o=>`
+        ${t.parameters.map(n=>`
           <tr>
-            <td class="params-table__name">${o.name}</td>
-            <td class="params-table__type">${o.type}</td>
-            <td class="params-table__required">${o.required?"Yes":"No"}</td>
-            <td>${o.description}</td>
+            <td class="params-table__name">${n.name}</td>
+            <td class="params-table__type">${n.type}</td>
+            <td class="params-table__required">${n.required?"Yes":"No"}</td>
+            <td>${n.description}</td>
           </tr>
         `).join("")}
       </tbody>
     </table>
-  `:"",t=e.requiredMcp&&e.requiredMcp.length>0?`
+  `:"",a=t.requiredMcp&&t.requiredMcp.length>0?`
     <h4 class="endpoint__section-title">Required MCP Tools</h4>
     <div class="tags">
-      ${e.requiredMcp.map(o=>`<span class="badge badge--mcp">${o}</span>`).join("")}
+      ${t.requiredMcp.map(n=>`<span class="badge badge--mcp">${n}</span>`).join("")}
     </div>
-  `:"",s=e.source?`
+  `:"",d=t.source?`
     <div class="mt-md text-xs text-muted">
-      Source: <a href="https://github.com/${e.source}" target="_blank">${e.source}</a>
+      Source: <a href="https://github.com/${t.source}" target="_blank">${t.source}</a>
     </div>
-  `:"",r=e.example?`
+  `:"",i=t.example?`
     <h4 class="endpoint__section-title">Example</h4>
     <div class="code-block">
       <div class="code-block__header">
-        <span class="code-block__lang">${e.type==="mcp"?"typescript":"prompt"}</span>
-        <button class="code-block__copy" data-code="${encodeURIComponent(e.example)}">
+        <span class="code-block__lang">${t.type==="mcp"?"typescript":"prompt"}</span>
+        <button class="code-block__copy" data-code="${encodeURIComponent(t.example)}">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
             <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
@@ -256,15 +232,15 @@ LSP({
         </button>
       </div>
       <div class="code-block__content">
-        <code>${j(e.example)}</code>
+        <code>${ce(t.example)}</code>
       </div>
     </div>
   `:"";return`
-    <article class="endpoint endpoint--${e.type}" id="${e.id}" data-category="${e.category}">
+    <article class="endpoint endpoint--${t.type}" id="${t.id}" data-category="${t.category}">
       <div class="endpoint__header" onclick="toggleEndpoint(this.parentElement)">
-        <span class="endpoint__method">${e.type.toUpperCase()}</span>
-        <span class="endpoint__path">${e.path}</span>
-        <span class="endpoint__summary">${e.summary}</span>
+        <span class="endpoint__method">${t.type.toUpperCase()}</span>
+        <span class="endpoint__path">${t.path}</span>
+        <span class="endpoint__summary">${t.summary}</span>
         <span class="endpoint__toggle">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <polyline points="6 9 12 15 18 9"/>
@@ -272,52 +248,80 @@ LSP({
         </span>
       </div>
       <div class="endpoint__body">
-        <p class="endpoint__description">${e.description}</p>
-        ${t}
+        <p class="endpoint__description">${t.description}</p>
         ${a}
-        ${r}
         ${s}
+        ${i}
+        ${d}
       </div>
     </article>
-  `}function C(){let e=H(),a=z(e),t="";for(let[s,r]of Object.entries(a)){let o=r[0].type==="mcp"?"tools":"skills";t+=`
-      <section class="section" id="section-${k(s)}">
+  `}function W(){let t=ae(),s=oe(t),a="";for(let[d,i]of Object.entries(s)){let n=i[0].type==="mcp"?"tools":"skills";a+=`
+      <section class="section" id="section-${_(d)}">
         <div class="section__title">
-          <h2>${s}</h2>
-          <span class="badge badge--${r[0].type}">${r.length} ${o}</span>
+          <h2>${d}</h2>
+          <span class="badge badge--${i[0].type}">${i.length} ${n}</span>
         </div>
-        ${r.map(N).join("")}
+        ${i.map(se).join("")}
       </section>
-    `}e.length===0&&(t=`
+    `}t.length===0&&(a=`
       <div class="text-center text-muted mt-lg">
-        <p>No results found for "${g}"</p>
+        <p>No results found for "${v}"</p>
       </div>
-    `),I.innerHTML=t,V()}function O(){let e=[...new Set(v.map(r=>r.category))],a=[...new Set(w.map(r=>r.category))],t=[...new Set(x.map(r=>r.category))],s=`
+    `),te.innerHTML=a,le()}function ne(){let t=[...new Set(C.map(i=>i.category))],s=[...new Set(A.map(i=>i.category))],a=[...new Set(F.map(i=>i.category))],d=`
     <div class="sidebar__section">
-      <div class="sidebar__section-title">MCP Tools</div>
-      ${e.map(r=>`
-        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--skill">S</span>
+        Official Skills
+      </div>
+      <div class="sidebar__subtitle">Anthropic</div>
+      ${s.map(i=>`
+        <a href="#section-${_(i)}" class="sidebar__link sidebar__link--skill">${i}</a>
       `).join("")}
     </div>
     <div class="sidebar__section">
-      <div class="sidebar__section-title">Official Skills</div>
-      ${a.map(r=>`
-        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--community">C</span>
+        Community Skills
+      </div>
+      <div class="sidebar__subtitle">Custom Agents</div>
+      ${a.map(i=>`
+        <a href="#section-${_(i)}" class="sidebar__link sidebar__link--community">${i}</a>
       `).join("")}
     </div>
     <div class="sidebar__section">
-      <div class="sidebar__section-title">Community Skills</div>
-      ${t.map(r=>`
-        <a href="#section-${k(r)}" class="sidebar__link">${r}</a>
+      <div class="sidebar__section-title">
+        <span class="sidebar__icon sidebar__icon--mcp">T</span>
+        MCP Tools
+      </div>
+      <div class="sidebar__subtitle">Built-in Capabilities</div>
+      ${t.map(i=>`
+        <a href="#section-${_(i)}" class="sidebar__link sidebar__link--mcp">${i}</a>
       `).join("")}
     </div>
-  `;b.innerHTML=s}function z(e){return e.reduce((a,t)=>(a[t.category]||(a[t.category]=[]),a[t.category].push(t),a),{})}function k(e){return e.toLowerCase().replace(/\s+/g,"-").replace(/[^\w-]/g,"")}function j(e){return e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\n/g,"<br>")}function V(){document.querySelectorAll(".code-block__copy").forEach(e=>{e.addEventListener("click",a=>P(null,null,function*(){a.stopPropagation();let t=decodeURIComponent(e.dataset.code||"");yield navigator.clipboard.writeText(t),e.classList.add("is-copied"),e.textContent="Copied!",setTimeout(()=>{e.classList.remove("is-copied"),e.innerHTML=`
+  `;E.innerHTML=d}function oe(t){return t.reduce((s,a)=>(s[a.category]||(s[a.category]=[]),s[a.category].push(a),s),{})}function _(t){return t.toLowerCase().replace(/\s+/g,"-").replace(/[^\w-]/g,"")}function ce(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/\n/g,"<br>")}function le(){document.querySelectorAll(".code-block__copy").forEach(t=>{t.addEventListener("click",s=>V(null,null,function*(){s.stopPropagation();let a=decodeURIComponent(t.dataset.code||"");yield navigator.clipboard.writeText(a),t.classList.add("is-copied"),t.textContent="Copied!",setTimeout(()=>{t.classList.remove("is-copied"),t.innerHTML=`
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
             <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
           </svg>
           Copy
-        `},2e3)}))})}window.toggleEndpoint=$;var T=document.getElementById("list-view"),L=document.getElementById("graph-view"),h=document.getElementById("graph-svg"),y=document.getElementById("graph-tooltip"),F=document.querySelectorAll(".view-tab"),M=document.getElementById("filters-container"),G="list";function U(e){G=e,F.forEach(a=>{a.classList.toggle("is-active",a.dataset.view===e)}),e==="list"?(T.classList.remove("hidden"),L.classList.add("hidden"),M.style.display="flex"):(T.classList.add("hidden"),L.classList.remove("hidden"),M.style.display="none",D())}function D(){let e=h.clientWidth||900,a=h.clientHeight||500,t=v.map((i,n)=>({id:i.id,name:i.name,type:"mcp",x:150,y:50+n*(a-100)/v.length,connections:[]})),s=[...w,...x].map((i,n)=>({id:i.id,name:i.name,type:"skill",x:e-150,y:50+n*(a-100)/(w.length+x.length),connections:i.requiredMcp||[]})),r=[...t,...s],o=[];s.forEach(i=>{i.connections.forEach(n=>{let p=t.find(u=>u.name===n||u.name.toLowerCase()===n.toLowerCase());p&&o.push({from:i,to:p})})}),h.innerHTML="";let d=document.createElementNS("http://www.w3.org/2000/svg","defs");d.innerHTML=`
-    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
-      <polygon points="0 0, 10 3.5, 0 7" fill="#4d4d7a" />
-    </marker>
-  `,h.appendChild(d),o.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","path"),p=(i.from.x+i.to.x)/2,u=`M ${i.from.x} ${i.from.y} Q ${p} ${(i.from.y+i.to.y)/2} ${i.to.x} ${i.to.y}`;n.setAttribute("d",u),n.setAttribute("class","graph-edge"),n.setAttribute("data-from",i.from.id),n.setAttribute("data-to",i.to.id),h.appendChild(n)}),r.forEach(i=>{let n=document.createElementNS("http://www.w3.org/2000/svg","g");n.setAttribute("class",`graph-node graph-node--${i.type}`),n.setAttribute("data-id",i.id),n.setAttribute("transform",`translate(${i.x}, ${i.y})`);let p=document.createElementNS("http://www.w3.org/2000/svg","circle");p.setAttribute("r",i.type==="mcp"?"20":"16"),p.setAttribute("cx","0"),p.setAttribute("cy","0");let u=document.createElementNS("http://www.w3.org/2000/svg","text");u.setAttribute("dy","4"),u.textContent=i.name.length>8?i.name.substring(0,7)+"...":i.name,n.appendChild(p),n.appendChild(u),n.addEventListener("mouseenter",W=>X(W,i)),n.addEventListener("mouseleave",Q),n.addEventListener("click",()=>K(i,o)),h.appendChild(n)});let c=document.createElementNS("http://www.w3.org/2000/svg","text");c.setAttribute("x","150"),c.setAttribute("y","25"),c.setAttribute("text-anchor","middle"),c.setAttribute("fill","#22d3ee"),c.setAttribute("font-size","14"),c.setAttribute("font-weight","600"),c.textContent="MCP TOOLS",h.appendChild(c);let l=document.createElementNS("http://www.w3.org/2000/svg","text");l.setAttribute("x",String(e-150)),l.setAttribute("y","25"),l.setAttribute("text-anchor","middle"),l.setAttribute("fill","#a855f7"),l.setAttribute("font-size","14"),l.setAttribute("font-weight","600"),l.textContent="SKILLS",h.appendChild(l)}function X(e,a){let t=R.find(c=>c.id===a.id);if(!t)return;let s=`<div class="graph-tooltip__type">${a.type.toUpperCase()}</div>`;s+=`<div class="graph-tooltip__title">${t.name}</div>`,s+=`<div>${t.summary}</div>`,t.requiredMcp&&t.requiredMcp.length>0&&(s+=`<div class="graph-tooltip__deps">Requires: ${t.requiredMcp.join(", ")}</div>`),y.innerHTML=s,y.classList.add("is-visible");let r=L.getBoundingClientRect(),o=e.clientX-r.left+10,d=e.clientY-r.top+10;y.style.left=`${o}px`,y.style.top=`${d}px`}function Q(){y.classList.remove("is-visible")}function K(e,a){document.querySelectorAll(".graph-node").forEach(s=>s.classList.remove("is-highlighted")),document.querySelectorAll(".graph-edge").forEach(s=>s.classList.remove("is-highlighted"));let t=document.querySelector(`[data-id="${e.id}"]`);t==null||t.classList.add("is-highlighted"),a.forEach(s=>{if(s.from.id===e.id||s.to.id===e.id){let r=document.querySelector(`[data-from="${s.from.id}"][data-to="${s.to.id}"]`);r==null||r.classList.add("is-highlighted");let o=s.from.id===e.id?s.to.id:s.from.id,d=document.querySelector(`[data-id="${o}"]`);d==null||d.classList.add("is-highlighted")}})}document.addEventListener("DOMContentLoaded",()=>{O(),C(),q==null||q.addEventListener("click",B),f==null||f.addEventListener("click",S),m==null||m.addEventListener("input",e=>{g=e.target.value.toLowerCase(),C()}),document.addEventListener("keydown",e=>{(e.metaKey||e.ctrlKey)&&e.key==="k"&&(e.preventDefault(),m==null||m.focus()),e.key==="Escape"&&(S(),m==null||m.blur())}),E.forEach(e=>{e.addEventListener("click",()=>{E.forEach(a=>a.classList.remove("is-active")),e.classList.add("is-active"),_=e.dataset.filter,C()})}),F.forEach(e=>{e.addEventListener("click",()=>{U(e.dataset.view)})}),b==null||b.addEventListener("click",e=>{e.target.closest(".sidebar__link")&&S()}),window.addEventListener("resize",()=>{G==="graph"&&D()})});})();
+        `},2e3)}))})}window.toggleEndpoint=re;var U=document.getElementById("list-view"),D=document.getElementById("graph-view"),u=document.getElementById("graph-svg"),q=document.getElementById("graph-tooltip"),K=document.querySelectorAll(".view-tab"),z=document.getElementById("filters-container"),Y="list";function de(t){Y=t,K.forEach(s=>{s.classList.toggle("is-active",s.dataset.view===t)}),t==="list"?(U.classList.remove("hidden"),D.classList.add("hidden"),z.style.display="flex"):(U.classList.add("hidden"),D.classList.remove("hidden"),z.style.display="none",J())}var p={x:0,y:0,k:1};function J(){let t=u.clientWidth||900,s=u.clientHeight||600,a=t/2,d=s/2,i=C.map((e,r)=>{let c=r/C.length*Math.PI*2,o=120;return{id:e.id,name:e.name,type:"mcp",x:a+Math.cos(c)*o,y:d+Math.sin(c)*o,connections:[],vx:0,vy:0,fx:null,fy:null}}),n=[...A,...F],w=n.map((e,r)=>{let c=r/n.length*Math.PI*2+Math.PI/4,o=280+Math.random()*80;return{id:e.id,name:e.name,type:"skill",x:a+Math.cos(c)*o,y:d+Math.sin(c)*o,connections:e.requiredMcp||[],vx:0,vy:0,fx:null,fy:null,isOfficial:A.includes(e)}}),y=[...i,...w],g=[];w.forEach(e=>{e.connections.forEach(r=>{let c=i.find(o=>o.name===r||o.name.toLowerCase()===r.toLowerCase());c&&g.push({from:e,to:c,strength:.3})})}),u.innerHTML="";let f=document.createElementNS("http://www.w3.org/2000/svg","g");f.setAttribute("class","graph-container-inner"),u.appendChild(f);let I=document.createElementNS("http://www.w3.org/2000/svg","defs");I.innerHTML=`
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="mcp-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#67e8f9"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </radialGradient>
+    <radialGradient id="skill-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#a855f7"/>
+    </radialGradient>
+    <radialGradient id="community-gradient" cx="30%" cy="30%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </radialGradient>
+  `,u.appendChild(I);let L=document.createElementNS("http://www.w3.org/2000/svg","g");L.setAttribute("class","graph-edges"),f.appendChild(L);let B=[];g.forEach(e=>{let r=document.createElementNS("http://www.w3.org/2000/svg","path");r.setAttribute("class","graph-edge"),r.setAttribute("data-from",e.from.id),r.setAttribute("data-to",e.to.id),r.setAttribute("fill","none"),r.setAttribute("stroke","rgba(148, 163, 184, 0.15)"),r.setAttribute("stroke-width","1"),L.appendChild(r),B.push(r)});let P=document.createElementNS("http://www.w3.org/2000/svg","g");P.setAttribute("class","graph-nodes"),f.appendChild(P);let $=new Map;y.forEach(e=>{let r=document.createElementNS("http://www.w3.org/2000/svg","g"),c=e.isOfficial!==!1,o=e.type==="mcp"?"graph-node--mcp":c?"graph-node--skill":"graph-node--community";r.setAttribute("class",`graph-node ${o}`),r.setAttribute("data-id",e.id),r.style.cursor="pointer";let l=document.createElementNS("http://www.w3.org/2000/svg","circle"),m=e.type==="mcp"?24:18;l.setAttribute("r",String(m)),l.setAttribute("cx","0"),l.setAttribute("cy","0"),e.type==="mcp"?l.setAttribute("fill","url(#mcp-gradient)"):c?l.setAttribute("fill","url(#skill-gradient)"):l.setAttribute("fill","url(#community-gradient)"),l.setAttribute("filter","url(#glow)");let h=document.createElementNS("http://www.w3.org/2000/svg","text");h.setAttribute("y",String(m+14)),h.setAttribute("text-anchor","middle"),h.setAttribute("fill","#e2e8f0"),h.setAttribute("font-size","10"),h.setAttribute("font-weight","500"),h.textContent=e.name.length>12?e.name.substring(0,11)+"\u2026":e.name,r.appendChild(l),r.appendChild(h),r.addEventListener("mouseenter",b=>pe(b,e)),r.addEventListener("mouseleave",me),r.addEventListener("click",()=>ue(e,g));let x=!1;r.addEventListener("mousedown",b=>{x=!0,e.fx=e.x,e.fy=e.y,b.stopPropagation()}),P.appendChild(r),$.set(e.id,r)}),u.addEventListener("mousemove",e=>{let r=u.getBoundingClientRect(),c=(e.clientX-r.left-p.x)/p.k,o=(e.clientY-r.top-p.y)/p.k;y.forEach(l=>{l.fx!==null&&(l.x=c,l.y=o,l.fx=c,l.fy=o)})}),u.addEventListener("mouseup",()=>{y.forEach(e=>{e.fx=null,e.fy=null})});let M=!1,H=0,N=0;u.addEventListener("wheel",e=>{e.preventDefault();let r=e.deltaY>0?.9:1.1;p.k=Math.max(.3,Math.min(3,p.k*r)),f.setAttribute("transform",`translate(${p.x}, ${p.y}) scale(${p.k})`)}),u.addEventListener("mousedown",e=>{(e.target===u||e.target.classList.contains("graph-container-inner"))&&(M=!0,H=e.clientX-p.x,N=e.clientY-p.y)}),u.addEventListener("mousemove",e=>{M&&(p.x=e.clientX-H,p.y=e.clientY-N,f.setAttribute("transform",`translate(${p.x}, ${p.y}) scale(${p.k})`))}),u.addEventListener("mouseup",()=>{M=!1}),u.addEventListener("mouseleave",()=>{M=!1});function O(){y.forEach(e=>{if(e.fx!==null)return;let r=a-e.x,c=d-e.y;e.x+=r*.001,e.y+=c*.001,y.forEach(o=>{if(e===o)return;let l=e.x-o.x,m=e.y-o.y,h=Math.sqrt(l*l+m*m)||1,x=e.type==="mcp"?80:60;if(h<x){let b=(x-h)/h*.5;e.x+=l*b,e.y+=m*b}})}),g.forEach(e=>{let r=e.to.x-e.from.x,c=e.to.y-e.from.y,o=Math.sqrt(r*r+c*c)||1,m=(o-180)/o*.02;e.from.fx===null&&(e.from.x+=r*m,e.from.y+=c*m),e.to.fx===null&&(e.to.x-=r*m*.2,e.to.y-=c*m*.2)}),y.forEach(e=>{let r=$.get(e.id);r&&r.setAttribute("transform",`translate(${e.x}, ${e.y})`)}),g.forEach((e,r)=>{let c=B[r],o=e.to.x-e.from.x,l=e.to.y-e.from.y,m=Math.sqrt(o*o+l*l),h=(e.from.x+e.to.x)/2,x=(e.from.y+e.to.y)/2,b=Math.min(30,m*.1),Z=-l/m*b,ee=o/m*b;c.setAttribute("d",`M ${e.from.x} ${e.from.y} Q ${h+Z} ${x+ee} ${e.to.x} ${e.to.y}`)}),requestAnimationFrame(O)}O()}function pe(t,s){let a=Q.find(y=>y.id===s.id);if(!a)return;let d=`<div class="graph-tooltip__type">${s.type.toUpperCase()}</div>`;d+=`<div class="graph-tooltip__title">${a.name}</div>`,d+=`<div>${a.summary}</div>`,a.requiredMcp&&a.requiredMcp.length>0&&(d+=`<div class="graph-tooltip__deps">Requires: ${a.requiredMcp.join(", ")}</div>`),q.innerHTML=d,q.classList.add("is-visible");let i=D.getBoundingClientRect(),n=t.clientX-i.left+10,w=t.clientY-i.top+10;q.style.left=`${n}px`,q.style.top=`${w}px`}function me(){q.classList.remove("is-visible")}function ue(t,s){document.querySelectorAll(".graph-node").forEach(i=>{i.classList.remove("is-highlighted","is-dimmed")}),document.querySelectorAll(".graph-edge").forEach(i=>{i.classList.remove("is-highlighted"),i.style.stroke="rgba(148, 163, 184, 0.15)",i.style.strokeWidth="1"});let a=new Set;a.add(t.id),s.forEach(i=>{i.from.id===t.id?a.add(i.to.id):i.to.id===t.id&&a.add(i.from.id)});let d=document.querySelector(`[data-id="${t.id}"]`);d==null||d.classList.add("is-highlighted"),document.querySelectorAll(".graph-node").forEach(i=>{let n=i.getAttribute("data-id");n&&!a.has(n)?i.classList.add("is-dimmed"):n&&n!==t.id&&i.classList.add("is-highlighted")}),s.forEach(i=>{if(i.from.id===t.id||i.to.id===t.id){let n=document.querySelector(`[data-from="${i.from.id}"][data-to="${i.to.id}"]`);n&&(n.classList.add("is-highlighted"),n.style.stroke=t.type==="mcp"?"#22d3ee":"#a855f7",n.style.strokeWidth="2")}})}document.addEventListener("DOMContentLoaded",()=>{ne(),W(),T==null||T.addEventListener("click",ie),S==null||S.addEventListener("click",R),k==null||k.addEventListener("input",t=>{v=t.target.value.toLowerCase(),W()}),document.addEventListener("keydown",t=>{(t.metaKey||t.ctrlKey)&&t.key==="k"&&(t.preventDefault(),k==null||k.focus()),t.key==="Escape"&&(R(),k==null||k.blur())}),j.forEach(t=>{t.addEventListener("click",()=>{j.forEach(s=>s.classList.remove("is-active")),t.classList.add("is-active"),G=t.dataset.filter,W()})}),K.forEach(t=>{t.addEventListener("click",()=>{de(t.dataset.view)})}),E==null||E.addEventListener("click",t=>{t.target.closest(".sidebar__link")&&R()}),window.addEventListener("resize",()=>{Y==="graph"&&J()})});})();

@@ -3040,8 +3040,9 @@
         .analytics-summary-value--purple { color: var(--accent-purple); }
         .analytics-summary-value--orange { color: var(--accent-orange); }
         .analytics-summary-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-secondary);
+            text-transform: uppercase;
         }
 
         /* Service list items */
@@ -3196,4 +3197,882 @@
         .legend-value {
             color: var(--text-secondary);
             margin-left: auto;
+        }
+
+        /* Traffic bar container */
+        .traffic-bar-container {
+            flex: 1;
+            height: 6px;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        /* ============================================
+           UTILITY CLASSES - Layout & Spacing
+           ============================================ */
+
+        /* Margin utilities */
+        .mt-3 { margin-top: 1.5rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-025 { margin-bottom: 0.25rem; }
+        .mb-04 { margin-bottom: 0.4rem; }
+        .mb-05 { margin-bottom: 0.5rem; }
+        .ml-auto { margin-left: auto; }
+
+        /* Display utilities */
+        .d-block { display: block; }
+        .flex-shrink-0 { flex-shrink: 0; }
+
+        /* ============================================
+           SECTION HEADERS
+           ============================================ */
+        .section-header {
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        /* ============================================
+           ANALYTICS GRIDS
+           ============================================ */
+        .grid-150 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .grid-280 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .grid-280-mt {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* ============================================
+           STAT VALUE DISPLAYS
+           ============================================ */
+        .stat-value-xl {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .stat-value-xl--blue { color: var(--accent-blue); }
+        .stat-value-xl--green { color: var(--accent-green); }
+        .stat-value-xl--red { color: var(--accent-red); }
+        .stat-value-xl--yellow { color: var(--accent-yellow); }
+        .stat-value-xl--purple { color: var(--accent-purple); }
+        .stat-value-xl--orange { color: var(--accent-orange); }
+
+        .stat-label-sm {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ============================================
+           ANALYTICS CARDS
+           ============================================ */
+        .analytics-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        /* ============================================
+           CHARTS - Visits Over Time
+           ============================================ */
+        .visits-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            height: 120px;
+            padding: 0.5rem 0;
+        }
+        .chart-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .day-bar {
+            width: 100%;
+            background: linear-gradient(180deg, var(--accent-blue), var(--accent-purple));
+            border-radius: 4px 4px 0 0;
+        }
+        .chart-label-xs {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           CHARTS - Events Over Time
+           ============================================ */
+        .events-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            height: 80px;
+        }
+        .event-bar {
+            flex: 1;
+            background: var(--accent-blue);
+            border-radius: 2px 2px 0 0;
+        }
+        .event-bar--green {
+            background: var(--accent-green);
+        }
+        .chart-timeline {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================
+           FLEX LAYOUTS
+           ============================================ */
+        .flex-col-gap-sm {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .flex-col-gap {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .flex-row-center-gap {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* ============================================
+           PROGRESS BARS (Device type, etc.)
+           ============================================ */
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            margin-bottom: 0.25rem;
+        }
+        .progress-label-sm {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+        .progress-value--blue { color: var(--accent-blue); }
+        .progress-value--green { color: var(--accent-green); }
+        .progress-value--orange { color: var(--accent-orange); }
+        .progress-value--red { color: var(--accent-red); }
+        .progress-value--yellow { color: var(--accent-yellow); }
+
+        /* ============================================
+           REFERRER ROWS
+           ============================================ */
+        .referrer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+        .referrer-text {
+            font-size: 0.8rem;
+        }
+        .referrer-count {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .referrer-count--blue { color: var(--accent-blue); }
+        .referrer-count--green { color: var(--accent-green); }
+        .referrer-count--purple { color: var(--accent-purple); }
+
+        /* ============================================
+           PIE CHART
+           ============================================ */
+        .pie-chart {
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
+        }
+
+        /* ============================================
+           FILTER CONTROLS
+           ============================================ */
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .filter-select {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           TABLE TEXT COLORS
+           ============================================ */
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        /* ============================================
+           LEGEND DISPLAY
+           ============================================ */
+        .legend-list {
+            font-size: 0.75rem;
+        }
+
+        /* ============================================
+           STATUS BADGES
+           ============================================ */
+        .status-badge--blocked {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+        .status-badge--warn {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+            border: 1px solid var(--accent-yellow);
+        }
+        .status-badge--success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-green);
+            border: 1px solid var(--accent-green);
+        }
+        .status-badge--info {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+        }
+
+        /* ============================================
+           PAGINATION
+           ============================================ */
+        .pagination-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .pagination-info {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        .pagination-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .pagination-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           AI DONUT LEGEND DOTS
+           ============================================ */
+        .ai-donut-legend-dot--oracle { background: #F80000; }
+        .ai-donut-legend-dot--gcp { background: #4285F4; }
+
+        /* ============================================
+           VALUE COLORS
+           ============================================ */
+        .text-orange { color: var(--accent-orange); }
+        .text-success { color: var(--success); }
+
+        /* ============================================
+           TIMESTAMP / UPDATED TEXT
+           ============================================ */
+        .updated-timestamp {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: normal;
+            margin-left: 1rem;
+        }
+
+        /* ============================================
+           TABLE COLUMN WIDTH UTILITIES
+           ============================================ */
+        .col-w-40 { width: 40%; }
+
+        /* ============================================
+           AI LEGEND DOTS
+           ============================================ */
+        .ai-legend-dot--oracle { background: #F80000; }
+        .ai-legend-dot--gcp { background: #4285F4; }
+
+        /* ============================================
+           MONTHLY CHART CONTAINER
+           ============================================ */
+        .monthly-chart {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            padding: 1rem 0;
+        }
+
+        /* ============================================
+           FREE TIER GRID
+           ============================================ */
+        .free-tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        /* ============================================
+           PROVIDER CARDS
+           ============================================ */
+        .provider-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .provider-card--oracle { border-left: 4px solid #F80000; }
+        .provider-card--gcp { border-left: 4px solid #4285F4; }
+
+        .provider-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .provider-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .provider-icon--oracle { background: #F80000; }
+        .provider-icon--gcp { background: #4285F4; }
+
+        .provider-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* ============================================
+           FREE TIER USAGE ITEM
+           ============================================ */
+        .free-tier-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .free-tier-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .free-tier-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .free-tier-bar-fill--green {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+        .free-tier-bar-fill--yellow {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+
+        .free-tier-note {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* ============================================
+           TEXT UTILITIES
+           ============================================ */
+        .text-center { text-align: center; }
+
+        /* ============================================
+           AI MODEL LEGEND DOTS (opus/sonnet/haiku)
+           ============================================ */
+        .ai-legend-dot--opus { background: #a855f7; }
+        .ai-legend-dot--sonnet { background: #3b82f6; }
+        .ai-legend-dot--haiku { background: #22c55e; }
+
+        /* ============================================
+           AI DONUT LEGEND - MODEL COLORS
+           ============================================ */
+        .ai-donut-legend-dot--opus { background: #a855f7; }
+        .ai-donut-legend-dot--sonnet { background: #3b82f6; }
+        .ai-donut-legend-dot--haiku { background: #22c55e; }
+
+        /* ============================================
+           AI TOKEN ICON COLORS
+           ============================================ */
+        .ai-token-icon--input { color: #4ade80; }
+        .ai-token-icon--output { color: #f472b6; }
+        .ai-token-icon--cache-write { color: #fbbf24; }
+        .ai-token-icon--cache-read { color: #2dd4bf; }
+
+        /* ============================================
+           AI TOKEN BAR FILLS
+           ============================================ */
+        .ai-token-bar-fill--input { background: #4ade80; }
+        .ai-token-bar-fill--output { background: #f472b6; }
+        .ai-token-bar-fill--cache-write { background: #fbbf24; }
+        .ai-token-bar-fill--cache-read { background: #2dd4bf; }
+
+        /* ============================================
+           TABLE GROUP HEADERS
+           ============================================ */
+        .table-group-header {
+            background: var(--bg-tertiary);
+            font-weight: bold;
+        }
+
+        /* ============================================
+           STATUS BADGE - DORMANT
+           ============================================ */
+        .status-badge--dormant {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--accent-yellow);
+        }
+
+        /* ============================================
+           APP CARD ICONS (GRADIENTS)
+           ============================================ */
+        .app-card-icon--green { background: linear-gradient(135deg, #10b981, #059669); }
+        .app-card-icon--orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .app-card-icon--purple { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+
+        /* ============================================
+           APP CARD DOTS (SERVICE COLORS)
+           ============================================ */
+        .app-card-dot--emerald { background: #10b981; }
+        .app-card-dot--amber { background: #f59e0b; }
+        .app-card-dot--violet { background: #8b5cf6; }
+
+        /* ============================================
+           APP CARD BADGES
+           ============================================ */
+        .app-card-badge--blue {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        /* ============================================
+           COST COMPARISON SECTION
+           ============================================ */
+        .cost-comparison-header {
+            text-align: center;
+        }
+        .cost-savings-percent {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+        .cost-savings-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        .cost-comparison-item {
+            margin-bottom: 1rem;
+        }
+        .cost-comparison-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+        .cost-comparison-bar {
+            height: 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .cost-comparison-bar-fill {
+            height: 100%;
+            border-radius: 6px;
+        }
+        .cost-comparison-bar-fill--green {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+        .cost-comparison-bar-fill--red {
+            background: linear-gradient(90deg, #ff6b6b, #ff8888);
+        }
+        .cost-comparison-bar-fill--pink {
+            background: linear-gradient(90deg, #f472b6, #f9a8d4);
+        }
+        .cost-comparison-note {
+            font-size: 0.7rem;
+            color: var(--text-tertiary);
+            margin-top: 0.25rem;
+        }
+        .cost-summary-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        .cost-summary-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+        .cost-summary-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        .cost-summary-sub {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Color text utilities */
+        .text-red { color: #ff6b6b; }
+        .text-pink { color: #f472b6; }
+        .text-tertiary { color: var(--text-tertiary); }
+        .text-warning { color: var(--accent-yellow); }
+
+        /* Section description text */
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* Code snippet font size */
+        .code-sm { font-size: 0.7rem; }
+
+        /* Resource mono section */
+        .resource-mono-section {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            line-height: 1.6;
+            white-space: pre;
+            overflow-x: auto;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+        }
+
+        /* Grid 200 utility */
+        .grid-200 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        /* Storage summary values */
+        .storage-summary-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Section header small */
+        .section-header-sm {
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        /* ============================================
+           FREE TIER SECTION STYLES
+           ============================================ */
+        .free-tier-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .free-tier-card {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        .free-tier-card--oracle { border-left: 4px solid #F80000; }
+        .free-tier-card--gcp { border-left: 4px solid #4285F4; }
+
+        .free-tier-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .free-tier-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .free-tier-icon--oracle { background: #F80000; }
+        .free-tier-icon--gcp { background: #4285F4; }
+
+        .free-tier-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .free-tier-metric {
+            margin-bottom: 0.75rem;
+        }
+
+        .free-tier-metric-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .free-tier-bar {
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .free-tier-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .free-tier-bar-fill--green { background: #22c55e; }
+        .free-tier-bar-fill--green-gradient { background: linear-gradient(90deg, #22c55e, #4ade80); }
+        .free-tier-bar-fill--blue { background: linear-gradient(90deg, #4285F4, #66aaff); }
+        .free-tier-bar-fill--yellow { background: #fbbf24; }
+
+        .free-tier-note {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* ============================================
+           WARNING BOX
+           ============================================ */
+        .warning-box {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           CODE INLINE STYLING
+           ============================================ */
+        .code-inline {
+            background: var(--bg-tertiary);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+        }
+
+        /* ============================================
+           VM NAME WITH DOT
+           ============================================ */
+        .vm-name-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        /* ============================================
+           SECURITY LAYER COLORS
+           ============================================ */
+        .security-layer--red { --layer-color: #ef4444; }
+        .security-layer--orange { --layer-color: #f97316; }
+        .security-layer--yellow { --layer-color: #eab308; }
+        .security-layer--green { --layer-color: #22c55e; }
+
+        /* ============================================
+           SECURITY DOTS (ADDITIONAL COLORS)
+           ============================================ */
+        .security-dot--orange { background: #f97316; }
+        .security-dot--purple { background: #8b5cf6; }
+        .security-dot--yellow { background: #eab308; }
+        .security-dot--cyan { background: #06b6d4; }
+
+        /* ============================================
+           APP CARD DOTS (ADDITIONAL COLORS)
+           ============================================ */
+        .app-card-dot--orange { background: #f97316; }
+        .app-card-dot--cyan { background: #06b6d4; }
+        .app-card-dot--red { background: #ef4444; }
+
+        /* ============================================
+           APP CARD BADGES (ADDITIONAL)
+           ============================================ */
+        .app-card-badge--orange {
+            background: rgba(249, 115, 22, 0.15);
+            color: #f97316;
+        }
+
+        /* ============================================
+           COST MARKET COMPARISON
+           ============================================ */
+        .cost-market-comparison {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, var(--bg-tertiary) 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .cost-market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .cost-savings-hero {
+            text-align: center;
+        }
+
+        .cost-savings-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .cost-savings-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ============================================
+           SECURITY PRE BLOCK
+           ============================================ */
+        .security-pre-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .security-pre {
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        /* ============================================
+           TABLE COLUMN WIDTHS (MORE)
+           ============================================ */
+        .col-w-15 { width: 15%; }
+        .col-w-30 { width: 30%; }
+        .col-w-35 { width: 35%; }
+        .col-w-50 { width: 50%; }
+
+        /* ============================================
+           VIEW CONTENT HIDDEN (JS-controlled)
+           ============================================ */
+        .view-hidden { display: none; }
+
+        /* ============================================
+           AI BAR CHART CONTAINER
+           ============================================ */
+        .ai-bar-chart-container {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            gap: 0.5rem;
+            padding: 1rem 0;
+        }
+
+        /* ============================================
+           GRID 400 UTILITY
+           ============================================ */
+        .grid-400 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* ============================================
+           DATA STAT LARGE
+           ============================================ */
+        .data-stat-large {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-orange);
+        }
+
+        /* ============================================
+           LINK BLUE
+           ============================================ */
+        a.link-blue { color: var(--accent-blue); }
+
+        /* ============================================
+           EMPTY TABLE MESSAGE
+           ============================================ */
+        .table-empty-msg {
+            text-align: center;
+        }
+
+        /* ============================================
+           GRID 150 UTILITY
+           ============================================ */
+        .grid-150 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        /* ============================================
+           FONT WEIGHT UTILITIES
+           ============================================ */
+        .fw-semibold { font-weight: 600; }
+
+        /* ============================================
+           COST SUMMARY BOX
+           ============================================ */
+        .cost-summary-box {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .cost-summary-box-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--success);
+        }
+
+        .cost-summary-box-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .cost-summary-box-note {
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
         }

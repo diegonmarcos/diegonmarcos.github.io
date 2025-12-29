@@ -43,3 +43,63 @@
   z-index: $z-index-particle;
   animation: starburst $duration-starburst ease-out forwards;
 }
+
+// --- Inline Style Replacements ---
+.section-header-accent {
+  color: var(--color-accent-purple);
+  margin-top: 15px;
+}
+
+.link-purple {
+  color: #9966cc;
+}
+
+.linktree-link-section {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.footer-buttons {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+}
+
+.footer-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.btn-cta--linktree {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+  }
+}
+
+.btn-cta--github {
+  background: linear-gradient(135deg, #333, #555);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+}

@@ -6,7 +6,8 @@
   <title>Central Bank Modeling System</title>
   <style>
     html{height:100%;width:100%}
-    body{min-width:1200px;margin:0;transform-origin:top left}
+    body{min-width:1200px;margin:0;transform-origin:top left;background-color:#18181b}
+    #app{background-color:#18181b;min-height:100vh}
     @media(max-width:1200px){
       body{transform:scale(calc(100vw/1200));width:1200px;height:calc(100vh/(100vw/1200))}
     }
@@ -466,7 +467,7 @@
     ${ja()}
   `,setTimeout(()=>{P.activeModel==="dsge"?td():(ed(),sd())},50),nd())}function nd(){var s,t,e,n,i;(s=document.getElementById("theme-toggle"))==null||s.addEventListener("click",()=>{P.theme=P.theme==="light"?"dark":"light",Ti(),vt()}),document.querySelectorAll(".model-tab").forEach(a=>{a.addEventListener("click",()=>{const o=a.dataset.model;o&&o!==P.activeModel&&(P.activeModel=o,vt())})}),["beta","sigma","phi","alpha","delta","rho_a","sigma_a"].forEach(a=>{const o=document.getElementById(a);o&&o.addEventListener("input",()=>{const r=parseFloat(o.value);P.dsgeParams[a]=r;const l=document.getElementById(`${a}-value`);if(l){const h=parseFloat(o.step);l.textContent=r.toFixed(h<.01?3:2)}const c=o.nextElementSibling;if(c){const h=parseFloat(o.min),d=parseFloat(o.max),u=(r-h)/(d-h)*100;c.style.width=`${u}%`}})}),(t=document.getElementById("reset-params"))==null||t.addEventListener("click",()=>{P.dsgeParams={...Oi},vt()}),(e=document.getElementById("run-simulation"))==null||e.addEventListener("click",()=>{const a=document.getElementById("run-simulation");a&&(a.innerHTML='<span class="w-4 h-4 border-2 border-cb-navy-900/30 border-t-cb-navy-900 rounded-full animate-spin"></span> Running...',a.disabled=!0,setTimeout(()=>{vt()},2e3))}),document.querySelectorAll(".data-source-btn").forEach(a=>{a.addEventListener("click",()=>{const o=a.dataset.source;o&&(P.activeDataSources.includes(o)?P.activeDataSources=P.activeDataSources.filter(r=>r!==o):P.activeDataSources.push(o),vt())})}),(n=document.getElementById("toggle-simulation"))==null||n.addEventListener("click",()=>{P.isSimulating=!P.isSimulating,vt()}),(i=document.getElementById("reset-agents"))==null||i.addEventListener("click",()=>{P.agents=Ci(),vt()})}Ti();vt();</script>
 </head>
-<body style="background-color: #18181b; margin: 0;">
-  <div id="app" style="background-color: #18181b; min-height: 100vh;"></div>
+<body>
+  <div id="app"></div>
 </body>
 </html>

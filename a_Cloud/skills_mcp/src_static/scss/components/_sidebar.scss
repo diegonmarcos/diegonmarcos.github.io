@@ -53,6 +53,36 @@
 
   &__section {
     margin-bottom: $spacing-md;
+
+    &--graph {
+      padding: $spacing-sm $spacing-lg;
+      margin-bottom: $spacing-lg;
+      border-bottom: 1px solid $color-border;
+    }
+  }
+
+  &__graph-link {
+    @include flex-row(flex-start, center, $spacing-sm);
+    padding: $spacing-sm $spacing-md;
+    background: linear-gradient(135deg, rgba(#a855f7, 0.1), rgba(#06b6d4, 0.1));
+    border: 1px solid rgba(#a855f7, 0.3);
+    border-radius: $border-radius-md;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    transition: all $transition-fast;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      color: #a855f7;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, rgba(#a855f7, 0.2), rgba(#06b6d4, 0.2));
+      border-color: #a855f7;
+      transform: translateX(4px);
+    }
   }
 
   &__section-title {

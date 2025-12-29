@@ -1206,6 +1206,18 @@ function renderSidebarNav(): void {
   const communitySkillCategories = [...new Set(communitySkills.map(e => e.category))];
 
   let html = `
+    <div class="sidebar__section sidebar__section--graph">
+      <a href="#" class="sidebar__graph-link" data-view="graph">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Graph View
+      </a>
+    </div>
     <div class="sidebar__section">
       <div class="sidebar__section-title">
         <span class="sidebar__icon sidebar__icon--skill">S</span>
@@ -1239,6 +1251,14 @@ function renderSidebarNav(): void {
   `;
 
   sidebarNav.innerHTML = html;
+
+  // Add click handler for graph view link
+  const graphLink = sidebarNav.querySelector('.sidebar__graph-link');
+  graphLink?.addEventListener('click', (e) => {
+    e.preventDefault();
+    const graphTab = document.querySelector('[data-view="graph"]') as HTMLElement;
+    graphTab?.click();
+  });
 }
 
 function groupByCategory(items: Endpoint[]): Record<string, Endpoint[]> {

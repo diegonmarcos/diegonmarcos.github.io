@@ -123,7 +123,8 @@
             <div class="nav-level3-wrapper" id="nav-health" style="display: flex;">
                 <h2 class="nav-level3-title">Health</h2>
                 <div class="nav-level3">
-                    <button class="view-btn active" data-dash-tab="resources">Infra</button>
+                    <button class="view-btn active" data-dash-tab="resources">Metrics</button>
+                    <button class="view-btn" data-dash-tab="profiling">Profiling</button>
                 </div>
             </div>
             <!-- Level 3: Sub-navigation for Security -->
@@ -504,7 +505,174 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><!-- End Resources/Metrics Tab -->
+
+        <!-- Profiling Tab Content -->
+        <div id="profiling-tab" class="tab-content">
+            <!-- Performance Profiling Dashboard -->
+            <div class="resources-category">
+                <h3 class="resources-category-title">Performance Profiling</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Real-time performance analysis and bottleneck detection</p>
+
+                <!-- Summary Cards -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-green);">98.5%</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Avg Uptime</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-blue);">142ms</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Avg Response</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-yellow);">3</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Slow Queries</div>
+                    </div>
+                    <div style="background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; padding: 1rem; text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent-purple);">0</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">Errors (24h)</div>
+                    </div>
+                </div>
+
+                <!-- Response Time Distribution -->
+                <div class="resources-section" style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Response Time Distribution</h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Endpoint</th>
+                                    <th>P50</th>
+                                    <th>P95</th>
+                                    <th>P99</th>
+                                    <th>Requests/min</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">GET /api/health</code></td>
+                                    <td style="color: var(--accent-green);">12ms</td>
+                                    <td style="color: var(--accent-green);">28ms</td>
+                                    <td style="color: var(--accent-green);">45ms</td>
+                                    <td>120</td>
+                                    <td><span class="status-badge on">FAST</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">POST /api/auth/login</code></td>
+                                    <td style="color: var(--accent-green);">85ms</td>
+                                    <td style="color: var(--accent-yellow);">210ms</td>
+                                    <td style="color: var(--accent-yellow);">380ms</td>
+                                    <td>45</td>
+                                    <td><span class="status-badge on">OK</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">GET /api/metrics</code></td>
+                                    <td style="color: var(--accent-green);">45ms</td>
+                                    <td style="color: var(--accent-green);">95ms</td>
+                                    <td style="color: var(--accent-yellow);">180ms</td>
+                                    <td>200</td>
+                                    <td><span class="status-badge on">FAST</span></td>
+                                </tr>
+                                <tr>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">GET /api/photos/sync</code></td>
+                                    <td style="color: var(--accent-yellow);">320ms</td>
+                                    <td style="color: var(--accent-orange);">890ms</td>
+                                    <td style="color: var(--accent-red);">1.2s</td>
+                                    <td>15</td>
+                                    <td><span class="status-badge" style="background: rgba(251,191,36,0.15); color: var(--accent-yellow);">SLOW</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Resource Hotspots -->
+                <div class="resources-section" style="margin-bottom: 1.5rem;">
+                    <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Resource Hotspots</h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Service</th>
+                                    <th>CPU Peak</th>
+                                    <th>Memory Peak</th>
+                                    <th>I/O Wait</th>
+                                    <th>Bottleneck</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>photoprism</strong></td>
+                                    <td><span style="color: var(--accent-orange);">78%</span></td>
+                                    <td><span style="color: var(--accent-yellow);">2.1 GB</span></td>
+                                    <td><span style="color: var(--accent-green);">5%</span></td>
+                                    <td><span style="color: var(--accent-orange);">CPU-bound (image processing)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>matomo</strong></td>
+                                    <td><span style="color: var(--accent-green);">15%</span></td>
+                                    <td><span style="color: var(--accent-yellow);">450 MB</span></td>
+                                    <td><span style="color: var(--accent-yellow);">18%</span></td>
+                                    <td><span style="color: var(--accent-yellow);">I/O-bound (database)</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>npm</strong></td>
+                                    <td><span style="color: var(--accent-green);">8%</span></td>
+                                    <td><span style="color: var(--accent-green);">120 MB</span></td>
+                                    <td><span style="color: var(--accent-green);">2%</span></td>
+                                    <td><span style="color: var(--accent-green);">None detected</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>mailu</strong></td>
+                                    <td><span style="color: var(--accent-green);">12%</span></td>
+                                    <td><span style="color: var(--accent-green);">380 MB</span></td>
+                                    <td><span style="color: var(--accent-green);">4%</span></td>
+                                    <td><span style="color: var(--accent-green);">None detected</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recent Traces -->
+                <div class="resources-section">
+                    <h4 style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">Recent Slow Traces (>500ms)</h4>
+                    <div class="resources-table-container">
+                        <table class="resources-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Request</th>
+                                    <th>Duration</th>
+                                    <th>Root Cause</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="color: var(--text-secondary); font-size: 0.75rem;">2025-12-29 13:42:18</td>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">GET /api/photos/sync</code></td>
+                                    <td style="color: var(--accent-orange);">1.2s</td>
+                                    <td>Large batch processing (150 images)</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-secondary); font-size: 0.75rem;">2025-12-29 12:15:03</td>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">POST /api/matomo/archive</code></td>
+                                    <td style="color: var(--accent-yellow);">890ms</td>
+                                    <td>Database archival job</td>
+                                </tr>
+                                <tr>
+                                    <td style="color: var(--text-secondary); font-size: 0.75rem;">2025-12-29 10:33:47</td>
+                                    <td><code style="background: var(--bg-tertiary); padding: 0.15rem 0.4rem; border-radius: 3px; font-size: 0.75rem;">GET /api/photos/thumbnails</code></td>
+                                    <td style="color: var(--accent-yellow);">720ms</td>
+                                    <td>Cold cache miss</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Profiling Tab -->
 
         <!-- Audit Analytics Tab Content -->
         <div id="audit-analytics-tab" class="tab-content">
@@ -5996,13 +6164,14 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity'];
+            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity', 'profiling'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
             const tabToParent = {
                 'infra': 'topology',
                 'resources': 'health',
+                'profiling': 'health',
                 'security': 'security',
                 'audit-analytics': 'security',
                 'audit-logs': 'security',

@@ -7,232 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --card-w: 60px;
-            --card-h: 102px;
-            --reveal-w: 130px;
-            --reveal-h: 220px;
-            --support-w: 75px;
-            --support-h: 115px;
-            --gold: #ffd700;
-            --velvet-base: #1a0505;
-        }
-
-        @media (min-width: 1200px) {
-            :root {
-                --card-w: 75px;
-                --card-h: 128px;
-                --reveal-w: 170px;
-                --reveal-h: 290px;
-            }
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background-color: var(--velvet-base);
-            background-image:
-                radial-gradient(circle at 50% 50%, transparent 0%, #000 100%),
-                url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E"),
-                radial-gradient(circle at 50% 100%, #3a0000 0%, transparent 60%);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            font-family: 'Sorts Mill Goudy', serif;
-            perspective: 2500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* --- PARTICLES --- */
-        .particles {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;
-            background-image: radial-gradient(rgba(255, 215, 0, 0.7) 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-            background-size: 60px 60px; background-position: 0 0, 30px 30px; opacity: 0.3; animation: twinkle 8s linear infinite;
-        }
-        @keyframes twinkle { 0% { transform: translateY(0); opacity: 0.3; } 50% { opacity: 0.5; } 100% { transform: translateY(-50px); opacity: 0.3; } }
-
-        /* --- CRYSTAL BALL --- */
-        .trigger-container {
-            position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-            display: flex; flex-direction: column; align-items: center; z-index: 5000; cursor: pointer; transition: opacity 0.5s;
-        }
-        .trigger-container:hover .orb {
-            box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8), inset 10px 10px 30px rgba(255,255,255,0.4), 0 0 40px rgba(255, 255, 255, 0.3), 0 0 80px rgba(255, 215, 0, 0.2);
-            border-color: rgba(255,255,255,0.5);
-        }
-        .orb-wrapper { position: relative; width: 130px; height: 130px; margin-bottom: 15px; }
-        .orb {
-            width: 100%; height: 100%; border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 30%, rgba(0, 0, 0, 0.1) 70%);
-            backdrop-filter: blur(5px) brightness(1.1); -webkit-backdrop-filter: blur(5px) brightness(1.1);
-            box-shadow: inset -15px -15px 40px rgba(0,0,0,0.7), inset 10px 10px 20px rgba(255,255,255,0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.1), 0 20px 40px rgba(0,0,0,0.4);
-            border: 1px solid rgba(255, 255, 255, 0.2); position: relative; overflow: hidden; transition: all 0.4s ease;
-        }
-        .orb::before {
-            content: ''; position: absolute; top: 15%; left: 20%; width: 25%; height: 15%;
-            background: radial-gradient(ellipse at center, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(-45deg); filter: blur(1px); z-index: 2;
-        }
-        .orb::after {
-            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
-            background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.1) 60%, transparent 70%);
-            transform: skewX(-20deg); animation: shineSweep 5s infinite ease-in-out; pointer-events: none;
-        }
-        @keyframes shineSweep { 0%, 20% { left: -150%; } 50%, 100% { left: 150%; } }
-        .stand {
-            width: 90px; height: 30px; background: radial-gradient(ellipse at center, #d4af37 0%, #8a6e2f 50%, #2a1a0a 100%);
-            border-radius: 50%; margin-top: -30px; z-index: -1; box-shadow: 0 15px 25px rgba(0,0,0,0.8); position: relative;
-        }
-        .instruction {
-            margin-top: 15px; font-family: 'Cinzel Decorative', cursive; color: var(--gold);
-            font-size: 1.3rem; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 10px #000;
-        }
-
-        /* --- BUTTONS --- */
-        .btn-round {
-            background: rgba(0,0,0,0.6); border: 2px solid var(--gold); color: var(--gold);
-            width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: 0.4s;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); pointer-events: auto;
-            font-family: 'Cinzel Decorative', serif; font-size: 1.2rem; font-weight: bold;
-        }
-        .btn-round:hover { background: var(--gold); color: #2a0a0a; box-shadow: 0 0 30px var(--gold); transform: scale(1.1); }
-        .btn-round svg { width: 24px; height: 24px; fill: currentColor; }
-
-        .info-container { position: absolute; bottom: 30px; left: 30px; z-index: 5005; }
-        .reload-container { position: absolute; top: 30px; right: 30px; z-index: 5001; opacity: 0; pointer-events: none; transition: opacity 1s; }
-        .reload-container.visible { opacity: 1; pointer-events: auto; }
-
-        /* --- TABLE & CARDS --- */
-        #table { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform-style: preserve-3d; z-index: 10; }
-        .card {
-            position: absolute; width: var(--card-w); height: var(--card-h); transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), left 1.2s, top 1.2s;
-            cursor: default; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.6);
-            animation: idleFloat 6s ease-in-out infinite;
-        }
-        @keyframes idleFloat {
-            0%, 100% { transform: translate(-50%, -50%) rotate(var(--rot)) translateY(0); }
-            50% { transform: translate(-50%, -50%) rotate(var(--rot)) translateY(-5px); }
-        }
-        .card-inner { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 0.6s; border-radius: 8px; }
-        .face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 7px; background-size: 100% 100%; background-repeat: no-repeat; overflow: hidden; }
-        .face-front { transform: rotateY(0deg); background-color: #111; border: 1px solid #333; }
-        .face-back { transform: rotateY(180deg); background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=300'); background-size: cover; border: 2px solid #5a3e1b; }
-        .face-back::after { content: ''; position: absolute; top: 50%; left: 50%; width: 70%; height: 70%; transform: translate(-50%, -50%) rotate(45deg); border: 1px solid rgba(255,215,0,0.3); }
-        .is-flipped .card-inner { transform: rotateY(180deg); }
-        .shuffling .card-inner { animation: shuffleShake 0.2s infinite; }
-        @keyframes shuffleShake { 0% { transform: rotateY(180deg) translate(0,0) rotate(0); } 25% { transform: rotateY(180deg) translate(2px,0) rotate(1deg); } 75% { transform: rotateY(180deg) translate(-2px,0) rotate(-1deg); } }
-        .revealed-tarot { width: var(--reveal-w) !important; height: var(--reveal-h) !important; z-index: 100 !important; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); animation: none !important; }
-        .revealed-support { width: var(--support-w) !important; height: var(--support-h) !important; z-index: 50 !important; animation: none !important; }
-
-        /* --- TEXT CONTAINER --- */
-        .reading-container {
-            position: absolute;
-            /* Raised bottom to avoid overlap with phrase */
-            bottom: 120px;
-            left: 0;
-            width: 100%;
-            height: 30%; /* Fixed height to keep texts uniform */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding: 0 5%;
-            gap: 20px;
-            z-index: 200;
-            pointer-events: none;
-        }
-
-        .reading-text {
-            flex: 1; max-width: 350px;
-            background: linear-gradient(to bottom, rgba(25, 5, 5, 0.95), rgba(10, 0, 0, 0.98));
-            border: 1px solid var(--gold); border-top: 3px solid var(--gold); padding: 15px; color: #f0e6d2; text-align: center;
-            opacity: 0; transform: translateY(30px); transition: all 0.8s ease;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9); border-radius: 0 0 10px 10px;
-        }
-        .reading-text.visible { opacity: 1; transform: translateY(0); }
-        .reading-text h3 { color: var(--gold); font-family: 'Cinzel Decorative', cursive; margin-bottom: 8px; font-size: 1.1rem; border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 5px; }
-        .reading-text p { font-size: 0.9rem; line-height: 1.5; }
-
-        .title-overlay { position: absolute; top: 30px; width: 100%; text-align: center; pointer-events: none; z-index: 100; opacity: 1; transition: opacity 1s; }
-        .title-overlay h1 { font-family: 'Cinzel Decorative', cursive; font-size: 3rem; color: var(--gold); text-shadow: 0 0 20px rgba(0,0,0,0.8); opacity: 0.8; }
-
-        /* --- FINAL PHRASE --- */
-        .final-phrase {
-            position: absolute;
-            bottom: 40px; /* Separated from container */
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: #ccc;
-            font-family: 'Sorts Mill Goudy', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            text-shadow: 0 2px 4px #000;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 1.5s ease;
-            pointer-events: none;
-            z-index: 200;
-            letter-spacing: 0.5px;
-            padding: 0 20px;
-        }
-        .final-phrase.visible { opacity: 1; transform: translateY(0); }
-
-        /* --- GALLERY OVERLAY --- */
-        #galleryView {
-            position: fixed; inset: 0; background: rgba(10, 0, 0, 0.95); backdrop-filter: blur(15px);
-            z-index: 6000; display: none; flex-direction: column; opacity: 0; transition: opacity 0.5s ease;
-        }
-        #galleryView.active { display: flex; opacity: 1; }
-        .gallery-header { padding: 20px; text-align: center; border-bottom: 1px solid var(--gold); background: #1a0505; display: flex; justify-content: space-between; align-items: center; }
-        .gallery-header h2 { font-family: 'Cinzel Decorative', cursive; color: var(--gold); font-size: 1.5rem; flex-grow: 1; }
-        .btn-close { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 5px 15px; cursor: pointer; font-family: 'Philosopher', sans-serif; text-transform: uppercase; }
-        .btn-close:hover { background: var(--gold); color: #000; }
-
-        /* --- STRICT 6 COLUMNS GRID --- */
-        .gallery-grid {
-            flex-grow: 1; padding: 20px; overflow-y: auto; display: grid; gap: 10px;
-            /* FORCED 6 COLUMNS ALWAYS */
-            grid-template-columns: repeat(6, 1fr) !important;
-            scrollbar-width: thin; scrollbar-color: var(--gold) #222;
-        }
-
-        .gallery-item {
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            cursor: pointer; transition: transform 0.2s;
-            min-width: 0;
-        }
-        .gallery-item:hover { transform: scale(1.1); z-index: 10; }
-
-        .g-card-img {
-            width: 100%; aspect-ratio: 60/102; background-size: cover; border-radius: 4px;
-            border: 1px solid #444; margin-bottom: 3px; box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-        }
-
-        .g-name {
-            color: #ddd; font-size: 0.7rem; font-weight: bold; margin-bottom: 2px; line-height: 1.1;
-            width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
-        .g-mean {
-            display: block;
-            color: #aaa; font-size: 0.6rem; font-style: italic; line-height: 1;
-            width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-            margin-top: 2px;
-        }
-
-        /* Tiny Screen Text Adj */
-        @media (max-width: 600px) {
-            .gallery-grid { gap: 5px; padding: 10px; }
-            .g-name { font-size: 0.5rem; }
-            .g-mean { font-size: 0.4rem; }
-        }
-
-    </style>
+<style>
+:root{--card-w: 60px;--card-h: 102px;--reveal-w: 130px;--reveal-h: 220px;--support-w: 75px;--support-h: 115px;--gold: #ffd700;--velvet-base: #1a0505;--z-particles: 1;--z-table: 10;--z-cards-support: 50;--z-cards-tarot: 100;--z-title: 100;--z-reading: 200;--z-reload: 5001;--z-info: 5005;--z-trigger: 5000;--z-gallery: 6000}*{margin:0;padding:0;box-sizing:border-box}body{background-color:var(--velvet-base);background-image:radial-gradient(circle at 50% 50%, transparent 0%, #000 100%),url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E"),radial-gradient(circle at 50% 100%, #3a0000 0%, transparent 60%);height:100vh;width:100vw;overflow:hidden;font-family:"Sorts Mill Goudy",serif;perspective:2500px;display:flex;flex-direction:column;align-items:center}.particles{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:var(--z-particles);background-image:radial-gradient(rgba(255, 215, 0, 0.7) 1px, transparent 1px),radial-gradient(rgba(255, 255, 255, 0.5) 1px, transparent 1px);background-size:60px 60px;background-position:0 0,30px 30px;opacity:.3;animation:twinkle 8s linear infinite}.trigger-container{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;z-index:var(--z-trigger);cursor:pointer;transition:opacity .5s}.trigger-container:hover .orb{box-shadow:inset -20px -20px 50px rgba(0,0,0,.8),inset 10px 10px 30px hsla(0,0%,100%,.4),0 0 40px hsla(0,0%,100%,.3),0 0 80px rgba(255,215,0,.2);border-color:hsla(0,0%,100%,.5)}.orb-wrapper{position:relative;width:130px;height:130px;margin-bottom:15px}.orb{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 30%, rgba(0, 0, 0, 0.1) 70%);backdrop-filter:blur(5px) brightness(1.1);-webkit-backdrop-filter:blur(5px) brightness(1.1);box-shadow:inset -15px -15px 40px rgba(0,0,0,.7),inset 10px 10px 20px hsla(0,0%,100%,.2),inset 0 0 0 1px hsla(0,0%,100%,.1),0 20px 40px rgba(0,0,0,.4);border:1px solid hsla(0,0%,100%,.2);position:relative;overflow:hidden;transition:all .4s ease}.orb::before{content:"";position:absolute;top:15%;left:20%;width:25%;height:15%;background:radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0) 70%);transform:rotate(-45deg);filter:blur(1px);z-index:2}.orb::after{content:"";position:absolute;top:0;left:-150%;width:100%;height:100%;background:linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0.1) 60%, transparent 70%);transform:skewX(-20deg);animation:shineSweep 5s infinite ease-in-out;pointer-events:none}.stand{width:90px;height:30px;background:radial-gradient(ellipse at center, #d4af37 0%, #8a6e2f 50%, #2a1a0a 100%);border-radius:50%;margin-top:-30px;z-index:-1;box-shadow:0 15px 25px rgba(0,0,0,.8);position:relative}.instruction{margin-top:15px;font-family:"Cinzel Decorative",cursive;color:var(--gold);font-size:1.3rem;text-transform:uppercase;letter-spacing:2px;text-shadow:0 2px 10px #000}.btn-round{background:rgba(0,0,0,.6);border:2px solid var(--gold);color:var(--gold);width:45px;height:45px;border-radius:50%;cursor:pointer;transition:.4s;display:flex;align-items:center;justify-content:center;box-shadow:0 0 15px rgba(255,215,0,.3);pointer-events:auto;font-family:"Cinzel Decorative",serif;font-size:1.2rem;font-weight:bold}.btn-round:hover{background:var(--gold);color:#2a0a0a;box-shadow:0 0 30px var(--gold);transform:scale(1.1)}.btn-round svg{width:24px;height:24px;fill:currentColor}.btn-close{background:rgba(0,0,0,0);border:1px solid var(--gold);color:var(--gold);padding:5px 15px;cursor:pointer;font-family:"Philosopher",sans-serif;text-transform:uppercase}.btn-close:hover{background:var(--gold);color:#000}.info-container{position:absolute;bottom:30px;left:30px;z-index:var(--z-info)}.reload-container{position:absolute;top:30px;right:30px;z-index:var(--z-reload);opacity:0;pointer-events:none;transition:opacity 1s}.reload-container.visible{opacity:1;pointer-events:auto}#table{position:absolute;top:0;left:0;width:100%;height:100%;transform-style:preserve-3d;z-index:var(--z-table)}.card{position:absolute;width:var(--card-w);height:var(--card-h);transform-style:preserve-3d;transition:transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1),left 1.2s,top 1.2s;cursor:default;border-radius:8px;box-shadow:0 5px 15px rgba(0,0,0,.6);animation:idleFloat 6s ease-in-out infinite}.card-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s;border-radius:8px}.face{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:7px;background-size:100% 100%;background-repeat:no-repeat;overflow:hidden}.face-front{transform:rotateY(0deg);background-color:#111;border:1px solid #333}.face-back{transform:rotateY(180deg);background-image:url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=300");background-size:cover;border:2px solid #5a3e1b}.face-back::after{content:"";position:absolute;top:50%;left:50%;width:70%;height:70%;transform:translate(-50%, -50%) rotate(45deg);border:1px solid rgba(255,215,0,.3)}.is-flipped .card-inner{transform:rotateY(180deg)}.shuffling .card-inner{animation:shuffleShake .2s infinite}.revealed-tarot{width:var(--reveal-w) !important;height:var(--reveal-h) !important;z-index:var(--z-cards-tarot) !important;filter:drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));animation:none !important}.revealed-support{width:var(--support-w) !important;height:var(--support-h) !important;z-index:var(--z-cards-support) !important;animation:none !important}#galleryView{position:fixed;inset:0;background:rgba(10,0,0,.95);backdrop-filter:blur(15px);z-index:var(--z-gallery);display:none;flex-direction:column;opacity:0;transition:opacity .5s ease}#galleryView.active{display:flex;opacity:1}.gallery-header{padding:20px;text-align:center;border-bottom:1px solid var(--gold);background:#1a0505;display:flex;justify-content:space-between;align-items:center}.gallery-header h2{font-family:"Cinzel Decorative",cursive;color:var(--gold);font-size:1.5rem;flex-grow:1}.gallery-tabs{display:flex;gap:10px;flex-grow:1;justify-content:center}.gallery-tab{background:rgba(0,0,0,0);border:1px solid var(--gold);color:var(--gold);padding:8px 16px;font-family:"Cinzel Decorative",cursive;font-size:.9rem;cursor:pointer;border-radius:4px;transition:all .3s ease}.gallery-tab:hover{background:rgba(255,215,0,.1)}.gallery-tab.active{background:var(--gold);color:#1a0505}.gallery-grid{flex-grow:1;padding:20px;overflow-y:auto;display:grid;gap:10px;grid-template-columns:repeat(6, 1fr) !important;scrollbar-width:thin;scrollbar-color:var(--gold) #222}.gallery-item{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;transition:transform .2s;min-width:0}.gallery-item:hover{transform:scale(1.1);z-index:10}.g-card-img{width:100%;aspect-ratio:60/102;background-size:cover;border-radius:4px;border:1px solid #444;margin-bottom:3px;box-shadow:0 4px 8px rgba(0,0,0,.5)}.g-name{color:#ddd;font-size:.7rem;font-weight:bold;margin-bottom:2px;line-height:1.1;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.g-mean{display:block;color:#aaa;font-size:.6rem;font-style:italic;line-height:1;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}.g-card-symbol{width:100%;aspect-ratio:60/102;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:linear-gradient(135deg, #2a1a1a 0%, #1a0505 50%, #2a1a1a 100%);border:2px solid var(--gold);border-radius:6px;margin-bottom:3px;box-shadow:0 4px 12px rgba(0,0,0,.6),inset 0 0 20px rgba(255,215,0,.1)}.lenormand-item .g-name{font-size:.65rem}.lenormand-item .g-mean{font-size:.55rem;white-space:normal;line-height:1.2}.title-overlay{position:absolute;top:30px;width:100%;text-align:center;pointer-events:none;z-index:var(--z-title);opacity:1;transition:opacity 1s}.title-overlay h1{font-family:"Cinzel Decorative",cursive;font-size:3rem;color:var(--gold);text-shadow:0 0 20px rgba(0,0,0,.8);opacity:.8}.reading-container{position:absolute;bottom:120px;left:0;width:100%;height:30%;display:flex;justify-content:center;align-items:flex-start;padding:0 5%;gap:20px;z-index:var(--z-reading);pointer-events:none}.reading-text{flex:1;max-width:350px;background:linear-gradient(to bottom, rgba(25, 5, 5, 0.95), rgba(10, 0, 0, 0.98));border:1px solid var(--gold);border-top:3px solid var(--gold);padding:15px;color:#f0e6d2;text-align:center;opacity:0;transform:translateY(30px);transition:all .8s ease;box-shadow:0 10px 40px rgba(0,0,0,.9);border-radius:0 0 10px 10px}.reading-text.visible{opacity:1;transform:translateY(0)}.reading-text h3{color:var(--gold);font-family:"Cinzel Decorative",cursive;margin-bottom:8px;font-size:1.1rem;border-bottom:1px solid rgba(212,175,55,.2);padding-bottom:5px}.reading-text p{font-size:.9rem;line-height:1.5}.final-phrase{position:absolute;bottom:40px;left:0;width:100%;text-align:center;color:#ccc;font-family:"Sorts Mill Goudy",serif;font-style:italic;font-size:1.2rem;text-shadow:0 2px 4px #000;opacity:0;transform:translateY(10px);transition:all 1.5s ease;pointer-events:none;z-index:var(--z-reading);letter-spacing:.5px;padding:0 20px}.final-phrase.visible{opacity:1;transform:translateY(0)}@keyframes twinkle{0%{transform:translateY(0);opacity:.3}50%{opacity:.5}100%{transform:translateY(-50px);opacity:.3}}@keyframes shineSweep{0%,20%{left:-150%}50%,100%{left:150%}}@keyframes idleFloat{0%,100%{transform:translate(-50%, -50%) rotate(var(--rot)) translateY(0)}50%{transform:translate(-50%, -50%) rotate(var(--rot)) translateY(-5px)}}@keyframes shuffleShake{0%{transform:rotateY(180deg) translate(0, 0) rotate(0)}25%{transform:rotateY(180deg) translate(2px, 0) rotate(1deg)}75%{transform:rotateY(180deg) translate(-2px, 0) rotate(-1deg)}}@media(min-width: 1200px){:root{--card-w: 75px;--card-h: 128px;--reveal-w: 170px;--reveal-h: 290px}}@media(max-width: 600px){.gallery-grid{gap:5px;padding:10px}.g-name{font-size:.5rem}.g-mean{font-size:.4rem}}
+</style>
 </head>
 <body>
 
@@ -273,172 +50,368 @@
     <div id="galleryView">
         <div class="gallery-header">
             <button class="btn-close" style="visibility: hidden;">Close</button>
-            <h2>The Arcana (78 Cards)</h2>
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" data-deck="tarot">Tarot (78)</button>
+                <button class="gallery-tab" data-deck="lenormand">Lenormand (36)</button>
+            </div>
             <button class="btn-close" id="btnCloseGallery">Close</button>
         </div>
         <div class="gallery-grid" id="galleryGrid"></div>
     </div>
 
-    <script>
-        const RWS_ASSETS = [
-            'https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_03_Empress.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/36/RWS_Tarot_06_Lovers.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/f7/RWS_Tarot_08_Strength.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/30/RWS_Tarot_10_Wheel_of_Fortune.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/dc/RWS_Tarot_16_Tower.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d1/RWS_Tarot_17_Star.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d0/RWS_Tarot_20_Judgement.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cups01.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/9d/Cups02.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/5/5e/Cups05.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/ff/Wands03.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/4d/Wands09.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/fd/Pents01.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/9f/Pents02.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/42/Pents03.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/3/35/Pents04.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/9/96/Pents05.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/a/a6/Pents06.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/6/6a/Pents07.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/49/Pents08.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/f/f0/Pents09.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/4/42/Pents10.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/e/ec/Pents11.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/d/d5/Pents12.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/8/88/Pents13.jpg',
-            'https://upload.wikimedia.org/wikipedia/commons/1/1c/Pents14.jpg'
-        ];
-        const SUPPORT_IMGS = [ 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/8_of_hearts.svg/300px-8_of_hearts.svg.png', 'https://upload.wikimedia.org/wikipedia/commons/2/23/The_Ship_-_Nuremberg_chronicle_-_f_10r.png', 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Queen_of_spades_en.svg/300px-Queen_of_spades_en.svg.png', 'https://upload.wikimedia.org/wikipedia/commons/2/2d/Breviary_Grimani_-_Book_Cover.jpg', 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ace_of_diamonds.svg/300px-Ace_of_diamonds.svg.png', 'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg' ];
-        const HERO_CONFIG = { 'past': 'https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg', 'pres': 'https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg', 'fut':  'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg' };
-        const table = document.getElementById('table'); let deck = []; const DECK_SIZE = 78;
-
-        function init() {
-            table.innerHTML = ''; deck = [];
-            for (let i = 0; i < DECK_SIZE; i++) { const img = RWS_ASSETS[i % RWS_ASSETS.length]; createCard(i, img); }
-            assignHero(10, 'hero-past', HERO_CONFIG.past); assignHero(35, 'hero-pres', HERO_CONFIG.pres); assignHero(60, 'hero-fut',  HERO_CONFIG.fut);
+<script>
+"use strict";
+const RWS_ASSETS = [
+    'https://upload.wikimedia.org/wikipedia/commons/9/90/RWS_Tarot_00_Fool.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/de/RWS_Tarot_01_Magician.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/db/RWS_Tarot_03_Empress.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/c3/RWS_Tarot_04_Emperor.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/8d/RWS_Tarot_05_Hierophant.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/36/RWS_Tarot_06_Lovers.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9b/RWS_Tarot_07_Chariot.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/f7/RWS_Tarot_08_Strength.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/4d/RWS_Tarot_09_Hermit.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/30/RWS_Tarot_10_Wheel_of_Fortune.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e0/RWS_Tarot_11_Justice.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2b/RWS_Tarot_12_Hanged_Man.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d7/RWS_Tarot_13_Death.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/f8/RWS_Tarot_14_Temperance.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/5/55/RWS_Tarot_15_Devil.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/dc/RWS_Tarot_16_Tower.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d1/RWS_Tarot_17_Star.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/7/7f/RWS_Tarot_18_Moon.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d0/RWS_Tarot_20_Judgement.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/ff/RWS_Tarot_21_World.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/36/Cups01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/f8/Cups02.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/7/7a/Cups03.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/35/Cups04.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d7/Cups05.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/17/Cups06.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/a/ae/Cups07.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/24/Cups09.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/84/Cups10.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/a/ad/Cups11.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/fa/Cups12.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/62/Cups13.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/04/Cups14.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1a/Swords01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9e/Swords02.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/02/Swords03.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/bf/Swords04.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/23/Swords05.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/29/Swords06.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/34/Swords07.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/a/a7/Swords08.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2f/Swords09.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords10.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/4c/Swords11.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/b/b0/Swords12.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d4/Swords13.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/33/Swords14.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/11/Wands01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0f/Wands02.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/ff/Wands03.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/a/a4/Wands04.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9d/Wands05.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/3b/Wands06.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/e4/Wands07.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/6b/Wands08.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/4d/Tarot_Nine_of_Wands.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0b/Wands10.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/6a/Wands11.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/16/Wands12.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/0/0d/Wands13.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/c/ce/Wands14.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/fd/Pents01.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/9f/Pents02.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/42/Pents03.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/3/35/Pents04.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/9/96/Pents05.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/a/a6/Pents06.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/6/6a/Pents07.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/49/Pents08.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/f/f0/Pents09.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/4/42/Pents10.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/e/ec/Pents11.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/d/d5/Pents12.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/8/88/Pents13.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/1/1c/Pents14.jpg'
+];
+const SUPPORT_IMGS = [
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/8_of_hearts.svg/300px-8_of_hearts.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/2/23/The_Ship_-_Nuremberg_chronicle_-_f_10r.png',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Queen_of_spades_en.svg/300px-Queen_of_spades_en.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/2/2d/Breviary_Grimani_-_Book_Cover.jpg',
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ace_of_diamonds.svg/300px-Ace_of_diamonds.svg.png',
+    'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg'
+];
+const HERO_CONFIG = {
+    past: 'https://upload.wikimedia.org/wikipedia/commons/6/60/Cups08.jpg',
+    pres: 'https://upload.wikimedia.org/wikipedia/commons/8/88/RWS_Tarot_02_High_Priestess.jpg',
+    fut: 'https://upload.wikimedia.org/wikipedia/commons/1/17/RWS_Tarot_19_Sun.jpg'
+};
+const DECK_SIZE = 78;
+const LENORMAND_CARDS = [
+    { name: '1. Rider', symbol: '🏇', meaning: 'News, messages, arrival' },
+    { name: '2. Clover', symbol: '🍀', meaning: 'Luck, opportunity, small fortune' },
+    { name: '3. Ship', symbol: '🚢', meaning: 'Travel, journey, trade' },
+    { name: '4. House', symbol: '🏠', meaning: 'Home, family, stability' },
+    { name: '5. Tree', symbol: '🌳', meaning: 'Health, growth, roots' },
+    { name: '6. Clouds', symbol: '☁️', meaning: 'Confusion, doubt, uncertainty' },
+    { name: '7. Snake', symbol: '🐍', meaning: 'Deception, complications, wisdom' },
+    { name: '8. Coffin', symbol: '⚰️', meaning: 'Endings, transformation, grief' },
+    { name: '9. Bouquet', symbol: '💐', meaning: 'Gift, beauty, happiness' },
+    { name: '10. Scythe', symbol: '🔪', meaning: 'Sudden change, danger, harvest' },
+    { name: '11. Whip', symbol: '🏏', meaning: 'Conflict, repetition, discussion' },
+    { name: '12. Birds', symbol: '🐦', meaning: 'Communication, gossip, couples' },
+    { name: '13. Child', symbol: '👶', meaning: 'New beginning, innocence, small' },
+    { name: '14. Fox', symbol: '🦊', meaning: 'Cunning, work, deception' },
+    { name: '15. Bear', symbol: '🐻', meaning: 'Power, boss, mother figure' },
+    { name: '16. Stars', symbol: '⭐', meaning: 'Hope, guidance, success' },
+    { name: '17. Stork', symbol: '🦢', meaning: 'Change, improvement, pregnancy' },
+    { name: '18. Dog', symbol: '🐕', meaning: 'Loyalty, friendship, trust' },
+    { name: '19. Tower', symbol: '🏰', meaning: 'Authority, isolation, institution' },
+    { name: '20. Garden', symbol: '🌷', meaning: 'Social events, public, gathering' },
+    { name: '21. Mountain', symbol: '⛰️', meaning: 'Obstacle, delay, challenge' },
+    { name: '22. Crossroads', symbol: '🔀', meaning: 'Choices, decisions, options' },
+    { name: '23. Mice', symbol: '🐭', meaning: 'Loss, worry, theft' },
+    { name: '24. Heart', symbol: '❤️', meaning: 'Love, romance, emotions' },
+    { name: '25. Ring', symbol: '💍', meaning: 'Commitment, contract, cycle' },
+    { name: '26. Book', symbol: '📖', meaning: 'Secrets, knowledge, education' },
+    { name: '27. Letter', symbol: '✉️', meaning: 'Documents, written message' },
+    { name: '28. Man', symbol: '👨', meaning: 'Male querent or significant male' },
+    { name: '29. Woman', symbol: '👩', meaning: 'Female querent or significant female' },
+    { name: '30. Lily', symbol: '🌸', meaning: 'Peace, maturity, sensuality' },
+    { name: '31. Sun', symbol: '☀️', meaning: 'Success, joy, vitality' },
+    { name: '32. Moon', symbol: '🌙', meaning: 'Intuition, emotions, recognition' },
+    { name: '33. Key', symbol: '🔑', meaning: 'Solution, importance, certainty' },
+    { name: '34. Fish', symbol: '🐟', meaning: 'Finances, business, abundance' },
+    { name: '35. Anchor', symbol: '⚓', meaning: 'Stability, perseverance, goal' },
+    { name: '36. Cross', symbol: '✝️', meaning: 'Burden, fate, spirituality' }
+];
+let currentDeck = 'tarot';
+const table = document.getElementById('table');
+let deck = [];
+function init() {
+    table.innerHTML = '';
+    deck = [];
+    for (let i = 0; i < DECK_SIZE; i++) {
+        const img = RWS_ASSETS[i % RWS_ASSETS.length];
+        createCard(i, img);
+    }
+    assignHero(10, 'hero-past', HERO_CONFIG.past);
+    assignHero(35, 'hero-pres', HERO_CONFIG.pres);
+    assignHero(60, 'hero-fut', HERO_CONFIG.fut);
+}
+function createCard(i, imgUrl) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const x = Math.random() * (window.innerWidth + 100) - 50;
+    const y = Math.random() * (window.innerHeight + 100) - 50;
+    const rot = Math.random() * 360;
+    card.style.left = `${x}px`;
+    card.style.top = `${y}px`;
+    card.style.setProperty('--rot', `${rot}deg`);
+    card.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`;
+    card.style.animationDelay = `${Math.random() * 5}s`;
+    card.innerHTML = `
+        <div class="card-inner">
+            <div class="face face-front" style="background-image: url('${imgUrl}')"></div>
+            <div class="face face-back"></div>
+        </div>
+    `;
+    table.appendChild(card);
+    deck.push({ el: card, isHero: false, heroId: null, isSupport: false, index: i });
+}
+function assignHero(idx, heroId, imgUrl) {
+    const c = deck[idx];
+    c.isHero = true;
+    c.heroId = heroId;
+    const frontFace = c.el.querySelector('.face-front');
+    frontFace.style.backgroundImage = `url('${imgUrl}')`;
+}
+async function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+function injectSupports(x, y) {
+    SUPPORT_IMGS.forEach((url, i) => {
+        const card = document.createElement('div');
+        card.className = 'card is-flipped';
+        card.style.left = `${x}px`;
+        card.style.top = `${y}px`;
+        card.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 6 - 3}deg)`;
+        card.style.zIndex = (200 + i).toString();
+        card.innerHTML = `
+            <div class="card-inner">
+                <div class="face face-front" style="background-image: url('${url}'); background-size: contain; background-color:#fffdf0;"></div>
+                <div class="face face-back"></div>
+            </div>
+        `;
+        table.appendChild(card);
+        deck.push({ el: card, isHero: false, heroId: null, isSupport: true, supportIndex: i });
+    });
+}
+async function dealSpreads() {
+    const cardY = window.innerHeight * 0.4;
+    const SEQUENCE = [
+        { pct: 0.17, heroId: 'hero-past', sup: [0, 1], txt: 'txt-past' },
+        { pct: 0.5, heroId: 'hero-pres', sup: [2, 3], txt: 'txt-pres' },
+        { pct: 0.83, heroId: 'hero-fut', sup: [4, 5], txt: 'txt-fut' }
+    ];
+    let globalZ = 300;
+    for (const item of SEQUENCE) {
+        const xPos = window.innerWidth * item.pct;
+        const s1 = deck.find(c => c.supportIndex === item.sup[0]);
+        const s2 = deck.find(c => c.supportIndex === item.sup[1]);
+        const hero = deck.find(c => c.heroId === item.heroId);
+        s1.el.style.zIndex = (globalZ++).toString();
+        s1.el.classList.add('revealed-support');
+        s1.el.style.left = `${xPos - 50}px`;
+        s1.el.style.top = `${cardY + 40}px`;
+        s1.el.style.transform = `translate(-50%, -50%) rotate(-12deg)`;
+        s2.el.style.zIndex = (globalZ++).toString();
+        s2.el.classList.add('revealed-support');
+        s2.el.style.left = `${xPos + 50}px`;
+        s2.el.style.top = `${cardY + 40}px`;
+        s2.el.style.transform = `translate(-50%, -50%) rotate(12deg)`;
+        await wait(200);
+        hero.el.style.zIndex = (globalZ + 50).toString();
+        hero.el.classList.add('revealed-tarot');
+        hero.el.style.left = `${xPos}px`;
+        hero.el.style.top = `${cardY}px`;
+        hero.el.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+        await wait(600);
+        hero.el.classList.remove('is-flipped');
+        await wait(250);
+        s1.el.classList.remove('is-flipped');
+        s2.el.classList.remove('is-flipped');
+        document.getElementById(item.txt)?.classList.add('visible');
+        await wait(800);
+    }
+    document.getElementById('finalPhrase')?.classList.add('visible');
+    document.getElementById('reloadContainer')?.classList.add('visible');
+}
+function getCardMeta(i) {
+    const suits = ['Cups', 'Swords', 'Wands', 'Pentacles'];
+    const ranks = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Page', 'Knight', 'Queen', 'King'];
+    const majors = ['The Fool', 'The Magician', 'High Priestess', 'Empress', 'Emperor', 'Hierophant', 'Lovers', 'Chariot', 'Strength', 'Hermit', 'Wheel of Fortune', 'Justice', 'Hanged Man', 'Death', 'Temperance', 'Devil', 'Tower', 'Star', 'Moon', 'Sun', 'Judgement', 'World'];
+    if (i < 22) {
+        return { name: majors[i], mean: "Major Arcana" };
+    }
+    const suitIndex = Math.floor((i - 22) / 14);
+    const rankIndex = (i - 22) % 14;
+    if (suitIndex < 4) {
+        return { name: `${ranks[rankIndex]} of ${suits[suitIndex]}`, mean: `Minor Arcana - ${suits[suitIndex]}` };
+    }
+    return { name: "Card", mean: "" };
+}
+function renderGallery(deckType = 'tarot') {
+    const grid = document.getElementById('galleryGrid');
+    if (!grid)
+        return;
+    grid.innerHTML = '';
+    currentDeck = deckType;
+    if (deckType === 'tarot') {
+        for (let i = 0; i < RWS_ASSETS.length; i++) {
+            const meta = getCardMeta(i);
+            const div = document.createElement('div');
+            div.className = 'gallery-item';
+            div.innerHTML = `
+                <div class="g-card-img" style="background-image: url('${RWS_ASSETS[i]}')"></div>
+                <div class="g-name">${meta.name}</div>
+                <div class="g-mean">${meta.mean}</div>
+            `;
+            grid.appendChild(div);
         }
-        function createCard(i, imgUrl) {
-            const card = document.createElement('div'); card.className = 'card';
-            const x = Math.random() * (window.innerWidth + 100) - 50; const y = Math.random() * (window.innerHeight + 100) - 50; const rot = Math.random() * 360;
-            card.style.left = `${x}px`; card.style.top = `${y}px`; card.style.setProperty('--rot', `${rot}deg`);
-            card.style.transform = `translate(-50%, -50%) rotate(${rot}deg)`; card.style.animationDelay = `${Math.random() * 5}s`;
-            card.innerHTML = `<div class="card-inner"><div class="face face-front" style="background-image: url('${imgUrl}')"></div><div class="face face-back"></div></div>`;
-            table.appendChild(card); deck.push({ el: card, isHero: false, heroId: null, isSupport: false, index: i });
+    }
+    else {
+        for (const card of LENORMAND_CARDS) {
+            const div = document.createElement('div');
+            div.className = 'gallery-item lenormand-item';
+            div.innerHTML = `
+                <div class="g-card-symbol">${card.symbol}</div>
+                <div class="g-name">${card.name}</div>
+                <div class="g-mean">${card.meaning}</div>
+            `;
+            grid.appendChild(div);
         }
-        function assignHero(idx, heroId, imgUrl) { const c = deck[idx]; c.isHero = true; c.heroId = heroId; c.el.querySelector('.face-front').style.backgroundImage = `url('${imgUrl}')`; }
-
-        document.getElementById('triggerObj').addEventListener('click', async () => {
-            document.getElementById('triggerObj').style.opacity = '0'; document.getElementById('triggerObj').style.pointerEvents = 'none';
-            document.getElementById('mainTitle').style.opacity = '0'; document.getElementById('btnInfo').style.opacity = '0'; document.getElementById('btnInfo').style.pointerEvents = 'none';
-            const cx = window.innerWidth / 2; const cy = window.innerHeight / 2;
-            deck.forEach((c, i) => { c.el.style.animation = 'none'; c.el.classList.add('is-flipped'); c.el.style.left = `${cx}px`; c.el.style.top = `${cy}px`; c.el.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 10 - 5}deg)`; c.el.style.zIndex = i; });
-            await wait(1200); injectSupports(cx, cy); await wait(600);
-            document.querySelectorAll('.card').forEach(el => el.classList.add('shuffling')); await wait(1000); document.querySelectorAll('.card').forEach(el => el.classList.remove('shuffling'));
-            dealSpreads();
-        });
-        document.getElementById('btnRestart').addEventListener('click', () => {
-            document.getElementById('triggerObj').style.opacity = '1'; document.getElementById('triggerObj').style.pointerEvents = 'auto';
-            document.getElementById('mainTitle').style.opacity = '1'; document.getElementById('btnInfo').style.opacity = '1'; document.getElementById('btnInfo').style.pointerEvents = 'auto';
-            document.getElementById('reloadContainer').classList.remove('visible'); document.querySelectorAll('.reading-text').forEach(el => el.classList.remove('visible')); document.getElementById('finalPhrase').classList.remove('visible');
-            init();
-        });
-        function injectSupports(x, y) {
-            SUPPORT_IMGS.forEach((url, i) => {
-                const card = document.createElement('div'); card.className = 'card is-flipped';
-                card.style.left = `${x}px`; card.style.top = `${y}px`; card.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 6 - 3}deg)`; card.style.zIndex = 200 + i;
-                card.innerHTML = `<div class="card-inner"><div class="face face-front" style="background-image: url('${url}'); background-size: contain; background-color:#fffdf0;"></div><div class="face face-back"></div></div>`;
-                table.appendChild(card); deck.push({ el: card, isSupport: true, supportIndex: i });
-            });
+    }
+}
+document.getElementById('triggerObj')?.addEventListener('click', async () => {
+    const triggerEl = document.getElementById('triggerObj');
+    const mainTitle = document.getElementById('mainTitle');
+    const btnInfo = document.getElementById('btnInfo');
+    triggerEl.style.opacity = '0';
+    triggerEl.style.pointerEvents = 'none';
+    mainTitle.style.opacity = '0';
+    btnInfo.style.opacity = '0';
+    btnInfo.style.pointerEvents = 'none';
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+    deck.forEach((c, i) => {
+        c.el.style.animation = 'none';
+        c.el.classList.add('is-flipped');
+        c.el.style.left = `${cx}px`;
+        c.el.style.top = `${cy}px`;
+        c.el.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 10 - 5}deg)`;
+        c.el.style.zIndex = i.toString();
+    });
+    await wait(1200);
+    injectSupports(cx, cy);
+    await wait(600);
+    document.querySelectorAll('.card').forEach(el => el.classList.add('shuffling'));
+    await wait(1000);
+    document.querySelectorAll('.card').forEach(el => el.classList.remove('shuffling'));
+    dealSpreads();
+});
+document.getElementById('btnRestart')?.addEventListener('click', () => {
+    const triggerEl = document.getElementById('triggerObj');
+    const mainTitle = document.getElementById('mainTitle');
+    const btnInfo = document.getElementById('btnInfo');
+    const reloadContainer = document.getElementById('reloadContainer');
+    const finalPhrase = document.getElementById('finalPhrase');
+    triggerEl.style.opacity = '1';
+    triggerEl.style.pointerEvents = 'auto';
+    mainTitle.style.opacity = '1';
+    btnInfo.style.opacity = '1';
+    btnInfo.style.pointerEvents = 'auto';
+    reloadContainer.classList.remove('visible');
+    finalPhrase.classList.remove('visible');
+    document.querySelectorAll('.reading-text').forEach(el => el.classList.remove('visible'));
+    init();
+});
+document.getElementById('btnInfo')?.addEventListener('click', () => {
+    document.getElementById('galleryView')?.classList.add('active');
+    renderGallery('tarot');
+    updateTabState('tarot');
+});
+document.getElementById('btnCloseGallery')?.addEventListener('click', () => {
+    document.getElementById('galleryView')?.classList.remove('active');
+});
+document.querySelectorAll('.gallery-tab').forEach(tab => {
+    tab.addEventListener('click', (e) => {
+        const target = e.currentTarget;
+        const deckType = target.dataset.deck;
+        renderGallery(deckType);
+        updateTabState(deckType);
+    });
+});
+function updateTabState(activeType) {
+    document.querySelectorAll('.gallery-tab').forEach(tab => {
+        const t = tab;
+        if (t.dataset.deck === activeType) {
+            t.classList.add('active');
         }
-        async function dealSpreads() {
-            const cardY = window.innerHeight * 0.4;
-            const SEQUENCE = [ { pct: 0.17, heroId: 'hero-past', sup: [0, 1], txt: 'txt-past' }, { pct: 0.5, heroId: 'hero-pres', sup: [2, 3], txt: 'txt-pres' }, { pct: 0.83, heroId: 'hero-fut', sup: [4, 5], txt: 'txt-fut' } ];
-            let globalZ = 300;
-            for (const item of SEQUENCE) {
-                const xPos = window.innerWidth * item.pct;
-                const s1 = deck.find(c => c.supportIndex === item.sup[0]); const s2 = deck.find(c => c.supportIndex === item.sup[1]); const hero = deck.find(c => c.heroId === item.heroId);
-                s1.el.style.zIndex = globalZ++; s1.el.classList.add('revealed-support'); s1.el.style.left = `${xPos - 50}px`; s1.el.style.top = `${cardY + 40}px`; s1.el.style.transform = `translate(-50%, -50%) rotate(-12deg)`;
-                s2.el.style.zIndex = globalZ++; s2.el.classList.add('revealed-support'); s2.el.style.left = `${xPos + 50}px`; s2.el.style.top = `${cardY + 40}px`; s2.el.style.transform = `translate(-50%, -50%) rotate(12deg)`;
-                await wait(200);
-                hero.el.style.zIndex = globalZ + 50; hero.el.classList.add('revealed-tarot'); hero.el.style.left = `${xPos}px`; hero.el.style.top = `${cardY}px`; hero.el.style.transform = `translate(-50%, -50%) rotate(0deg)`;
-                await wait(600);
-                hero.el.classList.remove('is-flipped'); await wait(250); s1.el.classList.remove('is-flipped'); s2.el.classList.remove('is-flipped');
-                document.getElementById(item.txt).classList.add('visible'); await wait(800);
-            }
-            document.getElementById('finalPhrase').classList.add('visible'); document.getElementById('reloadContainer').classList.add('visible');
+        else {
+            t.classList.remove('active');
         }
-        function getCardMeta(i) {
-            const suits = ['Cups', 'Swords', 'Wands', 'Pentacles']; const ranks = ['Ace', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Page', 'Knight', 'Queen', 'King'];
-            const majors = ['The Fool', 'The Magician', 'High Priestess', 'Empress', 'Emperor', 'Hierophant', 'Lovers', 'Chariot', 'Strength', 'Hermit', 'Wheel of Fortune', 'Justice', 'Hanged Man', 'Death', 'Temperance', 'Devil', 'Tower', 'Star', 'Moon', 'Sun', 'Judgement', 'World'];
-            if (i < 22) return { name: majors[i], mean: "Major Arcana" };
-            const suitIndex = Math.floor((i - 22) / 14); const rankIndex = (i - 22) % 14;
-            if (suitIndex < 4) return { name: `${ranks[rankIndex]} of ${suits[suitIndex]}`, mean: `Minor Arcana - ${suits[suitIndex]}` };
-            return { name: "Card", mean: "" };
-        }
-        document.getElementById('btnInfo').addEventListener('click', () => { document.getElementById('galleryView').classList.add('active'); renderGallery(); });
-        document.getElementById('btnCloseGallery').addEventListener('click', () => { document.getElementById('galleryView').classList.remove('active'); });
-        function renderGallery() {
-            const grid = document.getElementById('galleryGrid'); if (grid.children.length > 0) return;
-            for (let i = 0; i < RWS_ASSETS.length; i++) {
-                const meta = getCardMeta(i); const div = document.createElement('div'); div.className = 'gallery-item';
-                div.innerHTML = `<div class="g-card-img" style="background-image: url('${RWS_ASSETS[i]}')"></div><div class="g-name">${meta.name}</div><div class="g-mean">${meta.mean}</div>`;
-                grid.appendChild(div);
-            }
-        }
-        function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
-        window.onload = init;
-    </script>
+    });
+}
+window.onload = init;
+</script>
 </body>
 </html>

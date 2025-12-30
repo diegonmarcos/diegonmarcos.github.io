@@ -261,7 +261,7 @@ function injectSupports(x: number, y: number): void {
         `;
 
         table.appendChild(card);
-        deck.push({ el: card, isSupport: true, supportIndex: i });
+        deck.push({ el: card, isHero: false, heroId: null, isSupport: true, supportIndex: i });
     });
 }
 

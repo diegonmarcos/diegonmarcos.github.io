@@ -1,0 +1,13 @@
+{
+  "name": "carto-sass",
+  "version": "1.0.0",
+  "description": "Sass compilation for carto style.css",
+  "scripts": {
+    "sass:watch": "sass --watch ./style.scss:../../dist/style.css",
+    "sass:build": "sass ./style.scss:../../dist/style.css --style=compressed",
+    "sass:dev": "sass ./style.scss:../style.css --style=expanded"
+  },
+  "devDependencies": {
+    "sass": "^1.69.0"
+  }
+}

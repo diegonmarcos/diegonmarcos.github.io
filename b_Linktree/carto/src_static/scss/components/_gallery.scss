@@ -1,0 +1,98 @@
+// ==========================================
+// GALLERY OVERLAY
+// ==========================================
+
+#galleryView {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 0, 0, 0.95);
+    backdrop-filter: blur(15px);
+    z-index: var(--z-gallery);
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+
+    &.active {
+        display: flex;
+        opacity: 1;
+    }
+}
+
+.gallery-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--gold);
+    background: #1a0505;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h2 {
+        font-family: 'Cinzel Decorative', cursive;
+        color: var(--gold);
+        font-size: 1.5rem;
+        flex-grow: 1;
+    }
+}
+
+.gallery-grid {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(6, 1fr) !important;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) #222;
+}
+
+.gallery-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+    min-width: 0;
+
+    &:hover {
+        transform: scale(1.1);
+        z-index: 10;
+    }
+}
+
+.g-card-img {
+    width: 100%;
+    aspect-ratio: 60/102;
+    background-size: cover;
+    border-radius: 4px;
+    border: 1px solid #444;
+    margin-bottom: 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+.g-name {
+    color: #ddd;
+    font-size: 0.7rem;
+    font-weight: bold;
+    margin-bottom: 2px;
+    line-height: 1.1;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.g-mean {
+    display: block;
+    color: #aaa;
+    font-size: 0.6rem;
+    font-style: italic;
+    line-height: 1;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 2px;
+}

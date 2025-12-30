@@ -1,0 +1,72 @@
+// ==========================================
+// BUTTONS
+// ==========================================
+
+.btn-round {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+    pointer-events: auto;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    &:hover {
+        background: var(--gold);
+        color: #2a0a0a;
+        box-shadow: 0 0 30px var(--gold);
+        transform: scale(1.1);
+    }
+
+    svg {
+        width: 24px;
+        height: 24px;
+        fill: currentColor;
+    }
+}
+
+.btn-close {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 5px 15px;
+    cursor: pointer;
+    font-family: 'Philosopher', sans-serif;
+    text-transform: uppercase;
+
+    &:hover {
+        background: var(--gold);
+        color: #000;
+    }
+}
+
+.info-container {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    z-index: var(--z-info);
+}
+
+.reload-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    z-index: var(--z-reload);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s;
+
+    &.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}

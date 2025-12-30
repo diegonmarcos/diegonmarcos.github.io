@@ -1,0 +1,92 @@
+// ==========================================
+// TAROT CARDS
+// ==========================================
+
+#table {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    z-index: var(--z-table);
+}
+
+.card {
+    position: absolute;
+    width: var(--card-w);
+    height: var(--card-h);
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.25, 0.8, 0.25, 1), left 1.2s, top 1.2s;
+    cursor: default;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    animation: idleFloat 6s ease-in-out infinite;
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    border-radius: 8px;
+}
+
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 7px;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.face-front {
+    transform: rotateY(0deg);
+    background-color: #111;
+    border: 1px solid #333;
+}
+
+.face-back {
+    transform: rotateY(180deg);
+    background-image: url('https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=300');
+    background-size: cover;
+    border: 2px solid #5a3e1b;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 70%;
+        height: 70%;
+        transform: translate(-50%, -50%) rotate(45deg);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+}
+
+.is-flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.shuffling .card-inner {
+    animation: shuffleShake 0.2s infinite;
+}
+
+.revealed-tarot {
+    width: var(--reveal-w) !important;
+    height: var(--reveal-h) !important;
+    z-index: var(--z-cards-tarot) !important;
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+    animation: none !important;
+}
+
+.revealed-support {
+    width: var(--support-w) !important;
+    height: var(--support-h) !important;
+    z-index: var(--z-cards-support) !important;
+    animation: none !important;
+}

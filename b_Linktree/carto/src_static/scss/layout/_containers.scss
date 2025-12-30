@@ -1,0 +1,97 @@
+// ==========================================
+// LAYOUT CONTAINERS
+// ==========================================
+
+.title-overlay {
+    position: absolute;
+    top: 30px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+    z-index: var(--z-title);
+    opacity: 1;
+    transition: opacity 1s;
+
+    h1 {
+        font-family: 'Cinzel Decorative', cursive;
+        font-size: 3rem;
+        color: var(--gold);
+        text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        opacity: 0.8;
+    }
+}
+
+.reading-container {
+    position: absolute;
+    bottom: 120px;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 5%;
+    gap: 20px;
+    z-index: var(--z-reading);
+    pointer-events: none;
+}
+
+.reading-text {
+    flex: 1;
+    max-width: 350px;
+    background: linear-gradient(to bottom, rgba(25, 5, 5, 0.95), rgba(10, 0, 0, 0.98));
+    border: 1px solid var(--gold);
+    border-top: 3px solid var(--gold);
+    padding: 15px;
+    color: #f0e6d2;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+    border-radius: 0 0 10px 10px;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    h3 {
+        color: var(--gold);
+        font-family: 'Cinzel Decorative', cursive;
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        padding-bottom: 5px;
+    }
+
+    p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+}
+
+.final-phrase {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #ccc;
+    font-family: 'Sorts Mill Goudy', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    text-shadow: 0 2px 4px #000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 1.5s ease;
+    pointer-events: none;
+    z-index: var(--z-reading);
+    letter-spacing: 0.5px;
+    padding: 0 20px;
+
+    &.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -686,14 +686,14 @@ jobs:
             echo "⏭️  Skipping Skills & MCP Docs copy (no dist directory found)"
           fi
 
-          # Copy Astro Life build (if dist exists - Nuxt static single-file)
-          if [ -d "b_Linktree/astro_life/dist" ]; then
-            echo "📦 Copying Astro Life build..."
-            mkdir -p _site/astro_life
-            cp -rL b_Linktree/astro_life/dist/* _site/astro_life/ 2>/dev/null || cp -r b_Linktree/astro_life/dist/* _site/astro_life/
-            echo "✅ Astro Life build copied to _site/astro_life/"
+          # Copy Astro build (if dist exists - Nuxt static single-file)
+          if [ -d "b_Linktree/astro/dist" ]; then
+            echo "📦 Copying Astro build..."
+            mkdir -p _site/astro
+            cp -rL b_Linktree/astro/dist/* _site/astro/ 2>/dev/null || cp -r b_Linktree/astro/dist/* _site/astro/
+            echo "✅ Astro build copied to _site/astro/"
           else
-            echo "⏭️  Skipping Astro Life copy (no dist directory found)"
+            echo "⏭️  Skipping Astro copy (no dist directory found)"
           fi
 
           # Copy Carto build (if dist exists - TypeScript + Sass single-file)

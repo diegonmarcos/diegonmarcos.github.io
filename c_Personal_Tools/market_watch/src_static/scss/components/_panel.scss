@@ -1,0 +1,162 @@
+/* * BLOOMBERG TERMINAL - PANEL LAYOUT
+ * -----------------------------------
+ * 4-quadrant workspace grid.
+ */
+
+@use '../abstracts/variables' as *;
+
+// --- Main Grid Layout ---
+
+.main-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: $panel-gap;
+  padding: 0;
+  background: $color-border; // Border color shows through gaps
+  overflow: hidden;
+  min-height: 0;
+}
+
+// --- Individual Panel ---
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: $color-bg-global;
+  border: none;
+  overflow: hidden;
+  min-height: 0;
+
+  // Panel header bar
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $cell-padding;
+    background: $color-bg-panel-alt;
+    border-bottom: 1px solid $color-border;
+    flex-shrink: 0;
+    user-select: none;
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      .panel-number {
+        font-weight: bold;
+        font-size: $font-size-base;
+        font-family: $font-mono;
+        color: $color-text-accent;
+      }
+
+      .panel-name {
+        font-weight: bold;
+        font-size: $font-size-tiny;
+        font-family: $font-mono;
+        color: $color-text-primary;
+        text-transform: uppercase;
+      }
+    }
+
+    .panel-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      // Command button - amber background = editable
+      .panel-command {
+        font-family: $font-mono;
+        font-size: $font-size-small;
+        font-weight: bold;
+        color: $color-bg-global;
+        background: $color-text-accent;
+        cursor: pointer;
+        padding: 1px 6px;
+
+        &:hover {
+          filter: brightness(1.1);
+        }
+      }
+
+      .panel-icons {
+        display: flex;
+        gap: 4px;
+
+        svg {
+          width: 12px;
+          height: 12px;
+          color: $color-text-muted;
+          cursor: pointer;
+
+          &:hover {
+            color: $color-text-accent;
+          }
+        }
+      }
+    }
+  }
+
+  // Panel content area
+  &__content {
+    flex: 1;
+    overflow: auto;
+    padding: 2px;
+    min-height: 0;
+    background: $color-bg-global;
+  }
+
+  // Panel with chart
+  &__chart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    overflow: hidden;
+    min-height: 0;
+    background: $color-bg-global;
+
+    .chart-container {
+      flex: 1;
+      min-height: 0;
+      margin-bottom: 4px;
+      position: relative;
+    }
+
+    .chart-tables {
+      height: 80px;
+      display: flex;
+      gap: 8px;
+      border-top: 1px solid $color-border;
+      padding-top: 4px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// --- Filter Bar (Amber) ---
+
+.filter-bar {
+  background-color: $color-text-accent;
+  color: $color-bg-global;
+  padding: 4px 6px;
+  font-weight: bold;
+  font-size: $font-size-tiny;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+
+  select {
+    background: $color-bg-global;
+    color: $color-text-accent;
+    border: 1px solid $gray-600;
+    font-family: $font-mono;
+    font-size: $font-size-tiny;
+    height: 20px;
+    padding: 0 4px;
+  }
+}
+
+// No responsive breakpoints - layout stays fixed, user can zoom

@@ -1,0 +1,15 @@
+// ==========================================================================
+// Decorative Background Patterns
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+
+.bg-pattern-dots-indigo {
+    background-image: radial-gradient(circle at 2px 2px, $accent-indigo 1px, transparent 0);
+    background-size: 40px 40px;
+}
+
+.bg-pattern-lines-gold {
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, $accent-gold 2px, $accent-gold 4px);
+    background-size: 60px 60px;
+}

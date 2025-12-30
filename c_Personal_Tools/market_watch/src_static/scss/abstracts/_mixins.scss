@@ -1,0 +1,30 @@
+// ==========================================================================
+// Mixins
+// ==========================================================================
+
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin terminal-focus {
+  outline: none;
+  background-color: $color-text-accent;
+  color: $color-bg-global;
+  font-weight: bold;
+}

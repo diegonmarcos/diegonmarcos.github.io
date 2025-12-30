@@ -1,0 +1,34 @@
+// ==========================================================================
+// Utility Classes
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+
+// Text colors
+.txt-green   { color: $color-text-green; }
+.txt-red     { color: $color-text-red; }
+.txt-amber   { color: $color-text-accent; }
+.txt-muted   { color: $color-text-muted; }
+.txt-white   { color: #ffffff; }
+
+// Text alignment
+.txt-right   { text-align: right; }
+.txt-left    { text-align: left; }
+.txt-center  { text-align: center; }
+
+// Font utilities
+.font-mono   { font-family: $font-mono; }
+.font-bold   { font-weight: bold; }
+.uppercase   { text-transform: uppercase; }
+
+// Number alignment - critical for terminal
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+// Visibility
+.hidden-mobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}

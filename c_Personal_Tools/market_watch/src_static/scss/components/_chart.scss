@@ -1,0 +1,120 @@
+/* * BLOOMBERG TERMINAL - CHART
+ * ---------------------------
+ * SVG chart styling for yield curves.
+ */
+
+@use '../abstracts/variables' as *;
+
+.yield-chart {
+  width: 100%;
+  height: 100%;
+  background: $color-bg-global;
+  border: 1px solid $color-border;
+  position: relative;
+
+  // Chart title
+  &__title {
+    position: absolute;
+    top: 4px;
+    left: 6px;
+    font-size: $font-size-tiny;
+    font-weight: bold;
+    font-family: $font-mono;
+    color: $color-text-accent;
+    background: $color-bg-global;
+    padding: 2px 4px;
+    z-index: 10;
+    text-transform: uppercase;
+  }
+
+  // Chart legend
+  &__legend {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    display: flex;
+    gap: 12px;
+    font-size: $font-size-small;
+    font-family: $font-mono;
+    z-index: 10;
+    background: $color-bg-global;
+    padding: 2px 4px;
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .legend-dot {
+        width: 10px;
+        height: 2px; // Line style indicator
+
+        &.us {
+          background: $color-text-accent;
+        }
+
+        &.br {
+          background: $color-text-green;
+        }
+      }
+
+      .legend-label {
+        color: $color-text-primary;
+      }
+    }
+  }
+
+  // SVG container
+  svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    font-family: $font-mono;
+    overflow: visible;
+
+    .grid-line {
+      stroke: #222;
+      stroke-dasharray: 2 2;
+      stroke-width: 0.5;
+    }
+
+    .grid-label {
+      fill: $color-text-muted;
+      font-size: 9px;
+    }
+
+    .axis-label {
+      fill: $color-text-accent;
+      font-size: $font-size-small;
+      font-weight: bold;
+    }
+
+    // Chart lines
+    .chart-line {
+      fill: none;
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .line-us {
+      fill: none;
+      stroke: $color-text-accent;
+      stroke-width: 2;
+    }
+
+    .line-br {
+      fill: none;
+      stroke: $color-text-green;
+      stroke-width: 2;
+    }
+
+    // Data points
+    .point-us {
+      fill: $color-text-accent;
+    }
+
+    .point-br {
+      fill: $color-text-green;
+    }
+  }
+}

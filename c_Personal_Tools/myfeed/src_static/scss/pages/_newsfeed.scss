@@ -1,0 +1,117 @@
+// NewsFeed Page Styles
+// =========================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.newsfeed {
+  min-height: 100vh;
+  @include flex-col(flex-start, stretch, 0);
+
+  &__header {
+    @include flex-row(space-between, center, 0.5rem);
+    background: $bg-surface;
+
+    .tab-bar {
+      flex: 1;
+      border-bottom: none;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+}
+
+.news-row {
+  @include flex-row(flex-start, flex-start, 0.75rem);
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid $border-muted;
+
+  &:hover {
+    background: rgba(#fff, 0.02);
+  }
+
+  .news-thumb {
+    width: 80px;
+    height: 80px;
+    border-radius: 6px;
+    background: $bg-tertiary;
+    flex-shrink: 0;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .news-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .news-source {
+    font-size: 0.65rem;
+    color: $text-tertiary;
+    margin-bottom: 0.25rem;
+  }
+
+  .news-title {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+
+    a {
+      color: $text-primary;
+      text-decoration: none;
+
+      &:hover {
+        color: $accent-blue;
+      }
+    }
+  }
+
+  .news-desc {
+    font-size: 0.7rem;
+    color: $text-secondary;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.25rem;
+  }
+
+  .news-time {
+    font-size: 0.6rem;
+    color: $text-tertiary;
+  }
+}
+
+// Compact mode for grid view
+.news-column .news-row {
+  .news-thumb {
+    width: 60px;
+    height: 60px;
+  }
+
+  .news-title {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+
+  .news-desc {
+    display: none;
+  }
+}
+
+// Hacker News section header
+.section-header.hn {
+  background: linear-gradient(135deg, #ff6600 0%, #ff8533 100%);
+  color: #fff;
+
+  .icon {
+    opacity: 1;
+  }
+}

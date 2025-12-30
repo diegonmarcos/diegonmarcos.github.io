@@ -1,0 +1,34 @@
+// ==========================================================================
+// Media Queries
+// ==========================================================================
+
+@media (max-width: 1024px) {
+  body {
+    font-size: 10px;
+  }
+
+  .data-table {
+    font-size: 8px;
+
+    thead th,
+    tbody td {
+      padding: 3px 4px;
+    }
+  }
+}
+
+@media print {
+  .header,
+  .footer {
+    display: none;
+  }
+
+  .main-grid {
+    display: block;
+  }
+
+  .panel {
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}

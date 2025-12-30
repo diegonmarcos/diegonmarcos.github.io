@@ -1,0 +1,21 @@
+// ==========================================================================
+// App Layout
+// ==========================================================================
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-divider {
+  width: 1px;
+  background: var(--gray-800, #1a1a1a);
+  margin: 0 8px;
+}

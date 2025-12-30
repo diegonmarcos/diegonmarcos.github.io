@@ -1,0 +1,45 @@
+// ==========================================================================
+// Collapsible / More Toggle
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+
+.more-toggle {
+    display: block;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    color: $color-text;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: $border-radius-lg;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-decoration: none;
+    transition: background $transition-fast;
+    font-weight: bold;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+    &:hover { background: rgba(255, 255, 255, 0.18); }
+
+    .arrow {
+        display: inline-block;
+        transition: transform $transition-fast;
+        margin-right: 5px;
+    }
+
+    &.open .arrow { transform: rotate(90deg); }
+}
+
+.collapsible-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease-out, opacity $transition-medium;
+
+    &.open {
+        opacity: 1;
+        overflow: visible;
+    }
+}

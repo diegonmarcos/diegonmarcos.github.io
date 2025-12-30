@@ -1,0 +1,230 @@
+/* * BLOOMBERG TERMINAL - DATA GRID
+ * --------------------------------
+ * High-density data table with zebra stripes and selection state.
+ */
+
+@use '../abstracts/variables' as *;
+@use 'sass:color';
+
+// --- Data Table ---
+
+.data-table {
+  width: 100%;
+  font-family: $font-mono;
+  font-size: $font-size-base;
+  border-collapse: collapse;
+  white-space: nowrap;
+
+  &__section {
+    margin-bottom: 4px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // Section title - amber underline
+  &__title {
+    font-size: $font-size-tiny;
+    font-weight: bold;
+    color: $color-text-accent;
+    background: $color-bg-global;
+    padding: $cell-padding;
+    margin-bottom: 0;
+    text-transform: uppercase;
+    border-bottom: 1px solid $color-text-accent;
+  }
+
+  // Table header row
+  thead {
+    position: sticky;
+    top: 0;
+    background-color: $color-bg-panel-alt;
+    z-index: 10;
+
+    tr {
+      border-bottom: 1px solid $color-border;
+    }
+
+    th {
+      padding: $cell-padding;
+      font-weight: normal;
+      font-size: $font-size-tiny;
+      color: $color-text-accent;
+      text-align: right;
+      text-transform: uppercase;
+
+      &:first-child {
+        text-align: left;
+        width: 100px;
+      }
+    }
+  }
+
+  // Table body
+  tbody {
+    tr {
+      height: $row-height;
+      cursor: pointer;
+      border-bottom: 1px solid color.adjust($color-border, $lightness: -10%);
+
+      // Zebra striping
+      &:nth-child(even) {
+        background-color: $color-bg-panel;
+      }
+
+      &:nth-child(odd) {
+        background-color: $color-bg-global;
+      }
+
+      // SELECTION STATE - The iconic blue
+      &.is-selected {
+        background-color: $color-bg-selection !important;
+        color: white !important;
+        outline: 1px solid color.adjust($color-bg-selection, $lightness: 20%);
+
+        // Override colored text when selected for readability
+        .ticker-cell,
+        .perf-cell,
+        .txt-green,
+        .txt-red,
+        .txt-amber {
+          color: white !important;
+        }
+      }
+
+      // Hover state (only if not selected)
+      &:not(.is-selected):hover {
+        border: 1px solid $color-text-muted;
+      }
+    }
+
+    td {
+      padding: $cell-padding;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+
+      &:first-child {
+        text-align: left;
+      }
+    }
+  }
+
+  // Cell types
+  .ticker-cell {
+    color: $color-text-accent;
+    font-weight: bold;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .price-cell {
+    color: $color-text-primary;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .perf-cell {
+    font-variant-numeric: tabular-nums;
+
+    &.positive {
+      color: $color-text-green;
+    }
+
+    &.negative {
+      color: $color-text-red;
+    }
+
+    &.neutral {
+      color: $color-text-muted;
+    }
+  }
+
+  // Flash animations for live updates
+  .flash-up {
+    animation: flash-green 0.3s ease-out;
+  }
+
+  .flash-down {
+    animation: flash-red 0.3s ease-out;
+  }
+}
+
+// --- Yield Table Variant ---
+
+.yield-table {
+  flex: 1;
+
+  &__title {
+    font-size: $font-size-small;
+    font-weight: bold;
+    color: $color-text-accent;
+    background: $color-bg-global;
+    padding: $cell-padding;
+    text-transform: uppercase;
+    border-bottom: 1px solid $color-text-accent;
+  }
+
+  table {
+    width: 100%;
+    font-family: $font-mono;
+    font-size: $font-size-tiny;
+    border-collapse: collapse;
+
+    thead {
+      tr {
+        background: $color-bg-panel-alt;
+      }
+
+      th {
+        padding: $cell-padding;
+        font-weight: normal;
+        color: $color-text-accent;
+        text-align: right;
+        text-transform: uppercase;
+
+        &:first-child {
+          text-align: left;
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        // Zebra stripes
+        &:nth-child(even) {
+          background-color: $color-bg-panel;
+        }
+
+        &:nth-child(odd) {
+          background-color: $color-bg-global;
+        }
+      }
+
+      td {
+        padding: $cell-padding;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+
+        &:first-child {
+          text-align: left;
+          color: $color-text-accent;
+          font-weight: bold;
+        }
+
+        &:nth-child(2) {
+          color: $color-text-primary;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}
+
+// --- Table Wrapper for Scrolling ---
+
+.table-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}

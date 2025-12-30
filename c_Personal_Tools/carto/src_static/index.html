@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcanum Triad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Philosopher:ital,wght@0,400;0,700;1,400&family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="particles"></div>
+    <div class="title-overlay" id="mainTitle"><h1>Arcanum Triad</h1></div>
+
+    <div class="info-container"><button id="btnInfo" class="btn-round" title="View Full Deck">i</button></div>
+    <div class="reload-container" id="reloadContainer">
+        <button id="btnRestart" class="btn-round" title="Consult Again">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v240H560v-80h135q-31-40-74.5-65T546-730q-99 0-169.5 70.5T306-490q0 99 70.5 169.5T546-250q76 0 138-41t91-109h85q-34 104-118.5 167T546-170h-66Z"/></svg>
+        </button>
+    </div>
+
+    <div class="trigger-container" id="triggerObj">
+        <div class="orb-wrapper"><div class="orb"></div></div>
+        <div class="stand"></div>
+        <div class="instruction">Consult the Spirits</div>
+    </div>
+
+    <div class="reading-container">
+        <div id="txt-past" class="reading-text">
+            <h3>The Departure</h3>
+            <p><strong>Past:</strong> 8 of Cups. Supported by 8 Hearts & The Ship.<br>A brave choice to leave behind what was no longer fulfilling.</p>
+        </div>
+        <div id="txt-pres" class="reading-text">
+            <h3>The Silent Veil</h3>
+            <p><strong>Present:</strong> High Priestess. Supported by Q Spades & The Book.<br>Secrets and intuition guide you.</p>
+        </div>
+        <div id="txt-fut" class="reading-text">
+            <h3>Radiant Victory</h3>
+            <p><strong>Future:</strong> The Sun. Supported by Ace Diamonds & The Sun.<br>Absolute success, joy, and a tangible new beginning.</p>
+        </div>
+    </div>
+
+    <div class="final-phrase" id="finalPhrase">"From the shadows of the past, through the silence of the present, into the golden light of the future."</div>
+    <div id="table"></div>
+
+    <div id="galleryView">
+        <div class="gallery-header">
+            <button class="btn-close" style="visibility: hidden;">Close</button>
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" data-deck="tarot">Tarot (78)</button>
+                <button class="gallery-tab" data-deck="lenormand">Lenormand (36)</button>
+            </div>
+            <button class="btn-close" id="btnCloseGallery">Close</button>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+// ==========================================================================
+// Linktree Main Stylesheet
+// ==========================================================================
+// ITCSS Architecture - Inverted Triangle CSS
+// ==========================================================================
+
+// ---------------------------------------------------------------------------
+// 1. UTILITIES - Animations (loaded first for use in components)
+// ---------------------------------------------------------------------------
+@use 'utilities/animations';
+
+// ---------------------------------------------------------------------------
+// 2. BASE - Reset, Typography
+// ---------------------------------------------------------------------------
+@use 'base/reset';
+@use 'base/typography';
+
+// ---------------------------------------------------------------------------
+// 3. LAYOUT - Container, Header
+// ---------------------------------------------------------------------------
+@use 'layout/container';
+@use 'layout/header';
+
+// ---------------------------------------------------------------------------
+// 4. COMPONENTS - UI Elements
+// ---------------------------------------------------------------------------
+@use 'components/background';
+@use 'components/icons';
+@use 'components/links';
+@use 'components/carousel';
+@use 'components/controls';
+@use 'components/collapsible';
+@use 'components/cookie-banner';
+@use 'components/gallery';
+@use 'components/lite-mode';
+
+// ---------------------------------------------------------------------------
+// 5. UTILITIES - Media Queries (loaded last for overrides)
+// ---------------------------------------------------------------------------
+@use 'utilities/media-queries';

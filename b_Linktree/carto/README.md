@@ -14,7 +14,10 @@ A mystical tarot card reading application featuring interactive 3-card spreads a
 ## Tech Stack
 
 - **Framework**: Vanilla JavaScript
-- **Type**: Static Single-File HTML
+- **CSS**: Sass (SCSS) with ITCSS methodology
+- **JavaScript**: TypeScript with strict type checking
+- **Build**: POSIX shell script
+- **Dev Server**: live-server with watch mode
 - **Fonts**: Google Fonts (Cinzel Decorative, Philosopher, Sorts Mill Goudy)
 - **Assets**: Wikimedia Commons (Rider-Waite-Smith Tarot)
 
@@ -23,33 +26,67 @@ A mystical tarot card reading application featuring interactive 3-card spreads a
 ```
 /carto
 ├── 1.ops/
-│   └── build.sh           # Build script
+│   └── build.sh           # Build automation script
 ├── src_static/
-│   └── index.html         # Source HTML file
+│   ├── scss/              # Sass source files (ITCSS structure)
+│   │   ├── abstracts/     # Variables
+│   │   ├── base/          # Reset, typography
+│   │   ├── components/    # Particles, crystal ball, buttons, cards, gallery
+│   │   ├── layout/        # Containers
+│   │   ├── utilities/     # Animations, media queries
+│   │   └── style.scss     # Main SCSS entry point
+│   ├── typescript/        # TypeScript source files
+│   │   ├── script.ts      # Main TypeScript source
+│   │   ├── tsconfig.json  # TypeScript config
+│   │   └── package.json   # TS dependencies
+│   ├── index.html         # Development HTML
+│   ├── style.css          # Compiled CSS (generated)
+│   └── script.js          # Compiled JS (generated)
 ├── dist/
-│   └── index.html         # Production build
+│   └── index.html         # Production single-file build
 └── public/                # Static assets (if any)
 ```
 
 ## Development
 
-Start development server:
+Start development server with watchers:
 
 ```bash
 ./1.ops/build.sh dev
 ```
 
-Server runs at: `http://localhost:8001`
+This will:
+- Compile Sass to CSS (with source maps)
+- Compile TypeScript to JavaScript (with source maps)
+- Watch for changes and auto-recompile
+- Start live-server at `http://localhost:8001`
+
+Stop the dev server:
+```bash
+./1.ops/build.sh kill
+```
 
 ## Build
 
-Build for production:
+Build for production (single-file HTML):
 
 ```bash
 ./1.ops/build.sh build
 ```
 
-Output: `dist/index.html`
+This will:
+- Compile Sass to compressed CSS
+- Compile TypeScript to minified JavaScript
+- Inline all CSS and JS into single HTML file
+- Output: `dist/index.html`
+
+## Clean
+
+Remove all build artifacts:
+
+```bash
+./1.ops/build.sh clean
+```
 
 ## Usage
 

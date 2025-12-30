@@ -1,0 +1,29 @@
+// ==========================================
+// CARTO - CSS VARIABLES
+// ==========================================
+
+:root {
+    // Card Sizes
+    --card-w: 60px;
+    --card-h: 102px;
+    --reveal-w: 130px;
+    --reveal-h: 220px;
+    --support-w: 75px;
+    --support-h: 115px;
+
+    // Colors
+    --gold: #ffd700;
+    --velvet-base: #1a0505;
+
+    // Z-index layers
+    --z-particles: 1;
+    --z-table: 10;
+    --z-cards-support: 50;
+    --z-cards-tarot: 100;
+    --z-title: 100;
+    --z-reading: 200;
+    --z-reload: 5001;
+    --z-info: 5005;
+    --z-trigger: 5000;
+    --z-gallery: 6000;
+}

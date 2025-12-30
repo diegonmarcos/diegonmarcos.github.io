@@ -1,0 +1,47 @@
+// ==========================================
+// ANIMATIONS
+// ==========================================
+
+@keyframes twinkle {
+    0% {
+        transform: translateY(0);
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(-50px);
+        opacity: 0.3;
+    }
+}
+
+@keyframes shineSweep {
+    0%, 20% {
+        left: -150%;
+    }
+    50%, 100% {
+        left: 150%;
+    }
+}
+
+@keyframes idleFloat {
+    0%, 100% {
+        transform: translate(-50%, -50%) rotate(var(--rot)) translateY(0);
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(var(--rot)) translateY(-5px);
+    }
+}
+
+@keyframes shuffleShake {
+    0% {
+        transform: rotateY(180deg) translate(0, 0) rotate(0);
+    }
+    25% {
+        transform: rotateY(180deg) translate(2px, 0) rotate(1deg);
+    }
+    75% {
+        transform: rotateY(180deg) translate(-2px, 0) rotate(-1deg);
+    }
+}

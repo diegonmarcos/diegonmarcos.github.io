@@ -38,10 +38,10 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Copy HTML to dist (production)\n"
+    printf "  ${GREEN}build${NC}        # Build Sass and TypeScript (production)\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
-    printf "  ${GREEN}dev${NC}          # Start live-server for development\n"
+    printf "  ${GREEN}dev${NC}          # Watch Sass and TypeScript + live-server\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
@@ -49,42 +49,149 @@ print_usage() {
     printf "\n"
     printf "${YELLOW}PROJECT INFO:${NC}\n"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${MAGENTA}%-20s  %-10s  %-10s  %-14s${NC}\n" "Project" "Framework" "Type" "Dev Server"
+    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-20s${NC}  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "Carto" "Vanilla" "Static HTML" "live-server :${PORT}"
+    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}  ${YELLOW}%s${NC}\n" "Carto" "Vanilla" "Sass" "TypeScript" "live-server :${PORT}" "Sass, TS"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
+}
+
+# Check and install dependencies for scss
+check_scss_deps() {
+    if [ -d "$SRC_STATIC/scss/node_modules" ]; then
+        return 0
+    fi
+    log_info "Installing SCSS dependencies..."
+    cd "$SRC_STATIC/scss"
+    npm install
+}
+
+# Check and install dependencies for typescript
+check_ts_deps() {
+    if [ -d "$SRC_STATIC/typescript/node_modules" ]; then
+        return 0
+    fi
+    log_info "Installing TypeScript dependencies..."
+    cd "$SRC_STATIC/typescript"
+    npm install
+}
+
+# Build SCSS to CSS
+build_scss() {
+    log_info "Building SCSS..."
+    check_scss_deps
+    cd "$SRC_STATIC/scss"
+
+    if [ "$1" = "dev" ]; then
+        npx sass style.scss:../style.css --style=expanded --source-map
+    else
+        npx sass style.scss:../style.css --style=compressed --no-source-map
+    fi
+
+    log_success "SCSS compiled successfully"
+}
+
+# Build TypeScript to JavaScript
+build_typescript() {
+    log_info "Building TypeScript..."
+    check_ts_deps
+    cd "$SRC_STATIC/typescript"
+
+    if [ "$1" = "dev" ]; then
+        npx tsc --sourceMap
+    else
+        npx tsc
+    fi
+
+    # Move output to src_static
+    if [ -f "script.js" ]; then
+        mv script.js ../script.js
+    fi
+    if [ -f "script.js.map" ]; then
+        mv script.js.map ../script.js.map
+    fi
+
+    log_success "TypeScript compiled successfully"
+}
+
+# Build single-file HTML (inline CSS + JS)
+build_single_file() {
+    log_info "Building single-file HTML..."
+
+    _html_file="$DIST_DIR/index.html"
+    _css_file="$DIST_DIR/style.css"
+    _js_file="$DIST_DIR/script.js"
+    _output_file="$DIST_DIR/index_spa.html"
+
+    if [ ! -f "$_html_file" ]; then
+        log_warning "index.html not found, skipping single-file build"
+        return 0
+    fi
+
+    # Strip BOM from CSS if present
+    if [ -f "$_css_file" ]; then
+        sed -i '1s/^\xEF\xBB\xBF//' "$_css_file"
+    fi
+
+    # Create single-file HTML
+    awk '
+    /<link[^>]*href="style\.css[^"]*"[^>]*>/ {
+        print "<style>"
+        while ((getline line < "'"$_css_file"'") > 0) print line
+        close("'"$_css_file"'")
+        print "</style>"
+        next
+    }
+    /<script[^>]*src="script\.js[^"]*"[^>]*>/ {
+        print "<script>"
+        while ((getline line < "'"$_js_file"'") > 0) print line
+        close("'"$_js_file"'")
+        print "</script>"
+        next
+    }
+    { print }
+    ' "$_html_file" > "$_output_file"
+
+    log_success "Single-file build → $_output_file"
 }
 
 # Build for production
 build() {
     log_info "Building ${PROJECT_NAME} for production..."
 
+    build_scss "prod"
+    build_typescript "prod"
+
     # Clean and create dist directory
     rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"
 
-    # Copy HTML file
-    if [ -f "$SRC_STATIC/index.html" ]; then
-        cp "$SRC_STATIC/index.html" "$DIST_DIR/index.html"
-        log_success "Copied index.html to dist"
-    else
-        log_error "index.html not found in src_static"
-        exit 1
-    fi
-
-    # Create symlink for public if it exists
+    # Create symlinks for media assets
     if [ -d "$PROJECT_DIR/public" ]; then
         ln -sf ../public "$DIST_DIR/public"
-        log_info "Created symlink: dist/public -> ../public"
     fi
+
+    # Copy files temporarily for single-file build
+    cp "$SRC_STATIC/index.html" "$DIST_DIR/"
+    cp "$SRC_STATIC/style.css" "$DIST_DIR/"
+    cp "$SRC_STATIC/script.js" "$DIST_DIR/"
+
+    build_single_file
+
+    # Clean up intermediate files, keep only SPA
+    rm -f "$DIST_DIR/style.css" "$DIST_DIR/script.js"
+    mv "$DIST_DIR/index_spa.html" "$DIST_DIR/index.html"
 
     log_success "Build completed → $DIST_DIR"
 }
 
-# Development mode with live-server
+# Development mode with watch
 dev() {
     log_info "Starting development mode..."
+
+    # Build once first
+    build_scss "dev"
+    build_typescript "dev"
 
     cd "$SRC_STATIC"
 
@@ -93,6 +200,16 @@ dev() {
         ln -sf ../public public
         log_info "Created symlink: src_static/public -> ../public"
     fi
+
+    # Start SCSS watcher in background
+    cd scss
+    nohup npx sass --watch style.scss:../style.css --style=expanded > /dev/null 2>&1 &
+    cd ..
+
+    # Start TypeScript watcher in background
+    cd typescript
+    nohup npx tsc --watch > /dev/null 2>&1 &
+    cd ..
 
     # Start live-server
     nohup npx live-server . --port=${PORT} --no-browser --quiet > /dev/null 2>&1 &
@@ -103,7 +220,7 @@ dev() {
     printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} Dev Server STARTED${NC}\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
-    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} pkill -f 'live-server.*${PORT}'\n"
+    printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build.sh kill\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "\n"
 }
@@ -111,6 +228,11 @@ dev() {
 # Clean build artifacts
 clean() {
     log_info "Cleaning build artifacts..."
+
+    rm -f "$SRC_STATIC/style.css"
+    rm -f "$SRC_STATIC/style.css.map"
+    rm -f "$SRC_STATIC/script.js"
+    rm -f "$SRC_STATIC/script.js.map"
 
     if [ -d "$DIST_DIR" ]; then
         rm -rf "$DIST_DIR"

@@ -19,7 +19,8 @@
   cursor: pointer;
   @include transition(all);
 
-  &:hover {
+  &:hover,
+  &.auto-hover {
     border-color: var(--accent);
     transform: translateY(-3px);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);

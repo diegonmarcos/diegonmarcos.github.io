@@ -1,18 +1,43 @@
 <script setup lang="ts">
 import type { DataItem } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   data: DataItem[]
 }>()
+
+// Auto-cycling hover effect
+const activeCardIndex = ref(0)
+let cycleInterval: ReturnType<typeof setInterval> | null = null
+
+const startCycle = () => {
+  cycleInterval = setInterval(() => {
+    activeCardIndex.value = (activeCardIndex.value + 1) % props.data.length
+  }, 2500)
+}
+
+const stopCycle = () => {
+  if (cycleInterval) {
+    clearInterval(cycleInterval)
+    cycleInterval = null
+  }
+}
+
+onMounted(() => {
+  startCycle()
+})
+
+onUnmounted(() => {
+  stopCycle()
+})
 </script>
 
 <template>
   <div class="shard-grid fade-in-up">
     <div
-      v-for="shard in data"
+      v-for="(shard, index) in data"
       :key="shard.id"
       class="shard-card"
-      :class="'type-' + shard.type"
+      :class="['type-' + shard.type, { 'auto-hover': index === activeCardIndex }]"
       :style="{ '--accent': shard.accentColor }"
     >
       <div

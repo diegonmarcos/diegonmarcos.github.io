@@ -15,11 +15,14 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    inlineSSRStyles: true
+    inlineSSRStyles: true,
+    payloadExtraction: false,
+    renderJsonPayloads: false,
+    appManifest: false
   },
 
   app: {
-    baseURL: '/myprofile/',
+    baseURL: './',
     head: {
       title: 'DIEGO N. MARCOS // PROFILE',
       meta: [
@@ -52,9 +55,15 @@ _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
   vite: {
     build: {
       cssCodeSplit: false,
+      target: 'es2015',
       rollupOptions: {
         output: {
-          inlineDynamicImports: true
+          format: 'iife',
+          name: 'MyProfileApp',
+          inlineDynamicImports: true,
+          entryFileNames: 'app.js',
+          chunkFileNames: '[name].js',
+          assetFileNames: '[name].[ext]'
         }
       }
     },

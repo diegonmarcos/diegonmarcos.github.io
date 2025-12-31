@@ -1,98 +1,53 @@
 // ==============================================
-// MEDIAS VIEW - 2D Social Media Grid
+// MEDIAS VIEW - Footer Inline Links
 // ==============================================
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-.medias-container {
-  width: 100%;
-  padding: $space-8;
-}
-
-.medias-header {
+.footer-links {
   display: flex;
   align-items: center;
-  gap: $space-2;
-  color: $text-dim;
-  font-size: $text-sm;
-  font-family: $font-mono;
-  margin-bottom: $space-8;
   justify-content: center;
-
-  .anim-icon {
-    animation: pulse-glow 2s ease-in-out infinite;
-  }
-}
-
-.medias-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: $space-6;
-  max-width: 800px;
-  margin: 0 auto;
-
-  @include respond-to(md) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.media-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
   gap: $space-3;
-  padding: $space-6;
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  padding: $space-4 0;
+  margin-bottom: $space-2;
+}
+
+.footer-link-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  color: $text-dim;
   text-decoration: none;
-  transition: all 0.3s ease;
+  @include transition(all);
   cursor: pointer;
 
   &:hover {
-    border-color: var(--media-color);
-    background: rgba(0, 0, 0, 0.8);
-    transform: translateY(-4px);
-    box-shadow:
-      0 10px 30px var(--media-glow),
-      0 0 20px var(--media-glow);
+    color: var(--link-color);
+    border-color: var(--link-color);
+    box-shadow: 0 0 12px var(--link-color);
+    transform: translateY(-2px);
+  }
 
-    .media-icon {
-      transform: scale(1.1);
-      color: var(--media-color);
-      border-color: var(--media-color);
-      box-shadow:
-        0 0 15px var(--media-glow),
-        inset 0 0 10px var(--media-glow);
-    }
+  &.app-item {
+    border-style: dashed;
+    opacity: 0.7;
 
-    .media-label {
-      color: var(--media-color);
+    &:hover {
+      opacity: 1;
     }
   }
 }
 
-.media-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(0, 0, 0, 0.5);
-  @include flex-center;
-  color: $text-light;
-  transition: all 0.3s ease;
-}
-
-.media-label {
-  font-family: $font-mono;
-  font-size: $text-xs;
-  color: $text-dim;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition: color 0.3s ease;
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+.footer-divider {
+  color: $terminal-green;
+  font-size: $text-sm;
+  opacity: 0.5;
+  margin: 0 $space-2;
 }

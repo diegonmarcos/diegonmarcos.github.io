@@ -1,0 +1,488 @@
+// ==============================================
+// STATS DASHBOARD - Cyberpunk Data Visualization
+// ==============================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.stats-dashboard {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: $space-4;
+
+  @include respond-to(md) {
+    padding: $space-6;
+  }
+}
+
+// Header
+.stats-header {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-8;
+  padding: $space-4;
+  background: rgba($bg-dark-panel, 0.8);
+  border: 1px solid $border-dim;
+  border-left: 3px solid $accent-cyan;
+
+  .header-icon {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba($accent-cyan, 0.2), transparent);
+    border: 1px solid rgba($accent-cyan, 0.3);
+    color: $accent-cyan;
+
+    @include respond-to(md) {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .header-title {
+    flex: 1;
+    font-size: $text-sm;
+    font-weight: 600;
+    color: $text-primary;
+    letter-spacing: 0.05em;
+
+    @include respond-to(md) {
+      font-size: $text-lg;
+    }
+
+    .dim {
+      color: $text-dim;
+    }
+  }
+
+  .header-status {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $terminal-green;
+      box-shadow: 0 0 10px $terminal-green;
+
+      &.pulse {
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+    }
+
+    .status-text {
+      font-size: $text-xs;
+      color: $terminal-green;
+      letter-spacing: 0.1em;
+    }
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; box-shadow: 0 0 10px $terminal-green; }
+  50% { opacity: 0.5; box-shadow: 0 0 20px $terminal-green; }
+}
+
+// Summary Row
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-4;
+  margin-bottom: $space-8;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: $space-4;
+  padding: $space-6;
+  background: rgba($bg-dark-panel, 0.9);
+  border: 1px solid $border-dim;
+  position: relative;
+  overflow: hidden;
+  @include transition(all);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--summary-color, $accent-cyan), transparent);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--summary-color, $accent-cyan);
+    box-shadow: 0 0 20px rgba(var(--summary-color, $accent-cyan), 0.2);
+  }
+
+  svg {
+    color: var(--summary-color, $accent-cyan);
+    flex-shrink: 0;
+  }
+
+  .summary-content {
+    @include flex-column;
+    gap: $space-1;
+  }
+
+  .summary-value {
+    font-size: $text-2xl;
+    font-weight: 700;
+    color: $text-white;
+    line-height: 1;
+
+    @include respond-to(md) {
+      font-size: $text-3xl;
+    }
+  }
+
+  .summary-label {
+    font-size: $text-xs;
+    color: $text-muted;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &.total-media {
+    --summary-color: #{$accent-cyan};
+  }
+
+  &.total-reviews {
+    --summary-color: #{$accent-orange};
+  }
+
+  &.people-reviewed {
+    --summary-color: #{$accent-purple};
+  }
+}
+
+// Section Headers
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-4;
+  padding: $space-2 0;
+  border-bottom: 1px solid $border-dim;
+  color: $text-light;
+  font-size: $text-sm;
+  letter-spacing: 0.1em;
+
+  svg {
+    color: $accent-cyan;
+  }
+}
+
+// Categories Grid
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-4;
+  margin-bottom: $space-8;
+}
+
+.category-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: $space-4;
+  padding: $space-4;
+  background: rgba($bg-dark-panel, 0.8);
+  border: 1px solid $border-dim;
+  overflow: hidden;
+  @include transition(all);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--card-accent, $accent-cyan);
+  }
+
+  &:hover {
+    transform: translateX(4px);
+    border-color: var(--card-accent, $accent-cyan);
+
+    .card-glow {
+      opacity: 0.1;
+    }
+
+    .card-icon {
+      transform: scale(1.1);
+      color: var(--card-accent, $accent-cyan);
+    }
+  }
+
+  .card-icon {
+    @include flex-center;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid $border-dim;
+    color: $text-light;
+    flex-shrink: 0;
+    @include transition(all);
+  }
+
+  .card-content {
+    @include flex-column;
+    gap: $space-1;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .card-count {
+    font-size: $text-xl;
+    font-weight: 700;
+    color: $text-white;
+    line-height: 1;
+
+    .unit {
+      font-size: $text-base;
+      color: var(--card-accent, $accent-cyan);
+      margin-left: 2px;
+    }
+  }
+
+  .card-label {
+    font-size: $text-sm;
+    color: $text-primary;
+    font-weight: 500;
+  }
+
+  .card-duration {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $text-xs;
+    color: $text-muted;
+    margin-top: $space-1;
+
+    svg {
+      color: var(--card-accent, $accent-cyan);
+    }
+  }
+
+  .card-extra {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-xs;
+    margin-top: $space-1;
+
+    .extra-value {
+      color: var(--card-accent, $accent-cyan);
+      font-weight: 600;
+    }
+
+    .extra-label {
+      color: $text-muted;
+    }
+  }
+
+  .card-glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--card-accent, $accent-cyan));
+    opacity: 0;
+    @include transition(opacity);
+  }
+}
+
+// Fitness Row
+.fitness-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $space-4;
+  margin-bottom: $space-8;
+}
+
+.fitness-card {
+  position: relative;
+  padding: $space-6;
+  background: rgba($bg-dark-panel, 0.9);
+  border: 1px solid $border-dim;
+  text-align: center;
+  overflow: hidden;
+  @include transition(all);
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--fitness-color, $accent-orange);
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+
+    .fitness-icon {
+      transform: scale(1.1);
+    }
+  }
+
+  .fitness-icon {
+    @include flex-center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto $space-3;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 50%;
+    color: var(--fitness-color, $accent-orange);
+    @include transition(transform);
+  }
+
+  .fitness-content {
+    @include flex-column;
+    gap: $space-1;
+  }
+
+  .fitness-value {
+    font-size: $text-2xl;
+    font-weight: 700;
+    color: $text-white;
+
+    @include respond-to(md) {
+      font-size: $text-3xl;
+    }
+  }
+
+  .fitness-label {
+    font-size: $text-xs;
+    color: $text-muted;
+    letter-spacing: 0.1em;
+  }
+
+  .fitness-duration {
+    font-size: $text-xs;
+    color: var(--fitness-color, $accent-orange);
+    margin-top: $space-2;
+  }
+
+  &.workouts {
+    --fitness-color: #{$accent-orange};
+  }
+
+  &.weight {
+    --fitness-color: #{$accent-pink};
+  }
+
+  &.measurements {
+    --fitness-color: #{$accent-cyan};
+  }
+}
+
+// Social Grid
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $space-6;
+  margin-bottom: $space-8;
+}
+
+.social-section {
+  background: rgba($bg-dark-panel, 0.6);
+  border: 1px solid $border-dim;
+  padding: $space-4;
+
+  .social-section-header {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    font-size: $text-xs;
+    color: $text-muted;
+    letter-spacing: 0.1em;
+    margin-bottom: $space-3;
+    padding-bottom: $space-2;
+    border-bottom: 1px dashed $border-dim;
+
+    svg {
+      color: $accent-cyan;
+    }
+  }
+
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  padding: $space-2 $space-3;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid $border-dim;
+  color: $text-light;
+  text-decoration: none;
+  font-size: $text-sm;
+  @include transition(all);
+
+  &:hover {
+    background: rgba(var(--link-color), 0.1);
+    border-color: var(--link-color, $accent-cyan);
+    color: $text-white;
+    transform: translateY(-2px);
+
+    svg {
+      color: var(--link-color, $accent-cyan);
+    }
+  }
+
+  svg {
+    color: $text-muted;
+    @include transition(color);
+  }
+
+  .link-text {
+    white-space: nowrap;
+  }
+}
+
+// Data Signature
+.data-signature {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-3;
+  padding: $space-4;
+  margin-top: $space-8;
+  border-top: 1px solid $border-dim;
+  font-size: $text-xs;
+  color: $text-dim;
+  letter-spacing: 0.1em;
+
+  .signature-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: $border-active;
+  }
+
+  .signature-date {
+    color: $accent-cyan;
+  }
+
+  .signature-version {
+    color: $text-muted;
+  }
+}

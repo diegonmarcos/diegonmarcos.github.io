@@ -8,10 +8,10 @@ const matrixCanvas = ref<HTMLCanvasElement | null>(null)
 // Composables
 const { initMatrixRain, handleResize } = useMatrixRain()
 const { data, mediaLinks } = useData()
-const { rotation, calculateSpherePoints, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd } = useSphere()
+const { statsData } = useStatsData()
+const { rotation, onMouseDown, onMouseMove, onMouseUp, onTouchStart, onTouchMove, onTouchEnd } = useSphere()
 
-// Computed
-const spherePoints = computed(() => calculateSpherePoints(data))
+// Note: SphereView now uses its own planet data internally
 
 // Lifecycle
 onMounted(() => {
@@ -82,19 +82,19 @@ const scrollToSection = (id: string) => {
           </a>
           <a
             class="tab-btn"
+            href="#stats"
+            @click.prevent="scrollToSection('stats')"
+          >
+            <Icon name="lucide:bar-chart-3" :size="14" />
+            STATS
+          </a>
+          <a
+            class="tab-btn"
             href="#player"
             @click.prevent="scrollToSection('player')"
           >
             <Icon name="lucide:user" :size="14" />
             PLAYER
-          </a>
-          <a
-            class="tab-btn"
-            href="#medias"
-            @click.prevent="scrollToSection('medias')"
-          >
-            <Icon name="lucide:share-2" :size="14" />
-            MEDIAS
           </a>
           <a
             class="tab-btn"
@@ -106,11 +106,11 @@ const scrollToSection = (id: string) => {
           </a>
           <a
             class="tab-btn"
-            href="#sphere"
-            @click.prevent="scrollToSection('sphere')"
+            href="#solar"
+            @click.prevent="scrollToSection('solar')"
           >
-            <Icon name="lucide:box" :size="14" />
-            SPHERE
+            <Icon name="lucide:sun" :size="14" />
+            SOLAR
           </a>
         </nav>
       </header>
@@ -122,14 +122,14 @@ const scrollToSection = (id: string) => {
           <CardsView :data="data" />
         </section>
 
+        <!-- Stats Dashboard Section -->
+        <section id="stats" class="view-section">
+          <StatsView :stats-data="statsData" />
+        </section>
+
         <!-- Player Section -->
         <section id="player" class="view-section">
           <PlayerView :data="data" />
-        </section>
-
-        <!-- Medias Section -->
-        <section id="medias" class="view-section">
-          <MediasView :media-links="mediaLinks" />
         </section>
 
         <!-- Terminal Section -->
@@ -137,10 +137,9 @@ const scrollToSection = (id: string) => {
           <TerminalAI />
         </section>
 
-        <!-- Sphere Section -->
-        <section id="sphere" class="view-section">
+        <!-- Solar System Section -->
+        <section id="solar" class="view-section">
           <SphereView
-            :sphere-points="spherePoints"
             :rotation="rotation"
             @mousedown="onMouseDown"
             @mousemove="onMouseMove"
@@ -168,15 +167,12 @@ const scrollToSection = (id: string) => {
       </div>
     </main>
 
-    <!-- Footer -->
+    <!-- Footer with Social Links -->
     <footer class="terminal-dock mono">
+      <MediasView :media-links="mediaLinks" :tracked-apps="data" />
       <div class="dock-content">
         <span class="prompt">root@dnm:~/profile#</span>
         <span class="cursor blink">█</span>
-        <div class="dock-actions">
-          <Icon name="lucide:wifi" :size="16" class="green" />
-          <span class="dim">PING: 24ms</span>
-        </div>
       </div>
     </footer>
   </div>

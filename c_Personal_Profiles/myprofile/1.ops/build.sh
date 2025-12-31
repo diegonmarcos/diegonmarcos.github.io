@@ -80,12 +80,37 @@ build() {
         return 1
     }
 
-    if [ -d "$DIST_DIR" ]; then
-        log_success "Build completed → $DIST_DIR"
-    else
+    if [ ! -d "$DIST_DIR" ]; then
         log_error "Build directory not created"
         return 1
     fi
+
+    # Post-build: Fix for file:// protocol compatibility
+    log_info "Applying file:// protocol fixes..."
+
+    CACHE_DIR="$NUXT_DIR/node_modules/.cache/nuxt/.nuxt/dist/client"
+    NUXT_ASSETS="$DIST_DIR/_nuxt"
+
+    # Create _nuxt directory and copy IIFE assets
+    mkdir -p "$NUXT_ASSETS"
+    cp "$CACHE_DIR/app.js" "$NUXT_ASSETS/"
+    cp "$CACHE_DIR/style.css" "$NUXT_ASSETS/"
+
+    # Extract buildId from the generated HTML
+    BUILD_ID=$(grep -oP 'buildId[^,]*,[^"]*"[^"]*"' "$DIST_DIR/index.html" | grep -oP '"[^"]*"$' | tr -d '"' | head -1)
+    TIMESTAMP=$(date +%s)000
+
+    # Generate clean index.html for file:// protocol
+    cat > "$DIST_DIR/index.html" << 'HTMLEOF'
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DIEGO N. MARCOS // PROFILE</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="./_nuxt/style.css"><meta name="description" content="Cyberpunk Data Stream Portfolio"><meta property="og:title" content="DIEGO N. MARCOS // NETWORK"><script>var _mtm = window._mtm = window._mtm || [];
+_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+(function() {
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+})();</script><script>window.__NUXT__={serverRendered:false,config:{public:{},app:{baseURL:"./",buildAssetsDir:"./_nuxt/",cdnURL:""}}}</script></head><body><div id="__nuxt"></div><div id="teleports"></div><script src="./_nuxt/app.js"></script></body></html>
+HTMLEOF
+
+    log_success "Build completed → $DIST_DIR"
 }
 
 # Generate static site

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { SpherePoint, Rotation } from '~/types'
+import type { Rotation } from '~/types'
 
 defineProps<{
-  spherePoints: SpherePoint[]
   rotation: Rotation
 }>()
 
@@ -16,35 +15,22 @@ defineEmits<{
   (e: 'touchend'): void
 }>()
 
-// Calculate orbit radius for each planet (concentric rings)
-const getOrbitRadius = (index: number, total: number) => {
-  const minRadius = 100
-  const maxRadius = 280
-  return minRadius + ((index / (total - 1)) * (maxRadius - minRadius))
-}
-
-// Get orbit tilt angle for varied orbital planes
-const getOrbitTilt = (index: number) => {
-  // Each orbit has different tilt for 3D effect
-  const tilts = [75, 70, 80, 65, 85, 72]
-  return tilts[index % tilts.length]
-}
-
-// Get orbit animation speed (inner planets faster)
-const getOrbitSpeed = (index: number) => {
-  return 12 + index * 4
-}
-
-// Get starting rotation offset for each planet
-const getOrbitOffset = (index: number) => {
-  // Spread planets around their orbits
-  return index * 60
-}
+// Realistic Solar System Data
+const planets = [
+  { id: 'mercury', name: 'MERCURY', color: '#b5b5b5', size: 8, orbit: 60, speed: 8, tilt: 7 },
+  { id: 'venus', name: 'VENUS', color: '#e6c87a', size: 12, orbit: 90, speed: 12, tilt: 3.4 },
+  { id: 'earth', name: 'EARTH', color: '#6b93d6', size: 13, orbit: 120, speed: 16, tilt: 23.4 },
+  { id: 'mars', name: 'MARS', color: '#c1440e', size: 10, orbit: 150, speed: 20, tilt: 25.2 },
+  { id: 'jupiter', name: 'JUPITER', color: '#d8ca9d', size: 28, orbit: 195, speed: 28, tilt: 3.1 },
+  { id: 'saturn', name: 'SATURN', color: '#f4d59e', size: 24, orbit: 245, speed: 36, tilt: 26.7, hasRings: true },
+  { id: 'uranus', name: 'URANUS', color: '#d1e7e7', size: 16, orbit: 285, speed: 48, tilt: 97.8 },
+  { id: 'neptune', name: 'NEPTUNE', color: '#5b5ddf', size: 15, orbit: 320, speed: 60, tilt: 28.3 }
+]
 </script>
 
 <template>
   <div
-    class="sphere-viewport fade-in"
+    class="solar-viewport fade-in"
     @mousedown="$emit('mousedown', $event)"
     @mousemove="$emit('mousemove', $event)"
     @mouseup="$emit('mouseup')"
@@ -53,82 +39,76 @@ const getOrbitOffset = (index: number) => {
     @touchmove.prevent="$emit('touchmove', $event)"
     @touchend="$emit('touchend')"
   >
-    <div class="sphere-instruction">
-      <Icon name="lucide:orbit" class="anim-icon" />
-      DRAG TO EXPLORE THE UNIVERSE
+    <div class="solar-instruction">
+      <Icon name="lucide:rotate-3d" class="anim-icon" />
+      DRAG TO EXPLORE THE SOLAR SYSTEM
     </div>
+
     <div
-      class="sphere-scene solar-system"
+      class="solar-system-scene"
       :style="{
-        transform: 'rotateX(' + rotation.x + 'deg) rotateY(' + rotation.y + 'deg)'
+        transform: 'rotateX(' + (rotation.x + 60) + 'deg) rotateZ(' + rotation.y + 'deg)'
       }"
     >
-      <!-- Central Sun -->
-      <div class="sun">
-        <div class="sun-core" />
-        <div class="sun-corona" />
-        <div class="sun-flare" />
+      <!-- Sun -->
+      <div class="sun-star">
+        <div class="sun-surface" />
+        <div class="sun-corona-1" />
+        <div class="sun-corona-2" />
+        <div class="sun-glow" />
       </div>
 
-      <!-- Orbital Rings -->
+      <!-- Orbital Paths -->
       <div
-        v-for="(pt, index) in spherePoints"
-        :key="'orbit-' + pt.id"
-        class="orbit-ring"
+        v-for="planet in planets"
+        :key="'orbit-' + planet.id"
+        class="orbital-path"
         :style="{
-          width: getOrbitRadius(index, spherePoints.length) * 2 + 'px',
-          height: getOrbitRadius(index, spherePoints.length) * 2 + 'px',
-          transform: 'translate(-50%, -50%) rotateX(' + getOrbitTilt(index) + 'deg)',
-          '--ring-color': pt.accentColor
+          width: planet.orbit * 2 + 'px',
+          height: planet.orbit * 2 + 'px'
         }"
       />
 
-      <!-- Planets in orbit -->
+      <!-- Planets -->
       <div
-        v-for="(pt, index) in spherePoints"
-        :key="pt.id"
-        class="planet-orbit"
+        v-for="planet in planets"
+        :key="planet.id"
+        class="planet-container"
         :style="{
-          animationDuration: getOrbitSpeed(index) + 's',
-          transform: 'rotateX(' + getOrbitTilt(index) + 'deg) rotateZ(' + getOrbitOffset(index) + 'deg)'
+          '--orbit-radius': planet.orbit + 'px',
+          '--orbit-speed': planet.speed + 's',
+          '--planet-size': planet.size + 'px',
+          '--planet-color': planet.color,
+          '--planet-tilt': planet.tilt + 'deg'
         }"
       >
-        <div
-          class="planet"
-          :style="{
-            transform: 'translateX(' + getOrbitRadius(index, spherePoints.length) + 'px)',
-            '--planet-color': pt.accentColor,
-            '--planet-glow': pt.accentColor + '60'
-          }"
-        >
-          <div
-            class="planet-face"
-            :style="{
-              transform: 'rotateZ(' + (-getOrbitOffset(index)) + 'deg) rotateX(' + (-getOrbitTilt(index)) + 'deg) rotateX(' + (-rotation.x) + 'deg) rotateY(' + (-rotation.y) + 'deg)'
-            }"
-          >
-            <div class="planet-body" :style="{ borderColor: pt.accentColor, boxShadow: '0 0 20px ' + pt.accentColor + ', inset 0 0 15px ' + pt.accentColor + '40' }">
-              <Icon
-                :name="'lucide:' + pt.icon"
-                :size="22"
-                :style="{ color: pt.accentColor }"
-              />
-            </div>
-            <span class="planet-label" :style="{ color: pt.accentColor }">
-              {{ pt.platform }}
-            </span>
+        <div class="planet-orbit-wrapper">
+          <div class="planet-body" :class="{ 'has-rings': planet.hasRings }">
+            <div class="planet-sphere" />
+            <div v-if="planet.hasRings" class="saturn-rings" />
+            <span class="planet-name">{{ planet.name }}</span>
           </div>
         </div>
       </div>
 
-      <!-- Starfield background particles -->
-      <div class="starfield">
-        <div v-for="n in 50" :key="'star-' + n" class="star" :style="{
-          '--x': Math.random() * 600 - 300 + 'px',
-          '--y': Math.random() * 600 - 300 + 'px',
-          '--z': Math.random() * 400 - 200 + 'px',
-          '--delay': Math.random() * 3 + 's',
-          '--size': Math.random() * 2 + 1 + 'px'
+      <!-- Asteroid Belt (between Mars and Jupiter) -->
+      <div class="asteroid-belt">
+        <div v-for="n in 40" :key="'asteroid-' + n" class="asteroid" :style="{
+          '--angle': (n * 9) + 'deg',
+          '--distance': (165 + Math.random() * 20) + 'px',
+          '--size': (1 + Math.random() * 2) + 'px',
+          '--delay': (Math.random() * 30) + 's'
+        }" />
+      </div>
+
+      <!-- Stars Background -->
+      <div class="star-field">
+        <div v-for="n in 80" :key="'star-' + n" class="distant-star" :style="{
+          '--x': (Math.random() * 800 - 400) + 'px',
+          '--y': (Math.random() * 800 - 400) + 'px',
+          '--z': (Math.random() * 300 - 150) + 'px',
+          '--twinkle-delay': (Math.random() * 4) + 's',
+          '--star-size': (Math.random() * 2 + 0.5) + 'px'
         }" />
       </div>
     </div>

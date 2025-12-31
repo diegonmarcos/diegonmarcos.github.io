@@ -54,3 +54,41 @@ export interface MediaItem {
   url: string
   accentColor: string
 }
+
+// Stats Dashboard Types
+export interface StatCategory {
+  id: string
+  label: string
+  icon: string
+  count: number
+  countUnit?: string
+  duration?: string
+  extraMetric?: string
+  extraMetricLabel?: string
+  accentColor: string
+}
+
+export interface SocialProfile {
+  id: string
+  platform: string
+  icon: string
+  url: string
+  accentColor: string
+  category: 'contact' | 'profile' | 'activity'
+}
+
+export interface LifetimeStats {
+  totalMedia: number
+  totalReviews: number
+  peopleReviewed: number
+  totalWorkouts: number
+  workoutDuration: string
+  totalWeight: string
+  measurements: number
+}
+
+export interface StatsData {
+  categories: StatCategory[]
+  socialProfiles: SocialProfile[]
+  lifetime: LifetimeStats
+}

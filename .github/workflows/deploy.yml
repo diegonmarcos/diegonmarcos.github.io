@@ -55,6 +55,17 @@ jobs:
           cd ../../..
           echo "✅ Linktree build complete"
 
+      - name: 🔨 Build Linktree Mindmap
+        id: build-linktree-mindmap
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_mindmap/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building Linktree Mindmap..."
+          cd a_Portals/linktree_mindmap/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ Linktree Mindmap build complete"
+
       - name: 🔨 Build CV Web
         id: build-cv-web
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/cv_web/')
@@ -299,6 +310,13 @@ jobs:
             echo "✅ SUCCESS: Linktree"
           fi
 
+          if [ "${{ steps.build-linktree-mindmap.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Linktree Mindmap"
+            FAILED="$FAILED linktree_mindmap"
+          elif [ "${{ steps.build-linktree-mindmap.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Linktree Mindmap"
+          fi
+
           if [ "${{ steps.build-cv-web.outcome }}" == "failure" ]; then
             echo "❌ FAILED: CV Web"
             FAILED="$FAILED cv_web"
@@ -509,6 +527,16 @@ jobs:
             cp -rL b_Linktree/linktree/dist/* _site/linktree/ 2>/dev/null || cp -r b_Linktree/linktree/dist/* _site/linktree/
             cp -r b_Linktree/linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
+          fi
+
+          # Copy Linktree Mindmap build (if dist exists)
+          if [ -d "a_Portals/linktree_mindmap/dist" ]; then
+            echo "📦 Copying Linktree Mindmap build..."
+            mkdir -p _site/linktree_mindmap
+            cp -rL a_Portals/linktree_mindmap/dist/* _site/linktree_mindmap/ 2>/dev/null || cp -r a_Portals/linktree_mindmap/dist/* _site/linktree_mindmap/
+            echo "✅ Linktree Mindmap build copied to _site/linktree_mindmap/"
+          else
+            echo "⏭️  Skipping Linktree Mindmap copy (no dist directory found)"
           fi
 
           # Copy CV Web build (if dist exists)

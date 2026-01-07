@@ -25,3 +25,44 @@ See `1.ops/github-actions/README.md` for detailed documentation.
 ---
 
 **Note**: When updating workflows, remember to copy changes to `1.ops/github-actions/` for documentation purposes.
+
+---
+
+# BUILDS
+
+a_Portals
+   * linktree
+   * cloud
+
+  b_Work_Profiles
+   * landpage
+   * cv_web
+   * nexus
+   * cv_pdf
+
+  b_Work_Tools
+   * mymail
+   * myphotos
+   * myanalytics
+   * mydrive
+   * mymaps
+   * skills_mcp
+   * api (Swagger UI)
+
+  c_Personal_Profiles
+   * myprofile
+
+  c_Personal_Tools
+   * myfeed
+   * mygames
+   * feed_yourself
+   * others
+   * health_tracker
+   * market_watch
+   * central_bank
+   * mymovies
+   * mymusic
+   * json-vision
+   * carto
+   * astro
+

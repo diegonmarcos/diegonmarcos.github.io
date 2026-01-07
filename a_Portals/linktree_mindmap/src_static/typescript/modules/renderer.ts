@@ -165,23 +165,24 @@ function drawConnectionGlows(edges: GraphEdge[]): void {
 function drawNode(node: GraphNode, time: number): void {
   if (!ctx) return;
 
-  const { x, y, radius, color, opacity, glowIntensity, highlighted, hovered, breathePhase } = node;
+  const { x, y, radius, color, opacity, highlighted, hovered, breathePhase } = node;
 
-  // Breathing animation
-  const breathe = 1 + 0.005 * Math.sin(time * 0.001 + breathePhase); // Subtle breathing (0.5%)
+  // Subtle breathing animation
+  const breathe = 1 + 0.003 * Math.sin(time * 0.001 + breathePhase);
   const currentRadius = radius * breathe;
 
-  // Boost opacity and glow when hovered/highlighted
-  const effectiveOpacity = (hovered || highlighted) ? 1 : opacity;
-  const effectiveGlow = (highlighted || hovered) ? glowIntensity * 4.0 : glowIntensity * 0.3;
+  // Use node's opacity directly (set by distance-based highlighting)
+  const effectiveOpacity = opacity;
 
-  // Outer glow
-  const glowRadius = currentRadius * (2 + effectiveGlow * 0.5);
-  const glowGradient = createRadialGlow(ctx!, x, y, currentRadius * 0.5, glowRadius, color, effectiveOpacity * effectiveGlow);
-  ctx!.fillStyle = glowGradient;
-  ctx!.beginPath();
-  ctx!.arc(x, y, glowRadius, 0, Math.PI * 2);
-  ctx!.fill();
+  // Minimal glow - only for hovered node, very subtle
+  if (hovered) {
+    const glowRadius = currentRadius * 1.5;
+    const glowGradient = createRadialGlow(ctx!, x, y, currentRadius, glowRadius, color, 0.3);
+    ctx!.fillStyle = glowGradient;
+    ctx!.beginPath();
+    ctx!.arc(x, y, glowRadius, 0, Math.PI * 2);
+    ctx!.fill();
+  }
 
   // Glass fill
   const glassGradient = createGlassGradient(ctx!, x, y, currentRadius, color, effectiveOpacity);
@@ -190,9 +191,10 @@ function drawNode(node: GraphNode, time: number): void {
   ctx!.arc(x, y, currentRadius, 0, Math.PI * 2);
   ctx!.fill();
 
-  // Glass border
-  ctx!.strokeStyle = withAlpha('#ffffff', (hovered ? 0.35 : 0.2) * effectiveOpacity);
-  ctx!.lineWidth = hovered ? 1.5 : 1;
+  // Border - stronger for highlighted/hovered
+  const borderOpacity = hovered ? 0.5 : (highlighted ? 0.35 : 0.15);
+  ctx!.strokeStyle = withAlpha('#ffffff', borderOpacity * effectiveOpacity);
+  ctx!.lineWidth = hovered ? 2 : (highlighted ? 1.5 : 1);
   ctx!.stroke();
 
   // Icon (for larger nodes)

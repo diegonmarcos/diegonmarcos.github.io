@@ -155,42 +155,71 @@ export function highlightPath(
   edges: GraphEdge[],
   targetNode: GraphNode | null
 ): void {
-  console.log('highlightPath called, target:', targetNode?.label); // DEBUG
-
   if (!targetNode) {
     // Clear all highlights - restore full visibility
     nodes.forEach((n) => {
       n.highlighted = false;
-      n.opacity = 1.0; // Full opacity when not hovering
+      n.opacity = 1.0;
     });
     edges.forEach((e) => {
       e.highlighted = false;
       e.opacity = 1;
     });
-    console.log('Cleared all highlights'); // DEBUG
     return;
   }
 
-  const ancestors = new Set(getAncestors(targetNode));
-  const descendants = new Set(getDescendants(targetNode));
-  const highlighted = new Set([targetNode, ...ancestors, ...descendants]);
+  const ancestors = getAncestors(targetNode);
+  const descendants = getDescendants(targetNode);
+  const highlightedSet = new Set([targetNode, ...ancestors, ...descendants]);
 
-  console.log('Highlighting:', highlighted.size, 'nodes'); // DEBUG
+  // Calculate distance from target for each highlighted node
+  const distanceMap = new Map<GraphNode, number>();
+  distanceMap.set(targetNode, 0);
 
-  // Update nodes
+  // Distance to ancestors (going up)
+  ancestors.forEach((anc, i) => {
+    distanceMap.set(anc, i + 1);
+  });
+
+  // Distance to descendants (going down) - BFS
+  function setDescendantDistances(node: GraphNode, dist: number): void {
+    node.children.forEach((child) => {
+      if (!distanceMap.has(child)) {
+        distanceMap.set(child, dist);
+        setDescendantDistances(child, dist + 1);
+      }
+    });
+  }
+  setDescendantDistances(targetNode, 1);
+
+  // Find max distance for normalization
+  const maxDist = Math.max(...Array.from(distanceMap.values()), 1);
+
+  // Update nodes with distance-based opacity
   nodes.forEach((n) => {
-    n.highlighted = highlighted.has(n);
-    // Strong contrast: vivid highlighted, very faded non-highlighted
+    n.highlighted = highlightedSet.has(n);
+
     if (n.highlighted) {
-      n.opacity = 1.0; // Full opacity for highlighted
+      const dist = distanceMap.get(n) || 0;
+      // Closer = higher opacity (1.0 for target, fades with distance)
+      // Use exponential falloff for smoother gradient
+      n.opacity = Math.max(0.3, 1.0 - (dist / (maxDist + 1)) * 0.7);
     } else {
-      n.opacity = 0.05; // Very faded for non-highlighted (gray) - even darker
+      n.opacity = 0.08; // Very faded for non-highlighted
     }
   });
 
-  // Update edges
+  // Update edges with distance-based opacity
   edges.forEach((e) => {
-    e.highlighted = highlighted.has(e.source) && highlighted.has(e.target);
-    e.opacity = e.highlighted ? 1 : 0.02; // Strong contrast for edges too
+    e.highlighted = highlightedSet.has(e.source) && highlightedSet.has(e.target);
+
+    if (e.highlighted) {
+      const sourceDist = distanceMap.get(e.source) || 0;
+      const targetDist = distanceMap.get(e.target) || 0;
+      const avgDist = (sourceDist + targetDist) / 2;
+      e.opacity = Math.max(0.3, 1.0 - (avgDist / (maxDist + 1)) * 0.7);
+    } else {
+      e.opacity = 0.03;
+    }
   });
 }

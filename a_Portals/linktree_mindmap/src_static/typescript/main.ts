@@ -196,21 +196,8 @@ function handleBackToFullView(): void {
 // -----------------------------------------------------------------------------
 
 function updateTooltipPosition(): void {
-  const hoveredNode = getHoveredNode();
-
-  if (hoveredNode) {
-    // Convert world position to screen position
-    const { width, height } = getCanvasSize();
-    const centerX = width / 2;
-    const centerY = height / 2;
-
-    const screenX = (hoveredNode.x - centerX) * view.scale + centerX + view.x;
-    const screenY = (hoveredNode.y - centerY) * view.scale + centerY + view.y;
-
-    showTooltip(hoveredNode, screenX, screenY);
-  } else {
-    hideTooltip();
-  }
+  // Tooltip disabled - minimal UI
+  hideTooltip();
 }
 
 // -----------------------------------------------------------------------------

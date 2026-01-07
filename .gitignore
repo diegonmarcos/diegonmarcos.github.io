@@ -50,7 +50,3 @@ vendor/
 
 
 
-.server.pid
-.server.conf
-server.log
-.server_log.fifo

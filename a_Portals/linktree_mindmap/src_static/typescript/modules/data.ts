@@ -92,7 +92,7 @@ function createNode(data: NodeData, depth: number, parent: GraphNode | null): Gr
 
     // Visual state
     radius: visual.nodeRadiusByDepth[depthIndex],
-    opacity: visual.opacityByDepth[depthIndex],
+    opacity: 1.0, // All nodes start fully visible
     glowIntensity: visual.glowIntensityByDepth[depthIndex],
     highlighted: false,
     hovered: false,
@@ -155,16 +155,19 @@ export function highlightPath(
   edges: GraphEdge[],
   targetNode: GraphNode | null
 ): void {
+  console.log('highlightPath called, target:', targetNode?.label); // DEBUG
+
   if (!targetNode) {
-    // Clear all highlights
+    // Clear all highlights - restore full visibility
     nodes.forEach((n) => {
       n.highlighted = false;
-      n.opacity = config.visual.opacityByDepth[Math.min(n.depth, config.visual.opacityByDepth.length - 1)];
+      n.opacity = 1.0; // Full opacity when not hovering
     });
     edges.forEach((e) => {
       e.highlighted = false;
       e.opacity = 1;
     });
+    console.log('Cleared all highlights'); // DEBUG
     return;
   }
 
@@ -172,20 +175,22 @@ export function highlightPath(
   const descendants = new Set(getDescendants(targetNode));
   const highlighted = new Set([targetNode, ...ancestors, ...descendants]);
 
+  console.log('Highlighting:', highlighted.size, 'nodes'); // DEBUG
+
   // Update nodes
   nodes.forEach((n) => {
     n.highlighted = highlighted.has(n);
-    // Fade non-highlighted nodes
+    // Strong contrast: vivid highlighted, very faded non-highlighted
     if (n.highlighted) {
-      n.opacity = config.visual.opacityByDepth[Math.min(n.depth, config.visual.opacityByDepth.length - 1)];
+      n.opacity = 1.0; // Full opacity for highlighted
     } else {
-      n.opacity = 0.15;
+      n.opacity = 0.05; // Very faded for non-highlighted (gray) - even darker
     }
   });
 
   // Update edges
   edges.forEach((e) => {
     e.highlighted = highlighted.has(e.source) && highlighted.has(e.target);
-    e.opacity = e.highlighted ? 1 : 0.1;
+    e.opacity = e.highlighted ? 1 : 0.02; // Strong contrast for edges too
   });
 }

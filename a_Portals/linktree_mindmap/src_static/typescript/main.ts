@@ -41,6 +41,10 @@ let animationFrameId: number | null = null;
 let bgCanvas: HTMLCanvasElement | null = null;
 let graphCanvas: HTMLCanvasElement | null = null;
 
+// Expansion animation state
+let expansionProgress = 0; // 0 = collapsed, 1 = fully expanded
+let expansionStartTime = 0;
+
 // -----------------------------------------------------------------------------
 // Initialize Application
 // -----------------------------------------------------------------------------
@@ -72,9 +76,23 @@ async function init(): Promise<void> {
     // Create view state
     view = createViewState();
 
-    // Compute initial layout
+    // Compute initial layout (sets target positions)
     const { width, height } = getCanvasSize();
     computeInitialLayout(nodes, width / 2, height / 2);
+
+    // Start all nodes at center (collapsed state)
+    const centerX = width / 2;
+    const centerY = height / 2;
+    nodes.forEach((node) => {
+      node.x = centerX;
+      node.y = centerY;
+      node.vx = 0;
+      node.vy = 0;
+    });
+
+    // Start expansion animation
+    expansionStartTime = performance.now();
+    expansionProgress = 0;
 
     // Initialize interaction
     initInteraction(graphCanvas, nodes, edges, view);
@@ -104,15 +122,32 @@ function animate(time: number): void {
   const deltaTime = time - lastTime;
   lastTime = time;
 
+  const { width, height } = getCanvasSize();
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  // Update expansion animation
+  if (expansionProgress < 1) {
+    const elapsed = time - expansionStartTime;
+    const duration = 2000; // 2 seconds
+    expansionProgress = Math.min(1, elapsed / duration);
+
+    // Easing function (ease-out cubic)
+    const eased = 1 - Math.pow(1 - expansionProgress, 3);
+
+    // Interpolate nodes from center to target positions
+    nodes.forEach((node) => {
+      node.x = centerX + (node.targetX - centerX) * eased;
+      node.y = centerY + (node.targetY - centerY) * eased;
+    });
+  }
+  // Expansion complete - NO PHYSICS! Stay exactly where placed
+
   // Update particles
   updateParticles(deltaTime);
 
   // Update view state (smooth pan/zoom)
   updateViewState(view);
-
-  // Update physics
-  const { width, height } = getCanvasSize();
-  updatePhysics(nodes, edges, deltaTime, width / 2, height / 2);
 
   // Update breathing animation
   updateBreathing(nodes, time);

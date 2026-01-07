@@ -6,14 +6,14 @@ import type { AppConfig } from './types';
 
 export const config: AppConfig = {
   physics: {
-    repulsion: 180,           // Node-node repulsion strength
-    attraction: 0.025,        // Edge spring strength
-    centerGravity: 0.015,     // Pull toward center
-    damping: 0.88,            // Velocity decay (higher = more drift)
-    ambientForce: 0.3,        // Random drift strength
-    ambientFrequency: 0.002,  // How often drift changes
-    minVelocity: 0.02,        // Never fully stop
-    maxVelocity: 4,           // Speed limit
+    repulsion: 0,             // No repulsion after expansion
+    attraction: 0,            // No attraction - stay where placed
+    centerGravity: 0,         // No center gravity - no centralization!
+    damping: 0.98,            // High damping to stop any residual motion
+    ambientForce: 0,          // No drift
+    ambientFrequency: 0.002,  // Not used
+    minVelocity: 0,           // Allow complete stop
+    maxVelocity: 1,           // Very low speed limit
   },
 
   visual: {
@@ -64,16 +64,20 @@ export const colors = {
 // -----------------------------------------------------------------------------
 
 export const layout = {
-  // Initial tree layout spacing
-  levelSpacing: 120,      // Vertical space between levels
-  siblingSpacing: 80,     // Horizontal space between siblings
+  // Initial tree layout spacing (will be calculated dynamically)
+  levelSpacing: 280,      // Fallback if calculation fails
+  siblingSpacing: 120,    // Horizontal space between siblings (not used in radial)
 
   // View constraints
-  minZoom: 0.3,
+  minZoom: 0.2,
   maxZoom: 2.5,
-  defaultZoom: 1,
+  defaultZoom: 1.0,       // Default zoom to see everything
 
   // Animation
   panEasing: 0.12,        // Pan/zoom interpolation speed
   hoverFadeSpeed: 0.15,   // Opacity transition speed
+
+  // Expansion animation
+  expansionDuration: 2000,  // ms - time to expand from collapsed to full
+  expansionEasing: 0.08,    // Smooth expansion speed
 };

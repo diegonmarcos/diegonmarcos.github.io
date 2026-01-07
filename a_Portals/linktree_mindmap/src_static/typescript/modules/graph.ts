@@ -21,29 +21,56 @@ export function computeInitialLayout(
   root.x = root.targetX = centerX;
   root.y = root.targetY = centerY;
 
-  // Recursively layout children
-  layoutSubtree(root, centerX, centerY);
+  // Find max depth to calculate optimal spacing
+  const maxDepth = Math.max(...nodes.map(n => n.depth));
+
+  // Calculate available radius (use 80% of the smaller viewport dimension)
+  const availableRadius = Math.min(centerX, centerY) * 0.8;
+
+  // Calculate spacing per level to fill the screen
+  const calculatedSpacing = maxDepth > 0 ? availableRadius / maxDepth : layout.levelSpacing;
+  const optimalSpacing = Math.max(calculatedSpacing, 150); // Minimum 150px between levels
+
+  // Layout all nodes in an expanded radial tree
+  layoutRadialTree(root, centerX, centerY, 0, Math.PI * 2, 0, optimalSpacing);
 }
 
-function layoutSubtree(node: GraphNode, parentX: number, parentY: number): void {
-  const childCount = node.children.length;
-  if (childCount === 0) return;
+function layoutRadialTree(
+  node: GraphNode,
+  centerX: number,
+  centerY: number,
+  startAngle: number,
+  angleRange: number,
+  depth: number,
+  spacing: number
+): void {
+  if (node.children.length === 0) return;
 
-  const levelRadius = layout.levelSpacing * (node.depth + 1);
-  const angleSpread = Math.PI * 1.2; // Spread children across 216 degrees
-  const startAngle = -Math.PI / 2 - angleSpread / 2;
+  // Calculate radius for this depth level using calculated spacing
+  const radius = spacing * (depth + 1);
+
+  // Distribute children evenly across the available angle range
+  const childCount = node.children.length;
+  const anglePerChild = angleRange / childCount;
 
   node.children.forEach((child, i) => {
-    // Calculate angle for this child
-    const angleStep = childCount > 1 ? angleSpread / (childCount - 1) : 0;
-    const angle = startAngle + (childCount > 1 ? i * angleStep : angleSpread / 2);
+    // Calculate angle for this child (centered in its slice)
+    const childAngle = startAngle + anglePerChild * i + anglePerChild / 2;
 
-    // Position relative to parent
-    child.x = child.targetX = parentX + Math.cos(angle) * levelRadius;
-    child.y = child.targetY = parentY + Math.sin(angle) * levelRadius;
+    // Position child at this angle and radius from center (not parent!)
+    child.x = child.targetX = centerX + Math.cos(childAngle) * radius;
+    child.y = child.targetY = centerY + Math.sin(childAngle) * radius;
 
-    // Recurse
-    layoutSubtree(child, child.x, child.y);
+    // Recursively layout this child's subtree within its angular slice
+    layoutRadialTree(
+      child,
+      centerX,
+      centerY,
+      startAngle + anglePerChild * i,
+      anglePerChild,
+      depth + 1,
+      spacing
+    );
   });
 }
 

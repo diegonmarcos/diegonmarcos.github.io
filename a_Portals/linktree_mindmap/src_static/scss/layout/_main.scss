@@ -29,8 +29,11 @@
   z-index: $z-ui;
   pointer-events: none;
 
-  // Allow pointer events on children
-  > * {
+  // ONLY allow pointer events on specific interactive elements
+  // NOT on all children - that blocks the canvas!
+  #controls,
+  #btn-back,
+  #link-panel {
     pointer-events: auto;
   }
 }
@@ -70,6 +73,7 @@
   padding: $space-md $space-lg;
   border-radius: $radius-lg;
   z-index: $z-loading;
+  pointer-events: none; // Don't block canvas events
 
   .spinner {
     width: 20px;

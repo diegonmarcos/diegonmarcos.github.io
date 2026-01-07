@@ -49,9 +49,9 @@ export function updatePhysics(
       const dy = node.y - other.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      // Stronger repulsion for closer nodes
-      const minDist = node.radius + other.radius + 20;
-      if (dist < minDist * 3) {
+      // Strong repulsion to maintain expanded layout
+      const minDist = node.radius + other.radius + 40;
+      if (dist < minDist * 5) {
         const force = physics.repulsion / (dist * dist);
         fx += (dx / dist) * force;
         fy += (dy / dist) * force;
@@ -69,9 +69,9 @@ export function updatePhysics(
       const dy = other.y - node.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 
-      // Target distance based on depth difference
-      const depthDiff = Math.abs(node.depth - other.depth);
-      const targetDist = 100 + depthDiff * 60;
+      // Use current distance as target - we want to maintain the expanded radial layout
+      // Only pull together if they're too far apart, never compress
+      const targetDist = dist * 0.98; // Very slight pull, mostly maintain distance
 
       const force = (dist - targetDist) * physics.attraction;
       fx += (dx / dist) * force;

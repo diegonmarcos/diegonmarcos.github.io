@@ -168,12 +168,12 @@ function drawNode(node: GraphNode, time: number): void {
   const { x, y, radius, color, opacity, glowIntensity, highlighted, hovered, breathePhase } = node;
 
   // Breathing animation
-  const breathe = 1 + 0.02 * Math.sin(time * 0.001 + breathePhase);
+  const breathe = 1 + 0.005 * Math.sin(time * 0.001 + breathePhase); // Subtle breathing (0.5%)
   const currentRadius = radius * breathe;
 
   // Boost opacity and glow when hovered/highlighted
-  const effectiveOpacity = hovered ? 1 : opacity;
-  const effectiveGlow = highlighted || hovered ? glowIntensity * 1.5 : glowIntensity;
+  const effectiveOpacity = (hovered || highlighted) ? 1 : opacity;
+  const effectiveGlow = (highlighted || hovered) ? glowIntensity * 4.0 : glowIntensity * 0.3;
 
   // Outer glow
   const glowRadius = currentRadius * (2 + effectiveGlow * 0.5);
@@ -237,13 +237,13 @@ function drawIcon(iconName: string, x: number, y: number, size: number, opacity:
 function drawLabel(node: GraphNode, scale: number): void {
   if (!ctx) return;
 
-  // Only show labels for depth 0-1, or when hovered
-  const shouldShow = node.depth <= 1 || node.hovered || node.highlighted;
+  // Show labels for depth 0-3, or when hovered/highlighted
+  const shouldShow = node.depth <= 3 || node.hovered || node.highlighted;
   if (!shouldShow) return;
 
-  // Adjust font size based on zoom
-  const baseFontSize = node.depth === 0 ? 14 : 11;
-  const fontSize = Math.max(10, baseFontSize / Math.sqrt(scale));
+  // Adjust font size based on depth and zoom
+  const baseFontSize = node.depth === 0 ? 16 : node.depth === 1 ? 13 : node.depth === 2 ? 11 : 10;
+  const fontSize = Math.max(8, baseFontSize / Math.sqrt(scale));
 
   ctx!.font = `500 ${fontSize}px Inter, sans-serif`;
   ctx!.textAlign = 'center';
@@ -252,14 +252,18 @@ function drawLabel(node: GraphNode, scale: number): void {
   const label = node.fullLabel || node.label;
   const y = node.y + node.radius * node.breatheScale + 8;
 
+  // Enhanced glow for highlighted/hovered nodes
+  const labelOpacity = (node.highlighted || node.hovered) ? 1.0 : node.opacity;
+  const glowStrength = (node.highlighted || node.hovered) ? 1.2 : 0.6;
+
   // Text shadow/glow
-  ctx!.fillStyle = withAlpha(node.color, 0.6 * node.opacity);
+  ctx!.fillStyle = withAlpha(node.color, glowStrength * labelOpacity);
   ctx!.filter = 'blur(4px)';
   ctx!.fillText(label, node.x, y);
 
   // Main text
   ctx!.filter = 'none';
-  ctx!.fillStyle = withAlpha('#ffffff', node.opacity);
+  ctx!.fillStyle = withAlpha('#ffffff', labelOpacity);
   ctx!.fillText(label, node.x, y);
 }
 

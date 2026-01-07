@@ -46,7 +46,28 @@ export function initInteraction(
   edges = graphEdges;
   view = viewState;
 
-  // Mouse events
+  console.log('🟢 Interaction initialized:', nodes.length, 'nodes,', edges.length, 'edges');
+  console.log('🟢 Canvas element:', canvasElement);
+  console.log('🟢 Canvas ID:', canvasElement.id);
+  console.log('🟢 Canvas size:', canvasElement.width, 'x', canvasElement.height);
+
+  // Check computed styles
+  const styles = window.getComputedStyle(canvasElement);
+  console.log('🟢 Canvas pointer-events:', styles.pointerEvents);
+  console.log('🟢 Canvas z-index:', styles.zIndex);
+  console.log('🟢 Canvas position:', styles.position);
+
+  // TEST: Add window-level listener to verify if ANY mouse events fire
+  window.addEventListener('mousemove', () => {
+    console.log('🔶 WINDOW mousemove detected');
+  }, { once: true }); // Only log once to avoid spam
+
+  // TEST: Add document-level listener
+  document.addEventListener('mousemove', () => {
+    console.log('🔷 DOCUMENT mousemove detected');
+  }, { once: true });
+
+  // Mouse events on canvas
   canvas.addEventListener('mousemove', handleMouseMove);
   canvas.addEventListener('mousedown', handleMouseDown);
   canvas.addEventListener('mouseup', handleMouseUp);
@@ -55,10 +76,18 @@ export function initInteraction(
   canvas.addEventListener('click', handleClick);
   canvas.addEventListener('dblclick', handleDoubleClick);
 
+  console.log('🟢 Mouse event listeners attached to canvas');
+  console.log('🟢 Listeners attached to element:', canvas.id);
+
   // Touch events
   canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
   canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
   canvas.addEventListener('touchend', handleTouchEnd);
+
+  // TEST: Immediate click test
+  canvas.addEventListener('click', () => {
+    console.log('🟡 CANVAS CLICK detected - events ARE working!');
+  }, { once: true });
 }
 
 export function setCallbacks(
@@ -86,12 +115,19 @@ function findNodeAtPosition(screenX: number, screenY: number): GraphNode | null 
 
   const world = screenToWorld(screenX, screenY, view, canvas.width, canvas.height);
 
+  console.log('Mouse screen:', screenX, screenY, 'World:', world.x, world.y, 'View:', view.x, view.y, view.scale); // DEBUG
+
   // Check nodes in reverse order (top-most first)
   for (let i = nodes.length - 1; i >= 0; i--) {
     const node = nodes[i];
-    // Increase hit area slightly for better UX
-    const hitRadius = node.radius * 1.2;
-    if (pointInCircle(world.x, world.y, node.x, node.y, hitRadius)) {
+    // Much larger hit area for easier hovering
+    const hitRadius = node.radius * 3;
+    const dx = world.x - node.x;
+    const dy = world.y - node.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist <= hitRadius) {
+      console.log('HIT NODE:', node.label, 'at', node.x, node.y, 'distance:', dist, 'radius:', hitRadius); // DEBUG
       return node;
     }
   }
@@ -104,9 +140,18 @@ function findNodeAtPosition(screenX: number, screenY: number): GraphNode | null 
 // -----------------------------------------------------------------------------
 
 function handleMouseMove(e: MouseEvent): void {
-  const rect = canvas!.getBoundingClientRect();
+  console.log('⚡ CANVAS MOUSEMOVE FIRED at', e.clientX, e.clientY);
+
+  if (!canvas) {
+    console.error('❌ Canvas is null!');
+    return;
+  }
+
+  const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
+
+  console.log('⚡ Mouse local:', x, y);
 
   state.lastMouseX = x;
   state.lastMouseY = y;
@@ -138,19 +183,22 @@ function handleMouseMove(e: MouseEvent): void {
   // Clear previous hover
   if (state.hoveredNode && state.hoveredNode !== hoveredNode) {
     state.hoveredNode.hovered = false;
+    console.log('Cleared hover from:', state.hoveredNode.label);
   }
 
   // Set new hover
   if (hoveredNode) {
     hoveredNode.hovered = true;
-    canvas!.style.cursor = 'pointer';
+    canvas.style.cursor = 'pointer';
+    console.log('🔴 HOVERING:', hoveredNode.label, 'Depth:', hoveredNode.depth, 'ID:', hoveredNode.id);
     highlightPath(nodes, edges, hoveredNode);
   } else {
     canvas!.style.cursor = state.isPanning ? 'grabbing' : 'grab';
-    // Only clear highlight if not focused on a node
-    if (!state.focusedNode) {
-      highlightPath(nodes, edges, null);
+    // Always clear highlight when not hovering
+    if (state.hoveredNode) {
+      console.log('🔵 No node hovered - clearing'); // DEBUG
     }
+    highlightPath(nodes, edges, null);
   }
 
   state.hoveredNode = hoveredNode;

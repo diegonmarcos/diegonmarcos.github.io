@@ -1,0 +1,37 @@
+// ==========================================================================
+// Tooltip - Linktree Mindmap
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+#tooltip {
+  position: fixed;
+  max-width: 250px;
+  padding: $space-md;
+  border-radius: $radius-md;
+  @include glass;
+  z-index: $z-tooltip;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px) scale(0.95);
+  @include transition-fast(opacity, transform);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  #tooltip-title {
+    font-size: $font-size-sm;
+    font-weight: 600;
+    margin-bottom: $space-xs;
+    color: $color-text;
+  }
+
+  #tooltip-subtitle {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    margin: 0;
+  }
+}

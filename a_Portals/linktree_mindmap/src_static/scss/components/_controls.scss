@@ -1,0 +1,57 @@
+// ==========================================================================
+// Controls - Linktree Mindmap
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// Glass panel base (used by controls, back button, etc.)
+.glass-panel {
+  @include glass;
+}
+
+// Icon button
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  @include flex-center;
+  @include glass;
+  border-radius: $radius-md;
+  @include interactive;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: $color-text-muted;
+    @include transition-fast(stroke);
+  }
+
+  &:hover svg {
+    stroke: $color-text;
+  }
+
+  // Wide variant (with text)
+  &:has(span) {
+    width: auto;
+    padding: 0 $space-md;
+    gap: $space-sm;
+  }
+}
+
+// Button states
+.icon-btn {
+  &.active {
+    background: rgba($color-root, 0.2);
+    border-color: rgba($color-root, 0.4);
+
+    svg {
+      stroke: $color-root;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DNM | Mindmap</title>
+    <meta name="description" content="Interactive mindmap visualization of Diego Nepomuceno Marcos links">
+    <link rel="icon" type="image/jpeg" href="public/favicon.jpg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://diegonmarcos.github.io/linktree_mindmap/">
+    <meta property="og:title" content="Diego Nepomuceno Marcos | Mindmap">
+    <meta property="og:description" content="Interactive mindmap visualization">
+
+    <!-- Matomo Tag Manager -->
+    <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background particle canvas -->
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- Main graph canvas -->
+    <canvas id="graph-canvas" aria-label="Interactive mindmap visualization"></canvas>
+
+    <!-- UI Overlay -->
+    <div id="ui-overlay">
+        <!-- Tooltip -->
+        <div id="tooltip" class="glass-panel" hidden>
+            <h3 id="tooltip-title"></h3>
+            <p id="tooltip-subtitle"></p>
+        </div>
+
+        <!-- Link Panel -->
+        <div id="link-panel" class="glass-panel" hidden>
+            <button id="link-panel-close" class="icon-btn" aria-label="Close">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+            <h2 id="link-panel-title"></h2>
+            <div id="link-panel-links"></div>
+        </div>
+
+        <!-- Controls -->
+        <div id="controls" class="glass-panel">
+            <button id="btn-reset" class="icon-btn" title="Reset View">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                </svg>
+            </button>
+            <button id="btn-zoom-in" class="icon-btn" title="Zoom In">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>
+                </svg>
+            </button>
+            <button id="btn-zoom-out" class="icon-btn" title="Zoom Out">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="M21 21l-4.35-4.35M8 11h6"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Back button (hidden by default) -->
+        <button id="btn-back" class="glass-panel icon-btn" hidden title="Back to full view">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back</span>
+        </button>
+
+        <!-- Loading indicator -->
+        <div id="loading" class="glass-panel">
+            <div class="spinner"></div>
+            <span>Loading...</span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

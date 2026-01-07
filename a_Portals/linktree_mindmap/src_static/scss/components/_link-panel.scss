@@ -1,0 +1,114 @@
+// ==========================================================================
+// Link Panel - Linktree Mindmap
+// ==========================================================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+#link-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  padding: $space-lg;
+  border-radius: $radius-xl;
+  @include glass(rgba(20, 20, 30, 0.85), $glass-border, 20px);
+  z-index: $z-panel;
+  opacity: 0;
+  @include transition-normal(opacity, transform);
+  overflow-y: auto;
+  @include custom-scrollbar;
+
+  &.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  // Close button
+  #link-panel-close {
+    position: absolute;
+    top: $space-md;
+    right: $space-md;
+    width: 32px;
+    height: 32px;
+    @include flex-center;
+    @include glass;
+    border-radius: $radius-full;
+    @include interactive;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      stroke: $color-text-muted;
+    }
+
+    &:hover svg {
+      stroke: $color-text;
+    }
+  }
+
+  // Title
+  #link-panel-title {
+    font-size: $font-size-lg;
+    margin-bottom: $space-lg;
+    padding-right: $space-xl;
+  }
+
+  // Links container
+  #link-panel-links {
+    @include flex-col($space-sm);
+  }
+}
+
+// Link card inside panel
+.link-card {
+  @include flex-row($space-md);
+  padding: $space-md;
+  border-radius: $radius-md;
+  @include glass;
+  @include interactive;
+  text-decoration: none;
+
+  &:hover {
+    @include glass-hover;
+    transform: translateX(4px);
+  }
+
+  .link-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    opacity: 0.8;
+
+    img {
+      width: 100%;
+      height: 100%;
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  .link-label {
+    font-size: $font-size-sm;
+    font-weight: 500;
+    color: $color-text;
+  }
+}
+
+// Backdrop when panel is open
+.panel-backdrop {
+  @include fixed-fill;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: $z-panel - 1;
+  opacity: 0;
+  @include transition-normal(opacity);
+  pointer-events: none;
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}

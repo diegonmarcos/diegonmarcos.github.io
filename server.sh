@@ -2,7 +2,7 @@
 
 # --- Configuration ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
-CONFIG_FILE="$SCRIPT_DIR/.server.conf"
+CONFIG_FILE="$SCRIPT_DIR/server.json"
 PID_FILE="$SCRIPT_DIR/.server.pid"
 LOG_FILE="$SCRIPT_DIR/server.log"
 
@@ -10,21 +10,27 @@ LOG_FILE="$SCRIPT_DIR/server.log"
 DEFAULT_PORT=8000
 DEFAULT_MOUNT="$SCRIPT_DIR"
 
-# Load Configuration
+# Load Configuration (JSON)
 load_config() {
     if [ -f "$CONFIG_FILE" ]; then
-        . "$CONFIG_FILE"
+        # Use python to read JSON safely
+        PORT=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('port', ''))" 2>/dev/null)
+        MOUNT_DIR=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('mount_point', ''))" 2>/dev/null)
     fi
-    : "${PORT:=$DEFAULT_PORT}"
-    : "${MOUNT_DIR:=$DEFAULT_MOUNT}"
+    
+    # Set defaults if values are missing or empty
+    if [ -z "$PORT" ]; then PORT=$DEFAULT_PORT; fi
+    if [ -z "$MOUNT_DIR" ]; then MOUNT_DIR=$DEFAULT_MOUNT; fi
 }
 
-# Save Configuration
+# Save Configuration (JSON)
 save_config() {
-    echo "PORT=$PORT" > "$CONFIG_FILE"
-    echo "MOUNT_DIR=\"$MOUNT_DIR\"" >> "$CONFIG_FILE"
+    export SAV_PORT="$PORT"
+    export SAV_MOUNT="$MOUNT_DIR"
+    python3 -c "import json, os; config={'port': int(os.environ['SAV_PORT']), 'mount_point': os.environ['SAV_MOUNT']}; print(json.dumps(config, indent=2))" > "$CONFIG_FILE"
 }
 
+# Load immediately
 load_config
 
 # --- Colors ---
@@ -68,18 +74,15 @@ do_start() {
     mkfifo "$FIFO"
 
     # Start the logger process in the background
-    # It reads from the FIFO, prepends the date, and writes to LOG_FILE
     (
-        trap "" HUP # Ensure it survives terminal closure
+        trap "" HUP
         while IFS= read -r line; do
             echo "[$(date '+%Y-%m-%d %H:%M:%S')] $line" >> "$LOG_FILE"
         done < "$FIFO"
-        # Cleanup when the writer (server) closes the pipe
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    # Start the Python server, directing output to the FIFO
-    # -u ensures output is unbuffered so it appears in logs immediately
+    # Start the Python server
     nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
     
     SERVER_PID=$!
@@ -89,9 +92,13 @@ do_start() {
     
     if is_running; then
         echo "Server started successfully. Logs: $LOG_FILE"
+        # Create config file if it doesn't exist
+        if [ ! -f "$CONFIG_FILE" ]; then
+            save_config
+        fi
     else
         echo "Failed to start server. Check logs."
-        rm -f "$FIFO" # Cleanup if start failed
+        rm -f "$FIFO"
         [ -f "$PID_FILE" ] && rm "$PID_FILE"
     fi
 }
@@ -102,7 +109,6 @@ do_stop() {
         if kill "$pid" 2>/dev/null; then
             rm "$PID_FILE"
             echo "Server stopped."
-            # The logger loop will automatically exit when it sees EOF from the pipe
         else
             echo "Could not stop server (Process $pid not found)."
             rm "$PID_FILE"
@@ -113,7 +119,8 @@ do_stop() {
 }
 
 do_status() {
-    printf "${CYAN}--- Server Information ---${NC}\n"
+    printf "${CYAN}--- Server Information ---
+${NC}"
     if is_running; then
         read -r pid < "$PID_FILE"
         printf "Status:      ${GREEN}${BOLD}RUNNING${NC}\n"
@@ -122,10 +129,12 @@ do_status() {
         printf "URL:         ${BLUE}${BOLD}http://localhost:$PORT${NC}\n"
         printf "Mount Point: $MOUNT_DIR\n"
         printf "Log File:    $LOG_FILE\n"
+        printf "Config File: $CONFIG_FILE\n"
     else
         printf "Status:      ${RED}${BOLD}STOPPED${NC}\n"
         printf "Port:        $PORT\n"
         printf "Mount Point: $MOUNT_DIR\n"
+        printf "Config File: $CONFIG_FILE\n"
     fi
     printf "${CYAN}--------------------------${NC}\n"
 }
@@ -137,7 +146,7 @@ edit_port() {
         if echo "$new_port" | grep -Eq '^[0-9]+$'; then
             PORT="$new_port"
             save_config
-            echo "Port updated to $PORT."
+            echo "Port updated to $PORT (Saved to server.json)."
         else
             echo "${RED}Invalid port.${NC}"
         fi
@@ -151,7 +160,7 @@ edit_mount() {
         if [ -d "$new_mount" ]; then
             MOUNT_DIR=$(cd "$new_mount" && pwd)
             save_config
-            echo "Mount point updated to $MOUNT_DIR."
+            echo "Mount point updated to $MOUNT_DIR (Saved to server.json)."
         else
             echo "${RED}Error: Directory does not exist.${NC}"
         fi
@@ -189,7 +198,7 @@ show_tui() {
         printf "  1. ${GREEN}START${NC} Server\n"
         printf "  2. ${RED}STOP${NC} Server\n"
         printf "  3. ${YELLOW}VIEW LOGS${NC} (tail)\n"
-        printf "${CYAN}╟─ SETTINGS ───────────────────────────────────────────────${NC}\n"
+        printf "${CYAN}╟─ SETTINGS (server.json) ─────────────────────────────────${NC}\n"
         printf "  4. Edit ${BOLD}PORT${NC}\n"
         printf "  5. Edit ${BOLD}MOUNT POINT${NC}\n"
         printf "${CYAN}╟──────────────────────────────────────────────────────────${NC}\n"

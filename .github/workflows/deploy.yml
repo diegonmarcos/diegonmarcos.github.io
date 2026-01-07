@@ -46,11 +46,11 @@ jobs:
 
       - name: 🔨 Build Linktree
         id: build-linktree
-        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Linktree/linktree/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree/')
         continue-on-error: false
         run: |
           echo "🔨 Building Linktree..."
-          cd b_Linktree/linktree/1.ops
+          cd a_Portals/linktree/1.ops
           bash build.sh build
           cd ../../..
           echo "✅ Linktree build complete"
@@ -520,12 +520,12 @@ jobs:
           fi
 
           # Copy Linktree build (if dist exists)
-          if [ -d "b_Linktree/linktree/dist" ]; then
+          if [ -d "a_Portals/linktree/dist" ]; then
             echo "📦 Copying Linktree build..."
             mkdir -p _site/linktree
             # Use -L to dereference symlinks (dist may contain symlinks to public/)
-            cp -rL b_Linktree/linktree/dist/* _site/linktree/ 2>/dev/null || cp -r b_Linktree/linktree/dist/* _site/linktree/
-            cp -r b_Linktree/linktree/public/* _site/linktree/ 2>/dev/null || true
+            cp -rL a_Portals/linktree/dist/* _site/linktree/ 2>/dev/null || cp -r a_Portals/linktree/dist/* _site/linktree/
+            cp -r a_Portals/linktree/public/* _site/linktree/ 2>/dev/null || true
             echo "✅ Linktree build copied to _site/linktree/"
           fi
 

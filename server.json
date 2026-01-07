@@ -1,4 +1,5 @@
 {
   "port": 8000,
-  "mount_point": "/home/diego/mnt_git/front-Github_io"
+  "mount_point": "/home/diego/mnt_git/front-Github_io",
+  "pid": 0
 }

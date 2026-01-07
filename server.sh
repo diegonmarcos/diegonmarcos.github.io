@@ -3,34 +3,49 @@
 # --- Configuration ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/server.json"
-PID_FILE="$SCRIPT_DIR/.server.pid"
 LOG_FILE="$SCRIPT_DIR/server.log"
 
 # Defaults
 DEFAULT_PORT=8000
 DEFAULT_MOUNT="$SCRIPT_DIR"
 
-# Load Configuration (JSON)
-load_config() {
-    if [ -f "$CONFIG_FILE" ]; then
-        # Use python to read JSON safely
-        PORT=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('port', ''))" 2>/dev/null)
-        MOUNT_DIR=$(python3 -c "import json; print(json.load(open('$CONFIG_FILE')).get('mount_point', ''))" 2>/dev/null)
-    fi
+# Python helper to read/write JSON safely
+py_read() {
+    python3 -c "import json, sys; 
+try: 
+    data = json.load(open('$CONFIG_FILE'))
+    print(data.get('$1', ''))
+except: 
+    print('')" 2>/dev/null
+}
+
+py_write() {
+    # $1=key, $2=value (string), $3=is_number (bool)
+    VAL="'$2'"
+    if [ "$3" = "true" ]; then VAL="$2"; fi
     
-    # Set defaults if values are missing or empty
+    python3 -c "import json, os; 
+try: 
+    data = json.load(open('$CONFIG_FILE'))
+except: 
+    data = {}
+data['$1'] = $VAL
+print(json.dumps(data, indent=2))" > "${CONFIG_FILE}.tmp" && mv "${CONFIG_FILE}.tmp" "$CONFIG_FILE"
+}
+
+# Load Configuration
+load_config() {
+    if [ ! -f "$CONFIG_FILE" ]; then
+        echo "{}" > "$CONFIG_FILE"
+    fi
+    PORT=$(py_read "port")
+    MOUNT_DIR=$(py_read "mount_point")
+    PID=$(py_read "pid")
+
     if [ -z "$PORT" ]; then PORT=$DEFAULT_PORT; fi
     if [ -z "$MOUNT_DIR" ]; then MOUNT_DIR=$DEFAULT_MOUNT; fi
 }
 
-# Save Configuration (JSON)
-save_config() {
-    export SAV_PORT="$PORT"
-    export SAV_MOUNT="$MOUNT_DIR"
-    python3 -c "import json, os; config={'port': int(os.environ['SAV_PORT']), 'mount_point': os.environ['SAV_MOUNT']}; print(json.dumps(config, indent=2))" > "$CONFIG_FILE"
-}
-
-# Load immediately
 load_config
 
 # --- Colors ---
@@ -45,19 +60,15 @@ NC='\033[0m' # No Color
 # --- Helper Functions ---
 
 is_running() {
-    if [ -f "$PID_FILE" ]; then
-        read -r pid < "$PID_FILE"
-        if [ -n "$pid" ] && ps -p "$pid" > /dev/null 2>&1; then
-            return 0
-        fi
+    if [ -n "$PID" ] && ps -p "$PID" > /dev/null 2>&1; then
+        return 0
     fi
     return 1
 }
 
 do_start() {
     if is_running; then
-        read -r pid < "$PID_FILE"
-        echo "Server is already running (PID $pid)."
+        echo "Server is already running (PID $PID)."
         return
     fi
 
@@ -68,8 +79,8 @@ do_start() {
 
     echo "Starting server on port $PORT serving $MOUNT_DIR..."
     
-    # Use a named pipe to timestamp logs while preserving the PID
-    FIFO="$SCRIPT_DIR/.server_log.fifo"
+    # Use a named pipe in /tmp to timestamp logs
+    FIFO="/tmp/server_log_$$.fifo"
     rm -f "$FIFO"
     mkfifo "$FIFO"
 
@@ -86,45 +97,50 @@ do_start() {
     nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
     
     SERVER_PID=$!
-    echo "$SERVER_PID" > "$PID_FILE"
     
+    # Save Config & PID to JSON
+    py_write "port" "$PORT" true
+    py_write "mount_point" "$MOUNT_DIR" false
+    py_write "pid" "$SERVER_PID" true
+    
+    # Reload config to get the new PID
+    load_config
+
     sleep 1
     
     if is_running; then
         echo "Server started successfully. Logs: $LOG_FILE"
-        # Create config file if it doesn't exist
-        if [ ! -f "$CONFIG_FILE" ]; then
-            save_config
-        fi
     else
         echo "Failed to start server. Check logs."
         rm -f "$FIFO"
-        [ -f "$PID_FILE" ] && rm "$PID_FILE"
+        # Clear PID on failure
+        py_write "pid" "0" true
     fi
 }
 
 do_stop() {
-    if [ -f "$PID_FILE" ]; then
-        read -r pid < "$PID_FILE"
-        if kill "$pid" 2>/dev/null; then
-            rm "$PID_FILE"
+    if is_running; then
+        if kill "$PID" 2>/dev/null; then
             echo "Server stopped."
+            py_write "pid" "0" true
         else
-            echo "Could not stop server (Process $pid not found)."
-            rm "$PID_FILE"
+            echo "Could not stop server (Process $PID not found)."
+            py_write "pid" "0" true
         fi
     else
         echo "Server is not running."
+        # Ensure PID is cleared if it was stale
+        if [ -n "$PID" ] && [ "$PID" != "0" ]; then
+             py_write "pid" "0" true
+        fi
     fi
 }
 
 do_status() {
-    printf "${CYAN}--- Server Information ---
-${NC}"
+    printf "${CYAN}--- Server Information ---${NC}\n"
     if is_running; then
-        read -r pid < "$PID_FILE"
         printf "Status:      ${GREEN}${BOLD}RUNNING${NC}\n"
-        printf "PID:         ${YELLOW}$pid${NC}\n"
+        printf "PID:         ${YELLOW}$PID${NC}\n"
         printf "Port:        ${YELLOW}$PORT${NC}\n"
         printf "URL:         ${BLUE}${BOLD}http://localhost:$PORT${NC}\n"
         printf "Mount Point: $MOUNT_DIR\n"
@@ -145,7 +161,7 @@ edit_port() {
     if [ -n "$new_port" ]; then
         if echo "$new_port" | grep -Eq '^[0-9]+$'; then
             PORT="$new_port"
-            save_config
+            py_write "port" "$PORT" true
             echo "Port updated to $PORT (Saved to server.json)."
         else
             echo "${RED}Invalid port.${NC}"
@@ -159,7 +175,7 @@ edit_mount() {
     if [ -n "$new_mount" ]; then
         if [ -d "$new_mount" ]; then
             MOUNT_DIR=$(cd "$new_mount" && pwd)
-            save_config
+            py_write "mount_point" "$MOUNT_DIR" false
             echo "Mount point updated to $MOUNT_DIR (Saved to server.json)."
         else
             echo "${RED}Error: Directory does not exist.${NC}"
@@ -180,13 +196,15 @@ view_logs() {
 show_tui() {
     while true; do
         clear
+        # Reload config to ensure status is up to date
+        load_config
+        
         printf "${CYAN}╔══════════════════════════════════════════════════════════╗${NC}\n"
         printf "${CYAN}║${NC}           ${BOLD}WEB SERVER CONTROL PANEL${NC}                       ${CYAN}║${NC}\n"
         printf "${CYAN}╠══════════════════════════════════════════════════════════╝${NC}\n"
         
         if is_running; then
-            read -r pid < "$PID_FILE"
-            printf "  ${BOLD}STATUS:${NC}  ${GREEN}● ONLINE${NC} (PID: $pid)\n"
+            printf "  ${BOLD}STATUS:${NC}  ${GREEN}● ONLINE${NC} (PID: $PID)\n"
             printf "  ${BOLD}URL:${NC}     ${BLUE}http://localhost:$PORT${NC}\n"
         else
             printf "  ${BOLD}STATUS:${NC}  ${RED}○ OFFLINE${NC}\n"
@@ -226,8 +244,12 @@ case "$1" in
     status) do_status ;; 
     logs)   view_logs ;; 
     config) 
-        if [ "$2" = "port" ]; then PORT=$3; save_config; fi
-        if [ "$2" = "mount" ]; then MOUNT_DIR=$3; save_config; fi
+        if [ "$2" = "port" ]; then 
+             py_write "port" "$3" true
+        fi
+        if [ "$2" = "mount" ]; then 
+             py_write "mount_point" "$3" false
+        fi
         do_status
         ;; 
     tui)    show_tui ;; 

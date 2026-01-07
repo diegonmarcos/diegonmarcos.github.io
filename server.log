@@ -76,3 +76,27 @@
 [2026-01-07 13:16:03] 127.0.0.1 - - [07/Jan/2026 13:16:03] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 200 -
 [2026-01-07 13:16:03] 127.0.0.1 - - [07/Jan/2026 13:16:03] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 304 -
 [2026-01-07 13:16:04] 127.0.0.1 - - [07/Jan/2026 13:16:04] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 200 -
+[2026-01-07 13:17:50] Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+[2026-01-07 13:19:39] 127.0.0.1 - - [07/Jan/2026 13:19:39] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 304 -
+[2026-01-07 13:19:39] 127.0.0.1 - - [07/Jan/2026 13:19:39] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 304 -
+[2026-01-07 13:19:48] 127.0.0.1 - - [07/Jan/2026 13:19:48] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 200 -
+[2026-01-07 13:19:48] 127.0.0.1 - - [07/Jan/2026 13:19:48] "GET /a_Portals/linktree/dist/public/images/background_static.jpg HTTP/1.1" 304 -
+[2026-01-07 13:20:12] Traceback (most recent call last):
+[2026-01-07 13:20:12]   File "<frozen runpy>", line 198, in _run_module_as_main
+[2026-01-07 13:20:12]   File "<frozen runpy>", line 88, in _run_code
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/http/server.py", line 1314, in <module>
+[2026-01-07 13:20:12]     test(
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/http/server.py", line 1261, in test
+[2026-01-07 13:20:12]     with ServerClass(addr, HandlerClass) as httpd:
+[2026-01-07 13:20:12]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/socketserver.py", line 457, in __init__
+[2026-01-07 13:20:12]     self.server_bind()
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/http/server.py", line 1308, in server_bind
+[2026-01-07 13:20:12]     return super().server_bind()
+[2026-01-07 13:20:12]            ^^^^^^^^^^^^^^^^^^^^^
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/http/server.py", line 136, in server_bind
+[2026-01-07 13:20:12]     socketserver.TCPServer.server_bind(self)
+[2026-01-07 13:20:12]   File "/usr/lib/python3.12/socketserver.py", line 473, in server_bind
+[2026-01-07 13:20:12]     self.socket.bind(self.server_address)
+[2026-01-07 13:20:12] OSError: [Errno 98] Address already in use
+[2026-01-07 13:20:21] Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...

@@ -27,6 +27,47 @@
     margin: 0 2px;
 }
 
+// Mindmap Link Button (top right corner)
+.mindmap-btn {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all $transition-fast;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    text-decoration: none;
+
+    img {
+        width: 20px;
+        height: 20px;
+        opacity: 0.6;
+        filter: invert(1);
+        transition: opacity $transition-fast, transform $transition-fast;
+    }
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+
+        img {
+            opacity: 1;
+            transform: rotate(90deg);
+        }
+    }
+}
+
 // Icon Button
 .icon-btn {
     display: flex;

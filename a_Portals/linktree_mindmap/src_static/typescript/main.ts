@@ -1,30 +1,33 @@
 // ==========================================================================
-// Main Entry Point - Linktree Mindmap
+// Main Entry Point - Linktree Mindmap (CSS/DOM-based Rendering)
 // ==========================================================================
 
 import type { GraphNode, GraphEdge, ViewState } from './types';
 import { loadGraphData, buildGraph } from './modules/data';
-import { initParticles, updateParticles, renderParticles } from './modules/particles';
-import { initRenderer, render, getCanvasSize } from './modules/renderer';
-import { computeInitialLayout, createViewState, updateViewState } from './modules/graph';
-import { updatePhysics, updateBreathing } from './modules/physics';
+import { initRenderer, render, getCanvasSize, createNodeElements, createEdgeElements } from './modules/renderer';
+import { computeInitialLayout, createViewState, calculateFitZoom, setInitialFitZoom } from './modules/graph';
 import {
   initInteraction,
   setCallbacks,
-  getHoveredNode,
   setFocusedNode,
   clearFocus,
+  setRenderCallback,
 } from './modules/interaction';
 import {
   initUI,
   showLoading,
   hideLoading,
-  showTooltip,
-  hideTooltip,
-  focusOnNodeWithUI,
-  hideBackButton,
+  showLinkPanel,
   setOnBack,
+  setNodes,
+  setOnNodeSelect,
+  setRenderCallback as setUIRenderCallback,
   updateCanvasSize,
+  updateZoomIndicator,
+  updateMinimap,
+  updateBreadcrumb,
+  focusOnNodeWithUI,
+  setCurrentNode,
 } from './modules/ui';
 
 // -----------------------------------------------------------------------------
@@ -34,16 +37,81 @@ import {
 let nodes: GraphNode[] = [];
 let edges: GraphEdge[] = [];
 let view: ViewState;
-let lastTime = 0;
-let animationFrameId: number | null = null;
+let expansionFrameId: number | null = null;
 
-// Canvas elements
-let bgCanvas: HTMLCanvasElement | null = null;
-let graphCanvas: HTMLCanvasElement | null = null;
+// DOM elements
+let graphContainer: HTMLElement | null = null;
 
-// Expansion animation state
-let expansionProgress = 0; // 0 = collapsed, 1 = fully expanded
-let expansionStartTime = 0;
+// -----------------------------------------------------------------------------
+// CSS Particles (GPU-accelerated, no JS loop)
+// -----------------------------------------------------------------------------
+
+function initCSSParticles(): void {
+  const container = document.createElement('div');
+  container.id = 'particles-layer';
+  container.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  `;
+
+  // Inject particle CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes particle-float {
+      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+      10% { opacity: var(--particle-opacity); }
+      90% { opacity: var(--particle-opacity); }
+      100% { transform: translateY(-20px) translateX(var(--drift)); opacity: 0; }
+    }
+    @keyframes particle-twinkle {
+      0%, 100% { opacity: var(--particle-opacity); }
+      50% { opacity: calc(var(--particle-opacity) * 1.5); }
+    }
+    .particle {
+      position: absolute;
+      width: var(--size);
+      height: var(--size);
+      background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+      border-radius: 50%;
+      animation:
+        particle-float var(--duration) linear infinite,
+        particle-twinkle var(--twinkle) ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Create 40 particles with varied properties
+  for (let i = 0; i < 40; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    const size = 1 + Math.random() * 3;
+    const duration = 15 + Math.random() * 25;
+    const delay = Math.random() * duration;
+    const drift = -30 + Math.random() * 60;
+    const opacity = 0.2 + Math.random() * 0.4;
+    const twinkle = 2 + Math.random() * 4;
+
+    particle.style.cssText = `
+      left: ${Math.random() * 100}%;
+      --size: ${size}px;
+      --duration: ${duration}s;
+      --drift: ${drift}px;
+      --particle-opacity: ${opacity};
+      --twinkle: ${twinkle}s;
+      animation-delay: -${delay}s, -${Math.random() * twinkle}s;
+    `;
+    container.appendChild(particle);
+  }
+
+  document.body.insertBefore(container, document.body.firstChild);
+}
 
 // -----------------------------------------------------------------------------
 // Initialize Application
@@ -53,19 +121,17 @@ async function init(): Promise<void> {
   try {
     showLoading();
 
-    // Get canvas elements
-    bgCanvas = document.getElementById('bg-canvas') as HTMLCanvasElement;
-    graphCanvas = document.getElementById('graph-canvas') as HTMLCanvasElement;
-
-    if (!bgCanvas || !graphCanvas) {
-      throw new Error('Canvas elements not found');
+    // Get graph container element
+    graphContainer = document.getElementById('graph-container');
+    if (!graphContainer) {
+      throw new Error('Graph container element not found');
     }
 
-    // Initialize particles (background)
-    initParticles(bgCanvas);
+    // Initialize CSS particles (no JS loop needed)
+    initCSSParticles();
 
-    // Initialize renderer
-    initRenderer(graphCanvas);
+    // Initialize renderer (DOM-based)
+    initRenderer(graphContainer);
 
     // Load graph data
     const data = await loadGraphData();
@@ -80,33 +146,50 @@ async function init(): Promise<void> {
     const { width, height } = getCanvasSize();
     computeInitialLayout(nodes, width / 2, height / 2);
 
+    // Calculate zoom to fit all nodes on screen
+    const fitZoom = calculateFitZoom(nodes, width, height);
+    setInitialFitZoom(fitZoom);
+    view.scale = fitZoom;
+    view.targetScale = fitZoom;
+
+    // Create DOM elements for nodes and edges
+    createNodeElements(nodes);
+    createEdgeElements(edges);
+
     // Start all nodes at center (collapsed state)
     const centerX = width / 2;
     const centerY = height / 2;
     nodes.forEach((node) => {
       node.x = centerX;
       node.y = centerY;
-      node.vx = 0;
-      node.vy = 0;
     });
 
-    // Start expansion animation
-    expansionStartTime = performance.now();
-    expansionProgress = 0;
-
-    // Initialize interaction
-    initInteraction(graphCanvas, nodes, edges, view);
+    // Initialize interaction (event-driven updates)
+    initInteraction(graphContainer as unknown as HTMLCanvasElement, nodes, edges, view);
     setCallbacks(handleNodeClick, handleBackgroundClick);
+    setRenderCallback(() => {
+      render(nodes, edges, view);
+      updateMinimap(nodes, edges);
+      updateZoomIndicator();
+    });
 
     // Initialize UI
     initUI(view, width, height);
+    setNodes(nodes);
     setOnBack(handleBackToFullView);
+    setOnNodeSelect(handleNodeSelect);
+    setUIRenderCallback(() => {
+      render(nodes, edges, view);
+      updateMinimap(nodes, edges);
+    });
 
     hideLoading();
 
-    // Start animation loop
-    lastTime = performance.now();
-    animationFrameId = requestAnimationFrame(animate);
+    // Run expansion animation ONCE, then stop
+    runExpansionAnimation();
+
+    // Root pulse is now CSS-based (see _graph.scss root-glow animation)
+
   } catch (error) {
     console.error('Failed to initialize:', error);
     hideLoading();
@@ -115,89 +198,95 @@ async function init(): Promise<void> {
 }
 
 // -----------------------------------------------------------------------------
-// Animation Loop
+// Expansion Animation (runs once, then stops - NO continuous loop)
 // -----------------------------------------------------------------------------
 
-function animate(time: number): void {
-  const deltaTime = time - lastTime;
-  lastTime = time;
-
+function runExpansionAnimation(): void {
+  const startTime = performance.now();
+  const duration = 2000; // 2 seconds
   const { width, height } = getCanvasSize();
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // Update expansion animation
-  if (expansionProgress < 1) {
-    const elapsed = time - expansionStartTime;
-    const duration = 2000; // 2 seconds
-    expansionProgress = Math.min(1, elapsed / duration);
+  function animateExpansion(time: number): void {
+    const elapsed = time - startTime;
+    const progress = Math.min(1, elapsed / duration);
 
     // Easing function (ease-out cubic)
-    const eased = 1 - Math.pow(1 - expansionProgress, 3);
+    const eased = 1 - Math.pow(1 - progress, 3);
 
     // Interpolate nodes from center to target positions
     nodes.forEach((node) => {
       node.x = centerX + (node.targetX - centerX) * eased;
       node.y = centerY + (node.targetY - centerY) * eased;
     });
+
+    // Render current state
+    render(nodes, edges, view);
+
+    if (progress < 1) {
+      expansionFrameId = requestAnimationFrame(animateExpansion);
+    } else {
+      // Expansion complete - NO MORE ANIMATION LOOP!
+      expansionFrameId = null;
+
+      // Final render with nodes at target positions
+      nodes.forEach((node) => {
+        node.x = node.targetX;
+        node.y = node.targetY;
+      });
+      render(nodes, edges, view);
+    }
   }
-  // Expansion complete - NO PHYSICS! Stay exactly where placed
 
-  // Update particles
-  updateParticles(deltaTime);
-
-  // Update view state (smooth pan/zoom)
-  updateViewState(view);
-
-  // Update breathing animation
-  updateBreathing(nodes, time);
-
-  // Render particles (background canvas)
-  renderParticles();
-
-  // Render graph (main canvas)
-  render(nodes, edges, view, time);
-
-  // Update tooltip
-  updateTooltipPosition();
-
-  // Continue loop
-  animationFrameId = requestAnimationFrame(animate);
+  expansionFrameId = requestAnimationFrame(animateExpansion);
 }
 
 // -----------------------------------------------------------------------------
-// Event Handlers
+// Event Handlers (trigger re-renders only when needed)
 // -----------------------------------------------------------------------------
 
 function handleNodeClick(node: GraphNode): void {
-  if (node.links.length > 0) {
-    // Leaf node with links - show panel
-    focusOnNodeWithUI(node);
-    setFocusedNode(node);
-  } else if (node.children.length > 0) {
-    // Branch node - focus on subtree
-    focusOnNodeWithUI(node);
-    setFocusedNode(node);
+  // Highlight path
+  setFocusedNode(node);
+  setCurrentNode(node);
+  updateBreadcrumb(node);
+
+  // If this is a leaf node with exactly 1 link (a link leaf), open it directly
+  if (node.links.length === 1 && node.children.length === 0) {
+    const link = node.links[0];
+    window.open(link.url, '_blank', 'noopener,noreferrer');
+  } else if (node.links.length > 1) {
+    // Show panel if node has multiple links
+    showLinkPanel(node);
   }
+
+  // Re-render to update highlights
+  render(nodes, edges, view);
+  updateMinimap(nodes, edges);
+}
+
+function handleNodeSelect(node: GraphNode): void {
+  // Called from UI (search, breadcrumb, keyboard nav)
+  setFocusedNode(node);
+  focusOnNodeWithUI(node);
+  render(nodes, edges, view);
+  updateMinimap(nodes, edges);
 }
 
 function handleBackgroundClick(): void {
-  // Clicking on background clears focus
   clearFocus();
-  hideBackButton();
+  updateBreadcrumb(null);
+  // Re-render to clear highlights
+  render(nodes, edges, view);
+  updateMinimap(nodes, edges);
 }
 
 function handleBackToFullView(): void {
   clearFocus();
-}
-
-// -----------------------------------------------------------------------------
-// Tooltip Management
-// -----------------------------------------------------------------------------
-
-function updateTooltipPosition(): void {
-  // Tooltip disabled - minimal UI
-  hideTooltip();
+  updateBreadcrumb(null);
+  render(nodes, edges, view);
+  updateMinimap(nodes, edges);
 }
 
 // -----------------------------------------------------------------------------
@@ -207,6 +296,8 @@ function updateTooltipPosition(): void {
 function handleResize(): void {
   const { width, height } = getCanvasSize();
   updateCanvasSize(width, height);
+  // Re-render on resize
+  render(nodes, edges, view);
 }
 
 window.addEventListener('resize', handleResize);
@@ -216,8 +307,8 @@ window.addEventListener('resize', handleResize);
 // -----------------------------------------------------------------------------
 
 function cleanup(): void {
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId);
+  if (expansionFrameId !== null) {
+    cancelAnimationFrame(expansionFrameId);
   }
   window.removeEventListener('resize', handleResize);
 }
@@ -228,7 +319,6 @@ window.addEventListener('beforeunload', cleanup);
 // Start Application
 // -----------------------------------------------------------------------------
 
-// Wait for DOM to be ready
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {

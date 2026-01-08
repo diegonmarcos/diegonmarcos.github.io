@@ -1,11 +1,11 @@
 // ==========================================================================
-// Interaction Module - Linktree Mindmap
+// Interaction Module - DOM-based Event Handling
 // ==========================================================================
 
 import type { GraphNode, ViewState, InteractionState } from '../types';
 import { highlightPath } from './data';
-import { resetView, zoomAtPoint, screenToWorld } from './graph';
-import { pointInCircle } from '../utils/math';
+import { resetView, zoomAtPoint } from './graph';
+import { getNodeElement } from './renderer';
 
 // -----------------------------------------------------------------------------
 // State
@@ -22,7 +22,7 @@ let state: InteractionState = {
   lastMouseY: 0,
 };
 
-let canvas: HTMLCanvasElement | null = null;
+let container: HTMLElement | null = null;
 let nodes: GraphNode[] = [];
 let edges: any[] = [];
 let view: ViewState | null = null;
@@ -30,35 +30,86 @@ let view: ViewState | null = null;
 // Callbacks
 let onNodeClick: ((node: GraphNode) => void) | null = null;
 let onBackgroundClick: (() => void) | null = null;
+let onRenderNeeded: (() => void) | null = null;
+
+// Touch state
+let lastTouchDist = 0;
+let isTouchDragging = false;
+
+export function setRenderCallback(callback: () => void): void {
+  onRenderNeeded = callback;
+}
+
+function triggerRender(): void {
+  if (onRenderNeeded) {
+    onRenderNeeded();
+  }
+}
 
 // -----------------------------------------------------------------------------
 // Initialize
 // -----------------------------------------------------------------------------
 
 export function initInteraction(
-  canvasElement: HTMLCanvasElement,
+  containerElement: HTMLCanvasElement | HTMLElement,
   graphNodes: GraphNode[],
   graphEdges: any[],
   viewState: ViewState
 ): void {
-  canvas = canvasElement;
+  container = containerElement as HTMLElement;
   nodes = graphNodes;
   edges = graphEdges;
   view = viewState;
 
-  // Mouse events
-  canvas.addEventListener('mousemove', handleMouseMove);
-  canvas.addEventListener('mousedown', handleMouseDown);
-  canvas.addEventListener('mouseup', handleMouseUp);
-  canvas.addEventListener('mouseleave', handleMouseLeave);
-  canvas.addEventListener('wheel', handleWheel, { passive: false });
-  canvas.addEventListener('click', handleClick);
-  canvas.addEventListener('dblclick', handleDoubleClick);
+  // Attach event handlers to nodes
+  nodes.forEach((node) => {
+    const el = getNodeElement(node.id);
+    if (!el) return;
+
+    // Mouse click
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (onNodeClick) onNodeClick(node);
+    });
+
+    // Mouse hover
+    el.addEventListener('mouseenter', () => {
+      state.hoveredNode = node;
+      node.hovered = true;
+      highlightPath(nodes, edges, node);
+      triggerRender();
+    });
+
+    el.addEventListener('mouseleave', () => {
+      node.hovered = false;
+      state.hoveredNode = null;
+      if (!state.focusedNode) {
+        highlightPath(nodes, edges, null);
+      }
+      triggerRender();
+    });
+  });
+
+  // Container events for pan/zoom
+  container.addEventListener('mousedown', onMouseDown);
+  container.addEventListener('mousemove', onMouseMove);
+  container.addEventListener('mouseup', onMouseUp);
+  container.addEventListener('mouseleave', onMouseUp);
+  container.addEventListener('wheel', onWheel, { passive: false });
+  container.addEventListener('dblclick', onDoubleClick);
+
+  // Background click
+  container.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (target === container || target.id === 'graph-world' || target.id === 'edges-svg' || target.tagName === 'svg' || target.tagName === 'path') {
+      if (onBackgroundClick) onBackgroundClick();
+    }
+  });
 
   // Touch events
-  canvas.addEventListener('touchstart', handleTouchStart, { passive: false });
-  canvas.addEventListener('touchmove', handleTouchMove, { passive: false });
-  canvas.addEventListener('touchend', handleTouchEnd);
+  container.addEventListener('touchstart', onTouchStart, { passive: false });
+  container.addEventListener('touchmove', onTouchMove, { passive: false });
+  container.addEventListener('touchend', onTouchEnd, { passive: false });
 }
 
 export function setCallbacks(
@@ -78,162 +129,71 @@ export function updateInteractionData(
 }
 
 // -----------------------------------------------------------------------------
-// Hit Testing
-// -----------------------------------------------------------------------------
-
-function findNodeAtPosition(screenX: number, screenY: number): GraphNode | null {
-  if (!canvas || !view) return null;
-
-  const world = screenToWorld(screenX, screenY, view, canvas.width, canvas.height);
-
-  // Check nodes in reverse order (top-most first)
-  for (let i = nodes.length - 1; i >= 0; i--) {
-    const node = nodes[i];
-    const hitRadius = node.radius * 3; // Larger hit area for easier hovering
-    const dx = world.x - node.x;
-    const dy = world.y - node.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist <= hitRadius) {
-      return node;
-    }
-  }
-
-  return null;
-}
-
-// -----------------------------------------------------------------------------
 // Mouse Handlers
 // -----------------------------------------------------------------------------
 
-function handleMouseMove(e: MouseEvent): void {
-  if (!canvas) return;
+function onMouseDown(e: MouseEvent): void {
+  // Don't start pan if clicking on a node
+  const target = e.target as HTMLElement;
+  if (target.closest('.node')) return;
 
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  state.lastMouseX = x;
-  state.lastMouseY = y;
-
-  // Handle panning
-  if (state.isPanning && view) {
-    const dx = x - state.panStartX;
-    const dy = y - state.panStartY;
-    view.targetX += dx;
-    view.targetY += dy;
-    state.panStartX = x;
-    state.panStartY = y;
-    return;
-  }
-
-  // Handle node dragging
-  if (state.draggingNode && view && canvas) {
-    const world = screenToWorld(x, y, view, canvas.width, canvas.height);
-    state.draggingNode.x = world.x;
-    state.draggingNode.y = world.y;
-    state.draggingNode.vx = 0;
-    state.draggingNode.vy = 0;
-    return;
-  }
-
-  // Update hover state
-  const hoveredNode = findNodeAtPosition(x, y);
-
-  // Clear previous hover
-  if (state.hoveredNode && state.hoveredNode !== hoveredNode) {
-    state.hoveredNode.hovered = false;
-  }
-
-  // Set new hover
-  if (hoveredNode) {
-    hoveredNode.hovered = true;
-    canvas.style.cursor = 'pointer';
-    highlightPath(nodes, edges, hoveredNode);
-  } else {
-    canvas!.style.cursor = state.isPanning ? 'grabbing' : 'grab';
-    highlightPath(nodes, edges, null);
-  }
-
-  state.hoveredNode = hoveredNode;
+  state.isPanning = true;
+  state.panStartX = e.clientX;
+  state.panStartY = e.clientY;
+  if (container) container.style.cursor = 'grabbing';
 }
 
-function handleMouseDown(e: MouseEvent): void {
-  const rect = canvas!.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+function onMouseMove(e: MouseEvent): void {
+  if (!state.isPanning || !view) return;
 
-  const node = findNodeAtPosition(x, y);
+  const dx = e.clientX - state.panStartX;
+  const dy = e.clientY - state.panStartY;
 
-  if (node) {
-    // Start dragging node
-    state.draggingNode = node;
-    (node as any).dragging = true;
-    canvas!.style.cursor = 'grabbing';
-  } else {
-    // Start panning
-    state.isPanning = true;
-    state.panStartX = x;
-    state.panStartY = y;
-    canvas!.style.cursor = 'grabbing';
-  }
+  view.x += dx;
+  view.y += dy;
+  view.targetX = view.x;
+  view.targetY = view.y;
+
+  state.panStartX = e.clientX;
+  state.panStartY = e.clientY;
+
+  triggerRender();
 }
 
-function handleMouseUp(): void {
-  if (state.draggingNode) {
-    (state.draggingNode as any).dragging = false;
-    state.draggingNode = null;
-  }
-
+function onMouseUp(): void {
   state.isPanning = false;
-  canvas!.style.cursor = state.hoveredNode ? 'pointer' : 'grab';
+  if (container) container.style.cursor = 'grab';
 }
 
-function handleMouseLeave(): void {
-  if (state.hoveredNode) {
-    state.hoveredNode.hovered = false;
-    if (!state.focusedNode) {
-      highlightPath(nodes, edges, null);
-    }
-  }
-  state.hoveredNode = null;
-  state.isPanning = false;
-  if (state.draggingNode) {
-    (state.draggingNode as any).dragging = false;
-    state.draggingNode = null;
-  }
-}
-
-function handleWheel(e: WheelEvent): void {
+function onWheel(e: WheelEvent): void {
   e.preventDefault();
-  if (!view || !canvas) return;
+  if (!view || !container) return;
 
-  const rect = canvas.getBoundingClientRect();
+  const rect = container.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
 
-  zoomAtPoint(view, x, y, e.deltaY, canvas.width, canvas.height);
+  zoomAtPoint(view, x, y, e.deltaY, container.clientWidth, container.clientHeight);
+  view.x = view.targetX;
+  view.y = view.targetY;
+  view.scale = view.targetScale;
+
+  triggerRender();
 }
 
-function handleClick(e: MouseEvent): void {
-  const rect = canvas!.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+function onDoubleClick(e: MouseEvent): void {
+  const target = e.target as HTMLElement;
+  if (target.closest('.node')) return; // Let node handle it
 
-  const node = findNodeAtPosition(x, y);
-
-  if (node) {
-    if (onNodeClick) onNodeClick(node);
-  } else {
-    if (onBackgroundClick) onBackgroundClick();
-  }
-}
-
-function handleDoubleClick(): void {
+  // Double-click on background: reset view
   if (view) {
     resetView(view);
+    view.x = view.targetX;
+    view.y = view.targetY;
+    view.scale = view.targetScale;
     state.focusedNode = null;
     highlightPath(nodes, edges, null);
+    triggerRender();
   }
 }
 
@@ -241,84 +201,100 @@ function handleDoubleClick(): void {
 // Touch Handlers
 // -----------------------------------------------------------------------------
 
-let lastTouchDist = 0;
+function onTouchStart(e: TouchEvent): void {
+  const target = e.target as HTMLElement;
 
-function handleTouchStart(e: TouchEvent): void {
+  // If touching a node, let it handle the tap
+  if (target.closest('.node')) {
+    // Handle node tap
+    const nodeEl = target.closest('.node') as HTMLElement;
+    const nodeId = nodeEl?.dataset.nodeId;
+    const node = nodes.find(n => n.id === nodeId);
+    if (node && onNodeClick) {
+      e.preventDefault();
+      onNodeClick(node);
+    }
+    return;
+  }
+
+  // If touching UI elements, let them handle it
+  if (target.closest('#ui-overlay') && !target.closest('#graph-container')) {
+    return;
+  }
+
   e.preventDefault();
 
   if (e.touches.length === 1) {
-    const touch = e.touches[0];
-    const rect = canvas!.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    state.lastMouseX = x;
-    state.lastMouseY = y;
-
-    const node = findNodeAtPosition(x, y);
-    if (node) {
-      state.draggingNode = node;
-      (node as any).dragging = true;
-    } else {
-      state.isPanning = true;
-      state.panStartX = x;
-      state.panStartY = y;
-    }
+    state.isPanning = true;
+    state.panStartX = e.touches[0].clientX;
+    state.panStartY = e.touches[0].clientY;
+    isTouchDragging = false;
   } else if (e.touches.length === 2) {
-    // Pinch zoom
+    state.isPanning = false;
     const t1 = e.touches[0];
     const t2 = e.touches[1];
     lastTouchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
   }
 }
 
-function handleTouchMove(e: TouchEvent): void {
+function onTouchMove(e: TouchEvent): void {
+  if (!view || !container) return;
+
+  const target = e.target as HTMLElement;
+  if (target.closest('#ui-overlay') && !target.closest('#graph-container')) {
+    return;
+  }
+
   e.preventDefault();
+  isTouchDragging = true;
 
-  if (e.touches.length === 1 && (state.isPanning || state.draggingNode)) {
+  if (e.touches.length === 1 && state.isPanning) {
     const touch = e.touches[0];
-    const rect = canvas!.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
+    const dx = touch.clientX - state.panStartX;
+    const dy = touch.clientY - state.panStartY;
 
-    if (state.isPanning && view) {
-      const dx = x - state.panStartX;
-      const dy = y - state.panStartY;
-      view.targetX += dx;
-      view.targetY += dy;
-      state.panStartX = x;
-      state.panStartY = y;
-    } else if (state.draggingNode && view && canvas) {
-      const world = screenToWorld(x, y, view, canvas.width, canvas.height);
-      state.draggingNode.x = world.x;
-      state.draggingNode.y = world.y;
-    }
+    view.x += dx;
+    view.y += dy;
+    view.targetX = view.x;
+    view.targetY = view.y;
 
-    state.lastMouseX = x;
-    state.lastMouseY = y;
-  } else if (e.touches.length === 2 && view && canvas) {
+    state.panStartX = touch.clientX;
+    state.panStartY = touch.clientY;
+
+    triggerRender();
+  } else if (e.touches.length === 2) {
     const t1 = e.touches[0];
     const t2 = e.touches[1];
     const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
-    const center = {
-      x: (t1.clientX + t2.clientX) / 2,
-      y: (t1.clientY + t2.clientY) / 2,
-    };
 
-    const rect = canvas.getBoundingClientRect();
+    const centerX = (t1.clientX + t2.clientX) / 2;
+    const centerY = (t1.clientY + t2.clientY) / 2;
+    const rect = container.getBoundingClientRect();
+
     const delta = (lastTouchDist - dist) * 2;
-    zoomAtPoint(view, center.x - rect.left, center.y - rect.top, delta, canvas.width, canvas.height);
+    zoomAtPoint(view, centerX - rect.left, centerY - rect.top, delta, container.clientWidth, container.clientHeight);
+
+    view.x = view.targetX;
+    view.y = view.targetY;
+    view.scale = view.targetScale;
 
     lastTouchDist = dist;
+    triggerRender();
   }
 }
 
-function handleTouchEnd(): void {
-  if (state.draggingNode) {
-    (state.draggingNode as any).dragging = false;
-    state.draggingNode = null;
+function onTouchEnd(e: TouchEvent): void {
+  const target = e.target as HTMLElement;
+
+  // Tap on background (no drag)
+  if (!isTouchDragging && e.changedTouches.length === 1) {
+    if (!target.closest('.node') && !target.closest('#ui-overlay')) {
+      if (onBackgroundClick) onBackgroundClick();
+    }
   }
+
   state.isPanning = false;
+  isTouchDragging = false;
 }
 
 // -----------------------------------------------------------------------------
@@ -350,16 +326,15 @@ export function clearFocus(): void {
 // -----------------------------------------------------------------------------
 
 export function destroyInteraction(): void {
-  if (!canvas) return;
+  if (!container) return;
 
-  canvas.removeEventListener('mousemove', handleMouseMove);
-  canvas.removeEventListener('mousedown', handleMouseDown);
-  canvas.removeEventListener('mouseup', handleMouseUp);
-  canvas.removeEventListener('mouseleave', handleMouseLeave);
-  canvas.removeEventListener('wheel', handleWheel);
-  canvas.removeEventListener('click', handleClick);
-  canvas.removeEventListener('dblclick', handleDoubleClick);
-  canvas.removeEventListener('touchstart', handleTouchStart);
-  canvas.removeEventListener('touchmove', handleTouchMove);
-  canvas.removeEventListener('touchend', handleTouchEnd);
+  container.removeEventListener('mousedown', onMouseDown);
+  container.removeEventListener('mousemove', onMouseMove);
+  container.removeEventListener('mouseup', onMouseUp);
+  container.removeEventListener('mouseleave', onMouseUp);
+  container.removeEventListener('wheel', onWheel);
+  container.removeEventListener('dblclick', onDoubleClick);
+  container.removeEventListener('touchstart', onTouchStart);
+  container.removeEventListener('touchmove', onTouchMove);
+  container.removeEventListener('touchend', onTouchEnd);
 }

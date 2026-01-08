@@ -21,18 +21,46 @@ export function computeInitialLayout(
   root.x = root.targetX = centerX;
   root.y = root.targetY = centerY;
 
-  // Find max depth to calculate optimal spacing
-  const maxDepth = Math.max(...nodes.map(n => n.depth));
-
-  // Calculate available radius (use 80% of the smaller viewport dimension)
-  const availableRadius = Math.min(centerX, centerY) * 0.8;
-
-  // Calculate spacing per level to fill the screen
-  const calculatedSpacing = maxDepth > 0 ? availableRadius / maxDepth : layout.levelSpacing;
-  const optimalSpacing = Math.max(calculatedSpacing, 150); // Minimum 150px between levels
+  // Use generous spacing - will zoom out to fit
+  const optimalSpacing = 180;
 
   // Layout all nodes in an expanded radial tree
   layoutRadialTree(root, centerX, centerY, 0, Math.PI * 2, 0, optimalSpacing);
+}
+
+// Calculate zoom level needed to fit all nodes on screen
+export function calculateFitZoom(
+  nodes: GraphNode[],
+  screenWidth: number,
+  screenHeight: number
+): number {
+  if (nodes.length === 0) return 1;
+
+  // Find bounding box of all nodes
+  let minX = Infinity, maxX = -Infinity;
+  let minY = Infinity, maxY = -Infinity;
+
+  nodes.forEach(node => {
+    const r = node.radius + 30; // Include radius + label space
+    minX = Math.min(minX, node.targetX - r);
+    maxX = Math.max(maxX, node.targetX + r);
+    minY = Math.min(minY, node.targetY - r);
+    maxY = Math.max(maxY, node.targetY + r);
+  });
+
+  const graphWidth = maxX - minX;
+  const graphHeight = maxY - minY;
+
+  // Available screen space (with padding)
+  const availableWidth = screenWidth * 0.9;
+  const availableHeight = screenHeight * 0.9;
+
+  // Calculate scale to fit everything
+  const scaleX = availableWidth / graphWidth;
+  const scaleY = availableHeight / graphHeight;
+  const fitScale = Math.min(scaleX, scaleY, 1); // Don't zoom in past 1
+
+  return Math.max(fitScale, layout.minZoom);
 }
 
 function layoutRadialTree(
@@ -153,10 +181,17 @@ export function focusOnNode(
   view.targetScale = Math.min(1.5, layout.maxZoom);
 }
 
+// Store the initial fit zoom for reset
+let initialFitZoom = 1;
+
+export function setInitialFitZoom(zoom: number): void {
+  initialFitZoom = zoom;
+}
+
 export function resetView(view: ViewState): void {
   view.targetX = 0;
   view.targetY = 0;
-  view.targetScale = layout.defaultZoom;
+  view.targetScale = initialFitZoom;
 }
 
 // -----------------------------------------------------------------------------

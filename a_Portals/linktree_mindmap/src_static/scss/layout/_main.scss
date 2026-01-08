@@ -5,22 +5,9 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-// Background canvas (particles)
-#bg-canvas {
-  @include fixed-fill;
+// Background particles layer (CSS-based, created via JS)
+#particles-layer {
   z-index: $z-bg;
-  pointer-events: none;
-}
-
-// Main graph canvas
-#graph-canvas {
-  @include fixed-fill;
-  z-index: $z-graph;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
 }
 
 // UI Overlay container
@@ -29,13 +16,24 @@
   z-index: $z-ui;
   pointer-events: none;
 
-  // ONLY allow pointer events on specific interactive elements
-  // NOT on all children - that blocks the canvas!
+  // Allow pointer events on interactive UI elements
   #controls,
   #btn-back,
-  #link-panel {
+  #btn-home,
+  #link-panel,
+  #keyboard-hints,
+  #breadcrumb,
+  #minimap {
     pointer-events: auto;
   }
+}
+
+// Home button (top right)
+#btn-home {
+  position: fixed;
+  top: $space-lg;
+  right: $space-lg;
+  z-index: $z-ui;
 }
 
 // Controls container (bottom right)

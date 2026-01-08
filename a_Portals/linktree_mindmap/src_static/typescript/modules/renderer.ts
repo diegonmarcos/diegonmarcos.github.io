@@ -1,272 +1,245 @@
 // ==========================================================================
-// Renderer Module - Linktree Mindmap
+// Renderer Module - CSS/DOM-based Rendering
 // ==========================================================================
 
 import type { GraphNode, GraphEdge, ViewState } from '../types';
-import { withAlpha, createRadialGlow, createGlassGradient } from '../utils/color';
 
 // -----------------------------------------------------------------------------
-// Canvas Setup
+// DOM Elements
 // -----------------------------------------------------------------------------
 
-let canvas: HTMLCanvasElement | null = null;
-let ctx: CanvasRenderingContext2D | null = null;
-let iconCache: Map<string, HTMLImageElement> = new Map();
+let graphContainer: HTMLElement | null = null;
+let graphWorld: HTMLElement | null = null;
+let edgesSvg: SVGSVGElement | null = null;
+let nodeElements: Map<string, HTMLElement> = new Map();
+let edgeElements: Map<string, SVGPathElement> = new Map();
 
-export function initRenderer(canvasElement: HTMLCanvasElement): void {
-  canvas = canvasElement;
-  ctx = canvas.getContext('2d');
+// -----------------------------------------------------------------------------
+// Initialize
+// -----------------------------------------------------------------------------
 
-  if (!ctx) {
-    console.error('Failed to get 2D context for graph canvas');
+export function initRenderer(container: HTMLElement): void {
+  graphContainer = container;
+  graphWorld = document.getElementById('graph-world');
+  edgesSvg = document.getElementById('edges-svg') as unknown as SVGSVGElement;
+
+  if (!graphWorld || !edgesSvg) {
+    console.error('Graph DOM elements not found');
     return;
   }
 
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
+  // Set SVG viewBox to match container
+  updateSvgViewBox();
+  window.addEventListener('resize', updateSvgViewBox);
 }
 
-function resizeCanvas(): void {
-  if (!canvas) return;
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+function updateSvgViewBox(): void {
+  if (!edgesSvg || !graphContainer) return;
+  const w = graphContainer.clientWidth;
+  const h = graphContainer.clientHeight;
+  edgesSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  edgesSvg.style.width = `${w}px`;
+  edgesSvg.style.height = `${h}px`;
 }
 
 export function getCanvasSize(): { width: number; height: number } {
   return {
-    width: canvas?.width || window.innerWidth,
-    height: canvas?.height || window.innerHeight,
+    width: graphContainer?.clientWidth || window.innerWidth,
+    height: graphContainer?.clientHeight || window.innerHeight,
   };
 }
 
 // -----------------------------------------------------------------------------
-// Main Render Function
+// Create DOM Elements
+// -----------------------------------------------------------------------------
+
+export function createNodeElements(nodes: GraphNode[]): void {
+  if (!graphWorld) return;
+
+  // Clear existing
+  graphWorld.innerHTML = '';
+  nodeElements.clear();
+
+  nodes.forEach((node, index) => {
+    const el = document.createElement('div');
+    el.className = `node node--depth-${Math.min(node.depth, 5)}`;
+    el.dataset.nodeId = node.id;
+    el.style.setProperty('--node-color', node.color);
+    el.style.setProperty('--enter-delay', String(index));
+
+    // Set icon as background image
+    el.style.setProperty('--icon-url', `url(public/icons/${node.icon}.svg)`);
+    el.style.backgroundImage = 'none'; // Icon via ::before pseudo
+
+    // Create icon element instead of pseudo (for better control)
+    const icon = document.createElement('img');
+    icon.className = 'node-icon';
+    icon.src = `public/icons/${node.icon}.svg`;
+    icon.alt = '';
+    icon.draggable = false;
+    el.appendChild(icon);
+
+    // Label
+    const label = document.createElement('span');
+    label.className = 'node-label';
+    label.textContent = node.label;
+    el.appendChild(label);
+
+    // Badge (child count)
+    if (node.children.length > 0 && node.depth < 3) {
+      const badge = document.createElement('span');
+      badge.className = 'node-badge';
+      badge.textContent = String(node.children.length);
+      el.appendChild(badge);
+    }
+
+    graphWorld.appendChild(el);
+    nodeElements.set(node.id, el);
+  });
+}
+
+export function createEdgeElements(edges: GraphEdge[]): void {
+  if (!edgesSvg) return;
+
+  // Clear existing
+  edgesSvg.innerHTML = '';
+  edgeElements.clear();
+
+  // Create defs for gradients
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  edgesSvg.appendChild(defs);
+
+  edges.forEach((edge, index) => {
+    // Create gradient for this edge
+    const gradientId = `edge-gradient-${index}`;
+    const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+    gradient.id = gradientId;
+    gradient.setAttribute('gradientUnits', 'userSpaceOnUse');
+
+    const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop1.setAttribute('offset', '0%');
+    stop1.setAttribute('stop-color', edge.source.color);
+
+    const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+    stop2.setAttribute('offset', '100%');
+    stop2.setAttribute('stop-color', edge.target.color);
+
+    gradient.appendChild(stop1);
+    gradient.appendChild(stop2);
+    defs.appendChild(gradient);
+
+    // Create path
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.className.baseVal = 'edge';
+    path.setAttribute('stroke', `url(#${gradientId})`);
+    path.dataset.sourceId = edge.source.id;
+    path.dataset.targetId = edge.target.id;
+
+    edgesSvg.appendChild(path);
+    edgeElements.set(`${edge.source.id}-${edge.target.id}`, path);
+  });
+}
+
+// -----------------------------------------------------------------------------
+// Update Positions (called on pan/zoom/layout)
 // -----------------------------------------------------------------------------
 
 export function render(
   nodes: GraphNode[],
   edges: GraphEdge[],
-  view: ViewState,
-  time: number
+  view: ViewState
 ): void {
-  if (!ctx || !canvas) return;
+  if (!graphWorld || !edgesSvg || !graphContainer) return;
 
-  // Clear canvas (background is handled by particles canvas)
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const centerX = graphContainer.clientWidth / 2;
+  const centerY = graphContainer.clientHeight / 2;
 
-  // Save state and apply view transform
-  ctx.save();
-  ctx.translate(canvas.width / 2 + view.x, canvas.height / 2 + view.y);
-  ctx.scale(view.scale, view.scale);
-  ctx.translate(-canvas.width / 2, -canvas.height / 2);
+  // Apply view transform to graph world
+  graphWorld.style.transform = `
+    translate(${centerX + view.x}px, ${centerY + view.y}px)
+    scale(${view.scale})
+    translate(${-centerX}px, ${-centerY}px)
+  `;
 
-  // Draw connection glows (blurred layer)
-  drawConnectionGlows(edges);
+  // Update SVG transform to match
+  edgesSvg.style.transform = graphWorld.style.transform;
 
-  // Draw connections
-  drawConnections(edges);
+  // Update node positions
+  nodes.forEach((node) => {
+    const el = nodeElements.get(node.id);
+    if (el) {
+      el.style.left = `${node.x}px`;
+      el.style.top = `${node.y}px`;
 
-  // Draw nodes
-  nodes.forEach((node) => drawNode(node, time));
+      // Update state classes
+      el.classList.toggle('highlighted', node.highlighted);
+      el.classList.toggle('dimmed', !node.highlighted && nodes.some(n => n.highlighted));
+      el.classList.toggle('focused', node.focused);
 
-  // Draw labels for visible nodes
-  nodes.forEach((node) => drawLabel(node, view.scale));
+      // Update opacity for distance-based dimming
+      if (!node.highlighted && !node.hovered) {
+        el.style.opacity = String(node.opacity);
+      } else {
+        el.style.opacity = '1';
+      }
+    }
+  });
 
-  ctx.restore();
-}
-
-// -----------------------------------------------------------------------------
-// Draw Connections
-// -----------------------------------------------------------------------------
-
-function drawConnections(edges: GraphEdge[]): void {
-  if (!ctx) return;
-
+  // Update edge paths
   edges.forEach((edge) => {
-    const { source, target, highlighted, opacity } = edge;
+    const path = edgeElements.get(`${edge.source.id}-${edge.target.id}`);
+    if (path) {
+      // Calculate curved path
+      const { source, target } = edge;
+      const midX = (source.x + target.x) / 2;
+      const midY = (source.y + target.y) / 2;
+      const dx = target.x - source.x;
+      const dy = target.y - source.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const offset = dist * 0.15;
+      const nx = -dy / dist;
+      const ny = dx / dist;
+      const controlX = midX + nx * offset;
+      const controlY = midY + ny * offset;
 
-    // Calculate control point for curve
-    const midX = (source.x + target.x) / 2;
-    const midY = (source.y + target.y) / 2;
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const offset = dist * 0.15;
+      // Update path d attribute
+      path.setAttribute('d', `M ${source.x} ${source.y} Q ${controlX} ${controlY} ${target.x} ${target.y}`);
 
-    // Perpendicular offset for curve
-    const nx = -dy / dist;
-    const ny = dx / dist;
-    const controlX = midX + nx * offset;
-    const controlY = midY + ny * offset;
+      // Update gradient positions
+      const gradientId = path.getAttribute('stroke')?.match(/url\(#(.+)\)/)?.[1];
+      if (gradientId) {
+        const gradient = edgesSvg?.querySelector(`#${gradientId}`);
+        if (gradient) {
+          gradient.setAttribute('x1', String(source.x));
+          gradient.setAttribute('y1', String(source.y));
+          gradient.setAttribute('x2', String(target.x));
+          gradient.setAttribute('y2', String(target.y));
+        }
+      }
 
-    // Create gradient
-    const gradient = ctx!.createLinearGradient(source.x, source.y, target.x, target.y);
-    const sourceAlpha = highlighted ? 0.7 : 0.25;
-    const targetAlpha = highlighted ? 0.7 : 0.25;
-    gradient.addColorStop(0, withAlpha(source.color, sourceAlpha * opacity * source.opacity));
-    gradient.addColorStop(1, withAlpha(target.color, targetAlpha * opacity * target.opacity));
-
-    ctx!.strokeStyle = gradient;
-    ctx!.lineWidth = highlighted ? 2 : 1;
-    ctx!.lineCap = 'round';
-
-    ctx!.beginPath();
-    ctx!.moveTo(source.x, source.y);
-    ctx!.quadraticCurveTo(controlX, controlY, target.x, target.y);
-    ctx!.stroke();
-  });
-}
-
-function drawConnectionGlows(edges: GraphEdge[]): void {
-  if (!ctx) return;
-
-  // Only draw glows for highlighted edges
-  const highlightedEdges = edges.filter((e) => e.highlighted);
-
-  highlightedEdges.forEach((edge) => {
-    const { source, target } = edge;
-
-    const midX = (source.x + target.x) / 2;
-    const midY = (source.y + target.y) / 2;
-    const dx = target.x - source.x;
-    const dy = target.y - source.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    const offset = dist * 0.15;
-    const nx = -dy / dist;
-    const ny = dx / dist;
-    const controlX = midX + nx * offset;
-    const controlY = midY + ny * offset;
-
-    // Draw blurred glow
-    ctx!.save();
-    ctx!.filter = 'blur(6px)';
-
-    const gradient = ctx!.createLinearGradient(source.x, source.y, target.x, target.y);
-    gradient.addColorStop(0, withAlpha(source.color, 0.4));
-    gradient.addColorStop(1, withAlpha(target.color, 0.4));
-
-    ctx!.strokeStyle = gradient;
-    ctx!.lineWidth = 4;
-    ctx!.lineCap = 'round';
-
-    ctx!.beginPath();
-    ctx!.moveTo(source.x, source.y);
-    ctx!.quadraticCurveTo(controlX, controlY, target.x, target.y);
-    ctx!.stroke();
-
-    ctx!.restore();
+      // Update state classes
+      path.classList.toggle('highlighted', edge.highlighted);
+    }
   });
 }
 
 // -----------------------------------------------------------------------------
-// Draw Node
+// Get Node Element (for hit testing)
 // -----------------------------------------------------------------------------
 
-function drawNode(node: GraphNode, time: number): void {
-  if (!ctx) return;
-
-  const { x, y, radius, color, opacity, highlighted, hovered, breathePhase } = node;
-
-  // Subtle breathing animation
-  const breathe = 1 + 0.003 * Math.sin(time * 0.001 + breathePhase);
-  const currentRadius = radius * breathe;
-
-  // Use node's opacity directly (set by distance-based highlighting)
-  const effectiveOpacity = opacity;
-
-  // Minimal glow - only for hovered node, very subtle
-  if (hovered) {
-    const glowRadius = currentRadius * 1.5;
-    const glowGradient = createRadialGlow(ctx!, x, y, currentRadius, glowRadius, color, 0.3);
-    ctx!.fillStyle = glowGradient;
-    ctx!.beginPath();
-    ctx!.arc(x, y, glowRadius, 0, Math.PI * 2);
-    ctx!.fill();
-  }
-
-  // Glass fill
-  const glassGradient = createGlassGradient(ctx!, x, y, currentRadius, color, effectiveOpacity);
-  ctx!.fillStyle = glassGradient;
-  ctx!.beginPath();
-  ctx!.arc(x, y, currentRadius, 0, Math.PI * 2);
-  ctx!.fill();
-
-  // Border - stronger for highlighted/hovered
-  const borderOpacity = hovered ? 0.5 : (highlighted ? 0.35 : 0.15);
-  ctx!.strokeStyle = withAlpha('#ffffff', borderOpacity * effectiveOpacity);
-  ctx!.lineWidth = hovered ? 2 : (highlighted ? 1.5 : 1);
-  ctx!.stroke();
-
-  // Icon (for larger nodes)
-  if (currentRadius > 14) {
-    drawIcon(node.icon, x, y, currentRadius * 0.5, effectiveOpacity);
-  }
+export function getNodeElement(nodeId: string): HTMLElement | undefined {
+  return nodeElements.get(nodeId);
 }
 
-// -----------------------------------------------------------------------------
-// Draw Icon
-// -----------------------------------------------------------------------------
-
-function drawIcon(iconName: string, x: number, y: number, size: number, opacity: number): void {
-  if (!ctx) return;
-
-  const iconPath = `public/icons/${iconName}.svg`;
-
-  // Check cache
-  let img = iconCache.get(iconPath);
-
-  if (!img) {
-    // Load icon
-    img = new Image();
-    img.src = iconPath;
-    iconCache.set(iconPath, img);
+export function getNodeAtPoint(x: number, y: number): string | null {
+  const el = document.elementFromPoint(x, y);
+  if (el?.classList.contains('node')) {
+    return (el as HTMLElement).dataset.nodeId || null;
   }
-
-  if (img.complete && img.naturalWidth > 0) {
-    ctx!.save();
-    ctx!.globalAlpha = opacity * 0.9;
-    // Apply white filter to SVG
-    ctx!.filter = 'brightness(0) invert(1)';
-    ctx!.drawImage(img, x - size, y - size, size * 2, size * 2);
-    ctx!.restore();
+  if (el?.closest('.node')) {
+    return (el.closest('.node') as HTMLElement).dataset.nodeId || null;
   }
-}
-
-// -----------------------------------------------------------------------------
-// Draw Label
-// -----------------------------------------------------------------------------
-
-function drawLabel(node: GraphNode, scale: number): void {
-  if (!ctx) return;
-
-  // Show labels for depth 0-3, or when hovered/highlighted
-  const shouldShow = node.depth <= 3 || node.hovered || node.highlighted;
-  if (!shouldShow) return;
-
-  // Adjust font size based on depth and zoom
-  const baseFontSize = node.depth === 0 ? 16 : node.depth === 1 ? 13 : node.depth === 2 ? 11 : 10;
-  const fontSize = Math.max(8, baseFontSize / Math.sqrt(scale));
-
-  ctx!.font = `500 ${fontSize}px Inter, sans-serif`;
-  ctx!.textAlign = 'center';
-  ctx!.textBaseline = 'top';
-
-  const label = node.fullLabel || node.label;
-  const y = node.y + node.radius * node.breatheScale + 8;
-
-  // Enhanced glow for highlighted/hovered nodes
-  const labelOpacity = (node.highlighted || node.hovered) ? 1.0 : node.opacity;
-  const glowStrength = (node.highlighted || node.hovered) ? 1.2 : 0.6;
-
-  // Text shadow/glow
-  ctx!.fillStyle = withAlpha(node.color, glowStrength * labelOpacity);
-  ctx!.filter = 'blur(4px)';
-  ctx!.fillText(label, node.x, y);
-
-  // Main text
-  ctx!.filter = 'none';
-  ctx!.fillStyle = withAlpha('#ffffff', labelOpacity);
-  ctx!.fillText(label, node.x, y);
+  return null;
 }
 
 // -----------------------------------------------------------------------------
@@ -274,6 +247,9 @@ function drawLabel(node: GraphNode, scale: number): void {
 // -----------------------------------------------------------------------------
 
 export function destroyRenderer(): void {
-  window.removeEventListener('resize', resizeCanvas);
-  iconCache.clear();
+  window.removeEventListener('resize', updateSvgViewBox);
+  nodeElements.clear();
+  edgeElements.clear();
+  if (graphWorld) graphWorld.innerHTML = '';
+  if (edgesSvg) edgesSvg.innerHTML = '';
 }

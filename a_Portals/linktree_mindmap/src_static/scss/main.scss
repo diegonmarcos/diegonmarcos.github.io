@@ -24,10 +24,14 @@
 // ---------------------------------------------------------------------------
 // 4. COMPONENTS - UI Elements
 // ---------------------------------------------------------------------------
-@use 'components/canvas';
+@use 'components/graph';
 @use 'components/tooltip';
 @use 'components/link-panel';
 @use 'components/controls';
+@use 'components/search';
+@use 'components/breadcrumb';
+@use 'components/minimap';
+@use 'components/hints';
 
 // ---------------------------------------------------------------------------
 // 5. UTILITIES - Animations, helpers

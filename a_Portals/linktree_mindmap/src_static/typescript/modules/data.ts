@@ -53,14 +53,70 @@ export function buildGraph(data: GraphData): { nodes: GraphNode[]; edges: GraphE
         opacity: 1,
       });
 
-      // Recurse
+      // Recurse into children first
       processChildren(childNode, childData.children, depth + 1);
+
+      // If this node has links and no children, expand links as leaf nodes
+      if (childData.links && childData.links.length > 0 && (!childData.children || childData.children.length === 0)) {
+        childData.links.forEach((link, linkIndex) => {
+          const linkNode = createLinkNode(link, `${childNode.id}-link-${linkIndex}`, depth + 1, childNode);
+          nodes.push(linkNode);
+          nodeMap.set(linkNode.id, linkNode);
+          childNode.children.push(linkNode);
+
+          // Create edge to link node
+          edges.push({
+            source: childNode,
+            target: linkNode,
+            highlighted: false,
+            opacity: 1,
+          });
+        });
+      }
     });
   }
 
   processChildren(rootNode, data.root.children, 1);
 
   return { nodes, edges };
+}
+
+// Create a node from a link
+function createLinkNode(link: { label: string; url: string; icon: string; download?: boolean }, id: string, depth: number, parent: GraphNode): GraphNode {
+  const visual = config.visual;
+  const depthIndex = Math.min(depth, visual.nodeRadiusByDepth.length - 1);
+
+  return {
+    id,
+    label: link.label,
+    fullLabel: link.label,
+    icon: link.icon,
+    color: parent.color,
+    depth,
+    parent,
+    children: [],
+    links: [link], // Single link for this node
+
+    // Position (will be set by layout)
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
+    targetX: 0,
+    targetY: 0,
+
+    // Visual state
+    radius: visual.nodeRadiusByDepth[depthIndex],
+    opacity: 1.0,
+    glowIntensity: visual.glowIntensityByDepth[depthIndex],
+    highlighted: false,
+    hovered: false,
+    focused: false,
+
+    // Animation
+    breathePhase: Math.random() * Math.PI * 2,
+    breatheScale: 1,
+  };
 }
 
 // -----------------------------------------------------------------------------

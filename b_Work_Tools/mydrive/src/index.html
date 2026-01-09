@@ -28,6 +28,7 @@
             --photos: #e91e63;
             --slides: #ff5722;
             --files: #9c27b0;
+            --notes: #6880ff;
             /* Photo service colors */
             --photoprism: #ff9500;
             --immich: #4250af;
@@ -48,6 +49,8 @@
             --onlyoffice-docs: #2196f3;
             --cryptpad: #673ab7;
             --hedgedoc: #009688;
+            /* Notes service colors */
+            --affine: #6880ff;
             /* Files service colors */
             --filebrowser: #9c27b0;
             --nextcloud: #0082c9;
@@ -133,6 +136,11 @@
         .doc-icon.slides { color: #ff5722; }
         .doc-icon.slides:nth-child(7) { width: 65px; bottom: 25%; right: 15%; animation-delay: -3s; }
         .doc-icon.slides:nth-child(8) { width: 50px; top: 35%; left: 3%; animation-delay: -9s; }
+
+        /* Notes - Purple/Blue */
+        .doc-icon.notes { color: #6880ff; }
+        .doc-icon.notes:nth-child(11) { width: 55px; top: 50%; right: 25%; animation-delay: -11s; }
+        .doc-icon.notes:nth-child(12) { width: 48px; bottom: 50%; left: 22%; animation-delay: -16s; }
 
         /* Files - Purple */
         .doc-icon.files { color: #9c27b0; }
@@ -624,12 +632,17 @@
             color: #ffab91;
             border-color: rgba(255, 87, 34, 0.4);
         }
+        .category-tab[data-category="notes"] {
+            color: #a5b4fc;
+            border-color: rgba(104, 128, 255, 0.4);
+        }
 
         .category-tab:hover:not(.active)[data-category="files"] { background: rgba(156, 39, 176, 0.15); }
         .category-tab:hover:not(.active)[data-category="sheets"] { background: rgba(15, 157, 88, 0.15); }
         .category-tab:hover:not(.active)[data-category="docs"] { background: rgba(66, 133, 244, 0.15); }
         .category-tab:hover:not(.active)[data-category="photos"] { background: rgba(233, 30, 99, 0.15); }
         .category-tab:hover:not(.active)[data-category="slides"] { background: rgba(255, 87, 34, 0.15); }
+        .category-tab:hover:not(.active)[data-category="notes"] { background: rgba(104, 128, 255, 0.15); }
 
         .category-tab.active[data-category="sheets"] {
             background: rgba(15, 157, 88, 0.25);
@@ -655,6 +668,11 @@
             background: rgba(156, 39, 176, 0.25);
             border-color: var(--files);
             color: #ce93d8;
+        }
+        .category-tab.active[data-category="notes"] {
+            background: rgba(104, 128, 255, 0.25);
+            border-color: var(--notes);
+            color: #a5b4fc;
         }
 
         /* Tools section */
@@ -1085,6 +1103,17 @@
                 <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
         </div>
+        <!-- Notes icons -->
+        <div class="doc-icon notes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+        </div>
+        <div class="doc-icon notes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+        </div>
         <!-- Files icons -->
         <div class="doc-icon files">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1152,7 +1181,16 @@
 
             <!-- Category Tabs Row 2 -->
             <div class="category-tabs">
-                <button class="category-tab active" data-category="sheets">
+                <button class="category-tab active" data-category="notes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="12" y1="18" x2="12" y2="12"/>
+                        <line x1="9" y1="15" x2="15" y2="15"/>
+                    </svg>
+                    Notes
+                </button>
+                <button class="category-tab" data-category="sheets">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <rect x="3" y="3" width="18" height="18" rx="2"/>
                         <line x1="3" y1="9" x2="21" y2="9"/>
@@ -1191,8 +1229,20 @@
 
             <!-- Service Options Tables -->
             <div class="tools-section">
+                <!-- NOTES OPTIONS -->
+                <div class="service-table active" data-category="notes">
+                    <div class="service-option active" data-name="AFFiNE" data-url="https://drive-notes-affine.diegonmarcos.com/" data-config="https://drive-notes-affine.diegonmarcos.com/settings">
+                        <div class="radio"></div>
+                        <div class="service-icon affine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">AFFiNE</div>
+                            <div class="service-desc">Privacy-first all-in-one workspace - Notion + Miro alternative</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- SHEETS OPTIONS -->
-                <div class="service-table active" data-category="sheets">
+                <div class="service-table" data-category="sheets">
                     <div class="service-option active" data-name="Ethercalc" data-url="https://sheets.diegonmarcos.com/" data-config="https://sheets.diegonmarcos.com/admin">
                         <div class="radio"></div>
                         <div class="service-icon ethercalc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>

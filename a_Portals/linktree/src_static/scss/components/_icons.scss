@@ -19,6 +19,17 @@
     margin-top: 1rem;
 }
 
+.profile-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+
+    a { @include holographic-icon-square; }
+}
+
 .inline-icon {
     width: 20px;
     height: 20px;

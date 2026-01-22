@@ -23,24 +23,37 @@
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   @include smooth-transition(background, transform);
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  border: none;
   color: $color-white;
   width: 36px;
   height: 36px;
   border-radius: $radius-md;
-  font-size: $font-size-menu-toggle;
   @include flex-center;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
 
   &:hover {
     background: transparent !important;
-    border-color: rgba(255, 255, 255, 0.7);
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
+
+    .c-hamburger-line {
+      box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    }
   }
 
   &--open {
     transform: rotate(90deg);
   }
+}
+
+.c-hamburger-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 1px;
+  @include smooth-transition(background, box-shadow);
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
 }
 
 .c-menu-panel {

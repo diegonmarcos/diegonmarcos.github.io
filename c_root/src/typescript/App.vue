@@ -7,7 +7,9 @@
         :class="{ 'c-menu-toggle--open': menuOpen }"
         @click="toggleMenu"
       >
-        ☰
+        <span class="c-hamburger-line"></span>
+        <span class="c-hamburger-line"></span>
+        <span class="c-hamburger-line"></span>
       </button>
       <div class="c-menu-panel" :class="{ 'c-menu-panel--visible': menuOpen }">
         <div class="c-controls-row">

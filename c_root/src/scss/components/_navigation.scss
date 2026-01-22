@@ -206,3 +206,25 @@
     transform: rotate(180deg) translateY(6px);
   }
 }
+
+// Mobile: reduce sizes by 40% total
+@media (max-width: 768px) {
+  .c-nav-toggle {
+    width: 30px;
+    height: 30px;
+  }
+
+  .c-nav-arrow {
+    font-size: 1.15rem;
+  }
+
+  .c-nav-menu {
+    gap: 5px;
+  }
+
+  .c-nav-button {
+    padding: 6px 10px;
+    font-size: 0.51rem;
+    border-radius: 6px;
+  }
+}

@@ -64,7 +64,7 @@
     </div>
 
     <!-- Navigation Buttons - Fixed at Bottom -->
-    <div class="c-nav-footer" @mouseenter="showNav" @mouseleave="startAutoHide">
+    <div class="c-nav-footer" @mouseenter="handleHover" @mouseleave="startAutoHide">
       <button
         class="c-nav-toggle"
         :class="{ 'c-nav-toggle--open': navOpen }"
@@ -101,8 +101,20 @@ const navOpen = ref(false);
 
 let autoHideTimer: number | null = null;
 
-const showNav = () => {
-  // Clear any existing auto-hide timer
+// Detect touch device
+const isTouchDevice = ref(false);
+
+const checkTouchDevice = () => {
+  isTouchDevice.value = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
+
+// Call on mount
+checkTouchDevice();
+
+const handleHover = () => {
+  // Only open on hover for non-touch devices
+  if (isTouchDevice.value) return;
+
   if (autoHideTimer) {
     clearTimeout(autoHideTimer);
     autoHideTimer = null;
@@ -111,6 +123,9 @@ const showNav = () => {
 };
 
 const startAutoHide = () => {
+  // Only auto-hide on hover for non-touch devices
+  if (isTouchDevice.value) return;
+
   // Set 1-second timer to auto-collapse
   autoHideTimer = window.setTimeout(() => {
     navOpen.value = false;

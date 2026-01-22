@@ -1,12 +1,7 @@
-precision highp float;
-varying vec2 vUV;
-uniform float uTime;
-uniform vec2 uResolution;
-uniform int uMode;
+// ===== MAIN SHADER PROGRAM =====
+// Note: Uniforms and precision are declared in fragment-base.glsl
 
-// Import base functions
-// Note: In actual WebGL, these would need to be concatenated at build time
-// The component will handle combining these files
+varying vec2 vUV;
 
 // ===== SCENE MAPPING =====
 vec2 map3D(vec3 p, float time, int mode) {

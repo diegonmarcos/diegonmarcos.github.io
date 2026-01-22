@@ -141,15 +141,20 @@ export function initControlsToggle(): void {
     }
   };
 
-  // Hover to expand
-  container.addEventListener('mouseenter', () => {
+  // Hover FAB button to expand (not container!)
+  controlsFab.addEventListener('mouseenter', () => {
     cancelAutoClose();
     if (!hasClass(controlsList, 'open')) {
       openControls();
     }
   });
 
-  // Restart auto-close when leaving
+  // When hovering over the opened list, cancel auto-close
+  controlsList.addEventListener('mouseenter', () => {
+    cancelAutoClose();
+  });
+
+  // Restart auto-close when leaving the whole container
   container.addEventListener('mouseleave', () => {
     restartAutoClose();
   });

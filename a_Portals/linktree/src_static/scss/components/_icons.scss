@@ -38,7 +38,7 @@
     margin: 0 2px;
 }
 
-// Mindmap Link Button (top right corner)
+// Mindmap Link Button (top right corner) - matches FAB style
 .mindmap-btn {
     position: fixed;
     top: 1rem;
@@ -47,34 +47,46 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg,
+        rgba(150, 100, 255, 0.8),
+        rgba(100, 150, 255, 0.8)
+    );
+    border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: all $transition-fast;
+    transition: all $transition-medium;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+    box-shadow:
+        0 4px 16px rgba(150, 100, 255, 0.4),
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
     text-decoration: none;
+    overflow: hidden;
 
     img {
-        width: 20px;
-        height: 20px;
-        opacity: 0.6;
-        filter: invert(1);
-        transition: opacity $transition-fast, transform $transition-fast;
+        width: 24px;
+        height: 24px;
+        filter: invert(1) brightness(1.2);
+        transition: all $transition-medium;
+        position: relative;
+        z-index: 1;
     }
 
     &:hover {
-        background: rgba(255, 255, 255, 0.2);
-        border-color: rgba(255, 255, 255, 0.4);
         transform: scale(1.1);
-        box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        box-shadow:
+            0 6px 20px rgba(150, 100, 255, 0.6),
+            0 12px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        border-color: rgba(255, 255, 255, 0.5);
 
         img {
-            opacity: 1;
             transform: rotate(90deg);
+            filter: invert(1) brightness(1.5)
+                drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
         }
     }
 }

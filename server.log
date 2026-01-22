@@ -798,3 +798,30 @@
 [2026-01-22 15:02:24] 127.0.0.1 - - [22/Jan/2026 15:02:24] "GET /c_root/dist/assets/index-B7_cS4t4.css HTTP/1.1" 200 -
 [2026-01-22 15:02:25] 127.0.0.1 - - [22/Jan/2026 15:02:25] code 404, message File not found
 [2026-01-22 15:02:25] 127.0.0.1 - - [22/Jan/2026 15:02:25] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-22 15:13:02] 127.0.0.1 - - [22/Jan/2026 15:13:02] "GET /c_Personal_Tools/mytrips/dist/ HTTP/1.1" 200 -
+[2026-01-22 15:13:02] 127.0.0.1 - - [22/Jan/2026 15:13:02] code 404, message File not found
+[2026-01-22 15:13:02] 127.0.0.1 - - [22/Jan/2026 15:13:02] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[2026-01-22 15:13:02] 127.0.0.1 - - [22/Jan/2026 15:13:02] code 404, message File not found
+[2026-01-22 15:13:02] 127.0.0.1 - - [22/Jan/2026 15:13:02] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-22 15:13:22] 127.0.0.1 - - [22/Jan/2026 15:13:22] code 404, message File not found
+[2026-01-22 15:13:22] 127.0.0.1 - - [22/Jan/2026 15:13:22] "GET /index.html HTTP/1.1" 404 -
+[2026-01-22 15:13:31] 127.0.0.1 - - [22/Jan/2026 15:13:31] "GET /c_Personal_Tools/mytrips/dist/ HTTP/1.1" 200 -
+[2026-01-22 15:13:31] 127.0.0.1 - - [22/Jan/2026 15:13:31] code 404, message File not found
+[2026-01-22 15:13:31] 127.0.0.1 - - [22/Jan/2026 15:13:31] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[2026-01-22 15:13:32] 127.0.0.1 - - [22/Jan/2026 15:13:32] code 404, message File not found
+[2026-01-22 15:13:32] 127.0.0.1 - - [22/Jan/2026 15:13:32] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-22 15:16:39] 127.0.0.1 - - [22/Jan/2026 15:16:39] "GET /c_Personal_Tools/mytrips/dist/ HTTP/1.1" 304 -
+[2026-01-22 15:16:39] 127.0.0.1 - - [22/Jan/2026 15:16:39] code 404, message File not found
+[2026-01-22 15:16:39] 127.0.0.1 - - [22/Jan/2026 15:16:39] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[2026-01-22 15:16:39] 127.0.0.1 - - [22/Jan/2026 15:16:39] code 404, message File not found
+[2026-01-22 15:16:39] 127.0.0.1 - - [22/Jan/2026 15:16:39] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-22 15:16:41] 127.0.0.1 - - [22/Jan/2026 15:16:41] "GET /c_Personal_Tools/mytrips/dist/ HTTP/1.1" 200 -
+[2026-01-22 15:16:41] 127.0.0.1 - - [22/Jan/2026 15:16:41] code 404, message File not found
+[2026-01-22 15:16:41] 127.0.0.1 - - [22/Jan/2026 15:16:41] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[2026-01-22 15:16:42] 127.0.0.1 - - [22/Jan/2026 15:16:42] code 404, message File not found
+[2026-01-22 15:16:42] 127.0.0.1 - - [22/Jan/2026 15:16:42] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-22 15:16:42] 127.0.0.1 - - [22/Jan/2026 15:16:42] "GET /c_Personal_Tools/mytrips/dist/ HTTP/1.1" 200 -
+[2026-01-22 15:16:42] 127.0.0.1 - - [22/Jan/2026 15:16:42] code 404, message File not found
+[2026-01-22 15:16:42] 127.0.0.1 - - [22/Jan/2026 15:16:42] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 -
+[2026-01-22 15:16:43] 127.0.0.1 - - [22/Jan/2026 15:16:43] code 404, message File not found
+[2026-01-22 15:16:43] 127.0.0.1 - - [22/Jan/2026 15:16:43] "GET /favicon.ico HTTP/1.1" 404 -

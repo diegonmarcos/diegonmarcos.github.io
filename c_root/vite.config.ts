@@ -15,9 +15,11 @@ export default defineConfig({
     assetsInlineLimit: 0,  // Don't inline assets as base64
     rollupOptions: {
       output: {
+        format: 'iife',  // IIFE format instead of ES modules (for plain <script> tag)
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
-        entryFileNames: 'assets/[name]-[hash].js'
+        entryFileNames: 'assets/[name]-[hash].js',
+        inlineDynamicImports: true  // Bundle everything into single JS file
       }
     }
   },

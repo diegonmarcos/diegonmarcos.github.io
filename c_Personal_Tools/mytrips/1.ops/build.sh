@@ -43,17 +43,13 @@ kill_port() {
 build() {
     log_info "Building MyTrips for production..."
 
-    # Clean dist
-    rm -rf dist
-
-    # Build with Vite
-    npm run build
-
-    if [ $? -eq 0 ]; then
-        log_success "Build completed successfully!"
-        log_info "Output: $PROJECT_ROOT/dist/"
+    # MyTrips uses standalone HTML with CDN dependencies (no build needed)
+    # dist/ contains pre-built HTML files that are committed to git
+    if [ -f "dist/index.html" ] && [ -f "dist/myroadtrip.html" ]; then
+        log_success "Standalone HTML files found in dist/"
+        log_info "No build step required (CDN-based dependencies)"
     else
-        log_error "Build failed!"
+        log_error "Missing dist files! Please restore from git."
         exit 1
     fi
 }

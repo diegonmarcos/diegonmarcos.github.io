@@ -51,6 +51,21 @@ function initApp(): void {
 
   // DISABLED: Initialize scroll-based FAB hiding
   // initScrollFab();
+
+  // Show FABs after everything is loaded and positioned
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
+      const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
+
+      if (controlsFab) {
+        controlsFab.style.visibility = 'visible';
+      }
+      if (mindmapBtn) {
+        mindmapBtn.style.visibility = 'visible';
+      }
+    });
+  });
 }
 
 // Declare Swiper as global

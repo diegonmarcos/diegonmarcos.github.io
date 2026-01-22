@@ -1,0 +1,26 @@
+// ============================================
+// OBJECTS - Container
+// ============================================
+
+.o-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+
+  @include mq(md) {
+    padding: 0 $spacing-lg;
+  }
+
+  @include mq(lg) {
+    padding: 0 $spacing-xl;
+  }
+}
+
+.o-container--narrow {
+  max-width: 960px;
+}
+
+.o-container--wide {
+  max-width: 1536px;
+}

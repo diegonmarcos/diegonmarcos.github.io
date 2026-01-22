@@ -1,0 +1,22 @@
+{
+  "name": "mytrips",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Travel planning and road trip planner",
+  "scripts": {
+    "dev": "NODE_PATH=../../node_modules vite",
+    "build": "NODE_PATH=../../node_modules vue-tsc --noEmit && NODE_PATH=../../node_modules vite build",
+    "preview": "NODE_PATH=../../node_modules vite preview"
+  },
+  "keywords": [
+    "travel",
+    "trips",
+    "roadtrip",
+    "planner"
+  ],
+  "author": "Diego Nepomuceno Marcos",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.5.1"
+  }
+}

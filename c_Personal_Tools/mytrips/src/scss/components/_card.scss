@@ -1,0 +1,38 @@
+// ============================================
+// COMPONENTS - Card
+// ============================================
+
+.c-card {
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-sm;
+  transition: $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.c-card__header {
+  margin-bottom: $spacing-md;
+  padding-bottom: $spacing-md;
+  border-bottom: 1px solid $color-border;
+}
+
+.c-card__title {
+  font-size: $font-size-xl;
+  font-weight: 700;
+  margin-bottom: $spacing-xs;
+}
+
+.c-card__body {
+  margin-bottom: $spacing-md;
+}
+
+.c-card__footer {
+  @include flex-row(space-between, center, $spacing-sm);
+  padding-top: $spacing-md;
+  border-top: 1px solid $color-border;
+}

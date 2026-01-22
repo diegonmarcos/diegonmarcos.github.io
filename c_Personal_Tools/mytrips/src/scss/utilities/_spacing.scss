@@ -1,0 +1,29 @@
+// ============================================
+// UTILITIES - Spacing
+// ============================================
+
+// Margin
+.u-m-0 { margin: 0 !important; }
+.u-m-xs { margin: $spacing-xs !important; }
+.u-m-sm { margin: $spacing-sm !important; }
+.u-m-md { margin: $spacing-md !important; }
+.u-m-lg { margin: $spacing-lg !important; }
+.u-m-xl { margin: $spacing-xl !important; }
+
+.u-mt-0 { margin-top: 0 !important; }
+.u-mt-sm { margin-top: $spacing-sm !important; }
+.u-mt-md { margin-top: $spacing-md !important; }
+.u-mt-lg { margin-top: $spacing-lg !important; }
+
+.u-mb-0 { margin-bottom: 0 !important; }
+.u-mb-sm { margin-bottom: $spacing-sm !important; }
+.u-mb-md { margin-bottom: $spacing-md !important; }
+.u-mb-lg { margin-bottom: $spacing-lg !important; }
+
+// Padding
+.u-p-0 { padding: 0 !important; }
+.u-p-xs { padding: $spacing-xs !important; }
+.u-p-sm { padding: $spacing-sm !important; }
+.u-p-md { padding: $spacing-md !important; }
+.u-p-lg { padding: $spacing-lg !important; }
+.u-p-xl { padding: $spacing-xl !important; }

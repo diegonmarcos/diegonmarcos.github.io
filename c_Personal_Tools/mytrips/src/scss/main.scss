@@ -1,0 +1,32 @@
+// ============================================
+// MAIN SCSS - ITCSS Architecture
+// ============================================
+
+// Tailwind CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Settings - Variables and config
+@import 'settings/variables';
+
+// Tools - Mixins and functions
+@import 'tools/mixins';
+
+// Generic - Reset and normalize
+@import 'generic/reset';
+
+// Elements - Base HTML elements
+@import 'elements/typography';
+
+// Objects - Layout patterns
+@import 'objects/container';
+
+// Components - UI components
+@import 'components/card';
+@import 'components/button';
+@import 'components/mytrips';
+
+// Utilities - Helper classes
+@import 'utilities/spacing';
+@import 'utilities/display';

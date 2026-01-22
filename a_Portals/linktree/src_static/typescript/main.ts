@@ -7,6 +7,7 @@ import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
 import { initSmoothSnap } from './modules/smoothSnap';
+import { initMindmapOverlay } from './modules/mindmap-overlay';
 
 /**
  * Initialize all application modules
@@ -17,6 +18,9 @@ function initApp(): void {
 
   // Initialize controls toggle
   initControlsToggle();
+
+  // Initialize mindmap overlay
+  initMindmapOverlay();
 
   // Initialize random background video
   initVideoBackground();

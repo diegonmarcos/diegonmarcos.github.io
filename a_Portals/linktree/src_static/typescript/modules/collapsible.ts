@@ -159,8 +159,12 @@ export function initControlsToggle(): void {
     restartAutoClose();
   });
 
-  // Click to collapse
+  // Click to toggle
   controlsFab.addEventListener('click', () => {
-    closeControls();
+    if (hasClass(controlsList, 'open')) {
+      closeControls();
+    } else {
+      openControls();
+    }
   });
 }

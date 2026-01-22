@@ -86,6 +86,51 @@
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="loading-spinner"></div>
+                <h2>DIEGO MARCOS</h2>
+                <p>Loading Experience...</p>
+            </div>
+
+            <div class="loading-progress">
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <span class="progress-text" id="progress-text">0%</span>
+            </div>
+
+            <div class="loading-stats">
+                <div class="stat-row">
+                    <span class="stat-label">Download Speed:</span>
+                    <span class="stat-value" id="download-speed">Testing...</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Latency:</span>
+                    <span class="stat-value" id="latency">Measuring...</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Assets Loaded:</span>
+                    <span class="stat-value" id="assets-loaded">0 / 0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Cache Status:</span>
+                    <span class="stat-value" id="cache-status">Checking...</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Transfer Rate:</span>
+                    <span class="stat-value" id="transfer-rate">0 MB/s</span>
+                </div>
+            </div>
+
+            <div class="loading-details" id="loading-details">
+                Initializing...
+            </div>
+        </div>
+    </div>
+
     <!-- Mindmap Link Button -->
     <a href="https://diegonmarcos.github.io/linktree_mindmap/" class="mindmap-btn" id="mindmap-btn" title="View as Mindmap">
         <img src="public/icons/git-branch.svg" alt="Mindmap">
@@ -469,6 +514,9 @@
     <!-- Performance Controls (corner button) -->
     <div class="controls-fab-container">
         <div class="controls-list" id="controls-list">
+            <button id="status-toggle" class="icon-btn" title="View Status & Diagnostics">
+                <img src="public/icons/database.svg" alt="Status">
+            </button>
             <button id="btn-mindmap" class="icon-btn" title="Open Mindmap">
                 <img src="public/icons/git-branch.svg" alt="Mindmap">
             </button>
@@ -485,6 +533,22 @@
         <button class="controls-fab" id="controls-fab" title="Settings">
             <img src="public/icons/settings.svg" alt="Settings">
         </button>
+    </div>
+
+    <!-- Status Diagnostics Modal -->
+    <div class="status-modal" id="status-modal">
+        <div class="status-modal-content">
+            <div class="status-modal-header">
+                <h2>System Diagnostics</h2>
+                <button class="status-modal-close" id="status-modal-close">&times;</button>
+            </div>
+            <div class="status-modal-body" id="status-modal-body">
+                <div class="status-loading">
+                    <div class="status-spinner"></div>
+                    <p>Gathering diagnostics...</p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Swiper.js JS (with timeout fallback) -->

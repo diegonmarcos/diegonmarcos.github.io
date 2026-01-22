@@ -1,5 +1,7 @@
 // Main entry point for Linktree application
 
+import { initLoader } from './modules/loader';
+import { initStatusModal } from './modules/status';
 import { initCollapsibleSections, initControlsToggle } from './modules/collapsible';
 import { initVideoBackground, initVideoToggle } from './modules/videoBackground';
 import { initCarousels } from './modules/carousel';
@@ -18,6 +20,9 @@ function initApp(): void {
 
   // Initialize controls toggle
   initControlsToggle();
+
+  // Initialize status modal
+  initStatusModal();
 
   // Initialize mindmap overlay
   initMindmapOverlay();
@@ -54,8 +59,11 @@ function startApp(): void {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Check if Swiper is already loaded
+document.addEventListener('DOMContentLoaded', async () => {
+  // Run loading screen first
+  await initLoader();
+
+  // Then check if Swiper is already loaded
   if (typeof Swiper !== 'undefined') {
     startApp();
   } else {

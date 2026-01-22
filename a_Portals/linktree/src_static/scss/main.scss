@@ -24,6 +24,8 @@
 // ---------------------------------------------------------------------------
 // 4. COMPONENTS - UI Elements
 // ---------------------------------------------------------------------------
+@use 'components/loading';
+@use 'components/status-modal';
 @use 'components/background';
 @use 'components/icons';
 @use 'components/links';

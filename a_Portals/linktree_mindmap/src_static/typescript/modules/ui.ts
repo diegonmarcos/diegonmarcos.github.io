@@ -514,10 +514,33 @@ export function updateMinimap(nodes: GraphNode[], edges: any[]): void {
   const offsetX = (w - graphW * scale) / 2 - minX * scale + padding * scale;
   const offsetY = (h - graphH * scale) / 2 - minY * scale + padding * scale;
 
-  // Draw edges
-  ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-  ctx.lineWidth = 0.5;
+  // Draw edges with highlighting (highlighted vs dimmed)
+  const hasHighlights = edges.some(e => e.highlighted);
+
   edges.forEach((e) => {
+    // Set color based on highlight state
+    if (e.highlighted) {
+      // Create gradient for highlighted edges
+      const gradient = ctx.createLinearGradient(
+        e.source.x * scale + offsetX,
+        e.source.y * scale + offsetY,
+        e.target.x * scale + offsetX,
+        e.target.y * scale + offsetY
+      );
+      gradient.addColorStop(0, e.source.color);
+      gradient.addColorStop(1, e.target.color);
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = 1.0;
+    } else if (hasHighlights) {
+      // Dim non-highlighted edges when something is selected
+      ctx.strokeStyle = 'rgba(100,100,100,0.15)';
+      ctx.lineWidth = 0.4;
+    } else {
+      // Default state - all edges normal
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 0.5;
+    }
+
     ctx.beginPath();
     ctx.moveTo(e.source.x * scale + offsetX, e.source.y * scale + offsetY);
     ctx.lineTo(e.target.x * scale + offsetX, e.target.y * scale + offsetY);

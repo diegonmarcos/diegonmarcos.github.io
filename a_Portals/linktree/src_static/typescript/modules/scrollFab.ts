@@ -15,6 +15,8 @@ export function initScrollFab(): void {
 
   let scrollTimeout: number | null = null;
   let isScrolling = false;
+  let lastScrollY = window.scrollY;
+  const SCROLL_THRESHOLD = 50; // Only hide if scrolled more than 50px
 
   /**
    * Hide FABs (fade out)
@@ -46,8 +48,14 @@ export function initScrollFab(): void {
    * Handle scroll event
    */
   function handleScroll(): void {
-    // Hide FABs immediately on scroll
-    hideFabs();
+    const currentScrollY = window.scrollY;
+    const scrollDelta = Math.abs(currentScrollY - lastScrollY);
+
+    // Only hide FABs if user scrolled a meaningful distance
+    if (scrollDelta > SCROLL_THRESHOLD) {
+      hideFabs();
+      lastScrollY = currentScrollY;
+    }
 
     // Clear existing timeout
     if (scrollTimeout !== null) {

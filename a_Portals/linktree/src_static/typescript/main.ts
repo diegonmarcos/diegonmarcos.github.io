@@ -1,6 +1,6 @@
 // Main entry point for Linktree application
 
-import { initCollapsibleSections } from './modules/collapsible';
+import { initCollapsibleSections, initControlsToggle } from './modules/collapsible';
 import { initVideoBackground, initVideoToggle } from './modules/videoBackground';
 import { initCarousels } from './modules/carousel';
 import { initMobileScrollSelection } from './modules/mobileScroll';
@@ -14,6 +14,9 @@ import { initSmoothSnap } from './modules/smoothSnap';
 function initApp(): void {
   // Initialize collapsible sections
   initCollapsibleSections();
+
+  // Initialize controls toggle
+  initControlsToggle();
 
   // Initialize random background video
   initVideoBackground();

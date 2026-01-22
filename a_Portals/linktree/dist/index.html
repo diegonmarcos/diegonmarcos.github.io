@@ -450,7 +450,15 @@
                 <!-- End Personal Row -->
             </section>
         </main>
-        <div class="controls-row">
+
+    </div>
+
+    <!-- Performance Controls (outside container) -->
+    <div class="controls-container">
+        <button class="controls-toggle" id="controls-toggle">
+            <span class="arrow">⌄</span>
+        </button>
+        <div class="controls-row" id="controls-row">
             <button id="gallery-toggle" class="icon-btn" title="Gallery View">
                 <img src="public/icons/slideshow.svg" alt="Gallery">
             </button>
@@ -461,7 +469,6 @@
                 <img src="public/icons/bolt.svg" alt="Lite">
             </button>
         </div>
-
     </div>
 
     <!-- Swiper.js JS (with timeout fallback) -->

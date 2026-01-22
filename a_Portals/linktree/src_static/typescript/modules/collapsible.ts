@@ -93,3 +93,25 @@ export function initCollapsibleSections(): void {
     toggle.addEventListener('click', () => handleToggleClick(toggle));
   });
 }
+
+/**
+ * Initialize controls toggle (performance buttons)
+ */
+export function initControlsToggle(): void {
+  const controlsToggle = getElementById<HTMLElement>('controls-toggle');
+  const controlsRow = getElementById<HTMLElement>('controls-row');
+
+  if (!controlsToggle || !controlsRow) return;
+
+  controlsToggle.addEventListener('click', () => {
+    if (hasClass(controlsRow, 'open')) {
+      // Close controls
+      removeClass(controlsRow, 'open');
+      removeClass(controlsToggle, 'open');
+    } else {
+      // Open controls
+      addClass(controlsRow, 'open');
+      addClass(controlsToggle, 'open');
+    }
+  });
+}

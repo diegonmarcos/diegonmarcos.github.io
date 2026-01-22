@@ -7,8 +7,9 @@
 export function initScrollFab(): void {
   const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
   const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
+  const controlsList = document.getElementById('controls-list') as HTMLElement;
 
-  if (!controlsFab || !mindmapBtn) {
+  if (!controlsFab || !mindmapBtn || !controlsList) {
     console.warn('ScrollFab: FAB elements not found');
     return;
   }
@@ -16,12 +17,23 @@ export function initScrollFab(): void {
   let scrollTimeout: number | null = null;
   let isScrolling = false;
   let lastScrollY = window.scrollY;
+  let isInteracting = false;
   const SCROLL_THRESHOLD = 50; // Only hide if scrolled more than 50px
+
+  /**
+   * Check if controls menu is open
+   */
+  function isMenuOpen(): boolean {
+    return controlsList.classList.contains('open');
+  }
 
   /**
    * Hide FABs (fade out)
    */
   function hideFabs(): void {
+    // Don't hide if menu is open or user is interacting
+    if (isMenuOpen() || isInteracting) return;
+
     if (!isScrolling) {
       isScrolling = true;
       controlsFab.style.opacity = '0';
@@ -68,6 +80,34 @@ export function initScrollFab(): void {
       scrollTimeout = null;
     }, 500);
   }
+
+  // Prevent hiding when interacting with FABs
+  const fabElements = [controlsFab, mindmapBtn];
+  fabElements.forEach(element => {
+    // Touch/click start - mark as interacting
+    element.addEventListener('touchstart', () => {
+      isInteracting = true;
+      showFabs(); // Force show immediately
+    }, { passive: true });
+
+    element.addEventListener('mousedown', () => {
+      isInteracting = true;
+      showFabs(); // Force show immediately
+    });
+
+    // Touch/click end - clear interacting flag after delay
+    element.addEventListener('touchend', () => {
+      setTimeout(() => {
+        isInteracting = false;
+      }, 300);
+    }, { passive: true });
+
+    element.addEventListener('mouseup', () => {
+      setTimeout(() => {
+        isInteracting = false;
+      }, 300);
+    });
+  });
 
   // Add scroll listener
   window.addEventListener('scroll', handleScroll, { passive: true });

@@ -429,7 +429,7 @@ onUnmounted(() => {
   max-width: 840px;
 
   h1, h2 {
-    font-size: clamp(1.4rem, 4.5vw, 2.4rem);
+    font-size: clamp(1.4rem, 4.5vw, 2.0rem);
     font-weight: bold;
     line-height: 1.3;
     margin: 0;

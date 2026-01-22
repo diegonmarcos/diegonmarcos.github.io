@@ -21,6 +21,7 @@
     justify-content: center !important;
     width: 56px !important;
     height: 56px !important;
+    box-sizing: border-box !important;
 
     // Appearance
     background: linear-gradient(135deg, rgba(150, 100, 255, 0.8), rgba(100, 150, 255, 0.8)) !important;
@@ -140,6 +141,7 @@
     justify-content: center !important;
     width: 48px !important;
     height: 48px !important;
+    box-sizing: border-box !important;
     padding: 0 !important;
 
     // Appearance
@@ -203,6 +205,7 @@
     // Layout
     width: 56px !important;
     height: 56px !important;
+    box-sizing: border-box !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;

@@ -68,7 +68,7 @@
       <button
         class="c-nav-toggle"
         :class="{ 'c-nav-toggle--open': navOpen }"
-        @click="closeNav"
+        @click="toggleNav"
       >
         <span class="c-nav-arrow">↑</span>
       </button>
@@ -125,6 +125,15 @@ const closeNav = () => {
     autoHideTimer = null;
   }
   navOpen.value = false;
+};
+
+const toggleNav = () => {
+  // Toggle nav open/close (works on mobile tap and desktop click)
+  if (autoHideTimer) {
+    clearTimeout(autoHideTimer);
+    autoHideTimer = null;
+  }
+  navOpen.value = !navOpen.value;
 };
 
 interface FractalType {

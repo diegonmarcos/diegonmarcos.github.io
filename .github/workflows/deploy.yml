@@ -30,6 +30,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: 📦 Install Dependencies
+        run: |
+          echo "📦 Installing npm dependencies..."
+          npm install
+          echo "✅ Dependencies installed"
+
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================

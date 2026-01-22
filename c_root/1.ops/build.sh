@@ -9,7 +9,8 @@ set -e  # Exit on error
 
 PROJECT_NAME="c_root"
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-GLOBAL_NODE_MODULES="/home/diego/mnt_git/front-Github_io/node_modules"
+REPO_ROOT="$(cd "$PROJECT_ROOT/.." && pwd)"
+GLOBAL_NODE_MODULES="$REPO_ROOT/node_modules"
 DIST_DIR="$PROJECT_ROOT/dist"
 
 # Colors for output
@@ -53,7 +54,7 @@ check_deps() {
     if [ ! -f "$GLOBAL_NODE_MODULES/.bin/vite" ]; then
         print_error "Vite not found in global node_modules"
         echo "Please install dependencies in the root directory:"
-        echo "  cd /home/diego/mnt_git/front-Github_io && npm install"
+        echo "  cd $REPO_ROOT && npm install"
         exit 1
     fi
 

@@ -79,8 +79,8 @@
 
         <!-- Im formula -->
         <g :transform="`translate(${bwCenter.x}, ${bwCenter.y - 25}) rotate(${bwAngle})`">
-          <text fill="#22d3d3" font-size="11" font-family="Times New Roman, serif" text-anchor="middle" style="letter-spacing: -0.5px" >
-            <tspan font-weight="bold">Im</tspan><tspan font-style="italic"> f</tspan><tspan>=e</tspan><tspan baseline-shift="super" font-size="7">−γ(t−t₀)²</tspan><tspan font-style="italic">sin(ωt)</tspan>
+          <text fill="#22d3d3" font-size="8" font-family="Times New Roman, serif" text-anchor="middle" style="letter-spacing: -0.5px" >
+            <tspan font-weight="bold">Im</tspan><tspan font-style="italic"> f</tspan><tspan>=e</tspan><tspan baseline-shift="super" font-size="5">−γ(t−t₀)²</tspan><tspan font-style="italic">sin(ωt)</tspan>
           </text>
         </g>
 
@@ -94,8 +94,8 @@
 
         <!-- Re formula -->
         <g :transform="`translate(${flCenter.x}, ${flCenter.y + 25}) rotate(${flAngle})`">
-          <text fill="#fb923c" font-size="11" font-family="Times New Roman, serif" text-anchor="middle" style="letter-spacing: -0.5px" >
-            <tspan font-weight="bold">Re</tspan><tspan font-style="italic"> f</tspan><tspan>=e</tspan><tspan baseline-shift="super" font-size="7">−γ(t−t₀)²</tspan><tspan font-style="italic">cos(ωt)</tspan>
+          <text fill="#fb923c" font-size="8" font-family="Times New Roman, serif" text-anchor="middle" style="letter-spacing: -0.5px" >
+            <tspan font-weight="bold">Re</tspan><tspan font-style="italic"> f</tspan><tspan>=e</tspan><tspan baseline-shift="super" font-size="5">−γ(t−t₀)²</tspan><tspan font-style="italic">cos(ωt)</tspan>
           </text>
         </g>
 
@@ -433,9 +433,6 @@ onUnmounted(() => {
     font-weight: bold;
     line-height: 1.3;
     margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 

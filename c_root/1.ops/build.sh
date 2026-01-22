@@ -88,11 +88,13 @@ build() {
     NODE_PATH="$GLOBAL_NODE_MODULES" "$GLOBAL_NODE_MODULES/.bin/vite" build
 
     # Remove type="module" and crossorigin attributes for file:// protocol support
+    # Add defer to script tag so it executes after DOM is ready
     if [ -f "$DIST_DIR/index.html" ]; then
-        print_step "Removing CORS attributes for file:// protocol..."
+        print_step "Fixing script attributes for file:// protocol..."
         sed -i 's/ type="module"//g' "$DIST_DIR/index.html"
         sed -i 's/ crossorigin//g' "$DIST_DIR/index.html"
-        print_success "Removed module/CORS attributes"
+        sed -i 's/<script src="/<script defer src="/g' "$DIST_DIR/index.html"
+        print_success "Fixed script attributes (removed module/CORS, added defer)"
     fi
 
     if [ $? -eq 0 ]; then

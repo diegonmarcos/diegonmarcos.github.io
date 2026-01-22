@@ -547,21 +547,27 @@ export function updateMinimap(nodes: GraphNode[], edges: any[]): void {
     ctx.stroke();
   });
 
-  // Draw nodes (with colors matching main graph)
+  // Draw nodes (with dimming matching main graph)
+  const hasNodeHighlights = nodes.some(n => n.highlighted);
+
   nodes.forEach((n) => {
     const x = n.x * scale + offsetX;
     const y = n.y * scale + offsetY;
     const r = Math.max(2, n.radius * scale * 0.3);
 
-    // Always use node color, with glow effect for highlighted nodes
+    // Match main graph brightness behavior
     if (n.highlighted) {
-      // Glow effect for highlighted nodes
+      // Highlighted nodes: bright with glow
       ctx.shadowBlur = 8;
       ctx.shadowColor = n.color;
       ctx.fillStyle = n.color;
-    } else {
+    } else if (hasNodeHighlights) {
+      // When something is selected, dim non-highlighted nodes to gray
       ctx.shadowBlur = 0;
-      // Use node color with some transparency for non-highlighted nodes
+      ctx.fillStyle = 'rgba(100, 100, 100, 0.3)';
+    } else {
+      // Default state: all nodes shown with their colors
+      ctx.shadowBlur = 0;
       const rgb = hexToRgb(n.color);
       ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.8)`;
     }

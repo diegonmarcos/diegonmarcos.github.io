@@ -49,8 +49,8 @@ function initApp(): void {
   // Initialize smooth scroll snap
   initSmoothSnap();
 
-  // Initialize scroll-based FAB hiding
-  initScrollFab();
+  // DISABLED: Initialize scroll-based FAB hiding
+  // initScrollFab();
 }
 
 // Declare Swiper as global

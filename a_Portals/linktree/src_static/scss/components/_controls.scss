@@ -1,17 +1,35 @@
 // ==========================================================================
-// Performance Controls (Outside Container)
+// Performance Controls (Slide-up Card)
 // ==========================================================================
 
 @use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
 
 .controls-container {
     max-width: 800px;
-    margin: 1rem auto 2rem;
+    margin: 0 auto 2rem;
     padding: 0 2rem;
-    text-align: center;
 }
 
-// Controls Toggle (Minimal Chevron Line)
+// Controls Card (Glass Card that slides up)
+.controls-card {
+    @include glass-card;
+    padding: 0;
+    transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 2px solid rgba(150, 100, 255, 0.3);
+
+    &.open {
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.35),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15),
+            0 0 20px rgba(150, 100, 255, 0.1);
+        border-top-color: rgba(150, 100, 255, 0.5);
+    }
+}
+
+// Controls Toggle (Minimal Chevron Line - Arrow points UP)
 .controls-toggle {
     display: flex;
     align-items: center;
@@ -40,7 +58,7 @@
         transition: all $transition-fast;
     }
 
-    // Chevron icon
+    // Chevron icon (points UP initially ⌃)
     .arrow {
         display: inline-flex;
         align-items: center;
@@ -59,23 +77,23 @@
             background: linear-gradient(
                 to right,
                 transparent,
-                rgba(255, 0, 255, 0.3),
-                rgba(0, 255, 255, 0.3),
+                rgba(150, 100, 255, 0.4),
+                rgba(100, 150, 255, 0.4),
                 transparent
             );
-            box-shadow: 0 0 6px rgba(255, 0, 255, 0.2);
+            box-shadow: 0 0 6px rgba(150, 100, 255, 0.3);
         }
 
         .arrow {
             color: rgba(255, 255, 255, 0.9);
             text-shadow:
-                0 0 8px rgba(255, 0, 255, 0.5),
-                0 0 15px rgba(0, 255, 255, 0.3);
+                0 0 8px rgba(150, 100, 255, 0.6),
+                0 0 15px rgba(100, 150, 255, 0.4);
             transform: scale(1.1);
         }
     }
 
-    // Open state - flip chevron
+    // Open state - flip chevron (⌃ → ⌄)
     &.open .arrow {
         transform: rotate(180deg);
     }
@@ -85,21 +103,23 @@
     }
 }
 
-// Controls Row (Collapsible)
+// Controls Row (Slide content)
 .controls-row {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    padding: 0 1rem 1.5rem;
     max-height: 0;
-    overflow: hidden;
     opacity: 0;
-    transition: max-height 0.4s ease-out, opacity $transition-medium, margin-top $transition-medium;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                opacity 0.4s ease,
+                padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 
     &.open {
-        max-height: 100px;
+        max-height: 120px;
         opacity: 1;
-        margin-top: 1rem;
         overflow: visible;
     }
 }

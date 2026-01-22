@@ -85,6 +85,7 @@
   transform: translateX(-50%);
   @include flex-row($space-xs);
   align-items: center;
+  justify-content: center;
   padding: $space-xs;
   border-radius: $radius-lg;
   z-index: $z-ui;

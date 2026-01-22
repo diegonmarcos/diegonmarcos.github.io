@@ -33,14 +33,14 @@ const swiperConfig: SwiperOptions = {
   loop: true,
   creativeEffect: {
     prev: {
-      shadow: true,
+      shadow: false,
       translate: ['-120%', 0, -500],
       rotate: [0, 0, -15],
       opacity: 0,
       scale: 0.8,
     },
     next: {
-      shadow: true,
+      shadow: false,
       translate: ['120%', 0, -500],
       rotate: [0, 0, 15],
       opacity: 0,

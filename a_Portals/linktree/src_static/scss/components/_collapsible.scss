@@ -5,31 +5,77 @@
 @use '../abstracts/variables' as *;
 
 .more-toggle {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
-    color: $color-text;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: $border-radius-lg;
-    padding: 1rem;
-    margin: 1rem 0;
-    text-decoration: none;
-    transition: background $transition-fast;
-    font-weight: bold;
-    font-size: 1.2rem;
+    background: transparent;
+    border: none;
+    padding: 1.5rem 0;
+    margin: 0.5rem 0;
     cursor: pointer;
-    text-align: center;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all $transition-fast;
 
-    &:hover { background: rgba(255, 255, 255, 0.18); }
-
-    .arrow {
-        display: inline-block;
-        transition: transform $transition-fast;
-        margin-right: 5px;
+    // Horizontal line (gradient divider)
+    &::before,
+    &::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            rgba(255, 255, 255, 0.3),
+            transparent
+        );
+        transition: all $transition-fast;
     }
 
-    &.open .arrow { transform: rotate(90deg); }
+    // Chevron icon container
+    .arrow {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 1rem;
+        font-size: 1.4rem;
+        color: rgba(255, 255, 255, 0.6);
+        transition: all $transition-medium;
+        transform: rotate(0deg);
+    }
+
+    // Hover state
+    &:hover {
+        &::before,
+        &::after {
+            background: linear-gradient(
+                to right,
+                transparent,
+                rgba(255, 0, 255, 0.4),
+                rgba(0, 255, 255, 0.4),
+                transparent
+            );
+            box-shadow: 0 0 8px rgba(255, 0, 255, 0.3);
+        }
+
+        .arrow {
+            color: rgba(255, 255, 255, 1);
+            text-shadow:
+                0 0 10px rgba(255, 0, 255, 0.6),
+                0 0 20px rgba(0, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+    }
+
+    // Open state - flip chevron
+    &.open .arrow {
+        transform: rotate(180deg);
+    }
+
+    &.open:hover .arrow {
+        transform: rotate(180deg) scale(1.1);
+    }
 }
 
 .collapsible-content {

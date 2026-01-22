@@ -1,177 +1,122 @@
 // ==========================================================================
-// Performance Controls (Slide-up Card)
+// Performance Controls (FAB Corner Button)
 // ==========================================================================
 
 @use '../abstracts/variables' as *;
 @use '../abstracts/mixins' as *;
 
-.controls-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 2rem 2rem;
-    position: sticky;
-    bottom: 0;
-    z-index: 10;
-
-    // Ensure visibility by adding subtle pointer for collapsed state
-    &::before {
-        content: '';
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 2px;
-        height: 20px;
-        background: linear-gradient(
-            to bottom,
-            transparent,
-            rgba(150, 100, 255, 0.3)
-        );
-        opacity: 0.5;
-        pointer-events: none;
-    }
+// FAB Container (Bottom-Right Corner)
+.controls-fab-container {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
 }
 
-// Controls Card (Glass Card that slides up)
-.controls-card {
-    @include glass-card;
-    padding: 0;
-    transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-top: 2px solid rgba(150, 100, 255, 0.3);
-    cursor: pointer;
-
-    // Pulse animation for collapsed state to draw attention
-    &:not(.open) {
-        animation: controlsPulse 3s ease-in-out infinite;
-    }
+// Controls List (Icon buttons that roll up)
+.controls-list {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
 
     &.open {
-        box-shadow:
-            0 8px 32px rgba(0, 0, 0, 0.35),
-            inset 0 1px 0 rgba(255, 255, 255, 0.15),
-            0 0 20px rgba(150, 100, 255, 0.1);
-        border-top-color: rgba(150, 100, 255, 0.5);
-        cursor: default;
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
     }
 
-    &:not(.open):hover {
-        border-top-color: rgba(150, 100, 255, 0.6);
-        box-shadow:
-            0 4px 16px rgba(0, 0, 0, 0.3),
-            0 0 12px rgba(150, 100, 255, 0.15);
+    .icon-btn {
+        animation: fadeInUp 0.3s ease backwards;
     }
+
+    &.open .icon-btn:nth-child(1) { animation-delay: 0.05s; }
+    &.open .icon-btn:nth-child(2) { animation-delay: 0.1s; }
+    &.open .icon-btn:nth-child(3) { animation-delay: 0.15s; }
 }
 
-// Pulse animation for collapsed controls
-@keyframes controlsPulse {
-    0%, 100% {
-        border-top-color: rgba(150, 100, 255, 0.3);
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.37),
-            0 0 0 1px rgba(255, 255, 255, 0.1);
-    }
-    50% {
-        border-top-color: rgba(150, 100, 255, 0.5);
-        box-shadow:
-            0 8px 32px 0 rgba(0, 0, 0, 0.37),
-            0 0 0 1px rgba(255, 255, 255, 0.1),
-            0 0 15px rgba(150, 100, 255, 0.2);
-    }
-}
-
-// Controls Toggle (Minimal Chevron Line - Arrow points UP)
-.controls-toggle {
+// FAB Button (Settings Icon)
+.controls-fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,
+        rgba(150, 100, 255, 0.8),
+        rgba(100, 150, 255, 0.8)
+    );
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 4px 16px rgba(150, 100, 255, 0.4),
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    background: transparent;
-    border: none;
-    padding: 1rem 0;
-    cursor: pointer;
+    transition: all $transition-medium;
     position: relative;
-    transition: all $transition-fast;
+    overflow: hidden;
 
-    // Horizontal line (gradient divider)
-    &::before,
-    &::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: linear-gradient(
-            to right,
-            transparent,
-            rgba(255, 255, 255, 0.2),
-            rgba(255, 255, 255, 0.2),
-            transparent
-        );
-        transition: all $transition-fast;
-    }
-
-    // Chevron icon (points UP initially ⌃)
-    .arrow {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 1rem;
-        font-size: 1.2rem;
-        color: rgba(255, 255, 255, 0.5);
+    img {
+        width: 24px;
+        height: 24px;
+        filter: invert(1) brightness(1.2);
         transition: all $transition-medium;
-        transform: rotate(0deg);
+        position: relative;
+        z-index: 1;
     }
 
     // Hover state
     &:hover {
-        &::before,
-        &::after {
-            background: linear-gradient(
-                to right,
-                transparent,
-                rgba(150, 100, 255, 0.4),
-                rgba(100, 150, 255, 0.4),
-                transparent
-            );
-            box-shadow: 0 0 6px rgba(150, 100, 255, 0.3);
-        }
+        transform: scale(1.1);
+        box-shadow:
+            0 6px 20px rgba(150, 100, 255, 0.6),
+            0 12px 40px rgba(0, 0, 0, 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        border-color: rgba(255, 255, 255, 0.5);
 
-        .arrow {
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow:
-                0 0 8px rgba(150, 100, 255, 0.6),
-                0 0 15px rgba(100, 150, 255, 0.4);
-            transform: scale(1.1);
+        img {
+            transform: rotate(90deg);
+            filter: invert(1) brightness(1.5)
+                drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
         }
     }
 
-    // Open state - flip chevron (⌃ → ⌄)
-    &.open .arrow {
+    // Open state
+    &.open {
+        background: linear-gradient(135deg,
+            rgba(255, 100, 150, 0.8),
+            rgba(255, 150, 100, 0.8)
+        );
         transform: rotate(180deg);
+
+        img {
+            filter: invert(1) brightness(1.3);
+        }
     }
 
-    &.open:hover .arrow {
+    &.open:hover {
         transform: rotate(180deg) scale(1.1);
     }
 }
 
-// Controls Row (Slide content)
-.controls-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding: 0 1rem 1.5rem;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
-                opacity 0.4s ease,
-                padding 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
-
-    &.open {
-        max-height: 120px;
+// Fade in up animation for icon buttons
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    to {
         opacity: 1;
-        overflow: visible;
+        transform: translateY(0) scale(1);
     }
 }

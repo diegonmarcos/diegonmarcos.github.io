@@ -6,7 +6,7 @@
 
 .container {
     max-width: 800px;
-    margin: 2rem auto;
+    margin: 0 auto;
     padding: 2rem;
     text-align: center;
     position: relative;
@@ -21,9 +21,6 @@
     -webkit-backdrop-filter: $glass-blur;
     animation: containerBorderGlow 4s ease-in-out infinite;
     overflow: visible;
-
-    // Ensure space for sticky controls at bottom
-    margin-bottom: calc(2rem + 80px);
 
     &::before {
         content: '';

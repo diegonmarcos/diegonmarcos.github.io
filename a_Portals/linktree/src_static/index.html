@@ -453,24 +453,22 @@
 
     </div>
 
-    <!-- Performance Controls (slide-up card) -->
-    <div class="controls-container">
-        <div class="controls-card" id="controls-card">
-            <button class="controls-toggle" id="controls-toggle">
-                <span class="arrow">⌃</span>
+    <!-- Performance Controls (corner button) -->
+    <div class="controls-fab-container">
+        <div class="controls-list" id="controls-list">
+            <button id="gallery-toggle" class="icon-btn" title="Gallery View">
+                <img src="public/icons/slideshow.svg" alt="Gallery">
             </button>
-            <div class="controls-row" id="controls-row">
-                <button id="gallery-toggle" class="icon-btn" title="Gallery View">
-                    <img src="public/icons/slideshow.svg" alt="Gallery">
-                </button>
-                <button id="video-toggle" class="icon-btn active" title="Video Background">
-                    <img src="public/icons/video.svg" alt="Video">
-                </button>
-                <button id="lite-toggle" class="icon-btn" title="Lite Mode">
-                    <img src="public/icons/bolt.svg" alt="Lite">
-                </button>
-            </div>
+            <button id="video-toggle" class="icon-btn active" title="Video Background">
+                <img src="public/icons/video.svg" alt="Video">
+            </button>
+            <button id="lite-toggle" class="icon-btn" title="Lite Mode">
+                <img src="public/icons/bolt.svg" alt="Lite">
+            </button>
         </div>
+        <button class="controls-fab" id="controls-fab" title="Settings">
+            <img src="public/icons/settings.svg" alt="Settings">
+        </button>
     </div>
 
     <!-- Swiper.js JS (with timeout fallback) -->

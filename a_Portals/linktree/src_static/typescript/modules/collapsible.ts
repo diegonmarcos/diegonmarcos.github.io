@@ -95,40 +95,23 @@ export function initCollapsibleSections(): void {
 }
 
 /**
- * Initialize controls toggle (performance buttons slide-up card)
+ * Initialize controls FAB (floating action button)
  */
 export function initControlsToggle(): void {
-  const controlsToggle = getElementById<HTMLElement>('controls-toggle');
-  const controlsRow = getElementById<HTMLElement>('controls-row');
-  const controlsCard = getElementById<HTMLElement>('controls-card');
+  const controlsFab = getElementById<HTMLElement>('controls-fab');
+  const controlsList = getElementById<HTMLElement>('controls-list');
 
-  if (!controlsToggle || !controlsRow || !controlsCard) return;
+  if (!controlsFab || !controlsList) return;
 
-  const toggleControls = () => {
-    if (hasClass(controlsRow, 'open')) {
+  controlsFab.addEventListener('click', () => {
+    if (hasClass(controlsList, 'open')) {
       // Close controls
-      removeClass(controlsRow, 'open');
-      removeClass(controlsToggle, 'open');
-      removeClass(controlsCard, 'open');
+      removeClass(controlsList, 'open');
+      removeClass(controlsFab, 'open');
     } else {
       // Open controls
-      addClass(controlsRow, 'open');
-      addClass(controlsToggle, 'open');
-      addClass(controlsCard, 'open');
-    }
-  };
-
-  // Toggle button click
-  controlsToggle.addEventListener('click', (e) => {
-    e.stopPropagation();
-    toggleControls();
-  });
-
-  // Entire card clickable when collapsed
-  controlsCard.addEventListener('click', (e) => {
-    // Only trigger if clicking the card itself (not the buttons inside)
-    if (!hasClass(controlsRow, 'open') && e.target === controlsCard) {
-      toggleControls();
+      addClass(controlsList, 'open');
+      addClass(controlsFab, 'open');
     }
   });
 }

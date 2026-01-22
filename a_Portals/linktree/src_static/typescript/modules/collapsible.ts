@@ -104,7 +104,7 @@ export function initControlsToggle(): void {
 
   if (!controlsToggle || !controlsRow || !controlsCard) return;
 
-  controlsToggle.addEventListener('click', () => {
+  const toggleControls = () => {
     if (hasClass(controlsRow, 'open')) {
       // Close controls
       removeClass(controlsRow, 'open');
@@ -115,6 +115,20 @@ export function initControlsToggle(): void {
       addClass(controlsRow, 'open');
       addClass(controlsToggle, 'open');
       addClass(controlsCard, 'open');
+    }
+  };
+
+  // Toggle button click
+  controlsToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleControls();
+  });
+
+  // Entire card clickable when collapsed
+  controlsCard.addEventListener('click', (e) => {
+    // Only trigger if clicking the card itself (not the buttons inside)
+    if (!hasClass(controlsRow, 'open') && e.target === controlsCard) {
+      toggleControls();
     }
   });
 }

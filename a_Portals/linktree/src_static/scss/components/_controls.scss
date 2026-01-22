@@ -7,8 +7,29 @@
 
 .controls-container {
     max-width: 800px;
-    margin: 0 auto 2rem;
-    padding: 0 2rem;
+    margin: 0 auto;
+    padding: 0 2rem 2rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+
+    // Ensure visibility by adding subtle pointer for collapsed state
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 20px;
+        background: linear-gradient(
+            to bottom,
+            transparent,
+            rgba(150, 100, 255, 0.3)
+        );
+        opacity: 0.5;
+        pointer-events: none;
+    }
 }
 
 // Controls Card (Glass Card that slides up)
@@ -19,6 +40,12 @@
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-top: 2px solid rgba(150, 100, 255, 0.3);
+    cursor: pointer;
+
+    // Pulse animation for collapsed state to draw attention
+    &:not(.open) {
+        animation: controlsPulse 3s ease-in-out infinite;
+    }
 
     &.open {
         box-shadow:
@@ -26,6 +53,31 @@
             inset 0 1px 0 rgba(255, 255, 255, 0.15),
             0 0 20px rgba(150, 100, 255, 0.1);
         border-top-color: rgba(150, 100, 255, 0.5);
+        cursor: default;
+    }
+
+    &:not(.open):hover {
+        border-top-color: rgba(150, 100, 255, 0.6);
+        box-shadow:
+            0 4px 16px rgba(0, 0, 0, 0.3),
+            0 0 12px rgba(150, 100, 255, 0.15);
+    }
+}
+
+// Pulse animation for collapsed controls
+@keyframes controlsPulse {
+    0%, 100% {
+        border-top-color: rgba(150, 100, 255, 0.3);
+        box-shadow:
+            0 8px 32px 0 rgba(0, 0, 0, 0.37),
+            0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        border-top-color: rgba(150, 100, 255, 0.5);
+        box-shadow:
+            0 8px 32px 0 rgba(0, 0, 0, 0.37),
+            0 0 0 1px rgba(255, 255, 255, 0.1),
+            0 0 15px rgba(150, 100, 255, 0.2);
     }
 }
 

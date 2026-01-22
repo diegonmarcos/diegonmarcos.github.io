@@ -56,7 +56,6 @@
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: box-shadow $transition-medium, border-color $transition-medium, opacity 0.3s ease;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow:
@@ -71,38 +70,16 @@
         height: 45px;
     }
 
-    // Disable transitions on page load
-    &.no-transition,
-    &.no-transition * {
-        transition: none !important;
-    }
-
     img {
         width: 24px;
         height: 24px;
         filter: invert(1) brightness(1.2);
-        transition: transform $transition-medium, filter $transition-medium;
         position: relative;
         z-index: 1;
 
         @media (max-width: 768px) {
             width: 20px;
             height: 20px;
-        }
-    }
-
-    &:hover {
-        transform: scale(1.1);
-        box-shadow:
-            0 6px 20px rgba(150, 100, 255, 0.6),
-            0 12px 40px rgba(0, 0, 0, 0.4),
-            inset 0 1px 0 rgba(255, 255, 255, 0.4);
-        border-color: rgba(255, 255, 255, 0.5);
-
-        img {
-            transform: rotate(90deg);
-            filter: invert(1) brightness(1.5)
-                drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
         }
     }
 }

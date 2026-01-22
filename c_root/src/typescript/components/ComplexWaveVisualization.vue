@@ -12,7 +12,7 @@
 
     <!-- Main visualization -->
     <div class="pv-svg-container">
-      <svg viewBox="0 0 520 480" preserveAspectRatio="xMidYMid meet">
+      <svg viewBox="0 0 840 640" preserveAspectRatio="xMidYMid meet">
         <defs>
           <!-- Gradients -->
           <linearGradient id="pv-helixGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -227,11 +227,11 @@ const floorWidth: number = 1.3;
 const envelope = (t: number): number => Math.exp(-gamma * Math.pow(t - t0, 2));
 
 const project3D = (t: number, re: number, im: number): Point2D => {
-  const scale = 38;
-  const centerX = 270;
-  const centerY = 220;
-  const tx = -t * 50 * 0.7;
-  const ty = t * 50 * 0.35;
+  const scale = 61;
+  const centerX = 436;
+  const centerY = 355;
+  const tx = -t * 81 * 0.7;
+  const ty = t * 81 * 0.35;
   const rx = re * scale * 0.9;
   const ry = re * scale * 0.25;
   const iy = -im * scale;
@@ -423,13 +423,13 @@ onUnmounted(() => {
 
 .pv-title {
   text-align: center;
-  margin-bottom: 8px;
-  padding: 0 10px;
+  margin-bottom: 16px;
+  padding: 0 16px;
   width: 100%;
-  max-width: 520px;
+  max-width: 840px;
 
   h1, h2 {
-    font-size: clamp(0.85rem, 3vw, 1.1rem);
+    font-size: clamp(1.4rem, 4.5vw, 1.8rem);
     font-weight: bold;
     line-height: 1.3;
     margin: 0;
@@ -456,9 +456,9 @@ onUnmounted(() => {
 .pv-svg-container {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 840px;
   height: auto;
-  aspect-ratio: 520 / 480;
+  aspect-ratio: 840 / 640;
   flex-shrink: 1;
 
   svg {
@@ -468,20 +468,20 @@ onUnmounted(() => {
 }
 
 .pv-values {
-  margin-top: 8px;
+  margin-top: 16px;
   width: 100%;
-  max-width: 360px;
+  max-width: 580px;
   text-align: center;
-  padding: 0 10px;
+  padding: 0 16px;
 }
 
 .pv-values-main {
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .pv-values-text {
-  font-size: 1.25rem;
+  font-size: 2rem;
   font-family: 'Times New Roman', serif;
 }
 
@@ -517,7 +517,7 @@ onUnmounted(() => {
 }
 
 .pv-values-time-text {
-  font-size: 1.125rem;
+  font-size: 1.8rem;
   font-family: 'Times New Roman', serif;
 }
 

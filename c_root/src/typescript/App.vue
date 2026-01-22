@@ -60,6 +60,28 @@
     <div class="c-foreground-layer">
       <ComplexWaveVisualization />
     </div>
+
+    <!-- Navigation Buttons - Fixed at Bottom -->
+    <div class="c-nav-footer" @mouseenter="showNav" @mouseleave="startAutoHide">
+      <button
+        class="c-nav-toggle"
+        :class="{ 'c-nav-toggle--open': navOpen }"
+        @click="closeNav"
+      >
+        <span class="c-nav-arrow">↑</span>
+      </button>
+      <div class="c-nav-menu" :class="{ 'c-nav-menu--visible': navOpen }">
+        <a href="https://diegonmarcos.github.io/myprofile/" class="c-nav-button" target="_blank" rel="noopener noreferrer">
+          Profile
+        </a>
+        <a href="https://diegonmarcos.github.io/linktree/" class="c-nav-button" target="_blank" rel="noopener noreferrer">
+          Linktree
+        </a>
+        <a href="https://diegonmarcos.github.io/landpage/" class="c-nav-button" target="_blank" rel="noopener noreferrer">
+          Landpage
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -73,6 +95,35 @@ const fractalMode = ref(23);
 const fractalKey = ref(0);
 const brightness = ref(50);
 const menuOpen = ref(false);
+const navOpen = ref(false);
+
+let autoHideTimer: number | null = null;
+
+const showNav = () => {
+  // Clear any existing auto-hide timer
+  if (autoHideTimer) {
+    clearTimeout(autoHideTimer);
+    autoHideTimer = null;
+  }
+  navOpen.value = true;
+};
+
+const startAutoHide = () => {
+  // Set 1-second timer to auto-collapse
+  autoHideTimer = window.setTimeout(() => {
+    navOpen.value = false;
+    autoHideTimer = null;
+  }, 1000);
+};
+
+const closeNav = () => {
+  // Immediately close the menu and cancel any timer
+  if (autoHideTimer) {
+    clearTimeout(autoHideTimer);
+    autoHideTimer = null;
+  }
+  navOpen.value = false;
+};
 
 interface FractalType {
   value: number;

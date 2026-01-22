@@ -33,6 +33,17 @@ jobs:
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================
+      - name: 🔨 Build Root Index (c_root)
+        id: build-c-root
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c_root/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building Root Index (c_root)..."
+          cd c_root/1.ops
+          bash build.sh build
+          cd ../../
+          echo "✅ Root Index build complete"
+
       - name: 🔨 Build Landpage
         id: build-landpage
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/landpage/')
@@ -286,6 +297,17 @@ jobs:
           cd ../../..
           echo "✅ Carto build complete"
 
+      - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
+        id: build-mytrips
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mytrips/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building MyTrips..."
+          cd c_Personal_Tools/mytrips/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ MyTrips build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -295,6 +317,13 @@ jobs:
           echo "📊 BUILD STATUS SUMMARY"
           echo "============================================"
           FAILED=""
+
+          if [ "${{ steps.build-c-root.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Root Index (c_root)"
+            FAILED="$FAILED c_root"
+          elif [ "${{ steps.build-c-root.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Root Index (c_root)"
+          fi
 
           if [ "${{ steps.build-landpage.outcome }}" == "failure" ]; then
             echo "❌ FAILED: Landpage"
@@ -429,6 +458,13 @@ jobs:
             echo "✅ SUCCESS: Carto"
           fi
 
+          if [ "${{ steps.build-mytrips.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyTrips"
+            FAILED="$FAILED mytrips"
+          elif [ "${{ steps.build-mytrips.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyTrips"
+          fi
+
           if [ "${{ steps.build-mymail.outcome }}" == "failure" ]; then
             echo "❌ FAILED: MyMail"
             FAILED="$FAILED mymail"
@@ -475,6 +511,15 @@ jobs:
         run: |
           echo "📋 Creating _site directory and copying all files..."
           mkdir -p _site
+
+          # Copy c_root build to ROOT of _site (this is the main index.html)
+          if [ -d "c_root/dist" ]; then
+            echo "📦 Copying Root Index (c_root) to _site root..."
+            cp -rL c_root/dist/* _site/ 2>/dev/null || cp -r c_root/dist/* _site/
+            echo "✅ Root Index copied to _site/"
+          else
+            echo "⏭️  Skipping Root Index copy (no dist directory found)"
+          fi
 
           # Copy cv_pdf build (dist contents only)
           if [ -d "b_Work_Profiles/cv_pdf/dist" ]; then
@@ -732,6 +777,16 @@ jobs:
             echo "✅ Carto build copied to _site/carto/"
           else
             echo "⏭️  Skipping Carto copy (no dist directory found)"
+          fi
+
+          # Copy MyTrips build (if dist exists - Vue 3 + TypeScript + SCSS)
+          if [ -d "c_Personal_Tools/mytrips/dist" ]; then
+            echo "📦 Copying MyTrips build..."
+            mkdir -p _site/mytrips
+            cp -rL c_Personal_Tools/mytrips/dist/* _site/mytrips/ 2>/dev/null || cp -r c_Personal_Tools/mytrips/dist/* _site/mytrips/
+            echo "✅ MyTrips build copied to _site/mytrips/"
+          else
+            echo "⏭️  Skipping MyTrips copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

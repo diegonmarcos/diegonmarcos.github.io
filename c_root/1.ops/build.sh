@@ -87,6 +87,13 @@ build() {
     cd "$PROJECT_ROOT"
     NODE_PATH="$GLOBAL_NODE_MODULES" "$GLOBAL_NODE_MODULES/.bin/vite" build
 
+    # Remove type="module" from HTML for file:// protocol support
+    if [ -f "$DIST_DIR/index.html" ]; then
+        print_step "Removing type=\"module\" for file:// protocol support..."
+        sed -i 's/ type="module"//g' "$DIST_DIR/index.html"
+        print_success "HTML updated for offline use"
+    fi
+
     if [ $? -eq 0 ]; then
         print_success "Build complete!"
         print_success "Output: $DIST_DIR/"

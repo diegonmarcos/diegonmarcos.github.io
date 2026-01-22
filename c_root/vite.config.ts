@@ -15,6 +15,7 @@ export default defineConfig({
     assetsInlineLimit: 0,  // Don't inline assets as base64
     rollupOptions: {
       output: {
+        format: 'iife',  // Use IIFE instead of ES modules for file:// protocol support
         assetFileNames: 'assets/[name]-[hash][extname]',
         chunkFileNames: 'assets/[name]-[hash].js',
         entryFileNames: 'assets/[name]-[hash].js'

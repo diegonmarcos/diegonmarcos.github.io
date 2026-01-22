@@ -5,7 +5,7 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [vue()],
   root: 'src',
-  base: './',
+  base: '/mytrips/',
   cacheDir: resolve(__dirname, '../../node_modules/.vite'),
   build: {
     outDir: '../dist',

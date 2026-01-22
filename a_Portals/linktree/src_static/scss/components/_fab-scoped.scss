@@ -44,6 +44,9 @@
     @media (max-width: 768px) {
         width: 45px !important;
         height: 45px !important;
+        // Use safe-area-inset to account for mobile browser chrome
+        top: max(1rem, env(safe-area-inset-top, 1rem)) !important;
+        right: max(1rem, env(safe-area-inset-right, 1rem)) !important;
     }
 
     // Mindmap FAB Image
@@ -98,8 +101,10 @@
     transform: none !important;
 
     @media (max-width: 768px) {
-        bottom: 1rem !important;
-        right: 1rem !important;
+        // Use safe-area-inset to account for mobile browser chrome
+        // This prevents FAB movement when address bar hides/shows
+        bottom: max(1rem, env(safe-area-inset-bottom, 1rem)) !important;
+        right: max(1rem, env(safe-area-inset-right, 1rem)) !important;
     }
 }
 

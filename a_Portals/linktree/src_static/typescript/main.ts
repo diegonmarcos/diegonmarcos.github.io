@@ -10,7 +10,6 @@ import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
 import { initSmoothSnap } from './modules/smoothSnap';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
-import { initScrollFab } from './modules/scrollFab';
 
 /**
  * Initialize all application modules
@@ -46,11 +45,8 @@ function initApp(): void {
   // Initialize performance/fast mode toggle
   initPerformanceMode();
 
-  // Initialize smooth scroll snap
-  initSmoothSnap();
-
-  // DISABLED: Initialize scroll-based FAB hiding
-  // initScrollFab();
+  // DISABLED: Smooth snap might be causing page resize issues
+  // initSmoothSnap();
 
   // Show FABs after everything is loaded and positioned
   requestAnimationFrame(() => {

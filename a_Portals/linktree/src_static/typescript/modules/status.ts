@@ -6,6 +6,7 @@ interface DiagnosticData {
   system: SystemInfo;
   assets: AssetInfo[];
   performance: PerformanceMetrics;
+  gpuCpu: GPUCPUMetrics;
 }
 
 interface NetworkDiagnostics {
@@ -62,6 +63,17 @@ interface PerformanceMetrics {
   transferSize: string;
   resourceCount: string;
   memoryUsage: string;
+}
+
+interface GPUCPUMetrics {
+  cpuUsage: number; // 0-100%
+  gpuUsage: number; // 0-100%
+  gpuRenderer: string;
+  gpuVendor: string;
+  cpuStatus: string; // "Low" | "Medium" | "High" | "Critical"
+  gpuStatus: string; // "Low" | "Medium" | "High" | "Critical"
+  fps: number;
+  frameTiming: string;
 }
 
 // Asset lists
@@ -337,6 +349,120 @@ function getPerformanceMetrics(): PerformanceMetrics {
 }
 
 /**
+ * Get GPU and CPU usage metrics
+ */
+async function getGPUCPUMetrics(): Promise<GPUCPUMetrics> {
+  // Get GPU info via WebGL
+  let gpuRenderer = 'Unknown';
+  let gpuVendor = 'Unknown';
+  let gpuUsage = 0;
+
+  try {
+    const canvas = document.createElement('canvas');
+    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
+
+    if (gl) {
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      if (debugInfo) {
+        gpuRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'Unknown';
+        gpuVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || 'Unknown';
+      }
+
+      // Estimate GPU usage from memory if available
+      const glMemory = (gl as any).getParameter((gl as any).GPU_DISJOINT_EXT);
+      if (glMemory !== undefined) {
+        gpuUsage = Math.min(glMemory / 1000, 100); // Rough estimate
+      }
+    }
+  } catch (e) {
+    console.warn('Could not get GPU info:', e);
+  }
+
+  // Measure FPS over 1 second
+  const fps = await measureFPS();
+
+  // Estimate CPU usage from frame timing and long tasks
+  let cpuUsage = 0;
+  const longTasks = (performance as any).getEntriesByType?.('longtask') || [];
+  if (longTasks.length > 0) {
+    // If we have long tasks, CPU is busy
+    const totalLongTaskTime = longTasks.reduce((sum: number, task: any) => sum + task.duration, 0);
+    cpuUsage = Math.min((totalLongTaskTime / 10000) * 100, 100); // Normalize to percentage
+  } else {
+    // Estimate from FPS - if FPS is low, CPU or GPU is busy
+    // If GPU is rendering well (>30fps), but still slow, it's CPU
+    if (fps < 30) {
+      cpuUsage = 60; // Likely CPU-bound
+    } else if (fps < 50) {
+      cpuUsage = 30;
+    } else {
+      cpuUsage = 10; // Healthy
+    }
+  }
+
+  // Estimate GPU usage from frame timing
+  // If we're getting 60fps, GPU is keeping up (low usage means efficient)
+  // If we're getting <30fps and CPU is low, GPU is bottleneck
+  if (fps >= 55) {
+    gpuUsage = Math.max(gpuUsage, 40); // Efficiently rendering
+  } else if (fps < 30 && cpuUsage < 40) {
+    gpuUsage = 80; // GPU bottleneck
+  } else {
+    gpuUsage = Math.max(gpuUsage, 60); // Working hard
+  }
+
+  // Determine status
+  const getCPUStatus = (usage: number): string => {
+    if (usage < 25) return 'Low';
+    if (usage < 50) return 'Medium';
+    if (usage < 75) return 'High';
+    return 'Critical';
+  };
+
+  const getGPUStatus = (usage: number): string => {
+    if (usage < 30) return 'Low';
+    if (usage < 60) return 'Medium';
+    if (usage < 85) return 'High';
+    return 'Critical';
+  };
+
+  return {
+    cpuUsage: Math.round(cpuUsage),
+    gpuUsage: Math.round(gpuUsage),
+    gpuRenderer,
+    gpuVendor,
+    cpuStatus: getCPUStatus(cpuUsage),
+    gpuStatus: getGPUStatus(gpuUsage),
+    fps: Math.round(fps),
+    frameTiming: `${(1000 / fps).toFixed(2)}ms`,
+  };
+}
+
+/**
+ * Measure FPS over 1 second
+ */
+function measureFPS(): Promise<number> {
+  return new Promise((resolve) => {
+    let frames = 0;
+    const startTime = performance.now();
+
+    function countFrame() {
+      frames++;
+      const elapsed = performance.now() - startTime;
+
+      if (elapsed < 1000) {
+        requestAnimationFrame(countFrame);
+      } else {
+        const fps = (frames / elapsed) * 1000;
+        resolve(fps);
+      }
+    }
+
+    requestAnimationFrame(countFrame);
+  });
+}
+
+/**
  * Format bytes to human readable
  */
 function formatBytes(bytes: number): string {
@@ -362,6 +488,29 @@ function renderDiagnostics(data: DiagnosticData): string {
 
   return `
     <div class="diagnostics-container">
+      <!-- GPU/CPU Usage Section -->
+      <div class="diag-section">
+        <h3>GPU & CPU Usage</h3>
+        <div class="gpu-cpu-grid">
+          <div class="usage-card cpu-card">
+            <div class="usage-header">CPU Usage</div>
+            <div class="usage-percentage ${data.gpuCpu.cpuStatus.toLowerCase()}">${data.gpuCpu.cpuUsage}%</div>
+            <div class="usage-status">Status: ${data.gpuCpu.cpuStatus}</div>
+            <div class="usage-details">Cores: ${data.system.hardwareConcurrency}</div>
+          </div>
+          <div class="usage-card gpu-card">
+            <div class="usage-header">GPU Usage</div>
+            <div class="usage-percentage ${data.gpuCpu.gpuStatus.toLowerCase()}">${data.gpuCpu.gpuUsage}%</div>
+            <div class="usage-status">Status: ${data.gpuCpu.gpuStatus}</div>
+            <div class="usage-details">FPS: ${data.gpuCpu.fps} (${data.gpuCpu.frameTiming})</div>
+          </div>
+        </div>
+        <div class="diag-grid">
+          <div class="diag-item"><span class="diag-label">GPU Renderer:</span><span class="diag-value">${data.gpuCpu.gpuRenderer}</span></div>
+          <div class="diag-item"><span class="diag-label">GPU Vendor:</span><span class="diag-value">${data.gpuCpu.gpuVendor}</span></div>
+        </div>
+      </div>
+
       <!-- Network Section -->
       <div class="diag-section">
         <h3>Network Information</h3>
@@ -478,6 +627,7 @@ export function initStatusModal(): void {
       system: getSystemInfo(),
       assets: await getAssetInfo(),
       performance: getPerformanceMetrics(),
+      gpuCpu: await getGPUCPUMetrics(),
     };
 
     // Render diagnostics

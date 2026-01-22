@@ -12,16 +12,28 @@ export function initMindmapOverlay(): void {
   const overlay = getElementById<HTMLElement>('mindmap-overlay');
   const closeBtn = getElementById<HTMLButtonElement>('mindmap-overlay-close');
   const iframe = getElementById<HTMLIFrameElement>('mindmap-iframe');
+  const backgroundVideo = getElementById<HTMLVideoElement>('background-video');
 
   if (!mindmapBtn || !overlay || !closeBtn || !iframe) return;
 
   const mindmapUrl = mindmapBtn.href;
   let hoverTimeout: number | null = null;
+  let iframeLoaded = false;
 
   const openOverlay = () => {
-    // Always load iframe src to ensure it loads
-    iframe.src = mindmapUrl;
-    console.log('Opening mindmap overlay with URL:', mindmapUrl);
+    // Load iframe src only once (don't reload every time)
+    if (!iframeLoaded) {
+      iframe.src = mindmapUrl;
+      iframeLoaded = true;
+      console.log('Loading mindmap iframe for first time:', mindmapUrl);
+    }
+
+    // CRITICAL GPU FIX #1: Pause background video to free GPU resources
+    if (backgroundVideo) {
+      backgroundVideo.pause();
+      console.log('Paused background video (GPU optimization)');
+    }
+
     addClass(overlay, 'active');
     // Hide mindmap button when overlay is open
     addClass(mindmapBtn, 'hidden');
@@ -31,6 +43,13 @@ export function initMindmapOverlay(): void {
     removeClass(overlay, 'active');
     // Show mindmap button when overlay is closed
     removeClass(mindmapBtn, 'hidden');
+
+    // Resume background video when overlay closes
+    if (backgroundVideo) {
+      backgroundVideo.play().catch(err => {
+        console.warn('Could not resume background video:', err);
+      });
+    }
   };
 
   // Hover to open (with delay to prevent accidental triggers)

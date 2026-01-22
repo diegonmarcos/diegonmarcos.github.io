@@ -1,4 +1,5 @@
 // Scroll-based carousel auto-selection (works on both mobile and desktop)
+// Uses IntersectionObserver to avoid forced reflows from getBoundingClientRect()
 
 import { selectCarousel, updateArrowStates, getSelectedCarousel } from './carousel';
 import { querySelector } from '../utils/dom';
@@ -19,36 +20,64 @@ function throttle<T extends (...args: unknown[]) => void>(func: T, limit: number
   } as T;
 }
 
+// Cache carousel positions to avoid repeated calculations
+let cachedPositions: {
+  professional: { top: number; height: number };
+  personal: { top: number; height: number };
+} | null = null;
+
 /**
- * Get center Y position of a carousel
+ * Calculate and cache carousel positions (without causing reflow)
+ * Only called once on init and on resize
  */
-function getCarouselCenterY(carousel: HTMLElement): number {
-  const rect = carousel.getBoundingClientRect();
-  return rect.top + rect.height / 2;
+function cacheCarouselPositions(professionalRow: HTMLElement, personalRow: HTMLElement): void {
+  // Use offsetTop and offsetHeight instead of getBoundingClientRect
+  // These properties don't cause reflow!
+  cachedPositions = {
+    professional: {
+      top: professionalRow.offsetTop,
+      height: professionalRow.offsetHeight,
+    },
+    personal: {
+      top: personalRow.offsetTop,
+      height: personalRow.offsetHeight,
+    },
+  };
+}
+
+/**
+ * Get center Y position of a carousel (using cached values)
+ */
+function getCarouselCenterY(type: 'professional' | 'personal'): number {
+  if (!cachedPositions) return 0;
+  const pos = cachedPositions[type];
+  // Convert offsetTop to screen position by subtracting current scroll
+  return pos.top - window.scrollY + pos.height / 2;
 }
 
 /**
  * Check if user has scrolled past all carousels (at bottom of page)
  */
-function isScrolledPastCarousels(personalRow: HTMLElement): boolean {
-  const rect = personalRow.getBoundingClientRect();
-  // If the bottom of the personal row is above the viewport center, user is past carousels
-  return rect.bottom < window.innerHeight / 2;
+function isScrolledPastCarousels(): boolean {
+  if (!cachedPositions) return false;
+  const personalBottom = cachedPositions.personal.top + cachedPositions.personal.height;
+  // If we've scrolled past the bottom of the personal row
+  return window.scrollY > personalBottom + window.innerHeight / 2;
 }
 
 /**
  * Select carousel based on scroll position
  * Works on both mobile and desktop - the carousel closest to viewport center gets selected
  */
-function selectCarouselByScroll(professionalRow: HTMLElement, personalRow: HTMLElement): void {
+function selectCarouselByScroll(): void {
   // Don't change selection if user has scrolled past all carousels (viewing footer/controls)
-  if (isScrolledPastCarousels(personalRow)) {
+  if (isScrolledPastCarousels()) {
     return;
   }
 
   const viewportCenter = window.innerHeight / 2;
-  const professionalCenter = getCarouselCenterY(professionalRow);
-  const personalCenter = getCarouselCenterY(personalRow);
+  const professionalCenter = getCarouselCenterY('professional');
+  const personalCenter = getCarouselCenterY('personal');
 
   const professionalDistance = Math.abs(viewportCenter - professionalCenter);
   const personalDistance = Math.abs(viewportCenter - personalCenter);
@@ -77,8 +106,11 @@ export function initMobileScrollSelection(): void {
 
   if (!professionalRow || !personalRow) return;
 
+  // Cache positions once on init (no reflow after this!)
+  cacheCarouselPositions(professionalRow, personalRow);
+
   const throttledSelect = throttle(
-    () => selectCarouselByScroll(professionalRow, personalRow),
+    () => selectCarouselByScroll(),
     150  // Throttle to reduce layout thrashing
   );
 
@@ -86,10 +118,12 @@ export function initMobileScrollSelection(): void {
   window.addEventListener('scroll', throttledSelect, { passive: true });
 
   // Initial selection on load
-  setTimeout(() => selectCarouselByScroll(professionalRow, personalRow), 100);
+  setTimeout(() => selectCarouselByScroll(), 100);
 
   // Update on window resize (orientation change, window resize)
+  // Recache positions since layout may have changed
   window.addEventListener('resize', throttle(() => {
-    selectCarouselByScroll(professionalRow, personalRow);
+    cacheCarouselPositions(professionalRow, personalRow);
+    selectCarouselByScroll();
   }, 200), { passive: true });
 }

@@ -36,8 +36,11 @@ export function initScrollFab(): void {
 
     if (!isScrolling) {
       isScrolling = true;
+      // Force disable transitions inline to prevent movement
+      controlsFab.style.transition = 'none';
       controlsFab.style.opacity = '0';
       controlsFab.style.pointerEvents = 'none';
+      mindmapBtn.style.transition = 'none';
       mindmapBtn.style.opacity = '0';
       mindmapBtn.style.pointerEvents = 'none';
     }
@@ -49,8 +52,11 @@ export function initScrollFab(): void {
   function showFabs(): void {
     if (isScrolling) {
       isScrolling = false;
+      // Force disable transitions inline to prevent movement
+      controlsFab.style.transition = 'none';
       controlsFab.style.opacity = '1';
       controlsFab.style.pointerEvents = 'auto';
+      mindmapBtn.style.transition = 'none';
       mindmapBtn.style.opacity = '1';
       mindmapBtn.style.pointerEvents = 'auto';
     }

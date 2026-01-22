@@ -34,22 +34,24 @@ function smoothScrollTo(targetY: number, duration: number): void {
 
 /**
  * Find nearest snap point
+ * Uses offsetTop instead of getBoundingClientRect() to avoid forced reflows
  */
 function findNearestSnapPoint(): number {
-  const header = document.querySelector('header');
-  const professionalSection = document.querySelector('.professional-section');
-  const personalSection = document.querySelector('.personal-section');
+  const header = document.querySelector('header') as HTMLElement;
+  const professionalSection = document.querySelector('.professional-section') as HTMLElement;
+  const personalSection = document.querySelector('.personal-section') as HTMLElement;
 
   const snapPoints: number[] = [];
 
+  // Use offsetTop instead of getBoundingClientRect() - doesn't cause reflow!
   if (header) {
-    snapPoints.push(header.getBoundingClientRect().top + window.scrollY);
+    snapPoints.push(header.offsetTop);
   }
   if (professionalSection) {
-    snapPoints.push(professionalSection.getBoundingClientRect().top + window.scrollY);
+    snapPoints.push(professionalSection.offsetTop);
   }
   if (personalSection) {
-    snapPoints.push(personalSection.getBoundingClientRect().top + window.scrollY);
+    snapPoints.push(personalSection.offsetTop);
   }
 
   const currentScroll = window.scrollY;

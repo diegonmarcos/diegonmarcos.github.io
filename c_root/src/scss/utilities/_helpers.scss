@@ -1,0 +1,22 @@
+// =============================================================================
+// UTILITIES - Helpers
+// =============================================================================
+// Utility classes for overrides and helpers
+
+// Visibility utilities
+.u-hidden {
+  display: none !important;
+}
+
+.u-invisible {
+  visibility: hidden !important;
+}
+
+// Pointer events
+.u-no-pointer {
+  pointer-events: none !important;
+}
+
+.u-pointer {
+  pointer-events: auto !important;
+}

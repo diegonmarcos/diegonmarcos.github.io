@@ -1,0 +1,36 @@
+// =============================================================================
+// TOOLS - Mixins
+// =============================================================================
+// Reusable mixins and functions
+// Should NOT generate any CSS output
+
+@use '../settings/variables' as *;
+
+// Glass morphism effect
+@mixin glass-morphism($opacity: 0.1, $blur: 4px) {
+  background: rgba(255, 255, 255, $opacity);
+  backdrop-filter: blur($blur);
+}
+
+// Flex centering
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Button reset
+@mixin button-reset {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+}
+
+// Smooth transition
+@mixin smooth-transition($properties...) {
+  transition-property: $properties;
+  transition-duration: $transition-medium;
+  transition-timing-function: ease;
+}

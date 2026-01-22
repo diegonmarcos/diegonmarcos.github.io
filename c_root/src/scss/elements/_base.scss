@@ -1,0 +1,25 @@
+// =============================================================================
+// ELEMENTS - Base
+// =============================================================================
+// Bare HTML elements (H1, a, button, etc.)
+
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+body {
+  background-color: $color-black;
+  font-family: $font-stack;
+  color: $color-white;
+}
+
+button {
+  @include button-reset;
+}
+
+select {
+  font-family: $font-stack;
+}
+
+canvas {
+  display: block;
+}

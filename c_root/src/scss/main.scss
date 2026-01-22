@@ -1,0 +1,42 @@
+// =============================================================================
+// Main SCSS Entry Point - ITCSS Architecture
+// =============================================================================
+// Inverted Triangle CSS - layers ordered by specificity (low to high)
+
+// SETTINGS - Variables, config (no CSS output)
+@use 'settings/variables' as *;
+
+// TOOLS - Mixins, functions (no CSS output)
+@use 'tools/mixins' as *;
+
+// GENERIC - Reset, normalize
+@use 'generic/reset';
+
+// ELEMENTS - Bare HTML elements
+@use 'elements/base';
+
+// OBJECTS - Design patterns, layout structures
+@use 'objects/layouts';
+
+// COMPONENTS - UI components
+@use 'components/layers';
+@use 'components/controls';
+
+// UTILITIES - Helpers and overrides
+@use 'utilities/helpers';
+
+// =============================================================================
+// App Container
+// =============================================================================
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}

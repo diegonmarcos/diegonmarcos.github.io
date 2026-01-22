@@ -1,0 +1,38 @@
+// =============================================================================
+// COMPONENTS - Layers
+// =============================================================================
+// Background and foreground layer styles
+
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+.c-background-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-background;
+  @include smooth-transition(opacity, filter);
+
+  &--hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+.c-foreground-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: $z-foreground;
+  @include flex-center;
+  pointer-events: none;
+}

@@ -1,0 +1,144 @@
+// =============================================================================
+// COMPONENTS - Controls
+// =============================================================================
+// UI components for fractal controls
+
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+.c-controls {
+  position: fixed;
+  top: $spacing-md;
+  right: $spacing-md;
+  z-index: $z-controls;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  align-items: flex-end;
+}
+
+.c-menu-toggle {
+  @include glass-morphism(0.15);
+  @include smooth-transition(background, transform);
+  border: 1px solid $color-transparent-border;
+  color: $color-white;
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-md;
+  font-size: $font-size-menu-toggle;
+  @include flex-center;
+
+  &:hover {
+    background: $color-transparent-medium;
+  }
+
+  &--open {
+    transform: rotate(90deg);
+  }
+}
+
+.c-menu-panel {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+  align-items: flex-end;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  @include smooth-transition(max-height, opacity);
+
+  &--visible {
+    max-height: 200px;
+    opacity: 1;
+  }
+}
+
+.c-controls-row {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+}
+
+.c-fractal-toggle {
+  @include glass-morphism(0.1);
+  @include smooth-transition(background);
+  border: 1px solid $color-transparent-border;
+  color: $color-white;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-sm;
+  font-size: $font-size-control;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.c-fractal-select {
+  @include glass-morphism(0.1);
+  border: 1px solid $color-transparent-border;
+  color: $color-white;
+  padding: $spacing-sm $spacing-lg;
+  border-radius: $radius-sm;
+  font-size: $font-size-control;
+  outline: none;
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  @include smooth-transition(background-color);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  option {
+    background: $color-dark-bg;
+    color: $color-white;
+  }
+}
+
+.c-slider-container {
+  @include glass-morphism(0.1);
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  border: 1px solid $color-transparent-border;
+  padding: $spacing-xs $spacing-lg;
+  border-radius: $radius-sm;
+}
+
+.c-slider-label {
+  color: $color-white;
+  font-size: $font-size-slider-label;
+  white-space: nowrap;
+}
+
+.c-brightness-slider {
+  appearance: none;
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: $color-transparent-border;
+  outline: none;
+  cursor: pointer;
+
+  &::-webkit-slider-thumb {
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: $color-white;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  &::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: $color-white;
+    cursor: pointer;
+    border: none;
+  }
+}

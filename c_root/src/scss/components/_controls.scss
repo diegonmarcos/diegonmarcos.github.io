@@ -18,18 +18,24 @@
 }
 
 .c-menu-toggle {
-  @include glass-morphism(0.15);
+  // TRANSPARENT - NO BACKGROUND
+  background: transparent !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   @include smooth-transition(background, transform);
-  border: 1px solid $color-transparent-border;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   color: $color-white;
   width: 36px;
   height: 36px;
   border-radius: $radius-md;
   font-size: $font-size-menu-toggle;
   @include flex-center;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
 
   &:hover {
-    background: $color-transparent-medium;
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.25);
   }
 
   &--open {

@@ -1,3 +1,11 @@
+// ===== PRECISION AND UNIFORMS =====
+
+precision highp float;
+
+uniform float uTime;
+uniform vec2 uResolution;
+uniform int uMode;
+
 // ===== BASE FUNCTIONS AND UTILITIES =====
 
 #define MAX_STEPS 60

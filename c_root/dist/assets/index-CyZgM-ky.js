@@ -780,7 +780,15 @@ void main() {
   vUV = aPosition;
   gl_Position = vec4(aPosition, 0.0, 1.0);
 }
-`,gc=`// ===== BASE FUNCTIONS AND UTILITIES =====
+`,gc=`// ===== PRECISION AND UNIFORMS =====
+
+precision highp float;
+
+uniform float uTime;
+uniform vec2 uResolution;
+uniform int uMode;
+
+// ===== BASE FUNCTIONS AND UTILITIES =====
 
 #define MAX_STEPS 60
 #define MAX_DIST 20.0

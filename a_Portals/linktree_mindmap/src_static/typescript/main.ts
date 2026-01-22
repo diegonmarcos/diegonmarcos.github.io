@@ -29,6 +29,7 @@ import {
   focusOnNodeWithUI,
   setCurrentNode,
 } from './modules/ui';
+import { GalaxyRenderer } from './modules/galaxy';
 
 // -----------------------------------------------------------------------------
 // State
@@ -42,76 +43,8 @@ let expansionFrameId: number | null = null;
 // DOM elements
 let graphContainer: HTMLElement | null = null;
 
-// -----------------------------------------------------------------------------
-// CSS Particles (GPU-accelerated, no JS loop)
-// -----------------------------------------------------------------------------
-
-function initCSSParticles(): void {
-  const container = document.createElement('div');
-  container.id = 'particles-layer';
-  container.style.cssText = `
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 1;
-    overflow: hidden;
-  `;
-
-  // Inject particle CSS animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes particle-float {
-      0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-      10% { opacity: var(--particle-opacity); }
-      90% { opacity: var(--particle-opacity); }
-      100% { transform: translateY(-20px) translateX(var(--drift)); opacity: 0; }
-    }
-    @keyframes particle-twinkle {
-      0%, 100% { opacity: var(--particle-opacity); }
-      50% { opacity: calc(var(--particle-opacity) * 1.5); }
-    }
-    .particle {
-      position: absolute;
-      width: var(--size);
-      height: var(--size);
-      background: radial-gradient(circle, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-      border-radius: 50%;
-      animation:
-        particle-float var(--duration) linear infinite,
-        particle-twinkle var(--twinkle) ease-in-out infinite;
-      will-change: transform, opacity;
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Create 40 particles with varied properties
-  for (let i = 0; i < 40; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    const size = 1 + Math.random() * 3;
-    const duration = 15 + Math.random() * 25;
-    const delay = Math.random() * duration;
-    const drift = -30 + Math.random() * 60;
-    const opacity = 0.2 + Math.random() * 0.4;
-    const twinkle = 2 + Math.random() * 4;
-
-    particle.style.cssText = `
-      left: ${Math.random() * 100}%;
-      --size: ${size}px;
-      --duration: ${duration}s;
-      --drift: ${drift}px;
-      --particle-opacity: ${opacity};
-      --twinkle: ${twinkle}s;
-      animation-delay: -${delay}s, -${Math.random() * twinkle}s;
-    `;
-    container.appendChild(particle);
-  }
-
-  document.body.insertBefore(container, document.body.firstChild);
-}
+// WebGL galaxy background
+let galaxyRenderer: GalaxyRenderer | null = null;
 
 // -----------------------------------------------------------------------------
 // Initialize Application
@@ -127,8 +60,8 @@ async function init(): Promise<void> {
       throw new Error('Graph container element not found');
     }
 
-    // Initialize CSS particles (no JS loop needed)
-    initCSSParticles();
+    // Initialize WebGL galaxy background
+    galaxyRenderer = new GalaxyRenderer(graphContainer);
 
     // Initialize renderer (DOM-based)
     initRenderer(graphContainer);
@@ -309,6 +242,9 @@ window.addEventListener('resize', handleResize);
 function cleanup(): void {
   if (expansionFrameId !== null) {
     cancelAnimationFrame(expansionFrameId);
+  }
+  if (galaxyRenderer) {
+    galaxyRenderer.destroy();
   }
   window.removeEventListener('resize', handleResize);
 }

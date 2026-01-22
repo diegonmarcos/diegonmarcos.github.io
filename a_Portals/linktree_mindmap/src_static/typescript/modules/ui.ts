@@ -118,11 +118,6 @@ export function initUI(
   // Keyboard shortcuts
   document.addEventListener('keydown', handleKeydown);
 
-  // Show hints on first visit
-  if (!localStorage.getItem('mindmap-hints-shown')) {
-    setTimeout(showKeyboardHints, 2000);
-  }
-
   // Initial zoom indicator
   updateZoomIndicator();
 }
@@ -479,6 +474,17 @@ function getNodePath(node: GraphNode): string {
 // Minimap
 // -----------------------------------------------------------------------------
 
+function hexToRgb(hex: string): { r: number; g: number; b: number } {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : { r: 255, g: 255, b: 255 };
+}
+
 export function updateMinimap(nodes: GraphNode[], edges: any[]): void {
   if (!minimapCanvas || !minimapViewport || !view) return;
 
@@ -518,13 +524,25 @@ export function updateMinimap(nodes: GraphNode[], edges: any[]): void {
     ctx.stroke();
   });
 
-  // Draw nodes
+  // Draw nodes (with colors matching main graph)
   nodes.forEach((n) => {
     const x = n.x * scale + offsetX;
     const y = n.y * scale + offsetY;
     const r = Math.max(2, n.radius * scale * 0.3);
 
-    ctx.fillStyle = n.highlighted ? n.color : 'rgba(255,255,255,0.5)';
+    // Always use node color, with glow effect for highlighted nodes
+    if (n.highlighted) {
+      // Glow effect for highlighted nodes
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = n.color;
+      ctx.fillStyle = n.color;
+    } else {
+      ctx.shadowBlur = 0;
+      // Use node color with some transparency for non-highlighted nodes
+      const rgb = hexToRgb(n.color);
+      ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 0.8)`;
+    }
+
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();

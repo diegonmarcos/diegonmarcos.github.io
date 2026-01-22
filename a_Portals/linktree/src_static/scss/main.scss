@@ -40,3 +40,8 @@
 // 5. UTILITIES - Media Queries (loaded last for overrides)
 // ---------------------------------------------------------------------------
 @use 'utilities/media-queries';
+
+// ---------------------------------------------------------------------------
+// 6. FAB SCOPED CSS - Vue-style isolation (MUST BE LAST)
+// ---------------------------------------------------------------------------
+@use 'components/fab-scoped';

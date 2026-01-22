@@ -76,7 +76,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform $transition-medium, box-shadow $transition-medium, border-color $transition-medium, background $transition-medium;
+    transition: box-shadow $transition-medium, border-color $transition-medium, background $transition-medium;
     position: relative;
     overflow: hidden;
 

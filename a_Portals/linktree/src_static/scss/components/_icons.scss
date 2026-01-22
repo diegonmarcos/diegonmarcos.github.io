@@ -56,7 +56,7 @@
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 50%;
     cursor: pointer;
-    transition: transform $transition-medium, box-shadow $transition-medium, border-color $transition-medium, opacity 0.3s ease;
+    transition: box-shadow $transition-medium, border-color $transition-medium, opacity 0.3s ease;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow:

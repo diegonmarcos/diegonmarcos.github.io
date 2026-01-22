@@ -112,7 +112,6 @@
 .mindmap-btn.hidden {
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease;
 }
 
 .mindmap-overlay-content {
@@ -192,7 +191,6 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 50%;
     cursor: pointer;
-    transition: all $transition-fast;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 
@@ -201,13 +199,11 @@
         height: 22px;
         opacity: 0.5;
         filter: invert(1);
-        transition: opacity $transition-fast;
     }
 
     &:hover {
         background: rgba(255, 255, 255, 0.15);
         border-color: rgba(255, 255, 255, 0.25);
-        transform: scale(1.05);
 
         img {
             opacity: 0.8;

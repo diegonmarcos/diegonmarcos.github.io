@@ -290,6 +290,7 @@ function hideLoadingScreen(): void {
   setTimeout(() => {
     loadingScreen.style.opacity = '0';
     setTimeout(() => {
+      loadingScreen.classList.remove('active');
       loadingScreen.style.display = 'none';
     }, 500);
   }, 500);
@@ -314,6 +315,9 @@ export async function initLoader(): Promise<void> {
     console.warn('Loading screen not found');
     return;
   }
+
+  // Show loading screen
+  loadingScreen.classList.add('active');
 
   try {
     // Check cache first

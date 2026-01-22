@@ -10,6 +10,7 @@ import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
 import { initSmoothSnap } from './modules/smoothSnap';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
+import { initScrollFab } from './modules/scrollFab';
 
 /**
  * Initialize all application modules
@@ -47,6 +48,9 @@ function initApp(): void {
 
   // Initialize smooth scroll snap
   initSmoothSnap();
+
+  // Initialize scroll-based FAB hiding
+  initScrollFab();
 }
 
 // Declare Swiper as global

@@ -15,6 +15,12 @@
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    transition: opacity 0.3s ease;
+
+    @media (max-width: 768px) {
+        bottom: 1rem;
+        right: 1rem;
+    }
 }
 
 // Controls List (Icon buttons that roll up)
@@ -64,17 +70,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all $transition-medium;
+    transition: transform $transition-medium, box-shadow $transition-medium, border-color $transition-medium, background $transition-medium;
     position: relative;
     overflow: hidden;
+
+    @media (max-width: 768px) {
+        width: 45px;
+        height: 45px;
+    }
 
     img {
         width: 24px;
         height: 24px;
         filter: invert(1) brightness(1.2);
-        transition: all $transition-medium;
+        transition: transform $transition-medium, filter $transition-medium;
         position: relative;
         z-index: 1;
+
+        @media (max-width: 768px) {
+            width: 20px;
+            height: 20px;
+        }
     }
 
     // Hover state

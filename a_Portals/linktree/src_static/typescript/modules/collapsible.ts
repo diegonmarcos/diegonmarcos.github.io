@@ -96,6 +96,7 @@ export function initCollapsibleSections(): void {
 
 /**
  * Initialize controls FAB (floating action button)
+ * Hover to expand, click to collapse, auto-collapse after 1 second
  */
 export function initControlsToggle(): void {
   const controlsFab = getElementById<HTMLElement>('controls-fab');
@@ -140,22 +141,21 @@ export function initControlsToggle(): void {
     }
   };
 
-  // FAB click handler
-  controlsFab.addEventListener('click', () => {
-    if (hasClass(controlsList, 'open')) {
-      closeControls();
-    } else {
+  // Hover to expand
+  container.addEventListener('mouseenter', () => {
+    cancelAutoClose();
+    if (!hasClass(controlsList, 'open')) {
       openControls();
     }
   });
 
-  // Cancel auto-close when hovering over controls
-  container.addEventListener('mouseenter', () => {
-    cancelAutoClose();
-  });
-
-  // Restart auto-close when leaving controls
+  // Restart auto-close when leaving
   container.addEventListener('mouseleave', () => {
     restartAutoClose();
+  });
+
+  // Click to collapse
+  controlsFab.addEventListener('click', () => {
+    closeControls();
   });
 }

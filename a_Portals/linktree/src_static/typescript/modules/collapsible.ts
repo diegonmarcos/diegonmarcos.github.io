@@ -100,18 +100,62 @@ export function initCollapsibleSections(): void {
 export function initControlsToggle(): void {
   const controlsFab = getElementById<HTMLElement>('controls-fab');
   const controlsList = getElementById<HTMLElement>('controls-list');
+  const container = controlsFab?.parentElement;
 
-  if (!controlsFab || !controlsList) return;
+  if (!controlsFab || !controlsList || !container) return;
 
+  let autoCloseTimeout: number | null = null;
+
+  const closeControls = () => {
+    removeClass(controlsList, 'open');
+    removeClass(controlsFab, 'open');
+    if (autoCloseTimeout) {
+      clearTimeout(autoCloseTimeout);
+      autoCloseTimeout = null;
+    }
+  };
+
+  const openControls = () => {
+    addClass(controlsList, 'open');
+    addClass(controlsFab, 'open');
+    // Auto-close after 1 second
+    autoCloseTimeout = window.setTimeout(() => {
+      closeControls();
+    }, 1000);
+  };
+
+  const cancelAutoClose = () => {
+    if (autoCloseTimeout) {
+      clearTimeout(autoCloseTimeout);
+      autoCloseTimeout = null;
+    }
+  };
+
+  const restartAutoClose = () => {
+    cancelAutoClose();
+    if (hasClass(controlsList, 'open')) {
+      autoCloseTimeout = window.setTimeout(() => {
+        closeControls();
+      }, 1000);
+    }
+  };
+
+  // FAB click handler
   controlsFab.addEventListener('click', () => {
     if (hasClass(controlsList, 'open')) {
-      // Close controls
-      removeClass(controlsList, 'open');
-      removeClass(controlsFab, 'open');
+      closeControls();
     } else {
-      // Open controls
-      addClass(controlsList, 'open');
-      addClass(controlsFab, 'open');
+      openControls();
     }
+  });
+
+  // Cancel auto-close when hovering over controls
+  container.addEventListener('mouseenter', () => {
+    cancelAutoClose();
+  });
+
+  // Restart auto-close when leaving controls
+  container.addEventListener('mouseleave', () => {
+    restartAutoClose();
   });
 }

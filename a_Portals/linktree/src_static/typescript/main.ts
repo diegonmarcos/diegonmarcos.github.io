@@ -51,6 +51,19 @@ function initApp(): void {
 
   // Initialize scroll-based FAB hiding
   initScrollFab();
+
+  // Remove no-transition class after page load to enable smooth transitions
+  requestAnimationFrame(() => {
+    const controlsFab = document.querySelector('.controls-fab-container');
+    const mindmapBtn = document.getElementById('mindmap-btn');
+
+    if (controlsFab) {
+      controlsFab.classList.remove('no-transition');
+    }
+    if (mindmapBtn) {
+      mindmapBtn.classList.remove('no-transition');
+    }
+  });
 }
 
 // Declare Swiper as global

@@ -71,6 +71,12 @@
         height: 45px;
     }
 
+    // Disable transitions on page load
+    &.no-transition,
+    &.no-transition * {
+        transition: none !important;
+    }
+
     img {
         width: 24px;
         height: 24px;

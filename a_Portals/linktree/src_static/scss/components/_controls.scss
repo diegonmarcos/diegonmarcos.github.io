@@ -21,6 +21,12 @@
         bottom: 1rem;
         right: 1rem;
     }
+
+    // Disable transitions on page load
+    &.no-transition,
+    &.no-transition * {
+        transition: none !important;
+    }
 }
 
 // Controls List (Icon buttons that roll up)

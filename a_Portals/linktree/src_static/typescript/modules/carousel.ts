@@ -239,16 +239,20 @@ function initKeyboardNavigation(): void {
 }
 
 /**
- * Initialize hover selection
+ * Initialize click selection (tap/click to select a carousel)
  */
-function initHoverSelection(): void {
-  professionalRow.addEventListener('mouseenter', () => {
+function initClickSelection(): void {
+  professionalRow.addEventListener('click', (e) => {
+    // Don't select if clicking on a link or button
+    if ((e.target as HTMLElement).closest('a, button')) return;
     selectCarousel('professional');
     updateArrowStates();
     updateTrackpadListeners();
   });
 
-  personalRow.addEventListener('mouseenter', () => {
+  personalRow.addEventListener('click', (e) => {
+    // Don't select if clicking on a link or button
+    if ((e.target as HTMLElement).closest('a, button')) return;
     selectCarousel('personal');
     updateArrowStates();
     updateTrackpadListeners();
@@ -319,7 +323,7 @@ export function initCarousels(): void {
   updateArrowStates();
   initTwoFingerSwipe();
   initKeyboardNavigation();
-  initHoverSelection();
+  initClickSelection();
   updateTrackpadListeners();
 }
 

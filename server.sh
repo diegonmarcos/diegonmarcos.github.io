@@ -5,9 +5,12 @@ SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/server.json"
 LOG_FILE="$SCRIPT_DIR/server.log"
 
-# Defaults
+# Defaults - use current working directory for portability (Termux/Desktop)
 DEFAULT_PORT=8000
-DEFAULT_MOUNT="$SCRIPT_DIR"
+DEFAULT_MOUNT="$(pwd)"
+
+# Live reload server preference (live-server > python fallback)
+USE_LIVE_SERVER=true
 
 # Python helper to read/write JSON safely
 py_read() {
@@ -60,7 +63,16 @@ NC='\033[0m' # No Color
 # --- Helper Functions ---
 
 is_running() {
-    if [ -n "$PID" ] && ps -p "$PID" > /dev/null 2>&1; then
+    # Check by saved PID first
+    if [ -n "$PID" ] && [ "$PID" != "0" ] && ps -p "$PID" > /dev/null 2>&1; then
+        return 0
+    fi
+    # Fallback: check if live-server is running on our port
+    if pgrep -f "live-server.*--port=$PORT" > /dev/null 2>&1; then
+        return 0
+    fi
+    # Fallback: check if python http.server is running on our port
+    if pgrep -f "http.server.*$PORT" > /dev/null 2>&1; then
         return 0
     fi
     return 1
@@ -77,8 +89,6 @@ do_start() {
         return
     fi
 
-    echo "Starting server on port $PORT serving $MOUNT_DIR..."
-    
     # Use a named pipe in /tmp to timestamp logs
     FIFO="/tmp/server_log_$$.fifo"
     rm -f "$FIFO"
@@ -93,23 +103,42 @@ do_start() {
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    # Start the Python server
-    nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
-    
+    # Check if live-server is available and enabled
+    if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
+        echo "Starting live-server (auto-refresh) on port $PORT serving $MOUNT_DIR..."
+        nohup live-server "$MOUNT_DIR" --port="$PORT" --no-browser --wait=100 > "$FIFO" 2>&1 &
+    else
+        echo "Starting Python server on port $PORT serving $MOUNT_DIR..."
+        nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
+    fi
+
     SERVER_PID=$!
-    
+
+    # Wait for server to start
+    sleep 2
+
+    # For live-server, find the actual node process PID
+    if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
+        ACTUAL_PID=$(pgrep -f "live-server.*--port=$PORT" 2>/dev/null | head -1)
+        if [ -n "$ACTUAL_PID" ]; then
+            SERVER_PID="$ACTUAL_PID"
+        fi
+    fi
+
     # Save Config & PID to JSON
     py_write "port" "$PORT" true
     py_write "mount_point" "$MOUNT_DIR" false
     py_write "pid" "$SERVER_PID" true
-    
+
     # Reload config to get the new PID
     load_config
 
-    sleep 1
-    
     if is_running; then
-        echo "Server started successfully. Logs: $LOG_FILE"
+        if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
+            echo "Live server started (auto-refresh enabled). Logs: $LOG_FILE"
+        else
+            echo "Server started successfully. Logs: $LOG_FILE"
+        fi
     else
         echo "Failed to start server. Check logs."
         rm -f "$FIFO"
@@ -120,13 +149,27 @@ do_start() {
 
 do_stop() {
     if is_running; then
-        if kill "$PID" 2>/dev/null; then
-            echo "Server stopped."
-            py_write "pid" "0" true
-        else
-            echo "Could not stop server (Process $PID not found)."
-            py_write "pid" "0" true
+        STOPPED=false
+        # Try killing by saved PID
+        if [ -n "$PID" ] && [ "$PID" != "0" ] && kill "$PID" 2>/dev/null; then
+            STOPPED=true
         fi
+        # Also kill any live-server on our port
+        LIVE_PID=$(pgrep -f "live-server.*--port=$PORT" 2>/dev/null)
+        if [ -n "$LIVE_PID" ]; then
+            kill $LIVE_PID 2>/dev/null && STOPPED=true
+        fi
+        # Also kill any python http.server on our port
+        PY_PID=$(pgrep -f "http.server.*$PORT" 2>/dev/null)
+        if [ -n "$PY_PID" ]; then
+            kill $PY_PID 2>/dev/null && STOPPED=true
+        fi
+        if [ "$STOPPED" = "true" ]; then
+            echo "Server stopped."
+        else
+            echo "Could not stop server."
+        fi
+        py_write "pid" "0" true
     else
         echo "Server is not running."
         # Ensure PID is cleared if it was stale

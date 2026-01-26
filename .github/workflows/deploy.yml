@@ -314,6 +314,17 @@ jobs:
           cd ../../..
           echo "✅ MyTrips build complete"
 
+      - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
+        id: build-leafy
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/leafy/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building Leafy..."
+          cd b_Work_Profiles/leafy/1.ops
+          bash build.sh
+          cd ../../..
+          echo "✅ Leafy build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -469,6 +480,13 @@ jobs:
             FAILED="$FAILED mytrips"
           elif [ "${{ steps.build-mytrips.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: MyTrips"
+          fi
+
+          if [ "${{ steps.build-leafy.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Leafy"
+            FAILED="$FAILED leafy"
+          elif [ "${{ steps.build-leafy.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Leafy"
           fi
 
           if [ "${{ steps.build-mymail.outcome }}" == "failure" ]; then
@@ -793,6 +811,16 @@ jobs:
             echo "✅ MyTrips build copied to _site/mytrips/"
           else
             echo "⏭️  Skipping MyTrips copy (no dist directory found)"
+          fi
+
+          # Copy Leafy build (if dist exists - TypeScript + SCSS + Shaders)
+          if [ -d "b_Work_Profiles/leafy/dist" ]; then
+            echo "📦 Copying Leafy build..."
+            mkdir -p _site/leafy
+            cp -rL b_Work_Profiles/leafy/dist/* _site/leafy/ 2>/dev/null || cp -r b_Work_Profiles/leafy/dist/* _site/leafy/
+            echo "✅ Leafy build copied to _site/leafy/"
+          else
+            echo "⏭️  Skipping Leafy copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

@@ -1,0 +1,12 @@
+// Main SCSS Entry Point
+// Import order matters for proper cascade
+
+@import 'variables';
+@import 'base';
+@import 'components/navigation';
+@import 'components/hero';
+@import 'components/cards';
+@import 'components/loader';
+@import 'components/cursor';
+@import 'animations/keyframes';
+@import 'responsive';

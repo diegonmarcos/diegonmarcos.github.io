@@ -1,0 +1,23 @@
+{
+  "name": "leaf-studios",
+  "version": "1.0.0",
+  "description": "Leaf Studios - Where Edge Technologies Meets Design",
+  "main": "dist/index.html",
+  "scripts": {
+    "build": "bash 1.ops/build.sh",
+    "dev": "bash 1.ops/build.sh && cd dist && python3 -m http.server 8080",
+    "clean": "rm -rf dist/*"
+  },
+  "keywords": [
+    "webgl",
+    "shaders",
+    "animation",
+    "frontend"
+  ],
+  "author": "Leaf Studios",
+  "license": "MIT",
+  "devDependencies": {
+    "sass": "^1.69.0",
+    "typescript": "^5.3.0"
+  }
+}

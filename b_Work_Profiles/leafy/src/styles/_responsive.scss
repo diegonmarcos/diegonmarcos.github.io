@@ -1,0 +1,33 @@
+// =====================
+// RESPONSIVE
+// =====================
+
+@media (max-width: 768px) {
+    html {
+        scroll-snap-type: none;
+    }
+
+    .nav {
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero-title {
+        letter-spacing: 10px;
+    }
+
+    .page-content {
+        padding: 80px 20px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cursor {
+        display: none;
+    }
+}

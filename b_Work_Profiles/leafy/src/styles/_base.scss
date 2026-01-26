@@ -1,0 +1,87 @@
+// =====================
+// GPU-ACCELERATED BASE
+// =====================
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--wood-darkest);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// GPU Acceleration Classes
+.gpu {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.gpu-filter {
+    will-change: filter;
+    transform: translateZ(0);
+}
+
+// =====================
+// FULL PAGE SECTIONS
+// =====================
+
+.page {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    scroll-snap-align: start;
+    overflow: hidden;
+}
+
+// =====================
+// SHADER BACKGROUNDS
+// =====================
+
+.shader-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+
+    canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.page-content {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}

@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaf Studios | Where Edge Technologies Meets Design</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ===================== */
+        /* CSS VARIABLES         */
+        /* ===================== */
+        :root {
+            --gold: #c9a227;
+            --gold-light: #e8d48b;
+            --gold-bright: #ffd700;
+            --gold-dark: #8b6914;
+            --wood-darkest: #0d0a08;
+            --wood-dark: #1a1410;
+            --wood-medium: #2d2319;
+            --wood-light: #3d3025;
+            --cream: #f5f0e6;
+            --text-primary: #f5f0e6;
+            --text-secondary: #a89a85;
+        }
+
+        /* ===================== */
+        /* GPU-ACCELERATED BASE  */
+        /* ===================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-snap-type: y mandatory;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--wood-darkest);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* GPU Acceleration Classes */
+        .gpu {
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            backface-visibility: hidden;
+            perspective: 1000px;
+        }
+
+        .gpu-filter {
+            will-change: filter;
+            transform: translateZ(0);
+        }
+
+        /* ===================== */
+        /* FULL PAGE SECTIONS    */
+        /* ===================== */
+        .page {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            scroll-snap-align: start;
+            overflow: hidden;
+        }
+
+        /* ===================== */
+        /* SHADER BACKGROUNDS    */
+        /* ===================== */
+        .shader-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .shader-container canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .shader-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        /* ===================== */
+        /* HERO PAGE (PAGE 1)    */
+        /* ===================== */
+        .hero-page {
+            background: var(--wood-darkest);
+        }
+
+        .hero-page .page-content {
+            justify-content: center;
+        }
+
+        .hero-logo {
+            width: min(500px, 80vw);
+            height: auto;
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            animation: heroLogoIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+        }
+
+        .hero-logo .bar {
+            fill: var(--gold);
+            filter: drop-shadow(0 0 20px rgba(201, 162, 39, 0.3));
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 8vw, 80px);
+            font-weight: 300;
+            letter-spacing: 20px;
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeSlideUp 1s ease-out 1s forwards;
+            text-shadow: 0 0 60px rgba(201, 162, 39, 0.4);
+        }
+
+        .hero-tagline {
+            font-size: clamp(12px, 2vw, 18px);
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: var(--text-secondary);
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeSlideUp 1s ease-out 1.3s forwards;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 2s forwards, bounce 2s ease-in-out 2.5s infinite;
+        }
+
+        .scroll-indicator span {
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .scroll-arrow {
+            width: 24px;
+            height: 24px;
+            border-right: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            transform: rotate(45deg);
+        }
+
+        /* ===================== */
+        /* INFO PAGE (PAGE 2+)   */
+        /* ===================== */
+        .info-page {
+            background: linear-gradient(to bottom, var(--wood-darkest), var(--wood-dark));
+        }
+
+        .info-page .shader-container {
+            opacity: 0.4;
+        }
+
+        .info-page .page-content {
+            padding: 100px 40px;
+            justify-content: flex-start;
+            align-items: flex-start;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .section-header.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .section-label {
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(40px, 6vw, 72px);
+            font-weight: 300;
+            line-height: 1.1;
+        }
+
+        .section-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(18px, 2.5vw, 28px);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--gold-light);
+            margin-top: 20px;
+        }
+
+        /* ===================== */
+        /* SERVICE CARDS        */
+        /* ===================== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        .card {
+            background: linear-gradient(145deg, 
+                rgba(45, 35, 25, 0.6), 
+                rgba(26, 20, 16, 0.8));
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 8px;
+            padding: 50px 40px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(60px) rotateX(10deg);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--gold), 
+                transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(201, 162, 39, 0.1),
+                transparent 50%
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.4),
+                0 0 40px rgba(201, 162, 39, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        .card-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 64px;
+            font-weight: 300;
+            color: rgba(201, 162, 39, 0.15);
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            line-height: 1;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 25px;
+            stroke: var(--gold);
+            stroke-width: 1.5;
+            fill: none;
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--gold-light);
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-weight: 300;
+            font-size: 15px;
+        }
+
+        /* ===================== */
+        /* SHADER GALLERY        */
+        /* ===================== */
+        .shader-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .shader-card {
+            aspect-ratio: 16/9;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(201, 162, 39, 0.2);
+        }
+
+        .shader-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .shader-card:hover {
+            transform: scale(1.05);
+            border-color: var(--gold);
+            box-shadow: 0 20px 60px rgba(201, 162, 39, 0.2);
+            z-index: 10;
+        }
+
+        .shader-card iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+        }
+
+        .shader-card .shader-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, 
+                rgba(13, 10, 8, 0.95) 0%,
+                transparent 50%);
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .shader-card:hover .shader-overlay {
+            opacity: 1;
+        }
+
+        .shader-info h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            color: var(--gold-light);
+            margin-bottom: 5px;
+        }
+
+        .shader-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ===================== */
+        /* NAVIGATION           */
+        /* ===================== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .nav.scrolled {
+            background: rgba(13, 10, 8, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 15px 50px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-logo {
+            width: 80px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: fadeSlideRight 0.8s ease-out 0.3s forwards;
+        }
+
+        .nav-logo .bar {
+            fill: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            opacity: 0;
+            transform: translateY(-10px);
+            animation: fadeSlideDown 0.5s ease-out forwards;
+        }
+
+        .nav-links li:nth-child(1) { animation-delay: 0.4s; }
+        .nav-links li:nth-child(2) { animation-delay: 0.5s; }
+        .nav-links li:nth-child(3) { animation-delay: 0.6s; }
+        .nav-links li:nth-child(4) { animation-delay: 0.7s; }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===================== */
+        /* CONTACT SECTION       */
+        /* ===================== */
+        .contact-section {
+            text-align: center;
+            padding: 150px 40px;
+        }
+
+        .contact-section .section-title {
+            margin-bottom: 30px;
+        }
+
+        .contact-text {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 50px;
+            line-height: 1.8;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .contact-text.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 20px 60px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .cta-btn.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-btn:hover {
+            color: var(--wood-darkest);
+        }
+
+        .cta-btn:hover::before {
+            left: 0;
+        }
+
+        /* ===================== */
+        /* FOOTER               */
+        /* ===================== */
+        footer {
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid rgba(201, 162, 39, 0.1);
+            background: var(--wood-darkest);
+        }
+
+        footer p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+        }
+
+        /* ===================== */
+        /* ANIMATIONS           */
+        /* ===================== */
+        @keyframes heroLogoIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes fadeSlideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeSlideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeSlideRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(10px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scale(0.98);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* ===================== */
+        /* LOADING SCREEN       */
+        /* ===================== */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: var(--wood-darkest);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-logo {
+            width: 200px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .loader-logo .bar {
+            fill: var(--gold);
+        }
+
+        .loader-text {
+            margin-top: 30px;
+            font-size: 12px;
+            letter-spacing: 6px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: var(--wood-medium);
+            margin-top: 20px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            height: 100%;
+            background: var(--gold);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+
+        /* ===================== */
+        /* CURSOR               */
+        /* ===================== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--gold);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease, opacity 0.15s ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(2);
+            background: rgba(201, 162, 39, 0.2);
+        }
+
+        /* ===================== */
+        /* RESPONSIVE           */
+        /* ===================== */
+        @media (max-width: 768px) {
+            html {
+                scroll-snap-type: none;
+            }
+
+            .nav {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                letter-spacing: 10px;
+            }
+
+            .page-content {
+                padding: 80px 20px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cursor {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor gpu"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader">
+        <svg class="loader-logo" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+            <!-- L with cut base -->
+            <rect class="bar" x="0" y="0" width="4" height="36" />
+            <rect class="bar" x="0" y="46" width="35" height="4" />
+            <rect class="bar" x="0" y="0" width="16" height="4" />
+            <!-- E with longer middle -->
+            <rect class="bar" x="45" y="0" width="4" height="50" />
+            <rect class="bar" x="45" y="0" width="18" height="4" />
+            <rect class="bar" x="45" y="23" width="24" height="4" />
+            <rect class="bar" x="45" y="46" width="28" height="4" />
+            <!-- A Scandinavian rune style -->
+            <polygon class="bar" points="95,50 99,50 110,0 106,0" />
+            <polygon class="bar" points="106,0 110,0 121,50 117,50" />
+            <rect class="bar" x="99" y="30" width="18" height="4" />
+            <!-- F with cut and longer middle -->
+            <rect class="bar" x="140" y="0" width="60" height="4" />
+            <rect class="bar" x="140" y="0" width="4" height="20" />
+            <rect class="bar" x="140" y="23" width="26" height="4" />
+            <rect class="bar" x="196" y="0" width="4" height="27" />
+        </svg>
+        <p class="loader-text">Loading Experience</p>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav gpu">
+        <svg class="nav-logo" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+            <rect class="bar" x="0" y="0" width="4" height="36" />
+            <rect class="bar" x="0" y="46" width="35" height="4" />
+            <rect class="bar" x="0" y="0" width="16" height="4" />
+            <rect class="bar" x="45" y="0" width="4" height="50" />
+            <rect class="bar" x="45" y="0" width="18" height="4" />
+            <rect class="bar" x="45" y="23" width="24" height="4" />
+            <rect class="bar" x="45" y="46" width="28" height="4" />
+            <polygon class="bar" points="95,50 99,50 110,0 106,0" />
+            <polygon class="bar" points="106,0 110,0 121,50 117,50" />
+            <rect class="bar" x="99" y="30" width="18" height="4" />
+            <rect class="bar" x="140" y="0" width="60" height="4" />
+            <rect class="bar" x="140" y="0" width="4" height="20" />
+            <rect class="bar" x="140" y="23" width="26" height="4" />
+            <rect class="bar" x="196" y="0" width="4" height="27" />
+        </svg>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#shaders">Shaders</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE 1: HERO with intense shader -->
+    <section class="page hero-page" id="home">
+        <div class="shader-container">
+            <canvas id="hero-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <svg class="hero-logo gpu" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
+                <!-- L with cut base -->
+                <rect class="bar" x="0" y="0" width="4" height="36" />
+                <rect class="bar" x="0" y="46" width="35" height="4" />
+                <rect class="bar" x="0" y="0" width="16" height="4" />
+                <!-- E with longer middle -->
+                <rect class="bar" x="45" y="0" width="4" height="50" />
+                <rect class="bar" x="45" y="0" width="18" height="4" />
+                <rect class="bar" x="45" y="23" width="24" height="4" />
+                <rect class="bar" x="45" y="46" width="28" height="4" />
+                <!-- A Scandinavian rune style -->
+                <polygon class="bar" points="95,50 99,50 110,0 106,0" />
+                <polygon class="bar" points="106,0 110,0 121,50 117,50" />
+                <rect class="bar" x="99" y="30" width="18" height="4" />
+                <!-- F with cut and longer middle -->
+                <rect class="bar" x="140" y="0" width="60" height="4" />
+                <rect class="bar" x="140" y="0" width="4" height="20" />
+                <rect class="bar" x="140" y="23" width="26" height="4" />
+                <rect class="bar" x="196" y="0" width="4" height="27" />
+            </svg>
+            <h1 class="hero-title gpu">STUDIOS</h1>
+            <p class="hero-tagline gpu">3D Animation • Frontend Design • Event Illumination</p>
+        </div>
+        <div class="scroll-indicator gpu">
+            <span>Scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: SERVICES with calmer shader -->
+    <section class="page info-page" id="services">
+        <div class="shader-container">
+            <canvas id="services-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <div class="section-header">
+                <p class="section-label">What We Do</p>
+                <h2 class="section-title">Our Craft</h2>
+                <p class="section-subtitle">"Where Edge Technologies Meets Design"</p>
+            </div>
+            <div class="cards-grid">
+                <div class="card gpu" data-delay="0">
+                    <span class="card-number">01</span>
+                    <svg class="card-icon" viewBox="0 0 50 50">
+                        <path d="M10 40 L25 10 L40 40" />
+                        <circle cx="25" cy="20" r="4" />
+                        <line x1="25" y1="25" x2="25" y2="35" />
+                    </svg>
+                    <h3>3D Animation</h3>
+                    <p>Crafting immersive three-dimensional experiences that push the boundaries of visual storytelling. From character animation to architectural visualization, we bring imagination to life.</p>
+                </div>
+                <div class="card gpu" data-delay="100">
+                    <span class="card-number">02</span>
+                    <svg class="card-icon" viewBox="0 0 50 50">
+                        <rect x="5" y="10" width="40" height="28" rx="2" />
+                        <line x1="5" y1="18" x2="45" y2="18" />
+                        <circle cx="10" cy="14" r="1.5" />
+                        <circle cx="15" cy="14" r="1.5" />
+                    </svg>
+                    <h3>Frontend Design</h3>
+                    <p>Building cutting-edge web experiences with WebGL, shaders, and modern frameworks. Interfaces that feel alive, respond to every interaction, and leave lasting impressions.</p>
+                </div>
+                <div class="card gpu" data-delay="200">
+                    <span class="card-number">03</span>
+                    <svg class="card-icon" viewBox="0 0 50 50">
+                        <circle cx="25" cy="25" r="15" />
+                        <path d="M25 15 L25 25 L33 30" />
+                        <circle cx="25" cy="25" r="2" />
+                    </svg>
+                    <h3>Event Illumination</h3>
+                    <p>Transforming spaces with programmatic lighting, projection mapping, and synchronized visual performances that create unforgettable moments and immersive atmospheres.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: SHADER GALLERY -->
+    <section class="page info-page" id="shaders">
+        <div class="shader-container">
+            <canvas id="gallery-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <div class="section-header">
+                <p class="section-label">Explore</p>
+                <h2 class="section-title">Shader Laboratory</h2>
+                <p class="section-subtitle">Real-time visual experiments from Shadertoy</p>
+            </div>
+            <div class="shader-gallery" id="shader-gallery">
+                <!-- Shader cards will be inserted by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: ABOUT -->
+    <section class="page info-page" id="about">
+        <div class="shader-container">
+            <canvas id="about-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <div class="section-header">
+                <p class="section-label">Who We Are</p>
+                <h2 class="section-title">The Vision</h2>
+            </div>
+            <div class="cards-grid">
+                <div class="card gpu" data-delay="0">
+                    <h3>Philosophy</h3>
+                    <p>We believe technology should be invisible, allowing pure creativity to shine. Every pixel, every frame, every light—meticulously crafted to evoke emotion and wonder.</p>
+                </div>
+                <div class="card gpu" data-delay="100">
+                    <h3>Technology</h3>
+                    <p>WebGL, Three.js, GLSL shaders, real-time rendering, motion capture, DMX lighting systems—we master the tools that turn visions into reality.</p>
+                </div>
+                <div class="card gpu" data-delay="200">
+                    <h3>Collaboration</h3>
+                    <p>From global brands to independent artists, we partner with visionaries who dare to push boundaries and create experiences that transcend the ordinary.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 5: CONTACT -->
+    <section class="page info-page contact-section" id="contact">
+        <div class="shader-container">
+            <canvas id="contact-shader"></canvas>
+        </div>
+        <div class="page-content" style="justify-content: center; align-items: center;">
+            <div class="section-header" style="text-align: center;">
+                <p class="section-label">Get in Touch</p>
+                <h2 class="section-title">Let's Create</h2>
+            </div>
+            <p class="contact-text">Ready to bring your vision to life? We collaborate with brands, artists, and visionaries to craft experiences that transcend the ordinary.</p>
+            <a href="mailto:hello@leafstudios.com" class="cta-btn gpu">Start a Project</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 Leaf Studios. Where Edge Technologies Meets Design.</p>
+    </footer>
+
+    <script>
+        // =====================================================
+        // SHADERTOY EMBEDS - 10 POPULAR SHADERS
+        // =====================================================
+        const shadertoyShaders = [
+            { id: 'XsX3RB', name: 'Seascape', author: 'TDM' },
+            { id: 'Ms2SD1', name: 'Clouds', author: 'iq' },
+            { id: '4ttSWf', name: 'Rainier mood', author: 'flockaroo' },
+            { id: 'MdX3Rr', name: 'Elevated', author: 'iq' },
+            { id: 'ldl3W8', name: 'Aurora', author: 'nimitz' },
+            { id: 'XlfGRj', name: 'Star Nest', author: 'Kali' },
+            { id: '4df3Rn', name: 'Volcanic', author: 'iq' },
+            { id: 'lsf3RH', name: 'Flame', author: 'iq' },
+            { id: 'MdXyzX', name: 'Fractal Land', author: 'Kali' },
+            { id: '4dsGzH', name: 'Abstract Glassy', author: 'iq' }
+        ];
+
+        // Create shader gallery cards
+        const gallery = document.getElementById('shader-gallery');
+        shadertoyShaders.forEach((shader, index) => {
+            const card = document.createElement('div');
+            card.className = 'shader-card gpu';
+            card.style.transitionDelay = `${index * 0.1}s`;
+            card.innerHTML = `
+                <iframe 
+                    src="https://www.shadertoy.com/embed/${shader.id}?gui=false&paused=false&muted=true"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+                <div class="shader-overlay">
+                    <div class="shader-info">
+                        <h4>${shader.name}</h4>
+                        <p>by ${shader.author}</p>
+                    </div>
+                </div>
+            `;
+            card.addEventListener('click', () => {
+                window.open(`https://www.shadertoy.com/view/${shader.id}`, '_blank');
+            });
+            gallery.appendChild(card);
+        });
+
+        // =====================================================
+        // WEBGL SHADER BACKGROUNDS
+        // =====================================================
+        function initShader(canvasId, fragmentCode, intensity = 1.0) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (!gl) return;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+            }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const vertexSource = `
+                attribute vec2 position;
+                void main() {
+                    gl_Position = vec4(position, 0.0, 1.0);
+                }
+            `;
+
+            function createShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error(gl.getShaderInfoLog(shader));
+                    return null;
+                }
+                return shader;
+            }
+
+            const vs = createShader(gl.VERTEX_SHADER, vertexSource);
+            const fs = createShader(gl.FRAGMENT_SHADER, fragmentCode);
+            if (!vs || !fs) return;
+
+            const program = gl.createProgram();
+            gl.attachShader(program, vs);
+            gl.attachShader(program, fs);
+            gl.linkProgram(program);
+
+            if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                console.error(gl.getProgramInfoLog(program));
+                return;
+            }
+
+            gl.useProgram(program);
+
+            const positions = new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]);
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
+
+            const posLoc = gl.getAttribLocation(program, 'position');
+            gl.enableVertexAttribArray(posLoc);
+            gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+            const resLoc = gl.getUniformLocation(program, 'resolution');
+            const timeLoc = gl.getUniformLocation(program, 'time');
+            const intensityLoc = gl.getUniformLocation(program, 'intensity');
+
+            function render(t) {
+                t *= 0.001;
+                gl.viewport(0, 0, canvas.width, canvas.height);
+                gl.uniform2f(resLoc, canvas.width, canvas.height);
+                gl.uniform1f(timeLoc, t);
+                gl.uniform1f(intensityLoc, intensity);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        // HERO SHADER - Intense, dramatic
+        const heroShaderCode = `
+            precision highp float;
+            uniform vec2 resolution;
+            uniform float time;
+            uniform float intensity;
+
+            #define PI 3.14159265359
+
+            float noise(vec2 p) {
+                return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+            }
+
+            float smoothNoise(vec2 p) {
+                vec2 i = floor(p);
+                vec2 f = fract(p);
+                f = f * f * (3.0 - 2.0 * f);
+                float a = noise(i);
+                float b = noise(i + vec2(1.0, 0.0));
+                float c = noise(i + vec2(0.0, 1.0));
+                float d = noise(i + vec2(1.0, 1.0));
+                return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+            }
+
+            float fbm(vec2 p) {
+                float v = 0.0, a = 0.5;
+                for (int i = 0; i < 6; i++) {
+                    v += a * smoothNoise(p);
+                    p *= 2.0;
+                    a *= 0.5;
+                }
+                return v;
+            }
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / resolution.xy;
+                vec2 p = (gl_FragCoord.xy - resolution.xy * 0.5) / resolution.y;
+                float t = time * 0.2;
+
+                // Swirling motion
+                float angle = atan(p.y, p.x);
+                float radius = length(p);
+                
+                // Multiple noise layers
+                float n1 = fbm(p * 3.0 + t);
+                float n2 = fbm(p * 2.0 - t * 0.7 + vec2(n1));
+                float n3 = fbm(vec2(angle * 2.0, radius * 5.0) + t);
+
+                // Fiery gold colors
+                vec3 c1 = vec3(0.05, 0.03, 0.02);
+                vec3 c2 = vec3(0.15, 0.08, 0.03);
+                vec3 c3 = vec3(0.79, 0.50, 0.10);
+                vec3 c4 = vec3(1.0, 0.85, 0.4);
+
+                float blend = n1 * n2;
+                vec3 color = mix(c1, c2, n3);
+                color = mix(color, c3, pow(blend, 2.0) * 0.8);
+                color += c4 * pow(n1 * n2 * n3, 3.0) * 2.0;
+
+                // Central glow
+                float glow = exp(-radius * 2.0) * 0.3;
+                color += vec3(0.79, 0.64, 0.15) * glow;
+
+                // Vignette
+                float vig = 1.0 - pow(radius * 0.8, 2.0);
+                color *= vig;
+
+                // Grain
+                color += (noise(uv * 500.0 + time) - 0.5) * 0.05;
+
+                gl_FragColor = vec4(color * intensity, 1.0);
+            }
+        `;
+
+        // CALM SHADER - Subtle, elegant
+        const calmShaderCode = `
+            precision highp float;
+            uniform vec2 resolution;
+            uniform float time;
+            uniform float intensity;
+
+            float noise(vec2 p) {
+                return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+            }
+
+            float smoothNoise(vec2 p) {
+                vec2 i = floor(p);
+                vec2 f = fract(p);
+                f = f * f * (3.0 - 2.0 * f);
+                return mix(
+                    mix(noise(i), noise(i + vec2(1,0)), f.x),
+                    mix(noise(i + vec2(0,1)), noise(i + vec2(1,1)), f.x),
+                    f.y
+                );
+            }
+
+            float fbm(vec2 p) {
+                float v = 0.0, a = 0.5;
+                for (int i = 0; i < 4; i++) {
+                    v += a * smoothNoise(p);
+                    p *= 2.0;
+                    a *= 0.5;
+                }
+                return v;
+            }
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / resolution.xy;
+                float t = time * 0.1;
+
+                float n = fbm(uv * 3.0 + t);
+                float n2 = fbm(uv * 2.0 - t * 0.5);
+
+                vec3 dark = vec3(0.05, 0.04, 0.03);
+                vec3 mid = vec3(0.12, 0.09, 0.06);
+                vec3 gold = vec3(0.3, 0.22, 0.08);
+
+                vec3 color = mix(dark, mid, n);
+                color = mix(color, gold, n * n2 * 0.3);
+
+                float vig = 1.0 - length(uv - 0.5) * 0.5;
+                color *= vig;
+
+                color += (noise(uv * 400.0 + time) - 0.5) * 0.02;
+
+                gl_FragColor = vec4(color * intensity, 1.0);
+            }
+        `;
+
+        // Initialize all shaders
+        initShader('hero-shader', heroShaderCode, 1.0);
+        initShader('services-shader', calmShaderCode, 0.6);
+        initShader('gallery-shader', calmShaderCode, 0.5);
+        initShader('about-shader', calmShaderCode, 0.5);
+        initShader('contact-shader', calmShaderCode, 0.4);
+
+        // =====================================================
+        // ANIMATION 1: Custom Cursor
+        // =====================================================
+        const cursor = document.querySelector('.cursor');
+        let cursorX = 0, cursorY = 0;
+        let targetX = 0, targetY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            targetX = e.clientX;
+            targetY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (targetX - cursorX) * 0.15;
+            cursorY += (targetY - cursorY) * 0.15;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effect
+        document.querySelectorAll('a, .card, .shader-card, .cta-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // =====================================================
+        // ANIMATION 2: Card Mouse Tracking (Spotlight)
+        // =====================================================
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+
+        // =====================================================
+        // ANIMATION 3: Scroll-triggered reveals
+        // =====================================================
+        const observerOptions = {
+            threshold: 0.2,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const delay = entry.target.dataset.delay || 0;
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, delay);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .shader-card, .section-header, .contact-text, .cta-btn').forEach(el => {
+            observer.observe(el);
+        });
+
+        // =====================================================
+        // ANIMATION 4: Nav scroll effect
+        // =====================================================
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // =====================================================
+        // ANIMATION 5: Parallax effect on hero
+        // =====================================================
+        const heroLogo = document.querySelector('.hero-logo');
+        const heroTitle = document.querySelector('.hero-title');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.pageYOffset;
+            const heroHeight = window.innerHeight;
+            
+            if (scrollY < heroHeight) {
+                const progress = scrollY / heroHeight;
+                heroLogo.style.transform = `translateY(${scrollY * 0.3}px) scale(${1 - progress * 0.2})`;
+                heroLogo.style.opacity = 1 - progress;
+                heroTitle.style.transform = `translateY(${scrollY * 0.2}px)`;
+                heroTitle.style.opacity = 1 - progress;
+            }
+        });
+
+        // =====================================================
+        // ANIMATION 6: Smooth scroll for nav links
+        // =====================================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // =====================================================
+        // ANIMATION 7: Loading screen with progress
+        // =====================================================
+        const loader = document.querySelector('.loader');
+        const loaderProgress = document.querySelector('.loader-progress');
+        let progress = 0;
+
+        function updateLoader() {
+            progress += Math.random() * 15;
+            if (progress > 100) progress = 100;
+            loaderProgress.style.width = progress + '%';
+            
+            if (progress < 100) {
+                setTimeout(updateLoader, 100 + Math.random() * 200);
+            } else {
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 500);
+            }
+        }
+
+        window.addEventListener('load', () => {
+            updateLoader();
+        });
+
+        // =====================================================
+        // ANIMATION 8: Staggered card entrance
+        // =====================================================
+        function staggerCards() {
+            document.querySelectorAll('.cards-grid').forEach(grid => {
+                const cards = grid.querySelectorAll('.card');
+                cards.forEach((card, i) => {
+                    card.style.transitionDelay = `${i * 0.15}s`;
+                });
+            });
+        }
+        staggerCards();
+
+        // =====================================================
+        // ANIMATION 9: Text scramble effect
+        // =====================================================
+        class TextScramble {
+            constructor(el) {
+                this.el = el;
+                this.chars = '!<>-_\\/[]{}—=+*^?#________';
+                this.update = this.update.bind(this);
+            }
+            
+            setText(newText) {
+                const oldText = this.el.innerText;
+                const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise(resolve => this.resolve = resolve);
+                this.queue = [];
+                
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || '';
+                    const to = newText[i] || '';
+                    const start = Math.floor(Math.random() * 40);
+                    const end = start + Math.floor(Math.random() * 40);
+                    this.queue.push({ from, to, start, end });
+                }
+                
+                cancelAnimationFrame(this.frameRequest);
+                this.frame = 0;
+                this.update();
+                return promise;
+            }
+            
+            update() {
+                let output = '';
+                let complete = 0;
+                
+                for (let i = 0; i < this.queue.length; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    
+                    if (this.frame >= end) {
+                        complete++;
+                        output += to;
+                    } else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) {
+                            char = this.chars[Math.floor(Math.random() * this.chars.length)];
+                            this.queue[i].char = char;
+                        }
+                        output += `<span style="color: var(--gold)">${char}</span>`;
+                    } else {
+                        output += from;
+                    }
+                }
+                
+                this.el.innerHTML = output;
+                
+                if (complete === this.queue.length) {
+                    this.resolve();
+                } else {
+                    this.frameRequest = requestAnimationFrame(this.update);
+                    this.frame++;
+                }
+            }
+        }
+
+        // Apply text scramble to section titles on scroll
+        const sectionTitles = document.querySelectorAll('.section-title');
+        const scrambleObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.scrambled) {
+                    entry.target.dataset.scrambled = 'true';
+                    const fx = new TextScramble(entry.target);
+                    fx.setText(entry.target.innerText);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sectionTitles.forEach(title => scrambleObserver.observe(title));
+
+        // =====================================================
+        // ANIMATION 10: Card 3D tilt on hover
+        // =====================================================
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+            });
+        });
+
+        // =====================================================
+        // BONUS: Magnetic buttons
+        // =====================================================
+        document.querySelectorAll('.cta-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+            });
+            
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0, 0)';
+            });
+        });
+    </script>
+</body>
+</html>

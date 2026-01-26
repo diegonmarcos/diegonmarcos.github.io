@@ -1,4 +1,6 @@
-export const heroShaderCode = `
+// Hero Shader - Intense, dramatic gold fire effect
+// For use with WebGL background
+
 precision highp float;
 uniform vec2 resolution;
 uniform float time;
@@ -69,4 +71,3 @@ void main() {
 
     gl_FragColor = vec4(color * intensity, 1.0);
 }
-`;

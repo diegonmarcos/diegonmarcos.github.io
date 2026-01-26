@@ -1,4 +1,6 @@
-export const calmShaderCode = `
+// Calm Shader - Subtle, elegant background
+// For use with WebGL background sections
+
 precision highp float;
 uniform vec2 resolution;
 uniform float time;
@@ -50,4 +52,3 @@ void main() {
 
     gl_FragColor = vec4(color * intensity, 1.0);
 }
-`;

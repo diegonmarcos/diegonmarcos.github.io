@@ -1,0 +1,264 @@
+// =====================
+// 3D VISION PYRAMID
+// =====================
+
+.pyramid-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    perspective: 1200px;
+    user-select: none;
+}
+
+.pyramid-wrapper {
+    position: relative;
+    width: 300px;
+    height: 350px;
+    margin: 40px 0;
+}
+
+.pyramid-canvas {
+    position: absolute;
+    top: -30px;
+    left: -50px;
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 0;
+}
+
+.pyramid {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: translateY(50px) rotateX(-15deg) rotateY(-30deg);
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: grab;
+    z-index: 1;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    &.dragging {
+        transition: none;
+    }
+}
+
+// Pyramid geometry - triangular faces meeting at apex
+$pyramid-size: 280px;
+$pyramid-height: 320px;
+$face-angle: 55deg; // Angle of faces from vertical
+
+.pyramid-face {
+    position: absolute;
+    width: 0;
+    height: 0;
+    // Triangle shape using borders
+    border-left: #{$pyramid-size / 2} solid transparent;
+    border-right: #{$pyramid-size / 2} solid transparent;
+    border-bottom: #{$pyramid-height} solid rgba(35, 28, 20, 0.9);
+    transform-origin: center bottom;
+    backface-visibility: visible;
+
+    // Content overlay
+    .pyramid-content {
+        position: absolute;
+        top: 80px;
+        left: -100px;
+        width: 200px;
+        text-align: center;
+        color: var(--text-primary);
+        pointer-events: none;
+
+        .face-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 36px;
+            font-weight: 300;
+            color: rgba(201, 162, 39, 0.3);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: var(--gold-light);
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+    }
+}
+
+// Position each triangular face
+.pyramid-front {
+    border-bottom-color: rgba(45, 35, 25, 0.95);
+    transform: translateZ(#{$pyramid-size / 3.5}) rotateX($face-angle);
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 50px;
+        left: -#{$pyramid-size / 2};
+        width: $pyramid-size;
+        height: $pyramid-height;
+        background: linear-gradient(180deg,
+            rgba(201, 162, 39, 0.1) 0%,
+            transparent 60%);
+        pointer-events: none;
+    }
+}
+
+.pyramid-right {
+    border-bottom-color: rgba(40, 32, 22, 0.95);
+    transform: rotateY(90deg) translateZ(#{$pyramid-size / 3.5}) rotateX($face-angle);
+}
+
+.pyramid-back {
+    border-bottom-color: rgba(35, 28, 20, 0.95);
+    transform: rotateY(180deg) translateZ(#{$pyramid-size / 3.5}) rotateX($face-angle);
+}
+
+.pyramid-left {
+    border-bottom-color: rgba(38, 30, 21, 0.95);
+    transform: rotateY(-90deg) translateZ(#{$pyramid-size / 3.5}) rotateX($face-angle);
+}
+
+// Base of pyramid
+.pyramid-base {
+    position: absolute;
+    width: $pyramid-size;
+    height: $pyramid-size;
+    border: none;
+    background: linear-gradient(145deg,
+        rgba(20, 16, 12, 0.95),
+        rgba(30, 24, 18, 0.95));
+    border: 1px solid rgba(201, 162, 39, 0.2);
+    transform: rotateX(-90deg) translateZ(0) translateX(-#{$pyramid-size / 2}) translateY(-#{$pyramid-size / 2});
+
+    .pyramid-content {
+        display: none;
+    }
+}
+
+// Active face highlight
+.pyramid-face.active {
+    border-bottom-color: rgba(60, 48, 35, 0.98);
+
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: -$pyramid-height;
+        left: -#{$pyramid-size / 2};
+        width: $pyramid-size;
+        height: 3px;
+        background: linear-gradient(90deg,
+            transparent,
+            var(--gold),
+            transparent);
+    }
+
+    .pyramid-content h3 {
+        color: var(--gold);
+        text-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
+    }
+}
+
+// Edge glow effect
+.pyramid-face::before {
+    content: '';
+    position: absolute;
+    bottom: -$pyramid-height;
+    left: -#{$pyramid-size / 2};
+    width: $pyramid-size;
+    height: 2px;
+    background: linear-gradient(90deg,
+        transparent 10%,
+        rgba(201, 162, 39, 0.3) 50%,
+        transparent 90%);
+}
+
+// Navigation buttons
+.pyramid-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pyramid-nav-btn {
+    background: transparent;
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+
+    &:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+    &.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--wood-darkest);
+    }
+}
+
+.pyramid-hint {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .pyramid-wrapper {
+        width: 250px;
+        height: 300px;
+    }
+
+    .pyramid-canvas {
+        width: 350px;
+        height: 350px;
+        top: -50px;
+        left: -50px;
+    }
+
+    .pyramid-face .pyramid-content {
+        top: 60px;
+        left: -80px;
+        width: 160px;
+
+        h3 {
+            font-size: 18px;
+        }
+
+        p {
+            font-size: 11px;
+        }
+    }
+}

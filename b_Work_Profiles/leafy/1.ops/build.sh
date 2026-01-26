@@ -22,16 +22,25 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Clean dist directory
-echo -e "${BLUE}[1/5]${NC} Cleaning dist directory..."
+echo -e "${BLUE}[1/7]${NC} Cleaning dist directory..."
 rm -rf dist
-mkdir -p dist/styles dist/scripts
+mkdir -p dist/styles dist/scripts dist/shaders
 
 # Copy HTML
-echo -e "${BLUE}[2/5]${NC} Copying HTML template..."
+echo -e "${BLUE}[2/7]${NC} Copying HTML template..."
 cp src/index.html dist/
 
+# Copy GLSL Shaders
+echo -e "${BLUE}[3/7]${NC} Copying GLSL shaders..."
+if [ -d "src/shaders" ]; then
+    cp src/shaders/*.glsl dist/shaders/
+    echo -e "${GREEN}✓${NC} Shaders copied"
+else
+    echo -e "${YELLOW}⚠${NC} No shaders directory found"
+fi
+
 # Compile SCSS
-echo -e "${BLUE}[3/5]${NC} Compiling SCSS..."
+echo -e "${BLUE}[4/7]${NC} Compiling SCSS..."
 if command -v sass &> /dev/null; then
     sass src/styles/main.scss dist/styles/main.css --style=compressed --no-source-map
     echo -e "${GREEN}✓${NC} SCSS compiled successfully"
@@ -47,7 +56,7 @@ else
 fi
 
 # Compile TypeScript
-echo -e "${BLUE}[4/6]${NC} Compiling TypeScript..."
+echo -e "${BLUE}[5/7]${NC} Compiling TypeScript..."
 if command -v tsc &> /dev/null; then
     tsc
     echo -e "${GREEN}✓${NC} TypeScript compiled successfully"
@@ -63,12 +72,12 @@ else
 fi
 
 # Fix ES module imports (add .js extensions for browser compatibility)
-echo -e "${BLUE}[5/6]${NC} Fixing module imports..."
+echo -e "${BLUE}[6/7]${NC} Fixing module imports..."
 bash "$PROJECT_ROOT/1.ops/fix-imports.sh" > /dev/null
 echo -e "${GREEN}✓${NC} Module imports fixed"
 
 # Calculate sizes
-echo -e "${BLUE}[6/6]${NC} Build summary..."
+echo -e "${BLUE}[7/7]${NC} Build summary..."
 HTML_SIZE=$(du -h dist/index.html | cut -f1)
 CSS_SIZE=$(du -h dist/styles/main.css | cut -f1)
 JS_SIZE=$(du -h dist/scripts/main.js | cut -f1)

@@ -1,6 +1,6 @@
 {
   "port": 8000,
   "mount_point": "/data/data/com.termux/files/home/Git/front-Github_io",
-  "pid": 20951,
-  "log_receiver_pid": 20941
+  "pid": 18570,
+  "log_receiver_pid": 18563
 }

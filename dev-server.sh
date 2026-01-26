@@ -2,16 +2,17 @@
 # Pure POSIX HTTP server with auto-injection of dev tools into HTML
 
 # Use absolute paths for utilities (socat subprocess may not inherit PATH)
-TR="/usr/bin/tr"
-CUT="/usr/bin/cut"
-AWK="/usr/bin/awk"
-WC="/usr/bin/wc"
-CAT="/bin/cat"
-LS="/bin/ls"
-STAT="/usr/bin/stat"
+TR="$(which tr)"
+CUT="$(which cut)"
+AWK="$(which awk)"
+WC="$(which wc)"
+CAT="$(which cat)"
+LS="$(which ls)"
+STAT="$(which stat)"
 
 PORT=${1:-8000}
-MOUNT_DIR=${2:-$(pwd)}
+# Use env var if set (for subprocess), else use arg, else pwd
+MOUNT_DIR=${MOUNT_DIR:-${2:-$(pwd)}}
 LOG_FILE="${MOUNT_DIR}/browser-console.log"
 SED="/bin/sed"
 
@@ -372,24 +373,32 @@ handle_request() {
                 }
             }
         ')
+        # Calculate content length for HTML
+        CONTENT_LENGTH=$(printf '%s' "$CONTENT" | $WC -c | $TR -d ' ')
+
+        # Send HTTP response for HTML
+        printf "HTTP/1.1 200 OK\r\n"
+        printf "Content-Type: %s\r\n" "$MIME_TYPE"
+        printf "Content-Length: %s\r\n" "$CONTENT_LENGTH"
+        printf "Cache-Control: no-cache\r\n"
+        printf "Connection: close\r\n"
+        printf "\r\n"
+        printf '%s' "$CONTENT"
     else
-        # Non-HTML file - serve as-is (binary-safe)
-        $CAT "$FILE_PATH" > /tmp/dev_server_$$
-        CONTENT=$($CAT /tmp/dev_server_$$)
-        rm -f /tmp/dev_server_$$
+        # Non-HTML file - serve directly (binary-safe)
+        FILE_SIZE=$($STAT -c%s "$FILE_PATH" 2>/dev/null || $STAT -f%z "$FILE_PATH" 2>/dev/null || echo 0)
+
+        # Send HTTP response headers
+        printf "HTTP/1.1 200 OK\r\n"
+        printf "Content-Type: %s\r\n" "$MIME_TYPE"
+        printf "Content-Length: %s\r\n" "$FILE_SIZE"
+        printf "Cache-Control: no-cache\r\n"
+        printf "Connection: close\r\n"
+        printf "\r\n"
+
+        # Send file content directly (binary-safe)
+        $CAT "$FILE_PATH"
     fi
-
-    # Calculate content length
-    CONTENT_LENGTH=$(printf '%s' "$CONTENT" | $WC -c | $TR -d ' ')
-
-    # Send HTTP response
-    printf "HTTP/1.1 200 OK\r\n"
-    printf "Content-Type: %s\r\n" "$MIME_TYPE"
-    printf "Content-Length: %s\r\n" "$CONTENT_LENGTH"
-    printf "Cache-Control: no-cache\r\n"
-    printf "Connection: close\r\n"
-    printf "\r\n"
-    printf '%s' "$CONTENT"
 }
 
 # Check dependencies

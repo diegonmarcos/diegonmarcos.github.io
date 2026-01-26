@@ -1,0 +1,323 @@
+{
+  "traveler": "Diego N. Marcos",
+  "homeBase": {
+    "city": "Berlin",
+    "country": "Germany",
+    "lat": 52.52,
+    "lng": 13.405
+  },
+  "trips": [
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Sao Paulo", "city": "Sao Paulo", "dateIn": "2020-01-01", "dateOut": "2021-01-01", "lat": -23.55, "lng": -46.63, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "Europe", "country": "Germany", "nomadRegion": "Central Europe", "state": "Berlin", "city": "Berlin", "dateIn": "2021-01-02", "dateOut": "2022-01-02", "lat": 52.52, "lng": 13.405, "countryISO": "DE", "countryFlag": "🇩🇪"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Catalonia", "city": "Barcelona", "dateIn": "2022-01-03", "dateOut": "2023-01-03", "lat": 41.385, "lng": 2.173, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "United Kingdom", "nomadRegion": "British Isles", "state": "England", "city": "London", "dateIn": "2023-01-04", "dateOut": "2023-04-04", "lat": 51.507, "lng": -0.127, "countryISO": "GB", "countryFlag": "🇬🇧"},
+    {"continent": "Asia", "country": "Thailand", "nomadRegion": "Southeast Asia", "state": "Chiang Mai", "city": "Chiang Mai", "dateIn": "2023-04-05", "dateOut": "2023-07-05", "lat": 18.788, "lng": 98.985, "countryISO": "TH", "countryFlag": "🇹🇭"},
+    {"continent": "Europe", "country": "Albania", "nomadRegion": "Balkans", "state": "Tirana", "city": "Tirana", "dateIn": "2023-07-06", "dateOut": "2023-10-06", "lat": 41.327, "lng": 19.818, "countryISO": "AL", "countryFlag": "🇦🇱"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Ile-de-France", "city": "Paris", "dateIn": "2023-10-07", "dateOut": "2023-11-07", "lat": 48.856, "lng": 2.352, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Africa", "country": "Morocco", "nomadRegion": "North Africa", "state": "Rabat-Sale", "city": "Rabat", "dateIn": "2023-11-08", "dateOut": "2023-12-08", "lat": 34.02, "lng": -6.84, "countryISO": "MA", "countryFlag": "🇲🇦"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Valencia", "city": "Valencia", "dateIn": "2023-12-09", "dateOut": "2024-01-09", "lat": 39.469, "lng": -0.376, "countryISO": "ES", "countryFlag": "🇪🇸"},
+
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Rio de Janeiro", "city": "Rio de Janeiro", "dateIn": "2024-01-10", "dateOut": "2024-01-17", "lat": -22.906, "lng": -43.172, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Minas Gerais", "city": "Belo Horizonte", "dateIn": "2024-01-18", "dateOut": "2024-01-21", "lat": -19.917, "lng": -43.934, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Minas Gerais", "city": "Ouro Preto", "dateIn": "2024-01-22", "dateOut": "2024-01-23", "lat": -20.385, "lng": -43.503, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Parana", "city": "Curitiba", "dateIn": "2024-01-24", "dateOut": "2024-01-27", "lat": -25.428, "lng": -49.273, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Rio Grande do Sul", "city": "Porto Alegre", "dateIn": "2024-01-28", "dateOut": "2024-01-31", "lat": -30.033, "lng": -51.23, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Santa Catarina", "city": "Florianopolis", "dateIn": "2024-02-01", "dateOut": "2024-02-04", "lat": -27.595, "lng": -48.548, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Bahia", "city": "Salvador", "dateIn": "2024-02-05", "dateOut": "2024-02-08", "lat": -12.971, "lng": -38.501, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Pernambuco", "city": "Recife", "dateIn": "2024-02-09", "dateOut": "2024-02-12", "lat": -8.054, "lng": -34.881, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Ceara", "city": "Fortaleza", "dateIn": "2024-02-13", "dateOut": "2024-02-16", "lat": -3.731, "lng": -38.526, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Rio Grande do Norte", "city": "Natal", "dateIn": "2024-02-17", "dateOut": "2024-02-18", "lat": -5.795, "lng": -35.209, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Paraiba", "city": "Joao Pessoa", "dateIn": "2024-02-19", "dateOut": "2024-02-20", "lat": -7.115, "lng": -34.861, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Alagoas", "city": "Maceio", "dateIn": "2024-02-21", "dateOut": "2024-02-22", "lat": -9.665, "lng": -35.735, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Sergipe", "city": "Aracaju", "dateIn": "2024-02-23", "dateOut": "2024-02-24", "lat": -10.911, "lng": -37.071, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Amazonas", "city": "Manaus", "dateIn": "2024-02-25", "dateOut": "2024-02-28", "lat": -3.119, "lng": -60.021, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Para", "city": "Belem", "dateIn": "2024-03-01", "dateOut": "2024-03-04", "lat": -1.455, "lng": -48.502, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Central-West Brazil", "state": "Distrito Federal", "city": "Brasilia", "dateIn": "2024-03-05", "dateOut": "2024-03-08", "lat": -15.794, "lng": -47.882, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Central-West Brazil", "state": "Goias", "city": "Goiania", "dateIn": "2024-03-09", "dateOut": "2024-03-10", "lat": -16.686, "lng": -49.264, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Central-West Brazil", "state": "Mato Grosso", "city": "Cuiaba", "dateIn": "2024-03-11", "dateOut": "2024-03-12", "lat": -15.601, "lng": -56.097, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Central-West Brazil", "state": "Mato Grosso do Sul", "city": "Campo Grande", "dateIn": "2024-03-13", "dateOut": "2024-03-14", "lat": -20.469, "lng": -54.62, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Espirito Santo", "city": "Vitoria", "dateIn": "2024-03-15", "dateOut": "2024-03-16", "lat": -20.319, "lng": -40.337, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Santa Catarina", "city": "Joinville", "dateIn": "2024-03-17", "dateOut": "2024-03-18", "lat": -26.304, "lng": -48.845, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Santa Catarina", "city": "Blumenau", "dateIn": "2024-03-19", "dateOut": "2024-03-20", "lat": -26.919, "lng": -49.066, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Sao Paulo", "city": "Campinas", "dateIn": "2024-03-21", "dateOut": "2024-03-22", "lat": -22.905, "lng": -47.061, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Sao Paulo", "city": "Santos", "dateIn": "2024-03-23", "dateOut": "2024-03-24", "lat": -23.96, "lng": -46.333, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Rio de Janeiro", "city": "Niteroi", "dateIn": "2024-03-25", "dateOut": "2024-03-26", "lat": -22.883, "lng": -43.103, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Rio de Janeiro", "city": "Petropolis", "dateIn": "2024-03-27", "dateOut": "2024-03-28", "lat": -22.505, "lng": -43.178, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Rio de Janeiro", "city": "Buzios", "dateIn": "2024-03-29", "dateOut": "2024-03-30", "lat": -22.748, "lng": -41.881, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Rio de Janeiro", "city": "Paraty", "dateIn": "2024-03-31", "dateOut": "2024-04-01", "lat": -23.217, "lng": -44.714, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Bahia", "city": "Porto Seguro", "dateIn": "2024-04-02", "dateOut": "2024-04-03", "lat": -16.449, "lng": -39.064, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Bahia", "city": "Ilheus", "dateIn": "2024-04-04", "dateOut": "2024-04-05", "lat": -14.789, "lng": -39.046, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Pernambuco", "city": "Olinda", "dateIn": "2024-04-06", "dateOut": "2024-04-07", "lat": -8.009, "lng": -34.855, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Maranhao", "city": "Sao Luis", "dateIn": "2024-04-08", "dateOut": "2024-04-09", "lat": -2.53, "lng": -44.306, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Northeast Brazil", "state": "Piaui", "city": "Teresina", "dateIn": "2024-04-10", "dateOut": "2024-04-11", "lat": -5.092, "lng": -42.803, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Tocantins", "city": "Palmas", "dateIn": "2024-04-12", "dateOut": "2024-04-13", "lat": -10.212, "lng": -48.36, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Rondonia", "city": "Porto Velho", "dateIn": "2024-04-14", "dateOut": "2024-04-15", "lat": -8.761, "lng": -63.9, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Acre", "city": "Rio Branco", "dateIn": "2024-04-16", "dateOut": "2024-04-17", "lat": -9.975, "lng": -67.81, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Roraima", "city": "Boa Vista", "dateIn": "2024-04-18", "dateOut": "2024-04-19", "lat": 2.819, "lng": -60.673, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "North Brazil", "state": "Amapa", "city": "Macapa", "dateIn": "2024-04-20", "dateOut": "2024-04-21", "lat": 0.034, "lng": -51.066, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Minas Gerais", "city": "Uberlandia", "dateIn": "2024-04-22", "dateOut": "2024-04-23", "lat": -18.918, "lng": -48.275, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Minas Gerais", "city": "Juiz de Fora", "dateIn": "2024-04-24", "dateOut": "2024-04-25", "lat": -21.764, "lng": -43.349, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Rio Grande do Sul", "city": "Gramado", "dateIn": "2024-04-26", "dateOut": "2024-04-27", "lat": -29.378, "lng": -50.876, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "South Brazil", "state": "Parana", "city": "Foz do Iguacu", "dateIn": "2024-04-28", "dateOut": "2024-04-29", "lat": -25.516, "lng": -54.585, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Sao Paulo", "city": "Ribeirao Preto", "dateIn": "2024-04-30", "dateOut": "2024-05-01", "lat": -21.177, "lng": -47.81, "countryISO": "BR", "countryFlag": "🇧🇷"},
+    {"continent": "South America", "country": "Brazil", "nomadRegion": "Southeast Brazil", "state": "Sao Paulo", "city": "Sao Jose dos Campos", "dateIn": "2024-05-02", "dateOut": "2024-05-03", "lat": -23.179, "lng": -45.886, "countryISO": "BR", "countryFlag": "🇧🇷"},
+
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Madrid", "city": "Madrid", "dateIn": "2024-05-04", "dateOut": "2024-05-11", "lat": 40.416, "lng": -3.703, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Andalusia", "city": "Seville", "dateIn": "2024-05-12", "dateOut": "2024-05-15", "lat": 37.389, "lng": -5.984, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Andalusia", "city": "Granada", "dateIn": "2024-05-16", "dateOut": "2024-05-19", "lat": 37.177, "lng": -3.598, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Andalusia", "city": "Malaga", "dateIn": "2024-05-20", "dateOut": "2024-05-23", "lat": 36.721, "lng": -4.421, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Andalusia", "city": "Cordoba", "dateIn": "2024-05-24", "dateOut": "2024-05-25", "lat": 37.888, "lng": -4.779, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Andalusia", "city": "Cadiz", "dateIn": "2024-05-26", "dateOut": "2024-05-27", "lat": 36.527, "lng": -6.288, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Basque Country", "city": "Bilbao", "dateIn": "2024-05-28", "dateOut": "2024-05-31", "lat": 43.263, "lng": -2.934, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Basque Country", "city": "San Sebastian", "dateIn": "2024-06-01", "dateOut": "2024-06-04", "lat": 43.318, "lng": -1.981, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Balearic Islands", "city": "Palma de Mallorca", "dateIn": "2024-06-05", "dateOut": "2024-06-08", "lat": 39.569, "lng": 2.65, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Atlantic Spain", "state": "Canary Islands", "city": "Las Palmas", "dateIn": "2024-06-09", "dateOut": "2024-06-12", "lat": 28.124, "lng": -15.43, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Atlantic Spain", "state": "Canary Islands", "city": "Santa Cruz de Tenerife", "dateIn": "2024-06-13", "dateOut": "2024-06-14", "lat": 28.463, "lng": -16.251, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Galicia", "city": "Santiago de Compostela", "dateIn": "2024-06-15", "dateOut": "2024-06-18", "lat": 42.878, "lng": -8.544, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Galicia", "city": "A Coruna", "dateIn": "2024-06-19", "dateOut": "2024-06-20", "lat": 43.362, "lng": -8.411, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Central Spain", "state": "Castile and Leon", "city": "Salamanca", "dateIn": "2024-06-21", "dateOut": "2024-06-22", "lat": 40.965, "lng": -5.664, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Central Spain", "state": "Castile and Leon", "city": "Segovia", "dateIn": "2024-06-23", "dateOut": "2024-06-24", "lat": 40.948, "lng": -4.118, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Central Spain", "state": "Castile-La Mancha", "city": "Toledo", "dateIn": "2024-06-25", "dateOut": "2024-06-26", "lat": 39.857, "lng": -4.024, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Murcia", "city": "Murcia", "dateIn": "2024-06-27", "dateOut": "2024-06-28", "lat": 37.987, "lng": -1.13, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Alicante", "city": "Alicante", "dateIn": "2024-06-29", "dateOut": "2024-06-30", "lat": 38.345, "lng": -0.481, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Aragon", "city": "Zaragoza", "dateIn": "2024-07-01", "dateOut": "2024-07-02", "lat": 41.649, "lng": -0.887, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Catalonia", "city": "Tarragona", "dateIn": "2024-07-03", "dateOut": "2024-07-04", "lat": 41.118, "lng": 1.244, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Mediterranean", "state": "Catalonia", "city": "Girona", "dateIn": "2024-07-05", "dateOut": "2024-07-06", "lat": 41.979, "lng": 2.821, "countryISO": "ES", "countryFlag": "🇪🇸"},
+    {"continent": "Europe", "country": "Spain", "nomadRegion": "Northern Spain", "state": "Navarre", "city": "Pamplona", "dateIn": "2024-07-07", "dateOut": "2024-07-08", "lat": 42.812, "lng": -1.645, "countryISO": "ES", "countryFlag": "🇪🇸"},
+
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Provence", "city": "Nice", "dateIn": "2024-07-09", "dateOut": "2024-07-12", "lat": 43.696, "lng": 7.265, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Provence", "city": "Marseille", "dateIn": "2024-07-13", "dateOut": "2024-07-16", "lat": 43.296, "lng": 5.369, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Auvergne-Rhone-Alpes", "city": "Lyon", "dateIn": "2024-07-17", "dateOut": "2024-07-20", "lat": 45.764, "lng": 4.835, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Occitanie", "city": "Toulouse", "dateIn": "2024-07-21", "dateOut": "2024-07-24", "lat": 43.604, "lng": 1.444, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Nouvelle-Aquitaine", "city": "Bordeaux", "dateIn": "2024-07-25", "dateOut": "2024-07-28", "lat": 44.837, "lng": -0.579, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Brittany", "city": "Rennes", "dateIn": "2024-07-29", "dateOut": "2024-07-30", "lat": 48.117, "lng": -1.677, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Pays de la Loire", "city": "Nantes", "dateIn": "2024-07-31", "dateOut": "2024-08-01", "lat": 47.218, "lng": -1.553, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Grand Est", "city": "Strasbourg", "dateIn": "2024-08-02", "dateOut": "2024-08-03", "lat": 48.573, "lng": 7.752, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Normandy", "city": "Rouen", "dateIn": "2024-08-04", "dateOut": "2024-08-05", "lat": 49.443, "lng": 1.099, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Hauts-de-France", "city": "Lille", "dateIn": "2024-08-06", "dateOut": "2024-08-07", "lat": 50.629, "lng": 3.057, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Occitanie", "city": "Montpellier", "dateIn": "2024-08-08", "dateOut": "2024-08-09", "lat": 43.61, "lng": 3.876, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Provence", "city": "Avignon", "dateIn": "2024-08-10", "dateOut": "2024-08-11", "lat": 43.949, "lng": 4.806, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Provence", "city": "Cannes", "dateIn": "2024-08-12", "dateOut": "2024-08-13", "lat": 43.552, "lng": 7.017, "countryISO": "FR", "countryFlag": "🇫🇷"},
+    {"continent": "Europe", "country": "France", "nomadRegion": "Western Europe", "state": "Centre-Val de Loire", "city": "Tours", "dateIn": "2024-08-14", "dateOut": "2024-08-15", "lat": 47.394, "lng": 0.684, "countryISO": "FR", "countryFlag": "🇫🇷"},
+
+    {"continent": "Europe", "country": "Portugal", "nomadRegion": "Iberian Peninsula", "state": "Lisbon", "city": "Lisbon", "dateIn": "2024-08-16", "dateOut": "2024-08-23", "lat": 38.722, "lng": -9.139, "countryISO": "PT", "countryFlag": "🇵🇹"},
+    {"continent": "Europe", "country": "Portugal", "nomadRegion": "Iberian Peninsula", "state": "Porto", "city": "Porto", "dateIn": "2024-08-24", "dateOut": "2024-08-27", "lat": 41.157, "lng": -8.629, "countryISO": "PT", "countryFlag": "🇵🇹"},
+    {"continent": "Europe", "country": "Portugal", "nomadRegion": "Iberian Peninsula", "state": "Algarve", "city": "Faro", "dateIn": "2024-08-28", "dateOut": "2024-08-29", "lat": 37.019, "lng": -7.93, "countryISO": "PT", "countryFlag": "🇵🇹"},
+
+    {"continent": "Europe", "country": "Italy", "nomadRegion": "Southern Europe", "state": "Lazio", "city": "Rome", "dateIn": "2024-08-30", "dateOut": "2024-09-06", "lat": 41.902, "lng": 12.496, "countryISO": "IT", "countryFlag": "🇮🇹"},
+    {"continent": "Europe", "country": "Italy", "nomadRegion": "Southern Europe", "state": "Tuscany", "city": "Florence", "dateIn": "2024-09-07", "dateOut": "2024-09-10", "lat": 43.769, "lng": 11.255, "countryISO": "IT", "countryFlag": "🇮🇹"},
+    {"continent": "Europe", "country": "Italy", "nomadRegion": "Southern Europe", "state": "Veneto", "city": "Venice", "dateIn": "2024-09-11", "dateOut": "2024-09-14", "lat": 45.438, "lng": 12.327, "countryISO": "IT", "countryFlag": "🇮🇹"},
+    {"continent": "Europe", "country": "Italy", "nomadRegion": "Southern Europe", "state": "Lombardy", "city": "Milan", "dateIn": "2024-09-15", "dateOut": "2024-09-18", "lat": 45.464, "lng": 9.19, "countryISO": "IT", "countryFlag": "🇮🇹"},
+    {"continent": "Europe", "country": "Italy", "nomadRegion": "Southern Europe", "state": "Campania", "city": "Naples", "dateIn": "2024-09-19", "dateOut": "2024-09-20", "lat": 40.851, "lng": 14.268, "countryISO": "IT", "countryFlag": "🇮🇹"},
+
+    {"continent": "Europe", "country": "Netherlands", "nomadRegion": "Benelux", "state": "North Holland", "city": "Amsterdam", "dateIn": "2024-09-21", "dateOut": "2024-09-28", "lat": 52.367, "lng": 4.904, "countryISO": "NL", "countryFlag": "🇳🇱"},
+    {"continent": "Europe", "country": "Netherlands", "nomadRegion": "Benelux", "state": "South Holland", "city": "Rotterdam", "dateIn": "2024-09-29", "dateOut": "2024-09-30", "lat": 51.924, "lng": 4.477, "countryISO": "NL", "countryFlag": "🇳🇱"},
+
+    {"continent": "Europe", "country": "Belgium", "nomadRegion": "Benelux", "state": "Brussels-Capital", "city": "Brussels", "dateIn": "2024-10-01", "dateOut": "2024-10-04", "lat": 50.85, "lng": 4.351, "countryISO": "BE", "countryFlag": "🇧🇪"},
+    {"continent": "Europe", "country": "Belgium", "nomadRegion": "Benelux", "state": "Flanders", "city": "Bruges", "dateIn": "2024-10-05", "dateOut": "2024-10-06", "lat": 51.209, "lng": 3.225, "countryISO": "BE", "countryFlag": "🇧🇪"},
+
+    {"continent": "Europe", "country": "Switzerland", "nomadRegion": "Alpine Region", "state": "Zurich", "city": "Zurich", "dateIn": "2024-10-07", "dateOut": "2024-10-10", "lat": 47.376, "lng": 8.541, "countryISO": "CH", "countryFlag": "🇨🇭"},
+    {"continent": "Europe", "country": "Switzerland", "nomadRegion": "Alpine Region", "state": "Geneva", "city": "Geneva", "dateIn": "2024-10-11", "dateOut": "2024-10-12", "lat": 46.204, "lng": 6.143, "countryISO": "CH", "countryFlag": "🇨🇭"},
+
+    {"continent": "Europe", "country": "Austria", "nomadRegion": "Alpine Region", "state": "Vienna", "city": "Vienna", "dateIn": "2024-10-13", "dateOut": "2024-10-16", "lat": 48.208, "lng": 16.373, "countryISO": "AT", "countryFlag": "🇦🇹"},
+    {"continent": "Europe", "country": "Austria", "nomadRegion": "Alpine Region", "state": "Salzburg", "city": "Salzburg", "dateIn": "2024-10-17", "dateOut": "2024-10-18", "lat": 47.809, "lng": 13.055, "countryISO": "AT", "countryFlag": "🇦🇹"},
+
+    {"continent": "Europe", "country": "Czech Republic", "nomadRegion": "Central Europe", "state": "Prague", "city": "Prague", "dateIn": "2024-10-19", "dateOut": "2024-10-22", "lat": 50.075, "lng": 14.437, "countryISO": "CZ", "countryFlag": "🇨🇿"},
+
+    {"continent": "Europe", "country": "Poland", "nomadRegion": "Eastern Europe", "state": "Masovia", "city": "Warsaw", "dateIn": "2024-10-23", "dateOut": "2024-10-26", "lat": 52.229, "lng": 21.012, "countryISO": "PL", "countryFlag": "🇵🇱"},
+    {"continent": "Europe", "country": "Poland", "nomadRegion": "Eastern Europe", "state": "Lesser Poland", "city": "Krakow", "dateIn": "2024-10-27", "dateOut": "2024-10-28", "lat": 50.064, "lng": 19.944, "countryISO": "PL", "countryFlag": "🇵🇱"},
+
+    {"continent": "Europe", "country": "Hungary", "nomadRegion": "Central Europe", "state": "Budapest", "city": "Budapest", "dateIn": "2024-10-29", "dateOut": "2024-11-01", "lat": 47.497, "lng": 19.04, "countryISO": "HU", "countryFlag": "🇭🇺"},
+
+    {"continent": "Europe", "country": "Greece", "nomadRegion": "Mediterranean", "state": "Attica", "city": "Athens", "dateIn": "2024-11-02", "dateOut": "2024-11-05", "lat": 37.983, "lng": 23.727, "countryISO": "GR", "countryFlag": "🇬🇷"},
+    {"continent": "Europe", "country": "Greece", "nomadRegion": "Mediterranean", "state": "South Aegean", "city": "Santorini", "dateIn": "2024-11-06", "dateOut": "2024-11-07", "lat": 36.393, "lng": 25.461, "countryISO": "GR", "countryFlag": "🇬🇷"},
+
+    {"continent": "Europe", "country": "Croatia", "nomadRegion": "Balkans", "state": "Dubrovnik", "city": "Dubrovnik", "dateIn": "2024-11-08", "dateOut": "2024-11-11", "lat": 42.65, "lng": 18.094, "countryISO": "HR", "countryFlag": "🇭🇷"},
+    {"continent": "Europe", "country": "Croatia", "nomadRegion": "Balkans", "state": "Split", "city": "Split", "dateIn": "2024-11-12", "dateOut": "2024-11-13", "lat": 43.508, "lng": 16.44, "countryISO": "HR", "countryFlag": "🇭🇷"},
+
+    {"continent": "Europe", "country": "Slovenia", "nomadRegion": "Balkans", "state": "Ljubljana", "city": "Ljubljana", "dateIn": "2024-11-14", "dateOut": "2024-11-17", "lat": 46.056, "lng": 14.505, "countryISO": "SI", "countryFlag": "🇸🇮"},
+
+    {"continent": "Europe", "country": "Montenegro", "nomadRegion": "Balkans", "state": "Kotor", "city": "Kotor", "dateIn": "2024-11-18", "dateOut": "2024-11-21", "lat": 42.424, "lng": 18.771, "countryISO": "ME", "countryFlag": "🇲🇪"},
+
+    {"continent": "Europe", "country": "Serbia", "nomadRegion": "Balkans", "state": "Belgrade", "city": "Belgrade", "dateIn": "2024-11-22", "dateOut": "2024-11-25", "lat": 44.786, "lng": 20.448, "countryISO": "RS", "countryFlag": "🇷🇸"},
+
+    {"continent": "Europe", "country": "North Macedonia", "nomadRegion": "Balkans", "state": "Skopje", "city": "Skopje", "dateIn": "2024-11-26", "dateOut": "2024-11-29", "lat": 41.997, "lng": 21.428, "countryISO": "MK", "countryFlag": "🇲🇰"},
+
+    {"continent": "Europe", "country": "Bulgaria", "nomadRegion": "Balkans", "state": "Sofia", "city": "Sofia", "dateIn": "2024-11-30", "dateOut": "2024-12-03", "lat": 42.697, "lng": 23.321, "countryISO": "BG", "countryFlag": "🇧🇬"},
+
+    {"continent": "Europe", "country": "Romania", "nomadRegion": "Eastern Europe", "state": "Bucharest", "city": "Bucharest", "dateIn": "2024-12-04", "dateOut": "2024-12-07", "lat": 44.426, "lng": 26.102, "countryISO": "RO", "countryFlag": "🇷🇴"},
+
+    {"continent": "Europe", "country": "Turkey", "nomadRegion": "Middle East", "state": "Istanbul", "city": "Istanbul", "dateIn": "2024-12-08", "dateOut": "2024-12-15", "lat": 41.008, "lng": 28.978, "countryISO": "TR", "countryFlag": "🇹🇷"},
+    {"continent": "Europe", "country": "Turkey", "nomadRegion": "Middle East", "state": "Cappadocia", "city": "Goreme", "dateIn": "2024-12-16", "dateOut": "2024-12-17", "lat": 38.643, "lng": 34.829, "countryISO": "TR", "countryFlag": "🇹🇷"},
+
+    {"continent": "Africa", "country": "Morocco", "nomadRegion": "North Africa", "state": "Marrakech-Safi", "city": "Marrakech", "dateIn": "2024-12-18", "dateOut": "2024-12-21", "lat": 31.629, "lng": -7.981, "countryISO": "MA", "countryFlag": "🇲🇦"},
+    {"continent": "Africa", "country": "Morocco", "nomadRegion": "North Africa", "state": "Fes-Meknes", "city": "Fez", "dateIn": "2024-12-22", "dateOut": "2024-12-23", "lat": 34.033, "lng": -5.0, "countryISO": "MA", "countryFlag": "🇲🇦"},
+    {"continent": "Africa", "country": "Morocco", "nomadRegion": "North Africa", "state": "Tangier-Tetouan", "city": "Tangier", "dateIn": "2024-12-24", "dateOut": "2024-12-25", "lat": 35.759, "lng": -5.833, "countryISO": "MA", "countryFlag": "🇲🇦"},
+    {"continent": "Africa", "country": "Morocco", "nomadRegion": "North Africa", "state": "Casablanca-Settat", "city": "Casablanca", "dateIn": "2024-12-26", "dateOut": "2024-12-27", "lat": 33.573, "lng": -7.589, "countryISO": "MA", "countryFlag": "🇲🇦"},
+
+    {"continent": "Africa", "country": "Egypt", "nomadRegion": "North Africa", "state": "Cairo", "city": "Cairo", "dateIn": "2024-12-28", "dateOut": "2024-12-31", "lat": 30.044, "lng": 31.235, "countryISO": "EG", "countryFlag": "🇪🇬"},
+    {"continent": "Africa", "country": "Egypt", "nomadRegion": "North Africa", "state": "Luxor", "city": "Luxor", "dateIn": "2025-01-01", "dateOut": "2025-01-02", "lat": 25.687, "lng": 32.639, "countryISO": "EG", "countryFlag": "🇪🇬"},
+
+    {"continent": "Africa", "country": "South Africa", "nomadRegion": "Southern Africa", "state": "Western Cape", "city": "Cape Town", "dateIn": "2025-01-03", "dateOut": "2025-01-10", "lat": -33.924, "lng": 18.424, "countryISO": "ZA", "countryFlag": "🇿🇦"},
+    {"continent": "Africa", "country": "South Africa", "nomadRegion": "Southern Africa", "state": "Gauteng", "city": "Johannesburg", "dateIn": "2025-01-11", "dateOut": "2025-01-12", "lat": -26.204, "lng": 28.047, "countryISO": "ZA", "countryFlag": "🇿🇦"},
+
+    {"continent": "Africa", "country": "Kenya", "nomadRegion": "East Africa", "state": "Nairobi", "city": "Nairobi", "dateIn": "2025-01-13", "dateOut": "2025-01-16", "lat": -1.286, "lng": 36.817, "countryISO": "KE", "countryFlag": "🇰🇪"},
+
+    {"continent": "Africa", "country": "Tanzania", "nomadRegion": "East Africa", "state": "Dar es Salaam", "city": "Dar es Salaam", "dateIn": "2025-01-17", "dateOut": "2025-01-18", "lat": -6.792, "lng": 39.208, "countryISO": "TZ", "countryFlag": "🇹🇿"},
+    {"continent": "Africa", "country": "Tanzania", "nomadRegion": "East Africa", "state": "Zanzibar", "city": "Zanzibar City", "dateIn": "2025-01-19", "dateOut": "2025-01-20", "lat": -6.165, "lng": 39.199, "countryISO": "TZ", "countryFlag": "🇹🇿"},
+
+    {"continent": "Asia", "country": "Thailand", "nomadRegion": "Southeast Asia", "state": "Bangkok", "city": "Bangkok", "dateIn": "2025-01-21", "dateOut": "2025-01-28", "lat": 13.756, "lng": 100.501, "countryISO": "TH", "countryFlag": "🇹🇭"},
+    {"continent": "Asia", "country": "Thailand", "nomadRegion": "Southeast Asia", "state": "Phuket", "city": "Phuket", "dateIn": "2025-01-29", "dateOut": "2025-01-30", "lat": 7.878, "lng": 98.391, "countryISO": "TH", "countryFlag": "🇹🇭"},
+
+    {"continent": "Asia", "country": "Vietnam", "nomadRegion": "Southeast Asia", "state": "Ho Chi Minh", "city": "Ho Chi Minh City", "dateIn": "2025-01-31", "dateOut": "2025-02-03", "lat": 10.823, "lng": 106.629, "countryISO": "VN", "countryFlag": "🇻🇳"},
+    {"continent": "Asia", "country": "Vietnam", "nomadRegion": "Southeast Asia", "state": "Hanoi", "city": "Hanoi", "dateIn": "2025-02-04", "dateOut": "2025-02-05", "lat": 21.028, "lng": 105.834, "countryISO": "VN", "countryFlag": "🇻🇳"},
+
+    {"continent": "Asia", "country": "Cambodia", "nomadRegion": "Southeast Asia", "state": "Siem Reap", "city": "Siem Reap", "dateIn": "2025-02-06", "dateOut": "2025-02-09", "lat": 13.367, "lng": 103.844, "countryISO": "KH", "countryFlag": "🇰🇭"},
+    {"continent": "Asia", "country": "Cambodia", "nomadRegion": "Southeast Asia", "state": "Phnom Penh", "city": "Phnom Penh", "dateIn": "2025-02-10", "dateOut": "2025-02-11", "lat": 11.556, "lng": 104.928, "countryISO": "KH", "countryFlag": "🇰🇭"},
+
+    {"continent": "Asia", "country": "Malaysia", "nomadRegion": "Southeast Asia", "state": "Kuala Lumpur", "city": "Kuala Lumpur", "dateIn": "2025-02-12", "dateOut": "2025-02-15", "lat": 3.139, "lng": 101.686, "countryISO": "MY", "countryFlag": "🇲🇾"},
+    {"continent": "Asia", "country": "Malaysia", "nomadRegion": "Southeast Asia", "state": "Penang", "city": "Georgetown", "dateIn": "2025-02-16", "dateOut": "2025-02-17", "lat": 5.414, "lng": 100.329, "countryISO": "MY", "countryFlag": "🇲🇾"},
+
+    {"continent": "Asia", "country": "Singapore", "nomadRegion": "Southeast Asia", "state": "Singapore", "city": "Singapore", "dateIn": "2025-02-18", "dateOut": "2025-02-21", "lat": 1.352, "lng": 103.819, "countryISO": "SG", "countryFlag": "🇸🇬"},
+
+    {"continent": "Asia", "country": "Indonesia", "nomadRegion": "Southeast Asia", "state": "Bali", "city": "Bali", "dateIn": "2025-02-22", "dateOut": "2025-02-29", "lat": -8.409, "lng": 115.188, "countryISO": "ID", "countryFlag": "🇮🇩"},
+    {"continent": "Asia", "country": "Indonesia", "nomadRegion": "Southeast Asia", "state": "Jakarta", "city": "Jakarta", "dateIn": "2025-03-01", "dateOut": "2025-03-02", "lat": -6.208, "lng": 106.845, "countryISO": "ID", "countryFlag": "🇮🇩"},
+
+    {"continent": "Asia", "country": "Philippines", "nomadRegion": "Southeast Asia", "state": "Metro Manila", "city": "Manila", "dateIn": "2025-03-03", "dateOut": "2025-03-06", "lat": 14.599, "lng": 120.984, "countryISO": "PH", "countryFlag": "🇵🇭"},
+    {"continent": "Asia", "country": "Philippines", "nomadRegion": "Southeast Asia", "state": "Cebu", "city": "Cebu City", "dateIn": "2025-03-07", "dateOut": "2025-03-08", "lat": 10.315, "lng": 123.885, "countryISO": "PH", "countryFlag": "🇵🇭"},
+
+    {"continent": "Asia", "country": "Japan", "nomadRegion": "East Asia", "state": "Tokyo", "city": "Tokyo", "dateIn": "2025-03-09", "dateOut": "2025-03-16", "lat": 35.682, "lng": 139.759, "countryISO": "JP", "countryFlag": "🇯🇵"},
+    {"continent": "Asia", "country": "Japan", "nomadRegion": "East Asia", "state": "Kyoto", "city": "Kyoto", "dateIn": "2025-03-17", "dateOut": "2025-03-20", "lat": 35.011, "lng": 135.768, "countryISO": "JP", "countryFlag": "🇯🇵"},
+    {"continent": "Asia", "country": "Japan", "nomadRegion": "East Asia", "state": "Osaka", "city": "Osaka", "dateIn": "2025-03-21", "dateOut": "2025-03-22", "lat": 34.693, "lng": 135.502, "countryISO": "JP", "countryFlag": "🇯🇵"},
+
+    {"continent": "Asia", "country": "South Korea", "nomadRegion": "East Asia", "state": "Seoul", "city": "Seoul", "dateIn": "2025-03-23", "dateOut": "2025-03-30", "lat": 37.566, "lng": 126.978, "countryISO": "KR", "countryFlag": "🇰🇷"},
+    {"continent": "Asia", "country": "South Korea", "nomadRegion": "East Asia", "state": "Busan", "city": "Busan", "dateIn": "2025-03-31", "dateOut": "2025-04-01", "lat": 35.179, "lng": 129.075, "countryISO": "KR", "countryFlag": "🇰🇷"},
+
+    {"continent": "Asia", "country": "Taiwan", "nomadRegion": "East Asia", "state": "Taipei", "city": "Taipei", "dateIn": "2025-04-02", "dateOut": "2025-04-05", "lat": 25.032, "lng": 121.565, "countryISO": "TW", "countryFlag": "🇹🇼"},
+
+    {"continent": "Asia", "country": "China", "nomadRegion": "East Asia", "state": "Shanghai", "city": "Shanghai", "dateIn": "2025-04-06", "dateOut": "2025-04-09", "lat": 31.23, "lng": 121.474, "countryISO": "CN", "countryFlag": "🇨🇳"},
+    {"continent": "Asia", "country": "China", "nomadRegion": "East Asia", "state": "Beijing", "city": "Beijing", "dateIn": "2025-04-10", "dateOut": "2025-04-11", "lat": 39.904, "lng": 116.407, "countryISO": "CN", "countryFlag": "🇨🇳"},
+    {"continent": "Asia", "country": "China", "nomadRegion": "East Asia", "state": "Hong Kong", "city": "Hong Kong", "dateIn": "2025-04-12", "dateOut": "2025-04-13", "lat": 22.319, "lng": 114.169, "countryISO": "HK", "countryFlag": "🇭🇰"},
+
+    {"continent": "Asia", "country": "India", "nomadRegion": "South Asia", "state": "Delhi", "city": "New Delhi", "dateIn": "2025-04-14", "dateOut": "2025-04-17", "lat": 28.613, "lng": 77.209, "countryISO": "IN", "countryFlag": "🇮🇳"},
+    {"continent": "Asia", "country": "India", "nomadRegion": "South Asia", "state": "Maharashtra", "city": "Mumbai", "dateIn": "2025-04-18", "dateOut": "2025-04-19", "lat": 19.076, "lng": 72.877, "countryISO": "IN", "countryFlag": "🇮🇳"},
+    {"continent": "Asia", "country": "India", "nomadRegion": "South Asia", "state": "Rajasthan", "city": "Jaipur", "dateIn": "2025-04-20", "dateOut": "2025-04-21", "lat": 26.912, "lng": 75.787, "countryISO": "IN", "countryFlag": "🇮🇳"},
+
+    {"continent": "Asia", "country": "Nepal", "nomadRegion": "South Asia", "state": "Kathmandu", "city": "Kathmandu", "dateIn": "2025-04-22", "dateOut": "2025-04-25", "lat": 27.717, "lng": 85.323, "countryISO": "NP", "countryFlag": "🇳🇵"},
+
+    {"continent": "Asia", "country": "Sri Lanka", "nomadRegion": "South Asia", "state": "Colombo", "city": "Colombo", "dateIn": "2025-04-26", "dateOut": "2025-04-29", "lat": 6.927, "lng": 79.861, "countryISO": "LK", "countryFlag": "🇱🇰"},
+
+    {"continent": "Asia", "country": "United Arab Emirates", "nomadRegion": "Middle East", "state": "Dubai", "city": "Dubai", "dateIn": "2025-04-30", "dateOut": "2025-05-03", "lat": 25.204, "lng": 55.27, "countryISO": "AE", "countryFlag": "🇦🇪"},
+    {"continent": "Asia", "country": "United Arab Emirates", "nomadRegion": "Middle East", "state": "Abu Dhabi", "city": "Abu Dhabi", "dateIn": "2025-05-04", "dateOut": "2025-05-05", "lat": 24.453, "lng": 54.377, "countryISO": "AE", "countryFlag": "🇦🇪"},
+
+    {"continent": "Asia", "country": "Israel", "nomadRegion": "Middle East", "state": "Tel Aviv", "city": "Tel Aviv", "dateIn": "2025-05-06", "dateOut": "2025-05-09", "lat": 32.085, "lng": 34.781, "countryISO": "IL", "countryFlag": "🇮🇱"},
+    {"continent": "Asia", "country": "Israel", "nomadRegion": "Middle East", "state": "Jerusalem", "city": "Jerusalem", "dateIn": "2025-05-10", "dateOut": "2025-05-11", "lat": 31.768, "lng": 35.213, "countryISO": "IL", "countryFlag": "🇮🇱"},
+
+    {"continent": "Asia", "country": "Jordan", "nomadRegion": "Middle East", "state": "Amman", "city": "Amman", "dateIn": "2025-05-12", "dateOut": "2025-05-15", "lat": 31.956, "lng": 35.945, "countryISO": "JO", "countryFlag": "🇯🇴"},
+    {"continent": "Asia", "country": "Jordan", "nomadRegion": "Middle East", "state": "Petra", "city": "Petra", "dateIn": "2025-05-16", "dateOut": "2025-05-17", "lat": 30.328, "lng": 35.444, "countryISO": "JO", "countryFlag": "🇯🇴"},
+
+    {"continent": "North America", "country": "United States", "nomadRegion": "North America", "state": "New York", "city": "New York City", "dateIn": "2025-05-18", "dateOut": "2025-05-25", "lat": 40.712, "lng": -74.006, "countryISO": "US", "countryFlag": "🇺🇸"},
+    {"continent": "North America", "country": "United States", "nomadRegion": "North America", "state": "California", "city": "Los Angeles", "dateIn": "2025-05-26", "dateOut": "2025-05-29", "lat": 34.052, "lng": -118.243, "countryISO": "US", "countryFlag": "🇺🇸"},
+    {"continent": "North America", "country": "United States", "nomadRegion": "North America", "state": "California", "city": "San Francisco", "dateIn": "2025-05-30", "dateOut": "2025-05-31", "lat": 37.774, "lng": -122.419, "countryISO": "US", "countryFlag": "🇺🇸"},
+    {"continent": "North America", "country": "United States", "nomadRegion": "North America", "state": "Florida", "city": "Miami", "dateIn": "2025-06-01", "dateOut": "2025-06-02", "lat": 25.761, "lng": -80.191, "countryISO": "US", "countryFlag": "🇺🇸"},
+    {"continent": "North America", "country": "United States", "nomadRegion": "North America", "state": "Nevada", "city": "Las Vegas", "dateIn": "2025-06-03", "dateOut": "2025-06-04", "lat": 36.169, "lng": -115.139, "countryISO": "US", "countryFlag": "🇺🇸"},
+
+    {"continent": "North America", "country": "Canada", "nomadRegion": "North America", "state": "Ontario", "city": "Toronto", "dateIn": "2025-06-05", "dateOut": "2025-06-08", "lat": 43.653, "lng": -79.383, "countryISO": "CA", "countryFlag": "🇨🇦"},
+    {"continent": "North America", "country": "Canada", "nomadRegion": "North America", "state": "British Columbia", "city": "Vancouver", "dateIn": "2025-06-09", "dateOut": "2025-06-10", "lat": 49.282, "lng": -123.12, "countryISO": "CA", "countryFlag": "🇨🇦"},
+    {"continent": "North America", "country": "Canada", "nomadRegion": "North America", "state": "Quebec", "city": "Montreal", "dateIn": "2025-06-11", "dateOut": "2025-06-12", "lat": 45.501, "lng": -73.567, "countryISO": "CA", "countryFlag": "🇨🇦"},
+
+    {"continent": "North America", "country": "Mexico", "nomadRegion": "Central America", "state": "Mexico City", "city": "Mexico City", "dateIn": "2025-06-13", "dateOut": "2025-06-20", "lat": 19.432, "lng": -99.133, "countryISO": "MX", "countryFlag": "🇲🇽"},
+    {"continent": "North America", "country": "Mexico", "nomadRegion": "Central America", "state": "Quintana Roo", "city": "Cancun", "dateIn": "2025-06-21", "dateOut": "2025-06-22", "lat": 21.161, "lng": -86.851, "countryISO": "MX", "countryFlag": "🇲🇽"},
+    {"continent": "North America", "country": "Mexico", "nomadRegion": "Central America", "state": "Yucatan", "city": "Merida", "dateIn": "2025-06-23", "dateOut": "2025-06-24", "lat": 20.967, "lng": -89.592, "countryISO": "MX", "countryFlag": "🇲🇽"},
+    {"continent": "North America", "country": "Mexico", "nomadRegion": "Central America", "state": "Oaxaca", "city": "Oaxaca", "dateIn": "2025-06-25", "dateOut": "2025-06-26", "lat": 17.061, "lng": -96.725, "countryISO": "MX", "countryFlag": "🇲🇽"},
+
+    {"continent": "North America", "country": "Costa Rica", "nomadRegion": "Central America", "state": "San Jose", "city": "San Jose", "dateIn": "2025-06-27", "dateOut": "2025-06-30", "lat": 9.928, "lng": -84.09, "countryISO": "CR", "countryFlag": "🇨🇷"},
+
+    {"continent": "North America", "country": "Panama", "nomadRegion": "Central America", "state": "Panama", "city": "Panama City", "dateIn": "2025-07-01", "dateOut": "2025-07-04", "lat": 9.101, "lng": -79.402, "countryISO": "PA", "countryFlag": "🇵🇦"},
+
+    {"continent": "North America", "country": "Cuba", "nomadRegion": "Caribbean", "state": "Havana", "city": "Havana", "dateIn": "2025-07-05", "dateOut": "2025-07-08", "lat": 23.113, "lng": -82.366, "countryISO": "CU", "countryFlag": "🇨🇺"},
+
+    {"continent": "South America", "country": "Argentina", "nomadRegion": "Southern Cone", "state": "Buenos Aires", "city": "Buenos Aires", "dateIn": "2025-07-09", "dateOut": "2025-07-16", "lat": -34.603, "lng": -58.381, "countryISO": "AR", "countryFlag": "🇦🇷"},
+    {"continent": "South America", "country": "Argentina", "nomadRegion": "Southern Cone", "state": "Mendoza", "city": "Mendoza", "dateIn": "2025-07-17", "dateOut": "2025-07-18", "lat": -32.889, "lng": -68.845, "countryISO": "AR", "countryFlag": "🇦🇷"},
+
+    {"continent": "South America", "country": "Chile", "nomadRegion": "Southern Cone", "state": "Santiago", "city": "Santiago", "dateIn": "2025-07-19", "dateOut": "2025-07-22", "lat": -33.448, "lng": -70.669, "countryISO": "CL", "countryFlag": "🇨🇱"},
+    {"continent": "South America", "country": "Chile", "nomadRegion": "Southern Cone", "state": "Valparaiso", "city": "Valparaiso", "dateIn": "2025-07-23", "dateOut": "2025-07-24", "lat": -33.045, "lng": -71.619, "countryISO": "CL", "countryFlag": "🇨🇱"},
+
+    {"continent": "South America", "country": "Peru", "nomadRegion": "Andean", "state": "Lima", "city": "Lima", "dateIn": "2025-07-25", "dateOut": "2025-07-28", "lat": -12.046, "lng": -77.042, "countryISO": "PE", "countryFlag": "🇵🇪"},
+    {"continent": "South America", "country": "Peru", "nomadRegion": "Andean", "state": "Cusco", "city": "Cusco", "dateIn": "2025-07-29", "dateOut": "2025-07-30", "lat": -13.531, "lng": -71.967, "countryISO": "PE", "countryFlag": "🇵🇪"},
+
+    {"continent": "South America", "country": "Colombia", "nomadRegion": "Andean", "state": "Bogota", "city": "Bogota", "dateIn": "2025-07-31", "dateOut": "2025-08-03", "lat": 4.711, "lng": -74.072, "countryISO": "CO", "countryFlag": "🇨🇴"},
+    {"continent": "South America", "country": "Colombia", "nomadRegion": "Andean", "state": "Antioquia", "city": "Medellin", "dateIn": "2025-08-04", "dateOut": "2025-08-05", "lat": 6.244, "lng": -75.573, "countryISO": "CO", "countryFlag": "🇨🇴"},
+    {"continent": "South America", "country": "Colombia", "nomadRegion": "Caribbean Coast", "state": "Bolivar", "city": "Cartagena", "dateIn": "2025-08-06", "dateOut": "2025-08-07", "lat": 10.39, "lng": -75.479, "countryISO": "CO", "countryFlag": "🇨🇴"},
+
+    {"continent": "South America", "country": "Ecuador", "nomadRegion": "Andean", "state": "Pichincha", "city": "Quito", "dateIn": "2025-08-08", "dateOut": "2025-08-11", "lat": -0.18, "lng": -78.467, "countryISO": "EC", "countryFlag": "🇪🇨"},
+
+    {"continent": "South America", "country": "Uruguay", "nomadRegion": "Southern Cone", "state": "Montevideo", "city": "Montevideo", "dateIn": "2025-08-12", "dateOut": "2025-08-15", "lat": -34.901, "lng": -56.164, "countryISO": "UY", "countryFlag": "🇺🇾"},
+
+    {"continent": "Oceania", "country": "Australia", "nomadRegion": "Oceania", "state": "New South Wales", "city": "Sydney", "dateIn": "2025-08-16", "dateOut": "2025-08-23", "lat": -33.868, "lng": 151.209, "countryISO": "AU", "countryFlag": "🇦🇺"},
+    {"continent": "Oceania", "country": "Australia", "nomadRegion": "Oceania", "state": "Victoria", "city": "Melbourne", "dateIn": "2025-08-24", "dateOut": "2025-08-27", "lat": -37.813, "lng": 144.963, "countryISO": "AU", "countryFlag": "🇦🇺"},
+
+    {"continent": "Oceania", "country": "New Zealand", "nomadRegion": "Oceania", "state": "Auckland", "city": "Auckland", "dateIn": "2025-08-28", "dateOut": "2025-08-31", "lat": -36.848, "lng": 174.763, "countryISO": "NZ", "countryFlag": "🇳🇿"},
+    {"continent": "Oceania", "country": "New Zealand", "nomadRegion": "Oceania", "state": "Wellington", "city": "Wellington", "dateIn": "2025-09-01", "dateOut": "2025-09-02", "lat": -41.286, "lng": 174.776, "countryISO": "NZ", "countryFlag": "🇳🇿"},
+
+    {"continent": "Europe", "country": "Ireland", "nomadRegion": "British Isles", "state": "Dublin", "city": "Dublin", "dateIn": "2025-09-03", "dateOut": "2025-09-06", "lat": 53.349, "lng": -6.26, "countryISO": "IE", "countryFlag": "🇮🇪"},
+
+    {"continent": "Europe", "country": "Denmark", "nomadRegion": "Scandinavia", "state": "Copenhagen", "city": "Copenhagen", "dateIn": "2025-09-07", "dateOut": "2025-09-10", "lat": 55.676, "lng": 12.568, "countryISO": "DK", "countryFlag": "🇩🇰"},
+
+    {"continent": "Europe", "country": "Sweden", "nomadRegion": "Scandinavia", "state": "Stockholm", "city": "Stockholm", "dateIn": "2025-09-11", "dateOut": "2025-09-14", "lat": 59.329, "lng": 18.068, "countryISO": "SE", "countryFlag": "🇸🇪"},
+
+    {"continent": "Europe", "country": "Norway", "nomadRegion": "Scandinavia", "state": "Oslo", "city": "Oslo", "dateIn": "2025-09-15", "dateOut": "2025-09-18", "lat": 59.913, "lng": 10.752, "countryISO": "NO", "countryFlag": "🇳🇴"},
+
+    {"continent": "Europe", "country": "Finland", "nomadRegion": "Scandinavia", "state": "Helsinki", "city": "Helsinki", "dateIn": "2025-09-19", "dateOut": "2025-09-22", "lat": 60.169, "lng": 24.938, "countryISO": "FI", "countryFlag": "🇫🇮"},
+
+    {"continent": "Europe", "country": "Estonia", "nomadRegion": "Baltic States", "state": "Tallinn", "city": "Tallinn", "dateIn": "2025-09-23", "dateOut": "2025-09-26", "lat": 59.437, "lng": 24.753, "countryISO": "EE", "countryFlag": "🇪🇪"},
+
+    {"continent": "Europe", "country": "Latvia", "nomadRegion": "Baltic States", "state": "Riga", "city": "Riga", "dateIn": "2025-09-27", "dateOut": "2025-09-30", "lat": 56.946, "lng": 24.105, "countryISO": "LV", "countryFlag": "🇱🇻"},
+
+    {"continent": "Europe", "country": "Lithuania", "nomadRegion": "Baltic States", "state": "Vilnius", "city": "Vilnius", "dateIn": "2025-10-01", "dateOut": "2025-10-04", "lat": 54.687, "lng": 25.279, "countryISO": "LT", "countryFlag": "🇱🇹"},
+
+    {"continent": "Europe", "country": "Kosovo", "nomadRegion": "Balkans", "state": "Pristina", "city": "Pristina", "dateIn": "2025-10-05", "dateOut": "2025-10-08", "lat": 42.662, "lng": 21.165, "countryISO": "XK", "countryFlag": "🇽🇰"},
+
+    {"continent": "Europe", "country": "Bosnia and Herzegovina", "nomadRegion": "Balkans", "state": "Sarajevo", "city": "Sarajevo", "dateIn": "2025-10-09", "dateOut": "2025-10-12", "lat": 43.856, "lng": 18.413, "countryISO": "BA", "countryFlag": "🇧🇦"},
+    {"continent": "Europe", "country": "Bosnia and Herzegovina", "nomadRegion": "Balkans", "state": "Herzegovina", "city": "Mostar", "dateIn": "2025-10-13", "dateOut": "2025-10-14", "lat": 43.343, "lng": 17.807, "countryISO": "BA", "countryFlag": "🇧🇦"},
+
+    {"continent": "Europe", "country": "Slovakia", "nomadRegion": "Central Europe", "state": "Bratislava", "city": "Bratislava", "dateIn": "2025-10-15", "dateOut": "2025-10-18", "lat": 48.148, "lng": 17.107, "countryISO": "SK", "countryFlag": "🇸🇰"},
+
+    {"continent": "Europe", "country": "Germany", "nomadRegion": "Central Europe", "state": "Bavaria", "city": "Munich", "dateIn": "2025-10-19", "dateOut": "2025-10-22", "lat": 48.137, "lng": 11.575, "countryISO": "DE", "countryFlag": "🇩🇪"},
+    {"continent": "Europe", "country": "Germany", "nomadRegion": "Central Europe", "state": "Hamburg", "city": "Hamburg", "dateIn": "2025-10-23", "dateOut": "2025-10-24", "lat": 53.551, "lng": 9.993, "countryISO": "DE", "countryFlag": "🇩🇪"},
+    {"continent": "Europe", "country": "Germany", "nomadRegion": "Central Europe", "state": "Hesse", "city": "Frankfurt", "dateIn": "2025-10-25", "dateOut": "2025-10-26", "lat": 50.11, "lng": 8.682, "countryISO": "DE", "countryFlag": "🇩🇪"},
+
+    {"continent": "Europe", "country": "Luxembourg", "nomadRegion": "Benelux", "state": "Luxembourg", "city": "Luxembourg City", "dateIn": "2025-10-27", "dateOut": "2025-10-30", "lat": 49.611, "lng": 6.13, "countryISO": "LU", "countryFlag": "🇱🇺"},
+
+    {"continent": "Europe", "country": "Malta", "nomadRegion": "Mediterranean", "state": "Valletta", "city": "Valletta", "dateIn": "2025-10-31", "dateOut": "2025-11-03", "lat": 35.898, "lng": 14.512, "countryISO": "MT", "countryFlag": "🇲🇹"},
+
+    {"continent": "Europe", "country": "Iceland", "nomadRegion": "Nordic", "state": "Reykjavik", "city": "Reykjavik", "dateIn": "2025-11-04", "dateOut": "2025-11-07", "lat": 64.146, "lng": -21.942, "countryISO": "IS", "countryFlag": "🇮🇸"},
+
+    {"continent": "Asia", "country": "Georgia", "nomadRegion": "Caucasus", "state": "Tbilisi", "city": "Tbilisi", "dateIn": "2025-11-08", "dateOut": "2025-11-11", "lat": 41.716, "lng": 44.783, "countryISO": "GE", "countryFlag": "🇬🇪"},
+
+    {"continent": "Asia", "country": "Armenia", "nomadRegion": "Caucasus", "state": "Yerevan", "city": "Yerevan", "dateIn": "2025-11-12", "dateOut": "2025-11-15", "lat": 40.183, "lng": 44.514, "countryISO": "AM", "countryFlag": "🇦🇲"},
+
+    {"continent": "Europe", "country": "Cyprus", "nomadRegion": "Mediterranean", "state": "Nicosia", "city": "Nicosia", "dateIn": "2025-11-16", "dateOut": "2025-11-19", "lat": 35.185, "lng": 33.382, "countryISO": "CY", "countryFlag": "🇨🇾"},
+
+    {"continent": "Africa", "country": "Tunisia", "nomadRegion": "North Africa", "state": "Tunis", "city": "Tunis", "dateIn": "2025-11-20", "dateOut": "2025-11-23", "lat": 36.806, "lng": 10.181, "countryISO": "TN", "countryFlag": "🇹🇳"},
+
+    {"continent": "Africa", "country": "Senegal", "nomadRegion": "West Africa", "state": "Dakar", "city": "Dakar", "dateIn": "2025-11-24", "dateOut": "2025-11-27", "lat": 14.716, "lng": -17.467, "countryISO": "SN", "countryFlag": "🇸🇳"},
+
+    {"continent": "Africa", "country": "Ghana", "nomadRegion": "West Africa", "state": "Accra", "city": "Accra", "dateIn": "2025-11-28", "dateOut": "2025-12-01", "lat": 5.556, "lng": -0.196, "countryISO": "GH", "countryFlag": "🇬🇭"},
+
+    {"continent": "Asia", "country": "Laos", "nomadRegion": "Southeast Asia", "state": "Vientiane", "city": "Vientiane", "dateIn": "2025-12-02", "dateOut": "2025-12-05", "lat": 17.974, "lng": 102.63, "countryISO": "LA", "countryFlag": "🇱🇦"},
+    {"continent": "Asia", "country": "Laos", "nomadRegion": "Southeast Asia", "state": "Luang Prabang", "city": "Luang Prabang", "dateIn": "2025-12-06", "dateOut": "2025-12-07", "lat": 19.885, "lng": 102.134, "countryISO": "LA", "countryFlag": "🇱🇦"},
+
+    {"continent": "Asia", "country": "Myanmar", "nomadRegion": "Southeast Asia", "state": "Yangon", "city": "Yangon", "dateIn": "2025-12-08", "dateOut": "2025-12-11", "lat": 16.866, "lng": 96.195, "countryISO": "MM", "countryFlag": "🇲🇲"},
+
+    {"continent": "Europe", "country": "Monaco", "nomadRegion": "Western Europe", "state": "Monaco", "city": "Monaco", "dateIn": "2025-12-12", "dateOut": "2025-12-15", "lat": 43.738, "lng": 7.424, "countryISO": "MC", "countryFlag": "🇲🇨"},
+
+    {"continent": "Europe", "country": "Andorra", "nomadRegion": "Iberian Peninsula", "state": "Andorra la Vella", "city": "Andorra la Vella", "dateIn": "2025-12-16", "dateOut": "2025-12-19", "lat": 42.506, "lng": 1.521, "countryISO": "AD", "countryFlag": "🇦🇩"},
+
+    {"continent": "Europe", "country": "San Marino", "nomadRegion": "Southern Europe", "state": "San Marino", "city": "San Marino", "dateIn": "2025-12-20", "dateOut": "2025-12-23", "lat": 43.942, "lng": 12.457, "countryISO": "SM", "countryFlag": "🇸🇲"},
+
+    {"continent": "Europe", "country": "Liechtenstein", "nomadRegion": "Alpine Region", "state": "Vaduz", "city": "Vaduz", "dateIn": "2025-12-24", "dateOut": "2025-12-27", "lat": 47.141, "lng": 9.521, "countryISO": "LI", "countryFlag": "🇱🇮"},
+
+    {"continent": "Europe", "country": "Germany", "nomadRegion": "Central Europe", "state": "Berlin", "city": "Berlin", "dateIn": "2025-12-28", "dateOut": "2026-01-01", "lat": 52.52, "lng": 13.405, "countryISO": "DE", "countryFlag": "🇩🇪"}
+  ]
+}

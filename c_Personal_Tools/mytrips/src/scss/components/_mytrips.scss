@@ -1,22 +1,498 @@
 // MyTrips Specific Styles
+// ============================================
 
+// Variables
+$bg-primary: #020617;
+$bg-secondary: #0f172a;
+$bg-glass: rgba(30, 41, 59, 0.4);
+$bg-glass-panel: rgba(15, 23, 42, 0.8);
+$text-primary: #ffffff;
+$text-secondary: #e2e8f0;
+$text-muted: #94a3b8;
+$text-dim: #64748b;
+$accent-cyan: #06b6d4;
+$accent-purple: #a855f7;
+$accent-amber: #f59e0b;
+$accent-rose: #f43f5e;
+$accent-green: #22c55e;
+$accent-blue: #3b82f6;
+$accent-teal: #14b8a6;
+$border-subtle: rgba(255, 255, 255, 0.05);
+$border-light: rgba(255, 255, 255, 0.1);
+
+// Base
 body {
-  background: #020617;
-  color: #e2e8f0;
+  background: $bg-primary;
+  color: $text-secondary;
   min-width: 1440px;
   overflow: hidden;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.glass {
-  background: rgba(30, 41, 59, 0.4);
+// Layout
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+// Sidebar
+.sidebar {
+  width: 288px;
+  height: 100%;
+  background: $bg-glass-panel;
+  backdrop-filter: blur(16px);
+  border-right: 1px solid $border-subtle;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  z-index: 50;
+  transition: width 0.3s ease;
+
+  &--collapsed {
+    width: 72px;
+
+    .sidebar__header {
+      padding: 0 16px;
+      justify-content: center;
+    }
+
+    .sidebar__nav {
+      padding: 32px 12px;
+    }
+
+    .nav-item {
+      justify-content: center;
+      padding: 12px;
+    }
+  }
+
+  &__header {
+    height: 96px;
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    gap: 16px;
+    border-bottom: 1px solid $border-subtle;
+    background: rgba(15, 23, 42, 0.5);
+    cursor: pointer;
+    transition: padding 0.3s ease;
+  }
+
+  &__logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(6, 182, 212, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $accent-cyan;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    font-size: 24px;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 10px;
+    color: $accent-cyan;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  &__nav {
+    flex: 1;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__section-title {
+    padding: 0 16px;
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-dim;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    margin-top: 24px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+// Nav Item
+.nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  color: $text-muted;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: $text-primary;
+  }
+
+  &--active {
+    background: rgba(6, 182, 212, 0.1);
+    color: $accent-cyan;
+    border-color: rgba(6, 182, 212, 0.2);
+  }
+
+  &__icon {
+    font-size: 20px;
+  }
+
+  &__badge {
+    margin-left: auto;
+    font-size: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 9999px;
+  }
+}
+
+// Main Content
+.main-content {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  background: $bg-primary;
+  display: flex;
+  flex-direction: column;
+}
+
+// Header
+.header {
+  height: 80px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  border-bottom: 1px solid $border-subtle;
+  background: rgba(2, 6, 23, 0.8);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 40;
+
+  &__title {
+    font-size: 24px;
+    font-weight: 300;
+    color: $text-primary;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    color: $text-muted;
+    margin-top: 4px;
+  }
+
+  &__search {
+    background: $bg-glass;
+    padding: 8px 16px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 320px;
+    border: 1px solid $border-subtle;
+
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      color: $text-primary;
+      font-size: 14px;
+
+      &::placeholder {
+        color: $text-dim;
+      }
+    }
+  }
+}
+
+// Viewport
+.viewport {
+  flex: 1;
+  overflow: visible;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+
+  &--scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 40px;
+  }
+}
+
+// Globe Container
+.globe-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: $bg-primary;
+  overflow: visible;
+
+  canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+// Globe Legend
+.globe-legend {
+  position: absolute;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: $text-muted;
+  }
+
+  &__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+
+    &--red { background: #ef4444; }
+    &--green { background: #22c55e; }
+    &--blue { background: #3b82f6; }
+    &--purple { background: #a855f7; }
+    &--amber { background: #f59e0b; }
+    &--teal { background: #14b8a6; }
+  }
+}
+
+// Stats Grid
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+// Stat Card
+.stat-card {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid $border-subtle;
+  border-top: 4px solid $accent-cyan;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+
+  &--purple { border-top-color: $accent-purple; }
+  &--amber { border-top-color: $accent-amber; }
+  &--rose { border-top-color: $accent-rose; }
+
+  &__label {
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  &__value {
+    font-size: 36px;
+    font-weight: 300;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  &__meta {
+    font-size: 12px;
+    color: $accent-cyan;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+
+    &--purple { color: $accent-purple; }
+    &--amber { color: $accent-amber; }
+    &--rose { color: $accent-rose; }
+  }
+}
+
+// Charts Grid
+.charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  height: 320px;
+  margin-bottom: 32px;
+}
+
+// Chart Card
+.chart-card {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid $border-subtle;
+
+  &__title {
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  &__content {
+    height: calc(100% - 40px);
+    width: 100%;
+
+    &--centered {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+// Activity List
+.activity-list {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid $border-subtle;
+
+  &__title {
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+// Activity Item
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid $border-subtle;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+
+    .activity-item__action {
+      opacity: 1;
+    }
+
+    .activity-item__name {
+      color: $accent-cyan;
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $accent-cyan;
+  }
+
+  &__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-primary;
+    transition: color 0.2s ease;
+  }
+
+  &__date {
+    font-size: 12px;
+    color: $text-muted;
+  }
+
+  &__action {
+    font-size: 12px;
+    color: $text-dim;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+}
+
+// Glass utilities
+.glass {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  border: 1px solid $border-subtle;
 }
 
 .glass-panel {
-  background: rgba(15, 23, 42, 0.8);
+  background: $bg-glass-panel;
   backdrop-filter: blur(16px);
-  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  border-right: 1px solid $border-subtle;
 }
 
 // Map Dark Mode Fixes
@@ -32,7 +508,7 @@ body {
   border: 1px solid #334155;
 }
 
-// Smooth Fade & Slide Animations
+// Animations
 .fade-in {
   animation: fadeIn 0.4s ease-out;
 }
@@ -62,5 +538,1379 @@ body {
     opacity: 0.5;
     transform: scale(1);
     transition: opacity 1.5s ease, transform 10s linear;
+  }
+}
+
+// View sections
+.view-section {
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  &--hidden {
+    display: none;
+  }
+}
+
+// Placeholder views
+.placeholder-view {
+  color: $text-primary;
+  font-size: 18px;
+  padding: 40px;
+}
+
+// Long Stay Section
+.long-stays-section {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.long-stay-card {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid $border-subtle;
+  border-left: 4px solid $accent-cyan;
+
+  &--gold {
+    border-left-color: #fbbf24;
+  }
+
+  &--cyan {
+    border-left-color: $accent-cyan;
+  }
+
+  &--purple {
+    border-left-color: $accent-purple;
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    i {
+      font-size: 18px;
+      color: $accent-cyan;
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.long-stay-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &__city {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__country {
+    font-size: 12px;
+    color: $text-muted;
+    flex: 1;
+    margin-left: 8px;
+  }
+
+  &__duration {
+    font-size: 12px;
+    font-weight: 600;
+    color: $accent-cyan;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+}
+
+// Atlas Map
+.atlas-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: $bg-primary;
+  z-index: 1;
+}
+
+// Collections Grid
+.collections-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.collection-card {
+  background: $bg-glass;
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  border: 1px solid $border-subtle;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  gap: 20px;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: $accent-cyan;
+    box-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
+  }
+
+  &__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  &__desc {
+    font-size: 13px;
+    color: $text-muted;
+    margin-bottom: 12px;
+  }
+
+  &__stats {
+    display: flex;
+    gap: 16px;
+  }
+
+  &__count, &__countries {
+    font-size: 12px;
+    color: $accent-cyan;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 4px 10px;
+    border-radius: 9999px;
+  }
+}
+
+// Timeline Stats
+.timeline-stats {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 20px;
+  background: $bg-glass;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+}
+
+.timeline-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  &__value {
+    font-size: 28px;
+    font-weight: 700;
+    color: $accent-cyan;
+  }
+
+  &__label {
+    font-size: 11px;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+// Timeline Filters
+.timeline-filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.timeline-select {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: $text-primary;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 160px;
+
+  &:focus {
+    outline: none;
+    border-color: $accent-cyan;
+  }
+
+  option {
+    background: $bg-secondary;
+    color: $text-primary;
+  }
+}
+
+.timeline-btn {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: $accent-cyan;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(6, 182, 212, 0.2);
+  }
+}
+
+// Timeline Table
+.timeline-table-wrap {
+  background: $bg-glass;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+  overflow: hidden;
+}
+
+.timeline-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 14px 16px;
+    text-align: left;
+    border-bottom: 1px solid $border-subtle;
+  }
+
+  th {
+    background: rgba(0, 0, 0, 0.3);
+    font-size: 11px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &.sortable {
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $accent-cyan;
+      }
+
+      i {
+        margin-left: 6px;
+        font-size: 12px;
+      }
+    }
+  }
+
+  td {
+    font-size: 14px;
+    color: $text-primary;
+  }
+
+  tbody tr {
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  .flag {
+    margin-right: 8px;
+  }
+
+  .days-badge {
+    background: rgba(6, 182, 212, 0.1);
+    color: $accent-cyan;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+}
+
+// Atlas View
+.atlas-view {
+  position: relative;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.atlas-controls {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 400;
+  width: 256px;
+  padding: 16px;
+  border-radius: 12px;
+
+  &__title {
+    font-size: 10px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__btn {
+    width: 100%;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 6px;
+    color: $text-muted;
+    background: transparent;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $text-primary;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &--active {
+      color: $accent-cyan;
+      background: rgba(6, 182, 212, 0.1);
+    }
+
+    i {
+      margin-right: 8px;
+    }
+  }
+}
+
+.atlas-legend {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  z-index: 400;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 14px;
+
+  &__content {
+    color: $text-secondary;
+  }
+}
+
+// Collections Header
+.collections-header {
+  margin-bottom: 32px;
+
+  &__title {
+    font-size: 30px;
+    font-weight: 300;
+    color: $text-primary;
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    color: $text-muted;
+  }
+}
+
+// Themes Grid (16 collection cards)
+.themes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-bottom: 48px;
+}
+
+.theme-card {
+  position: relative;
+  height: 256px;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba(6, 182, 212, 0.5);
+    transform: translateY(-4px);
+
+    .theme-card__img {
+      transform: scale(1.1);
+      opacity: 0.4;
+    }
+  }
+
+  &__img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+    transition: transform 0.7s ease, opacity 0.3s ease;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, $bg-primary, transparent, transparent);
+  }
+
+  &__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 24px;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  &__icon {
+    color: $accent-cyan;
+    font-size: 20px;
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__desc {
+    font-size: 12px;
+    color: $text-muted;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+// Theme Overlay Modal
+.theme-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: $bg-primary;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+
+  &--visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &__slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: #000;
+  }
+
+  &__gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, $bg-primary, rgba(2, 6, 23, 0.9), transparent);
+    z-index: 10;
+  }
+
+  &__left {
+    position: relative;
+    z-index: 20;
+    width: 35%;
+    height: 100%;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(2, 6, 23, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  &__back {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $text-muted;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: color 0.2s;
+
+    &:hover {
+      color: $text-primary;
+    }
+  }
+
+  &__info {
+    margin-top: auto;
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    background: rgba(6, 182, 212, 0.2);
+    color: $accent-cyan;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin-bottom: 32px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+  }
+
+  &__title {
+    font-size: 48px;
+    font-weight: 300;
+    color: $text-primary;
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+
+  &__desc {
+    font-size: 20px;
+    color: $text-secondary;
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    padding-left: 24px;
+    border-left: 2px solid $accent-cyan;
+  }
+
+  &__count {
+    padding: 24px;
+    border-radius: 12px;
+    width: fit-content;
+  }
+
+  &__count-label {
+    font-size: 12px;
+    color: $text-muted;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  &__count-value {
+    font-size: 30px;
+    font-weight: 300;
+    color: $text-primary;
+    margin-top: 4px;
+  }
+
+  &__right {
+    position: relative;
+    z-index: 20;
+    width: 65%;
+    height: 100%;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  &__map-container {
+    width: 100%;
+    height: 60%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    background: $bg-secondary;
+    position: relative;
+  }
+
+  &__map {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__map-label {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    z-index: 500;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: $text-muted;
+  }
+}
+
+// Section Title
+.section-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: $text-primary;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  i {
+    color: $accent-cyan;
+  }
+}
+
+// Flag Summary Section
+.flag-summary-section {
+  margin-bottom: 32px;
+}
+
+.flag-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+.flag-summary-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  &__emoji {
+    font-size: 20px;
+  }
+
+  &__name {
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-primary;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    flex: 1;
+  }
+
+  &__count {
+    font-size: 11px;
+    color: $accent-cyan;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 2px 8px;
+    border-radius: 9999px;
+  }
+
+  &__flags {
+    font-size: 18px;
+    line-height: 1.8;
+    word-break: break-word;
+    min-height: 40px;
+    color: $text-muted;
+  }
+}
+
+// Cultural Regions Section
+.cultural-regions-section {
+  margin-bottom: 32px;
+}
+
+.cultural-regions-table-wrap {
+  background: $bg-glass;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+  overflow: hidden;
+}
+
+.cultural-regions-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid $border-subtle;
+  }
+
+  th {
+    background: rgba(0, 0, 0, 0.3);
+    color: $text-muted;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .region-row {
+    background: rgba(6, 182, 212, 0.05);
+
+    td {
+      font-weight: 600;
+      color: $text-primary;
+    }
+  }
+
+  .group-row {
+    td {
+      color: $text-secondary;
+    }
+  }
+
+  .region-emoji {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+
+  .group-name {
+    padding-left: 32px;
+  }
+
+  .group-emoji {
+    font-size: 14px;
+    margin-right: 6px;
+  }
+
+  .num {
+    text-align: center;
+    width: 80px;
+  }
+
+  .flags-cell {
+    font-size: 14px;
+    max-width: 200px;
+    word-break: break-word;
+  }
+}
+
+// Progress Bar
+.progress-bar {
+  position: relative;
+  width: 100%;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+
+  &--small {
+    height: 16px;
+    border-radius: 8px;
+  }
+
+  &__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, $accent-cyan, $accent-blue);
+    border-radius: inherit;
+    transition: width 0.5s ease;
+  }
+
+  &__text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+// Mobile View - Desktop layout is preserved via viewport meta tag (width=1440)
+// The browser scales the entire page to fit mobile screens
+// Only add touch-friendly improvements here, no layout changes
+
+// Touch-friendly scrolling for tables
+.timeline-table-wrap,
+.cultural-regions-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// ============================================
+// ADDITIONAL STATS SECTIONS
+// ============================================
+
+// Stats Section wrapper
+.stats-section {
+  margin-bottom: 32px;
+}
+
+// Stats Cards Grid (for language/culture stats)
+.stats-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+// Mini Stat Card
+.mini-stat-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 6px;
+  }
+
+  &__stats {
+    font-size: 12px;
+    color: $text-muted;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-items: center;
+  }
+
+  &__value {
+    color: $accent-cyan;
+    font-weight: 500;
+  }
+
+  &__separator {
+    color: $text-dim;
+  }
+}
+
+// Stats Table
+.stats-table-wrap {
+  background: $bg-glass;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+
+  th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid $border-subtle;
+  }
+
+  th {
+    background: rgba(0, 0, 0, 0.3);
+    color: $text-muted;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+  }
+
+  td {
+    color: $text-secondary;
+  }
+
+  .num {
+    text-align: center;
+    width: 80px;
+  }
+
+  tbody tr {
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+  }
+}
+
+// Geographic Stats Section
+.geo-stats-section {
+  margin-bottom: 32px;
+}
+
+.geo-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.geo-stat-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(6, 182, 212, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 24px;
+      color: $accent-cyan;
+    }
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__value {
+    font-size: 28px;
+    font-weight: 300;
+    color: $text-primary;
+    line-height: 1;
+  }
+
+  &__label {
+    font-size: 11px;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+}
+
+// Hemisphere Section
+.hemisphere-section {
+  margin-bottom: 32px;
+}
+
+.hemisphere-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.hemisphere-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 16px;
+
+  &__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  &__value {
+    font-size: 28px;
+    font-weight: 300;
+    color: $text-primary;
+    margin-bottom: 12px;
+  }
+}
+
+.hemisphere-bar {
+  height: 8px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  overflow: hidden;
+
+  &__fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+
+    &--north { background: linear-gradient(90deg, $accent-blue, $accent-cyan); }
+    &--south { background: linear-gradient(90deg, $accent-green, $accent-teal); }
+    &--east { background: linear-gradient(90deg, $accent-amber, #f59e0b); }
+    &--west { background: linear-gradient(90deg, $accent-purple, #a855f7); }
+  }
+}
+
+// Duration Section
+.duration-section {
+  margin-bottom: 32px;
+}
+
+.duration-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.duration-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &--highlight {
+    background: rgba(6, 182, 212, 0.1);
+    border-color: rgba(6, 182, 212, 0.3);
+
+    .duration-card__value {
+      color: $accent-cyan;
+    }
+  }
+
+  &__value {
+    font-size: 32px;
+    font-weight: 300;
+    color: $text-primary;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  &__label {
+    font-size: 11px;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.duration-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 16px;
+  background: $bg-glass;
+  border-radius: 12px;
+  border: 1px solid $border-subtle;
+
+  &__item {
+    font-size: 14px;
+    color: $text-muted;
+
+    strong {
+      color: $accent-cyan;
+    }
+  }
+
+  &__separator {
+    color: $text-dim;
+  }
+}
+
+// Top Countries Section
+.top-countries-section {
+  margin-bottom: 32px;
+}
+
+.top-countries-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.top-country-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &__rank {
+    font-size: 14px;
+    font-weight: 700;
+    color: $text-dim;
+    min-width: 28px;
+  }
+
+  &__flag {
+    font-size: 24px;
+  }
+
+  &__name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__value {
+    font-size: 12px;
+    color: $accent-cyan;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+}
+
+// Continent Days Section
+.continent-days-section {
+  margin-bottom: 32px;
+}
+
+.continent-days-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.continent-days-card {
+  display: grid;
+  grid-template-columns: 140px 1fr 100px;
+  align-items: center;
+  gap: 16px;
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 10px;
+  padding: 12px 16px;
+
+  &__name {
+    font-size: 14px;
+    font-weight: 500;
+    color: $text-primary;
+  }
+
+  &__bar {
+    height: 24px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.5s ease;
+    min-width: 2%;
+  }
+
+  &__value {
+    font-size: 14px;
+    font-weight: 600;
+    color: $accent-cyan;
+    text-align: right;
+  }
+}
+
+// Monthly Travel Section
+.monthly-section {
+  margin-bottom: 32px;
+}
+
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+}
+
+.monthly-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 8px;
+  padding: 12px 8px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+  }
+
+  &__month {
+    font-size: 11px;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  &__bar {
+    width: 20px;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 8px;
+  }
+
+  &__fill {
+    width: 100%;
+    background: linear-gradient(180deg, $accent-cyan, $accent-blue);
+    border-radius: 10px;
+    min-height: 4px;
+    transition: height 0.5s ease;
+  }
+
+  &__value {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+}
+
+// Geographic Extremes Section
+.extremes-section {
+  margin-bottom: 32px;
+}
+
+.extremes-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.extreme-card {
+  background: $bg-glass;
+  border: 1px solid $border-subtle;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: $accent-cyan;
+    transform: translateY(-2px);
+  }
+
+  &__direction {
+    font-size: 12px;
+    font-weight: 600;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  &__city {
+    font-size: 18px;
+    font-weight: 600;
+    color: $text-primary;
+    margin-bottom: 4px;
+  }
+
+  &__country {
+    font-size: 13px;
+    color: $text-muted;
+    margin-bottom: 12px;
+  }
+
+  &__coord {
+    font-size: 14px;
+    color: $accent-cyan;
+    background: rgba(6, 182, 212, 0.1);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    display: inline-block;
+    font-weight: 500;
   }
 }

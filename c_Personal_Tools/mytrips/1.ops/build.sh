@@ -43,13 +43,29 @@ kill_port() {
 build() {
     log_info "Building MyTrips for production..."
 
-    # MyTrips uses standalone HTML with CDN dependencies (no build needed)
-    # dist/ contains pre-built HTML files that are committed to git
-    if [ -f "dist/index.html" ] && [ -f "dist/myroadtrip.html" ]; then
-        log_success "Standalone HTML files found in dist/"
-        log_info "No build step required (CDN-based dependencies)"
+    # Backup ONLY Cultural Regions Map (D3 version) - Vue handles main app
+    log_info "Backing up Cultural Regions Map..."
+    if [ -f "dist/myroadtrip.html" ]; then
+        cp dist/myroadtrip.html dist/myroadtrip.html.bak
+    fi
+
+    # Run Vue build (creates main app with Home/Timeline/Stats/Atlas/Collections)
+    npm run build
+    if [ $? -eq 0 ]; then
+        log_success "Vue build completed!"
+
+        # Restore the working Cultural Regions Map (D3 version - too complex for Vue)
+        if [ -f "dist/myroadtrip.html.bak" ]; then
+            log_info "Restoring Cultural Regions Map (D3 version)..."
+            mv dist/myroadtrip.html.bak dist/myroadtrip.html
+        fi
+
+        log_success "Build completed!"
+        log_info "Main app: Vue version (Home, Timeline, Stats, Atlas, Collections)"
+        log_info "Cultural Regions Map: D3 version (preserved)"
     else
-        log_error "Missing dist files! Please restore from git."
+        log_error "Build failed!"
+        [ -f "dist/myroadtrip.html.bak" ] && mv dist/myroadtrip.html.bak dist/myroadtrip.html
         exit 1
     fi
 }

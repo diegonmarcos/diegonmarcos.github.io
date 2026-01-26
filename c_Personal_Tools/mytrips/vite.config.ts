@@ -5,8 +5,8 @@ import { resolve } from 'path';
 export default defineConfig({
   plugins: [vue()],
   root: 'src',
-  base: '/mytrips/',
-  cacheDir: resolve(__dirname, '../../node_modules/.vite'),
+  base: './',
+  cacheDir: resolve(__dirname, 'node_modules/.vite'),
   build: {
     outDir: '../dist',
     emptyOutDir: true,
@@ -20,7 +20,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': resolve(__dirname, 'src'),
-      'vue': resolve(__dirname, '../../node_modules/vue/dist/vue.esm-bundler.js')
+      'vue': resolve(__dirname, 'node_modules/vue/dist/vue.esm-bundler.js')
     }
   },
   css: {

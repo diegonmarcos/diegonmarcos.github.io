@@ -1,8 +1,4 @@
 import { ShaderManager } from './shaders/ShaderManager.js';
-import { heroShaderCode } from './shaders/heroShader.js';
-import { calmShaderCode } from './shaders/calmShader.js';
-import { cubeShaderCode } from './shaders/cubeShader.js';
-import { pyramidShaderCode } from './shaders/pyramidShader.js';
 import { CursorAnimation } from './animations/cursor.js';
 import { CardEffects } from './animations/cardEffects.js';
 import { ScrollEffects } from './animations/scrollEffects.js';
@@ -17,7 +13,7 @@ class LeafStudios {
         this.init();
     }
     init() {
-        this.shaderManagers.push(new ShaderManager('hero-shader', heroShaderCode, 1.0), new ShaderManager('services-shader', calmShaderCode, 0.6), new ShaderManager('cube-shader', cubeShaderCode, 0.8), new ShaderManager('gallery-shader', calmShaderCode, 0.5), new ShaderManager('about-shader', calmShaderCode, 0.5), new ShaderManager('pyramid-shader', pyramidShaderCode, 0.8), new ShaderManager('contact-shader', calmShaderCode, 0.4));
+        this.shaderManagers.push(new ShaderManager('hero-shader', 'hero.glsl', 1.0));
         new CursorAnimation();
         new CardEffects();
         new ScrollEffects();

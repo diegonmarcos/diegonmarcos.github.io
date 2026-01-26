@@ -73,7 +73,18 @@ fi
 
 # Fix ES module imports (add .js extensions for browser compatibility)
 echo -e "${BLUE}[6/7]${NC} Fixing module imports..."
-bash "$PROJECT_ROOT/1.ops/fix-imports.sh" > /dev/null
+cd "$PROJECT_ROOT/dist/scripts"
+find . -name "*.js" -type f | while read -r file; do
+    # Handle ./ imports
+    sed -i "s|from '\./\([^']*\)';|from './\1.js';|g" "$file"
+    sed -i "s|from \"\./\([^\"]*\)\";|from \"./\1.js\";|g" "$file"
+    # Handle ../ imports
+    sed -i "s|from '\.\./\([^']*\)';|from '../\1.js';|g" "$file"
+    sed -i "s|from \"\.\./\([^\"]*\)\";|from \"../\1.js\";|g" "$file"
+    # Fix double .js.js if it was already there
+    sed -i "s|\.js\.js|.js|g" "$file"
+done
+cd "$PROJECT_ROOT"
 echo -e "${GREEN}✓${NC} Module imports fixed"
 
 # Calculate sizes

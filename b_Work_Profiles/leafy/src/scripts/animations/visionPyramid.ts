@@ -6,6 +6,7 @@ export class VisionPyramid {
     private currentFace: number = 0;
     private rotationY: number = -30;
     private rotationX: number = -15;
+    private rotationZ: number = 0;
     private isDragging: boolean = false;
     private startX: number = 0;
     private startY: number = 0;
@@ -217,7 +218,7 @@ export class VisionPyramid {
     private updateTransform(): void {
         if (!this.pyramid) return;
 
-        this.pyramid.style.transform = `translateY(50px) rotateX(${this.rotationX}deg) rotateY(${this.rotationY}deg)`;
+        this.pyramid.style.transform = `rotateX(${this.rotationX}deg) rotateY(${this.rotationY}deg) rotateZ(${this.rotationZ}deg)`;
     }
 
     private setActiveFace(face: number): void {
@@ -236,41 +237,33 @@ export class VisionPyramid {
 
     private startAutoRotate(): void {
         let lastTime = performance.now();
-        let targetRotY = this.rotationY;
-        let targetRotX = this.rotationX;
-        let changeTime = 0;
-        const changeInterval = 4000; // Change direction every 4 seconds
+
+        // Continuous rotation speeds (degrees per second)
+        const speedX = 8;   // Slow tilt
+        const speedY = 25;  // Main horizontal spin
+        const speedZ = 5;   // Slight wobble
 
         const rotate = (time: number) => {
             if (this.isDragging) return;
 
-            const delta = time - lastTime;
+            const delta = (time - lastTime) / 1000; // Convert to seconds
             lastTime = time;
 
-            // Change target rotation randomly
-            if (time - changeTime > changeInterval) {
-                changeTime = time;
-                targetRotY = this.rotationY + (Math.random() - 0.5) * 200;
-                targetRotX = -15 + (Math.random() - 0.5) * 25;
-                targetRotX = Math.max(-35, Math.min(10, targetRotX));
-            }
+            // Continuous rotation on all 3 axes
+            this.rotationY += speedY * delta;
 
-            // Smooth interpolation towards target
-            const ease = 0.015;
-            this.rotationY += (targetRotY - this.rotationY) * ease;
-            this.rotationX += (targetRotX - this.rotationX) * ease;
+            // Oscillating X and Z for organic motion
+            const t = time * 0.001;
+            this.rotationX = -15 + Math.sin(t * 0.5) * 20;
+            this.rotationZ = Math.sin(t * 0.3) * 10;
 
             this.updateTransform();
 
             this.autoRotateId = requestAnimationFrame(rotate);
         };
 
-        // Start auto-rotate after 3 seconds
-        setTimeout(() => {
-            if (!this.isDragging) {
-                this.autoRotateId = requestAnimationFrame(rotate);
-            }
-        }, 3000);
+        // Start auto-rotate immediately
+        this.autoRotateId = requestAnimationFrame(rotate);
     }
 
     private stopAutoRotate(): void {

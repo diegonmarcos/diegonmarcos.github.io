@@ -1,9 +1,5 @@
-// Import shaders
+// Import shader manager
 import { ShaderManager } from './shaders/ShaderManager';
-import { heroShaderCode } from './shaders/heroShader';
-import { calmShaderCode } from './shaders/calmShader';
-import { cubeShaderCode } from './shaders/cubeShader';
-import { pyramidShaderCode } from './shaders/pyramidShader';
 
 // Import animations
 import { CursorAnimation } from './animations/cursor';
@@ -26,15 +22,10 @@ class LeafStudios {
     }
 
     private init(): void {
-        // Initialize WebGL shaders
+        // Only 2 WebGL shaders to avoid context exhaustion
+        // Mobile browsers have ~8 context limit
         this.shaderManagers.push(
-            new ShaderManager('hero-shader', heroShaderCode, 1.0),
-            new ShaderManager('services-shader', calmShaderCode, 0.6),
-            new ShaderManager('cube-shader', cubeShaderCode, 0.8),
-            new ShaderManager('gallery-shader', calmShaderCode, 0.5),
-            new ShaderManager('about-shader', calmShaderCode, 0.5),
-            new ShaderManager('pyramid-shader', pyramidShaderCode, 0.8),
-            new ShaderManager('contact-shader', calmShaderCode, 0.4)
+            new ShaderManager('hero-shader', 'hero.glsl', 1.0)
         );
 
         // Initialize animations
@@ -45,9 +36,7 @@ class LeafStudios {
         new VisionPyramid();
 
         // Initialize utilities
-        // IMPORTANT: ShadertoyGallery must run BEFORE ObserverManager
-        // because it creates .shader-card elements that need to be observed
-        new ShadertoyGallery();
+        new ShadertoyGallery(); // Lazy-loaded shader gallery
         new ObserverManager();
         new LoaderManager();
     }

@@ -3,10 +3,13 @@
 // =====================
 
 .hero-page {
-    background: var(--wood-darkest);
+    // No solid background - let the WebGL shader show through
+    background: transparent;
 
     .page-content {
         justify-content: center;
+        // Ensure content doesn't block shader visibility
+        background: transparent;
     }
 }
 

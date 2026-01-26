@@ -5,6 +5,7 @@ export class VisionPyramid {
         this.currentFace = 0;
         this.rotationY = -30;
         this.rotationX = -15;
+        this.rotationZ = 0;
         this.isDragging = false;
         this.startX = 0;
         this.startY = 0;
@@ -174,7 +175,7 @@ export class VisionPyramid {
     updateTransform() {
         if (!this.pyramid)
             return;
-        this.pyramid.style.transform = `translateY(50px) rotateX(${this.rotationX}deg) rotateY(${this.rotationY}deg)`;
+        this.pyramid.style.transform = `rotateX(${this.rotationX}deg) rotateY(${this.rotationY}deg) rotateZ(${this.rotationZ}deg)`;
     }
     setActiveFace(face) {
         const faces = document.querySelectorAll('.pyramid-face');
@@ -190,32 +191,22 @@ export class VisionPyramid {
     }
     startAutoRotate() {
         let lastTime = performance.now();
-        let targetRotY = this.rotationY;
-        let targetRotX = this.rotationX;
-        let changeTime = 0;
-        const changeInterval = 4000;
+        const speedX = 8;
+        const speedY = 25;
+        const speedZ = 5;
         const rotate = (time) => {
             if (this.isDragging)
                 return;
-            const delta = time - lastTime;
+            const delta = (time - lastTime) / 1000;
             lastTime = time;
-            if (time - changeTime > changeInterval) {
-                changeTime = time;
-                targetRotY = this.rotationY + (Math.random() - 0.5) * 200;
-                targetRotX = -15 + (Math.random() - 0.5) * 25;
-                targetRotX = Math.max(-35, Math.min(10, targetRotX));
-            }
-            const ease = 0.015;
-            this.rotationY += (targetRotY - this.rotationY) * ease;
-            this.rotationX += (targetRotX - this.rotationX) * ease;
+            this.rotationY += speedY * delta;
+            const t = time * 0.001;
+            this.rotationX = -15 + Math.sin(t * 0.5) * 20;
+            this.rotationZ = Math.sin(t * 0.3) * 10;
             this.updateTransform();
             this.autoRotateId = requestAnimationFrame(rotate);
         };
-        setTimeout(() => {
-            if (!this.isDragging) {
-                this.autoRotateId = requestAnimationFrame(rotate);
-            }
-        }, 3000);
+        this.autoRotateId = requestAnimationFrame(rotate);
     }
     stopAutoRotate() {
         if (this.autoRotateId) {

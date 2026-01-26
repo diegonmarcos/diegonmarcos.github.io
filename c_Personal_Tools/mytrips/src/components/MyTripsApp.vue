@@ -671,6 +671,7 @@ const mapLegendContent = ref('');
 const mapModes = [
   { id: 'pin', name: 'Pins' },
   { id: 'country', name: 'Countries' },
+  { id: 'region', name: 'NomadMania Regions' },
   { id: 'rel', name: 'Religions' }
 ];
 
@@ -1278,6 +1279,40 @@ async function setMapMode(mode: string) {
         <span style="color:#cbd5e1">${trip.country} - ${trip.dateIn}</span>
       `);
     });
+  } else if (mode === 'region') {
+    // NomadMania Regions mode - color by region
+    const regionColors: Record<string, string> = {};
+    const regions = [...new Set(travelData.trips.map(t => t.nomadRegion))];
+    const colorPalette = [
+      '#06b6d4', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899',
+      '#3b82f6', '#14b8a6', '#f43f5e', '#84cc16', '#6366f1',
+      '#22c55e', '#eab308', '#0ea5e9', '#a855f7', '#ef4444'
+    ];
+    regions.forEach((region, i) => {
+      regionColors[region] = colorPalette[i % colorPalette.length];
+    });
+
+    travelData.trips.forEach(trip => {
+      const marker = L.circleMarker([trip.lat, trip.lng], {
+        radius: 6,
+        fillColor: regionColors[trip.nomadRegion] || '#06b6d4',
+        color: '#0b0f19',
+        weight: 1,
+        fillOpacity: 0.9
+      }).addTo(atlasMap);
+
+      marker.bindPopup(`
+        <b style="color:${regionColors[trip.nomadRegion]}">${trip.city}</b><br>
+        <span style="color:#cbd5e1">${trip.nomadRegion}</span><br>
+        <span style="color:#64748b">${trip.country}</span>
+      `);
+    });
+
+    showMapLegend.value = true;
+    mapLegendContent.value = `<div style="font-size:10px;color:#94a3b8;margin-bottom:4px">NomadMania Regions (${regions.length})</div>` +
+      regions.slice(0, 12).map(r =>
+        `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:10px;height:10px;background:${regionColors[r]};border-radius:2px"></div><span style="font-size:11px">${r}</span></div>`
+      ).join('') + (regions.length > 12 ? `<div style="margin-top:4px;font-size:10px;color:#64748b">+${regions.length - 12} more...</div>` : '');
   } else {
     // Load GeoJSON for country/religion modes
     try {

@@ -1339,7 +1339,7 @@ async function setMapMode(mode: string) {
       mapLegendContent.value = mode === 'country'
         ? '<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#06b6d4;border-radius:2px"></div> Visited</div>'
         : '<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#3b82f6;border-radius:2px"></div> Group A</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#10b981;border-radius:2px"></div> Group B</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#f59e0b;border-radius:2px"></div> Group C</div>';
-    } catch (e) {
+    } catch (e: unknown) {
       console.error('Failed to load GeoJSON:', e);
     }
   }

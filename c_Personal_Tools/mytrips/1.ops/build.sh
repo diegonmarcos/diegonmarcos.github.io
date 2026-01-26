@@ -43,6 +43,10 @@ kill_port() {
 build() {
     log_info "Building MyTrips for production..."
 
+    # Install dependencies (required for CI)
+    log_info "Installing dependencies..."
+    npm install
+
     # Backup ONLY Cultural Regions Map (D3 version) - Vue handles main app
     log_info "Backing up Cultural Regions Map..."
     if [ -f "dist/myroadtrip.html" ]; then

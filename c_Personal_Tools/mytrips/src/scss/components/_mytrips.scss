@@ -42,9 +42,10 @@ body {
 }
 
 // Layout - viewport meta tag handles scaling (width=1280)
+// Height is set dynamically via JS based on actual viewport aspect ratio
 .app-container {
   display: flex;
-  height: 100vh;
+  height: 100vh; // Fallback, JS will override for mobile
   width: $design-width;
   min-width: $design-width;
   overflow: hidden;

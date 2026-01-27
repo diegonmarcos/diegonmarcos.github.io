@@ -984,6 +984,37 @@ let charts: Record<string, Chart> = {};
 onMounted(async () => {
   DB.value = initData();
 
+  // Debug viewport info
+  const DESIGN_WIDTH = 1280;
+  const debugViewport = () => {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const visualVW = window.visualViewport?.width || vw;
+    const visualVH = window.visualViewport?.height || vh;
+    const scale = window.visualViewport?.scale || 1;
+    const appContainer = document.querySelector('.app-container') as HTMLElement;
+
+    console.log('[MyTrips] Viewport Debug:', {
+      innerWidth: vw,
+      innerHeight: vh,
+      visualViewport: { width: visualVW, height: visualVH, scale },
+      devicePixelRatio: window.devicePixelRatio,
+      appContainerSize: appContainer ? { w: appContainer.offsetWidth, h: appContainer.offsetHeight } : null
+    });
+
+    // Calculate correct height based on aspect ratio
+    if (appContainer && vw < DESIGN_WIDTH) {
+      const aspectRatio = visualVH / visualVW;
+      const correctHeight = DESIGN_WIDTH * aspectRatio;
+      console.log('[MyTrips] Calculated height:', correctHeight, 'aspect:', aspectRatio);
+      appContainer.style.height = `${correctHeight}px`;
+    }
+  };
+
+  debugViewport();
+  window.addEventListener('resize', debugViewport);
+  window.visualViewport?.addEventListener('resize', debugViewport);
+
   // Start clock
   const interval = setInterval(() => {
     const now = new Date();

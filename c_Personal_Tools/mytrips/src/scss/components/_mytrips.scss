@@ -255,7 +255,7 @@ body {
 // Viewport
 .viewport {
   flex: 1;
-  overflow: visible;
+  overflow: hidden;
   position: relative;
   height: 100%;
   width: 100%;
@@ -265,6 +265,7 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     padding: 40px;
+    height: 100%;
   }
 }
 
@@ -557,9 +558,14 @@ body {
 
 // View sections
 .view-section {
-  height: 100%;
   width: 100%;
   position: relative;
+  min-height: 100%;
+
+  // For non-scrollable views (globe, atlas), use fixed height
+  &:not(.viewport--scrollable) {
+    height: 100%;
+  }
 
   &--hidden {
     display: none;
@@ -888,10 +894,8 @@ body {
 .atlas-view {
   position: relative;
   height: 100%;
-  border-radius: 16px;
+  width: 100%;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .atlas-controls {

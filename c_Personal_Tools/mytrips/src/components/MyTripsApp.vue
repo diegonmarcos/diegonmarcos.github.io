@@ -1004,8 +1004,11 @@ onUnmounted(() => {
 });
 
 watch(currentView, async (newView, oldView) => {
+  console.log(`[MyTrips] View change: ${oldView} -> ${newView}`);
+
   // Cleanup globe when leaving dashboard
   if (oldView === 'dashboard' && newView !== 'dashboard') {
+    console.log('[MyTrips] Cleaning up globe...');
     if (animationId) cancelAnimationFrame(animationId);
     if (globeRenderer) {
       globeRenderer.dispose();
@@ -1015,17 +1018,31 @@ watch(currentView, async (newView, oldView) => {
     globeCamera = null;
     globeControls = null;
     globeInitialized = false;
+    console.log('[MyTrips] Globe cleanup complete');
+  }
+
+  // Cleanup atlas when leaving atlas view
+  if (oldView === 'atlas' && newView !== 'atlas') {
+    console.log('[MyTrips] Cleaning up atlas...');
+    if (atlasMap) {
+      atlasMap.remove();
+      atlasMap = null;
+    }
+    console.log('[MyTrips] Atlas cleanup complete');
   }
 
   if (currentView.value === 'analytics') {
+    console.log('[MyTrips] Initializing charts...');
     await nextTick();
     initCharts();
   }
   if (currentView.value === 'dashboard') {
+    console.log('[MyTrips] Initializing globe...');
     await nextTick();
     initGlobe();
   }
   if (currentView.value === 'atlas') {
+    console.log('[MyTrips] Initializing atlas...');
     await nextTick();
     initAtlasMap();
   }
@@ -1033,16 +1050,23 @@ watch(currentView, async (newView, oldView) => {
 
 // Globe initialization
 function initGlobe() {
-  if (!globeContainer.value || globeInitialized) return;
+  console.log('[MyTrips] initGlobe called', { hasContainer: !!globeContainer.value, globeInitialized });
+  if (!globeContainer.value || globeInitialized) {
+    console.log('[MyTrips] initGlobe skipped - already initialized or no container');
+    return;
+  }
 
   const container = globeContainer.value;
+  console.log('[MyTrips] Globe container size:', container.clientWidth, 'x', container.clientHeight);
 
   // Wait for container to have dimensions
   if (container.clientWidth === 0 || container.clientHeight === 0) {
+    console.log('[MyTrips] Globe container has no size, retrying in 100ms');
     setTimeout(initGlobe, 100);
     return;
   }
 
+  console.log('[MyTrips] Creating globe...');
   globeInitialized = true;
   const CONFIG = { radius: 10, dotSize: 0.08, dotDensity: 1.5 };
 
@@ -1238,14 +1262,22 @@ function initGlobe() {
 
 // Atlas Map initialization
 function initAtlasMap() {
-  if (!atlasMapContainer.value || atlasMap) return;
+  console.log('[MyTrips] initAtlasMap called', { hasContainer: !!atlasMapContainer.value, hasAtlasMap: !!atlasMap });
+  if (!atlasMapContainer.value || atlasMap) {
+    console.log('[MyTrips] initAtlasMap skipped - already initialized or no container');
+    return;
+  }
 
   const container = atlasMapContainer.value;
+  console.log('[MyTrips] Atlas container size:', container.clientWidth, 'x', container.clientHeight);
+
   if (container.clientWidth === 0 || container.clientHeight === 0) {
+    console.log('[MyTrips] Atlas container has no size, retrying in 100ms');
     setTimeout(initAtlasMap, 100);
     return;
   }
 
+  console.log('[MyTrips] Creating atlas map...');
   atlasMap = L.map(container, {
     center: [20, 0],
     zoom: 2,

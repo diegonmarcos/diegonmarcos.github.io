@@ -173,7 +173,7 @@ is_log_receiver_running() {
     return 1
 }
 
-# Static server - lightweight Python http.server (no live-reload, minimal resources)
+# Static server - lightweight Python server with Eruda DevTools (no logging)
 do_start_static() {
     if is_running; then
         echo "Server is already running (PID $PID)."
@@ -204,10 +204,10 @@ do_start_static() {
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    printf "${CYAN}Starting static server (lightweight)...${NC}\n"
+    printf "${CYAN}Starting static server (with Eruda)...${NC}\n"
     echo "  Port:  $PORT"
     echo "  Mount: $MOUNT_DIR"
-    nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
+    nohup python3 -u "$SCRIPT_DIR/static-server.py" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
@@ -226,6 +226,7 @@ do_start_static() {
     if is_running; then
         printf "${GREEN}✓${NC} Static server started (PID: $SERVER_PID)\n"
         printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
+        printf "  Mode: ${GREEN}Eruda DevTools (no logging)${NC}\n"
         printf "  Logs: $LOG_FILE\n"
     else
         echo "Failed to start server. Check logs."
@@ -234,7 +235,7 @@ do_start_static() {
     fi
 }
 
-# Live server - live-server with auto-refresh (requires Node.js)
+# Live server - Python server with Eruda + auto-refresh (no Node.js required)
 do_start_live() {
     if is_running; then
         echo "Server is already running (PID $PID)."
@@ -248,14 +249,6 @@ do_start_live() {
 
     if [ ! -d "$MOUNT_DIR" ]; then
         echo "Error: Mount point '$MOUNT_DIR' does not exist."
-        return
-    fi
-
-    # Check if live-server is available
-    if ! command -v live-server >/dev/null 2>&1; then
-        printf "${YELLOW}live-server not found. Install with: npm install -g live-server${NC}\n"
-        printf "${YELLOW}Falling back to static server...${NC}\n"
-        do_start_static
         return
     fi
 
@@ -273,21 +266,15 @@ do_start_live() {
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    printf "${CYAN}Starting live server (auto-refresh)...${NC}\n"
+    printf "${CYAN}Starting live server (Eruda + auto-refresh)...${NC}\n"
     echo "  Port:  $PORT"
     echo "  Mount: $MOUNT_DIR"
-    nohup live-server "$MOUNT_DIR" --port="$PORT" --no-browser --wait=100 > "$FIFO" 2>&1 &
+    nohup python3 -u "$SCRIPT_DIR/live-server.py" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
     # Wait for server to start
-    sleep 2
-
-    # Find the actual node process PID
-    ACTUAL_PID=$(pgrep -f "live-server.*--port=$PORT" 2>/dev/null | head -1)
-    if [ -n "$ACTUAL_PID" ]; then
-        SERVER_PID="$ACTUAL_PID"
-    fi
+    sleep 1
 
     # Save Config & PID to JSON
     py_write "port" "$PORT" true
@@ -301,7 +288,7 @@ do_start_live() {
     if is_running; then
         printf "${GREEN}✓${NC} Live server started (PID: $SERVER_PID)\n"
         printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
-        printf "  Mode: ${GREEN}Auto-refresh enabled${NC}\n"
+        printf "  Mode: ${GREEN}Eruda + Auto-refresh (1s polling)${NC}\n"
         printf "  Logs: $LOG_FILE\n"
     else
         echo "Failed to start server. Check logs."
@@ -634,8 +621,8 @@ show_tui() {
         printf "  ${BOLD}MOUNT:${NC}   $MOUNT_DIR\n"
 
         printf "${CYAN}╟─ SERVER MODES ───────────────────────────────────────────${NC}\n"
-        printf "  1. ${GREEN}STATIC${NC}  - Lightweight Python server (minimal RAM)\n"
-        printf "  2. ${GREEN}LIVE${NC}    - Auto-refresh server (Node.js live-server)\n"
+        printf "  1. ${GREEN}STATIC${NC}  - Python server + Eruda (no reload)\n"
+        printf "  2. ${GREEN}LIVE${NC}    - Python server + Eruda + auto-refresh\n"
         printf "  3. ${GREEN}DEV${NC}     - Dev mode (live + DevTools + logging)\n"
         printf "  4. ${RED}STOP${NC}    - Stop all servers\n"
         printf "${CYAN}╟─ LOGS ───────────────────────────────────────────────────${NC}\n"
@@ -753,8 +740,8 @@ case "$1" in
         printf "  %s [command] [options]\n" "$0"
         printf "\n"
         printf "${CYAN}SERVER MODES:${NC}\n"
-        printf "  ${GREEN}static${NC}             Lightweight Python server (minimal RAM)\n"
-        printf "  ${GREEN}live${NC}               Auto-refresh server (Node.js live-server)\n"
+        printf "  ${GREEN}static${NC}             Python server + Eruda (no reload)\n"
+        printf "  ${GREEN}live${NC}               Python server + Eruda + auto-refresh\n"
         printf "  ${GREEN}dev${NC}                Dev mode (live + DevTools + console logging)\n"
         printf "  ${RED}stop${NC}               Stop all servers\n"
         printf "\n"
@@ -781,9 +768,9 @@ case "$1" in
         printf "  ┌──────────┬─────────────┬─────────────┬──────────────┐\n"
         printf "  │ ${BOLD}Mode${NC}     │ ${BOLD}Auto-reload${NC} │ ${BOLD}DevTools${NC}    │ ${BOLD}RAM Usage${NC}    │\n"
         printf "  ├──────────┼─────────────┼─────────────┼──────────────┤\n"
-        printf "  │ static   │ No          │ No          │ ~10-20 MB    │\n"
-        printf "  │ live     │ Yes         │ No          │ ~50-80 MB    │\n"
-        printf "  │ dev      │ Yes         │ Yes+Logging │ ~80-120 MB   │\n"
+        printf "  │ static   │ No          │ Eruda       │ ~15-25 MB    │\n"
+        printf "  │ live     │ Yes         │ Eruda       │ ~20-35 MB    │\n"
+        printf "  │ dev      │ Yes         │ Eruda+Logs  │ ~80-120 MB   │\n"
         printf "  └──────────┴─────────────┴─────────────┴──────────────┘\n"
         printf "\n"
         printf "${CYAN}EXAMPLES:${NC}\n"

@@ -4,33 +4,1550 @@ Bash Dev Server with Auto-Injection
   Mode:  Auto-injecting Eruda + console logger into HTML
 
 Press Ctrl+C to stop
-2026/01/26 14:47:51 socat[21797] E write(5, 0xb400007bdce64000, 838): Broken pipe
-2026/01/26 14:47:52 socat[21971] E write(5, 0xb400007bdce64000, 632): Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-2026/01/26 14:48:00 socat[25882] E write(5, 0xb400007bdce64000, 844): Broken pipe
-2026/01/26 14:48:02 socat[27231] E write(5, 0xb400007bdce64000, 645): Broken pipe
-2026/01/26 14:48:03 socat[27296] E write(5, 0xb400007bdce64000, 644): Broken pipe
-2026/01/26 14:48:06 socat[29122] E write(5, 0xb400007bdce64000, 859): Broken pipe
-2026/01/26 14:48:06 socat[29136] E write(5, 0xb400007bdce64000, 841): Broken pipe
-2026/01/26 14:48:10 socat[32172] E write(5, 0xb400007bdce64000, 882): Broken pipe
-2026/01/26 14:54:31 socat[24726] E write(5, 0xb400007bdce64000, 847): Broken pipe
-2026/01/26 15:01:01 socat[17080] E write(5, 0xb400007bdce64000, 868): Broken pipe
-2026/01/26 15:02:38 socat[24542] E read(5, 0xb400007bdce64000, 8192): Connection reset by peer
-2026/01/26 15:05:53 socat[16640] E write(5, 0xb400007bdce64000, 704): Broken pipe
-tr: write error: Broken pipe
-tr: write error: Broken pipe
-tr: tr: write errorwrite error: Broken pipe: Broken pipe
-
-2026/01/26 15:07:19 socat[30968] E read(5, 0xb400007bdce64000, 8192): Connection reset by peer
-tr: write errortr: : Broken pipe
-write error: Broken pipe
-tr: write error: Broken pipe
-2026/01/26 15:10:55 socat[27775] E write(5, 0xb400007bdce64000, 833): Broken pipe
-date: write error: Broken pipe
-2026/01/26 15:12:17 socat[2697] E write(5, 0xb400007bdce64000, 704): Broken pipe
-2026/01/26 15:18:31 socat[25892] E read(5, 0xb400007bdce64000, 8192): Connection reset by peer
+2026/01/27 13:11:26 socat[18833] E write(5, 0xb40000775c31f000, 743): Broken pipe
+[2026-01-27 15:18:28] Serving HTTP on :: port 8000 (http://[::]:8000/) ...
+[2026-01-27 15:18:49] ::1 - - [27/Jan/2026 15:18:49] "GET / HTTP/1.1" 200 -
+[2026-01-27 15:18:49] ::1 - - [27/Jan/2026 15:18:49] code 404, message File not found
+[2026-01-27 15:18:49] ::1 - - [27/Jan/2026 15:18:49] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-27 15:18:58] ::1 - - [27/Jan/2026 15:18:58] "GET /a_Portals/ HTTP/1.1" 200 -
+[2026-01-27 15:18:59] ::1 - - [27/Jan/2026 15:18:59] "GET /a_Portals/linktree_mindmap/ HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:01] ::1 - - [27/Jan/2026 15:19:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:03] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:04] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:04] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:04] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:04] ::1 - - [27/Jan/2026 15:19:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 15:19:04] ::1 - - [27/Jan/2026 15:19:04] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 15:19:35] ::1 - - [27/Jan/2026 15:19:35] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:19:36] ::1 - - [27/Jan/2026 15:19:36] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:19:36] ::1 - - [27/Jan/2026 15:19:36] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:39] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:39] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:40] ::1 - - [27/Jan/2026 15:19:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:41] ::1 - - [27/Jan/2026 15:19:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:41] ::1 - - [27/Jan/2026 15:19:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:19:41] ::1 - - [27/Jan/2026 15:19:40] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:20:41] ::1 - - [27/Jan/2026 15:20:41] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:20:42] ::1 - - [27/Jan/2026 15:20:42] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:20:42] ::1 - - [27/Jan/2026 15:20:42] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:45] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:45] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:46] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:46] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:46] ::1 - - [27/Jan/2026 15:20:46] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:20:51] ::1 - - [27/Jan/2026 15:20:51] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:24:17] ::1 - - [27/Jan/2026 15:24:17] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 15:24:18] ::1 - - [27/Jan/2026 15:24:18] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 15:24:18] ::1 - - [27/Jan/2026 15:24:18] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 15:24:19] ::1 - - [27/Jan/2026 15:24:19] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:19] ::1 - - [27/Jan/2026 15:24:19] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:19] ::1 - - [27/Jan/2026 15:24:19] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:20] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:21] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:21] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:21] ::1 - - [27/Jan/2026 15:24:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 15:24:21] ::1 - - [27/Jan/2026 15:24:21] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 15:28:57] ::1 - - [27/Jan/2026 15:28:57] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 15:28:58] ::1 - - [27/Jan/2026 15:28:58] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 15:28:58] ::1 - - [27/Jan/2026 15:28:58] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:01] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:01] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 15:29:02] ::1 - - [27/Jan/2026 15:29:02] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 15:29:50] ::1 - - [27/Jan/2026 15:29:50] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:29:51] ::1 - - [27/Jan/2026 15:29:51] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:29:51] ::1 - - [27/Jan/2026 15:29:51] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:54] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:55] ::1 - - [27/Jan/2026 15:29:54] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:29:55] ::1 - - [27/Jan/2026 15:29:55] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:50:02] ::1 - - [27/Jan/2026 15:50:02] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:50:02] ::1 - - [27/Jan/2026 15:50:02] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:50:02] ::1 - - [27/Jan/2026 15:50:02] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:05] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:05] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:50:06] ::1 - - [27/Jan/2026 15:50:06] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:52:19] ::1 - - [27/Jan/2026 15:52:19] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:52:20] ::1 - - [27/Jan/2026 15:52:20] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:52:20] ::1 - - [27/Jan/2026 15:52:20] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:23] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:52:24] ::1 - - [27/Jan/2026 15:52:23] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:54:11] ::1 - - [27/Jan/2026 15:54:11] "GET / HTTP/1.1" 200 -
+[2026-01-27 15:54:11] ::1 - - [27/Jan/2026 15:54:11] code 404, message File not found
+[2026-01-27 15:54:11] ::1 - - [27/Jan/2026 15:54:11] "GET /favicon.ico HTTP/1.1" 404 -
+[2026-01-27 15:54:16] ::1 - - [27/Jan/2026 15:54:16] "GET /a_Portals/ HTTP/1.1" 200 -
+[2026-01-27 15:54:18] ::1 - - [27/Jan/2026 15:54:18] "GET /a_Portals/linktree_mindmap/ HTTP/1.1" 200 -
+[2026-01-27 15:55:29] ::1 - - [27/Jan/2026 15:55:29] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:55:29] ::1 - - [27/Jan/2026 15:55:29] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:55:29] ::1 - - [27/Jan/2026 15:55:29] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:32] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:32] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:55:33] ::1 - - [27/Jan/2026 15:55:33] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 15:58:28] ::1 - - [27/Jan/2026 15:58:28] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 15:58:28] ::1 - - [27/Jan/2026 15:58:28] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 15:58:28] ::1 - - [27/Jan/2026 15:58:28] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:30] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:30] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:31] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 15:58:32] ::1 - - [27/Jan/2026 15:58:31] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:01:48] ::1 - - [27/Jan/2026 16:01:48] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:01:48] ::1 - - [27/Jan/2026 16:01:48] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:01:48] ::1 - - [27/Jan/2026 16:01:48] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:51] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:51] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 16:01:52] ::1 - - [27/Jan/2026 16:01:52] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:05:54] ::1 - - [27/Jan/2026 16:05:54] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:05:54] ::1 - - [27/Jan/2026 16:05:54] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:05:54] ::1 - - [27/Jan/2026 16:05:54] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:57] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:58] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:59] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:59] ::1 - - [27/Jan/2026 16:05:58] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 16:05:59] ::1 - - [27/Jan/2026 16:05:59] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:06:31] ::1 - - [27/Jan/2026 16:06:31] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 16:07:00] ::1 - - [27/Jan/2026 16:07:00] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:07:06] ::1 - - [27/Jan/2026 16:07:06] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:07:31] ::1 - - [27/Jan/2026 16:07:31] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:08:53] ::1 - - [27/Jan/2026 16:08:53] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 16:09:03] ::1 - - [27/Jan/2026 16:09:03] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:09:09] ::1 - - [27/Jan/2026 16:09:09] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:09:14] ::1 - - [27/Jan/2026 16:09:14] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:11:21] ::1 - - [27/Jan/2026 16:11:21] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:11:22] ::1 - - [27/Jan/2026 16:11:22] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 16:11:22] ::1 - - [27/Jan/2026 16:11:22] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:24] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:24] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:25] ::1 - - [27/Jan/2026 16:11:25] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 16:11:42] ::1 - - [27/Jan/2026 16:11:42] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:43] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:43] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 16:11:44] ::1 - - [27/Jan/2026 16:11:44] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 16:12:37] ::1 - - [27/Jan/2026 16:12:37] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:12:39] ::1 - - [27/Jan/2026 16:12:39] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:12:39] ::1 - - [27/Jan/2026 16:12:39] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:12:39] ::1 - - [27/Jan/2026 16:12:39] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:40] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 16:12:41] ::1 - - [27/Jan/2026 16:12:40] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 16:13:10] ::1 - - [27/Jan/2026 16:13:10] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:13:10] ::1 - - [27/Jan/2026 16:13:10] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:13:10] ::1 - - [27/Jan/2026 16:13:10] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:13:11] ::1 - - [27/Jan/2026 16:13:11] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:12] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 16:13:13] ::1 - - [27/Jan/2026 16:13:12] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:14:01] ::1 - - [27/Jan/2026 16:14:01] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:14:01] ::1 - - [27/Jan/2026 16:14:01] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:14:01] ::1 - - [27/Jan/2026 16:14:01] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:02] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:02] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:03] ::1 - - [27/Jan/2026 16:14:03] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:14:19] ::1 - - [27/Jan/2026 16:14:19] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 16:14:19] ::1 - - [27/Jan/2026 16:14:19] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 16:14:19] ::1 - - [27/Jan/2026 16:14:19] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:20] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:20] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 16:14:21] ::1 - - [27/Jan/2026 16:14:21] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 16:14:24] ::1 - - [27/Jan/2026 16:14:24] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 304 -
+[2026-01-27 16:14:24] ::1 - - [27/Jan/2026 16:14:24] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 304 -
+[2026-01-27 16:14:24] ::1 - - [27/Jan/2026 16:14:24] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:25] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 304 -
+[2026-01-27 16:14:26] ::1 - - [27/Jan/2026 16:14:25] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 304 -
+[2026-01-27 16:16:26] ::1 - - [27/Jan/2026 16:16:26] "GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1" 200 -
+[2026-01-27 16:16:26] ::1 - - [27/Jan/2026 16:16:26] "GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1" 200 -
+[2026-01-27 16:16:26] ::1 - - [27/Jan/2026 16:16:26] "GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:27] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:27] "GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1" 200 -
+[2026-01-27 16:16:28] ::1 - - [27/Jan/2026 16:16:28] "GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1" 200 -
+[2026-01-27 16:19:42] Static Server with Eruda DevTools
+[2026-01-27 16:19:42]   URL:   http://localhost:8000
+[2026-01-27 16:19:42]   Mount: /data/data/com.termux/files/home/Git/front-Github_io
+[2026-01-27 16:19:42]   Mode:  Eruda auto-injection (no logging)
+[2026-01-27 16:19:42] 
+[2026-01-27 16:19:42] Press Ctrl+C to stop
+[2026-01-27 16:19:48] [27/Jan/2026 16:19:48] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 16:19:48] [27/Jan/2026 16:19:48] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 16:19:48] [27/Jan/2026 16:19:48] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 16:19:48] [27/Jan/2026 16:19:48] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 16:19:49] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:49] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 16:19:50] [27/Jan/2026 16:19:50] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 16:19:59] [27/Jan/2026 16:19:59] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 16:20:00] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 16:20:01] [27/Jan/2026 16:20:00] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 16:20:08] [27/Jan/2026 16:20:08] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 16:21:32] [27/Jan/2026 16:21:32] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 16:21:33] [27/Jan/2026 16:21:33] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 16:21:33] [27/Jan/2026 16:21:33] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 16:21:33] [27/Jan/2026 16:21:33] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 16:21:35] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:35] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 16:21:36] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 16:21:37] [27/Jan/2026 16:21:36] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 16:22:05] [27/Jan/2026 16:22:05] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 16:22:06] [27/Jan/2026 16:22:06] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 16:22:06] [27/Jan/2026 16:22:06] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 16:22:06] [27/Jan/2026 16:22:06] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 16:22:08] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:08] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 16:22:09] [27/Jan/2026 16:22:09] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:23:32] Static Server with Eruda DevTools
+[2026-01-27 14:23:32]   URL:   http://localhost:8000
+[2026-01-27 14:23:32]   Mount: /data/data/com.termux/files/home/Git/front-Github_io
+[2026-01-27 14:23:32]   Mode:  Eruda auto-injection (no logging)
+[2026-01-27 14:23:32] 
+[2026-01-27 14:23:32] Press Ctrl+C to stop
+[2026-01-27 14:23:39] [27/Jan/2026 16:23:39] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:23:40] [27/Jan/2026 16:23:40] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:23:40] [27/Jan/2026 16:23:40] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:23:40] [27/Jan/2026 16:23:40] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:23:40] [27/Jan/2026 16:23:40] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:23:41] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:41] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:23:42] [27/Jan/2026 16:23:42] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:23:44] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:23:44] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:23:44] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:23:44] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:44] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:23:45] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:23:46] [27/Jan/2026 16:23:45] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:25:02] [27/Jan/2026 16:25:02] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:25:02] [27/Jan/2026 16:25:02] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:25:03] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:25:03] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:25:03] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:25:03] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:25:03] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:03] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:25:04] [27/Jan/2026 16:25:04] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:25:14] [27/Jan/2026 16:25:14] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:26:49] [27/Jan/2026 16:26:49] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:26:49] [27/Jan/2026 16:26:49] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:26:50] [27/Jan/2026 16:26:50] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:26:50] [27/Jan/2026 16:26:50] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:26:52] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:26:53] [27/Jan/2026 16:26:52] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:28:36] [27/Jan/2026 16:28:36] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:28:37] [27/Jan/2026 16:28:37] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:28:37] [27/Jan/2026 16:28:37] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:28:37] [27/Jan/2026 16:28:37] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:28:39] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:39] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:28:40] [27/Jan/2026 16:28:40] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:28:47] [27/Jan/2026 16:28:47] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:28:51] [27/Jan/2026 16:28:51] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:28:52] [27/Jan/2026 16:28:52] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:28:52] [27/Jan/2026 16:28:52] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:28:52] [27/Jan/2026 16:28:52] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:28:53] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:28:53] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:28:53] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:28:53] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:28:53] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:53] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:28:54] [27/Jan/2026 16:28:54] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:29:17] [27/Jan/2026 16:29:17] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:29:18] [27/Jan/2026 16:29:18] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:29:18] [27/Jan/2026 16:29:18] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:29:18] [27/Jan/2026 16:29:18] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:29:18] [27/Jan/2026 16:29:18] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:29:19] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:19] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:20] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:29:20] [27/Jan/2026 16:29:20] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:29:38] [27/Jan/2026 16:29:38] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:29:39] [27/Jan/2026 16:29:39] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:29:39] [27/Jan/2026 16:29:39] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:29:39] [27/Jan/2026 16:29:39] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:29:40] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:29:41] [27/Jan/2026 16:29:40] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:30:47] [27/Jan/2026 16:30:47] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:30:47] [27/Jan/2026 16:30:47] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:30:47] [27/Jan/2026 16:30:47] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:30:47] [27/Jan/2026 16:30:47] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:30:48] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:48] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:49] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:49] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:49] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:30:49] [27/Jan/2026 16:30:49] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:31:31] [27/Jan/2026 16:31:31] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:28] [27/Jan/2026 16:32:28] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:28] [27/Jan/2026 16:32:28] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:28] [27/Jan/2026 16:32:28] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:32:29] [27/Jan/2026 16:32:29] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:32:29] [27/Jan/2026 16:32:29] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:29] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:32:30] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:32:31] [27/Jan/2026 16:32:30] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:32] [27/Jan/2026 16:32:32] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:32] [27/Jan/2026 16:32:32] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:32] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:32:33] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:33] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:32:34] [27/Jan/2026 16:32:34] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:44] [27/Jan/2026 16:32:44] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:32:45] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:45] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:32:46] [27/Jan/2026 16:32:46] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:33:28] [27/Jan/2026 16:33:28] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:33:28] [27/Jan/2026 16:33:28] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:33:29] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:29] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:33:30] [27/Jan/2026 16:33:30] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:33:49] [27/Jan/2026 16:33:49] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:34:16] [27/Jan/2026 16:34:16] GET /a_Portals/linktree_mindmap/dist/public/favicon.jpg HTTP/1.1
+[2026-01-27 14:34:16] [27/Jan/2026 16:34:16] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:34:16] [27/Jan/2026 16:34:16] GET /a_Portals/linktree_mindmap/dist/script.js HTTP/1.1
+[2026-01-27 14:34:16] [27/Jan/2026 16:34:16] GET /a_Portals/linktree_mindmap/dist/style.css HTTP/1.1
+[2026-01-27 14:34:17] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/database.svg HTTP/1.1
+[2026-01-27 14:34:17] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/git-branch.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/brain.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-github.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/settings.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:17] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-pdf.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-linkedin.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/briefcase.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/user.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/world.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/mail.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/rocket.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/file-type-html.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/bolt.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/device-desktop.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/slideshow.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/world-longitude.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/heart.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/send.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-instagram.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/map-pin-2.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-whatsapp.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/headphones.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/bike.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-youtube.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/christmas-tree.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/brand-google-maps.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/robot.svg HTTP/1.1
+[2026-01-27 14:34:18] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/file-stack.svg HTTP/1.1
+[2026-01-27 14:34:19] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/sparkles.svg HTTP/1.1
+[2026-01-27 14:34:19] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/device-gamepad.svg HTTP/1.1
+[2026-01-27 14:34:19] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/checklist.svg HTTP/1.1
+[2026-01-27 14:34:19] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/code.svg HTTP/1.1
+[2026-01-27 14:34:19] [27/Jan/2026 16:34:18] GET /a_Portals/linktree_mindmap/dist/public/icons/video.svg HTTP/1.1
+[2026-01-27 14:37:24] Static Server with Eruda DevTools
+[2026-01-27 14:37:24]   URL:   http://localhost:8000
+[2026-01-27 14:37:24]   Mount: /data/data/com.termux/files/home/Git/front-Github_io/c_Personal_Tools/mytrips/dist
+[2026-01-27 14:37:24]   Mode:  Eruda auto-injection (no logging)
+[2026-01-27 14:37:24] 
+[2026-01-27 14:37:24] Press Ctrl+C to stop
+[2026-01-27 14:38:33] [27/Jan/2026 16:38:33] 404
+[2026-01-27 14:38:33] [27/Jan/2026 16:38:33] GET /a_Portals/linktree_mindmap/dist/ HTTP/1.1
+[2026-01-27 14:38:33] [27/Jan/2026 16:38:33] 404
+[2026-01-27 14:38:33] [27/Jan/2026 16:38:33] GET /favicon.ico HTTP/1.1
+[2026-01-27 14:38:44] [27/Jan/2026 16:38:43] 404
+[2026-01-27 14:38:44] [27/Jan/2026 16:38:43] GET /a_Portals/linktree_mindmap/dist HTTP/1.1
+[2026-01-27 14:38:52] [27/Jan/2026 16:38:52] 404
+[2026-01-27 14:38:52] [27/Jan/2026 16:38:52] GET /a_Portals/linktree_mindmap HTTP/1.1
+[2026-01-27 14:39:18] [27/Jan/2026 16:39:18] GET / HTTP/1.1
+[2026-01-27 14:39:18] [27/Jan/2026 16:39:18] GET /assets/main-Bot_tpxd.js HTTP/1.1
+[2026-01-27 14:39:18] [27/Jan/2026 16:39:18] GET /assets/main-Dqh1f9kP.js HTTP/1.1
+[2026-01-27 14:39:19] [27/Jan/2026 16:39:18] GET /assets/main-b4R67rc1.css HTTP/1.1
+[2026-01-27 16:39:49] Traceback (most recent call last):
+[2026-01-27 16:39:49]   File "/data/data/com.termux/files/home/Git/front-Github_io/static-server.py", line 127, in <module>
+[2026-01-27 16:39:49]     with socketserver.TCPServer(("", PORT), ErudaHandler) as httpd:
+[2026-01-27 16:39:49]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-01-27 16:39:49]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 457, in __init__
+[2026-01-27 16:39:49]     self.server_bind()
+[2026-01-27 16:39:49]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 478, in server_bind
+[2026-01-27 16:39:49]     self.socket.bind(self.server_address)
+[2026-01-27 16:39:49] OSError: [Errno 98] Address already in use
+[2026-01-27 14:39:53] Traceback (most recent call last):
+[2026-01-27 14:39:53]   File "/data/data/com.termux/files/home/Git/front-Github_io/static-server.py", line 127, in <module>
+[2026-01-27 14:39:53]     with socketserver.TCPServer(("", PORT), ErudaHandler) as httpd:
+[2026-01-27 14:39:53]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-01-27 14:39:53]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 457, in __init__
+[2026-01-27 14:39:53]     self.server_bind()
+[2026-01-27 14:39:54]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 478, in server_bind
+[2026-01-27 14:39:54]     self.socket.bind(self.server_address)
+[2026-01-27 14:39:54] OSError: [Errno 98] Address already in use
+[2026-01-27 14:40:30] Static Server with Eruda DevTools
+[2026-01-27 14:40:30]   URL:   http://localhost:8000
+[2026-01-27 14:40:30]   Mount: /data/data/com.termux/files/home/Git/front-Github_io/c_Personal_Tools/mytrips/dist
+[2026-01-27 14:40:30]   Mode:  Eruda auto-injection (no logging)
+[2026-01-27 14:40:30] 
+[2026-01-27 14:40:30] Press Ctrl+C to stop
+[2026-01-27 14:40:55] [27/Jan/2026 16:40:55] GET / HTTP/1.1
+[2026-01-27 14:42:44] [27/Jan/2026 16:42:44] GET / HTTP/1.1
+[2026-01-27 14:42:44] [27/Jan/2026 16:42:44] GET /assets/main-DF_Xsadz.js HTTP/1.1
+[2026-01-27 14:42:44] [27/Jan/2026 16:42:44] GET /assets/main-CG2yOWyD.css HTTP/1.1
+[2026-01-27 14:42:44] [27/Jan/2026 16:42:44] GET /assets/main-8zXdJ-pl.js HTTP/1.1
+[2026-01-27 14:42:54] [27/Jan/2026 16:42:54] GET / HTTP/1.1
+[2026-01-27 14:44:13] Static Server with Eruda DevTools
+[2026-01-27 14:44:13]   URL:   http://localhost:8000
+[2026-01-27 14:44:13]   Mount: /data/data/com.termux/files/home/Git/front-Github_io
+[2026-01-27 14:44:13]   Mode:  Eruda auto-injection (no logging)
+[2026-01-27 14:44:13] 
+[2026-01-27 14:44:13] Press Ctrl+C to stop
+[2026-01-27 14:44:21] [27/Jan/2026 16:44:21] GET / HTTP/1.1
+[2026-01-27 14:44:35] Traceback (most recent call last):
+[2026-01-27 14:44:35]   File "/data/data/com.termux/files/home/Git/front-Github_io/static-server.py", line 127, in <module>
+[2026-01-27 14:44:35]     with socketserver.TCPServer(("", PORT), ErudaHandler) as httpd:
+[2026-01-27 14:44:35]          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[2026-01-27 14:44:35]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 457, in __init__
+[2026-01-27 14:44:35]     self.server_bind()
+[2026-01-27 14:44:35]   File "/data/data/com.termux/files/usr/lib/python3.12/socketserver.py", line 478, in server_bind
+[2026-01-27 14:44:35]     self.socket.bind(self.server_address)
+[2026-01-27 14:44:35] OSError: [Errno 98] Address already in use

@@ -1,6 +1,8 @@
 {
   "port": 8000,
-  "mount_point": "/data/data/com.termux/files/home/Git/front-Github_io",
-  "pid": 18570,
-  "log_receiver_pid": 18563
+  "mount_point": "/data/data/com.termux/files/home/Git/front-Github_io/a_Portals/linktree_mindmap/dist",
+  "pid": 0,
+  "log_receiver_pid": 0,
+  "mode": "static",
+  "mount_locked": "false"
 }

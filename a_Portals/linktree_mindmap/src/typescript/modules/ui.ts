@@ -837,10 +837,8 @@ export function focusOnNodeWithUI(node: GraphNode): void {
   updateZoomIndicator();
   setCurrentNode(node);
 
-  // If node has links, show panel
-  if (node.links.length > 0) {
-    showLinkPanel(node);
-  }
+  // Don't auto-show link panel on click - let user explore the graph freely
+  // User can press Enter or double-click to open links if needed
 
   if (onRenderNeeded) onRenderNeeded();
 }

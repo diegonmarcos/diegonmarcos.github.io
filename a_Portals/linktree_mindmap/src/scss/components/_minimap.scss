@@ -23,7 +23,12 @@
   }
 
   @media (max-width: 768px) {
-    display: none;
+    // Show minimap on mobile - smaller size
+    width: 100px;
+    height: 70px;
+    bottom: $space-md;
+    right: $space-md;
+    opacity: 0.6;
   }
 }
 

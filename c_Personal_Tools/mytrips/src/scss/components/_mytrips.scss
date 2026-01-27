@@ -41,14 +41,13 @@ body {
   padding: 0;
 }
 
-// Layout - viewport meta tag handles scaling (width=1280)
-// Height is set dynamically via JS based on actual viewport aspect ratio
+// Layout - fixed design size, JS handles scaling
 .app-container {
   display: flex;
-  height: 100vh; // Fallback, JS will override for mobile
+  height: 800px;
   width: $design-width;
-  min-width: $design-width;
   overflow: hidden;
+  transform-origin: top left;
 }
 
 // Sidebar (doubled size for mobile visibility)

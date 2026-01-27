@@ -984,36 +984,36 @@ let charts: Record<string, Chart> = {};
 onMounted(async () => {
   DB.value = initData();
 
-  // Debug viewport info
-  const DESIGN_WIDTH = 1280;
-  const debugViewport = () => {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const visualVW = window.visualViewport?.width || vw;
-    const visualVH = window.visualViewport?.height || vh;
-    const scale = window.visualViewport?.scale || 1;
-    const appContainer = document.querySelector('.app-container') as HTMLElement;
+  // Scale to fit: fixed 1280x800 design, scale to fit screen
+  const DESIGN_W = 1280;
+  const DESIGN_H = 800;
 
-    console.log('[MyTrips] Viewport Debug:', {
-      innerWidth: vw,
-      innerHeight: vh,
-      visualViewport: { width: visualVW, height: visualVH, scale },
-      devicePixelRatio: window.devicePixelRatio,
-      appContainerSize: appContainer ? { w: appContainer.offsetWidth, h: appContainer.offsetHeight } : null
+  const scaleToFit = () => {
+    const screenW = window.innerWidth;
+    const screenH = window.innerHeight;
+    const appContainer = document.querySelector('.app-container') as HTMLElement;
+    if (!appContainer) return;
+
+    // Calculate scale to fit both width and height
+    const scaleX = screenW / DESIGN_W;
+    const scaleY = screenH / DESIGN_H;
+    const scale = Math.min(scaleX, scaleY);
+
+    console.log('[MyTrips] Scale to fit:', {
+      screen: `${screenW}x${screenH}`,
+      design: `${DESIGN_W}x${DESIGN_H}`,
+      scaleX: scaleX.toFixed(3),
+      scaleY: scaleY.toFixed(3),
+      finalScale: scale.toFixed(3)
     });
 
-    // Calculate correct height based on aspect ratio
-    if (appContainer && vw < DESIGN_WIDTH) {
-      const aspectRatio = visualVH / visualVW;
-      const correctHeight = DESIGN_WIDTH * aspectRatio;
-      console.log('[MyTrips] Calculated height:', correctHeight, 'aspect:', aspectRatio);
-      appContainer.style.height = `${correctHeight}px`;
-    }
+    appContainer.style.transform = `scale(${scale})`;
+    appContainer.style.width = `${DESIGN_W}px`;
+    appContainer.style.height = `${DESIGN_H}px`;
   };
 
-  debugViewport();
-  window.addEventListener('resize', debugViewport);
-  window.visualViewport?.addEventListener('resize', debugViewport);
+  scaleToFit();
+  window.addEventListener('resize', scaleToFit);
 
   // Start clock
   const interval = setInterval(() => {

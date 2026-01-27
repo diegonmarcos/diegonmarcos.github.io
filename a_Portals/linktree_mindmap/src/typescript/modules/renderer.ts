@@ -54,10 +54,11 @@ export function getCanvasSize(): { width: number; height: number } {
 // -----------------------------------------------------------------------------
 
 export function createNodeElements(nodes: GraphNode[]): void {
-  if (!graphWorld) return;
+  const container = graphWorld;
+  if (!container) return;
 
   // Clear existing
-  graphWorld.innerHTML = '';
+  container.innerHTML = '';
   nodeElements.clear();
 
   nodes.forEach((node, index) => {
@@ -93,21 +94,22 @@ export function createNodeElements(nodes: GraphNode[]): void {
       el.appendChild(badge);
     }
 
-    graphWorld.appendChild(el);
+    container.appendChild(el);
     nodeElements.set(node.id, el);
   });
 }
 
 export function createEdgeElements(edges: GraphEdge[]): void {
-  if (!edgesSvg) return;
+  const svg = edgesSvg;
+  if (!svg) return;
 
   // Clear existing
-  edgesSvg.innerHTML = '';
+  svg.innerHTML = '';
   edgeElements.clear();
 
   // Create defs for gradients
   const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-  edgesSvg.appendChild(defs);
+  svg.appendChild(defs);
 
   edges.forEach((edge, index) => {
     // Create gradient for this edge
@@ -135,7 +137,7 @@ export function createEdgeElements(edges: GraphEdge[]): void {
     path.dataset.sourceId = edge.source.id;
     path.dataset.targetId = edge.target.id;
 
-    edgesSvg.appendChild(path);
+    svg.appendChild(path);
     edgeElements.set(`${edge.source.id}-${edge.target.id}`, path);
   });
 }
@@ -164,12 +166,12 @@ export function render(
   // Update SVG transform to match
   edgesSvg.style.transform = graphWorld.style.transform;
 
-  // Update node positions
+  // Update node positions - use translate3d for GPU acceleration
   nodes.forEach((node) => {
     const el = nodeElements.get(node.id);
     if (el) {
-      el.style.left = `${node.x}px`;
-      el.style.top = `${node.y}px`;
+      // GPU-accelerated positioning via translate3d (replaces left/top)
+      el.style.transform = `translate3d(${node.x}px, ${node.y}px, 0) translate(-50%, -50%)`;
 
       // Update state classes
       el.classList.toggle('highlighted', node.highlighted);

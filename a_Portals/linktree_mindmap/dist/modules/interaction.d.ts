@@ -1,0 +1,10 @@
+import type { GraphNode, ViewState } from '../types';
+export declare function setRenderCallback(callback: () => void): void;
+export declare function initInteraction(containerElement: HTMLCanvasElement | HTMLElement, graphNodes: GraphNode[], graphEdges: any[], viewState: ViewState): void;
+export declare function setCallbacks(nodeClick: (node: GraphNode) => void, backgroundClick: () => void): void;
+export declare function updateInteractionData(graphNodes: GraphNode[], graphEdges: any[]): void;
+export declare function getHoveredNode(): GraphNode | null;
+export declare function getFocusedNode(): GraphNode | null;
+export declare function setFocusedNode(node: GraphNode | null): void;
+export declare function clearFocus(): void;
+export declare function destroyInteraction(): void;

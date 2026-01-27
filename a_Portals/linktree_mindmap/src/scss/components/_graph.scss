@@ -70,12 +70,13 @@
 
 .node {
   position: absolute;
+  top: 0;
+  left: 0;
   border-radius: 50%;
-  transform: translate(-50%, -50%);
+  // Transform is set via JS using translate3d for GPU acceleration
   cursor: pointer;
   will-change: transform, opacity;
-  transition: transform $duration-fast $ease-spring,
-              box-shadow $duration-fast $ease-out,
+  transition: box-shadow $duration-fast $ease-out,
               opacity $duration-normal $ease-out;
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
@@ -105,9 +106,9 @@
     pointer-events: none;
   }
 
-  // Hover state
+  // Hover state - scale only, position managed by JS
   &:hover {
-    transform: translate(-50%, -50%) scale(1.15);
+    filter: brightness(1.1);
     border-color: rgba(255, 255, 255, 0.4);
     z-index: 10;
   }
@@ -118,8 +119,9 @@
     opacity: 1 !important;
   }
 
-  // Focused state
+  // Focused state - GPU accelerated animation
   &.focused {
+    will-change: filter;
     animation: node-breathe 3s ease-in-out infinite;
   }
 
@@ -136,6 +138,7 @@
 .node--depth-0 {
   width: 80px;
   height: 80px;
+  will-change: box-shadow;
   box-shadow:
     0 0 30px var(--node-color, #{$color-root}),
     0 0 60px rgba(var(--node-color-rgb, 96, 165, 250), 0.3);
@@ -254,8 +257,8 @@
 // -----------------------------------------------------------------------------
 
 @keyframes node-breathe {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); }
-  50% { transform: translate(-50%, -50%) scale(1.08); }
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 15px currentColor); }
+  50% { filter: brightness(1.15) drop-shadow(0 0 25px currentColor); }
 }
 
 @keyframes root-glow {
@@ -272,12 +275,11 @@
 }
 
 // -----------------------------------------------------------------------------
-// Entrance Animation (staggered)
+// Entrance Animation (staggered) - uses opacity only, transform handled by JS
 // -----------------------------------------------------------------------------
 
 .node {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
   animation: node-enter $duration-slow $ease-spring forwards;
 }
 
@@ -290,7 +292,6 @@
 @keyframes node-enter {
   to {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
   }
 }
 

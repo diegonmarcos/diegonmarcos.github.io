@@ -20,28 +20,62 @@ last_change = time.time()
 lock = threading.Lock()
 
 ERUDA_AND_RELOAD_SCRIPT = '''
-<!-- AUTO-INJECTED: Eruda DevTools + Live Reload -->
+<!-- AUTO-INJECTED: Eruda DevTools + Live Reload (early load) -->
 <script>
 (function() {
+  // Queue to capture console messages before Eruda loads
+  var queue = [];
+  var erudaReady = false;
+  var orig = {
+    log: console.log,
+    error: console.error,
+    warn: console.warn,
+    info: console.info,
+    debug: console.debug
+  };
+
+  function capture(level, args) {
+    if (!erudaReady) {
+      queue.push({ level: level, args: Array.from(args), time: Date.now() });
+    }
+  }
+
+  // Override console methods immediately to capture early messages
+  console.log = function() { capture("log", arguments); orig.log.apply(console, arguments); };
+  console.error = function() { capture("error", arguments); orig.error.apply(console, arguments); };
+  console.warn = function() { capture("warn", arguments); orig.warn.apply(console, arguments); };
+  console.info = function() { capture("info", arguments); orig.info.apply(console, arguments); };
+  console.debug = function() { capture("debug", arguments); orig.debug.apply(console, arguments); };
+
   // Load Eruda
   var s = document.createElement("script");
   s.src = "//cdn.jsdelivr.net/npm/eruda";
   s.onload = function() {
     eruda.init();
-    console.log("%c[LIVE] Eruda DevTools loaded", "color:green;font-weight:bold");
+    erudaReady = true;
+
+    // Replay queued messages to Eruda
+    if (queue.length > 0) {
+      console.info("[Eruda] Replaying " + queue.length + " early messages...");
+      queue.forEach(function(item) {
+        console[item.level].apply(console, item.args);
+      });
+    }
+    queue = [];
+    console.info("[Eruda] DevTools ready - all console messages captured");
   };
   document.head.appendChild(s);
 
   // Live Reload - poll for changes
   var lastCheck = Date.now();
-  var checkInterval = 1000; // 1 second
+  var checkInterval = 1000;
 
   function checkForChanges() {
     fetch("/__live_reload_check?t=" + lastCheck)
       .then(function(r) { return r.json(); })
       .then(function(data) {
         if (data.changed) {
-          console.log("%c[LIVE] Change detected, reloading...", "color:orange;font-weight:bold");
+          console.info("[Live] Change detected, reloading...");
           location.reload();
         }
         lastCheck = data.timestamp;
@@ -52,9 +86,8 @@ ERUDA_AND_RELOAD_SCRIPT = '''
       });
   }
 
-  // Start checking after page load
   setTimeout(checkForChanges, checkInterval);
-  console.log("%c[LIVE] Auto-reload enabled (1s polling)", "color:blue;font-weight:bold");
+  console.info("[Live] Auto-reload enabled (1s polling)");
 })();
 </script>
 '''
@@ -143,17 +176,25 @@ class LiveReloadHandler(http.server.SimpleHTTPRequestHandler):
                 with open(path, 'r', encoding='utf-8') as f:
                     content = f.read()
 
-                # Inject Eruda + Live Reload before </body> or at the end
-                if re.search(r'</body>', content, re.IGNORECASE):
+                # Inject in <head> (early) to capture all console messages
+                if re.search(r'<head[^>]*>', content, re.IGNORECASE):
                     content = re.sub(
-                        r'(</body>)',
-                        ERUDA_AND_RELOAD_SCRIPT + r'\1',
+                        r'(<head[^>]*>)',
+                        r'\1' + ERUDA_AND_RELOAD_SCRIPT,
+                        content,
+                        count=1,
+                        flags=re.IGNORECASE
+                    )
+                elif re.search(r'<html[^>]*>', content, re.IGNORECASE):
+                    content = re.sub(
+                        r'(<html[^>]*>)',
+                        r'\1<head>' + ERUDA_AND_RELOAD_SCRIPT + '</head>',
                         content,
                         count=1,
                         flags=re.IGNORECASE
                     )
                 else:
-                    content += ERUDA_AND_RELOAD_SCRIPT
+                    content = ERUDA_AND_RELOAD_SCRIPT + content
 
                 self.send_response(200)
                 self.send_header('Content-Type', 'text/html; charset=utf-8')

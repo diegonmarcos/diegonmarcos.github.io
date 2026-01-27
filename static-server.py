@@ -11,14 +11,49 @@ PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 DIRECTORY = sys.argv[2] if len(sys.argv) > 2 else os.getcwd()
 
 ERUDA_SCRIPT = '''
-<!-- AUTO-INJECTED: Eruda DevTools -->
+<!-- AUTO-INJECTED: Eruda DevTools (early load) -->
 <script>
 (function() {
+  // Queue to capture console messages before Eruda loads
+  var queue = [];
+  var erudaReady = false;
+  var orig = {
+    log: console.log,
+    error: console.error,
+    warn: console.warn,
+    info: console.info,
+    debug: console.debug
+  };
+
+  function capture(level, args) {
+    if (!erudaReady) {
+      queue.push({ level: level, args: Array.from(args), time: Date.now() });
+    }
+  }
+
+  // Override console methods immediately to capture early messages
+  console.log = function() { capture("log", arguments); orig.log.apply(console, arguments); };
+  console.error = function() { capture("error", arguments); orig.error.apply(console, arguments); };
+  console.warn = function() { capture("warn", arguments); orig.warn.apply(console, arguments); };
+  console.info = function() { capture("info", arguments); orig.info.apply(console, arguments); };
+  console.debug = function() { capture("debug", arguments); orig.debug.apply(console, arguments); };
+
+  // Load Eruda
   var s = document.createElement("script");
   s.src = "//cdn.jsdelivr.net/npm/eruda";
   s.onload = function() {
     eruda.init();
-    console.log("%c[STATIC] Eruda DevTools loaded", "color:green;font-weight:bold");
+    erudaReady = true;
+
+    // Replay queued messages to Eruda
+    if (queue.length > 0) {
+      console.info("[Eruda] Replaying " + queue.length + " early messages...");
+      queue.forEach(function(item) {
+        console[item.level].apply(console, item.args);
+      });
+    }
+    queue = [];
+    console.info("[Eruda] DevTools ready - all console messages captured");
   };
   document.head.appendChild(s);
 })();
@@ -48,17 +83,25 @@ class ErudaHandler(http.server.SimpleHTTPRequestHandler):
                 with open(path, 'r', encoding='utf-8') as f:
                     content = f.read()
 
-                # Inject Eruda before </body> or at the end
-                if re.search(r'</body>', content, re.IGNORECASE):
+                # Inject Eruda in <head> (early) to capture all console messages
+                if re.search(r'<head[^>]*>', content, re.IGNORECASE):
                     content = re.sub(
-                        r'(</body>)',
-                        ERUDA_SCRIPT + r'\1',
+                        r'(<head[^>]*>)',
+                        r'\1' + ERUDA_SCRIPT,
+                        content,
+                        count=1,
+                        flags=re.IGNORECASE
+                    )
+                elif re.search(r'<html[^>]*>', content, re.IGNORECASE):
+                    content = re.sub(
+                        r'(<html[^>]*>)',
+                        r'\1<head>' + ERUDA_SCRIPT + '</head>',
                         content,
                         count=1,
                         flags=re.IGNORECASE
                     )
                 else:
-                    content += ERUDA_SCRIPT
+                    content = ERUDA_SCRIPT + content
 
                 # Send response
                 self.send_response(200)

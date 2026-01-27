@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>DNM | Mindmap</title>
     <meta name="description" content="Interactive mindmap visualization of Diego Nepomuceno Marcos links">
     <link rel="icon" type="image/jpeg" href="public/favicon.jpg">
@@ -26,41 +28,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- CSS Galaxy Stars Background - GPU Optimized -->
+    <!-- WebGL Stars Canvas - GPU ACCELERATED -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- Galaxy Background - Nebulas + Shooting Stars -->
     <div id="galaxy-bg">
-        <!-- Star layers - Golden ratio distribution -->
-        <div class="stars stars-dust"></div>
-        <div class="stars stars-dust-2"></div>
-        <div class="stars stars-dust-3"></div>
-        <div class="stars stars-small"></div>
-        <div class="stars stars-small-2"></div>
-        <div class="stars stars-small-3"></div>
-        <div class="stars stars-medium"></div>
-        <div class="stars stars-large"></div>
-        <!-- Nebula clouds (5 colored regions) -->
         <div class="nebula nebula-1"></div>
         <div class="nebula nebula-2"></div>
         <div class="nebula nebula-3"></div>
-        <div class="nebula nebula-4"></div>
-        <div class="nebula nebula-5"></div>
-        <!-- Star clusters -->
-        <div class="star-cluster star-cluster-1"></div>
-        <div class="star-cluster star-cluster-2"></div>
-        <!-- Shooting stars (8 with varied timing) -->
         <div class="shooting-stars">
             <div class="shooting-star shooting-star-1"></div>
             <div class="shooting-star shooting-star-2"></div>
-            <div class="shooting-star shooting-star-3"></div>
-            <div class="shooting-star shooting-star-4"></div>
-            <div class="shooting-star shooting-star-5"></div>
-            <div class="shooting-star shooting-star-6"></div>
-            <div class="shooting-star shooting-star-7"></div>
-            <div class="shooting-star shooting-star-8"></div>
         </div>
-        <!-- Comets with ion tails -->
-        <div class="comet comet-1"></div>
-        <div class="comet comet-2"></div>
-        <div class="comet comet-3"></div>
     </div>
 
     <!-- Main graph (CSS/DOM-based) -->

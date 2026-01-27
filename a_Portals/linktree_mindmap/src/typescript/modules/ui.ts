@@ -2,22 +2,13 @@
 // UI Module - Linktree Mindmap (Enhanced UX)
 // ==========================================================================
 
-import type { GraphNode, LinkData, ViewState } from '../types';
+import type { GraphNode, ViewState } from '../types';
 import { zoomIn, zoomOut, resetView, focusOnNode } from './graph';
 
 // -----------------------------------------------------------------------------
 // DOM Elements
 // -----------------------------------------------------------------------------
 
-let tooltip: HTMLElement | null = null;
-let tooltipTitle: HTMLElement | null = null;
-let tooltipSubtitle: HTMLElement | null = null;
-let tooltipBadge: HTMLElement | null = null;
-let linkPanel: HTMLElement | null = null;
-let linkPanelIcon: HTMLElement | null = null;
-let linkPanelTitle: HTMLElement | null = null;
-let linkPanelLinks: HTMLElement | null = null;
-let linkPanelClose: HTMLElement | null = null;
 let btnBack: HTMLElement | null = null;
 let btnHome: HTMLElement | null = null;
 let btnReset: HTMLElement | null = null;
@@ -36,7 +27,6 @@ let minimapViewport: HTMLElement | null = null;
 let keyboardHints: HTMLElement | null = null;
 let hintsClose: HTMLElement | null = null;
 
-let backdrop: HTMLElement | null = null;
 let view: ViewState | null = null;
 let canvasWidth = 0;
 let canvasHeight = 0;
@@ -62,15 +52,6 @@ export function initUI(
   canvasHeight = height;
 
   // Get elements
-  tooltip = document.getElementById('tooltip');
-  tooltipTitle = document.getElementById('tooltip-title');
-  tooltipSubtitle = document.getElementById('tooltip-subtitle');
-  tooltipBadge = document.getElementById('tooltip-badge');
-  linkPanel = document.getElementById('link-panel');
-  linkPanelIcon = document.getElementById('link-panel-icon');
-  linkPanelTitle = document.getElementById('link-panel-title');
-  linkPanelLinks = document.getElementById('link-panel-links');
-  linkPanelClose = document.getElementById('link-panel-close');
   btnBack = document.getElementById('btn-back');
   btnHome = document.getElementById('btn-home');
   btnReset = document.getElementById('btn-reset');
@@ -89,14 +70,7 @@ export function initUI(
   keyboardHints = document.getElementById('keyboard-hints');
   hintsClose = document.getElementById('hints-close');
 
-  // Create backdrop
-  backdrop = document.createElement('div');
-  backdrop.className = 'panel-backdrop';
-  document.getElementById('ui-overlay')?.appendChild(backdrop);
-
   // Bind events
-  linkPanelClose?.addEventListener('click', hideLinkPanel);
-  backdrop?.addEventListener('click', hideLinkPanel);
   btnReset?.addEventListener('click', handleReset);
   btnHome?.addEventListener('click', handleReset);
   btnZoomIn?.addEventListener('click', handleZoomIn);
@@ -167,75 +141,6 @@ export function updateZoomIndicator(): void {
 }
 
 // -----------------------------------------------------------------------------
-// Tooltip
-// -----------------------------------------------------------------------------
-
-export function showTooltip(node: GraphNode, screenX: number, screenY: number): void {
-  if (!tooltip || !tooltipTitle || !tooltipSubtitle) return;
-
-  tooltipTitle.textContent = node.fullLabel || node.label;
-
-  // Show link count or depth info
-  if (node.links.length > 0) {
-    tooltipSubtitle.textContent = `${node.links.length} link${node.links.length > 1 ? 's' : ''} - Click to open`;
-  } else if (node.children.length > 0) {
-    tooltipSubtitle.textContent = `${node.children.length} item${node.children.length > 1 ? 's' : ''}`;
-  } else {
-    tooltipSubtitle.textContent = '';
-  }
-
-  // Show badge with total descendants
-  if (tooltipBadge) {
-    const totalDescendants = countDescendants(node);
-    if (totalDescendants > 0) {
-      tooltipBadge.textContent = `${totalDescendants} total`;
-      tooltipBadge.hidden = false;
-      tooltipBadge.style.backgroundColor = node.color;
-    } else {
-      tooltipBadge.hidden = true;
-    }
-  }
-
-  // Position tooltip
-  const padding = 15;
-  let x = screenX + padding;
-  let y = screenY + padding;
-
-  // Keep within viewport
-  if (x + 200 > window.innerWidth) {
-    x = screenX - 200 - padding;
-  }
-  if (y + 100 > window.innerHeight) {
-    y = screenY - 100 - padding;
-  }
-
-  tooltip.style.left = `${x}px`;
-  tooltip.style.top = `${y}px`;
-  tooltip.hidden = false;
-  tooltip.classList.add('visible');
-}
-
-function countDescendants(node: GraphNode): number {
-  let count = 0;
-  function traverse(n: GraphNode) {
-    count += n.children.length;
-    n.children.forEach(traverse);
-  }
-  traverse(node);
-  return count;
-}
-
-export function hideTooltip(): void {
-  if (!tooltip) return;
-  tooltip.classList.remove('visible');
-  setTimeout(() => {
-    if (tooltip && !tooltip.classList.contains('visible')) {
-      tooltip.hidden = true;
-    }
-  }, 150);
-}
-
-// -----------------------------------------------------------------------------
 // Breadcrumb
 // -----------------------------------------------------------------------------
 
@@ -279,127 +184,6 @@ export function updateBreadcrumb(node: GraphNode | null): void {
   });
 
   breadcrumb.hidden = false;
-}
-
-// -----------------------------------------------------------------------------
-// Link Panel
-// -----------------------------------------------------------------------------
-
-export function showLinkPanel(node: GraphNode): void {
-  if (!linkPanel || !linkPanelTitle || !linkPanelLinks || !backdrop) return;
-
-  currentNode = node;
-
-  // Set accent color
-  linkPanel.style.setProperty('--panel-accent', node.color);
-
-  // Set icon
-  if (linkPanelIcon) {
-    linkPanelIcon.innerHTML = `<img src="public/icons/${node.icon}.svg" alt="">`;
-    linkPanelIcon.style.backgroundColor = node.color;
-  }
-
-  linkPanelTitle.textContent = node.fullLabel || node.label;
-  linkPanelLinks.innerHTML = '';
-
-  // Group links by type
-  const grouped = groupLinks(node.links);
-
-  // Create link cards
-  Object.entries(grouped).forEach(([group, links]) => {
-    if (Object.keys(grouped).length > 1 && links.length > 0) {
-      const groupHeader = document.createElement('div');
-      groupHeader.className = 'link-group-header';
-      groupHeader.textContent = group;
-      linkPanelLinks!.appendChild(groupHeader);
-    }
-
-    links.forEach((link) => {
-      const card = createLinkCard(link, node.color);
-      linkPanelLinks!.appendChild(card);
-    });
-  });
-
-  // Show panel and backdrop
-  backdrop.classList.add('visible');
-  linkPanel.hidden = false;
-  requestAnimationFrame(() => {
-    linkPanel?.classList.add('visible');
-  });
-
-  // Update breadcrumb
-  updateBreadcrumb(node);
-}
-
-function groupLinks(links: LinkData[]): Record<string, LinkData[]> {
-  const groups: Record<string, LinkData[]> = {};
-
-  links.forEach((link) => {
-    let group = 'Links';
-    const url = link.url.toLowerCase();
-
-    if (url.includes('mailto:') || url.includes('linkedin') || url.includes('telegram') || url.includes('whatsapp')) {
-      group = 'Contact';
-    } else if (url.includes('github')) {
-      group = 'Code';
-    } else if (link.download || url.includes('.pdf') || url.includes('.vcf')) {
-      group = 'Downloads';
-    }
-
-    if (!groups[group]) groups[group] = [];
-    groups[group].push(link);
-  });
-
-  return groups;
-}
-
-export function hideLinkPanel(): void {
-  if (!linkPanel || !backdrop) return;
-
-  linkPanel.classList.remove('visible');
-  backdrop.classList.remove('visible');
-
-  setTimeout(() => {
-    if (linkPanel && !linkPanel.classList.contains('visible')) {
-      linkPanel.hidden = true;
-    }
-  }, 300);
-}
-
-function createLinkCard(link: LinkData, accentColor: string): HTMLElement {
-  const card = document.createElement('a');
-  card.className = 'link-card';
-  card.href = link.url;
-  card.target = '_blank';
-  card.rel = 'noopener noreferrer';
-  card.style.setProperty('--link-accent', accentColor);
-
-  if (link.download) {
-    card.download = '';
-  }
-
-  card.innerHTML = `
-    <div class="link-icon">
-      <img src="public/icons/${link.icon}.svg" alt="${link.label}">
-    </div>
-    <span class="link-label">${link.label}</span>
-    <svg class="link-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M7 17L17 7M17 7H7M17 7v10"/>
-    </svg>
-  `;
-
-  // Add ripple effect
-  card.addEventListener('click', (e) => {
-    const rect = card.getBoundingClientRect();
-    const ripple = document.createElement('span');
-    ripple.className = 'ripple';
-    ripple.style.left = `${e.clientX - rect.left}px`;
-    ripple.style.top = `${e.clientY - rect.top}px`;
-    card.appendChild(ripple);
-    setTimeout(() => ripple.remove(), 600);
-  });
-
-  return card;
 }
 
 // -----------------------------------------------------------------------------
@@ -715,11 +499,9 @@ function handleKeydown(e: KeyboardEvent): void {
     return;
   }
 
-  // Escape to close panel or reset view
+  // Escape to close hints or reset view
   if (e.key === 'Escape') {
-    if (linkPanel && !linkPanel.hidden) {
-      hideLinkPanel();
-    } else if (keyboardHints && !keyboardHints.hidden) {
+    if (keyboardHints && !keyboardHints.hidden) {
       hideKeyboardHints();
     } else if (view) {
       handleReset();
@@ -745,10 +527,10 @@ function handleKeydown(e: KeyboardEvent): void {
     handleArrowNavigation(e.key);
   }
 
-  // Enter to open links
+  // Enter to open link directly (if node has exactly 1 link)
   if (e.key === 'Enter' && currentNode) {
-    if (currentNode.links.length > 0) {
-      showLinkPanel(currentNode);
+    if (currentNode.links.length === 1) {
+      window.open(currentNode.links[0].url, '_blank', 'noopener,noreferrer');
     }
   }
 
@@ -848,8 +630,6 @@ export function focusOnNodeWithUI(node: GraphNode): void {
 // -----------------------------------------------------------------------------
 
 export function destroyUI(): void {
-  linkPanelClose?.removeEventListener('click', hideLinkPanel);
-  backdrop?.removeEventListener('click', hideLinkPanel);
   btnReset?.removeEventListener('click', handleReset);
   btnHome?.removeEventListener('click', handleReset);
   btnZoomIn?.removeEventListener('click', handleZoomIn);
@@ -858,6 +638,4 @@ export function destroyUI(): void {
   btnBack?.removeEventListener('click', handleBack);
   hintsClose?.removeEventListener('click', hideKeyboardHints);
   document.removeEventListener('keydown', handleKeydown);
-
-  backdrop?.remove();
 }

@@ -1,5 +1,5 @@
 // ==========================================================================
-// Main Entry Point - Linktree Mindmap (CSS/DOM-based Rendering)
+// Main Entry Point - Linktree Mindmap (PERFORMANCE OPTIMIZED)
 // ==========================================================================
 
 import type { GraphNode, GraphEdge, ViewState } from './types';
@@ -17,7 +17,6 @@ import {
   initUI,
   showLoading,
   hideLoading,
-  showLinkPanel,
   setOnBack,
   setNodes,
   setOnNodeSelect,
@@ -29,7 +28,8 @@ import {
   focusOnNodeWithUI,
   setCurrentNode,
 } from './modules/ui';
-// Galaxy background is now CSS-only (see _galaxy.scss)
+// WebGL GPU-accelerated particle system for stars
+import { initParticles, updateParticles, renderParticles, destroyParticles } from './modules/particles';
 
 // -----------------------------------------------------------------------------
 // State
@@ -39,6 +39,8 @@ let nodes: GraphNode[] = [];
 let edges: GraphEdge[] = [];
 let view: ViewState;
 let expansionFrameId: number | null = null;
+let starsAnimationId: number | null = null;
+let lastStarsTime = 0;
 
 // DOM elements
 let graphContainer: HTMLElement | null = null;
@@ -55,6 +57,13 @@ async function init(): Promise<void> {
     graphContainer = document.getElementById('graph-container');
     if (!graphContainer) {
       throw new Error('Graph container element not found');
+    }
+
+    // Initialize WebGL stars (GPU-accelerated)
+    const starsCanvas = document.getElementById('stars-canvas') as HTMLCanvasElement;
+    if (starsCanvas) {
+      initParticles(starsCanvas);
+      startStarsAnimation();
     }
 
     // Initialize renderer (DOM-based)
@@ -115,8 +124,6 @@ async function init(): Promise<void> {
     // Run expansion animation ONCE, then stop
     runExpansionAnimation();
 
-    // Root pulse is now CSS-based (see _graph.scss root-glow animation)
-
   } catch (error) {
     console.error('Failed to initialize:', error);
     hideLoading();
@@ -125,7 +132,27 @@ async function init(): Promise<void> {
 }
 
 // -----------------------------------------------------------------------------
-// Expansion Animation (runs once, then stops - NO continuous loop)
+// WebGL Stars Animation (runs continuously but efficiently on GPU)
+// -----------------------------------------------------------------------------
+
+function startStarsAnimation(): void {
+  lastStarsTime = performance.now();
+
+  function animateStars(time: number): void {
+    const deltaTime = time - lastStarsTime;
+    lastStarsTime = time;
+
+    updateParticles(deltaTime);
+    renderParticles();
+
+    starsAnimationId = requestAnimationFrame(animateStars);
+  }
+
+  starsAnimationId = requestAnimationFrame(animateStars);
+}
+
+// -----------------------------------------------------------------------------
+// Expansion Animation (runs once, then stops)
 // -----------------------------------------------------------------------------
 
 function runExpansionAnimation(): void {
@@ -154,7 +181,7 @@ function runExpansionAnimation(): void {
     if (progress < 1) {
       expansionFrameId = requestAnimationFrame(animateExpansion);
     } else {
-      // Expansion complete - NO MORE ANIMATION LOOP!
+      // Expansion complete
       expansionFrameId = null;
 
       // Final render with nodes at target positions
@@ -170,31 +197,26 @@ function runExpansionAnimation(): void {
 }
 
 // -----------------------------------------------------------------------------
-// Event Handlers (trigger re-renders only when needed)
+// Event Handlers
 // -----------------------------------------------------------------------------
 
 function handleNodeClick(node: GraphNode): void {
-  // Highlight path
   setFocusedNode(node);
   setCurrentNode(node);
   updateBreadcrumb(node);
 
-  // If this is a leaf node with exactly 1 link (a link leaf), open it directly
+  // If leaf node with exactly 1 link, open it directly
   if (node.links.length === 1 && node.children.length === 0) {
     const link = node.links[0];
     window.open(link.url, '_blank', 'noopener,noreferrer');
-  } else if (node.links.length > 1) {
-    // Show panel if node has multiple links
-    showLinkPanel(node);
   }
+  // No popup panel - just highlight the node
 
-  // Re-render to update highlights
   render(nodes, edges, view);
   updateMinimap(nodes, edges);
 }
 
 function handleNodeSelect(node: GraphNode): void {
-  // Called from UI (search, breadcrumb, keyboard nav)
   setFocusedNode(node);
   focusOnNodeWithUI(node);
   render(nodes, edges, view);
@@ -204,7 +226,6 @@ function handleNodeSelect(node: GraphNode): void {
 function handleBackgroundClick(): void {
   clearFocus();
   updateBreadcrumb(null);
-  // Re-render to clear highlights
   render(nodes, edges, view);
   updateMinimap(nodes, edges);
 }
@@ -223,7 +244,6 @@ function handleBackToFullView(): void {
 function handleResize(): void {
   const { width, height } = getCanvasSize();
   updateCanvasSize(width, height);
-  // Re-render on resize
   render(nodes, edges, view);
 }
 
@@ -237,10 +257,37 @@ function cleanup(): void {
   if (expansionFrameId !== null) {
     cancelAnimationFrame(expansionFrameId);
   }
+  if (starsAnimationId !== null) {
+    cancelAnimationFrame(starsAnimationId);
+  }
+  destroyParticles();
   window.removeEventListener('resize', handleResize);
 }
 
 window.addEventListener('beforeunload', cleanup);
+
+// -----------------------------------------------------------------------------
+// Prevent Overscroll/Pull-to-Refresh (Mobile)
+// -----------------------------------------------------------------------------
+
+// Block document-level touchmove to prevent gray overscroll area
+document.addEventListener('touchmove', (e: TouchEvent) => {
+  // Allow touchmove only on elements that need scrolling (none in this app)
+  if (e.target === document.body || e.target === document.documentElement) {
+    e.preventDefault();
+  }
+}, { passive: false });
+
+// Block scroll events on document
+document.addEventListener('scroll', (e: Event) => {
+  e.preventDefault();
+  window.scrollTo(0, 0);
+}, { passive: false });
+
+// Ensure window never scrolls
+window.addEventListener('scroll', () => {
+  window.scrollTo(0, 0);
+});
 
 // -----------------------------------------------------------------------------
 // Start Application

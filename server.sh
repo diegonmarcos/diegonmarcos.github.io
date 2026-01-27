@@ -57,9 +57,15 @@ load_config() {
     MOUNT_DIR=$(py_read "mount_point")
     PID=$(py_read "pid")
     LOG_RECEIVER_PID=$(py_read "log_receiver_pid")
+    MOUNT_LOCKED=$(py_read "mount_locked")
 
     if [ -z "$PORT" ]; then PORT=$DEFAULT_PORT; fi
-    if [ -z "$MOUNT_DIR" ]; then MOUNT_DIR=$DEFAULT_MOUNT; fi
+    # Mount defaults to current directory unless explicitly locked via 'config mount'
+    if [ "$MOUNT_LOCKED" != "true" ]; then
+        MOUNT_DIR=$DEFAULT_MOUNT
+    elif [ -z "$MOUNT_DIR" ]; then
+        MOUNT_DIR=$DEFAULT_MOUNT
+    fi
 }
 
 load_config
@@ -74,6 +80,35 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 # --- Helper Functions ---
+
+# Check if port is in use (Python-based, works in proot)
+is_port_in_use() {
+    python3 -c "
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    s.bind(('', $1))
+    s.close()
+    exit(1)  # Port is free
+except:
+    exit(0)  # Port is in use
+" 2>/dev/null
+}
+
+# Wait for port to be free (with timeout)
+wait_for_port_free() {
+    local port=$1
+    local timeout=${2:-10}
+    local count=0
+    while is_port_in_use "$port" && [ $count -lt $timeout ]; do
+        sleep 1
+        count=$((count + 1))
+    done
+    if is_port_in_use "$port"; then
+        return 1  # Still in use
+    fi
+    return 0  # Free
+}
 
 check_dependencies() {
     # Check basic dependencies (always needed)
@@ -177,7 +212,17 @@ is_log_receiver_running() {
 do_start_static() {
     if is_running; then
         echo "Server is already running (PID $PID)."
-        return
+        return 0
+    fi
+
+    # Check if port is in use (and wait for it to be free)
+    if is_port_in_use "$PORT"; then
+        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
+        if ! wait_for_port_free "$PORT" 5; then
+            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
+            return 1
+        fi
+        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
     fi
 
     # Check dependencies
@@ -187,7 +232,7 @@ do_start_static() {
 
     if [ ! -d "$MOUNT_DIR" ]; then
         echo "Error: Mount point '$MOUNT_DIR' does not exist."
-        return
+        return 1
     fi
 
     # Use a named pipe in /tmp to timestamp logs
@@ -211,27 +256,43 @@ do_start_static() {
 
     SERVER_PID=$!
 
-    # Wait for server to start
-    sleep 1
-
-    # Save Config & PID to JSON
+    # Save Config & PID to JSON immediately
     py_write "port" "$PORT" true
     py_write "mount_point" "$MOUNT_DIR" false
     py_write "pid" "$SERVER_PID" true
     py_write "mode" "static" false
 
-    # Reload config to get the new PID
+    # Wait for server to start (with retry)
+    local retries=5
+    local started=false
+    while [ $retries -gt 0 ]; do
+        sleep 0.5
+        if kill -0 "$SERVER_PID" 2>/dev/null; then
+            started=true
+            break
+        fi
+        retries=$((retries - 1))
+    done
+
+    # Reload config
     load_config
 
-    if is_running; then
+    if [ "$started" = "true" ]; then
         printf "${GREEN}✓${NC} Static server started (PID: $SERVER_PID)\n"
         printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
         printf "  Mode: ${GREEN}Eruda DevTools (no logging)${NC}\n"
         printf "  Logs: $LOG_FILE\n"
+        return 0
     else
-        echo "Failed to start server. Check logs."
+        printf "${RED}✗${NC} Failed to start server.\n"
+        # Show last few lines of log for debugging
+        if [ -f "$LOG_FILE" ]; then
+            printf "${YELLOW}Recent logs:${NC}\n"
+            tail -n 5 "$LOG_FILE"
+        fi
         rm -f "$FIFO"
         py_write "pid" "0" true
+        return 1
     fi
 }
 
@@ -239,7 +300,17 @@ do_start_static() {
 do_start_live() {
     if is_running; then
         echo "Server is already running (PID $PID)."
-        return
+        return 0
+    fi
+
+    # Check if port is in use (and wait for it to be free)
+    if is_port_in_use "$PORT"; then
+        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
+        if ! wait_for_port_free "$PORT" 5; then
+            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
+            return 1
+        fi
+        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
     fi
 
     # Check dependencies
@@ -248,14 +319,23 @@ do_start_live() {
     fi
 
     if [ ! -d "$MOUNT_DIR" ]; then
-        echo "Error: Mount point '$MOUNT_DIR' does not exist."
-        return
+        printf "${RED}Error: Mount point '$MOUNT_DIR' does not exist.${NC}\n"
+        return 1
+    fi
+
+    # Check if live-server.py exists
+    if [ ! -f "$SCRIPT_DIR/live-server.py" ]; then
+        printf "${RED}Error: live-server.py not found in $SCRIPT_DIR${NC}\n"
+        return 1
     fi
 
     # Use a named pipe in /tmp to timestamp logs
     FIFO="$TMP_DIR/server_log_$$.fifo"
     rm -f "$FIFO"
-    mkfifo "$FIFO"
+    if ! mkfifo "$FIFO" 2>/dev/null; then
+        printf "${RED}Error: Cannot create FIFO pipe in $TMP_DIR${NC}\n"
+        return 1
+    fi
 
     # Start the logger process in the background
     (
@@ -273,27 +353,43 @@ do_start_live() {
 
     SERVER_PID=$!
 
-    # Wait for server to start
-    sleep 1
-
-    # Save Config & PID to JSON
+    # Save Config & PID to JSON immediately
     py_write "port" "$PORT" true
     py_write "mount_point" "$MOUNT_DIR" false
     py_write "pid" "$SERVER_PID" true
     py_write "mode" "live" false
 
-    # Reload config to get the new PID
+    # Wait for server to start (with retry)
+    local retries=5
+    local started=false
+    while [ $retries -gt 0 ]; do
+        sleep 0.5
+        if kill -0 "$SERVER_PID" 2>/dev/null; then
+            started=true
+            break
+        fi
+        retries=$((retries - 1))
+    done
+
+    # Reload config
     load_config
 
-    if is_running; then
+    if [ "$started" = "true" ]; then
         printf "${GREEN}✓${NC} Live server started (PID: $SERVER_PID)\n"
         printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
         printf "  Mode: ${GREEN}Eruda + Auto-refresh (1s polling)${NC}\n"
         printf "  Logs: $LOG_FILE\n"
+        return 0
     else
-        echo "Failed to start server. Check logs."
+        printf "${RED}✗${NC} Failed to start server.\n"
+        # Show last few lines of log for debugging
+        if [ -f "$LOG_FILE" ]; then
+            printf "${YELLOW}Recent logs:${NC}\n"
+            tail -n 5 "$LOG_FILE"
+        fi
         rm -f "$FIFO"
         py_write "pid" "0" true
+        return 1
     fi
 }
 
@@ -362,12 +458,34 @@ do_stop() {
 do_start_dev() {
     if is_running; then
         echo "Server is already running (PID $PID)."
-        return
+        return 0
+    fi
+
+    # Check if port is in use (and wait for it to be free)
+    if is_port_in_use "$PORT"; then
+        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
+        if ! wait_for_port_free "$PORT" 5; then
+            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
+            return 1
+        fi
+        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
     fi
 
     if [ ! -d "$MOUNT_DIR" ]; then
-        echo "Error: Mount point '$MOUNT_DIR' does not exist."
-        return
+        printf "${RED}Error: Mount point '$MOUNT_DIR' does not exist.${NC}\n"
+        return 1
+    fi
+
+    # Check if dev-server.sh exists
+    if [ ! -f "$SCRIPT_DIR/dev-server.sh" ]; then
+        printf "${RED}Error: dev-server.sh not found in $SCRIPT_DIR${NC}\n"
+        return 1
+    fi
+
+    # Check if log-receiver.sh exists
+    if [ ! -f "$SCRIPT_DIR/log-receiver.sh" ]; then
+        printf "${RED}Error: log-receiver.sh not found in $SCRIPT_DIR${NC}\n"
+        return 1
     fi
 
     # Check all dev mode dependencies
@@ -387,32 +505,55 @@ do_start_dev() {
     sleep 0.5
     "$SCRIPT_DIR/log-receiver.sh" > /dev/null 2>&1 &
     LOG_RECEIVER_PID=$!
-    sleep 1
 
-    if kill -0 "$LOG_RECEIVER_PID" 2>/dev/null; then
+    # Wait with retry
+    local retries=5
+    local log_started=false
+    while [ $retries -gt 0 ]; do
+        sleep 0.5
+        if kill -0 "$LOG_RECEIVER_PID" 2>/dev/null; then
+            log_started=true
+            break
+        fi
+        retries=$((retries - 1))
+    done
+
+    if [ "$log_started" = "true" ]; then
         printf "${GREEN}✓${NC}\n"
         py_write "log_receiver_pid" "$LOG_RECEIVER_PID" true
     else
         printf "${RED}✗${NC}\n"
         printf "${RED}Failed to start log receiver.${NC}\n"
-        return
+        return 1
     fi
 
     # Start dev server with auto-injection
     printf "Starting dev server (auto-injection) on port $PORT... "
     nohup "$SCRIPT_DIR/dev-server.sh" "$PORT" "$MOUNT_DIR" > "$LOG_FILE" 2>&1 &
     SERVER_PID=$!
-    sleep 2
 
-    # Save config
+    # Save config immediately
     py_write "port" "$PORT" true
     py_write "mount_point" "$MOUNT_DIR" false
     py_write "pid" "$SERVER_PID" true
+    py_write "mode" "dev" false
+
+    # Wait with retry
+    retries=6
+    local started=false
+    while [ $retries -gt 0 ]; do
+        sleep 0.5
+        if kill -0 "$SERVER_PID" 2>/dev/null; then
+            started=true
+            break
+        fi
+        retries=$((retries - 1))
+    done
 
     # Reload config
     load_config
 
-    if kill -0 "$SERVER_PID" 2>/dev/null; then
+    if [ "$started" = "true" ]; then
         printf "${GREEN}✓${NC}\n"
         echo ""
         printf "${CYAN}╔════════════════════════════════════════════╗${NC}\n"
@@ -430,15 +571,22 @@ do_start_dev() {
         printf "  ✓ Auto-injection (no HTML changes needed)\n"
         echo ""
         printf "${YELLOW}Tip:${NC} Use './server.sh console-logs' to view browser logs\n"
+        return 0
     else
         printf "${RED}✗${NC}\n"
         printf "${RED}Failed to start dev server.${NC}\n"
+        # Show logs for debugging
+        if [ -f "$LOG_FILE" ]; then
+            printf "${YELLOW}Recent logs:${NC}\n"
+            tail -n 5 "$LOG_FILE"
+        fi
         # Cleanup
         if [ -n "$LOG_RECEIVER_PID" ]; then
             kill "$LOG_RECEIVER_PID" 2>/dev/null
         fi
         py_write "pid" "0" true
         py_write "log_receiver_pid" "0" true
+        return 1
     fi
 }
 
@@ -571,15 +719,20 @@ edit_port() {
 }
 
 edit_mount() {
-    printf "Enter new mount directory [Current: $MOUNT_DIR]: "
+    printf "Enter new mount directory [Current: $MOUNT_DIR] (or 'reset' for auto): "
     read -r new_mount
-    if [ -n "$new_mount" ]; then
+    if [ "$new_mount" = "reset" ]; then
+        py_write "mount_locked" "false" false
+        MOUNT_DIR=$DEFAULT_MOUNT
+        printf "${GREEN}✓${NC} Mount point reset to auto (current directory).\n"
+    elif [ -n "$new_mount" ]; then
         if [ -d "$new_mount" ]; then
             MOUNT_DIR=$(cd "$new_mount" && pwd)
             py_write "mount_point" "$MOUNT_DIR" false
-            echo "Mount point updated to $MOUNT_DIR (Saved to server.json)."
+            py_write "mount_locked" "true" false
+            printf "${GREEN}✓${NC} Mount point locked to $MOUNT_DIR\n"
         else
-            echo "${RED}Error: Directory does not exist.${NC}"
+            printf "${RED}Error: Directory does not exist.${NC}\n"
         fi
     fi
 }
@@ -723,10 +876,32 @@ case "$1" in
         ;;
     config)
         if [ "$2" = "port" ]; then
-             py_write "port" "$3" true
-        fi
-        if [ "$2" = "mount" ]; then
-             py_write "mount_point" "$3" false
+            if [ -n "$3" ]; then
+                py_write "port" "$3" true
+                printf "${GREEN}✓${NC} Port set to $3\n"
+            else
+                printf "${RED}Usage: $0 config port <number>${NC}\n"
+            fi
+        elif [ "$2" = "mount" ]; then
+            if [ "$3" = "reset" ] || [ "$3" = "auto" ]; then
+                py_write "mount_locked" "false" false
+                printf "${GREEN}✓${NC} Mount point reset to auto (current directory)\n"
+            elif [ -n "$3" ]; then
+                if [ -d "$3" ]; then
+                    ABS_PATH=$(cd "$3" && pwd)
+                    py_write "mount_point" "$ABS_PATH" false
+                    py_write "mount_locked" "true" false
+                    printf "${GREEN}✓${NC} Mount point locked to $ABS_PATH\n"
+                else
+                    printf "${RED}Error: Directory '$3' does not exist.${NC}\n"
+                fi
+            else
+                printf "${RED}Usage: $0 config mount <directory|reset>${NC}\n"
+            fi
+        else
+            printf "${YELLOW}Available config options:${NC}\n"
+            printf "  $0 config port <number>\n"
+            printf "  $0 config mount <directory|reset>\n"
         fi
         do_status
         ;;

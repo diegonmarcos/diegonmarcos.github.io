@@ -17,6 +17,10 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  // Prevent mobile rubber-band scrolling revealing gray background
+  height: 100%;
+  overflow: hidden;
+  background: $void-bg;
 }
 
 body {
@@ -26,8 +30,10 @@ body {
   color: $color-text;
   background: $void-bg;
   overflow: hidden;
-  min-height: 100vh;
-  min-height: 100dvh;
+  height: 100%;
+  // Prevent pull-to-refresh and overscroll bounce
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 a {

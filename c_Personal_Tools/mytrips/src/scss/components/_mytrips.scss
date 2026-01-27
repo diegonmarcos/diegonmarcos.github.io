@@ -41,11 +41,11 @@ body {
   padding: 0;
 }
 
-// Layout - fixed design size, JS handles scaling
+// Layout - JS sets width/height/scale to fill screen
 .app-container {
   display: flex;
-  height: 800px;
   width: $design-width;
+  height: 100vh; // JS overrides this
   overflow: hidden;
   transform-origin: top left;
 }

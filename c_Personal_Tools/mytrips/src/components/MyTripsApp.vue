@@ -984,36 +984,34 @@ let charts: Record<string, Chart> = {};
 onMounted(async () => {
   DB.value = initData();
 
-  // Scale to fit: fixed 1280x800 design, scale to fit screen
+  // Scale to FILL screen: width-based scale, height fills screen
   const DESIGN_W = 1280;
-  const DESIGN_H = 800;
 
-  const scaleToFit = () => {
+  const scaleToFill = () => {
     const screenW = window.innerWidth;
     const screenH = window.innerHeight;
     const appContainer = document.querySelector('.app-container') as HTMLElement;
     if (!appContainer) return;
 
-    // Calculate scale to fit both width and height
-    const scaleX = screenW / DESIGN_W;
-    const scaleY = screenH / DESIGN_H;
-    const scale = Math.min(scaleX, scaleY);
+    // Scale based on width to fill horizontally
+    const scale = screenW / DESIGN_W;
+    // Calculate height needed to fill screen (in design pixels)
+    const designH = screenH / scale;
 
-    console.log('[MyTrips] Scale to fit:', {
+    console.log('[MyTrips] Scale to FILL:', {
       screen: `${screenW}x${screenH}`,
-      design: `${DESIGN_W}x${DESIGN_H}`,
-      scaleX: scaleX.toFixed(3),
-      scaleY: scaleY.toFixed(3),
-      finalScale: scale.toFixed(3)
+      scale: scale.toFixed(3),
+      designSize: `${DESIGN_W}x${Math.round(designH)}`
     });
 
     appContainer.style.transform = `scale(${scale})`;
+    appContainer.style.transformOrigin = 'top left';
     appContainer.style.width = `${DESIGN_W}px`;
-    appContainer.style.height = `${DESIGN_H}px`;
+    appContainer.style.height = `${designH}px`;
   };
 
-  scaleToFit();
-  window.addEventListener('resize', scaleToFit);
+  scaleToFill();
+  window.addEventListener('resize', scaleToFill);
 
   // Start clock
   const interval = setInterval(() => {

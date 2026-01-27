@@ -1003,7 +1003,20 @@ onUnmounted(() => {
   if (globeRenderer) globeRenderer.dispose();
 });
 
-watch(currentView, async () => {
+watch(currentView, async (newView, oldView) => {
+  // Cleanup globe when leaving dashboard
+  if (oldView === 'dashboard' && newView !== 'dashboard') {
+    if (animationId) cancelAnimationFrame(animationId);
+    if (globeRenderer) {
+      globeRenderer.dispose();
+      globeRenderer = null;
+    }
+    globeScene = null;
+    globeCamera = null;
+    globeControls = null;
+    globeInitialized = false;
+  }
+
   if (currentView.value === 'analytics') {
     await nextTick();
     initCharts();

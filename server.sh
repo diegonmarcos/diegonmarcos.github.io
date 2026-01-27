@@ -1,15 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# --- OOM Protection: Mark server as sacrificial (kill first to protect Claude) ---
-echo 1000 > /proc/$$/oom_score_adj 2>/dev/null
-
-# --- Memory Limit: Cap RAM usage at 1GB ---
-ulimit -v 1048576 2>/dev/null
+# --- Resource Limits ---
+# Note: OOM and memory limits are applied to server subprocesses only,
+# not this control script (Python needs more RAM to initialize)
 
 # --- Configuration ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/server.json"
 LOG_FILE="$SCRIPT_DIR/server.log"
+
+# Temp directory - use $TMPDIR (Termux), /tmp (Linux), or script dir as fallback
+TMP_DIR="${TMPDIR:-/tmp}"
+[ ! -w "$TMP_DIR" ] && TMP_DIR="$SCRIPT_DIR"
 
 # Defaults - use current working directory for portability (Termux/Desktop)
 DEFAULT_PORT=8000
@@ -189,7 +191,7 @@ do_start_static() {
     fi
 
     # Use a named pipe in /tmp to timestamp logs
-    FIFO="/tmp/server_log_$$.fifo"
+    FIFO="$TMP_DIR/server_log_$$.fifo"
     rm -f "$FIFO"
     mkfifo "$FIFO"
 
@@ -258,7 +260,7 @@ do_start_live() {
     fi
 
     # Use a named pipe in /tmp to timestamp logs
-    FIFO="/tmp/server_log_$$.fifo"
+    FIFO="$TMP_DIR/server_log_$$.fifo"
     rm -f "$FIFO"
     mkfifo "$FIFO"
 

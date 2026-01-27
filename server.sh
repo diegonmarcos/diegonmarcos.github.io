@@ -82,15 +82,17 @@ NC='\033[0m' # No Color
 # --- Helper Functions ---
 
 # Check if port is in use (Python-based, works in proot)
+# Uses SO_REUSEADDR to ignore TIME_WAIT state
 is_port_in_use() {
     python3 -c "
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 try:
-    s.bind(('', $1))
+    s.bind(('127.0.0.1', $1))
     s.close()
     exit(1)  # Port is free
-except:
+except OSError:
     exit(0)  # Port is in use
 " 2>/dev/null
 }
@@ -108,6 +110,23 @@ wait_for_port_free() {
         return 1  # Still in use
     fi
     return 0  # Free
+}
+
+# Force-kill whatever is using a port
+kill_port_user() {
+    local port=$1
+    # Try fuser first (lightweight, common on Linux)
+    if command -v fuser >/dev/null 2>&1; then
+        fuser -k "${port}/tcp" 2>/dev/null
+        return 0
+    fi
+    # Try lsof (common on macOS/some Linux)
+    if command -v lsof >/dev/null 2>&1; then
+        lsof -ti :"$port" 2>/dev/null | xargs -r kill -9 2>/dev/null
+        return 0
+    fi
+    # Fallback: kill known server patterns (already done in do_stop_dev)
+    return 0
 }
 
 check_dependencies() {
@@ -215,14 +234,18 @@ do_start_static() {
         return 0
     fi
 
-    # Check if port is in use (and wait for it to be free)
+    # Check if port is in use - auto-kill if needed
     if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
-        if ! wait_for_port_free "$PORT" 5; then
-            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
-            return 1
+        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
+        kill_port_user "$PORT"
+        sleep 0.5
+        if is_port_in_use "$PORT"; then
+            if ! wait_for_port_free "$PORT" 3; then
+                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
+                return 1
+            fi
         fi
-        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
+        printf "${GREEN}✓${NC} Port $PORT freed.\n"
     fi
 
     # Check dependencies
@@ -303,14 +326,18 @@ do_start_live() {
         return 0
     fi
 
-    # Check if port is in use (and wait for it to be free)
+    # Check if port is in use - auto-kill if needed
     if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
-        if ! wait_for_port_free "$PORT" 5; then
-            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
-            return 1
+        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
+        kill_port_user "$PORT"
+        sleep 0.5
+        if is_port_in_use "$PORT"; then
+            if ! wait_for_port_free "$PORT" 3; then
+                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
+                return 1
+            fi
         fi
-        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
+        printf "${GREEN}✓${NC} Port $PORT freed.\n"
     fi
 
     # Check dependencies
@@ -461,14 +488,18 @@ do_start_dev() {
         return 0
     fi
 
-    # Check if port is in use (and wait for it to be free)
+    # Check if port is in use - auto-kill if needed
     if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT is in use. Waiting for it to be free...${NC}\n"
-        if ! wait_for_port_free "$PORT" 5; then
-            printf "${RED}Port $PORT is still in use after waiting. Try 'server.sh stop' first.${NC}\n"
-            return 1
+        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
+        kill_port_user "$PORT"
+        sleep 0.5
+        if is_port_in_use "$PORT"; then
+            if ! wait_for_port_free "$PORT" 3; then
+                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
+                return 1
+            fi
         fi
-        printf "${GREEN}✓${NC} Port $PORT is now free.\n"
+        printf "${GREEN}✓${NC} Port $PORT freed.\n"
     fi
 
     if [ ! -d "$MOUNT_DIR" ]; then
@@ -591,29 +622,53 @@ do_start_dev() {
 }
 
 do_stop_dev() {
-    printf "Stopping dev mode...\n"
+    printf "Stopping servers...\n"
 
-    # Stop main server (port 8000)
+    # Stop main server (port 8000) - kill by PID first
     if [ -n "$PID" ] && [ "$PID" != "0" ]; then
         kill "$PID" 2>/dev/null
+        kill -9 "$PID" 2>/dev/null
     fi
-    pkill -f "dev-server.sh" 2>/dev/null
-    pkill -f "socat.*8000" 2>/dev/null
-    printf "${GREEN}✓${NC} Dev server stopped (port 8000)\n"
+
+    # Kill all known server processes by pattern
+    pkill -9 -f "static-server.py" 2>/dev/null
+    pkill -9 -f "live-server.py" 2>/dev/null
+    pkill -9 -f "dev-server.sh" 2>/dev/null
+    pkill -9 -f "http.server.*$PORT" 2>/dev/null
+    pkill -9 -f "socat.*$PORT" 2>/dev/null
+
+    # Force-kill anything still on the port
+    kill_port_user "$PORT"
+    sleep 0.3
+
+    # Verify port is free
+    if is_port_in_use "$PORT"; then
+        printf "${YELLOW}!${NC} Port $PORT still in use, force killing...\n"
+        kill_port_user "$PORT"
+        sleep 0.5
+        if is_port_in_use "$PORT"; then
+            printf "${RED}✗${NC} Could not free port $PORT\n"
+        else
+            printf "${GREEN}✓${NC} Port $PORT freed\n"
+        fi
+    else
+        printf "${GREEN}✓${NC} Server stopped (port $PORT)\n"
+    fi
 
     # Stop log receiver (port 19001)
     if [ -n "$LOG_RECEIVER_PID" ] && [ "$LOG_RECEIVER_PID" != "0" ]; then
         kill "$LOG_RECEIVER_PID" 2>/dev/null
+        kill -9 "$LOG_RECEIVER_PID" 2>/dev/null
     fi
-    pkill -f "log-receiver.sh" 2>/dev/null
-    pkill -f "socat.*19001" 2>/dev/null
+    pkill -9 -f "log-receiver.sh" 2>/dev/null
+    pkill -9 -f "socat.*19001" 2>/dev/null
     printf "${GREEN}✓${NC} Log receiver stopped (port 19001)\n"
 
     # Clear PIDs
     py_write "pid" "0" true
     py_write "log_receiver_pid" "0" true
 
-    echo "All dev servers stopped."
+    echo "All servers stopped."
 }
 
 view_console_logs() {

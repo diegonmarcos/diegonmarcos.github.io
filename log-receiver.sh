@@ -1,6 +1,12 @@
 #!/bin/sh
 # Pure POSIX log receiver - writes raw JSONL (JSON Lines)
 
+# OOM Protection: Mark as sacrificial (kill first to protect Claude)
+echo 1000 > /proc/$$/oom_score_adj 2>/dev/null
+
+# Memory Limit: Cap RAM usage at 1GB
+ulimit -v 1048576 2>/dev/null
+
 # Use absolute paths for utilities (socat subprocess may not inherit PATH)
 CAT="/bin/cat"
 HEAD="/usr/bin/head"

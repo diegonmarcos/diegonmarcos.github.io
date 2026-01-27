@@ -8,7 +8,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src_static/typescript",
+    "rootDir": "./src/typescript",
     "declaration": true,
     "sourceMap": true,
     "noUnusedLocals": true,
@@ -16,6 +16,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src_static/typescript/**/*"],
+  "include": ["src/typescript/**/*"],
   "exclude": ["node_modules", "dist"]
 }

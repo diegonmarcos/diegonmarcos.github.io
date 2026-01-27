@@ -1,10 +1,10 @@
 const esbuild = require('./node_modules/esbuild');
 
 const isProd = process.argv.includes('--minify');
-const outfile = process.argv.includes('--dev') ? 'src_static/script.js' : 'script.js';
+const outfile = process.argv.includes('--dev') ? 'src/script.js' : 'script.js';
 
 esbuild.buildSync({
-  entryPoints: ['src_static/typescript/main.ts'],
+  entryPoints: ['src/typescript/main.ts'],
   bundle: true,
   outfile: outfile,
   format: 'iife',

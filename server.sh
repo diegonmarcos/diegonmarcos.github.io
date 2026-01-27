@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# --- OOM Protection: Mark server as sacrificial (kill first to protect Claude) ---
+echo 1000 > /proc/$$/oom_score_adj 2>/dev/null
+
+# --- Memory Limit: Cap RAM usage at 1GB ---
+ulimit -v 1048576 2>/dev/null
+
 # --- Configuration ---
 SCRIPT_DIR=$(cd "$(dirname "$0")" && pwd)
 CONFIG_FILE="$SCRIPT_DIR/server.json"
@@ -165,7 +171,8 @@ is_log_receiver_running() {
     return 1
 }
 
-do_start() {
+# Static server - lightweight Python http.server (no live-reload, minimal resources)
+do_start_static() {
     if is_running; then
         echo "Server is already running (PID $PID)."
         return
@@ -195,48 +202,115 @@ do_start() {
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    # Check if live-server is available and enabled
-    if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
-        echo "Starting live-server (auto-refresh) on port $PORT serving $MOUNT_DIR..."
-        nohup live-server "$MOUNT_DIR" --port="$PORT" --no-browser --wait=100 > "$FIFO" 2>&1 &
+    printf "${CYAN}Starting static server (lightweight)...${NC}\n"
+    echo "  Port:  $PORT"
+    echo "  Mount: $MOUNT_DIR"
+    nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
+
+    SERVER_PID=$!
+
+    # Wait for server to start
+    sleep 1
+
+    # Save Config & PID to JSON
+    py_write "port" "$PORT" true
+    py_write "mount_point" "$MOUNT_DIR" false
+    py_write "pid" "$SERVER_PID" true
+    py_write "mode" "static" false
+
+    # Reload config to get the new PID
+    load_config
+
+    if is_running; then
+        printf "${GREEN}✓${NC} Static server started (PID: $SERVER_PID)\n"
+        printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
+        printf "  Logs: $LOG_FILE\n"
     else
-        echo "Starting Python server on port $PORT serving $MOUNT_DIR..."
-        nohup python3 -u -m http.server "$PORT" --directory "$MOUNT_DIR" > "$FIFO" 2>&1 &
+        echo "Failed to start server. Check logs."
+        rm -f "$FIFO"
+        py_write "pid" "0" true
     fi
+}
+
+# Live server - live-server with auto-refresh (requires Node.js)
+do_start_live() {
+    if is_running; then
+        echo "Server is already running (PID $PID)."
+        return
+    fi
+
+    # Check dependencies
+    if ! check_dependencies; then
+        return 1
+    fi
+
+    if [ ! -d "$MOUNT_DIR" ]; then
+        echo "Error: Mount point '$MOUNT_DIR' does not exist."
+        return
+    fi
+
+    # Check if live-server is available
+    if ! command -v live-server >/dev/null 2>&1; then
+        printf "${YELLOW}live-server not found. Install with: npm install -g live-server${NC}\n"
+        printf "${YELLOW}Falling back to static server...${NC}\n"
+        do_start_static
+        return
+    fi
+
+    # Use a named pipe in /tmp to timestamp logs
+    FIFO="/tmp/server_log_$$.fifo"
+    rm -f "$FIFO"
+    mkfifo "$FIFO"
+
+    # Start the logger process in the background
+    (
+        trap "" HUP
+        while IFS= read -r line; do
+            echo "[$(date '+%Y-%m-%d %H:%M:%S')] $line" >> "$LOG_FILE"
+        done < "$FIFO"
+        rm -f "$FIFO"
+    ) > /dev/null 2>&1 &
+
+    printf "${CYAN}Starting live server (auto-refresh)...${NC}\n"
+    echo "  Port:  $PORT"
+    echo "  Mount: $MOUNT_DIR"
+    nohup live-server "$MOUNT_DIR" --port="$PORT" --no-browser --wait=100 > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
     # Wait for server to start
     sleep 2
 
-    # For live-server, find the actual node process PID
-    if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
-        ACTUAL_PID=$(pgrep -f "live-server.*--port=$PORT" 2>/dev/null | head -1)
-        if [ -n "$ACTUAL_PID" ]; then
-            SERVER_PID="$ACTUAL_PID"
-        fi
+    # Find the actual node process PID
+    ACTUAL_PID=$(pgrep -f "live-server.*--port=$PORT" 2>/dev/null | head -1)
+    if [ -n "$ACTUAL_PID" ]; then
+        SERVER_PID="$ACTUAL_PID"
     fi
 
     # Save Config & PID to JSON
     py_write "port" "$PORT" true
     py_write "mount_point" "$MOUNT_DIR" false
     py_write "pid" "$SERVER_PID" true
+    py_write "mode" "live" false
 
     # Reload config to get the new PID
     load_config
 
     if is_running; then
-        if [ "$USE_LIVE_SERVER" = "true" ] && command -v live-server >/dev/null 2>&1; then
-            echo "Live server started (auto-refresh enabled). Logs: $LOG_FILE"
-        else
-            echo "Server started successfully. Logs: $LOG_FILE"
-        fi
+        printf "${GREEN}✓${NC} Live server started (PID: $SERVER_PID)\n"
+        printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
+        printf "  Mode: ${GREEN}Auto-refresh enabled${NC}\n"
+        printf "  Logs: $LOG_FILE\n"
     else
         echo "Failed to start server. Check logs."
         rm -f "$FIFO"
-        # Clear PID on failure
         py_write "pid" "0" true
     fi
+}
+
+# Legacy do_start - defaults to live server behavior
+do_start() {
+    do_start_live
 }
 
 do_stop() {
@@ -317,8 +391,11 @@ do_start_dev() {
     printf "${CYAN}╚════════════════════════════════════════════╝${NC}\n"
     echo ""
 
-    # Start log receiver
+    # Start log receiver (autofix: kill stale processes first)
     printf "Starting JSON log receiver on port 19001... "
+    pkill -9 -f "socat.*19001" 2>/dev/null
+    pkill -9 -f "log-receiver.sh" 2>/dev/null
+    sleep 0.5
     "$SCRIPT_DIR/log-receiver.sh" > /dev/null 2>&1 &
     LOG_RECEIVER_PID=$!
     sleep 1
@@ -554,34 +631,36 @@ show_tui() {
         printf "  ${BOLD}PORT:${NC}    $PORT\n"
         printf "  ${BOLD}MOUNT:${NC}   $MOUNT_DIR\n"
 
-        printf "${CYAN}╟─ CONTROL ────────────────────────────────────────────────${NC}\n"
-        printf "  1. ${GREEN}START${NC} Server (Normal)\n"
-        printf "  2. ${GREEN}START${NC} Server (${YELLOW}DEV MODE${NC} - Auto-inject DevTools)\n"
-        printf "  3. ${RED}STOP${NC} Server\n"
-        printf "  4. ${YELLOW}VIEW LOGS${NC} (server)\n"
-        printf "${CYAN}╟─ DEV TOOLS ──────────────────────────────────────────────${NC}\n"
-        printf "  5. ${YELLOW}VIEW LOGS${NC} (browser console)\n"
-        printf "  6. ${RED}VIEW ERRORS${NC} (browser console)\n"
-        printf "  7. ${RED}CLEAR${NC} browser console logs\n"
+        printf "${CYAN}╟─ SERVER MODES ───────────────────────────────────────────${NC}\n"
+        printf "  1. ${GREEN}STATIC${NC}  - Lightweight Python server (minimal RAM)\n"
+        printf "  2. ${GREEN}LIVE${NC}    - Auto-refresh server (Node.js live-server)\n"
+        printf "  3. ${GREEN}DEV${NC}     - Dev mode (live + DevTools + logging)\n"
+        printf "  4. ${RED}STOP${NC}    - Stop all servers\n"
+        printf "${CYAN}╟─ LOGS ───────────────────────────────────────────────────${NC}\n"
+        printf "  5. ${YELLOW}VIEW${NC} server logs\n"
+        printf "  6. ${YELLOW}VIEW${NC} browser console logs\n"
+        printf "  7. ${RED}VIEW${NC} browser errors only\n"
+        printf "  8. ${RED}CLEAR${NC} browser console logs\n"
         printf "${CYAN}╟─ SETTINGS (server.json) ─────────────────────────────────${NC}\n"
-        printf "  8. Edit ${BOLD}PORT${NC}\n"
-        printf "  9. Edit ${BOLD}MOUNT POINT${NC}\n"
+        printf "  p. Edit ${BOLD}PORT${NC}\n"
+        printf "  m. Edit ${BOLD}MOUNT POINT${NC}\n"
         printf "${CYAN}╟──────────────────────────────────────────────────────────${NC}\n"
         printf "  0. EXIT\n"
         printf "${CYAN}╚══════════════════════════════════════════════════════════╝${NC}\n"
-        printf " Choice [0-9]: "
+        printf " Choice: "
         read -r choice
 
         case "$choice" in
-            1) echo ""; do_start; sleep 1.5 ;;
-            2) echo ""; do_start_dev; sleep 2 ;;
-            3) echo ""; do_stop_dev; sleep 1.5 ;;
-            4) echo ""; view_logs; printf "\nPress Enter to continue..."; read -r dummy ;;
-            5) echo ""; view_console_logs; printf "\nPress Enter to continue..."; read -r dummy ;;
-            6) echo ""; view_console_errors; printf "\nPress Enter to continue..."; read -r dummy ;;
-            7) echo ""; clear_console_logs; sleep 1.5 ;;
-            8) echo ""; edit_port; sleep 1.5 ;;
-            9) echo ""; edit_mount; sleep 1.5 ;;
+            1) echo ""; do_start_static; sleep 1.5 ;;
+            2) echo ""; do_start_live; sleep 1.5 ;;
+            3) echo ""; do_start_dev; sleep 2 ;;
+            4) echo ""; do_stop_dev; sleep 1.5 ;;
+            5) echo ""; view_logs; printf "\nPress Enter to continue..."; read -r dummy ;;
+            6) echo ""; view_console_logs; printf "\nPress Enter to continue..."; read -r dummy ;;
+            7) echo ""; view_console_errors; printf "\nPress Enter to continue..."; read -r dummy ;;
+            8) echo ""; clear_console_logs; sleep 1.5 ;;
+            p|P) echo ""; edit_port; sleep 1.5 ;;
+            m|M) echo ""; edit_mount; sleep 1.5 ;;
             0|q|Q) clear; exit 0 ;;
             *) ;;
         esac
@@ -590,15 +669,22 @@ show_tui() {
 
 # --- Main Logic ---
 case "$1" in
-    start)
-        if [ "$2" = "--dev" ] || [ "$2" = "-d" ]; then
-            do_start_dev
-        else
-            do_start
-        fi
+    static)
+        do_start_static
+        ;;
+    live)
+        do_start_live
         ;;
     dev)
         do_start_dev
+        ;;
+    start)
+        # Legacy: 'start' defaults to live, 'start --dev' for dev mode
+        if [ "$2" = "--dev" ] || [ "$2" = "-d" ]; then
+            do_start_dev
+        else
+            do_start_live
+        fi
         ;;
     stop)
         do_stop_dev
@@ -659,53 +745,63 @@ case "$1" in
         show_tui
         ;;
     help|--help|-h)
-        cat << EOF
-${BOLD}Web Server Control Script${NC}
-
-${CYAN}USAGE:${NC}
-  $0 [command] [options]
-
-${CYAN}COMMANDS:${NC}
-  ${GREEN}start${NC} [--dev|-d]   Start server (use --dev for dev mode)
-  ${GREEN}dev${NC}                Start in dev mode (auto-inject DevTools)
-  ${RED}stop${NC}               Stop server and dev tools
-  ${YELLOW}status${NC}             Show server status
-  ${YELLOW}logs${NC}               View server logs
-
-  ${CYAN}DEV MODE COMMANDS:${NC}
-  ${YELLOW}console-logs${NC}       View browser console logs (last 20)
-  ${RED}console-errors${NC}     View only errors and warnings
-  ${YELLOW}console-json${NC}       View raw JSON logs (all)
-  ${YELLOW}console-tail${NC}       Live tail browser console logs
-  ${RED}console-clear${NC}      Clear browser console logs
-
-  ${CYAN}SETTINGS:${NC}
-  config port <num>   Set port number
-  config mount <dir>  Set mount directory
-
-  ${CYAN}INTERACTIVE:${NC}
-  tui                 Launch interactive TUI menu
-  help                Show this help message
-
-${CYAN}DEV MODE FEATURES:${NC}
-  • Eruda DevTools auto-loaded in browser
-  • Console logging to JSONL file
-  • Error tracking (uncaught errors + promise rejections)
-  • Auto-injection (no HTML modifications needed)
-
-${CYAN}EXAMPLES:${NC}
-  $0                    # Launch TUI
-  $0 dev                # Start in dev mode
-  $0 start --dev        # Start in dev mode
-  $0 console-logs       # View browser console
-  $0 console-tail       # Live tail browser logs
-
-${CYAN}FILES:${NC}
-  Config:        $CONFIG_FILE
-  Server logs:   $LOG_FILE
-  Console logs:  $CONSOLE_LOG_FILE
-
-EOF
+        printf "${BOLD}Web Server Control Script${NC}\n"
+        printf "\n"
+        printf "${CYAN}USAGE:${NC}\n"
+        printf "  %s [command] [options]\n" "$0"
+        printf "\n"
+        printf "${CYAN}SERVER MODES:${NC}\n"
+        printf "  ${GREEN}static${NC}             Lightweight Python server (minimal RAM)\n"
+        printf "  ${GREEN}live${NC}               Auto-refresh server (Node.js live-server)\n"
+        printf "  ${GREEN}dev${NC}                Dev mode (live + DevTools + console logging)\n"
+        printf "  ${RED}stop${NC}               Stop all servers\n"
+        printf "\n"
+        printf "${CYAN}SERVER INFO:${NC}\n"
+        printf "  ${YELLOW}status${NC}             Show server status\n"
+        printf "  ${YELLOW}logs${NC}               View server logs (last 20 lines)\n"
+        printf "\n"
+        printf "${CYAN}BROWSER CONSOLE (dev mode):${NC}\n"
+        printf "  ${YELLOW}console-logs${NC}       View browser console logs (last 20)\n"
+        printf "  ${YELLOW}console-json${NC}       View raw JSON logs (all)\n"
+        printf "  ${YELLOW}console-tail${NC}       Live tail browser console (Ctrl+C to stop)\n"
+        printf "  ${RED}console-errors${NC}     View only errors and warnings\n"
+        printf "  ${RED}console-clear${NC}      Clear browser console logs\n"
+        printf "\n"
+        printf "${CYAN}CONFIGURATION:${NC}\n"
+        printf "  ${BLUE}config port${NC} <num>  Set port number\n"
+        printf "  ${BLUE}config mount${NC} <dir> Set mount directory\n"
+        printf "\n"
+        printf "${CYAN}INTERACTIVE:${NC}\n"
+        printf "  ${BOLD}tui${NC}                Launch interactive TUI menu\n"
+        printf "  ${BOLD}help${NC}               Show this help message\n"
+        printf "\n"
+        printf "${CYAN}SERVER MODE COMPARISON:${NC}\n"
+        printf "  ┌──────────┬─────────────┬─────────────┬──────────────┐\n"
+        printf "  │ ${BOLD}Mode${NC}     │ ${BOLD}Auto-reload${NC} │ ${BOLD}DevTools${NC}    │ ${BOLD}RAM Usage${NC}    │\n"
+        printf "  ├──────────┼─────────────┼─────────────┼──────────────┤\n"
+        printf "  │ static   │ No          │ No          │ ~10-20 MB    │\n"
+        printf "  │ live     │ Yes         │ No          │ ~50-80 MB    │\n"
+        printf "  │ dev      │ Yes         │ Yes+Logging │ ~80-120 MB   │\n"
+        printf "  └──────────┴─────────────┴─────────────┴──────────────┘\n"
+        printf "\n"
+        printf "${CYAN}EXAMPLES:${NC}\n"
+        printf "  ${BOLD}%s${NC}                 # Launch TUI (interactive)\n" "$0"
+        printf "  ${BOLD}%s static${NC}          # Start lightweight server\n" "$0"
+        printf "  ${BOLD}%s live${NC}            # Start with auto-refresh\n" "$0"
+        printf "  ${BOLD}%s dev${NC}             # Start dev mode (full features)\n" "$0"
+        printf "  ${BOLD}%s stop${NC}            # Stop all servers\n" "$0"
+        printf "  ${BOLD}%s status${NC}          # Check if running\n" "$0"
+        printf "  ${BOLD}%s console-tail${NC}    # Live browser logs\n" "$0"
+        printf "\n"
+        printf "${CYAN}FILES:${NC}\n"
+        printf "  Config:        ${YELLOW}%s${NC}\n" "$CONFIG_FILE"
+        printf "  Server logs:   ${YELLOW}%s${NC}\n" "$LOG_FILE"
+        printf "  Console logs:  ${YELLOW}%s${NC}\n" "$CONSOLE_LOG_FILE"
+        printf "\n"
+        printf "${CYAN}RESOURCE LIMITS:${NC}\n"
+        printf "  • RAM cap: 1GB (ulimit -v)\n"
+        printf "  • OOM score: 1000 (sacrificial - killed first under pressure)\n"
+        printf "\n"
         ;;
     *)
         if [ $# -eq 0 ]; then

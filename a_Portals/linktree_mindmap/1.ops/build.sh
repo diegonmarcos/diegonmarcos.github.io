@@ -94,7 +94,7 @@ build() {
 
     # Check required files exist
     _errors=0
-    [ -f "$PROJECT_DIR/src_static/index.html" ] || { log_error "src_static/index.html not found"; _errors=$((_errors + 1)); }
+    [ -f "$PROJECT_DIR/src/index.html" ] || { log_error "src/index.html not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/style.css" ] || { log_error "style.css not found"; _errors=$((_errors + 1)); }
     [ -f "$PROJECT_DIR/script.js" ] || { log_error "script.js not found"; _errors=$((_errors + 1)); }
 
@@ -131,7 +131,7 @@ build_dist() {
     log_success "Copied public assets -> dist/public/"
 
     # Copy HTML
-    cp "$PROJECT_DIR/src_static/index.html" "$DIST_DIR/index.html"
+    cp "$PROJECT_DIR/src/index.html" "$DIST_DIR/index.html"
     log_success "Copied index.html -> dist/"
 
     # Move CSS
@@ -152,19 +152,19 @@ dev() {
     cd "$PROJECT_DIR"
 
     # Create symlink to public folder if it doesn't exist
-    if [ ! -e "src_static/public" ] && [ -d "$PROJECT_DIR/public" ]; then
-        ln -sf ../public src_static/public
-        log_info "Created symlink: src_static/public -> ../public"
+    if [ ! -e "src/public" ] && [ -d "$PROJECT_DIR/public" ]; then
+        ln -sf ../public src/public
+        log_info "Created symlink: src/public -> ../public"
     fi
 
     # Start TypeScript/esbuild watch in background
-    nohup npx esbuild src_static/typescript/main.ts --bundle --outfile=src_static/script.js --format=iife --target=es2020 --sourcemap --watch=forever > /dev/null 2>&1 &
+    nohup npx esbuild src/typescript/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch=forever > /dev/null 2>&1 &
 
     # Start Sass watch in background
     nohup npm run dev:css > /dev/null 2>&1 &
 
-    # Start live-server from src_static directory
-    nohup npx live-server src_static --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
+    # Start live-server from src directory
+    nohup npx live-server src --port="${PORT}" --no-browser --quiet > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"

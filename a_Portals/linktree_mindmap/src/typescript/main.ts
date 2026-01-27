@@ -29,7 +29,7 @@ import {
   focusOnNodeWithUI,
   setCurrentNode,
 } from './modules/ui';
-import { GalaxyRenderer } from './modules/galaxy';
+// Galaxy background is now CSS-only (see _galaxy.scss)
 
 // -----------------------------------------------------------------------------
 // State
@@ -42,9 +42,6 @@ let expansionFrameId: number | null = null;
 
 // DOM elements
 let graphContainer: HTMLElement | null = null;
-
-// WebGL galaxy background
-let galaxyRenderer: GalaxyRenderer | null = null;
 
 // -----------------------------------------------------------------------------
 // Initialize Application
@@ -59,9 +56,6 @@ async function init(): Promise<void> {
     if (!graphContainer) {
       throw new Error('Graph container element not found');
     }
-
-    // Initialize WebGL galaxy background
-    galaxyRenderer = new GalaxyRenderer(graphContainer);
 
     // Initialize renderer (DOM-based)
     initRenderer(graphContainer);
@@ -242,9 +236,6 @@ window.addEventListener('resize', handleResize);
 function cleanup(): void {
   if (expansionFrameId !== null) {
     cancelAnimationFrame(expansionFrameId);
-  }
-  if (galaxyRenderer) {
-    galaxyRenderer.destroy();
   }
   window.removeEventListener('resize', handleResize);
 }

@@ -1,0 +1,48 @@
+/**
+ * Formula Component Styles
+ */
+
+.formula-display {
+    font-family: var(--font-display);
+    font-size: clamp(0.65rem, 1.6vw, 0.85rem);
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 2s ease-out 1s forwards;
+    font-style: italic;
+    letter-spacing: 0.03em;
+    padding: 10px 20px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.formula-r {
+    color: rgba(255, 200, 150, 0.6);
+}
+
+.formula-theta {
+    color: rgba(150, 200, 255, 0.6);
+}
+
+.formula-sep {
+    color: rgba(255, 255, 255, 0.25);
+    font-weight: 300;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .formula-display {
+        font-size: 0.55rem;
+        padding: 6px 12px;
+        gap: 4px;
+    }
+}

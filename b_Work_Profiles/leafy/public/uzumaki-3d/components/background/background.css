@@ -1,0 +1,14 @@
+/**
+ * Background Component Styles
+ * WebGL shader canvas positioning
+ */
+
+#background-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: var(--z-shader, 2);
+    pointer-events: none;
+}

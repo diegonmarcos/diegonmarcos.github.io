@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>渦巻き - The Most Illegal Uzumaki</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Noto+Serif+JP:wght@200;300&family=Inter:wght@200;400&display=swap" rel="stylesheet">
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <!-- Styles: Global + Components -->
+    <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="components/stars/stars.css">
+    <link rel="stylesheet" href="components/background/background.css">
+    <link rel="stylesheet" href="components/uzumaki/uzumaki.css">
+    <link rel="stylesheet" href="components/header/header.css">
+    <link rel="stylesheet" href="components/formula/formula.css">
+    <link rel="stylesheet" href="components/controls/controls.css">
+    <link rel="stylesheet" href="components/stats/stats.css">
+</head>
+<body>
+    <!-- Background layers rendered by JS (CSS stars + WebGL shader) -->
+
+    <!-- UI Layer -->
+    <div id="ui-layer">
+        <header>
+            <h1>The Most Illegal Uzumaki in Mathematics</h1>
+            <div class="jp-title">渦巻き</div>
+        </header>
+
+        <div class="formula-display">
+            F(n, t) = [ n<sup>3/2</sup> / (n + 1000), sin(0.1n · sin(83.3333t)), 0.1nt ]
+        </div>
+
+        <div class="controls">
+            <button class="btn" id="restartBtn">Restart</button>
+            <button class="btn" id="pauseBtn">Pause</button>
+        </div>
+
+        <div class="presets">
+            <button class="preset-btn active" data-preset="0">Uzumaki</button>
+            <button class="preset-btn" data-preset="1">Lotus</button>
+            <button class="preset-btn" data-preset="2">Vortex</button>
+            <button class="preset-btn" data-preset="3">Chrysanthemum</button>
+            <button class="preset-btn" data-preset="4">Chaos</button>
+            <button class="preset-btn" data-preset="5">Mandala</button>
+            <button class="preset-btn" data-preset="6">Tempest</button>
+            <button class="preset-btn" data-preset="7">Sakura</button>
+            <button class="preset-btn" data-preset="8">Eclipse</button>
+            <button class="preset-btn" data-preset="9">Nebula</button>
+            <button class="preset-btn" data-preset="10">Whisper</button>
+            <button class="preset-btn" data-preset="11">Tsunami</button>
+            <button class="preset-btn" data-preset="12">Fibonacci</button>
+            <button class="preset-btn" data-preset="13">Void</button>
+            <button class="preset-btn" data-preset="14">Zen</button>
+            <button class="preset-btn auto-btn" id="autoBtn">Auto</button>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+        <div id="layerCount">Layer: 0</div>
+        <div id="pointCount">Points: 0</div>
+        <div id="fpsCount">FPS: --</div>
+    </div>
+
+    <!-- Main Script (ES Module) -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>

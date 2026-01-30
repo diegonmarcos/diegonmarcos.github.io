@@ -50,42 +50,109 @@ const emit = defineEmits<{
         <div v-else class="key-actions">
           <button class="btn-ghost" @click="emit('clearKey')">KEY</button>
           <button class="btn-gold" @click="emit('openWebPlayer')">PLAYER</button>
+          <button :class="['btn-ghost', { active: view === 'search' }]" @click="emit('setView', 'search')">SEARCH</button>
+          <button :class="['btn-ghost bulk', { active: view === 'bulk' || showBulkInput }]" @click="emit('toggleBulkInput')">+ BULK</button>
         </div>
       </div>
     </div>
 
+    <!-- Search Box (in top bar area) -->
+    <div v-if="view === 'search'" class="search-container top-search">
+      <input
+        :value="searchQuery"
+        @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value); emit('search')"
+        class="search-box"
+        placeholder="SEARCH FILMS & SERIES..."
+        autofocus
+      />
+    </div>
+
+    <!-- Bulk Input (in top bar area) -->
+    <div v-if="showBulkInput" class="bulk-container top-bulk">
+      <input
+        :value="bulkInput"
+        @input="emit('update:bulkInput', ($event.target as HTMLInputElement).value)"
+        @keyup.enter="emit('fetchBulk')"
+        class="bulk-input"
+        placeholder="tt1234567, tt7654321, tt9876543..."
+        autofocus
+      />
+      <button class="btn-fetch" @click="emit('fetchBulk')">FETCH</button>
+    </div>
+
     <nav class="nav-section">
-      <!-- Row 1: Main Categories -->
+      <!-- Row 1: Browse -->
       <div class="nav-row">
         <span class="row-label">BROWSE</span>
         <div class="nav-buttons">
           <button :class="['nav-btn', { active: view === 'home' }]" @click="emit('setView', 'home')">
-            TRENDING
-          </button>
-          <button :class="['nav-btn', { active: view === 'movies2025' }]" @click="emit('setView', 'movies2025')">
             FILMS '25
           </button>
           <button :class="['nav-btn', { active: view === 'series2025' }]" @click="emit('setView', 'series2025')">
             SERIES '25
           </button>
-          <button :class="['nav-btn', { active: view === 'staffpicks' }]" @click="emit('setView', 'staffpicks')">
-            CLASSICS
-          </button>
           <button :class="['nav-btn', { active: view === 'ghibli' }]" @click="emit('setView', 'ghibli')">
             GHIBLI
           </button>
-          <button :class="['nav-btn', { active: view === 'search' }]" @click="emit('setView', 'search')">
-            SEARCH
+          <button :class="['nav-btn', { active: view === 'european' }]" @click="emit('setView', 'european')">
+            EUROPEAN
           </button>
-          <button :class="['nav-btn bulk', { active: view === 'bulk' || showBulkInput }]" @click="emit('toggleBulkInput')">
-            + BULK
+          <button :class="['nav-btn', { active: view === 'newnoirs' }]" @click="emit('setView', 'newnoirs')">
+            NEWNOIRS
+          </button>
+          <button :class="['nav-btn', { active: view === 'scifi' }]" @click="emit('setView', 'scifi')">
+            SCI-FI
           </button>
         </div>
       </div>
 
-      <!-- Row 2: Oscar Legends -->
+      <!-- Row 2: Watch Before You Die -->
+      <div class="nav-row bucketlist-row">
+        <span class="row-label crimson">WATCH BEFORE YOU DIE</span>
+        <div class="nav-buttons">
+          <button :class="['nav-btn bucketlist', { active: view === 'staffpicks' }]" @click="emit('setView', 'staffpicks')">
+            CLASSICS
+          </button>
+          <button :class="['nav-btn bucketlist', { active: view === 'epics' }]" @click="emit('setView', 'epics')">
+            EPICS
+          </button>
+          <button :class="['nav-btn bucketlist', { active: view === 'thrillers' }]" @click="emit('setView', 'thrillers')">
+            THRILLERS
+          </button>
+          <button :class="['nav-btn bucketlist', { active: view === 'epicseries' }]" @click="emit('setView', 'epicseries')">
+            SERIES
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 3: Oscar Nominees by Year -->
       <div class="nav-row oscar-row">
-        <span class="row-label gold">OSCAR LEGENDS</span>
+        <span class="row-label gold">OSCAR NOMINEES</span>
+        <div class="nav-buttons">
+          <button :class="['nav-btn nominee', { active: view === 'oscars2025' }]" @click="emit('setView', 'oscars2025')">
+            2025
+          </button>
+          <button :class="['nav-btn nominee', { active: view === 'oscars2024' }]" @click="emit('setView', 'oscars2024')">
+            2024
+          </button>
+          <button :class="['nav-btn nominee', { active: view === 'oscars2023' }]" @click="emit('setView', 'oscars2023')">
+            2023
+          </button>
+          <button :class="['nav-btn nominee', { active: view === 'oscars2022' }]" @click="emit('setView', 'oscars2022')">
+            2022
+          </button>
+          <button :class="['nav-btn nominee', { active: view === 'oscars2021' }]" @click="emit('setView', 'oscars2021')">
+            2021
+          </button>
+          <button :class="['nav-btn nominee', { active: view === 'oscars2020' }]" @click="emit('setView', 'oscars2020')">
+            2020
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 4: Directors Legends -->
+      <div class="nav-row legend-row">
+        <span class="row-label gold">DIRECTORS LEGENDS</span>
         <div class="nav-buttons">
           <button :class="['nav-btn legend', { active: view === 'spielberg' }]" @click="emit('setView', 'spielberg')">
             SPIELBERG
@@ -93,43 +160,44 @@ const emit = defineEmits<{
           <button :class="['nav-btn legend', { active: view === 'scorsese' }]" @click="emit('setView', 'scorsese')">
             SCORSESE
           </button>
+          <button :class="['nav-btn legend', { active: view === 'eastwood' }]" @click="emit('setView', 'eastwood')">
+            EASTWOOD
+          </button>
+          <button :class="['nav-btn legend', { active: view === 'kubrick' }]" @click="emit('setView', 'kubrick')">
+            KUBRICK
+          </button>
+          <button :class="['nav-btn legend', { active: view === 'nolan' }]" @click="emit('setView', 'nolan')">
+            NOLAN
+          </button>
+          <button :class="['nav-btn legend', { active: view === 'tarantino' }]" @click="emit('setView', 'tarantino')">
+            TARANTINO
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 5: Actor/ess Legends -->
+      <div class="nav-row actor-row">
+        <span class="row-label gold">ACTOR/ESS LEGENDS</span>
+        <div class="nav-buttons">
           <button :class="['nav-btn legend', { active: view === 'streep' }]" @click="emit('setView', 'streep')">
             STREEP
           </button>
           <button :class="['nav-btn legend', { active: view === 'nicholson' }]" @click="emit('setView', 'nicholson')">
             NICHOLSON
           </button>
-          <button :class="['nav-btn legend', { active: view === 'hepburn' }]" @click="emit('setView', 'hepburn')">
-            HEPBURN
+          <button :class="['nav-btn legend', { active: view === 'alpacino' }]" @click="emit('setView', 'alpacino')">
+            AL PACINO
           </button>
-          <button :class="['nav-btn legend', { active: view === 'eastwood' }]" @click="emit('setView', 'eastwood')">
-            EASTWOOD
+          <button :class="['nav-btn legend', { active: view === 'deniro' }]" @click="emit('setView', 'deniro')">
+            DE NIRO
+          </button>
+          <button :class="['nav-btn legend', { active: view === 'hanks' }]" @click="emit('setView', 'hanks')">
+            HANKS
+          </button>
+          <button :class="['nav-btn legend', { active: view === 'dicaprio' }]" @click="emit('setView', 'dicaprio')">
+            DICAPRIO
           </button>
         </div>
-      </div>
-
-      <!-- Search Box -->
-      <div v-if="view === 'search'" class="search-container">
-        <input
-          :value="searchQuery"
-          @input="emit('update:searchQuery', ($event.target as HTMLInputElement).value); emit('search')"
-          class="search-box"
-          placeholder="SEARCH FILMS & SERIES..."
-          autofocus
-        />
-      </div>
-
-      <!-- Bulk Input -->
-      <div v-if="showBulkInput" class="bulk-container">
-        <input
-          :value="bulkInput"
-          @input="emit('update:bulkInput', ($event.target as HTMLInputElement).value)"
-          @keyup.enter="emit('fetchBulk')"
-          class="bulk-input"
-          placeholder="tt1234567, tt7654321, tt9876543..."
-          autofocus
-        />
-        <button class="btn-fetch" @click="emit('fetchBulk')">FETCH</button>
       </div>
     </nav>
   </header>
@@ -290,6 +358,21 @@ h1 {
 .key-actions {
   display: flex;
   gap: 8px;
+
+  .btn-ghost.active {
+    border-color: var(--noir-red);
+    color: var(--noir-cream);
+  }
+
+  .btn-ghost.bulk {
+    color: var(--noir-gold);
+    border-color: rgba(184, 134, 11, 0.3);
+
+    &:hover, &.active {
+      border-color: var(--noir-gold);
+      color: var(--noir-gold);
+    }
+  }
 }
 
 .btn-ghost {
@@ -337,8 +420,20 @@ h1 {
   padding: 12px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
 
+  &.bucketlist-row {
+    padding-top: 8px;
+  }
+
   &.oscar-row {
     padding-top: 8px;
+  }
+
+  &.legend-row {
+    padding-top: 4px;
+  }
+
+  &.actor-row {
+    padding-top: 4px;
     border-bottom: none;
   }
 }
@@ -348,7 +443,7 @@ h1 {
   font-size: 0.7rem;
   letter-spacing: 2px;
   color: var(--text-muted);
-  min-width: 100px;
+  min-width: 130px;
   text-align: right;
   padding-right: 16px;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
@@ -356,6 +451,11 @@ h1 {
   &.gold {
     color: var(--noir-gold);
     border-right-color: rgba(184, 134, 11, 0.3);
+  }
+
+  &.crimson {
+    color: var(--noir-crimson);
+    border-right-color: rgba(139, 0, 0, 0.4);
   }
 }
 
@@ -417,11 +517,38 @@ h1 {
       background: rgba(184, 134, 11, 0.5);
     }
   }
+
+  &.nominee {
+    &.active::after {
+      background: var(--noir-gold);
+      box-shadow: 0 0 8px var(--noir-gold);
+    }
+
+    &:hover::after {
+      background: rgba(184, 134, 11, 0.5);
+    }
+  }
+
+  &.bucketlist {
+    &.active::after {
+      background: var(--noir-crimson);
+      box-shadow: 0 0 8px var(--noir-crimson);
+    }
+
+    &:hover::after {
+      background: rgba(139, 0, 0, 0.5);
+    }
+  }
 }
 
 .search-container {
   padding-top: 16px;
   max-width: 500px;
+
+  &.top-search {
+    padding: 0 24px 16px;
+    max-width: 100%;
+  }
 }
 
 .search-box {
@@ -451,6 +578,11 @@ h1 {
   display: flex;
   gap: 8px;
   max-width: 600px;
+
+  &.top-bulk {
+    padding: 0 24px 16px;
+    max-width: 100%;
+  }
 }
 
 .bulk-input {
@@ -492,18 +624,6 @@ h1 {
   }
 }
 
-.nav-btn.bulk {
-  color: var(--noir-gold);
-
-  &.active::after {
-    background: var(--noir-gold);
-    box-shadow: 0 0 8px var(--noir-gold);
-  }
-
-  &:hover::after {
-    background: rgba(184, 134, 11, 0.5);
-  }
-}
 
 @media (max-width: 900px) {
   .row-label {

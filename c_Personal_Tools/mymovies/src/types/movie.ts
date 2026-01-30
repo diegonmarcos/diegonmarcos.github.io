@@ -26,6 +26,9 @@ export interface OmdbDetailResponse extends Movie {
 }
 
 export type ViewType =
-  | 'home' | 'search' | 'movies2025' | 'series2025' | 'staffpicks' | 'ghibli'
-  | 'spielberg' | 'scorsese' | 'streep' | 'nicholson' | 'hepburn' | 'eastwood'
+  | 'home' | 'search' | 'series2025' | 'ghibli' | 'european' | 'newnoirs' | 'scifi'
+  | 'staffpicks' | 'epics' | 'thrillers' | 'epicseries'
+  | 'oscars2025' | 'oscars2024' | 'oscars2023' | 'oscars2022' | 'oscars2021' | 'oscars2020'
+  | 'spielberg' | 'scorsese' | 'eastwood' | 'kubrick' | 'nolan' | 'tarantino'
+  | 'streep' | 'nicholson' | 'alpacino' | 'deniro' | 'hanks' | 'dicaprio'
   | 'bulk'

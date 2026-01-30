@@ -1,0 +1,106 @@
+{
+  "oscars2025": {
+    "ceremony": "97th Academy Awards",
+    "year": 2025,
+    "filmsFrom": 2024,
+    "nominees": [
+      { "name": "Anora", "imdbId": "tt28607951", "category": "Best Picture" },
+      { "name": "The Brutalist", "imdbId": "tt8999762", "category": "Best Picture" },
+      { "name": "A Complete Unknown", "imdbId": "tt11563598", "category": "Best Picture" },
+      { "name": "Conclave", "imdbId": "tt20215234", "category": "Best Picture" },
+      { "name": "Dune: Part Two", "imdbId": "tt15239678", "category": "Best Picture" },
+      { "name": "Emilia Pérez", "imdbId": "tt20221436", "category": "Best Picture" },
+      { "name": "I'm Still Here", "imdbId": "tt14745616", "category": "Best Picture" },
+      { "name": "Nickel Boys", "imdbId": "tt23055660", "category": "Best Picture" },
+      { "name": "The Substance", "imdbId": "tt17526714", "category": "Best Picture" },
+      { "name": "Wicked", "imdbId": "tt1262426", "category": "Best Picture" }
+    ]
+  },
+  "oscars2024": {
+    "ceremony": "96th Academy Awards",
+    "year": 2024,
+    "filmsFrom": 2023,
+    "winner": "Oppenheimer",
+    "nominees": [
+      { "name": "Oppenheimer", "imdbId": "tt15398776", "category": "Best Picture", "winner": true },
+      { "name": "American Fiction", "imdbId": "tt23561236", "category": "Best Picture" },
+      { "name": "Anatomy of a Fall", "imdbId": "tt17009710", "category": "Best Picture" },
+      { "name": "Barbie", "imdbId": "tt1517268", "category": "Best Picture" },
+      { "name": "The Holdovers", "imdbId": "tt14849194", "category": "Best Picture" },
+      { "name": "Killers of the Flower Moon", "imdbId": "tt5537002", "category": "Best Picture" },
+      { "name": "Maestro", "imdbId": "tt5535276", "category": "Best Picture" },
+      { "name": "Past Lives", "imdbId": "tt13238346", "category": "Best Picture" },
+      { "name": "Poor Things", "imdbId": "tt14230458", "category": "Best Picture" },
+      { "name": "The Zone of Interest", "imdbId": "tt7160372", "category": "Best Picture" }
+    ]
+  },
+  "oscars2023": {
+    "ceremony": "95th Academy Awards",
+    "year": 2023,
+    "filmsFrom": 2022,
+    "winner": "Everything Everywhere All at Once",
+    "nominees": [
+      { "name": "Everything Everywhere All at Once", "imdbId": "tt6710474", "category": "Best Picture", "winner": true },
+      { "name": "All Quiet on the Western Front", "imdbId": "tt1016150", "category": "Best Picture" },
+      { "name": "Avatar: The Way of Water", "imdbId": "tt1630029", "category": "Best Picture" },
+      { "name": "The Banshees of Inisherin", "imdbId": "tt11813216", "category": "Best Picture" },
+      { "name": "Elvis", "imdbId": "tt3704428", "category": "Best Picture" },
+      { "name": "The Fabelmans", "imdbId": "tt14208870", "category": "Best Picture" },
+      { "name": "Tár", "imdbId": "tt14444726", "category": "Best Picture" },
+      { "name": "Top Gun: Maverick", "imdbId": "tt1745960", "category": "Best Picture" },
+      { "name": "Triangle of Sadness", "imdbId": "tt7322224", "category": "Best Picture" },
+      { "name": "Women Talking", "imdbId": "tt13669038", "category": "Best Picture" }
+    ]
+  },
+  "oscars2022": {
+    "ceremony": "94th Academy Awards",
+    "year": 2022,
+    "filmsFrom": 2021,
+    "winner": "CODA",
+    "nominees": [
+      { "name": "CODA", "imdbId": "tt10366460", "category": "Best Picture", "winner": true },
+      { "name": "Belfast", "imdbId": "tt12789558", "category": "Best Picture" },
+      { "name": "Don't Look Up", "imdbId": "tt11286314", "category": "Best Picture" },
+      { "name": "Drive My Car", "imdbId": "tt14039582", "category": "Best Picture" },
+      { "name": "Dune", "imdbId": "tt1160419", "category": "Best Picture" },
+      { "name": "King Richard", "imdbId": "tt9620288", "category": "Best Picture" },
+      { "name": "Licorice Pizza", "imdbId": "tt11271038", "category": "Best Picture" },
+      { "name": "Nightmare Alley", "imdbId": "tt7740496", "category": "Best Picture" },
+      { "name": "The Power of the Dog", "imdbId": "tt10293406", "category": "Best Picture" },
+      { "name": "West Side Story", "imdbId": "tt3581652", "category": "Best Picture" }
+    ]
+  },
+  "oscars2021": {
+    "ceremony": "93rd Academy Awards",
+    "year": 2021,
+    "filmsFrom": 2020,
+    "winner": "Nomadland",
+    "nominees": [
+      { "name": "Nomadland", "imdbId": "tt9770150", "category": "Best Picture", "winner": true },
+      { "name": "The Father", "imdbId": "tt10272386", "category": "Best Picture" },
+      { "name": "Judas and the Black Messiah", "imdbId": "tt9784798", "category": "Best Picture" },
+      { "name": "Mank", "imdbId": "tt10618286", "category": "Best Picture" },
+      { "name": "Minari", "imdbId": "tt10633456", "category": "Best Picture" },
+      { "name": "Promising Young Woman", "imdbId": "tt9620292", "category": "Best Picture" },
+      { "name": "Sound of Metal", "imdbId": "tt5363618", "category": "Best Picture" },
+      { "name": "The Trial of the Chicago 7", "imdbId": "tt1070874", "category": "Best Picture" }
+    ]
+  },
+  "oscars2020": {
+    "ceremony": "92nd Academy Awards",
+    "year": 2020,
+    "filmsFrom": 2019,
+    "winner": "Parasite",
+    "nominees": [
+      { "name": "Parasite", "imdbId": "tt6751668", "category": "Best Picture", "winner": true },
+      { "name": "1917", "imdbId": "tt8579674", "category": "Best Picture" },
+      { "name": "Ford v Ferrari", "imdbId": "tt1950186", "category": "Best Picture" },
+      { "name": "The Irishman", "imdbId": "tt1302006", "category": "Best Picture" },
+      { "name": "Jojo Rabbit", "imdbId": "tt2584384", "category": "Best Picture" },
+      { "name": "Joker", "imdbId": "tt7286456", "category": "Best Picture" },
+      { "name": "Little Women", "imdbId": "tt3281548", "category": "Best Picture" },
+      { "name": "Marriage Story", "imdbId": "tt7653254", "category": "Best Picture" },
+      { "name": "Once Upon a Time in Hollywood", "imdbId": "tt7131622", "category": "Best Picture" }
+    ]
+  }
+}

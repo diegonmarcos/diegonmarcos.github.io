@@ -4,8 +4,8 @@ import { debounce } from 'lodash-es'
 import type { Movie, OmdbSearchResponse, OmdbDetailResponse, ViewType } from '@/types/movie'
 
 
-// Curated list of IMDb IDs for home view
-const CURATED_IDS = [
+// Films 2025 - Merged trending and upcoming (home view)
+const FILMS_2025_IDS = [
   'tt3566834',  // A Minecraft Movie
   'tt12299608', // Mickey 17
   'tt31193180', // Sinners
@@ -15,23 +15,10 @@ const CURATED_IDS = [
   'tt7181546',  // Ballerina
   'tt20969586', // Thunderbolts
   'tt11655566', // Lilo & Stitch
-  'tt10676052'  // Fantastic Four
-]
-
-// IMDb Staff's Favorite Movies of 2025 (ls4153451747)
-const MOVIES_2025_IDS = [
-  'tt27714946', // The Monkey
+  'tt10676052', // Fantastic Four
   'tt14539740', // Blue Moon (Linklater)
   'tt21064584', // One Battle After Another (PTA)
   'tt14921174', // Warfare (Garland)
-  'tt12299608', // Mickey 17
-  'tt31193180', // Sinners
-  'tt3566834',  // A Minecraft Movie
-  'tt7181546',  // Ballerina
-  'tt20969586', // Thunderbolts
-  'tt10676052', // Fantastic Four
-  'tt14107334', // The Running Man
-  'tt11655566', // Lilo & Stitch
   'tt6263850',  // The Gorge
   'tt13622970', // Mission: Impossible 8
   'tt10146532'  // Wicked Part 2
@@ -50,7 +37,7 @@ const SERIES_2025_IDS = [
   'tt14688458', // Daredevil: Born Again
   'tt6468322',  // The Last of Us S2
   'tt1190634',  // The Boys S5
-  'tt15398776', // Andor S2
+  'tt9253284',  // Andor S2
   'tt9288030',  // Reacher S3
   'tt14452590', // The Penguin
   'tt12809988'  // Cobra Kai S6
@@ -91,7 +78,138 @@ const GHIBLI_IDS = [
   'tt1568921'  // Arrietty
 ]
 
-// === OSCAR LEGENDS ===
+// European Cinema Masterpieces
+const EUROPEAN_IDS = [
+  'tt0211915', // Amélie
+  'tt0118799', // Life Is Beautiful
+  'tt0095765', // Cinema Paradiso
+  'tt0082096', // Das Boot
+  'tt0317248', // City of God
+  'tt0405094', // The Lives of Others
+  'tt0381681', // Before Sunset
+  'tt1255953', // Incendies
+  'tt2278388', // The Grand Budapest Hotel
+  'tt0986264', // Like Stars on Earth (Taare Zameen Par)
+  'tt0338013', // Eternal Sunshine
+  'tt0467406', // Juno
+  'tt0120663', // Eyes Wide Shut
+  'tt0101414', // Delicatessen
+  'tt0113247'  // La Haine
+]
+
+// Neo-Noir / Modern Noir Films
+const NEWNOIRS_IDS = [
+  'tt0114369', // Se7en
+  'tt0209144', // Memento
+  'tt0169547', // American Beauty
+  'tt0144084', // American Psycho
+  'tt0137523', // Fight Club
+  'tt0110912', // Pulp Fiction
+  'tt0266697', // Kill Bill: Vol. 1
+  'tt1853728', // Django Unchained
+  'tt0816692', // Interstellar
+  'tt1130884', // Shutter Island
+  'tt0482571', // The Prestige
+  'tt0993846', // The Wolf of Wall Street
+  'tt2267998', // Gone Girl
+  'tt7286456', // Joker
+  'tt1950186'  // Ford v Ferrari
+]
+
+// Sci-Fi Essentials (20 films)
+const SCIFI_IDS = [
+  'tt0816692', // Interstellar
+  'tt0133093', // The Matrix
+  'tt0062622', // 2001: A Space Odyssey
+  'tt0083658', // Blade Runner
+  'tt0078748', // Alien
+  'tt0090605', // Aliens
+  'tt0088763', // Back to the Future
+  'tt0103064', // Terminator 2: Judgment Day
+  'tt0076759', // Star Wars: Episode IV
+  'tt0080684', // The Empire Strikes Back
+  'tt0117731', // The Fifth Element
+  'tt0181689', // Minority Report
+  'tt0470752', // Ex Machina
+  'tt1856101', // Blade Runner 2049
+  'tt0499549', // Avatar
+  'tt1392190', // Mad Max: Fury Road
+  'tt2543164', // Arrival
+  'tt1160419', // Dune
+  'tt15239678', // Dune: Part Two
+  'tt0118929'  // Dark City
+]
+
+// === WATCH BEFORE YOU DIE ===
+
+// Epic Cinema - Grand Scale Masterpieces
+const EPICS_IDS = [
+  'tt0056172', // Lawrence of Arabia
+  'tt0052618', // Ben-Hur
+  'tt0112573', // Braveheart
+  'tt0172495', // Gladiator
+  'tt0167260', // Lord of the Rings: Return of the King
+  'tt0120737', // Lord of the Rings: Fellowship
+  'tt0167261', // Lord of the Rings: Two Towers
+  'tt0108052', // Schindler's List
+  'tt0120815', // Saving Private Ryan
+  'tt0816692', // Interstellar
+  'tt1375666', // Inception
+  'tt0082971', // Raiders of the Lost Ark
+  'tt0047396', // Rear Window
+  'tt0033467', // Citizen Kane
+  'tt0043014'  // Sunset Boulevard
+]
+
+// Must-See Thrillers
+const THRILLERS_IDS = [
+  'tt0102926', // The Silence of the Lambs
+  'tt0114369', // Se7en
+  'tt0081505', // The Shining
+  'tt0078748', // Alien
+  'tt0054215', // Psycho
+  'tt0209144', // Memento
+  'tt0482571', // The Prestige
+  'tt1130884', // Shutter Island
+  'tt0114814', // The Usual Suspects
+  'tt0110413', // Léon: The Professional
+  'tt0071562', // The Godfather Part II
+  'tt0068646', // The Godfather
+  'tt0099685', // Goodfellas
+  'tt0105236', // Reservoir Dogs
+  'tt0317248'  // City of God
+]
+
+// Epic Series - Must Watch Before You Die
+const EPIC_SERIES_IDS = [
+  'tt0903747', // Breaking Bad
+  'tt0306414', // The Wire
+  'tt0141842', // The Sopranos
+  'tt0944947', // Game of Thrones
+  'tt5491994', // Planet Earth II
+  'tt0804503', // Mad Men
+  'tt1475582', // Sherlock
+  'tt0386676', // The Office (US)
+  'tt0098904', // Seinfeld
+  'tt0108778', // Friends
+  'tt2356777', // True Detective
+  'tt2861424', // Rick and Morty
+  'tt4574334', // Stranger Things
+  'tt0475784', // Westworld
+  'tt7366338', // Chernobyl
+  'tt0412142', // House M.D.
+  'tt0185906', // Band of Brothers
+  'tt5180504', // The Witcher
+  'tt2442560', // Peaky Blinders
+  'tt8111088', // The Mandalorian
+  'tt1856010', // House of Cards
+  'tt0413573', // Grey's Anatomy
+  'tt0460649', // How I Met Your Mother
+  'tt1520211', // The Walking Dead
+  'tt0773262'  // Dexter
+]
+
+// === DIRECTORS LEGENDS ===
 
 // Steven Spielberg (3 Oscars - Director)
 const SPIELBERG_IDS = [
@@ -149,18 +267,18 @@ const NICHOLSON_IDS = [
   'tt0093773'  // Witches of Eastwick
 ]
 
-// Katharine Hepburn (4 Oscars - Most acting wins)
-const HEPBURN_IDS = [
-  'tt0082511', // On Golden Pond
-  'tt0065134', // The Lion in Winter
-  'tt0061184', // Guess Who's Coming to Dinner
-  'tt0031381', // The Philadelphia Story
-  'tt0044081', // Adam's Rib
-  'tt0044257', // The African Queen
-  'tt0024034', // Morning Glory
-  'tt0032599', // Bringing Up Baby
-  'tt0053137', // Suddenly Last Summer
-  'tt0046876'  // Roman Holiday
+// Al Pacino (1 Oscar - Actor)
+const ALPACINO_IDS = [
+  'tt0068646', // The Godfather
+  'tt0071562', // The Godfather Part II
+  'tt0099685', // Goodfellas
+  'tt0110413', // Scent of a Woman
+  'tt0071315', // Serpico
+  'tt0072890', // Dog Day Afternoon
+  'tt0057565', // Scarface
+  'tt0119217', // Heat
+  'tt0087089', // Carlito's Way
+  'tt0099348'  // The Irishman
 ]
 
 // Clint Eastwood (4 Oscars - Director/Producer)
@@ -175,6 +293,175 @@ const EASTWOOD_IDS = [
   'tt0097576', // Heartbreak Ridge
   'tt0107206', // In the Line of Fire
   'tt1057500'  // Invictus
+]
+
+// Stanley Kubrick (Master filmmaker)
+const KUBRICK_IDS = [
+  'tt0081505', // The Shining
+  'tt0062622', // 2001: A Space Odyssey
+  'tt0066921', // A Clockwork Orange
+  'tt0093058', // Full Metal Jacket
+  'tt0057012', // Dr. Strangelove
+  'tt0120663', // Eyes Wide Shut
+  'tt0069293', // Barry Lyndon
+  'tt0056193', // Lolita
+  'tt0055630', // Spartacus
+  'tt0049406'  // The Killing
+]
+
+// Christopher Nolan (Modern visionary)
+const NOLAN_IDS = [
+  'tt1375666', // Inception
+  'tt0468569', // The Dark Knight
+  'tt0816692', // Interstellar
+  'tt0209144', // Memento
+  'tt0482571', // The Prestige
+  'tt1345836', // The Dark Knight Rises
+  'tt0372784', // Batman Begins
+  'tt5013056', // Dunkirk
+  'tt6723592', // Tenet
+  'tt15398776' // Oppenheimer
+]
+
+// Quentin Tarantino (Iconic storyteller)
+const TARANTINO_IDS = [
+  'tt0110912', // Pulp Fiction
+  'tt0105236', // Reservoir Dogs
+  'tt0266697', // Kill Bill: Vol. 1
+  'tt0378194', // Kill Bill: Vol. 2
+  'tt0361748', // Inglourious Basterds
+  'tt1853728', // Django Unchained
+  'tt3460252', // The Hateful Eight
+  'tt7131622', // Once Upon a Time in Hollywood
+  'tt0116367', // From Dusk Till Dawn
+  'tt0119396'  // Jackie Brown
+]
+
+// === ACTOR/ESS LEGENDS ===
+
+// Robert De Niro (2 Oscars - Actor)
+const DENIRO_IDS = [
+  'tt0071562', // The Godfather Part II
+  'tt0081398', // Raging Bull
+  'tt0075314', // Taxi Driver
+  'tt0099685', // Goodfellas
+  'tt0112641', // Casino
+  'tt0119217', // Heat
+  'tt1302006', // The Irishman
+  'tt0088944', // Once Upon a Time in America
+  'tt0082979', // The Deer Hunter
+  'tt0317248'  // The King of Comedy
+]
+
+// Tom Hanks (2 Oscars - Actor)
+const HANKS_IDS = [
+  'tt0109830', // Forrest Gump
+  'tt0107818', // Philadelphia
+  'tt0108160', // Saving Private Ryan
+  'tt0120815', // Saving Private Ryan
+  'tt0112384', // Apollo 13
+  'tt0120689', // The Green Mile
+  'tt0162222', // Cast Away
+  'tt0338751', // Catch Me If You Can
+  'tt0096463', // Big
+  'tt0862846'  // Toy Story 3
+]
+
+// Leonardo DiCaprio (1 Oscar - Actor)
+const DICAPRIO_IDS = [
+  'tt1663202', // The Wolf of Wall Street
+  'tt1375666', // Inception
+  'tt0407887', // The Departed
+  'tt0993846', // The Wolf of Wall Street
+  'tt3659388', // The Revenant
+  'tt1130884', // Shutter Island
+  'tt0363163', // Catch Me If You Can
+  'tt1355644', // Django Unchained
+  'tt0119217', // Titanic
+  'tt5537002'  // Killers of the Flower Moon
+]
+
+// === OSCAR NOMINEES BY YEAR ===
+
+// 97th Academy Awards (2025) - Best Picture Nominees (films from 2024)
+const OSCARS_2025_IDS = [
+  'tt28607951', // Anora
+  'tt8999762',  // The Brutalist
+  'tt11563598', // A Complete Unknown
+  'tt20215234', // Conclave
+  'tt15239678', // Dune: Part Two
+  'tt20221436', // Emilia Pérez
+  'tt14745616', // I'm Still Here
+  'tt23055660', // Nickel Boys
+  'tt17526714', // The Substance
+  'tt1262426'   // Wicked
+]
+
+// 96th Academy Awards (2024) - Best Picture Nominees (films from 2023)
+const OSCARS_2024_IDS = [
+  'tt15398776', // Oppenheimer (WINNER)
+  'tt23561236', // American Fiction
+  'tt17009710', // Anatomy of a Fall
+  'tt1517268',  // Barbie
+  'tt14849194', // The Holdovers
+  'tt5537002',  // Killers of the Flower Moon
+  'tt5535276',  // Maestro
+  'tt13238346', // Past Lives
+  'tt14230458', // Poor Things
+  'tt7160372'   // The Zone of Interest
+]
+
+// 95th Academy Awards (2023) - Best Picture Nominees (films from 2022)
+const OSCARS_2023_IDS = [
+  'tt6710474',  // Everything Everywhere All at Once (WINNER)
+  'tt1016150',  // All Quiet on the Western Front
+  'tt1630029',  // Avatar: The Way of Water
+  'tt11813216', // The Banshees of Inisherin
+  'tt3704428',  // Elvis
+  'tt14208870', // The Fabelmans
+  'tt14444726', // Tár
+  'tt1745960',  // Top Gun: Maverick
+  'tt7322224',  // Triangle of Sadness
+  'tt13669038'  // Women Talking
+]
+
+// 94th Academy Awards (2022) - Best Picture Nominees (films from 2021)
+const OSCARS_2022_IDS = [
+  'tt10366460', // CODA (WINNER)
+  'tt12789558', // Belfast
+  'tt11286314', // Don't Look Up
+  'tt14039582', // Drive My Car
+  'tt1160419',  // Dune
+  'tt9620288',  // King Richard
+  'tt11271038', // Licorice Pizza
+  'tt7740496',  // Nightmare Alley
+  'tt10293406', // The Power of the Dog
+  'tt3581652'   // West Side Story
+]
+
+// 93rd Academy Awards (2021) - Best Picture Nominees (films from 2020)
+const OSCARS_2021_IDS = [
+  'tt9770150',  // Nomadland (WINNER)
+  'tt10272386', // The Father
+  'tt9784798',  // Judas and the Black Messiah
+  'tt10618286', // Mank
+  'tt10633456', // Minari
+  'tt9620292',  // Promising Young Woman
+  'tt5363618',  // Sound of Metal
+  'tt1070874'   // The Trial of the Chicago 7
+]
+
+// 92nd Academy Awards (2020) - Best Picture Nominees (films from 2019)
+const OSCARS_2020_IDS = [
+  'tt6751668',  // Parasite (WINNER)
+  'tt8579674',  // 1917
+  'tt1950186',  // Ford v Ferrari
+  'tt1302006',  // The Irishman
+  'tt2584384',  // Jojo Rabbit
+  'tt7286456',  // Joker
+  'tt3281548',  // Little Women
+  'tt7653254',  // Marriage Story
+  'tt7131622'   // Once Upon a Time in Hollywood
 ]
 
 // Secret key (reversed)
@@ -194,16 +481,33 @@ export function useMovies() {
   // Cache for all lists - stores fetched movies by list name
   const cache = ref<Record<string, Movie[]>>({
     home: [],
-    movies2025: [],
     series2025: [],
-    staffpicks: [],
     ghibli: [],
+    european: [],
+    newnoirs: [],
+    scifi: [],
+    staffpicks: [],
+    epics: [],
+    thrillers: [],
+    epicseries: [],
+    oscars2025: [],
+    oscars2024: [],
+    oscars2023: [],
+    oscars2022: [],
+    oscars2021: [],
+    oscars2020: [],
     spielberg: [],
     scorsese: [],
+    eastwood: [],
+    kubrick: [],
+    nolan: [],
+    tarantino: [],
     streep: [],
     nicholson: [],
-    hepburn: [],
-    eastwood: [],
+    alpacino: [],
+    deniro: [],
+    hanks: [],
+    dicaprio: [],
     bulk: []
   })
 
@@ -245,16 +549,33 @@ export function useMovies() {
     movies.value = []
     cache.value = {
       home: [],
-      movies2025: [],
       series2025: [],
-      staffpicks: [],
       ghibli: [],
+      european: [],
+      newnoirs: [],
+      scifi: [],
+      staffpicks: [],
+      epics: [],
+      thrillers: [],
+      epicseries: [],
+      oscars2025: [],
+      oscars2024: [],
+      oscars2023: [],
+      oscars2022: [],
+      oscars2021: [],
+      oscars2020: [],
       spielberg: [],
       scorsese: [],
+      eastwood: [],
+      kubrick: [],
+      nolan: [],
+      tarantino: [],
       streep: [],
       nicholson: [],
-      hepburn: [],
-      eastwood: [],
+      alpacino: [],
+      deniro: [],
+      hanks: [],
+      dicaprio: [],
       bulk: []
     }
     isCacheLoaded.value = false
@@ -303,33 +624,73 @@ export function useMovies() {
 
     try {
       // Fetch all lists in parallel
-      const [home, movies2025, series2025, staffpicks, ghibli, spielberg, scorsese, streep, nicholson, hepburn, eastwood] = await Promise.all([
-        fetchByIds(CURATED_IDS),
-        fetchByIds(MOVIES_2025_IDS),
+      const [
+        home, series2025, ghibli, european, newnoirs, scifi,
+        staffpicks, epics, thrillers, epicseries,
+        oscars2025, oscars2024, oscars2023, oscars2022, oscars2021, oscars2020,
+        spielberg, scorsese, eastwood, kubrick, nolan, tarantino,
+        streep, nicholson, alpacino, deniro, hanks, dicaprio
+      ] = await Promise.all([
+        fetchByIds(FILMS_2025_IDS),
         fetchByIds(SERIES_2025_IDS),
-        fetchByIds(STAFF_PICKS_IDS),
         fetchByIds(GHIBLI_IDS),
+        fetchByIds(EUROPEAN_IDS),
+        fetchByIds(NEWNOIRS_IDS),
+        fetchByIds(SCIFI_IDS),
+        fetchByIds(STAFF_PICKS_IDS),
+        fetchByIds(EPICS_IDS),
+        fetchByIds(THRILLERS_IDS),
+        fetchByIds(EPIC_SERIES_IDS),
+        fetchByIds(OSCARS_2025_IDS),
+        fetchByIds(OSCARS_2024_IDS),
+        fetchByIds(OSCARS_2023_IDS),
+        fetchByIds(OSCARS_2022_IDS),
+        fetchByIds(OSCARS_2021_IDS),
+        fetchByIds(OSCARS_2020_IDS),
         fetchByIds(SPIELBERG_IDS),
         fetchByIds(SCORSESE_IDS),
+        fetchByIds(EASTWOOD_IDS),
+        fetchByIds(KUBRICK_IDS),
+        fetchByIds(NOLAN_IDS),
+        fetchByIds(TARANTINO_IDS),
         fetchByIds(STREEP_IDS),
         fetchByIds(NICHOLSON_IDS),
-        fetchByIds(HEPBURN_IDS),
-        fetchByIds(EASTWOOD_IDS)
+        fetchByIds(ALPACINO_IDS),
+        fetchByIds(DENIRO_IDS),
+        fetchByIds(HANKS_IDS),
+        fetchByIds(DICAPRIO_IDS)
       ])
 
       // Store in cache
       cache.value = {
         home,
-        movies2025,
         series2025,
-        staffpicks,
         ghibli,
+        european,
+        newnoirs,
+        scifi,
+        staffpicks,
+        epics,
+        thrillers,
+        epicseries,
+        oscars2025,
+        oscars2024,
+        oscars2023,
+        oscars2022,
+        oscars2021,
+        oscars2020,
         spielberg,
         scorsese,
+        eastwood,
+        kubrick,
+        nolan,
+        tarantino,
         streep,
         nicholson,
-        hepburn,
-        eastwood
+        alpacino,
+        deniro,
+        hanks,
+        dicaprio
       }
 
       isCacheLoaded.value = true

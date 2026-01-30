@@ -214,8 +214,17 @@
           </div>
         </div>
 
-        <!-- Analytics/Stats View - All Stats Here -->
+        <!-- Analytics/Stats View - Organized by Topics -->
         <div v-if="currentView === 'analytics'" class="view-section fade-in viewport--scrollable">
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 1: OVERVIEW - Key Performance Indicators                 -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-chart-line-up"></i> Overview</h2>
+            </div>
+
           <!-- KPI Cards -->
           <div class="stats-grid">
             <div class="stat-card">
@@ -239,6 +248,16 @@
               <div class="stat-card__meta stat-card__meta--rose">1+ month stays</div>
             </div>
           </div>
+
+          </div><!-- end stats-topic: Overview -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 2: RANKINGS - Top Countries & Regions                   -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-ranking"></i> Rankings</h2>
+            </div>
 
           <!-- Long Stay Cities Section -->
           <div class="long-stays-section">
@@ -278,6 +297,16 @@
               </div>
             </div>
           </div>
+
+          </div><!-- end stats-topic: Rankings -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 3: GEOGRAPHIC COVERAGE - World Distribution             -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-globe"></i> Geographic Coverage</h2>
+            </div>
 
           <!-- Flag Summary by Continent -->
           <div class="flag-summary-section">
@@ -340,18 +369,41 @@
             </div>
           </div>
 
-          <!-- Language Stats Section -->
+          </div><!-- end stats-topic: Geographic Coverage -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 4: CULTURAL & LINGUISTIC - Cultural Diversity           -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-translate"></i> Cultural & Linguistic</h2>
+            </div>
+
+          <!-- Language Stats Section - Family Tree -->
           <div class="stats-section">
-            <h3 class="section-title"><i class="ph-fill ph-translate"></i> Languages Spoken</h3>
-            <div class="stats-cards-grid">
-              <div v-for="lang in languageStats" :key="lang.language" class="mini-stat-card">
-                <div class="mini-stat-card__title">{{ lang.language }}</div>
-                <div class="mini-stat-card__stats">
-                  <span class="mini-stat-card__value">{{ lang.cities }} cities</span>
-                  <span class="mini-stat-card__separator">•</span>
-                  <span class="mini-stat-card__value">{{ lang.days }}d</span>
-                  <span class="mini-stat-card__separator">•</span>
-                  <span class="mini-stat-card__value">{{ lang.countries }} countries</span>
+            <h3 class="section-title"><i class="ph-fill ph-translate"></i> Languages Spoken <span class="section-title__count">{{ languageStats.length }} languages</span></h3>
+            <div class="language-families">
+              <div v-for="familyGroup in languagesByFamily" :key="familyGroup.family" class="language-family">
+                <div class="language-family__header">
+                  <span class="language-family__name">{{ familyGroup.family }}</span>
+                  <span class="language-family__days">{{ familyGroup.totalDays.toLocaleString() }} days</span>
+                </div>
+                <div class="language-family__branches">
+                  <div v-for="branch in familyGroup.branches" :key="branch.branch" class="language-branch">
+                    <div class="language-branch__header">
+                      <span class="language-branch__name">{{ branch.branch }}</span>
+                    </div>
+                    <div class="language-branch__langs">
+                      <div v-for="lang in branch.languages" :key="lang.language" class="language-item">
+                        <span class="language-item__icon">{{ lang.icon }}</span>
+                        <span class="language-item__name">{{ lang.language }}</span>
+                        <div class="language-item__bar">
+                          <div class="language-item__fill" :style="{ width: Math.min(100, lang.days / 30) + '%' }"></div>
+                        </div>
+                        <span class="language-item__days">{{ lang.days }}d</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -397,9 +449,19 @@
             </div>
           </div>
 
+          </div><!-- end stats-topic: Cultural & Linguistic -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 5: SPECIAL CATEGORIES - Geographic Features             -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-map-pin"></i> Special Categories</h2>
+            </div>
+
           <!-- Geographic Stats -->
           <div class="geo-stats-section">
-            <h3 class="section-title"><i class="ph-fill ph-map-pin"></i> Geographic Stats</h3>
+            <h3 class="section-title"><i class="ph-fill ph-map-pin"></i> Geographic Features</h3>
             <div class="geo-stats-grid">
               <div class="geo-stat-card">
                 <div class="geo-stat-card__icon"><i class="ph-fill ph-island"></i></div>
@@ -480,6 +542,16 @@
               </div>
             </div>
           </div>
+
+          </div><!-- end stats-topic: Special Categories -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 6: TIME ANALYSIS - Duration & Patterns                  -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-clock"></i> Time Analysis</h2>
+            </div>
 
           <!-- Trip Duration Categories -->
           <div class="duration-section">
@@ -608,6 +680,121 @@
             </div>
           </div>
 
+          </div><!-- end stats-topic: Time Analysis -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 7: DATA BREAKDOWN - Detailed Tables                     -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-list-numbers"></i> Data Breakdown</h2>
+            </div>
+
+          <!-- BREAKDOWN TABLES -->
+          <div class="breakdown-section">
+            <h3 class="section-title"><i class="ph-fill ph-list-numbers"></i> Coverage Breakdown</h3>
+            <div class="breakdown-grid">
+              <!-- Countries Breakdown -->
+              <div class="breakdown-card">
+                <div class="breakdown-card__header">
+                  <i class="ph-fill ph-flag"></i>
+                  <span>Countries</span>
+                  <strong>{{ countriesBreakdown.total }}</strong>
+                </div>
+                <table class="breakdown-table">
+                  <thead><tr><th>By Continent</th><th>#</th><th>Flags</th></tr></thead>
+                  <tbody>
+                    <tr v-for="row in countriesBreakdown.byContinent" :key="row.name">
+                      <td>{{ row.name }}</td>
+                      <td class="num">{{ row.count }}</td>
+                      <td class="flags">{{ row.flags }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="breakdown-table breakdown-table--mt">
+                  <thead><tr><th>By Culture</th><th>#</th><th>Flags</th></tr></thead>
+                  <tbody>
+                    <tr v-for="row in countriesBreakdown.byCulture" :key="row.name">
+                      <td>{{ row.name }}</td>
+                      <td class="num">{{ row.count }}</td>
+                      <td class="flags">{{ row.flags }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Cities Breakdown -->
+              <div class="breakdown-card">
+                <div class="breakdown-card__header">
+                  <i class="ph-fill ph-buildings"></i>
+                  <span>Cities</span>
+                  <strong>{{ citiesBreakdown.total }}</strong>
+                </div>
+                <table class="breakdown-table">
+                  <thead><tr><th>By Continent</th><th>#</th></tr></thead>
+                  <tbody>
+                    <tr v-for="row in citiesBreakdown.byContinent" :key="row.name">
+                      <td>{{ row.name }}</td>
+                      <td class="num">{{ row.count }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="breakdown-table breakdown-table--mt">
+                  <thead><tr><th>By Culture</th><th>#</th></tr></thead>
+                  <tbody>
+                    <tr v-for="row in citiesBreakdown.byCulture" :key="row.name">
+                      <td>{{ row.name }}</td>
+                      <td class="num">{{ row.count }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Cities by Country -->
+              <div class="breakdown-card breakdown-card--wide">
+                <div class="breakdown-card__header">
+                  <i class="ph-fill ph-map-pin"></i>
+                  <span>Cities by Country</span>
+                </div>
+                <div class="breakdown-country-grid">
+                  <div v-for="row in citiesBreakdown.byCountry" :key="row.name" class="breakdown-country-item">
+                    <span class="breakdown-country-item__flag">{{ row.flag }}</span>
+                    <span class="breakdown-country-item__name">{{ row.name }}</span>
+                    <span class="breakdown-country-item__count">{{ row.count }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Countries by Region -->
+              <div class="breakdown-card breakdown-card--wide">
+                <div class="breakdown-card__header">
+                  <i class="ph-fill ph-globe-hemisphere-west"></i>
+                  <span>Countries by Region</span>
+                  <strong>{{ totalCountries }}</strong>
+                </div>
+                <div class="breakdown-region-grid">
+                  <div v-for="row in countriesByRegion" :key="row.region" class="breakdown-region-item">
+                    <div class="breakdown-region-item__header">
+                      <span class="breakdown-region-item__name">{{ row.region }}</span>
+                      <span class="breakdown-region-item__count">{{ row.count }}</span>
+                    </div>
+                    <div class="breakdown-region-item__flags">{{ row.flags }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          </div><!-- end stats-topic: Data Breakdown -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 8: TRENDS & CHARTS - Visual Analytics                   -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-chart-bar"></i> Trends & Charts</h2>
+            </div>
+
           <!-- Charts Area -->
           <div class="charts-grid">
             <div class="chart-card" style="grid-column: span 2;">
@@ -619,6 +806,8 @@
               <div class="chart-card__content chart-card__content--centered"><canvas ref="chartContinents"></canvas></div>
             </div>
           </div>
+
+          </div><!-- end stats-topic: Trends & Charts -->
         </div>
       </div>
     </main>
@@ -803,20 +992,32 @@ const currentViewTitle = computed(() => {
   return titles[currentView.value];
 });
 
-// Calculate trip durations from travel data
+// Calculate trip durations from travel data - CONSOLIDATED BY CITY
 const tripsWithDuration = computed((): TripWithDuration[] => {
-  return travelData.trips.map(trip => {
+  const cityMap: Record<string, { city: string; country: string; days: number; dateIn: string; dateOut: string }> = {};
+
+  travelData.trips.forEach(trip => {
+    const key = `${trip.city}_${trip.country}`;
     const dateIn = new Date(trip.dateIn);
     const dateOut = new Date(trip.dateOut);
     const days = Math.ceil((dateOut.getTime() - dateIn.getTime()) / (1000 * 60 * 60 * 24));
-    return {
-      city: trip.city,
-      country: trip.country,
-      days,
-      dateIn: trip.dateIn,
-      dateOut: trip.dateOut
-    };
+
+    if (!cityMap[key]) {
+      cityMap[key] = {
+        city: trip.city,
+        country: trip.country,
+        days: 0,
+        dateIn: trip.dateIn,
+        dateOut: trip.dateOut
+      };
+    }
+    cityMap[key].days += days;
+    // Track earliest dateIn and latest dateOut
+    if (trip.dateIn < cityMap[key].dateIn) cityMap[key].dateIn = trip.dateIn;
+    if (trip.dateOut > cityMap[key].dateOut) cityMap[key].dateOut = trip.dateOut;
   });
+
+  return Object.values(cityMap);
 });
 
 // Long stays: more than 6 months (180+ days)
@@ -834,8 +1035,8 @@ const longStays2WeeksTo1Month = computed(() => {
   return tripsWithDuration.value.filter(t => t.days >= 14 && t.days < 36).sort((a, b) => b.days - a.days);
 });
 
-// Stats computed from data
-const totalCities = computed(() => travelData.trips.length);
+// Stats computed from data - COUNT UNIQUE CITIES
+const totalCities = computed(() => new Set(travelData.trips.map(t => `${t.city}_${t.country}`)).size);
 const totalCountries = computed(() => new Set(travelData.trips.map(t => t.country)).size);
 const totalDaysAbroad = computed(() => tripsWithDuration.value.reduce((sum, t) => sum + t.days, 0));
 
@@ -1520,7 +1721,91 @@ const continentColors: Record<string, string> = {
 // ADDITIONAL COMPUTED STATS - ALL FROM DATA
 // ============================================
 
-// Stats by language
+// Language family mapping
+const LANGUAGE_FAMILIES: Record<string, { family: string; branch: string; icon: string }> = {
+  // Indo-European > Romance
+  'Portuguese': { family: 'Indo-European', branch: 'Romance', icon: '🇵🇹' },
+  'Spanish': { family: 'Indo-European', branch: 'Romance', icon: '🇪🇸' },
+  'French': { family: 'Indo-European', branch: 'Romance', icon: '🇫🇷' },
+  'Italian': { family: 'Indo-European', branch: 'Romance', icon: '🇮🇹' },
+  'Catalan': { family: 'Indo-European', branch: 'Romance', icon: '🏴' },
+  'Romanian': { family: 'Indo-European', branch: 'Romance', icon: '🇷🇴' },
+  // Indo-European > Germanic
+  'English': { family: 'Indo-European', branch: 'Germanic', icon: '🇬🇧' },
+  'German': { family: 'Indo-European', branch: 'Germanic', icon: '🇩🇪' },
+  'Dutch': { family: 'Indo-European', branch: 'Germanic', icon: '🇳🇱' },
+  'Swedish': { family: 'Indo-European', branch: 'Germanic', icon: '🇸🇪' },
+  'Norwegian': { family: 'Indo-European', branch: 'Germanic', icon: '🇳🇴' },
+  'Danish': { family: 'Indo-European', branch: 'Germanic', icon: '🇩🇰' },
+  'Icelandic': { family: 'Indo-European', branch: 'Germanic', icon: '🇮🇸' },
+  // Indo-European > Slavic
+  'Russian': { family: 'Indo-European', branch: 'Slavic', icon: '🇷🇺' },
+  'Polish': { family: 'Indo-European', branch: 'Slavic', icon: '🇵🇱' },
+  'Czech': { family: 'Indo-European', branch: 'Slavic', icon: '🇨🇿' },
+  'Slovak': { family: 'Indo-European', branch: 'Slavic', icon: '🇸🇰' },
+  'Ukrainian': { family: 'Indo-European', branch: 'Slavic', icon: '🇺🇦' },
+  'Bulgarian': { family: 'Indo-European', branch: 'Slavic', icon: '🇧🇬' },
+  'Serbian': { family: 'Indo-European', branch: 'Slavic', icon: '🇷🇸' },
+  'Croatian': { family: 'Indo-European', branch: 'Slavic', icon: '🇭🇷' },
+  'Slovenian': { family: 'Indo-European', branch: 'Slavic', icon: '🇸🇮' },
+  'Bosnian': { family: 'Indo-European', branch: 'Slavic', icon: '🇧🇦' },
+  'Macedonian': { family: 'Indo-European', branch: 'Slavic', icon: '🇲🇰' },
+  // Indo-European > Baltic
+  'Lithuanian': { family: 'Indo-European', branch: 'Baltic', icon: '🇱🇹' },
+  'Latvian': { family: 'Indo-European', branch: 'Baltic', icon: '🇱🇻' },
+  // Indo-European > Celtic
+  'Irish': { family: 'Indo-European', branch: 'Celtic', icon: '🇮🇪' },
+  'Welsh': { family: 'Indo-European', branch: 'Celtic', icon: '🏴󠁧󠁢󠁷󠁬󠁳󠁿' },
+  // Indo-European > Greek
+  'Greek': { family: 'Indo-European', branch: 'Hellenic', icon: '🇬🇷' },
+  // Indo-European > Albanian
+  'Albanian': { family: 'Indo-European', branch: 'Albanian', icon: '🇦🇱' },
+  // Indo-European > Indo-Iranian
+  'Hindi': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇮🇳' },
+  'Persian': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇮🇷' },
+  'Urdu': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇵🇰' },
+  'Bengali': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇧🇩' },
+  'Nepali': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇳🇵' },
+  'Sinhala': { family: 'Indo-European', branch: 'Indo-Iranian', icon: '🇱🇰' },
+  // Afro-Asiatic > Semitic
+  'Arabic': { family: 'Afro-Asiatic', branch: 'Semitic', icon: '🇸🇦' },
+  'Hebrew': { family: 'Afro-Asiatic', branch: 'Semitic', icon: '🇮🇱' },
+  'Maltese': { family: 'Afro-Asiatic', branch: 'Semitic', icon: '🇲🇹' },
+  'Amharic': { family: 'Afro-Asiatic', branch: 'Semitic', icon: '🇪🇹' },
+  // Uralic
+  'Finnish': { family: 'Uralic', branch: 'Finnic', icon: '🇫🇮' },
+  'Estonian': { family: 'Uralic', branch: 'Finnic', icon: '🇪🇪' },
+  'Hungarian': { family: 'Uralic', branch: 'Ugric', icon: '🇭🇺' },
+  // Turkic
+  'Turkish': { family: 'Turkic', branch: 'Oghuz', icon: '🇹🇷' },
+  'Azerbaijani': { family: 'Turkic', branch: 'Oghuz', icon: '🇦🇿' },
+  'Kazakh': { family: 'Turkic', branch: 'Kipchak', icon: '🇰🇿' },
+  'Uzbek': { family: 'Turkic', branch: 'Karluk', icon: '🇺🇿' },
+  // Kartvelian
+  'Georgian': { family: 'Kartvelian', branch: 'Kartvelian', icon: '🇬🇪' },
+  // Sino-Tibetan
+  'Mandarin': { family: 'Sino-Tibetan', branch: 'Sinitic', icon: '🇨🇳' },
+  'Cantonese': { family: 'Sino-Tibetan', branch: 'Sinitic', icon: '🇭🇰' },
+  'Burmese': { family: 'Sino-Tibetan', branch: 'Tibeto-Burman', icon: '🇲🇲' },
+  // Japonic
+  'Japanese': { family: 'Japonic', branch: 'Japonic', icon: '🇯🇵' },
+  // Koreanic
+  'Korean': { family: 'Koreanic', branch: 'Koreanic', icon: '🇰🇷' },
+  // Tai-Kadai
+  'Thai': { family: 'Tai-Kadai', branch: 'Tai', icon: '🇹🇭' },
+  'Lao': { family: 'Tai-Kadai', branch: 'Tai', icon: '🇱🇦' },
+  // Austroasiatic
+  'Vietnamese': { family: 'Austroasiatic', branch: 'Vietic', icon: '🇻🇳' },
+  'Khmer': { family: 'Austroasiatic', branch: 'Khmer', icon: '🇰🇭' },
+  // Austronesian
+  'Indonesian': { family: 'Austronesian', branch: 'Malayo-Polynesian', icon: '🇮🇩' },
+  'Malay': { family: 'Austronesian', branch: 'Malayo-Polynesian', icon: '🇲🇾' },
+  'Filipino': { family: 'Austronesian', branch: 'Malayo-Polynesian', icon: '🇵🇭' },
+  // Niger-Congo
+  'Swahili': { family: 'Niger-Congo', branch: 'Bantu', icon: '🇰🇪' },
+};
+
+// Stats by language with family grouping
 const languageStats = computed(() => {
   const langs: Record<string, { count: number; days: number; countries: Set<string> }> = {};
   travelData.trips.forEach(trip => {
@@ -1542,6 +1827,53 @@ const languageStats = computed(() => {
       countries: data.countries.size
     }))
     .sort((a, b) => b.days - a.days);
+});
+
+// Languages grouped by family tree
+const languagesByFamily = computed(() => {
+  const families: Record<string, {
+    totalDays: number;
+    branches: Record<string, {
+      totalDays: number;
+      languages: Array<{ language: string; days: number; cities: number; countries: number; icon: string }>
+    }>
+  }> = {};
+
+  languageStats.value.forEach(lang => {
+    const info = LANGUAGE_FAMILIES[lang.language] || { family: 'Other', branch: 'Other', icon: '🌍' };
+
+    if (!families[info.family]) {
+      families[info.family] = { totalDays: 0, branches: {} };
+    }
+    if (!families[info.family].branches[info.branch]) {
+      families[info.family].branches[info.branch] = { totalDays: 0, languages: [] };
+    }
+
+    families[info.family].totalDays += lang.days;
+    families[info.family].branches[info.branch].totalDays += lang.days;
+    families[info.family].branches[info.branch].languages.push({
+      language: lang.language,
+      days: lang.days,
+      cities: lang.cities,
+      countries: lang.countries,
+      icon: info.icon
+    });
+  });
+
+  // Sort and convert to array
+  return Object.entries(families)
+    .map(([family, data]) => ({
+      family,
+      totalDays: data.totalDays,
+      branches: Object.entries(data.branches)
+        .map(([branch, branchData]) => ({
+          branch,
+          totalDays: branchData.totalDays,
+          languages: branchData.languages.sort((a, b) => b.days - a.days)
+        }))
+        .sort((a, b) => b.totalDays - a.totalDays)
+    }))
+    .sort((a, b) => b.totalDays - a.totalDays);
 });
 
 // Stats by culture
@@ -1568,77 +1900,92 @@ const cultureStats = computed(() => {
     .sort((a, b) => b.days - a.days);
 });
 
-// Stats by nomad region
+// Stats by nomad region - COUNT UNIQUE CITIES, NOT VISITS
 const nomadRegionStats = computed(() => {
-  const regions: Record<string, { count: number; days: number; countries: Set<string> }> = {};
+  const regions: Record<string, { cities: Set<string>; days: number; countries: Set<string> }> = {};
   travelData.trips.forEach(trip => {
     const dateIn = new Date(trip.dateIn);
     const dateOut = new Date(trip.dateOut);
     const days = Math.ceil((dateOut.getTime() - dateIn.getTime()) / (1000 * 60 * 60 * 24));
     if (!regions[trip.nomadRegion]) {
-      regions[trip.nomadRegion] = { count: 0, days: 0, countries: new Set() };
+      regions[trip.nomadRegion] = { cities: new Set(), days: 0, countries: new Set() };
     }
-    regions[trip.nomadRegion].count++;
+    regions[trip.nomadRegion].cities.add(`${trip.city}_${trip.country}`);
     regions[trip.nomadRegion].days += days;
     regions[trip.nomadRegion].countries.add(trip.country);
   });
   return Object.entries(regions)
     .map(([region, data]) => ({
       region,
-      cities: data.count,
+      cities: data.cities.size,
       days: data.days,
       countries: data.countries.size
     }))
     .sort((a, b) => b.days - a.days);
 });
 
-// Island destinations (detect from city/region names)
+// Island destinations (detect from city/region names) - UNIQUE CITIES
 const islandKeywords = ['Island', 'Ilh', 'Baleares', 'Canarias', 'Noronha', 'Florianópolis', 'Ibiza', 'Mallorca', 'Tenerife', 'Palmas', 'Madeira', 'Açores', 'Azores', 'Sardinia', 'Sicily', 'Corsica', 'Crete', 'Santorini', 'Bali', 'Phuket', 'Zanzibar', 'Malta', 'Cyprus'];
 const islandDestinations = computed(() => {
-  return travelData.trips.filter(trip =>
-    islandKeywords.some(kw =>
+  const seen = new Set<string>();
+  return travelData.trips.filter(trip => {
+    const key = `${trip.city}_${trip.country}`;
+    if (seen.has(key)) return false;
+    const isIsland = islandKeywords.some(kw =>
       trip.city.toLowerCase().includes(kw.toLowerCase()) ||
       trip.state.toLowerCase().includes(kw.toLowerCase()) ||
       trip.nomadRegion.toLowerCase().includes(kw.toLowerCase())
-    )
-  );
+    );
+    if (isIsland) seen.add(key);
+    return isIsland;
+  });
 });
 
-// Coastal destinations (cities by the sea - approximation by common coastal city patterns)
+// Coastal destinations (cities by the sea) - UNIQUE CITIES
 const coastalKeywords = ['Beach', 'Porto', 'Port', 'Mar', 'Costa', 'Bay', 'Coastal', 'Santos', 'Búzios', 'Paraty', 'Ubatuba', 'Cádiz', 'Alicante', 'Valencia', 'Barcelona', 'Nice', 'Monaco', 'Lisbon', 'Rio', 'Salvador', 'Recife', 'Fortaleza', 'Natal', 'Pipa', 'Jericoacoara'];
 const coastalDestinations = computed(() => {
-  return travelData.trips.filter(trip =>
-    coastalKeywords.some(kw =>
+  const seen = new Set<string>();
+  const islandKeys = new Set(islandDestinations.value.map(t => `${t.city}_${t.country}`));
+  return travelData.trips.filter(trip => {
+    const key = `${trip.city}_${trip.country}`;
+    if (seen.has(key)) return false;
+    const isCoastal = coastalKeywords.some(kw =>
       trip.city.toLowerCase().includes(kw.toLowerCase()) ||
       trip.state.toLowerCase().includes(kw.toLowerCase())
-    ) || islandDestinations.value.includes(trip)
-  );
+    ) || islandKeys.has(key);
+    if (isCoastal) seen.add(key);
+    return isCoastal;
+  });
 });
 
-// Capital cities visited
+// Capital cities visited - UNIQUE CITIES
 const capitalCities = computed(() => {
+  const seen = new Set<string>();
   return travelData.trips.filter(trip => {
+    const key = `${trip.city}_${trip.country}`;
+    if (seen.has(key)) return false;
     const capitalLat = trip.countryCapital?.lat;
     const capitalLng = trip.countryCapital?.lng;
     if (!capitalLat || !capitalLng) return false;
-    // Check if city coordinates are close to capital (within ~50km)
     const latDiff = Math.abs(trip.lat - capitalLat);
     const lngDiff = Math.abs(trip.lng - capitalLng);
-    return latDiff < 0.5 && lngDiff < 0.5;
+    const isCapital = latDiff < 0.5 && lngDiff < 0.5;
+    if (isCapital) seen.add(key);
+    return isCapital;
   });
 });
 
-// Top countries by cities visited
+// Top countries by cities visited - COUNT UNIQUE CITIES
 const topCountriesByCities = computed(() => {
-  const countries: Record<string, { cities: number; flag: string }> = {};
+  const countries: Record<string, { cities: Set<string>; flag: string }> = {};
   travelData.trips.forEach(trip => {
     if (!countries[trip.country]) {
-      countries[trip.country] = { cities: 0, flag: trip.countryFlag };
+      countries[trip.country] = { cities: new Set(), flag: trip.countryFlag };
     }
-    countries[trip.country].cities++;
+    countries[trip.country].cities.add(trip.city);
   });
   return Object.entries(countries)
-    .map(([country, data]) => ({ country, ...data }))
+    .map(([country, data]) => ({ country, cities: data.cities.size, flag: data.flag }))
     .sort((a, b) => b.cities - a.cities)
     .slice(0, 10);
 });
@@ -1695,17 +2042,21 @@ const yearRangeStats = computed(() => {
   return { firstYear, lastYear, yearsActive: uniqueYears, span: lastYear - firstYear + 1 };
 });
 
-// Hemisphere stats
+// Hemisphere stats - COUNT UNIQUE CITIES
 const hemisphereStats = computed(() => {
+  const seen = new Set<string>();
   let northern = 0, southern = 0, eastern = 0, western = 0;
   travelData.trips.forEach(trip => {
+    const key = `${trip.city}_${trip.country}`;
+    if (seen.has(key)) return;
+    seen.add(key);
     if (trip.lat >= 0) northern++; else southern++;
     if (trip.lng >= 0) eastern++; else western++;
   });
   return { northern, southern, eastern, western };
 });
 
-// States/Provinces visited
+// States/Provinces visited - UNIQUE
 const uniqueStates = computed(() => new Set(travelData.trips.map(t => `${t.state}, ${t.country}`)).size);
 
 // Unique languages count
@@ -1759,6 +2110,108 @@ const geographicExtremes = computed(() => {
     if (trip.lng < westernmost.lng) westernmost = trip;
   });
   return { northernmost, southernmost, easternmost, westernmost };
+});
+
+// ============================================
+// BREAKDOWN TABLES - Countries & Cities
+// ============================================
+
+// Countries breakdown by continent and culture
+const countriesBreakdown = computed(() => {
+  const byContinent: Record<string, { countries: Set<string>; flags: string[] }> = {};
+  const byCulture: Record<string, { countries: Set<string>; flags: string[] }> = {};
+
+  travelData.trips.forEach(trip => {
+    // By continent
+    if (!byContinent[trip.continent]) {
+      byContinent[trip.continent] = { countries: new Set(), flags: [] };
+    }
+    if (!byContinent[trip.continent].countries.has(trip.country)) {
+      byContinent[trip.continent].countries.add(trip.country);
+      byContinent[trip.continent].flags.push(trip.countryFlag);
+    }
+
+    // By culture
+    if (!byCulture[trip.culture]) {
+      byCulture[trip.culture] = { countries: new Set(), flags: [] };
+    }
+    if (!byCulture[trip.culture].countries.has(trip.country)) {
+      byCulture[trip.culture].countries.add(trip.country);
+      byCulture[trip.culture].flags.push(trip.countryFlag);
+    }
+  });
+
+  return {
+    total: totalCountries.value,
+    byContinent: Object.entries(byContinent)
+      .map(([name, data]) => ({ name, count: data.countries.size, flags: data.flags.join(' ') }))
+      .sort((a, b) => b.count - a.count),
+    byCulture: Object.entries(byCulture)
+      .map(([name, data]) => ({ name, count: data.countries.size, flags: data.flags.join(' ') }))
+      .sort((a, b) => b.count - a.count)
+  };
+});
+
+// Cities breakdown by continent, culture, and country
+const citiesBreakdown = computed(() => {
+  const byContinent: Record<string, Set<string>> = {};
+  const byCulture: Record<string, Set<string>> = {};
+  const byCountry: Record<string, { cities: Set<string>; flag: string }> = {};
+
+  travelData.trips.forEach(trip => {
+    const cityKey = `${trip.city}_${trip.country}`;
+
+    // By continent
+    if (!byContinent[trip.continent]) byContinent[trip.continent] = new Set();
+    byContinent[trip.continent].add(cityKey);
+
+    // By culture
+    if (!byCulture[trip.culture]) byCulture[trip.culture] = new Set();
+    byCulture[trip.culture].add(cityKey);
+
+    // By country
+    if (!byCountry[trip.country]) {
+      byCountry[trip.country] = { cities: new Set(), flag: trip.countryFlag };
+    }
+    byCountry[trip.country].cities.add(trip.city);
+  });
+
+  return {
+    total: totalCities.value,
+    byContinent: Object.entries(byContinent)
+      .map(([name, cities]) => ({ name, count: cities.size }))
+      .sort((a, b) => b.count - a.count),
+    byCulture: Object.entries(byCulture)
+      .map(([name, cities]) => ({ name, count: cities.size }))
+      .sort((a, b) => b.count - a.count),
+    byCountry: Object.entries(byCountry)
+      .map(([name, data]) => ({ name, count: data.cities.size, flag: data.flag }))
+      .sort((a, b) => b.count - a.count)
+  };
+});
+
+// Countries grouped by nomad region
+const countriesByRegion = computed(() => {
+  const byRegion: Record<string, { countries: Set<string>; flags: string[] }> = {};
+
+  travelData.trips.forEach(trip => {
+    if (!byRegion[trip.nomadRegion]) {
+      byRegion[trip.nomadRegion] = { countries: new Set(), flags: [] };
+    }
+    if (!byRegion[trip.nomadRegion].countries.has(trip.country)) {
+      byRegion[trip.nomadRegion].countries.add(trip.country);
+      byRegion[trip.nomadRegion].flags.push(trip.countryFlag);
+    }
+  });
+
+  return Object.entries(byRegion)
+    .map(([region, data]) => ({
+      region,
+      count: data.countries.size,
+      flags: data.flags.join(' '),
+      countries: Array.from(data.countries)
+    }))
+    .sort((a, b) => b.count - a.count);
 });
 
 function initCharts() {

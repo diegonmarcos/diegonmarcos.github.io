@@ -1,55 +1,55 @@
 import type { City } from '@/types/mytrips';
-import { ANCHORS } from '@/data/anchors';
+import { travelData } from '@/data/travel-data';
 import { THEMES } from '@/data/themes';
 
+/**
+ * Convert real travel data to City[] format for backward compatibility
+ * with theme-based filtering and map display
+ */
 export function initData(): City[] {
   const DB: City[] = [];
-  let idCounter = 1;
+  const seenCities = new Set<string>();
 
-  THEMES.forEach(t => {
-    t.query.forEach(name => {
-      if (!DB.find(c => c.name === name)) {
-        let anchor = ANCHORS.find(a => a.n === name);
-        let lat, lng;
-        if (anchor) {
-          lat = anchor.lat;
-          lng = anchor.lng;
-        } else {
-          const randAnchor = ANCHORS[Math.floor(Math.random() * ANCHORS.length)];
-          lat = randAnchor.lat + (Math.random() * 10 - 5);
-          lng = randAnchor.lng + (Math.random() * 10 - 5);
-        }
-        DB.push({
-          id: idCounter++,
-          name,
-          theme: t.id,
-          lat: lat,
-          lng: lng,
-          year: 2014 + Math.floor(Math.random() * 10)
-        });
+  travelData.trips.forEach((trip, index) => {
+    const cityKey = `${trip.city}_${trip.country}`;
+
+    // Deduplicate by city+country (keep first occurrence)
+    if (seenCities.has(cityKey)) return;
+    seenCities.add(cityKey);
+
+    // Determine theme based on THEMES query lists
+    let theme = 'gen';
+    for (const t of THEMES) {
+      if (t.query.includes(trip.city)) {
+        theme = t.id;
+        break;
       }
+    }
+
+    // Extract year from dateIn
+    const year = parseInt(trip.dateIn.split('-')[0], 10);
+
+    DB.push({
+      id: index + 1,
+      name: trip.city,
+      theme,
+      lat: trip.lat,
+      lng: trip.lng,
+      year,
+      country: trip.country,
+      continent: trip.continent
     });
   });
-
-  while (DB.length < 170) {
-    const randAnchor = ANCHORS[Math.floor(Math.random() * ANCHORS.length)];
-    const jLat = randAnchor.lat + (Math.random() * 4 - 2);
-    const jLng = randAnchor.lng + (Math.random() * 4 - 2);
-    DB.push({
-      id: idCounter++,
-      name: `Expedition ${idCounter}`,
-      theme: 'gen',
-      lat: jLat,
-      lng: jLng,
-      year: 2014 + Math.floor(Math.random() * 10)
-    });
-  }
 
   return DB;
 }
 
+/**
+ * Calculate distance between two coordinates using Haversine formula
+ * @returns Distance in kilometers
+ */
 export function calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371; // km
+  const R = 6371; // Earth's radius in km
   const d2r = (d: number) => d * (Math.PI / 180);
   const dLat = d2r(lat2 - lat1);
   const dLon = d2r(lng2 - lng1);

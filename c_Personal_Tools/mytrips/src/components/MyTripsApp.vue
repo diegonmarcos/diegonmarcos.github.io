@@ -225,27 +225,46 @@
               <h2 class="stats-topic__title"><i class="ph-fill ph-chart-line-up"></i> Overview</h2>
             </div>
 
-          <!-- KPI Cards -->
-          <div class="stats-grid">
-            <div class="stat-card">
-              <div class="stat-card__label">Total Cities</div>
-              <div class="stat-card__value">{{ totalCities }}</div>
-              <div class="stat-card__meta"><i class="ph-bold ph-map-pin"></i> unique locations</div>
+          <!-- KPI Cards - Row 1: Main Stats -->
+          <div class="stats-grid stats-grid--5col">
+            <div class="stat-card stat-card--compact">
+              <div class="stat-card__label">Continents</div>
+              <div class="stat-card__value">{{ totalContinents }}</div>
             </div>
-            <div class="stat-card stat-card--purple">
+            <div class="stat-card stat-card--compact stat-card--purple">
               <div class="stat-card__label">Countries</div>
               <div class="stat-card__value">{{ totalCountries }}</div>
-              <div class="stat-card__meta stat-card__meta--purple">{{ Math.round(totalCountries / 195 * 100) }}% of World</div>
             </div>
-            <div class="stat-card stat-card--amber">
+            <div class="stat-card stat-card--compact stat-card--cyan">
+              <div class="stat-card__label">NomadMania Regions</div>
+              <div class="stat-card__value">{{ totalNomadRegions }}</div>
+            </div>
+            <div class="stat-card stat-card--compact">
+              <div class="stat-card__label">Cities</div>
+              <div class="stat-card__value">{{ totalCities }}</div>
+            </div>
+            <div class="stat-card stat-card--compact stat-card--amber">
               <div class="stat-card__label">Time Abroad</div>
-              <div class="stat-card__value">{{ totalDaysAbroad }}d</div>
-              <div class="stat-card__meta stat-card__meta--amber">~{{ (totalDaysAbroad / 365).toFixed(1) }} Years</div>
+              <div class="stat-card__value">{{ (totalDaysAbroad / 365).toFixed(1) }}y</div>
             </div>
-            <div class="stat-card stat-card--rose">
-              <div class="stat-card__label">Long Stays</div>
-              <div class="stat-card__value">{{ longStaysOver6Months.length + longStays1to6Months.length }}</div>
-              <div class="stat-card__meta stat-card__meta--rose">1+ month stays</div>
+          </div>
+
+          <!-- KPI Cards - Row 2: World Percentages -->
+          <div class="stats-grid stats-grid--3col">
+            <div class="stat-card stat-card--compact stat-card--purple">
+              <div class="stat-card__label">% Countries (UN)</div>
+              <div class="stat-card__value">{{ Math.round(totalCountries / WORLD_COUNTRIES_UN * 100) }}%</div>
+              <div class="stat-card__meta stat-card__meta--purple">{{ totalCountries }}/{{ WORLD_COUNTRIES_UN }}</div>
+            </div>
+            <div class="stat-card stat-card--compact stat-card--cyan">
+              <div class="stat-card__label">% NomadMania Regions</div>
+              <div class="stat-card__value">{{ Math.round(totalNomadRegions / WORLD_NOMAD_REGIONS * 100) }}%</div>
+              <div class="stat-card__meta stat-card__meta--cyan">{{ totalNomadRegions }}/{{ WORLD_NOMAD_REGIONS }}</div>
+            </div>
+            <div class="stat-card stat-card--compact">
+              <div class="stat-card__label">Cities Visited</div>
+              <div class="stat-card__value">{{ totalCities }}</div>
+              <div class="stat-card__meta"><i class="ph-bold ph-map-pin"></i> unique</div>
             </div>
           </div>
 
@@ -260,6 +279,7 @@
             </div>
 
           <!-- Long Stay Cities Section -->
+          <h3 class="section-title"><i class="ph-fill ph-house"></i> Long Stay Cities</h3>
           <div class="long-stays-section">
             <!-- Over 6 Months -->
             <div class="long-stay-card long-stay-card--gold" v-if="longStaysOver6Months.length > 0">
@@ -267,7 +287,7 @@
               <div class="long-stay-card__items">
                 <div v-for="trip in longStaysOver6Months" :key="trip.city + trip.dateIn" class="long-stay-item">
                   <div class="long-stay-item__city">{{ trip.city }}</div>
-                  <div class="long-stay-item__country">{{ trip.country }}</div>
+                  <div class="long-stay-item__country"><span class="long-stay-item__flag">{{ trip.countryFlag }}</span> {{ trip.country }}</div>
                   <div class="long-stay-item__duration">{{ Math.round(trip.days / 30) }} months</div>
                 </div>
               </div>
@@ -279,7 +299,7 @@
               <div class="long-stay-card__items">
                 <div v-for="trip in longStays1to6Months" :key="trip.city + trip.dateIn" class="long-stay-item">
                   <div class="long-stay-item__city">{{ trip.city }}</div>
-                  <div class="long-stay-item__country">{{ trip.country }}</div>
+                  <div class="long-stay-item__country"><span class="long-stay-item__flag">{{ trip.countryFlag }}</span> {{ trip.country }}</div>
                   <div class="long-stay-item__duration">{{ trip.days >= 60 ? Math.round(trip.days / 30) + ' months' : trip.days + ' days' }}</div>
                 </div>
               </div>
@@ -291,8 +311,82 @@
               <div class="long-stay-card__items">
                 <div v-for="trip in longStays2WeeksTo1Month" :key="trip.city + trip.dateIn" class="long-stay-item">
                   <div class="long-stay-item__city">{{ trip.city }}</div>
-                  <div class="long-stay-item__country">{{ trip.country }}</div>
+                  <div class="long-stay-item__country"><span class="long-stay-item__flag">{{ trip.countryFlag }}</span> {{ trip.country }}</div>
                   <div class="long-stay-item__duration">{{ trip.days }} days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Country Rankings by Time Spent -->
+          <h3 class="section-title"><i class="ph-fill ph-clock"></i> Most Time Countries</h3>
+          <div class="long-stays-section">
+            <!-- 1+ Year -->
+            <div class="long-stay-card long-stay-card--gold" v-if="countriesByTimeOver1Year.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-clock-clockwise"></i> Most Time (1+ year)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByTimeOver1Year" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ (country.days / 365).toFixed(1) }} years</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3-12 Months -->
+            <div class="long-stay-card long-stay-card--cyan" v-if="countriesByTime3To12Months.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-clock"></i> Long Time (3-12 months)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByTime3To12Months" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ Math.round(country.days / 30) }} months</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1-3 Months -->
+            <div class="long-stay-card long-stay-card--purple" v-if="countriesByTime1To3Months.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-hourglass-medium"></i> Medium Time (1-3 months)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByTime1To3Months" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ country.days }} days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Country Rankings by Cities Visited -->
+          <h3 class="section-title"><i class="ph-fill ph-map-pin"></i> Most Visited Countries</h3>
+          <div class="long-stays-section">
+            <!-- 10+ Cities -->
+            <div class="long-stay-card long-stay-card--gold" v-if="countriesByCitiesOver10.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-buildings"></i> Most Cities (10+)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByCitiesOver10" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ country.cities }} cities</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5-9 Cities -->
+            <div class="long-stay-card long-stay-card--cyan" v-if="countriesByCities5To9.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-city"></i> Many Cities (5-9)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByCities5To9" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ country.cities }} cities</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2-4 Cities -->
+            <div class="long-stay-card long-stay-card--purple" v-if="countriesByCities2To4.length > 0">
+              <h3 class="long-stay-card__title"><i class="ph-fill ph-map-pin"></i> Few Cities (2-4)</h3>
+              <div class="long-stay-card__items">
+                <div v-for="country in countriesByCities2To4" :key="country.country" class="long-stay-item">
+                  <div class="long-stay-item__city"><span class="long-stay-item__flag">{{ country.flag }}</span> {{ country.country }}</div>
+                  <div class="long-stay-item__duration">{{ country.cities }} cities</div>
                 </div>
               </div>
             </div>
@@ -301,27 +395,82 @@
           </div><!-- end stats-topic: Rankings -->
 
           <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 2B: TIMELINE - Country Changes Over Time                 -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-calendar"></i> Timeline</h2>
+            </div>
+
+            <!-- Row 1: 2015-2021, 2022, 2023 -->
+            <div class="country-timeline__row">
+              <div v-for="group in timelineByYearGroups.slice(0, 3)" :key="group.label" class="country-timeline__col">
+                <div class="country-timeline__header">{{ group.label }}</div>
+                <div class="country-timeline__entries">
+                  <div v-for="(entry, idx) in group.entries" :key="idx" class="country-timeline__entry">
+                    <span class="country-timeline__dates">{{ formatTimelineDate(entry.dateIn) }}–{{ formatTimelineDate(entry.dateOut) }}</span>
+                    <span class="country-timeline__days">({{ String(entry.days).padStart(3, ' ') }}d)</span>
+                    <span class="country-timeline__iso">{{ entry.iso }}</span>
+                    <span class="country-timeline__flag">{{ entry.flag }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 2: 2024, 2025, 2026 -->
+            <div class="country-timeline__row">
+              <div v-for="group in timelineByYearGroups.slice(3, 6)" :key="group.label" class="country-timeline__col">
+                <div class="country-timeline__header">{{ group.label }}</div>
+                <div class="country-timeline__entries">
+                  <div v-for="(entry, idx) in group.entries" :key="idx" class="country-timeline__entry">
+                    <span class="country-timeline__dates">{{ formatTimelineDate(entry.dateIn) }}–{{ formatTimelineDate(entry.dateOut) }}</span>
+                    <span class="country-timeline__days">({{ String(entry.days).padStart(3, ' ') }}d)</span>
+                    <span class="country-timeline__iso">{{ entry.iso }}</span>
+                    <span class="country-timeline__flag">{{ entry.flag }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cities by Year/Month Grid -->
+            <div class="year-month-grids">
+              <div class="year-month-grid">
+                <h4 class="year-month-grid__title"><i class="ph-fill ph-buildings"></i> Cities by Month</h4>
+                <div class="year-month-grid__header">
+                  <div class="year-month-grid__label">Year</div>
+                  <div v-for="m in 12" :key="m" class="year-month-grid__month">{{ String(m).padStart(2, '0') }}</div>
+                </div>
+                <div v-for="row in citiesByYearMonth" :key="row.year" class="year-month-grid__row">
+                  <div class="year-month-grid__year">{{ row.year }}</div>
+                  <div v-for="cell in row.months" :key="cell.month" class="year-month-grid__cell" :class="{ 'year-month-grid__cell--empty': cell.count === 0 }">
+                    {{ cell.count || '–' }}
+                  </div>
+                </div>
+              </div>
+
+              <div class="year-month-grid year-month-grid--purple">
+                <h4 class="year-month-grid__title"><i class="ph-fill ph-flag"></i> Countries by Month</h4>
+                <div class="year-month-grid__header">
+                  <div class="year-month-grid__label">Year</div>
+                  <div v-for="m in 12" :key="m" class="year-month-grid__month">{{ String(m).padStart(2, '0') }}</div>
+                </div>
+                <div v-for="row in countriesByYearMonth" :key="row.year" class="year-month-grid__row">
+                  <div class="year-month-grid__year">{{ row.year }}</div>
+                  <div v-for="cell in row.months" :key="cell.month" class="year-month-grid__cell" :class="{ 'year-month-grid__cell--empty': cell.count === 0 }">
+                    {{ cell.count || '–' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- end stats-topic: Timeline -->
+
+          <!-- ═══════════════════════════════════════════════════════════════ -->
           <!-- SECTION 3: GEOGRAPHIC COVERAGE - World Distribution             -->
           <!-- ═══════════════════════════════════════════════════════════════ -->
           <div class="stats-topic">
             <div class="stats-topic__header">
               <h2 class="stats-topic__title"><i class="ph-fill ph-globe"></i> Geographic Coverage</h2>
             </div>
-
-          <!-- Flag Summary by Continent -->
-          <div class="flag-summary-section">
-            <h3 class="section-title"><i class="ph-fill ph-flag"></i> Visited Countries by Region</h3>
-            <div class="flag-summary-grid">
-              <div v-for="region in flagSummaryByContinent" :key="region.region" class="flag-summary-card">
-                <div class="flag-summary-card__header">
-                  <span class="flag-summary-card__emoji">{{ region.emoji }}</span>
-                  <span class="flag-summary-card__name">{{ region.region }}</span>
-                  <span class="flag-summary-card__count">{{ region.visited }}/{{ region.total }}</span>
-                </div>
-                <div class="flag-summary-card__flags">{{ region.flags || '—' }}</div>
-              </div>
-            </div>
-          </div>
 
           <!-- Cultural Regions Stats Table -->
           <div class="cultural-regions-section">
@@ -595,46 +744,6 @@
             </div>
           </div>
 
-          <!-- Monthly Travel Intensity -->
-          <div class="monthly-section">
-            <h3 class="section-title"><i class="ph-fill ph-calendar"></i> Travel by Month</h3>
-            <div class="monthly-grid">
-              <div v-for="(count, month) in tripsByMonth" :key="month" class="monthly-card">
-                <div class="monthly-card__month">{{ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][Number(month) - 1] }}</div>
-                <div class="monthly-card__bar">
-                  <div class="monthly-card__fill" :style="{ height: (count / Math.max(...Object.values(tripsByMonth)) * 100) + '%' }"></div>
-                </div>
-                <div class="monthly-card__value">{{ count }}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Countries by Cities -->
-          <div class="top-countries-section">
-            <h3 class="section-title"><i class="ph-fill ph-ranking"></i> Top 10 Countries by Cities</h3>
-            <div class="top-countries-grid">
-              <div v-for="(country, idx) in topCountriesByCities" :key="country.country" class="top-country-card">
-                <div class="top-country-card__rank">#{{ idx + 1 }}</div>
-                <div class="top-country-card__flag">{{ country.flag }}</div>
-                <div class="top-country-card__name">{{ country.country }}</div>
-                <div class="top-country-card__value">{{ country.cities }} cities</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Top Countries by Days -->
-          <div class="top-countries-section">
-            <h3 class="section-title"><i class="ph-fill ph-clock"></i> Top 10 Countries by Time Spent</h3>
-            <div class="top-countries-grid">
-              <div v-for="(country, idx) in daysByCountry" :key="country.country" class="top-country-card">
-                <div class="top-country-card__rank">#{{ idx + 1 }}</div>
-                <div class="top-country-card__flag">{{ country.flag }}</div>
-                <div class="top-country-card__name">{{ country.country }}</div>
-                <div class="top-country-card__value">{{ country.days >= 365 ? (country.days / 365).toFixed(1) + ' yrs' : country.days + 'd' }}</div>
-              </div>
-            </div>
-          </div>
-
           <!-- Days by Continent -->
           <div class="continent-days-section">
             <h3 class="section-title"><i class="ph-fill ph-globe"></i> Days by Continent</h3>
@@ -765,49 +874,11 @@
                 </div>
               </div>
 
-              <!-- Countries by Region -->
-              <div class="breakdown-card breakdown-card--wide">
-                <div class="breakdown-card__header">
-                  <i class="ph-fill ph-globe-hemisphere-west"></i>
-                  <span>Countries by Region</span>
-                  <strong>{{ totalCountries }}</strong>
-                </div>
-                <div class="breakdown-region-grid">
-                  <div v-for="row in countriesByRegion" :key="row.region" class="breakdown-region-item">
-                    <div class="breakdown-region-item__header">
-                      <span class="breakdown-region-item__name">{{ row.region }}</span>
-                      <span class="breakdown-region-item__count">{{ row.count }}</span>
-                    </div>
-                    <div class="breakdown-region-item__flags">{{ row.flags }}</div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
 
           </div><!-- end stats-topic: Data Breakdown -->
 
-          <!-- ═══════════════════════════════════════════════════════════════ -->
-          <!-- SECTION 8: TRENDS & CHARTS - Visual Analytics                   -->
-          <!-- ═══════════════════════════════════════════════════════════════ -->
-          <div class="stats-topic">
-            <div class="stats-topic__header">
-              <h2 class="stats-topic__title"><i class="ph-fill ph-chart-bar"></i> Trends & Charts</h2>
-            </div>
-
-          <!-- Charts Area -->
-          <div class="charts-grid">
-            <div class="chart-card" style="grid-column: span 2;">
-              <h3 class="chart-card__title">Travel Velocity</h3>
-              <div class="chart-card__content"><canvas ref="chartVelocity"></canvas></div>
-            </div>
-            <div class="chart-card">
-              <h3 class="chart-card__title">Regional Split</h3>
-              <div class="chart-card__content chart-card__content--centered"><canvas ref="chartContinents"></canvas></div>
-            </div>
-          </div>
-
-          </div><!-- end stats-topic: Trends & Charts -->
         </div>
       </div>
     </main>
@@ -834,6 +905,7 @@ declare const L: {
 interface TripWithDuration {
   city: string;
   country: string;
+  countryFlag: string;
   days: number;
   dateIn: string;
   dateOut: string;
@@ -965,6 +1037,45 @@ const COUNTRY_ISO_MAP: Record<string, string> = {
   "KE": "Kenya", "TZ": "Tanzania"
 };
 
+// ISO 3166-1 alpha-3 (3-letter) country codes
+const COUNTRY_ISO3_MAP: Record<string, string> = {
+  "Germany": "DEU", "Switzerland": "CHE", "Netherlands": "NLD", "Austria": "AUT",
+  "United Kingdom": "GBR", "Ireland": "IRL", "Sweden": "SWE", "Norway": "NOR",
+  "Denmark": "DNK", "Iceland": "ISL", "France": "FRA", "Belgium": "BEL",
+  "Spain": "ESP", "Portugal": "PRT", "Italy": "ITA", "Greece": "GRC",
+  "Cyprus": "CYP", "Romania": "ROU", "Bulgaria": "BGR", "Serbia": "SRB",
+  "Croatia": "HRV", "Slovenia": "SVN", "Poland": "POL", "Czechia": "CZE",
+  "Slovakia": "SVK", "Ukraine": "UKR", "Russia": "RUS", "Hungary": "HUN",
+  "Finland": "FIN", "Lithuania": "LTU", "Latvia": "LVA", "Estonia": "EST",
+  "United States": "USA", "Canada": "CAN", "Mexico": "MEX", "Brazil": "BRA",
+  "Argentina": "ARG", "Chile": "CHL", "Peru": "PER", "Colombia": "COL",
+  "Australia": "AUS", "New Zealand": "NZL", "Japan": "JPN", "South Korea": "KOR",
+  "China": "CHN", "Taiwan": "TWN", "Thailand": "THA", "Vietnam": "VNM",
+  "Singapore": "SGP", "Malaysia": "MYS", "Indonesia": "IDN", "Philippines": "PHL",
+  "India": "IND", "Nepal": "NPL", "Turkey": "TUR", "UAE": "ARE",
+  "Israel": "ISR", "Egypt": "EGY", "Morocco": "MAR", "South Africa": "ZAF",
+  "Kenya": "KEN", "Tanzania": "TZA", "Luxembourg": "LUX", "Monaco": "MCO",
+  "Malta": "MLT", "Andorra": "AND", "San Marino": "SMR", "Vatican": "VAT",
+  "Liechtenstein": "LIE", "Montenegro": "MNE", "Bosnia": "BIH", "Albania": "ALB",
+  "North Macedonia": "MKD", "Kosovo": "XKX", "Moldova": "MDA", "Belarus": "BLR",
+  "Georgia": "GEO", "Armenia": "ARM", "Azerbaijan": "AZE", "Kazakhstan": "KAZ",
+  "Uzbekistan": "UZB", "Turkmenistan": "TKM", "Tajikistan": "TJK", "Kyrgyzstan": "KGZ",
+  "Mongolia": "MNG", "Cambodia": "KHM", "Laos": "LAO", "Myanmar": "MMR",
+  "Bangladesh": "BGD", "Sri Lanka": "LKA", "Pakistan": "PAK", "Afghanistan": "AFG",
+  "Iran": "IRN", "Iraq": "IRQ", "Syria": "SYR", "Lebanon": "LBN", "Jordan": "JOR",
+  "Saudi Arabia": "SAU", "Qatar": "QAT", "Kuwait": "KWT", "Bahrain": "BHR", "Oman": "OMN",
+  "Yemen": "YEM", "Tunisia": "TUN", "Algeria": "DZA", "Libya": "LBY", "Sudan": "SDN",
+  "Ethiopia": "ETH", "Nigeria": "NGA", "Ghana": "GHA", "Senegal": "SEN", "Ivory Coast": "CIV",
+  "Cameroon": "CMR", "Uganda": "UGA", "Rwanda": "RWA", "Botswana": "BWA", "Namibia": "NAM",
+  "Zimbabwe": "ZWE", "Zambia": "ZMB", "Mozambique": "MOZ", "Madagascar": "MDG",
+  "Cuba": "CUB", "Dominican Republic": "DOM", "Puerto Rico": "PRI", "Jamaica": "JAM",
+  "Haiti": "HTI", "Costa Rica": "CRI", "Panama": "PAN", "Guatemala": "GTM",
+  "Honduras": "HND", "El Salvador": "SLV", "Nicaragua": "NIC", "Belize": "BLZ",
+  "Ecuador": "ECU", "Bolivia": "BOL", "Paraguay": "PRY", "Uruguay": "URY",
+  "Venezuela": "VEN", "Guyana": "GUY", "Suriname": "SUR", "Fiji": "FJI",
+  "Papua New Guinea": "PNG", "Czech Republic": "CZE"
+};
+
 // Globe state
 let globeInitialized = false;
 let globeScene: THREE.Scene | null = null;
@@ -994,7 +1105,7 @@ const currentViewTitle = computed(() => {
 
 // Calculate trip durations from travel data - CONSOLIDATED BY CITY
 const tripsWithDuration = computed((): TripWithDuration[] => {
-  const cityMap: Record<string, { city: string; country: string; days: number; dateIn: string; dateOut: string }> = {};
+  const cityMap: Record<string, { city: string; country: string; countryFlag: string; days: number; dateIn: string; dateOut: string }> = {};
 
   travelData.trips.forEach(trip => {
     const key = `${trip.city}_${trip.country}`;
@@ -1006,6 +1117,7 @@ const tripsWithDuration = computed((): TripWithDuration[] => {
       cityMap[key] = {
         city: trip.city,
         country: trip.country,
+        countryFlag: trip.countryFlag,
         days: 0,
         dateIn: trip.dateIn,
         dateOut: trip.dateOut
@@ -1038,7 +1150,176 @@ const longStays2WeeksTo1Month = computed(() => {
 // Stats computed from data - COUNT UNIQUE CITIES
 const totalCities = computed(() => new Set(travelData.trips.map(t => `${t.city}_${t.country}`)).size);
 const totalCountries = computed(() => new Set(travelData.trips.map(t => t.country)).size);
+const totalContinents = computed(() => new Set(travelData.trips.map(t => t.continent)).size);
+const totalNomadRegions = computed(() => new Set(travelData.trips.map(t => t.nomadRegion)).size);
 const totalDaysAbroad = computed(() => tripsWithDuration.value.reduce((sum, t) => sum + t.days, 0));
+
+// World totals for percentage calculations
+const WORLD_COUNTRIES_UN = 195;
+const WORLD_NOMAD_REGIONS = 1301;
+
+// Country name to ISO 3-letter code lookup
+const countryNameToISO3 = computed(() => {
+  const map: Record<string, string> = {};
+  for (const [name, iso3] of Object.entries(COUNTRY_ISO3_MAP)) {
+    map[name] = iso3;
+    map[name.toLowerCase()] = iso3;
+  }
+  return map;
+});
+
+// Country Timeline - grouped by consecutive country stays
+const countryTimeline = computed(() => {
+  // Sort all trips by dateIn chronologically
+  const sortedTrips = [...travelData.trips].sort((a, b) =>
+    new Date(a.dateIn).getTime() - new Date(b.dateIn).getTime()
+  );
+
+  if (sortedTrips.length === 0) return [];
+
+  // Group consecutive stays in same country
+  const timeline: { country: string; iso: string; flag: string; dateIn: string; dateOut: string; days: number }[] = [];
+  let current = {
+    country: sortedTrips[0].country,
+    flag: sortedTrips[0].countryFlag,
+    dateIn: sortedTrips[0].dateIn,
+    dateOut: sortedTrips[0].dateOut
+  };
+
+  for (let i = 1; i < sortedTrips.length; i++) {
+    const trip = sortedTrips[i];
+    if (trip.country === current.country) {
+      // Same country - extend dateOut if later
+      if (trip.dateOut > current.dateOut) current.dateOut = trip.dateOut;
+      if (trip.dateIn < current.dateIn) current.dateIn = trip.dateIn;
+    } else {
+      // Different country - save current and start new
+      const days = Math.ceil((new Date(current.dateOut).getTime() - new Date(current.dateIn).getTime()) / (1000 * 60 * 60 * 24));
+      const iso = countryNameToISO3.value[current.country] || countryNameToISO3.value[current.country.toLowerCase()] || '';
+      timeline.push({ ...current, iso, days });
+      current = {
+        country: trip.country,
+        flag: trip.countryFlag,
+        dateIn: trip.dateIn,
+        dateOut: trip.dateOut
+      };
+    }
+  }
+  // Push last entry
+  const days = Math.ceil((new Date(current.dateOut).getTime() - new Date(current.dateIn).getTime()) / (1000 * 60 * 60 * 24));
+  const iso = countryNameToISO3.value[current.country] || countryNameToISO3.value[current.country.toLowerCase()] || '';
+  timeline.push({ ...current, iso, days });
+
+  return timeline;
+});
+
+// Format date for timeline display (compact: DD/MM/YY)
+const formatTimelineDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${String(d.getFullYear()).slice(-2)}`;
+};
+
+// Cities visited by year and month (heatmap data)
+const citiesByYearMonth = computed(() => {
+  const data: Record<number, Record<number, Set<string>>> = {};
+
+  travelData.trips.forEach(trip => {
+    const dateIn = new Date(trip.dateIn);
+    const dateOut = new Date(trip.dateOut);
+    const cityKey = `${trip.city}_${trip.country}`;
+
+    // Mark city for each month it spans
+    let current = new Date(dateIn);
+    while (current <= dateOut) {
+      const year = current.getFullYear();
+      const month = current.getMonth() + 1; // 1-12
+
+      if (!data[year]) data[year] = {};
+      if (!data[year][month]) data[year][month] = new Set();
+      data[year][month].add(cityKey);
+
+      // Move to next month
+      current.setMonth(current.getMonth() + 1);
+      current.setDate(1);
+    }
+  });
+
+  // Convert to array format with counts
+  const years = Object.keys(data).map(Number).sort();
+  return years.map(year => ({
+    year,
+    months: Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      count: data[year]?.[i + 1]?.size || 0
+    }))
+  }));
+});
+
+// Countries visited by year and month
+const countriesByYearMonth = computed(() => {
+  const data: Record<number, Record<number, Set<string>>> = {};
+
+  travelData.trips.forEach(trip => {
+    const dateIn = new Date(trip.dateIn);
+    const dateOut = new Date(trip.dateOut);
+
+    // Mark country for each month it spans
+    let current = new Date(dateIn);
+    while (current <= dateOut) {
+      const year = current.getFullYear();
+      const month = current.getMonth() + 1; // 1-12
+
+      if (!data[year]) data[year] = {};
+      if (!data[year][month]) data[year][month] = new Set();
+      data[year][month].add(trip.country);
+
+      // Move to next month
+      current.setMonth(current.getMonth() + 1);
+      current.setDate(1);
+    }
+  });
+
+  // Convert to array format with counts
+  const years = Object.keys(data).map(Number).sort();
+  return years.map(year => ({
+    year,
+    months: Array.from({ length: 12 }, (_, i) => ({
+      month: i + 1,
+      count: data[year]?.[i + 1]?.size || 0
+    }))
+  }));
+});
+
+// Timeline grouped by year ranges for display
+const timelineByYearGroups = computed(() => {
+  const groups = [
+    { label: '2015–2021', entries: [] as typeof countryTimeline.value },
+    { label: '2022', entries: [] as typeof countryTimeline.value },
+    { label: '2023', entries: [] as typeof countryTimeline.value },
+    { label: '2024', entries: [] as typeof countryTimeline.value },
+    { label: '2025', entries: [] as typeof countryTimeline.value },
+    { label: '2026', entries: [] as typeof countryTimeline.value },
+  ];
+
+  countryTimeline.value.forEach(entry => {
+    const year = new Date(entry.dateIn).getFullYear();
+    if (year <= 2021) {
+      groups[0].entries.push(entry);
+    } else if (year === 2022) {
+      groups[1].entries.push(entry);
+    } else if (year === 2023) {
+      groups[2].entries.push(entry);
+    } else if (year === 2024) {
+      groups[3].entries.push(entry);
+    } else if (year === 2025) {
+      groups[4].entries.push(entry);
+    } else {
+      groups[5].entries.push(entry);
+    }
+  });
+
+  return groups;
+});
 
 // Timeline unique values for filters
 const uniqueContinents = computed(() => [...new Set(travelData.trips.map(t => t.continent))].sort());
@@ -1059,22 +1340,6 @@ const visitedCountryCodes = computed(() => {
     if (iso) visited.add(iso);
   });
   return visited;
-});
-
-// Flag summary by continent
-const flagSummaryByContinent = computed(() => {
-  const visited = visitedCountryCodes.value;
-  return CULTURAL_REGIONS.map(region => {
-    const allCountries = region.groups.flatMap(g => g.countries);
-    const visitedInRegion = allCountries.filter(iso => visited.has(iso));
-    return {
-      region: region.region,
-      emoji: region.emoji,
-      flags: visitedInRegion.map(iso => isoToFlag(iso)).join(' '),
-      visited: visitedInRegion.length,
-      total: allCountries.length
-    };
-  });
 });
 
 // Cultural regions stats for visited vs not visited table
@@ -1975,21 +2240,6 @@ const capitalCities = computed(() => {
   });
 });
 
-// Top countries by cities visited - COUNT UNIQUE CITIES
-const topCountriesByCities = computed(() => {
-  const countries: Record<string, { cities: Set<string>; flag: string }> = {};
-  travelData.trips.forEach(trip => {
-    if (!countries[trip.country]) {
-      countries[trip.country] = { cities: new Set(), flag: trip.countryFlag };
-    }
-    countries[trip.country].cities.add(trip.city);
-  });
-  return Object.entries(countries)
-    .map(([country, data]) => ({ country, cities: data.cities.size, flag: data.flag }))
-    .sort((a, b) => b.cities - a.cities)
-    .slice(0, 10);
-});
-
 // Days spent by continent
 const daysByContinent = computed(() => {
   const continents: Record<string, number> = {};
@@ -2004,8 +2254,8 @@ const daysByContinent = computed(() => {
     .sort((a, b) => b.days - a.days);
 });
 
-// Days spent by country (top 10)
-const daysByCountry = computed(() => {
+// Countries by time spent - ALL countries (not limited to 10)
+const allCountriesByTime = computed(() => {
   const countries: Record<string, { days: number; flag: string }> = {};
   travelData.trips.forEach(trip => {
     const dateIn = new Date(trip.dateIn);
@@ -2018,8 +2268,51 @@ const daysByCountry = computed(() => {
   });
   return Object.entries(countries)
     .map(([country, data]) => ({ country, ...data }))
-    .sort((a, b) => b.days - a.days)
-    .slice(0, 10);
+    .sort((a, b) => b.days - a.days);
+});
+
+// Countries by time: 1+ year (365+ days)
+const countriesByTimeOver1Year = computed(() => {
+  return allCountriesByTime.value.filter(c => c.days >= 365);
+});
+
+// Countries by time: 3-12 months (90-364 days)
+const countriesByTime3To12Months = computed(() => {
+  return allCountriesByTime.value.filter(c => c.days >= 90 && c.days < 365);
+});
+
+// Countries by time: 1-3 months (30-89 days)
+const countriesByTime1To3Months = computed(() => {
+  return allCountriesByTime.value.filter(c => c.days >= 30 && c.days < 90);
+});
+
+// Countries by cities visited - ALL countries (not limited to 10)
+const allCountriesByCities = computed(() => {
+  const countries: Record<string, { cities: Set<string>; flag: string }> = {};
+  travelData.trips.forEach(trip => {
+    if (!countries[trip.country]) {
+      countries[trip.country] = { cities: new Set(), flag: trip.countryFlag };
+    }
+    countries[trip.country].cities.add(trip.city);
+  });
+  return Object.entries(countries)
+    .map(([country, data]) => ({ country, cities: data.cities.size, flag: data.flag }))
+    .sort((a, b) => b.cities - a.cities);
+});
+
+// Countries by cities: 10+ cities
+const countriesByCitiesOver10 = computed(() => {
+  return allCountriesByCities.value.filter(c => c.cities >= 10);
+});
+
+// Countries by cities: 5-9 cities
+const countriesByCities5To9 = computed(() => {
+  return allCountriesByCities.value.filter(c => c.cities >= 5 && c.cities < 10);
+});
+
+// Countries by cities: 2-4 cities
+const countriesByCities2To4 = computed(() => {
+  return allCountriesByCities.value.filter(c => c.cities >= 2 && c.cities < 5);
 });
 
 // Average stay duration
@@ -2087,16 +2380,6 @@ const tripsByDurationCategory = computed(() => {
 });
 
 // Travel intensity by month
-const tripsByMonth = computed(() => {
-  const months: Record<number, number> = {};
-  for (let i = 1; i <= 12; i++) months[i] = 0;
-  travelData.trips.forEach(trip => {
-    const month = new Date(trip.dateIn).getMonth() + 1;
-    months[month]++;
-  });
-  return months;
-});
-
 // Geographic extremes
 const geographicExtremes = computed(() => {
   let northernmost = travelData.trips[0];
@@ -2188,30 +2471,6 @@ const citiesBreakdown = computed(() => {
       .map(([name, data]) => ({ name, count: data.cities.size, flag: data.flag }))
       .sort((a, b) => b.count - a.count)
   };
-});
-
-// Countries grouped by nomad region
-const countriesByRegion = computed(() => {
-  const byRegion: Record<string, { countries: Set<string>; flags: string[] }> = {};
-
-  travelData.trips.forEach(trip => {
-    if (!byRegion[trip.nomadRegion]) {
-      byRegion[trip.nomadRegion] = { countries: new Set(), flags: [] };
-    }
-    if (!byRegion[trip.nomadRegion].countries.has(trip.country)) {
-      byRegion[trip.nomadRegion].countries.add(trip.country);
-      byRegion[trip.nomadRegion].flags.push(trip.countryFlag);
-    }
-  });
-
-  return Object.entries(byRegion)
-    .map(([region, data]) => ({
-      region,
-      count: data.countries.size,
-      flags: data.flags.join(' '),
-      countries: Array.from(data.countries)
-    }))
-    .sort((a, b) => b.count - a.count);
 });
 
 function initCharts() {

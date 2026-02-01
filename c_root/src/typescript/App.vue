@@ -53,7 +53,6 @@
     >
       <BioFractalViewer
         v-if="showFractal"
-        :key="fractalKey"
         :mode="fractalMode"
       />
     </div>
@@ -99,10 +98,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted, defineAsyncComponent } from 'vue';
 import BioFractalViewer from './components/BioFractalViewer.vue';
 import ComplexWaveVisualization from './components/ComplexWaveVisualization.vue';
-import CubeView from './components/CubeView.vue';
+
+// Lazy load CubeView - only loaded when first opened
+const CubeView = defineAsyncComponent(() => import('./components/CubeView.vue'));
 
 const showFractal = ref(true);
 const showCube = ref(false);
@@ -131,7 +132,6 @@ onUnmounted(() => {
   window.removeEventListener('keydown', handleGlobalKeydown);
 });
 const fractalMode = ref(23);
-const fractalKey = ref(0);
 const brightness = ref(50);
 const menuOpen = ref(false);
 const navOpen = ref(false);
@@ -266,7 +266,6 @@ const toggleMenu = () => {
 const onModeChange = (e: Event) => {
   const target = e.target as HTMLSelectElement;
   fractalMode.value = parseInt(target.value);
-  fractalKey.value++;
 };
 
 const onBrightnessChange = (e: Event) => {

@@ -21,6 +21,13 @@ let program: WebGLProgram | null = null;
 let animationId: number | null = null;
 let startTime = Date.now();
 
+// Cache uniform locations for performance
+let uniformLocations: {
+  uTime: WebGLUniformLocation | null;
+  uResolution: WebGLUniformLocation | null;
+  uMode: WebGLUniformLocation | null;
+} | null = null;
+
 // Import shader files
 import vertexShaderSource from '../../shaders/vertex.glsl?raw';
 import fragmentBaseSource from '../../shaders/fragment-base.glsl?raw';
@@ -89,6 +96,13 @@ const initWebGL = (): boolean => {
   gl.enableVertexAttribArray(aPosition);
   gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
 
+  // Cache uniform locations
+  uniformLocations = {
+    uTime: gl.getUniformLocation(program, 'uTime'),
+    uResolution: gl.getUniformLocation(program, 'uResolution'),
+    uMode: gl.getUniformLocation(program, 'uMode')
+  };
+
   return true;
 };
 
@@ -101,12 +115,12 @@ const resize = (): void => {
 };
 
 const render = (): void => {
-  if (!gl || !program || !canvasRef.value) return;
+  if (!gl || !program || !canvasRef.value || !uniformLocations) return;
 
   gl.useProgram(program);
-  gl.uniform1f(gl.getUniformLocation(program, 'uTime'), (Date.now() - startTime) / 1000);
-  gl.uniform2f(gl.getUniformLocation(program, 'uResolution'), canvasRef.value.width, canvasRef.value.height);
-  gl.uniform1i(gl.getUniformLocation(program, 'uMode'), props.mode);
+  gl.uniform1f(uniformLocations.uTime, (Date.now() - startTime) / 1000);
+  gl.uniform2f(uniformLocations.uResolution, canvasRef.value.width, canvasRef.value.height);
+  gl.uniform1i(uniformLocations.uMode, props.mode);
   gl.drawArrays(gl.TRIANGLES, 0, 6);
 
   animationId = requestAnimationFrame(render);

@@ -100,7 +100,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, shallowRef, computed, onMounted, onUnmounted, watch } from 'vue';
 
 interface Props {
   active?: boolean;
@@ -143,7 +143,8 @@ const pages = {
 };
 
 // Track which faces have been visited (lazy load iframes)
-const visitedFaces = ref<Set<number>>(new Set([0])); // Front is always loaded
+// Using shallowRef since we manually trigger updates
+const visitedFaces = shallowRef<Set<number>>(new Set([0])); // Front is always loaded
 
 // Check if a face should load its iframe
 const shouldLoadFace = (faceIndex: number) => {
@@ -160,8 +161,12 @@ const markAdjacentFacesVisited = () => {
     4: [0, 1, 2, 3], // Top -> all sides
     5: [0, 1, 2, 3], // Bottom -> all sides
   };
-  visitedFaces.value.add(currentFace.value);
-  adjacent[currentFace.value]?.forEach(f => visitedFaces.value.add(f));
+  const newSet = new Set(visitedFaces.value);
+  newSet.add(currentFace.value);
+  adjacent[currentFace.value]?.forEach(f => newSet.add(f));
+  if (newSet.size !== visitedFaces.value.size) {
+    visitedFaces.value = newSet; // Trigger reactivity only when changed
+  }
 };
 
 // Face rotation presets (flat 2D view)

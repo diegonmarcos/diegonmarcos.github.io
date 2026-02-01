@@ -1694,3 +1694,114 @@ Press Ctrl+C to stop
 [2026-01-30 17:15:52] [30/Jan/2026 17:15:52] GET /c_Personal_Tools/mytrips/dist/assets/main-QFXYGyyb.css HTTP/1.1
 [2026-01-30 17:15:53] [30/Jan/2026 17:15:53] 404
 [2026-01-30 17:15:53] [30/Jan/2026 17:15:53] GET /favicon.ico HTTP/1.1
+[2026-01-31 15:29:39] Static Server with Eruda DevTools
+[2026-01-31 15:29:39]   URL:   http://localhost:8000
+[2026-01-31 15:29:39]   Mount: /home/diego/Mounts/Git/front
+[2026-01-31 15:29:39]   Mode:  Eruda auto-injection (no logging)
+[2026-01-31 15:29:39] 
+[2026-01-31 15:29:39] Press Ctrl+C to stop
+[2026-01-31 16:41:46] Static Server with Eruda DevTools
+[2026-01-31 16:41:46]   URL:   http://localhost:8000
+[2026-01-31 16:41:46]   Mount: /home/diego/Mounts/Git/front
+[2026-01-31 16:41:46]   Mode:  Eruda auto-injection (no logging)
+[2026-01-31 16:41:46] 
+[2026-01-31 16:41:46] Press Ctrl+C to stop
+[2026-01-31 16:41:56] [2026-01-31 15:41:56] 200 GET / (listing)
+[2026-01-31 16:41:56] [2026-01-31 15:41:56] 404 GET /favicon.ico
+[2026-01-31 16:45:18] [2026-01-31 15:45:18] 200 GET /c_Personal_Tools/ (listing)
+[2026-01-31 16:45:21] [2026-01-31 15:45:21] 200 GET /c_Personal_Tools/mytrips/ (listing)
+[2026-01-31 16:45:23] [2026-01-31 15:45:23] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 16:45:23] [2026-01-31 15:45:23] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-mLLJQ9YZ.js
+[2026-01-31 16:45:23] [2026-01-31 15:45:23] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-QFXYGyyb.css
+[2026-01-31 16:45:23] [2026-01-31 15:45:23] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-PPib9e4_.js
+[2026-01-31 16:45:56] [2026-01-31 15:45:56] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 16:45:56] [2026-01-31 15:45:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BUERlqGB.js
+[2026-01-31 16:45:56] [2026-01-31 15:45:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-QFXYGyyb.css
+[2026-01-31 16:45:56] [2026-01-31 15:45:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-PPib9e4_.js
+[2026-01-31 16:45:56] [2026-01-31 15:45:56] 404 GET /favicon.ico
+[2026-01-31 16:48:56] [2026-01-31 15:48:56] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 16:48:56] [2026-01-31 15:48:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-lm1_DhFX.js
+[2026-01-31 16:48:56] [2026-01-31 15:48:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-QFXYGyyb.css
+[2026-01-31 16:48:56] [2026-01-31 15:48:56] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-PPib9e4_.js
+[2026-01-31 16:48:57] [2026-01-31 15:48:57] 404 GET /favicon.ico
+[2026-01-31 16:49:59] [2026-01-31 15:49:59] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 16:49:59] [2026-01-31 15:49:59] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DKmEBq0c.js
+[2026-01-31 16:49:59] [2026-01-31 15:49:59] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-QIZodedo.css
+[2026-01-31 16:49:59] [2026-01-31 15:49:59] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DP9AVg_G.js
+[2026-01-31 16:49:59] [2026-01-31 15:49:59] 404 GET /favicon.ico
+[2026-01-31 16:55:50] [2026-01-31 15:55:50] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 16:55:50] [2026-01-31 15:55:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-NAhgrOpi.js
+[2026-01-31 16:55:50] [2026-01-31 15:55:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Q_khUlZP.js
+[2026-01-31 16:55:50] [2026-01-31 15:55:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DXvPb8wT.css
+[2026-01-31 16:55:52] [2026-01-31 15:55:52] 404 GET /favicon.ico
+[2026-01-31 17:02:29] [2026-01-31 16:02:29] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:02:29] [2026-01-31 16:02:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BvGmpe-1.js
+[2026-01-31 17:02:29] [2026-01-31 16:02:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Dc39Vcnb.js
+[2026-01-31 17:02:29] [2026-01-31 16:02:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CmPz4NUC.css
+[2026-01-31 17:02:29] [2026-01-31 16:02:29] 404 GET /favicon.ico
+[2026-01-31 17:04:55] [2026-01-31 16:04:55] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:04:55] [2026-01-31 16:04:55] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-ChIrvaZQ.js
+[2026-01-31 17:04:55] [2026-01-31 16:04:55] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BJ1x3wnp.js
+[2026-01-31 17:04:55] [2026-01-31 16:04:55] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BQRvWTiN.css
+[2026-01-31 17:04:55] [2026-01-31 16:04:55] 404 GET /favicon.ico
+[2026-01-31 17:06:50] [2026-01-31 16:06:50] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:06:50] [2026-01-31 16:06:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DPaxLLUk.js
+[2026-01-31 17:06:50] [2026-01-31 16:06:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-B60lU3aJ.js
+[2026-01-31 17:06:50] [2026-01-31 16:06:50] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CZxYq29c.css
+[2026-01-31 17:06:56] [2026-01-31 16:06:56] 404 GET /favicon.ico
+[2026-01-31 17:09:32] [2026-01-31 16:09:32] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:09:32] [2026-01-31 16:09:32] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CDHBv6iV.js
+[2026-01-31 17:09:32] [2026-01-31 16:09:32] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-xSxowkM6.css
+[2026-01-31 17:09:32] [2026-01-31 16:09:32] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-C7_HiCXg.js
+[2026-01-31 17:09:33] [2026-01-31 16:09:33] 404 GET /favicon.ico
+[2026-01-31 17:10:53] [2026-01-31 16:10:53] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:10:53] [2026-01-31 16:10:53] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-2f643wJG.js
+[2026-01-31 17:10:53] [2026-01-31 16:10:53] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DPjd_22c.js
+[2026-01-31 17:10:53] [2026-01-31 16:10:53] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BQhHialW.css
+[2026-01-31 17:10:53] [2026-01-31 16:10:53] 404 GET /favicon.ico
+[2026-01-31 17:12:40] [2026-01-31 16:12:40] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:12:40] [2026-01-31 16:12:40] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DnhfYCkR.js
+[2026-01-31 17:12:40] [2026-01-31 16:12:40] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-ByqahNKb.js
+[2026-01-31 17:12:40] [2026-01-31 16:12:40] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Di52uNHN.css
+[2026-01-31 17:12:41] [2026-01-31 16:12:41] 404 GET /favicon.ico
+[2026-01-31 17:14:02] [2026-01-31 16:14:02] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:14:02] [2026-01-31 16:14:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DnhfYCkR.js
+[2026-01-31 17:14:02] [2026-01-31 16:14:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Di52uNHN.css
+[2026-01-31 17:14:02] [2026-01-31 16:14:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-ByqahNKb.js
+[2026-01-31 17:14:03] [2026-01-31 16:14:03] 404 GET /favicon.ico
+[2026-01-31 17:14:17] [2026-01-31 16:14:17] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:14:17] [2026-01-31 16:14:17] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CZ-j1sQ2.js
+[2026-01-31 17:14:17] [2026-01-31 16:14:17] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Bn1h1YJG.js
+[2026-01-31 17:14:17] [2026-01-31 16:14:17] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BYAtq5Q6.css
+[2026-01-31 17:14:17] [2026-01-31 16:14:17] 404 GET /favicon.ico
+[2026-01-31 17:20:42] [2026-01-31 16:20:42] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:20:42] [2026-01-31 16:20:42] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BWQcQbQg.js
+[2026-01-31 17:20:42] [2026-01-31 16:20:42] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DBE4GHKz.js
+[2026-01-31 17:20:42] [2026-01-31 16:20:42] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Ct7R5Tg-.css
+[2026-01-31 17:20:43] [2026-01-31 16:20:43] 404 GET /favicon.ico
+[2026-01-31 17:35:02] [2026-01-31 16:35:02] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:35:02] [2026-01-31 16:35:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-klLSGMqt.js
+[2026-01-31 17:35:02] [2026-01-31 16:35:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-Dqvk9f5_.js
+[2026-01-31 17:35:02] [2026-01-31 16:35:02] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-3bCNCQlw.css
+[2026-01-31 17:35:03] [2026-01-31 16:35:03] 404 GET /favicon.ico
+[2026-01-31 17:37:37] [2026-01-31 16:37:37] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:37:37] [2026-01-31 16:37:37] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-DZYpEq_m.js
+[2026-01-31 17:37:37] [2026-01-31 16:37:37] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BhJsn7y4.js
+[2026-01-31 17:37:37] [2026-01-31 16:37:37] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CYJjwDwi.css
+[2026-01-31 17:37:37] [2026-01-31 16:37:37] 404 GET /favicon.ico
+[2026-01-31 17:45:29] [2026-01-31 16:45:29] 200 GET /c_Personal_Tools/mytrips/dist/ (index.html)
+[2026-01-31 17:45:29] [2026-01-31 16:45:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BDA9E-_N.js
+[2026-01-31 17:45:29] [2026-01-31 16:45:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-BhJsn7y4.js
+[2026-01-31 17:45:29] [2026-01-31 16:45:29] 200 GET /c_Personal_Tools/mytrips/dist/assets/main-CYJjwDwi.css
+[2026-01-31 17:45:30] [2026-01-31 16:45:30] 404 GET /favicon.ico
+[2026-02-01 17:49:21] Static Server with Eruda DevTools
+[2026-02-01 17:49:21]   URL:   http://localhost:8000
+[2026-02-01 17:49:21]   Mount: /home/diego/Mounts/Git/front
+[2026-02-01 17:49:21]   Mode:  Eruda auto-injection (no logging)
+[2026-02-01 17:49:21] 
+[2026-02-01 17:49:21] Press Ctrl+C to stop
+[2026-02-01 17:49:27] [2026-02-01 16:49:27] 200 GET / (listing)
+[2026-02-01 17:49:27] [2026-02-01 16:49:27] 404 GET /favicon.ico
+[2026-02-01 17:49:34] [2026-02-01 16:49:34] 200 GET /c_root/ (listing)
+[2026-02-01 17:49:36] [2026-02-01 16:49:36] 200 GET /c_root/dist/ (index.html)
+[2026-02-01 17:49:36] [2026-02-01 16:49:36] 200 GET /c_root/dist/assets/index-XDFhGKLS.js

@@ -130,15 +130,26 @@ kill_port_user() {
 }
 
 check_dependencies() {
-    # Check basic dependencies (always needed)
+    # Check basic dependencies based on mode
     local missing_pkgs=""
+    local needs_node=0
     local needs_python=0
     local needs_coreutils=0
     local needs_socat=0
     local needs_awk=0
 
-    if ! command -v python3 >/dev/null 2>&1; then
-        needs_python=1
+    # Static mode uses Node.js
+    if [ "$1" = "static" ]; then
+        if ! command -v node >/dev/null 2>&1; then
+            needs_node=1
+        fi
+    fi
+
+    # Live and dev modes still use Python
+    if [ "$1" = "live" ] || [ "$1" = "dev" ]; then
+        if ! command -v python3 >/dev/null 2>&1; then
+            needs_python=1
+        fi
     fi
 
     # Check dev mode dependencies if requested
@@ -172,6 +183,7 @@ check_dependencies() {
     fi
 
     # Build package list
+    [ $needs_node -eq 1 ] && missing_pkgs="${missing_pkgs} nodejs"
     [ $needs_python -eq 1 ] && missing_pkgs="${missing_pkgs} python3"
     [ $needs_socat -eq 1 ] && missing_pkgs="${missing_pkgs} socat"
     [ $needs_coreutils -eq 1 ] && missing_pkgs="${missing_pkgs} coreutils"
@@ -227,7 +239,7 @@ is_log_receiver_running() {
     return 1
 }
 
-# Static server - lightweight Python server with Eruda DevTools (no logging)
+# Static server - lightweight Node.js server with Eruda DevTools and styled listings
 do_start_static() {
     if is_running; then
         echo "Server is already running (PID $PID)."
@@ -248,13 +260,19 @@ do_start_static() {
         printf "${GREEN}✓${NC} Port $PORT freed.\n"
     fi
 
-    # Check dependencies
-    if ! check_dependencies; then
+    # Check dependencies (Node.js)
+    if ! check_dependencies "static"; then
         return 1
     fi
 
     if [ ! -d "$MOUNT_DIR" ]; then
         echo "Error: Mount point '$MOUNT_DIR' does not exist."
+        return 1
+    fi
+
+    # Check if static-server.mjs exists
+    if [ ! -f "$SCRIPT_DIR/static-server.mjs" ]; then
+        printf "${RED}Error: static-server.mjs not found in $SCRIPT_DIR${NC}\n"
         return 1
     fi
 
@@ -272,10 +290,10 @@ do_start_static() {
         rm -f "$FIFO"
     ) > /dev/null 2>&1 &
 
-    printf "${CYAN}Starting static server (with Eruda)...${NC}\n"
+    printf "${CYAN}Starting static server (Node.js + Eruda)...${NC}\n"
     echo "  Port:  $PORT"
     echo "  Mount: $MOUNT_DIR"
-    nohup python3 -u "$SCRIPT_DIR/static-server.py" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
+    nohup node "$SCRIPT_DIR/static-server.mjs" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
@@ -303,7 +321,7 @@ do_start_static() {
     if [ "$started" = "true" ]; then
         printf "${GREEN}✓${NC} Static server started (PID: $SERVER_PID)\n"
         printf "  URL: ${BLUE}http://localhost:$PORT${NC}\n"
-        printf "  Mode: ${GREEN}Eruda DevTools (no logging)${NC}\n"
+        printf "  Mode: ${GREEN}Node.js + Eruda DevTools${NC}\n"
         printf "  Logs: $LOG_FILE\n"
         return 0
     else
@@ -340,8 +358,8 @@ do_start_live() {
         printf "${GREEN}✓${NC} Port $PORT freed.\n"
     fi
 
-    # Check dependencies
-    if ! check_dependencies; then
+    # Check dependencies (Python)
+    if ! check_dependencies "live"; then
         return 1
     fi
 
@@ -631,6 +649,7 @@ do_stop_dev() {
     fi
 
     # Kill all known server processes by pattern
+    pkill -9 -f "static-server.mjs" 2>/dev/null
     pkill -9 -f "static-server.py" 2>/dev/null
     pkill -9 -f "live-server.py" 2>/dev/null
     pkill -9 -f "dev-server.sh" 2>/dev/null
@@ -829,7 +848,7 @@ show_tui() {
         printf "  ${BOLD}MOUNT:${NC}   $MOUNT_DIR\n"
 
         printf "${CYAN}╟─ SERVER MODES ───────────────────────────────────────────${NC}\n"
-        printf "  1. ${GREEN}STATIC${NC}  - Python server + Eruda (no reload)\n"
+        printf "  1. ${GREEN}STATIC${NC}  - Node.js + Eruda + styled listings\n"
         printf "  2. ${GREEN}LIVE${NC}    - Python server + Eruda + auto-refresh\n"
         printf "  3. ${GREEN}DEV${NC}     - Dev mode (live + DevTools + logging)\n"
         printf "  4. ${RED}STOP${NC}    - Stop all servers\n"
@@ -970,7 +989,7 @@ case "$1" in
         printf "  %s [command] [options]\n" "$0"
         printf "\n"
         printf "${CYAN}SERVER MODES:${NC}\n"
-        printf "  ${GREEN}static${NC}             Python server + Eruda (no reload)\n"
+        printf "  ${GREEN}static${NC}             Node.js server + Eruda + styled listings\n"
         printf "  ${GREEN}live${NC}               Python server + Eruda + auto-refresh\n"
         printf "  ${GREEN}dev${NC}                Dev mode (live + DevTools + console logging)\n"
         printf "  ${RED}stop${NC}               Stop all servers\n"
@@ -995,13 +1014,13 @@ case "$1" in
         printf "  ${BOLD}help${NC}               Show this help message\n"
         printf "\n"
         printf "${CYAN}SERVER MODE COMPARISON:${NC}\n"
-        printf "  ┌──────────┬─────────────┬─────────────┬──────────────┐\n"
-        printf "  │ ${BOLD}Mode${NC}     │ ${BOLD}Auto-reload${NC} │ ${BOLD}DevTools${NC}    │ ${BOLD}RAM Usage${NC}    │\n"
-        printf "  ├──────────┼─────────────┼─────────────┼──────────────┤\n"
-        printf "  │ static   │ No          │ Eruda       │ ~15-25 MB    │\n"
-        printf "  │ live     │ Yes         │ Eruda       │ ~20-35 MB    │\n"
-        printf "  │ dev      │ Yes         │ Eruda+Logs  │ ~80-120 MB   │\n"
-        printf "  └──────────┴─────────────┴─────────────┴──────────────┘\n"
+        printf "  ┌──────────┬─────────────┬─────────────┬──────────────┬──────────┐\n"
+        printf "  │ ${BOLD}Mode${NC}     │ ${BOLD}Auto-reload${NC} │ ${BOLD}DevTools${NC}    │ ${BOLD}RAM Usage${NC}    │ ${BOLD}Runtime${NC}  │\n"
+        printf "  ├──────────┼─────────────┼─────────────┼──────────────┼──────────┤\n"
+        printf "  │ static   │ No          │ Eruda       │ ~30-50 MB    │ Node.js  │\n"
+        printf "  │ live     │ Yes         │ Eruda       │ ~20-35 MB    │ Python   │\n"
+        printf "  │ dev      │ Yes         │ Eruda+Logs  │ ~80-120 MB   │ Python   │\n"
+        printf "  └──────────┴─────────────┴─────────────┴──────────────┴──────────┘\n"
         printf "\n"
         printf "${CYAN}EXAMPLES:${NC}\n"
         printf "  ${BOLD}%s${NC}                 # Launch TUI (interactive)\n" "$0"

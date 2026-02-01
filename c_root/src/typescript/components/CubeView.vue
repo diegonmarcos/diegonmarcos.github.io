@@ -3,20 +3,20 @@
     <div
       class="c-cube-overlay"
       :class="{ 'c-cube-overlay--active': isActive }"
-      @wheel="handleWheel"
+      @wheel.prevent="handleWheel"
+      @mousedown="startDrag"
+      @touchstart.prevent="startDrag"
     >
       <div class="c-cube-scene">
         <div
           class="c-cube"
           :class="{ 'c-cube--animating': isAnimating }"
           :style="cubeStyle"
-          @mousedown="startDrag"
-          @touchstart.passive="startDrag"
         >
           <!-- Front: Main App (live render via iframe) -->
           <div class="c-cube__face c-cube__face--front">
             <iframe
-              v-if="isActive"
+              v-if="isActive && shouldLoadFace(0)"
               src="index.html"
               class="c-cube__iframe"
               title="Current View"
@@ -26,7 +26,7 @@
           <!-- Right: Neon Cube -->
           <div class="c-cube__face c-cube__face--right">
             <iframe
-              v-if="isActive"
+              v-if="isActive && shouldLoadFace(1)"
               :src="pages.right"
               class="c-cube__iframe"
               title="Neon Cube"
@@ -36,7 +36,7 @@
           <!-- Back: Perspectives -->
           <div class="c-cube__face c-cube__face--back">
             <iframe
-              v-if="isActive"
+              v-if="isActive && shouldLoadFace(2)"
               :src="pages.back"
               class="c-cube__iframe"
               title="Perspectives"
@@ -78,11 +78,9 @@
       <div class="c-cube-hint" v-if="isActive">
         <span>Drag to rotate</span>
         <span class="c-cube-hint__separator">|</span>
-        <span>Scroll to zoom</span>
+        <span>Pinch/Scroll to zoom</span>
         <span class="c-cube-hint__separator">|</span>
-        <span><kbd>Space</kbd> toggle view</span>
-        <span class="c-cube-hint__separator">|</span>
-        <span><kbd>`</kbd> or <kbd>Esc</kbd> close</span>
+        <span><kbd>Q</kbd> close</span>
       </div>
 
       <!-- Face indicator -->
@@ -123,18 +121,47 @@ const ISOMETRIC_Y = -45;
 const isActive = ref(props.active);
 const rotateX = ref(ISOMETRIC_X);
 const rotateY = ref(ISOMETRIC_Y);
-const perspective = ref(1600); // Zoomed out for better view
+const scale = ref(1);
 const isDragging = ref(false);
 const lastMouse = ref({ x: 0, y: 0 });
 const currentFace = ref(0);
 const isIsometric = ref(true);
 const isAnimating = ref(false);
+const isPinching = ref(false);
+const lastPinchDistance = ref(0);
+
+// Momentum/velocity tracking
+const velocityX = ref(0);
+const velocityY = ref(0);
+let momentumFrame: number | null = null;
 
 const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
 const pages = {
   right: 'cube_fractal_neon.html',
   back: 'perspectives.html'
+};
+
+// Track which faces have been visited (lazy load iframes)
+const visitedFaces = ref<Set<number>>(new Set([0])); // Front is always loaded
+
+// Check if a face should load its iframe
+const shouldLoadFace = (faceIndex: number) => {
+  return visitedFaces.value.has(faceIndex);
+};
+
+// Mark adjacent faces as visited when rotating
+const markAdjacentFacesVisited = () => {
+  const adjacent: Record<number, number[]> = {
+    0: [1, 3, 4, 5], // Front -> Right, Left, Top, Bottom
+    1: [0, 2, 4, 5], // Right -> Front, Back, Top, Bottom
+    2: [1, 3, 4, 5], // Back -> Right, Left, Top, Bottom
+    3: [0, 2, 4, 5], // Left -> Front, Back, Top, Bottom
+    4: [0, 1, 2, 3], // Top -> all sides
+    5: [0, 1, 2, 3], // Bottom -> all sides
+  };
+  visitedFaces.value.add(currentFace.value);
+  adjacent[currentFace.value]?.forEach(f => visitedFaces.value.add(f));
 };
 
 // Face rotation presets (flat 2D view)
@@ -164,6 +191,7 @@ watch(() => props.active, (newVal) => {
     // Reset to isometric view when opening
     rotateX.value = ISOMETRIC_X;
     rotateY.value = ISOMETRIC_Y;
+    scale.value = 1;
     isIsometric.value = true;
     currentFace.value = 0;
   } else {
@@ -173,8 +201,8 @@ watch(() => props.active, (newVal) => {
 
 const cubeStyle = computed(() => ({
   transform: `
-    perspective(${perspective.value}px)
     translateZ(-300px)
+    scale(${scale.value})
     rotateX(${rotateX.value}deg)
     rotateY(${rotateY.value}deg)
   `
@@ -248,25 +276,64 @@ const toggleViewMode = async () => {
   }
 };
 
+// Calculate distance between two touch points
+const getTouchDistance = (touches: TouchList): number => {
+  if (touches.length < 2) return 0;
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
 const startDrag = (e: MouseEvent | TouchEvent) => {
   if (isAnimating.value) return;
+
+  // Stop any ongoing momentum
+  if (momentumFrame) {
+    cancelAnimationFrame(momentumFrame);
+    momentumFrame = null;
+  }
+  velocityX.value = 0;
+  velocityY.value = 0;
+
+  if ('touches' in e && e.touches.length === 2) {
+    // Start pinch zoom
+    isPinching.value = true;
+    lastPinchDistance.value = getTouchDistance(e.touches);
+    return;
+  }
+
   isDragging.value = true;
   const point = 'touches' in e ? e.touches[0] : e;
   lastMouse.value = { x: point.clientX, y: point.clientY };
 };
 
 const handleDrag = (e: MouseEvent | TouchEvent) => {
-  if (!isDragging.value || !isActive.value || isAnimating.value) return;
+  if (!isActive.value || isAnimating.value) return;
+
+  // Handle pinch zoom (scale)
+  if ('touches' in e && e.touches.length === 2) {
+    e.preventDefault();
+    const currentDistance = getTouchDistance(e.touches);
+    if (lastPinchDistance.value > 0) {
+      const scaleDelta = currentDistance / lastPinchDistance.value;
+      scale.value = Math.max(0.3, Math.min(2, scale.value * scaleDelta));
+    }
+    lastPinchDistance.value = currentDistance;
+    return;
+  }
+
+  if (!isDragging.value) return;
 
   const point = 'touches' in e ? e.touches[0] : e;
   const deltaX = point.clientX - lastMouse.value.x;
   const deltaY = point.clientY - lastMouse.value.y;
 
-  rotateY.value += deltaX * 0.5;
-  rotateX.value -= deltaY * 0.5;
+  // Track velocity for momentum
+  velocityY.value = deltaX * 0.4;
+  velocityX.value = -deltaY * 0.4;
 
-  // Clamp X rotation
-  rotateX.value = Math.max(-90, Math.min(90, rotateX.value));
+  rotateY.value += velocityY.value;
+  rotateX.value += velocityX.value;
 
   lastMouse.value = { x: point.clientX, y: point.clientY };
 
@@ -274,15 +341,40 @@ const handleDrag = (e: MouseEvent | TouchEvent) => {
   updateCurrentFace();
 };
 
+const applyMomentum = () => {
+  if (Math.abs(velocityX.value) < 0.1 && Math.abs(velocityY.value) < 0.1) {
+    momentumFrame = null;
+    return;
+  }
+
+  // Apply friction
+  velocityX.value *= 0.95;
+  velocityY.value *= 0.95;
+
+  rotateY.value += velocityY.value;
+  rotateX.value += velocityX.value;
+
+  updateCurrentFace();
+  momentumFrame = requestAnimationFrame(applyMomentum);
+};
+
 const stopDrag = () => {
+  if (isDragging.value && (Math.abs(velocityX.value) > 0.5 || Math.abs(velocityY.value) > 0.5)) {
+    // Start momentum animation
+    momentumFrame = requestAnimationFrame(applyMomentum);
+  }
   isDragging.value = false;
+  isPinching.value = false;
+  lastPinchDistance.value = 0;
 };
 
 const handleWheel = (e: WheelEvent) => {
   if (!isActive.value) return;
   e.preventDefault();
 
-  perspective.value = Math.max(600, Math.min(2000, perspective.value + e.deltaY));
+  // Scale with mouse wheel
+  const delta = e.deltaY > 0 ? 0.95 : 1.05;
+  scale.value = Math.max(0.3, Math.min(2, scale.value * delta));
 };
 
 const updateCurrentFace = () => {
@@ -306,13 +398,16 @@ const updateCurrentFace = () => {
   const xIsAngled = Math.abs(rotateX.value) > 15 && Math.abs(rotateX.value) < 75;
   const yIsAngled = (normalizedY % 90) > 15 && (normalizedY % 90) < 75;
   isIsometric.value = xIsAngled || yIsAngled;
+
+  // Lazy load adjacent faces
+  markAdjacentFacesVisited();
 };
 
 const handleKeydown = (e: KeyboardEvent) => {
   if (!isActive.value) return;
 
-  // Close on backtick or Escape
-  if (e.key === '`' || e.key === 'Escape') {
+  // Close on 'Q' or Escape
+  if (e.key.toLowerCase() === 'q' || e.key === 'Escape') {
     e.preventDefault();
     emit('close');
     return;
@@ -366,5 +461,8 @@ onUnmounted(() => {
   window.removeEventListener('touchend', stopDrag);
   window.removeEventListener('keydown', handleKeydown);
   document.body.style.overflow = '';
+  if (momentumFrame) {
+    cancelAnimationFrame(momentumFrame);
+  }
 });
 </script>

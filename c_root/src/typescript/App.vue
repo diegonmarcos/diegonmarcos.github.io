@@ -86,10 +86,11 @@
     </div>
 
     <!-- Cube View Toggle Button -->
-    <button class="c-cube-trigger" @click="showCube = true" title="Cube View (`)">
+    <button class="c-cube-trigger" @click="showCube = true" title="Cube View (Q)">
       <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
       </svg>
+      <span class="c-cube-trigger__key">Q</span>
     </button>
 
     <!-- 3D Cube View -->
@@ -106,10 +107,13 @@ import CubeView from './components/CubeView.vue';
 const showFractal = ref(true);
 const showCube = ref(false);
 
-// Keyboard shortcut: Backtick (`) to toggle cube view - like console in games
+// Keyboard shortcut: 'Q' to toggle cube view
 const handleGlobalKeydown = (e: KeyboardEvent) => {
-  // Backtick key to toggle cube view
-  if (e.key === '`' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+  // Skip if typing in an input
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+
+  // 'Q' key to toggle cube view
+  if (e.key.toLowerCase() === 'q' && !e.ctrlKey && !e.metaKey && !e.altKey) {
     e.preventDefault();
     showCube.value = !showCube.value;
   }

@@ -84,15 +84,48 @@
         </a>
       </div>
     </div>
+
+    <!-- Cube View Toggle Button -->
+    <button class="c-cube-trigger" @click="showCube = true" title="Cube View (`)">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+      </svg>
+    </button>
+
+    <!-- 3D Cube View -->
+    <CubeView :active="showCube" @close="closeCube" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import BioFractalViewer from './components/BioFractalViewer.vue';
 import ComplexWaveVisualization from './components/ComplexWaveVisualization.vue';
+import CubeView from './components/CubeView.vue';
 
 const showFractal = ref(true);
+const showCube = ref(false);
+
+// Keyboard shortcut: Backtick (`) to toggle cube view - like console in games
+const handleGlobalKeydown = (e: KeyboardEvent) => {
+  // Backtick key to toggle cube view
+  if (e.key === '`' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    showCube.value = !showCube.value;
+  }
+};
+
+const closeCube = () => {
+  showCube.value = false;
+};
+
+onMounted(() => {
+  window.addEventListener('keydown', handleGlobalKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleGlobalKeydown);
+});
 const fractalMode = ref(23);
 const fractalKey = ref(0);
 const brightness = ref(50);

@@ -98,6 +98,15 @@ build() {
         print_success "Fixed script attributes (removed module/CORS, added defer)"
     fi
 
+    # Copy standalone HTML pages used by cube view iframes
+    print_step "Copying standalone HTML pages..."
+    for html_file in "$PROJECT_ROOT/src/"*.html; do
+        if [ -f "$html_file" ] && [ "$(basename "$html_file")" != "index.html" ]; then
+            cp "$html_file" "$DIST_DIR/"
+            print_success "Copied $(basename "$html_file")"
+        fi
+    done
+
     if [ $? -eq 0 ]; then
         print_success "Build complete!"
         print_success "Output: $DIST_DIR/"

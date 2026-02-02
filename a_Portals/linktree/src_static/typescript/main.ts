@@ -10,6 +10,7 @@ import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
 import { initSmoothSnap } from './modules/smoothSnap';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
+import { initVmControl } from './modules/vmControl';
 
 /**
  * Initialize all application modules
@@ -47,6 +48,9 @@ function initApp(): void {
 
   // DISABLED: Smooth snap might be causing page resize issues
   // initSmoothSnap();
+
+  // Initialize VM control buttons (on-demand VPS)
+  initVmControl();
 
   // Show FABs after everything is loaded and positioned
   requestAnimationFrame(() => {

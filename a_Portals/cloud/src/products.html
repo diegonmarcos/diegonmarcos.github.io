@@ -1006,6 +1006,33 @@
                     <button class="tree-filter-btn" data-filter="on">On</button>
                     <button class="tree-filter-btn" data-filter="offline">Offline</button>
                 </div>
+                <span class="tree-controls-sep"></span>
+                <div class="tree-controls-group flex-server-controls">
+                    <span class="flex-server-label">Flex Server</span>
+                    <span class="flex-server-indicator" id="flex-status-indicator" title="Flex Server Status">
+                        <span class="indicator-dot"></span>
+                    </span>
+                    <button class="tree-ctrl-btn flex-btn" id="flex-start" title="Start Flex Server">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="tree-ctrl-btn flex-btn" id="flex-stop" title="Stop Flex Server">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="6" width="12" height="12"/>
+                        </svg>
+                        Off
+                    </button>
+                    <button class="tree-ctrl-btn flex-btn flex-btn-danger" id="flex-reset" title="Force Reset Flex Server">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="23 4 23 10 17 10"/>
+                            <polyline points="1 20 1 14 7 14"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                        Reset
+                    </button>
+                </div>
             </div>
             <div class="tree-container">
 

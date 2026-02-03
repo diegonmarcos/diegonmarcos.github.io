@@ -3,6 +3,7 @@ import { handleCardClick } from './service-handler';
 import { initViewToggle, initTreeExpand, initTreeServiceClick, initTreeControls, initTreeFilter } from './tree-view';
 import { initThemeSwitcher } from './theme-switcher';
 import { initZoomControl } from './zoom-control';
+import { initAdminActions } from './admin-actions';
 import type { ServiceId } from './types';
 
 // Architecture page modal info - global function for onclick handlers
@@ -152,6 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initTreeServiceClick();
     initTreeControls();
     initTreeFilter();
+
+    // Admin actions (Flex server controls, etc.)
+    initAdminActions();
 
     // Listen for service clicks from tree view
     document.addEventListener('service-click', ((e: CustomEvent) => {

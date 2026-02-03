@@ -20,7 +20,7 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-VANILLA_DIR="$PROJECT_DIR/src_vanilla"
+VANILLA_DIR="$PROJECT_DIR/src"
 VUE_DIR="$PROJECT_DIR/src_vue"
 DIST_DIR="$PROJECT_DIR/dist"
 DIST_VANILLA="$PROJECT_DIR/dist_vanilla"

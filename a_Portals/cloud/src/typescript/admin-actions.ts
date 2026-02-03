@@ -456,5 +456,273 @@ export function initAdminActions(): void {
     // Initial state
     updateAdminButtonsState();
 
+    // Initialize Flex server controls
+    initFlexServerControls();
+
     console.log('[AdminActions] Initialized, authorized:', isAuthorized());
+}
+
+// ============================================
+// FLEX SERVER (OCI-P-FLEX_1) VM CONTROL
+// ============================================
+
+const FLEX_VM_ID = 'oci-p-flex_1';
+
+type FlexServerStatus = 'online' | 'offline' | 'starting' | 'stopping' | 'unknown';
+
+/**
+ * Update the Flex server status indicator
+ */
+function updateFlexIndicator(status: FlexServerStatus, title?: string): void {
+    const indicator = document.getElementById('flex-status-indicator');
+    if (!indicator) return;
+
+    indicator.className = 'flex-server-indicator ' + status;
+    indicator.title = title || `Flex Server: ${status}`;
+}
+
+/**
+ * Set loading state on Flex buttons
+ */
+function setFlexButtonLoading(buttonId: string, loading: boolean): void {
+    const btn = document.getElementById(buttonId) as HTMLButtonElement;
+    if (!btn) return;
+
+    if (loading) {
+        btn.classList.add('loading');
+        btn.disabled = true;
+    } else {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+    }
+}
+
+/**
+ * Get Flex server status from API
+ */
+export async function getFlexServerStatus(): Promise<FlexServerStatus> {
+    try {
+        const response = await fetch(`${API_BASE}/vms/${FLEX_VM_ID}/status`);
+        if (!response.ok) {
+            return 'unknown';
+        }
+        const data = await response.json();
+
+        // Map API response to status
+        if (data.state === 'RUNNING' || data.pingable === true) {
+            return 'online';
+        } else if (data.state === 'STOPPED' || data.state === 'TERMINATED') {
+            return 'offline';
+        } else if (data.state === 'STARTING') {
+            return 'starting';
+        } else if (data.state === 'STOPPING') {
+            return 'stopping';
+        }
+        return 'unknown';
+    } catch {
+        return 'unknown';
+    }
+}
+
+/**
+ * Start the Flex server
+ */
+export async function startFlexServer(): Promise<boolean> {
+    if (getDataMode() === 'local') {
+        showNotification('Cannot control VMs in Local mode. Switch to API mode.');
+        return false;
+    }
+
+    if (!isAuthorized()) {
+        showNotification('Login required to control Flex server');
+        initiateLogin();
+        return false;
+    }
+
+    try {
+        setFlexButtonLoading('flex-start', true);
+        updateFlexIndicator('starting', 'Starting Flex Server...');
+        showNotification('Starting Flex Server...');
+
+        const response = await apiRequest(`/vms/${FLEX_VM_ID}/start`, { method: 'POST' });
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('Flex Server start initiated');
+            // Poll for status updates
+            pollFlexStatus();
+            return true;
+        } else {
+            updateFlexIndicator('unknown');
+            showNotification(data.error || 'Failed to start Flex Server');
+            return false;
+        }
+    } catch (error) {
+        updateFlexIndicator('unknown');
+        showNotification('Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+        return false;
+    } finally {
+        setFlexButtonLoading('flex-start', false);
+    }
+}
+
+/**
+ * Stop the Flex server
+ */
+export async function stopFlexServer(): Promise<boolean> {
+    if (getDataMode() === 'local') {
+        showNotification('Cannot control VMs in Local mode. Switch to API mode.');
+        return false;
+    }
+
+    if (!isAuthorized()) {
+        showNotification('Login required to control Flex server');
+        initiateLogin();
+        return false;
+    }
+
+    try {
+        setFlexButtonLoading('flex-stop', true);
+        updateFlexIndicator('stopping', 'Stopping Flex Server...');
+        showNotification('Stopping Flex Server...');
+
+        const response = await apiRequest(`/vms/${FLEX_VM_ID}/stop`, { method: 'POST' });
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('Flex Server stop initiated');
+            // Poll for status updates
+            pollFlexStatus();
+            return true;
+        } else {
+            updateFlexIndicator('unknown');
+            showNotification(data.error || 'Failed to stop Flex Server');
+            return false;
+        }
+    } catch (error) {
+        updateFlexIndicator('unknown');
+        showNotification('Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+        return false;
+    } finally {
+        setFlexButtonLoading('flex-stop', false);
+    }
+}
+
+/**
+ * Force reset the Flex server (hard reset)
+ */
+export async function resetFlexServer(): Promise<boolean> {
+    if (getDataMode() === 'local') {
+        showNotification('Cannot control VMs in Local mode. Switch to API mode.');
+        return false;
+    }
+
+    if (!isAuthorized()) {
+        showNotification('Login required to control Flex server');
+        initiateLogin();
+        return false;
+    }
+
+    // Confirmation dialog for dangerous action
+    if (!confirm('Force reset Flex Server? This is a hard reset and may cause data loss.')) {
+        return false;
+    }
+
+    try {
+        setFlexButtonLoading('flex-reset', true);
+        updateFlexIndicator('starting', 'Resetting Flex Server...');
+        showNotification('Force resetting Flex Server...');
+
+        const response = await apiRequest(`/vms/${FLEX_VM_ID}/reset`, { method: 'POST' });
+        const data = await response.json();
+
+        if (response.ok) {
+            showNotification('Flex Server reset initiated');
+            // Poll for status updates
+            pollFlexStatus();
+            return true;
+        } else {
+            updateFlexIndicator('unknown');
+            showNotification(data.error || 'Failed to reset Flex Server');
+            return false;
+        }
+    } catch (error) {
+        updateFlexIndicator('unknown');
+        showNotification('Error: ' + (error instanceof Error ? error.message : 'Unknown error'));
+        return false;
+    } finally {
+        setFlexButtonLoading('flex-reset', false);
+    }
+}
+
+/**
+ * Poll for Flex server status updates
+ */
+let flexPollInterval: number | null = null;
+
+function pollFlexStatus(): void {
+    // Clear existing poll
+    if (flexPollInterval) {
+        clearInterval(flexPollInterval);
+    }
+
+    let attempts = 0;
+    const maxAttempts = 30; // Poll for up to 5 minutes (30 * 10s)
+
+    const poll = async () => {
+        attempts++;
+        const status = await getFlexServerStatus();
+        updateFlexIndicator(status);
+
+        // Stop polling if we've reached a stable state or max attempts
+        if (status === 'online' || status === 'offline' || attempts >= maxAttempts) {
+            if (flexPollInterval) {
+                clearInterval(flexPollInterval);
+                flexPollInterval = null;
+            }
+            if (status === 'online') {
+                showNotification('Flex Server is now online');
+            } else if (status === 'offline') {
+                showNotification('Flex Server is now offline');
+            }
+        }
+    };
+
+    // Start polling every 10 seconds
+    flexPollInterval = window.setInterval(poll, 10000);
+    // Also check immediately
+    poll();
+}
+
+/**
+ * Initialize Flex server controls
+ */
+export function initFlexServerControls(): void {
+    const startBtn = document.getElementById('flex-start');
+    const stopBtn = document.getElementById('flex-stop');
+    const resetBtn = document.getElementById('flex-reset');
+
+    if (startBtn) {
+        startBtn.addEventListener('click', () => startFlexServer());
+    }
+
+    if (stopBtn) {
+        stopBtn.addEventListener('click', () => stopFlexServer());
+    }
+
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => resetFlexServer());
+    }
+
+    // Initial status check
+    checkFlexServerStatus();
+}
+
+/**
+ * Check and display initial Flex server status
+ */
+async function checkFlexServerStatus(): Promise<void> {
+    updateFlexIndicator('unknown', 'Checking Flex Server status...');
+    const status = await getFlexServerStatus();
+    updateFlexIndicator(status);
 }

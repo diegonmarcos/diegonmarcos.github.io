@@ -1,12 +1,12 @@
 import { s as store_get, a as attr_class, b as attr, u as unsubscribe_stores, e as ensure_array_like, c as stringify, h as head } from "../../chunks/index2.js";
-import { b as base } from "../../chunks/server.js";
-import "@sveltejs/kit/internal/server";
 import { s as searchResults, a as searchQuery, f as formatDuration, b as formatDistance, P as ProviderBadge, c as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, d as routeError, e as selectedRoute, g as routeOrigin, h as routeDestination, j as showLayersPanel, m as mapStyles, k as currentStyleId, l as layerStore, M as MapCanvas, n as MapControls, o as PlacePanel } from "../../chunks/PlacePanel.js";
 import { c as capabilities } from "../../chunks/configStore.js";
 import "maplibre-gl";
 import { $ as escape_html } from "../../chunks/context.js";
 import "@mapbox/togeojson";
 import "jszip";
+import { b as base } from "../../chunks/server.js";
+import "@sveltejs/kit/internal/server";
 function SearchBar($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     var $$store_subs;
@@ -152,6 +152,69 @@ function LayersPanel($$renderer, $$props) {
     if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
+function SideMenu($$renderer) {
+  let isOpen = false;
+  const menuSections = [
+    {
+      id: "list",
+      name: "List",
+      icon: "M4 6h16M4 12h16M4 18h16",
+      description: "View saved places"
+    },
+    {
+      id: "maps",
+      name: "Maps",
+      icon: "M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7",
+      description: "Your custom maps"
+    },
+    {
+      id: "chronology",
+      name: "Chronology",
+      icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
+      description: "Location history"
+    }
+  ];
+  let activeSection = null;
+  $$renderer.push(`<button${attr_class("menu-toggle", void 0, { "menu-toggle--open": isOpen })}${attr("aria-label", "Open menu")}${attr("aria-expanded", isOpen)}><span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span> <span class="menu-toggle-bar"></span></button> `);
+  {
+    $$renderer.push("<!--[!-->");
+  }
+  $$renderer.push(`<!--]--> <nav${attr_class("side-menu", void 0, { "side-menu--open": isOpen })} aria-label="Main menu"><div class="side-menu-header"><h2 class="side-menu-title">MyMaps</h2></div> <div class="side-menu-content"><!--[-->`);
+  const each_array = ensure_array_like(menuSections);
+  for (let $$index = 0, $$length = each_array.length; $$index < $$length; $$index++) {
+    let section = each_array[$$index];
+    $$renderer.push(`<button${attr_class("menu-section", void 0, { "menu-section--active": activeSection === section.id })}><div class="menu-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path${attr("d", section.icon)}></path></svg></div> <div class="menu-section-info"><span class="menu-section-name">${escape_html(section.name)}</span> <span class="menu-section-desc">${escape_html(section.description)}</span></div> <svg class="menu-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button> `);
+    if (activeSection === section.id) {
+      $$renderer.push("<!--[-->");
+      $$renderer.push(`<div class="menu-section-content">`);
+      if (section.id === "list") {
+        $$renderer.push("<!--[-->");
+        $$renderer.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg> <p>No saved places yet</p> <span>Search and save places to see them here</span></div>`);
+      } else {
+        $$renderer.push("<!--[!-->");
+        if (section.id === "maps") {
+          $$renderer.push("<!--[-->");
+          $$renderer.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg> <p>No custom maps</p> <span>Create maps to organize your places</span></div>`);
+        } else {
+          $$renderer.push("<!--[!-->");
+          if (section.id === "chronology") {
+            $$renderer.push("<!--[-->");
+            $$renderer.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <p>No location history</p> <span>Your visited places will appear here</span></div>`);
+          } else {
+            $$renderer.push("<!--[!-->");
+          }
+          $$renderer.push(`<!--]-->`);
+        }
+        $$renderer.push(`<!--]-->`);
+      }
+      $$renderer.push(`<!--]--></div>`);
+    } else {
+      $$renderer.push("<!--[!-->");
+    }
+    $$renderer.push(`<!--]-->`);
+  }
+  $$renderer.push(`<!--]--></div> <div class="side-menu-footer"><a href="/maps" class="menu-footer-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> <span>Classic Maps</span></a> <a${attr("href", `${stringify(base)}/settings`)} class="menu-footer-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> <span>Settings</span></a></div></nav>`);
+}
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     head("1uha8ag", $$renderer2, ($$renderer3) => {
@@ -162,6 +225,8 @@ function _page($$renderer, $$props) {
     $$renderer2.push(`<div id="app"><div class="app-map">`);
     MapCanvas($$renderer2);
     $$renderer2.push(`<!----></div> <div class="app-ui">`);
+    SideMenu($$renderer2);
+    $$renderer2.push(`<!----> `);
     SearchBar($$renderer2);
     $$renderer2.push(`<!----> `);
     MapControls($$renderer2);
@@ -171,7 +236,7 @@ function _page($$renderer, $$props) {
     DirectionsPanel($$renderer2);
     $$renderer2.push(`<!----> `);
     LayersPanel($$renderer2);
-    $$renderer2.push(`<!----> <a${attr("href", `${stringify(base)}/settings`)} class="settings-link glass-button glass-button--icon" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></a></div></div>`);
+    $$renderer2.push(`<!----></div></div>`);
   });
 }
 export {

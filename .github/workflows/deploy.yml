@@ -237,16 +237,8 @@ jobs:
           cd ../../..
           echo "✅ Central Bank build complete"
 
-      - name: 🔨 Build MyMaps
-        id: build-mymaps
-        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/mymaps/')
-        continue-on-error: false
-        run: |
-          echo "🔨 Building MyMaps..."
-          cd b_Work_Tools/mymaps/1.ops
-          bash build.sh build
-          cd ../../..
-          echo "✅ MyMaps build complete"
+      # NOTE: Old MyMaps (React+Vite) moved to c_Personal_Tools/maps/
+      # New MyMaps (SvelteKit) is at c_Personal_Tools/mymaps/
 
       - name: 🔨 Build MyProfile
         id: build-myprofile
@@ -759,15 +751,8 @@ jobs:
             echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
           fi
 
-          # Copy MyMaps build (if dist exists - React+Vite single-file)
-          if [ -d "b_Work_Tools/mymaps/dist" ]; then
-            echo "📦 Copying MyMaps build..."
-            mkdir -p _site/mymaps
-            cp -rL b_Work_Tools/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r b_Work_Tools/mymaps/dist/* _site/mymaps/
-            echo "✅ MyMaps build copied to _site/mymaps/"
-          else
-            echo "⏭️  Skipping MyMaps copy (no dist directory found)"
-          fi
+          # NOTE: Old MyMaps (React+Vite) moved to c_Personal_Tools/maps/
+          # MyMaps SvelteKit copy is handled below
 
           # Copy MyProfile build (if dist exists - Nuxt static export)
           if [ -d "c_Personal_Profiles/myprofile/dist" ]; then

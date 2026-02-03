@@ -6,11 +6,11 @@ function __memo(fn) {
 
 return {
 	appDir: "_app",
-	appPath: "mymaps-pro/_app",
+	appPath: "mymaps/_app",
 	assets: new Set(["favicon.svg"]),
 	mimeTypes: {".svg":"image/svg+xml"},
 	_: {
-		client: {start:"_app/immutable/entry/start.CM1USXma.js",app:"_app/immutable/entry/app.Bcd6aHvO.js",imports:["_app/immutable/entry/start.CM1USXma.js","_app/immutable/chunks/B2qZTTib.js","_app/immutable/chunks/CsEt7wkl.js","_app/immutable/chunks/DHWuI-b2.js","_app/immutable/chunks/BQ5vValz.js","_app/immutable/chunks/BhAN65R9.js","_app/immutable/chunks/CdXDmEGE.js","_app/immutable/entry/app.Bcd6aHvO.js","_app/immutable/chunks/CsEt7wkl.js","_app/immutable/chunks/gAqsdKty.js","_app/immutable/chunks/BsUTZ2wg.js","_app/immutable/chunks/BhAN65R9.js","_app/immutable/chunks/DSfmRzg0.js","_app/immutable/chunks/BO_sHbwD.js","_app/immutable/chunks/DHWuI-b2.js","_app/immutable/chunks/wMiDVtCj.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
+		client: {start:"_app/immutable/entry/start.0VauWrk1.js",app:"_app/immutable/entry/app.BvG-Pwn3.js",imports:["_app/immutable/entry/start.0VauWrk1.js","_app/immutable/chunks/N_xd4uSK.js","_app/immutable/chunks/asKwNPUx.js","_app/immutable/chunks/BZCT7ppd.js","_app/immutable/chunks/CU5A1ikF.js","_app/immutable/chunks/Dl1iZ6KQ.js","_app/immutable/chunks/BZSscL21.js","_app/immutable/entry/app.BvG-Pwn3.js","_app/immutable/chunks/asKwNPUx.js","_app/immutable/chunks/DhYG5ZPg.js","_app/immutable/chunks/CZqZxQ13.js","_app/immutable/chunks/Dl1iZ6KQ.js","_app/immutable/chunks/CuBdEQPs.js","_app/immutable/chunks/Dno6Q1ME.js","_app/immutable/chunks/BZCT7ppd.js","_app/immutable/chunks/nxaZ-_5b.js"],stylesheets:[],fonts:[],uses_env_dynamic_public:false},
 		nodes: [
 			__memo(() => import('./nodes/0.js')),
 			__memo(() => import('./nodes/1.js')),

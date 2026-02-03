@@ -6,7 +6,8 @@
     mapStore,
     currentStyle,
     setMapInstance,
-    userLocation
+    userLocation,
+    isGlobeView
   } from '$lib/stores/mapStore';
   import { encodeMapState, updateUrl, decodeMapState, getCurrentHash } from '$lib/utils/urlState';
   import { throttle } from '$lib/utils/debounce';
@@ -65,8 +66,9 @@
     // Sync state on move
     map.on('moveend', syncToUrl);
 
-    // Add 3D buildings when style loads
+    // Set loaded flag and add 3D buildings when style loads
     map.on('style.load', () => {
+      mapLoaded = true;
       add3DBuildings();
     });
 
@@ -142,9 +144,21 @@
     }
   }
 
+  // Track if map is loaded
+  let mapLoaded = false;
+
   // React to style changes
-  $: if (map && $currentStyle) {
+  $: if (map && $currentStyle && mapLoaded) {
     map.setStyle($currentStyle.url);
+  }
+
+  // React to globe view changes
+  $: if (map && mapLoaded && typeof map.setProjection === 'function') {
+    try {
+      map.setProjection($isGlobeView ? 'globe' : 'mercator');
+    } catch (e) {
+      console.warn('Globe projection not supported');
+    }
   }
 </script>
 

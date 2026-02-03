@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getMapInstance, mapStore, userLocation, isLocating, currentStyleId, mapStyles } from '$lib/stores/mapStore';
+  import { getMapInstance, mapStore, userLocation, isLocating, currentStyleId, mapStyles, isGlobeView, toggleGlobeView } from '$lib/stores/mapStore';
   import { showLayersPanel, toggleLayersPanel } from '$lib/stores/layerStore';
 
   function zoomIn() {
@@ -166,6 +166,20 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <rect x="3" y="3" width="18" height="18" rx="2" />
       <path d="M3 9h18M9 21V9" />
+    </svg>
+  </button>
+
+  <!-- Globe toggle -->
+  <button
+    class="map-control-btn map-control-btn--standalone"
+    class:map-control-btn--active={$isGlobeView}
+    onclick={toggleGlobeView}
+    aria-label={$isGlobeView ? 'Switch to flat map' : 'Switch to globe view'}
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   </button>
 </div>

@@ -931,11 +931,18 @@ function unsubscribe_stores(store_values) {
     store_values[store_name][1]();
   }
 }
+function ensure_array_like(array_like_or_iterator) {
+  if (array_like_or_iterator) {
+    return array_like_or_iterator.length !== void 0 ? array_like_or_iterator : Array.from(array_like_or_iterator);
+  }
+  return [];
+}
 export {
   attr_style as a,
-  store_get as b,
-  attr_class as c,
-  attr as d,
+  attr_class as b,
+  attr as c,
+  store_get as d,
+  ensure_array_like as e,
   head as h,
   is_passive_event as i,
   render as r,

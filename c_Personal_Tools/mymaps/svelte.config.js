@@ -15,7 +15,7 @@ const config = {
 		}),
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/mymaps' : '',
-			relative: false
+			relative: true
 		},
 		prerender: {
 			entries: [

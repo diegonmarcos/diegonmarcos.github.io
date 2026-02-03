@@ -35,13 +35,13 @@
 .map-controls {
   position: absolute;
   right: $space-4;
-  bottom: $space-4;
+  bottom: calc($space-4 + 24px); // Move up to avoid attribution
   z-index: $z-controls;
   @include flex-col(flex-end, flex-end, $space-2);
 
   @include mobile-only {
     right: $space-3;
-    bottom: $space-3;
+    bottom: calc($space-3 + 24px);
   }
 }
 

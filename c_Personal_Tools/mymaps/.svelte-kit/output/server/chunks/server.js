@@ -1,7 +1,7 @@
-let base = "/mymaps-pro";
+let base = "/mymaps";
 let assets = base;
 const app_dir = "_app";
-const relative = false;
+const relative = true;
 const initial = { base, assets };
 function override(paths) {
   base = paths.base;

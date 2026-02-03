@@ -155,6 +155,45 @@ export const currentStyle = derived(
 export const userLocation = writable<LngLat | null>(null);
 export const isLocating = writable<boolean>(false);
 
+// Globe view store
+export const isGlobeView = writable<boolean>(false);
+
+/**
+ * Toggle between globe and mercator projection
+ */
+export function toggleGlobeView() {
+  isGlobeView.update(v => !v);
+
+  if (mapInstance && typeof mapInstance.setProjection === 'function') {
+    try {
+      const currentProjection = typeof mapInstance.getProjection === 'function'
+        ? mapInstance.getProjection()?.type
+        : 'mercator';
+      const newProjection = !currentProjection || currentProjection === 'mercator'
+        ? 'globe'
+        : 'mercator';
+      mapInstance.setProjection(newProjection);
+    } catch (e) {
+      console.warn('Globe projection not supported:', e);
+    }
+  }
+}
+
+/**
+ * Set globe view state
+ */
+export function setGlobeView(enabled: boolean) {
+  isGlobeView.set(enabled);
+
+  if (mapInstance && typeof mapInstance.setProjection === 'function') {
+    try {
+      mapInstance.setProjection(enabled ? 'globe' : 'mercator');
+    } catch (e) {
+      console.warn('Globe projection not supported:', e);
+    }
+  }
+}
+
 /**
  * Set the map instance reference
  */

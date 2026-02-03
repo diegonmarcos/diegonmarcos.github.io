@@ -3,10 +3,10 @@ import { json, text, error } from "@sveltejs/kit";
 import { Redirect, SvelteKitError, ActionFailure, HttpError } from "@sveltejs/kit/internal";
 import { with_request_store, merge_tracing, try_get_request_store } from "@sveltejs/kit/internal/server";
 import { a as assets, b as base, c as app_dir, r as relative, o as override, d as reset } from "./chunks/environment.js";
-import { E as ENDPOINT_METHODS, P as PAGE_METHODS, n as negotiate, m as method_not_allowed, h as handle_error_and_jsonify, g as get_status, i as is_form_content_type, a as normalize_error, b as get_global_name, s as serialize_uses, c as clarify_devalue_error, d as get_node_type, e as escape_html, f as create_remote_key, j as static_error_page, r as redirect_response, p as parse_remote_arg, k as stringify, l as deserialize_binary_form, o as has_prerendered_path, T as TRAILING_SLASH_PARAM, I as INVALIDATED_PARAM, q as handle_fatal_error, t as format_server_error } from "./chunks/shared.js";
+import { E as ENDPOINT_METHODS, P as PAGE_METHODS, n as negotiate, m as method_not_allowed, h as handle_error_and_jsonify, g as get_status, i as is_form_content_type, a as normalize_error, b as get_global_name, s as serialize_uses, c as clarify_devalue_error, d as get_node_type, e as escape_html, S as SVELTE_KIT_ASSETS, f as create_remote_key, j as static_error_page, r as redirect_response, p as parse_remote_arg, k as stringify, l as deserialize_binary_form, o as has_prerendered_path, T as TRAILING_SLASH_PARAM, I as INVALIDATED_PARAM, q as handle_fatal_error, t as format_server_error } from "./chunks/shared.js";
 import * as devalue from "devalue";
 import { m as make_trackable, d as disable_search, a as decode_params, S as SCHEME, v as validate_layout_server_exports, b as validate_layout_exports, c as validate_page_server_exports, e as validate_page_exports, n as normalize_path, r as resolve, f as decode_pathname, g as validate_server_exports } from "./chunks/exports.js";
-import { b as base64_encode, t as text_decoder, a as text_encoder } from "./chunks/utils.js";
+import { b as base64_encode, t as text_decoder, a as text_encoder, g as get_relative_path } from "./chunks/utils.js";
 import { r as readable, w as writable } from "./chunks/index.js";
 import { p as public_env, r as read_implementation, o as options, s as set_private_env, a as set_public_env, g as get_hooks, b as set_read_implementation } from "./chunks/internal.js";
 import { parse, serialize } from "cookie";
@@ -1389,7 +1389,7 @@ function exec(match, params, matchers) {
 }
 function generate_route_object(route, url, manifest) {
   const { errors, layouts, leaf } = route;
-  const nodes = [...errors, ...layouts.map((l) => l?.[1]), leaf[1]].filter((n) => typeof n === "number").map((n) => `'${n}': () => ${create_client_import(manifest._.client.nodes?.[n])}`).join(",\n		");
+  const nodes = [...errors, ...layouts.map((l) => l?.[1]), leaf[1]].filter((n) => typeof n === "number").map((n) => `'${n}': () => ${create_client_import(manifest._.client.nodes?.[n], url)}`).join(",\n		");
   return [
     `{
 	id: ${s(route.id)}`,
@@ -1410,9 +1410,9 @@ function create_client_import(import_path, url) {
   if (assets !== "") {
     return `import('${assets}/${import_path}')`;
   }
-  {
-    return `import('${base}/${import_path}')`;
-  }
+  let path = get_relative_path(url.pathname, `${base}/${import_path}`);
+  if (path[0] !== ".") path = `./${path}`;
+  return `import('${path}')`;
 }
 async function resolve_route(resolved_path, url, manifest) {
   if (!manifest._.client.routes) {
@@ -1459,7 +1459,8 @@ function create_css_import(route, url, manifest) {
   if (!css) return "";
   return `${create_client_import(
     /** @type {string} */
-    manifest._.client.start
+    manifest._.client.start,
+    url
   )}.then(x => x.load_css([${css}]));`;
 }
 const updated = {
@@ -1501,6 +1502,18 @@ async function render_response({
   let base$1 = base;
   let assets$1 = assets;
   let base_expression = s(base);
+  {
+    if (!state.prerendering?.fallback) {
+      const segments = event.url.pathname.slice(base.length).split("/").slice(2);
+      base$1 = segments.map(() => "..").join("/") || ".";
+      base_expression = `new URL(${s(base$1)}, location).pathname.slice(0, -1)`;
+      if (!assets || assets[0] === "/" && assets !== SVELTE_KIT_ASSETS) {
+        assets$1 = base$1;
+      }
+    } else if (options2.hash_routing) {
+      base_expression = "new URL('.', location).pathname.slice(0, -1)";
+    }
+  }
   if (page_config.ssr) {
     const props = {
       stores: {
@@ -1550,7 +1563,7 @@ async function render_response({
     try {
       if (BROWSER) ;
       rendered = await with_request_store({ event, state: event_state }, async () => {
-        if (relative) ;
+        if (relative) override({ base: base$1, assets: assets$1 });
         const maybe_promise = options2.root.render(props, render_opts);
         const rendered2 = options2.async && "then" in maybe_promise ? (
           /** @type {ReturnType<typeof options.root.render> & Promise<any>} */

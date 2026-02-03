@@ -159,18 +159,22 @@
 
   // Helper: Handle atmosphere/fog effects for globe mode
   function handleGlobeAtmosphere(enabled: boolean) {
-    if (!map) return;
-    if (enabled) {
-      const fogSpec: FogSpecification = {
-        color: 'rgb(12, 12, 20)',
-        'high-color': 'rgb(36, 92, 223)',
-        'horizon-blend': 0.02,
-        'space-color': 'rgb(4, 4, 10)',
-        'star-intensity': 0.6
-      };
-      map.setFog(fogSpec);
-    } else {
-      map.setFog(null);
+    if (!map || typeof map.setFog !== 'function') return;
+    try {
+      if (enabled) {
+        const fogSpec: FogSpecification = {
+          color: 'rgb(12, 12, 20)',
+          'high-color': 'rgb(36, 92, 223)',
+          'horizon-blend': 0.02,
+          'space-color': 'rgb(4, 4, 10)',
+          'star-intensity': 0.6
+        };
+        map.setFog(fogSpec);
+      } else {
+        map.setFog(null);
+      }
+    } catch (e) {
+      console.warn('Fog not supported:', e);
     }
   }
 

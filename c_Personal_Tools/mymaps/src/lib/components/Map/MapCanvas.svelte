@@ -42,6 +42,8 @@
     }
 
     // Create map
+    // - Two-finger scroll = ZOOM (native, fast)
+    // - Ctrl + two-finger scroll = PAN
     const mapOptions: maplibregl.MapOptions = {
       container: mapContainer,
       style: $currentStyle.url,
@@ -52,12 +54,28 @@
       attributionControl: false,
       maxZoom: 20,
       minZoom: 1,
-      // Cooperative gestures: require Ctrl+scroll or two-finger to interact
-      cooperativeGestures: true
+      scrollZoom: true,   // Native fast zoom
+      dragPan: true       // Normal drag pan
     };
 
     console.log('[GLOBE DEBUG] Creating map with options:', mapOptions);
     map = new maplibregl.Map(mapOptions);
+
+    // Intercept Ctrl+scroll for panning instead of zoom
+    const handleWheel = (e: WheelEvent) => {
+      if (!map || !e.ctrlKey) return;
+
+      // Ctrl is pressed - pan instead of zoom
+      e.preventDefault();
+      e.stopPropagation();
+      map.panBy([-e.deltaX * 2, -e.deltaY * 2], { duration: 0 });
+    };
+
+    mapContainer.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+
+    const cleanupGestures = () => {
+      mapContainer.removeEventListener('wheel', handleWheel, { capture: true });
+    };
 
     // Add attribution in corner
     map.addControl(
@@ -71,7 +89,7 @@
     // Sync state on move
     map.on('moveend', syncToUrl);
 
-    // Set loaded flag, apply globe projection, and add 3D buildings when style loads
+    // Set loaded flag, apply globe projection, terrain, and add 3D buildings when style loads
     map.on('style.load', () => {
       mapLoaded = true;
 
@@ -80,6 +98,9 @@
         console.log('[GLOBE DEBUG] Applying initial globe projection');
         map.setProjection({ type: 'globe' });
       }
+
+      // Add 3D terrain
+      add3DTerrain();
 
       add3DBuildings();
     });
@@ -93,6 +114,7 @@
 
     return () => {
       unsubLocation();
+      cleanupGestures();
     };
   });
 

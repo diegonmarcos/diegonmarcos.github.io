@@ -1,6 +1,7 @@
 <script lang="ts">
   import { base } from '$app/paths';
   import GlobeCanvas from '$lib/components/GlobeCanvas.svelte';
+  import SideMenu from '$lib/components/SideMenu.svelte';
   import {
     projections,
     currentProjectionType,
@@ -53,13 +54,8 @@
 <!-- Globe/Map Canvas -->
 <GlobeCanvas />
 
-<!-- Link to MyMaps -->
-<a href="/mymaps" class="nav-link">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M15 19l-7-7 7-7" />
-  </svg>
-  <span>MyMaps</span>
-</a>
+<!-- Side Menu (hamburger) -->
+<SideMenu />
 
 <!-- Controls -->
 <div class="controls">

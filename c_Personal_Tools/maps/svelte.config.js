@@ -9,13 +9,23 @@ const config = {
 		adapter: adapter({
 			pages: 'dist',
 			assets: 'dist',
-			fallback: 'index.html',
+			fallback: '404.html',
 			precompress: false,
-			strict: false
+			strict: true
 		}),
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/maps' : '',
-			relative: false
+			relative: true
+		},
+		prerender: {
+			entries: ['/'],
+			handleHttpError: ({ path, referrer, message }) => {
+				// Ignore external links to other projects
+				if (path.startsWith('/mymaps')) {
+					return;
+				}
+				throw new Error(message);
+			}
 		}
 	}
 };

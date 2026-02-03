@@ -65,6 +65,9 @@ export const rotation = writable<[number, number, number]>([0, -20, 0]);
 // Scale/zoom level
 export const scale = writable<number>(1);
 
+// Pan offset for flat maps (in pixels)
+export const panOffset = writable<[number, number]>([0, 0]);
+
 // Auto-rotate toggle
 export const autoRotate = writable<boolean>(true);
 

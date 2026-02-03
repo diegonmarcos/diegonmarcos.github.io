@@ -183,10 +183,10 @@
     aria-label={$isGlobeView ? 'Switch to flat view' : 'Switch to 3D tilt'}
     title={$isGlobeView ? 'Flat view' : '3D tilt'}
   >
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M12 3L2 8l10 5 10-5-10-5z" />
-      <path d="M2 15l10 5 10-5" />
-      <path d="M2 11.5l10 5 10-5" />
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <path d="M2 12h20" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   </button>
 </div>

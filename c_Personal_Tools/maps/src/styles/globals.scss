@@ -118,11 +118,16 @@ body {
 }
 
 .projection-item {
+  width: 100%;
   padding: $space-2 $space-3;
+  border: none;
   border-radius: $radius-sm;
+  background: transparent;
+  color: $color-text;
   cursor: pointer;
   transition: all $transition-fast;
   font-size: 0.875rem;
+  text-align: left;
 
   &:hover {
     background: rgba(255, 255, 255, 0.05);

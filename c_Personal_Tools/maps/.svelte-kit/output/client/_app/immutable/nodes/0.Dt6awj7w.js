@@ -1,0 +1,1 @@
+import{a as t,f as i}from"../chunks/DUnnsJax.js";import{f as p,E as c,g as m,i as f}from"../chunks/BeyDceIe.js";import{B as l}from"../chunks/C4lkNuRl.js";function d(r,n,...a){var o=new l(r);p(()=>{const s=n()??null;o.ensure(s,s&&(e=>s(e,...a)))},c)}var v=i('<div class="app"><!></div>');function T(r,n){var a=v(),o=m(a);d(o,()=>n.children),f(a),t(r,a)}export{T as component};

@@ -2,16 +2,13 @@
   import { onMount } from 'svelte';
   import * as d3Geo from 'd3-geo';
   import { timer } from 'd3-timer';
-  import { interpolate } from 'd3-interpolate';
   import * as topojson from 'topojson-client';
   import {
-    currentProjectionType,
     currentProjectionConfig,
     rotation,
     scale,
     autoRotate,
-    isGlobe,
-    type ProjectionType
+    isGlobe
   } from '$lib/stores/projectionStore';
 
   let canvas: HTMLCanvasElement;

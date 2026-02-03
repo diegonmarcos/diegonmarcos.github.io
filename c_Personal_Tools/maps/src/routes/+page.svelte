@@ -123,15 +123,14 @@
       <div class="projection-label">Projection</div>
       <ul class="projection-list">
         {#each projections as proj}
-          <li
-            class="projection-item"
-            class:active={$currentProjectionType === proj.id}
-            onclick={() => selectProjection(proj.id)}
-            onkeydown={(e) => e.key === 'Enter' && selectProjection(proj.id)}
-            role="button"
-            tabindex="0"
-          >
-            {proj.name}
+          <li>
+            <button
+              class="projection-item"
+              class:active={$currentProjectionType === proj.id}
+              onclick={() => selectProjection(proj.id)}
+            >
+              {proj.name}
+            </button>
           </li>
         {/each}
       </ul>

@@ -1,0 +1,197 @@
+// ==============================================
+// GLOBAL STYLES - MAPS VISUALIZATION
+// ==============================================
+
+@use 'abstracts' as *;
+
+// Reset
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: $color-bg;
+  color: $color-text;
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+// App container
+.app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+// Canvas container
+.canvas-container {
+  position: absolute;
+  inset: 0;
+  z-index: $z-canvas;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// Controls panel
+.controls {
+  position: absolute;
+  top: $space-4;
+  right: $space-4;
+  z-index: $z-controls;
+  @include flex-col(flex-start, flex-end, $space-2);
+}
+
+.control-group {
+  @include glass-panel;
+  @include flex-col(flex-start, stretch, 0);
+  overflow: hidden;
+}
+
+.control-btn {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: none;
+  color: $color-text;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.active {
+    background: $color-primary;
+    color: white;
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $color-border;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+// Projection selector
+.projection-selector {
+  @include glass-panel;
+  padding: $space-3;
+  min-width: 180px;
+}
+
+.projection-label {
+  font-size: 0.75rem;
+  color: $color-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: $space-2;
+}
+
+.projection-list {
+  @include flex-col(flex-start, stretch, $space-1);
+  list-style: none;
+}
+
+.projection-item {
+  padding: $space-2 $space-3;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+  font-size: 0.875rem;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &.active {
+    background: $color-primary;
+    color: white;
+  }
+}
+
+// Info panel
+.info-panel {
+  position: absolute;
+  bottom: $space-4;
+  left: $space-4;
+  z-index: $z-panel;
+  @include glass-panel;
+  padding: $space-4;
+  max-width: 300px;
+}
+
+.info-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: $space-2;
+}
+
+.info-subtitle {
+  font-size: 0.875rem;
+  color: $color-text-muted;
+}
+
+// Link to mymaps
+.nav-link {
+  position: absolute;
+  top: $space-4;
+  left: $space-4;
+  z-index: $z-controls;
+  @include glass-button;
+  @include flex-row(flex-start, center, $space-2);
+  text-decoration: none;
+  color: $color-text;
+  font-size: 0.875rem;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+// Loading state
+.loading {
+  @include flex-center;
+  position: absolute;
+  inset: 0;
+  background: $color-bg;
+  z-index: 100;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $color-border;
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

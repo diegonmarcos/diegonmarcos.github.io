@@ -109,8 +109,10 @@
             <!-- Level 2: Page Tabs -->
             <div class="nav-level2 active" id="nav-products">
                 <button class="view-btn active" data-page="products">Products</button>
-                <button class="view-btn" data-page="features">Features</button>
+                <button class="view-btn" data-page="admin">Admin</button>
                 <button class="view-btn" data-page="apps">Apps</button>
+                <span style="color: rgba(255,255,255,0.3); margin: 0 0.25rem;">|</span>
+                <button class="view-btn" data-page="features">Features</button>
             </div>
             <!-- Level 3: Dynamic Title -->
             <div class="nav-level3-wrapper">
@@ -128,12 +130,14 @@
                 var productsPage = document.getElementById('products-page');
                 var appsPage = document.getElementById('apps-page');
                 var featuresPage = document.getElementById('features-page');
+                var adminPage = document.getElementById('admin-page');
 
                 // Page titles
                 var pageTitles = {
                     products: { title: 'Products', subtitle: 'Service Catalog' },
                     apps: { title: 'Apps', subtitle: 'Cloud Infrastructure Access' },
-                    features: { title: 'Features', subtitle: 'Cloud Portal Capabilities' }
+                    features: { title: 'Features', subtitle: 'Cloud Portal Capabilities' },
+                    admin: { title: 'Admin', subtitle: 'Admin Tools & Consoles' }
                 };
 
                 // Page switching
@@ -145,6 +149,7 @@
                     productsPage.classList.toggle('active', page === 'products');
                     appsPage.classList.toggle('active', page === 'apps');
                     featuresPage.classList.toggle('active', page === 'features');
+                    adminPage.classList.toggle('active', page === 'admin');
 
                     pageTitle.textContent = pageTitles[page].title;
                     pageSubtitle.textContent = pageTitles[page].subtitle;
@@ -479,6 +484,203 @@
                 </div>
             </div><!-- End page-container -->
         </div><!-- End Apps Page -->
+
+        <!-- Admin Page -->
+        <div id="admin-page" class="view-content">
+            <div class="page-container">
+
+                <style>
+                    #admin-page .apps-cards-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
+                        gap: 1rem;
+                        justify-content: start;
+                    }
+                    #admin-page .app-card {
+                        display: flex;
+                        flex-direction: column;
+                        height: 130px;
+                        width: 100%;
+                        max-width: 320px;
+                    }
+                    #admin-page .app-card-footer {
+                        margin-top: auto;
+                    }
+                </style>
+
+                <!-- Cloud Providers Section -->
+                <div class="profile-section">
+                    <h2 class="profile-title">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                        </svg>
+                        Cloud Providers
+                    </h2>
+                    <div class="apps-cards-grid">
+                        <!-- Oracle Cloud -->
+                        <a href="https://cloud.oracle.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #c74634, #a03528);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <ellipse cx="12" cy="12" rx="10" ry="5"/>
+                                        <path d="M2 12v0c0 2.76 4.48 5 10 5s10-2.24 10-5"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Oracle Cloud</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(199, 70, 52, 0.15); color: #c74634;">OCI</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Console</span>
+                            </div>
+                        </a>
+
+                        <!-- GCloud -->
+                        <a href="https://console.cloud.google.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">GCloud</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(96, 165, 250, 0.15); color: #93c5fd;">GCP</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Console</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Security Section -->
+                <div class="profile-section">
+                    <h2 class="profile-title">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Security
+                    </h2>
+                    <div class="apps-cards-grid">
+                        <!-- Proxy (NPM) -->
+                        <a href="https://proxy.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Proxy</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">NPM</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-f-micro_1</span>
+                            </div>
+                        </a>
+
+                        <!-- Sauron Logs -->
+                        <a href="https://logs.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <circle cx="12" cy="12" r="4"/>
+                                        <circle cx="12" cy="12" r="1"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Sauron Logs</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Logs</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Centralized</span>
+                            </div>
+                        </a>
+
+                        <!-- Firewall -->
+                        <a href="https://cloud.oracle.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Firewall</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">Security</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Cloud Console</span>
+                            </div>
+                        </a>
+
+                        <!-- Vault -->
+                        <a href="https://vault.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Vault</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(99, 102, 241, 0.15); color: #a5b4fc;">Passwords</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Vaultwarden</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Others Section -->
+                <div class="profile-section">
+                    <h2 class="profile-title">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="14" y="3" width="7" height="7"/>
+                            <rect x="14" y="14" width="7" height="7"/>
+                            <rect x="3" y="14" width="7" height="7"/>
+                        </svg>
+                        Others
+                    </h2>
+                    <div class="apps-cards-grid">
+                        <!-- Matomo Analytics -->
+                        <a href="https://analytics.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 20V10M12 20V4M6 20v-6"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Matomo Analytics</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">Analytics</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">oci-f-micro_2</span>
+                            </div>
+                        </a>
+
+                        <!-- NocoDB -->
+                        <a href="https://db.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                        <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                        <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">NocoDB</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(6, 182, 212, 0.15); color: #22d3ee;">Database</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Airtable Alt</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+            </div><!-- End page-container -->
+        </div><!-- End Admin Page -->
 
         <!-- Features Page -->
         <div id="features-page" class="view-content">

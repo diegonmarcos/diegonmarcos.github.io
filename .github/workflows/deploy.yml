@@ -325,6 +325,28 @@ jobs:
           cd ../../..
           echo "✅ Leafy build complete"
 
+      - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
+        id: build-mymaps-svelte
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mymaps/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building MyMaps SvelteKit..."
+          cd c_Personal_Tools/mymaps/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ MyMaps SvelteKit build complete"
+
+      - name: 🔨 Build Maps Classic (React + Vite)
+        id: build-maps-classic
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/maps/')
+        continue-on-error: false
+        run: |
+          echo "🔨 Building Maps Classic..."
+          cd c_Personal_Tools/maps/1.ops
+          bash build.sh build
+          cd ../../..
+          echo "✅ Maps Classic build complete"
+
       # ============================================
       # BUILD STATUS SUMMARY
       # ============================================
@@ -487,6 +509,20 @@ jobs:
             FAILED="$FAILED leafy"
           elif [ "${{ steps.build-leafy.outcome }}" == "success" ]; then
             echo "✅ SUCCESS: Leafy"
+          fi
+
+          if [ "${{ steps.build-mymaps-svelte.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMaps SvelteKit"
+            FAILED="$FAILED mymaps-svelte"
+          elif [ "${{ steps.build-mymaps-svelte.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMaps SvelteKit"
+          fi
+
+          if [ "${{ steps.build-maps-classic.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Maps Classic"
+            FAILED="$FAILED maps-classic"
+          elif [ "${{ steps.build-maps-classic.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Maps Classic"
           fi
 
           if [ "${{ steps.build-mymail.outcome }}" == "failure" ]; then
@@ -821,6 +857,26 @@ jobs:
             echo "✅ Leafy build copied to _site/leafy/"
           else
             echo "⏭️  Skipping Leafy copy (no dist directory found)"
+          fi
+
+          # Copy MyMaps SvelteKit build (if dist exists - SvelteKit + MapLibre)
+          if [ -d "c_Personal_Tools/mymaps/dist" ]; then
+            echo "📦 Copying MyMaps SvelteKit build..."
+            mkdir -p _site/mymaps
+            cp -rL c_Personal_Tools/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r c_Personal_Tools/mymaps/dist/* _site/mymaps/
+            echo "✅ MyMaps SvelteKit build copied to _site/mymaps/"
+          else
+            echo "⏭️  Skipping MyMaps SvelteKit copy (no dist directory found)"
+          fi
+
+          # Copy Maps Classic build (if dist exists - React + Vite)
+          if [ -d "c_Personal_Tools/maps/dist" ]; then
+            echo "📦 Copying Maps Classic build..."
+            mkdir -p _site/maps
+            cp -rL c_Personal_Tools/maps/dist/* _site/maps/ 2>/dev/null || cp -r c_Personal_Tools/maps/dist/* _site/maps/
+            echo "✅ Maps Classic build copied to _site/maps/"
+          else
+            echo "⏭️  Skipping Maps Classic copy (no dist directory found)"
           fi
 
           echo "✅ All files prepared for deployment"

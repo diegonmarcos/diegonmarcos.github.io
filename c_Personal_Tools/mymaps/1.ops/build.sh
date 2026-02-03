@@ -1,6 +1,6 @@
 #!/bin/sh
 #=====================================
-# MYMAPS BUILD SCRIPT (Vite SPA)
+# MYMAPS BUILD SCRIPT
 #=====================================
 # POSIX-compliant build script
 # Usage: ./1.ops/build.sh [action]
@@ -18,9 +18,9 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-DIST_DIR="$PROJECT_DIR/dist"
 PROJECT_NAME="MyMaps"
-PORT="8014"
+PORT="8018"
+BUILD_DIR="$PROJECT_DIR/dist"
 
 # Logging
 log_info() { printf "${BLUE}[INFO]${NC} %s\n" "$1"; }
@@ -37,20 +37,24 @@ print_usage() {
     printf "${YELLOW}USAGE:${NC}  ./1.ops/build.sh [action]\n"
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
-    printf "  ${GREEN}build${NC}        # Build for production (Single File SPA)\n"
+    printf "  ${GREEN}build${NC}        # Build for production (static adapter)\n"
+    printf "  ${GREEN}lint${NC}         # Lint Svelte/JS/TS files\n"
+    printf "  ${GREEN}check${NC}        # Run svelte-check for type checking\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
     printf "  ${GREEN}dev${NC}          # Start Vite dev server :${PORT}\n"
+    printf "  ${GREEN}preview${NC}      # Preview production build\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
+    printf "  ${GREEN}format${NC}       # Format code with Prettier\n"
     printf "  ${GREEN}help${NC}         # Show this help\n"
     printf "\n"
     printf "${YELLOW}PROJECT INFO:${NC}\n"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s${NC}\n" "Project" "Framework" "CSS" "Language" "Dev Server"
+    printf "  ${MAGENTA}%-14s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  %-10s  %-10s  %-10s  ${GREEN}%-14s${NC}\n" "MyMaps" "React+Vite" "Sass" "TypeScript" "Vite :${PORT}"
+    printf "  ${CYAN}%-14s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "MyMaps" "SvelteKit" "Sass" "TypeScript" "Vite :${PORT}" "HMR"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
@@ -65,24 +69,21 @@ check_dependencies() {
     npm install
 }
 
-# Build action
+# Build for production
 build() {
-    log_info "Building ${PROJECT_NAME}..."
+    log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
     cd "$PROJECT_DIR"
 
-    # Clean existing build artifacts
-    rm -rf "$DIST_DIR"
+    npm run build 2>&1 || {
+        log_error "Build failed"
+        return 1
+    }
 
-    # Compile TypeScript
-    # npm run typecheck # Optional, if scripts are set up
-
-    # Build with Vite
-    npx vite build
-
-    if [ -d "$DIST_DIR" ]; then
-        log_success "Build completed → dist/"
-        log_info "Single File SPA generated at dist/index.html"
+    if [ -d "$BUILD_DIR" ]; then
+        log_success "Build completed → $BUILD_DIR"
+        log_info "Build size:"
+        du -sh "$BUILD_DIR"
     else
         log_error "Build directory not created"
         return 1
@@ -94,19 +95,13 @@ dev() {
     check_dependencies
     cd "$PROJECT_DIR"
 
-    # Create logs directory
-    mkdir -p "$PROJECT_DIR/1.ops/logs"
-
-    # Start Vite dev server in background
-    nohup npx vite --port $PORT > "$PROJECT_DIR/1.ops/logs/server.log" 2>&1 &
-
-    # Give server time to start
-    sleep 2
+    # Start Vite in background
+    nohup npm run dev > /dev/null 2>&1 &
 
     # Print URL and return control
     printf "\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
-    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} Dev Server STARTED${NC}\n"
+    printf "${GREEN}|${NC}  ${CYAN}${PROJECT_NAME} STARTED${NC}\n"
     printf "${GREEN}+----------------------------------------------------------+${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}URL:${NC}  ${BLUE}http://localhost:${PORT}/${NC}\n"
     printf "${GREEN}|${NC}  ${YELLOW}Stop:${NC} ./1.ops/build_main.sh kill\n"
@@ -114,11 +109,69 @@ dev() {
     printf "\n"
 }
 
-# Clean
+# Preview production build
+preview() {
+    log_info "Starting preview server..."
+
+    if [ ! -d "$BUILD_DIR" ]; then
+        log_warning "No production build found. Building first..."
+        build
+    fi
+
+    cd "$PROJECT_DIR"
+    log_success "Preview server starting..."
+    npm run preview
+}
+
+# Clean build artifacts
 clean() {
     log_info "Cleaning build artifacts..."
-    rm -rf "$DIST_DIR"
+
+    rm -rf "$BUILD_DIR"
+    rm -rf "$PROJECT_DIR/.svelte-kit"
+
     log_success "Clean completed"
+}
+
+# Lint files
+lint() {
+    log_info "Linting files..."
+    check_dependencies
+    cd "$PROJECT_DIR"
+
+    if grep -q "lint" package.json 2>/dev/null; then
+        npm run lint || log_warning "Linting completed with warnings"
+    else
+        log_warning "No lint script found in package.json"
+    fi
+}
+
+# Format code
+format() {
+    log_info "Formatting code..."
+    check_dependencies
+    cd "$PROJECT_DIR"
+
+    if grep -q "format" package.json 2>/dev/null; then
+        npm run format
+        log_success "Code formatted"
+    else
+        log_warning "No format script found in package.json"
+    fi
+}
+
+# Svelte type checking
+check_types() {
+    log_info "Running svelte-check..."
+    check_dependencies
+    cd "$PROJECT_DIR"
+
+    if grep -q "check" package.json 2>/dev/null; then
+        npm run check
+        log_success "Type checking completed"
+    else
+        log_warning "No check script found in package.json"
+    fi
 }
 
 # Main
@@ -128,7 +181,11 @@ main() {
     case "$_action" in
         build)      build ;;
         dev)        dev ;;
+        preview)    preview ;;
         clean)      clean ;;
+        lint)       lint ;;
+        format)     format ;;
+        check)      check_types ;;
         help|-h|--help) print_usage ;;
         *)          print_usage ;;
     esac

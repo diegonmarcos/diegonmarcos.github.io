@@ -42,6 +42,7 @@ Some projects have additional specifications in their backend repos:
 | **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyGames**       | Retro games collection          | **Type 2** (Browser Tool)      | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 | **MyMaps**        | Strategic map viewer            | **Type 2** (Browser Tool)      | **React+Vite** | Client-Side (CSR)        | Yes             | Yes     |
+| **MyMaps Pro**    | Self-hosted Google Maps alt     | **Type 2** (Browser Tool)      | **SvelteKit** | Client-Side (CSR)        | No              | Yes     |
 | **MyMovies**      | Movie & TV series browser       | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyMusic**       | Winamp-style music library      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
@@ -67,6 +68,7 @@ Some projects have additional specifications in their backend repos:
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
 | **MyGames**       | SvelteKit     | Sass     | TypeScript     |
 | **MyMaps**        | React+Vite    | Sass     | TypeScript     |
+| **MyMaps Pro**    | SvelteKit     | Sass     | TypeScript     |
 | **MyMovies**      | Vue 3         | Sass     | TypeScript     |
 | **MyMusic**       | Vue 3         | Sass     | TypeScript     |
 | **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
@@ -92,6 +94,7 @@ Some projects have additional specifications in their backend repos:
 | **MyFeed**        | Vite :8003            | HMR        |
 | **MyGames**       | Vite :8013            | HMR        |
 | **MyMaps**        | Vite :8014            | HMR        |
+| **MyMaps Pro**    | Vite :8018            | HMR        |
 | **MyMovies**      | Vite :8015            | HMR        |
 | **MyMusic**       | Vite :8016            | HMR        |
 | **MyProfile**     | Vite :8004            | HMR        |

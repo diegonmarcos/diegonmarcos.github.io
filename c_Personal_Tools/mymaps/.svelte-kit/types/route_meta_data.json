@@ -1,0 +1,11 @@
+{
+	"/": [
+		"src/routes/+page.ts"
+	],
+	"/place/[id]": [
+		"src/routes/place/[id]/+page.ts"
+	],
+	"/settings": [
+		"src/routes/settings/+page.ts"
+	]
+}

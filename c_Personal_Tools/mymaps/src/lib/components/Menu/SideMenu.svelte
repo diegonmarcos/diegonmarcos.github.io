@@ -1,0 +1,152 @@
+<script lang="ts">
+  import { base } from '$app/paths';
+
+  let isOpen = $state(false);
+
+  function toggle() {
+    isOpen = !isOpen;
+  }
+
+  function close() {
+    isOpen = false;
+  }
+
+  // Close on escape key
+  function handleKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape' && isOpen) {
+      close();
+    }
+  }
+
+  // Menu sections
+  const menuSections = [
+    {
+      id: 'list',
+      name: 'List',
+      icon: 'M4 6h16M4 12h16M4 18h16',
+      description: 'View saved places'
+    },
+    {
+      id: 'maps',
+      name: 'Maps',
+      icon: 'M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7',
+      description: 'Your custom maps'
+    },
+    {
+      id: 'chronology',
+      name: 'Chronology',
+      icon: 'M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
+      description: 'Location history'
+    }
+  ];
+
+  let activeSection = $state<string | null>(null);
+
+  function selectSection(id: string) {
+    activeSection = activeSection === id ? null : id;
+  }
+</script>
+
+<svelte:window onkeydown={handleKeydown} />
+
+<!-- Hamburger Button -->
+<button
+  class="menu-toggle"
+  class:menu-toggle--open={isOpen}
+  onclick={toggle}
+  aria-label={isOpen ? 'Close menu' : 'Open menu'}
+  aria-expanded={isOpen}
+>
+  <span class="menu-toggle-bar"></span>
+  <span class="menu-toggle-bar"></span>
+  <span class="menu-toggle-bar"></span>
+</button>
+
+<!-- Overlay -->
+{#if isOpen}
+  <button
+    class="menu-overlay"
+    onclick={close}
+    aria-label="Close menu"
+    tabindex="-1"
+  ></button>
+{/if}
+
+<!-- Side Menu -->
+<nav class="side-menu" class:side-menu--open={isOpen} aria-label="Main menu">
+  <div class="side-menu-header">
+    <h2 class="side-menu-title">MyMaps</h2>
+  </div>
+
+  <div class="side-menu-content">
+    {#each menuSections as section}
+      <button
+        class="menu-section"
+        class:menu-section--active={activeSection === section.id}
+        onclick={() => selectSection(section.id)}
+      >
+        <div class="menu-section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d={section.icon} />
+          </svg>
+        </div>
+        <div class="menu-section-info">
+          <span class="menu-section-name">{section.name}</span>
+          <span class="menu-section-desc">{section.description}</span>
+        </div>
+        <svg class="menu-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+
+      {#if activeSection === section.id}
+        <div class="menu-section-content">
+          {#if section.id === 'list'}
+            <div class="menu-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+              </svg>
+              <p>No saved places yet</p>
+              <span>Search and save places to see them here</span>
+            </div>
+          {:else if section.id === 'maps'}
+            <div class="menu-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <path d="M3 9h18M9 21V9" />
+              </svg>
+              <p>No custom maps</p>
+              <span>Create maps to organize your places</span>
+            </div>
+          {:else if section.id === 'chronology'}
+            <div class="menu-empty-state">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <p>No location history</p>
+              <span>Your visited places will appear here</span>
+            </div>
+          {/if}
+        </div>
+      {/if}
+    {/each}
+  </div>
+
+  <div class="side-menu-footer">
+    <a href="/maps" class="menu-footer-link" onclick={close}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+      <span>Classic Maps</span>
+    </a>
+    <a href="{base}/settings" class="menu-footer-link" onclick={close}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+      </svg>
+      <span>Settings</span>
+    </a>
+  </div>
+</nav>

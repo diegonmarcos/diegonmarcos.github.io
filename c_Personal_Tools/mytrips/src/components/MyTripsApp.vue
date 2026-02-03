@@ -159,10 +159,6 @@
               <span class="timeline-stat__label">Countries</span>
             </div>
             <div class="timeline-stat">
-              <span class="timeline-stat__value">{{ timelineStats.totalRegions }}</span>
-              <span class="timeline-stat__label">Nomad Regions</span>
-            </div>
-            <div class="timeline-stat">
               <span class="timeline-stat__value">{{ timelineStats.totalCities }}</span>
               <span class="timeline-stat__label">Cities</span>
             </div>
@@ -178,10 +174,6 @@
               <option value="">All Countries</option>
               <option v-for="c in uniqueCountries" :key="c" :value="c">{{ c }}</option>
             </select>
-            <select v-model="timelineFilter.region" class="timeline-select">
-              <option value="">All Regions</option>
-              <option v-for="r in uniqueRegions" :key="r" :value="r">{{ r }}</option>
-            </select>
             <button class="timeline-btn" @click="resetFilters">Reset</button>
           </div>
 
@@ -192,7 +184,6 @@
                 <tr>
                   <th @click="sortTimeline('continent')" class="sortable">Continent <i :class="sortIcon('continent')"></i></th>
                   <th @click="sortTimeline('country')" class="sortable">Country <i :class="sortIcon('country')"></i></th>
-                  <th @click="sortTimeline('nomadRegion')" class="sortable">Region <i :class="sortIcon('nomadRegion')"></i></th>
                   <th @click="sortTimeline('state')" class="sortable">State <i :class="sortIcon('state')"></i></th>
                   <th @click="sortTimeline('city')" class="sortable">City <i :class="sortIcon('city')"></i></th>
                   <th @click="sortTimeline('dateIn')" class="sortable">Date In <i :class="sortIcon('dateIn')"></i></th>
@@ -203,7 +194,6 @@
                 <tr v-for="(trip, index) in filteredTimeline" :key="index">
                   <td>{{ trip.continent }}</td>
                   <td><span class="flag">{{ trip.countryFlag }}</span> {{ trip.country }}</td>
-                  <td>{{ trip.nomadRegion }}</td>
                   <td>{{ trip.state }}</td>
                   <td>{{ trip.city }}</td>
                   <td>{{ trip.dateIn }}</td>
@@ -1324,7 +1314,6 @@ const timelineByYearGroups = computed(() => {
 // Timeline unique values for filters
 const uniqueContinents = computed(() => [...new Set(travelData.trips.map(t => t.continent))].sort());
 const uniqueCountries = computed(() => [...new Set(travelData.trips.map(t => t.country))].sort());
-const uniqueRegions = computed(() => [...new Set(travelData.trips.map(t => t.nomadRegion))].sort());
 
 // Get visited country codes from travel data
 const visitedCountryCodes = computed(() => {

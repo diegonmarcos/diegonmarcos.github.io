@@ -11,7 +11,6 @@
 Thumbs.db
 
 # Symlinks to external directories
-markdown/
 
 
 # Jekyll
@@ -46,7 +45,7 @@ vendor/
 1.ops/.dev-servers.pid
 
 # Dev mode symlinks (public folder in src_static)
-**/src_static/public
+
 
 
 

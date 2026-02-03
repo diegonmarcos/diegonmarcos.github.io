@@ -1,0 +1,294 @@
+// ============================================
+// MYMAPS PRO - MAP STYLES
+// ============================================
+
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ----------------
+// MAP CONTAINER
+// ----------------
+
+.map-container {
+  @include absolute-fill;
+  z-index: $z-map;
+}
+
+.map-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+// Override MapLibre GL default styles
+.maplibregl-map {
+  font-family: $font-sans;
+}
+
+.maplibregl-canvas {
+  outline: none;
+}
+
+// ----------------
+// MAP CONTROLS
+// ----------------
+
+.map-controls {
+  position: absolute;
+  right: $space-4;
+  bottom: $space-4;
+  z-index: $z-controls;
+  @include flex-col(flex-end, flex-end, $space-2);
+
+  @include mobile-only {
+    right: $space-3;
+    bottom: $space-3;
+  }
+}
+
+.map-control-group {
+  @include glass-panel-sm;
+  @include flex-col(center, center, 0);
+  overflow: hidden;
+  padding: 0;
+}
+
+.map-control-btn {
+  @include flex-center;
+  width: 40px;
+  height: 40px;
+  color: $text-primary;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: $bg-glass-hover;
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  &:not(:last-child) {
+    border-bottom: 1px solid $border-glass;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &--active {
+    color: $accent-blue-light;
+    background: rgba($accent-blue, 0.15);
+  }
+
+  // Standalone button (not in a group)
+  &--standalone {
+    @include glass-panel-sm;
+    padding: 0;
+    border: none;
+
+    &:not(:last-child) {
+      border-bottom: none;
+    }
+  }
+}
+
+// ----------------
+// COMPASS
+// ----------------
+
+.map-compass {
+  @include glass-panel-sm;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  @include flex-center;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: $bg-glass-hover;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s $ease-out;
+  }
+
+  &--rotated svg {
+    transform: rotate(var(--bearing, 0deg));
+  }
+}
+
+// ----------------
+// GEOLOCATION BUTTON
+// ----------------
+
+.geolocate-btn {
+  @include glass-button;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &--tracking {
+    color: $accent-blue-light;
+    background: rgba($accent-blue, 0.2);
+    animation: pulse-glow 2s infinite;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: $shadow-lg, 0 0 0 0 rgba($accent-blue, 0.4);
+  }
+  50% {
+    box-shadow: $shadow-lg, 0 0 0 8px rgba($accent-blue, 0);
+  }
+}
+
+// ----------------
+// SCALE CONTROL
+// ----------------
+
+.map-scale {
+  position: absolute;
+  left: $space-4;
+  bottom: $space-4;
+  z-index: $z-controls;
+  @include glass-panel-sm;
+  padding: $space-1 $space-2;
+  font-size: $text-xs;
+  color: $text-secondary;
+}
+
+// ----------------
+// ATTRIBUTION
+// ----------------
+
+.maplibregl-ctrl-attrib {
+  @include glass-panel-sm;
+  font-size: 10px;
+  padding: $space-1 $space-2;
+  color: $text-muted;
+  border-radius: 4px;
+
+  a {
+    color: $text-secondary;
+  }
+}
+
+.maplibregl-ctrl-attrib-button {
+  display: none;
+}
+
+// ----------------
+// CUSTOM POPUPS
+// ----------------
+
+.maplibregl-popup {
+  z-index: $z-popup;
+}
+
+.maplibregl-popup-content {
+  @include glass-panel;
+  padding: $space-4;
+  max-width: 300px;
+  color: $text-primary;
+}
+
+.maplibregl-popup-close-button {
+  color: $text-secondary;
+  font-size: 20px;
+  padding: $space-2;
+
+  &:hover {
+    color: $text-primary;
+    background: transparent;
+  }
+}
+
+.maplibregl-popup-tip {
+  border-top-color: $bg-glass;
+}
+
+// ----------------
+// MARKERS
+// ----------------
+
+.map-marker {
+  cursor: pointer;
+  @include transition(transform);
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &--place {
+    width: 32px;
+    height: 32px;
+    @include glass-panel-sm;
+    @include flex-center;
+    padding: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      color: $accent-blue-light;
+    }
+  }
+
+  &--search {
+    width: 40px;
+    height: 40px;
+    background: $accent-red;
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    @include flex-center;
+    box-shadow: $shadow-md;
+
+    svg {
+      transform: rotate(45deg);
+      width: 20px;
+      height: 20px;
+      color: white;
+    }
+  }
+
+  &--user {
+    width: 20px;
+    height: 20px;
+    background: $accent-blue;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: $shadow-md;
+  }
+}
+
+// ----------------
+// ROUTE LINE
+// ----------------
+
+.route-line {
+  stroke: $accent-blue;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.route-line-outline {
+  stroke: rgba($accent-blue, 0.3);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}

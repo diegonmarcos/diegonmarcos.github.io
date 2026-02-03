@@ -1,0 +1,69 @@
+// ===========================================
+// CARD COMPONENT
+// ===========================================
+
+@use '../abstracts' as *;
+
+.card {
+  @include card-base;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $color-red-core, $color-blue-core);
+    opacity: 0;
+    transition: opacity $transition-base;
+  }
+
+  &:hover {
+    @include card-hover;
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &__icon {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  &__title {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  &__description {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    line-height: 1.5;
+  }
+
+  &__meta {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid $color-border;
+    font-size: $font-size-xs;
+    color: $color-text-dim;
+    @include flex-between;
+  }
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+
+  @include respond-to(sm) {
+    grid-template-columns: 1fr;
+  }
+}

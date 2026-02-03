@@ -41,7 +41,7 @@
 
   @include mobile-only {
     right: $space-3;
-    bottom: calc($space-3 + 24px);
+    bottom: calc($space-3 + 64px); // Extra space for mobile browser bottom bars
   }
 
   @include landscape-mobile {
@@ -143,20 +143,33 @@
 // ----------------
 
 .geolocate-btn {
-  @include glass-button;
+  @include glass-panel-sm;
+  @include flex-center;
   width: 40px;
   height: 40px;
   padding: 0;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: $bg-glass-hover;
+  }
 
   svg {
     width: 20px;
     height: 20px;
+    flex-shrink: 0;
   }
 
   &--tracking {
     color: $accent-blue-light;
     background: rgba($accent-blue, 0.2);
     animation: pulse-glow 2s infinite;
+  }
+
+  @include touch-device {
+    width: 48px;
+    height: 48px;
   }
 }
 

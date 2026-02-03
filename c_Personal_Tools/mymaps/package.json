@@ -28,8 +28,8 @@
 		"vite": "^7.1.10"
 	},
 	"dependencies": {
-		"maplibre-gl": "^4.7.1",
 		"@mapbox/togeojson": "^0.16.2",
-		"jszip": "^3.10.1"
+		"jszip": "^3.10.1",
+		"maplibre-gl": "^5.17.0"
 	}
 }

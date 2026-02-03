@@ -182,18 +182,12 @@ export const isGlobeView = writable<boolean>(loadGlobeState());
  * Toggle between globe and mercator projection
  */
 export function toggleGlobeView() {
+  console.log('[GLOBE DEBUG] toggleGlobeView called');
   isGlobeView.update(v => {
     const newValue = !v;
+    console.log('[GLOBE DEBUG] Toggling from', v, 'to', newValue);
     saveGlobeState(newValue);
-
-    if (mapInstance && typeof mapInstance.setProjection === 'function') {
-      try {
-        mapInstance.setProjection(newValue ? 'globe' : 'mercator');
-      } catch (e) {
-        console.warn('Globe projection not supported:', e);
-      }
-    }
-
+    // Note: actual projection change happens via $effect in MapCanvas
     return newValue;
   });
 }
@@ -202,16 +196,10 @@ export function toggleGlobeView() {
  * Set globe view state
  */
 export function setGlobeView(enabled: boolean) {
+  console.log('[GLOBE DEBUG] setGlobeView called with:', enabled);
   isGlobeView.set(enabled);
   saveGlobeState(enabled);
-
-  if (mapInstance && typeof mapInstance.setProjection === 'function') {
-    try {
-      mapInstance.setProjection(enabled ? 'globe' : 'mercator');
-    } catch (e) {
-      console.warn('Globe projection not supported:', e);
-    }
-  }
+  // Note: actual projection change happens via $effect in MapCanvas
 }
 
 /**

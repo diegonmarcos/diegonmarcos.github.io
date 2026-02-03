@@ -144,8 +144,14 @@
       "_index2.js"
     ],
     "css": [
-      "_app/immutable/assets/_layout.Dkg1p4NG.css"
+      "_app/immutable/assets/_layout.DjVRPrqB.css"
     ]
+  },
+  "src/routes/+layout.ts": {
+    "file": "entries/pages/_layout.ts.js",
+    "name": "entries/pages/_layout.ts",
+    "src": "src/routes/+layout.ts",
+    "isEntry": true
   },
   "src/routes/+page.svelte": {
     "file": "entries/pages/_page.svelte.js",

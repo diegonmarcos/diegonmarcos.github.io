@@ -42,17 +42,22 @@
     }
 
     // Create map
-    map = new maplibregl.Map({
+    const mapOptions: maplibregl.MapOptions = {
       container: mapContainer,
       style: $currentStyle.url,
       center: initialState.center,
       zoom: initialState.zoom,
       bearing: initialState.bearing,
-      pitch: initialState.pitch,
+      pitch: $isGlobeView ? 45 : initialState.pitch,
       attributionControl: false,
       maxZoom: 20,
-      minZoom: 1
-    });
+      minZoom: 1,
+      // Cooperative gestures: require Ctrl+scroll or two-finger to interact
+      cooperativeGestures: true
+    };
+
+    console.log('[GLOBE DEBUG] Creating map with options:', mapOptions);
+    map = new maplibregl.Map(mapOptions);
 
     // Add attribution in corner
     map.addControl(
@@ -66,9 +71,16 @@
     // Sync state on move
     map.on('moveend', syncToUrl);
 
-    // Set loaded flag and add 3D buildings when style loads
+    // Set loaded flag, apply globe projection, and add 3D buildings when style loads
     map.on('style.load', () => {
       mapLoaded = true;
+
+      // Apply globe projection if enabled (must be done after style loads)
+      if ($isGlobeView && map) {
+        console.log('[GLOBE DEBUG] Applying initial globe projection');
+        map.setProjection({ type: 'globe' });
+      }
+
       add3DBuildings();
     });
 
@@ -147,12 +159,19 @@
   // Track if map is loaded
   let mapLoaded = $state(false);
 
-  // Helper: Toggle globe projection (supported in MapLibre 3.0+)
+  // Helper: Toggle globe projection (MapLibre 5.0+)
   function toggleGlobeProjection(enabled: boolean) {
-    if (!map) return;
+    console.log('[GLOBE DEBUG] toggleGlobeProjection called with:', enabled);
+
+    if (!map) {
+      console.error('[GLOBE DEBUG] No map instance!');
+      return;
+    }
+
     try {
-      // Set projection
-      map.setProjection(enabled ? 'globe' : 'mercator');
+      // Use setProjection API (MapLibre 5.0+)
+      map.setProjection({ type: enabled ? 'globe' : 'mercator' });
+      console.log('[GLOBE DEBUG] setProjection succeeded:', enabled ? 'globe' : 'mercator');
 
       // Adjust pitch for better 3D view
       const targetPitch = enabled ? 45 : 0;
@@ -161,7 +180,7 @@
         duration: 500
       });
     } catch (e) {
-      console.warn('Globe projection error:', e);
+      console.error('[GLOBE DEBUG] setProjection failed:', e);
     }
   }
 
@@ -177,6 +196,7 @@
   $effect(() => {
     const globeEnabled = $isGlobeView;
     if (map && mapLoaded) {
+      console.log('[GLOBE DEBUG] $effect: toggling globe to', globeEnabled);
       untrack(() => toggleGlobeProjection(globeEnabled));
     }
   });

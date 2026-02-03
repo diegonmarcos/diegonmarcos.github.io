@@ -95,6 +95,15 @@
     max-width: 100%;
     border-radius: 0;
   }
+
+  @include landscape-mobile {
+    width: 280px;
+    max-width: 50vw;
+  }
+
+  @include tablet-only {
+    width: 360px;
+  }
 }
 
 .side-menu-header {

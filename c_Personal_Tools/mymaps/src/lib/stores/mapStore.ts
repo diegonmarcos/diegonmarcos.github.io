@@ -8,6 +8,7 @@ import type { MapState, MapStyle, LngLat } from '$lib/services/api/types';
 import { browser } from '$app/environment';
 
 const STORAGE_KEY = 'mymaps-map-state';
+const GLOBE_STORAGE_KEY = 'mymaps-globe-view';
 
 // Default map state (centered on Europe)
 const defaultState: MapState = {
@@ -155,28 +156,46 @@ export const currentStyle = derived(
 export const userLocation = writable<LngLat | null>(null);
 export const isLocating = writable<boolean>(false);
 
-// Globe view store
-export const isGlobeView = writable<boolean>(false);
+// Globe view persistence helpers
+function loadGlobeState(): boolean {
+  if (!browser) return false;
+  try {
+    return localStorage.getItem(GLOBE_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function saveGlobeState(enabled: boolean): void {
+  if (!browser) return;
+  try {
+    localStorage.setItem(GLOBE_STORAGE_KEY, String(enabled));
+  } catch {
+    // Ignore errors
+  }
+}
+
+// Globe view store (persisted)
+export const isGlobeView = writable<boolean>(loadGlobeState());
 
 /**
  * Toggle between globe and mercator projection
  */
 export function toggleGlobeView() {
-  isGlobeView.update(v => !v);
+  isGlobeView.update(v => {
+    const newValue = !v;
+    saveGlobeState(newValue);
 
-  if (mapInstance && typeof mapInstance.setProjection === 'function') {
-    try {
-      const currentProjection = typeof mapInstance.getProjection === 'function'
-        ? mapInstance.getProjection()?.type
-        : 'mercator';
-      const newProjection = !currentProjection || currentProjection === 'mercator'
-        ? 'globe'
-        : 'mercator';
-      mapInstance.setProjection(newProjection);
-    } catch (e) {
-      console.warn('Globe projection not supported:', e);
+    if (mapInstance && typeof mapInstance.setProjection === 'function') {
+      try {
+        mapInstance.setProjection(newValue ? 'globe' : 'mercator');
+      } catch (e) {
+        console.warn('Globe projection not supported:', e);
+      }
     }
-  }
+
+    return newValue;
+  });
 }
 
 /**
@@ -184,6 +203,7 @@ export function toggleGlobeView() {
  */
 export function setGlobeView(enabled: boolean) {
   isGlobeView.set(enabled);
+  saveGlobeState(enabled);
 
   if (mapInstance && typeof mapInstance.setProjection === 'function') {
     try {

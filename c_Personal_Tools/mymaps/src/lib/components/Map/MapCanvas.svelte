@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte';
+  import { onMount, onDestroy, untrack } from 'svelte';
   import maplibregl from 'maplibre-gl';
-  import type { Map as MapLibreMap } from 'maplibre-gl';
+  import type { Map as MapLibreMap, FogSpecification } from 'maplibre-gl';
   import {
     mapStore,
     currentStyle,
@@ -145,21 +145,63 @@
   }
 
   // Track if map is loaded
-  let mapLoaded = false;
+  let mapLoaded = $state(false);
 
-  // React to style changes
-  $: if (map && $currentStyle && mapLoaded) {
-    map.setStyle($currentStyle.url);
-  }
-
-  // React to globe view changes
-  $: if (map && mapLoaded && typeof map.setProjection === 'function') {
+  // Helper: Set projection on the map
+  function setProjection(globeEnabled: boolean) {
+    if (!map || typeof map.setProjection !== 'function') return;
     try {
-      map.setProjection($isGlobeView ? 'globe' : 'mercator');
+      map.setProjection(globeEnabled ? 'globe' : 'mercator');
     } catch (e) {
-      console.warn('Globe projection not supported');
+      console.warn('Globe projection not supported:', e);
     }
   }
+
+  // Helper: Handle atmosphere/fog effects for globe mode
+  function handleGlobeAtmosphere(enabled: boolean) {
+    if (!map) return;
+    if (enabled) {
+      const fogSpec: FogSpecification = {
+        color: 'rgb(12, 12, 20)',
+        'high-color': 'rgb(36, 92, 223)',
+        'horizon-blend': 0.02,
+        'space-color': 'rgb(4, 4, 10)',
+        'star-intensity': 0.6
+      };
+      map.setFog(fogSpec);
+    } else {
+      map.setFog(null);
+    }
+  }
+
+  // Helper: Adjust pitch when entering/exiting globe mode
+  function adjustPitchForGlobe(enabled: boolean) {
+    if (!map) return;
+    const targetPitch = enabled ? 45 : 0;
+    if (Math.abs(map.getPitch() - targetPitch) > 5) {
+      map.easeTo({ pitch: targetPitch, duration: 500 });
+    }
+  }
+
+  // React to style changes
+  $effect(() => {
+    const style = $currentStyle;
+    if (map && style && mapLoaded) {
+      untrack(() => map!.setStyle(style.url));
+    }
+  });
+
+  // React to globe view changes
+  $effect(() => {
+    const globeEnabled = $isGlobeView;
+    if (map && mapLoaded) {
+      untrack(() => {
+        setProjection(globeEnabled);
+        handleGlobeAtmosphere(globeEnabled);
+        adjustPitchForGlobe(globeEnabled);
+      });
+    }
+  });
 </script>
 
 <div class="map-canvas" bind:this={mapContainer}></div>

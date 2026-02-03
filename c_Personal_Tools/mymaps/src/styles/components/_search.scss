@@ -10,15 +10,28 @@
 // ----------------
 
 .search-container {
+  --menu-offset: 63px; // 44px toggle + 16px spacing + 3px buffer
   position: absolute;
   top: $space-4;
-  left: 68px; // Account for hamburger menu
+  left: var(--menu-offset);
   z-index: $z-search;
-  width: calc(100% - 68px - #{$space-4});
+  width: calc(100% - var(--menu-offset) - #{$space-4});
   max-width: 420px;
+
+  @include landscape-mobile {
+    max-width: 280px;
+  }
+
+  @include mq(sm) {
+    width: 340px;
+  }
 
   @include mq(md) {
     width: 380px;
+  }
+
+  @include mq(lg) {
+    width: 420px;
   }
 }
 

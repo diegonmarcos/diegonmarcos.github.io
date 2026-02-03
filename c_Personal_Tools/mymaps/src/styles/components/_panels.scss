@@ -89,6 +89,17 @@
     max-height: 70vh;
     border-radius: $glass-radius-lg $glass-radius-lg 0 0;
   }
+
+  @include landscape-mobile {
+    left: $space-3;
+    top: $space-3;
+    bottom: $space-3;
+    right: auto;
+    width: 45%;
+    max-width: 320px;
+    max-height: none;
+    border-radius: $glass-radius;
+  }
 }
 
 .place-photos {
@@ -269,6 +280,17 @@
     max-width: none;
     max-height: 60vh;
     border-radius: $glass-radius-lg $glass-radius-lg 0 0;
+  }
+
+  @include landscape-mobile {
+    left: $space-3;
+    top: $space-3;
+    bottom: $space-3;
+    right: auto;
+    width: 45%;
+    max-width: 320px;
+    max-height: none;
+    border-radius: $glass-radius;
   }
 }
 

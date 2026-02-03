@@ -28,6 +28,24 @@
   @media (max-width: #{$breakpoint-sm - 1px}) { @content; }
 }
 
+@mixin landscape-mobile {
+  @media (max-width: #{$breakpoint-md - 1px}) and (orientation: landscape) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: $breakpoint-sm) and (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin touch-device {
+  @media (hover: none) and (pointer: coarse) {
+    @content;
+  }
+}
+
 // ----------------
 // GLASSMORPHISM
 // ----------------

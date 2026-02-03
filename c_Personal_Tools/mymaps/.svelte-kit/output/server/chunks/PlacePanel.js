@@ -103,7 +103,10 @@ derived(
 );
 const userLocation = writable(null);
 const isLocating = writable(false);
-const isGlobeView = writable(false);
+function loadGlobeState() {
+  return false;
+}
+const isGlobeView = writable(loadGlobeState());
 function MapCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     onDestroy(() => {

@@ -43,6 +43,20 @@
     right: $space-3;
     bottom: calc($space-3 + 24px);
   }
+
+  @include landscape-mobile {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 200px;
+    justify-content: flex-end;
+  }
+
+  @include touch-device {
+    .map-control-btn {
+      width: 48px;
+      height: 48px;
+    }
+  }
 }
 
 .map-control-group {

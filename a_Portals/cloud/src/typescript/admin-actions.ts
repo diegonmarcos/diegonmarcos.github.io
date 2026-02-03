@@ -8,7 +8,7 @@ import { showNotification } from './notification';
 import { getDataMode } from './data-loader';
 
 // API Base URL
-const API_BASE = 'http://34.55.55.234:5000/api';
+const API_BASE = 'https://api.diegonmarcos.com/api';
 
 // GitHub OAuth2 constants
 const GITHUB_CLIENT_ID = 'Ov23liQPvqLvZgQQrI7C';

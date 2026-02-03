@@ -38,7 +38,7 @@ Open `index.html` in your browser for full interactive documentation with "Try i
 | `/api/cloud_control/costs_ai` | GET | AI service costs | `costs_ai.js` |
 | `/api/cloud_control/infrastructure` | GET | Full infrastructure | `infrastructure.js` |
 
-**Base URL:** http://34.55.55.234:5000/api
+**Base URL:** https://api.diegonmarcos.com/api
 
 ---
 
@@ -48,23 +48,23 @@ Open `index.html` in your browser for full interactive documentation with "Try i
 
 ```bash
 # Monitor (VMs & Services)
-curl http://34.55.55.234:5000/api/cloud_control/monitor
+curl https://api.diegonmarcos.com/api/cloud_control/monitor
 
 # Infrastructure Costs
-curl http://34.55.55.234:5000/api/cloud_control/costs_infra
+curl https://api.diegonmarcos.com/api/cloud_control/costs_infra
 
 # AI Costs
-curl http://34.55.55.234:5000/api/cloud_control/costs_ai
+curl https://api.diegonmarcos.com/api/cloud_control/costs_ai
 
 # Full Infrastructure
-curl http://34.55.55.234:5000/api/cloud_control/infrastructure
+curl https://api.diegonmarcos.com/api/cloud_control/infrastructure
 ```
 
 ### JavaScript Fetch
 
 ```javascript
 // Try API first
-const response = await fetch('http://34.55.55.234:5000/api/cloud_control/monitor');
+const response = await fetch('https://api.diegonmarcos.com/api/cloud_control/monitor');
 const data = await response.json();
 
 // Fallback to static file
@@ -161,7 +161,7 @@ info:
   version: 1.0.0
 
 servers:
-  - url: http://34.55.55.234:5000/api
+  - url: https://api.diegonmarcos.com/api
 
 paths:
   /cloud_control/monitor:
@@ -189,7 +189,7 @@ paths:
 
 ### cURL
 ```bash
-curl -X GET "http://34.55.55.234:5000/api/cloud_control/monitor" \
+curl -X GET "https://api.diegonmarcos.com/api/cloud_control/monitor" \
      -H "accept: application/json"
 ```
 
@@ -197,14 +197,14 @@ curl -X GET "http://34.55.55.234:5000/api/cloud_control/monitor" \
 ```python
 import requests
 
-response = requests.get('http://34.55.55.234:5000/api/cloud_control/monitor')
+response = requests.get('https://api.diegonmarcos.com/api/cloud_control/monitor')
 data = response.json()
 print(data)
 ```
 
 ### JavaScript
 ```javascript
-fetch('http://34.55.55.234:5000/api/cloud_control/monitor')
+fetch('https://api.diegonmarcos.com/api/cloud_control/monitor')
   .then(res => res.json())
   .then(data => console.log(data));
 ```

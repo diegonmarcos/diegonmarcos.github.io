@@ -1,7 +1,7 @@
 {
   "port": 8000,
   "mount_point": "/home/diego/Mounts/Git/front",
-  "pid": 58800,
+  "pid": 14689,
   "log_receiver_pid": 0,
   "mode": "static",
   "mount_locked": "false"

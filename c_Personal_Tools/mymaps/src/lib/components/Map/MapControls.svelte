@@ -175,13 +175,13 @@
     </svg>
   </button>
 
-  <!-- 3D Tilt toggle (MapLibre doesn't support globe projection) -->
+  <!-- Globe projection toggle -->
   <button
     class="map-control-btn map-control-btn--standalone"
     class:map-control-btn--active={$isGlobeView}
     onclick={toggleGlobeView}
-    aria-label={$isGlobeView ? 'Switch to flat view' : 'Switch to 3D tilt'}
-    title={$isGlobeView ? 'Flat view' : '3D tilt'}
+    aria-label={$isGlobeView ? 'Switch to flat map' : 'Switch to globe view'}
+    title={$isGlobeView ? 'Flat map' : 'Globe view'}
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="12" cy="12" r="10" />

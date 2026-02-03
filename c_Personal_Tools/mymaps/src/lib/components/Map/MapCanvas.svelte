@@ -147,14 +147,22 @@
   // Track if map is loaded
   let mapLoaded = $state(false);
 
-  // Helper: Toggle 3D tilt view (MapLibre doesn't support globe projection)
-  function toggle3DTilt(enabled: boolean) {
+  // Helper: Toggle globe projection (supported in MapLibre 3.0+)
+  function toggleGlobeProjection(enabled: boolean) {
     if (!map) return;
-    const targetPitch = enabled ? 60 : 0;
-    map.easeTo({
-      pitch: targetPitch,
-      duration: 500
-    });
+    try {
+      // Set projection
+      map.setProjection(enabled ? 'globe' : 'mercator');
+
+      // Adjust pitch for better 3D view
+      const targetPitch = enabled ? 45 : 0;
+      map.easeTo({
+        pitch: targetPitch,
+        duration: 500
+      });
+    } catch (e) {
+      console.warn('Globe projection error:', e);
+    }
   }
 
   // React to style changes
@@ -165,11 +173,11 @@
     }
   });
 
-  // React to 3D tilt toggle
+  // React to globe view toggle
   $effect(() => {
-    const tiltEnabled = $isGlobeView;
+    const globeEnabled = $isGlobeView;
     if (map && mapLoaded) {
-      untrack(() => toggle3DTilt(tiltEnabled));
+      untrack(() => toggleGlobeProjection(globeEnabled));
     }
   });
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy, untrack } from 'svelte';
   import maplibregl from 'maplibre-gl';
-  import type { Map as MapLibreMap, FogSpecification } from 'maplibre-gl';
+  import type { Map as MapLibreMap } from 'maplibre-gl';
   import {
     mapStore,
     currentStyle,
@@ -147,44 +147,14 @@
   // Track if map is loaded
   let mapLoaded = $state(false);
 
-  // Helper: Set projection on the map
-  function setProjection(globeEnabled: boolean) {
-    if (!map || typeof map.setProjection !== 'function') return;
-    try {
-      map.setProjection(globeEnabled ? 'globe' : 'mercator');
-    } catch (e) {
-      console.warn('Globe projection not supported:', e);
-    }
-  }
-
-  // Helper: Handle atmosphere/fog effects for globe mode
-  function handleGlobeAtmosphere(enabled: boolean) {
-    if (!map || typeof map.setFog !== 'function') return;
-    try {
-      if (enabled) {
-        const fogSpec: FogSpecification = {
-          color: 'rgb(12, 12, 20)',
-          'high-color': 'rgb(36, 92, 223)',
-          'horizon-blend': 0.02,
-          'space-color': 'rgb(4, 4, 10)',
-          'star-intensity': 0.6
-        };
-        map.setFog(fogSpec);
-      } else {
-        map.setFog(null);
-      }
-    } catch (e) {
-      console.warn('Fog not supported:', e);
-    }
-  }
-
-  // Helper: Adjust pitch when entering/exiting globe mode
-  function adjustPitchForGlobe(enabled: boolean) {
+  // Helper: Toggle 3D tilt view (MapLibre doesn't support globe projection)
+  function toggle3DTilt(enabled: boolean) {
     if (!map) return;
-    const targetPitch = enabled ? 45 : 0;
-    if (Math.abs(map.getPitch() - targetPitch) > 5) {
-      map.easeTo({ pitch: targetPitch, duration: 500 });
-    }
+    const targetPitch = enabled ? 60 : 0;
+    map.easeTo({
+      pitch: targetPitch,
+      duration: 500
+    });
   }
 
   // React to style changes
@@ -195,15 +165,11 @@
     }
   });
 
-  // React to globe view changes
+  // React to 3D tilt toggle
   $effect(() => {
-    const globeEnabled = $isGlobeView;
+    const tiltEnabled = $isGlobeView;
     if (map && mapLoaded) {
-      untrack(() => {
-        setProjection(globeEnabled);
-        handleGlobeAtmosphere(globeEnabled);
-        adjustPitchForGlobe(globeEnabled);
-      });
+      untrack(() => toggle3DTilt(tiltEnabled));
     }
   });
 </script>

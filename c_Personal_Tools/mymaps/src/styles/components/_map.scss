@@ -41,8 +41,8 @@
 
   @include mobile-only {
     right: $space-3;
-    // Use safe-area-inset for browser UI + fallback base offset
-    bottom: calc($space-3 + 40px + env(safe-area-inset-bottom, 0px));
+    // Use safe-area-inset for browser UI + larger base offset for mobile browser bars
+    bottom: calc($space-3 + 80px + env(safe-area-inset-bottom, 0px));
   }
 
   @include landscape-mobile {

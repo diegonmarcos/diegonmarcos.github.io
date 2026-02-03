@@ -73,6 +73,7 @@
       class="map-control-btn"
       onclick={zoomIn}
       aria-label="Zoom in"
+      title="Zoom in"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="12" y1="5" x2="12" y2="19" />
@@ -83,6 +84,7 @@
       class="map-control-btn"
       onclick={zoomOut}
       aria-label="Zoom out"
+      title="Zoom out"
     >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <line x1="5" y1="12" x2="19" y2="12" />
@@ -97,6 +99,7 @@
     style={bearingStyle}
     onclick={resetBearing}
     aria-label="Reset bearing to north"
+    title="Reset north"
   >
     <svg viewBox="0 0 24 24" fill="none">
       <path
@@ -120,6 +123,7 @@
     class:geolocate-btn--tracking={$userLocation !== null}
     onclick={geolocate}
     aria-label="Find my location"
+    title="My location"
     disabled={$isLocating}
   >
     {#if $isLocating}
@@ -149,6 +153,7 @@
     class:map-control-btn--active={$showLayersPanel}
     onclick={toggleLayersPanel}
     aria-label="Toggle layers panel"
+    title="Layers"
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <polygon points="12 2 2 7 12 12 22 7 12 2" />
@@ -162,6 +167,7 @@
     class="map-control-btn map-control-btn--standalone"
     onclick={cycleStyle}
     aria-label="Change map style"
+    title="Change style"
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -169,17 +175,18 @@
     </svg>
   </button>
 
-  <!-- Globe toggle -->
+  <!-- 3D Tilt toggle (MapLibre doesn't support globe projection) -->
   <button
     class="map-control-btn map-control-btn--standalone"
     class:map-control-btn--active={$isGlobeView}
     onclick={toggleGlobeView}
-    aria-label={$isGlobeView ? 'Switch to flat map' : 'Switch to globe view'}
+    aria-label={$isGlobeView ? 'Switch to flat view' : 'Switch to 3D tilt'}
+    title={$isGlobeView ? 'Flat view' : '3D tilt'}
   >
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10" />
-      <path d="M2 12h20" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      <path d="M12 3L2 8l10 5 10-5-10-5z" />
+      <path d="M2 15l10 5 10-5" />
+      <path d="M2 11.5l10 5 10-5" />
     </svg>
   </button>
 </div>

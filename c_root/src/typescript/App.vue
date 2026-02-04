@@ -106,7 +106,7 @@ import ComplexWaveVisualization from './components/ComplexWaveVisualization.vue'
 const CubeView = defineAsyncComponent(() => import('./components/CubeView.vue'));
 
 const showFractal = ref(true);
-const showCube = ref(false);
+const showCube = ref(true); // Cube view is default
 
 // Keyboard shortcut: 'Q' to toggle cube view
 const handleGlobalKeydown = (e: KeyboardEvent) => {

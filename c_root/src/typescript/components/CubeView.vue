@@ -14,7 +14,7 @@
           :style="cubeStyle"
         >
           <!-- Front: Main App (live render via iframe) -->
-          <div class="c-cube__face c-cube__face--front">
+          <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(0)"
               src="index.html"
@@ -24,7 +24,7 @@
           </div>
 
           <!-- Right: Neon Cube -->
-          <div class="c-cube__face c-cube__face--right">
+          <div class="c-cube__face c-cube__face--right" @click="handleFaceClick(1, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(1)"
               :src="pages.right"
@@ -34,7 +34,7 @@
           </div>
 
           <!-- Back: Perspectives -->
-          <div class="c-cube__face c-cube__face--back">
+          <div class="c-cube__face c-cube__face--back" @click="handleFaceClick(2, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(2)"
               :src="pages.back"
@@ -44,7 +44,7 @@
           </div>
 
           <!-- Left: Placeholder for future -->
-          <div class="c-cube__face c-cube__face--left">
+          <div class="c-cube__face c-cube__face--left" @click="handleFaceClick(3, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-1">
               <h2>Coming Soon</h2>
               <p>Future content</p>
@@ -52,7 +52,7 @@
           </div>
 
           <!-- Top -->
-          <div class="c-cube__face c-cube__face--top">
+          <div class="c-cube__face c-cube__face--top" @click="handleFaceClick(4, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-2">
               <h2>Projects</h2>
               <p>View from above</p>
@@ -60,7 +60,7 @@
           </div>
 
           <!-- Bottom -->
-          <div class="c-cube__face c-cube__face--bottom">
+          <div class="c-cube__face c-cube__face--bottom" @click="handleFaceClick(5, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-3">
               <h2>Contact</h2>
               <p>Get in touch</p>
@@ -68,6 +68,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Exit button to 2D view -->
+      <button class="c-cube-exit" v-if="isActive" @click="emit('close')" title="Exit to 2D View (Q)">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 6L6 18M6 6l12 12"/>
+        </svg>
+      </button>
 
       <!-- View mode indicator -->
       <div class="c-cube-view-mode" v-if="isActive">
@@ -78,9 +85,9 @@
       <div class="c-cube-hint" v-if="isActive">
         <span>Drag to rotate</span>
         <span class="c-cube-hint__separator">|</span>
-        <span>Pinch/Scroll to zoom</span>
+        <span>Click face to open</span>
         <span class="c-cube-hint__separator">|</span>
-        <span><kbd>Q</kbd> close</span>
+        <span><kbd>Q</kbd> exit to 2D</span>
       </div>
 
       <!-- Face indicator -->
@@ -137,9 +144,45 @@ let momentumFrame: number | null = null;
 
 const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
+// URL mapping for each face (null = no page yet)
+const faceUrls: (string | null)[] = [
+  'index.html',           // Front - main app
+  'cube_fractal_neon.html', // Right - neon cube
+  'perspectives.html',    // Back - perspectives
+  null,                   // Left - coming soon
+  null,                   // Top - projects (coming soon)
+  null                    // Bottom - contact (coming soon)
+];
+
 const pages = {
   right: 'cube_fractal_neon.html',
   back: 'perspectives.html'
+};
+
+// Track if click was a drag (to prevent navigation on drag)
+let clickStartTime = 0;
+let clickStartPos = { x: 0, y: 0 };
+
+// Handle click on a cube face - navigate to that face's page
+const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
+  // Ignore if animating or if this was a drag (not a click)
+  if (isAnimating.value) return;
+
+  // Check if this was a quick click (not a drag)
+  const clickDuration = Date.now() - clickStartTime;
+  const clickDistance = Math.sqrt(
+    Math.pow(event.clientX - clickStartPos.x, 2) +
+    Math.pow(event.clientY - clickStartPos.y, 2)
+  );
+
+  // If dragged more than 10px or held longer than 200ms, ignore
+  if (clickDistance > 10 || clickDuration > 200) return;
+
+  const url = faceUrls[faceIndex];
+  if (url) {
+    // Navigate to the face's page
+    window.location.href = url;
+  }
 };
 
 // Track which faces have been visited (lazy load iframes)
@@ -292,6 +335,11 @@ const getTouchDistance = (touches: TouchList): number => {
 const startDrag = (e: MouseEvent | TouchEvent) => {
   if (isAnimating.value) return;
 
+  // Track click start for face click detection
+  clickStartTime = Date.now();
+  const startPoint = 'touches' in e ? e.touches[0] : e;
+  clickStartPos = { x: startPoint.clientX, y: startPoint.clientY };
+
   // Stop any ongoing momentum
   if (momentumFrame) {
     cancelAnimationFrame(momentumFrame);
@@ -308,8 +356,7 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
   }
 
   isDragging.value = true;
-  const point = 'touches' in e ? e.touches[0] : e;
-  lastMouse.value = { x: point.clientX, y: point.clientY };
+  lastMouse.value = { x: startPoint.clientX, y: startPoint.clientY };
 };
 
 const handleDrag = (e: MouseEvent | TouchEvent) => {

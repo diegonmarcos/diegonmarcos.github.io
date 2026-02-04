@@ -96,6 +96,13 @@ $cube-translate: calc(#{$cube-size} / 2);
   background: #0a0a12;
   contain: layout style paint;
   will-change: transform;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 30px rgba(100, 150, 255, 0.3);
+  }
 
   &--front {
     transform: translateZ($cube-translate);
@@ -179,6 +186,46 @@ $cube-translate: calc(#{$cube-size} / 2);
 
   &--gradient-3 {
     background: linear-gradient(135deg, #1e3a5f 0%, #16213e 50%, #1a1a2e 100%);
+  }
+}
+
+// Exit button to 2D view
+.c-cube-exit {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+
+  &:hover {
+    background: rgba(255, 100, 100, 0.2);
+    border-color: rgba(255, 100, 100, 0.5);
+    color: #fff;
+    transform: scale(1.1);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  svg {
+    transition: transform 0.2s ease;
+  }
+
+  &:hover svg {
+    transform: rotate(90deg);
   }
 }
 
@@ -350,6 +397,18 @@ $cube-translate: calc(#{$cube-size} / 2);
 
 // Responsive adjustments
 @media (max-width: 768px) {
+  .c-cube-exit {
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
   .c-cube-trigger {
     bottom: 12px;
     right: 12px;

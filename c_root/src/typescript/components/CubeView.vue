@@ -13,12 +13,14 @@
           :class="{ 'c-cube--animating': isAnimating }"
           :style="cubeStyle"
         >
-          <!-- Front: Main App placeholder (can't iframe index.html - it would recurse) -->
+          <!-- Front: Observer Effect -->
           <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)">
-            <div class="c-cube__placeholder c-cube__placeholder--main">
-              <h2>Main View</h2>
-              <p>Click to exit cube</p>
-            </div>
+            <iframe
+              v-if="isActive && shouldLoadFace(0)"
+              :src="pages.front"
+              class="c-cube__iframe"
+              title="Observer Effect"
+            ></iframe>
           </div>
 
           <!-- Right: Neon Cube -->
@@ -142,9 +144,9 @@ let momentumFrame: number | null = null;
 
 const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
-// URL mapping for each face (null = no page, 'close' = close cube)
+// URL mapping for each face (null = no page yet)
 const faceUrls: (string | null)[] = [
-  null,                     // Front - closes cube (back to 2D)
+  'observer_effect.html',   // Front - observer effect
   'cube_fractal_neon.html', // Right - neon cube
   'perspectives.html',      // Back - perspectives
   null,                     // Left - coming soon
@@ -153,6 +155,7 @@ const faceUrls: (string | null)[] = [
 ];
 
 const pages = {
+  front: 'observer_effect.html',
   right: 'cube_fractal_neon.html',
   back: 'perspectives.html'
 };
@@ -175,12 +178,6 @@ const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
 
   // If dragged more than 10px or held longer than 200ms, ignore
   if (clickDistance > 10 || clickDuration > 200) return;
-
-  // Front face (0) closes the cube view
-  if (faceIndex === 0) {
-    emit('close');
-    return;
-  }
 
   const url = faceUrls[faceIndex];
   if (url) {

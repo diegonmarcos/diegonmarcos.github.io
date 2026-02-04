@@ -13,14 +13,12 @@
           :class="{ 'c-cube--animating': isAnimating }"
           :style="cubeStyle"
         >
-          <!-- Front: Main App (live render via iframe) -->
+          <!-- Front: Main App placeholder (can't iframe index.html - it would recurse) -->
           <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)">
-            <iframe
-              v-if="isActive && shouldLoadFace(0)"
-              src="index.html"
-              class="c-cube__iframe"
-              title="Current View"
-            ></iframe>
+            <div class="c-cube__placeholder c-cube__placeholder--main">
+              <h2>Main View</h2>
+              <p>Click to exit cube</p>
+            </div>
           </div>
 
           <!-- Right: Neon Cube -->
@@ -144,14 +142,14 @@ let momentumFrame: number | null = null;
 
 const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
-// URL mapping for each face (null = no page yet)
+// URL mapping for each face (null = no page, 'close' = close cube)
 const faceUrls: (string | null)[] = [
-  'index.html',           // Front - main app
+  null,                     // Front - closes cube (back to 2D)
   'cube_fractal_neon.html', // Right - neon cube
-  'perspectives.html',    // Back - perspectives
-  null,                   // Left - coming soon
-  null,                   // Top - projects (coming soon)
-  null                    // Bottom - contact (coming soon)
+  'perspectives.html',      // Back - perspectives
+  null,                     // Left - coming soon
+  null,                     // Top - projects (coming soon)
+  null                      // Bottom - contact (coming soon)
 ];
 
 const pages = {
@@ -177,6 +175,12 @@ const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
 
   // If dragged more than 10px or held longer than 200ms, ignore
   if (clickDistance > 10 || clickDuration > 200) return;
+
+  // Front face (0) closes the cube view
+  if (faceIndex === 0) {
+    emit('close');
+    return;
+  }
 
   const url = faceUrls[faceIndex];
   if (url) {

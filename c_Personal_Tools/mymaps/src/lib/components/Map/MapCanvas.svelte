@@ -169,7 +169,7 @@
     // Add terrain source (AWS Terrain Tiles - free)
     map.addSource('terrain', {
       type: 'raster-dem',
-      url: 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png',
+      tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
       tileSize: 256,
       maxzoom: 15,
       encoding: 'terrarium'

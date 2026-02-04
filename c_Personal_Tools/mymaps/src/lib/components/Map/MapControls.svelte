@@ -1,6 +1,29 @@
 <script lang="ts">
-  import { getMapInstance, mapStore, userLocation, isLocating, currentStyleId, mapStyles, isGlobeView, toggleGlobeView } from '$lib/stores/mapStore';
+  import { getMapInstance, mapStore, userLocation, isLocating, isGlobeView, toggleGlobeView } from '$lib/stores/mapStore';
   import { showLayersPanel, toggleLayersPanel } from '$lib/stores/layerStore';
+
+  function resetView() {
+    const map = getMapInstance();
+    if (map) {
+      // Calculate optimal zoom based on viewport size
+      const container = map.getContainer();
+      const minDimension = Math.min(container.clientWidth, container.clientHeight);
+
+      // For globe projection, calculate zoom where globe just fits
+      const optimalZoom = Math.log2(minDimension / 180) + 0.7;
+
+      // Clamp between reasonable bounds
+      const zoom = Math.max(1.8, Math.min(optimalZoom, 4));
+
+      map.easeTo({
+        center: [0, 20],
+        zoom,
+        pitch: 0,
+        bearing: 0,
+        duration: 800
+      });
+    }
+  }
 
   function zoomIn() {
     const map = getMapInstance();
@@ -53,12 +76,6 @@
         timeout: 10000
       }
     );
-  }
-
-  function cycleStyle() {
-    const currentIndex = mapStyles.findIndex(s => s.id === $currentStyleId);
-    const nextIndex = (currentIndex + 1) % mapStyles.length;
-    currentStyleId.set(mapStyles[nextIndex].id);
   }
 
   // Calculate bearing rotation for compass
@@ -147,6 +164,20 @@
     {/if}
   </button>
 
+  <!-- World view reset -->
+  <button
+    class="map-control-btn map-control-btn--standalone"
+    onclick={resetView}
+    aria-label="Reset to world view"
+    title="World view"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+    </svg>
+  </button>
+
   <!-- Layers toggle -->
   <button
     class="map-control-btn map-control-btn--standalone"
@@ -159,19 +190,6 @@
       <polygon points="12 2 2 7 12 12 22 7 12 2" />
       <polyline points="2 17 12 22 22 17" />
       <polyline points="2 12 12 17 22 12" />
-    </svg>
-  </button>
-
-  <!-- Style toggle -->
-  <button
-    class="map-control-btn map-control-btn--standalone"
-    onclick={cycleStyle}
-    aria-label="Change map style"
-    title="Change style"
-  >
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <path d="M3 9h18M9 21V9" />
     </svg>
   </button>
 

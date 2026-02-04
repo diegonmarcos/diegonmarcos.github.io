@@ -271,3 +271,110 @@
     font-size: $text-sm;
   }
 }
+
+// ----------------
+// LIST ITEMS
+// ----------------
+
+.menu-list-item {
+  margin-bottom: $space-2;
+}
+
+.menu-list-header {
+  @include flex-row(flex-start, center, $space-2);
+  width: 100%;
+  padding: $space-2 $space-3;
+  border-radius: 8px;
+  cursor: pointer;
+  @include transition;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  &--active {
+    background: rgba($accent-blue, 0.15);
+
+    .menu-list-name {
+      color: $text-primary;
+    }
+  }
+}
+
+.menu-list-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.menu-list-name {
+  flex: 1;
+  font-size: $text-sm;
+  color: $text-secondary;
+  text-align: left;
+}
+
+.menu-list-count {
+  font-size: $text-xs;
+  color: $text-muted;
+}
+
+.menu-list-places {
+  margin-left: 20px;
+  padding-left: $space-3;
+  border-left: 1px solid $border-glass;
+  margin-top: $space-1;
+}
+
+.menu-place-item {
+  display: block;
+  width: 100%;
+  padding: $space-1 $space-2;
+  font-size: $text-xs;
+  color: $text-muted;
+  text-align: left;
+  border-radius: 4px;
+  cursor: pointer;
+  @include transition;
+  @include truncate;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: $text-primary;
+  }
+}
+
+// ----------------
+// MAPS LIST
+// ----------------
+
+.menu-maps-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+}
+
+.menu-map-item {
+  @include flex-row(flex-start, center, $space-3);
+  padding: $space-2 $space-3;
+  border-radius: 8px;
+  color: $text-secondary;
+  text-decoration: none;
+  @include transition;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: $text-primary;
+    text-decoration: none;
+  }
+}
+
+.menu-map-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.menu-map-name {
+  font-size: $text-sm;
+}

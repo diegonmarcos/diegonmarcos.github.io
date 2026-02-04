@@ -1,5 +1,8 @@
 <script lang="ts">
   import { base } from '$app/paths';
+  import { placeLists, listVisibility } from '$lib/stores/placeListsStore';
+  import { flyTo } from '$lib/stores/mapStore';
+  import type { SavedPlace } from '$lib/stores/placeListsStore';
 
   let isOpen = $state(false);
 
@@ -30,7 +33,7 @@
       id: 'maps',
       name: 'Maps',
       icon: 'M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7',
-      description: 'Your custom maps'
+      description: 'Map projections'
     },
     {
       id: 'chronology',
@@ -40,10 +43,32 @@
     }
   ];
 
+  // Available map projections (from maps/ project)
+  const mapProjections = [
+    { id: 'orthographic', name: 'Globe', icon: '🌍' },
+    { id: 'mercator', name: 'Mercator', icon: '🗺️' },
+    { id: 'equalEarth', name: 'Equal Earth', icon: '🌐' },
+    { id: 'naturalEarth1', name: 'Natural Earth', icon: '🗾' },
+    { id: 'equirectangular', name: 'Plate Carrée', icon: '📊' }
+  ];
+
   let activeSection = $state<string | null>(null);
 
   function selectSection(id: string) {
     activeSection = activeSection === id ? null : id;
+  }
+
+  function toggleListVisibility(listId: string) {
+    listVisibility.toggle(listId);
+  }
+
+  function goToPlace(place: SavedPlace) {
+    flyTo(place.coordinates, 15);
+    close();
+  }
+
+  function goToMapProjection(projectionId: string) {
+    window.location.href = `/maps/?projection=${projectionId}`;
   }
 </script>
 
@@ -102,21 +127,50 @@
       {#if activeSection === section.id}
         <div class="menu-section-content">
           {#if section.id === 'list'}
-            <div class="menu-empty-state">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-              </svg>
-              <p>No saved places yet</p>
-              <span>Search and save places to see them here</span>
-            </div>
+            {#if $placeLists.length === 0}
+              <div class="menu-empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                </svg>
+                <p>No saved places yet</p>
+                <span>Search and save places to see them here</span>
+              </div>
+            {:else}
+              {#each $placeLists as list}
+                <div class="menu-list-item">
+                  <button
+                    class="menu-list-header"
+                    class:menu-list-header--active={$listVisibility[list.id]}
+                    onclick={() => toggleListVisibility(list.id)}
+                  >
+                    <span class="menu-list-color" style="background-color: {list.color}"></span>
+                    <span class="menu-list-name">{list.name}</span>
+                    <span class="menu-list-count">{list.places.length}</span>
+                  </button>
+                  {#if list.places.length > 0}
+                    <div class="menu-list-places">
+                      {#each list.places as place}
+                        <button class="menu-place-item" onclick={() => goToPlace(place)}>
+                          {place.name}
+                        </button>
+                      {/each}
+                    </div>
+                  {/if}
+                </div>
+              {/each}
+            {/if}
           {:else if section.id === 'maps'}
-            <div class="menu-empty-state">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <rect x="3" y="3" width="18" height="18" rx="2" />
-                <path d="M3 9h18M9 21V9" />
-              </svg>
-              <p>No custom maps</p>
-              <span>Create maps to organize your places</span>
+            <div class="menu-maps-list">
+              {#each mapProjections as projection}
+                <a
+                  href="/maps/?projection={projection.id}"
+                  class="menu-map-item"
+                  onclick={close}
+                >
+                  <span class="menu-map-icon">{projection.icon}</span>
+                  <span class="menu-map-name">{projection.name}</span>
+                </a>
+              {/each}
             </div>
           {:else if section.id === 'chronology'}
             <div class="menu-empty-state">

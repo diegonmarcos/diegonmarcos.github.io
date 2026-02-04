@@ -12,6 +12,7 @@
   import { search } from '$lib/services/api';
   import { debounce } from '$lib/utils/debounce';
   import SearchResults from './SearchResults.svelte';
+  import QuickSearchBar from './QuickSearchBar.svelte';
 
   let inputElement: HTMLInputElement;
   let isFocused = $state(false);
@@ -173,4 +174,6 @@
       </div>
     {/if}
   {/if}
+
+  <QuickSearchBar />
 </div>

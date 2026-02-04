@@ -8,11 +8,41 @@
   } from '$lib/stores/searchStore';
   import { flyTo, getMapInstance } from '$lib/stores/mapStore';
   import { openDirections } from '$lib/stores/routeStore';
+  import { tempPins } from '$lib/stores/placeListsStore';
   import type { SearchResult } from '$lib/services/api/types';
   import ProviderBadge from '$lib/components/UI/ProviderBadge.svelte';
   import maplibregl from 'maplibre-gl';
 
-  let currentMarker: maplibregl.Marker | null = null;
+  // Context menu state (exported for parent to use)
+  interface ContextMenuState {
+    show: boolean;
+    x: number;
+    y: number;
+    coordinates: [number, number];
+    placeName: string;
+    placeAddress: string;
+  }
+
+  let contextMenuState = $state<ContextMenuState>({
+    show: false,
+    x: 0,
+    y: 0,
+    coordinates: [0, 0],
+    placeName: '',
+    placeAddress: ''
+  });
+
+  // Export context menu state for parent component
+  export function getContextMenuState() {
+    return contextMenuState;
+  }
+
+  export function closeContextMenu() {
+    contextMenuState.show = false;
+  }
+
+  // Track all temp markers by their pin ID
+  const tempMarkers = new Map<string, maplibregl.Marker>();
 
   function formatDistance(meters?: number): string {
     if (!meters) return '';
@@ -50,10 +80,12 @@
     const map = getMapInstance();
     if (!map) return;
 
-    // Remove existing marker
-    if (currentMarker) {
-      currentMarker.remove();
-    }
+    // Add to temp pins store (returns the pin ID)
+    const pinId = tempPins.add({
+      name: result.name,
+      address: result.address,
+      coordinates: result.coordinates
+    });
 
     // Create marker element
     const el = document.createElement('div');
@@ -64,6 +96,20 @@
       </svg>
     `;
 
+    // Add right-click handler for context menu
+    el.addEventListener('contextmenu', (e: MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      contextMenuState = {
+        show: true,
+        x: e.clientX,
+        y: e.clientY,
+        coordinates: result.coordinates,
+        placeName: result.name,
+        placeAddress: result.address
+      };
+    });
+
     // Create popup
     const popup = new maplibregl.Popup({ offset: 25 }).setHTML(`
       <div style="padding: 8px;">
@@ -72,14 +118,31 @@
       </div>
     `);
 
-    currentMarker = new maplibregl.Marker({ element: el })
+    const marker = new maplibregl.Marker({ element: el })
       .setLngLat(result.coordinates)
       .setPopup(popup)
       .addTo(map);
 
-    // Open popup
-    currentMarker.togglePopup();
+    // Store marker reference
+    tempMarkers.set(pinId, marker);
+
+    // Open popup for this marker
+    marker.togglePopup();
   }
+
+  // Sync markers with tempPins store (remove markers when pins are cleared)
+  $effect(() => {
+    const pins = $tempPins;
+    const pinIds = new Set(pins.map(p => p.id));
+
+    // Remove markers that are no longer in the store
+    for (const [id, marker] of tempMarkers) {
+      if (!pinIds.has(id)) {
+        marker.remove();
+        tempMarkers.delete(id);
+      }
+    }
+  });
 
   function handleDirections(result: SearchResult, e: Event) {
     e.stopPropagation();

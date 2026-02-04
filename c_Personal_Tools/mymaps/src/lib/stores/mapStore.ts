@@ -11,22 +11,29 @@ const STORAGE_KEY = 'mymaps-map-state';
 const GLOBE_STORAGE_KEY = 'mymaps-globe-view';
 const TERRAIN_STORAGE_KEY = 'mymaps-terrain-3d';
 const TERRAIN_LAYER_STORAGE_KEY = 'mymaps-terrain-layer';
+const SATELLITE_LAYER_STORAGE_KEY = 'mymaps-satellite-layer';
 
-// Default map state (centered on Europe)
+// Default map state (world view)
 const defaultState: MapState = {
-  center: [2.3522, 48.8566], // Paris
-  zoom: 5,
+  center: [0, 20], // Centered for globe view
+  zoom: 2.5, // Will be recalculated on load based on viewport
   bearing: 0,
   pitch: 0
 };
 
-// Available map styles
+// Available map styles (ordered from dark to light)
 export const mapStyles: MapStyle[] = [
   {
     id: 'carto-dark',
     name: 'Dark',
     url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
     preview: 'https://basemaps.cartocdn.com/dark_all/5/15/12.png'
+  },
+  {
+    id: 'osm-positron',
+    name: 'Positron',
+    url: 'https://tiles.openfreemap.org/styles/positron',
+    preview: 'https://basemaps.cartocdn.com/light_all/5/15/12.png'
   },
   {
     id: 'carto-light',
@@ -39,6 +46,18 @@ export const mapStyles: MapStyle[] = [
     name: 'Voyager',
     url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
     preview: 'https://basemaps.cartocdn.com/rastertiles/voyager/5/15/12.png'
+  },
+  {
+    id: 'osm-liberty',
+    name: 'Liberty',
+    url: 'https://tiles.openfreemap.org/styles/liberty',
+    preview: 'https://tile.openstreetmap.org/5/15/12.png'
+  },
+  {
+    id: 'osm-bright',
+    name: 'Bright',
+    url: 'https://tiles.openfreemap.org/styles/bright',
+    preview: 'https://tile.openstreetmap.org/5/15/12.png'
   }
 ];
 
@@ -146,7 +165,7 @@ let mapInstance: MapLibreMap | null = null;
 export const mapStore = createMapStore();
 
 // Current style store
-export const currentStyleId = writable<string>('carto-dark');
+export const currentStyleId = writable<string>('osm-bright');
 
 // Derived store for current style object
 export const currentStyle = derived(
@@ -158,13 +177,15 @@ export const currentStyle = derived(
 export const userLocation = writable<LngLat | null>(null);
 export const isLocating = writable<boolean>(false);
 
-// Globe view persistence helpers
+// Globe view persistence helpers (defaults to true)
 function loadGlobeState(): boolean {
-  if (!browser) return false;
+  if (!browser) return true;
   try {
-    return localStorage.getItem(GLOBE_STORAGE_KEY) === 'true';
+    const stored = localStorage.getItem(GLOBE_STORAGE_KEY);
+    // Default to true if not set
+    return stored === null ? true : stored === 'true';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -177,7 +198,7 @@ function saveGlobeState(enabled: boolean): void {
   }
 }
 
-// 3D Terrain persistence helpers
+// 3D Terrain persistence helpers (defaults to false)
 function loadTerrainState(): boolean {
   if (!browser) return false;
   try {
@@ -196,13 +217,15 @@ function saveTerrainState(enabled: boolean): void {
   }
 }
 
-// Terrain Layer (hillshade) persistence helpers
+// Terrain Layer (hillshade) persistence helpers (defaults to true)
 function loadTerrainLayerState(): boolean {
-  if (!browser) return false;
+  if (!browser) return true;
   try {
-    return localStorage.getItem(TERRAIN_LAYER_STORAGE_KEY) === 'true';
+    const stored = localStorage.getItem(TERRAIN_LAYER_STORAGE_KEY);
+    // Default to true if not set
+    return stored === null ? true : stored === 'true';
   } catch {
-    return false;
+    return true;
   }
 }
 
@@ -210,6 +233,27 @@ function saveTerrainLayerState(enabled: boolean): void {
   if (!browser) return;
   try {
     localStorage.setItem(TERRAIN_LAYER_STORAGE_KEY, String(enabled));
+  } catch {
+    // Ignore errors
+  }
+}
+
+// Satellite Layer persistence helpers (defaults to true)
+function loadSatelliteLayerState(): boolean {
+  if (!browser) return true;
+  try {
+    const stored = localStorage.getItem(SATELLITE_LAYER_STORAGE_KEY);
+    // Default to true if not set
+    return stored === null ? true : stored === 'true';
+  } catch {
+    return true;
+  }
+}
+
+function saveSatelliteLayerState(enabled: boolean): void {
+  if (!browser) return;
+  try {
+    localStorage.setItem(SATELLITE_LAYER_STORAGE_KEY, String(enabled));
   } catch {
     // Ignore errors
   }
@@ -223,6 +267,9 @@ export const is3DTerrain = writable<boolean>(loadTerrainState());
 
 // Terrain layer (hillshade) store (persisted)
 export const isTerrainLayer = writable<boolean>(loadTerrainLayerState());
+
+// Satellite layer store (persisted)
+export const isSatelliteLayer = writable<boolean>(loadSatelliteLayerState());
 
 /**
  * Toggle between globe and mercator projection
@@ -273,9 +320,10 @@ export function set3DTerrain(enabled: boolean) {
  * Toggle terrain layer (hillshade)
  */
 export function toggleTerrainLayer() {
+  console.log('[TERRAIN DEBUG] toggleTerrainLayer() called');
   isTerrainLayer.update(v => {
     const newValue = !v;
-    console.log('[TERRAIN] Toggling terrain layer to:', newValue);
+    console.log('[TERRAIN DEBUG] Toggling terrain layer from', v, 'to', newValue);
     saveTerrainLayerState(newValue);
     return newValue;
   });
@@ -288,6 +336,28 @@ export function setTerrainLayer(enabled: boolean) {
   console.log('[TERRAIN] Setting terrain layer to:', enabled);
   isTerrainLayer.set(enabled);
   saveTerrainLayerState(enabled);
+}
+
+/**
+ * Toggle satellite layer
+ */
+export function toggleSatelliteLayer() {
+  console.log('[SATELLITE DEBUG] toggleSatelliteLayer() called');
+  isSatelliteLayer.update(v => {
+    const newValue = !v;
+    console.log('[SATELLITE DEBUG] Toggling satellite layer from', v, 'to', newValue);
+    saveSatelliteLayerState(newValue);
+    return newValue;
+  });
+}
+
+/**
+ * Set satellite layer state
+ */
+export function setSatelliteLayer(enabled: boolean) {
+  console.log('[SATELLITE] Setting satellite layer to:', enabled);
+  isSatelliteLayer.set(enabled);
+  saveSatelliteLayerState(enabled);
 }
 
 /**

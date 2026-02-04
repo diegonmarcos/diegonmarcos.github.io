@@ -9,13 +9,21 @@
     userLocation,
     isGlobeView,
     is3DTerrain,
-    isTerrainLayer
+    isTerrainLayer,
+    isSatelliteLayer
   } from '$lib/stores/mapStore';
   import { encodeMapState, updateUrl, decodeMapState, getCurrentHash } from '$lib/utils/urlState';
   import { throttle } from '$lib/utils/debounce';
+  import { quickSearch, quickSearchCategories, placeLists, listVisibility } from '$lib/stores/placeListsStore';
+  import type { QuickSearchPin, PlaceList } from '$lib/stores/placeListsStore';
 
   let mapContainer: HTMLDivElement;
   let map: MapLibreMap | null = null;
+
+  // Globe auto-rotation state
+  let isSpinning = $state(true);
+  let spinAnimationId: number | null = null;
+  const spinSpeed = 0.3; // degrees per frame (~18 deg/sec at 60fps)
 
   // Sync map state to URL (throttled)
   const syncToUrl = throttle(() => {
@@ -91,6 +99,38 @@
     // Sync state on move
     map.on('moveend', syncToUrl);
 
+    // Stop spinning on any user interaction
+    const stopSpinning = () => {
+      if (isSpinning) {
+        isSpinning = false;
+        if (spinAnimationId !== null) {
+          cancelAnimationFrame(spinAnimationId);
+          spinAnimationId = null;
+        }
+        console.log('[GLOBE] Stopped spinning due to user interaction');
+      }
+    };
+
+    // Listen for user interactions that should stop the spin
+    map.on('mousedown', stopSpinning);
+    map.on('touchstart', stopSpinning);
+    map.on('wheel', stopSpinning);
+    map.on('dragstart', stopSpinning);
+
+    // Start globe spinning animation
+    const spinGlobe = () => {
+      if (!map || !isSpinning || !$isGlobeView) return;
+
+      const center = map.getCenter();
+      center.lng += spinSpeed;
+
+      // Wrap longitude
+      if (center.lng > 180) center.lng -= 360;
+
+      map.setCenter(center);
+      spinAnimationId = requestAnimationFrame(spinGlobe);
+    };
+
     // Set loaded flag, apply globe projection, terrain, and add 3D buildings when style loads
     map.on('style.load', () => {
       mapLoaded = true;
@@ -99,6 +139,33 @@
       if ($isGlobeView && map) {
         console.log('[GLOBE DEBUG] Applying initial globe projection');
         map.setProjection({ type: 'globe' });
+
+        // Apply optimal zoom for globe view on first load (if no URL state)
+        if (!urlState) {
+          const optimalZoom = getOptimalGlobeZoom();
+          map.jumpTo({
+            center: [0, 20],
+            zoom: optimalZoom,
+            pitch: 45
+          });
+
+          // Start spinning animation (only on fresh load without URL state)
+          if (isSpinning) {
+            console.log('[GLOBE] Starting spin animation');
+            spinGlobe();
+          }
+        } else {
+          // Don't spin if loading from URL state (user navigated here intentionally)
+          isSpinning = false;
+        }
+      } else {
+        // Don't spin if not in globe view
+        isSpinning = false;
+      }
+
+      // Add satellite layer if enabled
+      if ($isSatelliteLayer) {
+        addSatelliteLayer();
       }
 
       // Add terrain layer (hillshade) if enabled
@@ -106,12 +173,10 @@
         addHillshadeLayer();
       }
 
-      // Add 3D terrain if enabled
+      // Add 3D terrain and buildings if enabled
       if ($is3DTerrain) {
         enable3DTerrain();
       }
-
-      add3DBuildings();
     });
 
     // Handle user location updates
@@ -124,10 +189,20 @@
     return () => {
       unsubLocation();
       cleanupGestures();
+      // Stop spin animation
+      if (spinAnimationId !== null) {
+        cancelAnimationFrame(spinAnimationId);
+        spinAnimationId = null;
+      }
     };
   });
 
   onDestroy(() => {
+    // Stop spin animation on destroy
+    if (spinAnimationId !== null) {
+      cancelAnimationFrame(spinAnimationId);
+      spinAnimationId = null;
+    }
     if (map) {
       map.remove();
       setMapInstance(null);
@@ -137,6 +212,9 @@
   // Add 3D building extrusions
   function add3DBuildings() {
     if (!map) return;
+
+    // Check if already exists
+    if (map.getLayer('3d-buildings')) return;
 
     // Check if building layer exists
     const layers = map.getStyle().layers || [];
@@ -165,6 +243,21 @@
         },
         labelLayerId
       );
+      console.log('[3D] Buildings layer added');
+    }
+  }
+
+  // Remove 3D building extrusions
+  function remove3DBuildings() {
+    if (!map) return;
+
+    try {
+      if (map.getLayer('3d-buildings')) {
+        map.removeLayer('3d-buildings');
+        console.log('[3D] Buildings layer removed');
+      }
+    } catch (e) {
+      console.error('[3D] Failed to remove buildings layer:', e);
     }
   }
 
@@ -228,7 +321,7 @@
     }
   }
 
-  // Enable 3D terrain extrusion
+  // Enable 3D terrain extrusion and buildings
   function enable3DTerrain() {
     if (!map) return;
 
@@ -240,21 +333,99 @@
         source: 'terrain-dem',
         exaggeration: 1.5
       });
-      console.log('[TERRAIN] 3D extrusion enabled');
+      // Add 3D buildings
+      add3DBuildings();
+      // Tilt the map to show 3D effect
+      map.easeTo({
+        pitch: 60,
+        duration: 500
+      });
+      console.log('[3D] Terrain and buildings enabled with pitch');
     } catch (e) {
-      console.error('[TERRAIN] Failed to enable 3D:', e);
+      console.error('[3D] Failed to enable 3D:', e);
     }
   }
 
-  // Disable 3D terrain extrusion
+  // Disable 3D terrain extrusion and buildings
   function disable3DTerrain() {
     if (!map) return;
 
     try {
       map.setTerrain(null);
-      console.log('[TERRAIN] 3D extrusion disabled');
+      // Remove 3D buildings
+      remove3DBuildings();
+      // Flatten the map
+      map.easeTo({
+        pitch: 0,
+        duration: 500
+      });
+      console.log('[3D] Terrain and buildings disabled, pitch reset');
     } catch (e) {
-      console.error('[TERRAIN] Failed to disable 3D:', e);
+      console.error('[3D] Failed to disable 3D:', e);
+    }
+  }
+
+  // Add satellite layer (ESRI World Imagery)
+  function addSatelliteLayer() {
+    if (!map) return;
+
+    // Check if source already exists
+    if (map.getSource('satellite')) {
+      console.log('[SATELLITE] Source already exists');
+      // Just show the layer if it exists
+      if (map.getLayer('satellite-layer')) {
+        map.setLayoutProperty('satellite-layer', 'visibility', 'visible');
+      }
+      return;
+    }
+
+    try {
+      map.addSource('satellite', {
+        type: 'raster',
+        tiles: [
+          'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+        ],
+        tileSize: 256,
+        maxzoom: 19,
+        attribution: '&copy; Esri'
+      });
+
+      // Add layer below labels but above base map
+      const layers = map.getStyle().layers || [];
+      const labelLayerId = layers.find(
+        (layer) => layer.type === 'symbol' && (layer.layout as Record<string, unknown>)?.['text-field']
+      )?.id;
+
+      map.addLayer({
+        id: 'satellite-layer',
+        type: 'raster',
+        source: 'satellite',
+        paint: {
+          'raster-opacity': 0.85
+        }
+      }, labelLayerId);
+
+      console.log('[SATELLITE] Layer added');
+    } catch (e) {
+      console.error('[SATELLITE] Failed to add layer:', e);
+    }
+  }
+
+  // Remove satellite layer
+  function removeSatelliteLayer() {
+    if (!map) return;
+
+    try {
+      if (map.getLayer('satellite-layer')) {
+        map.removeLayer('satellite-layer');
+        console.log('[SATELLITE] Layer removed');
+      }
+      if (map.getSource('satellite')) {
+        map.removeSource('satellite');
+        console.log('[SATELLITE] Source removed');
+      }
+    } catch (e) {
+      console.error('[SATELLITE] Failed to remove layer:', e);
     }
   }
 
@@ -280,6 +451,19 @@
   // Track if map is loaded
   let mapLoaded = $state(false);
 
+  // Store previous zoom for when exiting globe view
+  let preGlobeZoom: number | null = null;
+
+  // Calculate optimal zoom for globe view based on viewport
+  function getOptimalGlobeZoom(): number {
+    if (!map) return 2.5;
+    const container = map.getContainer();
+    const minDimension = Math.min(container.clientWidth, container.clientHeight);
+    // For globe projection, calculate zoom where globe just fits
+    const optimalZoom = Math.log2(minDimension / 180) + 0.7;
+    return Math.max(1.8, Math.min(optimalZoom, 4));
+  }
+
   // Helper: Toggle globe projection (MapLibre 5.0+)
   function toggleGlobeProjection(enabled: boolean) {
     console.log('[GLOBE DEBUG] toggleGlobeProjection called with:', enabled);
@@ -294,12 +478,26 @@
       map.setProjection({ type: enabled ? 'globe' : 'mercator' });
       console.log('[GLOBE DEBUG] setProjection succeeded:', enabled ? 'globe' : 'mercator');
 
-      // Adjust pitch for better 3D view
-      const targetPitch = enabled ? 45 : 0;
-      map.easeTo({
-        pitch: targetPitch,
-        duration: 500
-      });
+      if (enabled) {
+        // Save current zoom and zoom out to show globe centered
+        preGlobeZoom = map.getZoom();
+        const optimalZoom = getOptimalGlobeZoom();
+        map.easeTo({
+          center: [0, 20], // Center on Atlantic/Europe area
+          zoom: optimalZoom,
+          pitch: 45,
+          bearing: 0,
+          duration: 800
+        });
+      } else {
+        // Restore previous zoom or default
+        map.easeTo({
+          zoom: preGlobeZoom ?? 5,
+          pitch: 0,
+          duration: 500
+        });
+        preGlobeZoom = null;
+      }
     } catch (e) {
       console.error('[GLOBE DEBUG] setProjection failed:', e);
     }
@@ -325,8 +523,9 @@
   // React to terrain layer (hillshade) toggle
   $effect(() => {
     const layerEnabled = $isTerrainLayer;
+    console.log('[TERRAIN DEBUG] $effect triggered, layerEnabled=', layerEnabled, 'map=', !!map, 'mapLoaded=', mapLoaded);
     if (map && mapLoaded) {
-      console.log('[TERRAIN] $effect: toggling hillshade to', layerEnabled);
+      console.log('[TERRAIN DEBUG] Calling hillshade function for:', layerEnabled);
       untrack(() => {
         if (layerEnabled) {
           addHillshadeLayer();
@@ -350,6 +549,143 @@
         }
       });
     }
+  });
+
+  // React to satellite layer toggle
+  $effect(() => {
+    const satelliteEnabled = $isSatelliteLayer;
+    if (map && mapLoaded) {
+      console.log('[SATELLITE] $effect: toggling satellite to', satelliteEnabled);
+      untrack(() => {
+        if (satelliteEnabled) {
+          addSatelliteLayer();
+        } else {
+          removeSatelliteLayer();
+        }
+      });
+    }
+  });
+
+  // ============================================
+  // QUICK SEARCH PINS
+  // ============================================
+
+  const quickSearchMarkers = new Map<string, maplibregl.Marker>();
+
+  function createQuickSearchMarker(pin: QuickSearchPin): maplibregl.Marker {
+    const category = quickSearchCategories.find(c => c.id === pin.categoryId);
+    const emoji = category?.emoji || '📍';
+
+    const el = document.createElement('div');
+    el.className = 'map-marker map-marker--quick';
+    el.innerHTML = `<span class="quick-marker-emoji">${emoji}</span>`;
+    el.title = pin.name;
+
+    return new maplibregl.Marker({ element: el })
+      .setLngLat(pin.coordinates)
+      .setPopup(new maplibregl.Popup({ offset: 25 }).setHTML(`
+        <div style="padding: 8px;">
+          <strong>${emoji} ${pin.name}</strong>
+          <p style="margin: 4px 0 0; font-size: 12px; color: #94a3b8;">${pin.address}</p>
+        </div>
+      `));
+  }
+
+  // React to quick search pins changes
+  $effect(() => {
+    const pins = quickSearch.pins;
+    let currentPins: QuickSearchPin[] = [];
+    const unsub = pins.subscribe(p => { currentPins = p; });
+    unsub();
+
+    if (!map || !mapLoaded) return;
+
+    untrack(() => {
+      // Get current pin IDs
+      const newPinIds = new Set(currentPins.map(p => p.id));
+
+      // Remove markers that are no longer in pins
+      for (const [id, marker] of quickSearchMarkers) {
+        if (!newPinIds.has(id)) {
+          marker.remove();
+          quickSearchMarkers.delete(id);
+        }
+      }
+
+      // Add new markers
+      for (const pin of currentPins) {
+        if (!quickSearchMarkers.has(pin.id)) {
+          const marker = createQuickSearchMarker(pin);
+          marker.addTo(map!);
+          quickSearchMarkers.set(pin.id, marker);
+        }
+      }
+    });
+  });
+
+  // ============================================
+  // LIST MARKERS
+  // ============================================
+
+  const listMarkers = new Map<string, maplibregl.Marker>();
+
+  function createListMarker(place: { id: string; name: string; address: string; coordinates: [number, number] }, color: string): maplibregl.Marker {
+    const el = document.createElement('div');
+    el.className = 'map-marker map-marker--list';
+    el.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="${color}" stroke="white" stroke-width="1.5">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3" fill="white"/>
+      </svg>
+    `;
+    el.title = place.name;
+
+    return new maplibregl.Marker({ element: el })
+      .setLngLat(place.coordinates)
+      .setPopup(new maplibregl.Popup({ offset: 25 }).setHTML(`
+        <div style="padding: 8px;">
+          <strong>${place.name}</strong>
+          <p style="margin: 4px 0 0; font-size: 12px; color: #94a3b8;">${place.address}</p>
+        </div>
+      `));
+  }
+
+  // React to list visibility and places changes
+  $effect(() => {
+    const lists = $placeLists;
+    const visibility = $listVisibility;
+
+    if (!map || !mapLoaded) return;
+
+    untrack(() => {
+      // Collect all visible places
+      const visiblePlaces = new Map<string, { place: typeof lists[0]['places'][0]; color: string }>();
+
+      for (const list of lists) {
+        if (visibility[list.id]) {
+          for (const place of list.places) {
+            visiblePlaces.set(place.id, { place, color: list.color });
+          }
+        }
+      }
+
+      // Remove markers that should no longer be visible
+      for (const [id, marker] of listMarkers) {
+        if (!visiblePlaces.has(id)) {
+          marker.remove();
+          listMarkers.delete(id);
+        }
+      }
+
+      // Add new markers
+      for (const [id, { place, color }] of visiblePlaces) {
+        if (!listMarkers.has(id)) {
+          const marker = createListMarker(place, color);
+          marker.addTo(map!);
+          listMarkers.set(id, marker);
+        }
+      }
+    });
   });
 </script>
 

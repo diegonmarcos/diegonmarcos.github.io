@@ -323,3 +323,45 @@
     color: $accent-blue-light;
   }
 }
+
+// ----------------
+// QUICK SEARCH BAR
+// ----------------
+
+.quick-search-bar {
+  @include flex-row(flex-start, center, $space-2);
+  margin-top: $space-2;
+}
+
+.quick-search-btn {
+  @include glass-panel-sm;
+  @include flex-center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  cursor: pointer;
+  @include transition;
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 1;
+    background: $bg-glass-hover;
+  }
+
+  &--active {
+    opacity: 1;
+    background: rgba($accent-blue, 0.25);
+    border-color: rgba($accent-blue, 0.4);
+    box-shadow: 0 0 0 2px rgba($accent-blue, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: wait;
+  }
+}
+
+.quick-search-emoji {
+  font-size: 18px;
+  line-height: 1;
+}

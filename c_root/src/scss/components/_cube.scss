@@ -31,6 +31,12 @@ $cube-translate: calc(#{$cube-size} / 2);
   overflow: hidden;
   touch-action: none; // Prevent browser gestures
   user-select: none;
+  // GPU acceleration
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: opacity, visibility;
+  isolation: isolate;
+  contain: layout style;
 
   // Static stars layer (no animation for performance)
   &::before {
@@ -65,6 +71,11 @@ $cube-translate: calc(#{$cube-size} / 2);
   perspective: 1400px;
   perspective-origin: 50% 50%;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  // Force GPU layer
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  isolation: isolate;
 }
 
 // The cube itself
@@ -73,7 +84,11 @@ $cube-translate: calc(#{$cube-size} / 2);
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   will-change: transform;
+  // Force GPU compositing
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
   cursor: grab;
 
   &:active {
@@ -90,42 +105,51 @@ $cube-translate: calc(#{$cube-size} / 2);
   position: absolute;
   width: $cube-size;
   height: $cube-size;
+  // GPU acceleration
+  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  // Layout containment for performance
+  contain: strict;
+  content-visibility: auto;
+  // Visual
   border: 2px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
   background: #0a0a12;
-  contain: layout style paint;
-  will-change: transform;
   cursor: pointer;
+  // Smooth transitions on GPU
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform, opacity;
 
   &:hover {
     border-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 0 30px rgba(100, 150, 255, 0.3);
   }
 
+  // Use translate3d for GPU-accelerated transforms
   &--front {
-    transform: translateZ($cube-translate);
+    transform: translate3d(0, 0, $cube-translate);
   }
 
   &--back {
-    transform: rotateY(180deg) translateZ($cube-translate);
+    transform: rotateY(180deg) translate3d(0, 0, $cube-translate);
   }
 
   &--right {
-    transform: rotateY(90deg) translateZ($cube-translate);
+    transform: rotateY(90deg) translate3d(0, 0, $cube-translate);
   }
 
   &--left {
-    transform: rotateY(-90deg) translateZ($cube-translate);
+    transform: rotateY(-90deg) translate3d(0, 0, $cube-translate);
   }
 
   &--top {
-    transform: rotateX(90deg) translateZ($cube-translate);
+    transform: rotateX(90deg) translate3d(0, 0, $cube-translate);
   }
 
   &--bottom {
-    transform: rotateX(-90deg) translateZ($cube-translate);
+    transform: rotateX(-90deg) translate3d(0, 0, $cube-translate);
   }
 }
 
@@ -144,7 +168,13 @@ $cube-translate: calc(#{$cube-size} / 2);
   border: none;
   pointer-events: none;
   background: #000;
+  // GPU layer isolation for iframe content
   contain: strict;
+  isolation: isolate;
+  // Force GPU compositing
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: contents;
 }
 
 // Placeholder for faces without content

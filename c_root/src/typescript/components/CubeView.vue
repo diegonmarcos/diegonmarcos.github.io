@@ -20,6 +20,8 @@
               :src="pages.front"
               class="c-cube__iframe"
               title="Observer Effect"
+              loading="eager"
+              allow="accelerometer; autoplay"
             ></iframe>
           </div>
 
@@ -30,6 +32,8 @@
               :src="pages.right"
               class="c-cube__iframe"
               title="Neon Cube"
+              loading="eager"
+              allow="accelerometer; autoplay"
             ></iframe>
           </div>
 
@@ -40,6 +44,8 @@
               :src="pages.back"
               class="c-cube__iframe"
               title="Perspectives"
+              loading="eager"
+              allow="accelerometer; autoplay"
             ></iframe>
           </div>
 
@@ -249,13 +255,9 @@ watch(() => props.active, (newVal) => {
   }
 });
 
+// GPU-optimized transform using translate3d and scale3d
 const cubeStyle = computed(() => ({
-  transform: `
-    translateZ(-300px)
-    scale(${scale.value})
-    rotateX(${rotateX.value}deg)
-    rotateY(${rotateY.value}deg)
-  `
+  transform: `translate3d(0, 0, -300px) scale3d(${scale.value}, ${scale.value}, ${scale.value}) rotateX(${rotateX.value}deg) rotateY(${rotateY.value}deg)`
 }));
 
 // Animate to target rotation

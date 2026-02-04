@@ -30,25 +30,28 @@ Some projects have additional specifications in their backend repos:
 
 | **Project**       | **Description**                 | **Classification (Type)**      | **Framework** | Build Strategy           | **Single-File** | **SPA** |
 | ----------------- | ------------------------------- | ------------------------------ | ------------- | ------------------------ | --------------- | ------- |
+| **Astro**         | Astronomy tools & sky charts    | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
+| **Carto**         | Card games collection           | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **CentralBank**   | Central bank modeling tool      | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **Cloud**         | Cloud resources monitor         | **Type 3** (Private Dashboard) | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **CV PDF**        | PDF Resume generator            | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **CV Web**        | Digital Resume/CV               | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Feed Yourself** | Calculator / Utility Tool       | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | No      |
 | **HealthTracker** | Personal health monitoring      | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **JSON Vision**   | Visual JSON editor & graph      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **Landpage**      | Main landing page & entry point | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
+| **Leafy**         | Plant care & garden tracker     | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **Linktree**      | Simple links hub & bio page     | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | No      |
 | **MarketWatch**   | Financial market tracker        | **Type 3** (Private Dashboard) | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **MyFeed**        | Social feed aggregator          | **Type 3** (Private Dashboard) | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyGames**       | Retro games collection          | **Type 2** (Browser Tool)      | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
 | **MyMaps**        | Strategic map viewer            | **Type 2** (Browser Tool)      | **React+Vite** | Client-Side (CSR)        | Yes             | Yes     |
-| **MyMaps Pro**    | Self-hosted Google Maps alt     | **Type 2** (Browser Tool)      | **SvelteKit** | Client-Side (CSR)        | No              | Yes     |
 | **MyMovies**      | Movie & TV series browser       | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyMusic**       | Winamp-style music library      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 | **MyProfile**     | Personal portfolio showcase     | **Type 4** (Public Platform)   | **SvelteKit** | Hybrid (SSR/Hydration)   | No              | Yes     |
+| **MyTrips**       | Travel planning & itineraries   | **Type 2** (Browser Tool)      | **Vanilla**   | Client-Side (CSR)        | Yes             | Yes     |
 | **Nexus**         | Company Business Website        | **Type 1** (Digital Card)      | **Vanilla**   | Server-Side (Static SSG) | Yes             | Yes     |
 | **Others**        | Python tools & scripts          | **Scripts**                    | **Python**    | Server-Side (Static SSG) | Yes             | No      |
-| **JSON Vision**   | Visual JSON editor & graph      | **Type 2** (Browser Tool)      | **Vue 3**     | Client-Side (CSR)        | Yes             | Yes     |
 
 ---
 
@@ -56,25 +59,28 @@ Some projects have additional specifications in their backend repos:
 
 | **Project**       | **Framework** | **CSS**  | **JS Variant** |
 | ----------------- | ------------- | -------- | -------------- |
+| **Astro**         | Vanilla       | Sass     | TypeScript     |
+| **Carto**         | Vanilla       | Sass     | TypeScript     |
 | **CentralBank**   | Vanilla       | Sass+TW  | TypeScript     |
 | **Cloud**         | Vanilla       | Sass     | TypeScript     |
 | **CV PDF**        | Vanilla       | Sass     | TypeScript     |
 | **CV Web**        | Vanilla       | Sass     | TypeScript     |
 | **Feed Yourself** | Vanilla       | Sass     | TypeScript     |
 | **HealthTracker** | Vanilla       | Tailwind | -              |
+| **JSON Vision**   | Vue 3         | Sass     | TypeScript     |
 | **Landpage**      | Vanilla       | Sass     | TypeScript     |
+| **Leafy**         | Vanilla       | Sass     | TypeScript     |
 | **Linktree**      | Vanilla       | Sass     | TypeScript     |
 | **MarketWatch**   | Vanilla       | Sass     | TypeScript     |
 | **MyFeed**        | Vue 3         | Sass     | TypeScript     |
 | **MyGames**       | SvelteKit     | Sass     | TypeScript     |
 | **MyMaps**        | React+Vite    | Sass     | TypeScript     |
-| **MyMaps Pro**    | SvelteKit     | Sass     | TypeScript     |
 | **MyMovies**      | Vue 3         | Sass     | TypeScript     |
 | **MyMusic**       | Vue 3         | Sass     | TypeScript     |
 | **MyProfile**     | SvelteKit     | Sass     | TypeScript     |
+| **MyTrips**       | Vanilla       | Sass     | TypeScript     |
 | **Nexus**         | Vanilla       | Sass+TW  | TypeScript     |
 | **Others**        | Python 3.11+  | -        | -              |
-| **JSON Vision**   | Vue 3         | Sass     | TypeScript     |
 
 ---
 
@@ -82,25 +88,28 @@ Some projects have additional specifications in their backend repos:
 
 | **Project**       | **Dev Server (Port)** | **Watch**  |
 | ----------------- | --------------------- | ---------- |
+| **Astro**         | npm-live :8019        | Sass, TS   |
+| **Carto**         | npm-live :8020        | Sass, TS   |
 | **CentralBank**   | Vite :8011            | HMR        |
 | **Cloud**         | npm-live :8006        | Sass, TS   |
 | **CV PDF**        | npm-live :8012        | Sass, TS   |
 | **CV Web**        | npm-live :8002        | Sass, TS   |
 | **Feed Yourself** | npm-live :8007        | Sass, TS   |
 | **HealthTracker** | npm-live :8009        | -          |
+| **JSON Vision**   | Vite :8017            | HMR        |
 | **Landpage**      | npm-live :8000        | Sass, TS   |
+| **Leafy**         | npm-live :8021        | Sass, TS   |
 | **Linktree**      | npm-live :8001        | Sass, TS   |
 | **MarketWatch**   | npm-live :8010        | Sass, TS   |
 | **MyFeed**        | Vite :8003            | HMR        |
-| **MyGames**       | Vite :8013            | HMR        |
+| **MyGames**       | Vite :8004            | HMR        |
 | **MyMaps**        | Vite :8014            | HMR        |
-| **MyMaps Pro**    | Vite :8018            | HMR        |
 | **MyMovies**      | Vite :8015            | HMR        |
 | **MyMusic**       | Vite :8016            | HMR        |
-| **MyProfile**     | Vite :8004            | HMR        |
+| **MyProfile**     | Vite :8013            | HMR        |
+| **MyTrips**       | npm-live :8022        | Sass, TS   |
 | **Nexus**         | npm-live :8005        | Sass, TS   |
 | **Others**        | npm-live :8008        | -          |
-| **JSON Vision**   | Vite :8017            | HMR        |
 
 ---
 

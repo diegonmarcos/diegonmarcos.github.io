@@ -181,18 +181,8 @@
       exaggeration: 1.5
     });
 
-    // Add sky layer for atmosphere effect
-    if (!map.getLayer('sky')) {
-      map.addLayer({
-        id: 'sky',
-        type: 'sky',
-        paint: {
-          'sky-type': 'atmosphere',
-          'sky-atmosphere-sun': [0.0, 90.0],
-          'sky-atmosphere-sun-intensity': 15
-        }
-      });
-    }
+    // Note: Sky layer is Mapbox-specific and not supported in MapLibre GL
+    // MapLibre uses a different approach for atmosphere effects
 
     console.log('[TERRAIN] 3D terrain enabled');
   }

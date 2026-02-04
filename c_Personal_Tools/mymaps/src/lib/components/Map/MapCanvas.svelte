@@ -7,7 +7,8 @@
     currentStyle,
     setMapInstance,
     userLocation,
-    isGlobeView
+    isGlobeView,
+    is3DTerrain
   } from '$lib/stores/mapStore';
   import { encodeMapState, updateUrl, decodeMapState, getCurrentHash } from '$lib/utils/urlState';
   import { throttle } from '$lib/utils/debounce';
@@ -99,8 +100,10 @@
         map.setProjection({ type: 'globe' });
       }
 
-      // Add 3D terrain
-      add3DTerrain();
+      // Add 3D terrain if enabled
+      if ($is3DTerrain) {
+        add3DTerrain();
+      }
 
       add3DBuildings();
     });
@@ -166,25 +169,45 @@
     // Check if terrain source already exists
     if (map.getSource('terrain')) return;
 
-    // Add terrain source (AWS Terrain Tiles - free)
-    map.addSource('terrain', {
-      type: 'raster-dem',
-      tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
-      tileSize: 256,
-      maxzoom: 15,
-      encoding: 'terrarium'
-    });
+    try {
+      // Add terrain source (AWS Terrain Tiles - free)
+      map.addSource('terrain', {
+        type: 'raster-dem',
+        tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
+        tileSize: 256,
+        maxzoom: 15,
+        encoding: 'terrarium'
+      });
 
-    // Enable terrain with exaggeration
-    map.setTerrain({
-      source: 'terrain',
-      exaggeration: 1.5
-    });
+      // Enable terrain with exaggeration
+      map.setTerrain({
+        source: 'terrain',
+        exaggeration: 1.5
+      });
 
-    // Note: Sky layer is Mapbox-specific and not supported in MapLibre GL
-    // MapLibre uses a different approach for atmosphere effects
+      console.log('[TERRAIN] 3D terrain enabled');
+    } catch (e) {
+      console.error('[TERRAIN] Failed to enable terrain:', e);
+    }
+  }
 
-    console.log('[TERRAIN] 3D terrain enabled');
+  // Remove 3D terrain
+  function remove3DTerrain() {
+    if (!map) return;
+
+    try {
+      // Disable terrain
+      map.setTerrain(null);
+
+      // Remove terrain source if it exists
+      if (map.getSource('terrain')) {
+        map.removeSource('terrain');
+      }
+
+      console.log('[TERRAIN] 3D terrain disabled');
+    } catch (e) {
+      console.error('[TERRAIN] Failed to disable terrain:', e);
+    }
   }
 
   // User location marker
@@ -248,6 +271,21 @@
     if (map && mapLoaded) {
       console.log('[GLOBE DEBUG] $effect: toggling globe to', globeEnabled);
       untrack(() => toggleGlobeProjection(globeEnabled));
+    }
+  });
+
+  // React to 3D terrain toggle
+  $effect(() => {
+    const terrainEnabled = $is3DTerrain;
+    if (map && mapLoaded) {
+      console.log('[TERRAIN] $effect: toggling terrain to', terrainEnabled);
+      untrack(() => {
+        if (terrainEnabled) {
+          add3DTerrain();
+        } else {
+          remove3DTerrain();
+        }
+      });
     }
   });
 </script>

@@ -106,7 +106,11 @@ const isLocating = writable(false);
 function loadGlobeState() {
   return false;
 }
+function loadTerrainState() {
+  return false;
+}
 const isGlobeView = writable(loadGlobeState());
+const is3DTerrain = writable(loadTerrainState());
 function MapCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     onDestroy(() => {
@@ -482,12 +486,13 @@ export {
   isCalculatingRoute as i,
   showLayersPanel as j,
   currentStyleId as k,
-  layerStore as l,
+  is3DTerrain as l,
   mapStyles as m,
-  MapControls as n,
-  PlacePanel as o,
-  selectedPlace as p,
-  isLoadingPlace as q,
+  layerStore as n,
+  MapControls as o,
+  PlacePanel as p,
+  selectedPlace as q,
   routeMode as r,
-  searchResults as s
+  searchResults as s,
+  isLoadingPlace as t
 };

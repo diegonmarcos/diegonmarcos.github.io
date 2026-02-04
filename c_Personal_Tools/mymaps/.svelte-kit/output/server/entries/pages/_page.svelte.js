@@ -1,5 +1,5 @@
 import { s as store_get, a as attr_class, b as attr, u as unsubscribe_stores, e as ensure_array_like, c as stringify, h as head } from "../../chunks/index2.js";
-import { s as searchResults, a as searchQuery, f as formatDuration, b as formatDistance, P as ProviderBadge, c as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, d as routeError, e as selectedRoute, g as routeOrigin, h as routeDestination, j as showLayersPanel, m as mapStyles, k as currentStyleId, l as layerStore, M as MapCanvas, n as MapControls, o as PlacePanel } from "../../chunks/PlacePanel.js";
+import { s as searchResults, a as searchQuery, f as formatDuration, b as formatDistance, P as ProviderBadge, c as showDirectionsPanel, r as routeMode, i as isCalculatingRoute, d as routeError, e as selectedRoute, g as routeOrigin, h as routeDestination, j as showLayersPanel, m as mapStyles, k as currentStyleId, l as is3DTerrain, n as layerStore, M as MapCanvas, o as MapControls, p as PlacePanel } from "../../chunks/PlacePanel.js";
 import { c as capabilities } from "../../chunks/configStore.js";
 import "maplibre-gl";
 import { $ as escape_html } from "../../chunks/context.js";
@@ -131,7 +131,7 @@ function LayersPanel($$renderer, $$props) {
         }
         $$renderer2.push(`<!--]--></div> <div class="layer-info"><div class="layer-name">${escape_html(style.name)}</div></div></button>`);
       }
-      $$renderer2.push(`<!--]--></div> <div class="layers-section"><h3 class="layers-section-title">Custom Layers</h3> <!--[-->`);
+      $$renderer2.push(`<!--]--></div> <div class="layers-section"><h3 class="layers-section-title">Map Features</h3> <div class="layer-toggle"><input type="checkbox" id="terrain-3d"${attr("checked", store_get($$store_subs ??= {}, "$is3DTerrain", is3DTerrain), true)}/> <span class="toggle-switch"></span> <span class="toggle-label">3D Terrain</span></div></div> <div class="layers-section"><h3 class="layers-section-title">Custom Layers</h3> <!--[-->`);
       const each_array_1 = ensure_array_like(store_get($$store_subs ??= {}, "$layerStore", layerStore));
       for (let $$index_1 = 0, $$length = each_array_1.length; $$index_1 < $$length; $$index_1++) {
         let layer = each_array_1[$$index_1];

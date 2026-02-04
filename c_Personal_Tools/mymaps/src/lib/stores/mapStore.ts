@@ -9,6 +9,7 @@ import { browser } from '$app/environment';
 
 const STORAGE_KEY = 'mymaps-map-state';
 const GLOBE_STORAGE_KEY = 'mymaps-globe-view';
+const TERRAIN_STORAGE_KEY = 'mymaps-terrain-3d';
 
 // Default map state (centered on Europe)
 const defaultState: MapState = {
@@ -175,8 +176,30 @@ function saveGlobeState(enabled: boolean): void {
   }
 }
 
+// 3D Terrain persistence helpers
+function loadTerrainState(): boolean {
+  if (!browser) return false;
+  try {
+    return localStorage.getItem(TERRAIN_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function saveTerrainState(enabled: boolean): void {
+  if (!browser) return;
+  try {
+    localStorage.setItem(TERRAIN_STORAGE_KEY, String(enabled));
+  } catch {
+    // Ignore errors
+  }
+}
+
 // Globe view store (persisted)
 export const isGlobeView = writable<boolean>(loadGlobeState());
+
+// 3D Terrain store (persisted)
+export const is3DTerrain = writable<boolean>(loadTerrainState());
 
 /**
  * Toggle between globe and mercator projection
@@ -200,6 +223,27 @@ export function setGlobeView(enabled: boolean) {
   isGlobeView.set(enabled);
   saveGlobeState(enabled);
   // Note: actual projection change happens via $effect in MapCanvas
+}
+
+/**
+ * Toggle 3D terrain
+ */
+export function toggle3DTerrain() {
+  is3DTerrain.update(v => {
+    const newValue = !v;
+    console.log('[TERRAIN] Toggling 3D terrain to:', newValue);
+    saveTerrainState(newValue);
+    return newValue;
+  });
+}
+
+/**
+ * Set 3D terrain state
+ */
+export function set3DTerrain(enabled: boolean) {
+  console.log('[TERRAIN] Setting 3D terrain to:', enabled);
+  is3DTerrain.set(enabled);
+  saveTerrainState(enabled);
 }
 
 /**

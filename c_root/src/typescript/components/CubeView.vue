@@ -188,7 +188,8 @@ const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
 
 // Track which faces have been visited (lazy load iframes)
 // Using shallowRef since we manually trigger updates
-const visitedFaces = shallowRef<Set<number>>(new Set([0])); // Front is always loaded
+// Load front, right, back faces initially (they have content)
+const visitedFaces = shallowRef<Set<number>>(new Set([0, 1, 2]));
 
 // Check if a face should load its iframe
 const shouldLoadFace = (faceIndex: number) => {

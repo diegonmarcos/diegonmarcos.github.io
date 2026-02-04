@@ -107,6 +107,15 @@ build() {
         fi
     done
 
+    # Copy standalone JS modules used by standalone HTML pages
+    print_step "Copying standalone JS modules..."
+    for js_file in "$PROJECT_ROOT/src/"*.js; do
+        if [ -f "$js_file" ]; then
+            cp "$js_file" "$DIST_DIR/"
+            print_success "Copied $(basename "$js_file")"
+        fi
+    done
+
     if [ $? -eq 0 ]; then
         print_success "Build complete!"
         print_success "Output: $DIST_DIR/"

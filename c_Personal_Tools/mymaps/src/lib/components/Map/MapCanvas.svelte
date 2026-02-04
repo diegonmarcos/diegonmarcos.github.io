@@ -8,7 +8,8 @@
     setMapInstance,
     userLocation,
     isGlobeView,
-    is3DTerrain
+    is3DTerrain,
+    isTerrainLayer
   } from '$lib/stores/mapStore';
   import { encodeMapState, updateUrl, decodeMapState, getCurrentHash } from '$lib/utils/urlState';
   import { throttle } from '$lib/utils/debounce';
@@ -100,9 +101,14 @@
         map.setProjection({ type: 'globe' });
       }
 
+      // Add terrain layer (hillshade) if enabled
+      if ($isTerrainLayer) {
+        addHillshadeLayer();
+      }
+
       // Add 3D terrain if enabled
       if ($is3DTerrain) {
-        add3DTerrain();
+        enable3DTerrain();
       }
 
       add3DBuildings();
@@ -162,51 +168,93 @@
     }
   }
 
-  // Add 3D terrain
-  function add3DTerrain() {
-    if (!map) return;
-
-    // Check if terrain source already exists
-    if (map.getSource('terrain')) return;
+  // Add terrain DEM source (shared by hillshade and 3D)
+  function addTerrainSource() {
+    if (!map || map.getSource('terrain-dem')) return;
 
     try {
-      // Add terrain source (AWS Terrain Tiles - free)
-      map.addSource('terrain', {
+      map.addSource('terrain-dem', {
         type: 'raster-dem',
         tiles: ['https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png'],
         tileSize: 256,
         maxzoom: 15,
         encoding: 'terrarium'
       });
-
-      // Enable terrain with exaggeration
-      map.setTerrain({
-        source: 'terrain',
-        exaggeration: 1.5
-      });
-
-      console.log('[TERRAIN] 3D terrain enabled');
+      console.log('[TERRAIN] DEM source added');
     } catch (e) {
-      console.error('[TERRAIN] Failed to enable terrain:', e);
+      console.error('[TERRAIN] Failed to add DEM source:', e);
     }
   }
 
-  // Remove 3D terrain
-  function remove3DTerrain() {
+  // Add hillshade layer for 2D terrain visualization
+  function addHillshadeLayer() {
+    if (!map) return;
+
+    // Ensure source exists
+    addTerrainSource();
+
+    // Check if layer already exists
+    if (map.getLayer('hillshade-layer')) return;
+
+    try {
+      map.addLayer({
+        id: 'hillshade-layer',
+        type: 'hillshade',
+        source: 'terrain-dem',
+        paint: {
+          'hillshade-exaggeration': 0.5,
+          'hillshade-shadow-color': '#000000',
+          'hillshade-highlight-color': '#ffffff',
+          'hillshade-accent-color': '#000000'
+        }
+      });
+      console.log('[TERRAIN] Hillshade layer added');
+    } catch (e) {
+      console.error('[TERRAIN] Failed to add hillshade layer:', e);
+    }
+  }
+
+  // Remove hillshade layer
+  function removeHillshadeLayer() {
     if (!map) return;
 
     try {
-      // Disable terrain
-      map.setTerrain(null);
-
-      // Remove terrain source if it exists
-      if (map.getSource('terrain')) {
-        map.removeSource('terrain');
+      if (map.getLayer('hillshade-layer')) {
+        map.removeLayer('hillshade-layer');
+        console.log('[TERRAIN] Hillshade layer removed');
       }
-
-      console.log('[TERRAIN] 3D terrain disabled');
     } catch (e) {
-      console.error('[TERRAIN] Failed to disable terrain:', e);
+      console.error('[TERRAIN] Failed to remove hillshade layer:', e);
+    }
+  }
+
+  // Enable 3D terrain extrusion
+  function enable3DTerrain() {
+    if (!map) return;
+
+    // Ensure source exists
+    addTerrainSource();
+
+    try {
+      map.setTerrain({
+        source: 'terrain-dem',
+        exaggeration: 1.5
+      });
+      console.log('[TERRAIN] 3D extrusion enabled');
+    } catch (e) {
+      console.error('[TERRAIN] Failed to enable 3D:', e);
+    }
+  }
+
+  // Disable 3D terrain extrusion
+  function disable3DTerrain() {
+    if (!map) return;
+
+    try {
+      map.setTerrain(null);
+      console.log('[TERRAIN] 3D extrusion disabled');
+    } catch (e) {
+      console.error('[TERRAIN] Failed to disable 3D:', e);
     }
   }
 
@@ -274,16 +322,31 @@
     }
   });
 
+  // React to terrain layer (hillshade) toggle
+  $effect(() => {
+    const layerEnabled = $isTerrainLayer;
+    if (map && mapLoaded) {
+      console.log('[TERRAIN] $effect: toggling hillshade to', layerEnabled);
+      untrack(() => {
+        if (layerEnabled) {
+          addHillshadeLayer();
+        } else {
+          removeHillshadeLayer();
+        }
+      });
+    }
+  });
+
   // React to 3D terrain toggle
   $effect(() => {
     const terrainEnabled = $is3DTerrain;
     if (map && mapLoaded) {
-      console.log('[TERRAIN] $effect: toggling terrain to', terrainEnabled);
+      console.log('[TERRAIN] $effect: toggling 3D terrain to', terrainEnabled);
       untrack(() => {
         if (terrainEnabled) {
-          add3DTerrain();
+          enable3DTerrain();
         } else {
-          remove3DTerrain();
+          disable3DTerrain();
         }
       });
     }

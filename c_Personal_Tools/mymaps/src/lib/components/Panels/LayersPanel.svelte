@@ -1,6 +1,6 @@
 <script lang="ts">
   import { layerStore, showLayersPanel, toggleLayersPanel, visibleLayers } from '$lib/stores/layerStore';
-  import { currentStyleId, mapStyles, currentStyle, is3DTerrain, toggle3DTerrain } from '$lib/stores/mapStore';
+  import { currentStyleId, mapStyles, currentStyle, is3DTerrain, toggle3DTerrain, isTerrainLayer, toggleTerrainLayer } from '$lib/stores/mapStore';
   import { createLayerFromKML, getBounds } from '$lib/services/layers/kml';
   import { fitBounds, getMapInstance } from '$lib/stores/mapStore';
   import type { CustomLayer } from '$lib/services/api/types';
@@ -195,12 +195,22 @@
       <div class="layer-toggle">
         <input
           type="checkbox"
+          id="terrain-layer"
+          checked={$isTerrainLayer}
+          onchange={toggleTerrainLayer}
+        />
+        <span class="toggle-switch"></span>
+        <span class="toggle-label">Terrain (Hillshade)</span>
+      </div>
+      <div class="layer-toggle">
+        <input
+          type="checkbox"
           id="terrain-3d"
           checked={$is3DTerrain}
           onchange={toggle3DTerrain}
         />
         <span class="toggle-switch"></span>
-        <span class="toggle-label">3D Terrain</span>
+        <span class="toggle-label">3D Elevation</span>
       </div>
     </div>
 

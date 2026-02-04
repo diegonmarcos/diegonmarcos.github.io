@@ -159,6 +159,44 @@
     }
   }
 
+  // Add 3D terrain
+  function add3DTerrain() {
+    if (!map) return;
+
+    // Check if terrain source already exists
+    if (map.getSource('terrain')) return;
+
+    // Add terrain source (AWS Terrain Tiles - free)
+    map.addSource('terrain', {
+      type: 'raster-dem',
+      url: 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png',
+      tileSize: 256,
+      maxzoom: 15,
+      encoding: 'terrarium'
+    });
+
+    // Enable terrain with exaggeration
+    map.setTerrain({
+      source: 'terrain',
+      exaggeration: 1.5
+    });
+
+    // Add sky layer for atmosphere effect
+    if (!map.getLayer('sky')) {
+      map.addLayer({
+        id: 'sky',
+        type: 'sky',
+        paint: {
+          'sky-type': 'atmosphere',
+          'sky-atmosphere-sun': [0.0, 90.0],
+          'sky-atmosphere-sun-intensity': 15
+        }
+      });
+    }
+
+    console.log('[TERRAIN] 3D terrain enabled');
+  }
+
   // User location marker
   let userMarker: maplibregl.Marker | null = null;
 

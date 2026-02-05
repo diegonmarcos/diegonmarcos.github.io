@@ -80,6 +80,11 @@
     selectedIndex = pageOrder.indexOf(currentPage);
     updateCubeRotation();
 
+    // Blur any focused element so keyboard events work
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+
     // Progressive iframe loading for better performance
     // Load selected face first, then stagger others
     loadedIframes = new Set([selectedIndex]);
@@ -823,6 +828,7 @@
           {#each pageOrder as pageName, i}
             {@const pageData = pages[pageName]}
             {@const shouldLoad = loadedIframes.has(i)}
+            {@const iframeSrc = getRelativeRoute(pageName)}
             <button
               class="cube-face"
               class:selected={i === selectedIndex}
@@ -835,7 +841,7 @@
               <div class="face-preview">
                 {#if shouldLoad}
                   <iframe
-                    src={pageName === 'profile' ? './' : `./${pageName}/`}
+                    src={iframeSrc}
                     title={pageData.label}
                     loading="eager"
                     scrolling="no"

@@ -9,6 +9,6 @@ export const universal = {
   "ssr": false
 };
 export const universal_id = "src/routes/settings/+page.ts";
-export const imports = ["_app/immutable/nodes/4.BN9Ocl-7.js","_app/immutable/chunks/Caw1DNdb.js","_app/immutable/chunks/vspoVZMS.js","_app/immutable/chunks/Cf6CUyyp.js","_app/immutable/chunks/Bx4rsG9H.js","_app/immutable/chunks/CmO1FvvD.js","_app/immutable/chunks/DlIj0L74.js","_app/immutable/chunks/BkQBlPxm.js","_app/immutable/chunks/NLOkJi2Q.js","_app/immutable/chunks/0n6Vdrcu.js","_app/immutable/chunks/WcwG1U8M.js"];
+export const imports = ["_app/immutable/nodes/4.DzlM2-bQ.js","_app/immutable/chunks/BpHFVdBK.js","_app/immutable/chunks/Dyi0cJRJ.js","_app/immutable/chunks/62dkkLdj.js","_app/immutable/chunks/IR8sAqcL.js","_app/immutable/chunks/B7AKX-54.js","_app/immutable/chunks/D32J1AuY.js","_app/immutable/chunks/Bs5Te_zd.js","_app/immutable/chunks/DxTjl29k.js","_app/immutable/chunks/qKxsrdYH.js","_app/immutable/chunks/DXl8p3-Q.js"];
 export const stylesheets = [];
 export const fonts = [];

@@ -1,0 +1,24 @@
+{
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/audio": [
+		"src/routes/+layout.ts"
+	],
+	"/bio": [
+		"src/routes/+layout.ts"
+	],
+	"/geo": [
+		"src/routes/+layout.ts"
+	],
+	"/memory": [
+		"src/routes/+layout.ts"
+	],
+	"/syslog": [
+		"src/routes/+layout.ts"
+	],
+	"/visual": [
+		"src/routes/+layout.ts"
+	]
+}

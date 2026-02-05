@@ -940,8 +940,8 @@ function ensure_array_like(array_like_or_iterator) {
 export {
   attr_class as a,
   attr as b,
-  stringify as c,
-  attr_style as d,
+  attr_style as c,
+  stringify as d,
   ensure_array_like as e,
   head as h,
   is_passive_event as i,

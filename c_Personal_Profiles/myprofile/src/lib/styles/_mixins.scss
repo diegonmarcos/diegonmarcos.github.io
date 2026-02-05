@@ -1,0 +1,53 @@
+// ==============================================
+// MIXINS
+// ==============================================
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin absolute-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+@mixin transition($prop: all, $duration: $duration-normal, $ease: $ease-in-out) {
+  transition: $prop $duration $ease;
+}
+
+@mixin vignette {
+  background: radial-gradient(circle, transparent 0%, $bg-black 120%);
+}
+
+// Breakpoints
+$breakpoints: (
+  sm: $breakpoint-sm,
+  md: $breakpoint-md,
+  lg: $breakpoint-lg,
+  xl: $breakpoint-xl
+);
+
+@mixin respond-to($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+}
+
+// GPU Acceleration
+@mixin gpu-accelerate {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}

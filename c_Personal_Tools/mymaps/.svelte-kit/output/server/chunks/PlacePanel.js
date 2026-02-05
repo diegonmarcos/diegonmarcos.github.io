@@ -6,17 +6,18 @@ import "./exports.js";
 import "./utils.js";
 import "@sveltejs/kit/internal/server";
 import "./state.svelte.js";
-import { s as store_get, a as attr_class, d as attr_style, b as attr, u as unsubscribe_stores, c as stringify, e as ensure_array_like } from "./index2.js";
 import { d as derived, w as writable } from "./index.js";
+import { s as store_get, a as attr_class, c as attr_style, b as attr, u as unsubscribe_stores, d as stringify, e as ensure_array_like } from "./index2.js";
 import { c as capabilities } from "./configStore.js";
 function onDestroy(fn) {
   /** @type {SSRContext} */
   ssr_context.r.on_destroy(fn);
 }
 const defaultState = {
-  center: [2.3522, 48.8566],
-  // Paris
-  zoom: 5,
+  center: [0, 20],
+  // Centered for globe view
+  zoom: 2.5,
+  // Will be recalculated on load based on viewport
   bearing: 0,
   pitch: 0
 };
@@ -26,6 +27,12 @@ const mapStyles = [
     name: "Dark",
     url: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
     preview: "https://basemaps.cartocdn.com/dark_all/5/15/12.png"
+  },
+  {
+    id: "osm-positron",
+    name: "Positron",
+    url: "https://tiles.openfreemap.org/styles/positron",
+    preview: "https://basemaps.cartocdn.com/light_all/5/15/12.png"
   },
   {
     id: "carto-light",
@@ -38,6 +45,18 @@ const mapStyles = [
     name: "Voyager",
     url: "https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json",
     preview: "https://basemaps.cartocdn.com/rastertiles/voyager/5/15/12.png"
+  },
+  {
+    id: "osm-liberty",
+    name: "Liberty",
+    url: "https://tiles.openfreemap.org/styles/liberty",
+    preview: "https://tile.openstreetmap.org/5/15/12.png"
+  },
+  {
+    id: "osm-bright",
+    name: "Bright",
+    url: "https://tiles.openfreemap.org/styles/bright",
+    preview: "https://tile.openstreetmap.org/5/15/12.png"
   }
 ];
 function loadState() {
@@ -96,7 +115,7 @@ function createMapStore() {
   };
 }
 const mapStore = createMapStore();
-const currentStyleId = writable("carto-dark");
+const currentStyleId = writable("osm-bright");
 derived(
   currentStyleId,
   ($id) => mapStyles.find((s) => s.id === $id) || mapStyles[0]
@@ -104,17 +123,320 @@ derived(
 const userLocation = writable(null);
 const isLocating = writable(false);
 function loadGlobeState() {
-  return false;
+  return true;
 }
 function loadTerrainState() {
   return false;
 }
 function loadTerrainLayerState() {
-  return false;
+  return true;
+}
+function loadSatelliteLayerState() {
+  return true;
 }
 const isGlobeView = writable(loadGlobeState());
 const is3DTerrain = writable(loadTerrainState());
 const isTerrainLayer = writable(loadTerrainLayerState());
+const isSatelliteLayer = writable(loadSatelliteLayerState());
+const defaultLists = [
+  {
+    id: "favorites",
+    name: "Favorites",
+    color: "#ef4444",
+    places: [],
+    createdAt: Date.now()
+  },
+  {
+    id: "want-to-go",
+    name: "Want to go",
+    color: "#3b82f6",
+    places: [],
+    createdAt: Date.now()
+  }
+];
+function loadLists() {
+  return defaultLists;
+}
+function loadTempPins() {
+  return [];
+}
+function createPlaceListsStore() {
+  const { subscribe, set, update } = writable(loadLists());
+  return {
+    subscribe,
+    /**
+     * Add a new list
+     */
+    addList(name, color = "#6b7280") {
+      const id = `list-${Date.now()}`;
+      update((lists) => {
+        const newLists = [...lists, {
+          id,
+          name,
+          color,
+          places: [],
+          createdAt: Date.now()
+        }];
+        return newLists;
+      });
+      return id;
+    },
+    /**
+     * Remove a list
+     */
+    removeList(listId) {
+      update((lists) => {
+        const newLists = lists.filter((l) => l.id !== listId);
+        return newLists;
+      });
+    },
+    /**
+     * Rename a list
+     */
+    renameList(listId, name) {
+      update((lists) => {
+        const newLists = lists.map(
+          (l) => l.id === listId ? { ...l, name } : l
+        );
+        return newLists;
+      });
+    },
+    /**
+     * Add place to a list
+     */
+    addPlace(listId, place) {
+      const placeId = `place-${Date.now()}`;
+      update((lists) => {
+        const newLists = lists.map((l) => {
+          if (l.id === listId) {
+            return {
+              ...l,
+              places: [...l.places, {
+                ...place,
+                id: placeId,
+                addedAt: Date.now()
+              }]
+            };
+          }
+          return l;
+        });
+        return newLists;
+      });
+      return placeId;
+    },
+    /**
+     * Remove place from a list
+     */
+    removePlace(listId, placeId) {
+      update((lists) => {
+        const newLists = lists.map((l) => {
+          if (l.id === listId) {
+            return {
+              ...l,
+              places: l.places.filter((p) => p.id !== placeId)
+            };
+          }
+          return l;
+        });
+        return newLists;
+      });
+    },
+    /**
+     * Check if a place is in any list (by coordinates)
+     */
+    isPlaceInAnyList(coordinates) {
+      let found = false;
+      const unsubscribe = subscribe((lists) => {
+        found = lists.some(
+          (l) => l.places.some(
+            (p) => p.coordinates[0] === coordinates[0] && p.coordinates[1] === coordinates[1]
+          )
+        );
+      });
+      unsubscribe();
+      return found;
+    },
+    /**
+     * Get lists containing a place (by coordinates)
+     */
+    getListsForPlace(coordinates) {
+      let result = [];
+      const unsubscribe = subscribe((lists) => {
+        result = lists.filter(
+          (l) => l.places.some(
+            (p) => p.coordinates[0] === coordinates[0] && p.coordinates[1] === coordinates[1]
+          )
+        );
+      });
+      unsubscribe();
+      return result;
+    }
+  };
+}
+function createTempPinsStore() {
+  const { subscribe, set, update } = writable(loadTempPins());
+  return {
+    subscribe,
+    /**
+     * Add a temporary pin from search
+     */
+    add(pin) {
+      const id = `temp-${Date.now()}`;
+      update((pins) => {
+        const exists = pins.some(
+          (p) => p.coordinates[0] === pin.coordinates[0] && p.coordinates[1] === pin.coordinates[1]
+        );
+        if (exists) return pins;
+        const newPins = [...pins, {
+          ...pin,
+          id,
+          createdAt: Date.now()
+        }];
+        return newPins;
+      });
+      return id;
+    },
+    /**
+     * Remove a single temp pin
+     */
+    remove(pinId) {
+      update((pins) => {
+        const newPins = pins.filter((p) => p.id !== pinId);
+        return newPins;
+      });
+    },
+    /**
+     * Clear all temporary pins
+     */
+    clearAll() {
+      set([]);
+    },
+    /**
+     * Remove pin by coordinates (when added to a list)
+     */
+    removeByCoordinates(coordinates) {
+      update((pins) => {
+        const newPins = pins.filter(
+          (p) => p.coordinates[0] !== coordinates[0] || p.coordinates[1] !== coordinates[1]
+        );
+        return newPins;
+      });
+    }
+  };
+}
+const placeLists = createPlaceListsStore();
+const tempPins = createTempPinsStore();
+derived(
+  placeLists,
+  ($lists) => $lists.reduce((sum, list) => sum + list.places.length, 0)
+);
+const tempPinsCount = derived(tempPins, ($pins) => $pins.length);
+function loadListVisibility() {
+  return {};
+}
+function createListVisibilityStore() {
+  const { subscribe, set, update } = writable(loadListVisibility());
+  return {
+    subscribe,
+    toggle(listId) {
+      update((v) => {
+        const newV = { ...v, [listId]: !v[listId] };
+        return newV;
+      });
+    },
+    setVisible(listId, visible) {
+      update((v) => {
+        const newV = { ...v, [listId]: visible };
+        return newV;
+      });
+    },
+    isVisible(listId) {
+      let result = false;
+      const unsub = subscribe((v) => {
+        result = v[listId] ?? false;
+      });
+      unsub();
+      return result;
+    }
+  };
+}
+const listVisibility = createListVisibilityStore();
+const quickSearchCategories = [
+  { id: "supermarket", name: "Supermarkets", emoji: "🛒", query: "supermarket" },
+  { id: "park", name: "Parks", emoji: "🌳", query: "park" },
+  { id: "gym", name: "Gyms", emoji: "💪", query: "gym fitness" },
+  { id: "bar", name: "Bars", emoji: "🍺", query: "bar pub" },
+  { id: "hostel", name: "Hostels", emoji: "🛏️", query: "hostel" },
+  { id: "restaurant", name: "Restaurants", emoji: "🍽️", query: "restaurant" },
+  { id: "cafe", name: "Cafes", emoji: "☕", query: "cafe coffee" },
+  { id: "pharmacy", name: "Pharmacies", emoji: "💊", query: "pharmacy" },
+  { id: "atm", name: "ATMs", emoji: "🏧", query: "atm bank" },
+  { id: "gas", name: "Gas Stations", emoji: "⛽", query: "gas station fuel" }
+];
+function loadActiveCategories() {
+  return [];
+}
+function createQuickSearchStore() {
+  const activeCategories = writable(loadActiveCategories());
+  const pins = writable([]);
+  const isLoading = writable(false);
+  return {
+    activeCategories: {
+      subscribe: activeCategories.subscribe,
+      toggle(categoryId) {
+        activeCategories.update((cats) => {
+          const newCats = cats.includes(categoryId) ? cats.filter((c) => c !== categoryId) : [...cats, categoryId];
+          return newCats;
+        });
+      },
+      isActive(categoryId) {
+        let result = false;
+        const unsub = activeCategories.subscribe((cats) => {
+          result = cats.includes(categoryId);
+        });
+        unsub();
+        return result;
+      },
+      clear() {
+        activeCategories.set([]);
+      }
+    },
+    pins: {
+      subscribe: pins.subscribe,
+      set(newPins) {
+        pins.set(newPins);
+      },
+      addPins(newPins) {
+        pins.update((p) => [...p, ...newPins]);
+      },
+      clearCategory(categoryId) {
+        pins.update((p) => p.filter((pin) => pin.categoryId !== categoryId));
+      },
+      clearAll() {
+        pins.set([]);
+      }
+    },
+    isLoading: {
+      subscribe: isLoading.subscribe,
+      set: isLoading.set
+    }
+  };
+}
+const quickSearch = createQuickSearchStore();
+function loadSearchRadius() {
+  return 10;
+}
+function createSearchRadiusStore() {
+  const { subscribe, set } = writable(loadSearchRadius());
+  return {
+    subscribe,
+    set(radius) {
+      const clamped = Math.max(1, Math.min(100, radius));
+      set(clamped);
+    }
+  };
+}
+const searchRadius = createSearchRadiusStore();
 function MapCanvas($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     onDestroy(() => {
@@ -220,9 +542,9 @@ function MapControls($$renderer, $$props) {
       $$renderer2.push("<!--[!-->");
       $$renderer2.push(`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v4M12 18v4M2 12h4M18 12h4"></path></svg>`);
     }
-    $$renderer2.push(`<!--]--></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
+    $$renderer2.push(`<!--]--></button> <button class="map-control-btn map-control-btn--standalone" aria-label="Reset to world view" title="World view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
       "map-control-btn--active": store_get($$store_subs ??= {}, "$showLayersPanel", showLayersPanel)
-    })} aria-label="Toggle layers panel" title="Layers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></button> <button class="map-control-btn map-control-btn--standalone" aria-label="Change map style" title="Change style"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M3 9h18M9 21V9"></path></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
+    })} aria-label="Toggle layers panel" title="Layers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></button> <button${attr_class("map-control-btn map-control-btn--standalone", void 0, {
       "map-control-btn--active": store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView)
     })}${attr("aria-label", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Switch to flat map" : "Switch to globe view")}${attr("title", store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView) ? "Flat map" : "Globe view")}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></button></div>`);
     if ($$store_subs) unsubscribe_stores($$store_subs);
@@ -477,27 +799,34 @@ function PlacePanel($$renderer, $$props) {
   });
 }
 export {
+  selectedPlace as A,
+  isLoadingPlace as B,
   MapCanvas as M,
   ProviderBadge as P,
-  searchQuery as a,
-  formatDistance as b,
-  showDirectionsPanel as c,
-  routeError as d,
-  selectedRoute as e,
+  quickSearch as a,
+  searchQuery as b,
+  formatDistance as c,
+  showDirectionsPanel as d,
+  routeError as e,
   formatDuration as f,
-  routeOrigin as g,
-  routeDestination as h,
+  selectedRoute as g,
+  routeOrigin as h,
   isCalculatingRoute as i,
-  showLayersPanel as j,
-  currentStyleId as k,
-  isTerrainLayer as l,
+  routeDestination as j,
+  showLayersPanel as k,
+  currentStyleId as l,
   mapStyles as m,
-  is3DTerrain as n,
-  layerStore as o,
-  MapControls as p,
-  PlacePanel as q,
+  isTerrainLayer as n,
+  isSatelliteLayer as o,
+  isGlobeView as p,
+  quickSearchCategories as q,
   routeMode as r,
   searchResults as s,
-  selectedPlace as t,
-  isLoadingPlace as u
+  is3DTerrain as t,
+  searchRadius as u,
+  tempPinsCount as v,
+  placeLists as w,
+  listVisibility as x,
+  MapControls as y,
+  PlacePanel as z
 };

@@ -22,6 +22,7 @@
   let dragStartRotX = 0;
   let dragStartRotY = 0;
   let cubeElement: HTMLDivElement;
+  let cubeSceneElement: HTMLDivElement;
 
   // Touch tap detection (vs drag)
   let touchStartTime = 0;
@@ -307,8 +308,17 @@
     const targetPage = pageOrder[selectedIndex];
     const rot = pageRotations[targetPage];
     // Add isometric offset for visibility
-    cubeRotX = rot.rotX - 25;
-    cubeRotY = rot.rotY + 35;
+    const targetRotX = rot.rotX - 25;
+    const targetRotY = rot.rotY + 35;
+
+    // Calculate shortest angular path for Y rotation (allows smooth circular rotation)
+    let deltaY = targetRotY - cubeRotY;
+    // Normalize to -180 to 180 range for shortest path
+    while (deltaY > 180) deltaY -= 360;
+    while (deltaY < -180) deltaY += 360;
+
+    cubeRotX = targetRotX;
+    cubeRotY = cubeRotY + deltaY;
   }
 
   function selectNext() {
@@ -483,13 +493,14 @@
 
     const deltaX = clientX - dragStartX;
     const deltaY = clientY - dragStartY;
-    const sensitivity = 0.5;
+    const sensitivity = 0.4; // Slightly lower for smoother feel
 
     cubeRotY = dragStartRotY + deltaX * sensitivity;
     cubeRotX = dragStartRotX - deltaY * sensitivity;
 
-    // Clamp vertical rotation
-    cubeRotX = Math.max(-90, Math.min(90, cubeRotX));
+    // Allow full rotation but with soft limits for X (vertical)
+    // This prevents the cube from going upside down too easily
+    cubeRotX = Math.max(-120, Math.min(120, cubeRotX));
   }
 
   function handleDragEnd() {
@@ -509,26 +520,42 @@
     let closestPage: PageName = 'profile';
     let closestDistance = Infinity;
 
-    // Normalize cubeRotY to 0-360 range
-    let normalizedY = ((cubeRotY % 360) + 360) % 360;
+    // Normalize cubeRotY to -180 to 180 range for better distance calculation
+    let normalizedY = cubeRotY % 360;
+    if (normalizedY > 180) normalizedY -= 360;
+    if (normalizedY < -180) normalizedY += 360;
 
-    for (const [pageName, rot] of Object.entries(pageRotations)) {
-      // Normalize the page rotation
-      let pageRotY = ((-rot.rotY % 360) + 360) % 360;
-      let pageRotX = rot.rotX;
+    // Only check horizontal and vertical faces (skip syslog which overlaps with profile)
+    const mainPages: PageName[] = ['profile', 'audio', 'bio', 'geo', 'visual', 'memory'];
 
-      // Calculate distance (considering wrap-around for Y)
-      let distY = Math.min(
-        Math.abs(normalizedY - pageRotY),
-        360 - Math.abs(normalizedY - pageRotY)
-      );
-      let distX = Math.abs(cubeRotX - (pageRotX - 25)); // -25 is our isometric offset
+    for (const pageName of mainPages) {
+      const rot = pageRotations[pageName];
+      // Normalize page rotation the same way
+      let pageRotY = rot.rotY % 360;
+      if (pageRotY > 180) pageRotY -= 360;
+      if (pageRotY < -180) pageRotY += 360;
 
-      let distance = distY + distX * 2; // Weight X more since it's more constrained
+      let pageRotX = rot.rotX - 25; // -25 is our isometric offset
+
+      // Calculate angular distance for Y (considering wrap-around)
+      let distY = Math.abs(normalizedY - pageRotY);
+      if (distY > 180) distY = 360 - distY;
+
+      let distX = Math.abs(cubeRotX - pageRotX);
+
+      // Weight based on which axis the face is on
+      let distance;
+      if (pageName === 'visual' || pageName === 'memory') {
+        // Top/bottom faces - prioritize X rotation match
+        distance = distX * 3 + distY;
+      } else {
+        // Horizontal faces - prioritize Y rotation match
+        distance = distY * 2 + distX;
+      }
 
       if (distance < closestDistance) {
         closestDistance = distance;
-        closestPage = pageName as PageName;
+        closestPage = pageName;
       }
     }
 
@@ -537,19 +564,21 @@
     updateCubeRotation();
   }
 
-  // Touch events with tap detection
-  function onTouchStart(e: TouchEvent) {
+  // Touch events with tap detection - registered as non-passive via $effect
+  function onCubeTouchStart(e: TouchEvent) {
     if (e.touches.length === 1) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent scrolling
+      e.stopPropagation();
       touchStartTime = Date.now();
       touchMoved = false;
       handleDragStart(e.touches[0].clientX, e.touches[0].clientY);
     }
   }
 
-  function onTouchMove(e: TouchEvent) {
+  function onCubeTouchMove(e: TouchEvent) {
     if (e.touches.length === 1 && isDragging) {
-      e.preventDefault();
+      e.preventDefault(); // Prevent scrolling while dragging
+      e.stopPropagation();
       const deltaX = Math.abs(e.touches[0].clientX - dragStartX);
       const deltaY = Math.abs(e.touches[0].clientY - dragStartY);
       // Mark as moved if exceeds threshold
@@ -560,7 +589,8 @@
     }
   }
 
-  function onTouchEnd() {
+  function onCubeTouchEnd(e: TouchEvent) {
+    e.stopPropagation();
     const touchDuration = Date.now() - touchStartTime;
     const wasTap = !touchMoved && touchDuration < TAP_THRESHOLD_MS;
 
@@ -571,6 +601,21 @@
       navigate();
     }
   }
+
+  // Register cube touch handlers as non-passive (so preventDefault works)
+  $effect(() => {
+    if (isOpen && cubeSceneElement) {
+      cubeSceneElement.addEventListener('touchstart', onCubeTouchStart, { passive: false });
+      cubeSceneElement.addEventListener('touchmove', onCubeTouchMove, { passive: false });
+      cubeSceneElement.addEventListener('touchend', onCubeTouchEnd, { passive: false });
+
+      return () => {
+        cubeSceneElement.removeEventListener('touchstart', onCubeTouchStart);
+        cubeSceneElement.removeEventListener('touchmove', onCubeTouchMove);
+        cubeSceneElement.removeEventListener('touchend', onCubeTouchEnd);
+      };
+    }
+  });
 
   // Mouse events (for desktop drag support)
   function onMouseDown(e: MouseEvent) {
@@ -874,11 +919,9 @@
 
     <div class="cube-nav-container" class:loading={!iframesReady && !isTransitioning} onclick={(e) => e.stopPropagation()}>
       <div
+        bind:this={cubeSceneElement}
         class="cube-scene"
         style="perspective: {1000 + cameraZ}px;"
-        ontouchstart={onTouchStart}
-        ontouchmove={onTouchMove}
-        ontouchend={onTouchEnd}
         onmousedown={onMouseDown}
         role="slider"
         aria-label="Rotate cube to select page"
@@ -1046,11 +1089,14 @@
     height: 350px;
     perspective-origin: center center;
     cursor: grab;
-    touch-action: none;
+    touch-action: none; // Disable browser touch handling - we handle it
     user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none; // Prevent iOS callout
     // GPU acceleration
     will-change: perspective;
     contain: layout style;
+    transform: translateZ(0); // Force GPU layer
 
     &:active {
       cursor: grabbing;
@@ -1062,10 +1108,10 @@
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
     // GPU acceleration - force composite layer
     will-change: transform;
-    backface-visibility: hidden;
+    transform: translateZ(0); // Force GPU layer
 
     &.dragging {
       transition: none;

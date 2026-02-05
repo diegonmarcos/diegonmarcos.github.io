@@ -2,7 +2,7 @@
 #=====================================
 # MYPROFILE BUILD SCRIPT
 #=====================================
-# POSIX-compliant build script
+# POSIX-compliant build script for SvelteKit
 # Usage: ./1.ops/build.sh [action]
 
 set -e
@@ -20,7 +20,7 @@ NC='\033[0m'
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT_NAME="MyProfile"
 PORT="8013"
-NUXT_DIR="$PROJECT_DIR/src"
+SRC_DIR="$PROJECT_DIR/src"
 DIST_DIR="$PROJECT_DIR/dist"
 
 # Logging
@@ -39,33 +39,32 @@ print_usage() {
     printf "\n"
     printf "${YELLOW}BUILD:${NC}\n"
     printf "  ${GREEN}build${NC}        # Build for production\n"
-    printf "  ${GREEN}generate${NC}     # Generate static site\n"
     printf "\n"
     printf "${YELLOW}DEV SERVER:${NC}\n"
-    printf "  ${GREEN}dev${NC}          # Start Nuxt dev server :${PORT}\n"
+    printf "  ${GREEN}dev${NC}          # Start SvelteKit dev server :${PORT}\n"
     printf "  ${GREEN}preview${NC}      # Preview production build\n"
     printf "\n"
     printf "${YELLOW}UTILITY:${NC}\n"
     printf "  ${GREEN}clean${NC}        # Clean build artifacts\n"
-    printf "  ${GREEN}typecheck${NC}    # Run TypeScript type checking\n"
+    printf "  ${GREEN}check${NC}        # Run svelte-check\n"
     printf "  ${GREEN}help${NC}         # Show this help\n"
     printf "\n"
     printf "${YELLOW}PROJECT INFO:${NC}\n"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "  ${MAGENTA}%-12s  %-10s  %-10s  %-10s  %-14s  %s${NC}\n" "Project" "Framework" "CSS" "JavaScript" "Dev Server" "Watch"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
-    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "Nuxt 4" "Sass" "TypeScript" "Vite :${PORT}" "HMR"
+    printf "  ${CYAN}%-12s${NC}  ${GREEN}%-10s${NC}  %-10s  %-10s  ${CYAN}%-14s${NC}  ${YELLOW}%s${NC}\n" "MyProfile" "SvelteKit" "Sass" "TypeScript" "Vite :${PORT}" "HMR"
     printf "${BLUE}---------------------------------------------------------------------------${NC}\n"
     printf "\n"
 }
 
 # Check dependencies
 check_dependencies() {
-    if [ -d "$NUXT_DIR/node_modules" ]; then
+    if [ -d "$SRC_DIR/node_modules" ]; then
         return 0
     fi
     log_info "Installing dependencies..."
-    cd "$NUXT_DIR"
+    cd "$SRC_DIR"
     npm install
 }
 
@@ -73,7 +72,7 @@ check_dependencies() {
 build() {
     log_info "Building ${PROJECT_NAME} for production..."
     check_dependencies
-    cd "$NUXT_DIR"
+    cd "$SRC_DIR"
 
     npm run build 2>&1 || {
         log_error "Build failed"
@@ -85,54 +84,15 @@ build() {
         return 1
     fi
 
-    # Post-build: Fix for file:// protocol compatibility
-    log_info "Applying file:// protocol fixes..."
-
-    CACHE_DIR="$NUXT_DIR/node_modules/.cache/nuxt/.nuxt/dist/client"
-    NUXT_ASSETS="$DIST_DIR/_nuxt"
-
-    # Create _nuxt directory and copy IIFE assets
-    mkdir -p "$NUXT_ASSETS"
-    cp "$CACHE_DIR/app.js" "$NUXT_ASSETS/"
-    cp "$CACHE_DIR/style.css" "$NUXT_ASSETS/"
-
-    # Extract buildId from the generated HTML
-    BUILD_ID=$(grep -oP 'buildId[^,]*,[^"]*"[^"]*"' "$DIST_DIR/index.html" | grep -oP '"[^"]*"$' | tr -d '"' | head -1)
-    TIMESTAMP=$(date +%s)000
-
-    # Generate clean index.html for file:// protocol
-    cat > "$DIST_DIR/index.html" << 'HTMLEOF'
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>DIEGO N. MARCOS // PROFILE</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Rajdhani:wght@600;700&display=swap"><link rel="stylesheet" href="./_nuxt/style.css"><meta name="description" content="Cyberpunk Data Stream Portfolio"><meta property="og:title" content="DIEGO N. MARCOS // NETWORK"><script>var _mtm = window._mtm = window._mtm || [];
-_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-(function() {
-  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
-})();</script><script>window.__NUXT__={serverRendered:false,config:{public:{},app:{baseURL:"./",buildAssetsDir:"./_nuxt/",cdnURL:""}}}</script></head><body><div id="__nuxt"></div><div id="teleports"></div><script src="./_nuxt/app.js"></script></body></html>
-HTMLEOF
-
     log_success "Build completed → $DIST_DIR"
-}
-
-# Generate static site
-generate() {
-    log_info "Generating static site for ${PROJECT_NAME}..."
-    check_dependencies
-    cd "$NUXT_DIR"
-
-    npm run generate 2>&1 || {
-        log_error "Generate failed"
-        return 1
-    }
-
-    log_success "Static site generated"
 }
 
 # Development server
 dev() {
     check_dependencies
-    cd "$NUXT_DIR"
+    cd "$SRC_DIR"
 
-    # Start Nuxt dev server in background
+    # Start SvelteKit dev server in background
     nohup npm run dev > /dev/null 2>&1 &
 
     # Print URL and return control
@@ -155,7 +115,7 @@ preview() {
         build
     fi
 
-    cd "$NUXT_DIR"
+    cd "$SRC_DIR"
     log_success "Preview server starting..."
     npm run preview
 }
@@ -165,19 +125,19 @@ clean() {
     log_info "Cleaning build artifacts..."
 
     rm -rf "$DIST_DIR"
-    rm -rf "$NUXT_DIR/.nuxt"
-    rm -rf "$NUXT_DIR/node_modules/.vite"
+    rm -rf "$SRC_DIR/.svelte-kit"
+    rm -rf "$SRC_DIR/node_modules/.vite"
 
     log_success "Clean completed"
 }
 
-# TypeScript type checking
-typecheck() {
-    log_info "Running TypeScript type checking..."
+# Svelte check
+check() {
+    log_info "Running svelte-check..."
     check_dependencies
-    cd "$NUXT_DIR"
+    cd "$SRC_DIR"
 
-    npx nuxi typecheck || log_warning "Type checking completed with issues"
+    npx svelte-check || log_warning "Check completed with issues"
 }
 
 # Main
@@ -186,11 +146,10 @@ main() {
 
     case "$_action" in
         build)      build ;;
-        generate)   generate ;;
         dev|watch)  dev ;;
         preview)    preview ;;
         clean)      clean ;;
-        typecheck)  typecheck ;;
+        check|typecheck) check ;;
         help|-h|--help) print_usage ;;
         *)          print_usage ;;
     esac

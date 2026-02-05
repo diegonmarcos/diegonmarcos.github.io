@@ -5,9 +5,15 @@
 
   let isOpen = $state(false);
   let isTransitioning = $state(false);
+  let transitionPhase = $state<'idle' | 'zoom-out' | 'isometric' | 'rotate' | 'zoom-in'>('idle');
   let selectedIndex = $state(0);
   let cubeRotX = $state(-25);
   let cubeRotY = $state(35);
+  let cameraZ = $state(0); // For zoom effect
+
+  // Progressive iframe loading - load selected first, then others with delay
+  let loadedIframes = $state<Set<number>>(new Set());
+  let iframesReady = $state(false);
 
   // Touch/drag state
   let isDragging = $state(false);
@@ -17,7 +23,19 @@
   let dragStartRotY = 0;
   let cubeElement: HTMLDivElement;
 
-  // Face rotations for each page
+  // Touch tap detection (vs drag)
+  let touchStartTime = 0;
+  let touchMoved = false;
+  const TAP_THRESHOLD_MS = 250; // Max time for a tap
+  const TAP_MOVE_THRESHOLD = 15; // Max movement in pixels for a tap
+
+  // Wheel scroll cooldown
+  let lastWheelTime = 0;
+  const wheelCooldown = 400; // ms between wheel-triggered navigations
+
+  // Face rotations for each page (circular layout)
+  // All horizontal faces + syslog rotate on Y axis (0, 90, 180, 270, 360...)
+  // visual = top (-90 on X), memory = bottom (90 on X)
   const pageRotations: Record<PageName, { rotX: number; rotY: number }> = {
     profile: { rotX: 0, rotY: 0 },
     audio: { rotX: 0, rotY: -90 },
@@ -61,10 +79,33 @@
     const currentPage = getPageFromPath(currentPath);
     selectedIndex = pageOrder.indexOf(currentPage);
     updateCubeRotation();
+
+    // Progressive iframe loading for better performance
+    // Load selected face first, then stagger others
+    loadedIframes = new Set([selectedIndex]);
+    iframesReady = false;
+
+    // Load adjacent faces after a short delay
+    setTimeout(() => {
+      const adjacent = [
+        (selectedIndex - 1 + pageOrder.length) % pageOrder.length,
+        (selectedIndex + 1) % pageOrder.length
+      ];
+      loadedIframes = new Set([...loadedIframes, ...adjacent]);
+    }, 150);
+
+    // Load remaining faces after cube is interactive
+    setTimeout(() => {
+      loadedIframes = new Set(pageOrder.map((_, i) => i));
+      iframesReady = true;
+    }, 400);
   }
 
   function close() {
     isOpen = false;
+    // Clear iframes to free memory
+    loadedIframes = new Set();
+    iframesReady = false;
   }
 
   function navigate() {
@@ -74,65 +115,180 @@
     window.location.href = targetRoute;
   }
 
-  // Navigate directly with cube transition effect (for arrow keys outside cube)
-  function navigateWithTransition(direction: 'left' | 'right' | 'up' | 'down') {
+  // Animate a value smoothly
+  function animateValue(
+    setter: (v: number) => void,
+    from: number,
+    to: number,
+    duration: number
+  ): Promise<void> {
+    return new Promise((resolve) => {
+      const start = performance.now();
+      function update() {
+        const elapsed = performance.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // Easing: ease-in-out cubic
+        const eased = progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        setter(from + (to - from) * eased);
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          resolve();
+        }
+      }
+      requestAnimationFrame(update);
+    });
+  }
+
+  // Navigate directly with cube transition effect (for arrow keys/wheel outside cube)
+  async function navigateWithTransition(direction: 'left' | 'right' | 'up' | 'down') {
     if (isTransitioning) return;
 
     const currentPath = $page.url.pathname;
     const currentPage = getPageFromPath(currentPath);
     selectedIndex = pageOrder.indexOf(currentPage);
 
-    // Calculate target based on direction
+    // Calculate target based on direction - CIRCULAR navigation
     let targetPage: PageName;
+
+    // Define circular page sequences
     const horizontalPages: PageName[] = ['profile', 'audio', 'bio', 'geo'];
+    const verticalPages: PageName[] = ['visual', 'profile', 'memory']; // top -> middle -> bottom, then wraps
+
     const currentHIndex = horizontalPages.indexOf(currentPage);
+    const currentVIndex = verticalPages.indexOf(currentPage);
 
     switch (direction) {
       case 'right':
         if (currentHIndex !== -1) {
+          // Circular: geo -> profile -> audio -> bio -> geo...
           targetPage = horizontalPages[(currentHIndex + 1) % horizontalPages.length];
         } else {
-          targetPage = 'profile';
+          // From top/bottom, go to profile then continue right
+          targetPage = 'audio';
         }
         break;
       case 'left':
         if (currentHIndex !== -1) {
+          // Circular: profile -> geo -> bio -> audio -> profile...
           targetPage = horizontalPages[(currentHIndex - 1 + horizontalPages.length) % horizontalPages.length];
         } else {
-          targetPage = 'profile';
+          // From top/bottom, go to profile then continue left
+          targetPage = 'geo';
         }
         break;
       case 'up':
-        targetPage = currentPage === 'memory' ? 'profile' : currentPage === 'visual' ? currentPage : 'visual';
+        // Circular vertical: memory -> profile -> visual -> memory...
+        if (currentPage === 'memory') {
+          targetPage = 'profile';
+        } else if (currentPage === 'visual') {
+          targetPage = 'memory'; // Wrap around: top goes to bottom
+        } else {
+          targetPage = 'visual'; // From horizontal pages, go to top
+        }
         break;
       case 'down':
-        targetPage = currentPage === 'visual' ? 'profile' : currentPage === 'memory' ? currentPage : 'memory';
+        // Circular vertical: visual -> profile -> memory -> visual...
+        if (currentPage === 'visual') {
+          targetPage = 'profile';
+        } else if (currentPage === 'memory') {
+          targetPage = 'visual'; // Wrap around: bottom goes to top
+        } else {
+          targetPage = 'memory'; // From horizontal pages, go to bottom
+        }
         break;
     }
 
     // Don't navigate if we're already on the target
     if (targetPage === currentPage) return;
 
-    // Show transition
+    // Start 3-stage transition
     isTransitioning = true;
     isOpen = true;
 
-    // Set initial rotation to current page
+    // During transition, only load current and target faces for performance
+    const currentIndex = pageOrder.indexOf(currentPage);
+    const targetIndex = pageOrder.indexOf(targetPage);
+    loadedIframes = new Set([currentIndex, targetIndex]);
+    iframesReady = false;
+
     const fromRot = pageRotations[currentPage];
-    cubeRotX = fromRot.rotX - 25;
-    cubeRotY = fromRot.rotY + 35;
+    const toRot = pageRotations[targetPage];
 
-    // Animate to target after a brief moment
-    setTimeout(() => {
-      selectedIndex = pageOrder.indexOf(targetPage);
-      updateCubeRotation();
+    // Isometric viewing angle offsets
+    const isoOffsetX = -25;
+    const isoOffsetY = 35;
 
-      // Navigate after animation
-      setTimeout(() => {
-        const targetRoute = getRelativeRoute(targetPage);
-        window.location.href = targetRoute;
-      }, 600);
-    }, 100);
+    // Stage 1: Start zoomed in on current face
+    cameraZ = 0;
+    cubeRotX = fromRot.rotX;
+    cubeRotY = fromRot.rotY;
+    transitionPhase = 'zoom-out';
+
+    // Stage 2: Zoom out
+    await animateValue((v) => cameraZ = v, 0, 600, 400);
+
+    // Stage 3: Move to isometric view
+    transitionPhase = 'isometric';
+    await Promise.all([
+      animateValue((v) => cubeRotX = v, fromRot.rotX, fromRot.rotX + isoOffsetX, 350),
+      animateValue((v) => cubeRotY = v, fromRot.rotY, fromRot.rotY + isoOffsetY, 350)
+    ]);
+
+    // Stage 4: Rotate to target face
+    transitionPhase = 'rotate';
+    await Promise.all([
+      animateValue((v) => cubeRotX = v, fromRot.rotX + isoOffsetX, toRot.rotX + isoOffsetX, 500),
+      animateValue((v) => cubeRotY = v, fromRot.rotY + isoOffsetY, toRot.rotY + isoOffsetY, 500)
+    ]);
+
+    // Update selected index
+    selectedIndex = pageOrder.indexOf(targetPage);
+
+    // Stage 5: Zoom in to target
+    transitionPhase = 'zoom-in';
+    await Promise.all([
+      animateValue((v) => cubeRotX = v, toRot.rotX + isoOffsetX, toRot.rotX, 350),
+      animateValue((v) => cubeRotY = v, toRot.rotY + isoOffsetY, toRot.rotY, 350),
+      animateValue((v) => cameraZ = v, 600, 0, 400)
+    ]);
+
+    // Navigate to the target page
+    transitionPhase = 'idle';
+    const targetRoute = getRelativeRoute(targetPage);
+    window.location.href = targetRoute;
+  }
+
+  // Handle mouse wheel to change pages
+  function handleWheel(e: WheelEvent) {
+    // Prevent if in input or transitioning
+    const activeEl = document.activeElement;
+    const isInput = activeEl?.tagName === 'INPUT' || activeEl?.tagName === 'TEXTAREA';
+    if (isInput || isTransitioning || isOpen) return;
+
+    // Cooldown to prevent rapid firing
+    const now = Date.now();
+    if (now - lastWheelTime < wheelCooldown) return;
+    lastWheelTime = now;
+
+    // Determine direction based on scroll delta
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      // Vertical scroll - up/down navigation
+      if (e.deltaY > 0) {
+        navigateWithTransition('down');
+      } else {
+        navigateWithTransition('up');
+      }
+    } else if (Math.abs(e.deltaX) > 10) {
+      // Horizontal scroll - left/right navigation
+      if (e.deltaX > 0) {
+        navigateWithTransition('right');
+      } else {
+        navigateWithTransition('left');
+      }
+    }
   }
 
   function updateCubeRotation() {
@@ -184,15 +340,15 @@
     updateCubeRotation();
   }
 
-  // Navigate vertically (top/bottom faces)
+  // Navigate vertically (top/bottom faces) - CIRCULAR
   function selectUp() {
     const currentPage = pageOrder[selectedIndex];
-    // visual is top face
+    // Circular vertical: memory -> profile -> visual -> memory...
     if (currentPage === 'memory') {
-      // From bottom, go to a horizontal face
       selectedIndex = pageOrder.indexOf('profile');
-    } else if (currentPage !== 'visual') {
-      // From horizontal or syslog, go to top (visual)
+    } else if (currentPage === 'visual') {
+      selectedIndex = pageOrder.indexOf('memory'); // Wrap: top goes to bottom
+    } else {
       selectedIndex = pageOrder.indexOf('visual');
     }
     updateCubeRotation();
@@ -200,12 +356,12 @@
 
   function selectDown() {
     const currentPage = pageOrder[selectedIndex];
-    // memory is bottom face
+    // Circular vertical: visual -> profile -> memory -> visual...
     if (currentPage === 'visual') {
-      // From top, go to a horizontal face
       selectedIndex = pageOrder.indexOf('profile');
-    } else if (currentPage !== 'memory') {
-      // From horizontal or syslog, go to bottom (memory)
+    } else if (currentPage === 'memory') {
+      selectedIndex = pageOrder.indexOf('visual'); // Wrap: bottom goes to top
+    } else {
       selectedIndex = pageOrder.indexOf('memory');
     }
     updateCubeRotation();
@@ -369,10 +525,12 @@
     updateCubeRotation();
   }
 
-  // Touch events
+  // Touch events with tap detection
   function onTouchStart(e: TouchEvent) {
     if (e.touches.length === 1) {
       e.preventDefault();
+      touchStartTime = Date.now();
+      touchMoved = false;
       handleDragStart(e.touches[0].clientX, e.touches[0].clientY);
     }
   }
@@ -380,12 +538,26 @@
   function onTouchMove(e: TouchEvent) {
     if (e.touches.length === 1 && isDragging) {
       e.preventDefault();
+      const deltaX = Math.abs(e.touches[0].clientX - dragStartX);
+      const deltaY = Math.abs(e.touches[0].clientY - dragStartY);
+      // Mark as moved if exceeds threshold
+      if (deltaX > TAP_MOVE_THRESHOLD || deltaY > TAP_MOVE_THRESHOLD) {
+        touchMoved = true;
+      }
       handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
     }
   }
 
   function onTouchEnd() {
+    const touchDuration = Date.now() - touchStartTime;
+    const wasTap = !touchMoved && touchDuration < TAP_THRESHOLD_MS;
+
     handleDragEnd();
+
+    // If it was a tap (not a drag), navigate to selected page
+    if (wasTap && !isTransitioning) {
+      navigate();
+    }
   }
 
   // Mouse events (for desktop drag support)
@@ -566,11 +738,13 @@
     const timeLoc = gl.getUniformLocation(program, 'u_time');
     const resLoc = gl.getUniformLocation(program, 'u_resolution');
 
-    // Resize
+    // Resize - use lower resolution for better GPU performance
+    const pixelRatio = Math.min(window.devicePixelRatio, 1.5); // Cap at 1.5x for performance
     const resize = () => {
       if (!bgCanvas || !gl) return;
-      bgCanvas.width = window.innerWidth;
-      bgCanvas.height = window.innerHeight;
+      // Render at slightly lower resolution for performance
+      bgCanvas.width = Math.floor(window.innerWidth * pixelRatio * 0.75);
+      bgCanvas.height = Math.floor(window.innerHeight * pixelRatio * 0.75);
       gl.viewport(0, 0, bgCanvas.width, bgCanvas.height);
     };
     resize();
@@ -606,11 +780,13 @@
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
+    window.addEventListener('wheel', handleWheel, { passive: true });
 
     return () => {
       window.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
+      window.removeEventListener('wheel', handleWheel);
       cleanupWebGL();
     };
   });
@@ -630,6 +806,7 @@
     <div class="cube-nav-container" onclick={(e) => e.stopPropagation()}>
       <div
         class="cube-scene"
+        style="perspective: {1000 + cameraZ}px;"
         ontouchstart={onTouchStart}
         ontouchmove={onTouchMove}
         ontouchend={onTouchEnd}
@@ -641,25 +818,33 @@
           bind:this={cubeElement}
           class="cube"
           class:dragging={isDragging}
-          style="transform: rotateX({cubeRotX}deg) rotateY({cubeRotY}deg)"
+          style="transform: translateZ({-cameraZ * 0.5}px) rotateX({cubeRotX}deg) rotateY({cubeRotY}deg)"
         >
           {#each pageOrder as pageName, i}
             {@const pageData = pages[pageName]}
+            {@const shouldLoad = loadedIframes.has(i)}
             <button
               class="cube-face"
               class:selected={i === selectedIndex}
+              class:loading={!shouldLoad}
               style="--face-color: {pageData.color}; transform: {getFaceTransform(pageName)};"
               onclick={() => { selectedIndex = i; updateCubeRotation(); }}
               ondblclick={navigate}
             >
-              <!-- Live page preview via iframe -->
+              <!-- Progressive iframe loading for GPU performance -->
               <div class="face-preview">
-                <iframe
-                  src={pageName === 'profile' ? './' : `./${pageName}/`}
-                  title={pageData.label}
-                  loading="lazy"
-                  scrolling="no"
-                ></iframe>
+                {#if shouldLoad}
+                  <iframe
+                    src={pageName === 'profile' ? './' : `./${pageName}/`}
+                    title={pageData.label}
+                    loading="eager"
+                    scrolling="no"
+                  ></iframe>
+                {:else}
+                  <div class="face-placeholder">
+                    <div class="loading-spinner"></div>
+                  </div>
+                {/if}
               </div>
               <div class="face-label">{pageData.label}</div>
             </button>
@@ -667,23 +852,49 @@
         </div>
       </div>
 
-      <div class="page-dots">
-        {#each pageOrder as pageName, i}
-          <button
-            class="dot"
-            class:active={i === selectedIndex}
-            style="--dot-color: {pages[pageName].color}"
-            onclick={() => { selectedIndex = i; updateCubeRotation(); }}
-            aria-label={pages[pageName].label}
-          ></button>
-        {/each}
-      </div>
+      {#if !isTransitioning}
+        <div class="page-dots">
+          {#each pageOrder as pageName, i}
+            <button
+              class="dot"
+              class:active={i === selectedIndex}
+              style="--dot-color: {pages[pageName].color}"
+              onclick={() => { selectedIndex = i; updateCubeRotation(); }}
+              aria-label={pages[pageName].label}
+            ></button>
+          {/each}
+        </div>
+      {/if}
     </div>
+
+    <!-- Phase indicator during transition -->
+    {#if isTransitioning}
+      <div class="phase-indicator mono">
+        {#if transitionPhase === 'zoom-out'}
+          EXITING...
+        {:else if transitionPhase === 'isometric'}
+          NAVIGATING...
+        {:else if transitionPhase === 'rotate'}
+          ROTATING...
+        {:else if transitionPhase === 'zoom-in'}
+          ENTERING...
+        {/if}
+      </div>
+    {/if}
   </div>
 {/if}
 
+<!-- Cube view button for mobile -->
+<button class="cube-open-btn" onclick={open} aria-label="Open cube navigation">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+    <path d="M2 17l10 5 10-5"/>
+    <path d="M2 12l10 5 10-5"/>
+  </svg>
+</button>
+
 <div class="cube-hint mono">
-  <span class="key">←→↑↓</span> Navigate pages
+  <span class="key">←→↑↓</span> or <span class="key">Scroll</span> Navigate
   <span class="separator">·</span>
   <span class="key">C</span> Cube view
 </div>
@@ -698,6 +909,10 @@
     align-items: center;
     justify-content: center;
     animation: fadeIn 0.2s ease-out;
+    // GPU acceleration for smoother overlay
+    will-change: opacity;
+    transform: translateZ(0);
+    contain: layout paint;
   }
 
   @keyframes fadeIn {
@@ -715,8 +930,17 @@
   .cube-scene {
     width: 350px;
     height: 350px;
-    perspective: 1000px;
     perspective-origin: center center;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    // GPU acceleration
+    will-change: perspective;
+    contain: layout style;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 
   .cube {
@@ -725,19 +949,12 @@
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    // GPU acceleration - force composite layer
+    will-change: transform;
+    backface-visibility: hidden;
 
     &.dragging {
       transition: none;
-    }
-  }
-
-  .cube-scene {
-    cursor: grab;
-    touch-action: none;
-    user-select: none;
-
-    &:active {
-      cursor: grabbing;
     }
   }
 
@@ -754,9 +971,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    backface-visibility: visible;
     cursor: pointer;
     transition: box-shadow 0.3s ease;
+    // GPU acceleration - each face gets its own layer
+    will-change: transform, box-shadow;
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+    // Containment for better rendering
+    contain: layout paint;
 
     &:hover, &.selected {
       box-shadow:
@@ -766,6 +988,12 @@
 
     &.selected {
       border-width: 3px;
+    }
+
+    &.loading {
+      .face-preview {
+        opacity: 0.7;
+      }
     }
   }
 
@@ -810,6 +1038,38 @@
     }
   }
 
+  // Cube open button for mobile
+  .cube-open-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(0, 20, 10, 0.85);
+    border: 2px solid rgba(0, 255, 65, 0.4);
+    color: #00ff41;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+
+    &:hover, &:active {
+      background: rgba(0, 255, 65, 0.15);
+      border-color: #00ff41;
+      box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
   .cube-hint {
     position: fixed;
     bottom: 1.5rem;
@@ -834,15 +1094,15 @@
       opacity: 0.5;
       margin: 0 0.25rem;
     }
+
+    // Hide keyboard hints on mobile
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
-  // Transitioning mode - hide controls, just show cube
+  // Transitioning mode - adjust cursor
   .cube-nav-overlay.transitioning {
-    .page-dots {
-      opacity: 0;
-      pointer-events: none;
-    }
-
     .cube-scene {
       cursor: default;
     }
@@ -857,7 +1117,7 @@
     z-index: -1;
   }
 
-  // Page preview with iframe
+  // Page preview with iframe - GPU optimized
   .face-preview {
     width: 260px;
     height: 180px;
@@ -867,6 +1127,10 @@
     border-radius: 6px;
     background: #000;
     border: 1px solid color-mix(in srgb, var(--face-color) 30%, transparent);
+    // GPU acceleration
+    will-change: opacity;
+    contain: strict;
+    transform: translateZ(0); // Force GPU layer
 
     iframe {
       position: absolute;
@@ -878,6 +1142,51 @@
       transform-origin: top left;
       border: none;
       pointer-events: none;
+      // GPU optimizations for iframe
+      will-change: transform;
+      backface-visibility: hidden;
     }
+  }
+
+  // Loading placeholder while iframes load progressively
+  .face-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(0, 20, 10, 0.8), rgba(0, 10, 5, 0.9));
+  }
+
+  .loading-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid color-mix(in srgb, var(--face-color) 20%, transparent);
+    border-top-color: var(--face-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    will-change: transform;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  // Phase indicator during transition
+  .phase-indicator {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #00ff41;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 15px #00ff41;
+    animation: phasePulse 0.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes phasePulse {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
   }
 </style>

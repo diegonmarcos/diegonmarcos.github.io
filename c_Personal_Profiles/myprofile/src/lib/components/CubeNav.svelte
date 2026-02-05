@@ -999,17 +999,25 @@
 
 <!-- Cube view button for mobile -->
 <button class="cube-open-btn" onclick={open} aria-label="Open cube navigation">
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-    <path d="M2 17l10 5 10-5"/>
-    <path d="M2 12l10 5 10-5"/>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+    <!-- 3D Cube icon -->
+    <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z"/>
+    <path d="M12 22V12"/>
+    <path d="M21 7l-9 5"/>
+    <path d="M3 7l9 5"/>
   </svg>
 </button>
 
-<div class="cube-hint mono">
+<!-- Desktop hint -->
+<div class="cube-hint cube-hint-desktop mono">
   <span class="key">←→↑↓</span> or <span class="key">Scroll</span> Navigate
   <span class="separator">·</span>
   <span class="key">C</span> Cube view
+</div>
+
+<!-- Mobile hint -->
+<div class="cube-hint cube-hint-mobile mono">
+  <span class="key">⬅ ➡ ⬆ ⬇</span> Swipe to navigate
 </div>
 
 <style lang="scss">
@@ -1198,16 +1206,16 @@
     }
   }
 
-  // Cube open button for mobile
+  // Cube open button - 3D cube icon
   .cube-open-btn {
     position: fixed;
     bottom: 1.5rem;
     left: 1.5rem;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(0, 20, 10, 0.85);
-    border: 2px solid rgba(0, 255, 65, 0.4);
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background: rgba(0, 20, 10, 0.9);
+    border: 2px solid rgba(0, 255, 65, 0.5);
     color: #00ff41;
     cursor: pointer;
     z-index: 100;
@@ -1215,18 +1223,30 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    box-shadow: 0 0 15px rgba(0, 255, 65, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.25);
 
     &:hover, &:active {
       background: rgba(0, 255, 65, 0.15);
       border-color: #00ff41;
-      box-shadow: 0 0 25px rgba(0, 255, 65, 0.4);
+      box-shadow: 0 0 30px rgba(0, 255, 65, 0.5);
       transform: scale(1.1);
     }
 
     svg {
-      width: 22px;
-      height: 22px;
+      width: 32px;
+      height: 32px;
+    }
+
+    @media (max-width: 768px) {
+      width: 56px;
+      height: 56px;
+      bottom: 1rem;
+      left: 1rem;
+
+      svg {
+        width: 28px;
+        height: 28px;
+      }
     }
   }
 
@@ -1234,7 +1254,7 @@
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.35);
     font-size: 0.75rem;
     z-index: 100;
     pointer-events: none;
@@ -1254,10 +1274,23 @@
       opacity: 0.5;
       margin: 0 0.25rem;
     }
+  }
 
-    // Hide keyboard hints on mobile
+  // Desktop hint - hide on mobile
+  .cube-hint-desktop {
     @media (max-width: 768px) {
       display: none;
+    }
+  }
+
+  // Mobile hint - show only on mobile
+  .cube-hint-mobile {
+    display: none;
+
+    @media (max-width: 768px) {
+      display: flex;
+      bottom: 1rem;
+      right: 1rem;
     }
   }
 

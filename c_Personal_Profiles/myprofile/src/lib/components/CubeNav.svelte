@@ -33,6 +33,13 @@
   let lastWheelTime = 0;
   const wheelCooldown = 400; // ms between wheel-triggered navigations
 
+  // Global swipe detection for mobile page navigation (when cube is closed)
+  let swipeStartX = 0;
+  let swipeStartY = 0;
+  let swipeStartTime = 0;
+  const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe
+  const SWIPE_TIME_LIMIT = 300; // Max time for a swipe gesture
+
   // Face rotations for each page (circular layout)
   // All horizontal faces + syslog rotate on Y axis (0, 90, 180, 270, 360...)
   // visual = top (-90 on X), memory = bottom (90 on X)
@@ -781,17 +788,64 @@
     }
   });
 
+  // Global swipe handlers for mobile page navigation (when cube is closed)
+  function handleGlobalTouchStart(e: TouchEvent) {
+    if (isOpen || isTransitioning) return;
+    if (e.touches.length !== 1) return;
+
+    swipeStartX = e.touches[0].clientX;
+    swipeStartY = e.touches[0].clientY;
+    swipeStartTime = Date.now();
+  }
+
+  function handleGlobalTouchEnd(e: TouchEvent) {
+    if (isOpen || isTransitioning) return;
+    if (e.changedTouches.length !== 1) return;
+
+    const deltaTime = Date.now() - swipeStartTime;
+    if (deltaTime > SWIPE_TIME_LIMIT) return;
+
+    const deltaX = e.changedTouches[0].clientX - swipeStartX;
+    const deltaY = e.changedTouches[0].clientY - swipeStartY;
+    const absX = Math.abs(deltaX);
+    const absY = Math.abs(deltaY);
+
+    // Determine swipe direction (must exceed threshold)
+    if (absX > SWIPE_THRESHOLD || absY > SWIPE_THRESHOLD) {
+      if (absX > absY) {
+        // Horizontal swipe
+        if (deltaX > 0) {
+          navigateWithTransition('left'); // Swipe right = go left
+        } else {
+          navigateWithTransition('right'); // Swipe left = go right
+        }
+      } else {
+        // Vertical swipe
+        if (deltaY > 0) {
+          navigateWithTransition('up'); // Swipe down = go up
+        } else {
+          navigateWithTransition('down'); // Swipe up = go down
+        }
+      }
+    }
+  }
+
   onMount(() => {
     window.addEventListener('keydown', handleKeydown);
     window.addEventListener('mousemove', onMouseMove);
     window.addEventListener('mouseup', onMouseUp);
     window.addEventListener('wheel', handleWheel, { passive: true });
+    // Global swipe for mobile
+    document.addEventListener('touchstart', handleGlobalTouchStart, { passive: true });
+    document.addEventListener('touchend', handleGlobalTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener('keydown', handleKeydown);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('wheel', handleWheel);
+      document.removeEventListener('touchstart', handleGlobalTouchStart);
+      document.removeEventListener('touchend', handleGlobalTouchEnd);
       cleanupWebGL();
     };
   });
@@ -808,7 +862,17 @@
     <!-- Dynamic space background -->
     <canvas bind:this={bgCanvas} class="bg-canvas"></canvas>
 
-    <div class="cube-nav-container" onclick={(e) => e.stopPropagation()}>
+    <!-- Loading screen while iframes load -->
+    {#if !iframesReady && !isTransitioning}
+      <div class="cube-loading-screen">
+        <div class="cube-loader">
+          <div class="cube-loader-box"></div>
+        </div>
+        <div class="cube-loading-text mono">LOADING CUBE...</div>
+      </div>
+    {/if}
+
+    <div class="cube-nav-container" class:loading={!iframesReady && !isTransitioning} onclick={(e) => e.stopPropagation()}>
       <div
         class="cube-scene"
         style="perspective: {1000 + cameraZ}px;"
@@ -931,6 +995,50 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    transition: opacity 0.3s ease;
+
+    &.loading {
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+
+  // Cube loading screen
+  .cube-loading-screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    z-index: 10;
+  }
+
+  .cube-loader {
+    perspective: 120px;
+  }
+
+  .cube-loader-box {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5);
+    animation: cubeRotate 1.5s infinite ease-in-out;
+  }
+
+  @keyframes cubeRotate {
+    0% { transform: rotateX(0deg) rotateY(0deg); }
+    50% { transform: rotateX(180deg) rotateY(0deg); }
+    100% { transform: rotateX(180deg) rotateY(180deg); }
+  }
+
+  .cube-loading-text {
+    color: #00ff41;
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 10px #00ff41;
+    animation: phasePulse 0.5s ease-in-out infinite alternate;
   }
 
   .cube-scene {

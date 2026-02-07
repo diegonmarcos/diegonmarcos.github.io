@@ -588,7 +588,7 @@ jobs:
           if [ -d "b_Work_Tools/mymail/dist" ]; then
             echo "📦 Copying MyMail build..."
             mkdir -p _site/mymail
-            cp -r b_Work_Tools/mymail/dist/* _site/mymail/
+            cp -rL b_Work_Tools/mymail/dist/* _site/mymail/ 2>/dev/null || true
             echo "✅ MyMail build copied to _site/mymail/"
           fi
 
@@ -596,7 +596,7 @@ jobs:
           if [ -d "b_Work_Tools/myphotos/dist" ]; then
             echo "📦 Copying MyPhotos build..."
             mkdir -p _site/myphotos
-            cp -r b_Work_Tools/myphotos/dist/* _site/myphotos/
+            cp -rL b_Work_Tools/myphotos/dist/* _site/myphotos/ 2>/dev/null || true
             echo "✅ MyPhotos build copied to _site/myphotos/"
           fi
 
@@ -604,7 +604,7 @@ jobs:
           if [ -d "b_Work_Tools/myanalytics/dist" ]; then
             echo "📦 Copying MyAnalytics build..."
             mkdir -p _site/myanalytics
-            cp -r b_Work_Tools/myanalytics/dist/* _site/myanalytics/
+            cp -rL b_Work_Tools/myanalytics/dist/* _site/myanalytics/ 2>/dev/null || true
             echo "✅ MyAnalytics build copied to _site/myanalytics/"
           fi
 
@@ -612,7 +612,7 @@ jobs:
           if [ -d "b_Work_Tools/mydrive/dist" ]; then
             echo "📦 Copying MyDrive build..."
             mkdir -p _site/mydrive
-            cp -r b_Work_Tools/mydrive/dist/* _site/mydrive/
+            cp -rL b_Work_Tools/mydrive/dist/* _site/mydrive/ 2>/dev/null || true
             echo "✅ MyDrive build copied to _site/mydrive/"
           fi
 

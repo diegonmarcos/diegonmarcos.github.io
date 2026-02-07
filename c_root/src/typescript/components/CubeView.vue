@@ -75,23 +75,6 @@
         </div>
       </div>
 
-      <!-- View mode indicator -->
-      <div class="c-cube-view-mode" v-if="isActive">
-        {{ isIsometric ? 'Isometric View' : `${faceNames[currentFace]} Face` }}
-      </div>
-
-      <!-- Face indicator -->
-      <div class="c-cube-indicator" v-if="isActive">
-        <div
-          v-for="(face, index) in faceNames"
-          :key="face"
-          class="c-cube-indicator__dot"
-          :class="{ 'c-cube-indicator__dot--active': currentFace === index }"
-          @click="navigateToFace(index)"
-        >
-          {{ face }}
-        </div>
-      </div>
     </div>
   </Teleport>
 </template>

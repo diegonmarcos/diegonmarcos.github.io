@@ -143,6 +143,12 @@ const isAnimating = ref(false);
 const isPinching = ref(false);
 const lastPinchDistance = ref(0);
 
+// Reactive window size for dynamic cube Z-translate
+const winW = ref(window.innerWidth);
+const winH = ref(window.innerHeight);
+const onResize = () => { winW.value = window.innerWidth; winH.value = window.innerHeight; };
+const cubeHalf = computed(() => Math.min(winW.value * 0.7, winH.value * 0.7) / 2);
+
 // Momentum/velocity tracking
 const velocityX = ref(0);
 const velocityY = ref(0);
@@ -266,8 +272,9 @@ watch(() => props.active, (newVal) => {
 });
 
 // GPU-optimized transform using translate3d and scale3d
+// Z-translate matches cube half-size so it stays centered at any viewport
 const cubeStyle = computed(() => ({
-  transform: `translate3d(0, 0, -300px) scale3d(${scale.value}, ${scale.value}, ${scale.value}) rotateX(${rotateX.value}deg) rotateY(${rotateY.value}deg)`
+  transform: `translate3d(0, 0, ${-cubeHalf.value}px) scale3d(${scale.value}, ${scale.value}, ${scale.value}) rotateX(${rotateX.value}deg) rotateY(${rotateY.value}deg)`
 }));
 
 // Animate to target rotation
@@ -424,7 +431,33 @@ const applyMomentum = () => {
   momentumFrame = requestAnimationFrame(applyMomentum);
 };
 
-const stopDrag = () => {
+const stopDrag = (e: MouseEvent | TouchEvent) => {
+  // Detect tap (not drag) and navigate to face page
+  if (!isAnimating.value && !isPinching.value) {
+    const clickDuration = Date.now() - clickStartTime;
+    const endPoint = 'changedTouches' in e ? e.changedTouches[0] : e;
+    const clickDistance = Math.sqrt(
+      Math.pow(endPoint.clientX - clickStartPos.x, 2) +
+      Math.pow(endPoint.clientY - clickStartPos.y, 2)
+    );
+
+    if (clickDistance <= 20 && clickDuration <= 500) {
+      // This was a tap - find which face was tapped
+      const target = document.elementFromPoint(endPoint.clientX, endPoint.clientY);
+      const faceEl = target?.closest('.c-cube__face') as HTMLElement | null;
+      if (faceEl) {
+        const faceClasses = ['front', 'right', 'back', 'left', 'top', 'bottom'];
+        const faceIndex = faceClasses.findIndex(f => faceEl.classList.contains(`c-cube__face--${f}`));
+        if (faceIndex >= 0) {
+          const url = faceUrls[faceIndex];
+          if (url) {
+            window.location.href = url;
+          }
+        }
+      }
+    }
+  }
+
   if (isDragging.value && (Math.abs(velocityX.value) > 0.5 || Math.abs(velocityY.value) > 0.5)) {
     // Start momentum animation
     momentumFrame = requestAnimationFrame(applyMomentum);
@@ -518,6 +551,7 @@ onMounted(() => {
   window.addEventListener('touchmove', handleDrag);
   window.addEventListener('touchend', stopDrag);
   window.addEventListener('keydown', handleKeydown);
+  window.addEventListener('resize', onResize);
 });
 
 onUnmounted(() => {
@@ -526,6 +560,7 @@ onUnmounted(() => {
   window.removeEventListener('touchmove', handleDrag);
   window.removeEventListener('touchend', stopDrag);
   window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('resize', onResize);
   document.body.style.overflow = '';
   if (momentumFrame) {
     cancelAnimationFrame(momentumFrame);

@@ -32,15 +32,8 @@ jobs:
 
       - name: 📦 Install Dependencies
         run: |
-          echo "📦 Installing root npm dependencies..."
-          npm install
-          echo "📦 Installing per-project dependencies..."
-          for pjson in */*/package.json; do
-            dir=$(dirname "$pjson")
-            [ -d "$dir/node_modules" ] && continue
-            echo "  → $dir"
-            (cd "$dir" && npm install --no-fund --no-audit --no-optional 2>/dev/null) || true
-          done
+          echo "📦 Generating merged package.json and installing..."
+          bash deploy.sh deps
           echo "✅ Dependencies installed"
 
       # ============================================

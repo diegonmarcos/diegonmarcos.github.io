@@ -149,19 +149,58 @@ for i,n in enumerate(tn):
 }
 
 # ─── DEP RESOLUTION ─────────────────────────────────────────
+
+# Check which deps from a package.json are missing in a node_modules dir
+# Outputs missing package names (with @version) one per line
+_check_missing_deps() {
+    local pkg_json="$1" nm_dir="$2"
+    [ -f "$pkg_json" ] || return 0
+    [ -d "$nm_dir" ] || return 0
+
+    node -e "
+const p=JSON.parse(require('fs').readFileSync('$pkg_json','utf8'));
+const all={...(p.dependencies||{}),...(p.devDependencies||{})};
+for(const [k,v] of Object.entries(all)){
+  try{require.resolve(k+'/package.json',{paths:['$nm_dir']})}
+  catch(e){console.log(k+'@'+v)}
+}" 2>/dev/null || python3 -c "
+import json,os
+p=json.load(open('$pkg_json'))
+deps={**p.get('dependencies',{}),**p.get('devDependencies',{})}
+for k,v in deps.items():
+    if not os.path.isdir(os.path.join('$nm_dir',k)):
+        print(k+'@'+v)
+" 2>/dev/null || true
+}
+
 resolve_deps() {
     [ "$OPT_NO_DEPS" = true ] && return 0
     local pkg_dir="${1:-$PROJECT_DIR}"
 
-    # 1. Already installed locally
-    if [ -d "$pkg_dir/node_modules" ]; then
-        log_verbose "deps: local $pkg_dir/node_modules"
-        return 0
-    fi
-
-    # 2. Repo root shared node_modules
+    # Find repo root (install target for shared deps)
     local repo_root
     repo_root="$(cd "$pkg_dir" && git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
+    local nm_dir="${repo_root:+$repo_root/node_modules}"
+    [ -n "$nm_dir" ] || nm_dir="$pkg_dir/node_modules"
+
+    # Check if project deps are satisfied
+    if [ -f "$pkg_dir/package.json" ]; then
+        local missing
+        missing="$(_check_missing_deps "$pkg_dir/package.json" "$nm_dir")"
+        if [ -n "$missing" ]; then
+            local install_dir="${repo_root:-$pkg_dir}"
+            log_info "Installing missing deps at $install_dir..."
+            log_verbose "missing: $missing"
+            if command -v npm >/dev/null 2>&1; then
+                (cd "$install_dir" && npm install --save-dev --no-fund --no-audit $missing 2>&1 | tail -5) || true
+            else
+                log_error "npm not found -- cannot install: $missing"
+                return $EXIT_DEPS
+            fi
+        fi
+    fi
+
+    # Export paths to repo root node_modules
     if [ -n "$repo_root" ] && [ -d "$repo_root/node_modules" ]; then
         export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
         export PATH="${repo_root}/node_modules/.bin:$PATH"
@@ -169,12 +208,23 @@ resolve_deps() {
         return 0
     fi
 
-    # 3. Auto-install
+    # Fallback: local node_modules
+    if [ -d "$pkg_dir/node_modules" ]; then
+        log_verbose "deps: local $pkg_dir/node_modules"
+        return 0
+    fi
+
+    # Last resort: full install at repo root
     if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
-        log_info "Installing dependencies in $pkg_dir..."
-        (cd "$pkg_dir" && npm install --no-fund --no-audit 2>&1 | tail -3)
-        if [ -d "$pkg_dir/node_modules" ]; then
-            log_success "deps: installed in $pkg_dir"
+        local install_dir="${repo_root:-$pkg_dir}"
+        log_info "Installing all dependencies in $install_dir..."
+        (cd "$install_dir" && npm install --no-fund --no-audit 2>&1 | tail -3)
+        if [ -d "$install_dir/node_modules" ]; then
+            [ -n "$repo_root" ] && {
+                export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
+                export PATH="${repo_root}/node_modules/.bin:$PATH"
+            }
+            log_success "deps: installed in $install_dir"
             return 0
         fi
     fi

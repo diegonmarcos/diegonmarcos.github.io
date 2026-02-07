@@ -1,0 +1,20 @@
+{
+  "name": "c_root",
+  "framework": "vue",
+  "port": 5173,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "vite" },
+    { "mod": "strip-module", "files": "index.html" },
+    { "mod": "copy", "files": "*.html", "from": "src", "exclude": "index.html" },
+    { "mod": "copy", "files": "*.js", "from": "src" }
+  ],
+
+  "serve": {
+    "mode": "vite"
+  },
+
+  "deploy": {}
+}

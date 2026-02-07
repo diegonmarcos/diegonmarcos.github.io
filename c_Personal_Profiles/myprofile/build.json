@@ -1,0 +1,17 @@
+{
+  "name": "MyProfile",
+  "framework": "sveltekit",
+  "port": 8013,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sveltekit" }
+  ],
+
+  "serve": {
+    "mode": "sveltekit"
+  },
+
+  "deploy": {}
+}

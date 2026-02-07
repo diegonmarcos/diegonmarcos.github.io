@@ -1,0 +1,18 @@
+{
+  "name": "MyMovies",
+  "framework": "vue",
+  "port": 8015,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "vite" },
+    { "mod": "copy", "files": "matomo.js", "from": "public" }
+  ],
+
+  "serve": {
+    "mode": "vite"
+  },
+
+  "deploy": {}
+}

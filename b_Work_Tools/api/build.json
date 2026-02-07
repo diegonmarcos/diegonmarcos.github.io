@@ -1,0 +1,18 @@
+{
+  "name": "API",
+  "framework": "vanilla",
+  "port": 8023,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "copy", "files": "*", "from": "src" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+
+  "deploy": {}
+}

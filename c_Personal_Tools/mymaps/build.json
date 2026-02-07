@@ -1,0 +1,17 @@
+{
+  "name": "MyMaps",
+  "framework": "sveltekit",
+  "port": 8018,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sveltekit" }
+  ],
+
+  "serve": {
+    "mode": "sveltekit"
+  },
+
+  "deploy": {}
+}

@@ -1,0 +1,19 @@
+{
+  "name": "HealthTracker",
+  "framework": "vanilla",
+  "port": 8009,
+  "src": "src_static",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "copy", "files": "*.html", "from": "src_static" },
+    { "mod": "symlink", "files": "public" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src_static"
+  },
+
+  "deploy": {}
+}

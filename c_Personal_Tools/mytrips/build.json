@@ -1,0 +1,17 @@
+{
+  "name": "MyTrips",
+  "framework": "vue",
+  "port": 8022,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "vite" }
+  ],
+
+  "serve": {
+    "mode": "vite"
+  },
+
+  "deploy": {}
+}

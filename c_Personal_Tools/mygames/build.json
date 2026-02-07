@@ -1,0 +1,17 @@
+{
+  "name": "MyGames",
+  "framework": "sveltekit",
+  "port": 8004,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sveltekit" }
+  ],
+
+  "serve": {
+    "mode": "sveltekit"
+  },
+
+  "deploy": {}
+}

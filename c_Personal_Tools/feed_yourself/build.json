@@ -1,0 +1,25 @@
+{
+  "name": "Feed Yourself",
+  "framework": "vanilla",
+  "port": 8007,
+  "src": "src_0",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sass", "input": "src_0/scss/main.scss", "output": "style0.css" },
+    { "mod": "esbuild", "input": "src_0/typescript/main.ts", "output": "script0.js", "format": "iife", "target": "es2015" },
+    { "mod": "sass", "input": "src_2/scss/main.scss", "output": "style2.css" },
+    { "mod": "esbuild", "input": "src_2/typescript/main.ts", "output": "script2.js", "format": "iife", "target": "es2015" },
+    { "mod": "copy", "files": "*.html", "from": "src_0" },
+    { "mod": "copy", "files": "*.html", "from": "src_1" },
+    { "mod": "copy", "files": "*.html", "from": "src_2" },
+    { "mod": "symlink", "files": "public" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "dist"
+  },
+
+  "deploy": {}
+}

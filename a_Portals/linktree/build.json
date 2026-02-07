@@ -1,0 +1,25 @@
+{
+  "name": "Linktree",
+  "framework": "vanilla",
+  "port": 8001,
+  "src": "src_static",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "esbuild", "input": "src_static/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
+    { "mod": "sass", "input": "src_static/scss/main.scss", "output": "style.css" },
+    { "mod": "copy", "files": "index.html", "from": "src_static" },
+    { "mod": "symlink", "files": "public" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src_static",
+    "watch": [
+      { "mod": "sass", "input": "scss/main.scss", "output": "style.css" },
+      { "mod": "esbuild", "input": "typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" }
+    ]
+  },
+
+  "deploy": {}
+}

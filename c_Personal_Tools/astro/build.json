@@ -1,0 +1,17 @@
+{
+  "name": "Astro",
+  "framework": "nuxt",
+  "port": 8019,
+  "src": ".",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "npm", "script": "build" }
+  ],
+
+  "serve": {
+    "mode": "vite"
+  },
+
+  "deploy": {}
+}

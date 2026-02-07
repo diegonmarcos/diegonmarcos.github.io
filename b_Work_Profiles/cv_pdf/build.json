@@ -1,0 +1,19 @@
+{
+  "name": "CV PDF",
+  "framework": "vanilla",
+  "port": 8012,
+  "src": "src_static",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "copy", "files": "*.html", "from": "src_static" },
+    { "mod": "symlink", "files": "public" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src_static"
+  },
+
+  "deploy": {}
+}

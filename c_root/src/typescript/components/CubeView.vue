@@ -13,13 +13,13 @@
           :class="{ 'c-cube--animating': isAnimating }"
           :style="cubeStyle"
         >
-          <!-- Front: Observer Effect -->
+          <!-- Front: Prism Glass -->
           <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)" @touchend="handleFaceTap(0, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(0)"
               :src="pages.front"
               class="c-cube__iframe"
-              title="Observer Effect"
+              title="Prism Glass"
               loading="eager"
               allow="accelerometer; autoplay"
             ></iframe>
@@ -143,7 +143,7 @@ const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
 // URL mapping for each face (null = no page / close cube instead)
 const faceUrls: (string | null)[] = [
-  null,                     // Front - same as main app, just close cube
+  'prism_glass.html',       // Front - prism glass
   'cube_fractal_neon.html', // Right - neon cube
   'perspectives.html',      // Back - perspectives
   null,                     // Left - coming soon
@@ -152,7 +152,7 @@ const faceUrls: (string | null)[] = [
 ];
 
 const pages = {
-  front: 'observer_effect.html',
+  front: 'prism_glass.html',
   right: 'cube_fractal_neon.html',
   back: 'perspectives.html'
 };

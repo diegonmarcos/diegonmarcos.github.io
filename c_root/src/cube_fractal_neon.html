@@ -33,22 +33,22 @@
         }
         .back-btn {
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 16px;
+            right: 16px;
             z-index: 1000;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            padding: 0;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             color: rgba(255, 255, 255, 0.8);
-            font-family: sans-serif;
-            font-size: 14px;
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease;
             backdrop-filter: blur(8px);
         }
         .back-btn:hover {
@@ -57,17 +57,22 @@
             color: #fff;
         }
         .back-btn svg {
-            width: 18px;
-            height: 18px;
+            width: 28px;
+            height: 28px;
+            transition: transform 0.4s ease;
+        }
+        .back-btn:active svg {
+            transform: rotate(360deg);
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-btn">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    <a href="index.html" class="back-btn" title="Back to Cube">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+            <path d="M12 2L20 7L12 12L4 7Z" fill="rgba(255,255,255,0.15)"/>
+            <path d="M20 7V17L12 22V12Z" fill="rgba(255,255,255,0.08)"/>
+            <path d="M4 7V17L12 22V12Z" fill="rgba(255,255,255,0.03)"/>
         </svg>
-        Back to Cube
     </a>
     <div id="ui">Drag to Rotate</div>
     <canvas id="glcanvas"></canvas>

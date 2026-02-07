@@ -84,16 +84,27 @@
       </div>
     </div>
 
-    <!-- Cube View Toggle Button -->
-    <button class="c-cube-trigger" @click="showCube = true" title="Cube View (Q)">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+    <!-- Cube / Close toggle button (top-right, above overlay) -->
+    <button
+      class="c-cube-toggle"
+      :class="{ 'c-cube-toggle--active': showCube }"
+      @click="toggleCube"
+      :title="showCube ? 'Close cube view' : 'Open cube view'"
+    >
+      <!-- 3D Cube icon -->
+      <svg class="c-cube-toggle__cube" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+        <path d="M12 2L20 7L12 12L4 7Z" fill="rgba(255,255,255,0.15)"/>
+        <path d="M20 7V17L12 22V12Z" fill="rgba(255,255,255,0.08)"/>
+        <path d="M4 7V17L12 22V12Z" fill="rgba(255,255,255,0.03)"/>
       </svg>
-      <span class="c-cube-trigger__key">Q</span>
+      <!-- X icon -->
+      <svg class="c-cube-toggle__close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
     </button>
 
     <!-- 3D Cube View -->
-    <CubeView :active="showCube" @close="closeCube" />
+    <CubeView :active="showCube" @close="closeCube" @navigate="onCubeNavigate" />
   </div>
 </template>
 
@@ -121,7 +132,31 @@ const handleGlobalKeydown = (e: KeyboardEvent) => {
 };
 
 const closeCube = () => {
+  console.log('[App] closeCube called — hiding cube view');
   showCube.value = false;
+};
+
+// Store the URL CubeView wants to navigate to
+let pendingNavigateUrl: string | null = null;
+
+const onCubeNavigate = (url: string) => {
+  console.log('[App] CubeView wants to navigate to:', url);
+  pendingNavigateUrl = url;
+};
+
+const toggleCube = () => {
+  if (showCube.value) {
+    // Closing cube — if CubeView has a pending URL for the current face, navigate
+    if (pendingNavigateUrl) {
+      console.log('[App] Toggle close — navigating to:', pendingNavigateUrl);
+      window.location.href = pendingNavigateUrl;
+    } else {
+      showCube.value = false;
+    }
+  } else {
+    showCube.value = true;
+  }
+  pendingNavigateUrl = null;
 };
 
 onMounted(() => {

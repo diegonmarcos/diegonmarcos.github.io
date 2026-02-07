@@ -111,8 +111,11 @@ $cube-translate: calc(#{$cube-size} / 2);
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   // Layout containment for performance
-  contain: strict;
-  content-visibility: auto;
+  // NOTE: Do NOT use content-visibility: auto here — it breaks hit testing
+  // on 3D-transformed faces because the browser uses 2D layout bounds to
+  // determine visibility, causing angled faces (right, back, etc.) to be
+  // skipped for pointer events.
+  contain: layout style paint;
   // Visual
   border: 2px solid rgba(255, 255, 255, 0.2);
   overflow: hidden;
@@ -189,6 +192,7 @@ $cube-translate: calc(#{$cube-size} / 2);
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
   padding: 2rem;
+  pointer-events: none;
 
   h2 {
     font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -233,43 +237,77 @@ $cube-translate: calc(#{$cube-size} / 2);
   }
 }
 
-// Exit button to 2D view
-.c-cube-exit {
+// Cube/Close toggle button (top-right, always above overlay)
+.c-cube-toggle {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
-  z-index: 10000;
+  top: 16px;
+  right: 16px;
+  z-index: 10001;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   padding: 0;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 50%;
+  border-radius: 12px;
   cursor: pointer;
   color: rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
   backdrop-filter: blur(8px);
 
   &:hover {
-    background: rgba(255, 100, 100, 0.2);
-    border-color: rgba(255, 100, 100, 0.5);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
     color: #fff;
-    transform: scale(1.1);
+    transform: scale(1.08);
   }
 
   &:active {
     transform: scale(0.95);
   }
 
+  // Both SVGs stacked in same position
   svg {
-    transition: transform 0.2s ease;
+    position: absolute;
+    transition: opacity 0.3s ease, transform 0.3s ease;
   }
 
-  &:hover svg {
-    transform: rotate(90deg);
+  // Cube icon — visible when cube is closed
+  &__cube {
+    width: 28px;
+    height: 28px;
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+
+  // X icon — hidden when cube is closed
+  &__close {
+    width: 24px;
+    height: 24px;
+    opacity: 0;
+    transform: rotate(-90deg);
+  }
+
+  // When cube is active: show X, hide cube
+  &--active {
+    background: rgba(255, 255, 255, 0.12);
+
+    .c-cube-toggle__cube {
+      opacity: 0;
+      transform: rotate(90deg);
+    }
+
+    .c-cube-toggle__close {
+      opacity: 1;
+      transform: rotate(0deg);
+    }
+
+    &:hover {
+      background: rgba(255, 100, 100, 0.2);
+      border-color: rgba(255, 100, 100, 0.5);
+    }
   }
 }
 
@@ -290,44 +328,6 @@ $cube-translate: calc(#{$cube-size} / 2);
   border: 1px solid rgba(255, 255, 255, 0.15);
   writing-mode: vertical-rl;
   text-orientation: mixed;
-}
-
-// Controls hint at bottom
-.c-cube-hint {
-  position: fixed;
-  bottom: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 2rem;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.8);
-  letter-spacing: 0.05em;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-
-  kbd {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.5rem;
-    height: 1.5rem;
-    padding: 0 0.4rem;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  &__separator {
-    opacity: 0.4;
-  }
 }
 
 // Face indicator/navigation
@@ -364,111 +364,22 @@ $cube-translate: calc(#{$cube-size} / 2);
   }
 }
 
-// Cube trigger button (fixed position - bottom right)
-.c-cube-trigger {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 12px;
-  cursor: pointer;
-  color: rgba(255, 255, 255, 0.8);
-  transition: all 0.3s ease;
-  backdrop-filter: blur(8px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.4);
-    color: #fff;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  svg {
-    transition: transform 0.3s ease;
-  }
-
-  &:hover svg {
-    transform: rotateY(15deg) rotateX(-10deg);
-  }
-
-  &__key {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 6px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 600;
-    font-family: inherit;
-  }
-}
-
-// App preview inside cube face
-.c-cube-app-preview {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #0a0a15 100%);
-  position: relative;
-
-  &__label {
-    padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-}
-
 // Responsive adjustments
 @media (max-width: 768px) {
-  .c-cube-exit {
-    top: 1rem;
-    right: 1rem;
-    width: 40px;
-    height: 40px;
+  .c-cube-toggle {
+    top: 12px;
+    right: 12px;
+    width: 44px;
+    height: 44px;
 
-    svg {
+    &__cube {
+      width: 24px;
+      height: 24px;
+    }
+
+    &__close {
       width: 20px;
       height: 20px;
-    }
-  }
-
-  .c-cube-trigger {
-    bottom: 12px;
-    right: 12px;
-    padding: 8px 10px;
-    gap: 6px;
-    border-radius: 10px;
-
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    &__key {
-      min-width: 18px;
-      height: 18px;
-      font-size: 10px;
     }
   }
 
@@ -476,14 +387,6 @@ $cube-translate: calc(#{$cube-size} / 2);
     left: 0.5rem;
     padding: 0.5rem 0.75rem;
     font-size: 0.6rem;
-  }
-
-  .c-cube-hint {
-    flex-wrap: wrap;
-    justify-content: center;
-    bottom: 1rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.7rem;
   }
 
   .c-cube-indicator {

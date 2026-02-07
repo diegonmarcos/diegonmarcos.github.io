@@ -14,7 +14,7 @@
           :style="cubeStyle"
         >
           <!-- Front: Observer Effect -->
-          <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)">
+          <div class="c-cube__face c-cube__face--front" @click="handleFaceClick(0, $event)" @touchend="handleFaceTap(0, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(0)"
               :src="pages.front"
@@ -26,7 +26,7 @@
           </div>
 
           <!-- Right: Neon Cube -->
-          <div class="c-cube__face c-cube__face--right" @click="handleFaceClick(1, $event)">
+          <div class="c-cube__face c-cube__face--right" @click="handleFaceClick(1, $event)" @touchend="handleFaceTap(1, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(1)"
               :src="pages.right"
@@ -38,7 +38,7 @@
           </div>
 
           <!-- Back: Perspectives -->
-          <div class="c-cube__face c-cube__face--back" @click="handleFaceClick(2, $event)">
+          <div class="c-cube__face c-cube__face--back" @click="handleFaceClick(2, $event)" @touchend="handleFaceTap(2, $event)">
             <iframe
               v-if="isActive && shouldLoadFace(2)"
               :src="pages.back"
@@ -50,7 +50,7 @@
           </div>
 
           <!-- Left: Placeholder for future -->
-          <div class="c-cube__face c-cube__face--left" @click="handleFaceClick(3, $event)">
+          <div class="c-cube__face c-cube__face--left" @click="handleFaceClick(3, $event)" @touchend="handleFaceTap(3, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-1">
               <h2>Coming Soon</h2>
               <p>Future content</p>
@@ -58,7 +58,7 @@
           </div>
 
           <!-- Top -->
-          <div class="c-cube__face c-cube__face--top" @click="handleFaceClick(4, $event)">
+          <div class="c-cube__face c-cube__face--top" @click="handleFaceClick(4, $event)" @touchend="handleFaceTap(4, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-2">
               <h2>Projects</h2>
               <p>View from above</p>
@@ -66,7 +66,7 @@
           </div>
 
           <!-- Bottom -->
-          <div class="c-cube__face c-cube__face--bottom" @click="handleFaceClick(5, $event)">
+          <div class="c-cube__face c-cube__face--bottom" @click="handleFaceClick(5, $event)" @touchend="handleFaceTap(5, $event)">
             <div class="c-cube__placeholder c-cube__placeholder--gradient-3">
               <h2>Contact</h2>
               <p>Get in touch</p>
@@ -75,25 +75,9 @@
         </div>
       </div>
 
-      <!-- Exit button - opens current face page -->
-      <button class="c-cube-exit" v-if="isActive" @click="handleExitClick" title="Open current page">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 6L6 18M6 6l12 12"/>
-        </svg>
-      </button>
-
       <!-- View mode indicator -->
       <div class="c-cube-view-mode" v-if="isActive">
         {{ isIsometric ? 'Isometric View' : `${faceNames[currentFace]} Face` }}
-      </div>
-
-      <!-- Controls hint -->
-      <div class="c-cube-hint" v-if="isActive">
-        <span>Drag to rotate</span>
-        <span class="c-cube-hint__separator">|</span>
-        <span>Click face to open</span>
-        <span class="c-cube-hint__separator">|</span>
-        <span><kbd>Q</kbd> open page</span>
       </div>
 
       <!-- Face indicator -->
@@ -125,6 +109,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   close: [];
+  navigate: [url: string];
 }>();
 
 // Isometric starting angle (shows front, top, right faces)
@@ -156,9 +141,9 @@ let momentumFrame: number | null = null;
 
 const faceNames = ['Front', 'Right', 'Back', 'Left', 'Top', 'Bottom'];
 
-// URL mapping for each face (null = no page yet)
+// URL mapping for each face (null = no page / close cube instead)
 const faceUrls: (string | null)[] = [
-  'observer_effect.html',   // Front - observer effect
+  null,                     // Front - same as main app, just close cube
   'cube_fractal_neon.html', // Right - neon cube
   'perspectives.html',      // Back - perspectives
   null,                     // Left - coming soon
@@ -175,36 +160,68 @@ const pages = {
 // Track if click was a drag (to prevent navigation on drag)
 let clickStartTime = 0;
 let clickStartPos = { x: 0, y: 0 };
+// Flag to prevent double navigation (touchend on face + stopDrag)
+let faceTapHandled = false;
 
-// Handle exit button - navigate to current face's page
-const handleExitClick = () => {
-  const url = faceUrls[currentFace.value];
-  if (url) {
-    window.location.href = url;
-  } else {
-    emit('close');
+// Navigate to a face's page, or close cube if no URL
+const navigateToFacePage = (faceIndex: number) => {
+  try {
+    const url = faceUrls[faceIndex];
+    console.log('[CubeView] Navigate face:', faceNames[faceIndex], '| URL:', url || 'close');
+    if (url) {
+      window.location.href = url;
+    } else {
+      emit('close');
+    }
+  } catch (err) {
+    console.error('[CubeView] Error navigating:', err);
   }
 };
 
-// Handle click on a cube face - navigate to that face's page
-const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
-  // Ignore if animating or if this was a drag (not a click)
-  if (isAnimating.value) return;
+// Handle exit button - close cube view
+const handleExitClick = () => {
+  try {
+    console.log('[CubeView] Exit clicked — closing cube view');
+    emit('close');
+  } catch (err) {
+    console.error('[CubeView] Error in handleExitClick:', err);
+  }
+};
 
-  // Check if this was a quick click (not a drag)
+// Check if an event was a tap (not a drag)
+const isTap = (clientX: number, clientY: number): boolean => {
   const clickDuration = Date.now() - clickStartTime;
   const clickDistance = Math.sqrt(
-    Math.pow(event.clientX - clickStartPos.x, 2) +
-    Math.pow(event.clientY - clickStartPos.y, 2)
+    Math.pow(clientX - clickStartPos.x, 2) +
+    Math.pow(clientY - clickStartPos.y, 2)
   );
+  return clickDistance <= 20 && clickDuration <= 500;
+};
 
-  // If dragged more than 20px or held longer than 500ms, treat as drag
-  if (clickDistance > 20 || clickDuration > 500) return;
+// Handle mouse click on a cube face (desktop)
+const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
+  try {
+    if (isAnimating.value) return;
+    if (!isTap(event.clientX, event.clientY)) return;
+    console.log('[CubeView] Face clicked (mouse):', faceNames[faceIndex]);
+    navigateToFacePage(faceIndex);
+  } catch (err) {
+    console.error('[CubeView] Error in handleFaceClick:', err);
+  }
+};
 
-  const url = faceUrls[faceIndex];
-  if (url) {
-    // Navigate to the face's page
-    window.location.href = url;
+// Handle touch tap on a cube face (mobile) — fires directly on the face element
+// This bypasses the unreliable elementFromPoint approach in stopDrag
+const handleFaceTap = (faceIndex: number, event: TouchEvent) => {
+  try {
+    if (isAnimating.value || isPinching.value) return;
+    const touch = event.changedTouches[0];
+    if (!isTap(touch.clientX, touch.clientY)) return;
+    console.log('[CubeView] Face tapped (touch):', faceNames[faceIndex]);
+    faceTapHandled = true;
+    navigateToFacePage(faceIndex);
+  } catch (err) {
+    console.error('[CubeView] Error in handleFaceTap:', err);
   }
 };
 
@@ -257,6 +274,7 @@ const isometricRotations = [
 ];
 
 watch(() => props.active, (newVal) => {
+  console.log('[CubeView] Active prop changed to:', newVal);
   isActive.value = newVal;
   if (newVal) {
     document.body.style.overflow = 'hidden';
@@ -360,6 +378,7 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
   clickStartTime = Date.now();
   const startPoint = 'touches' in e ? e.touches[0] : e;
   clickStartPos = { x: startPoint.clientX, y: startPoint.clientY };
+  faceTapHandled = false;
 
   // Stop any ongoing momentum
   if (momentumFrame) {
@@ -432,39 +451,37 @@ const applyMomentum = () => {
 };
 
 const stopDrag = (e: MouseEvent | TouchEvent) => {
-  // Detect tap (not drag) and navigate to face page
-  if (!isAnimating.value && !isPinching.value) {
-    const clickDuration = Date.now() - clickStartTime;
-    const endPoint = 'changedTouches' in e ? e.changedTouches[0] : e;
-    const clickDistance = Math.sqrt(
-      Math.pow(endPoint.clientX - clickStartPos.x, 2) +
-      Math.pow(endPoint.clientY - clickStartPos.y, 2)
-    );
-
-    if (clickDistance <= 20 && clickDuration <= 500) {
-      // This was a tap - find which face was tapped
-      const target = document.elementFromPoint(endPoint.clientX, endPoint.clientY);
-      const faceEl = target?.closest('.c-cube__face') as HTMLElement | null;
-      if (faceEl) {
-        const faceClasses = ['front', 'right', 'back', 'left', 'top', 'bottom'];
-        const faceIndex = faceClasses.findIndex(f => faceEl.classList.contains(`c-cube__face--${f}`));
-        if (faceIndex >= 0) {
-          const url = faceUrls[faceIndex];
-          if (url) {
-            window.location.href = url;
+  try {
+    // Fallback tap detection: if face-level handlers didn't fire (3D hit testing
+    // failure on some mobile browsers), detect tap here and navigate to currentFace.
+    if (!faceTapHandled && !isAnimating.value && !isPinching.value) {
+      const endPoint = 'changedTouches' in e ? e.changedTouches[0] : e;
+      if (isTap(endPoint.clientX, endPoint.clientY)) {
+        // Check if tap was inside the cube scene area (not just the background)
+        const cubeScene = document.querySelector('.c-cube-scene');
+        if (cubeScene) {
+          const rect = cubeScene.getBoundingClientRect();
+          if (endPoint.clientX >= rect.left && endPoint.clientX <= rect.right &&
+              endPoint.clientY >= rect.top && endPoint.clientY <= rect.bottom) {
+            console.log('[CubeView] stopDrag fallback tap — navigating to currentFace:', faceNames[currentFace.value]);
+            navigateToFacePage(currentFace.value);
           }
         }
       }
     }
+
+    if (isDragging.value && (Math.abs(velocityX.value) > 0.5 || Math.abs(velocityY.value) > 0.5)) {
+      // Start momentum animation
+      momentumFrame = requestAnimationFrame(applyMomentum);
+    }
+  } catch (err) {
+    console.error('[CubeView] Error in stopDrag:', err);
   }
 
-  if (isDragging.value && (Math.abs(velocityX.value) > 0.5 || Math.abs(velocityY.value) > 0.5)) {
-    // Start momentum animation
-    momentumFrame = requestAnimationFrame(applyMomentum);
-  }
   isDragging.value = false;
   isPinching.value = false;
   lastPinchDistance.value = 0;
+  faceTapHandled = false;
 };
 
 const handleWheel = (e: WheelEvent) => {
@@ -480,6 +497,8 @@ const updateCurrentFace = () => {
   // Normalize Y rotation to 0-360
   let normalizedY = ((rotateY.value % 360) + 360) % 360;
 
+  const prevFace = currentFace.value;
+
   // Determine face based on rotation
   if (Math.abs(rotateX.value) > 60) {
     currentFace.value = rotateX.value > 0 ? 4 : 5; // Top or Bottom
@@ -491,6 +510,16 @@ const updateCurrentFace = () => {
     currentFace.value = 2; // Back
   } else {
     currentFace.value = 1; // Right
+  }
+
+  // Emit current face URL to parent so the toggle button can navigate
+  if (currentFace.value !== prevFace) {
+    const url = faceUrls[currentFace.value];
+    if (url) {
+      emit('navigate', url);
+    } else {
+      emit('navigate', '');
+    }
   }
 
   // Check if we're in an isometric-like angle
@@ -505,10 +534,22 @@ const updateCurrentFace = () => {
 const handleKeydown = (e: KeyboardEvent) => {
   if (!isActive.value) return;
 
-  // Q or Escape - open current face page (or close if no URL)
-  if (e.key.toLowerCase() === 'q' || e.key === 'Escape') {
+  // Stop propagation so App.vue Q handler doesn't also fire
+  e.stopImmediatePropagation();
+
+  // Escape - close cube view
+  if (e.key === 'Escape') {
     e.preventDefault();
+    console.log('[CubeView] Escape pressed — closing');
     handleExitClick();
+    return;
+  }
+
+  // Q - open current face page (navigate) or close if no URL
+  if (e.key.toLowerCase() === 'q') {
+    e.preventDefault();
+    console.log('[CubeView] Q pressed — face:', faceNames[currentFace.value]);
+    navigateToFacePage(currentFace.value);
     return;
   }
 
@@ -520,18 +561,15 @@ const handleKeydown = (e: KeyboardEvent) => {
   }
 
   // Arrow key navigation - navigate to adjacent faces
-  // Front(0) -> Right(1) -> Back(2) -> Left(3) -> Front(0)
   if (isAnimating.value) return;
 
   switch (e.key) {
     case 'ArrowRight':
-      // Go to next face clockwise (Front -> Right -> Back -> Left)
       if (currentFace.value < 4) {
         navigateToFace((currentFace.value + 1) % 4);
       }
       break;
     case 'ArrowLeft':
-      // Go to previous face counter-clockwise
       if (currentFace.value < 4) {
         navigateToFace((currentFace.value + 3) % 4);
       }
@@ -550,7 +588,8 @@ onMounted(() => {
   window.addEventListener('mouseup', stopDrag);
   window.addEventListener('touchmove', handleDrag);
   window.addEventListener('touchend', stopDrag);
-  window.addEventListener('keydown', handleKeydown);
+  // Use capture phase so CubeView keydown fires BEFORE App.vue's handler
+  window.addEventListener('keydown', handleKeydown, true);
   window.addEventListener('resize', onResize);
 });
 
@@ -559,7 +598,7 @@ onUnmounted(() => {
   window.removeEventListener('mouseup', stopDrag);
   window.removeEventListener('touchmove', handleDrag);
   window.removeEventListener('touchend', stopDrag);
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener('keydown', handleKeydown, true);
   window.removeEventListener('resize', onResize);
   document.body.style.overflow = '';
   if (momentumFrame) {

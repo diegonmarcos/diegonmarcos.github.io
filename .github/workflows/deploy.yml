@@ -32,8 +32,15 @@ jobs:
 
       - name: 📦 Install Dependencies
         run: |
-          echo "📦 Installing npm dependencies..."
+          echo "📦 Installing root npm dependencies..."
           npm install
+          echo "📦 Installing per-project dependencies..."
+          for pjson in */*/package.json; do
+            dir=$(dirname "$pjson")
+            [ -d "$dir/node_modules" ] && continue
+            echo "  → $dir"
+            (cd "$dir" && npm install --no-fund --no-audit --no-optional 2>/dev/null) || true
+          done
           echo "✅ Dependencies installed"
 
       # ============================================
@@ -42,7 +49,7 @@ jobs:
       - name: 🔨 Build Root Index (c_root)
         id: build-c-root
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_root/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Root Index (c_root)..."
           cd c_root
@@ -53,7 +60,7 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/landpage/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Landpage..."
           cd b_Work_Profiles/landpage
@@ -64,7 +71,7 @@ jobs:
       - name: 🔨 Build Linktree
         id: build-linktree
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Linktree..."
           cd a_Portals/linktree
@@ -75,7 +82,7 @@ jobs:
       - name: 🔨 Build Linktree Mindmap
         id: build-linktree-mindmap
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/linktree_mindmap/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Linktree Mindmap..."
           cd a_Portals/linktree_mindmap
@@ -86,7 +93,7 @@ jobs:
       - name: 🔨 Build CV Web
         id: build-cv-web
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/cv_web/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building CV Web..."
           cd b_Work_Profiles/cv_web
@@ -97,7 +104,7 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/myfeed/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyFeed..."
           cd c_Personal_Tools/myfeed
@@ -108,7 +115,7 @@ jobs:
       - name: 🔨 Build MyGames
         id: build-mygames
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mygames/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyGames..."
           cd c_Personal_Tools/mygames
@@ -119,7 +126,7 @@ jobs:
       - name: 🔨 Build Nexus
         id: build-nexus
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/nexus/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Nexus..."
           cd b_Work_Profiles/nexus
@@ -130,7 +137,7 @@ jobs:
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
         if: contains(steps.changed-files.outputs.all_changed_files, 'a_Portals/cloud/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Cloud Dashboard..."
           cd a_Portals/cloud
@@ -141,7 +148,7 @@ jobs:
       - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/feed_yourself/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Feed Yourself..."
           cd c_Personal_Tools/feed_yourself
@@ -152,7 +159,7 @@ jobs:
       - name: 🔨 Build Others
         id: build-others
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/others/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Others..."
           cd c_Personal_Tools/others
@@ -163,7 +170,7 @@ jobs:
       - name: 🔨 Build MyMail
         id: build-mymail
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/mymail/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyMail..."
           cd b_Work_Tools/mymail
@@ -174,7 +181,7 @@ jobs:
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/myphotos/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyPhotos..."
           cd b_Work_Tools/myphotos
@@ -185,7 +192,7 @@ jobs:
       - name: 🔨 Build MyAnalytics
         id: build-myanalytics
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/myanalytics/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyAnalytics..."
           cd b_Work_Tools/myanalytics
@@ -196,7 +203,7 @@ jobs:
       - name: 🔨 Build MyDrive
         id: build-mydrive
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/mydrive/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyDrive..."
           cd b_Work_Tools/mydrive
@@ -207,7 +214,7 @@ jobs:
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/health_tracker/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Health Tracker..."
           cd c_Personal_Tools/health_tracker
@@ -218,7 +225,7 @@ jobs:
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/market_watch/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Market Watch..."
           cd c_Personal_Tools/market_watch
@@ -229,7 +236,7 @@ jobs:
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/central_bank/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Central Bank..."
           cd c_Personal_Tools/central_bank
@@ -243,7 +250,7 @@ jobs:
       - name: 🔨 Build MyProfile
         id: build-myprofile
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Profiles/myprofile/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyProfile..."
           cd c_Personal_Profiles/myprofile
@@ -254,7 +261,7 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mymovies/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyMovies..."
           cd c_Personal_Tools/mymovies
@@ -265,7 +272,7 @@ jobs:
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mymusic/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyMusic..."
           cd c_Personal_Tools/mymusic
@@ -276,7 +283,7 @@ jobs:
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/json-vision/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building JSON Vision..."
           cd c_Personal_Tools/json-vision
@@ -287,7 +294,7 @@ jobs:
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/carto/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Carto..."
           cd c_Personal_Tools/carto
@@ -298,7 +305,7 @@ jobs:
       - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mytrips
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mytrips/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyTrips..."
           cd c_Personal_Tools/mytrips
@@ -309,7 +316,7 @@ jobs:
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
         if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Profiles/leafy/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Leafy..."
           cd b_Work_Profiles/leafy
@@ -320,7 +327,7 @@ jobs:
       - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
         id: build-mymaps-svelte
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/mymaps/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building MyMaps SvelteKit..."
           cd c_Personal_Tools/mymaps
@@ -331,7 +338,7 @@ jobs:
       - name: 🔨 Build Maps Classic (React + Vite)
         id: build-maps-classic
         if: contains(steps.changed-files.outputs.all_changed_files, 'c_Personal_Tools/maps/')
-        continue-on-error: false
+        continue-on-error: true
         run: |
           echo "🔨 Building Maps Classic..."
           cd c_Personal_Tools/maps

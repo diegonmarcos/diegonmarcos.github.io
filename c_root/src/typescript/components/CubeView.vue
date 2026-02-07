@@ -75,8 +75,8 @@
         </div>
       </div>
 
-      <!-- Exit button to 2D view -->
-      <button class="c-cube-exit" v-if="isActive" @click="emit('close')" title="Exit to 2D View (Q)">
+      <!-- Exit button - opens current face page -->
+      <button class="c-cube-exit" v-if="isActive" @click="handleExitClick" title="Open current page">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M18 6L6 18M6 6l12 12"/>
         </svg>
@@ -93,7 +93,7 @@
         <span class="c-cube-hint__separator">|</span>
         <span>Click face to open</span>
         <span class="c-cube-hint__separator">|</span>
-        <span><kbd>Q</kbd> exit to 2D</span>
+        <span><kbd>Q</kbd> open page</span>
       </div>
 
       <!-- Face indicator -->
@@ -170,6 +170,16 @@ const pages = {
 let clickStartTime = 0;
 let clickStartPos = { x: 0, y: 0 };
 
+// Handle exit button - navigate to current face's page
+const handleExitClick = () => {
+  const url = faceUrls[currentFace.value];
+  if (url) {
+    window.location.href = url;
+  } else {
+    emit('close');
+  }
+};
+
 // Handle click on a cube face - navigate to that face's page
 const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
   // Ignore if animating or if this was a drag (not a click)
@@ -182,8 +192,8 @@ const handleFaceClick = (faceIndex: number, event: MouseEvent) => {
     Math.pow(event.clientY - clickStartPos.y, 2)
   );
 
-  // If dragged more than 10px or held longer than 200ms, ignore
-  if (clickDistance > 10 || clickDuration > 200) return;
+  // If dragged more than 20px or held longer than 500ms, treat as drag
+  if (clickDistance > 20 || clickDuration > 500) return;
 
   const url = faceUrls[faceIndex];
   if (url) {
@@ -462,10 +472,10 @@ const updateCurrentFace = () => {
 const handleKeydown = (e: KeyboardEvent) => {
   if (!isActive.value) return;
 
-  // Close on 'Q' or Escape
+  // Q or Escape - open current face page (or close if no URL)
   if (e.key.toLowerCase() === 'q' || e.key === 'Escape') {
     e.preventDefault();
-    emit('close');
+    handleExitClick();
     return;
   }
 

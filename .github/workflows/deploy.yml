@@ -45,9 +45,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Root Index (c_root)..."
-          cd c_root/1.ops
+          cd c_root
           bash build.sh build
-          cd ../../
+          cd ..
           echo "✅ Root Index build complete"
 
       - name: 🔨 Build Landpage
@@ -56,9 +56,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Landpage..."
-          cd b_Work_Profiles/landpage/1.ops
+          cd b_Work_Profiles/landpage
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Landpage build complete"
 
       - name: 🔨 Build Linktree
@@ -67,9 +67,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Linktree..."
-          cd a_Portals/linktree/1.ops
+          cd a_Portals/linktree
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Linktree build complete"
 
       - name: 🔨 Build Linktree Mindmap
@@ -78,9 +78,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Linktree Mindmap..."
-          cd a_Portals/linktree_mindmap/1.ops
+          cd a_Portals/linktree_mindmap
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Linktree Mindmap build complete"
 
       - name: 🔨 Build CV Web
@@ -89,9 +89,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building CV Web..."
-          cd b_Work_Profiles/cv_web/1.ops
+          cd b_Work_Profiles/cv_web
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ CV Web build complete"
 
       - name: 🔨 Build MyFeed
@@ -100,9 +100,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyFeed..."
-          cd c_Personal_Tools/myfeed/1.ops
+          cd c_Personal_Tools/myfeed
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyFeed build complete"
 
       - name: 🔨 Build MyGames
@@ -111,9 +111,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyGames..."
-          cd c_Personal_Tools/mygames/1.ops
+          cd c_Personal_Tools/mygames
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyGames build complete"
 
       - name: 🔨 Build Nexus
@@ -122,9 +122,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Nexus..."
-          cd b_Work_Profiles/nexus/1.ops
+          cd b_Work_Profiles/nexus
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Nexus build complete"
 
       - name: 🔨 Build Cloud Dashboard
@@ -133,9 +133,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Cloud Dashboard..."
-          cd a_Portals/cloud/1.ops
+          cd a_Portals/cloud
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Cloud Dashboard build complete"
 
       - name: 🔨 Build Feed Yourself
@@ -144,9 +144,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Feed Yourself..."
-          cd c_Personal_Tools/feed_yourself/1.ops
+          cd c_Personal_Tools/feed_yourself
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Feed Yourself build complete"
 
       - name: 🔨 Build Others
@@ -155,9 +155,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Others..."
-          cd c_Personal_Tools/others/1.ops
+          cd c_Personal_Tools/others
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Others build complete"
 
       - name: 🔨 Build MyMail
@@ -166,9 +166,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyMail..."
-          cd b_Work_Tools/mymail/1.ops
+          cd b_Work_Tools/mymail
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyMail build complete"
 
       - name: 🔨 Build MyPhotos
@@ -177,9 +177,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyPhotos..."
-          cd b_Work_Tools/myphotos/1.ops
+          cd b_Work_Tools/myphotos
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyPhotos build complete"
 
       - name: 🔨 Build MyAnalytics
@@ -188,9 +188,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyAnalytics..."
-          cd b_Work_Tools/myanalytics/1.ops
+          cd b_Work_Tools/myanalytics
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyAnalytics build complete"
 
       - name: 🔨 Build MyDrive
@@ -199,9 +199,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyDrive..."
-          cd b_Work_Tools/mydrive/1.ops
+          cd b_Work_Tools/mydrive
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyDrive build complete"
 
       - name: 🔨 Build Health Tracker
@@ -210,9 +210,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Health Tracker..."
-          cd c_Personal_Tools/health_tracker/1.ops
+          cd c_Personal_Tools/health_tracker
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Health Tracker build complete"
 
       - name: 🔨 Build Market Watch
@@ -221,9 +221,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Market Watch..."
-          cd c_Personal_Tools/market_watch/1.ops
+          cd c_Personal_Tools/market_watch
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Market Watch build complete"
 
       - name: 🔨 Build Central Bank
@@ -232,9 +232,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Central Bank..."
-          cd c_Personal_Tools/central_bank/1.ops
+          cd c_Personal_Tools/central_bank
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Central Bank build complete"
 
       # NOTE: Old MyMaps (React+Vite) moved to c_Personal_Tools/maps/
@@ -246,9 +246,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyProfile..."
-          cd c_Personal_Profiles/myprofile/1.ops
+          cd c_Personal_Profiles/myprofile
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyProfile build complete"
 
       - name: 🔨 Build MyMovies (Vue 3)
@@ -257,9 +257,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyMovies..."
-          cd c_Personal_Tools/mymovies/1.ops
+          cd c_Personal_Tools/mymovies
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyMovies build complete"
 
       - name: 🔨 Build MyMusic (Vue 3)
@@ -268,9 +268,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyMusic..."
-          cd c_Personal_Tools/mymusic/1.ops
+          cd c_Personal_Tools/mymusic
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyMusic build complete"
 
       - name: 🔨 Build JSON Vision (Vue 3)
@@ -279,9 +279,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building JSON Vision..."
-          cd c_Personal_Tools/json-vision/1.ops
+          cd c_Personal_Tools/json-vision
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ JSON Vision build complete"
 
       - name: 🔨 Build Carto (TypeScript + Sass)
@@ -290,9 +290,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Carto..."
-          cd c_Personal_Tools/carto/1.ops
+          cd c_Personal_Tools/carto
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Carto build complete"
 
       - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
@@ -301,9 +301,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyTrips..."
-          cd c_Personal_Tools/mytrips/1.ops
+          cd c_Personal_Tools/mytrips
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyTrips build complete"
 
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
@@ -312,9 +312,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Leafy..."
-          cd b_Work_Profiles/leafy/1.ops
-          bash build.sh
-          cd ../../..
+          cd b_Work_Profiles/leafy
+          bash build.sh build
+          cd ../..
           echo "✅ Leafy build complete"
 
       - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
@@ -323,9 +323,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building MyMaps SvelteKit..."
-          cd c_Personal_Tools/mymaps/1.ops
+          cd c_Personal_Tools/mymaps
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ MyMaps SvelteKit build complete"
 
       - name: 🔨 Build Maps Classic (React + Vite)
@@ -334,9 +334,9 @@ jobs:
         continue-on-error: false
         run: |
           echo "🔨 Building Maps Classic..."
-          cd c_Personal_Tools/maps/1.ops
+          cd c_Personal_Tools/maps
           bash build.sh build
-          cd ../../..
+          cd ../..
           echo "✅ Maps Classic build complete"
 
       # ============================================

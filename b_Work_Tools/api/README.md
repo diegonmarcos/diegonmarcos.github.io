@@ -4,7 +4,16 @@ Interactive API documentation for the Cloud Control system.
 
 ---
 
-## 📚 Documentation Access
+## API Specs
+
+| Spec | Description | Endpoints |
+|------|-------------|-----------|
+| **Central Cloud Control API** | Unified API — architecture, VMs, services, domains, topology, cost, monitor, actions | 60 |
+| **Containers Control On-Demand API** | oci-flex VM lifecycle & Docker container management via SSH | 12 |
+
+---
+
+## Documentation Access
 
 ### Option 1: Swagger UI (Interactive)
 Open `index.html` in your browser for full interactive documentation with "Try it out" functionality.
@@ -12,136 +21,102 @@ Open `index.html` in your browser for full interactive documentation with "Try i
 **URL (when deployed):** https://diegonmarcos.github.io/a_Cloud/api/
 
 **Features:**
-- ✅ Interactive "Try it out" buttons
-- ✅ Request/response examples
-- ✅ Schema validation
-- ✅ cURL/code snippets
-- ✅ Beautiful UI
+- Interactive "Try it out" buttons
+- Request/response examples
+- Schema validation
+- cURL/code snippets
+- API selector dropdown (Central / On-Demand)
 
-### Option 2: OpenAPI Spec Files
-- **YAML:** `openapi.yaml` (human-readable)
-- **JSON:** Download from Swagger UI or convert YAML
+### Option 2: Markdown References
+- [Central Cloud Control API](cloud_central_api.md) — 60 endpoints, 12 tags
+- [Containers Control On-Demand API](cloud_ondemand_api.md) — 12 endpoints, 2 tags
+
+### Option 3: OpenAPI Spec Files
+- **YAML:** `openapi_central.yaml` / `openapi_ondemand.yaml`
+- **JSON:** `openapi_central.json` / `openapi_ondemand.json`
 
 **Import into:**
-- Postman: Import → Link → `openapi.yaml`
-- Insomnia: Import → URL → `openapi.yaml`
+- Postman: Import → Link → `openapi_central.yaml`
+- Insomnia: Import → URL → `openapi_central.yaml`
 - VS Code: OpenAPI extension
 
 ---
 
-## 🔗 API Endpoints
-
-| Endpoint | Method | Purpose | Fallback |
-|----------|--------|---------|----------|
-| `/api/cloud_control/monitor` | GET | VM & service status | `monitor.js` |
-| `/api/cloud_control/costs_infra` | GET | Infrastructure costs | `costs_infra.js` |
-| `/api/cloud_control/costs_ai` | GET | AI service costs | `costs_ai.js` |
-| `/api/cloud_control/infrastructure` | GET | Full infrastructure | `infrastructure.js` |
-
-**Base URL:** https://api.diegonmarcos.com/api
-
----
-
-## 🚀 Quick Start
+## Quick Start
 
 ### Test Endpoints
 
 ```bash
-# Monitor (VMs & Services)
-curl https://api.diegonmarcos.com/api/cloud_control/monitor
+# Health check
+curl https://api.diegonmarcos.com/health
 
-# Infrastructure Costs
-curl https://api.diegonmarcos.com/api/cloud_control/costs_infra
+# Architecture (static data)
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/architecture
 
-# AI Costs
-curl https://api.diegonmarcos.com/api/cloud_control/costs_ai
+# Monitor (runtime)
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/monitor
 
-# Full Infrastructure
-curl https://api.diegonmarcos.com/api/cloud_control/infrastructure
-```
+# Topology
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/topology
 
-### JavaScript Fetch
+# Cost
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/cost
 
-```javascript
-// Try API first
-const response = await fetch('https://api.diegonmarcos.com/api/cloud_control/monitor');
-const data = await response.json();
+# On-Demand: VM status
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vm/status
 
-// Fallback to static file
-if (!response.ok) {
-  // Use pre-loaded MONITOR variable from monitor.js
-  const data = MONITOR;
-}
+# On-Demand: List containers
+curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/containers
 ```
 
 ---
 
-## 📁 Files in this Directory
+## Files
 
 ```
-a_Cloud/api/
-├── index.html                      # Swagger UI documentation page
-├── openapi.yaml                    # OpenAPI 3.0 specification
-├── README.md                       # This file
-├── export_cloud_control_data.py   # Script to generate .js files
-├── monitor.js                      # Static fallback data (MONITOR)
-├── costs_infra.js                  # Static fallback data (COSTS_INFRA)
-├── costs_ai.js                     # Static fallback data (COSTS_AI)
-└── infrastructure.js               # Static fallback data (INFRASTRUCTURE)
-```
-
----
-
-## 🔄 Update Workflow
-
-### 1. Update Source Data
-Edit the master configuration:
-```bash
-vim /home/diego/Documents/Git/back-System/cloud/1.ops/cloud_dash.json
-```
-
-### 2. Regenerate Static Files
-Run the export script:
-```bash
-cd /home/diego/Documents/Git/front-Github_io/a_Cloud/api
-python export_cloud_control_data.py
-```
-
-**Output:**
-```
-✓ monitor.js → MONITOR
-✓ costs_infra.js → COSTS_INFRA
-✓ costs_ai.js → COSTS_AI
-✓ infrastructure.js → INFRASTRUCTURE
-```
-
-### 3. Update API Specification (if needed)
-Edit `openapi.yaml` if you:
-- Add/remove endpoints
-- Change request/response schemas
-- Update descriptions
-
-### 4. Rebuild & Deploy
-```bash
-cd /home/diego/Documents/Git/front-Github_io/cloud
-./1.ops/build.sh build
-
-# Commit and push to GitHub
-git add .
-git commit -m "Update cloud control API data"
-git push
+b_Work_Tools/api/
+├── src/
+│   ├── index.html                 # Swagger UI documentation page
+│   ├── openapi_central.yaml       # Central API spec (YAML)
+│   ├── openapi_central.json       # Central API spec (JSON)
+│   ├── openapi_ondemand.yaml      # On-Demand API spec (YAML)
+│   ├── openapi_ondemand.json      # On-Demand API spec (JSON)
+│   ├── cloud_central_api.md       # Central API reference (Markdown)
+│   └── cloud_ondemand_api.md      # On-Demand API reference (Markdown)
+├── build.json                     # Build config (copy src → dist)
+├── build.sh                       # Build script
+└── README.md                      # This file
 ```
 
 ---
 
-## 🎨 Customization
+## Build & Deploy
 
-### Modify OpenAPI Spec
-Edit `openapi.yaml` to:
+```bash
+# Build (copies src/ → dist/)
+bash ~/git/front/b_Work_Tools/api/build.sh build
+
+# Local dev server
+bash ~/git/front/b_Work_Tools/api/build.sh serve
+```
+
+---
+
+## Customization
+
+### Modify OpenAPI Specs
+Edit `openapi_central.yaml` or `openapi_ondemand.yaml` to:
 - Add new endpoints
 - Update examples
 - Change server URLs
 - Add authentication schemes
+
+Then regenerate JSON:
+```bash
+cd src/
+npx js-yaml openapi_central.yaml > openapi_central.json
+npx js-yaml openapi_ondemand.yaml > openapi_ondemand.json
+```
 
 ### Customize Swagger UI
 Edit `index.html` to:
@@ -152,199 +127,4 @@ Edit `index.html` to:
 
 ---
 
-## 📖 OpenAPI Spec Structure
-
-```yaml
-openapi: 3.0.3
-info:
-  title: Cloud Control API
-  version: 1.0.0
-
-servers:
-  - url: https://api.diegonmarcos.com/api
-
-paths:
-  /cloud_control/monitor:
-    get:
-      summary: Get VM and service status
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema: {...}
-```
-
----
-
-## 🧪 Testing
-
-### Browser
-```
-1. Open index.html in browser
-2. Click "Try it out" on any endpoint
-3. Click "Execute"
-4. View response
-```
-
-### cURL
-```bash
-curl -X GET "https://api.diegonmarcos.com/api/cloud_control/monitor" \
-     -H "accept: application/json"
-```
-
-### Python
-```python
-import requests
-
-response = requests.get('https://api.diegonmarcos.com/api/cloud_control/monitor')
-data = response.json()
-print(data)
-```
-
-### JavaScript
-```javascript
-fetch('https://api.diegonmarcos.com/api/cloud_control/monitor')
-  .then(res => res.json())
-  .then(data => console.log(data));
-```
-
----
-
-## 📦 Deployment
-
-### GitHub Pages (Recommended)
-The Swagger UI (`index.html`) will be automatically deployed via GitHub Pages at:
-```
-https://diegonmarcos.github.io/a_Cloud/api/
-```
-
-**Setup:**
-1. Push to `main` branch
-2. GitHub Actions builds and deploys
-3. Access docs at GitHub Pages URL
-
-### Local Testing
-```bash
-# Option 1: Python HTTP server
-cd /home/diego/Documents/Git/front-Github_io/a_Cloud/api
-python -m http.server 8080
-
-# Access: http://localhost:8080
-
-# Option 2: Node.js http-server
-npx http-server . -p 8080
-```
-
----
-
-## 🔍 Tools & Resources
-
-### Import OpenAPI Spec Into:
-- **Postman:** File → Import → `openapi.yaml`
-- **Insomnia:** Import → From URL
-- **VS Code:** OpenAPI (Swagger) Editor extension
-- **Swagger Editor:** https://editor.swagger.io
-
-### Generate Client SDKs:
-```bash
-# Install OpenAPI Generator
-npm install @openapitools/openapi-generator-cli -g
-
-# Generate JavaScript client
-openapi-generator-cli generate \
-  -i openapi.yaml \
-  -g javascript \
-  -o ./client-sdk
-
-# Generate Python client
-openapi-generator-cli generate \
-  -i openapi.yaml \
-  -g python \
-  -o ./client-sdk-python
-```
-
----
-
-## 📝 Response Format Examples
-
-### Monitor Endpoint
-```json
-{
-  "vms": [{
-    "category": "services",
-    "categoryName": "Services",
-    "vms": [{
-      "id": "oci-f-micro_1",
-      "name": "OCI Free Micro 1",
-      "ip": "130.110.251.193",
-      "status": "Online"
-    }]
-  }],
-  "services": [{
-    "category": "user-productivity",
-    "services": [{
-      "id": "matomo",
-      "name": "Matomo Analytics",
-      "health_status": "healthy"
-    }]
-  }]
-}
-```
-
-### Costs Infra Endpoint
-```json
-{
-  "costs": {
-    "oracle": {
-      "name": "Oracle Cloud",
-      "tier": "always-free",
-      "monthly": 0
-    },
-    "gcloud": {
-      "name": "Google Cloud",
-      "tier": "free-tier",
-      "monthly": 0
-    }
-  },
-  "timestamp": "2025-12-07"
-}
-```
-
----
-
-## 🛠️ Troubleshooting
-
-### Swagger UI doesn't load
-- Check browser console for errors
-- Ensure `openapi.yaml` is in same directory
-- Check CORS settings if accessing from different domain
-
-### API returns 404
-- Verify Flask server is running
-- Check server URL in `openapi.yaml`
-- Test endpoint directly with cURL
-
-### Static files not updating
-- Run `export_cloud_control_data.py` again
-- Clear browser cache
-- Check file timestamps with `ls -lh`
-
----
-
-## 📞 Support
-
-**Owner:** Diego Nepomuceno Marcos
-**Email:** diego@diegonmarcos.com
-**Website:** https://diegonmarcos.com
-**Docs:** https://github.com/diegonmarcos/back-System/tree/main/cloud/1.ops
-
----
-
-## 📄 License
-
-Private - Internal Use Only
-
----
-
-*Last Updated: 2025-12-14*
+*Last Updated: 2026-02-08*

@@ -168,7 +168,7 @@
         }
 
         .quick-links li::before {
-            content: "→";
+            content: "\2192";
             color: #667eea;
             font-weight: bold;
             margin-right: 0.5rem;
@@ -224,7 +224,7 @@
 <body>
     <!-- Header -->
     <div class="api-header">
-        <h1>☁️ Cloud Control API</h1>
+        <h1>&#9729;&#65039; Cloud Control API</h1>
         <p>RESTful API for Cloud Infrastructure Monitoring & Management</p>
         <span class="version">v1.0.0</span>
     </div>
@@ -233,10 +233,10 @@
     <div class="api-selector">
         <label for="apiSelect">Select API:</label>
         <select id="apiSelect" onchange="switchApi(this.value)">
-            <option value="control">Cloud Control API (Runtime/Monitor)</option>
-            <option value="architecture">Cloud Architecture API (Static Data)</option>
+            <option value="central">Central Cloud Control API</option>
+            <option value="ondemand">Containers Control On-Demand API</option>
         </select>
-        <span class="api-info" id="apiInfo">38 endpoints - topology, cost, monitor, actions</span>
+        <span class="api-info" id="apiInfo">Unified API — architecture, vms, services, domains, topology, cost, monitor, actions</span>
     </div>
 
     <!-- Links -->
@@ -246,17 +246,21 @@
         <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/health" target="_blank">API Health</a>
         <span class="separator">|</span>
-        <a href="cloud_architecture_api.md" target="_blank">Architecture API (MD)</a>
-        <a href="cloud_control_api.md" target="_blank">Control API (MD)</a>
+        <a href="cloud_central_api.md" target="_blank">Central API (MD)</a>
+        <a href="cloud_ondemand_api.md" target="_blank">On-Demand API (MD)</a>
         <span class="separator">|</span>
-        <a href="openapi_architecture.json" target="_blank">OpenAPI Architecture</a>
-        <a href="openapi_control.json" target="_blank">OpenAPI Control</a>
+        <a href="openapi_central.json" target="_blank">OpenAPI Central</a>
+        <a href="openapi_ondemand.json" target="_blank">OpenAPI On-Demand</a>
     </div>
 
-    <!-- Quick Links Info -->
-    <div class="quick-links" id="quickLinksControl">
-        <h3>Control API - Runtime Endpoints</h3>
+    <!-- Quick Links: Central -->
+    <div class="quick-links" id="quickLinksCentral">
+        <h3>Central Cloud Control API</h3>
         <ul>
+            <li><strong>Architecture:</strong> <code>GET /architecture</code></li>
+            <li><strong>VMs:</strong> <code>GET /vms</code></li>
+            <li><strong>Services:</strong> <code>GET /services</code></li>
+            <li><strong>Domains:</strong> <code>GET /domains</code></li>
             <li><strong>Topology:</strong> <code>GET /topology</code></li>
             <li><strong>Cost:</strong> <code>GET /cost</code></li>
             <li><strong>Monitor:</strong> <code>GET /monitor</code></li>
@@ -264,13 +268,14 @@
         </ul>
     </div>
 
-    <div class="quick-links" id="quickLinksArch" style="display: none;">
-        <h3>Architecture API - Static Endpoints</h3>
+    <!-- Quick Links: On-Demand -->
+    <div class="quick-links" id="quickLinksOndemand" style="display: none;">
+        <h3>Containers Control On-Demand API</h3>
         <ul>
-            <li><strong>Full Architecture:</strong> <code>GET /architecture</code></li>
-            <li><strong>VMs:</strong> <code>GET /vms</code></li>
-            <li><strong>Services:</strong> <code>GET /services</code></li>
-            <li><strong>Domains:</strong> <code>GET /domains</code></li>
+            <li><strong>VM Status:</strong> <code>GET /vm/status</code></li>
+            <li><strong>VM Start:</strong> <code>POST /vm/start</code></li>
+            <li><strong>Containers:</strong> <code>GET /containers</code></li>
+            <li><strong>Restart:</strong> <code>POST /containers/{name}/restart</code></li>
         </ul>
     </div>
 
@@ -296,17 +301,17 @@
     <script>
         // API configurations
         const apiConfigs = {
-            control: {
-                url: './openapi_control.json',
-                info: '38 endpoints - topology, cost, monitor, actions'
+            central: {
+                url: './openapi_central.json',
+                info: 'Unified API \u2014 architecture, vms, services, domains, topology, cost, monitor, actions'
             },
-            architecture: {
-                url: './openapi_architecture.json',
-                info: '18 endpoints - architecture, vms, services, domains'
+            ondemand: {
+                url: './openapi_ondemand.json',
+                info: 'oci-flex VM lifecycle & Docker container management'
             }
         };
 
-        let currentApi = 'control';
+        let currentApi = 'central';
 
         // Initialize Swagger UI
         function createSwaggerUI(apiUrl) {
@@ -362,15 +367,15 @@
             document.getElementById('apiInfo').textContent = config.info;
 
             // Toggle quick links
-            document.getElementById('quickLinksControl').style.display = apiName === 'control' ? 'block' : 'none';
-            document.getElementById('quickLinksArch').style.display = apiName === 'architecture' ? 'block' : 'none';
+            document.getElementById('quickLinksCentral').style.display = apiName === 'central' ? 'block' : 'none';
+            document.getElementById('quickLinksOndemand').style.display = apiName === 'ondemand' ? 'block' : 'none';
 
             // Reload Swagger UI with new spec
             window.ui = createSwaggerUI(config.url);
         }
 
         // Initial load
-        window.ui = createSwaggerUI(apiConfigs.control.url);
+        window.ui = createSwaggerUI(apiConfigs.central.url);
     </script>
 </body>
 </html>

@@ -1,22 +1,22 @@
-# Cloud Control API Reference
+# Central Cloud Control API Reference
 
 > **Version**: 1.0.0
-> **Generated**: 2025-12-23 17:32
-> **Source**: `cloud_control_api.json`
+> **Generated**: 2026-02-08
+> **Source**: `openapi_central.yaml`
 
-This document is auto-generated from `cloud_control_api.json` using `cloud_json_md.py`.
-Do not edit manually - changes will be overwritten.
+Unified REST API for cloud infrastructure — static architecture definitions,
+runtime monitoring, topology, cost analysis, and administrative actions.
 
 ---
 
 
 ## API Overview
 
-**Title**: Cloud Control API
+**Title**: Central Cloud Control API
 
 **Version**: 1.0.0
 
-**Description**: REST API endpoints for cloud_control.json - runtime monitoring, topology, costs, and administrative actions
+**Description**: Unified REST API for cloud infrastructure — static architecture definitions, runtime monitoring, topology, cost analysis, and administrative actions
 
 
 ### Servers
@@ -46,20 +46,23 @@ Do not edit manually - changes will be overwritten.
 
 ## Endpoints Summary
 
-| Category       | Description                                                  | Endpoints |
-| -------------- | ------------------------------------------------------------ | --------- |
-| health         | API health and status checks                                 | 2         |
-| vmControl      | Virtual machine control via cloud provider APIs (OCI/GCloud) | 5         |
-| serviceControl | Service runtime operations                                   | 4         |
-| domainStatus   | Domain runtime status                                        | 2         |
-| topology       | Infrastructure topology data (for cloud_control_topology.md) | 8         |
-| cost           | Cost and billing data (for cloud_control_cost.md)            | 6         |
-| monitor        | Runtime monitoring data (for cloud_control_monitor.md)       | 12        |
-| actions        | Administrative actions                                       | 3         |
-| index          | API discovery and metadata                                   | 3         |
+| Category       | Description                                                             | Endpoints |
+| -------------- | ----------------------------------------------------------------------- | --------- |
+| health         | API health and status checks                                            | 2         |
+| architecture   | Access cloud_architecture.json data (static infrastructure definitions) | 8         |
+| vms            | Virtual machine definitions (static data)                               | 3         |
+| services       | Service definitions (static data)                                       | 2         |
+| domains        | Domain configuration and runtime status                                 | 4         |
+| vmControl      | Virtual machine control via cloud provider APIs (OCI/GCloud)            | 5         |
+| serviceControl | Service runtime operations                                              | 4         |
+| topology       | Infrastructure topology data                                            | 8         |
+| cost           | Cost and billing data                                                   | 6         |
+| monitor        | Runtime monitoring data                                                 | 12        |
+| actions        | Administrative actions                                                  | 3         |
+| index          | API discovery and metadata                                              | 3         |
 
 
-**Total Endpoints**: 38
+**Total Endpoints**: 60
 
 ## Endpoints Detail
 
@@ -72,6 +75,63 @@ Do not edit manually - changes will be overwritten.
 | ------ | --------------- | ---- | --------------------------------------- |
 | `GET`  | `/health`       | none | Simple health check                     |
 | `GET`  | `/health/ready` | none | Readiness check (DB, cache connections) |
+
+### ARCHITECTURE
+
+*Access cloud_architecture.json data (static infrastructure definitions)*
+
+**Source**: `cloud_architecture.json`
+
+
+| Method | Path                           | Auth | Description                           |
+| ------ | ------------------------------ | ---- | ------------------------------------- |
+| `GET`  | `/architecture`                | read | Get complete architecture.json        |
+| `GET`  | `/architecture/overview`       | read | Get partI_overview section            |
+| `GET`  | `/architecture/infrastructure` | read | Get partII_infrastructure section     |
+| `GET`  | `/architecture/security`       | read | Get partIII_security section          |
+| `GET`  | `/architecture/data`           | read | Get partIV_data section               |
+| `GET`  | `/architecture/operations`     | read | Get partV_operations section          |
+| `GET`  | `/architecture/reference`      | read | Get partVI_reference section          |
+| `GET`  | `/architecture/version`        | none | Get architecture version and metadata |
+
+### VMS
+
+*Virtual machine definitions (static data)*
+
+**Source**: `cloud_architecture.partII_infrastructure.virtualMachines`
+
+
+| Method | Path              | Auth | Description                       |
+| ------ | ----------------- | ---- | --------------------------------- |
+| `GET`  | `/vms`            | read | List all virtual machines         |
+| `GET`  | `/vms/{vmId}`     | read | Get single VM details             |
+| `GET`  | `/vms/{vmId}/ssh` | read | Get SSH connection command for VM |
+
+### SERVICES
+
+*Service definitions (static data)*
+
+**Source**: `cloud_architecture.partII_infrastructure.services`
+
+
+| Method | Path                    | Auth | Description                |
+| ------ | ----------------------- | ---- | -------------------------- |
+| `GET`  | `/services`             | read | List all services          |
+| `GET`  | `/services/{serviceId}` | read | Get single service details |
+
+### DOMAINS
+
+*Domain configuration and runtime status*
+
+**Source**: `cloud_architecture.partIII_security.domains` + `cloud_control.monitor.endpointStatus`
+
+
+| Method | Path                       | Auth | Description                            |
+| ------ | -------------------------- | ---- | -------------------------------------- |
+| `GET`  | `/domains`                 | read | List all domains and subdomains        |
+| `GET`  | `/domains/{domain}`        | read | Get domain configuration               |
+| `GET`  | `/domains/{domain}/status` | read | Check domain DNS, SSL, and HTTP status |
+| `GET`  | `/domains/{domain}/ssl`    | read | Get SSL certificate details            |
 
 ### VMCONTROL
 
@@ -102,21 +162,9 @@ Do not edit manually - changes will be overwritten.
 | `POST` | `/services/{serviceId}/restart`    | admin | Restart all containers for a service   |
 | `GET`  | `/services/{serviceId}/logs`       | read  | Get recent logs for service containers |
 
-### DOMAINSTATUS
-
-*Domain runtime status*
-
-**Source**: `cloud_control.monitor.endpointStatus`
-
-
-| Method | Path                       | Auth | Description                            |
-| ------ | -------------------------- | ---- | -------------------------------------- |
-| `GET`  | `/domains/{domain}/status` | read | Check domain DNS, SSL, and HTTP status |
-| `GET`  | `/domains/{domain}/ssl`    | read | Get SSL certificate details            |
-
 ### TOPOLOGY
 
-*Infrastructure topology data (for cloud_control_topology.md)*
+*Infrastructure topology data*
 
 **Source**: `cloud_control.topology`
 
@@ -134,7 +182,7 @@ Do not edit manually - changes will be overwritten.
 
 ### COST
 
-*Cost and billing data (for cloud_control_cost.md)*
+*Cost and billing data*
 
 **Source**: `cloud_control.cost`
 
@@ -150,7 +198,7 @@ Do not edit manually - changes will be overwritten.
 
 ### MONITOR
 
-*Runtime monitoring data (for cloud_control_monitor.md)*
+*Runtime monitoring data*
 
 **Source**: `cloud_control.monitor`
 
@@ -200,6 +248,19 @@ Do not edit manually - changes will be overwritten.
 | -------- | ------------------------------------------ |
 | ping     | `curl https://api.diegonmarcos.com/health` |
 
+### architecture
+
+| Endpoint | Curl Command                                                                       |
+| -------- | ---------------------------------------------------------------------------------- |
+| full     | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/architecture` |
+
+### vms
+
+| Endpoint | Curl Command                                                                           |
+| -------- | -------------------------------------------------------------------------------------- |
+| list     | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms`              |
+| get      | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-p-flex_1` |
+
 ### vmControl
 
 | Endpoint | Curl Command                                                                                           |
@@ -209,7 +270,67 @@ Do not edit manually - changes will be overwritten.
 | reboot   | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reboot` |
 | reset    | `curl -X POST -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/vms/oci-f-micro_1/reset`  |
 
+### topology
+
+| Endpoint | Curl Command                                                                        |
+| -------- | ----------------------------------------------------------------------------------- |
+| full     | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/topology`      |
+| vms      | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/topology/vms`  |
+
+### cost
+
+| Endpoint | Curl Command                                                                        |
+| -------- | ----------------------------------------------------------------------------------- |
+| full     | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/cost`          |
+| summary  | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/cost/summary`  |
+
+### monitor
+
+| Endpoint | Curl Command                                                                           |
+| -------- | -------------------------------------------------------------------------------------- |
+| full     | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/monitor`          |
+| summary  | `curl -H 'Authorization: Bearer $TOKEN' https://api.diegonmarcos.com/monitor/summary`  |
+
 ## Schemas
+
+### VirtualMachine
+
+| Property     | Type                       | Required | Description |
+| ------------ | -------------------------- | -------- | ----------- |
+| id           | string                     | Yes      |             |
+| name         | string                     | Yes      |             |
+| displayName  | string                     | No       |             |
+| provider     | enum: oracle, gcloud       | Yes      |             |
+| category     | enum: services, ml         | No       |             |
+| instanceType | string                     | No       |             |
+| specs        | object                     | No       |             |
+| network      | object                     | Yes      |             |
+| availability | enum: 24/7, wake-on-demand | No       |             |
+| cost         | object                     | No       |             |
+
+### Service
+
+| Property     | Type    | Required | Description |
+| ------------ | ------- | -------- | ----------- |
+| id           | string  | Yes      |             |
+| displayName  | string  | Yes      |             |
+| category     | string  | Yes      |             |
+| vmId         | string  | Yes      |             |
+| containers   | array   | No       |             |
+| technology   | object  | No       |             |
+| urls         | object  | No       |             |
+| authRequired | boolean | No       |             |
+| resources    | object  | No       |             |
+
+### Domain
+
+| Property | Type                         | Required | Description |
+| -------- | ---------------------------- | -------- | ----------- |
+| service  | string                       | Yes      |             |
+| vmId     | string                       | No       |             |
+| proxyVia | string                       | No       |             |
+| ssl      | boolean                      | Yes      |             |
+| auth     | enum: none, authelia, native | No       |             |
 
 ### VmStatus
 
@@ -271,5 +392,3 @@ Do not edit manually - changes will be overwritten.
 | default  | 100      | 1m     |
 | auth     | 10       | 1m     |
 | actions  | 5        | 1m     |
-
-## Data Sources Mapping

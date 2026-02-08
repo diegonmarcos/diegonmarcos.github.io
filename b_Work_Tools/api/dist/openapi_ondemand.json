@@ -1,0 +1,695 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Containers Control On-Demand API",
+    "description": "REST API for oci-flex VM lifecycle management and Docker container control via SSH",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Diego Nepomuceno Marcos",
+      "url": "https://diegonmarcos.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.diegonmarcos.com",
+      "description": "Production API via NPM proxy"
+    },
+    {
+      "url": "http://127.0.0.1:5000",
+      "description": "Direct Flask access (internal only)"
+    },
+    {
+      "url": "http://localhost:5000",
+      "description": "Local development"
+    }
+  ],
+  "tags": [
+    {
+      "name": "vm",
+      "description": "OCI Flex VM lifecycle (start, stop, reset, status)"
+    },
+    {
+      "name": "containers",
+      "description": "Docker container management on oci-flex via SSH"
+    }
+  ],
+  "paths": {
+    "/vm/status": {
+      "get": {
+        "tags": [
+          "vm"
+        ],
+        "summary": "Get oci-flex VM state (OCI lifecycle)",
+        "operationId": "vm_status",
+        "responses": {
+          "200": {
+            "description": "VM status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmState"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to query OCI API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/vm/start": {
+      "post": {
+        "tags": [
+          "vm"
+        ],
+        "summary": "Start oci-flex VM (OCI instance_action START)",
+        "operationId": "vm_start",
+        "responses": {
+          "200": {
+            "description": "VM start initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmActionResult"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "VM already running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/vm/stop": {
+      "post": {
+        "tags": [
+          "vm"
+        ],
+        "summary": "Stop oci-flex VM (OCI instance_action STOP)",
+        "operationId": "vm_stop",
+        "responses": {
+          "200": {
+            "description": "VM stop initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmActionResult"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "VM already stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/vm/reboot": {
+      "post": {
+        "tags": [
+          "vm"
+        ],
+        "summary": "Graceful reboot oci-flex VM (OCI instance_action SOFTRESET)",
+        "operationId": "vm_reboot",
+        "responses": {
+          "200": {
+            "description": "VM reboot initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmActionResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/vm/reset": {
+      "post": {
+        "tags": [
+          "vm"
+        ],
+        "summary": "Hard reset oci-flex VM (OCI instance_action RESET) - use with caution",
+        "operationId": "vm_reset",
+        "responses": {
+          "200": {
+            "description": "VM reset initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VmActionResult"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers": {
+      "get": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "List all containers on oci-flex (docker ps -a)",
+        "operationId": "containers_list",
+        "responses": {
+          "200": {
+            "description": "Container list retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "containers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Container"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "VM not reachable via SSH",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/status": {
+      "get": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Get container status",
+        "operationId": "containers_status",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Container"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/start": {
+      "post": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Start container",
+        "operationId": "containers_start",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container started",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerActionResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/stop": {
+      "post": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Stop container",
+        "operationId": "containers_stop",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container stopped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerActionResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/restart": {
+      "post": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Restart container",
+        "operationId": "containers_restart",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container restarted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerActionResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/rebuild": {
+      "post": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Rebuild container (docker-compose up -d --build)",
+        "operationId": "containers_rebuild",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container rebuild initiated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContainerActionResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "admin"
+            ]
+          }
+        ]
+      }
+    },
+    "/containers/{name}/logs": {
+      "get": {
+        "tags": [
+          "containers"
+        ],
+        "summary": "Get container logs",
+        "operationId": "containers_logs",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Container name"
+          },
+          {
+            "name": "lines",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 100
+            },
+            "description": "Number of log lines to return"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Container logs retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "container": {
+                      "type": "string"
+                    },
+                    "logs": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Container not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Authelia OIDC token from https://auth.diegonmarcos.com/api/oidc/token"
+      }
+    },
+    "schemas": {
+      "VmState": {
+        "type": "object",
+        "properties": {
+          "vmId": {
+            "type": "string",
+            "example": "oci-flex"
+          },
+          "lifecycleState": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "STOPPED",
+              "STARTING",
+              "STOPPING",
+              "TERMINATED"
+            ]
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "lastCheck": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "VmActionResult": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "START",
+              "STOP",
+              "SOFTRESET",
+              "RESET"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "example": "initiated"
+          },
+          "vmId": {
+            "type": "string",
+            "example": "oci-flex"
+          }
+        }
+      },
+      "Container": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "running",
+              "exited",
+              "paused",
+              "restarting",
+              "created"
+            ]
+          },
+          "image": {
+            "type": "string"
+          },
+          "ports": {
+            "type": "string"
+          },
+          "uptime": {
+            "type": "string"
+          }
+        }
+      },
+      "ContainerActionResult": {
+        "type": "object",
+        "properties": {
+          "container": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "start",
+              "stop",
+              "restart",
+              "rebuild"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      }
+    }
+  }
+}

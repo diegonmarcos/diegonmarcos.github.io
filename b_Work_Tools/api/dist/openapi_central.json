@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "Cloud Control API",
-    "description": "REST API endpoints for cloud_control.json - runtime monitoring, topology, costs, and administrative actions",
+    "title": "Central Cloud Control API",
+    "description": "Unified REST API for cloud infrastructure — static architecture definitions, runtime monitoring, topology, cost analysis, and administrative actions",
     "version": "1.0.0",
     "contact": {
       "name": "Diego Nepomuceno Marcos",
@@ -29,16 +29,28 @@
       "description": "API health and status checks"
     },
     {
+      "name": "architecture",
+      "description": "Access cloud_architecture.json data (static infrastructure definitions)"
+    },
+    {
+      "name": "vms",
+      "description": "Virtual machine definitions (static data)"
+    },
+    {
+      "name": "services",
+      "description": "Service definitions (static data)"
+    },
+    {
+      "name": "domains",
+      "description": "Domain configuration and runtime status"
+    },
+    {
       "name": "vmControl",
       "description": "Virtual machine control via cloud provider APIs (OCI/GCloud)"
     },
     {
       "name": "serviceControl",
       "description": "Service runtime operations"
-    },
-    {
-      "name": "domainStatus",
-      "description": "Domain runtime status"
     },
     {
       "name": "topology",
@@ -104,13 +116,13 @@
         }
       }
     },
-    "/vms/{vmId}/status": {
+    "/architecture": {
       "get": {
         "tags": [
-          "vmControl"
+          "architecture"
         ],
-        "summary": "Get live VM status (runtime data)",
-        "operationId": "vmControl_status",
+        "summary": "Get complete architecture.json",
+        "operationId": "architecture_full",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -129,7 +141,262 @@
               "read"
             ]
           }
+        ]
+      }
+    },
+    "/architecture/overview": {
+      "get": {
+        "tags": [
+          "architecture"
         ],
+        "summary": "Get partI_overview section",
+        "operationId": "architecture_overview",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/infrastructure": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get partII_infrastructure section",
+        "operationId": "architecture_infrastructure",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/security": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get partIII_security section",
+        "operationId": "architecture_security",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/data": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get partIV_data section",
+        "operationId": "architecture_data",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/operations": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get partV_operations section",
+        "operationId": "architecture_operations",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/reference": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get partVI_reference section",
+        "operationId": "architecture_reference",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/architecture/version": {
+      "get": {
+        "tags": [
+          "architecture"
+        ],
+        "summary": "Get architecture version and metadata",
+        "operationId": "architecture_version",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/vms": {
+      "get": {
+        "tags": [
+          "vms"
+        ],
+        "summary": "List all virtual machines",
+        "operationId": "vms_list",
+        "parameters": [
+          {
+            "name": "provider",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by provider"
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by status"
+          },
+          {
+            "name": "availability",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by availability"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/vms/{vmId}": {
+      "get": {
+        "tags": [
+          "vms"
+        ],
+        "summary": "Get single VM details",
+        "operationId": "vms_get",
         "parameters": [
           {
             "name": "vmId",
@@ -139,6 +406,344 @@
               "type": "string"
             },
             "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/vms/{vmId}/ssh": {
+      "get": {
+        "tags": [
+          "vms"
+        ],
+        "summary": "Get SSH connection command for VM",
+        "operationId": "vms_ssh",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/services": {
+      "get": {
+        "tags": [
+          "services"
+        ],
+        "summary": "List all services",
+        "operationId": "services_list",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by VM"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/services/{serviceId}": {
+      "get": {
+        "tags": [
+          "services"
+        ],
+        "summary": "Get single service details",
+        "operationId": "services_get",
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/domains": {
+      "get": {
+        "tags": [
+          "domains"
+        ],
+        "summary": "List all domains and subdomains",
+        "operationId": "domains_list",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/domains/{domain}": {
+      "get": {
+        "tags": [
+          "domains"
+        ],
+        "summary": "Get domain configuration",
+        "operationId": "domains_get",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/domains/{domain}/status": {
+      "get": {
+        "tags": [
+          "domains"
+        ],
+        "summary": "Check domain DNS, SSL, and HTTP status",
+        "operationId": "domainStatus_status",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/domains/{domain}/ssl": {
+      "get": {
+        "tags": [
+          "domains"
+        ],
+        "summary": "Get SSL certificate details",
+        "operationId": "domainStatus_ssl",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
+          }
+        ]
+      }
+    },
+    "/vms/{vmId}/status": {
+      "get": {
+        "tags": [
+          "vmControl"
+        ],
+        "summary": "Get live VM status (runtime data)",
+        "operationId": "vmControl_status",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": [
+              "read"
+            ]
           }
         ]
       }
@@ -150,6 +755,17 @@
         ],
         "summary": "Start a stopped VM via cloud provider API (OCI instance_action START)",
         "operationId": "vmControl_start",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -167,17 +783,6 @@
             "bearerAuth": [
               "admin"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "vmId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -189,6 +794,17 @@
         ],
         "summary": "Stop a running VM via cloud provider API (OCI instance_action STOP)",
         "operationId": "vmControl_stop",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -206,17 +822,6 @@
             "bearerAuth": [
               "admin"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "vmId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -228,6 +833,17 @@
         ],
         "summary": "Graceful reboot VM via cloud provider API (OCI instance_action SOFTRESET)",
         "operationId": "vmControl_reboot",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -245,17 +861,6 @@
             "bearerAuth": [
               "admin"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "vmId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -267,6 +872,17 @@
         ],
         "summary": "Hard reset VM via cloud provider API (OCI instance_action RESET) - use with caution",
         "operationId": "vmControl_reset",
+        "parameters": [
+          {
+            "name": "vmId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -284,17 +900,6 @@
             "bearerAuth": [
               "admin"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "vmId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -306,6 +911,17 @@
         ],
         "summary": "Check service health",
         "operationId": "serviceControl_health",
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -323,17 +939,6 @@
             "bearerAuth": [
               "read"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "serviceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -345,6 +950,17 @@
         ],
         "summary": "List containers for a service",
         "operationId": "serviceControl_containers",
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -363,17 +979,6 @@
               "read"
             ]
           }
-        ],
-        "parameters": [
-          {
-            "name": "serviceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
-          }
         ]
       }
     },
@@ -384,6 +989,17 @@
         ],
         "summary": "Restart all containers for a service",
         "operationId": "serviceControl_restart",
+        "parameters": [
+          {
+            "name": "serviceId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -402,17 +1018,6 @@
               "admin"
             ]
           }
-        ],
-        "parameters": [
-          {
-            "name": "serviceId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
-          }
         ]
       }
     },
@@ -423,25 +1028,6 @@
         ],
         "summary": "Get recent logs for service containers",
         "operationId": "serviceControl_logs",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ],
         "parameters": [
           {
             "name": "serviceId",
@@ -470,16 +1056,7 @@
             },
             "description": "Specific container name"
           }
-        ]
-      }
-    },
-    "/domains/{domain}/status": {
-      "get": {
-        "tags": [
-          "domainStatus"
         ],
-        "summary": "Check domain DNS, SSL, and HTTP status",
-        "operationId": "domainStatus_status",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -497,56 +1074,6 @@
             "bearerAuth": [
               "read"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "domain",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
-          }
-        ]
-      }
-    },
-    "/domains/{domain}/ssl": {
-      "get": {
-        "tags": [
-          "domainStatus"
-        ],
-        "summary": "Get SSL certificate details",
-        "operationId": "domainStatus_ssl",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "domain",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -1146,6 +1673,17 @@
         ],
         "summary": "Get recent audit events",
         "operationId": "monitor_audit",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -1163,17 +1701,6 @@
             "bearerAuth": [
               "read"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            },
-            "description": ""
           }
         ]
       }
@@ -1325,6 +1852,17 @@
         ],
         "summary": "Regenerate cloud_control_*.md files from JSON",
         "operationId": "actions_generateMd",
+        "parameters": [
+          {
+            "name": "target",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": ""
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful response",
@@ -1342,17 +1880,6 @@
             "bearerAuth": [
               "admin"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "name": "target",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            },
-            "description": ""
           }
         ]
       }
@@ -1459,6 +1986,163 @@
       }
     },
     "schemas": {
+      "VirtualMachine": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "provider",
+          "network"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^(oci|gcp)-[a-z]+-[a-z]+_[0-9]+$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "oracle",
+              "gcloud"
+            ]
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "services",
+              "ml"
+            ]
+          },
+          "instanceType": {
+            "type": "string"
+          },
+          "specs": {
+            "type": "object",
+            "properties": {
+              "cpu": {
+                "type": "string"
+              },
+              "ram": {
+                "type": "string"
+              },
+              "storage": {
+                "type": "string"
+              }
+            }
+          },
+          "network": {
+            "type": "object",
+            "properties": {
+              "publicIp": {
+                "type": "string",
+                "format": "ipv4"
+              },
+              "dockerNetwork": {
+                "type": "string"
+              },
+              "dockerSubnet": {
+                "type": "string"
+              }
+            }
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "24/7",
+              "wake-on-demand"
+            ]
+          },
+          "cost": {
+            "type": "object",
+            "properties": {
+              "monthly": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string",
+                "default": "USD"
+              }
+            }
+          }
+        }
+      },
+      "Service": {
+        "type": "object",
+        "required": [
+          "id",
+          "displayName",
+          "category",
+          "vmId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "displayName": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "vmId": {
+            "type": "string"
+          },
+          "containers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "technology": {
+            "type": "object"
+          },
+          "urls": {
+            "type": "object"
+          },
+          "authRequired": {
+            "type": "boolean",
+            "default": false
+          },
+          "resources": {
+            "type": "object"
+          }
+        }
+      },
+      "Domain": {
+        "type": "object",
+        "required": [
+          "service",
+          "ssl"
+        ],
+        "properties": {
+          "service": {
+            "type": "string"
+          },
+          "vmId": {
+            "type": "string"
+          },
+          "proxyVia": {
+            "type": "string"
+          },
+          "ssl": {
+            "type": "boolean"
+          },
+          "auth": {
+            "type": "string",
+            "enum": [
+              "none",
+              "authelia",
+              "native"
+            ]
+          }
+        }
+      },
       "VmStatus": {
         "type": "object",
         "properties": {

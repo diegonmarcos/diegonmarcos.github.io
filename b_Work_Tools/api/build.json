@@ -6,7 +6,7 @@
   "dist": "dist",
 
   "build": [
-    { "mod": "copy", "files": "*", "from": "src" }
+    { "mod": "copy", "files": "index.html,openapi_central.yaml,openapi_ondemand.yaml,openapi_central.json,openapi_ondemand.json,cloud_central_api.md,cloud_ondemand_api.md,costs_ai.js,costs_infra.js,infrastructure.js,monitor.js", "from": "src" }
   ],
 
   "serve": {

@@ -246,7 +246,7 @@ runtime monitoring, topology, cost analysis, and administrative actions.
 
 | Endpoint | Curl Command                               |
 | -------- | ------------------------------------------ |
-| ping     | `curl https://api.diegonmarcos.com/health` |
+| ping     | `curl https://api.diegonmarcos.com/api/health` |
 
 ### architecture
 

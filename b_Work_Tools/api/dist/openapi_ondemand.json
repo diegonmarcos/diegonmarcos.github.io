@@ -34,13 +34,18 @@
     }
   ],
   "paths": {
-    "/vm/status": {
+    "/vms/{vmId}/status": {
       "get": {
         "tags": [
           "vm"
         ],
-        "summary": "Get oci-flex VM state (OCI lifecycle)",
+        "summary": "Get VM state (ping, SSH, OCI lifecycle)",
         "operationId": "vm_status",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/vmId"
+          }
+        ],
         "responses": {
           "200": {
             "description": "VM status retrieved",
@@ -52,8 +57,8 @@
               }
             }
           },
-          "500": {
-            "description": "Failed to query OCI API",
+          "404": {
+            "description": "VM not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -62,26 +67,24 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/vm/start": {
+    "/vms/{vmId}/start": {
       "post": {
         "tags": [
           "vm"
         ],
-        "summary": "Start oci-flex VM (OCI instance_action START)",
+        "summary": "Start VM (OCI instance_action START / gcloud start)",
         "operationId": "vm_start",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/vmId"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "VM start initiated",
+            "description": "VM start initiated or already running",
             "content": {
               "application/json": {
                 "schema": {
@@ -90,8 +93,18 @@
               }
             }
           },
-          "409": {
-            "description": "VM already running",
+          "404": {
+            "description": "Unknown VM",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to start VM",
             "content": {
               "application/json": {
                 "schema": {
@@ -100,26 +113,24 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/vm/stop": {
+    "/vms/{vmId}/stop": {
       "post": {
         "tags": [
           "vm"
         ],
-        "summary": "Stop oci-flex VM (OCI instance_action STOP)",
+        "summary": "Stop VM (OCI instance_action STOP / gcloud stop)",
         "operationId": "vm_stop",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/vmId"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "VM stop initiated",
+            "description": "VM stop initiated or already stopped",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,8 +139,18 @@
               }
             }
           },
-          "409": {
-            "description": "VM already stopped",
+          "404": {
+            "description": "Unknown VM",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to stop VM",
             "content": {
               "application/json": {
                 "schema": {
@@ -138,54 +159,24 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/vm/reboot": {
+    "/vms/{vmId}/reset": {
       "post": {
         "tags": [
           "vm"
         ],
-        "summary": "Graceful reboot oci-flex VM (OCI instance_action SOFTRESET)",
-        "operationId": "vm_reboot",
-        "responses": {
-          "200": {
-            "description": "VM reboot initiated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VmActionResult"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
-      }
-    },
-    "/vm/reset": {
-      "post": {
-        "tags": [
-          "vm"
-        ],
-        "summary": "Hard reset oci-flex VM (OCI instance_action RESET) - use with caution",
+        "summary": "Reset VM (SOFTRESET if running, START if stopped)",
         "operationId": "vm_reset",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/vmId"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "VM reset initiated",
+            "description": "VM reset/reboot initiated",
             "content": {
               "application/json": {
                 "schema": {
@@ -193,24 +184,42 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Cannot reset VM in current state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown VM",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/containers": {
+    "/vms/{vmId}/containers": {
       "get": {
         "tags": [
           "containers"
         ],
-        "summary": "List all containers on oci-flex (docker ps -a)",
+        "summary": "List all Docker containers on VM",
         "operationId": "containers_list",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/vmId"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Container list retrieved",
@@ -219,6 +228,12 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
                     "containers": {
                       "type": "array",
                       "items": {
@@ -226,6 +241,16 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "VM not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
                 }
               }
             }
@@ -240,81 +265,22 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/containers/{name}/status": {
-      "get": {
-        "tags": [
-          "containers"
-        ],
-        "summary": "Get container status",
-        "operationId": "containers_status",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Container status retrieved",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Container"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Container not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ]
-      }
-    },
-    "/containers/{name}/start": {
+    "/vms/{vmId}/containers/{containerName}/start": {
       "post": {
         "tags": [
           "containers"
         ],
-        "summary": "Start container",
+        "summary": "Start container on VM",
         "operationId": "containers_start",
         "parameters": [
           {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
+            "$ref": "#/components/parameters/vmId"
+          },
+          {
+            "$ref": "#/components/parameters/containerName"
           }
         ],
         "responses": {
@@ -328,8 +294,8 @@
               }
             }
           },
-          "404": {
-            "description": "Container not found",
+          "500": {
+            "description": "Failed to start container",
             "content": {
               "application/json": {
                 "schema": {
@@ -338,32 +304,22 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/containers/{name}/stop": {
+    "/vms/{vmId}/containers/{containerName}/stop": {
       "post": {
         "tags": [
           "containers"
         ],
-        "summary": "Stop container",
+        "summary": "Stop container on VM",
         "operationId": "containers_stop",
         "parameters": [
           {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
+            "$ref": "#/components/parameters/vmId"
+          },
+          {
+            "$ref": "#/components/parameters/containerName"
           }
         ],
         "responses": {
@@ -377,8 +333,8 @@
               }
             }
           },
-          "404": {
-            "description": "Container not found",
+          "500": {
+            "description": "Failed to stop container",
             "content": {
               "application/json": {
                 "schema": {
@@ -387,32 +343,22 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/containers/{name}/restart": {
+    "/vms/{vmId}/containers/{containerName}/restart": {
       "post": {
         "tags": [
           "containers"
         ],
-        "summary": "Restart container",
+        "summary": "Restart container on VM",
         "operationId": "containers_restart",
         "parameters": [
           {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
+            "$ref": "#/components/parameters/vmId"
+          },
+          {
+            "$ref": "#/components/parameters/containerName"
           }
         ],
         "responses": {
@@ -426,8 +372,8 @@
               }
             }
           },
-          "404": {
-            "description": "Container not found",
+          "500": {
+            "description": "Failed to restart container",
             "content": {
               "application/json": {
                 "schema": {
@@ -436,66 +382,10 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
+        }
       }
     },
-    "/containers/{name}/rebuild": {
-      "post": {
-        "tags": [
-          "containers"
-        ],
-        "summary": "Rebuild container (docker-compose up -d --build)",
-        "operationId": "containers_rebuild",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Container rebuild initiated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ContainerActionResult"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Container not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "admin"
-            ]
-          }
-        ]
-      }
-    },
-    "/containers/{name}/logs": {
+    "/vms/{vmId}/containers/{containerName}/logs": {
       "get": {
         "tags": [
           "containers"
@@ -504,13 +394,10 @@
         "operationId": "containers_logs",
         "parameters": [
           {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            },
-            "description": "Container name"
+            "$ref": "#/components/parameters/vmId"
+          },
+          {
+            "$ref": "#/components/parameters/containerName"
           },
           {
             "name": "lines",
@@ -552,33 +439,57 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "bearerAuth": [
-              "read"
-            ]
-          }
-        ]
+        }
       }
     }
   },
   "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "Authelia OIDC token from https://auth.diegonmarcos.com/api/oidc/token"
+    "parameters": {
+      "vmId": {
+        "name": "vmId",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [
+            "oci-p-flex_1",
+            "oci-f-micro_1",
+            "oci-f-micro_2",
+            "gcp-f-micro_1"
+          ]
+        },
+        "description": "VM identifier from architecture config"
+      },
+      "containerName": {
+        "name": "containerName",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Docker container name"
       }
     },
     "schemas": {
       "VmState": {
         "type": "object",
         "properties": {
-          "vmId": {
+          "id": {
             "type": "string",
-            "example": "oci-flex"
+            "example": "oci-p-flex_1"
+          },
+          "name": {
+            "type": "string"
+          },
+          "ip": {
+            "type": "string",
+            "format": "ipv4"
+          },
+          "ping": {
+            "type": "boolean"
+          },
+          "ssh": {
+            "type": "boolean"
           },
           "lifecycleState": {
             "type": "string",
@@ -590,38 +501,29 @@
               "TERMINATED"
             ]
           },
-          "displayName": {
-            "type": "string"
-          },
-          "ip": {
-            "type": "string",
-            "format": "ipv4"
-          },
-          "lastCheck": {
-            "type": "string",
-            "format": "date-time"
+          "ram_percent": {
+            "type": "number",
+            "format": "float"
           }
         }
       },
       "VmActionResult": {
         "type": "object",
         "properties": {
+          "status": {
+            "type": "string",
+            "example": "ok"
+          },
           "action": {
             "type": "string",
             "enum": [
-              "START",
-              "STOP",
-              "SOFTRESET",
-              "RESET"
+              "started",
+              "stopped",
+              "rebooted"
             ]
           },
-          "status": {
-            "type": "string",
-            "example": "initiated"
-          },
-          "vmId": {
-            "type": "string",
-            "example": "oci-flex"
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -655,21 +557,26 @@
       "ContainerActionResult": {
         "type": "object",
         "properties": {
-          "container": {
-            "type": "string"
+          "status": {
+            "type": "string",
+            "example": "ok"
           },
           "action": {
             "type": "string",
             "enum": [
-              "start",
-              "stop",
-              "restart",
-              "rebuild"
+              "started",
+              "stopped",
+              "restarted"
             ]
           },
-          "status": {
-            "type": "string",
-            "example": "success"
+          "container": {
+            "type": "string"
+          },
+          "vm": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
           }
         }
       },
@@ -678,15 +585,6 @@
         "properties": {
           "error": {
             "type": "string"
-          },
-          "code": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          },
-          "details": {
-            "type": "object"
           }
         }
       }

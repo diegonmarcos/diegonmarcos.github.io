@@ -348,9 +348,9 @@ defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 .linktree-btn {
   position: absolute; bottom: 52px; right: 12px; z-index: 50;
   width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  background: rgba(120,120,120,0.12); border: 1px solid rgba(120,120,120,0.2);
-  color: rgba(160,160,160,0.5); text-decoration: none; transition: all 0.2s; opacity: 0.6;
-  &:hover { opacity: 1; color: rgba(180,180,180,0.8); background: rgba(120,120,120,0.2); border-color: rgba(150,150,150,0.3); }
+  background: rgba(100,100,100,0.25); border: 1px solid rgba(140,140,140,0.3);
+  color: rgba(180,180,180,0.7); text-decoration: none; transition: all 0.2s;
+  &:hover { color: rgba(220,220,220,0.9); background: rgba(120,120,120,0.35); border-color: rgba(180,180,180,0.4); }
 }
 .transform-layer { width: 100%; height: 100%; position: absolute; top: 0; left: 0; will-change: transform; }
 .edges-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }

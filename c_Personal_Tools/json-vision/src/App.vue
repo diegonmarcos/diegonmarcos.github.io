@@ -158,7 +158,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
         @fallback-files="handleFallbackFiles"
         @update:width="sidebarWidth = $event"
         @collapse="sidebarCollapsed = true"
-        @fetch-url="(url: string) => loadFromUrl(url, new URL(url).pathname.split('/').pop() || url)"
+        @fetch-url="(url: string, label?: string) => loadFromUrl(url, label || new URL(url).pathname.split('/').pop() || url)"
       />
 
       <main class="workspace">

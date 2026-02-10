@@ -267,6 +267,28 @@
         /* Markdown code */
         .swagger-ui .markdown code { background: #0a0c10 !important; color: var(--accent) !important; padding: 2px 6px; border-radius: 3px; }
 
+        /* Schemas / Models — kill yellow expand arrows and bright text */
+        .swagger-ui .model-toggle::after { background: var(--text-muted) !important; }
+        .swagger-ui .model-toggle { background: transparent !important; }
+        .swagger-ui .model span,
+        .swagger-ui .model .brace-open,
+        .swagger-ui .model .brace-close,
+        .swagger-ui .model .inner-object,
+        .swagger-ui .model-box .model span,
+        .swagger-ui section.models .model-container span,
+        .swagger-ui .model-box span { color: var(--text-secondary) !important; }
+        .swagger-ui .model .prop-name,
+        .swagger-ui .model-box .prop-name { color: var(--text-primary) !important; }
+        .swagger-ui .model .prop-type,
+        .swagger-ui .model-box .prop-type { color: var(--text-muted) !important; }
+        .swagger-ui section.models .model-container:hover { background: var(--bg-tertiary) !important; }
+        .swagger-ui .model-toggle:not(.collapsed) + .inner-object,
+        .swagger-ui .model .inner-object { background: transparent !important; }
+        /* Model expand/collapse toggle arrows */
+        .swagger-ui .model-toggle svg,
+        .swagger-ui section.models svg,
+        .swagger-ui .model-box svg { fill: var(--text-muted) !important; }
+
         /* NUCLEAR: kill any remaining white/light backgrounds on ANY child */
         .swagger-ui .opblock .opblock-body > div,
         .swagger-ui .opblock .opblock-body .tab-header,

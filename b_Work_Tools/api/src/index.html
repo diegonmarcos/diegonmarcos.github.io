@@ -88,7 +88,12 @@
         /* ========= SWAGGER UI DARK OVERRIDES ========= */
 
         .swagger-ui { color: var(--text-primary); }
-        .swagger-ui .topbar { display: none; }
+        .swagger-ui .topbar { background: var(--bg-tertiary); padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); }
+        .swagger-ui .topbar .topbar-wrapper .link { display: none; }
+        .swagger-ui .topbar .topbar-wrapper { display: flex; align-items: center; }
+        .swagger-ui .topbar .download-url-wrapper input { background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border); }
+        .swagger-ui .topbar .download-url-wrapper .select-label select { background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border); }
+        .swagger-ui .topbar .download-url-wrapper .select-label span { color: var(--text-secondary); }
 
         /* Info section */
         .swagger-ui .info { margin: 2rem 0; }

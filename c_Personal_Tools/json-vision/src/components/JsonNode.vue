@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const collapseSignal = inject<Ref<{ maxDepth: number; version: number }>>('collapseSignal', ref({ maxDepth: Infinity, version: 0 }))
-const isExpanded = ref(true)
+const isExpanded = ref((props.depth ?? 0) < collapseSignal.value.maxDepth)
 watch(() => collapseSignal.value.version, () => {
   isExpanded.value = (props.depth ?? 0) < collapseSignal.value.maxDepth
 })

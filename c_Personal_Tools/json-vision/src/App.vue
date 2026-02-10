@@ -140,7 +140,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
     />
 
     <div class="main-content">
-      <div v-if="sidebarCollapsed" class="sidebar-collapsed">
+      <div v-show="sidebarCollapsed" class="sidebar-collapsed">
         <button class="sidebar-toggle" @click="sidebarCollapsed = false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M9 18l6-6-6-6" />
@@ -148,7 +148,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
         </button>
       </div>
       <FileSidebar
-        v-else
+        v-show="!sidebarCollapsed"
         :files="files"
         :open-docs="openDocs"
         :width="sidebarWidth"

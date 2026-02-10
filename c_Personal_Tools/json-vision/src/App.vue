@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import type { ViewMode, LayoutMode } from '@/types/json'
 import { useJsonFiles } from '@/composables/useJsonFiles'
 import { setValueByPath } from '@/composables/useGraph'
@@ -23,6 +23,21 @@ const DEFAULT_API_URL = 'https://api.diegonmarcos.com/rust/api-docs/openapi.json
 const viewMode = ref<ViewMode>('mindmap')
 const layoutMode = ref<LayoutMode>('vertical')
 const searchTerm = ref('')
+
+const mindMapRef = ref()
+const graphRef = ref()
+const treeRef = ref()
+
+const hasCollapseSupport = computed(() => ['mindmap', 'graph', 'visual', 'split'].includes(viewMode.value))
+const activeViewRef = computed(() => {
+  if (viewMode.value === 'mindmap') return mindMapRef.value
+  if (viewMode.value === 'graph') return graphRef.value
+  if (viewMode.value === 'visual' || viewMode.value === 'split') return treeRef.value
+  return null
+})
+const handleCollapseLevel = () => activeViewRef.value?.collapseOneLevel()
+const handleExpandLevel = () => activeViewRef.value?.expandOneLevel()
+const handleExpandAll = () => activeViewRef.value?.expandAll()
 const sidebarWidth = ref(256)
 const sidebarCollapsed = ref(false)
 
@@ -193,6 +208,17 @@ const handleEdit = (path: string, key: string, value: unknown) => {
                 <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span>Split</span></button>
               </div>
               <div class="toolbar-right">
+                <div v-if="hasCollapseSupport" class="collapse-controls">
+                  <button class="collapse-btn" @click="handleCollapseLevel" title="Collapse one level">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 14l-5-5-5 5"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+                  </button>
+                  <button class="collapse-btn" @click="handleExpandLevel" title="Expand one level">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10l5 5 5-5"/><line x1="4" y1="4" x2="20" y2="4"/></svg>
+                  </button>
+                  <button class="collapse-btn" @click="handleExpandAll" title="Expand all">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l5 5 5-5"/><path d="M7 14l5 5 5-5"/></svg>
+                  </button>
+                </div>
                 <input v-if="viewMode !== 'graph'" v-model="searchTerm" type="text" placeholder="Filter..." class="filter-input"/>
                 <button v-if="activeDocIndex !== -1" class="export-btn" @click="handleRefresh" title="Refresh JSON">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,10 17,10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
@@ -203,6 +229,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
             <div class="visualizer-content">
               <div v-if="!parsedData" class="invalid-json">Invalid JSON</div>
               <GraphView
+                ref="graphRef"
                 v-else-if="viewMode === 'graph'"
                 :data="parsedData"
                 :layout-mode="layoutMode"
@@ -223,12 +250,14 @@ const handleEdit = (path: string, key: string, value: unknown) => {
                 @copy-path="handleCopyPath"
               />
               <MindMapView
+                ref="mindMapRef"
                 v-else-if="viewMode === 'mindmap'"
                 :data="parsedData"
                 :search-term="searchTerm"
                 @copy-path="handleCopyPath"
               />
               <TreeView
+                ref="treeRef"
                 v-else
                 :data="parsedData"
                 :search-term="searchTerm"
@@ -302,6 +331,14 @@ const handleEdit = (path: string, key: string, value: unknown) => {
 }
 
 .toolbar-right { display: flex; align-items: center; gap: 6px; }
+
+.collapse-controls { display: flex; gap: 2px; background: var(--color-bg-tertiary); border-radius: 5px; padding: 1px; }
+.collapse-btn {
+  width: 26px; height: 24px; border: none; border-radius: 4px; cursor: pointer;
+  background: transparent; color: var(--color-text-muted);
+  display: flex; align-items: center; justify-content: center;
+  &:hover { color: white; background: var(--color-border); }
+}
 
 .filter-input {
   background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 4px;

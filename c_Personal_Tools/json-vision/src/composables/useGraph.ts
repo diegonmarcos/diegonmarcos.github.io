@@ -58,7 +58,8 @@ export function processGraph(
     y,
     data: {},
     label: path.split('.').pop() || path.split('[').pop()?.replace(']', '') || 'Root',
-    totalSize: myTreeSize
+    totalSize: myTreeSize,
+    depth
   }
 
   let currentOffsetCursor = startOffset

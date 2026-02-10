@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch, provide } from 'vue'
 import JsonNode from './JsonNode.vue'
 
 const props = defineProps<{ data: unknown; searchTerm: string }>()
@@ -8,6 +8,65 @@ const emit = defineEmits<{ copyPath: [path: string]; edit: [path: string, key: s
 const flatMode = ref(false)
 const collapsedPaths = ref(new Set<string>())
 
+// --- Depth-based collapse control ---
+const collapseSignal = ref({ maxDepth: Infinity, version: 0 })
+provide('collapseSignal', collapseSignal)
+
+const getMaxObjectDepth = (val: unknown, depth = 0): number => {
+  if (val === null || typeof val !== 'object') return -Infinity
+  let max = depth
+  for (const v of Object.values(val as Record<string, unknown>)) {
+    const d = getMaxObjectDepth(v, depth + 1)
+    if (d > max) max = d
+  }
+  return max
+}
+
+const maxPossibleDepth = computed(() => Math.max(0, getMaxObjectDepth(props.data)))
+const currentMaxDepth = ref(Infinity)
+
+watch(() => props.data, () => { currentMaxDepth.value = Infinity })
+
+const updateFlatCollapse = () => {
+  if (!flatMode.value) return
+  const paths = new Set<string>()
+  const walk = (val: unknown, path: string, depth: number) => {
+    if (val === null || typeof val !== 'object') return
+    if (depth >= currentMaxDepth.value) { if (path !== '') paths.add(path); return }
+    for (const [k, v] of Object.entries(val as Record<string, unknown>)) {
+      const p = Array.isArray(val) ? `${path}[${k}]` : path ? `${path}.${k}` : k
+      walk(v, p, depth + 1)
+    }
+  }
+  walk(props.data, '', 0)
+  collapsedPaths.value = paths
+}
+
+const collapseOneLevel = () => {
+  const mp = maxPossibleDepth.value
+  if (currentMaxDepth.value > mp) currentMaxDepth.value = mp
+  else if (currentMaxDepth.value > 0) currentMaxDepth.value--
+  collapseSignal.value = { maxDepth: currentMaxDepth.value, version: collapseSignal.value.version + 1 }
+  updateFlatCollapse()
+}
+
+const expandOneLevel = () => {
+  const mp = maxPossibleDepth.value
+  if (currentMaxDepth.value < mp) currentMaxDepth.value++
+  else currentMaxDepth.value = Infinity
+  collapseSignal.value = { maxDepth: currentMaxDepth.value, version: collapseSignal.value.version + 1 }
+  updateFlatCollapse()
+}
+
+const expandAll = () => {
+  currentMaxDepth.value = Infinity
+  collapseSignal.value = { maxDepth: Infinity, version: collapseSignal.value.version + 1 }
+  collapsedPaths.value = new Set()
+}
+
+defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
+
+// --- Flat mode ---
 const toggleFlatCollapse = (path: string) => {
   const s = new Set(collapsedPaths.value)
   if (s.has(path)) s.delete(path)
@@ -69,6 +128,7 @@ const typeClass = (t: string) => {
         :value="data"
         :is-last="true"
         path=""
+        :depth="0"
         :search-term="searchTerm"
         @copy-path="emit('copyPath', $event)"
         @edit="(a: string, b: string, c: unknown) => emit('edit', a, b, c)"

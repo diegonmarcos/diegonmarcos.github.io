@@ -260,6 +260,44 @@ const transformStyle = computed(() => ({
   transform: `translate(${pan.value.x}px, ${pan.value.y}px) scale(${scale.value})`,
   transformOrigin: '0 0'
 }))
+
+// --- Depth-based collapse control ---
+const currentMaxDepth = ref(Infinity)
+
+const getMaxNodeDepth = () => {
+  let max = 0
+  for (const n of graphNodes.value) max = Math.max(max, n.depth)
+  return max
+}
+
+const applyDepthCollapse = () => {
+  const s = new Set<string>()
+  for (const n of graphNodes.value) {
+    if (n.depth >= currentMaxDepth.value) s.add(n.id)
+  }
+  collapsedNodes.value = s
+}
+
+const collapseOneLevel = () => {
+  const mp = getMaxNodeDepth()
+  if (currentMaxDepth.value > mp) currentMaxDepth.value = mp
+  else if (currentMaxDepth.value > 0) currentMaxDepth.value--
+  applyDepthCollapse()
+}
+
+const expandOneLevel = () => {
+  const mp = getMaxNodeDepth()
+  if (currentMaxDepth.value < mp) currentMaxDepth.value++
+  else currentMaxDepth.value = Infinity
+  applyDepthCollapse()
+}
+
+const expandAll = () => {
+  currentMaxDepth.value = Infinity
+  collapsedNodes.value = new Set()
+}
+
+defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 </script>
 
 <template>

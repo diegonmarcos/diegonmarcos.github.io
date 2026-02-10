@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, inject, watch, type Ref } from 'vue'
 
 const props = defineProps<{
   itemKey?: string | number
@@ -7,6 +7,7 @@ const props = defineProps<{
   isLast?: boolean
   path?: string
   searchTerm?: string
+  depth?: number
 }>()
 
 const emit = defineEmits<{
@@ -14,7 +15,11 @@ const emit = defineEmits<{
   edit: [path: string, key: string, value: unknown]
 }>()
 
+const collapseSignal = inject<Ref<{ maxDepth: number; version: number }>>('collapseSignal', ref({ maxDepth: Infinity, version: 0 }))
 const isExpanded = ref(true)
+watch(() => collapseSignal.value.version, () => {
+  isExpanded.value = (props.depth ?? 0) < collapseSignal.value.maxDepth
+})
 const isObject = computed(() => props.value !== null && typeof props.value === 'object' && !Array.isArray(props.value))
 const isArray = computed(() => Array.isArray(props.value))
 const isPrimitive = computed(() => !isObject.value && !isArray.value)
@@ -80,6 +85,7 @@ const formatValue = (v: unknown) => {
         :value="(value as any)[k]"
         :is-last="idx === keys.length - 1"
         :path="currentPath"
+        :depth="(depth ?? 0) + 1"
         :search-term="searchTerm"
         @copy-path="emit('copyPath', $event)"
         @edit="(a: string, b: string, c: unknown) => emit('edit', a, b, c)"

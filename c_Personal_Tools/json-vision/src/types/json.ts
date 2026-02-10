@@ -7,6 +7,7 @@ export interface GraphNode {
   data: Record<string, unknown>
   label: string
   totalSize: number
+  depth: number
 }
 
 export interface GraphEdge {

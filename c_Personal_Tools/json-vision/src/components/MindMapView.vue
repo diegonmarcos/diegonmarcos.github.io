@@ -170,6 +170,49 @@ const curvePath = (e: { x1: number; y1: number; x2: number; y2: number }) => {
   const mx = (e.x1 + e.x2) / 2, my = (e.y1 + e.y2) / 2
   return `M${e.x1},${e.y1} Q${mx},${e.y1} ${mx},${my} Q${mx},${e.y2} ${e.x2},${e.y2}`
 }
+
+// --- Depth-based collapse control ---
+const getMaxNonLeafDepth = (): number => {
+  let max = 0
+  const walk = (n: MNode) => { if (!n.isLeaf) max = Math.max(max, n.depth); n.children.forEach(walk) }
+  nodes.value.forEach(walk)
+  return max
+}
+
+const currentMaxDepth = ref(Infinity)
+
+const applyDepthCollapse = () => {
+  const walk = (n: MNode) => {
+    if (!n.isLeaf) n.collapsed = n.depth >= currentMaxDepth.value
+    n.children.forEach(walk)
+  }
+  nodes.value.forEach(walk)
+  if (nodes.value[0]) { layoutRadial(nodes.value[0]); nodes.value = [...nodes.value] }
+}
+
+const collapseOneLevel = () => {
+  const mp = getMaxNonLeafDepth()
+  if (currentMaxDepth.value > mp) currentMaxDepth.value = mp
+  else if (currentMaxDepth.value > 0) currentMaxDepth.value--
+  applyDepthCollapse()
+}
+
+const expandOneLevel = () => {
+  const mp = getMaxNonLeafDepth()
+  if (currentMaxDepth.value < mp) currentMaxDepth.value++
+  else currentMaxDepth.value = Infinity
+  applyDepthCollapse()
+}
+
+const expandAll = () => {
+  currentMaxDepth.value = Infinity
+  const walk = (n: MNode) => { n.collapsed = false; n.children.forEach(walk) }
+  nodes.value.forEach(walk)
+  if (nodes.value[0]) { layoutRadial(nodes.value[0]); nodes.value = [...nodes.value] }
+  nextTick(fitToView)
+}
+
+defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 </script>
 
 <template>

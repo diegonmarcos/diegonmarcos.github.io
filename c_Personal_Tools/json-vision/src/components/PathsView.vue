@@ -140,4 +140,10 @@ const getTypeClass = (type: string): string => {
 .type-null { color: var(--color-text-muted); }
 .type-object { color: #fbbf24; }
 .type-array { color: #f472b6; }
+
+@media (max-width: 640px) {
+  .paths-list { font-size: 11px; }
+  .paths-stats .stat { font-size: 9px; }
+  .path-type { font-size: 8px; }
+}
 </style>

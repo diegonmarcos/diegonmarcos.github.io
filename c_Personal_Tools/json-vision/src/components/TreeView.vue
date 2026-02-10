@@ -199,4 +199,13 @@ const typeClass = (t: string) => {
 :deep(.bracket) { color: #facc15; font-weight: 700; }
 :deep(.comma) { color: var(--color-text-muted); }
 :deep(.collapsed-hint) { color: var(--color-text-muted); font-size: 12px; font-style: italic; margin: 0 8px; }
+
+@media (max-width: 640px) {
+  .tree-view { font-size: 11px; padding: 10px; }
+  .flat-view { font-size: 10px; }
+  .flat-hint { font-size: 8px; }
+  .flat-chevron { font-size: 7px; }
+  :deep(.toggle-btn) { font-size: 8px; }
+  :deep(.collapsed-hint) { font-size: 10px; }
+}
 </style>

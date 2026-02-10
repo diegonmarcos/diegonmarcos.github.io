@@ -173,4 +173,12 @@ tr:hover td { background: rgba(59, 130, 246, 0.03); }
 .cell-null { color: var(--color-text-muted); font-style: italic; }
 .cell-object { color: #fbbf24; cursor: pointer; }
 .cell-expanded { white-space: pre-wrap; word-break: break-all; max-width: none; color: var(--color-text-primary); font-size: 12px; max-height: 200px; overflow: auto; }
+
+@media (max-width: 640px) {
+  table { font-size: 11px; }
+  th { font-size: 9px; padding: 6px 8px; }
+  td { padding: 4px 8px; &.row-num { font-size: 9px; } }
+  .table-info { font-size: 10px; }
+  .cell-expanded { font-size: 10px; }
+}
 </style>

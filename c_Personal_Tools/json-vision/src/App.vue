@@ -235,6 +235,9 @@ const handleEdit = (path: string, key: string, value: unknown) => {
                 @copy-path="handleCopyPath"
                 @edit="handleEdit"
               />
+              <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener noreferrer" class="linktree-ext" title="linktree.diegonmarcos.com">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22V12"/><path d="M12 12c-3-3-6-2-8-1"/><path d="M12 12c3-3 6-2 8-1"/><path d="M12 8c-2-3-5-4-7-3"/><path d="M12 8c2-3 5-4 7-3"/><path d="M12 5c-1.5-2-3-3-5-3"/><path d="M12 5c1.5-2 3-3 5-3"/><circle cx="12" cy="3" r="1" fill="currentColor" stroke="none"/></svg>
+              </a>
             </div>
           </div>
         </template>
@@ -318,6 +321,15 @@ const handleEdit = (path: string, key: string, value: unknown) => {
 }
 
 .visualizer-content { flex: 1; overflow: hidden; background: var(--color-bg-primary); position: relative; }
+
+.linktree-ext {
+  position: absolute; bottom: 8px; right: 8px; z-index: 90;
+  width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  background: rgba(16,185,129,0.12); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(52,211,153,0.25); box-shadow: 0 2px 8px rgba(16,185,129,0.15), inset 0 1px 0 rgba(52,211,153,0.15);
+  color: rgba(52,211,153,0.5); text-decoration: none; transition: all 0.3s ease;
+  &:hover { color: rgba(52,211,153,0.9); background: rgba(16,185,129,0.22); border-color: rgba(52,211,153,0.4); box-shadow: 0 4px 16px rgba(16,185,129,0.25), inset 0 1px 0 rgba(52,211,153,0.2); }
+}
 .invalid-json { height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: 14px; }
 
 .notification {

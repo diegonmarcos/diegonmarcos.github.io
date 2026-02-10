@@ -320,9 +320,6 @@ defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l5 5 5-5"/><path d="M7 14l5 5 5-5"/></svg>
       </button>
     </div>
-    <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener noreferrer" class="linktree-btn" title="linktree.diegonmarcos.com">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12l7-7 7 7"/><path d="M8 18l4-4 4 4"/><path d="M3 22h18"/></svg>
-    </a>
     <div class="transform-layer" :style="transformStyle">
       <svg class="edges-svg">
         <GraphEdgeLine v-for="(edge, idx) in visibleEdges" :key="idx" :edge="edge" :nodes="graphNodes" :layout="layoutMode"/>
@@ -345,13 +342,6 @@ defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 .graph-controls { position: absolute; top: 8px; right: 8px; z-index: 50; display: flex; flex-direction: column; gap: 3px; }
 .ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover, &:active { background: var(--color-border); } }
 .ctrl-sep { height: 1px; background: var(--color-border); margin: 2px 0; }
-.linktree-btn {
-  position: absolute; bottom: 52px; right: 12px; z-index: 50;
-  width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  background: rgba(100,100,100,0.25); border: 1px solid rgba(140,140,140,0.3);
-  color: rgba(180,180,180,0.7); text-decoration: none; transition: all 0.2s;
-  &:hover { color: rgba(220,220,220,0.9); background: rgba(120,120,120,0.35); border-color: rgba(180,180,180,0.4); }
-}
 .transform-layer { width: 100%; height: 100%; position: absolute; top: 0; left: 0; will-change: transform; }
 .edges-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 </style>

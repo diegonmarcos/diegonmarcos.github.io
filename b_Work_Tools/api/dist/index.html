@@ -34,7 +34,7 @@
         }
 
         .api-header {
-            background: linear-gradient(135deg, #1a1d2e 0%, #1e1a2e 100%);
+            background: linear-gradient(135deg, #12141f 0%, #1a1530 50%, #12141f 100%);
             color: var(--text-primary); padding: 2rem; text-align: center;
             border-bottom: 1px solid var(--border);
         }
@@ -60,7 +60,7 @@
         .api-links .separator { color: var(--border); }
 
         .quick-links {
-            background: var(--bg-tertiary); padding: 1.5rem 2rem; margin: 2rem;
+            background: linear-gradient(135deg, #1a1e2e 0%, #1e2236 50%, #161922 100%); padding: 1.5rem 2rem; margin: 2rem;
             border-radius: 8px; border-left: 4px solid var(--accent);
         }
         .quick-links h3 { margin: 0 0 1rem 0; color: var(--text-primary); }
@@ -79,7 +79,7 @@
         #swagger-ui { max-width: 1400px; margin: 0 auto; }
 
         .api-footer {
-            background: var(--bg-secondary); color: var(--text-secondary); text-align: center;
+            background: linear-gradient(180deg, #161922 0%, #12141f 100%); color: var(--text-secondary); text-align: center;
             padding: 2rem; margin-top: 3rem; border-top: 1px solid var(--border);
         }
         .api-footer a { color: var(--accent-light); text-decoration: none; }
@@ -94,10 +94,10 @@
 
         /* Force transparent/dark backgrounds on everything */
         .swagger-ui *:not(.opblock-summary-method):not(.btn):not(.topbar) { background-color: transparent !important; }
-        .swagger-ui .wrapper,
-        .swagger-ui .scheme-container,
-        .swagger-ui .opblock-section-header { background-color: var(--bg-tertiary) !important; }
-        .swagger-ui .opblock { background-color: var(--bg-secondary) !important; }
+        .swagger-ui .wrapper { background: linear-gradient(180deg, #1e2230 0%, #161922 100%) !important; }
+        .swagger-ui .scheme-container { background: linear-gradient(180deg, #1a1e2e 0%, #161922 100%) !important; }
+        .swagger-ui .opblock-section-header { background: linear-gradient(135deg, #1e2230 0%, #232840 100%) !important; }
+        .swagger-ui .opblock { background: linear-gradient(135deg, #161922 0%, #1a1e2e 50%, #161922 100%) !important; }
 
         /* Topbar (API selector) */
         .swagger-ui .topbar { background-color: var(--bg-tertiary) !important; padding: 0.5rem 1rem; }
@@ -111,8 +111,9 @@
         /* Inputs */
         .swagger-ui input, .swagger-ui textarea { background-color: #0a0c10 !important; color: var(--text-primary) !important; }
 
-        /* Code blocks */
-        .swagger-ui pre, .swagger-ui code { background-color: #0a0c10 !important; }
+        /* Code blocks / response body */
+        .swagger-ui pre, .swagger-ui code { background: linear-gradient(135deg, #0a0c10 0%, #0e1018 50%, #0a0c10 100%) !important; }
+        .swagger-ui .opblock-body { background: linear-gradient(180deg, #0f1117 0%, #131620 100%) !important; }
 
         /* Primary text — slightly brighter */
         .swagger-ui .opblock-tag,
@@ -151,6 +152,34 @@
 
         /* Filter input */
         .swagger-ui .filter .operation-filter-input { background-color: var(--bg-tertiary) !important; }
+
+        /* Request snippets — FORCE dark on everything */
+        .swagger-ui [class*="snippets"],
+        .swagger-ui [class*="snippets"] *,
+        .swagger-ui [class*="curl"],
+        .swagger-ui [class*="curl"] *,
+        .swagger-ui .request-snippets,
+        .swagger-ui .request-snippets *,
+        .swagger-ui .curl-command,
+        .swagger-ui .curl-command *,
+        .swagger-ui .snippet-wrapper,
+        .swagger-ui .snippet-wrapper * { background-color: #0a0c10 !important; color: #7e8694 !important; border-color: #2a2f42 !important; }
+        .swagger-ui .request-snippets .tab-header,
+        .swagger-ui .request-snippets .tab-header * { background: linear-gradient(180deg, #1e2230 0%, #1a1e2e 100%) !important; }
+        .swagger-ui .request-snippets .tab-header .tab-item.active,
+        .swagger-ui .request-snippets .tab-header button.active { background-color: #0a0c10 !important; color: #c8cdd8 !important; }
+        .swagger-ui .copy-to-clipboard,
+        .swagger-ui .copy-to-clipboard * { background-color: #1e2230 !important; }
+
+        /* Live response area */
+        .swagger-ui .live-responses-table,
+        .swagger-ui .live-responses-table *,
+        .swagger-ui .server-response-table,
+        .swagger-ui .server-response-table *,
+        .swagger-ui .response,
+        .swagger-ui .response *,
+        .swagger-ui .responses-table,
+        .swagger-ui .responses-table * { background-color: transparent !important; color: #7e8694 !important; }
 
         /* Scrollbar */
         .swagger-ui ::-webkit-scrollbar { width: 6px; height: 6px; }

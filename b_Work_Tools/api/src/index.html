@@ -267,6 +267,34 @@
         /* Markdown code */
         .swagger-ui .markdown code { background: #0a0c10 !important; color: var(--accent) !important; padding: 2px 6px; border-radius: 3px; }
 
+        /* API Responses — kill ALL colored text in response sections */
+        .swagger-ui .responses-table span,
+        .swagger-ui .responses-table td,
+        .swagger-ui .responses-table p,
+        .swagger-ui .responses-table h4,
+        .swagger-ui .responses-table h5,
+        .swagger-ui .responses-table .response-col_status,
+        .swagger-ui .responses-table .response-col_description,
+        .swagger-ui .responses-table .response-col_links,
+        .swagger-ui .live-responses-table span,
+        .swagger-ui .live-responses-table td,
+        .swagger-ui .live-responses-table .response-col_status,
+        .swagger-ui .response span,
+        .swagger-ui .response p,
+        .swagger-ui .response h4,
+        .swagger-ui .response h5,
+        .swagger-ui .response td,
+        .swagger-ui .opblock-body h4,
+        .swagger-ui .opblock-body h5,
+        .swagger-ui .opblock-body span,
+        .swagger-ui .opblock-body p,
+        .swagger-ui .opblock-body td,
+        .swagger-ui .opblock-body label,
+        .swagger-ui .opblock-body small,
+        .swagger-ui .opblock-body .tab-header .tab-item,
+        .swagger-ui .opblock-body .tab-header .tab-item.active,
+        .swagger-ui .responses-header td { color: var(--text-secondary) !important; }
+
         /* Schemas / Models — kill yellow expand arrows and bright text */
         .swagger-ui .model-toggle::after { background: var(--text-muted) !important; }
         .swagger-ui .model-toggle { background: transparent !important; }

@@ -110,17 +110,17 @@ const getTypeClass = (type: string): string => {
 .paths-view { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
 
 .paths-stats {
-  padding: 8px 12px; border-bottom: 1px solid var(--color-border);
-  display: flex; gap: 8px; flex-wrap: wrap; flex-shrink: 0;
-  .stat { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: var(--color-bg-tertiary); color: var(--color-text-muted); }
+  padding: 4px 8px; border-bottom: 1px solid var(--color-border);
+  display: flex; gap: 6px; flex-wrap: wrap; flex-shrink: 0;
+  .stat { font-size: 11px; padding: 1px 5px; border-radius: 4px; background: var(--color-bg-tertiary); color: var(--color-text-muted); }
 }
 
 .paths-list { flex: 1; overflow: auto; font-family: var(--font-mono); font-size: 13px; }
 
 .path-row {
-  display: flex; align-items: center; gap: 8px;
-  padding: 4px 8px; border-bottom: 1px solid rgba(51, 65, 85, 0.2);
-  cursor: pointer; min-height: 28px;
+  display: flex; align-items: center; gap: 6px;
+  padding: 2px 6px; border-bottom: 1px solid rgba(51, 65, 85, 0.2);
+  cursor: pointer; min-height: 24px;
   &:hover { background: rgba(59, 130, 246, 0.05); }
 }
 

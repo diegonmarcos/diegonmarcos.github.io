@@ -198,9 +198,9 @@ const collapseOneLevel = () => {
 }
 
 const expandOneLevel = () => {
-  const mp = getMaxNonLeafDepth()
-  if (currentMaxDepth.value < mp) currentMaxDepth.value++
-  else currentMaxDepth.value = Infinity
+  if (currentMaxDepth.value === Infinity) return
+  currentMaxDepth.value++
+  if (currentMaxDepth.value > getMaxNonLeafDepth()) currentMaxDepth.value = Infinity
   applyDepthCollapse()
 }
 
@@ -221,6 +221,16 @@ defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
       <button class="ctrl-btn" @click.stop="zoomBy(1.4)">+</button>
       <button class="ctrl-btn" @click.stop="zoomBy(0.6)">-</button>
       <button class="ctrl-btn" @click.stop="fitToView()">Fit</button>
+      <div class="ctrl-sep"></div>
+      <button class="ctrl-btn" @click.stop="collapseOneLevel" title="Collapse one level">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 14l-5-5-5 5"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+      </button>
+      <button class="ctrl-btn" @click.stop="expandOneLevel" title="Expand one level">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10l5 5 5-5"/><line x1="4" y1="4" x2="20" y2="4"/></svg>
+      </button>
+      <button class="ctrl-btn" @click.stop="expandAll" title="Expand all">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l5 5 5-5"/><path d="M7 14l5 5 5-5"/></svg>
+      </button>
     </div>
     <div class="mm-layer" :style="txStyle">
       <svg class="mm-edges">
@@ -245,6 +255,7 @@ defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 .mm-container { width: 100%; height: 100%; position: relative; overflow: hidden; cursor: grab; background: var(--color-bg-primary); touch-action: none; &.grabbing { cursor: grabbing; } }
 .mm-controls { position: absolute; top: 8px; right: 8px; z-index: 50; display: flex; flex-direction: column; gap: 3px; }
 .ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover,&:active { background: var(--color-border); } }
+.ctrl-sep { height: 1px; background: var(--color-border); margin: 2px 0; }
 .mm-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; will-change: transform; }
 .mm-edges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .mm-node {

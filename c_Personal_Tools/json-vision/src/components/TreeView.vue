@@ -51,9 +51,9 @@ const collapseOneLevel = () => {
 }
 
 const expandOneLevel = () => {
-  const mp = maxPossibleDepth.value
-  if (currentMaxDepth.value < mp) currentMaxDepth.value++
-  else currentMaxDepth.value = Infinity
+  if (currentMaxDepth.value === Infinity) return
+  currentMaxDepth.value++
+  if (currentMaxDepth.value > maxPossibleDepth.value) currentMaxDepth.value = Infinity
   collapseSignal.value = { maxDepth: currentMaxDepth.value, version: collapseSignal.value.version + 1 }
   updateFlatCollapse()
 }
@@ -63,8 +63,6 @@ const expandAll = () => {
   collapseSignal.value = { maxDepth: Infinity, version: collapseSignal.value.version + 1 }
   collapsedPaths.value = new Set()
 }
-
-defineExpose({ collapseOneLevel, expandOneLevel, expandAll })
 
 // --- Flat mode ---
 const toggleFlatCollapse = (path: string) => {
@@ -113,14 +111,25 @@ const typeClass = (t: string) => {
 
 <template>
   <div class="tree-wrapper">
-    <button class="mode-toggle" :title="flatMode ? 'Tree view' : 'Flat paths view'" @click="flatMode = !flatMode">
-      <svg v-if="!flatMode" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-      </svg>
-      <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-      </svg>
-    </button>
+    <div class="tree-controls">
+      <button class="ctrl-btn" @click="collapseOneLevel" title="Collapse one level">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 14l-5-5-5 5"/><line x1="4" y1="20" x2="20" y2="20"/></svg>
+      </button>
+      <button class="ctrl-btn" @click="expandOneLevel" title="Expand one level">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10l5 5 5-5"/><line x1="4" y1="4" x2="20" y2="4"/></svg>
+      </button>
+      <button class="ctrl-btn" @click="expandAll" title="Expand all">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 8l5 5 5-5"/><path d="M7 14l5 5 5-5"/></svg>
+      </button>
+      <button class="ctrl-btn" :title="flatMode ? 'Tree view' : 'Flat paths view'" @click="flatMode = !flatMode">
+        <svg v-if="!flatMode" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+        <svg v-else width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+        </svg>
+      </button>
+    </div>
 
     <!-- Default tree -->
     <div v-if="!flatMode" class="tree-view">
@@ -140,7 +149,7 @@ const typeClass = (t: string) => {
       <div
         v-for="(row, i) in filteredRows" :key="i"
         :class="['flat-row', { header: row.isHeader, collapsed: row.isHeader && collapsedPaths.has(row.path) }]"
-        :style="{ paddingLeft: (row.depth * 16 + 8) + 'px' }"
+        :style="{ paddingLeft: (row.depth * 12 + 4) + 'px' }"
         @click="row.isHeader ? toggleFlatCollapse(row.path) : emit('copyPath', row.path)"
       >
         <span v-if="row.isHeader" class="flat-chevron">{{ collapsedPaths.has(row.path) ? '▶' : '▼' }}</span>
@@ -159,53 +168,56 @@ const typeClass = (t: string) => {
 <style lang="scss" scoped>
 .tree-wrapper { height: 100%; width: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; }
 
-.mode-toggle {
-  position: absolute; top: 8px; right: 8px; z-index: 10;
+.tree-controls { position: absolute; top: 6px; right: 6px; z-index: 10; display: flex; flex-direction: column; gap: 3px; }
+.ctrl-btn {
   background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-radius: 5px;
   color: var(--color-text-muted); cursor: pointer;
   width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  -webkit-tap-highlight-color: transparent;
   &:hover { color: white; background: var(--color-border); }
 }
 
-.tree-view { padding: 16px; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 14px; -webkit-overflow-scrolling: touch; }
+.tree-view { padding: 8px; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 14px; -webkit-overflow-scrolling: touch; }
 
-.flat-view { padding: 4px 0; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 12px; -webkit-overflow-scrolling: touch; }
+.flat-view { padding: 2px 0; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 12px; -webkit-overflow-scrolling: touch; }
 .flat-row {
-  display: flex; align-items: baseline; gap: 6px; padding: 3px 8px; border-radius: 4px; cursor: pointer;
+  display: flex; align-items: baseline; gap: 4px; padding: 2px 4px; border-radius: 4px; cursor: pointer; white-space: nowrap;
   &:hover { background: var(--color-bg-tertiary); }
-  &.header { padding-top: 6px; padding-bottom: 2px; }
+  &.header { padding-top: 4px; padding-bottom: 1px; }
 }
 .flat-key { color: var(--color-text-secondary); white-space: nowrap; flex-shrink: 0; }
 .flat-chevron { font-size: 8px; color: var(--color-text-muted); width: 10px; flex-shrink: 0; }
 .header-key { color: #facc15; font-weight: 700; }
 .flat-hint { color: var(--color-text-muted); font-size: 10px; margin-left: 4px; }
 .flat-row.collapsed { opacity: 0.7; }
-.flat-dots { flex: 1; border-bottom: 1px dotted rgba(51,65,85,0.5); min-width: 16px; margin-bottom: 3px; }
+.flat-dots { flex: 1; border-bottom: 1px dotted rgba(51,65,85,0.5); min-width: 12px; margin-bottom: 3px; }
 .flat-val { white-space: nowrap; text-align: right; flex-shrink: 0; max-width: 50%; overflow: hidden; text-overflow: ellipsis; }
 .ft-string { color: #34d399; }
 .ft-number { color: #60a5fa; }
 .ft-boolean { color: #a78bfa; }
 .ft-null { color: var(--color-text-muted); font-style: italic; }
 
-:deep(.tree-row) { display: flex; align-items: center; padding: 4px; border-radius: 4px; cursor: pointer; &:hover { background: var(--color-bg-tertiary); } }
-:deep(.tree-children) { padding-left: 16px; margin-left: 10px; border-left: 1px solid rgba(51, 65, 85, 0.5); }
+:deep(.tree-row) { display: flex; align-items: center; padding: 2px; border-radius: 4px; cursor: pointer; white-space: nowrap; &:hover { background: var(--color-bg-tertiary); } }
+:deep(.tree-children) { padding-left: 12px; margin-left: 8px; border-left: 1px solid rgba(51, 65, 85, 0.5); }
 :deep(.toggle-btn) { background: none; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 10px; margin-right: 4px; padding: 2px; }
-:deep(.tree-key) { color: var(--color-text-secondary); margin-right: 8px; }
-:deep(.tree-value) { word-break: break-all; }
+:deep(.tree-key) { color: var(--color-text-secondary); margin-right: 6px; white-space: nowrap; }
+:deep(.tree-value) { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 :deep(.val-string) { color: #34d399; }
 :deep(.val-number) { color: #60a5fa; }
 :deep(.val-boolean) { color: #a78bfa; }
 :deep(.val-null) { color: var(--color-text-muted); }
 :deep(.bracket) { color: #facc15; font-weight: 700; }
 :deep(.comma) { color: var(--color-text-muted); }
-:deep(.collapsed-hint) { color: var(--color-text-muted); font-size: 12px; font-style: italic; margin: 0 8px; }
+:deep(.collapsed-hint) { color: var(--color-text-muted); font-size: 12px; font-style: italic; margin: 0 6px; }
 
 @media (max-width: 640px) {
-  .tree-view { font-size: 11px; padding: 10px; }
+  .tree-view { font-size: 11px; padding: 4px; }
   .flat-view { font-size: 10px; }
   .flat-hint { font-size: 8px; }
   .flat-chevron { font-size: 7px; }
+  .flat-row { gap: 3px; }
   :deep(.toggle-btn) { font-size: 8px; }
   :deep(.collapsed-hint) { font-size: 10px; }
+  :deep(.tree-children) { padding-left: 8px; margin-left: 4px; }
 }
 </style>

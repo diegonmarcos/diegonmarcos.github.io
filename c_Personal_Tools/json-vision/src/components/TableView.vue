@@ -141,7 +141,7 @@ const copyPath = (rowIdx: number, col: string) => {
 
 <style lang="scss" scoped>
 .table-view { height: 100%; display: flex; flex-direction: column; overflow: hidden; }
-.table-info { padding: 8px 12px; font-size: 12px; color: var(--color-text-muted); border-bottom: 1px solid var(--color-border); flex-shrink: 0; code { color: var(--color-accent-light); } }
+.table-info { padding: 4px 8px; font-size: 12px; color: var(--color-text-muted); border-bottom: 1px solid var(--color-border); flex-shrink: 0; code { color: var(--color-accent-light); } }
 .table-empty { height: 100%; display: flex; align-items: center; justify-content: center; color: var(--color-text-muted); font-size: 14px; }
 .table-scroll { flex: 1; overflow: auto; }
 
@@ -149,7 +149,7 @@ table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); f
 thead { position: sticky; top: 0; z-index: 10; }
 th {
   background: var(--color-bg-tertiary); color: var(--color-text-secondary);
-  padding: 8px 12px; text-align: left; font-size: 11px; font-weight: 600;
+  padding: 4px 8px; text-align: left; font-size: 11px; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap;
   border-bottom: 2px solid var(--color-border);
   &.sortable { cursor: pointer; user-select: none; &:hover { color: white; } }
@@ -158,7 +158,7 @@ th {
 .sort-icon { font-size: 9px; margin-left: 4px; }
 
 td {
-  padding: 6px 12px; border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+  padding: 3px 8px; border-bottom: 1px solid rgba(51, 65, 85, 0.3);
   max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   cursor: pointer;
   &:hover { background: rgba(59, 130, 246, 0.05); }

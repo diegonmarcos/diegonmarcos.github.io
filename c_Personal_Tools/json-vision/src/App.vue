@@ -8,6 +8,8 @@ import FileSidebar from '@/components/FileSidebar.vue'
 import JsonEditor from '@/components/JsonEditor.vue'
 import GraphView from '@/components/GraphView.vue'
 import TreeView from '@/components/TreeView.vue'
+import TableView from '@/components/TableView.vue'
+import PathsView from '@/components/PathsView.vue'
 
 const {
   files, openDocs, activeDocIndex, input, parsedData, error, notification, isSaving, useFallback,
@@ -19,6 +21,7 @@ const viewMode = ref<ViewMode>('graph')
 const layoutMode = ref<LayoutMode>('vertical')
 const searchTerm = ref('')
 const sidebarWidth = ref(256)
+const sidebarCollapsed = ref(false)
 
 const handleEdit = (path: string, key: string, value: unknown) => {
   if (!parsedData.value) return
@@ -44,7 +47,15 @@ const handleEdit = (path: string, key: string, value: unknown) => {
     />
 
     <div class="main-content">
+      <div v-if="sidebarCollapsed" class="sidebar-collapsed">
+        <button class="sidebar-toggle" @click="sidebarCollapsed = false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
       <FileSidebar
+        v-else
         :files="files"
         :open-docs="openDocs"
         :width="sidebarWidth"
@@ -53,6 +64,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
         @open-file="handleOpenFile"
         @fallback-files="handleFallbackFiles"
         @update:width="sidebarWidth = $event"
+        @collapse="sidebarCollapsed = true"
       />
 
       <main class="workspace">
@@ -79,9 +91,11 @@ const handleEdit = (path: string, key: string, value: unknown) => {
           <div :class="['visualizer-pane', { 'full-width': viewMode === 'visual' || viewMode === 'graph', 'half-width': viewMode === 'split' }]">
             <div class="visualizer-toolbar">
               <div class="view-switcher">
-                <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'">Split</button>
                 <button :class="{ active: viewMode === 'graph' }" @click="viewMode = 'graph'">Graph</button>
                 <button :class="{ active: viewMode === 'visual' }" @click="viewMode = 'visual'">Tree</button>
+                <button :class="{ active: viewMode === 'table' }" @click="viewMode = 'table'">Table</button>
+                <button :class="{ active: viewMode === 'paths' }" @click="viewMode = 'paths'">Paths</button>
+                <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'">Split</button>
               </div>
               <input v-if="viewMode !== 'graph'" v-model="searchTerm" type="text" placeholder="Filter..." class="filter-input"/>
             </div>
@@ -95,6 +109,18 @@ const handleEdit = (path: string, key: string, value: unknown) => {
                 @copy-path="handleCopyPath"
                 @edit="handleEdit"
                 @update:layout-mode="layoutMode = $event"
+              />
+              <TableView
+                v-else-if="viewMode === 'table'"
+                :data="parsedData"
+                :search-term="searchTerm"
+                @copy-path="handleCopyPath"
+              />
+              <PathsView
+                v-else-if="viewMode === 'paths'"
+                :data="parsedData"
+                :search-term="searchTerm"
+                @copy-path="handleCopyPath"
               />
               <TreeView
                 v-else
@@ -122,8 +148,22 @@ const handleEdit = (path: string, key: string, value: unknown) => {
 </template>
 
 <style lang="scss" scoped>
-.app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+.app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
 .main-content { flex: 1; display: flex; overflow: hidden; }
+
+.sidebar-collapsed {
+  width: 32px; flex-shrink: 0;
+  background: var(--color-bg-secondary); border-right: 1px solid var(--color-border);
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 10px;
+}
+
+.sidebar-toggle {
+  width: 24px; height: 24px; border-radius: 4px;
+  background: none; border: none;
+  color: var(--color-text-muted); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  &:hover { color: white; background: var(--color-bg-tertiary); }
+}
 .workspace { flex: 1; display: flex; overflow: hidden; position: relative; }
 
 .empty-workspace {

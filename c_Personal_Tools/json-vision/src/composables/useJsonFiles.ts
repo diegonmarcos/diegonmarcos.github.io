@@ -7,6 +7,18 @@ const hasFileSystemAccess = typeof window !== 'undefined'
   && 'showDirectoryPicker' in window
   && window.isSecureContext
 
+// Debug: log API availability on load
+if (typeof window !== 'undefined') {
+  console.info('[JSON Vision] Debug — API Check:', {
+    showDirectoryPicker: 'showDirectoryPicker' in window,
+    isSecureContext: window.isSecureContext,
+    protocol: window.location.protocol,
+    hostname: window.location.hostname,
+    hasFileSystemAccess,
+    userAgent: navigator.userAgent,
+  })
+}
+
 export function useJsonFiles() {
   const files = ref<string[]>([])
   const openDocs = ref<OpenDoc[]>([])
@@ -34,18 +46,26 @@ export function useJsonFiles() {
   }
 
   const handleOpenFolder = async () => {
-    if (useFallback.value) return // Use file input fallback instead
+    console.info('[JSON Vision] Open Folder clicked — useFallback:', useFallback.value)
+    if (useFallback.value) {
+      console.warn('[JSON Vision] Folder API unavailable (Brave/Firefox or non-secure context). Use File button instead.')
+      showNotification('Folder API blocked by browser — use File button', true)
+      return
+    }
     try {
       const handle = await window.showDirectoryPicker({ mode: 'readwrite' })
       dirHandle.value = handle
       await refreshFileList(handle)
       showNotification('Folder opened')
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      console.error('[JSON Vision] Open Folder error:', err?.name, err?.message, err)
+      if (err?.name === 'AbortError') return // User cancelled picker
+      showNotification(`Folder error: ${err?.message || 'Unknown'}`, true)
     }
   }
 
   const handleFallbackFiles = async (fileList: FileList | null) => {
+    console.info('[JSON Vision] File input triggered — files:', fileList?.length ?? 0)
     if (!fileList || fileList.length === 0) return
 
     const jsonFiles = Array.from(fileList).filter(f => f.name.endsWith('.json'))
@@ -71,28 +91,47 @@ export function useJsonFiles() {
   const refreshFileList = async (handle: FileSystemDirectoryHandle) => {
     const newFiles: string[] = []
     Object.keys(fileHandles).forEach(k => delete fileHandles[k])
+    console.info('[JSON Vision] Scanning directory:', handle.name)
 
     const scanDirectory = async (dirHandle: FileSystemDirectoryHandle, pathPrefix: string, depth: number) => {
-      if (depth > 4) return
+      if (depth > 4) {
+        console.warn('[JSON Vision] Max depth reached at:', pathPrefix)
+        return
+      }
 
-      for await (const entry of dirHandle.values()) {
-        if (entry.kind === 'file' && entry.name.endsWith('.json')) {
-          const filePath = pathPrefix + entry.name
-          newFiles.push(filePath)
-          fileHandles[filePath] = entry as FileSystemFileHandle
-        } else if (entry.kind === 'directory') {
-          await scanDirectory(entry as FileSystemDirectoryHandle, pathPrefix + entry.name + '/', depth + 1)
+      try {
+        for await (const entry of dirHandle.values()) {
+          if (entry.kind === 'file' && entry.name.endsWith('.json')) {
+            const filePath = pathPrefix + entry.name
+            newFiles.push(filePath)
+            fileHandles[filePath] = entry as FileSystemFileHandle
+            console.info('[JSON Vision] Registered file handle:', filePath, '→', entry.name)
+          } else if (entry.kind === 'directory') {
+            await scanDirectory(entry as FileSystemDirectoryHandle, pathPrefix + entry.name + '/', depth + 1)
+          }
         }
+      } catch (scanErr: any) {
+        console.error('[JSON Vision] Scan error at', pathPrefix, ':', scanErr?.name, scanErr?.message, scanErr)
       }
     }
 
     await scanDirectory(handle, '', 1)
+    console.info('[JSON Vision] Scan complete:', newFiles.length, 'files found. Handles:', Object.keys(fileHandles))
     files.value = newFiles.sort()
   }
 
   const handleOpenFile = async (filename: string) => {
+    console.info('[JSON Vision] Open File:', filename, {
+      useFallback: useFallback.value,
+      hasHandle: !!fileHandles[filename],
+      hasFallbackContent: !!fallbackFileContents[filename],
+      registeredHandles: Object.keys(fileHandles),
+      registeredFallback: Object.keys(fallbackFileContents),
+    })
+
     const existingIndex = openDocs.value.findIndex(d => d.filename === filename)
     if (existingIndex >= 0) {
+      console.info('[JSON Vision] File already open at index', existingIndex)
       activeDocIndex.value = existingIndex
       return
     }
@@ -103,20 +142,60 @@ export function useJsonFiles() {
       if (useFallback.value) {
         // Fallback mode: read from cached content
         text = fallbackFileContents[filename]
-        if (!text) throw new Error('File content not found')
+        console.info('[JSON Vision] Fallback read:', { filename, found: !!text, contentLength: text?.length })
+        if (!text) throw new Error(`Fallback content not found for "${filename}"`)
       } else {
         // File System Access API mode
-        const handle = fileHandles[filename]
-        if (!handle) throw new Error('File handle not found')
-        const file = await handle.getFile()
+        let handle = fileHandles[filename]
+        console.info('[JSON Vision] FS API read:', { filename, handleExists: !!handle, handleKind: handle?.kind, handleName: handle?.name })
+        if (!handle) throw new Error(`File handle not found for "${filename}" — registered: [${Object.keys(fileHandles).join(', ')}]`)
+
+        // Check permission
+        try {
+          const perm = await (handle as any).queryPermission({ mode: 'read' })
+          console.info('[JSON Vision] Permission status:', perm)
+          if (perm !== 'granted') {
+            const req = await (handle as any).requestPermission({ mode: 'read' })
+            console.info('[JSON Vision] Permission after request:', req)
+          }
+        } catch (permErr: any) {
+          console.warn('[JSON Vision] Permission check failed (API may not exist):', permErr?.message)
+        }
+
+        // Try getFile, if it fails try re-resolving from dirHandle
+        let file: File
+        try {
+          file = await handle.getFile()
+        } catch (readErr: any) {
+          console.warn('[JSON Vision] getFile() failed:', readErr?.name, readErr?.message, '— trying re-resolve from dirHandle')
+          if (dirHandle.value) {
+            // Re-resolve: walk the path segments to get a fresh handle
+            const parts = filename.split('/')
+            let currentDir = dirHandle.value
+            for (let i = 0; i < parts.length - 1; i++) {
+              currentDir = await currentDir.getDirectoryHandle(parts[i])
+            }
+            const freshHandle = await currentDir.getFileHandle(parts[parts.length - 1])
+            fileHandles[filename] = freshHandle
+            console.info('[JSON Vision] Re-resolved handle for:', filename)
+            file = await freshHandle.getFile()
+          } else {
+            throw readErr
+          }
+        }
+
+        console.info('[JSON Vision] Got File object:', { name: file.name, size: file.size, type: file.type, lastModified: file.lastModified })
         text = await file.text()
+        console.info('[JSON Vision] Read text OK, length:', text.length)
       }
 
       const newDoc: OpenDoc = { filename, content: text, originalContent: text }
       openDocs.value.push(newDoc)
       activeDocIndex.value = openDocs.value.length - 1
-    } catch (e) {
-      showNotification('Failed to read file', true)
+      console.info('[JSON Vision] File opened successfully:', filename)
+    } catch (e: any) {
+      console.error('[JSON Vision] Failed to read file:', e?.name, e?.message, e)
+      showNotification(`Failed to read: ${e?.message || 'Unknown error'}`, true)
     }
   }
 

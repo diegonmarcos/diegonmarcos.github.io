@@ -32,5 +32,5 @@ export interface Notification {
   isError?: boolean
 }
 
-export type ViewMode = 'split' | 'editor' | 'visual' | 'graph'
+export type ViewMode = 'split' | 'editor' | 'visual' | 'graph' | 'table' | 'paths'
 export type LayoutMode = 'vertical' | 'horizontal'

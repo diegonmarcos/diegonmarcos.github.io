@@ -14,6 +14,7 @@ const emit = defineEmits<{
   openFile: [filename: string]
   fallbackFiles: [files: FileList | null]
   'update:width': [value: number]
+  collapse: []
 }>()
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
@@ -72,17 +73,29 @@ const stopResize = () => {
     />
 
     <div class="sidebar-header">
-      <span class="sidebar-title">JSON Files</span>
-      <button
-        class="open-folder-btn"
-        :title="useFallback ? 'Select JSON Files' : 'Open Local Folder'"
-        @click="useFallback ? triggerFileInput() : handleOpenClick()"
-      >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-        </svg>
-        <span>Open</span>
-      </button>
+      <div class="sidebar-title-row">
+        <span class="sidebar-title">JSON Files</span>
+        <button class="collapse-btn" title="Collapse sidebar" @click="emit('collapse')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+      </div>
+      <div class="open-buttons">
+        <button class="open-btn" title="Select JSON Files" @click="triggerFileInput()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14,2 14,8 20,8" />
+          </svg>
+          <span>File</span>
+        </button>
+        <button :class="['open-btn', { disabled: useFallback }]" :title="useFallback ? 'Folder API blocked by browser' : 'Open Local Folder'" @click="handleOpenClick()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Folder</span>
+        </button>
+      </div>
     </div>
 
     <div class="file-list">
@@ -91,12 +104,7 @@ const stopResize = () => {
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
         <div class="empty-text">
-          <template v-if="useFallback">
-            Click "Open" to select JSON files
-          </template>
-          <template v-else>
-            Click "Open" to select your <code>jsons/</code> folder
-          </template>
+          Open a file or folder to start
         </div>
       </div>
 
@@ -129,11 +137,24 @@ const stopResize = () => {
 }
 
 .sidebar-header {
-  padding: 12px;
+  padding: 8px 12px;
   border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.collapse-btn {
+  background: none; border: none; color: var(--color-text-muted);
+  cursor: pointer; padding: 2px; border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  &:hover { color: white; background: var(--color-bg-tertiary); }
 }
 
 .sidebar-title {
@@ -144,11 +165,16 @@ const stopResize = () => {
   color: var(--color-text-muted);
 }
 
-.open-folder-btn {
+.open-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.open-btn {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
+  gap: 3px;
+  padding: 4px 6px;
   border: none;
   border-radius: 4px;
   background: none;
@@ -158,6 +184,12 @@ const stopResize = () => {
 
   &:hover {
     background: var(--color-bg-tertiary);
+  }
+
+  &.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    text-decoration: line-through;
   }
 }
 

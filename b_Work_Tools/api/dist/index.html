@@ -79,7 +79,12 @@
 
         /* Custom Swagger UI styling */
         .swagger-ui .topbar {
-            display: none; /* Hide default topbar */
+            background: #2c3e50;
+            padding: 0.5rem 1rem;
+        }
+
+        .swagger-ui .topbar .topbar-wrapper .link {
+            display: none; /* Hide Swagger logo */
         }
 
         .swagger-ui .info {
@@ -183,41 +188,13 @@
             color: #667eea;
         }
 
-        /* API Selector */
-        .api-selector {
-            background: #f8f9fa;
-            padding: 1rem 2rem;
-            border-bottom: 1px solid #e9ecef;
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        .api-selector label {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .api-selector select {
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            border: 2px solid #667eea;
-            border-radius: 6px;
-            background: white;
-            color: #2c3e50;
-            cursor: pointer;
-            min-width: 250px;
-        }
-
-        .api-selector select:focus {
-            outline: none;
-            border-color: #764ba2;
-        }
-
-        .api-selector .api-info {
-            font-size: 0.9rem;
-            color: #6c757d;
-            margin-left: 1rem;
+        .api-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
         }
     </style>
 </head>
@@ -227,16 +204,7 @@
         <h1>&#9729;&#65039; Cloud Control API</h1>
         <p>RESTful API for Cloud Infrastructure Monitoring & Management</p>
         <span class="version">v1.0.0</span>
-    </div>
-
-    <!-- API Selector -->
-    <div class="api-selector">
-        <label for="apiSelect">Select API:</label>
-        <select id="apiSelect" onchange="switchApi(this.value)">
-            <option value="central">Central Cloud Control API</option>
-            <option value="ondemand">Containers Control On-Demand API</option>
-        </select>
-        <span class="api-info" id="apiInfo">Unified API — architecture, vms, services, domains, topology, cost, monitor, actions</span>
+        <span class="api-badge">Live spec &mdash; auto-generated from Rust API</span>
     </div>
 
     <!-- Links -->
@@ -244,38 +212,30 @@
         <strong>Quick Access:</strong>
         <a href="https://cloud.diegonmarcos.com" target="_blank">Dashboard</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/api/health" target="_blank">API Health</a>
+        <a href="https://api.diegonmarcos.com/rust/health" target="_blank">Rust API Health</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/api/health" target="_blank">Flask API Health</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/rust/api-docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/apispec.json" target="_blank">Flask Spec (JSON)</a>
         <span class="separator">|</span>
         <a href="cloud_central_api.md" target="_blank">Central API (MD)</a>
         <a href="cloud_ondemand_api.md" target="_blank">On-Demand API (MD)</a>
-        <span class="separator">|</span>
-        <a href="openapi_central.json" target="_blank">OpenAPI Central</a>
-        <a href="openapi_ondemand.json" target="_blank">OpenAPI On-Demand</a>
     </div>
 
-    <!-- Quick Links: Central -->
-    <div class="quick-links" id="quickLinksCentral">
-        <h3>Central Cloud Control API</h3>
+    <!-- Quick Links -->
+    <div class="quick-links">
+        <h3>Key Endpoints</h3>
         <ul>
-            <li><strong>Architecture:</strong> <code>GET /architecture</code></li>
-            <li><strong>VMs:</strong> <code>GET /vms</code></li>
-            <li><strong>Services:</strong> <code>GET /services</code></li>
-            <li><strong>Domains:</strong> <code>GET /domains</code></li>
-            <li><strong>Topology:</strong> <code>GET /topology</code></li>
-            <li><strong>Cost:</strong> <code>GET /cost</code></li>
-            <li><strong>Monitor:</strong> <code>GET /monitor</code></li>
-            <li><strong>VM Control:</strong> <code>POST /vms/{vmId}/start</code></li>
-        </ul>
-    </div>
-
-    <!-- Quick Links: On-Demand -->
-    <div class="quick-links" id="quickLinksOndemand" style="display: none;">
-        <h3>Containers Control On-Demand API</h3>
-        <ul>
-            <li><strong>VM Status:</strong> <code>GET /vms/{vmId}/status</code></li>
-            <li><strong>VM Start:</strong> <code>POST /vms/{vmId}/start</code></li>
-            <li><strong>Containers:</strong> <code>GET /vms/{vmId}/containers</code></li>
-            <li><strong>Restart:</strong> <code>POST /vms/{vmId}/containers/{name}/restart</code></li>
+            <li><strong>Rust Health:</strong> <code>GET /rust/health</code></li>
+            <li><strong>Flask Health:</strong> <code>GET /api/health</code></li>
+            <li><strong>VM Status:</strong> <code>GET /rust/vms/{vm_id}/status</code></li>
+            <li><strong>Containers:</strong> <code>GET /rust/vms/{vm_id}/containers</code></li>
+            <li><strong>Dashboard:</strong> <code>GET /api/dashboard/summary</code></li>
+            <li><strong>Wake VM:</strong> <code>POST /rust/wake/trigger</code></li>
+            <li><strong>VM Control:</strong> <code>POST /rust/vms/{vm_id}/start</code></li>
+            <li><strong>Flex Wake:</strong> <code>POST /rust/flex/wake-all</code></li>
         </ul>
     </div>
 
@@ -299,83 +259,52 @@
     <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js"></script>
 
     <script>
-        // API configurations
-        const apiConfigs = {
-            central: {
-                url: './openapi_central.json',
-                info: 'Unified API \u2014 architecture, vms, services, domains, topology, cost, monitor, actions'
+        // Initialize Swagger UI with both APIs
+        window.ui = SwaggerUIBundle({
+            urls: [
+                { url: 'https://api.diegonmarcos.com/rust/api-docs/openapi.json', name: 'Rust API (Infrastructure)' },
+                { url: 'https://api.diegonmarcos.com/apispec.json', name: 'Flask API (Central)' }
+            ],
+            "urls.primaryName": "Rust API (Infrastructure)",
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout",
+            defaultModelsExpandDepth: 1,
+            defaultModelExpandDepth: 1,
+            docExpansion: 'list',
+            filter: true,
+            syntaxHighlight: {
+                activate: true,
+                theme: 'tomorrow-night'
             },
-            ondemand: {
-                url: './openapi_ondemand.json',
-                info: 'oci-flex VM lifecycle & Docker container management'
-            }
-        };
-
-        let currentApi = 'central';
-
-        // Initialize Swagger UI
-        function createSwaggerUI(apiUrl) {
-            return SwaggerUIBundle({
-                url: apiUrl,
-                dom_id: '#swagger-ui',
-                deepLinking: true,
-                presets: [
-                    SwaggerUIBundle.presets.apis,
-                    SwaggerUIStandalonePreset
-                ],
-                plugins: [
-                    SwaggerUIBundle.plugins.DownloadUrl
-                ],
-                layout: "StandaloneLayout",
-                defaultModelsExpandDepth: 1,
-                defaultModelExpandDepth: 1,
-                docExpansion: 'list',
-                filter: true,
-                syntaxHighlight: {
-                    activate: true,
-                    theme: 'tomorrow-night'
-                },
-                tryItOutEnabled: true,
-                requestSnippetsEnabled: true,
-                requestSnippets: {
-                    generators: {
-                        curl_bash: {
-                            title: "cURL (bash)",
-                            syntax: "bash"
-                        },
-                        curl_powershell: {
-                            title: "cURL (PowerShell)",
-                            syntax: "powershell"
-                        },
-                        curl_cmd: {
-                            title: "cURL (CMD)",
-                            syntax: "bash"
-                        }
+            tryItOutEnabled: true,
+            requestSnippetsEnabled: true,
+            requestSnippets: {
+                generators: {
+                    curl_bash: {
+                        title: "cURL (bash)",
+                        syntax: "bash"
                     },
-                    defaultExpanded: true,
-                    languages: null
-                }
-            });
-        }
-
-        // Switch between APIs
-        function switchApi(apiName) {
-            currentApi = apiName;
-            const config = apiConfigs[apiName];
-
-            // Update info text
-            document.getElementById('apiInfo').textContent = config.info;
-
-            // Toggle quick links
-            document.getElementById('quickLinksCentral').style.display = apiName === 'central' ? 'block' : 'none';
-            document.getElementById('quickLinksOndemand').style.display = apiName === 'ondemand' ? 'block' : 'none';
-
-            // Reload Swagger UI with new spec
-            window.ui = createSwaggerUI(config.url);
-        }
-
-        // Initial load
-        window.ui = createSwaggerUI(apiConfigs.central.url);
+                    curl_powershell: {
+                        title: "cURL (PowerShell)",
+                        syntax: "powershell"
+                    },
+                    curl_cmd: {
+                        title: "cURL (CMD)",
+                        syntax: "bash"
+                    }
+                },
+                defaultExpanded: true,
+                languages: null
+            }
+        });
     </script>
 </body>
 </html>

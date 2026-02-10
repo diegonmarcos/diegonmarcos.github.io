@@ -63,13 +63,37 @@ print_usage() {
 }
 
 # Check dependencies
-check_dependencies() {
-    if [ -d "$PROJECT_DIR/node_modules" ]; then
+# Resolve node dependencies - checks multiple locations before installing
+# Usage: resolve_deps [package_dir]
+resolve_deps() {
+    local pkg_dir="${1:-$PROJECT_DIR}"
+
+    # 1. Already installed locally
+    if [ -d "$pkg_dir/node_modules" ]; then
         return 0
     fi
-    log_info "Installing dependencies..."
-    cd "$PROJECT_DIR"
-    npm install
+
+    # 2. Repo root shared node_modules
+    local repo_root
+    repo_root="$(cd "$pkg_dir" && git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
+    if [ -n "$repo_root" ] && [ -d "$repo_root/node_modules" ]; then
+        export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
+        export PATH="${repo_root}/node_modules/.bin:$PATH"
+        log_info "Using shared deps: $repo_root/node_modules"
+        return 0
+    fi
+
+    # 3. Auto-install in package dir
+    if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
+        log_info "Installing dependencies in $pkg_dir..."
+        (cd "$pkg_dir" && npm install --no-fund --no-audit 2>&1 | tail -3)
+        if [ -d "$pkg_dir/node_modules" ]; then
+            return 0
+        fi
+    fi
+
+    log_error "Dependencies not resolved for $pkg_dir"
+    return 1
 }
 
 # Build SCSS for all folders
@@ -215,7 +239,7 @@ build_single_file_2() {
 # Build action
 build() {
     log_info "Building ${PROJECT_NAME}..."
-    check_dependencies
+    resolve_deps
 
     # Clean and create dist directory
     rm -rf "$DIST_DIR"
@@ -249,7 +273,7 @@ build() {
 
 # Start development server
 dev() {
-    check_dependencies
+    resolve_deps
     cd "$PROJECT_DIR"
     mkdir -p "$DIST_DIR"
 

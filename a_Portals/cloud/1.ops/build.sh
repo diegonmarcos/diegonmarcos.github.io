@@ -75,23 +75,37 @@ parse_args() {
     done
 }
 
-# Check dependencies
-check_dependencies_vue() {
-    if [ -d "$VUE_DIR/node_modules" ]; then
-        return 0
-    fi
-    log_info "Installing Vue 3 dependencies..."
-    cd "$VUE_DIR"
-    npm install
-}
+# Resolve node dependencies - checks multiple locations before installing
+# Usage: resolve_deps [package_dir]
+resolve_deps() {
+    local pkg_dir="${1:-$PROJECT_DIR}"
 
-check_dependencies_vanilla() {
-    if [ -d "$PROJECT_DIR/node_modules" ]; then
+    # 1. Already installed locally
+    if [ -d "$pkg_dir/node_modules" ]; then
         return 0
     fi
-    log_info "Installing Vanilla dependencies..."
-    cd "$PROJECT_DIR"
-    npm install
+
+    # 2. Repo root shared node_modules
+    local repo_root
+    repo_root="$(cd "$pkg_dir" && git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
+    if [ -n "$repo_root" ] && [ -d "$repo_root/node_modules" ]; then
+        export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
+        export PATH="${repo_root}/node_modules/.bin:$PATH"
+        log_info "Using shared deps: $repo_root/node_modules"
+        return 0
+    fi
+
+    # 3. Auto-install in package dir
+    if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
+        log_info "Installing dependencies in $pkg_dir..."
+        (cd "$pkg_dir" && npm install --no-fund --no-audit 2>&1 | tail -3)
+        if [ -d "$pkg_dir/node_modules" ]; then
+            return 0
+        fi
+    fi
+
+    log_error "Dependencies not resolved for $pkg_dir"
+    return 1
 }
 
 # Build action
@@ -117,7 +131,7 @@ build() {
 # Build Vue 3 version
 build_vue() {
     log_info "Building ${PROJECT_NAME} (Vue 3)..."
-    check_dependencies_vue
+    resolve_deps "$VUE_DIR"
     cd "$VUE_DIR"
     npm run build
 
@@ -135,7 +149,7 @@ build_vanilla() {
     log_info "Building ${PROJECT_NAME} (Vanilla)..."
 
     # Ensure dependencies are installed
-    check_dependencies_vanilla
+    resolve_deps "$PROJECT_DIR"
 
     # Prepare dist directory
     mkdir -p "$DIST_VANILLA"
@@ -223,7 +237,7 @@ dev() {
 
 # Dev Vue 3 version
 dev_vue() {
-    check_dependencies_vue
+    resolve_deps "$VUE_DIR"
     cd "$VUE_DIR"
 
     log_info "Starting Vue 3 dev server..."
@@ -244,7 +258,7 @@ dev_vue() {
 # Dev Vanilla version
 dev_vanilla() {
     log_info "Starting Vanilla dev watchers..."
-    check_dependencies_vanilla
+    resolve_deps "$PROJECT_DIR"
     
     mkdir -p "$DIST_VANILLA"
 

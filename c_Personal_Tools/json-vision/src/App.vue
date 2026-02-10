@@ -185,12 +185,12 @@ const handleEdit = (path: string, key: string, value: unknown) => {
           <div :class="['visualizer-pane', { 'full-width': viewMode !== 'split' && viewMode !== 'editor', 'half-width': viewMode === 'split' }]">
             <div class="visualizer-toolbar">
               <div class="view-switcher">
-                <button :class="{ active: viewMode === 'graph' }" @click="viewMode = 'graph'">Graph</button>
-                <button :class="{ active: viewMode === 'visual' }" @click="viewMode = 'visual'">Tree</button>
-                <button :class="{ active: viewMode === 'table' }" @click="viewMode = 'table'">Table</button>
-                <button :class="{ active: viewMode === 'paths' }" @click="viewMode = 'paths'">Paths</button>
-                <button :class="{ active: viewMode === 'mindmap' }" @click="viewMode = 'mindmap'">Mind</button>
-                <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'">Split</button>
+                <button :class="{ active: viewMode === 'mindmap' }" @click="viewMode = 'mindmap'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><line x1="12" y1="3" x2="12" y2="9"/><line x1="12" y1="15" x2="12" y2="21"/><line x1="3" y1="12" x2="9" y2="12"/><line x1="15" y1="12" x2="21" y2="12"/></svg><span>Mind</span></button>
+                <button :class="{ active: viewMode === 'graph' }" @click="viewMode = 'graph'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="8" y="14" width="7" height="7" rx="1"/><line x1="6" y1="10" x2="12" y2="14"/><line x1="18" y1="10" x2="12" y2="14"/></svg><span>Graph</span></button>
+                <button :class="{ active: viewMode === 'visual' }" @click="viewMode = 'visual'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span>Tree</span></button>
+                <button :class="{ active: viewMode === 'table' }" @click="viewMode = 'table'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg><span>Table</span></button>
+                <button :class="{ active: viewMode === 'paths' }" @click="viewMode = 'paths'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg><span>Paths</span></button>
+                <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg><span>Split</span></button>
               </div>
               <div class="toolbar-right">
                 <input v-if="viewMode !== 'graph'" v-model="searchTerm" type="text" placeholder="Filter..." class="filter-input"/>
@@ -289,11 +289,15 @@ const handleEdit = (path: string, key: string, value: unknown) => {
 }
 
 .view-switcher {
-  display: flex; background: var(--color-bg-tertiary); border-radius: 4px; padding: 2px;
+  display: flex; background: var(--color-bg-tertiary); border-radius: 6px; padding: 2px;
   button {
-    padding: 4px 8px; font-size: 10px; border: none; border-radius: 4px; cursor: pointer;
+    padding: 5px 10px; font-size: 11px; font-weight: 500; border: none; border-radius: 5px; cursor: pointer;
     background: transparent; color: var(--color-text-muted);
+    display: flex; align-items: center; gap: 4px;
     &.active { background: var(--color-accent); color: white; }
+    &:not(.active):hover { color: var(--color-text-secondary); }
+    svg { flex-shrink: 0; }
+    span { @media (max-width: 640px) { display: none; } }
   }
 }
 

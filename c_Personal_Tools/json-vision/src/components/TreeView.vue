@@ -1,25 +1,132 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue'
 import JsonNode from './JsonNode.vue'
 
-defineProps<{ data: unknown; searchTerm: string }>()
+const props = defineProps<{ data: unknown; searchTerm: string }>()
 const emit = defineEmits<{ copyPath: [path: string]; edit: [path: string, key: string, value: unknown] }>()
+
+const flatMode = ref(false)
+const collapsedPaths = ref(new Set<string>())
+
+const toggleFlatCollapse = (path: string) => {
+  const s = new Set(collapsedPaths.value)
+  if (s.has(path)) s.delete(path)
+  else s.add(path)
+  collapsedPaths.value = s
+}
+
+interface FlatRow { path: string; key: string; value: string; type: string; depth: number; isHeader: boolean }
+
+const flatRows = computed(() => {
+  const rows: FlatRow[] = []
+  const walk = (val: unknown, path: string, key: string, depth: number) => {
+    if (val === null || typeof val !== 'object') {
+      const type = val === null ? 'null' : typeof val
+      rows.push({ path, key, value: val === null ? 'null' : String(val), type, depth, isHeader: false })
+      return
+    }
+    const hint = Array.isArray(val) ? `[${Object.keys(val).length}]` : `{${Object.keys(val).length}}`
+    rows.push({ path, key: key || 'root', value: hint, type: 'object', depth, isHeader: true })
+    if (!collapsedPaths.value.has(path)) {
+      for (const [k, v] of Object.entries(val as Record<string, unknown>)) {
+        const p = Array.isArray(val) ? `${path}[${k}]` : path ? `${path}.${k}` : k
+        walk(v, p, k, depth + 1)
+      }
+    }
+  }
+  walk(props.data, '', '', 0)
+  return rows
+})
+
+const filteredRows = computed(() => {
+  if (!props.searchTerm) return flatRows.value
+  const t = props.searchTerm.toLowerCase()
+  return flatRows.value.filter(r => r.path.toLowerCase().includes(t) || r.value.toLowerCase().includes(t) || r.isHeader)
+})
+
+const typeClass = (t: string) => {
+  if (t === 'number') return 'ft-number'
+  if (t === 'boolean') return 'ft-boolean'
+  if (t === 'null') return 'ft-null'
+  return 'ft-string'
+}
 </script>
 
 <template>
-  <div class="tree-view">
-    <JsonNode
-      :value="data"
-      :is-last="true"
-      path=""
-      :search-term="searchTerm"
-      @copy-path="emit('copyPath', $event)"
-      @edit="(a: string, b: string, c: unknown) => emit('edit', a, b, c)"
-    />
+  <div class="tree-wrapper">
+    <button class="mode-toggle" :title="flatMode ? 'Tree view' : 'Flat paths view'" @click="flatMode = !flatMode">
+      <svg v-if="!flatMode" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+      <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+      </svg>
+    </button>
+
+    <!-- Default tree -->
+    <div v-if="!flatMode" class="tree-view">
+      <JsonNode
+        :value="data"
+        :is-last="true"
+        path=""
+        :search-term="searchTerm"
+        @copy-path="emit('copyPath', $event)"
+        @edit="(a: string, b: string, c: unknown) => emit('edit', a, b, c)"
+      />
+    </div>
+
+    <!-- Flat paths -->
+    <div v-else class="flat-view">
+      <div
+        v-for="(row, i) in filteredRows" :key="i"
+        :class="['flat-row', { header: row.isHeader, collapsed: row.isHeader && collapsedPaths.has(row.path) }]"
+        :style="{ paddingLeft: (row.depth * 16 + 8) + 'px' }"
+        @click="row.isHeader ? toggleFlatCollapse(row.path) : emit('copyPath', row.path)"
+      >
+        <span v-if="row.isHeader" class="flat-chevron">{{ collapsedPaths.has(row.path) ? '▶' : '▼' }}</span>
+        <span v-if="row.isHeader" class="flat-key header-key">{{ row.key }}</span>
+        <span v-if="row.isHeader" class="flat-hint">{{ row.value }}</span>
+        <template v-else>
+          <span class="flat-key">{{ row.key }}</span>
+          <span class="flat-dots"></span>
+          <span :class="['flat-val', typeClass(row.type)]">{{ row.value.length > 60 ? row.value.slice(0, 57) + '...' : row.value }}</span>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.tree-view { padding: 16px; overflow: auto; height: 100%; width: 100%; font-family: var(--font-mono); font-size: 14px; -webkit-overflow-scrolling: touch; }
+.tree-wrapper { height: 100%; width: 100%; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+
+.mode-toggle {
+  position: absolute; top: 8px; right: 8px; z-index: 10;
+  background: var(--color-bg-tertiary); border: 1px solid var(--color-border); border-radius: 5px;
+  color: var(--color-text-muted); cursor: pointer;
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  &:hover { color: white; background: var(--color-border); }
+}
+
+.tree-view { padding: 16px; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 14px; -webkit-overflow-scrolling: touch; }
+
+.flat-view { padding: 4px 0; overflow: auto; flex: 1; font-family: var(--font-mono); font-size: 12px; -webkit-overflow-scrolling: touch; }
+.flat-row {
+  display: flex; align-items: baseline; gap: 6px; padding: 3px 8px; border-radius: 4px; cursor: pointer;
+  &:hover { background: var(--color-bg-tertiary); }
+  &.header { padding-top: 6px; padding-bottom: 2px; }
+}
+.flat-key { color: var(--color-text-secondary); white-space: nowrap; flex-shrink: 0; }
+.flat-chevron { font-size: 8px; color: var(--color-text-muted); width: 10px; flex-shrink: 0; }
+.header-key { color: #facc15; font-weight: 700; }
+.flat-hint { color: var(--color-text-muted); font-size: 10px; margin-left: 4px; }
+.flat-row.collapsed { opacity: 0.7; }
+.flat-dots { flex: 1; border-bottom: 1px dotted rgba(51,65,85,0.5); min-width: 16px; margin-bottom: 3px; }
+.flat-val { white-space: nowrap; text-align: right; flex-shrink: 0; max-width: 50%; overflow: hidden; text-overflow: ellipsis; }
+.ft-string { color: #34d399; }
+.ft-number { color: #60a5fa; }
+.ft-boolean { color: #a78bfa; }
+.ft-null { color: var(--color-text-muted); font-style: italic; }
+
 :deep(.tree-row) { display: flex; align-items: center; padding: 4px; border-radius: 4px; cursor: pointer; &:hover { background: var(--color-bg-tertiary); } }
 :deep(.tree-children) { padding-left: 16px; margin-left: 10px; border-left: 1px solid rgba(51, 65, 85, 0.5); }
 :deep(.toggle-btn) { background: none; border: none; color: var(--color-text-muted); cursor: pointer; font-size: 10px; margin-right: 4px; padding: 2px; }

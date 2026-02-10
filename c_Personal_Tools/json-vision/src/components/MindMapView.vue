@@ -200,8 +200,8 @@ const curvePath = (e: { x1: number; y1: number; x2: number; y2: number }) => {
 
 <style lang="scss" scoped>
 .mm-container { width: 100%; height: 100%; position: relative; overflow: hidden; cursor: grab; background: var(--color-bg-primary); touch-action: none; &.grabbing { cursor: grabbing; } }
-.mm-controls { position: absolute; top: 8px; left: 8px; z-index: 50; display: flex; gap: 4px; }
-.ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 40px; height: 40px; padding: 0 8px; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover,&:active { background: var(--color-border); } }
+.mm-controls { position: absolute; top: 8px; right: 8px; z-index: 50; display: flex; flex-direction: column; gap: 3px; }
+.ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover,&:active { background: var(--color-border); } }
 .mm-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; will-change: transform; }
 .mm-edges { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 .mm-node {

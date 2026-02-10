@@ -22,11 +22,42 @@ const FIT_PADDING = 40
 
 const graphNodes = ref<GraphNode[]>([])
 const graphEdges = ref<GraphEdge[]>([])
+const collapsedNodes = ref(new Set<string>())
 const pan = ref({ x: 0, y: 0 })
 const scale = ref(1)
 const isDraggingCanvas = ref(false)
 const draggedNodeId = ref<string | null>(null)
 const graphContainer = ref<HTMLDivElement | null>(null)
+
+// Build children map from edges, then find all descendants of collapsed nodes
+const hiddenNodeIds = computed(() => {
+  const childrenOf = new Map<string, string[]>()
+  for (const e of graphEdges.value) {
+    if (!childrenOf.has(e.from)) childrenOf.set(e.from, [])
+    childrenOf.get(e.from)!.push(e.to)
+  }
+  const hidden = new Set<string>()
+  const hide = (id: string) => {
+    for (const child of childrenOf.get(id) || []) {
+      hidden.add(child)
+      hide(child)
+    }
+  }
+  for (const id of collapsedNodes.value) hide(id)
+  return hidden
+})
+
+const visibleNodes = computed(() => graphNodes.value.filter(n => !hiddenNodeIds.value.has(n.id)))
+const visibleEdges = computed(() => graphEdges.value.filter(e => !hiddenNodeIds.value.has(e.from) && !hiddenNodeIds.value.has(e.to)))
+
+const childCount = (nodeId: string) => graphEdges.value.filter(e => e.from === nodeId).length
+
+const toggleCollapse = (nodeId: string) => {
+  const s = new Set(collapsedNodes.value)
+  if (s.has(nodeId)) s.delete(nodeId)
+  else s.add(nodeId)
+  collapsedNodes.value = s
+}
 
 const dragStart = { x: 0, y: 0 }
 const itemStart = { x: 0, y: 0 }
@@ -241,32 +272,38 @@ const transformStyle = computed(() => ({
         {{ layoutMode === 'vertical' ? 'H' : 'V' }}
       </button>
     </div>
-    <div class="watermark">
-      <div class="watermark-content">
-        <div class="watermark-logo"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H7a2 2 0 0 0-2 2v5a2 2 0 0 1-2 2 2 2 0 0 1 2 2v5c0 1.1.9 2 2 2h1"/><path d="M16 21h1a2 2 0 0 0 2-2v-5c0-1.1.9-2 2-2a2 2 0 0 1-2-2V5a2 2 0 0 0-2-2h-1"/></svg></div>
-        <div class="watermark-text"><div class="watermark-title">JSON Vision</div><div class="watermark-subtitle">diegonmarcos.dev</div></div>
-      </div>
-      <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener noreferrer" class="watermark-link">linktree.diegonmarcos.com</a>
-    </div>
+    <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener noreferrer" class="linktree-btn" title="linktree.diegonmarcos.com">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22V8"/><path d="M5 12l7-7 7 7"/><path d="M8 18l4-4 4 4"/><path d="M3 22h18"/></svg>
+    </a>
     <div class="transform-layer" :style="transformStyle">
       <svg class="edges-svg">
-        <GraphEdgeLine v-for="(edge, idx) in graphEdges" :key="idx" :edge="edge" :nodes="graphNodes" :layout="layoutMode"/>
+        <GraphEdgeLine v-for="(edge, idx) in visibleEdges" :key="idx" :edge="edge" :nodes="graphNodes" :layout="layoutMode"/>
       </svg>
-      <GraphNodeCard v-for="node in graphNodes" :key="node.id" :node="node" @copy-path="emit('copyPath', $event)" @mousedown="handleMouseDown($event, node.id)" @edit="emit('edit', $event.path, $event.key, $event.value)"/>
+      <GraphNodeCard
+        v-for="node in visibleNodes" :key="node.id" :node="node"
+        :collapsed="collapsedNodes.has(node.id)"
+        :child-count="childCount(node.id)"
+        @copy-path="emit('copyPath', $event)"
+        @mousedown="handleMouseDown($event, node.id)"
+        @edit="emit('edit', $event.path, $event.key, $event.value)"
+        @toggle-collapse="toggleCollapse(node.id)"
+      />
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .graph-container { width: 100%; height: 100%; position: relative; overflow: hidden; cursor: grab; background: var(--color-bg-primary); touch-action: none; &.grabbing { cursor: grabbing; } }
-.graph-controls { position: absolute; top: 8px; left: 8px; z-index: 50; display: flex; gap: 4px; }
-.ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 40px; height: 40px; padding: 0 8px; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover, &:active { background: var(--color-border); } }
-.watermark { position: absolute; bottom: 24px; right: 24px; z-index: 50; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-.watermark-content { display: flex; align-items: center; gap: 8px; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(4px); padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(51, 65, 85, 0.5); }
-.watermark-logo { background: linear-gradient(135deg, var(--color-accent), #9333ea); padding: 6px; border-radius: 6px; color: white; display: flex; }
-.watermark-title { font-weight: 700; color: white; }
-.watermark-subtitle { font-size: 10px; color: var(--color-text-muted); }
-.watermark-link { font-size: 10px; color: var(--color-text-muted); background: rgba(15, 23, 42, 0.5); padding: 4px 8px; border-radius: 4px; text-decoration: none; &:hover { color: var(--color-accent); } }
+.graph-controls { position: absolute; top: 8px; right: 8px; z-index: 50; display: flex; flex-direction: column; gap: 3px; }
+.ctrl-btn { background: var(--color-bg-tertiary); border: 1px solid var(--color-border); color: white; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent; &:hover, &:active { background: var(--color-border); } }
+.linktree-btn {
+  position: absolute; bottom: 16px; right: 16px; z-index: 50;
+  width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15); color: var(--color-text-muted);
+  text-decoration: none; transition: all 0.2s;
+  &:hover { background: rgba(255,255,255,0.15); color: white; border-color: rgba(255,255,255,0.3); transform: scale(1.1); }
+}
 .transform-layer { width: 100%; height: 100%; position: absolute; top: 0; left: 0; will-change: transform; }
 .edges-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
 </style>

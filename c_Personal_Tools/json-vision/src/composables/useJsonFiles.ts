@@ -199,11 +199,11 @@ export function useJsonFiles() {
     }
   }
 
-  const loadFromUrl = async (url: string, label: string, pinned = false) => {
+  const loadFromUrl = async (url: string, label: string, pinned = false, method = 'GET') => {
     const existing = openDocs.value.findIndex(d => d.filename === label)
     if (existing >= 0) { activeDocIndex.value = existing; return }
     try {
-      const res = await fetch(url)
+      const res = await fetch(url, { method })
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const text = await res.text()
       // Validate JSON

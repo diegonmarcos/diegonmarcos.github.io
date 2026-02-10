@@ -13,7 +13,7 @@ const emit = defineEmits<{
   openFolder: []
   openFile: [filename: string]
   fallbackFiles: [files: FileList | null]
-  fetchUrl: [url: string, label?: string]
+  fetchUrl: [url: string, label?: string, method?: string]
   'update:width': [value: number]
   collapse: []
 }>()
@@ -98,8 +98,7 @@ const loadSpec = async () => {
 }
 
 const fetchEndpoint = (ep: ApiEndpoint) => {
-  if (ep.method !== 'GET') return
-  emit('fetchUrl', ep.url, `${ep.method} ${ep.path}`)
+  emit('fetchUrl', ep.url, `${ep.method} ${ep.path}`, ep.method)
 }
 
 const fetchSingleUrl = () => {
@@ -237,8 +236,8 @@ const stopResize = () => { isResizing = false; document.removeEventListener('mou
         <template v-if="expandedTags.has(tag)">
           <div
             v-for="ep in eps" :key="ep.operationId || ep.path + ep.method"
-            :class="['ep-item', { disabled: ep.method !== 'GET' }]"
-            :title="ep.method !== 'GET' ? 'Only GET endpoints can be fetched' : ep.description"
+            class="ep-item"
+            :title="ep.description"
             @click="fetchEndpoint(ep)"
           >
             <span class="ep-method" :style="{ color: methodColor(ep.method) }">{{ ep.method }}</span>
@@ -318,8 +317,7 @@ const stopResize = () => { isResizing = false; document.removeEventListener('mou
 .ep-item {
   display: flex; align-items: center; gap: 6px; padding: 5px 8px 5px 20px; cursor: pointer;
   border-radius: 4px; font-size: 11px;
-  &:hover:not(.disabled) { background: var(--color-bg-tertiary); }
-  &.disabled { opacity: 0.4; cursor: not-allowed; }
+  &:hover { background: var(--color-bg-tertiary); }
 }
 .ep-method { font-size: 9px; font-weight: 800; width: 32px; flex-shrink: 0; font-family: var(--font-mono); }
 .ep-path { color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); }

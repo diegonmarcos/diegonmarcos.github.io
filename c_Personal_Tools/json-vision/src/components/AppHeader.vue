@@ -10,7 +10,9 @@ defineProps<{
 const emit = defineEmits<{
   'update:activeDocIndex': [value: number]
   closeTab: [index: number]
-  save: []
+  exportJson: []
+  exportMd: []
+  exportCsv: []
 }>()
 </script>
 
@@ -45,7 +47,10 @@ const emit = defineEmits<{
           <polyline points="23,4 23,10 17,10" />
           <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
         </svg>
-        <button class="tab-close" @click.stop="emit('closeTab', idx)">
+        <span v-if="doc.pinned" class="pin-icon" title="Pinned">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="none"><circle cx="12" cy="12" r="5"/></svg>
+        </span>
+        <button v-else class="tab-close" @click.stop="emit('closeTab', idx)">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
@@ -55,17 +60,17 @@ const emit = defineEmits<{
     </div>
 
     <div class="actions">
-      <button
-        class="save-btn"
-        :disabled="activeDocIndex === -1"
-        @click="emit('save')"
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-          <polyline points="17,21 17,13 7,13 7,21" />
-          <polyline points="7,3 7,8 15,8" />
-        </svg>
-        <span>Save</span>
+      <button class="action-btn" :disabled="activeDocIndex === -1" @click="emit('exportJson')" title="Export as JSON">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>JSON</span>
+      </button>
+      <button class="action-btn" :disabled="activeDocIndex === -1" @click="emit('exportMd')" title="Export as Markdown">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>MD</span>
+      </button>
+      <button class="action-btn" :disabled="activeDocIndex === -1" @click="emit('exportCsv')" title="Export as CSV">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>CSV</span>
       </button>
     </div>
   </header>
@@ -175,6 +180,8 @@ h1 {
   to { transform: rotate(360deg); }
 }
 
+.pin-icon { flex-shrink: 0; color: var(--color-accent); display: flex; opacity: 0.6; }
+
 .tab-close {
   background: none;
   border: none;
@@ -191,30 +198,32 @@ h1 {
 
 .actions {
   display: flex;
-  gap: 8px;
+  gap: 4px;
 }
 
-.save-btn {
+.action-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 5px;
+  padding: 6px 10px;
   border-radius: 6px;
-  font-size: 12px;
-  font-weight: 500;
-  border: none;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--color-border);
   cursor: pointer;
-  background: var(--color-accent);
-  color: white;
-  transition: background 0.2s;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-secondary);
+  transition: all 0.15s;
+  white-space: nowrap;
 
   &:hover:not(:disabled) {
-    background: var(--color-accent-hover);
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
   }
 
   &:disabled {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-muted);
+    opacity: 0.35;
     cursor: not-allowed;
   }
 

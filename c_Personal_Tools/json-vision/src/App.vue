@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import type { ViewMode, LayoutMode } from '@/types/json'
 import { useJsonFiles } from '@/composables/useJsonFiles'
 import { setValueByPath } from '@/composables/useGraph'
@@ -10,18 +10,109 @@ import GraphView from '@/components/GraphView.vue'
 import TreeView from '@/components/TreeView.vue'
 import TableView from '@/components/TableView.vue'
 import PathsView from '@/components/PathsView.vue'
+import MindMapView from '@/components/MindMapView.vue'
 
 const {
   files, openDocs, activeDocIndex, input, parsedData, error, notification, isSaving, useFallback,
-  handleOpenFolder, handleFallbackFiles, handleOpenFile, handleCloseTab, handleSaveFile,
+  handleOpenFolder, handleFallbackFiles, handleOpenFile, handleCloseTab, loadFromUrl, handleRefresh, handleSaveFile,
   updateInput, handleFormat, handleMinify, handleCopy, handleCopyPath, showNotification
 } = useJsonFiles()
 
-const viewMode = ref<ViewMode>('graph')
+const DEFAULT_API_URL = 'https://api.diegonmarcos.com/rust/api-docs/openapi.json'
+
+const viewMode = ref<ViewMode>('mindmap')
 const layoutMode = ref<LayoutMode>('vertical')
 const searchTerm = ref('')
 const sidebarWidth = ref(256)
 const sidebarCollapsed = ref(false)
+
+onMounted(() => {
+  loadFromUrl(DEFAULT_API_URL, 'Cloud API (OpenAPI)', true)
+})
+
+const jsonToMarkdown = (data: unknown, depth = 1): string => {
+  if (data === null) return '_null_'
+  if (typeof data !== 'object') return typeof data === 'string' ? data : `\`${data}\``
+
+  // Array of objects → table
+  if (Array.isArray(data)) {
+    if (data.length === 0) return '_empty array_'
+    if (data.every(r => r && typeof r === 'object' && !Array.isArray(r))) {
+      const cols = [...new Set(data.flatMap(r => Object.keys(r as object)))]
+      const hdr = `| ${cols.join(' | ')} |`
+      const sep = `| ${cols.map(() => '---').join(' | ')} |`
+      const rows = data.map(r => `| ${cols.map(c => {
+        const v = (r as Record<string, unknown>)[c]
+        if (v === null || v === undefined) return ''
+        if (typeof v === 'object') return `\`${JSON.stringify(v)}\``
+        return String(v)
+      }).join(' | ')} |`)
+      return [hdr, sep, ...rows].join('\n')
+    }
+    return data.map((item, i) => {
+      const prefix = `${i + 1}. `
+      if (item === null || typeof item !== 'object') return `${prefix}${jsonToMarkdown(item)}`
+      return `${prefix}\n${jsonToMarkdown(item, depth + 1)}`
+    }).join('\n')
+  }
+
+  // Object → headings + content
+  const entries = Object.entries(data as Record<string, unknown>)
+  return entries.map(([key, val]) => {
+    const h = '#'.repeat(Math.min(depth, 6))
+    if (val === null || typeof val !== 'object') return `${h} ${key}\n\n${jsonToMarkdown(val)}`
+    if (Array.isArray(val) && val.length > 0 && val.every(r => r && typeof r === 'object' && !Array.isArray(r))) {
+      return `${h} ${key}\n\n${jsonToMarkdown(val, depth + 1)}`
+    }
+    return `${h} ${key}\n\n${jsonToMarkdown(val, depth + 1)}`
+  }).join('\n\n')
+}
+
+const downloadBlob = (content: string, ext: string, mime: string) => {
+  const name = openDocs.value[activeDocIndex.value]?.filename?.replace(/\.json$/i, '') || 'export'
+  const blob = new Blob([content], { type: mime })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `${name}.${ext}`
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+const handleExportJson = () => {
+  if (!parsedData.value) return
+  downloadBlob(JSON.stringify(parsedData.value, null, 2), 'json', 'application/json')
+  showNotification('Exported as JSON')
+}
+
+const handleExportMarkdown = () => {
+  if (!parsedData.value) return
+  downloadBlob(jsonToMarkdown(parsedData.value), 'md', 'text/markdown')
+  showNotification('Exported as Markdown')
+}
+
+const jsonToCsv = (data: unknown): string => {
+  const rows: [string, string, string][] = []
+  const flatten = (val: unknown, path: string) => {
+    if (val === null || typeof val !== 'object') {
+      const t = val === null ? 'null' : typeof val
+      rows.push([path || '(root)', t, val === null ? '' : String(val)])
+      return
+    }
+    for (const [k, v] of Object.entries(val as Record<string, unknown>)) {
+      const p = Array.isArray(val) ? `${path}[${k}]` : path ? `${path}.${k}` : k
+      flatten(v, p)
+    }
+  }
+  flatten(data, '')
+  const escape = (s: string) => s.includes(',') || s.includes('"') || s.includes('\n') ? `"${s.replace(/"/g, '""')}"` : s
+  return ['Path,Type,Value', ...rows.map(([p, t, v]) => `${escape(p)},${escape(t)},${escape(v)}`)].join('\n')
+}
+
+const handleExportCsv = () => {
+  if (!parsedData.value) return
+  downloadBlob(jsonToCsv(parsedData.value), 'csv', 'text/csv')
+  showNotification('Exported as CSV')
+}
 
 const handleEdit = (path: string, key: string, value: unknown) => {
   if (!parsedData.value) return
@@ -43,7 +134,9 @@ const handleEdit = (path: string, key: string, value: unknown) => {
       :is-saving="isSaving"
       @update:active-doc-index="activeDocIndex = $event"
       @close-tab="handleCloseTab"
-      @save="handleSaveFile(input)"
+      @export-json="handleExportJson"
+      @export-md="handleExportMarkdown"
+      @export-csv="handleExportCsv"
     />
 
     <div class="main-content">
@@ -65,6 +158,7 @@ const handleEdit = (path: string, key: string, value: unknown) => {
         @fallback-files="handleFallbackFiles"
         @update:width="sidebarWidth = $event"
         @collapse="sidebarCollapsed = true"
+        @fetch-url="(url: string) => loadFromUrl(url, new URL(url).pathname.split('/').pop() || url)"
       />
 
       <main class="workspace">
@@ -88,16 +182,22 @@ const handleEdit = (path: string, key: string, value: unknown) => {
             @copy="handleCopy"
           />
 
-          <div :class="['visualizer-pane', { 'full-width': viewMode === 'visual' || viewMode === 'graph', 'half-width': viewMode === 'split' }]">
+          <div :class="['visualizer-pane', { 'full-width': viewMode !== 'split' && viewMode !== 'editor', 'half-width': viewMode === 'split' }]">
             <div class="visualizer-toolbar">
               <div class="view-switcher">
                 <button :class="{ active: viewMode === 'graph' }" @click="viewMode = 'graph'">Graph</button>
                 <button :class="{ active: viewMode === 'visual' }" @click="viewMode = 'visual'">Tree</button>
                 <button :class="{ active: viewMode === 'table' }" @click="viewMode = 'table'">Table</button>
                 <button :class="{ active: viewMode === 'paths' }" @click="viewMode = 'paths'">Paths</button>
+                <button :class="{ active: viewMode === 'mindmap' }" @click="viewMode = 'mindmap'">Mind</button>
                 <button :class="{ active: viewMode === 'split' }" @click="viewMode = 'split'">Split</button>
               </div>
-              <input v-if="viewMode !== 'graph'" v-model="searchTerm" type="text" placeholder="Filter..." class="filter-input"/>
+              <div class="toolbar-right">
+                <input v-if="viewMode !== 'graph'" v-model="searchTerm" type="text" placeholder="Filter..." class="filter-input"/>
+                <button v-if="activeDocIndex !== -1" class="export-btn" @click="handleRefresh" title="Refresh JSON">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23,4 23,10 17,10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                </button>
+              </div>
             </div>
 
             <div class="visualizer-content">
@@ -118,6 +218,12 @@ const handleEdit = (path: string, key: string, value: unknown) => {
               />
               <PathsView
                 v-else-if="viewMode === 'paths'"
+                :data="parsedData"
+                :search-term="searchTerm"
+                @copy-path="handleCopyPath"
+              />
+              <MindMapView
+                v-else-if="viewMode === 'mindmap'"
                 :data="parsedData"
                 :search-term="searchTerm"
                 @copy-path="handleCopyPath"
@@ -191,11 +297,20 @@ const handleEdit = (path: string, key: string, value: unknown) => {
   }
 }
 
+.toolbar-right { display: flex; align-items: center; gap: 6px; }
+
 .filter-input {
   background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 4px;
   padding: 4px 8px; font-size: 12px; width: 96px; color: var(--color-text-secondary); outline: none;
   transition: width 0.2s;
   &:focus { width: 128px; }
+}
+
+.export-btn {
+  padding: 4px 8px; font-size: 10px; font-weight: 700; border: 1px solid var(--color-border);
+  border-radius: 4px; background: var(--color-bg-tertiary); color: var(--color-text-muted);
+  cursor: pointer; white-space: nowrap;
+  &:hover { color: white; border-color: var(--color-accent); }
 }
 
 .visualizer-content { flex: 1; overflow: hidden; background: var(--color-bg-primary); position: relative; }

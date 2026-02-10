@@ -199,7 +199,76 @@ export function useJsonFiles() {
     }
   }
 
+  const loadFromUrl = async (url: string, label: string, pinned = false) => {
+    const existing = openDocs.value.findIndex(d => d.filename === label)
+    if (existing >= 0) { activeDocIndex.value = existing; return }
+    try {
+      const res = await fetch(url)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const text = await res.text()
+      // Validate JSON
+      JSON.parse(text)
+      const doc: OpenDoc = { filename: label, content: text, originalContent: text, pinned, sourceUrl: url }
+      openDocs.value.push(doc)
+      activeDocIndex.value = openDocs.value.length - 1
+    } catch (e: any) {
+      console.error('[JSON Vision] Failed to load URL:', url, e)
+      showNotification(`Failed to load: ${e?.message || 'Unknown'}`, true)
+    }
+  }
+
+  const handleRefresh = async () => {
+    if (activeDocIndex.value === -1) return
+    const doc = openDocs.value[activeDocIndex.value]
+    if (!doc) return
+
+    if (doc.sourceUrl) {
+      // Re-fetch from URL
+      try {
+        const res = await fetch(doc.sourceUrl, { cache: 'no-store' })
+        if (!res.ok) throw new Error(`HTTP ${res.status}`)
+        const text = await res.text()
+        JSON.parse(text)
+        doc.content = text
+        doc.originalContent = text
+        input.value = text
+        showNotification('Refreshed from API')
+      } catch (e: any) {
+        showNotification(`Refresh failed: ${e?.message || 'Unknown'}`, true)
+      }
+    } else if (fileHandles[doc.filename]) {
+      // Re-read from local file handle
+      try {
+        let file: File
+        try {
+          file = await fileHandles[doc.filename].getFile()
+        } catch {
+          if (dirHandle.value) {
+            const parts = doc.filename.split('/')
+            let currentDir = dirHandle.value
+            for (let i = 0; i < parts.length - 1; i++) currentDir = await currentDir.getDirectoryHandle(parts[i])
+            const fresh = await currentDir.getFileHandle(parts[parts.length - 1])
+            fileHandles[doc.filename] = fresh
+            file = await fresh.getFile()
+          } else throw new Error('No directory handle')
+        }
+        const text = await file.text()
+        doc.content = text
+        doc.originalContent = text
+        input.value = text
+        showNotification('Refreshed from file')
+      } catch (e: any) {
+        showNotification(`Refresh failed: ${e?.message || 'Unknown'}`, true)
+      }
+    } else if (fallbackFileContents[doc.filename]) {
+      showNotification('File loaded from input — re-open to refresh', true)
+    } else {
+      showNotification('No source to refresh from', true)
+    }
+  }
+
   const handleCloseTab = (index: number) => {
+    if (openDocs.value[index]?.pinned) return
     openDocs.value.splice(index, 1)
     if (activeDocIndex.value >= index) {
       activeDocIndex.value = Math.max(0, activeDocIndex.value - 1)
@@ -340,6 +409,8 @@ export function useJsonFiles() {
     handleFallbackFiles,
     handleOpenFile,
     handleCloseTab,
+    loadFromUrl,
+    handleRefresh,
     handleSaveFile,
     updateInput,
     handleFormat,

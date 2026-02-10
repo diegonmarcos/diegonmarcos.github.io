@@ -13,11 +13,22 @@ const emit = defineEmits<{
   openFolder: []
   openFile: [filename: string]
   fallbackFiles: [files: FileList | null]
+  fetchUrl: [url: string]
   'update:width': [value: number]
   collapse: []
 }>()
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const apiUrl = ref('')
+const isFetching = ref(false)
+
+const handleFetchUrl = async () => {
+  const url = apiUrl.value.trim()
+  if (!url) return
+  isFetching.value = true
+  emit('fetchUrl', url)
+  setTimeout(() => { isFetching.value = false }, 2000)
+}
 
 const handleOpenClick = () => {
   emit('openFolder')
@@ -94,6 +105,23 @@ const stopResize = () => {
             <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
           </svg>
           <span>Folder</span>
+        </button>
+      </div>
+      <div class="fetch-row">
+        <input
+          v-model="apiUrl"
+          class="fetch-input"
+          type="url"
+          placeholder="https://api.example.com/data.json"
+          @keydown.enter="handleFetchUrl"
+        />
+        <button class="fetch-btn" :disabled="!apiUrl.trim() || isFetching" title="Fetch JSON from endpoint" @click="handleFetchUrl">
+          <svg v-if="!isFetching" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg v-else width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin">
+            <polyline points="23,4 23,10 17,10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -192,6 +220,26 @@ const stopResize = () => {
     text-decoration: line-through;
   }
 }
+
+.fetch-row {
+  display: flex; gap: 4px;
+}
+.fetch-input {
+  flex: 1; min-width: 0;
+  background: var(--color-bg-primary); border: 1px solid var(--color-border); border-radius: 4px;
+  padding: 4px 6px; font-size: 10px; color: var(--color-text-secondary); outline: none;
+  &:focus { border-color: var(--color-accent); }
+  &::placeholder { color: var(--color-text-muted); opacity: 0.6; }
+}
+.fetch-btn {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border: 1px solid var(--color-border); border-radius: 4px;
+  background: var(--color-bg-tertiary); color: var(--color-accent); cursor: pointer;
+  &:hover:not(:disabled) { background: var(--color-accent); color: white; }
+  &:disabled { opacity: 0.35; cursor: not-allowed; }
+  .spin { animation: spin 1s linear infinite; }
+}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .file-list {
   flex: 1;

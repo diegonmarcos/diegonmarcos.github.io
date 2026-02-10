@@ -19,6 +19,17 @@ const isObject = computed(() => props.value !== null && typeof props.value === '
 const isArray = computed(() => Array.isArray(props.value))
 const isPrimitive = computed(() => !isObject.value && !isArray.value)
 
+const matchesSearch = computed(() => {
+  if (!props.searchTerm) return true
+  const term = props.searchTerm.toLowerCase()
+  const check = (key: string | number | undefined, val: unknown): boolean => {
+    if (key !== undefined && String(key).toLowerCase().includes(term)) return true
+    if (val === null || typeof val !== 'object') return String(val).toLowerCase().includes(term)
+    return Object.entries(val as Record<string, unknown>).some(([k, v]) => check(k, v))
+  }
+  return check(props.itemKey, props.value)
+})
+
 const currentPath = computed(() => {
   if (!props.path) return String(props.itemKey ?? '')
   return Number.isInteger(props.itemKey)
@@ -44,6 +55,7 @@ const formatValue = (v: unknown) => {
 </script>
 
 <template>
+  <template v-if="matchesSearch">
   <div v-if="isPrimitive" class="tree-row" @click="emit('copyPath', currentPath)">
     <span v-if="itemKey !== undefined" class="tree-key">{{ itemKey }}:</span>
     <span :class="['tree-value', getValueClass(value)]">{{ formatValue(value) }}</span>
@@ -78,4 +90,5 @@ const formatValue = (v: unknown) => {
       <span v-if="!isLast" class="comma">,</span>
     </div>
   </div>
+  </template>
 </template>

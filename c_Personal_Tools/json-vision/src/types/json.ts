@@ -25,6 +25,8 @@ export interface OpenDoc {
   filename: string
   content: string
   originalContent: string
+  pinned?: boolean
+  sourceUrl?: string
 }
 
 export interface Notification {
@@ -32,5 +34,5 @@ export interface Notification {
   isError?: boolean
 }
 
-export type ViewMode = 'split' | 'editor' | 'visual' | 'graph' | 'table' | 'paths'
+export type ViewMode = 'split' | 'editor' | 'visual' | 'graph' | 'table' | 'paths' | 'mindmap'
 export type LayoutMode = 'vertical' | 'horizontal'

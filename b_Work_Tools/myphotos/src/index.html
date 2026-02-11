@@ -1135,6 +1135,10 @@
                         updateStatusIndicator('STARTING', 'Server Starting...');
                         updateButtonStates('loading');
                         wakeStatus.textContent = 'VM is starting up...';
+                    } else if (vmState === 'RUNNING') {
+                        updateStatusIndicator('STOPPED', 'Server Degraded (Not Responding)');
+                        updateButtonStates('running');
+                        wakeStatus.textContent = 'Server is running but not responding. Try Reset.';
                     } else {
                         updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
                         updateButtonStates('stopped');

@@ -102,7 +102,7 @@ function updateButtonStates(vmState: 'running' | 'stopped' | 'loading'): void {
 /**
  * Check if API is available and get VM status
  */
-async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean }> {
+async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean; providerRunning?: boolean }> {
   try {
     const id = await discoverVmId();
     if (!id) return { apiOk: false };
@@ -121,7 +121,8 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
       const data = await response.json();
       return {
         apiOk: true,
-        vmOnline: data.ping === true || data.ssh === true
+        vmOnline: data.ping === true || data.ssh === true,
+        providerRunning: data.provider_state === 'RUNNING'
       };
     }
 
@@ -143,7 +144,7 @@ async function checkVmStatus(): Promise<void> {
   if (result.apiOk && result.vmOnline !== undefined) {
     currentStatus = result.vmOnline ? 'online' : 'offline';
     updateStatusIndicator(currentStatus);
-    updateButtonStates(result.vmOnline ? 'running' : 'stopped');
+    updateButtonStates(result.vmOnline ? 'running' : (result.providerRunning ? 'running' : 'stopped'));
   } else {
     // API not available - show unknown state
     currentStatus = 'unknown';

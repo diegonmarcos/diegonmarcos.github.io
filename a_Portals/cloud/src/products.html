@@ -2478,7 +2478,7 @@
                         console.log('[ProductsVM] health:', data);
                         var online = data.health === 'online' || data.ping === true;
                         setIndicator(online ? 'online' : 'offline');
-                        setButtons(online ? 'running' : 'stopped');
+                        setButtons(online ? 'running' : (data.provider_state === 'RUNNING' ? 'running' : 'stopped'));
                     });
             }).catch(function() { setIndicator('unknown'); setButtons('stopped'); });
         }

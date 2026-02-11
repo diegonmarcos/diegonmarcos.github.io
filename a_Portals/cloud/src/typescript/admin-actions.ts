@@ -7,8 +7,9 @@
 import { showNotification } from './notification';
 import { getDataMode } from './data-loader';
 
-// API Base URL
+// API Base URLs
 const API_BASE = 'https://api.diegonmarcos.com/api';
+const RUST_API = 'https://api.diegonmarcos.com/rust';
 
 // GitHub OAuth2 constants
 const GITHUB_CLIENT_ID = 'Ov23liQPvqLvZgQQrI7C';
@@ -78,7 +79,7 @@ export function logout(): void {
 /**
  * Make authenticated API request
  */
-async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<Response> {
+async function apiRequest(endpoint: string, options: RequestInit = {}, base: string = API_BASE): Promise<Response> {
     const token = getAccessToken();
     if (!token) {
         throw new Error('Not authenticated');
@@ -90,7 +91,7 @@ async function apiRequest(endpoint: string, options: RequestInit = {}): Promise<
         ...options.headers
     };
 
-    return fetch(`${API_BASE}${endpoint}`, {
+    return fetch(`${base}${endpoint}`, {
         ...options,
         headers
     });
@@ -107,7 +108,7 @@ export async function stopContainer(vmId: string, container: string): Promise<bo
 
     try {
         showNotification(`Stopping ${container}...`);
-        const response = await apiRequest(`/vm/${vmId}/container/${container}/stop`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${vmId}/containers/${container}/stop`, { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
@@ -132,7 +133,7 @@ export async function startContainer(vmId: string, container: string): Promise<b
 
     try {
         showNotification(`Starting ${container}...`);
-        const response = await apiRequest(`/vm/${vmId}/container/${container}/start`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${vmId}/containers/${container}/start`, { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
@@ -157,7 +158,7 @@ export async function restartContainer(vmId: string, container: string): Promise
 
     try {
         showNotification(`Restarting ${container}...`);
-        const response = await apiRequest(`/vm/${vmId}/container/${container}/restart`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${vmId}/containers/${container}/restart`, { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
@@ -182,7 +183,7 @@ export async function updateContainer(vmId: string, container: string): Promise<
 
     try {
         showNotification(`Updating ${container}... (pulling new image)`);
-        const response = await apiRequest(`/vm/${vmId}/container/${container}/update`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${vmId}/containers/${container}/update`, { method: 'POST' });
         const data = await response.json();
 
         if (response.ok) {
@@ -204,7 +205,7 @@ export async function updateContainer(vmId: string, container: string): Promise<
 export async function getContainerLogs(vmId: string, container: string, lines: number = 100): Promise<string | null> {
     try {
         // Logs endpoint doesn't require auth
-        const response = await fetch(`${API_BASE}/vm/${vmId}/container/${container}/logs?lines=${lines}`);
+        const response = await fetch(`${API_BASE}/admin/vms/${vmId}/containers/${container}/logs?lines=${lines}`);
         const data = await response.json();
 
         if (response.ok) {
@@ -463,10 +464,32 @@ export function initAdminActions(): void {
 }
 
 // ============================================
-// FLEX SERVER (OCI-P-FLEX_1) VM CONTROL
+// FLEX SERVER VM CONTROL
 // ============================================
 
-const FLEX_VM_ID = 'oci-p-flex_1';
+const FLEX_VM_LABEL = 'oci-flex';
+let FLEX_VM_ID: string | null = null;
+
+/**
+ * Discover Flex VM ID from Rust health/all endpoint
+ */
+async function discoverFlexVmId(): Promise<string | null> {
+    if (FLEX_VM_ID) return FLEX_VM_ID;
+    try {
+        const response = await fetch(`${RUST_API}/health/ids`, {
+            signal: AbortSignal.timeout(5000)
+        });
+        if (!response.ok) return null;
+        const data = await response.json();
+        for (const [id, vm] of Object.entries(data.vms || {})) {
+            if ((vm as any).label === FLEX_VM_LABEL) {
+                FLEX_VM_ID = id;
+                return id;
+            }
+        }
+    } catch {}
+    return null;
+}
 
 type FlexServerStatus = 'online' | 'offline' | 'starting' | 'stopping' | 'unknown';
 
@@ -502,23 +525,25 @@ function setFlexButtonLoading(buttonId: string, loading: boolean): void {
  */
 export async function getFlexServerStatus(): Promise<FlexServerStatus> {
     try {
-        const response = await fetch(`${API_BASE}/vms/${FLEX_VM_ID}/status`);
+        const id = await discoverFlexVmId();
+        if (!id) return 'unknown';
+        const response = await fetch(`${RUST_API}/health/${id}`);
         if (!response.ok) {
             return 'unknown';
         }
         const data = await response.json();
 
-        // Map API response to status
-        if (data.state === 'RUNNING' || data.pingable === true) {
+        // Map Rust API response to status
+        if (data.health === 'online' || data.ping === true) {
             return 'online';
-        } else if (data.state === 'STOPPED' || data.state === 'TERMINATED') {
+        } else if (data.provider_state === 'STOPPED' || data.provider_state === 'TERMINATED') {
             return 'offline';
-        } else if (data.state === 'STARTING') {
+        } else if (data.provider_state === 'STARTING') {
             return 'starting';
-        } else if (data.state === 'STOPPING') {
+        } else if (data.provider_state === 'STOPPING') {
             return 'stopping';
         }
-        return 'unknown';
+        return 'offline';
     } catch {
         return 'unknown';
     }
@@ -540,15 +565,17 @@ export async function startFlexServer(): Promise<boolean> {
     }
 
     try {
+        const id = await discoverFlexVmId();
+        if (!id) { showNotification('Could not discover Flex VM'); return false; }
         setFlexButtonLoading('flex-start', true);
         updateFlexIndicator('starting', 'Starting Flex Server...');
         showNotification('Starting Flex Server...');
 
-        const response = await apiRequest(`/vms/${FLEX_VM_ID}/start`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${id}/start`, { method: 'POST' }, RUST_API);
         const data = await response.json();
 
         if (response.ok) {
-            showNotification('Flex Server start initiated');
+            showNotification(data.message || 'Flex Server start initiated');
             // Poll for status updates
             pollFlexStatus();
             return true;
@@ -582,15 +609,17 @@ export async function stopFlexServer(): Promise<boolean> {
     }
 
     try {
+        const id = await discoverFlexVmId();
+        if (!id) { showNotification('Could not discover Flex VM'); return false; }
         setFlexButtonLoading('flex-stop', true);
         updateFlexIndicator('stopping', 'Stopping Flex Server...');
         showNotification('Stopping Flex Server...');
 
-        const response = await apiRequest(`/vms/${FLEX_VM_ID}/stop`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${id}/stop`, { method: 'POST' }, RUST_API);
         const data = await response.json();
 
         if (response.ok) {
-            showNotification('Flex Server stop initiated');
+            showNotification(data.message || 'Flex Server stop initiated');
             // Poll for status updates
             pollFlexStatus();
             return true;
@@ -629,15 +658,17 @@ export async function resetFlexServer(): Promise<boolean> {
     }
 
     try {
+        const id = await discoverFlexVmId();
+        if (!id) { showNotification('Could not discover Flex VM'); return false; }
         setFlexButtonLoading('flex-reset', true);
         updateFlexIndicator('starting', 'Resetting Flex Server...');
         showNotification('Force resetting Flex Server...');
 
-        const response = await apiRequest(`/vms/${FLEX_VM_ID}/reset`, { method: 'POST' });
+        const response = await apiRequest(`/vms/${id}/reset`, { method: 'POST' }, RUST_API);
         const data = await response.json();
 
         if (response.ok) {
-            showNotification('Flex Server reset initiated');
+            showNotification(data.message || 'Flex Server reset initiated');
             // Poll for status updates
             pollFlexStatus();
             return true;

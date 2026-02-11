@@ -85,7 +85,7 @@
 
             try {
                 // Exchange code for token via API
-                const response = await fetch('https://api.diegonmarcos.com/auth/github/callback', {
+                const response = await fetch('https://api.diegonmarcos.com/api/auth/callback', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

@@ -10,7 +10,6 @@
     { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2015" },
     { "mod": "copy", "files": "*.html", "from": "src" },
     { "mod": "copy", "files": "*.js", "from": "src", "exclude": "script.js" },
-    { "mod": "inline", "html": "index.html", "css": "style.css", "js": "script.js" },
     { "mod": "symlink", "files": "public" }
   ],
 

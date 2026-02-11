@@ -4,13 +4,34 @@ import { getElementById, addClass, removeClass } from '../utils/dom';
 
 // Configuration
 const API_BASE = 'https://api.diegonmarcos.com';
-const VM_ID = 'oci-p-flex_1'; // On-demand VPS
-const OCI_CONSOLE_URL = 'https://cloud.oracle.com/compute/instances';
+const VM_LABEL = 'oci-flex'; // On-demand VPS label
 
 // State
 let isLoading = false;
 let currentStatus: 'online' | 'offline' | 'unknown' = 'unknown';
 let apiAvailable = false;
+let vmId: string | null = null;
+
+/**
+ * Discover VM ID from Rust health/all endpoint by label
+ */
+async function discoverVmId(): Promise<string | null> {
+  if (vmId) return vmId;
+  try {
+    const response = await fetch(`${API_BASE}/rust/health/ids`, {
+      signal: AbortSignal.timeout(5000)
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    for (const [id, vm] of Object.entries(data.vms || {})) {
+      if ((vm as any).label === VM_LABEL) {
+        vmId = id;
+        return id;
+      }
+    }
+  } catch {}
+  return null;
+}
 
 /**
  * Update status indicator UI
@@ -83,10 +104,13 @@ function updateButtonStates(vmState: 'running' | 'stopped' | 'loading'): void {
  */
 async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean }> {
   try {
+    const id = await discoverVmId();
+    if (!id) return { apiOk: false };
+
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const response = await fetch(`${API_BASE}/vms/${VM_ID}/status`, {
+    const response = await fetch(`${API_BASE}/rust/health/${id}`, {
       method: 'GET',
       signal: controller.signal
     });
@@ -97,7 +121,7 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
       const data = await response.json();
       return {
         apiOk: true,
-        vmOnline: data.pingable === true || data.sshable === true
+        vmOnline: data.ping === true || data.ssh === true
       };
     }
 
@@ -132,10 +156,9 @@ async function checkVmStatus(): Promise<void> {
  * Execute VM action - opens OCI Console if API not available
  */
 async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boolean> {
-  // If API is not available, redirect to OCI Console
-  if (!apiAvailable) {
-    showToast('Opening OCI Console...', false);
-    window.open(OCI_CONSOLE_URL, '_blank');
+  // If API is not available, show error
+  if (!apiAvailable || !vmId) {
+    showToast('API not available', true);
     return false;
   }
 
@@ -157,7 +180,8 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
     updateButtonStates('loading');
     updateStatusIndicator('loading');
 
-    const response = await fetch(`${API_BASE}/vms/${VM_ID}/${action}`, {
+    const rustAction = action === 'reboot' ? 'reset' : action;
+    const response = await fetch(`${API_BASE}/rust/vms/${vmId}/${rustAction}`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -179,13 +203,13 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
 
     const data = await response.json();
 
-    if (data.success) {
+    if (data.status) {
       const actionMessages: Record<string, string> = {
         start: 'VM starting...',
         stop: 'VM stopping...',
         reboot: 'VM rebooting...'
       };
-      showToast(actionMessages[action] || 'Done');
+      showToast(actionMessages[action] || data.message || 'Done');
 
       // Poll for status change
       setTimeout(() => checkVmStatus(), 10000);

@@ -524,6 +524,70 @@
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
         }
 
+        .vm-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .vm-controls button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .vm-controls button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .vm-controls button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-vm-start {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-vm-start:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-vm-stop {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-vm-stop:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+        }
+
+        .btn-vm-reset {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn-vm-reset:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+        }
+
         @keyframes pulse-wake {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.7; }
@@ -790,7 +854,7 @@
             <div class="tools-section">
                 <div class="tools-title">Select Tool</div>
                 <div class="tools-grid">
-                    <button class="tool-btn active" data-tool="photoprism" data-url="https://photos.diegonmarcos.com/" data-config-url="https://photos.diegonmarcos.com/settings">
+                    <button class="tool-btn active" data-tool="photoprism" data-url="https://photos.diegonmarcos.com/library/" data-config-url="https://photos.diegonmarcos.com/settings">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                             <circle cx="12" cy="13" r="4"/>
@@ -850,20 +914,20 @@
                     <div class="status-dot checking" id="status-dot"></div>
                     <span id="status-text">Checking server status...</span>
                 </div>
-                <button id="wake-btn" class="login-btn btn-wake" onclick="wakeServer()" style="width: 100%; margin-top: 12px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"/>
-                        <line x1="12" y1="1" x2="12" y2="3"/>
-                        <line x1="12" y1="21" x2="12" y2="23"/>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-                        <line x1="1" y1="12" x2="3" y2="12"/>
-                        <line x1="21" y1="12" x2="23" y2="12"/>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-                    </svg>
-                    <span id="wake-btn-text">Wake Photo Server</span>
-                </button>
+                <div class="vm-controls">
+                    <button id="vm-start-btn" class="btn-vm-start" onclick="vmAction('start')" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        Start
+                    </button>
+                    <button id="vm-stop-btn" class="btn-vm-stop" onclick="vmAction('stop')" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>
+                        Stop
+                    </button>
+                    <button id="vm-reset-btn" class="btn-vm-reset" onclick="vmAction('reset')" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        Reset
+                    </button>
+                </div>
                 <div id="wake-status" class="wake-status"></div>
             </div>
 
@@ -981,13 +1045,38 @@
             });
         });
 
-        // Wake Server functionality - Uses Cloud Control API
-        // VM: oci-p-flex_1 (Photoprism server)
+        // Wake Server functionality - Uses Rust Infrastructure API
+        // VM: oci-flex (Photoprism server) - ID discovered dynamically
         const CLOUD_API = 'https://api.diegonmarcos.com';
-        const VM_STATUS_URL = `${CLOUD_API}/api/wake/status`;
-        const VM_START_URL = `${CLOUD_API}/api/wake/trigger`;
-        const wakeBtn = document.getElementById('wake-btn');
-        const wakeBtnText = document.getElementById('wake-btn-text');
+        const VM_LABEL = 'oci-flex';
+        let VM_ID = null;
+        let VM_STATUS_URL = null;
+        let VM_START_URL = null;
+        let VM_STOP_URL = null;
+        let VM_RESET_URL = null;
+
+        async function discoverVmId() {
+            if (VM_ID) return VM_ID;
+            try {
+                const res = await fetch(`${CLOUD_API}/rust/health/ids`, { signal: AbortSignal.timeout(5000) });
+                if (!res.ok) return null;
+                const data = await res.json();
+                for (const [id, vm] of Object.entries(data.vms || {})) {
+                    if (vm.label === VM_LABEL) {
+                        VM_ID = id;
+                        VM_STATUS_URL = `${CLOUD_API}/rust/health/${id}`;
+                        VM_START_URL = `${CLOUD_API}/rust/vms/${id}/start`;
+                        VM_STOP_URL = `${CLOUD_API}/rust/vms/${id}/stop`;
+                        VM_RESET_URL = `${CLOUD_API}/rust/vms/${id}/reset`;
+                        return id;
+                    }
+                }
+            } catch (e) { console.log('VM discovery failed:', e.message); }
+            return null;
+        }
+        const startBtn = document.getElementById('vm-start-btn');
+        const stopBtn = document.getElementById('vm-stop-btn');
+        const resetBtn = document.getElementById('vm-reset-btn');
         const wakeStatus = document.getElementById('wake-status');
         const statusDot = document.getElementById('status-dot');
         const statusText = document.getElementById('status-text');
@@ -1009,9 +1098,26 @@
             }
         }
 
+        function updateButtonStates(vmState) {
+            if (vmState === 'running') {
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                resetBtn.disabled = false;
+            } else if (vmState === 'stopped') {
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                resetBtn.disabled = true;
+            } else {
+                startBtn.disabled = true;
+                stopBtn.disabled = true;
+                resetBtn.disabled = true;
+            }
+        }
+
         async function checkServerStatus() {
             try {
-                // First check VM status via Cloud API
+                await discoverVmId();
+                if (!VM_STATUS_URL) throw new Error('VM not discovered');
                 const statusResponse = await fetch(VM_STATUS_URL, {
                     method: 'GET',
                     signal: AbortSignal.timeout(8000)
@@ -1019,129 +1125,68 @@
 
                 if (statusResponse.ok) {
                     const data = await statusResponse.json();
-                    const vmState = data.state || data.status;
+                    const vmState = data.provider_state;
 
-                    if (vmState === 'RUNNING') {
-                        // VM is running - assume services are available
+                    if (data.health === 'online' || data.ping === true) {
                         updateStatusIndicator('RUNNING', 'Server Online');
-                        wakeBtn.style.display = 'none';
+                        updateButtonStates('running');
                         wakeStatus.textContent = '';
                     } else if (vmState === 'STARTING') {
                         updateStatusIndicator('STARTING', 'Server Starting...');
-                        wakeBtn.style.display = 'none';
+                        updateButtonStates('loading');
                         wakeStatus.textContent = 'VM is starting up...';
                     } else {
-                        // STOPPED or other
                         updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
-                        wakeBtn.style.display = 'flex';
+                        updateButtonStates('stopped');
                         wakeStatus.textContent = 'Photo server is sleeping.';
                     }
                 } else {
-                    // API error, fallback to health check
                     throw new Error('API unavailable');
                 }
             } catch (error) {
-                // Cloud API unavailable - show unknown state
                 console.log('Status check error:', error.message);
                 updateStatusIndicator('UNKNOWN', 'Status Unknown');
-                wakeBtn.style.display = 'flex';
+                updateButtonStates('stopped');
                 wakeStatus.textContent = 'Unable to check server status.';
             }
         }
 
-        async function wakeServer() {
-            wakeBtn.classList.add('waking');
-            wakeBtnText.textContent = 'Starting VM...';
-            wakeStatus.textContent = 'Sending wake command...';
+        async function vmAction(action) {
+            if (!VM_ID) { wakeStatus.textContent = 'VM not discovered'; return; }
+
+            const urls = { start: VM_START_URL, stop: VM_STOP_URL, reset: VM_RESET_URL };
+            const url = urls[action];
+            if (!url) return;
+
+            if (action === 'stop' && !confirm('Stop the server? Services will become unavailable.')) return;
+            if (action === 'reset' && !confirm('Reset the server? This will force restart.')) return;
+
+            updateButtonStates('loading');
+            wakeStatus.textContent = `Sending ${action} command...`;
 
             try {
-                // Trigger VM start via Cloud Control API
-                const startResponse = await fetch(VM_START_URL, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
 
-                if (startResponse.ok) {
-                    const startData = await startResponse.json();
-                    wakeStatus.textContent = 'VM starting! Waiting for services...';
-                    updateStatusIndicator('STARTING', 'VM Starting...');
+                if (response.ok) {
+                    const messages = { start: 'VM starting...', stop: 'VM stopping...', reset: 'VM resetting...' };
+                    wakeStatus.textContent = messages[action];
+                    updateStatusIndicator(action === 'stop' ? 'STOPPING' : 'STARTING');
 
-                    // Poll for server to come online (check every 5s for up to 120s)
-                    let attempts = 0;
-                    const maxAttempts = 24;
-
-                    const pollInterval = setInterval(async () => {
-                        attempts++;
-                        wakeStatus.textContent = `Starting up... (${attempts * 5}s)`;
-
-                        try {
-                            // Check VM status via API
-                            const statusResponse = await fetch(VM_STATUS_URL);
-                            if (statusResponse.ok) {
-                                const statusData = await statusResponse.json();
-                                const vmState = statusData.state || statusData.status;
-
-                                if (vmState === 'RUNNING') {
-                                    // VM is running, now check if app is responding
-                                    try {
-                                        const healthResponse = await fetch(HEALTH_URL, {
-                                            method: 'GET',
-                                            signal: AbortSignal.timeout(4000)
-                                        });
-
-                                        if (healthResponse.ok) {
-                                            clearInterval(pollInterval);
-                                            wakeBtn.classList.remove('waking');
-                                            wakeBtn.classList.add('success');
-                                            wakeBtnText.textContent = 'Server Online!';
-                                            updateStatusIndicator('RUNNING', 'Server Online');
-                                            wakeStatus.textContent = 'Server is ready! Refreshing...';
-                                            setTimeout(() => window.location.reload(), 1500);
-                                            return;
-                                        }
-                                    } catch (e) {
-                                        // App not ready yet, VM is running but services starting
-                                        wakeStatus.textContent = `VM running, services starting... (${attempts * 5}s)`;
-                                    }
-                                }
-                            }
-                        } catch (e) {
-                            // Still waiting
-                        }
-
-                        if (attempts >= maxAttempts) {
-                            clearInterval(pollInterval);
-                            wakeBtn.classList.remove('waking');
-                            wakeBtn.classList.add('error');
-                            wakeBtnText.textContent = 'Still Starting...';
-                            wakeStatus.textContent = 'Server is taking longer than expected. Try again in a minute.';
-                            setTimeout(() => {
-                                wakeBtn.classList.remove('error');
-                                wakeBtnText.textContent = 'Wake Photo Server';
-                            }, 5000);
-                        }
-                    }, 5000);
+                    // Poll for status change
+                    setTimeout(() => checkServerStatus(), 10000);
+                    setTimeout(() => checkServerStatus(), 30000);
+                    setTimeout(() => checkServerStatus(), 60000);
                 } else {
-                    // Start failed
-                    const errorData = await startResponse.json().catch(() => ({}));
-                    wakeBtn.classList.remove('waking');
-                    wakeBtn.classList.add('error');
-                    wakeBtnText.textContent = 'Start Failed';
-                    wakeStatus.textContent = errorData.error || errorData.message || 'Could not start VM.';
-                    setTimeout(() => {
-                        wakeBtn.classList.remove('error');
-                        wakeBtnText.textContent = 'Try Again';
-                    }, 3000);
+                    const errorData = await response.json().catch(() => ({}));
+                    wakeStatus.textContent = errorData.message || `${action} failed`;
+                    await checkServerStatus();
                 }
             } catch (error) {
-                wakeBtn.classList.remove('waking');
-                wakeBtn.classList.add('error');
-                wakeBtnText.textContent = 'Error';
-                wakeStatus.textContent = 'Could not reach Cloud API.';
-                setTimeout(() => {
-                    wakeBtn.classList.remove('error');
-                    wakeBtnText.textContent = 'Try Again';
-                }, 3000);
+                wakeStatus.textContent = 'Could not reach API.';
+                await checkServerStatus();
             }
         }
 

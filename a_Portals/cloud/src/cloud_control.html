@@ -3439,7 +3439,8 @@
         // =================================================================
         // CONFIGURATION
         // =================================================================
-        const apiUrl = 'http://34.55.55.234:5000/api';
+        const apiUrl = 'https://api.diegonmarcos.com/api';
+        const rustUrl = 'https://api.diegonmarcos.com/rust';
         const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
         const GITHUB_REDIRECT_URI = window.location.href.split('?')[0];
 
@@ -3940,7 +3941,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vms/${vmId}/reboot`, {
+                const response = await fetch(`${rustUrl}/vms/${vmId}/reset`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -3996,7 +3997,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vms/${vmId}/reset`, {
+                const response = await fetch(`${rustUrl}/vms/${vmId}/reset`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -4042,7 +4043,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vms/${vmId}/stop`, {
+                const response = await fetch(`${rustUrl}/vms/${vmId}/stop`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -4085,7 +4086,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/vms/${vmId}/containers/${containerName}/restart`, {
+                const response = await fetch(`${rustUrl}/vms/${vmId}/containers/${containerName}/restart`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -4113,24 +4114,40 @@
         }
 
         // ============================================
-        // WAKE-ON-DEMAND FUNCTIONS (uses Cloud Control API)
-        // VM: oci-p-flex_1 (Photoprism/Syncthing/Radicale server)
+        // WAKE-ON-DEMAND FUNCTIONS (uses Rust Infrastructure API)
+        // VM: oci-flex - ID discovered dynamically
         // ============================================
-        const WAKE_VM_ID = 'oci-p-flex_1';
+        const WAKE_VM_LABEL = 'oci-flex';
+        let WAKE_VM_ID = null;
+
+        async function discoverWakeVmId() {
+            if (WAKE_VM_ID) return WAKE_VM_ID;
+            try {
+                const res = await fetch(`${rustUrl}/health/ids`, { signal: AbortSignal.timeout(5000) });
+                if (!res.ok) return null;
+                const data = await res.json();
+                for (const [id, vm] of Object.entries(data.vms || {})) {
+                    if (vm.label === WAKE_VM_LABEL) { WAKE_VM_ID = id; return id; }
+                }
+            } catch (e) { console.log('VM discovery failed:', e.message); }
+            return null;
+        }
 
         async function checkDevServerStatus() {
             try {
-                const resp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/status`);
+                const id = await discoverWakeVmId();
+                if (!id) throw new Error('VM not discovered');
+                const resp = await fetch(`${rustUrl}/health/${id}`);
                 const data = await resp.json();
 
                 const statusEl = document.getElementById('dev-server-status');
                 const textEl = document.getElementById('dev-server-status-text');
                 const wakeBtn = document.getElementById('wake-dev-btn');
 
-                // API returns state from OCI: RUNNING, STOPPED, STARTING, STOPPING, etc.
-                const state = data.state || data.status || 'UNKNOWN';
+                const state = data.provider_state || 'UNKNOWN';
+                const isOnline = data.health === 'online' || data.ping === true;
 
-                if (state === 'RUNNING') {
+                if (isOnline) {
                     statusEl.className = 'live-status online';
                     textEl.textContent = 'Running';
                     wakeBtn.disabled = true;
@@ -4173,13 +4190,13 @@
                 const headers = { 'Content-Type': 'application/json' };
                 if (token) headers['Authorization'] = `Bearer ${token}`;
 
-                const resp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/start`, {
+                const resp = await fetch(`${rustUrl}/vms/${WAKE_VM_ID}/start`, {
                     method: 'POST',
                     headers: headers
                 });
                 const data = await resp.json();
 
-                if (resp.ok || data.success) {
+                if (resp.ok) {
                     textEl.textContent = 'VM Starting...';
                     // Poll for running status
                     let attempts = 0;
@@ -4190,9 +4207,9 @@
                         textEl.textContent = `Starting... (${attempts * 5}s)`;
 
                         try {
-                            const statusResp = await fetch(`${apiUrl}/vms/${WAKE_VM_ID}/status`);
+                            const statusResp = await fetch(`${rustUrl}/health/${WAKE_VM_ID}`);
                             const statusData = await statusResp.json();
-                            const state = statusData.state || statusData.status;
+                            const state = statusData.health === 'online' || statusData.ping === true ? 'RUNNING' : statusData.provider_state;
 
                             if (state === 'RUNNING') {
                                 clearInterval(checkInterval);
@@ -4947,7 +4964,7 @@
 
             try {
                 const token = localStorage.getItem('github_token');
-                const response = await fetch(`${apiUrl}/service/${serviceId}/kill`, {
+                const response = await fetch(`${rustUrl}/services/${serviceId}/stop`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${token}`,

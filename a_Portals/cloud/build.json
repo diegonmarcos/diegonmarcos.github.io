@@ -6,7 +6,7 @@
   "dist": "dist",
 
   "build": [
-    { "mod": "sass", "input": "src/scss/main.scss", "output": "style.css" },
+    { "mod": "sass", "input": "src/scss/main.scss", "output": "styles.css" },
     { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2015" },
     { "mod": "copy", "files": "*.html", "from": "src" },
     { "mod": "copy", "files": "*.js", "from": "src", "exclude": "script.js" },
@@ -17,7 +17,7 @@
     "mode": "auto",
     "dir": "src",
     "watch": [
-      { "mod": "sass", "input": "scss/main.scss", "output": "style.css" },
+      { "mod": "sass", "input": "scss/main.scss", "output": "styles.css" },
       { "mod": "esbuild", "input": "typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2015" }
     ]
   },

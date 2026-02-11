@@ -11,7 +11,12 @@
     gap: calc(2rem * var(--zoom-scale, 1));
 }
 
-// Mobile: same as desktop (no responsive column reduction)
+// Mobile: allow cards to grow to fit content
+@media (max-width: 768px) {
+    .card {
+        aspect-ratio: auto;
+    }
+}
 
 .card {
     background: var(--bg-card);

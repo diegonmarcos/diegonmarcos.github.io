@@ -162,19 +162,6 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
     return false;
   }
 
-  // Get or request auth token
-  let token = localStorage.getItem('api_token');
-
-  if (!token) {
-    const newToken = prompt('Enter API token for VM control:');
-    if (!newToken) {
-      showToast('Token required', true);
-      return false;
-    }
-    token = newToken;
-    localStorage.setItem('api_token', token);
-  }
-
   try {
     isLoading = true;
     updateButtonStates('loading');
@@ -183,19 +170,8 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
     const rustAction = action === 'reboot' ? 'reset' : action;
     const response = await fetch(`${API_BASE}/rust/vms/${vmId}/${rustAction}`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' }
     });
-
-    if (response.status === 401 || response.status === 403) {
-      localStorage.removeItem('api_token');
-      showToast('Invalid token', true);
-      isLoading = false;
-      await checkVmStatus();
-      return false;
-    }
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
@@ -277,18 +253,14 @@ export function initVmControl(): void {
   stopBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!isLoading && !stopBtn.disabled) {
-      if (confirm('Stop the on-demand VPS? Services will become unavailable.')) {
-        await executeVmAction('stop');
-      }
+      await executeVmAction('stop');
     }
   });
 
   rebootBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!isLoading && !rebootBtn.disabled) {
-      if (confirm('Reboot the on-demand VPS? This will take ~2 minutes.')) {
-        await executeVmAction('reboot');
-      }
+      await executeVmAction('reboot');
     }
   });
 

@@ -385,9 +385,7 @@ export function createContainerAdminButtons(vmId: string, container: string): HT
                 await startContainer(vmId, container);
                 break;
             case 'update':
-                if (confirm(`Update container ${container}? This will pull the latest image and restart.`)) {
-                    await updateContainer(vmId, container);
-                }
+                await updateContainer(vmId, container);
                 break;
         }
     });
@@ -678,11 +676,6 @@ export async function resetFlexServer(): Promise<boolean> {
     if (!isAuthorized()) {
         showNotification('Login required to control Flex server');
         initiateLogin();
-        return false;
-    }
-
-    // Confirmation dialog for dangerous action
-    if (!confirm('Force reset Flex Server? This is a hard reset and may cause data loss.')) {
         return false;
     }
 

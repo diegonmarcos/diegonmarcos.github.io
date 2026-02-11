@@ -1158,9 +1158,6 @@
             const url = urls[action];
             if (!url) return;
 
-            if (action === 'stop' && !confirm('Stop the server? Services will become unavailable.')) return;
-            if (action === 'reset' && !confirm('Reset the server? This will force restart.')) return;
-
             updateButtonStates('loading');
             wakeStatus.textContent = `Sending ${action} command...`;
 

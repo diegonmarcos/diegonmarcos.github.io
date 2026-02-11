@@ -64,8 +64,9 @@ type DataMode = 'local' | 'api';
 // Current mode (default to local if LOCAL_DATA exists)
 let currentMode: DataMode = 'local';
 
-// API base URL
-const API_BASE = 'http://34.55.55.234:5000/api';
+// API base URLs
+const API_BASE = 'https://api.diegonmarcos.com/api';
+const RUST_API = 'https://api.diegonmarcos.com/rust';
 
 // Check if LOCAL_DATA is available
 declare const LOCAL_DATA: InfrastructureData | undefined;
@@ -119,6 +120,7 @@ export function getLocalDataTimestamp(): string | null {
  * Load infrastructure data based on current mode
  */
 export async function loadInfrastructureData(): Promise<InfrastructureData | null> {
+    console.log(`[DataLoader] loadInfrastructureData() mode=${currentMode}`);
     if (currentMode === 'local') {
         return loadLocalData();
     } else {
@@ -143,12 +145,22 @@ function loadLocalData(): InfrastructureData | null {
  */
 async function loadApiData(): Promise<InfrastructureData | null> {
     try {
-        console.log('[DataLoader] Loading from API');
-        const response = await fetch(`${API_BASE}/config`);
+        const url = `${API_BASE}/config`;
+        console.log(`[DataLoader] Fetching API: ${url}`);
+        const response = await fetch(url);
+        console.log(`[DataLoader] API response: ${response.status} ${response.statusText}`);
         if (!response.ok) {
             throw new Error(`API error: ${response.status}`);
         }
-        return await response.json();
+        const data = await response.json();
+        console.log(`[DataLoader] API data loaded:`, Object.keys(data));
+        if (data.virtualMachines) {
+            console.log(`[DataLoader] VMs: ${Object.keys(data.virtualMachines).join(', ')}`);
+        }
+        if (data.services) {
+            console.log(`[DataLoader] Services: ${Object.keys(data.services).length} total`);
+        }
+        return data;
     } catch (error) {
         console.error('[DataLoader] API fetch failed:', error);
         return null;
@@ -160,8 +172,13 @@ async function loadApiData(): Promise<InfrastructureData | null> {
  */
 export async function getVMs(): Promise<VMData[]> {
     const data = await loadInfrastructureData();
-    if (!data) return [];
-    return Object.values(data.virtualMachines || {});
+    if (!data) {
+        console.warn('[DataLoader] getVMs(): no data');
+        return [];
+    }
+    const vms = Object.values(data.virtualMachines || {});
+    console.log(`[DataLoader] getVMs(): ${vms.length} VMs`);
+    return vms;
 }
 
 /**
@@ -192,20 +209,34 @@ export async function getService(serviceId: string): Promise<ServiceData | null>
 }
 
 /**
- * Get VM runtime metrics (API only)
+ * Get VM runtime metrics via Rust health API
  */
 export async function getVMMetrics(vmId: string): Promise<any | null> {
     if (currentMode === 'local') {
         // Return cached runtime status from local data
         const vm = await getVM(vmId);
+        console.log(`[DataLoader] getVMMetrics(${vmId}) local:`, vm?.runtimeStatus);
         return vm?.runtimeStatus || null;
     }
 
     try {
-        const response = await fetch(`${API_BASE}/vms/${vmId}/status`);
+        const url = `${RUST_API}/health/${vmId}`;
+        console.log(`[DataLoader] getVMMetrics fetching: ${url}`);
+        const response = await fetch(url);
+        console.log(`[DataLoader] getVMMetrics response: ${response.status}`);
         if (!response.ok) return null;
-        return await response.json();
-    } catch {
+        const data = await response.json();
+        console.log(`[DataLoader] getVMMetrics(${vmId}):`, data);
+        // Map Rust health response to expected format
+        return {
+            online: data.health === 'online' || data.ping === true,
+            ping: data.ping === true,
+            ssh: data.ssh === true,
+            providerState: data.provider_state,
+            lastCheck: new Date().toISOString()
+        };
+    } catch (error) {
+        console.error(`[DataLoader] getVMMetrics(${vmId}) failed:`, error);
         return null;
     }
 }

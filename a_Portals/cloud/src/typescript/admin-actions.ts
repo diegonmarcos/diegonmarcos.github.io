@@ -82,8 +82,12 @@ export function logout(): void {
 async function apiRequest(endpoint: string, options: RequestInit = {}, base: string = API_BASE): Promise<Response> {
     const token = getAccessToken();
     if (!token) {
+        console.error('[AdminActions] apiRequest: no token');
         throw new Error('Not authenticated');
     }
+
+    const url = `${base}${endpoint}`;
+    console.log(`[AdminActions] apiRequest: ${options.method || 'GET'} ${url}`);
 
     const headers = {
         'Authorization': `Bearer ${token}`,
@@ -91,10 +95,12 @@ async function apiRequest(endpoint: string, options: RequestInit = {}, base: str
         ...options.headers
     };
 
-    return fetch(`${base}${endpoint}`, {
+    const response = await fetch(url, {
         ...options,
         headers
     });
+    console.log(`[AdminActions] apiRequest response: ${response.status} ${response.statusText}`);
+    return response;
 }
 
 /**
@@ -474,20 +480,31 @@ let FLEX_VM_ID: string | null = null;
  * Discover Flex VM ID from Rust health/all endpoint
  */
 async function discoverFlexVmId(): Promise<string | null> {
-    if (FLEX_VM_ID) return FLEX_VM_ID;
+    if (FLEX_VM_ID) {
+        console.log(`[AdminActions] discoverFlexVmId() cached: ${FLEX_VM_ID}`);
+        return FLEX_VM_ID;
+    }
     try {
-        const response = await fetch(`${RUST_API}/health/ids`, {
+        const url = `${RUST_API}/health/ids`;
+        console.log(`[AdminActions] discoverFlexVmId() fetching: ${url}`);
+        const response = await fetch(url, {
             signal: AbortSignal.timeout(5000)
         });
+        console.log(`[AdminActions] discoverFlexVmId() response: ${response.status}`);
         if (!response.ok) return null;
         const data = await response.json();
+        console.log(`[AdminActions] discoverFlexVmId() VMs:`, Object.keys(data.vms || {}));
         for (const [id, vm] of Object.entries(data.vms || {})) {
             if ((vm as any).label === FLEX_VM_LABEL) {
                 FLEX_VM_ID = id;
+                console.log(`[AdminActions] Flex VM discovered: ${id}`);
                 return id;
             }
         }
-    } catch {}
+        console.warn(`[AdminActions] No VM with label '${FLEX_VM_LABEL}' found`);
+    } catch (error) {
+        console.error(`[AdminActions] discoverFlexVmId() error:`, error);
+    }
     return null;
 }
 
@@ -526,25 +543,37 @@ function setFlexButtonLoading(buttonId: string, loading: boolean): void {
 export async function getFlexServerStatus(): Promise<FlexServerStatus> {
     try {
         const id = await discoverFlexVmId();
-        if (!id) return 'unknown';
-        const response = await fetch(`${RUST_API}/health/${id}`);
+        if (!id) {
+            console.warn('[AdminActions] getFlexServerStatus(): no VM ID');
+            return 'unknown';
+        }
+        const url = `${RUST_API}/health/${id}`;
+        console.log(`[AdminActions] getFlexServerStatus() fetching: ${url}`);
+        const response = await fetch(url);
+        console.log(`[AdminActions] getFlexServerStatus() response: ${response.status}`);
         if (!response.ok) {
             return 'unknown';
         }
         const data = await response.json();
+        console.log(`[AdminActions] getFlexServerStatus() data:`, data);
 
         // Map Rust API response to status
+        let status: FlexServerStatus;
         if (data.health === 'online' || data.ping === true) {
-            return 'online';
+            status = 'online';
         } else if (data.provider_state === 'STOPPED' || data.provider_state === 'TERMINATED') {
-            return 'offline';
+            status = 'offline';
         } else if (data.provider_state === 'STARTING') {
-            return 'starting';
+            status = 'starting';
         } else if (data.provider_state === 'STOPPING') {
-            return 'stopping';
+            status = 'stopping';
+        } else {
+            status = 'offline';
         }
-        return 'offline';
-    } catch {
+        console.log(`[AdminActions] Flex status: ${status}`);
+        return status;
+    } catch (error) {
+        console.error('[AdminActions] getFlexServerStatus() error:', error);
         return 'unknown';
     }
 }
@@ -733,6 +762,8 @@ export function initFlexServerControls(): void {
     const stopBtn = document.getElementById('flex-stop');
     const resetBtn = document.getElementById('flex-reset');
 
+    console.log(`[AdminActions] initFlexServerControls() buttons: start=${!!startBtn} stop=${!!stopBtn} reset=${!!resetBtn}`);
+
     if (startBtn) {
         startBtn.addEventListener('click', () => startFlexServer());
     }
@@ -753,7 +784,9 @@ export function initFlexServerControls(): void {
  * Check and display initial Flex server status
  */
 async function checkFlexServerStatus(): Promise<void> {
+    console.log('[AdminActions] checkFlexServerStatus() starting...');
     updateFlexIndicator('unknown', 'Checking Flex Server status...');
     const status = await getFlexServerStatus();
+    console.log(`[AdminActions] checkFlexServerStatus() result: ${status}`);
     updateFlexIndicator(status);
 }

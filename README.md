@@ -147,6 +147,76 @@ front/
 
 ---
 
+## Domains
+
+- **Main**: diegonmarcos.com (Cloudflare DNS)
+- **GitHub Pages**: [diegonmarcos.github.io](https://diegonmarcos.github.io)
+
+---
+
+## Code Standards (Summary)
+
+> Full details: [Code Practices](./1.ops/30_Code_Practise.md)
+
+### TypeScript
+- **Strict Mode**: No `any`, handle `null`/`undefined`
+- **DOM**: Cast elements explicitly, check null
+- **ES Modules**: Use `import`/`export`
+
+### Svelte 5 (Runes Mode)
+```typescript
+let { propName }: { propName: Type } = $props();  // Props
+let count = $state(0);                             // State
+let doubled = $derived(count * 2);                 // Computed
+// Events: use standard HTML (onclick, not on:click)
+```
+
+### Vue 3 (Composition API)
+```typescript
+// Always use <script setup lang="ts">
+defineProps<{ id: number; name: string }>();
+const user = ref<User | null>(null);
+```
+
+### SCSS Rules
+```scss
+@include mq(sm|md|lg|xl)           // Breakpoints
+@include flex-center;               // Center anything
+@include flex-row(justify, align, gap);
+@include grid-auto-fit(min-size, gap);
+```
+
+### CRITICAL: NO INLINE CSS
+- **NEVER** use `style=""` attributes in HTML
+- **ALWAYS** create SCSS classes in appropriate `_*.scss` file
+- ALL styling must go through the SCSS build pipeline
+
+### HTML Standards
+- **Semantic**: Use `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`
+- **Links vs Buttons**: `<a>` for navigation, `<button>` for actions
+- **Accessibility**: All `<img>` have `alt`, inputs have `<label>`
+
+---
+
+## Analytics (Matomo)
+
+> Full details: [Analytics Spec](./1.ops/01_Analytics.md)
+
+**Required in every HTML `<head>`:**
+```html
+<script>
+var _mtm = window._mtm = window._mtm || [];
+_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+(function() {
+  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+  s.parentNode.insertBefore(g,s);
+})();
+</script>
+```
+
+---
+
 ## Specs & Documentation
 
 - [Stack Specification](./1.ops/00_Stack_Main.md)

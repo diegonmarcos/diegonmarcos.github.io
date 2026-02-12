@@ -270,7 +270,7 @@ export const GRAPH_DATA: GraphData = {
       "icon": "file-stack",
       "color": "#F48FB1",
       "links": [
-        { "label": "Drive&Suite", "url": "https://diegonmarcos.github.io/mydrive", "icon": "file-stack" },
+        { "label": "Suite", "url": "https://suite.diegonmarcos.com", "icon": "file-stack" },
         { "label": "JSON Vision", "url": "https://diegonmarcos.github.io/json-vision", "icon": "database" }
       ]
     },

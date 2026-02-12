@@ -193,16 +193,16 @@ jobs:
           cd ../..
           echo "✅ MyAnalytics build complete"
 
-      - name: 🔨 Build MyDrive
-        id: build-mydrive
-        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/mydrive/')
+      - name: 🔨 Build Suite
+        id: build-suite
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b_Work_Tools/suite/')
         continue-on-error: true
         run: |
-          echo "🔨 Building MyDrive..."
-          cd b_Work_Tools/mydrive
+          echo "🔨 Building Suite..."
+          cd b_Work_Tools/suite
           bash build.sh build
           cd ../..
-          echo "✅ MyDrive build complete"
+          echo "✅ Suite build complete"
 
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
@@ -538,11 +538,11 @@ jobs:
             echo "✅ SUCCESS: MyAnalytics"
           fi
 
-          if [ "${{ steps.build-mydrive.outcome }}" == "failure" ]; then
-            echo "❌ FAILED: MyDrive"
-            FAILED="$FAILED mydrive"
-          elif [ "${{ steps.build-mydrive.outcome }}" == "success" ]; then
-            echo "✅ SUCCESS: MyDrive"
+          if [ "${{ steps.build-suite.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Suite"
+            FAILED="$FAILED suite"
+          elif [ "${{ steps.build-suite.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Suite"
           fi
 
           echo "============================================"
@@ -608,12 +608,12 @@ jobs:
             echo "✅ MyAnalytics build copied to _site/myanalytics/"
           fi
 
-          # Copy MyDrive build (if dist exists)
-          if [ -d "b_Work_Tools/mydrive/dist" ]; then
-            echo "📦 Copying MyDrive build..."
-            mkdir -p _site/mydrive
-            cp -rL b_Work_Tools/mydrive/dist/* _site/mydrive/ 2>/dev/null || true
-            echo "✅ MyDrive build copied to _site/mydrive/"
+          # Copy Suite build (if dist exists)
+          if [ -d "b_Work_Tools/suite/dist" ]; then
+            echo "📦 Copying Suite build..."
+            mkdir -p _site/suite
+            cp -rL b_Work_Tools/suite/dist/* _site/suite/ 2>/dev/null || true
+            echo "✅ Suite build copied to _site/suite/"
           fi
 
           # Copy Linktree build (if dist exists)

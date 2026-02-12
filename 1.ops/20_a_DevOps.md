@@ -69,7 +69,7 @@ This directory contains the orchestration scripts for building and developing al
 │   ├── mymail/1.ops/build.sh       # MyMail (Vanilla + Sass + TypeScript)
 │   ├── myphotos/1.ops/build.sh     # MyPhotos (Vanilla + Sass + TypeScript)
 │   ├── myanalytics/1.ops/build.sh  # MyAnalytics (Vanilla + Sass + TypeScript)
-│   └── mydrive/1.ops/build.sh      # MyDrive (Vanilla + Sass + TypeScript)
+│   └── suite/1.ops/build.sh      # Suite (Vanilla + Sass + TypeScript)
 ```
 
 ## Quick Start
@@ -117,7 +117,7 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh build-mymail
 ./1.ops/build_main.sh build-myphotos
 ./1.ops/build_main.sh build-myanalytics
-./1.ops/build_main.sh build-mydrive
+./1.ops/build_main.sh build-suite
 ```
 
 ### Start Individual Dev Servers
@@ -142,7 +142,7 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh dev-mymail        # :8018
 ./1.ops/build_main.sh dev-myphotos      # :8019
 ./1.ops/build_main.sh dev-myanalytics   # :8020
-./1.ops/build_main.sh dev-mydrive       # :8021
+./1.ops/build_main.sh dev-suite       # :8021
 ```
 
 ## Main Orchestrator Commands
@@ -174,7 +174,7 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `build-mymail` | Build MyMail (Vanilla + Sass + TypeScript) |
 | `build-myphotos` | Build MyPhotos (Vanilla + Sass + TypeScript) |
 | `build-myanalytics` | Build MyAnalytics (Vanilla + Sass + TypeScript) |
-| `build-mydrive` | Build MyDrive (Vanilla + Sass + TypeScript) |
+| `build-suite` | Build Suite (Vanilla + Sass + TypeScript) |
 
 ### Dev Server Commands
 
@@ -201,7 +201,7 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `dev-mymail` | MyMail - npm-live :8018 |
 | `dev-myphotos` | MyPhotos - npm-live :8019 |
 | `dev-myanalytics` | MyAnalytics - npm-live :8020 |
-| `dev-mydrive` | MyDrive - Python :8021 |
+| `dev-suite` | Suite - Python :8021 |
 
 ### Utility Commands
 
@@ -242,7 +242,7 @@ The `build_main.sh` script orchestrates all sub-projects:
 | :8018 | MyMail | npm-live | Sass, TS |
 | :8019 | MyPhotos | npm-live | Sass, TS |
 | :8020 | MyAnalytics | npm-live | Sass, TS |
-| :8021 | MyDrive | Python | - |
+| :8021 | Suite | Python | - |
 
 ## TUI Mode
 
@@ -325,7 +325,7 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 | Build MyMail | `./1.ops/build_main.sh build-mymail` |
 | Build MyPhotos | `./1.ops/build_main.sh build-myphotos` |
 | Build MyAnalytics | `./1.ops/build_main.sh build-myanalytics` |
-| Build MyDrive | `./1.ops/build_main.sh build-mydrive` |
+| Build Suite | `./1.ops/build_main.sh build-suite` |
 | Build All | `./1.ops/build_main.sh build` |
 
 ## Testing Locally
@@ -659,7 +659,7 @@ Projects in `a_Cloud/` that connect to protected backends:
 |---------|-----------------|-------------|------------|
 | myanalytics | Matomo | Authelia 2FA | GitHub Pages → Authelia |
 | myphotos | Photoprism | Authelia 2FA | GitHub Pages → Authelia |
-| mydrive | Document Services | Authelia 2FA | GitHub Pages → Authelia |
+| suite | Document Services | Authelia 2FA | GitHub Pages → Authelia |
 | cloud | Cloud API | Authelia 2FA | GitHub Pages → Authelia |
 | mymail | Mailu | Mailu native | Mailu login |
 

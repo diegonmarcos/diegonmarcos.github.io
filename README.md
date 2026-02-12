@@ -51,7 +51,7 @@ CI/CD: GitHub Actions (`.github/workflows/deploy.yml`) — conditional per-proje
 |---------|------|-----------|------|
 | mymaps | Browser Tool | Vite | :8014 |
 | myanalytics | Dashboard | Static Copy | — |
-| mydrive | Browser Tool | Static Copy | — |
+| suite | Browser Tool | Sass+esbuild | :8021 |
 | mymail | Browser Tool | Static Copy | — |
 | myphotos | Browser Tool | Static Copy | — |
 | skills_mcp | Documentation | Sass+esbuild | — |
@@ -98,7 +98,7 @@ Main index page — 3D cube navigation. Vite + Sass + TypeScript.
 | **SvelteKit** | Vite + SSR | mygames, myprofile, c_Personal_Tools/mymaps |
 | **Sass+esbuild** | sass + esbuild | linktree, myfeed, cloud, market_watch, nexus, cv_web, skills_mcp, linktree_mindmap |
 | **Sass+tsc** | sass + tsc | carto, landpage, leafy |
-| **Copy** | Static file copy | cv_pdf, health_tracker, myanalytics, mydrive, mymail, myphotos |
+| **Copy** | Static file copy | cv_pdf, health_tracker, myanalytics, mymail, myphotos |
 | **Nuxt** | Nuxt (nuxt.config.ts) | astro |
 
 ---

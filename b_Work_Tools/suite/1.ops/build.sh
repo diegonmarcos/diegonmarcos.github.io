@@ -1,8 +1,8 @@
 #!/bin/sh
-# MyDrive Build Script - Simple copy from src/ to dist/
+# Suite Build Script - Simple copy from src/ to dist/
 # Usage: ./build.sh [build|clean|dev]
 
-PROJECT_NAME="MyDrive"
+PROJECT_NAME="Suite"
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 # Colors

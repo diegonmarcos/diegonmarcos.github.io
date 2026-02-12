@@ -44,7 +44,7 @@ a_Portals
    * mymail
    * myphotos
    * myanalytics
-   * mydrive
+   * suite
    * mymaps
    * skills_mcp
    * api (Swagger UI)

@@ -1066,7 +1066,7 @@
                 for (const [id, vm] of Object.entries(data.vms || {})) {
                     if (vm.label === VM_LABEL) {
                         VM_ID = id;
-                        VM_STATUS_URL = `${CLOUD_API}/rust/health/${id}`;
+                        VM_STATUS_URL = `${CLOUD_API}/rust/health/up/${id}`;
                         VM_START_URL = `${CLOUD_API}/rust/vms/${id}/start`;
                         VM_STOP_URL = `${CLOUD_API}/rust/vms/${id}/stop`;
                         VM_RESET_URL = `${CLOUD_API}/rust/vms/${id}/reset`;
@@ -1102,22 +1102,6 @@
             }
         }
 
-        function updateButtonStates(vmState) {
-            // Reset is always available — API handles both running (SOFTRESET) and stopped (START)
-            resetBtn.disabled = false;
-
-            if (vmState === 'running') {
-                startBtn.disabled = true;
-                stopBtn.disabled = false;
-            } else if (vmState === 'stopped') {
-                startBtn.disabled = false;
-                stopBtn.disabled = true;
-            } else {
-                startBtn.disabled = true;
-                stopBtn.disabled = true;
-            }
-        }
-
         async function checkServerStatus() {
             try {
                 await discoverVmId();
@@ -1126,31 +1110,20 @@
                 const t0 = performance.now();
                 const statusResponse = await fetch(VM_STATUS_URL, {
                     method: 'GET',
-                    signal: AbortSignal.timeout(30000)
+                    signal: AbortSignal.timeout(10000)
                 });
                 console.debug('[vmControl] status response:', statusResponse.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
                 if (statusResponse.ok) {
                     const data = await statusResponse.json();
                     console.debug('[vmControl] health data:', JSON.stringify(data));
-                    const vmState = data.provider_state;
 
-                    if (data.health === 'online' || data.ping === true) {
+                    if (data.health === 'online') {
                         updateStatusIndicator('RUNNING', 'Server Online');
-                        updateButtonStates('running');
                         wakeStatus.textContent = '';
-                    } else if (vmState === 'STARTING') {
-                        updateStatusIndicator('STARTING', 'Server Starting...');
-                        updateButtonStates('loading');
-                        wakeStatus.textContent = 'VM is starting up...';
-                    } else if (vmState === 'RUNNING') {
-                        updateStatusIndicator('STOPPED', 'Server Degraded (Not Responding)');
-                        updateButtonStates('running');
-                        wakeStatus.textContent = 'Server is running but not responding. Try Reset.';
                     } else {
-                        updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
-                        updateButtonStates('stopped');
-                        wakeStatus.textContent = 'Photo server is sleeping.';
+                        updateStatusIndicator('STOPPED', 'Server Offline');
+                        wakeStatus.textContent = 'Photo server is offline.';
                     }
                 } else {
                     throw new Error('API unavailable');
@@ -1158,7 +1131,6 @@
             } catch (error) {
                 console.debug('[vmControl] status check failed:', error.message);
                 updateStatusIndicator('UNKNOWN', 'Status Unknown');
-                updateButtonStates('stopped');
                 wakeStatus.textContent = 'Unable to check server status.';
             }
         }
@@ -1173,8 +1145,8 @@
             if (!url) return;
 
             console.debug('[vmControl] action:', action, '→ POST', url);
-            updateButtonStates('loading');
             wakeStatus.textContent = `Sending ${action} command...`;
+            updateStatusIndicator('STARTING', `Sending ${action}...`);
 
             try {
                 const t0 = performance.now();

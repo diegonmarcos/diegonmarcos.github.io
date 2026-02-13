@@ -19,9 +19,8 @@ interface VmDiscoveryResponse {
 }
 
 interface VmHealthResponse {
-  provider_state?: string;
   health?: string;
-  ping?: boolean;
+  ssh?: boolean;
 }
 
 async function discoverVmId(): Promise<string | null> {
@@ -35,7 +34,7 @@ async function discoverVmId(): Promise<string | null> {
     for (const [id, vm] of Object.entries(data.vms || {})) {
       if (vm.label === VM_LABEL) {
         vmId = id;
-        vmStatusUrl = `${CLOUD_API}/rust/health/${id}`;
+        vmStatusUrl = `${CLOUD_API}/rust/health/up/${id}`;
         vmStartUrl = `${CLOUD_API}/rust/vms/${id}/start`;
         vmStopUrl = `${CLOUD_API}/rust/vms/${id}/stop`;
         vmResetUrl = `${CLOUD_API}/rust/vms/${id}/reset`;
@@ -69,24 +68,6 @@ function updateStatusIndicator(state: string, message?: string): void {
   }
 }
 
-function updateButtonStates(vmState: string): void {
-  if (!startBtn || !stopBtn || !resetBtn) return;
-
-  // Reset is always available — API handles both running (SOFTRESET) and stopped (START)
-  resetBtn.disabled = false;
-
-  if (vmState === 'running') {
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-  } else if (vmState === 'stopped') {
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-  } else {
-    startBtn.disabled = true;
-    stopBtn.disabled = true;
-  }
-}
-
 async function checkServerStatus(): Promise<void> {
   try {
     await discoverVmId();
@@ -95,31 +76,20 @@ async function checkServerStatus(): Promise<void> {
     const t0 = performance.now();
     const statusResponse = await fetch(vmStatusUrl, {
       method: 'GET',
-      signal: AbortSignal.timeout(30000)
+      signal: AbortSignal.timeout(10000)
     });
     console.debug('[vmControl] status response:', statusResponse.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (statusResponse.ok) {
       const data: VmHealthResponse = await statusResponse.json();
       console.debug('[vmControl] health data:', JSON.stringify(data));
-      const vmState = data.provider_state;
 
-      if (data.health === 'online' || data.ping === true) {
+      if (data.health === 'online') {
         updateStatusIndicator('RUNNING', 'Server Online');
-        updateButtonStates('running');
         if (wakeStatus) wakeStatus.textContent = '';
-      } else if (vmState === 'STARTING') {
-        updateStatusIndicator('STARTING', 'Server Starting...');
-        updateButtonStates('loading');
-        if (wakeStatus) wakeStatus.textContent = 'VM is starting up...';
-      } else if (vmState === 'RUNNING') {
-        updateStatusIndicator('STOPPED', 'Server Degraded (Not Responding)');
-        updateButtonStates('running');
-        if (wakeStatus) wakeStatus.textContent = 'Server is running but not responding. Try Reset.';
       } else {
-        updateStatusIndicator('STOPPED', 'Server Offline (Sleeping)');
-        updateButtonStates('stopped');
-        if (wakeStatus) wakeStatus.textContent = 'Drive server is sleeping.';
+        updateStatusIndicator('STOPPED', 'Server Offline');
+        if (wakeStatus) wakeStatus.textContent = 'Server is offline.';
       }
     } else {
       throw new Error(`API HTTP ${statusResponse.status}`);
@@ -127,17 +97,13 @@ async function checkServerStatus(): Promise<void> {
   } catch (error) {
     console.debug('[vmControl] status check failed:', (error as Error).message);
     updateStatusIndicator('STOPPED', 'Status Unknown');
-    updateButtonStates('stopped');
     if (wakeStatus) wakeStatus.textContent = 'Could not check server status.';
   }
 }
 
 async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
   if (!vmId) await discoverVmId();
-  if (!vmId) {
-    if (wakeStatus) wakeStatus.textContent = 'VM not discovered — retrying...';
-    await discoverVmId();
-  }
+  if (!vmId) await discoverVmId();
   if (!vmId) {
     if (wakeStatus) wakeStatus.textContent = 'Could not discover VM. Check API connectivity.';
     return;
@@ -148,8 +114,8 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
   if (!url) return;
 
   console.debug('[vmControl] action:', action, '→ POST', url);
-  updateButtonStates('loading');
   if (wakeStatus) wakeStatus.textContent = `Sending ${action} command...`;
+  updateStatusIndicator('STARTING', `Sending ${action}...`);
 
   try {
     const t0 = performance.now();
@@ -191,12 +157,10 @@ export function initVmControl(): void {
   statusDot = document.getElementById('status-dot');
   statusText = document.getElementById('status-text');
 
-  // Wire up button click handlers
   if (startBtn) startBtn.addEventListener('click', () => vmAction('start'));
   if (stopBtn) stopBtn.addEventListener('click', () => vmAction('stop'));
   if (resetBtn) resetBtn.addEventListener('click', () => vmAction('reset'));
 
-  // Initial check and polling
   checkServerStatus();
   setInterval(checkServerStatus, 30000);
 }

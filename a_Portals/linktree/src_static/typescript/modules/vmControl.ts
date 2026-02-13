@@ -4,7 +4,7 @@ import { getElementById, addClass, removeClass } from '../utils/dom';
 
 // Configuration
 const API_BASE = 'https://api.diegonmarcos.com';
-const VM_LABEL = 'oci-flex'; // On-demand VPS label
+const VM_LABEL = 'oci-flex';
 
 // State
 let isLoading = false;
@@ -12,9 +12,6 @@ let currentStatus: 'online' | 'offline' | 'unknown' = 'unknown';
 let apiAvailable = false;
 let vmId: string | null = null;
 
-/**
- * Discover VM ID from Rust health/all endpoint by label
- */
 async function discoverVmId(): Promise<string | null> {
   if (vmId) return vmId;
   try {
@@ -39,9 +36,6 @@ async function discoverVmId(): Promise<string | null> {
   return null;
 }
 
-/**
- * Update status indicator UI
- */
 function updateStatusIndicator(status: 'online' | 'offline' | 'loading' | 'unknown'): void {
   const indicator = getElementById<HTMLElement>('vm-status-indicator');
   if (!indicator) return;
@@ -53,7 +47,6 @@ function updateStatusIndicator(status: 'online' | 'offline' | 'loading' | 'unkno
 
   addClass(indicator, `status-${status}`);
 
-  // Update title attribute
   const titles: Record<string, string> = {
     online: 'VM Online',
     offline: 'VM Offline',
@@ -63,58 +56,17 @@ function updateStatusIndicator(status: 'online' | 'offline' | 'loading' | 'unkno
   indicator.title = titles[status];
 }
 
-/**
- * Update button states
- */
-function updateButtonStates(vmState: 'running' | 'stopped' | 'loading'): void {
-  const startBtn = getElementById<HTMLButtonElement>('vm-start-btn');
-  const stopBtn = getElementById<HTMLButtonElement>('vm-stop-btn');
-  const rebootBtn = getElementById<HTMLButtonElement>('vm-reboot-btn');
-
-  if (!startBtn || !stopBtn || !rebootBtn) return;
-
-  // Reboot/reset is always available — API handles both running (SOFTRESET) and stopped (START)
-  rebootBtn.disabled = false;
-  removeClass(rebootBtn, 'btn-loading');
-  removeClass(rebootBtn, 'btn-inactive');
-
-  if (vmState === 'loading') {
-    startBtn.disabled = true;
-    stopBtn.disabled = true;
-    addClass(startBtn, 'btn-loading');
-    addClass(stopBtn, 'btn-loading');
-    return;
-  }
-
-  removeClass(startBtn, 'btn-loading');
-  removeClass(stopBtn, 'btn-loading');
-
-  if (vmState === 'running') {
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-    addClass(startBtn, 'btn-inactive');
-    removeClass(stopBtn, 'btn-inactive');
-  } else {
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-    removeClass(startBtn, 'btn-inactive');
-    addClass(stopBtn, 'btn-inactive');
-  }
-}
-
-/**
- * Check if API is available and get VM status
- */
-async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean; providerRunning?: boolean }> {
+async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean }> {
   try {
     const id = await discoverVmId();
     if (!id) return { apiOk: false };
 
-    console.debug('[vmControl] checking health:', `${API_BASE}/rust/health/${id}`);
+    const url = `${API_BASE}/rust/health/up/${id}`;
+    console.debug('[vmControl] checking health:', url);
     const t0 = performance.now();
-    const response = await fetch(`${API_BASE}/rust/health/${id}`, {
+    const response = await fetch(url, {
       method: 'GET',
-      signal: AbortSignal.timeout(30000)
+      signal: AbortSignal.timeout(10000)
     });
     console.debug('[vmControl] health response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
@@ -123,8 +75,7 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
       console.debug('[vmControl] health data:', JSON.stringify(data));
       return {
         apiOk: true,
-        vmOnline: data.ping === true || data.ssh === true,
-        providerRunning: data.provider_state === 'RUNNING'
+        vmOnline: data.health === 'online',
       };
     }
 
@@ -135,9 +86,6 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
   }
 }
 
-/**
- * Check VM status and update UI
- */
 async function checkVmStatus(): Promise<void> {
   updateStatusIndicator('loading');
 
@@ -147,20 +95,13 @@ async function checkVmStatus(): Promise<void> {
   if (result.apiOk && result.vmOnline !== undefined) {
     currentStatus = result.vmOnline ? 'online' : 'offline';
     updateStatusIndicator(currentStatus);
-    updateButtonStates(result.vmOnline ? 'running' : (result.providerRunning ? 'running' : 'stopped'));
   } else {
-    // API not available - show unknown state
     currentStatus = 'unknown';
     updateStatusIndicator('unknown');
-    updateButtonStates('stopped');
   }
 }
 
-/**
- * Execute VM action - opens OCI Console if API not available
- */
 async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boolean> {
-  // Retry discovery if VM not found yet
   if (!vmId) await discoverVmId();
   if (!vmId) await discoverVmId();
   if (!apiAvailable || !vmId) {
@@ -170,7 +111,6 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
 
   try {
     isLoading = true;
-    updateButtonStates('loading');
     updateStatusIndicator('loading');
 
     const rustAction = action === 'reboot' ? 'reset' : action;
@@ -199,7 +139,6 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
       };
       showToast(actionMessages[action] || data.message || 'Done');
 
-      // Poll for status change
       setTimeout(() => checkVmStatus(), 10000);
       setTimeout(() => checkVmStatus(), 30000);
       setTimeout(() => checkVmStatus(), 60000);
@@ -218,67 +157,47 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
   }
 }
 
-/**
- * Show toast notification
- */
 function showToast(message: string, isError: boolean = false): void {
-  // Create toast element
   const toast = document.createElement('div');
   toast.className = `vm-toast ${isError ? 'vm-toast-error' : 'vm-toast-success'}`;
   toast.textContent = message;
 
-  // Add to DOM
   document.body.appendChild(toast);
 
-  // Trigger animation
   requestAnimationFrame(() => {
     addClass(toast, 'vm-toast-visible');
   });
 
-  // Remove after delay
   setTimeout(() => {
     removeClass(toast, 'vm-toast-visible');
     setTimeout(() => toast.remove(), 300);
   }, 3000);
 }
 
-/**
- * Initialize VM control buttons
- */
 export function initVmControl(): void {
   const startBtn = getElementById<HTMLButtonElement>('vm-start-btn');
   const stopBtn = getElementById<HTMLButtonElement>('vm-stop-btn');
   const rebootBtn = getElementById<HTMLButtonElement>('vm-reboot-btn');
 
   if (!startBtn || !stopBtn || !rebootBtn) {
-    return; // VM control not present on this page
+    return;
   }
 
-  // Bind click handlers
   startBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (!isLoading && !startBtn.disabled) {
-      await executeVmAction('start');
-    }
+    if (!isLoading) await executeVmAction('start');
   });
 
   stopBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (!isLoading && !stopBtn.disabled) {
-      await executeVmAction('stop');
-    }
+    if (!isLoading) await executeVmAction('stop');
   });
 
   rebootBtn.addEventListener('click', async (e) => {
     e.preventDefault();
-    if (!isLoading && !rebootBtn.disabled) {
-      await executeVmAction('reboot');
-    }
+    if (!isLoading) await executeVmAction('reboot');
   });
 
-  // Initial status check
   checkVmStatus();
-
-  // Periodic status refresh (every 30 seconds)
   setInterval(checkVmStatus, 30000);
 }

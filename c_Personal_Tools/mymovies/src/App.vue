@@ -4,6 +4,7 @@ import { usePlayer } from '@/composables/usePlayer'
 import AppHeader from '@/components/AppHeader.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WebPlayer from '@/components/WebPlayer.vue'
+import PrestigeInfo from '@/components/PrestigeInfo.vue'
 import type { Movie } from '@/types/movie'
 
 const {
@@ -115,6 +116,12 @@ const handleOpenWebPlayerFromHeader = () => {
     />
 
     <main>
+      <!-- Prestige Table (above grid for prestige views) -->
+      <PrestigeInfo
+        v-if="view === 'prestige20m' || view === 'prestigepre22' || view === 'prestigetier2'"
+        :view="view"
+      />
+
       <!-- Loading State -->
       <div v-if="loading" class="status-msg loading">
         <div class="spinner"></div>

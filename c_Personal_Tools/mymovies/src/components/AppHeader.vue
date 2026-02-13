@@ -38,6 +38,7 @@ const emit = defineEmits<{
       </div>
       <div class="api-key-container">
         <template v-if="!hasApiKey">
+          <button class="btn-gold" @click="emit('openWebPlayer')">PLAYER</button>
           <input
             :value="tempApiKey"
             @input="emit('update:tempApiKey', ($event.target as HTMLInputElement).value)"
@@ -196,6 +197,22 @@ const emit = defineEmits<{
           </button>
           <button :class="['nav-btn legend', { active: view === 'dicaprio' }]" @click="emit('setView', 'dicaprio')">
             DICAPRIO
+          </button>
+        </div>
+      </div>
+
+      <!-- Row 6: Prestige Series -->
+      <div class="nav-row prestige-row">
+        <span class="row-label crimson">PRESTIGE SERIES</span>
+        <div class="nav-buttons">
+          <button :class="['nav-btn prestige', { active: view === 'prestige20m' }]" @click="emit('setView', 'prestige20m')">
+            $20M+ CLUB
+          </button>
+          <button :class="['nav-btn prestige', { active: view === 'prestigepre22' }]" @click="emit('setView', 'prestigepre22')">
+            PRE-2022
+          </button>
+          <button :class="['nav-btn prestige', { active: view === 'prestigetier2' }]" @click="emit('setView', 'prestigetier2')">
+            PRE-2022 TIER 2
           </button>
         </div>
       </div>
@@ -434,6 +451,10 @@ h1 {
 
   &.actor-row {
     padding-top: 4px;
+  }
+
+  &.prestige-row {
+    padding-top: 8px;
     border-bottom: none;
   }
 }
@@ -529,7 +550,7 @@ h1 {
     }
   }
 
-  &.bucketlist {
+  &.bucketlist, &.prestige {
     &.active::after {
       background: var(--noir-crimson);
       box-shadow: 0 0 8px var(--noir-crimson);

@@ -31,4 +31,8 @@ export type ViewType =
   | 'oscars2025' | 'oscars2024' | 'oscars2023' | 'oscars2022' | 'oscars2021' | 'oscars2020'
   | 'spielberg' | 'scorsese' | 'eastwood' | 'kubrick' | 'nolan' | 'tarantino'
   | 'streep' | 'nicholson' | 'alpacino' | 'deniro' | 'hanks' | 'dicaprio'
+  | 'prestige20m' | 'prestigepre22' | 'prestigetier2'
   | 'bulk'
+
+export type MovieDatabase = Record<string, Movie>
+export type CategoryDatabase = Partial<Record<ViewType, string[]>>

@@ -29,13 +29,17 @@ let targetY = 0
 let animationId: number | null = null
 
 const getImageUrl = (posterUrl: string): string => {
-  return posterUrl && posterUrl !== 'N/A'
-    ? posterUrl
-    : 'https://via.placeholder.com/300x450?text=No+Poster'
+  if (!posterUrl || posterUrl === 'N/A') {
+    console.warn(`[MovieCard] No poster for movie, using placeholder`)
+    return 'https://via.placeholder.com/300x450?text=No+Poster'
+  }
+  console.debug(`[MovieCard] Poster URL: ${posterUrl}`)
+  return posterUrl
 }
 
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement
+  console.error(`[MovieCard] Image failed to load: ${target.src}`)
   target.src = 'https://via.placeholder.com/300x450?text=No+Poster'
 }
 

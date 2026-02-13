@@ -27,9 +27,11 @@ interface VmHealthResponse {
 async function discoverVmId(): Promise<string | null> {
   if (vmId) return vmId;
   try {
-    const res = await fetch(`${CLOUD_API}/rust/health/ids`, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) return null;
+    console.debug('[vmControl] discovering VM via /rust/health/ids ...');
+    const res = await fetch(`${CLOUD_API}/rust/health/ids`, { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) { console.debug('[vmControl] discovery HTTP', res.status); return null; }
     const data: VmDiscoveryResponse = await res.json();
+    console.debug('[vmControl] discovered VMs:', Object.keys(data.vms || {}));
     for (const [id, vm] of Object.entries(data.vms || {})) {
       if (vm.label === VM_LABEL) {
         vmId = id;
@@ -37,11 +39,13 @@ async function discoverVmId(): Promise<string | null> {
         vmStartUrl = `${CLOUD_API}/rust/vms/${id}/start`;
         vmStopUrl = `${CLOUD_API}/rust/vms/${id}/stop`;
         vmResetUrl = `${CLOUD_API}/rust/vms/${id}/reset`;
+        console.debug('[vmControl] matched VM:', id);
         return id;
       }
     }
+    console.debug('[vmControl] no VM with label', VM_LABEL);
   } catch (e) {
-    console.log('VM discovery failed:', (e as Error).message);
+    console.debug('[vmControl] discovery failed:', (e as Error).message);
   }
   return null;
 }
@@ -87,13 +91,17 @@ async function checkServerStatus(): Promise<void> {
   try {
     await discoverVmId();
     if (!vmStatusUrl) throw new Error('VM not discovered');
+    console.debug('[vmControl] checking status:', vmStatusUrl);
+    const t0 = performance.now();
     const statusResponse = await fetch(vmStatusUrl, {
       method: 'GET',
-      signal: AbortSignal.timeout(8000)
+      signal: AbortSignal.timeout(30000)
     });
+    console.debug('[vmControl] status response:', statusResponse.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (statusResponse.ok) {
       const data: VmHealthResponse = await statusResponse.json();
+      console.debug('[vmControl] health data:', JSON.stringify(data));
       const vmState = data.provider_state;
 
       if (data.health === 'online' || data.ping === true) {
@@ -114,10 +122,10 @@ async function checkServerStatus(): Promise<void> {
         if (wakeStatus) wakeStatus.textContent = 'Drive server is sleeping.';
       }
     } else {
-      throw new Error('API unavailable');
+      throw new Error(`API HTTP ${statusResponse.status}`);
     }
   } catch (error) {
-    console.log('Status check error:', (error as Error).message);
+    console.debug('[vmControl] status check failed:', (error as Error).message);
     updateStatusIndicator('STOPPED', 'Status Unknown');
     updateButtonStates('stopped');
     if (wakeStatus) wakeStatus.textContent = 'Could not check server status.';
@@ -139,16 +147,22 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
   const url = urls[action];
   if (!url) return;
 
+  console.debug('[vmControl] action:', action, '→ POST', url);
   updateButtonStates('loading');
   if (wakeStatus) wakeStatus.textContent = `Sending ${action} command...`;
 
   try {
+    const t0 = performance.now();
     const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(30000)
     });
+    console.debug('[vmControl] action response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (response.ok) {
+      const data = await response.json();
+      console.debug('[vmControl] action result:', JSON.stringify(data));
       const messages: Record<string, string> = { start: 'VM starting...', stop: 'VM stopping...', reset: 'VM resetting...' };
       if (wakeStatus) wakeStatus.textContent = messages[action];
       updateStatusIndicator(action === 'stop' ? 'STOPPING' : 'STARTING');
@@ -158,10 +172,12 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
       setTimeout(() => checkServerStatus(), 60000);
     } else {
       const errorData = await response.json().catch(() => ({}));
+      console.debug('[vmControl] action failed:', response.status, errorData);
       if (wakeStatus) wakeStatus.textContent = (errorData as { message?: string }).message || `${action} failed`;
       await checkServerStatus();
     }
-  } catch {
+  } catch (e) {
+    console.debug('[vmControl] action error:', (e as Error).message);
     if (wakeStatus) wakeStatus.textContent = 'Could not reach API.';
     await checkServerStatus();
   }

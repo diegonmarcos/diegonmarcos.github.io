@@ -18,18 +18,24 @@ let vmId: string | null = null;
 async function discoverVmId(): Promise<string | null> {
   if (vmId) return vmId;
   try {
+    console.debug('[vmControl] discovering VM via /rust/health/ids ...');
     const response = await fetch(`${API_BASE}/rust/health/ids`, {
-      signal: AbortSignal.timeout(5000)
+      signal: AbortSignal.timeout(10000)
     });
-    if (!response.ok) return null;
+    if (!response.ok) { console.debug('[vmControl] discovery HTTP', response.status); return null; }
     const data = await response.json();
+    console.debug('[vmControl] discovered VMs:', Object.keys(data.vms || {}));
     for (const [id, vm] of Object.entries(data.vms || {})) {
       if ((vm as any).label === VM_LABEL) {
         vmId = id;
+        console.debug('[vmControl] matched VM:', id);
         return id;
       }
     }
-  } catch {}
+    console.debug('[vmControl] no VM with label', VM_LABEL);
+  } catch (e) {
+    console.debug('[vmControl] discovery failed:', (e as Error).message);
+  }
   return null;
 }
 
@@ -104,18 +110,17 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
     const id = await discoverVmId();
     if (!id) return { apiOk: false };
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 5000);
-
+    console.debug('[vmControl] checking health:', `${API_BASE}/rust/health/${id}`);
+    const t0 = performance.now();
     const response = await fetch(`${API_BASE}/rust/health/${id}`, {
       method: 'GET',
-      signal: controller.signal
+      signal: AbortSignal.timeout(30000)
     });
-
-    clearTimeout(timeoutId);
+    console.debug('[vmControl] health response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (response.ok) {
       const data = await response.json();
+      console.debug('[vmControl] health data:', JSON.stringify(data));
       return {
         apiOk: true,
         vmOnline: data.ping === true || data.ssh === true,
@@ -124,7 +129,8 @@ async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boole
     }
 
     return { apiOk: false };
-  } catch {
+  } catch (e) {
+    console.debug('[vmControl] health check failed:', (e as Error).message);
     return { apiOk: false };
   }
 }
@@ -168,16 +174,22 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
     updateStatusIndicator('loading');
 
     const rustAction = action === 'reboot' ? 'reset' : action;
-    const response = await fetch(`${API_BASE}/rust/vms/${vmId}/${rustAction}`, {
+    const url = `${API_BASE}/rust/vms/${vmId}/${rustAction}`;
+    console.debug('[vmControl] action:', action, '→ POST', url);
+    const t0 = performance.now();
+    const response = await fetch(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(30000)
     });
+    console.debug('[vmControl] action response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
     }
 
     const data = await response.json();
+    console.debug('[vmControl] action result:', JSON.stringify(data));
 
     if (data.status) {
       const actionMessages: Record<string, string> = {

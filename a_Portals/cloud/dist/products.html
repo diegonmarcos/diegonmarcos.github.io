@@ -2432,78 +2432,77 @@
             indicator.className = 'vm-ctrl-indicator ' + status;
             var titles = { online: 'VM Online', offline: 'VM Offline', loading: 'Checking...', unknown: 'Unknown' };
             indicator.title = titles[status] || status;
-            console.log('[ProductsVM] indicator:', status);
-        }
-
-        function setButtons(vmState) {
-            if (vmState === 'loading') {
-                startBtn.disabled = stopBtn.disabled = resetBtn.disabled = true;
-                return;
-            }
-            var running = vmState === 'running';
-            startBtn.disabled = running;
-            stopBtn.disabled = !running;
-            resetBtn.disabled = !running;
+            console.debug('[vmControl] indicator:', status);
         }
 
         function discoverVmId() {
             if (vmId) return Promise.resolve(vmId);
-            console.log('[ProductsVM] discovering VM ID...');
-            return fetch(RUST_API + '/health/ids', { signal: AbortSignal.timeout(5000) })
-                .then(function(r) { return r.ok ? r.json() : null; })
+            console.debug('[vmControl] discovering VM via /rust/health/ids ...');
+            return fetch(RUST_API + '/health/ids', { signal: AbortSignal.timeout(10000) })
+                .then(function(r) { if (!r.ok) { console.debug('[vmControl] discovery HTTP', r.status); return null; } return r.json(); })
                 .then(function(data) {
                     if (!data || !data.vms) return null;
+                    console.debug('[vmControl] discovered VMs:', Object.keys(data.vms));
                     var ids = Object.keys(data.vms);
                     for (var i = 0; i < ids.length; i++) {
                         if (data.vms[ids[i]].label === VM_LABEL) {
                             vmId = ids[i];
-                            console.log('[ProductsVM] VM discovered:', vmId);
+                            console.debug('[vmControl] matched VM:', vmId);
                             return vmId;
                         }
                     }
+                    console.debug('[vmControl] no VM with label', VM_LABEL);
                     return null;
                 })
-                .catch(function() { return null; });
+                .catch(function(e) { console.debug('[vmControl] discovery failed:', e.message); return null; });
         }
 
         function checkStatus() {
             setIndicator('loading');
-            setButtons('loading');
             discoverVmId().then(function(id) {
-                if (!id) { setIndicator('unknown'); setButtons('stopped'); return; }
-                return fetch(RUST_API + '/health/' + id)
-                    .then(function(r) { return r.ok ? r.json() : null; })
+                if (!id) { setIndicator('unknown'); return; }
+                var url = RUST_API + '/health/up/' + id;
+                console.debug('[vmControl] checking status:', url);
+                var t0 = performance.now();
+                return fetch(url, { signal: AbortSignal.timeout(10000) })
+                    .then(function(r) {
+                        console.debug('[vmControl] status response:', r.status, '(' + ((performance.now() - t0) / 1000).toFixed(1) + 's)');
+                        return r.ok ? r.json() : null;
+                    })
                     .then(function(data) {
-                        if (!data) { setIndicator('unknown'); setButtons('stopped'); return; }
-                        console.log('[ProductsVM] health:', data);
-                        var online = data.health === 'online' || data.ping === true;
-                        setIndicator(online ? 'online' : 'offline');
-                        setButtons(online ? 'running' : 'stopped');
+                        if (!data) { setIndicator('unknown'); return; }
+                        console.debug('[vmControl] health data:', JSON.stringify(data));
+                        setIndicator(data.health === 'online' ? 'online' : 'offline');
                     });
-            }).catch(function() { setIndicator('unknown'); setButtons('stopped'); });
+            }).catch(function(e) { console.debug('[vmControl] status check failed:', e.message); setIndicator('unknown'); });
         }
 
         function vmAction(action) {
             setIndicator('loading');
-            setButtons('loading');
-            var rustAction = action === 'reset' ? 'reset' : action;
             discoverVmId().then(function(id) {
+                if (!id) return discoverVmId();
+                return id;
+            }).then(function(id) {
                 if (!id) { alert('Could not discover VM'); checkStatus(); return; }
-                console.log('[ProductsVM] action:', rustAction, 'on', id);
-                return fetch(RUST_API + '/vms/' + id + '/' + rustAction, {
+                var url = RUST_API + '/vms/' + id + '/' + action;
+                console.debug('[vmControl] action:', action, '→ POST', url);
+                var t0 = performance.now();
+                return fetch(url, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 'Content-Type': 'application/json' },
+                    signal: AbortSignal.timeout(30000)
                 }).then(function(r) {
+                    console.debug('[vmControl] action response:', r.status, '(' + ((performance.now() - t0) / 1000).toFixed(1) + 's)');
                     if (!r.ok) throw new Error('HTTP ' + r.status);
                     return r.json().then(function(data) {
-                        console.log('[ProductsVM] action result:', data);
+                        console.debug('[vmControl] action result:', JSON.stringify(data));
                         setTimeout(checkStatus, 10000);
                         setTimeout(checkStatus, 30000);
                         setTimeout(checkStatus, 60000);
                     });
                 });
             }).catch(function(e) {
-                console.error('[ProductsVM] action failed:', e);
+                console.debug('[vmControl] action failed:', e.message);
                 checkStatus();
             });
         }

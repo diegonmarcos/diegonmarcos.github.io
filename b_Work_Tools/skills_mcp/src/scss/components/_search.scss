@@ -1,0 +1,104 @@
+// ============================================
+// SEARCH COMPONENT
+// ============================================
+
+.search {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+
+  &__icon {
+    position: absolute;
+    left: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $color-text-muted;
+    pointer-events: none;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    padding-left: calc($spacing-md * 2 + 18px);
+    background: $color-bg-card;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-md;
+    color: $color-text-primary;
+    font-size: $font-size-sm;
+    transition: all $transition-fast;
+
+    &::placeholder {
+      color: $color-text-muted;
+    }
+
+    &:focus {
+      @include focus-ring;
+      border-color: $color-accent-blue;
+    }
+  }
+
+  &__shortcut {
+    position: absolute;
+    right: $spacing-md;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 2px 6px;
+    background: $color-bg-tertiary;
+    border: 1px solid $color-border;
+    border-radius: $border-radius-sm;
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    font-family: $font-family-mono;
+  }
+}
+
+// Filter buttons
+.filters {
+  @include flex-row(flex-start, center, $spacing-sm);
+  margin-bottom: $spacing-lg;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: $spacing-sm $spacing-md;
+  background: transparent;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-card;
+    border-color: $color-border-light;
+  }
+
+  &.is-active {
+    background: rgba($color-accent-blue, 0.15);
+    border-color: $color-accent-blue;
+    color: $color-accent-blue;
+  }
+
+  &--mcp.is-active {
+    background: rgba($color-type-mcp, 0.15);
+    border-color: $color-type-mcp;
+    color: $color-type-mcp;
+  }
+
+  &--skill.is-active {
+    background: rgba($color-type-skill, 0.15);
+    border-color: $color-type-skill;
+    color: $color-type-skill;
+  }
+
+  &--api.is-active {
+    background: rgba($color-accent-green, 0.15);
+    border-color: $color-accent-green;
+    color: $color-accent-green;
+  }
+}

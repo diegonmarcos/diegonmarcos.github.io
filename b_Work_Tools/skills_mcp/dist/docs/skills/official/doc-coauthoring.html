@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doc Coauthoring — Skills & MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-tertiary: #0f0f23;
+      --bg-card: #1e1e3f;
+      --bg-code: #0d0d1a;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #2d2d4a;
+      --border-light: #3d3d5c;
+      --accent-blue: #61affe;
+      --accent-green: #49cc90;
+      --accent-purple: #a855f7;
+      --accent-cyan: #22d3ee;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-cyan);
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-secondary); }
+    strong { color: var(--text-primary); }
+
+    a { color: var(--accent-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      background: var(--bg-code);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    th {
+      background: var(--bg-secondary);
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    tr:nth-child(even) td { background: var(--bg-tertiary); }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      color: var(--text-secondary);
+    }
+    li { margin-bottom: 0.35rem; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent-blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      background: var(--bg-secondary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.5rem; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">Docs</a> <span>/</span> Skills <span>/</span> Official <span>/</span> Doc Coauthoring</nav>
+    <hr>
+<p>id: skill-doc-coauthoring
+type: skill
+name: &quot;Doc Co-authoring&quot;
+path: doc-coauthoring
+summary: &quot;Three-stage collaborative writing&quot;
+category: Communication
+source: anthropics/skills
+requiredMcp:</p>
+<ul>
+<li>Read</li>
+<li>Write</li>
+<li>Edit</li>
+<li>Task</li>
+<li>AskUserQuestion
+parameters:</li>
+<li>name: &quot;Stage 1&quot;
+type: Workflow
+required: true
+description: &quot;Context gathering: doc type, audience, impact, constraints&quot;</li>
+<li>name: &quot;Stage 2&quot;
+type: Workflow
+required: true
+description: &quot;Section-by-section: clarify --&gt; brainstorm --&gt; curate --&gt; draft&quot;</li>
+<li>name: &quot;Stage 3&quot;
+type: Workflow
+required: true
+description: &quot;Reader testing with fresh sub-agent&quot;</li>
+</ul>
+<hr>
+<p>Structured 3-stage workflow: 1) Context Gathering (meta-questions, info dumping), 2) Refinement (clarify --&gt; brainstorm --&gt; curate --&gt; draft --&gt; iterate per section), 3) Reader Testing (sub-agent tests with fresh context). For PRDs, specs, proposals, RFCs.</p>
+<p><strong>Stage 1 -- Context Gathering</strong>: The skill begins by asking meta-questions to understand the document&#39;s purpose, target audience, expected impact, and constraints. It encourages &quot;info dumping&quot; where the author shares raw thoughts, existing notes, and reference materials without worrying about structure. This stage produces a structured brief that guides the rest of the process.</p>
+<p><strong>Stage 2 -- Section-by-Section Refinement</strong>: Each section of the document goes through a four-step cycle: clarify (resolve ambiguities with targeted questions), brainstorm (generate multiple approaches), curate (select the strongest direction), and draft (produce polished prose). The author reviews and iterates on each section before moving to the next.</p>
+<p><strong>Stage 3 -- Reader Testing</strong>: A fresh sub-agent with no prior context reads the completed document and attempts to answer key comprehension questions. This reveals gaps, unclear sections, and assumptions that insiders might miss. Feedback from the reader test drives final revisions.</p>
+<h2>Example</h2>
+<ul>
+<li>&quot;Co-author a PRD for adding real-time collaboration to the document editor&quot;</li>
+<li>&quot;Help me write an RFC proposing a migration from REST to GraphQL for our internal APIs&quot;</li>
+<li>&quot;Draft a technical spec for the new authentication service with me, section by section&quot;</li>
+<li>&quot;Co-write a project proposal for adopting infrastructure-as-code across all environments&quot;</li>
+</ul>
+
+    <a class="back-link" href="index.html">Back to Docs Index</a>
+  </div>
+</body>
+</html>

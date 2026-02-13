@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Docs Index — Skills & MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-card: #1e1e3f;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #2d2d4a;
+      --accent-blue: #61affe;
+      --accent-purple: #a855f7;
+      --accent-cyan: #22d3ee;
+      --accent-green: #49cc90;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .card {
+      display: block;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .card:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-secondary);
+      text-decoration: none;
+    }
+    .card__title { color: var(--accent-blue); font-weight: 600; font-size: 0.95rem; }
+    .card__desc { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.35rem; }
+    .card--mcp .card__title { color: var(--accent-cyan); }
+    .card--api .card__title { color: var(--accent-green); }
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent-blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .back-link:hover { background: var(--bg-secondary); text-decoration: none; }
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Skills & MCP Documentation</h1>
+    <p class="subtitle">Single source of truth for all skills, MCP servers, and APIs.</p>
+    <h2>Skills</h2>
+<div class="card-grid">
+  <a class="card " href="skills/community/ai-engineer.html">
+    <div class="card__title">Ai Engineer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/app-store-optimizer.html">
+    <div class="card__title">App Store Optimizer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/backend-architect.html">
+    <div class="card__title">Backend Architect</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/brand-guardian.html">
+    <div class="card__title">Brand Guardian</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/content-creator.html">
+    <div class="card__title">Content Creator</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/devops-automator.html">
+    <div class="card__title">Devops Automator</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/experiment-tracker.html">
+    <div class="card__title">Experiment Tracker</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/feedback-synthesizer.html">
+    <div class="card__title">Feedback Synthesizer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/frontend-developer.html">
+    <div class="card__title">Frontend Developer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/growth-hacker.html">
+    <div class="card__title">Growth Hacker</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/instagram-curator.html">
+    <div class="card__title">Instagram Curator</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/mobile-app-builder.html">
+    <div class="card__title">Mobile App Builder</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/project-shipper.html">
+    <div class="card__title">Project Shipper</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/rapid-prototyper.html">
+    <div class="card__title">Rapid Prototyper</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/reddit-community-builder.html">
+    <div class="card__title">Reddit Community Builder</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/sprint-prioritizer.html">
+    <div class="card__title">Sprint Prioritizer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/studio-producer.html">
+    <div class="card__title">Studio Producer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/tiktok-strategist.html">
+    <div class="card__title">Tiktok Strategist</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/trend-researcher.html">
+    <div class="card__title">Trend Researcher</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/twitter-engager.html">
+    <div class="card__title">Twitter Engager</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/ui-designer.html">
+    <div class="card__title">Ui Designer</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/ux-researcher.html">
+    <div class="card__title">Ux Researcher</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/visual-storyteller.html">
+    <div class="card__title">Visual Storyteller</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/community/whimsy-injector.html">
+    <div class="card__title">Whimsy Injector</div>
+    <div class="card__desc">community</div>
+  </a>
+  <a class="card " href="skills/junior/ops.html">
+    <div class="card__title">Ops</div>
+    <div class="card__desc">junior</div>
+  </a>
+  <a class="card " href="skills/junior/software-engineer.html">
+    <div class="card__title">Software Engineer</div>
+    <div class="card__desc">junior</div>
+  </a>
+  <a class="card " href="skills/official/algorithmic-art.html">
+    <div class="card__title">Algorithmic Art</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/brand-guidelines.html">
+    <div class="card__title">Brand Guidelines</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/canvas-design.html">
+    <div class="card__title">Canvas Design</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/doc-coauthoring.html">
+    <div class="card__title">Doc Coauthoring</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/docx.html">
+    <div class="card__title">Docx</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/frontend-design.html">
+    <div class="card__title">Frontend Design</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/internal-comms.html">
+    <div class="card__title">Internal Comms</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/mcp-builder.html">
+    <div class="card__title">Mcp Builder</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/pdf.html">
+    <div class="card__title">Pdf</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/pptx.html">
+    <div class="card__title">Pptx</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/skill-creator.html">
+    <div class="card__title">Skill Creator</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/slack-gif-creator.html">
+    <div class="card__title">Slack Gif Creator</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/theme-factory.html">
+    <div class="card__title">Theme Factory</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/web-artifacts-builder.html">
+    <div class="card__title">Web Artifacts Builder</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/webapp-testing.html">
+    <div class="card__title">Webapp Testing</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/official/xlsx.html">
+    <div class="card__title">Xlsx</div>
+    <div class="card__desc">official</div>
+  </a>
+  <a class="card " href="skills/senior/cloud-architect.html">
+    <div class="card__title">Cloud Architect</div>
+    <div class="card__desc">senior</div>
+  </a>
+  <a class="card " href="skills/senior/designer.html">
+    <div class="card__title">Designer</div>
+    <div class="card__desc">senior</div>
+  </a>
+  <a class="card " href="skills/senior/frontend-developer.html">
+    <div class="card__title">Frontend Developer</div>
+    <div class="card__desc">senior</div>
+  </a>
+  <a class="card " href="skills/senior/software-architecture.html">
+    <div class="card__title">Software Architecture</div>
+    <div class="card__desc">senior</div>
+  </a>
+  <a class="card " href="skills/senior/software-engineer.html">
+    <div class="card__title">Software Engineer</div>
+    <div class="card__desc">senior</div>
+  </a>
+</div>
+<h2>MCP Servers</h2>
+<div class="card-grid">
+  <a class="card card--mcp" href="mcps/cloud-infra.html">
+    <div class="card__title">Cloud Infra</div>
+    
+  </a>
+</div>
+<h2>APIs</h2>
+<div class="card-grid">
+  <a class="card card--api" href="apis/cloud-provider-clis.html">
+    <div class="card__title">Cloud Provider Clis</div>
+    
+  </a>
+  <a class="card card--api" href="apis/container-management.html">
+    <div class="card__title">Container Management</div>
+    
+  </a>
+  <a class="card card--api" href="apis/flask-api.html">
+    <div class="card__title">Flask Api</div>
+    
+  </a>
+  <a class="card card--api" href="apis/health-monitoring.html">
+    <div class="card__title">Health Monitoring</div>
+    
+  </a>
+  <a class="card card--api" href="apis/rust-api.html">
+    <div class="card__title">Rust Api</div>
+    
+  </a>
+  <a class="card card--api" href="apis/service-apis.html">
+    <div class="card__title">Service Apis</div>
+    
+  </a>
+  <a class="card card--api" href="apis/service-management.html">
+    <div class="card__title">Service Management</div>
+    
+  </a>
+  <a class="card card--api" href="apis/vm-management.html">
+    <div class="card__title">Vm Management</div>
+    
+  </a>
+</div>
+
+    <a class="back-link" href="../index.html">Back to Interactive UI</a>
+  </div>
+</body>
+</html>

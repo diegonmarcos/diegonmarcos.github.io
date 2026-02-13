@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cloud Infra — Skills & MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-tertiary: #0f0f23;
+      --bg-card: #1e1e3f;
+      --bg-code: #0d0d1a;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #2d2d4a;
+      --border-light: #3d3d5c;
+      --accent-blue: #61affe;
+      --accent-green: #49cc90;
+      --accent-purple: #a855f7;
+      --accent-cyan: #22d3ee;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-cyan);
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-secondary); }
+    strong { color: var(--text-primary); }
+
+    a { color: var(--accent-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      background: var(--bg-code);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    th {
+      background: var(--bg-secondary);
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    tr:nth-child(even) td { background: var(--bg-tertiary); }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      color: var(--text-secondary);
+    }
+    li { margin-bottom: 0.35rem; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent-blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      background: var(--bg-secondary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.5rem; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">Docs</a> <span>/</span> Mcps <span>/</span> Cloud Infra</nav>
+    <h1>MCP: cloud-infra</h1>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Name</strong></td>
+<td><code>cloud-infra</code></td>
+</tr>
+<tr>
+<td><strong>Version</strong></td>
+<td><code>1.0.0</code></td>
+</tr>
+<tr>
+<td><strong>Transport</strong></td>
+<td>stdio</td>
+</tr>
+<tr>
+<td><strong>Runtime</strong></td>
+<td>Node.js (TypeScript)</td>
+</tr>
+<tr>
+<td><strong>Repo</strong></td>
+<td><code>~/git/cloud/a_solutions/container-nix/bb-sec_mcp-server-skills/</code></td>
+</tr>
+<tr>
+<td><strong>Entry</strong></td>
+<td><code>src/index.ts</code></td>
+</tr>
+<tr>
+<td><strong>SDK</strong></td>
+<td><code>@modelcontextprotocol/sdk ^1.12.0</code></td>
+</tr>
+</tbody></table>
+<h2>Tools (21)</h2>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Tool</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Infra</strong></td>
+<td><code>list_vms</code></td>
+<td>List all 4 VMs with IPs, aliases, descriptions</td>
+</tr>
+<tr>
+<td><strong>Infra</strong></td>
+<td><code>list_services</code></td>
+<td>List 42+ services (filter by VM or category)</td>
+</tr>
+<tr>
+<td><strong>Infra</strong></td>
+<td><code>get_service_detail</code></td>
+<td>Full service info: flake.nix, secrets, dist files</td>
+</tr>
+<tr>
+<td><strong>Repo</strong></td>
+<td><code>read_file</code></td>
+<td>Read file from any repo (cloud, unix, vault, front, tools)</td>
+</tr>
+<tr>
+<td><strong>Repo</strong></td>
+<td><code>search_repos</code></td>
+<td>Grep across repositories</td>
+</tr>
+<tr>
+<td><strong>Repo</strong></td>
+<td><code>list_directory</code></td>
+<td>List directory contents</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td><code>build_service</code></td>
+<td>Run build.sh for a service (build/secrets/ship/clean/all)</td>
+</tr>
+<tr>
+<td><strong>Build</strong></td>
+<td><code>build_all</code></td>
+<td>Run root orchestrator for all services</td>
+</tr>
+<tr>
+<td><strong>SSH</strong></td>
+<td><code>ssh_exec</code></td>
+<td>Execute command on VM via SSH</td>
+</tr>
+<tr>
+<td><strong>SSH</strong></td>
+<td><code>check_vm</code></td>
+<td>Test VM reachability + system info</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td><code>docker_ps</code></td>
+<td>List containers on a VM</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td><code>docker_control</code></td>
+<td>Start/stop/restart container</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td><code>docker_logs</code></td>
+<td>Get container logs</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td><code>docker_compose_up</code></td>
+<td>Rebuild + restart service on its VM</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td><code>api_call</code></td>
+<td>Call any Flask API endpoint</td>
+</tr>
+<tr>
+<td><strong>API</strong></td>
+<td><code>api_vm_control</code></td>
+<td>Start/stop/reset VM via OCI/gcloud CLI</td>
+</tr>
+<tr>
+<td><strong>Front</strong></td>
+<td><code>front_list_projects</code></td>
+<td>List all 32 web projects</td>
+</tr>
+<tr>
+<td><strong>Front</strong></td>
+<td><code>front_get_project</code></td>
+<td>Full project detail: build.json, deps, dist, dev server</td>
+</tr>
+<tr>
+<td><strong>Front</strong></td>
+<td><code>front_build</code></td>
+<td>Build a project using universal build.sh</td>
+</tr>
+<tr>
+<td><strong>Front</strong></td>
+<td><code>front_dev_server</code></td>
+<td>Start/stop/status of project dev server</td>
+</tr>
+<tr>
+<td><strong>Front</strong></td>
+<td><code>front_deploy</code></td>
+<td>Run deploy.sh (merge deps + build all changed)</td>
+</tr>
+</tbody></table>
+<h2>Resources (5)</h2>
+<table>
+<thead>
+<tr>
+<th>URI</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>cloud://config</code></td>
+<td>Full infrastructure config (config.json)</td>
+</tr>
+<tr>
+<td><code>cloud://ssh-config</code></td>
+<td>SSH configuration file</td>
+</tr>
+<tr>
+<td><code>cloud://services-overview</code></td>
+<td>Services overview markdown table</td>
+</tr>
+<tr>
+<td><code>cloud://readme</code></td>
+<td>Container-nix README</td>
+</tr>
+<tr>
+<td><code>cloud://front-projects</code></td>
+<td>Front-end projects overview</td>
+</tr>
+</tbody></table>
+<h2>Prompts (1)</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>cloud-architect</code></td>
+<td>Full cloud architect persona with VM table, services, architecture, and operational principles</td>
+</tr>
+</tbody></table>
+
+    <a class="back-link" href="index.html">Back to Docs Index</a>
+  </div>
+</body>
+</html>

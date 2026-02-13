@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Monitoring — Skills & MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-tertiary: #0f0f23;
+      --bg-card: #1e1e3f;
+      --bg-code: #0d0d1a;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #2d2d4a;
+      --border-light: #3d3d5c;
+      --accent-blue: #61affe;
+      --accent-green: #49cc90;
+      --accent-purple: #a855f7;
+      --accent-cyan: #22d3ee;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-cyan);
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-secondary); }
+    strong { color: var(--text-primary); }
+
+    a { color: var(--accent-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      background: var(--bg-code);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    th {
+      background: var(--bg-secondary);
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    tr:nth-child(even) td { background: var(--bg-tertiary); }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      color: var(--text-secondary);
+    }
+    li { margin-bottom: 0.35rem; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent-blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      background: var(--bg-secondary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.5rem; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">Docs</a> <span>/</span> Apis <span>/</span> Health Monitoring</nav>
+    <hr>
+<p>type: api
+category: Health Monitoring
+items:</p>
+<ul>
+<li>id: api-health
+method: GET
+name: Health Check
+path: /rust/health
+summary: API alive check
+description: Simple health check to verify the Rust API is running.</li>
+<li>id: api-health-all
+method: GET
+name: Health All
+path: /rust/health/all
+summary: Full health summary
+description: Health of all VMs with services and containers.</li>
+<li>id: api-health-containers-by-vm
+method: GET
+name: Containers by VM
+path: /rust/health/containers-by-vm
+summary: Container health grouped by VM
+description: Container health across all VMs grouped by VM.</li>
+<li>id: api-health-containers-by-service
+method: GET
+name: Containers by Service
+path: /rust/health/containers-by-service
+summary: Container health grouped by service
+description: Container health grouped by service across VMs.</li>
+<li>id: api-health-proxied
+method: GET
+name: Proxied Services
+path: /rust/health/proxied-by-services
+summary: Public route health probes
+description: Public route health probes with redirect chain.</li>
+<li>id: api-health-resources
+method: GET
+name: Resources All
+path: /rust/health/resources-all
+summary: System resources for all VMs
+description: &quot;System resources, specs, and info for all VMs (CPU, RAM, disk).&quot;</li>
+<li>id: api-health-ids
+method: GET
+name: Health IDs
+path: /rust/health/ids
+summary: All valid variable IDs
+description: &quot;All valid variable IDs: vm_ids, labels, services, containers.&quot;</li>
+<li>id: api-health-vm
+method: GET
+name: VM Health
+path: &quot;/rust/health/{vm_id}&quot;
+summary: Health for a specific VM
+description: VM health check by identifier.
+parameters:<ul>
+<li>name: vm_id
+type: string
+required: true
+description: VM identifier</li>
+</ul>
+</li>
+<li>id: api-health-vm-container
+method: GET
+name: Container Status
+path: &quot;/rust/health/{vm_id}/{container_name}&quot;
+summary: Status for a specific container
+description: Container status on a specific VM.
+parameters:<ul>
+<li>name: vm_id
+type: string
+required: true
+description: VM identifier</li>
+<li>name: container_name
+type: string
+required: true
+description: Container name</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p>Health monitoring endpoints for the Rust API at <code>api.diegonmarcos.com:8080</code>.</p>
+<p>All endpoints are GET requests that return JSON health data for VMs, containers, and services.</p>
+
+    <a class="back-link" href="index.html">Back to Docs Index</a>
+  </div>
+</body>
+</html>

@@ -16,7 +16,7 @@ NC='\033[0m'
 
 # Project paths
 PROJECT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-SRC_DIR="$PROJECT_DIR/src_static"
+SRC_DIR="$PROJECT_DIR/src"
 DIST_DIR="$PROJECT_DIR/dist"
 PROJECT_NAME="Skills & MCP"
 PORT="8018"

@@ -1,0 +1,57 @@
+// ============================================
+// HEADER COMPONENT
+// ============================================
+
+.header {
+  position: fixed;
+  top: 0;
+  left: $sidebar-width;
+  right: 0;
+  height: $header-height;
+  background: rgba($color-bg-secondary, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid $color-border;
+  @include flex-row(space-between, center);
+  padding: 0 $spacing-xl;
+  z-index: $z-header;
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__actions {
+    @include flex-row(flex-end, center, $spacing-md);
+  }
+}
+
+.header-btn {
+  @include flex-center;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-card;
+  border: 1px solid $color-border;
+  border-radius: $border-radius-md;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-tertiary;
+    color: $color-text-primary;
+    border-color: $color-border-light;
+  }
+
+  svg {
+    width: 18px;
+    height: 18px;
+    margin-right: $spacing-xs;
+  }
+
+  &--icon {
+    padding: $spacing-sm;
+
+    svg {
+      margin-right: 0;
+    }
+  }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brand Guidelines — Skills & MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #1a1a2e;
+      --bg-secondary: #16213e;
+      --bg-tertiary: #0f0f23;
+      --bg-card: #1e1e3f;
+      --bg-code: #0d0d1a;
+      --text-primary: #e4e4e7;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #2d2d4a;
+      --border-light: #3d3d5c;
+      --accent-blue: #61affe;
+      --accent-green: #49cc90;
+      --accent-purple: #a855f7;
+      --accent-cyan: #22d3ee;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .breadcrumb {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .breadcrumb a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.5rem; }
+
+    h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-purple);
+    }
+    h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--accent-cyan);
+    }
+
+    p { margin-bottom: 1rem; color: var(--text-secondary); }
+    strong { color: var(--text-primary); }
+
+    a { color: var(--accent-blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.875rem;
+      background: var(--bg-code);
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      color: var(--accent-cyan);
+    }
+    pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin-bottom: 1rem;
+    }
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    th {
+      background: var(--bg-secondary);
+      color: var(--accent-blue);
+      font-weight: 600;
+      text-align: left;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+    }
+    td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    tr:nth-child(even) td { background: var(--bg-tertiary); }
+
+    ul, ol {
+      margin-bottom: 1rem;
+      padding-left: 1.5rem;
+      color: var(--text-secondary);
+    }
+    li { margin-bottom: 0.35rem; }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--accent-blue);
+      font-size: 0.875rem;
+      text-decoration: none;
+    }
+    .back-link:hover {
+      background: var(--bg-secondary);
+      text-decoration: none;
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 1.5rem; }
+      table { font-size: 0.75rem; }
+      th, td { padding: 0.4rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav class="breadcrumb"><a href="index.html">Docs</a> <span>/</span> Skills <span>/</span> Official <span>/</span> Brand Guidelines</nav>
+    <hr>
+<p>id: skill-brand-guidelines
+type: skill
+name: &quot;Brand Guidelines&quot;
+path: brand-guidelines
+summary: &quot;Apply Anthropic brand styling&quot;
+category: Communication
+source: anthropics/skills
+requiredMcp:</p>
+<ul>
+<li>Read</li>
+<li>Write
+parameters:</li>
+<li>name: &quot;Main Colors&quot;
+type: Hex
+required: true
+description: &quot;#141413 (dark), #faf9f5 (light), #b0aea5 (mid gray)&quot;</li>
+<li>name: Accents
+type: Hex
+required: true
+description: &quot;#d97757 (orange), #6a9bcc (blue), #788c5d (green)&quot;</li>
+<li>name: Fonts
+type: Typography
+required: true
+description: &quot;Poppins (headings), Lora (body)&quot;</li>
+</ul>
+<hr>
+<p>Apply official brand identity: Colors (Dark #141413, Light #faf9f5, Orange #d97757, Blue #6a9bcc, Green #788c5d), Typography (Headings: Poppins, Body: Lora). Smart font application to 24pt+ headings, automatic fallbacks.</p>
+<p>The skill ensures consistent brand application across all generated documents, presentations, and web pages. The color palette centers on a warm neutral foundation -- dark charcoal (#141413) and warm off-white (#faf9f5) -- with mid-gray (#b0aea5) for secondary elements. Three accent colors serve distinct purposes: orange (#d97757) for primary actions and emphasis, blue (#6a9bcc) for informational elements and links, and green (#788c5d) for success states and positive indicators.</p>
+<p>Typography uses Poppins for headings at 24pt and above, providing clean geometric authority, with Lora as the body font for comfortable reading at smaller sizes. The skill automatically applies appropriate fallback font stacks and handles cases where custom fonts may not be available.</p>
+<h2>Example</h2>
+<ul>
+<li>&quot;Apply brand colors and typography to this HTML landing page&quot;</li>
+<li>&quot;Generate a styled status report document using the brand palette and Poppins/Lora fonts&quot;</li>
+<li>&quot;Convert this plain markdown into a branded HTML email with proper color scheme and typography&quot;</li>
+<li>&quot;Create a branded presentation template with consistent heading styles, accent colors, and font hierarchy&quot;</li>
+</ul>
+
+    <a class="back-link" href="index.html">Back to Docs Index</a>
+  </div>
+</body>
+</html>

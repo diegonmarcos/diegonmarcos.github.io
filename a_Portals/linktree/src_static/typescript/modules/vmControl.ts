@@ -67,35 +67,32 @@ function updateButtonStates(vmState: 'running' | 'stopped' | 'loading'): void {
 
   if (!startBtn || !stopBtn || !rebootBtn) return;
 
-  // Disable all during loading
+  // Reboot/reset is always available — API handles both running (SOFTRESET) and stopped (START)
+  rebootBtn.disabled = false;
+  removeClass(rebootBtn, 'btn-loading');
+  removeClass(rebootBtn, 'btn-inactive');
+
   if (vmState === 'loading') {
     startBtn.disabled = true;
     stopBtn.disabled = true;
-    rebootBtn.disabled = true;
     addClass(startBtn, 'btn-loading');
     addClass(stopBtn, 'btn-loading');
-    addClass(rebootBtn, 'btn-loading');
     return;
   }
 
   removeClass(startBtn, 'btn-loading');
   removeClass(stopBtn, 'btn-loading');
-  removeClass(rebootBtn, 'btn-loading');
 
   if (vmState === 'running') {
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    rebootBtn.disabled = false;
     addClass(startBtn, 'btn-inactive');
     removeClass(stopBtn, 'btn-inactive');
-    removeClass(rebootBtn, 'btn-inactive');
   } else {
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    rebootBtn.disabled = true;
     removeClass(startBtn, 'btn-inactive');
     addClass(stopBtn, 'btn-inactive');
-    addClass(rebootBtn, 'btn-inactive');
   }
 }
 
@@ -157,7 +154,9 @@ async function checkVmStatus(): Promise<void> {
  * Execute VM action - opens OCI Console if API not available
  */
 async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boolean> {
-  // If API is not available, show error
+  // Retry discovery if VM not found yet
+  if (!vmId) await discoverVmId();
+  if (!vmId) await discoverVmId();
   if (!apiAvailable || !vmId) {
     showToast('API not available', true);
     return false;

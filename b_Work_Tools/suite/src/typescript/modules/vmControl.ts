@@ -68,18 +68,18 @@ function updateStatusIndicator(state: string, message?: string): void {
 function updateButtonStates(vmState: string): void {
   if (!startBtn || !stopBtn || !resetBtn) return;
 
+  // Reset is always available — API handles both running (SOFTRESET) and stopped (START)
+  resetBtn.disabled = false;
+
   if (vmState === 'running') {
     startBtn.disabled = true;
     stopBtn.disabled = false;
-    resetBtn.disabled = false;
   } else if (vmState === 'stopped') {
     startBtn.disabled = false;
     stopBtn.disabled = true;
-    resetBtn.disabled = true;
   } else {
     startBtn.disabled = true;
     stopBtn.disabled = true;
-    resetBtn.disabled = true;
   }
 }
 
@@ -125,8 +125,13 @@ async function checkServerStatus(): Promise<void> {
 }
 
 async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
+  if (!vmId) await discoverVmId();
   if (!vmId) {
-    if (wakeStatus) wakeStatus.textContent = 'VM not discovered';
+    if (wakeStatus) wakeStatus.textContent = 'VM not discovered — retrying...';
+    await discoverVmId();
+  }
+  if (!vmId) {
+    if (wakeStatus) wakeStatus.textContent = 'Could not discover VM. Check API connectivity.';
     return;
   }
 

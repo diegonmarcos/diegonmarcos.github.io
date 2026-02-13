@@ -510,17 +510,21 @@
                         border: 1px solid rgba(255,255,255,0.15);
                         flex-shrink: 0;
                     }
-                    #products-vm-control .vm-ctrl-indicator.online {
+                    #products-vm-control .vm-ctrl-indicator.green {
                         background: #4caf50;
                         box-shadow: 0 0 8px rgba(76,175,80,0.6);
                     }
-                    #products-vm-control .vm-ctrl-indicator.offline {
+                    #products-vm-control .vm-ctrl-indicator.red {
                         background: #f44336;
                         box-shadow: 0 0 8px rgba(244,67,54,0.4);
                     }
-                    #products-vm-control .vm-ctrl-indicator.loading {
+                    #products-vm-control .vm-ctrl-indicator.yellow {
                         background: #ffa726;
                         animation: vm-ctrl-pulse 1.5s infinite;
+                    }
+                    #products-vm-control .vm-ctrl-indicator.blue {
+                        background: #2196f3;
+                        box-shadow: 0 0 8px rgba(33,150,243,0.4);
                     }
                     @keyframes vm-ctrl-pulse {
                         0%, 100% { opacity: 0.4; }
@@ -580,19 +584,23 @@
                 </h2>
                 <div class="vm-ctrl-bar">
                     <span class="vm-ctrl-label">oci-flex</span>
-                    <span class="vm-ctrl-indicator loading" id="products-vm-indicator" title="Checking..."></span>
+                    <span class="vm-ctrl-indicator yellow" id="products-vm-indicator" title="Checking..."></span>
                     <div class="vm-ctrl-btns">
-                        <button class="vm-ctrl-btn btn-start" id="products-vm-start" disabled title="Start VM">
+                        <button class="vm-ctrl-btn btn-start" id="products-vm-start" title="Start VM">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                             Start
                         </button>
-                        <button class="vm-ctrl-btn btn-stop" id="products-vm-stop" disabled title="Stop VM">
+                        <button class="vm-ctrl-btn btn-stop" id="products-vm-stop" title="Stop VM">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>
                             Stop
                         </button>
-                        <button class="vm-ctrl-btn btn-reset" id="products-vm-reset" disabled title="Reset VM">
+                        <button class="vm-ctrl-btn btn-reset" id="products-vm-reset" title="Reset VM">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                             Reset
+                        </button>
+                        <button class="vm-ctrl-btn btn-refresh" id="products-vm-refresh" title="Refresh Status">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                            Refresh
                         </button>
                     </div>
                 </div>
@@ -2425,14 +2433,16 @@
         var startBtn = document.getElementById('products-vm-start');
         var stopBtn = document.getElementById('products-vm-stop');
         var resetBtn = document.getElementById('products-vm-reset');
+        var refreshBtn = document.getElementById('products-vm-refresh');
 
         if (!indicator || !startBtn || !stopBtn || !resetBtn) return;
 
-        function setIndicator(status) {
-            indicator.className = 'vm-ctrl-indicator ' + status;
-            var titles = { online: 'VM Online', offline: 'VM Offline', loading: 'Checking...', unknown: 'Unknown' };
-            indicator.title = titles[status] || status;
-            console.debug('[vmControl] indicator:', status);
+        // Indicator: green=online, red=offline, yellow=running, blue=error/unknown
+        function setIndicator(color) {
+            indicator.className = 'vm-ctrl-indicator ' + color;
+            var titles = { green: 'VM Online', red: 'VM Offline', yellow: 'Command Running...', blue: 'Status Unknown' };
+            indicator.title = titles[color] || color;
+            console.debug('[vmControl] indicator:', color);
         }
 
         function discoverVmId() {
@@ -2458,9 +2468,9 @@
         }
 
         function checkStatus() {
-            setIndicator('loading');
+            setIndicator('yellow');
             discoverVmId().then(function(id) {
-                if (!id) { setIndicator('unknown'); return; }
+                if (!id) { setIndicator('blue'); return; }
                 var url = RUST_API + '/health/up/' + id;
                 console.debug('[vmControl] checking status:', url);
                 var t0 = performance.now();
@@ -2470,15 +2480,15 @@
                         return r.ok ? r.json() : null;
                     })
                     .then(function(data) {
-                        if (!data) { setIndicator('unknown'); return; }
+                        if (!data) { setIndicator('blue'); return; }
                         console.debug('[vmControl] health data:', JSON.stringify(data));
-                        setIndicator(data.health === 'online' ? 'online' : 'offline');
+                        setIndicator(data.health === 'online' ? 'green' : 'red');
                     });
-            }).catch(function(e) { console.debug('[vmControl] status check failed:', e.message); setIndicator('unknown'); });
+            }).catch(function(e) { console.debug('[vmControl] status check failed:', e.message); setIndicator('blue'); });
         }
 
         function vmAction(action) {
-            setIndicator('loading');
+            setIndicator('yellow');
             discoverVmId().then(function(id) {
                 if (!id) return discoverVmId();
                 return id;
@@ -2510,6 +2520,7 @@
         startBtn.addEventListener('click', function() { vmAction('start'); });
         stopBtn.addEventListener('click', function() { vmAction('stop'); });
         resetBtn.addEventListener('click', function() { vmAction('reset'); });
+        if (refreshBtn) refreshBtn.addEventListener('click', function() { checkStatus(); });
 
         checkStatus();
         setInterval(checkStatus, 30000);

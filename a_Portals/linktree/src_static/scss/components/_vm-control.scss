@@ -24,35 +24,33 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
-// Status indicator dot
+// Status indicator dot: green=online, red=offline, yellow=running, blue=error/unknown
 .vm-status-indicator {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #f44336; // Default to red (offline)
+    background: #6b7280;
     transition: all 0.3s ease;
-    box-shadow: 0 0 8px rgba(244, 67, 54, 0.6), 0 0 4px rgba(244, 67, 54, 0.4);
 
-    &.status-online {
+    &.status-green {
         background: #4CAF50;
         box-shadow: 0 0 10px rgba(76, 175, 80, 0.8), 0 0 6px rgba(76, 175, 80, 0.5);
     }
 
-    &.status-offline {
+    &.status-red {
         background: #f44336;
         box-shadow: 0 0 10px rgba(244, 67, 54, 0.8), 0 0 6px rgba(244, 67, 54, 0.5);
     }
 
-    &.status-loading {
+    &.status-yellow {
         background: #FFC107;
         box-shadow: 0 0 10px rgba(255, 193, 7, 0.8), 0 0 6px rgba(255, 193, 7, 0.5);
         animation: statusPulse 1s ease-in-out infinite;
     }
 
-    &.status-unknown {
-        background: #9E9E9E; // Gray when status unknown (API unavailable)
-        box-shadow: 0 0 8px rgba(158, 158, 158, 0.6), 0 0 4px rgba(158, 158, 158, 0.4);
-        animation: statusPulse 2s ease-in-out infinite;
+    &.status-blue {
+        background: #2196F3;
+        box-shadow: 0 0 10px rgba(33, 150, 243, 0.8), 0 0 6px rgba(33, 150, 243, 0.5);
     }
 }
 
@@ -85,7 +83,7 @@
     overflow: hidden;
     isolation: isolate;
 
-    img {
+    img, svg {
         width: 20px;
         height: 20px;
         filter: invert(1) brightness(1.1);
@@ -94,40 +92,21 @@
         z-index: 1;
     }
 
-    &:hover:not(:disabled) {
+    svg {
+        filter: none;
+        stroke: rgba(255, 255, 255, 0.9);
+    }
+
+    &:hover {
         background: rgba(255, 255, 255, 0.15);
         border-color: rgba(255, 255, 255, 0.3);
         box-shadow: 0 0 15px rgba(255, 255, 255, 0.2), 0 4px 12px rgba(0, 0, 0, 0.3);
         transform: translateY(-2px) scale(1.05);
     }
 
-    // Disabled state
-    &:disabled,
-    &.btn-inactive {
-        opacity: 0.35;
-        cursor: not-allowed;
-
-        &:hover {
-            transform: none;
-            box-shadow: none;
-            background: $glass-bg;
-            border-color: rgba(255, 255, 255, 0.15);
-        }
+    &:active {
+        transform: translateY(0) scale(1);
     }
-
-    // Loading state
-    &.btn-loading {
-        pointer-events: none;
-
-        img {
-            animation: spinLoader 1s linear infinite;
-        }
-    }
-}
-
-@keyframes spinLoader {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
 }
 
 // Toast notifications
@@ -172,7 +151,7 @@
         width: 40px;
         height: 40px;
 
-        img {
+        img, svg {
             width: 18px;
             height: 18px;
         }

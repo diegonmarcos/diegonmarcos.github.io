@@ -2,13 +2,10 @@
 
 import { getElementById, addClass, removeClass } from '../utils/dom';
 
-// Configuration
 const API_BASE = 'https://api.diegonmarcos.com';
 const VM_LABEL = 'oci-flex';
 
-// State
 let isLoading = false;
-let currentStatus: 'online' | 'offline' | 'unknown' = 'unknown';
 let apiAvailable = false;
 let vmId: string | null = null;
 
@@ -36,68 +33,51 @@ async function discoverVmId(): Promise<string | null> {
   return null;
 }
 
-function updateStatusIndicator(status: 'online' | 'offline' | 'loading' | 'unknown'): void {
+// Indicator: green=online, red=offline, yellow=command running, blue=error/unknown
+function setIndicator(color: 'green' | 'yellow' | 'red' | 'blue'): void {
   const indicator = getElementById<HTMLElement>('vm-status-indicator');
   if (!indicator) return;
 
-  removeClass(indicator, 'status-online');
-  removeClass(indicator, 'status-offline');
-  removeClass(indicator, 'status-loading');
-  removeClass(indicator, 'status-unknown');
-
-  addClass(indicator, `status-${status}`);
+  removeClass(indicator, 'status-green');
+  removeClass(indicator, 'status-red');
+  removeClass(indicator, 'status-yellow');
+  removeClass(indicator, 'status-blue');
+  addClass(indicator, `status-${color}`);
 
   const titles: Record<string, string> = {
-    online: 'VM Online',
-    offline: 'VM Offline',
-    loading: 'Checking...',
-    unknown: 'Status Unknown'
+    green: 'VM Online',
+    red: 'VM Offline',
+    yellow: 'Command Running...',
+    blue: 'Status Unknown'
   };
-  indicator.title = titles[status];
+  indicator.title = titles[color];
 }
 
-async function checkApiAndVmStatus(): Promise<{ apiOk: boolean; vmOnline?: boolean }> {
+async function checkVmStatus(): Promise<void> {
+  setIndicator('yellow');
   try {
     const id = await discoverVmId();
-    if (!id) return { apiOk: false };
+    if (!id) { setIndicator('blue'); return; }
 
     const url = `${API_BASE}/rust/health/up/${id}`;
     console.debug('[vmControl] checking health:', url);
     const t0 = performance.now();
-    const response = await fetch(url, {
-      method: 'GET',
-      signal: AbortSignal.timeout(10000)
-    });
+    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
     console.debug('[vmControl] health response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
     if (response.ok) {
       const data = await response.json();
       console.debug('[vmControl] health data:', JSON.stringify(data));
-      return {
-        apiOk: true,
-        vmOnline: data.health === 'online',
-      };
+      apiAvailable = true;
+      setIndicator(data.health === 'online' ? 'green' : 'red');
+    } else {
+      apiAvailable = false;
+      setIndicator('blue');
     }
-
-    return { apiOk: false };
   } catch (e) {
     console.debug('[vmControl] health check failed:', (e as Error).message);
-    return { apiOk: false };
-  }
-}
-
-async function checkVmStatus(): Promise<void> {
-  updateStatusIndicator('loading');
-
-  const result = await checkApiAndVmStatus();
-  apiAvailable = result.apiOk;
-
-  if (result.apiOk && result.vmOnline !== undefined) {
-    currentStatus = result.vmOnline ? 'online' : 'offline';
-    updateStatusIndicator(currentStatus);
-  } else {
-    currentStatus = 'unknown';
-    updateStatusIndicator('unknown');
+    apiAvailable = false;
+    setIndicator('blue');
   }
 }
 
@@ -111,7 +91,7 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
 
   try {
     isLoading = true;
-    updateStatusIndicator('loading');
+    setIndicator('yellow');
 
     const rustAction = action === 'reboot' ? 'reset' : action;
     const url = `${API_BASE}/rust/vms/${vmId}/${rustAction}`;
@@ -124,25 +104,17 @@ async function executeVmAction(action: 'start' | 'stop' | 'reboot'): Promise<boo
     });
     console.debug('[vmControl] action response:', response.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const data = await response.json();
     console.debug('[vmControl] action result:', JSON.stringify(data));
 
     if (data.status) {
-      const actionMessages: Record<string, string> = {
-        start: 'VM starting...',
-        stop: 'VM stopping...',
-        reboot: 'VM rebooting...'
-      };
-      showToast(actionMessages[action] || data.message || 'Done');
-
+      const msgs: Record<string, string> = { start: 'VM starting...', stop: 'VM stopping...', reboot: 'VM rebooting...' };
+      showToast(msgs[action] || data.message || 'Done');
       setTimeout(() => checkVmStatus(), 10000);
       setTimeout(() => checkVmStatus(), 30000);
       setTimeout(() => checkVmStatus(), 60000);
-
       return true;
     } else {
       throw new Error('Action failed');
@@ -161,13 +133,8 @@ function showToast(message: string, isError: boolean = false): void {
   const toast = document.createElement('div');
   toast.className = `vm-toast ${isError ? 'vm-toast-error' : 'vm-toast-success'}`;
   toast.textContent = message;
-
   document.body.appendChild(toast);
-
-  requestAnimationFrame(() => {
-    addClass(toast, 'vm-toast-visible');
-  });
-
+  requestAnimationFrame(() => addClass(toast, 'vm-toast-visible'));
   setTimeout(() => {
     removeClass(toast, 'vm-toast-visible');
     setTimeout(() => toast.remove(), 300);
@@ -178,24 +145,25 @@ export function initVmControl(): void {
   const startBtn = getElementById<HTMLButtonElement>('vm-start-btn');
   const stopBtn = getElementById<HTMLButtonElement>('vm-stop-btn');
   const rebootBtn = getElementById<HTMLButtonElement>('vm-reboot-btn');
+  const refreshBtn = getElementById<HTMLButtonElement>('vm-refresh-btn');
 
-  if (!startBtn || !stopBtn || !rebootBtn) {
-    return;
-  }
+  if (!startBtn || !stopBtn || !rebootBtn) return;
 
   startBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!isLoading) await executeVmAction('start');
   });
-
   stopBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!isLoading) await executeVmAction('stop');
   });
-
   rebootBtn.addEventListener('click', async (e) => {
     e.preventDefault();
     if (!isLoading) await executeVmAction('reboot');
+  });
+  if (refreshBtn) refreshBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    checkVmStatus();
   });
 
   checkVmStatus();

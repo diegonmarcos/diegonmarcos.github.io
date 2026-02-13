@@ -7,20 +7,12 @@ let vmStartUrl: string | null = null;
 let vmStopUrl: string | null = null;
 let vmResetUrl: string | null = null;
 
-let startBtn: HTMLButtonElement | null = null;
-let stopBtn: HTMLButtonElement | null = null;
-let resetBtn: HTMLButtonElement | null = null;
-let wakeStatus: HTMLElement | null = null;
 let statusDot: HTMLElement | null = null;
 let statusText: HTMLElement | null = null;
+let wakeStatus: HTMLElement | null = null;
 
 interface VmDiscoveryResponse {
   vms?: Record<string, { label?: string }>;
-}
-
-interface VmHealthResponse {
-  health?: string;
-  ssh?: boolean;
 }
 
 async function discoverVmId(): Promise<string | null> {
@@ -49,54 +41,40 @@ async function discoverVmId(): Promise<string | null> {
   return null;
 }
 
-function updateStatusIndicator(state: string, message?: string): void {
+// Indicator: green=online, red=offline, yellow=command running, blue=error/unknown
+function setIndicator(color: 'green' | 'yellow' | 'red' | 'blue', message: string): void {
   if (!statusDot || !statusText) return;
-
   statusDot.className = 'status-dot';
-  if (state === 'RUNNING') {
-    statusDot.classList.add('online');
-    statusText.textContent = message || 'Server Online';
-  } else if (state === 'STOPPED' || state === 'STOPPING') {
-    statusDot.classList.add('offline');
-    statusText.textContent = message || 'Server Offline (Sleeping)';
-  } else if (state === 'STARTING') {
-    statusDot.classList.add('checking');
-    statusText.textContent = message || 'Server Starting...';
-  } else {
-    statusDot.classList.add('checking');
-    statusText.textContent = message || 'Checking...';
-  }
+  statusDot.classList.add(`status-${color}`);
+  statusText.textContent = message;
 }
 
 async function checkServerStatus(): Promise<void> {
+  setIndicator('yellow', 'Checking...');
   try {
     await discoverVmId();
     if (!vmStatusUrl) throw new Error('VM not discovered');
     console.debug('[vmControl] checking status:', vmStatusUrl);
     const t0 = performance.now();
-    const statusResponse = await fetch(vmStatusUrl, {
-      method: 'GET',
-      signal: AbortSignal.timeout(10000)
-    });
-    console.debug('[vmControl] status response:', statusResponse.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
+    const res = await fetch(vmStatusUrl, { signal: AbortSignal.timeout(10000) });
+    console.debug('[vmControl] status response:', res.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
-    if (statusResponse.ok) {
-      const data: VmHealthResponse = await statusResponse.json();
+    if (res.ok) {
+      const data = await res.json();
       console.debug('[vmControl] health data:', JSON.stringify(data));
-
       if (data.health === 'online') {
-        updateStatusIndicator('RUNNING', 'Server Online');
+        setIndicator('green', 'Server Online');
         if (wakeStatus) wakeStatus.textContent = '';
       } else {
-        updateStatusIndicator('STOPPED', 'Server Offline');
+        setIndicator('red', 'Server Offline');
         if (wakeStatus) wakeStatus.textContent = 'Server is offline.';
       }
     } else {
-      throw new Error(`API HTTP ${statusResponse.status}`);
+      throw new Error(`API HTTP ${res.status}`);
     }
   } catch (error) {
     console.debug('[vmControl] status check failed:', (error as Error).message);
-    updateStatusIndicator('STOPPED', 'Status Unknown');
+    setIndicator('blue', 'Status Unknown');
     if (wakeStatus) wakeStatus.textContent = 'Could not check server status.';
   }
 }
@@ -105,7 +83,8 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
   if (!vmId) await discoverVmId();
   if (!vmId) await discoverVmId();
   if (!vmId) {
-    if (wakeStatus) wakeStatus.textContent = 'Could not discover VM. Check API connectivity.';
+    setIndicator('blue', 'VM not found');
+    if (wakeStatus) wakeStatus.textContent = 'Could not discover VM.';
     return;
   }
 
@@ -114,8 +93,8 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
   if (!url) return;
 
   console.debug('[vmControl] action:', action, '→ POST', url);
+  setIndicator('yellow', `Sending ${action}...`);
   if (wakeStatus) wakeStatus.textContent = `Sending ${action} command...`;
-  updateStatusIndicator('STARTING', `Sending ${action}...`);
 
   try {
     const t0 = performance.now();
@@ -130,8 +109,8 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
       const data = await response.json();
       console.debug('[vmControl] action result:', JSON.stringify(data));
       const messages: Record<string, string> = { start: 'VM starting...', stop: 'VM stopping...', reset: 'VM resetting...' };
+      setIndicator('yellow', messages[action]);
       if (wakeStatus) wakeStatus.textContent = messages[action];
-      updateStatusIndicator(action === 'stop' ? 'STOPPING' : 'STARTING');
 
       setTimeout(() => checkServerStatus(), 10000);
       setTimeout(() => checkServerStatus(), 30000);
@@ -139,27 +118,32 @@ async function vmAction(action: 'start' | 'stop' | 'reset'): Promise<void> {
     } else {
       const errorData = await response.json().catch(() => ({}));
       console.debug('[vmControl] action failed:', response.status, errorData);
+      setIndicator('red', `${action} failed`);
       if (wakeStatus) wakeStatus.textContent = (errorData as { message?: string }).message || `${action} failed`;
       await checkServerStatus();
     }
   } catch (e) {
     console.debug('[vmControl] action error:', (e as Error).message);
+    setIndicator('blue', 'Could not reach API');
     if (wakeStatus) wakeStatus.textContent = 'Could not reach API.';
     await checkServerStatus();
   }
 }
 
 export function initVmControl(): void {
-  startBtn = document.getElementById('vm-start-btn') as HTMLButtonElement | null;
-  stopBtn = document.getElementById('vm-stop-btn') as HTMLButtonElement | null;
-  resetBtn = document.getElementById('vm-reset-btn') as HTMLButtonElement | null;
-  wakeStatus = document.getElementById('wake-status');
   statusDot = document.getElementById('status-dot');
   statusText = document.getElementById('status-text');
+  wakeStatus = document.getElementById('wake-status');
+
+  const startBtn = document.getElementById('vm-start-btn');
+  const stopBtn = document.getElementById('vm-stop-btn');
+  const resetBtn = document.getElementById('vm-reset-btn');
+  const refreshBtn = document.getElementById('vm-refresh-btn');
 
   if (startBtn) startBtn.addEventListener('click', () => vmAction('start'));
   if (stopBtn) stopBtn.addEventListener('click', () => vmAction('stop'));
   if (resetBtn) resetBtn.addEventListener('click', () => vmAction('reset'));
+  if (refreshBtn) refreshBtn.addEventListener('click', () => checkServerStatus());
 
   checkServerStatus();
   setInterval(checkServerStatus, 30000);

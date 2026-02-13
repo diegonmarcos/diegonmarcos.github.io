@@ -620,22 +620,27 @@
             height: 10px;
             border-radius: 50%;
             background: #6b7280;
-            animation: pulse-dot 2s infinite;
         }
 
-        .status-dot.online {
+        .status-dot.status-green {
             background: #10b981;
             box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
         }
 
-        .status-dot.offline {
+        .status-dot.status-red {
             background: #ef4444;
             box-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
         }
 
-        .status-dot.checking {
+        .status-dot.status-yellow {
             background: #f59e0b;
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
             animation: pulse-dot 1s infinite;
+        }
+
+        .status-dot.status-blue {
+            background: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
         }
 
         @keyframes pulse-dot {
@@ -915,17 +920,21 @@
                     <span id="status-text">Checking server status...</span>
                 </div>
                 <div class="vm-controls">
-                    <button id="vm-start-btn" class="btn-vm-start" onclick="vmAction('start')" disabled>
+                    <button id="vm-start-btn" class="btn-vm-start">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                         Start
                     </button>
-                    <button id="vm-stop-btn" class="btn-vm-stop" onclick="vmAction('stop')" disabled>
+                    <button id="vm-stop-btn" class="btn-vm-stop">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12"/></svg>
                         Stop
                     </button>
-                    <button id="vm-reset-btn" class="btn-vm-reset" onclick="vmAction('reset')" disabled>
+                    <button id="vm-reset-btn" class="btn-vm-reset">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                         Reset
+                    </button>
+                    <button id="vm-refresh-btn" class="btn-vm-refresh">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+                        Refresh
                     </button>
                 </div>
                 <div id="wake-status" class="wake-status"></div>
@@ -1078,51 +1087,33 @@
             } catch (e) { console.debug('[vmControl] discovery failed:', e.message); }
             return null;
         }
-        const startBtn = document.getElementById('vm-start-btn');
-        const stopBtn = document.getElementById('vm-stop-btn');
-        const resetBtn = document.getElementById('vm-reset-btn');
         const wakeStatus = document.getElementById('wake-status');
         const statusDot = document.getElementById('status-dot');
         const statusText = document.getElementById('status-text');
 
-        function updateStatusIndicator(state, message) {
-            statusDot.className = 'status-dot';
-            if (state === 'RUNNING') {
-                statusDot.classList.add('online');
-                statusText.textContent = message || 'Server Online';
-            } else if (state === 'STOPPED' || state === 'STOPPING') {
-                statusDot.classList.add('offline');
-                statusText.textContent = message || 'Server Offline (Sleeping)';
-            } else if (state === 'STARTING') {
-                statusDot.classList.add('checking');
-                statusText.textContent = message || 'Server Starting...';
-            } else {
-                statusDot.classList.add('checking');
-                statusText.textContent = message || 'Checking...';
-            }
+        function setIndicator(color, message) {
+            statusDot.className = 'status-dot status-' + color;
+            statusText.textContent = message;
         }
 
         async function checkServerStatus() {
+            setIndicator('yellow', 'Checking...');
             try {
                 await discoverVmId();
                 if (!VM_STATUS_URL) throw new Error('VM not discovered');
                 console.debug('[vmControl] checking status:', VM_STATUS_URL);
                 const t0 = performance.now();
-                const statusResponse = await fetch(VM_STATUS_URL, {
-                    method: 'GET',
-                    signal: AbortSignal.timeout(10000)
-                });
-                console.debug('[vmControl] status response:', statusResponse.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
+                const res = await fetch(VM_STATUS_URL, { signal: AbortSignal.timeout(10000) });
+                console.debug('[vmControl] status response:', res.status, `(${((performance.now() - t0) / 1000).toFixed(1)}s)`);
 
-                if (statusResponse.ok) {
-                    const data = await statusResponse.json();
+                if (res.ok) {
+                    const data = await res.json();
                     console.debug('[vmControl] health data:', JSON.stringify(data));
-
                     if (data.health === 'online') {
-                        updateStatusIndicator('RUNNING', 'Server Online');
+                        setIndicator('green', 'Server Online');
                         wakeStatus.textContent = '';
                     } else {
-                        updateStatusIndicator('STOPPED', 'Server Offline');
+                        setIndicator('red', 'Server Offline');
                         wakeStatus.textContent = 'Photo server is offline.';
                     }
                 } else {
@@ -1130,7 +1121,7 @@
                 }
             } catch (error) {
                 console.debug('[vmControl] status check failed:', error.message);
-                updateStatusIndicator('UNKNOWN', 'Status Unknown');
+                setIndicator('blue', 'Status Unknown');
                 wakeStatus.textContent = 'Unable to check server status.';
             }
         }
@@ -1138,15 +1129,15 @@
         async function vmAction(action) {
             if (!VM_ID) await discoverVmId();
             if (!VM_ID) await discoverVmId();
-            if (!VM_ID) { wakeStatus.textContent = 'Could not discover VM. Check API connectivity.'; return; }
+            if (!VM_ID) { setIndicator('blue', 'VM not found'); wakeStatus.textContent = 'Could not discover VM.'; return; }
 
             const urls = { start: VM_START_URL, stop: VM_STOP_URL, reset: VM_RESET_URL };
             const url = urls[action];
             if (!url) return;
 
             console.debug('[vmControl] action:', action, '→ POST', url);
+            setIndicator('yellow', `Sending ${action}...`);
             wakeStatus.textContent = `Sending ${action} command...`;
-            updateStatusIndicator('STARTING', `Sending ${action}...`);
 
             try {
                 const t0 = performance.now();
@@ -1159,23 +1150,28 @@
 
                 if (response.ok) {
                     const messages = { start: 'VM starting...', stop: 'VM stopping...', reset: 'VM resetting...' };
+                    setIndicator('yellow', messages[action]);
                     wakeStatus.textContent = messages[action];
-                    updateStatusIndicator(action === 'stop' ? 'STOPPING' : 'STARTING');
-
-                    // Poll for status change
                     setTimeout(() => checkServerStatus(), 10000);
                     setTimeout(() => checkServerStatus(), 30000);
                     setTimeout(() => checkServerStatus(), 60000);
                 } else {
                     const errorData = await response.json().catch(() => ({}));
+                    setIndicator('red', `${action} failed`);
                     wakeStatus.textContent = errorData.message || `${action} failed`;
                     await checkServerStatus();
                 }
             } catch (error) {
+                setIndicator('blue', 'Could not reach API');
                 wakeStatus.textContent = 'Could not reach API.';
                 await checkServerStatus();
             }
         }
+
+        document.getElementById('vm-start-btn').addEventListener('click', () => vmAction('start'));
+        document.getElementById('vm-stop-btn').addEventListener('click', () => vmAction('stop'));
+        document.getElementById('vm-reset-btn').addEventListener('click', () => vmAction('reset'));
+        document.getElementById('vm-refresh-btn').addEventListener('click', () => checkServerStatus());
 
         // Tool and Auth selection handling
         let selectedTool = document.querySelector('.tool-btn[data-tool].active');

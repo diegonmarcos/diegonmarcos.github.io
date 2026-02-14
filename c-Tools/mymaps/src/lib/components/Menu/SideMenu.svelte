@@ -188,6 +188,13 @@
   </div>
 
   <div class="side-menu-footer">
+    <a href="https://diegonmarcos.github.io/mytrips/" class="menu-footer-link" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 17l6-6 4 4 8-8" />
+        <path d="M17 7h4v4" />
+      </svg>
+      <span>MyTrips</span>
+    </a>
     <a href="/maps/" class="menu-footer-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />

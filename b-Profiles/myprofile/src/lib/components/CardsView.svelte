@@ -1,19 +1,26 @@
 <script lang="ts">
   import type { DataItem } from '$lib/types';
+  import { base } from '$app/paths';
   import { onMount } from 'svelte';
   import Icon from './Icon.svelte';
 
   let { data }: { data: DataItem[] } = $props();
 
-  // Map card IDs to routes
-  const cardRoutes: Record<string, string> = {
-    '1': '/audio',
-    '2': '/bio',
-    '3': '/geo',
-    '4': '/visual',
-    '5': '/memory',
-    'system': '/syslog'
+  // Map card IDs to page names
+  const cardPages: Record<string, string> = {
+    '1': 'audio',
+    '2': 'bio',
+    '3': 'geo',
+    '4': 'visual',
+    '5': 'memory',
+    'system': 'syslog'
   };
+
+  function getCardRoute(id: string): string {
+    const page = cardPages[id];
+    if (!page) return `${base}/`;
+    return `${base}/${page}/`;
+  }
 
   // Auto-cycling hover effect
   let activeCardIndex = $state(0);
@@ -41,7 +48,7 @@
 <div class="shard-grid fade-in-up">
   {#each data as shard, index}
     <a
-      href={cardRoutes[shard.id] || '/'}
+      href={getCardRoute(shard.id)}
       class="shard-card type-{shard.type}"
       class:auto-hover={index === activeCardIndex}
       style="--accent: {shard.accentColor}"

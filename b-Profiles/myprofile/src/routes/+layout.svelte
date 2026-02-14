@@ -53,15 +53,7 @@
 
   function onTransitionComplete() {
     showTransition = false;
-    // Use window.location for static site navigation
-    const path = window.location.pathname;
-    const isInSubdir = path !== '/' && path !== `${base}/`;
-
-    if (transitionTo === 'profile') {
-      window.location.href = isInSubdir ? '../' : './';
-    } else {
-      window.location.href = isInSubdir ? `../${transitionTo}/` : `./${transitionTo}/`;
-    }
+    window.location.href = getPagePath(transitionTo);
   }
 
   // Keyboard navigation is now handled by CubeNav component (press 'c' to open)

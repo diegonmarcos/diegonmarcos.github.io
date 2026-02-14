@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
+  import { base } from '$app/paths';
   import { pages, pageOrder, type PageName } from '$lib/stores/navigation';
 
   let isOpen = $state(false);
@@ -65,19 +66,10 @@
     return 'profile';
   }
 
-  // Get relative route for navigation (works with static adapter)
-  function getRelativeRoute(targetPage: PageName): string {
-    const currentPath = window.location.pathname;
-    const isInSubdir = currentPath !== '/' && !currentPath.endsWith('/index.html') &&
-                       (currentPath.includes('/audio') || currentPath.includes('/bio') ||
-                        currentPath.includes('/geo') || currentPath.includes('/visual') ||
-                        currentPath.includes('/memory') || currentPath.includes('/syslog'));
-
-    if (targetPage === 'profile') {
-      return isInSubdir ? '../' : './';
-    } else {
-      return isInSubdir ? `../${targetPage}/` : `./${targetPage}/`;
-    }
+  // Get route for navigation using SvelteKit's base path
+  function getRoute(targetPage: PageName): string {
+    if (targetPage === 'profile') return `${base}/`;
+    return `${base}/${targetPage}/`;
   }
 
   function open() {
@@ -123,7 +115,7 @@
 
   function navigate() {
     const targetPage = pageOrder[selectedIndex];
-    const targetRoute = getRelativeRoute(targetPage);
+    const targetRoute = getRoute(targetPage);
     close();
     window.location.href = targetRoute;
   }
@@ -270,7 +262,7 @@
 
     // Navigate to the target page
     transitionPhase = 'idle';
-    const targetRoute = getRelativeRoute(targetPage);
+    const targetRoute = getRoute(targetPage);
     window.location.href = targetRoute;
   }
 
@@ -935,7 +927,7 @@
           {#each pageOrder as pageName, i}
             {@const pageData = pages[pageName]}
             {@const shouldLoad = loadedIframes.has(i)}
-            {@const iframeSrc = getRelativeRoute(pageName)}
+            {@const iframeSrc = getRoute(pageName)}
             <button
               class="cube-face"
               class:selected={i === selectedIndex}

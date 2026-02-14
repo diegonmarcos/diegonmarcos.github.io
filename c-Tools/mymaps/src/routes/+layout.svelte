@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-  <title>MyMaps Pro</title>
+  <title>My Maps</title>
   <meta name="description" content="Self-hosted maps with multi-provider API support" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <link rel="preconnect" href="https://basemaps.cartocdn.com" />

@@ -53,10 +53,10 @@
 
 <svelte:head>
   {#if $selectedPlace}
-    <title>{$selectedPlace.name} - MyMaps Pro</title>
+    <title>{$selectedPlace.name} - My Maps</title>
     <meta name="description" content={$selectedPlace.address} />
   {:else}
-    <title>Place - MyMaps Pro</title>
+    <title>Place - My Maps</title>
   {/if}
 </svelte:head>
 

@@ -234,7 +234,7 @@ function SideMenu($$renderer, $$props) {
     const menuSections = [
       {
         id: "list",
-        name: "List",
+        name: "Places",
         icon: "M4 6h16M4 12h16M4 18h16",
         description: "View saved places"
       },
@@ -249,6 +249,36 @@ function SideMenu($$renderer, $$props) {
         name: "Chronology",
         icon: "M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z",
         description: "Location history"
+      },
+      {
+        id: "mytrips",
+        name: "MyTrips",
+        icon: "M3 17l6-6 4 4 8-8M17 7h4v4",
+        description: "Travel journal"
+      }
+    ];
+    const tripsBaseUrl = "https://diegonmarcos.github.io/mytrips";
+    const tripPages = [
+      { id: "home", label: "Home", icon: "🏠", hash: "" },
+      { id: "atlas", label: "Atlas", icon: "🗺️", hash: "#atlas" },
+      {
+        id: "collections",
+        label: "Collections",
+        icon: "🃏",
+        hash: "#themes"
+      },
+      { id: "stats", label: "Stats", icon: "📊", hash: "#analytics" },
+      {
+        id: "timeline",
+        label: "Timeline",
+        icon: "⏱️",
+        hash: "#timeline"
+      },
+      {
+        id: "roadtrip",
+        label: "Cultural Regions",
+        icon: "🌎",
+        path: "/myroadtrip.html"
       }
     ];
     const mapProjections = [
@@ -265,8 +295,8 @@ function SideMenu($$renderer, $$props) {
     }
     $$renderer2.push(`<!--]--> <nav${attr_class("side-menu", void 0, { "side-menu--open": isOpen })} aria-label="Main menu"><div class="side-menu-header"><h2 class="side-menu-title">MyMaps</h2></div> <div class="side-menu-content"><!--[-->`);
     const each_array = ensure_array_like(menuSections);
-    for (let $$index_3 = 0, $$length = each_array.length; $$index_3 < $$length; $$index_3++) {
-      let section = each_array[$$index_3];
+    for (let $$index_4 = 0, $$length = each_array.length; $$index_4 < $$length; $$index_4++) {
+      let section = each_array[$$index_4];
       $$renderer2.push(`<button${attr_class("menu-section", void 0, { "menu-section--active": activeSection === section.id })}><div class="menu-section-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path${attr("d", section.icon)}></path></svg></div> <div class="menu-section-info"><span class="menu-section-name">${escape_html(section.name)}</span> <span class="menu-section-desc">${escape_html(section.description)}</span></div> <svg class="menu-section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button> `);
       if (activeSection === section.id) {
         $$renderer2.push("<!--[-->");
@@ -320,6 +350,19 @@ function SideMenu($$renderer, $$props) {
               $$renderer2.push(`<div class="menu-empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> <p>No location history</p> <span>Your visited places will appear here</span></div>`);
             } else {
               $$renderer2.push("<!--[!-->");
+              if (section.id === "mytrips") {
+                $$renderer2.push("<!--[-->");
+                $$renderer2.push(`<div class="menu-maps-list"><!--[-->`);
+                const each_array_4 = ensure_array_like(tripPages);
+                for (let $$index_3 = 0, $$length2 = each_array_4.length; $$index_3 < $$length2; $$index_3++) {
+                  let trip = each_array_4[$$index_3];
+                  $$renderer2.push(`<a${attr("href", `${stringify(tripsBaseUrl)}${stringify(trip.path || "/")}${stringify(trip.hash || "")}`)} class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">${escape_html(trip.icon)}</span> <span class="menu-map-name">${escape_html(trip.label)}</span></a>`);
+                }
+                $$renderer2.push(`<!--]--></div>`);
+              } else {
+                $$renderer2.push("<!--[!-->");
+              }
+              $$renderer2.push(`<!--]-->`);
             }
             $$renderer2.push(`<!--]-->`);
           }
@@ -337,14 +380,17 @@ function SideMenu($$renderer, $$props) {
 }
 function _page($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
+    var $$store_subs;
     head("1uha8ag", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>MyMaps Pro - Interactive Maps</title>`);
+        $$renderer4.push(`<title>My Maps</title>`);
       });
     });
     $$renderer2.push(`<div id="app"><div class="app-map">`);
     MapCanvas($$renderer2);
-    $$renderer2.push(`<!----></div> <div class="app-ui">`);
+    $$renderer2.push(`<!----></div> <div${attr_class("starfield", void 0, {
+      "starfield--visible": store_get($$store_subs ??= {}, "$isGlobeView", isGlobeView)
+    })}></div> <div class="app-ui">`);
     SideMenu($$renderer2);
     $$renderer2.push(`<!----> `);
     SearchBar($$renderer2);
@@ -361,6 +407,7 @@ function _page($$renderer, $$props) {
       $$renderer2.push("<!--[!-->");
     }
     $$renderer2.push(`<!--]--></div>`);
+    if ($$store_subs) unsubscribe_stores($$store_subs);
   });
 }
 export {

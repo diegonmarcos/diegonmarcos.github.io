@@ -9,7 +9,7 @@
   import SideMenu from '$lib/components/Menu/SideMenu.svelte';
   import MapContextMenu from '$lib/components/Map/MapContextMenu.svelte';
   import { tempPins } from '$lib/stores/placeListsStore';
-  import { getMapInstance } from '$lib/stores/mapStore';
+  import { getMapInstance, isGlobeView } from '$lib/stores/mapStore';
   import type { LngLat } from '$lib/services/api/types';
 
   // Context menu state
@@ -92,7 +92,7 @@
 </script>
 
 <svelte:head>
-  <title>MyMaps Pro - Interactive Maps</title>
+  <title>My Maps</title>
 </svelte:head>
 
 <div id="app">
@@ -100,6 +100,9 @@
   <div class="app-map">
     <MapCanvas />
   </div>
+
+  <!-- Starfield overlay (globe view only, mix-blend-mode: screen) -->
+  <div class="starfield" class:starfield--visible={$isGlobeView}></div>
 
   <!-- UI Overlay -->
   <div class="app-ui">

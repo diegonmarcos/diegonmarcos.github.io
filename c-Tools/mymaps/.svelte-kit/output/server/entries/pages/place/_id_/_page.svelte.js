@@ -38,13 +38,13 @@ function _page($$renderer, $$props) {
       if (store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace)) {
         $$renderer3.push("<!--[-->");
         $$renderer3.title(($$renderer4) => {
-          $$renderer4.push(`<title>${escape_html(store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace).name)} - MyMaps Pro</title>`);
+          $$renderer4.push(`<title>${escape_html(store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace).name)} - My Maps</title>`);
         });
         $$renderer3.push(`<meta name="description"${attr("content", store_get($$store_subs ??= {}, "$selectedPlace", selectedPlace).address)}/>`);
       } else {
         $$renderer3.push("<!--[!-->");
         $$renderer3.title(($$renderer4) => {
-          $$renderer4.push(`<title>Place - MyMaps Pro</title>`);
+          $$renderer4.push(`<title>Place - My Maps</title>`);
         });
       }
       $$renderer3.push(`<!--]-->`);

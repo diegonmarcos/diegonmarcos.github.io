@@ -63,7 +63,7 @@
 </script>
 
 <svelte:head>
-  <title>Settings - MyMaps Pro</title>
+  <title>Settings - My Maps</title>
 </svelte:head>
 
 <div class="settings-page">
@@ -166,7 +166,7 @@
     <div class="settings-section">
       <h2 class="settings-section-title">About</h2>
       <p class="settings-description">
-        MyMaps Pro uses a multi-provider architecture. Free providers (OpenStreetMap, OSRM)
+        My Maps uses a multi-provider architecture. Free providers (OpenStreetMap, OSRM)
         are always available. Premium providers unlock additional features like photos,
         reviews, and satellite imagery.
       </p>

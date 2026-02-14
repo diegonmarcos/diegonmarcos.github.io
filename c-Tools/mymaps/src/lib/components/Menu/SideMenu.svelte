@@ -25,7 +25,7 @@
   const menuSections = [
     {
       id: 'list',
-      name: 'List',
+      name: 'Places',
       icon: 'M4 6h16M4 12h16M4 18h16',
       description: 'View saved places'
     },
@@ -40,7 +40,24 @@
       name: 'Chronology',
       icon: 'M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
       description: 'Location history'
+    },
+    {
+      id: 'mytrips',
+      name: 'MyTrips',
+      icon: 'M3 17l6-6 4 4 8-8M17 7h4v4',
+      description: 'Travel journal'
     }
+  ];
+
+  const tripsBaseUrl = 'https://diegonmarcos.github.io/mytrips';
+
+  const tripPages = [
+    { id: 'home', label: 'Home', icon: '🏠', hash: '' },
+    { id: 'atlas', label: 'Atlas', icon: '🗺️', hash: '#atlas' },
+    { id: 'collections', label: 'Collections', icon: '🃏', hash: '#themes' },
+    { id: 'stats', label: 'Stats', icon: '📊', hash: '#analytics' },
+    { id: 'timeline', label: 'Timeline', icon: '⏱️', hash: '#timeline' },
+    { id: 'roadtrip', label: 'Cultural Regions', icon: '🌎', path: '/myroadtrip.html' }
   ];
 
   // Available map projections (from maps/ project)
@@ -181,20 +198,28 @@
               <p>No location history</p>
               <span>Your visited places will appear here</span>
             </div>
+          {:else if section.id === 'mytrips'}
+            <div class="menu-maps-list">
+              {#each tripPages as trip}
+                <a
+                  href="{tripsBaseUrl}{trip.path || '/'}{trip.hash || ''}"
+                  class="menu-map-item"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="menu-map-icon">{trip.icon}</span>
+                  <span class="menu-map-name">{trip.label}</span>
+                </a>
+              {/each}
+            </div>
           {/if}
         </div>
       {/if}
     {/each}
+
   </div>
 
   <div class="side-menu-footer">
-    <a href="https://diegonmarcos.github.io/mytrips/" class="menu-footer-link" target="_blank" rel="noopener noreferrer">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 17l6-6 4 4 8-8" />
-        <path d="M17 7h4v4" />
-      </svg>
-      <span>MyTrips</span>
-    </a>
     <a href="/maps/" class="menu-footer-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />

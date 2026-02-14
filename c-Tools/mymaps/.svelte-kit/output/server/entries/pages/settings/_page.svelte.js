@@ -121,7 +121,7 @@ function _page($$renderer, $$props) {
     ];
     head("1i19ct2", $$renderer2, ($$renderer3) => {
       $$renderer3.title(($$renderer4) => {
-        $$renderer4.push(`<title>Settings - MyMaps Pro</title>`);
+        $$renderer4.push(`<title>Settings - My Maps</title>`);
       });
     });
     $$renderer2.push(`<div class="settings-page"><div class="settings-header"><a${attr("href", `${stringify(base)}/`)} class="back-button" aria-label="Back to map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></a> <h1 class="settings-title">Settings</h1></div> <div class="settings-panel glass-panel"><div class="settings-section"><h2 class="settings-section-title">Available Features</h2> <p class="settings-description">`);
@@ -170,7 +170,7 @@ function _page($$renderer, $$props) {
       }
       $$renderer2.push(`<!--]--></div> <div class="glass-divider"></div>`);
     }
-    $$renderer2.push(`<!--]--> <div class="settings-section"><h2 class="settings-section-title">Reset</h2> <button class="glass-button">Reset to Defaults</button></div></div> <div class="settings-panel settings-panel--info glass-panel"><div class="settings-section"><h2 class="settings-section-title">About</h2> <p class="settings-description">MyMaps Pro uses a multi-provider architecture. Free providers (OpenStreetMap, OSRM)
+    $$renderer2.push(`<!--]--> <div class="settings-section"><h2 class="settings-section-title">Reset</h2> <button class="glass-button">Reset to Defaults</button></div></div> <div class="settings-panel settings-panel--info glass-panel"><div class="settings-section"><h2 class="settings-section-title">About</h2> <p class="settings-description">My Maps uses a multi-provider architecture. Free providers (OpenStreetMap, OSRM)
         are always available. Premium providers unlock additional features like photos,
         reviews, and satellite imagery.</p> <p class="settings-description settings-description--spaced">API keys are stored locally in your browser and never sent to any server except
         the respective API providers.</p></div></div></div>`);

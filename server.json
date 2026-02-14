@@ -1,7 +1,7 @@
 {
   "port": 8000,
   "mount_point": "/data/data/com.termux.nix/files/home",
-  "pid": 5956,
+  "pid": 16551,
   "log_receiver_pid": 0,
   "mode": "static",
   "mount_locked": "false"

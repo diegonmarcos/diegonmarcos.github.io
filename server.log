@@ -19405,3 +19405,9 @@ Press Ctrl+C to stop
 [2026-02-13 21:28:16] [2026-02-13 19:28:16] 200 GET /git/front/a_Portals/linktree/dist/public/images/background_static.jpg
 [2026-02-13 21:28:22] [2026-02-13 19:28:22] 200 GET /git/front/a_Portals/linktree/dist/public/videos/background2.mp4
 [2026-02-13 21:31:10] [2026-02-13 19:31:10] 200 GET /git/front/a_Portals/linktree/dist/public/videos/background2.mp4
+[2026-02-14 12:09:03] Static Server with Eruda DevTools
+[2026-02-14 12:09:03]   URL:   http://localhost:8000
+[2026-02-14 12:09:03]   Mount: /data/data/com.termux.nix/files/home
+[2026-02-14 12:09:03]   Mode:  Eruda auto-injection (no logging)
+[2026-02-14 12:09:03] 
+[2026-02-14 12:09:03] Press Ctrl+C to stop

@@ -1,0 +1,885 @@
+name: GitHub Pages Deployment (CI)
+
+on:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📦 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Needed to compare changes
+
+      - name: 📂 Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+
+      # ============================================
+      # SETUP NODE.JS
+      # ============================================
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: 📦 Install Dependencies
+        run: |
+          echo "📦 Generating merged package.json and installing..."
+          bash deploy.sh deps
+          echo "✅ Dependencies installed"
+
+      # ============================================
+      # PROJECT BUILDS (All use build.sh)
+      # ============================================
+      - name: 🔨 Build Root Index (e-Root)
+        id: build-c-root
+        if: contains(steps.changed-files.outputs.all_changed_files, 'e-Root/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Root Index (e-Root)..."
+          cd e-Root
+          bash build.sh build
+          cd ..
+          echo "✅ Root Index build complete"
+
+      - name: 🔨 Build Landpage
+        id: build-landpage
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Landpage..."
+          cd b-Profiles/landpage
+          bash build.sh build
+          cd ../..
+          echo "✅ Landpage build complete"
+
+      - name: 🔨 Build Linktree
+        id: build-linktree
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Linktree..."
+          cd a-Portals/linktree
+          bash build.sh build
+          cd ../..
+          echo "✅ Linktree build complete"
+
+      - name: 🔨 Build Linktree Mindmap
+        id: build-linktree-mindmap
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Linktree Mindmap..."
+          cd a-Portals/linktree_mindmap
+          bash build.sh build
+          cd ../..
+          echo "✅ Linktree Mindmap build complete"
+
+      - name: 🔨 Build CV Web
+        id: build-cv-web
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building CV Web..."
+          cd b-Profiles/cv_web
+          bash build.sh build
+          cd ../..
+          echo "✅ CV Web build complete"
+
+      - name: 🔨 Build MyFeed
+        id: build-myfeed
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyFeed..."
+          cd c-Tools/myfeed
+          bash build.sh build
+          cd ../..
+          echo "✅ MyFeed build complete"
+
+      - name: 🔨 Build MyGames
+        id: build-mygames
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyGames..."
+          cd c-Tools/mygames
+          bash build.sh build
+          cd ../..
+          echo "✅ MyGames build complete"
+
+      - name: 🔨 Build Nexus
+        id: build-nexus
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Nexus..."
+          cd b-Profiles/nexus
+          bash build.sh build
+          cd ../..
+          echo "✅ Nexus build complete"
+
+      - name: 🔨 Build Cloud Dashboard
+        id: build-cloud
+        if: contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Cloud Dashboard..."
+          cd a-Portals/cloud
+          bash build.sh build
+          cd ../..
+          echo "✅ Cloud Dashboard build complete"
+
+      - name: 🔨 Build Feed Yourself
+        id: build-feed-yourself
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Feed Yourself..."
+          cd c-Tools/feed_yourself
+          bash build.sh build
+          cd ../..
+          echo "✅ Feed Yourself build complete"
+
+      - name: 🔨 Build Others
+        id: build-others
+        if: contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Others..."
+          cd e-Others/others
+          bash build.sh build
+          cd ../..
+          echo "✅ Others build complete"
+
+      - name: 🔨 Build MyMail
+        id: build-mymail
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMail..."
+          cd c-Suite/mymail
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMail build complete"
+
+      - name: 🔨 Build MyPhotos
+        id: build-myphotos
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyPhotos..."
+          cd c-Suite/myphotos
+          bash build.sh build
+          cd ../..
+          echo "✅ MyPhotos build complete"
+
+      - name: 🔨 Build MyAnalytics
+        id: build-myanalytics
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyAnalytics..."
+          cd c-Suite/myanalytics
+          bash build.sh build
+          cd ../..
+          echo "✅ MyAnalytics build complete"
+
+      - name: 🔨 Build Suite
+        id: build-suite
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Suite..."
+          cd c-Suite/suite
+          bash build.sh build
+          cd ../..
+          echo "✅ Suite build complete"
+
+      - name: 🔨 Build Health Tracker
+        id: build-health-tracker
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Health Tracker..."
+          cd c-Tools/health_tracker
+          bash build.sh build
+          cd ../..
+          echo "✅ Health Tracker build complete"
+
+      - name: 🔨 Build Market Watch
+        id: build-market-watch
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Market Watch..."
+          cd c-Tools/market_watch
+          bash build.sh build
+          cd ../..
+          echo "✅ Market Watch build complete"
+
+      - name: 🔨 Build Central Bank
+        id: build-central-bank
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Central Bank..."
+          cd c-Tools/central_bank
+          bash build.sh build
+          cd ../..
+          echo "✅ Central Bank build complete"
+
+      - name: 🔨 Build MyProfile
+        id: build-myprofile
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyProfile..."
+          cd b-Profiles/myprofile
+          bash build.sh build
+          cd ../..
+          echo "✅ MyProfile build complete"
+
+      - name: 🔨 Build MyMovies (Vue 3)
+        id: build-mymovies
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMovies..."
+          cd c-Tools/mymovies
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMovies build complete"
+
+      - name: 🔨 Build MyMusic (Vue 3)
+        id: build-mymusic
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMusic..."
+          cd c-Tools/mymusic
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMusic build complete"
+
+      - name: 🔨 Build JSON Vision (Vue 3)
+        id: build-json-vision
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building JSON Vision..."
+          cd c-Suite/json-vision
+          bash build.sh build
+          cd ../..
+          echo "✅ JSON Vision build complete"
+
+      - name: 🔨 Build Carto (TypeScript + Sass)
+        id: build-carto
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Carto..."
+          cd c-Tools/carto
+          bash build.sh build
+          cd ../..
+          echo "✅ Carto build complete"
+
+      - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
+        id: build-mytrips
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyTrips..."
+          cd c-Tools/mytrips
+          bash build.sh build
+          cd ../..
+          echo "✅ MyTrips build complete"
+
+      - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
+        id: build-leafy
+        if: contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Leafy..."
+          cd b-Profiles/leafy
+          bash build.sh build
+          cd ../..
+          echo "✅ Leafy build complete"
+
+      - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
+        id: build-mymaps-svelte
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building MyMaps SvelteKit..."
+          cd c-Tools/mymaps
+          bash build.sh build
+          cd ../..
+          echo "✅ MyMaps SvelteKit build complete"
+
+      - name: 🔨 Build Maps Classic (React + Vite)
+        id: build-maps-classic
+        if: contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/')
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Maps Classic..."
+          cd c-Tools/maps
+          bash build.sh build
+          cd ../..
+          echo "✅ Maps Classic build complete"
+
+      # ============================================
+      # BUILD STATUS SUMMARY
+      # ============================================
+      - name: 📊 Build Status Summary
+        run: |
+          echo "============================================"
+          echo "📊 BUILD STATUS SUMMARY"
+          echo "============================================"
+          FAILED=""
+
+          if [ "${{ steps.build-c-root.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Root Index (c_root)"
+            FAILED="$FAILED c_root"
+          elif [ "${{ steps.build-c-root.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Root Index (c_root)"
+          fi
+
+          if [ "${{ steps.build-landpage.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Landpage"
+            FAILED="$FAILED landpage"
+          elif [ "${{ steps.build-landpage.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Landpage"
+          fi
+
+          if [ "${{ steps.build-linktree.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Linktree"
+            FAILED="$FAILED linktree"
+          elif [ "${{ steps.build-linktree.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Linktree"
+          fi
+
+          if [ "${{ steps.build-linktree-mindmap.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Linktree Mindmap"
+            FAILED="$FAILED linktree_mindmap"
+          elif [ "${{ steps.build-linktree-mindmap.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Linktree Mindmap"
+          fi
+
+          if [ "${{ steps.build-cv-web.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: CV Web"
+            FAILED="$FAILED cv_web"
+          elif [ "${{ steps.build-cv-web.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: CV Web"
+          fi
+
+          if [ "${{ steps.build-myfeed.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyFeed"
+            FAILED="$FAILED myfeed"
+          elif [ "${{ steps.build-myfeed.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyFeed"
+          fi
+
+          if [ "${{ steps.build-mygames.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyGames"
+            FAILED="$FAILED mygames"
+          elif [ "${{ steps.build-mygames.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyGames"
+          fi
+
+          if [ "${{ steps.build-nexus.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Nexus"
+            FAILED="$FAILED nexus"
+          elif [ "${{ steps.build-nexus.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Nexus"
+          fi
+
+          if [ "${{ steps.build-cloud.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Cloud Dashboard"
+            FAILED="$FAILED cloud"
+          elif [ "${{ steps.build-cloud.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Cloud Dashboard"
+          fi
+
+          if [ "${{ steps.build-feed-yourself.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Feed Yourself"
+            FAILED="$FAILED feed_yourself"
+          elif [ "${{ steps.build-feed-yourself.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Feed Yourself"
+          fi
+
+          if [ "${{ steps.build-others.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Others"
+            FAILED="$FAILED others"
+          elif [ "${{ steps.build-others.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Others"
+          fi
+
+          if [ "${{ steps.build-health-tracker.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Health Tracker"
+            FAILED="$FAILED health_tracker"
+          elif [ "${{ steps.build-health-tracker.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Health Tracker"
+          fi
+
+          if [ "${{ steps.build-market-watch.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Market Watch"
+            FAILED="$FAILED market_watch"
+          elif [ "${{ steps.build-market-watch.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Market Watch"
+          fi
+
+          if [ "${{ steps.build-central-bank.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Central Bank"
+            FAILED="$FAILED central_bank"
+          elif [ "${{ steps.build-central-bank.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Central Bank"
+          fi
+
+          if [ "${{ steps.build-mymaps.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMaps"
+            FAILED="$FAILED mymaps"
+          elif [ "${{ steps.build-mymaps.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMaps"
+          fi
+
+          if [ "${{ steps.build-myprofile.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyProfile"
+            FAILED="$FAILED myprofile"
+          elif [ "${{ steps.build-myprofile.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyProfile"
+          fi
+
+          if [ "${{ steps.build-mymovies.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMovies"
+            FAILED="$FAILED mymovies"
+          elif [ "${{ steps.build-mymovies.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMovies"
+          fi
+
+          if [ "${{ steps.build-mymusic.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMusic"
+            FAILED="$FAILED mymusic"
+          elif [ "${{ steps.build-mymusic.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMusic"
+          fi
+
+          if [ "${{ steps.build-json-vision.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: JSON Vision"
+            FAILED="$FAILED json-vision"
+          elif [ "${{ steps.build-json-vision.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: JSON Vision"
+          fi
+
+          if [ "${{ steps.build-carto.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Carto"
+            FAILED="$FAILED carto"
+          elif [ "${{ steps.build-carto.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Carto"
+          fi
+
+          if [ "${{ steps.build-mytrips.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyTrips"
+            FAILED="$FAILED mytrips"
+          elif [ "${{ steps.build-mytrips.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyTrips"
+          fi
+
+          if [ "${{ steps.build-leafy.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Leafy"
+            FAILED="$FAILED leafy"
+          elif [ "${{ steps.build-leafy.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Leafy"
+          fi
+
+          if [ "${{ steps.build-mymaps-svelte.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMaps SvelteKit"
+            FAILED="$FAILED mymaps-svelte"
+          elif [ "${{ steps.build-mymaps-svelte.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMaps SvelteKit"
+          fi
+
+          if [ "${{ steps.build-maps-classic.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Maps Classic"
+            FAILED="$FAILED maps-classic"
+          elif [ "${{ steps.build-maps-classic.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Maps Classic"
+          fi
+
+          if [ "${{ steps.build-mymail.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyMail"
+            FAILED="$FAILED mymail"
+          elif [ "${{ steps.build-mymail.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyMail"
+          fi
+
+          if [ "${{ steps.build-myphotos.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyPhotos"
+            FAILED="$FAILED myphotos"
+          elif [ "${{ steps.build-myphotos.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyPhotos"
+          fi
+
+          if [ "${{ steps.build-myanalytics.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: MyAnalytics"
+            FAILED="$FAILED myanalytics"
+          elif [ "${{ steps.build-myanalytics.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: MyAnalytics"
+          fi
+
+          if [ "${{ steps.build-suite.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Suite"
+            FAILED="$FAILED suite"
+          elif [ "${{ steps.build-suite.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Suite"
+          fi
+
+          echo "============================================"
+
+          if [ -n "$FAILED" ]; then
+            echo "⚠️ WARNING: Some builds failed:$FAILED"
+            echo "⚠️ Deployment will continue with existing dist/ files for failed projects"
+            echo ""
+            echo "::warning::Build failures detected:$FAILED - check logs above for details"
+          else
+            echo "✅ All triggered builds completed successfully!"
+          fi
+
+      - name: 🌐 Setup Pages Environment
+        uses: actions/configure-pages@v5
+
+      - name: 📂 Prepare Site for Deployment
+        run: |
+          echo "📋 Creating _site directory and copying all files..."
+          mkdir -p _site
+
+          # Copy e-Root build to ROOT of _site (this is the main index.html)
+          if [ -d "e-Root/dist" ]; then
+            echo "📦 Copying Root Index (e-Root) to _site root..."
+            cp -rL e-Root/dist/* _site/ 2>/dev/null || cp -r e-Root/dist/* _site/
+            echo "✅ Root Index copied to _site/"
+          else
+            echo "⏭️  Skipping Root Index copy (no dist directory found)"
+          fi
+
+          # Copy cv_pdf build (dist contents only)
+          if [ -d "b-Profiles/cv_pdf/dist" ]; then
+            echo "📦 Copying CV PDF build..."
+            mkdir -p _site/cv_pdf
+            cp -rL b-Profiles/cv_pdf/dist/* _site/cv_pdf/ 2>/dev/null || cp -r b-Profiles/cv_pdf/dist/* _site/cv_pdf/
+            echo "✅ CV PDF build copied to _site/cv_pdf/"
+          fi
+
+          # Copy others (static site)
+          cp -r e-Others/others/ _site/ 2>/dev/null || true
+
+          # Copy MyMail build (if dist exists)
+          if [ -d "c-Suite/mymail/dist" ]; then
+            echo "📦 Copying MyMail build..."
+            mkdir -p _site/mymail
+            cp -rL c-Suite/mymail/dist/* _site/mymail/ 2>/dev/null || true
+            echo "✅ MyMail build copied to _site/mymail/"
+          fi
+
+          # Copy MyPhotos build (if dist exists)
+          if [ -d "c-Suite/myphotos/dist" ]; then
+            echo "📦 Copying MyPhotos build..."
+            mkdir -p _site/myphotos
+            cp -rL c-Suite/myphotos/dist/* _site/myphotos/ 2>/dev/null || true
+            echo "✅ MyPhotos build copied to _site/myphotos/"
+          fi
+
+          # Copy MyAnalytics build (if dist exists)
+          if [ -d "c-Suite/myanalytics/dist" ]; then
+            echo "📦 Copying MyAnalytics build..."
+            mkdir -p _site/myanalytics
+            cp -rL c-Suite/myanalytics/dist/* _site/myanalytics/ 2>/dev/null || true
+            echo "✅ MyAnalytics build copied to _site/myanalytics/"
+          fi
+
+          # Copy Suite build (if dist exists)
+          if [ -d "c-Suite/suite/dist" ]; then
+            echo "📦 Copying Suite build..."
+            mkdir -p _site/suite
+            cp -rL c-Suite/suite/dist/* _site/suite/ 2>/dev/null || true
+            echo "✅ Suite build copied to _site/suite/"
+          fi
+
+          # Copy Linktree build (if dist exists)
+          if [ -d "a-Portals/linktree/dist" ]; then
+            echo "📦 Copying Linktree build..."
+            mkdir -p _site/linktree
+            cp -rL a-Portals/linktree/dist/* _site/linktree/ 2>/dev/null || cp -r a-Portals/linktree/dist/* _site/linktree/
+            cp -r a-Portals/linktree/public/* _site/linktree/ 2>/dev/null || true
+            echo "✅ Linktree build copied to _site/linktree/"
+          fi
+
+          # Copy Linktree Mindmap build (if dist exists)
+          if [ -d "a-Portals/linktree_mindmap/dist" ]; then
+            echo "📦 Copying Linktree Mindmap build..."
+            mkdir -p _site/linktree_mindmap
+            cp -rL a-Portals/linktree_mindmap/dist/* _site/linktree_mindmap/ 2>/dev/null || cp -r a-Portals/linktree_mindmap/dist/* _site/linktree_mindmap/
+            echo "✅ Linktree Mindmap build copied to _site/linktree_mindmap/"
+          else
+            echo "⏭️  Skipping Linktree Mindmap copy (no dist directory found)"
+          fi
+
+          # Copy CV Web build (if dist exists)
+          if [ -d "b-Profiles/cv_web/dist" ]; then
+            echo "📦 Copying CV Web build..."
+            mkdir -p _site/cv_web
+            cp -rL b-Profiles/cv_web/dist/* _site/cv_web/ 2>/dev/null || cp -r b-Profiles/cv_web/dist/* _site/cv_web/
+            cp -r b-Profiles/cv_web/public/* _site/cv_web/ 2>/dev/null || true
+            echo "✅ CV Web build copied to _site/cv_web/"
+          fi
+
+          # Copy Landpage (main landing page)
+          if [ -d "b-Profiles/landpage/dist" ]; then
+            echo "📦 Copying Landpage build..."
+            mkdir -p _site/landpage
+            cp -rL b-Profiles/landpage/dist/* _site/landpage/ 2>/dev/null || cp -r b-Profiles/landpage/dist/* _site/landpage/
+            echo "✅ Landpage build copied to _site/landpage/"
+          elif [ -d "b-Profiles/landpage/src_static" ]; then
+            echo "📦 Copying Landpage src_static..."
+            mkdir -p _site/landpage
+            cp b-Profiles/landpage/src_static/index.html b-Profiles/landpage/src_static/style.css b-Profiles/landpage/src_static/script.js _site/landpage/ 2>/dev/null || true
+            cp -r b-Profiles/landpage/public _site/landpage/ 2>/dev/null || true
+            echo "✅ Landpage src_static copied to _site/landpage/"
+          fi
+
+          # Copy MyFeed Vue build (if dist exists)
+          if [ -d "c-Tools/myfeed/dist" ]; then
+            echo "📦 Copying MyFeed Vue build..."
+            mkdir -p _site/myfeed
+            cp -rL c-Tools/myfeed/dist/* _site/myfeed/ 2>/dev/null || cp -r c-Tools/myfeed/dist/* _site/myfeed/
+            echo "✅ MyFeed Vue build copied to _site/myfeed/"
+          else
+            echo "⏭️  Skipping MyFeed copy (no dist directory found)"
+          fi
+
+          # Copy MyGames SvelteKit build (if dist exists)
+          if [ -d "c-Tools/mygames/dist" ]; then
+            echo "📦 Copying MyGames SvelteKit build..."
+            mkdir -p _site/mygames
+            cp -rL c-Tools/mygames/dist/* _site/mygames/ 2>/dev/null || cp -r c-Tools/mygames/dist/* _site/mygames/
+            echo "✅ MyGames build copied to _site/mygames/"
+          else
+            echo "⏭️  Skipping MyGames copy (no dist directory found)"
+          fi
+
+          # Copy Nexus Vue build (if dist exists)
+          if [ -d "b-Profiles/nexus/dist" ]; then
+            echo "📦 Copying Nexus Holdings build..."
+            mkdir -p _site/nexus
+            cp -rL b-Profiles/nexus/dist/* _site/nexus/ 2>/dev/null || cp -r b-Profiles/nexus/dist/* _site/nexus/
+            echo "✅ Nexus build copied to _site/nexus/"
+          else
+            echo "⏭️  Skipping Nexus copy (no dist directory found)"
+          fi
+
+          # Copy Cloud Dashboard build (if dist exists)
+          if [ -d "a-Portals/cloud/dist" ]; then
+            echo "📦 Copying Cloud Dashboard build..."
+            mkdir -p _site/cloud
+            cp -rL a-Portals/cloud/dist/* _site/cloud/ 2>/dev/null || cp -r a-Portals/cloud/dist/* _site/cloud/
+            echo "✅ Cloud Dashboard build copied to _site/cloud/"
+          else
+            echo "⏭️  Skipping Cloud Dashboard copy (no dist directory found)"
+          fi
+
+          # Copy API Docs (Swagger UI) - static files, no build needed
+          if [ -d "d-Cloud/api/src" ]; then
+            echo "📦 Copying API Docs (Swagger UI)..."
+            mkdir -p _site/api
+            cp -rL d-Cloud/api/src/* _site/api/ 2>/dev/null || cp -r d-Cloud/api/src/* _site/api/
+            echo "✅ API Docs copied to _site/api/"
+          else
+            echo "⏭️  Skipping API Docs copy (no src directory found)"
+          fi
+
+          # Copy Feed Yourself build (if dist exists)
+          if [ -d "c-Tools/feed_yourself/dist" ]; then
+            echo "📦 Copying Feed Yourself build..."
+            mkdir -p _site/feed_yourself
+            cp -rL c-Tools/feed_yourself/dist/* _site/feed_yourself/ 2>/dev/null || cp -r c-Tools/feed_yourself/dist/* _site/feed_yourself/
+            echo "✅ Feed Yourself build copied to _site/feed_yourself/"
+          else
+            echo "⏭️  Skipping Feed Yourself copy (no dist directory found)"
+          fi
+
+          # Copy Health Tracker build (if dist exists)
+          if [ -d "c-Tools/health_tracker/dist" ]; then
+            echo "📦 Copying Health Tracker build..."
+            mkdir -p _site/health_tracker
+            cp -rL c-Tools/health_tracker/dist/* _site/health_tracker/ 2>/dev/null || cp -r c-Tools/health_tracker/dist/* _site/health_tracker/
+            echo "✅ Health Tracker build copied to _site/health_tracker/"
+          else
+            echo "⏭️  Skipping Health Tracker copy (no dist directory found)"
+          fi
+
+          # Copy Market Watch build (if dist exists)
+          if [ -d "c-Tools/market_watch/dist" ]; then
+            echo "📦 Copying Market Watch build..."
+            mkdir -p _site/market_watch
+            cp -rL c-Tools/market_watch/dist/* _site/market_watch/ 2>/dev/null || cp -r c-Tools/market_watch/dist/* _site/market_watch/
+            echo "✅ Market Watch build copied to _site/market_watch/"
+          else
+            echo "⏭️  Skipping Market Watch copy (no dist directory found)"
+          fi
+
+          # Copy Central Bank Forecasting build (if dist exists)
+          if [ -d "c-Tools/central_bank/dist" ]; then
+            echo "📦 Copying Central Bank Forecasting build..."
+            mkdir -p _site/central_bank
+            cp -rL c-Tools/central_bank/dist/* _site/central_bank/ 2>/dev/null || cp -r c-Tools/central_bank/dist/* _site/central_bank/
+            echo "✅ Central Bank Forecasting build copied to _site/central_bank/"
+          else
+            echo "⏭️  Skipping Central Bank Forecasting copy (no dist directory found)"
+          fi
+
+          # Copy MyProfile build (if dist exists - Nuxt static export)
+          if [ -d "b-Profiles/myprofile/dist" ]; then
+            echo "📦 Copying MyProfile build..."
+            mkdir -p _site/myprofile
+            cp -rL b-Profiles/myprofile/dist/* _site/myprofile/ 2>/dev/null || cp -r b-Profiles/myprofile/dist/* _site/myprofile/
+            echo "✅ MyProfile build copied to _site/myprofile/"
+          else
+            echo "⏭️  Skipping MyProfile copy (no dist directory found)"
+          fi
+
+          # Copy MyMovies build (if dist exists - Vue 3 single-file)
+          if [ -d "c-Tools/mymovies/dist" ]; then
+            echo "📦 Copying MyMovies build..."
+            mkdir -p _site/mymovies
+            cp -rL c-Tools/mymovies/dist/* _site/mymovies/ 2>/dev/null || cp -r c-Tools/mymovies/dist/* _site/mymovies/
+            echo "✅ MyMovies build copied to _site/mymovies/"
+          else
+            echo "⏭️  Skipping MyMovies copy (no dist directory found)"
+          fi
+
+          # Copy MyMusic build (if dist exists - Vue 3 single-file)
+          if [ -d "c-Tools/mymusic/dist" ]; then
+            echo "📦 Copying MyMusic build..."
+            mkdir -p _site/mymusic
+            cp -rL c-Tools/mymusic/dist/* _site/mymusic/ 2>/dev/null || cp -r c-Tools/mymusic/dist/* _site/mymusic/
+            echo "✅ MyMusic build copied to _site/mymusic/"
+          else
+            echo "⏭️  Skipping MyMusic copy (no dist directory found)"
+          fi
+
+          # Copy JSON Vision build (if dist exists - Vue 3 single-file)
+          if [ -d "c-Suite/json-vision/dist" ]; then
+            echo "📦 Copying JSON Vision build..."
+            mkdir -p _site/json-vision
+            cp -rL c-Suite/json-vision/dist/* _site/json-vision/ 2>/dev/null || cp -r c-Suite/json-vision/dist/* _site/json-vision/
+            echo "✅ JSON Vision build copied to _site/json-vision/"
+          else
+            echo "⏭️  Skipping JSON Vision copy (no dist directory found)"
+          fi
+
+          # Copy Skills & MCP Docs build (if dist exists)
+          if [ -d "d-Cloud/skills_mcp/dist" ]; then
+            echo "📦 Copying Skills & MCP Docs build..."
+            mkdir -p _site/skills_mcp
+            cp -rL d-Cloud/skills_mcp/dist/* _site/skills_mcp/ 2>/dev/null || cp -r d-Cloud/skills_mcp/dist/* _site/skills_mcp/
+            echo "✅ Skills & MCP Docs build copied to _site/skills_mcp/"
+          else
+            echo "⏭️  Skipping Skills & MCP Docs copy (no dist directory found)"
+          fi
+
+          # Copy Astro build (if dist exists - Nuxt static single-file)
+          if [ -d "c-Tools/astro/dist" ]; then
+            echo "📦 Copying Astro build..."
+            mkdir -p _site/astro
+            cp -rL c-Tools/astro/dist/* _site/astro/ 2>/dev/null || cp -r c-Tools/astro/dist/* _site/astro/
+            echo "✅ Astro build copied to _site/astro/"
+          else
+            echo "⏭️  Skipping Astro copy (no dist directory found)"
+          fi
+
+          # Copy Carto build (if dist exists - TypeScript + Sass single-file)
+          if [ -d "c-Tools/carto/dist" ]; then
+            echo "📦 Copying Carto build..."
+            mkdir -p _site/carto
+            cp -rL c-Tools/carto/dist/* _site/carto/ 2>/dev/null || cp -r c-Tools/carto/dist/* _site/carto/
+            echo "✅ Carto build copied to _site/carto/"
+          else
+            echo "⏭️  Skipping Carto copy (no dist directory found)"
+          fi
+
+          # Copy MyTrips build (if dist exists - Vue 3 + TypeScript + SCSS)
+          if [ -d "c-Tools/mytrips/dist" ]; then
+            echo "📦 Copying MyTrips build..."
+            mkdir -p _site/mytrips
+            cp -rL c-Tools/mytrips/dist/* _site/mytrips/ 2>/dev/null || cp -r c-Tools/mytrips/dist/* _site/mytrips/
+            echo "✅ MyTrips build copied to _site/mytrips/"
+          else
+            echo "⏭️  Skipping MyTrips copy (no dist directory found)"
+          fi
+
+          # Copy Leafy build (if dist exists - TypeScript + SCSS + Shaders)
+          if [ -d "b-Profiles/leafy/dist" ]; then
+            echo "📦 Copying Leafy build..."
+            mkdir -p _site/leafy
+            cp -rL b-Profiles/leafy/dist/* _site/leafy/ 2>/dev/null || cp -r b-Profiles/leafy/dist/* _site/leafy/
+            echo "✅ Leafy build copied to _site/leafy/"
+          else
+            echo "⏭️  Skipping Leafy copy (no dist directory found)"
+          fi
+
+          # Copy MyMaps SvelteKit build (if dist exists - SvelteKit + MapLibre)
+          if [ -d "c-Tools/mymaps/dist" ]; then
+            echo "📦 Copying MyMaps SvelteKit build..."
+            mkdir -p _site/mymaps
+            cp -rL c-Tools/mymaps/dist/* _site/mymaps/ 2>/dev/null || cp -r c-Tools/mymaps/dist/* _site/mymaps/
+            echo "✅ MyMaps SvelteKit build copied to _site/mymaps/"
+          else
+            echo "⏭️  Skipping MyMaps SvelteKit copy (no dist directory found)"
+          fi
+
+          # Copy Maps Classic build (if dist exists - React + Vite)
+          if [ -d "c-Tools/maps/dist" ]; then
+            echo "📦 Copying Maps Classic build..."
+            mkdir -p _site/maps
+            cp -rL c-Tools/maps/dist/* _site/maps/ 2>/dev/null || cp -r c-Tools/maps/dist/* _site/maps/
+            echo "✅ Maps Classic build copied to _site/maps/"
+          else
+            echo "⏭️  Skipping Maps Classic copy (no dist directory found)"
+          fi
+
+          echo "✅ All files prepared for deployment"
+
+          # Remove any broken symlinks that could cause tar to fail
+          echo "🔗 Checking for broken symlinks..."
+          find _site -type l ! -exec test -e {} \; -delete 2>/dev/null || true
+          echo "✅ Broken symlinks removed"
+
+          echo "📊 Site structure:"
+          ls -lah _site/
+          echo ""
+          echo "📊 MyFeed contents:"
+          ls -lah _site/myfeed/ 2>/dev/null || echo "No myfeed directory"
+
+      - name: ⬆️ Upload Site Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

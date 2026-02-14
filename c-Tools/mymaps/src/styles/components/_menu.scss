@@ -10,7 +10,7 @@
 // ----------------
 
 .menu-toggle {
-  position: absolute;
+  position: fixed;
   top: $space-4;
   left: $space-4;
   z-index: $z-menu + 1;

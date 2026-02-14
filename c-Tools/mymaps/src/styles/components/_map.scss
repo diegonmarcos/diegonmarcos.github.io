@@ -33,22 +33,28 @@
 // ----------------
 
 .map-controls {
-  position: absolute;
+  position: fixed;
   right: $space-4;
-  bottom: calc($space-4 + 24px); // Move up to avoid attribution
+  bottom: calc($space-4 + 24px);
   z-index: $z-controls;
   @include flex-col(flex-end, flex-end, $space-2);
+  max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 80px);
+  overflow-y: auto;
+  overflow-x: hidden;
 
   @include mobile-only {
     right: $space-3;
-    // Use safe-area-inset for browser UI + larger base offset for mobile browser bars
-    bottom: calc($space-3 + 80px + env(safe-area-inset-bottom, 0px));
+    bottom: calc($space-3 + 24px + env(safe-area-inset-bottom, 0px));
+    max-height: calc(100vh - 60px);
+    max-height: calc(100dvh - 60px);
   }
 
   @include landscape-mobile {
     flex-direction: row;
     flex-wrap: wrap;
     max-width: 200px;
+    max-height: none;
     justify-content: flex-end;
   }
 

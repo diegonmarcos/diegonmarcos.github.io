@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
+    <title>Diego Marcos - Portfolio</title>
+    <meta name="description" content="Diego Nepomuceno Marcos - Software Engineer Portfolio">
+    <meta name="author" content="Diego Nepomuceno Marcos">
+
+    <!-- Matomo Tag Manager -->
+    <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+      s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.prod.js"
+        }
+    }
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        #app {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Background Fractal Layer */
+        .background-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            transition: opacity 0.3s ease, filter 0.3s ease;
+        }
+
+        .background-layer.hidden {
+            opacity: 0 !important;
+            pointer-events: none;
+        }
+
+        .background-layer canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+        }
+
+        /* Foreground Wave Layer */
+        .foreground-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        /* Controls */
+        .controls {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .menu-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .menu-toggle.open {
+            transform: rotate(90deg);
+        }
+
+        .menu-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: flex-start;
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+
+        .menu-panel.visible {
+            max-height: 200px;
+            opacity: 1;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .fractal-toggle {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: background 0.2s;
+        }
+
+        .fractal-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .fractal-select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+            padding-right: 28px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+        }
+
+        .fractal-select:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .fractal-select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        /* Brightness Slider */
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 6px 12px;
+            border-radius: 6px;
+            backdrop-filter: blur(4px);
+        }
+
+        .slider-label {
+            color: #fff;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        .brightness-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 80px;
+            height: 4px;
+            border-radius: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .brightness-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .brightness-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+        }
+        .back-btn svg {
+            width: 28px;
+            height: 28px;
+            transition: transform 0.4s ease;
+        }
+        .back-btn:active svg {
+            transform: rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn" title="Back to Cube">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+            <path d="M12 2L20 7L12 12L4 7Z" fill="rgba(255,255,255,0.15)"/>
+            <path d="M20 7V17L12 22V12Z" fill="rgba(255,255,255,0.08)"/>
+            <path d="M4 7V17L12 22V12Z" fill="rgba(255,255,255,0.03)"/>
+        </svg>
+    </a>
+
+    <div id="app"></div>
+
+    <script type="module">
+        import { createApp, ref, computed } from 'vue';
+        import BioFractalViewer from './fractal.js';
+        import ComplexWaveVisualization from './perspectives.js';
+
+        const App = {
+            components: {
+                BioFractalViewer,
+                ComplexWaveVisualization
+            },
+            setup() {
+                const showFractal = ref(true);
+                const fractalMode = ref(23);
+                const fractalKey = ref(0);
+                const brightness = ref(50); // 0-100, default 50%
+                const menuOpen = ref(false);
+
+                const fractalTypes = [
+                    // Original 3D Fractals (0-6)
+                    { value: 0, label: 'Mandelbulb' },
+                    { value: 1, label: 'Mandelbox' },
+                    { value: 2, label: 'Menger Sponge' },
+                    { value: 3, label: 'Sierpinski' },
+                    { value: 4, label: 'Kaleidoscope 3D' },
+                    { value: 5, label: 'Organic Hybrid' },
+                    { value: 6, label: 'Fractal Land' },
+                    // 2D Effects (7-14)
+                    { value: 7, label: '+ Galaxy Nebula' },
+                    { value: 8, label: '+ Infinite Tunnel' },
+                    { value: 9, label: '+ Plasma Fractal' },
+                    { value: 10, label: '+ Circuits' },
+                    { value: 11, label: '+ Metaballs' },
+                    { value: 12, label: '+ Volumetric Lines' },
+                    { value: 13, label: '+ Disco Tunnel' },
+                    { value: 14, label: '+ Speed Drive' },
+                    // 3D Fractals (15-19)
+                    { value: 15, label: '+ Hot Rocks' },
+                    { value: 16, label: '+ Server Room' },
+                    { value: 17, label: '+ Remnant X' },
+                    { value: 18, label: '+ Kali Set' },
+                    { value: 19, label: '+ Generators' },
+                    // Shadertoy Collection (20-49)
+                    { value: 20, label: '+ Simplicity Galaxy' },
+                    { value: 21, label: '+ Ribbons' },
+                    { value: 22, label: '+ Twisted Rings' },
+                    { value: 23, label: '+ Waves Remix' },
+                    { value: 24, label: '+ Dancing Metalights' },
+                    { value: 25, label: '+ IO Blocks' },
+                    { value: 26, label: '+ Beating Circles' },
+                    { value: 27, label: '+ Circle Wave' },
+                    { value: 28, label: '+ Soundflower' },
+                    { value: 29, label: '+ Polar Beats' },
+                    { value: 30, label: '+ Undulant Spectre' },
+                    { value: 31, label: '+ Revision 2015' },
+                    { value: 32, label: '+ Gameboy Style' },
+                    { value: 33, label: '+ Electric Storm' },
+                    { value: 34, label: '+ Vortex' },
+                    { value: 35, label: '+ Neon Grid' },
+                    { value: 36, label: '+ Matrix Rain' },
+                    { value: 37, label: '+ Fire' },
+                    { value: 38, label: '+ Aurora' },
+                    { value: 39, label: '+ Wormhole' },
+                    { value: 40, label: '+ Hexagons' },
+                    { value: 41, label: '+ Bubbles' },
+                    { value: 42, label: '+ Lightning' },
+                    { value: 43, label: '+ Kaleidoscope 2D' },
+                    { value: 44, label: '+ Starfield' },
+                    { value: 45, label: '+ Liquid Metal' },
+                    { value: 46, label: '+ Fractal Tree' },
+                    { value: 47, label: '+ Voronoi' },
+                    { value: 48, label: '+ Psychedelic' },
+                    { value: 49, label: '+ Energy Field' }
+                ];
+
+                const backgroundStyle = computed(() => ({
+                    opacity: brightness.value / 100,
+                    filter: `brightness(${0.3 + (brightness.value / 100) * 0.7})`
+                }));
+
+                const toggleFractal = () => {
+                    showFractal.value = !showFractal.value;
+                };
+
+                const toggleMenu = () => {
+                    menuOpen.value = !menuOpen.value;
+                };
+
+                const onModeChange = (e) => {
+                    fractalMode.value = parseInt(e.target.value);
+                    fractalKey.value++;
+                };
+
+                const onBrightnessChange = (e) => {
+                    brightness.value = parseInt(e.target.value);
+                };
+
+                return {
+                    showFractal,
+                    fractalMode,
+                    fractalKey,
+                    fractalTypes,
+                    brightness,
+                    backgroundStyle,
+                    menuOpen,
+                    toggleFractal,
+                    toggleMenu,
+                    onModeChange,
+                    onBrightnessChange
+                };
+            },
+            template: `
+                <div style="width:100%;height:100%">
+                    <div class="controls">
+                        <button class="menu-toggle" :class="{ open: menuOpen }" @click="toggleMenu">
+                            ☰
+                        </button>
+                        <div class="menu-panel" :class="{ visible: menuOpen }">
+                            <div class="controls-row">
+                                <select class="fractal-select" @change="onModeChange" :value="fractalMode">
+                                    <option v-for="ft in fractalTypes" :key="ft.value" :value="ft.value">
+                                        {{ ft.label }}
+                                    </option>
+                                </select>
+                                <button class="fractal-toggle" @click="toggleFractal">
+                                    {{ showFractal ? 'ON' : 'OFF' }}
+                                </button>
+                            </div>
+                            <div class="slider-container" v-if="showFractal">
+                                <span class="slider-label">Intensity</span>
+                                <input
+                                    type="range"
+                                    class="brightness-slider"
+                                    min="10"
+                                    max="100"
+                                    :value="brightness"
+                                    @input="onBrightnessChange"
+                                />
+                                <span class="slider-label">{{ brightness }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="background-layer" :class="{ hidden: !showFractal }" :style="backgroundStyle">
+                        <BioFractalViewer v-if="showFractal" :key="fractalKey" :mode="fractalMode" />
+                    </div>
+                    <div class="foreground-layer">
+                        <ComplexWaveVisualization />
+                    </div>
+                </div>
+            `
+        };
+
+        createApp(App).mount('#app');
+    </script>
+
+</body>
+</html>

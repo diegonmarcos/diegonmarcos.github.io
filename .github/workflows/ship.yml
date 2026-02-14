@@ -701,12 +701,12 @@ jobs:
             mkdir -p _site/landpage
             cp -rL b-Profiles/landpage/dist/* _site/landpage/ 2>/dev/null || cp -r b-Profiles/landpage/dist/* _site/landpage/
             echo "✅ Landpage build copied to _site/landpage/"
-          elif [ -d "b-Profiles/landpage/src_static" ]; then
-            echo "📦 Copying Landpage src_static..."
+          elif [ -d "b-Profiles/landpage/src" ]; then
+            echo "📦 Copying Landpage src..."
             mkdir -p _site/landpage
-            cp b-Profiles/landpage/src_static/index.html b-Profiles/landpage/src_static/style.css b-Profiles/landpage/src_static/script.js _site/landpage/ 2>/dev/null || true
+            cp b-Profiles/landpage/src/index.html b-Profiles/landpage/src/style.css b-Profiles/landpage/src/script.js _site/landpage/ 2>/dev/null || true
             cp -r b-Profiles/landpage/public _site/landpage/ 2>/dev/null || true
-            echo "✅ Landpage src_static copied to _site/landpage/"
+            echo "✅ Landpage src copied to _site/landpage/"
           fi
 
           # Copy MyFeed Vue build (if dist exists)

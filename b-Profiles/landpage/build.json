@@ -2,20 +2,19 @@
   "name": "Landpage",
   "framework": "vanilla",
   "port": 8000,
-  "src": "src_static",
+  "src": "src",
   "dist": "dist",
 
   "build": [
-    { "mod": "sass", "input": "src_static/scss/style.scss", "output": "style.css" },
-    { "mod": "tsc", "dir": "src_static/typescript", "output": "script.js" },
-    { "mod": "copy", "files": "index.html", "from": "src_static" },
-    { "mod": "inline", "html": "index.html", "css": "style.css", "js": "script.js" },
+    { "mod": "sass", "input": "src/scss/style.scss", "output": "style.css" },
+    { "mod": "tsc", "dir": "src/typescript", "output": "script.js" },
+    { "mod": "copy", "files": "index.html", "from": "src" },
     { "mod": "symlink", "files": "public" }
   ],
 
   "serve": {
     "mode": "auto",
-    "dir": "src_static",
+    "dir": "src",
     "watch": [
       { "mod": "sass", "input": "scss/style.scss", "output": "style.css" },
       { "mod": "tsc", "input": "typescript" }

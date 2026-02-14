@@ -620,14 +620,12 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
         }
       },
       (anchor_node2) => {
-        if (context) {
-          push({});
-          var ctx = (
-            /** @type {ComponentContext} */
-            component_context
-          );
-          ctx.c = context;
-        }
+        push({});
+        var ctx = (
+          /** @type {ComponentContext} */
+          component_context
+        );
+        if (context) ctx.c = context;
         if (events) {
           props.$$events = events;
         }
@@ -647,9 +645,7 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
             throw HYDRATION_ERROR;
           }
         }
-        if (context) {
-          pop();
-        }
+        pop();
       }
     );
     return () => {
@@ -857,13 +853,13 @@ function Root($$renderer, $$props) {
     if (constructors[1]) {
       $$renderer2.push("<!--[-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, {
         data: data_0,
         form,
         params: page.params,
         children: ($$renderer3) => {
-          $$renderer3.push(`<!---->`);
+          $$renderer3.push("<!---->");
           Pyramid_1?.($$renderer3, { data: data_1, form, params: page.params });
           $$renderer3.push(`<!---->`);
         },
@@ -873,7 +869,7 @@ function Root($$renderer, $$props) {
     } else {
       $$renderer2.push("<!--[!-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, { data: data_0, form, params: page.params });
       $$renderer2.push(`<!---->`);
     }
@@ -902,7 +898,7 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n	<head>\r\n		<meta charset="utf-8" />\r\n		<link rel="icon" type="image/svg+xml" href="' + assets + '/favicon.svg" />\r\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\r\n		' + head + '\r\n	</head>\r\n	<body data-sveltekit-preload-data="hover">\r\n		<div style="display: contents">' + body + "</div>\r\n	</body>\r\n</html>\r\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" type="image/svg+xml" href="' + assets + '/favicon.svg" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -974,7 +970,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "z7zqc5"
+  version_hash: "1t8bal0"
 };
 async function get_hooks() {
   let handle;

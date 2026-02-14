@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
+    <title>Vivid Neon Cube</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        .back-btn {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: background 0.3s ease, border-color 0.3s ease;
+            backdrop-filter: blur(8px);
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #fff;
+        }
+        .back-btn svg {
+            width: 28px;
+            height: 28px;
+            transition: transform 0.4s ease;
+        }
+        .back-btn:active svg {
+            transform: rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-btn" title="Back to Cube">
+        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
+            <path d="M12 2L20 7L12 12L4 7Z" fill="rgba(255,255,255,0.15)"/>
+            <path d="M20 7V17L12 22V12Z" fill="rgba(255,255,255,0.08)"/>
+            <path d="M4 7V17L12 22V12Z" fill="rgba(255,255,255,0.03)"/>
+        </svg>
+    </a>
+    <canvas id="glcanvas"></canvas>
+
+    <!-- Vertex Shader -->
+    <script id="vertex-shader" type="x-shader/x-vertex">
+        attribute vec2 position;
+        void main() {
+            gl_Position = vec4(position, 0.0, 1.0);
+        }
+    </script>
+
+    <!-- Fragment Shader -->
+    <script id="fragment-shader" type="x-shader/x-fragment">
+        #ifdef GL_ES
+        precision mediump float;
+        #endif
+
+        uniform vec2 iResolution;
+        uniform float iTime;
+        uniform vec2 iMouse;
+
+        // --- Rotation Matrix ---
+        mat2 rot(float a) {
+            float s = sin(a);
+            float c = cos(a);
+            return mat2(c, -s, s, c);
+        }
+
+        // --- Palette ---
+        vec3 palette( float t ) {
+            vec3 a = vec3(0.5, 0.5, 0.5);
+            vec3 b = vec3(0.5, 0.5, 0.5);
+            vec3 c = vec3(1.0, 1.0, 1.0);
+            vec3 d = vec3(0.263,0.416,0.557);
+            return a + b*cos( 6.28318*(c*t+d) );
+        }
+
+        // --- 1. Original Complex Pattern (For Background) ---
+        vec3 getNeonPattern(vec2 uv, float time) {
+            vec2 uv0 = uv;
+            vec3 finalColor = vec3(0.0);
+
+            for (float i = 0.0; i < 4.0; i++) {
+                uv = fract(uv * 1.5) - 0.5;
+                float d = length(uv) * exp(-length(uv0));
+                vec3 col = palette(length(uv0) + i*.4 + time*.4);
+                d = sin(d*8. + time)/8.;
+                d = abs(d);
+                d = pow(0.01 / d, 1.2);
+                finalColor += col * d;
+            }
+            return finalColor;
+        }
+
+        // --- 2. Cleaner/Simpler Pattern (For Cube) ---
+        // Less iterations and lower frequency to reduce noise
+        vec3 getCleanNeonPattern(vec2 uv, float time) {
+            vec2 uv0 = uv;
+            vec3 finalColor = vec3(0.0);
+
+            // Reduced iterations (2 vs 4) to remove small clutter
+            for (float i = 0.0; i < 2.0; i++) {
+                uv = fract(uv * 1.5) - 0.5;
+                float d = length(uv) * exp(-length(uv0));
+                vec3 col = palette(length(uv0) + i*.4 + time*.4);
+
+                // Reduced frequency (4.0 vs 8.0) for wider, cleaner rings
+                d = sin(d*4.0 + time)/4.0;
+                d = abs(d);
+
+                // Slightly reduced sharpness for a "thicker" beam look
+                d = pow(0.012 / d, 1.2);
+                finalColor += col * d;
+            }
+            return finalColor;
+        }
+
+        // --- UV Mapping Helper ---
+        vec2 getBoxUV(vec3 p) {
+            vec3 ap = abs(p);
+            if (ap.x >= ap.y && ap.x >= ap.z) return p.yz;
+            if (ap.y >= ap.x && ap.y >= ap.z) return p.zx;
+            return p.xy;
+        }
+
+        // --- Ray-Box Intersection ---
+        vec2 boxIntersection(vec3 ro, vec3 rd, vec3 boxSize) {
+            vec3 m = 1.0 / rd;
+            vec3 n = m * ro;
+            vec3 k = abs(m) * boxSize;
+            vec3 t1 = -n - k;
+            vec3 t2 = -n + k;
+            float tN = max(max(t1.x, t1.y), t1.z);
+            float tF = min(min(t2.x, t2.y), t2.z);
+            return vec2(tN, tF);
+        }
+
+        void main() {
+            vec2 uv = (gl_FragCoord.xy * 2.0 - iResolution.xy) / iResolution.y;
+
+            // --- Camera Setup ---
+            vec3 ro = vec3(0.0, 0.0, -3.5);
+            vec3 rd = normalize(vec3(uv, 1.0));
+
+            // --- Interaction/Rotation ---
+            vec2 m = (iMouse.xy / iResolution.xy) * 2.0 - 1.0;
+            float yRot = iTime * 0.2 + m.x * 2.0;
+            float xRot = m.y * 2.0;
+
+            ro.yz *= rot(xRot);
+            rd.yz *= rot(xRot);
+            ro.xz *= rot(yRot);
+            rd.xz *= rot(yRot);
+
+            // --- Render ---
+            vec3 col = vec3(0.0);
+
+            // 1. Vivid Background (Using Original Complex Pattern)
+            vec2 bgUV = uv * 0.8;
+            vec3 bgCol = getNeonPattern(bgUV, iTime * 0.5);
+            col = bgCol * 0.35;
+
+            // 2. Cube Intersection
+            vec3 boxSize = vec3(1.0);
+            vec2 t = boxIntersection(ro, rd, boxSize);
+
+            if (t.x < t.y && t.y > 0.0) {
+                // Hit!
+
+                // Back Face (Inside) - Using Cleaner Pattern
+                vec3 posFar = ro + rd * t.y;
+                vec2 uvFar = getBoxUV(posFar);
+                vec3 colFar = getCleanNeonPattern(uvFar * 0.8, iTime);
+
+                // Front Face (Outside) - Using Cleaner Pattern
+                vec3 posNear = ro + rd * t.x;
+                vec2 uvNear = getBoxUV(posNear);
+                vec3 colNear = getCleanNeonPattern(uvNear * 0.8, iTime);
+
+                // Blending
+                vec3 cubeCol = colNear + colFar * 0.6;
+                col += cubeCol;
+            }
+
+            gl_FragColor = vec4(col, 1.0);
+        }
+    </script>
+
+    <script>
+        const canvas = document.getElementById('glcanvas');
+        const gl = canvas.getContext('webgl');
+
+        if (!gl) { alert('WebGL not supported'); }
+
+        // --- Boilerplate ---
+        function createShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                console.error(gl.getShaderInfoLog(shader));
+                gl.deleteShader(shader); return null;
+            }
+            return shader;
+        }
+
+        const program = gl.createProgram();
+        const vs = createShader(gl, gl.VERTEX_SHADER, document.getElementById('vertex-shader').text);
+        const fs = createShader(gl, gl.FRAGMENT_SHADER, document.getElementById('fragment-shader').text);
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+        const positionLoc = gl.getAttribLocation(program, 'position');
+        gl.enableVertexAttribArray(positionLoc);
+        gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const resLoc = gl.getUniformLocation(program, 'iResolution');
+        const timeLoc = gl.getUniformLocation(program, 'iTime');
+        const mouseLoc = gl.getUniformLocation(program, 'iMouse');
+
+        let mouseX = 0, mouseY = 0;
+        function updateMouse(x, y) {
+            mouseX = x; mouseY = y;
+        }
+        canvas.addEventListener('mousemove', e => updateMouse(e.clientX, e.clientY));
+        canvas.addEventListener('touchmove', e => {
+            e.preventDefault();
+            updateMouse(e.touches[0].clientX, e.touches[0].clientY);
+        }, {passive: false});
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            gl.viewport(0, 0, canvas.width, canvas.height);
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function render(time) {
+            time *= 0.001;
+            gl.useProgram(program);
+            gl.uniform2f(resLoc, canvas.width, canvas.height);
+            gl.uniform1f(timeLoc, time);
+            gl.uniform2f(mouseLoc, mouseX, canvas.height - mouseY);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+    </script>
+</body>
+</html>

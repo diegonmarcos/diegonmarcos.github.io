@@ -27,7 +27,7 @@ export {};
 
 declare module "$app/types" {
 	export interface AppTypes {
-		RouteId(): "/" | "/audio" | "/bio" | "/geo" | "/memory" | "/profile" | "/syslog" | "/visual";
+		RouteId(): "/" | "/audio" | "/bio" | "/geo" | "/memory" | "/syslog" | "/visual";
 		RouteParams(): {
 			
 		};
@@ -37,11 +37,10 @@ declare module "$app/types" {
 			"/bio": Record<string, never>;
 			"/geo": Record<string, never>;
 			"/memory": Record<string, never>;
-			"/profile": Record<string, never>;
 			"/syslog": Record<string, never>;
 			"/visual": Record<string, never>
 		};
-		Pathname(): "/" | "/audio" | "/audio/" | "/bio" | "/bio/" | "/geo" | "/geo/" | "/memory" | "/memory/" | "/profile" | "/profile/" | "/syslog" | "/syslog/" | "/visual" | "/visual/";
+		Pathname(): "/" | "/audio" | "/audio/" | "/bio" | "/bio/" | "/geo" | "/geo/" | "/memory" | "/memory/" | "/syslog" | "/syslog/" | "/visual" | "/visual/";
 		ResolvedPathname(): `${"" | `/${string}`}${ReturnType<AppTypes['Pathname']>}`;
 		Asset(): "/favicon.ico" | string & {};
 	}

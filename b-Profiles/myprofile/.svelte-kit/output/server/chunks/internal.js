@@ -3,6 +3,7 @@ import { d as define_property, a as array_from } from "./equality.js";
 import "clsx";
 import { s as setContext } from "./context.js";
 import "./environment.js";
+import "./server.js";
 let public_env = {};
 function set_private_env(environment) {
 }
@@ -620,14 +621,12 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
         }
       },
       (anchor_node2) => {
-        if (context) {
-          push({});
-          var ctx = (
-            /** @type {ComponentContext} */
-            component_context
-          );
-          ctx.c = context;
-        }
+        push({});
+        var ctx = (
+          /** @type {ComponentContext} */
+          component_context
+        );
+        if (context) ctx.c = context;
         if (events) {
           props.$$events = events;
         }
@@ -647,9 +646,7 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
             throw HYDRATION_ERROR;
           }
         }
-        if (context) {
-          pop();
-        }
+        pop();
       }
     );
     return () => {
@@ -857,13 +854,13 @@ function Root($$renderer, $$props) {
     if (constructors[1]) {
       $$renderer2.push("<!--[-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, {
         data: data_0,
         form,
         params: page.params,
         children: ($$renderer3) => {
-          $$renderer3.push(`<!---->`);
+          $$renderer3.push("<!---->");
           Pyramid_1?.($$renderer3, { data: data_1, form, params: page.params });
           $$renderer3.push(`<!---->`);
         },
@@ -873,7 +870,7 @@ function Root($$renderer, $$props) {
     } else {
       $$renderer2.push("<!--[!-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, { data: data_0, form, params: page.params });
       $$renderer2.push(`<!---->`);
     }
@@ -902,7 +899,7 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\r\n<html lang="en">\r\n<head>\r\n  <meta charset="utf-8" />\r\n  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />\r\n  <link rel="icon" href="' + assets + '/favicon.ico" />\r\n  <link rel="preconnect" href="https://fonts.googleapis.com">\r\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\r\n  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">\r\n  <title>Diego Marcos | Profile</title>\r\n  ' + head + '\r\n</head>\r\n<body data-sveltekit-preload-data="hover">\r\n  <div style="display: contents">' + body + "</div>\r\n  <!-- Matomo Tag Manager -->\r\n  <script>\r\n  var _mtm = window._mtm = window._mtm || [];\r\n  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});\r\n  (function() {\r\n    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\r\n    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';\r\n    s.parentNode.insertBefore(g,s);\r\n  })();\r\n  <\/script>\r\n</body>\r\n</html>\r\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n<head>\n  <meta charset="utf-8" />\n  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />\n  <link rel="icon" href="' + assets + '/favicon.ico" />\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">\n  <title>Diego Marcos | Profile</title>\n  ' + head + '\n</head>\n<body data-sveltekit-preload-data="hover">\n  <div style="display: contents">' + body + "</div>\n  <!-- Matomo Tag Manager -->\n  <script>\n  var _mtm = window._mtm = window._mtm || [];\n  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});\n  (function() {\n    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];\n    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';\n    s.parentNode.insertBefore(g,s);\n  })();\n  <\/script>\n</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -974,7 +971,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "u3qhv8"
+  version_hash: "1hyd8yl"
 };
 async function get_hooks() {
   let handle;

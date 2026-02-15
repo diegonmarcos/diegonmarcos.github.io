@@ -1,5 +1,7 @@
 import "clsx";
 import { a1 as attr_class, a2 as attr, _ as stringify, a3 as ensure_array_like, Z as attr_style } from "../../chunks/index2.js";
+import { b as base } from "../../chunks/server.js";
+import "@sveltejs/kit/internal/server";
 /* empty css                                              */
 import { e as escape_html } from "../../chunks/context.js";
 import "../../chunks/navigation.js";
@@ -141,20 +143,25 @@ function Icon($$renderer, $$props) {
 function CardsView($$renderer, $$props) {
   $$renderer.component(($$renderer2) => {
     let { data } = $$props;
-    const cardRoutes = {
-      "1": "/audio",
-      "2": "/bio",
-      "3": "/geo",
-      "4": "/visual",
-      "5": "/memory",
-      "system": "/syslog"
+    const cardPages = {
+      "1": "audio",
+      "2": "bio",
+      "3": "geo",
+      "4": "visual",
+      "5": "memory",
+      "system": "syslog"
     };
+    function getCardRoute(id) {
+      const page = cardPages[id];
+      if (!page) return `${base}/`;
+      return `${base}/${page}/`;
+    }
     let activeCardIndex = 0;
     $$renderer2.push(`<div class="shard-grid fade-in-up"><!--[-->`);
     const each_array = ensure_array_like(data);
     for (let index = 0, $$length = each_array.length; index < $$length; index++) {
       let shard = each_array[index];
-      $$renderer2.push(`<a${attr("href", cardRoutes[shard.id] || "/")}${attr_class(`shard-card type-${stringify(shard.type)}`, void 0, { "auto-hover": index === activeCardIndex })}${attr_style(`--accent: ${stringify(shard.accentColor)}`)}><div class="shard-bg-layer"${attr_style(`background-image: url(${stringify(shard.image)})`)}></div> <div class="static-noise"></div> <div class="shard-content mono"><div class="shard-meta"><div class="platform-tag">`);
+      $$renderer2.push(`<a${attr("href", getCardRoute(shard.id))}${attr_class(`shard-card type-${stringify(shard.type)}`, void 0, { "auto-hover": index === activeCardIndex })}${attr_style(`--accent: ${stringify(shard.accentColor)}`)}><div class="shard-bg-layer"${attr_style(`background-image: url(${stringify(shard.image)})`)}></div> <div class="static-noise"></div> <div class="shard-content mono"><div class="shard-meta"><div class="platform-tag">`);
       Icon($$renderer2, { name: shard.icon, size: 14 });
       $$renderer2.push(`<!----> <span>${escape_html(shard.platform)}</span></div> `);
       Icon($$renderer2, { name: "eye", size: 14, class: "view-icon" });

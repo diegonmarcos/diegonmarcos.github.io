@@ -27,8 +27,8 @@ const WAS_MARKED = 1 << 15;
 const REACTION_IS_UPDATING = 1 << 21;
 const ASYNC = 1 << 22;
 const ERROR_VALUE = 1 << 23;
-const STATE_SYMBOL = Symbol("$state");
-const LEGACY_PROPS = Symbol("legacy props");
+const STATE_SYMBOL = /* @__PURE__ */ Symbol("$state");
+const LEGACY_PROPS = /* @__PURE__ */ Symbol("legacy props");
 const STALE_REACTION = new class StaleReactionError extends Error {
   name = "StaleReactionError";
   message = "The reaction that called `getAbortSignal()` was re-run or destroyed";
@@ -71,7 +71,7 @@ const HYDRATION_ERROR = {};
 const ELEMENT_IS_NAMESPACED = 1;
 const ELEMENT_PRESERVE_ATTRIBUTE_CASE = 1 << 1;
 const ELEMENT_IS_INPUT = 1 << 2;
-const UNINITIALIZED = Symbol();
+const UNINITIALIZED = /* @__PURE__ */ Symbol();
 let tracing_mode_flag = false;
 let component_context = null;
 function set_component_context(context) {
@@ -571,6 +571,7 @@ function flush_effects() {
       if (BROWSER) ;
     }
   } finally {
+    queued_root_effects = [];
     is_flushing = false;
     last_scheduled_effect = null;
   }
@@ -1992,7 +1993,10 @@ async function sha256(data) {
   crypto ??= globalThis.crypto?.subtle?.digest ? globalThis.crypto : (
     // @ts-ignore - we don't install node types in the prod build
     // don't use 'node:crypto' because static analysers will think we rely on node when we don't
-    (await import("node:crypto")).webcrypto
+    (await import(
+      /* @vite-ignore */
+      "node:crypto"
+    )).webcrypto
   );
   const hash_buffer = await crypto.subtle.digest("SHA-256", text_encoder.encode(data));
   return base64_encode(hash_buffer);
@@ -2121,6 +2125,14 @@ class Renderer {
     promise.catch(noop);
     this.promise = promise;
     return promises;
+  }
+  /**
+   * @param {(renderer: Renderer) => MaybePromise<void>} fn
+   */
+  child_block(fn) {
+    this.#out.push(BLOCK_OPEN);
+    this.child(fn);
+    this.#out.push(BLOCK_CLOSE);
   }
   /**
    * Create a child renderer. The child renderer inherits the state from the parent,
@@ -2495,15 +2507,11 @@ class Renderer {
       new SSRState(mode, options.idPrefix ? options.idPrefix + "-" : "", options.csp)
     );
     renderer.push(BLOCK_OPEN);
-    if (options.context) {
-      push$1();
-      ssr_context.c = options.context;
-      ssr_context.r = renderer;
-    }
+    push$1();
+    if (options.context) ssr_context.c = options.context;
+    ssr_context.r = renderer;
     component(renderer, options.props ?? {});
-    if (options.context) {
-      pop$1();
-    }
+    pop$1();
     renderer.push(BLOCK_CLOSE);
     return renderer;
   }

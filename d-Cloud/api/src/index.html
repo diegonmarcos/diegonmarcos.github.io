@@ -202,34 +202,36 @@
         <strong>Quick Access:</strong>
         <a href="https://cloud.diegonmarcos.com" target="_blank">Dashboard</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/api/health" target="_blank">Rust API Health</a>
+        <a href="https://api.diegonmarcos.com:8080/api/health/alive" target="_blank">Rust Health</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/flask/api/health" target="_blank">Flask API Health</a>
+        <a href="https://api.diegonmarcos.com:8080/api/health/status" target="_blank">Full Status</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/api/docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
+        <a href="https://api.diegonmarcos.com:8080/api/health/drift" target="_blank">Drift</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com:8080/api/docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
         <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/flask/apispec.json" target="_blank">Flask Spec (JSON)</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/go/services" target="_blank">Go API Services</a>
+        <a href="https://api.diegonmarcos.com:8080/api/services" target="_blank">Service Discovery</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/crawlee/" target="_blank">Crawlee Dashboard</a>
         <span class="separator">|</span>
         <a href="cloud_central_api.md" target="_blank">Central API (MD)</a>
         <a href="cloud_ondemand_api.md" target="_blank">On-Demand API (MD)</a>
-        <span class="separator">|</span>
-        <a href="https://app.diegonmarcos.com/crawlee/" target="_blank">Crawlee Dashboard</a>
     </div>
 
     <!-- Quick Links -->
     <div class="quick-links">
         <h3>Key Endpoints</h3>
         <ul>
-            <li><strong>Rust Health:</strong> <code>GET /api/health</code></li>
-            <li><strong>Flask Health:</strong> <code>GET /flask/api/health</code></li>
-            <li><strong>VM Status:</strong> <code>GET /api/health/status/{vm_id}</code></li>
-            <li><strong>Containers:</strong> <code>GET /api/health/deployed/{vm_id}</code></li>
-            <li><strong>Dashboard:</strong> <code>GET /flask/api/dashboard/summary</code></li>
-            <li><strong>Wake VM:</strong> <code>POST /api/vms/{vm_id}/start</code></li>
-            <li><strong>VM Control:</strong> <code>POST /api/vms/{vm_id}/start</code></li>
-            <li><strong>Health Status:</strong> <code>GET /api/health/status</code></li>
+            <li><strong>Heartbeat:</strong> <code>GET /api/health/alive</code></li>
+            <li><strong>Full Status:</strong> <code>GET /api/health/status</code></li>
+            <li><strong>Drift:</strong> <code>GET /api/health/drift</code></li>
+            <li><strong>Deployed:</strong> <code>GET /api/health/deployed/{vm_id}</code></li>
+            <li><strong>VM Control:</strong> <code>POST /api/vms/{vm_id}/start|stop|reset</code></li>
+            <li><strong>Containers:</strong> <code>POST /api/vms/{vm_id}/containers/{name}/start|stop</code></li>
+            <li><strong>Profiling:</strong> <code>GET /api/profiling/container/{name}</code></li>
+            <li><strong>Services:</strong> <code>GET /api/services</code></li>
         </ul>
     </div>
 
@@ -256,10 +258,8 @@
         // Initialize Swagger UI with both APIs
         window.ui = SwaggerUIBundle({
             urls: [
-                { url: 'https://api.diegonmarcos.com/api/docs/openapi.json', name: 'Rust API (Infrastructure)' },
-                { url: 'https://api.diegonmarcos.com/flask/apispec.json', name: 'Flask API (Central)' },
-                { url: 'https://api.diegonmarcos.com/go/docs/openapi.json', name: 'Go API (Services)' },
-                { url: 'https://api.diegonmarcos.com/crawlee/openapi.json', name: 'Crawlee Cloud (Scraping)' }
+                { url: 'https://api.diegonmarcos.com:8080/api/docs/openapi.json', name: 'Rust API (Infrastructure)' },
+                { url: 'https://api.diegonmarcos.com/flask/apispec.json', name: 'Flask API (Central)' }
             ],
             "urls.primaryName": "Rust API (Infrastructure)",
             dom_id: '#swagger-ui',

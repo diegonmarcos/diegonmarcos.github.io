@@ -40,7 +40,7 @@ interface ApiEndpoint {
   url: string
 }
 
-const specUrl = ref('https://api.diegonmarcos.com/api-docs/openapi.json')
+const specUrl = ref('https://api.diegonmarcos.com/api/docs/openapi.json')
 const singleUrl = ref('')
 const endpoints = ref<ApiEndpoint[]>([])
 const apiBaseUrl = ref('')

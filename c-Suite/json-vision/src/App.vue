@@ -18,7 +18,7 @@ const {
   updateInput, handleFormat, handleMinify, handleCopy, handleCopyPath, showNotification
 } = useJsonFiles()
 
-const DEFAULT_API_URL = 'https://api.diegonmarcos.com/rust/api-docs/openapi.json'
+const DEFAULT_API_URL = 'https://api.diegonmarcos.com/api-docs/openapi.json'
 
 const viewMode = ref<ViewMode>('mindmap')
 const layoutMode = ref<LayoutMode>('vertical')

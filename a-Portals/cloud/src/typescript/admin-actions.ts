@@ -8,8 +8,8 @@ import { showNotification } from './notification';
 import { getDataMode } from './data-loader';
 
 // API Base URLs
-const API_BASE = 'https://api.diegonmarcos.com/api';
-const RUST_API = 'https://api.diegonmarcos.com/rust';
+const API_BASE = 'https://api.diegonmarcos.com/flask/api';
+const RUST_API = 'https://api.diegonmarcos.com/api';
 
 // GitHub OAuth2 constants
 const GITHUB_CLIENT_ID = 'Ov23liQPvqLvZgQQrI7C';
@@ -483,7 +483,7 @@ async function discoverFlexVmId(): Promise<string | null> {
         return FLEX_VM_ID;
     }
     try {
-        const url = `${RUST_API}/health/ids`;
+        const url = `${RUST_API}/health/declared`;
         console.log(`[AdminActions] discoverFlexVmId() fetching: ${url}`);
         const response = await fetch(url, {
             signal: AbortSignal.timeout(5000)
@@ -545,7 +545,7 @@ export async function getFlexServerStatus(): Promise<FlexServerStatus> {
             console.warn('[AdminActions] getFlexServerStatus(): no VM ID');
             return 'unknown';
         }
-        const url = `${RUST_API}/health/${id}`;
+        const url = `${RUST_API}/health/status/${id}`;
         console.log(`[AdminActions] getFlexServerStatus() fetching: ${url}`);
         const response = await fetch(url);
         console.log(`[AdminActions] getFlexServerStatus() response: ${response.status}`);

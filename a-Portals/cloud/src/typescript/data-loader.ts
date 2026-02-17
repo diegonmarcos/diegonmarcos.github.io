@@ -65,8 +65,8 @@ type DataMode = 'local' | 'api';
 let currentMode: DataMode = 'local';
 
 // API base URLs
-const API_BASE = 'https://api.diegonmarcos.com/api';
-const RUST_API = 'https://api.diegonmarcos.com/rust';
+const API_BASE = 'https://api.diegonmarcos.com/flask/api';
+const RUST_API = 'https://api.diegonmarcos.com/api';
 
 // Check if LOCAL_DATA is available
 declare const LOCAL_DATA: InfrastructureData | undefined;
@@ -220,7 +220,7 @@ export async function getVMMetrics(vmId: string): Promise<any | null> {
     }
 
     try {
-        const url = `${RUST_API}/health/${vmId}`;
+        const url = `${RUST_API}/health/status/${vmId}`;
         console.log(`[DataLoader] getVMMetrics fetching: ${url}`);
         const response = await fetch(url);
         console.log(`[DataLoader] getVMMetrics response: ${response.status}`);

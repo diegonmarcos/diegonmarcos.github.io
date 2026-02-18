@@ -1,17 +1,18 @@
 // Import shader manager
-import { ShaderManager } from './shaders/ShaderManager';
+import { ShaderManager } from './shaders/ShaderManager.ts';
 
 // Import animations
-import { CursorAnimation } from './animations/cursor';
-import { CardEffects } from './animations/cardEffects';
-import { ScrollEffects } from './animations/scrollEffects';
-import { ServiceCube } from './animations/serviceCube';
-import { VisionPyramid } from './animations/visionPyramid';
+import { CursorAnimation } from './animations/cursor.ts';
+import { CardEffects } from './animations/cardEffects.ts';
+import { ScrollEffects } from './animations/scrollEffects.ts';
+import { ServiceCube } from './animations/serviceCube.ts';
+import { VisionPyramid } from './animations/visionPyramid.ts';
+import { ShaderDiamond } from './animations/shaderDiamond.ts';
 
 // Import utilities
-import { ObserverManager } from './utils/intersectionObserver';
-import { LoaderManager } from './utils/loader';
-import { ShadertoyGallery } from './utils/shadertoyGallery';
+import { ObserverManager } from './utils/intersectionObserver.ts';
+import { LoaderManager } from './utils/loader.ts';
+import { PageSnap } from './utils/pageSnap.ts';
 
 // Initialize application
 class LeafStudios {
@@ -34,11 +35,12 @@ class LeafStudios {
         new ScrollEffects();
         new ServiceCube();
         new VisionPyramid();
+        new ShaderDiamond();
 
         // Initialize utilities
-        new ShadertoyGallery(); // Lazy-loaded shader gallery
         new ObserverManager();
         new LoaderManager();
+        new PageSnap();
     }
 }
 

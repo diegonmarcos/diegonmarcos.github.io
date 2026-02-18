@@ -15,7 +15,8 @@
     "sourceMap": false,
     "declaration": false,
     "removeComments": true,
-    "allowImportingTsExtensions": false
+    "allowImportingTsExtensions": false,
+    "rewriteRelativeImportExtensions": true
   },
   "include": ["src/scripts/**/*"],
   "exclude": ["node_modules", "dist"]

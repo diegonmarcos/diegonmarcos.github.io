@@ -158,15 +158,25 @@ export class ServiceCube {
     }
     rotateTo(face) {
         this.currentFace = face;
-        const targetY = this.faceRotations[face];
-        let currentNormalized = this.rotationY % 360;
-        let diff = targetY - currentNormalized;
-        if (diff > 180)
-            diff -= 360;
-        if (diff < -180)
-            diff += 360;
-        this.rotationY = this.rotationY + diff;
-        this.rotationX = -10;
+        if (face === 4) {
+            this.rotationX = -90;
+            this.rotationY = 0;
+        }
+        else if (face === 5) {
+            this.rotationX = 90;
+            this.rotationY = 0;
+        }
+        else {
+            const targetY = this.faceRotations[face];
+            let currentNormalized = this.rotationY % 360;
+            let diff = targetY - currentNormalized;
+            if (diff > 180)
+                diff -= 360;
+            if (diff < -180)
+                diff += 360;
+            this.rotationY = this.rotationY + diff;
+            this.rotationX = -10;
+        }
         this.cube?.classList.remove('dragging');
         this.updateTransform();
         this.setActiveFace(face);
@@ -180,7 +190,7 @@ export class ServiceCube {
     setActiveFace(face) {
         const faces = document.querySelectorAll('.cube-face');
         faces.forEach((f, i) => {
-            if (i < 4) {
+            if (i < 6) {
                 f.classList.toggle('active', i === face);
             }
         });

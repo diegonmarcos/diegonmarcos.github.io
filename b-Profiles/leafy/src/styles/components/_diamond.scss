@@ -1,0 +1,301 @@
+// =====================
+// 3D SHADER DIAMOND (Octahedron)
+// =====================
+
+// Geometry: two pyramids joined BASE-TO-BASE at equator
+// Upper faces: base at equator, apex UP
+// Lower faces: base at equator, apex DOWN
+// Tilt from vertical = 35° (arctan(1/√2))
+
+$diamond-base: 200px;
+$diamond-slant: 180px;
+$diamond-tilt: 35deg;
+$diamond-half: calc($diamond-base / 2);
+
+.diamond-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto 0;
+    perspective: 1000px;
+    user-select: none;
+}
+
+.diamond-wrapper {
+    position: relative;
+    width: 320px;
+    height: 380px;
+    margin: 20px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.diamond {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-15deg) rotateY(-30deg);
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: grab;
+    z-index: 1;
+
+    &:active {
+        cursor: grabbing;
+    }
+
+    &.dragging {
+        transition: none;
+    }
+}
+
+// Common face styles
+.diamond-face {
+    position: absolute;
+    width: $diamond-base;
+    height: $diamond-slant;
+    left: 50%;
+    margin-left: calc($diamond-base / -2);
+    backface-visibility: visible;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+
+    .diamond-content {
+        text-align: center;
+        padding: 0 15px;
+        position: relative;
+        z-index: 3;
+
+        h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 16px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+        }
+
+        p {
+            font-family: 'Outfit', sans-serif;
+            font-size: 9px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+    }
+}
+
+// Shader canvas on each face — always visible, renders behind text
+.diamond-shader-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+// CRITICAL: Upper faces offset so BASE (bottom edge) sits at equator (50%)
+.diamond-upper {
+    top: 50%;
+    margin-top: calc($diamond-slant * -1);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    transform-origin: 50% 100%;
+    justify-content: flex-end;
+    padding-bottom: 30px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+        background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.03) 15%,
+            transparent 35%);
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+// CRITICAL: Lower faces offset so BASE (top edge) sits at equator (50%)
+.diamond-lower {
+    top: 50%;
+    margin-top: 0;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+    transform-origin: 50% 0%;
+    justify-content: flex-start;
+    padding-top: 30px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+        background: linear-gradient(0deg,
+            rgba(255, 255, 255, 0.1) 0%,
+            rgba(255, 255, 255, 0.02) 15%,
+            transparent 35%);
+        pointer-events: none;
+        z-index: 0;
+    }
+}
+
+// Upper face positions — positive tilt (top leans inward)
+.diamond-upper-front {
+    background: linear-gradient(135deg, #0a1628, #1a4a6e, #3d8eb9);
+    transform: rotateY(0deg) translateZ($diamond-half) rotateX($diamond-tilt);
+}
+.diamond-upper-right {
+    background: linear-gradient(135deg, #1a1a2e, #4a4a6e, #8a8aae);
+    transform: rotateY(90deg) translateZ($diamond-half) rotateX($diamond-tilt);
+}
+.diamond-upper-back {
+    background: linear-gradient(135deg, #0a0a1a, #1a4a3a, #3aaa7a);
+    transform: rotateY(180deg) translateZ($diamond-half) rotateX($diamond-tilt);
+}
+.diamond-upper-left {
+    background: linear-gradient(135deg, #000010, #1a1a4a, #4a3a8a);
+    transform: rotateY(-90deg) translateZ($diamond-half) rotateX($diamond-tilt);
+}
+
+// Lower face positions — negative tilt (bottom leans inward)
+.diamond-lower-front {
+    background: linear-gradient(135deg, #1a0a00, #4a2a0a, #aa4a0a);
+    transform: rotateY(0deg) translateZ($diamond-half) rotateX(-$diamond-tilt);
+}
+.diamond-lower-right {
+    background: linear-gradient(135deg, #1a0500, #3a1a0a, #6a2a1a);
+    transform: rotateY(90deg) translateZ($diamond-half) rotateX(-$diamond-tilt);
+}
+.diamond-lower-back {
+    background: linear-gradient(135deg, #0a1020, #1a3050, #2a6080);
+    transform: rotateY(180deg) translateZ($diamond-half) rotateX(-$diamond-tilt);
+}
+.diamond-lower-left {
+    background: linear-gradient(135deg, #0a1520, #1a4050, #4a8090);
+    transform: rotateY(-90deg) translateZ($diamond-half) rotateX(-$diamond-tilt);
+}
+
+// Active face highlight
+.diamond-face.active {
+    .diamond-content h3 {
+        color: var(--gold);
+        text-shadow: 0 0 15px rgba(201, 162, 39, 0.5);
+    }
+}
+
+// Navigation buttons
+.diamond-nav {
+    display: flex;
+    gap: 8px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.diamond-nav-btn {
+    background: transparent;
+    border: 1px solid rgba(201, 162, 39, 0.3);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 3px;
+
+    &:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+    }
+
+    &.active {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--wood-darkest);
+    }
+}
+
+.diamond-hint {
+    margin-top: 15px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.5;
+}
+
+// =====================
+// MOBILE RESPONSIVE
+// =====================
+@media (max-width: 768px) {
+    $m-base: 160px;
+    $m-slant: 144px;
+    $m-half: calc($m-base / 2);
+
+    .diamond-container {
+        perspective: 700px;
+        margin-top: 20px;
+    }
+
+    .diamond-wrapper {
+        width: 260px;
+        height: 320px;
+        margin: 10px auto;
+    }
+
+    .diamond-face {
+        width: $m-base;
+        height: $m-slant;
+        margin-left: calc($m-base / -2);
+
+        .diamond-content h3 { font-size: 13px; }
+        .diamond-content p { font-size: 8px; }
+    }
+
+    .diamond-upper {
+        margin-top: calc($m-slant * -1);
+        padding-bottom: 22px;
+    }
+    .diamond-lower {
+        margin-top: 0;
+        padding-top: 22px;
+    }
+
+    .diamond-upper-front  { transform: rotateY(0deg) translateZ($m-half) rotateX($diamond-tilt); }
+    .diamond-upper-right  { transform: rotateY(90deg) translateZ($m-half) rotateX($diamond-tilt); }
+    .diamond-upper-back   { transform: rotateY(180deg) translateZ($m-half) rotateX($diamond-tilt); }
+    .diamond-upper-left   { transform: rotateY(-90deg) translateZ($m-half) rotateX($diamond-tilt); }
+    .diamond-lower-front  { transform: rotateY(0deg) translateZ($m-half) rotateX(-$diamond-tilt); }
+    .diamond-lower-right  { transform: rotateY(90deg) translateZ($m-half) rotateX(-$diamond-tilt); }
+    .diamond-lower-back   { transform: rotateY(180deg) translateZ($m-half) rotateX(-$diamond-tilt); }
+    .diamond-lower-left   { transform: rotateY(-90deg) translateZ($m-half) rotateX(-$diamond-tilt); }
+
+    .diamond-nav {
+        gap: 5px;
+        margin-top: 10px;
+    }
+
+    .diamond-nav-btn {
+        padding: 5px 10px;
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .diamond-hint {
+        margin-top: 10px;
+        font-size: 9px;
+    }
+}

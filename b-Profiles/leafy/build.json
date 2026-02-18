@@ -6,17 +6,18 @@
   "dist": "dist",
 
   "build": [
-    { "mod": "sass", "input": "src/scss/main.scss", "output": "styles/main.css" },
-    { "mod": "tsc", "dir": "src/typescript", "output": "script.js" },
-    { "mod": "copy", "files": "*.html", "from": "src" }
+    { "mod": "sass", "input": "src/styles/main.scss", "output": "styles/main.css" },
+    { "mod": "tsc", "dir": "src/scripts" },
+    { "mod": "copy", "files": "*.html", "from": "src" },
+    { "mod": "symlink", "files": "src/shaders", "output": "shaders" }
   ],
 
   "serve": {
     "mode": "auto",
     "dir": "src",
     "watch": [
-      { "mod": "sass", "input": "scss/main.scss", "output": "styles/main.css" },
-      { "mod": "tsc", "input": "typescript" }
+      { "mod": "sass", "input": "styles/main.scss", "output": "styles/main.css" },
+      { "mod": "tsc", "input": "scripts" }
     ]
   },
 

@@ -1,4 +1,4 @@
-import { TextScramble } from '../animations/textScramble';
+import { TextScramble } from '../animations/textScramble.ts';
 
 export class ObserverManager {
     private observer: IntersectionObserver;

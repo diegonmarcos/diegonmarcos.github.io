@@ -114,7 +114,7 @@
                 <div class="cube-wrapper">
                     <canvas id="cube-shader" class="cube-canvas"></canvas>
                     <div class="cube" id="services-cube">
-                        <!-- Front: 3D Animation -->
+                        <!-- Front: AR & Immersive -->
                         <div class="cube-face cube-front" data-face="0">
                             <span class="card-number">01</span>
                             <svg class="card-icon" viewBox="0 0 50 50">
@@ -122,7 +122,7 @@
                                 <circle cx="25" cy="20" r="4" />
                                 <line x1="25" y1="25" x2="25" y2="35" />
                             </svg>
-                            <h3>3D Animation</h3>
+                            <h3>Augmented Reality and Immersive Experiences</h3>
                             <p>Crafting immersive three-dimensional experiences that push the boundaries of visual storytelling.</p>
                         </div>
                         <!-- Right: Frontend Design -->
@@ -145,7 +145,7 @@
                                 <path d="M25 15 L25 25 L33 30" />
                                 <circle cx="25" cy="25" r="2" />
                             </svg>
-                            <h3>Event Illumination</h3>
+                            <h3>Illumination, Projections and Drone Show</h3>
                             <p>Transforming spaces with programmatic lighting and projection mapping.</p>
                         </div>
                         <!-- Left: Cloud Infrastructure -->
@@ -160,17 +160,40 @@
                             <h3>Cloud Infrastructure</h3>
                             <p>Designing scalable, secure cloud architectures that power modern applications.</p>
                         </div>
-                        <!-- Top face -->
-                        <div class="cube-face cube-top"></div>
-                        <!-- Bottom face -->
-                        <div class="cube-face cube-bottom"></div>
+                        <!-- Top: AGI -->
+                        <div class="cube-face cube-top" data-face="4">
+                            <span class="card-number">05</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <circle cx="25" cy="18" r="9" />
+                                <path d="M16 18 Q12 9 25 7 Q38 9 34 18" />
+                                <line x1="25" y1="27" x2="25" y2="36" />
+                                <line x1="19" y1="33" x2="31" y2="33" />
+                                <circle cx="16" cy="18" r="2" />
+                                <circle cx="34" cy="18" r="2" />
+                            </svg>
+                            <h3>Artificial General Intelligence</h3>
+                            <p>ship-first-talk-later · context-clean-window · declarative-nix-way · penguin-philosophy · getting-OOM-oriented</p>
+                        </div>
+                        <!-- Bottom: Software Engineering -->
+                        <div class="cube-face cube-bottom" data-face="5">
+                            <span class="card-number">06</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <polyline points="10 18 20 28 10 38" />
+                                <line x1="22" y1="38" x2="38" y2="38" />
+                                <rect x="5" y="8" width="40" height="36" rx="3" fill="none" />
+                            </svg>
+                            <h3>Software Engineering</h3>
+                            <p>Architecting robust systems with modern tooling, declarative infrastructure, and clean code practices.</p>
+                        </div>
                     </div>
                 </div>
                 <div class="cube-nav">
-                    <button class="cube-nav-btn" data-face="0">3D Animation</button>
+                    <button class="cube-nav-btn" data-face="0">AR/XR</button>
                     <button class="cube-nav-btn" data-face="1">Frontend</button>
-                    <button class="cube-nav-btn" data-face="2">Illumination</button>
+                    <button class="cube-nav-btn" data-face="2">Drones</button>
                     <button class="cube-nav-btn" data-face="3">Cloud</button>
+                    <button class="cube-nav-btn" data-face="4">AGI</button>
+                    <button class="cube-nav-btn" data-face="5">SWE</button>
                 </div>
                 <p class="cube-hint">Swipe or drag to rotate</p>
             </div>
@@ -188,8 +211,87 @@
                 <h2 class="section-title">Shader Laboratory</h2>
                 <p class="section-subtitle">Real-time GPU-accelerated visual experiments</p>
             </div>
-            <div class="shader-gallery" id="shader-gallery">
-                <!-- Shader cards will be inserted by JS -->
+            <!-- Interactive 3D Diamond -->
+            <div class="diamond-container">
+                <div class="diamond-wrapper">
+                    <div class="diamond" id="shader-diamond">
+                        <!-- Upper Front: Seascape -->
+                        <div class="diamond-face diamond-upper diamond-upper-front" data-face="0" data-shader="seascape.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Seascape</h3>
+                                <p>by TDM</p>
+                            </div>
+                        </div>
+                        <!-- Upper Right: Clouds -->
+                        <div class="diamond-face diamond-upper diamond-upper-right" data-face="1" data-shader="clouds.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Clouds</h3>
+                                <p>by iq</p>
+                            </div>
+                        </div>
+                        <!-- Upper Back: Aurora -->
+                        <div class="diamond-face diamond-upper diamond-upper-back" data-face="2" data-shader="aurora.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Aurora</h3>
+                                <p>by nimitz</p>
+                            </div>
+                        </div>
+                        <!-- Upper Left: Star Nest -->
+                        <div class="diamond-face diamond-upper diamond-upper-left" data-face="3" data-shader="starnest.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Star Nest</h3>
+                                <p>by Kali</p>
+                            </div>
+                        </div>
+                        <!-- Lower Front: Flame -->
+                        <div class="diamond-face diamond-lower diamond-lower-front" data-face="4" data-shader="flame.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Flame</h3>
+                                <p>by iq</p>
+                            </div>
+                        </div>
+                        <!-- Lower Right: Volcanic -->
+                        <div class="diamond-face diamond-lower diamond-lower-right" data-face="5" data-shader="volcanic.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Volcanic</h3>
+                                <p>by iq</p>
+                            </div>
+                        </div>
+                        <!-- Lower Back: Calm -->
+                        <div class="diamond-face diamond-lower diamond-lower-back" data-face="6" data-shader="calm.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Calm</h3>
+                                <p>by nimitz</p>
+                            </div>
+                        </div>
+                        <!-- Lower Left: Glassy -->
+                        <div class="diamond-face diamond-lower diamond-lower-left" data-face="7" data-shader="glassy.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Glassy</h3>
+                                <p>by iq</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="diamond-nav">
+                    <button class="diamond-nav-btn" data-face="0">Seascape</button>
+                    <button class="diamond-nav-btn" data-face="1">Clouds</button>
+                    <button class="diamond-nav-btn" data-face="2">Aurora</button>
+                    <button class="diamond-nav-btn" data-face="3">Stars</button>
+                    <button class="diamond-nav-btn" data-face="4">Flame</button>
+                    <button class="diamond-nav-btn" data-face="5">Volcanic</button>
+                    <button class="diamond-nav-btn" data-face="6">Calm</button>
+                    <button class="diamond-nav-btn" data-face="7">Glassy</button>
+                </div>
+                <p class="diamond-hint">Swipe or drag to rotate</p>
             </div>
         </div>
     </section>
@@ -262,19 +364,31 @@
         <div class="shader-container">
             <canvas id="contact-shader"></canvas>
         </div>
-        <div class="page-content" style="justify-content: center; align-items: center;">
-            <div class="section-header" style="text-align: center;">
+        <div class="page-content contact-content">
+            <div class="section-header contact-header">
                 <p class="section-label">Get in Touch</p>
                 <h2 class="section-title">Let's Create</h2>
             </div>
             <p class="contact-text">Ready to bring your vision to life? We collaborate with brands, artists, and visionaries to craft experiences that transcend the ordinary.</p>
             <a href="mailto:hello@leafstudios.com" class="cta-btn gpu">Start a Project</a>
+            <footer>
+                <p>© 2026 Leaf Studios. Where Edge Technology meets Design.</p>
+            </footer>
         </div>
     </section>
 
-    <footer>
-        <p>© 2026 Leaf Studios. Where Edge Technology meets Design.</p>
-    </footer>
+    <!-- Linktree FAB -->
+    <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener" class="linktree-fab gpu" aria-label="Linktree">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="38" x2="20" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="28" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="28" x2="28" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="16" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="24" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="20" cy="15" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+    </a>
 
     <!-- Fallback loader hide script (runs immediately) -->
     <script>

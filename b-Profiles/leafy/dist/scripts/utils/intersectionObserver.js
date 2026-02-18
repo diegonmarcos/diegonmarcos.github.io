@@ -1,4 +1,4 @@
-import { TextScramble } from '../animations/textScramble.js';
+import { TextScramble } from "../animations/textScramble.js";
 export class ObserverManager {
     constructor() {
         this.observer = this.createMainObserver();

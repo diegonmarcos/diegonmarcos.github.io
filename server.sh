@@ -129,6 +129,27 @@ kill_port_user() {
     return 0
 }
 
+# Find a free port starting from $PORT, trying up to 10 consecutive ports
+# Sets PORT to the free port found. Returns 1 if none found.
+find_free_port() {
+    if ! is_port_in_use "$PORT"; then
+        return 0
+    fi
+    printf "${YELLOW}Port $PORT in use.${NC} "
+    local try_port=$((PORT + 1))
+    local max_port=$((PORT + 10))
+    while [ $try_port -lt $max_port ]; do
+        if ! is_port_in_use "$try_port"; then
+            PORT=$try_port
+            printf "Using port ${GREEN}$PORT${NC} instead.\n"
+            return 0
+        fi
+        try_port=$((try_port + 1))
+    done
+    printf "${RED}No free port found ($((PORT))-$((max_port - 1)))${NC}\n"
+    return 1
+}
+
 check_dependencies() {
     # Check basic dependencies based on mode
     local missing_pkgs=""
@@ -220,8 +241,8 @@ is_running() {
     if pgrep -f "http.server.*$PORT" > /dev/null 2>&1; then
         return 0
     fi
-    # Fallback: check if dev-server.sh is running
-    if pgrep -f "dev-server.sh.*$PORT" > /dev/null 2>&1; then
+    # Fallback: check if server-dev.sh is running
+    if pgrep -f "server-dev.sh.*$PORT" > /dev/null 2>&1; then
         return 0
     fi
     return 1
@@ -232,8 +253,8 @@ is_log_receiver_running() {
     if [ -n "$LOG_RECEIVER_PID" ] && [ "$LOG_RECEIVER_PID" != "0" ] && kill -0 "$LOG_RECEIVER_PID" 2>/dev/null; then
         return 0
     fi
-    # Fallback: check if log-receiver.sh is running
-    if pgrep -f "log-receiver.sh" > /dev/null 2>&1; then
+    # Fallback: check if server-log-receiver.sh is running
+    if pgrep -f "server-log-receiver.sh" > /dev/null 2>&1; then
         return 0
     fi
     return 1
@@ -246,18 +267,9 @@ do_start_static() {
         return 0
     fi
 
-    # Check if port is in use - auto-kill if needed
-    if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
-        kill_port_user "$PORT"
-        sleep 0.5
-        if is_port_in_use "$PORT"; then
-            if ! wait_for_port_free "$PORT" 3; then
-                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
-                return 1
-            fi
-        fi
-        printf "${GREEN}✓${NC} Port $PORT freed.\n"
+    # If port is in use, find next free port
+    if ! find_free_port; then
+        return 1
     fi
 
     # Check dependencies (Node.js)
@@ -270,9 +282,9 @@ do_start_static() {
         return 1
     fi
 
-    # Check if static-server.mjs exists
-    if [ ! -f "$SCRIPT_DIR/static-server.mjs" ]; then
-        printf "${RED}Error: static-server.mjs not found in $SCRIPT_DIR${NC}\n"
+    # Check if server-static.mjs exists
+    if [ ! -f "$SCRIPT_DIR/server-static.mjs" ]; then
+        printf "${RED}Error: server-static.mjs not found in $SCRIPT_DIR${NC}\n"
         return 1
     fi
 
@@ -293,7 +305,7 @@ do_start_static() {
     printf "${CYAN}Starting static server (Node.js + Eruda)...${NC}\n"
     echo "  Port:  $PORT"
     echo "  Mount: $MOUNT_DIR"
-    nohup node "$SCRIPT_DIR/static-server.mjs" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
+    nohup node "$SCRIPT_DIR/server-static.mjs" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
@@ -344,18 +356,9 @@ do_start_live() {
         return 0
     fi
 
-    # Check if port is in use - auto-kill if needed
-    if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
-        kill_port_user "$PORT"
-        sleep 0.5
-        if is_port_in_use "$PORT"; then
-            if ! wait_for_port_free "$PORT" 3; then
-                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
-                return 1
-            fi
-        fi
-        printf "${GREEN}✓${NC} Port $PORT freed.\n"
+    # If port is in use, find next free port
+    if ! find_free_port; then
+        return 1
     fi
 
     # Check dependencies (Python)
@@ -368,9 +371,9 @@ do_start_live() {
         return 1
     fi
 
-    # Check if live-server.py exists
-    if [ ! -f "$SCRIPT_DIR/live-server.py" ]; then
-        printf "${RED}Error: live-server.py not found in $SCRIPT_DIR${NC}\n"
+    # Check if server-live.py exists
+    if [ ! -f "$SCRIPT_DIR/server-live.py" ]; then
+        printf "${RED}Error: server-live.py not found in $SCRIPT_DIR${NC}\n"
         return 1
     fi
 
@@ -394,7 +397,7 @@ do_start_live() {
     printf "${CYAN}Starting live server (Eruda + auto-refresh)...${NC}\n"
     echo "  Port:  $PORT"
     echo "  Mount: $MOUNT_DIR"
-    nohup python3 -u "$SCRIPT_DIR/live-server.py" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
+    nohup python3 -u "$SCRIPT_DIR/server-live.py" "$PORT" "$MOUNT_DIR" > "$FIFO" 2>&1 &
 
     SERVER_PID=$!
 
@@ -462,8 +465,8 @@ do_stop() {
         if [ -n "$PY_PID" ]; then
             kill $PY_PID 2>/dev/null && STOPPED=true
         fi
-        # Also kill dev-server.sh
-        DEV_PID=$(pgrep -f "dev-server.sh" 2>/dev/null)
+        # Also kill server-dev.sh
+        DEV_PID=$(pgrep -f "server-dev.sh" 2>/dev/null)
         if [ -n "$DEV_PID" ]; then
             kill $DEV_PID 2>/dev/null && STOPPED=true
         fi
@@ -480,7 +483,7 @@ do_stop() {
             kill "$LOG_RECEIVER_PID" 2>/dev/null && STOPPED=true
         fi
         # Kill any remaining log-receiver processes
-        pkill -f "log-receiver.sh" 2>/dev/null && STOPPED=true
+        pkill -f "server-log-receiver.sh" 2>/dev/null && STOPPED=true
         # Kill any socat on port 19001
         SOCAT_8002=$(pgrep -f "socat.*19001" 2>/dev/null)
         if [ -n "$SOCAT_8002" ]; then
@@ -506,18 +509,9 @@ do_start_dev() {
         return 0
     fi
 
-    # Check if port is in use - auto-kill if needed
-    if is_port_in_use "$PORT"; then
-        printf "${YELLOW}Port $PORT in use. Stopping existing server...${NC}\n"
-        kill_port_user "$PORT"
-        sleep 0.5
-        if is_port_in_use "$PORT"; then
-            if ! wait_for_port_free "$PORT" 3; then
-                printf "${RED}Could not free port $PORT. Check: lsof -i :$PORT${NC}\n"
-                return 1
-            fi
-        fi
-        printf "${GREEN}✓${NC} Port $PORT freed.\n"
+    # If port is in use, find next free port
+    if ! find_free_port; then
+        return 1
     fi
 
     if [ ! -d "$MOUNT_DIR" ]; then
@@ -525,15 +519,15 @@ do_start_dev() {
         return 1
     fi
 
-    # Check if dev-server.sh exists
-    if [ ! -f "$SCRIPT_DIR/dev-server.sh" ]; then
-        printf "${RED}Error: dev-server.sh not found in $SCRIPT_DIR${NC}\n"
+    # Check if server-dev.sh exists
+    if [ ! -f "$SCRIPT_DIR/server-dev.sh" ]; then
+        printf "${RED}Error: server-dev.sh not found in $SCRIPT_DIR${NC}\n"
         return 1
     fi
 
-    # Check if log-receiver.sh exists
-    if [ ! -f "$SCRIPT_DIR/log-receiver.sh" ]; then
-        printf "${RED}Error: log-receiver.sh not found in $SCRIPT_DIR${NC}\n"
+    # Check if server-log-receiver.sh exists
+    if [ ! -f "$SCRIPT_DIR/server-log-receiver.sh" ]; then
+        printf "${RED}Error: server-log-receiver.sh not found in $SCRIPT_DIR${NC}\n"
         return 1
     fi
 
@@ -550,9 +544,9 @@ do_start_dev() {
     # Start log receiver (autofix: kill stale processes first)
     printf "Starting JSON log receiver on port 19001... "
     pkill -9 -f "socat.*19001" 2>/dev/null
-    pkill -9 -f "log-receiver.sh" 2>/dev/null
+    pkill -9 -f "server-log-receiver.sh" 2>/dev/null
     sleep 0.5
-    "$SCRIPT_DIR/log-receiver.sh" > /dev/null 2>&1 &
+    "$SCRIPT_DIR/server-log-receiver.sh" > /dev/null 2>&1 &
     LOG_RECEIVER_PID=$!
 
     # Wait with retry
@@ -578,7 +572,7 @@ do_start_dev() {
 
     # Start dev server with auto-injection
     printf "Starting dev server (auto-injection) on port $PORT... "
-    nohup "$SCRIPT_DIR/dev-server.sh" "$PORT" "$MOUNT_DIR" > "$LOG_FILE" 2>&1 &
+    nohup "$SCRIPT_DIR/server-dev.sh" "$PORT" "$MOUNT_DIR" > "$LOG_FILE" 2>&1 &
     SERVER_PID=$!
 
     # Save config immediately
@@ -649,10 +643,10 @@ do_stop_dev() {
     fi
 
     # Kill all known server processes by pattern
-    pkill -9 -f "static-server.mjs" 2>/dev/null
-    pkill -9 -f "static-server.py" 2>/dev/null
-    pkill -9 -f "live-server.py" 2>/dev/null
-    pkill -9 -f "dev-server.sh" 2>/dev/null
+    pkill -9 -f "server-static.mjs" 2>/dev/null
+    pkill -9 -f "server-static.py" 2>/dev/null
+    pkill -9 -f "server-live.py" 2>/dev/null
+    pkill -9 -f "server-dev.sh" 2>/dev/null
     pkill -9 -f "http.server.*$PORT" 2>/dev/null
     pkill -9 -f "socat.*$PORT" 2>/dev/null
 
@@ -679,7 +673,7 @@ do_stop_dev() {
         kill "$LOG_RECEIVER_PID" 2>/dev/null
         kill -9 "$LOG_RECEIVER_PID" 2>/dev/null
     fi
-    pkill -9 -f "log-receiver.sh" 2>/dev/null
+    pkill -9 -f "server-log-receiver.sh" 2>/dev/null
     pkill -9 -f "socat.*19001" 2>/dev/null
     printf "${GREEN}✓${NC} Log receiver stopped (port 19001)\n"
 
@@ -769,6 +763,11 @@ do_status() {
         printf "Mount Point: $MOUNT_DIR\n"
         printf "Log File:    $LOG_FILE\n"
         printf "Config File: $CONFIG_FILE\n"
+    elif is_port_in_use "$PORT"; then
+        printf "Status:      ${YELLOW}${BOLD}PORT $PORT IN USE${NC} (external process)\n"
+        printf "Port:        $PORT\n"
+        printf "Mount Point: $MOUNT_DIR\n"
+        printf "Config File: $CONFIG_FILE\n"
     else
         printf "Status:      ${RED}${BOLD}STOPPED${NC}\n"
         printf "Port:        $PORT\n"
@@ -823,7 +822,7 @@ view_logs() {
 
 show_tui() {
     while true; do
-        clear
+        printf '\033[2J\033[H'
         # Reload config to ensure status is up to date
         load_config
 
@@ -835,6 +834,8 @@ show_tui() {
         if is_running; then
             printf "  ${BOLD}STATUS:${NC}  ${GREEN}● ONLINE${NC} (PID: $PID)\n"
             printf "  ${BOLD}URL:${NC}     ${BLUE}http://localhost:$PORT${NC}\n"
+        elif is_port_in_use "$PORT"; then
+            printf "  ${BOLD}STATUS:${NC}  ${YELLOW}● PORT $PORT IN USE${NC} (external process)\n"
         else
             printf "  ${BOLD}STATUS:${NC}  ${RED}○ OFFLINE${NC}\n"
         fi
@@ -923,7 +924,7 @@ case "$1" in
         view_console_errors
         ;;
     console-clear)
-        clear_console_logs
+        printf '\033[2J\033[H'_console_logs
         ;;
     console-json)
         if [ -f "$CONSOLE_LOG_FILE" ]; then

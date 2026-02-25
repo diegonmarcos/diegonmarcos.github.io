@@ -1,14 +1,11 @@
 name: GitHub Pages Deployment (CI)
-
 on:
   push:
     branches: ["main"]
-
 permissions:
   contents: read
   pages: write
   id-token: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,11 +14,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Needed to compare changes
-
       - name: 📂 Get Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v41
-
       # ============================================
       # SETUP NODE.JS
       # ============================================
@@ -29,21 +24,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: 📦 Install Dependencies
         run: |
           echo "📦 Generating merged package.json and installing..."
           bash deploy.sh deps
           echo "✅ Dependencies installed"
-
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================
       - name: 🔨 Build Root Index (e-Root)
         id: build-c-root
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Root/src/')
-          || hashFiles('e-Root/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Root Index (e-Root)..."
@@ -51,12 +43,10 @@ jobs:
           bash build.sh build
           cd ..
           echo "✅ Root Index build complete"
-
       - name: 🔨 Build Landpage
         id: build-landpage
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/src/')
-          || hashFiles('b-Profiles/landpage/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Landpage..."
@@ -64,12 +54,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Landpage build complete"
-
       - name: 🔨 Build Linktree
         id: build-linktree
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/src/')
-          || hashFiles('a-Portals/linktree/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Linktree..."
@@ -77,12 +65,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Linktree build complete"
-
       - name: 🔨 Build Linktree Mindmap
         id: build-linktree-mindmap
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/src/')
-          || hashFiles('a-Portals/linktree_mindmap/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Linktree Mindmap..."
@@ -90,12 +76,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Linktree Mindmap build complete"
-
       - name: 🔨 Build Linktree Pixel World
         id: build-linktree-pixel-world
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/src/')
-          || hashFiles('a-Portals/linktree_pixel-world/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Linktree Pixel World..."
@@ -103,12 +87,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Linktree Pixel World build complete"
-
       - name: 🔨 Build CV Web
         id: build-cv-web
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/src/')
-          || hashFiles('b-Profiles/cv_web/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building CV Web..."
@@ -116,12 +98,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ CV Web build complete"
-
       - name: 🔨 Build MyFeed
         id: build-myfeed
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/src/')
-          || hashFiles('c-Tools/myfeed/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyFeed..."
@@ -129,12 +109,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
-
       - name: 🔨 Build MyGames
         id: build-mygames
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/src/')
-          || hashFiles('c-Tools/mygames/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyGames..."
@@ -142,12 +120,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyGames build complete"
-
       - name: 🔨 Build Nexus
         id: build-nexus
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/src/')
-          || hashFiles('b-Profiles/nexus/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Nexus..."
@@ -155,12 +131,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Nexus build complete"
-
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/src/')
-          || hashFiles('a-Portals/cloud/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Cloud Dashboard..."
@@ -168,12 +142,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Cloud Dashboard build complete"
-
       - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/src/')
-          || hashFiles('c-Tools/feed_yourself/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Feed Yourself..."
@@ -181,12 +153,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Feed Yourself build complete"
-
       - name: 🔨 Build Others
         id: build-others
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/src/')
-          || hashFiles('e-Others/others/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Others..."
@@ -194,12 +164,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Others build complete"
-
       - name: 🔨 Build Sailytics
         id: build-sailytics
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/src/')
-          || hashFiles('e-Others/sailytics/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Sailytics..."
@@ -207,12 +175,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Sailytics build complete"
-
       - name: 🔨 Build MyMail
         id: build-mymail
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/src/')
-          || hashFiles('c-Suite/mymail/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyMail..."
@@ -220,12 +186,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMail build complete"
-
       - name: 🔨 Build MyPhotos
         id: build-myphotos
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/src/')
-          || hashFiles('c-Suite/myphotos/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyPhotos..."
@@ -233,12 +197,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
-
       - name: 🔨 Build MyAnalytics
         id: build-myanalytics
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/src/')
-          || hashFiles('c-Suite/myanalytics/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyAnalytics..."
@@ -246,12 +208,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyAnalytics build complete"
-
       - name: 🔨 Build Suite
         id: build-suite
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')
-          || hashFiles('c-Suite/suite/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Suite..."
@@ -259,12 +219,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Suite build complete"
-
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/src/')
-          || hashFiles('c-Tools/health_tracker/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Health Tracker..."
@@ -272,12 +230,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Health Tracker build complete"
-
       - name: 🔨 Build Market Watch
         id: build-market-watch
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/src/')
-          || hashFiles('c-Tools/market_watch/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Market Watch..."
@@ -285,12 +241,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Market Watch build complete"
-
       - name: 🔨 Build Central Bank
         id: build-central-bank
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/src/')
-          || hashFiles('c-Tools/central_bank/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Central Bank..."
@@ -298,12 +252,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Central Bank build complete"
-
       - name: 🔨 Build MyProfile
         id: build-myprofile
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/src/')
-          || hashFiles('b-Profiles/myprofile/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyProfile..."
@@ -311,12 +263,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyProfile build complete"
-
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/src/')
-          || hashFiles('c-Tools/mymovies/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyMovies..."
@@ -324,12 +274,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMovies build complete"
-
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/src/')
-          || hashFiles('c-Tools/mymusic/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyMusic..."
@@ -337,12 +285,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
-
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/src/')
-          || hashFiles('c-Suite/json-vision/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building JSON Vision..."
@@ -350,12 +296,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ JSON Vision build complete"
-
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/src/')
-          || hashFiles('c-Tools/carto/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Carto..."
@@ -363,12 +307,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Carto build complete"
-
       - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mytrips
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/')
-          || hashFiles('c-Tools/mytrips/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyTrips..."
@@ -376,12 +318,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyTrips build complete"
-
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/src/')
-          || hashFiles('b-Profiles/leafy/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Leafy..."
@@ -389,12 +329,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Leafy build complete"
-
       - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
         id: build-mymaps-svelte
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/src/')
-          || hashFiles('c-Tools/mymaps/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building MyMaps SvelteKit..."
@@ -402,12 +340,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMaps SvelteKit build complete"
-
       - name: 🔨 Build Maps Classic (React + Vite)
         id: build-maps-classic
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/src/')
-          || hashFiles('c-Tools/maps/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Maps Classic..."
@@ -415,15 +351,13 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Maps Classic build complete"
-
       # ============================================
       # MISSING BUILD STEPS (Previously only had copy steps)
       # ============================================
       - name: 🔨 Build CV PDF
         id: build-cv-pdf
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_pdf/src/')
-          || hashFiles('b-Profiles/cv_pdf/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building CV PDF..."
@@ -431,12 +365,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ CV PDF build complete"
-
       - name: 🔨 Build Astro
         id: build-astro
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/astro/src/')
-          || hashFiles('c-Tools/astro/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Astro..."
@@ -444,12 +376,10 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
-
       - name: 🔨 Build Skills & MCP Docs
         id: build-skills-mcp
-        if: >-
+        if:
           contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/skills_mcp/src/')
-          || hashFiles('d-Cloud/skills_mcp/dist/**') == ''
         continue-on-error: true
         run: |
           echo "🔨 Building Skills & MCP Docs..."
@@ -457,21 +387,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Skills & MCP Docs build complete"
-
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
-
       - name: 📂 Deploy All Projects to _site
         run: |
           echo "============================================"
           echo "📂 DEPLOYING ALL PROJECTS TO _site"
           echo "============================================"
-
           mkdir -p _site
           FAILED=""
           COPIED=0
           SKIPPED=0
-
           # Project registry: path:deploy_name
           PROJECTS=(
             "e-Root:."
@@ -508,28 +434,23 @@ jobs:
             "e-Others/others:others"
             "e-Others/sailytics:sailytics"
           )
-
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"
             NAME="${entry##*:}"
             DIST="$SRC/dist"
-
             # Special cases
             [ "$SRC" = "d-Cloud/api" ] && DIST="$SRC/src"
-
             if [ ! -d "$DIST" ]; then
               echo "⏭️  $NAME (no dist/)"
               SKIPPED=$((SKIPPED + 1))
               continue
             fi
-
             # Check dist has files
             if [ -z "$(ls -A "$DIST" 2>/dev/null)" ]; then
               echo "⚠️  $NAME (dist/ empty)"
               SKIPPED=$((SKIPPED + 1))
               continue
             fi
-
             # Copy (dot-copy resolves symlinks, never fails on empty)
             if [ "$NAME" = "." ]; then
               cp -rL "$DIST"/. _site/ 2>/dev/null || true
@@ -537,7 +458,6 @@ jobs:
               mkdir -p "_site/$NAME"
               cp -rL "$DIST"/. "_site/$NAME/" 2>/dev/null || true
             fi
-
             # Validate
             TARGET="_site"
             [ "$NAME" != "." ] && TARGET="_site/$NAME"
@@ -550,24 +470,19 @@ jobs:
               FAILED="$FAILED $NAME"
             fi
           done
-
           # Summary
           echo "========================================="
           echo "📊 DEPLOY: $COPIED copied, $SKIPPED skipped"
           [ -n "$FAILED" ] && echo "⚠️ FAILED:$FAILED" && echo "::warning::Deploy failures:$FAILED"
           echo "========================================="
-
           # Clean broken symlinks
           find _site -type l ! -exec test -e {} \; -delete 2>/dev/null || true
-
           echo "📊 Site structure:"
           ls -lah _site/ | head -20
-
       - name: ⬆️ Upload Site Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
-
   deploy:
     environment:
       name: github-pages

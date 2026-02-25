@@ -11,6 +11,7 @@ export const enum InputAction {
   MoveRight = 'right',
   Interact = 'interact',
   Back = 'back',
+  Toggle25D = 'toggle25d',
 }
 
 const heldKeys = new Set<string>();
@@ -107,6 +108,10 @@ function onKeyDown(e: KeyboardEvent): void {
     case 'Backspace':
       e.preventDefault();
       callback(InputAction.Back);
+      break;
+    case 'KeyV':
+      e.preventDefault();
+      callback(InputAction.Toggle25D);
       break;
   }
 }

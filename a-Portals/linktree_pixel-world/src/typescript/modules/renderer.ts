@@ -10,7 +10,8 @@ import { getTileTexture } from '../sprites/tiles';
 import { getCharacterTexture } from '../sprites/character';
 import { getObjectTexture } from '../sprites/objects';
 import { getDecorationTexture, getAnimatedDecorationTextures, ANIMATED_DECORATIONS } from '../sprites/decorations';
-import { renderTextToTexture, measureText } from '../sprites/font';
+import { renderTextToTexture } from '../sprites/font';
+import { get25DFactor } from './camera';
 
 let app: Application;
 let staticContainer: Container;
@@ -23,7 +24,7 @@ let cachedZoneId = '';
 let objectSprites: Map<string, Sprite> = new Map();
 let objectGlows: Map<string, Graphics> = new Map();
 let objectLabels: Map<string, { sprite: Sprite; nearbyTex: Texture; farTex: Texture }> = new Map();
-let animalEntries: Array<{ sprite: Sprite; textures: Texture[] }> = [];
+let animalEntries: Array<{ sprite: Sprite; textures: Texture[]; height: number }> = [];
 let playerSprite: Sprite;
 
 /** Initialize PixiJS Application. */
@@ -56,6 +57,7 @@ export async function initRenderer(): Promise<Application> {
 
   // Player sprite (created once, texture updated per frame)
   playerSprite = new Sprite();
+  playerSprite.anchor.set(0.5, 1.0);
   dynamicContainer.addChild(playerSprite);
 
   return app;
@@ -140,7 +142,7 @@ export function rebuildDynamicEntities(zone: Zone): void {
     const px = obj.x * TILE_SIZE;
     const py = obj.y * TILE_SIZE;
 
-    // Glow (hidden by default)
+    // Glow (hidden by default) — stays on ground plane, no counter-scale
     const glow = new Graphics();
     glow.rect(-1, -1, TILE_SIZE + 2, TILE_SIZE + 2);
     glow.fill({ color: 0xffdd57, alpha: 0.4 });
@@ -151,10 +153,11 @@ export function rebuildDynamicEntities(zone: Zone): void {
     dynamicContainer.addChild(glow);
     objectGlows.set(obj.id, glow);
 
-    // Object sprite
+    // Object sprite — anchor center-bottom for counter-scaling
     const sprite = new Sprite(getObjectTexture(obj.type));
-    sprite.x = px;
-    sprite.y = py;
+    sprite.anchor.set(0.5, 1.0);
+    sprite.x = px + TILE_SIZE / 2;
+    sprite.y = py + TILE_SIZE;
     sprite.zIndex = py;
     dynamicContainer.addChild(sprite);
     objectSprites.set(obj.id, sprite);
@@ -162,45 +165,50 @@ export function rebuildDynamicEntities(zone: Zone): void {
     // Pre-cache label textures (nearby + far variants)
     const nearbyTex = renderTextToTexture(obj.label, '#ffdd57');
     const farTex = renderTextToTexture(obj.label, '#aaaaaa');
-    const tw = measureText(obj.label);
     const labelSprite = new Sprite(farTex);
-    labelSprite.x = px + TILE_SIZE / 2 - (tw + 1) / 2;
-    labelSprite.y = py - 10;
+    labelSprite.anchor.set(0.5, 1.0);
+    labelSprite.x = px + TILE_SIZE / 2;
+    labelSprite.y = py;
     labelSprite.zIndex = py;
     dynamicContainer.addChild(labelSprite);
     objectLabels.set(obj.id, { sprite: labelSprite, nearbyTex, farTex });
   }
 
-  // Animated decorations (animals) — use regular Sprites with manual frame swap
+  // Animated decorations (animals + portals) — use regular Sprites with manual frame swap
   for (const dec of zone.decorations) {
     if (!ANIMATED_DECORATIONS.has(dec.type as string)) continue;
     const textures = getAnimatedDecorationTextures(dec.type);
     const sprite = new Sprite(textures[0]);
-    sprite.x = dec.x * TILE_SIZE;
-    sprite.y = dec.y * TILE_SIZE;
+    const texH = textures[0].height;
+    const texW = textures[0].width;
+    sprite.anchor.set(0.5, 1.0);
+    sprite.x = dec.x * TILE_SIZE + texW / 2;
+    sprite.y = dec.y * TILE_SIZE + texH;
     sprite.zIndex = dec.y * TILE_SIZE;
     dynamicContainer.addChild(sprite);
-    animalEntries.push({ sprite, textures });
+    animalEntries.push({ sprite, textures, height: texH });
   }
 }
 
 /** Update dynamic entities each frame. */
 export function renderDynamic(zone: Zone, gameState: GameState): void {
   const player = gameState.player;
+  const counterScale = 1 / get25DFactor();
 
   // Update player sprite
   const frame = player.isMoving ? (player.animFrame % 2) + 1 : 0;
   playerSprite.texture = getCharacterTexture(player.direction, frame);
-  playerSprite.x = player.x;
-  playerSprite.y = player.y - 8; // character is taller than a tile
+  playerSprite.x = player.x + TILE_SIZE / 2;
+  playerSprite.y = player.y + TILE_SIZE;
   playerSprite.zIndex = player.y;
+  playerSprite.scale.set(1, counterScale);
 
-  // Update object glow visibility and label textures
+  // Update object glow visibility, label textures, and counter-scale
   const time = performance.now();
   for (const obj of zone.objects) {
     const isNearby = gameState.nearbyObject?.id === obj.id;
 
-    // Glow
+    // Glow — stays on ground plane, no counter-scale
     const glow = objectGlows.get(obj.id);
     if (glow) {
       glow.visible = isNearby;
@@ -209,17 +217,25 @@ export function renderDynamic(zone: Zone, gameState: GameState): void {
       }
     }
 
-    // Label texture swap
+    // Object sprite counter-scale
+    const sprite = objectSprites.get(obj.id);
+    if (sprite) {
+      sprite.scale.set(1, counterScale);
+    }
+
+    // Label texture swap + counter-scale
     const label = objectLabels.get(obj.id);
     if (label) {
       label.sprite.texture = isNearby ? label.nearbyTex : label.farTex;
+      label.sprite.scale.set(1, counterScale);
     }
   }
 
-  // Animate animals — swap texture based on time (~500ms per frame)
+  // Animate animals/portals — swap texture + counter-scale
   const animFrame = Math.floor(time / 500) % 2;
   for (const entry of animalEntries) {
     entry.sprite.texture = entry.textures[animFrame % entry.textures.length];
+    entry.sprite.scale.set(1, counterScale);
   }
 }
 

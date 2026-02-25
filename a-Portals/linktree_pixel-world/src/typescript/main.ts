@@ -9,12 +9,12 @@ import { GRAPH_DATA } from './data-embedded';
 
 // Modules
 import { initBackground, resizeBackground, renderBackground, stopBackgroundLoop } from './modules/background';
-import { initCamera, setCameraTarget, snapCamera, updateCamera, resizeCamera } from './modules/camera';
+import { initCamera, setCameraTarget, snapCamera, updateCamera, resizeCamera, toggle25D, is25DMode } from './modules/camera';
 import { initRenderer, cacheStaticLayer, rebuildDynamicEntities, renderDynamic, invalidateStaticCache, getApp } from './modules/renderer';
 import { initPlayer, getPlayerState, movePlayer, updatePlayer, processQueue, teleportPlayer } from './modules/player';
 import { initInput, destroyInput, isTouchDevice, InputAction } from './modules/input';
 import { initInteraction, updateInteraction, dismissCurrentDialog } from './modules/interaction';
-import { initUI, showZoneLabel, showDpad, hideLoading, updateWorldTitle } from './modules/ui';
+import { initUI, showZoneLabel, showDpad, hideLoading, updateWorldTitle, update25DButton } from './modules/ui';
 import { initDialog, isDialogOpen, dialogUp, dialogDown, dialogConfirm } from './modules/dialog';
 import { buildWorld, getZone } from './modules/world';
 import { initMinimap, cacheMinimap, renderMinimap, invalidateMinimap } from './modules/minimap';
@@ -97,6 +97,12 @@ async function init(): Promise<void> {
     showDpad();
   }
 
+  // 2.5D toggle button
+  document.getElementById('btn-25d')!.addEventListener('click', () => {
+    toggle25D();
+    update25DButton(is25DMode());
+  });
+
   // Resize handler
   window.addEventListener('resize', onResize);
 
@@ -118,6 +124,13 @@ async function init(): Promise<void> {
 // ── Input Handler ──────────────────────────────────────────
 function handleInput(action: InputAction): void {
   if (gameState.isTransitioning) return;
+
+  // 2.5D toggle — always available
+  if (action === InputAction.Toggle25D) {
+    toggle25D();
+    update25DButton(is25DMode());
+    return;
+  }
 
   // When dialog is open: Up/Down navigate links, Enter opens, Esc dismisses
   // Left/Right still move the player (dialog auto-hides on walk away)

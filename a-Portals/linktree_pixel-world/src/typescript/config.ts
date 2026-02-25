@@ -9,6 +9,8 @@ export const ANIM_FRAME_DURATION = 150; // ms per walk frame
 export const INTERACTION_DISTANCE = 1; // tiles
 export const CAMERA_LERP = 0.12;
 export const ZONE_TRANSITION_MS = 400;
+export const Y_COMPRESS_25D = 0.6;
+export const Y_COMPRESS_LERP = 0.08;
 
 // Pixel palette (NES-inspired)
 export const COLORS = {

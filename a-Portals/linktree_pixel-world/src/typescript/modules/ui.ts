@@ -62,6 +62,11 @@ export function showLoading(): void {
   loadingEl.removeAttribute('hidden');
 }
 
+/** Update 2.5D toggle button active state. */
+export function update25DButton(isActive: boolean): void {
+  document.getElementById('btn-25d')!.classList.toggle('active', isActive);
+}
+
 // ── World Title ────────────────────────────────────────────
 
 /** Update the persistent world title bar based on current zone. */

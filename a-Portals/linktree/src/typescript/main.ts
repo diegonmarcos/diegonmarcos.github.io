@@ -57,12 +57,16 @@ function initApp(): void {
     requestAnimationFrame(() => {
       const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
       const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
+      const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
 
       if (controlsFab) {
         controlsFab.style.visibility = 'visible';
       }
       if (mindmapBtn) {
         mindmapBtn.style.visibility = 'visible';
+      }
+      if (pixelworldBtn) {
+        pixelworldBtn.style.visibility = 'visible';
       }
     });
   });

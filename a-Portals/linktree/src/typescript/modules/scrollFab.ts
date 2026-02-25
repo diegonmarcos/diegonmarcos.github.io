@@ -7,6 +7,7 @@
 export function initScrollFab(): void {
   const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
   const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
+  const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
   const controlsList = document.getElementById('controls-list') as HTMLElement;
 
   if (!controlsFab || !mindmapBtn || !controlsList) {
@@ -43,6 +44,11 @@ export function initScrollFab(): void {
       mindmapBtn.style.transition = 'none';
       mindmapBtn.style.opacity = '0';
       mindmapBtn.style.pointerEvents = 'none';
+      if (pixelworldBtn) {
+        pixelworldBtn.style.transition = 'none';
+        pixelworldBtn.style.opacity = '0';
+        pixelworldBtn.style.pointerEvents = 'none';
+      }
     }
   }
 
@@ -59,6 +65,11 @@ export function initScrollFab(): void {
       mindmapBtn.style.transition = 'none';
       mindmapBtn.style.opacity = '1';
       mindmapBtn.style.pointerEvents = 'auto';
+      if (pixelworldBtn) {
+        pixelworldBtn.style.transition = 'none';
+        pixelworldBtn.style.opacity = '1';
+        pixelworldBtn.style.pointerEvents = 'auto';
+      }
     }
   }
 
@@ -88,7 +99,7 @@ export function initScrollFab(): void {
   }
 
   // Prevent hiding when interacting with FABs
-  const fabElements = [controlsFab, mindmapBtn];
+  const fabElements = [controlsFab, mindmapBtn, ...(pixelworldBtn ? [pixelworldBtn] : [])];
   fabElements.forEach(element => {
     // Touch/click start - mark as interacting
     element.addEventListener('touchstart', () => {

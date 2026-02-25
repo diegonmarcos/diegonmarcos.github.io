@@ -91,6 +91,19 @@ jobs:
           cd ../..
           echo "✅ Linktree Mindmap build complete"
 
+      - name: 🔨 Build Linktree Pixel World
+        id: build-linktree-pixel-world
+        if: >-
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/')
+          || hashFiles('a-Portals/linktree_pixel-world/dist/**') == ''
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Linktree Pixel World..."
+          cd a-Portals/linktree_pixel-world
+          bash build.sh build
+          cd ../..
+          echo "✅ Linktree Pixel World build complete"
+
       - name: 🔨 Build CV Web
         id: build-cv-web
         if: >-
@@ -441,6 +454,13 @@ jobs:
             echo "✅ SUCCESS: Linktree Mindmap"
           fi
 
+          if [ "${{ steps.build-linktree-pixel-world.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Linktree Pixel World"
+            FAILED="$FAILED linktree_pixel-world"
+          elif [ "${{ steps.build-linktree-pixel-world.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Linktree Pixel World"
+          fi
+
           if [ "${{ steps.build-cv-web.outcome }}" == "failure" ]; then
             echo "❌ FAILED: CV Web"
             FAILED="$FAILED cv_web"
@@ -712,6 +732,16 @@ jobs:
             echo "✅ Linktree Mindmap build copied to _site/linktree_mindmap/"
           else
             echo "⏭️  Skipping Linktree Mindmap copy (no dist directory found)"
+          fi
+
+          # Copy Linktree Pixel World build (if dist exists)
+          if [ -d "a-Portals/linktree_pixel-world/dist" ]; then
+            echo "📦 Copying Linktree Pixel World build..."
+            mkdir -p _site/linktree_pixel-world
+            cp -rL a-Portals/linktree_pixel-world/dist/* _site/linktree_pixel-world/ 2>/dev/null || cp -r a-Portals/linktree_pixel-world/dist/* _site/linktree_pixel-world/
+            echo "✅ Linktree Pixel World build copied to _site/linktree_pixel-world/"
+          else
+            echo "⏭️  Skipping Linktree Pixel World copy (no dist directory found)"
           fi
 
           # Copy CV Web build (if dist exists)

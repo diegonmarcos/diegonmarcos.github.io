@@ -42,7 +42,7 @@ jobs:
       - name: 🔨 Build Root Index (e-Root)
         id: build-c-root
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'e-Root/')
+          contains(steps.changed-files.outputs.all_changed_files, 'e-Root/src/')
           || hashFiles('e-Root/dist/**') == ''
         continue-on-error: true
         run: |
@@ -55,7 +55,7 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/src/')
           || hashFiles('b-Profiles/landpage/dist/**') == ''
         continue-on-error: true
         run: |
@@ -68,7 +68,7 @@ jobs:
       - name: 🔨 Build Linktree
         id: build-linktree
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/src/')
           || hashFiles('a-Portals/linktree/dist/**') == ''
         continue-on-error: true
         run: |
@@ -81,7 +81,7 @@ jobs:
       - name: 🔨 Build Linktree Mindmap
         id: build-linktree-mindmap
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/src/')
           || hashFiles('a-Portals/linktree_mindmap/dist/**') == ''
         continue-on-error: true
         run: |
@@ -94,7 +94,7 @@ jobs:
       - name: 🔨 Build Linktree Pixel World
         id: build-linktree-pixel-world
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/src/')
           || hashFiles('a-Portals/linktree_pixel-world/dist/**') == ''
         continue-on-error: true
         run: |
@@ -107,7 +107,7 @@ jobs:
       - name: 🔨 Build CV Web
         id: build-cv-web
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/src/')
           || hashFiles('b-Profiles/cv_web/dist/**') == ''
         continue-on-error: true
         run: |
@@ -120,7 +120,7 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/src/')
           || hashFiles('c-Tools/myfeed/dist/**') == ''
         continue-on-error: true
         run: |
@@ -133,7 +133,7 @@ jobs:
       - name: 🔨 Build MyGames
         id: build-mygames
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/src/')
           || hashFiles('c-Tools/mygames/dist/**') == ''
         continue-on-error: true
         run: |
@@ -146,7 +146,7 @@ jobs:
       - name: 🔨 Build Nexus
         id: build-nexus
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/src/')
           || hashFiles('b-Profiles/nexus/dist/**') == ''
         continue-on-error: true
         run: |
@@ -159,7 +159,7 @@ jobs:
       - name: 🔨 Build Cloud Dashboard
         id: build-cloud
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/src/')
           || hashFiles('a-Portals/cloud/dist/**') == ''
         continue-on-error: true
         run: |
@@ -172,7 +172,7 @@ jobs:
       - name: 🔨 Build Feed Yourself
         id: build-feed-yourself
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/src/')
           || hashFiles('c-Tools/feed_yourself/dist/**') == ''
         continue-on-error: true
         run: |
@@ -185,7 +185,7 @@ jobs:
       - name: 🔨 Build Others
         id: build-others
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/')
+          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/src/')
           || hashFiles('e-Others/others/dist/**') == ''
         continue-on-error: true
         run: |
@@ -198,7 +198,7 @@ jobs:
       - name: 🔨 Build Sailytics
         id: build-sailytics
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/')
+          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/src/')
           || hashFiles('e-Others/sailytics/dist/**') == ''
         continue-on-error: true
         run: |
@@ -211,7 +211,7 @@ jobs:
       - name: 🔨 Build MyMail
         id: build-mymail
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/src/')
           || hashFiles('c-Suite/mymail/dist/**') == ''
         continue-on-error: true
         run: |
@@ -224,7 +224,7 @@ jobs:
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/src/')
           || hashFiles('c-Suite/myphotos/dist/**') == ''
         continue-on-error: true
         run: |
@@ -237,7 +237,7 @@ jobs:
       - name: 🔨 Build MyAnalytics
         id: build-myanalytics
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/src/')
           || hashFiles('c-Suite/myanalytics/dist/**') == ''
         continue-on-error: true
         run: |
@@ -250,7 +250,7 @@ jobs:
       - name: 🔨 Build Suite
         id: build-suite
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')
           || hashFiles('c-Suite/suite/dist/**') == ''
         continue-on-error: true
         run: |
@@ -263,7 +263,7 @@ jobs:
       - name: 🔨 Build Health Tracker
         id: build-health-tracker
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/src/')
           || hashFiles('c-Tools/health_tracker/dist/**') == ''
         continue-on-error: true
         run: |
@@ -276,7 +276,7 @@ jobs:
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/src/')
           || hashFiles('c-Tools/market_watch/dist/**') == ''
         continue-on-error: true
         run: |
@@ -289,7 +289,7 @@ jobs:
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/src/')
           || hashFiles('c-Tools/central_bank/dist/**') == ''
         continue-on-error: true
         run: |
@@ -302,7 +302,7 @@ jobs:
       - name: 🔨 Build MyProfile
         id: build-myprofile
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/src/')
           || hashFiles('b-Profiles/myprofile/dist/**') == ''
         continue-on-error: true
         run: |
@@ -315,7 +315,7 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/src/')
           || hashFiles('c-Tools/mymovies/dist/**') == ''
         continue-on-error: true
         run: |
@@ -328,7 +328,7 @@ jobs:
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/src/')
           || hashFiles('c-Tools/mymusic/dist/**') == ''
         continue-on-error: true
         run: |
@@ -341,7 +341,7 @@ jobs:
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/src/')
           || hashFiles('c-Suite/json-vision/dist/**') == ''
         continue-on-error: true
         run: |
@@ -354,7 +354,7 @@ jobs:
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/src/')
           || hashFiles('c-Tools/carto/dist/**') == ''
         continue-on-error: true
         run: |
@@ -367,7 +367,7 @@ jobs:
       - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mytrips
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/')
           || hashFiles('c-Tools/mytrips/dist/**') == ''
         continue-on-error: true
         run: |
@@ -380,7 +380,7 @@ jobs:
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/src/')
           || hashFiles('b-Profiles/leafy/dist/**') == ''
         continue-on-error: true
         run: |
@@ -393,7 +393,7 @@ jobs:
       - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
         id: build-mymaps-svelte
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/src/')
           || hashFiles('c-Tools/mymaps/dist/**') == ''
         continue-on-error: true
         run: |
@@ -406,7 +406,7 @@ jobs:
       - name: 🔨 Build Maps Classic (React + Vite)
         id: build-maps-classic
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/src/')
           || hashFiles('c-Tools/maps/dist/**') == ''
         continue-on-error: true
         run: |
@@ -422,7 +422,7 @@ jobs:
       - name: 🔨 Build CV PDF
         id: build-cv-pdf
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_pdf/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_pdf/src/')
           || hashFiles('b-Profiles/cv_pdf/dist/**') == ''
         continue-on-error: true
         run: |
@@ -435,7 +435,7 @@ jobs:
       - name: 🔨 Build Astro
         id: build-astro
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/astro/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/astro/src/')
           || hashFiles('c-Tools/astro/dist/**') == ''
         continue-on-error: true
         run: |
@@ -448,7 +448,7 @@ jobs:
       - name: 🔨 Build Skills & MCP Docs
         id: build-skills-mcp
         if: >-
-          contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/skills_mcp/')
+          contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/skills_mcp/src/')
           || hashFiles('d-Cloud/skills_mcp/dist/**') == ''
         continue-on-error: true
         run: |

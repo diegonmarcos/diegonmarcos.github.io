@@ -7,6 +7,7 @@ import { SliderDataSource } from './data/api-adapter';
 import type { DataSource } from './data/api-adapter';
 import { Canvas2DRenderer } from './renderer/canvas2d';
 import { Scene3DRenderer } from './renderer/scene3d';
+import { BGShader } from './renderer/bg-shader';
 import { initControls, initViewToggle } from './ui/controls';
 import { initHUD, updateHUD } from './ui/hud';
 import { BOAT_DEFAULTS } from './data/defaults.js';
@@ -22,6 +23,13 @@ function getEl<T extends HTMLElement>(id: string): T {
 const canvas2d = getEl<HTMLCanvasElement>('canvas-2d');
 const container2d = getEl<HTMLDivElement>('canvas-2d-container');
 const container3d = getEl<HTMLDivElement>('container-3d');
+
+let bgShader: BGShader | null = null;
+try {
+  bgShader = new BGShader(container2d);
+} catch (e) {
+  console.warn('WebGL background shader failed, using fallback:', e);
+}
 
 const renderer2d = new Canvas2DRenderer(canvas2d, container2d);
 const renderer3d = new Scene3DRenderer(container3d);

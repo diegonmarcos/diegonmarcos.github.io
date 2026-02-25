@@ -4,8 +4,8 @@
 
 // Propulsion mode buttons (SAIL / ROTOR / HYBRID)
 .btn-mode {
-  padding: var(--space-xs) var(--space-md);
-  font-size: 0.6rem;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   border: none;
@@ -31,8 +31,8 @@
 
 // View toggle buttons (2D / 3D)
 .btn-view {
-  padding: var(--space-xs) var(--space-md);
-  font-size: 0.55rem;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   border: none;

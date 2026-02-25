@@ -1,94 +1,123 @@
 import {
   Mesh,
   PlaneGeometry,
-  MeshStandardMaterial,
+  ShaderMaterial,
   DoubleSide,
+  Vector3,
 } from 'three';
 
-/**
- * Procedural underwater terrain using Perlin-like noise
- * Semi-transparent so terrain visible through water
- */
 export class UnderwaterTerrain {
   mesh: Mesh;
   private geometry: PlaneGeometry;
+  private material: ShaderMaterial;
 
   constructor(size: number = 500, segments: number = 64) {
     this.geometry = new PlaneGeometry(size, size, segments, segments);
-
-    // Generate heightmap using simple multi-octave noise
     this.generateHeightmap();
 
-    const material = new MeshStandardMaterial({
-      color: 0x2d5f7a,
-      transparent: true,
-      opacity: 0.8,
-      roughness: 0.9,
-      metalness: 0.1,
+    this.material = new ShaderMaterial({
       side: DoubleSide,
-      emissive: 0x0a2030,
-      emissiveIntensity: 0.3,
+      uniforms: {
+        uTime: { value: 0 },
+        uBaseColor: { value: new Vector3(0.16, 0.36, 0.48) },
+        uDeepColor: { value: new Vector3(0.06, 0.18, 0.30) },
+        uCausticColor: { value: new Vector3(0.12, 0.40, 0.55) },
+      },
+      vertexShader: `
+        varying vec3 vWorldPos;
+        varying vec3 vNorm;
+        varying float vDepth;
+        void main() {
+          vNorm = normalize(normalMatrix * normal);
+          vec4 wp = modelMatrix * vec4(position, 1.0);
+          vWorldPos = wp.xyz;
+          vDepth = position.z;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float uTime;
+        uniform vec3 uBaseColor;
+        uniform vec3 uDeepColor;
+        uniform vec3 uCausticColor;
+        varying vec3 vWorldPos;
+        varying vec3 vNorm;
+        varying float vDepth;
+
+        float caustic(vec2 uv, float t) {
+          float c = 0.0;
+          mat2 m = mat2(1.6, 1.2, -1.2, 1.6);
+          vec2 p = uv;
+          for (int i = 0; i < 3; i++) {
+            c += abs(sin(p.x + sin(p.y + t)));
+            p = m * p * 0.5;
+            t *= 1.1;
+          }
+          return c / 3.0;
+        }
+
+        void main() {
+          // Height-based color blending
+          float h = clamp(vDepth * 0.08 + 0.5, 0.0, 1.0);
+          vec3 col = mix(uDeepColor, uBaseColor, h);
+
+          // Animated caustic pattern
+          float ca = caustic(vWorldPos.xz * 0.12, uTime * 0.25);
+          col += uCausticColor * ca * 0.2;
+
+          // Diffuse lighting
+          vec3 lightDir = normalize(vec3(0.3, 1.0, 0.2));
+          float diff = max(dot(normalize(vNorm), lightDir), 0.0) * 0.4 + 0.6;
+          col *= diff;
+
+          // Emissive base glow
+          col += vec3(0.05, 0.12, 0.18);
+
+          gl_FragColor = vec4(col, 1.0);
+        }
+      `,
     });
 
-    this.mesh = new Mesh(this.geometry, material);
+    this.mesh = new Mesh(this.geometry, this.material);
     this.mesh.rotation.x = -Math.PI / 2;
-    this.mesh.position.y = -5; // Closer to surface for visibility
+    this.mesh.position.y = -3;
   }
 
-  /**
-   * Generate procedural heightmap using multi-octave noise
-   */
+  update(time: number): void {
+    this.material.uniforms.uTime.value = time;
+  }
+
   private generateHeightmap(): void {
-    const positions = this.geometry.attributes.position;
-    const vertex = { x: 0, y: 0, z: 0 };
-
-    for (let i = 0; i < positions.count; i++) {
-      vertex.x = positions.getX(i);
-      vertex.y = positions.getY(i);
-      vertex.z = positions.getZ(i);
-
-      // Multi-octave noise (simplified)
-      const scale = 0.02;
-      const height =
-        this.noise2D(vertex.x * scale, vertex.y * scale) * 8 +
-        this.noise2D(vertex.x * scale * 2, vertex.y * scale * 2) * 4 +
-        this.noise2D(vertex.x * scale * 4, vertex.y * scale * 4) * 2;
-
-      positions.setZ(i, height - 5); // Offset down
+    const pos = this.geometry.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i);
+      const y = pos.getY(i);
+      const s = 0.02;
+      const h =
+        this.noise2D(x * s, y * s) * 10 +
+        this.noise2D(x * s * 2, y * s * 2) * 5 +
+        this.noise2D(x * s * 4, y * s * 4) * 2.5 +
+        this.noise2D(x * s * 8, y * s * 8) * 1;
+      pos.setZ(i, h - 4);
     }
-
-    positions.needsUpdate = true;
+    pos.needsUpdate = true;
     this.geometry.computeVertexNormals();
   }
 
-  /**
-   * Simple 2D noise function (hash-based, deterministic)
-   */
   private noise2D(x: number, y: number): number {
-    // Simple hash-based noise
     const X = Math.floor(x);
     const Y = Math.floor(y);
-
     const sx = x - X;
     const sy = y - Y;
-
-    // Interpolation weights
     const u = sx * sx * (3 - 2 * sx);
     const v = sy * sy * (3 - 2 * sy);
-
-    // Hash values
     const a = this.hash2D(X, Y);
     const b = this.hash2D(X + 1, Y);
     const c = this.hash2D(X, Y + 1);
     const d = this.hash2D(X + 1, Y + 1);
-
-    // Bilinear interpolation
-    return this.lerp(this.lerp(a, b, u), this.lerp(c, d, u), v);
+    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
   }
 
-  /**
-   * Simple 2D hash function
-   */
   private hash2D(x: number, y: number): number {
     let h = x * 374761393 + y * 668265263;
     h = (h ^ (h >>> 13)) * 1274126177;
@@ -96,37 +125,8 @@ export class UnderwaterTerrain {
     return (h & 0xffffffff) / 0xffffffff;
   }
 
-  private lerp(a: number, b: number, t: number): number {
-    return a + (b - a) * t;
-  }
-
-  /**
-   * Set heightmap from external data (e.g., bathymetry API)
-   */
-  setHeightmap(data: { x: number; y: number; depth: number }[]): void {
-    // Future: interpolate external bathymetry data to geometry vertices
-    const positions = this.geometry.attributes.position;
-
-    for (const point of data) {
-      // Find nearest vertices and update heights
-      // (Simplified: would need spatial indexing for performance)
-      for (let i = 0; i < positions.count; i++) {
-        const vx = positions.getX(i);
-        const vy = positions.getY(i);
-
-        const dist = Math.sqrt((vx - point.x) ** 2 + (vy - point.y) ** 2);
-        if (dist < 5) {
-          positions.setZ(i, -point.depth);
-        }
-      }
-    }
-
-    positions.needsUpdate = true;
-    this.geometry.computeVertexNormals();
-  }
-
   destroy(): void {
     this.mesh.geometry.dispose();
-    (this.mesh.material as MeshStandardMaterial).dispose();
+    this.material.dispose();
   }
 }

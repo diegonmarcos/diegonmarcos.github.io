@@ -182,6 +182,19 @@ jobs:
           cd ../..
           echo "✅ Others build complete"
 
+      - name: 🔨 Build Sailytics
+        id: build-sailytics
+        if: >-
+          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/')
+          || hashFiles('e-Others/sailytics/dist/**') == ''
+        continue-on-error: true
+        run: |
+          echo "🔨 Building Sailytics..."
+          cd e-Others/sailytics
+          bash build.sh build
+          cd ../..
+          echo "✅ Sailytics build complete"
+
       - name: 🔨 Build MyMail
         id: build-mymail
         if: >-
@@ -477,6 +490,13 @@ jobs:
             echo "✅ SUCCESS: Others"
           fi
 
+          if [ "${{ steps.build-sailytics.outcome }}" == "failure" ]; then
+            echo "❌ FAILED: Sailytics"
+            FAILED="$FAILED sailytics"
+          elif [ "${{ steps.build-sailytics.outcome }}" == "success" ]; then
+            echo "✅ SUCCESS: Sailytics"
+          fi
+
           if [ "${{ steps.build-health-tracker.outcome }}" == "failure" ]; then
             echo "❌ FAILED: Health Tracker"
             FAILED="$FAILED health_tracker"
@@ -634,6 +654,14 @@ jobs:
 
           # Copy others (static site)
           cp -r e-Others/others/ _site/ 2>/dev/null || true
+
+          # Copy Sailytics build (if dist exists)
+          if [ -d "e-Others/sailytics/dist" ]; then
+            echo "📦 Copying Sailytics build..."
+            mkdir -p _site/sailytics
+            cp -rL e-Others/sailytics/dist/* _site/sailytics/ 2>/dev/null || true
+            echo "✅ Sailytics build copied to _site/sailytics/"
+          fi
 
           # Copy MyMail build (if dist exists)
           if [ -d "c-Suite/mymail/dist" ]; then

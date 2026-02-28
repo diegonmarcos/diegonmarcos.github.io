@@ -88,6 +88,9 @@
                 <button class="view-btn" data-dash-parent="ops">Ops</button>
                 <span class="nav-divider"></span>
                 <button class="view-btn" data-dash-tab="apps">Apps</button>
+                <span class="nav-divider"></span>
+                <a href="https://api.diegonmarcos.com/c3-api/dash" class="view-btn" target="_blank" rel="noopener">C3-api</a>
+                <a href="https://proxy.diegonmarcos.com" class="view-btn" target="_blank" rel="noopener">Proxy</a>
             </div>
             <!-- Level 3: Sub-navigation for Topology -->
             <div class="nav-level3-wrapper nav-hidden" id="nav-topology">
@@ -3439,8 +3442,8 @@
         // =================================================================
         // CONFIGURATION
         // =================================================================
-        const apiUrl = 'https://api.diegonmarcos.com/api';
-        const rustUrl = 'https://api.diegonmarcos.com/rust';
+        const apiUrl = 'https://api.diegonmarcos.com/flask/api';
+        const rustUrl = 'https://api.diegonmarcos.com/api';
         const GITHUB_CLIENT_ID = 'Ov23liOg9JhezyYUCHmS';
         const GITHUB_REDIRECT_URI = window.location.href.split('?')[0];
 
@@ -4123,7 +4126,7 @@
         async function discoverWakeVmId() {
             if (WAKE_VM_ID) return WAKE_VM_ID;
             try {
-                const res = await fetch(`${rustUrl}/health/ids`, { signal: AbortSignal.timeout(5000) });
+                const res = await fetch(`${rustUrl}/health/declared`, { signal: AbortSignal.timeout(5000) });
                 if (!res.ok) return null;
                 const data = await res.json();
                 for (const [id, vm] of Object.entries(data.vms || {})) {
@@ -4137,7 +4140,7 @@
             try {
                 const id = await discoverWakeVmId();
                 if (!id) throw new Error('VM not discovered');
-                const resp = await fetch(`${rustUrl}/health/${id}`);
+                const resp = await fetch(`${rustUrl}/health/status/${id}`);
                 const data = await resp.json();
 
                 const statusEl = document.getElementById('dev-server-status');
@@ -4207,7 +4210,7 @@
                         textEl.textContent = `Starting... (${attempts * 5}s)`;
 
                         try {
-                            const statusResp = await fetch(`${rustUrl}/health/${WAKE_VM_ID}`);
+                            const statusResp = await fetch(`${rustUrl}/health/status/${WAKE_VM_ID}`);
                             const statusData = await statusResp.json();
                             const state = statusData.health === 'online' || statusData.ping === true ? 'RUNNING' : statusData.provider_state;
 

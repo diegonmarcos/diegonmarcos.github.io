@@ -202,17 +202,17 @@
         <strong>Quick Access:</strong>
         <a href="https://cloud.diegonmarcos.com" target="_blank">Dashboard</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com:8080/api/health/alive" target="_blank">Rust Health</a>
+        <a href="https://api.diegonmarcos.com/c3-api/health/status" target="_blank">C3 Health</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com:8080/api/health/status" target="_blank">Full Status</a>
+        <a href="https://api.diegonmarcos.com/c3-api/topology" target="_blank">Topology</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com:8080/api/health/drift" target="_blank">Drift</a>
+        <a href="https://api.diegonmarcos.com/c3-api/dash" target="_blank">C3 Dashboard</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com:8080/api/docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
+        <a href="https://api.diegonmarcos.com/c3-api/docs/json" target="_blank">C3 Spec (JSON)</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/rust-api/docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
         <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/flask/apispec.json" target="_blank">Flask Spec (JSON)</a>
-        <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com:8080/api/services" target="_blank">Service Discovery</a>
         <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/crawlee/" target="_blank">Crawlee Dashboard</a>
         <span class="separator">|</span>
@@ -259,10 +259,11 @@
         // Initialize Swagger UI with both APIs
         window.ui = SwaggerUIBundle({
             urls: [
-                { url: 'https://api.diegonmarcos.com:8080/api/docs/openapi.json', name: 'Rust API (Infrastructure)' },
+                { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API (Primary)' },
+                { url: 'https://api.diegonmarcos.com/rust-api/docs/openapi.json', name: 'Rust API (Legacy)' },
                 { url: 'https://api.diegonmarcos.com/flask/apispec.json', name: 'Flask API (Central)' }
             ],
-            "urls.primaryName": "Rust API (Infrastructure)",
+            "urls.primaryName": "C3 API (Primary)",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [

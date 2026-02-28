@@ -145,6 +145,7 @@
                 <div class="nav-level3">
                     <button class="view-btn active" data-dash-tab="cost">Cost</button>
                     <button class="view-btn" data-dash-tab="capacity">Capacity</button>
+                    <button class="view-btn" data-dash-tab="workflows">Workflows</button>
                 </div>
             </div>
             <!-- Level 4: Cost sub-tabs (under Ops) -->
@@ -1951,6 +1952,21 @@
                 </div>
             </div>
         </div><!-- End Capacity Tab -->
+
+        <!-- Workflows Tab Content -->
+        <div id="workflows-tab" class="tab-content">
+            <div class="resources-category">
+                <h3 class="resources-category-title">Dagu Workflow Scheduler</h3>
+                <p class="text-secondary mb-3">Monitor and manage DAG-based workflow executions</p>
+                <div class="resources-section" style="padding: 0;">
+                    <iframe
+                        src="https://workflows.diegonmarcos.com"
+                        style="width: 100%; height: calc(100vh - 200px); border: 1px solid var(--border-color); border-radius: 8px;"
+                        title="Dagu Workflows"
+                    ></iframe>
+                </div>
+            </div>
+        </div><!-- End Workflows Tab -->
 
         <!-- Apps Tab Content -->
         <div id="apps-tab" class="tab-content">
@@ -6184,7 +6200,7 @@
             const parentButtons = document.querySelectorAll('[data-dash-parent]');
             const tabContents = document.querySelectorAll('.tab-content');
             const loadedTabs = { resources: true };
-            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity', 'profiling'];
+            const validTabs = ['status', 'resources', 'cost', 'apps', 'security', 'infra', 'audit-analytics', 'audit-logs', 'capacity', 'profiling', 'workflows'];
             // Map legacy tab names to new names
             const tabAliases = { 'performance': 'resources' };
             // Map tabs to their parent groups
@@ -6196,7 +6212,8 @@
                 'audit-analytics': 'security',
                 'audit-logs': 'security',
                 'cost': 'ops',
-                'capacity': 'ops'
+                'capacity': 'ops',
+                'workflows': 'ops'
             };
 
             function hideAllLevel3Navs() {

@@ -2425,7 +2425,7 @@
     <!-- Products VM Control (oci-flex) -->
     <script>
     (function() {
-        var RUST_API = 'https://api.diegonmarcos.com/rust';
+        var RUST_API = 'https://api.diegonmarcos.com/api';
         var VM_LABEL = 'oci-flex';
         var vmId = null;
 
@@ -2447,8 +2447,8 @@
 
         function discoverVmId() {
             if (vmId) return Promise.resolve(vmId);
-            console.debug('[vmControl] discovering VM via /rust/health/ids ...');
-            return fetch(RUST_API + '/health/ids', { signal: AbortSignal.timeout(10000) })
+            console.debug('[vmControl] discovering VM via /api/health/declared ...');
+            return fetch(RUST_API + '/health/declared', { signal: AbortSignal.timeout(10000) })
                 .then(function(r) { if (!r.ok) { console.debug('[vmControl] discovery HTTP', r.status); return null; } return r.json(); })
                 .then(function(data) {
                     if (!data || !data.vms) return null;
@@ -2471,7 +2471,7 @@
             setIndicator('yellow');
             discoverVmId().then(function(id) {
                 if (!id) { setIndicator('blue'); return; }
-                var url = RUST_API + '/health/up/' + id;
+                var url = RUST_API + '/health/status/' + id;
                 console.debug('[vmControl] checking status:', url);
                 var t0 = performance.now();
                 return fetch(url, { signal: AbortSignal.timeout(10000) })

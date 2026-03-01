@@ -233,22 +233,16 @@ resolve_deps() {
     return $EXIT_DEPS
 }
 
-# ─── TOOL FINDER ────────────────────────────────────────────
-# Find a tool binary: system PATH → repo node_modules/.bin → project node_modules/.bin
-find_tool() {
-    local tool="$1"
-    command -v "$tool" 2>/dev/null && return 0
-
-    local repo_root
-    repo_root="$(cd "$PROJECT_DIR" && git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
-    [ -n "$repo_root" ] && [ -x "$repo_root/node_modules/.bin/$tool" ] && {
-        echo "$repo_root/node_modules/.bin/$tool"; return 0
-    }
-    [ -x "$PROJECT_DIR/node_modules/.bin/$tool" ] && {
-        echo "$PROJECT_DIR/node_modules/.bin/$tool"; return 0
-    }
-
-    return 1
+# ─── TOOL RUNNER ─────────────────────────────────────────────
+# Run a tool: PATH first (Nix / node_modules/.bin), npx fallback
+run_tool() {
+    local tool="$1"; shift
+    if command -v "$tool" >/dev/null 2>&1; then
+        "$tool" "$@"
+    else
+        log_verbose "fallback: npx $tool"
+        npx "$tool" "$@"
+    fi
 }
 
 # ─── BUILD MODULES ──────────────────────────────────────────
@@ -260,13 +254,12 @@ mod_sass() {
     local mode="${3:-prod}"
 
     [ -f "$input" ] || { log_error "sass: input not found: $input"; return $EXIT_BUILD; }
-    find_tool sass >/dev/null || { log_error "sass not found"; return $EXIT_DEPS; }
     mkdir -p "$(dirname "$output")"
 
     if [ "$mode" = "dev" ]; then
-        npx sass "$input" "$output" --style=expanded --source-map
+        run_tool sass "$input" "$output" --style=expanded --source-map
     else
-        npx sass "$input" "$output" --style=compressed --no-source-map
+        run_tool sass "$input" "$output" --style=compressed --no-source-map
     fi
     [ -f "$output" ] || { log_error "sass produced no output"; return $EXIT_BUILD; }
     log_success "sass: $(basename "$2")"
@@ -281,7 +274,6 @@ mod_esbuild() {
     local target="${5:-es2020}"
 
     [ -f "$input" ] || { log_error "esbuild: input not found: $input"; return $EXIT_BUILD; }
-    find_tool esbuild >/dev/null || { log_error "esbuild not found"; return $EXIT_DEPS; }
     mkdir -p "$(dirname "$output")"
 
     local args="--bundle --format=$format --target=$target --outfile=$output"
@@ -291,7 +283,7 @@ mod_esbuild() {
         args="$args --minify"
     fi
 
-    npx esbuild "$input" $args
+    run_tool esbuild "$input" $args
     [ -f "$output" ] || { log_error "esbuild produced no output"; return $EXIT_BUILD; }
     log_success "esbuild: $(basename "$2")"
 }
@@ -303,13 +295,12 @@ mod_tsc() {
     local mode="${3:-prod}"
 
     [ -d "$dir" ] || { log_error "tsc: dir not found: $dir"; return $EXIT_BUILD; }
-    find_tool tsc >/dev/null || { log_error "tsc not found"; return $EXIT_DEPS; }
 
     cd "$dir"
     if [ "$mode" = "dev" ]; then
-        npx tsc --sourceMap
+        run_tool tsc --sourceMap
     else
-        npx tsc
+        run_tool tsc
     fi
 
     # Move output to dist if specified
@@ -325,19 +316,7 @@ mod_tsc() {
 mod_vite() {
     cd "$PROJECT_DIR"
     log_info "Running vite build..."
-    if find_tool vite >/dev/null; then
-        local vite_bin
-        vite_bin="$(find_tool vite)"
-        local repo_root
-        repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
-        if [ -n "$repo_root" ] && [ -d "$repo_root/node_modules" ]; then
-            NODE_PATH="$repo_root/node_modules" "$vite_bin" build
-        else
-            "$vite_bin" build
-        fi
-    else
-        npx vite build
-    fi
+    run_tool vite build
     [ -d "$DIST_DIR" ] || { log_error "vite produced no output"; return $EXIT_BUILD; }
     log_success "vite: build complete"
 }
@@ -557,7 +536,7 @@ start_server() {
             else
                 mode="vite"
             fi
-        elif find_tool live-server >/dev/null 2>&1; then
+        elif command -v live-server >/dev/null 2>&1; then
             mode="live-server"
         elif command -v node >/dev/null 2>&1; then
             mode="node-static"
@@ -599,7 +578,7 @@ start_server() {
             ;;
         live-server)
             [ -d "$serve_dir" ] || serve_dir="$PROJECT_DIR"
-            nohup npx live-server "$serve_dir" --port="$port" --no-browser --quiet > /dev/null 2>&1 &
+            nohup live-server "$serve_dir" --port="$port" --no-browser --quiet > /dev/null 2>&1 &
             _write_pid "$!" "$port" "live-server"
             ;;
         node-static)
@@ -657,14 +636,14 @@ start_watchers() {
 
         case "$_mod" in
             sass)
-                nohup npx sass "$serve_dir/$_input" "$serve_dir/$_output" --watch --style=expanded --source-map > /dev/null 2>&1 &
+                nohup sass "$serve_dir/$_input" "$serve_dir/$_output" --watch --style=expanded --source-map > /dev/null 2>&1 &
                 _append_pid "$!" "sass"
                 log_step "watcher: sass"
                 ;;
             esbuild)
                 local fmt="${_format:-iife}"
                 local tgt="${_target:-es2020}"
-                nohup npx esbuild "$serve_dir/$_input" --bundle --outfile="$serve_dir/$_output" --format="$fmt" --target="$tgt" --sourcemap --watch=forever > /dev/null 2>&1 &
+                nohup esbuild "$serve_dir/$_input" --bundle --outfile="$serve_dir/$_output" --format="$fmt" --target="$tgt" --sourcemap --watch=forever > /dev/null 2>&1 &
                 _append_pid "$!" "esbuild"
                 log_step "watcher: esbuild"
                 ;;
@@ -672,7 +651,7 @@ start_watchers() {
                 local tsc_dir="$serve_dir"
                 [ -n "$_input" ] && tsc_dir="$serve_dir/$_input"
                 cd "$tsc_dir"
-                nohup npx tsc --watch > /dev/null 2>&1 &
+                nohup tsc --watch > /dev/null 2>&1 &
                 _append_pid "$!" "tsc"
                 cd "$PROJECT_DIR"
                 log_step "watcher: tsc"

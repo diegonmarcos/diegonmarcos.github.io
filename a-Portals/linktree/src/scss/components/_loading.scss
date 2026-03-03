@@ -36,15 +36,6 @@
 .loading-logo {
   margin-bottom: 2rem;
 
-  h2 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-    margin: 1rem 0 0.5rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
   p {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.9rem;
@@ -52,20 +43,139 @@
   }
 }
 
-.loading-spinner {
-  width: 60px;
-  height: 60px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: #60a5fa;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+// ── Code bracket spinner ───────────────────────────────────────────
+.code-spinner {
+  font-family: 'Courier New', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
   margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15em;
+  height: 60px;
+
+  .bracket {
+    color: #60a5fa;
+    display: inline-block;
+
+    &.left {
+      animation: bracket-left 1.5s ease-in-out infinite;
+    }
+
+    &.right {
+      animation: bracket-right 1.5s ease-in-out infinite;
+    }
+  }
+
+  .slash {
+    color: #f472b6;
+    display: inline-block;
+    animation: slash-spin 1.5s ease-in-out infinite;
+  }
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+@keyframes bracket-left {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(-8px); opacity: 0.6; }
+}
+
+@keyframes bracket-right {
+  0%, 100% { transform: translateX(0); opacity: 1; }
+  50% { transform: translateX(8px); opacity: 0.6; }
+}
+
+@keyframes slash-spin {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(360deg) scale(1.2); }
+}
+
+// ── Glitch text ────────────────────────────────────────────────────
+.glitch {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 1rem 0 0.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  animation: glitch-skew 4s infinite linear alternate-reverse;
+
+  &::before,
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
+
+  &::before {
+    color: #0ff;
+    animation: glitch-top 3s infinite linear alternate-reverse;
+    clip-path: inset(0 0 60% 0);
+  }
+
+  &::after {
+    color: #f0f;
+    animation: glitch-bottom 2.5s infinite linear alternate-reverse;
+    clip-path: inset(60% 0 0 0);
+  }
+}
+
+@keyframes glitch-top {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, -1px); }
+  94% { transform: translate(3px, 1px); }
+  96% { transform: translate(-2px, 0); }
+  98% { transform: translate(2px, -1px); }
+}
+
+@keyframes glitch-bottom {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(2px, 1px); }
+  93% { transform: translate(-3px, 0); }
+  95% { transform: translate(3px, -1px); }
+  97% { transform: translate(-2px, 1px); }
+}
+
+@keyframes glitch-skew {
+  0%, 85%, 100% { transform: skew(0deg); }
+  87% { transform: skew(-0.5deg); }
+  90% { transform: skew(0.5deg); }
+  93% { transform: skew(0deg); }
+}
+
+// ── Cycling subtitle phrases ───────────────────────────────────────
+.loading-subtitle {
+  position: relative;
+  height: 1.4em;
+  overflow: hidden;
+}
+
+.cycle-text {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  opacity: 0;
+  animation: cycle-fade 12.5s infinite;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+
+  &.t1 { animation-delay: 0s; }
+  &.t2 { animation-delay: 2.5s; }
+  &.t3 { animation-delay: 5s; }
+  &.t4 { animation-delay: 7.5s; }
+  &.t5 { animation-delay: 10s; }
+}
+
+@keyframes cycle-fade {
+  0%, 4% { opacity: 0; transform: translateY(8px); }
+  8%, 16% { opacity: 1; transform: translateY(0); }
+  20%, 100% { opacity: 0; transform: translateY(-8px); }
 }
 
 .loading-progress {
@@ -151,12 +261,12 @@
     padding: 1.5rem;
   }
 
-  .loading-logo h2 {
+  .glitch {
     font-size: 1.5rem;
   }
 
-  .loading-spinner {
-    width: 50px;
+  .code-spinner {
+    font-size: 2rem;
     height: 50px;
   }
 

@@ -78,6 +78,19 @@
               </button>
             </div>
           </div>
+          <!-- Political Level Toggle -->
+          <div v-if="currentMapMode === 'political'" class="atlas-level-toggle glass">
+            <button
+              class="atlas-level-toggle__btn"
+              :class="{ 'atlas-level-toggle__btn--active': politicalLevel === 'civilizations' }"
+              @click="setPoliticalLevel('civilizations')"
+            >Civilizations</button>
+            <button
+              class="atlas-level-toggle__btn"
+              :class="{ 'atlas-level-toggle__btn--active': politicalLevel === 'subregions' }"
+              @click="setPoliticalLevel('subregions')"
+            >Sub-Regions</button>
+          </div>
           <!-- Map Legend -->
           <div v-if="showMapLegend" class="atlas-legend glass">
             <div class="atlas-legend__content" v-html="mapLegendContent"></div>
@@ -924,6 +937,8 @@ import { travelData } from '@/data/travel-data';
 import Chart from 'chart.js/auto';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { union } from '@turf/union';
+import { featureCollection } from '@turf/helpers';
 
 declare const L: {
   map: (el: HTMLElement, options: any) => any;
@@ -957,15 +972,123 @@ const timelineSort = ref({ field: 'dateIn' as string, asc: true });
 
 // Atlas map state
 let atlasMap: any = null;
-const currentMapMode = ref('pin');
+const currentMapMode = ref('political');
+const politicalLevel = ref<'civilizations' | 'subregions'>('civilizations');
 const showMapLegend = ref(false);
 const mapLegendContent = ref('');
 const mapModes = [
-  { id: 'pin', name: 'Pins' },
+  { id: 'political', name: 'Political Cultural Regions' },
   { id: 'country', name: 'Countries' },
   { id: 'region', name: 'NomadMania Regions' },
-  { id: 'rel', name: 'Religions' }
+  { id: 'pin', name: 'Cities' },
 ];
+
+// Two-level Political-Social-Cultural Regions
+// Level 1 = Civilizations (e.g. Germanics), Level 2 = Sub-Regions (e.g. Norse-Scand)
+const POLITICAL_REGIONS_CONFIG = [
+  { region: "EUROPE", civilizations: [
+    { name: "Germanics", subregions: [
+      { name: "Central Germanic", countries: ["DE", "CH", "NL", "AT", "LI", "LU"] },
+      { name: "Anglo-Germanic", countries: ["GB", "IE"] },
+      { name: "Norse-Scandinavian", countries: ["SE", "NO", "DK", "IS"] },
+    ]},
+    { name: "Greco-Romans", subregions: [
+      { name: "Franco", countries: ["FR", "BE", "MC"] },
+      { name: "Iberians", countries: ["ES", "PT", "AD"] },
+      { name: "Italics", countries: ["IT", "VA", "MT", "SM"] },
+      { name: "Hellenics", countries: ["GR", "CY"] },
+      { name: "Romance East", countries: ["RO", "MD"] },
+    ]},
+    { name: "Slavs", subregions: [
+      { name: "Balkan Slavs", countries: ["BG", "MK", "RS", "BA", "ME", "HR", "SI"] },
+      { name: "West Slavs", countries: ["PL", "CZ", "SK"] },
+      { name: "East Slavs", countries: ["UA", "RU", "BY"] },
+    ]},
+    { name: "Others Europe", subregions: [
+      { name: "Finno-Ugric", countries: ["EE", "HU", "FI"] },
+      { name: "Baltic", countries: ["LT", "LV"] },
+      { name: "Caucasus", countries: ["AL", "XK", "GE", "AM", "AZ"] },
+    ]},
+  ]},
+  { region: "AMERICAS", civilizations: [
+    { name: "Anglo Americas", subregions: [
+      { name: "Anglo-America", countries: ["US", "CA"] },
+      { name: "Francophone Am.", countries: ["HT"] },
+    ]},
+    { name: "Hispanic Americas", subregions: [
+      { name: "Aztec & Maya", countries: ["MX", "GT", "HN", "SV", "NI", "CR", "PA"] },
+      { name: "Inca-Andeans", countries: ["AR", "CL", "PE", "BO", "EC", "CO", "VE"] },
+      { name: "Caribbean & Other", countries: ["PY", "CU", "DO", "UY"] },
+    ]},
+    { name: "Luso Americas", subregions: [
+      { name: "Luso-African Am.", countries: ["BR"] },
+    ]},
+  ]},
+  { region: "OCEANIA", civilizations: [
+    { name: "Australasia", subregions: [
+      { name: "Anglo-Aboriginal", countries: ["AU"] },
+    ]},
+    { name: "Polynesia", subregions: [
+      { name: "Anglo-Maori", countries: ["NZ"] },
+      { name: "Island Polynesia", countries: ["WS", "TO", "TV"] },
+    ]},
+    { name: "Micromelanesia", subregions: [
+      { name: "Micronesia", countries: ["PW", "FM", "MH", "NR", "KI"] },
+      { name: "Melanesia", countries: ["FJ", "PG", "SB", "VU"] },
+    ]},
+  ]},
+  { region: "ASIA", civilizations: [
+    { name: "Abrahamic Asia", subregions: [
+      { name: "Muslim Arabs", countries: ["JO", "QA", "SA", "AE", "KW", "BH", "OM", "YE", "IQ", "SY", "LB", "PS"] },
+      { name: "Muslim Turkish", countries: ["TR", "KZ", "UZ", "TM", "KG"] },
+      { name: "Muslim Persians", countries: ["IR", "AF", "PK", "TJ"] },
+      { name: "Muslim SE Asia", countries: ["ID", "MY", "BD", "BN", "MV"] },
+      { name: "Catholic Asia", countries: ["PH", "TL"] },
+      { name: "Jewish", countries: ["IL"] },
+    ]},
+    { name: "Hindu", subregions: [
+      { name: "Hindus", countries: ["IN", "NP"] },
+    ]},
+    { name: "Buddhist & Taoist", subregions: [
+      { name: "Theravada Buddhist", countries: ["TH", "MM", "KH", "LA", "LK"] },
+      { name: "Vajrayana Buddhist", countries: ["MN", "BT"] },
+      { name: "Mahayana Buddhist", countries: ["JP", "KR", "VN"] },
+      { name: "Taoist-Confucian", countries: ["CN", "TW", "KP", "SG"] },
+    ]},
+  ]},
+  { region: "AFRICA", civilizations: [
+    { name: "Maghreb & North", subregions: [
+      { name: "Arab-Berber", countries: ["MA", "DZ", "TN", "LY", "MR"] },
+      { name: "Nile Valley", countries: ["EG", "SD"] },
+    ]},
+    { name: "Anglophone Africa", subregions: [
+      { name: "West Anglophone", countries: ["NG", "GH", "SL", "LR", "GM"] },
+      { name: "East Swahili", countries: ["KE", "TZ", "UG", "RW", "BI", "SS"] },
+      { name: "Southern Africa", countries: ["ZA", "ZW", "ZM", "BW", "NA", "LS", "SZ", "MW"] },
+    ]},
+    { name: "Francophone Africa", subregions: [
+      { name: "West Francophone", countries: ["SN", "ML", "CI", "BF", "NE", "TG", "BJ", "GN"] },
+      { name: "Central Africa", countries: ["CD", "CG", "GA", "CM", "TD", "CF"] },
+    ]},
+    { name: "Luso & Others Africa", subregions: [
+      { name: "Lusophone Africa", countries: ["AO", "MZ", "GW", "CV", "ST"] },
+      { name: "Horn (Cushitic)", countries: ["ET", "SO", "ER", "DJ"] },
+      { name: "Indian Ocean", countries: ["MG", "MU", "SC", "KM"] },
+    ]},
+  ]},
+];
+
+// Build ISO → political region lookup (both levels)
+const isoToPolitical: Record<string, { region: string; civilization: string; subregion: string }> = {};
+POLITICAL_REGIONS_CONFIG.forEach(rc => {
+  rc.civilizations.forEach(civ => {
+    civ.subregions.forEach(sr => {
+      sr.countries.forEach(iso => {
+        isoToPolitical[iso] = { region: rc.region, civilization: civ.name, subregion: sr.name };
+      });
+    });
+  });
+});
 
 // Theme/Collections state
 const themeMapContainer = ref<HTMLElement | null>(null);
@@ -1817,25 +1940,49 @@ function initAtlasMap() {
   }).addTo(atlasMap);
 
   // Set default mode
-  setMapMode('pin');
+  setMapMode(currentMapMode.value);
 }
 
-// Set map visualization mode (Pins, Countries, Religions)
+// Set map visualization mode
+// GeoJSON country name → ISO mapping (common mismatches)
+// Build dynamic GeoJSON name → ISO lookup from travel data
+const travelNameToISO: Record<string, string> = {};
+travelData.trips.forEach(t => { travelNameToISO[t.country] = t.countryISO; });
+
+// GeoJSON-specific name mismatches (names that differ from travel data)
+const geoNameToISO: Record<string, string> = {
+  'United States of America': 'US', 'The Bahamas': 'BS',
+  'Republic of the Congo': 'CG', 'Democratic Republic of the Congo': 'CD',
+  'United Republic of Tanzania': 'TZ', 'Ivory Coast': 'CI',
+  'East Timor': 'TL', 'Timor-Leste': 'TL',
+  'Republic of Serbia': 'RS', 'Guinea Bissau': 'GW',
+  'West Bank': 'PS', 'Northern Cyprus': 'CY',
+  'Somaliland': 'SO', 'Kosovo': 'XK',
+  ...travelNameToISO,  // Travel data names (most match GeoJSON directly)
+};
+
+function countryNameToISO(name: string): string {
+  if (geoNameToISO[name]) return geoNameToISO[name];
+  // Try matching against travel data country names
+  const trip = travelData.trips.find(t => t.country === name);
+  if (trip) return trip.countryISO;
+  // Fallback: try 2-letter from common patterns
+  return '';
+}
+
 async function setMapMode(mode: string) {
   if (!atlasMap) return;
   currentMapMode.value = mode;
 
   // Clear existing layers (except tile layer)
   atlasMap.eachLayer((layer: any) => {
-    if (layer._url === undefined) { // Not a tile layer
-      atlasMap.removeLayer(layer);
-    }
+    if (layer._url === undefined) atlasMap.removeLayer(layer);
   });
 
   showMapLegend.value = false;
 
   if (mode === 'pin') {
-    // Add pin markers for each trip
+    // Cities mode - pin markers
     travelData.trips.forEach(trip => {
       const marker = L.circleMarker([trip.lat, trip.lng], {
         radius: 4,
@@ -1850,7 +1997,7 @@ async function setMapMode(mode: string) {
       `);
     });
   } else if (mode === 'region') {
-    // NomadMania Regions mode - color by region
+    // NomadMania Regions mode
     const regionColors: Record<string, string> = {};
     const regions = [...new Set(travelData.trips.map(t => t.nomadRegion))];
     const colorPalette = [
@@ -1884,35 +2031,242 @@ async function setMapMode(mode: string) {
         `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:10px;height:10px;background:${regionColors[r]};border-radius:2px"></div><span style="font-size:11px">${r}</span></div>`
       ).join('') + (regions.length > 12 ? `<div style="margin-top:4px;font-size:10px;color:#64748b">+${regions.length - 12} more...</div>` : '');
   } else {
-    // Load GeoJSON for country/religion modes
+    // GeoJSON-based modes: country, political
     try {
       const res = await fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json');
       const data = await res.json();
 
-      L.geoJSON(data, {
-        style: (feature: any) => {
-          let col = '#1e293b';
-          if (mode === 'country' && feature.properties.name.length % 2 === 0) {
-            col = '#06b6d4';
-          }
-          if (mode === 'rel') {
-            const code = feature.properties.name.charCodeAt(0);
-            if (code % 3 === 0) col = '#3b82f6';
-            else if (code % 3 === 1) col = '#10b981';
-            else col = '#f59e0b';
-          }
-          return { fillColor: col, weight: 1, color: '#0b0f19', fillOpacity: 0.7 };
-        }
-      }).addTo(atlasMap);
+      // Build visited ISO set from travel data (ISO-based matching avoids name mismatches)
+      const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+      const visitedCount = visitedISOs.size;
 
-      showMapLegend.value = true;
-      mapLegendContent.value = mode === 'country'
-        ? '<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#06b6d4;border-radius:2px"></div> Visited</div>'
-        : '<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#3b82f6;border-radius:2px"></div> Group A</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#10b981;border-radius:2px"></div> Group B</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#f59e0b;border-radius:2px"></div> Group C</div>';
+      if (mode === 'country') {
+        L.geoJSON(data, {
+          style: (feature: any) => {
+            const iso = countryNameToISO(feature.properties.name);
+            const visited = visitedISOs.has(iso);
+            return {
+              fillColor: visited ? '#06b6d4' : '#1e293b',
+              weight: 1,
+              color: '#0b0f19',
+              fillOpacity: visited ? 0.7 : 0.3
+            };
+          },
+          onEachFeature: (feature: any, layer: any) => {
+            const iso = countryNameToISO(feature.properties.name);
+            if (visitedISOs.has(iso)) {
+              layer.bindPopup(`<b style="color:#06b6d4">${feature.properties.name}</b>`);
+            }
+          }
+        }).addTo(atlasMap);
+
+        showMapLegend.value = true;
+        mapLegendContent.value = `<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#06b6d4;border-radius:2px"></div> Visited (${visitedCount})</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#1e293b;border:1px solid #334155;border-radius:2px"></div> Not visited</div>`;
+      } else if (mode === 'political') {
+        renderPoliticalMap(data);
+      }
     } catch (e: unknown) {
       console.error('Failed to load GeoJSON:', e);
     }
   }
+}
+
+// Political map rendering (supports both levels)
+let cachedGeoJSON: any = null;
+const mergedPolygonsCache: {
+  civilizations: Map<string, any> | null;
+  subregions: Map<string, any> | null;
+} = { civilizations: null, subregions: null };
+
+function buildMergedPolygons(geoData: any) {
+  // Build ISO → GeoJSON feature map
+  const isoToFeature = new Map<string, any[]>();
+  for (const feature of geoData.features) {
+    const iso = countryNameToISO(feature.properties.name);
+    if (!iso) continue;
+    if (!isoToFeature.has(iso)) isoToFeature.set(iso, []);
+    isoToFeature.get(iso)!.push(feature);
+  }
+
+  // Build merged polygons for each level
+  for (const level of ['civilizations', 'subregions'] as const) {
+    const merged = new Map<string, any>();
+    POLITICAL_REGIONS_CONFIG.forEach(rc => {
+      rc.civilizations.forEach(civ => {
+        if (level === 'civilizations') {
+          // Merge all countries in the civilization
+          const features: any[] = [];
+          civ.subregions.forEach(sr => {
+            sr.countries.forEach(iso => {
+              const feats = isoToFeature.get(iso);
+              if (feats) features.push(...feats);
+            });
+          });
+          if (features.length === 0) return;
+          if (features.length === 1) {
+            merged.set(civ.name, features[0]);
+          } else {
+            try {
+              const result = union(featureCollection(features));
+              if (result) merged.set(civ.name, result);
+            } catch { merged.set(civ.name, features[0]); }
+          }
+        } else {
+          // Merge all countries in each subregion
+          civ.subregions.forEach(sr => {
+            const features: any[] = [];
+            sr.countries.forEach(iso => {
+              const feats = isoToFeature.get(iso);
+              if (feats) features.push(...feats);
+            });
+            if (features.length === 0) return;
+            if (features.length === 1) {
+              merged.set(sr.name, features[0]);
+            } else {
+              try {
+                const result = union(featureCollection(features));
+                if (result) merged.set(sr.name, result);
+              } catch { merged.set(sr.name, features[0]); }
+            }
+          });
+        }
+      });
+    });
+    mergedPolygonsCache[level] = merged;
+  }
+}
+
+function renderPoliticalMap(geoData?: any) {
+  if (geoData) cachedGeoJSON = geoData;
+  if (!atlasMap || !cachedGeoJSON) return;
+
+  // Build merged polygons on first call
+  if (!mergedPolygonsCache.civilizations) buildMergedPolygons(cachedGeoJSON);
+
+  // Clear non-tile layers
+  atlasMap.eachLayer((layer: any) => {
+    if (layer._url === undefined) atlasMap.removeLayer(layer);
+  });
+
+  const level = politicalLevel.value;
+  const colorPalette = [
+    '#3b82f6', '#06b6d4', '#0ea5e9', '#6366f1',
+    '#22c55e', '#10b981', '#14b8a6', '#84cc16',
+    '#f59e0b', '#f97316', '#eab308',
+    '#a855f7', '#8b5cf6', '#ec4899',
+    '#f43f5e', '#ef4444',
+    '#0ea5e9', '#84cc16', '#6366f1', '#14b8a6',
+  ];
+
+  // Visited ISOs
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+
+  // Build group→color + group→ISOs + legend
+  const groupToColor: Record<string, string> = {};
+  const groupToISOs: Record<string, string[]> = {};
+  const isoToColor: Record<string, string> = {};
+  const legendItems: { name: string; color: string; region: string; hasVisited: boolean }[] = [];
+  let colorIdx = 0;
+
+  if (level === 'civilizations') {
+    POLITICAL_REGIONS_CONFIG.forEach(rc => {
+      rc.civilizations.forEach(civ => {
+        const col = colorPalette[colorIdx % colorPalette.length];
+        colorIdx++;
+        const isos: string[] = [];
+        civ.subregions.forEach(sr => {
+          sr.countries.forEach(iso => { isos.push(iso); isoToColor[iso] = col; });
+        });
+        groupToColor[civ.name] = col;
+        groupToISOs[civ.name] = isos;
+        const hasVisited = isos.some(iso => visitedISOs.has(iso));
+        legendItems.push({ name: civ.name, color: col, region: rc.region, hasVisited });
+      });
+    });
+  } else {
+    POLITICAL_REGIONS_CONFIG.forEach(rc => {
+      rc.civilizations.forEach(civ => {
+        civ.subregions.forEach(sr => {
+          const col = colorPalette[colorIdx % colorPalette.length];
+          colorIdx++;
+          groupToColor[sr.name] = col;
+          groupToISOs[sr.name] = sr.countries;
+          sr.countries.forEach(iso => { isoToColor[iso] = col; });
+          const hasVisited = sr.countries.some(iso => visitedISOs.has(iso));
+          legendItems.push({ name: sr.name, color: col, region: rc.region, hasVisited });
+        });
+      });
+    });
+  }
+
+  // Layer 1: Individual country fills (no internal borders)
+  L.geoJSON(cachedGeoJSON, {
+    style: (feature: any) => {
+      const iso = countryNameToISO(feature.properties.name);
+      const col = isoToColor[iso];
+      if (col && visitedISOs.has(iso)) {
+        return { fillColor: col, fillOpacity: 0.65, weight: 0, color: 'transparent' };
+      } else if (col) {
+        return { fillColor: '#1e293b', fillOpacity: 0.3, weight: 0, color: 'transparent' };
+      }
+      return { fillColor: '#0f172a', fillOpacity: 0.2, weight: 0.5, color: '#1e293b' };
+    },
+    onEachFeature: (feature: any, layer: any) => {
+      const iso = countryNameToISO(feature.properties.name);
+      const info = isoToPolitical[iso];
+      if (info) {
+        const col = isoToColor[iso];
+        const visited = visitedISOs.has(iso);
+        layer.bindPopup(
+          `<b style="color:${visited ? col : '#64748b'}">${feature.properties.name}</b>` +
+          (visited ? '' : ' <span style="color:#475569;font-size:11px">(not visited)</span>') +
+          `<br><span style="color:#cbd5e1">${info.subregion}</span>` +
+          `<br><span style="color:#94a3b8">${info.civilization}</span>` +
+          `<br><span style="color:#64748b">${info.region}</span>`
+        );
+      }
+    }
+  }).addTo(atlasMap);
+
+  // Layer 2: Merged group outlines
+  const mergedMap = mergedPolygonsCache[level];
+  if (mergedMap) {
+    mergedMap.forEach((mergedFeature: any, groupName: string) => {
+      const col = groupToColor[groupName];
+      const isos = groupToISOs[groupName] || [];
+      const hasVisited = isos.some(iso => visitedISOs.has(iso));
+      L.geoJSON(mergedFeature, {
+        style: () => ({
+          fillOpacity: 0,
+          weight: hasVisited ? 2.5 : 1,
+          color: hasVisited ? col : '#334155',
+          opacity: hasVisited ? 0.9 : 0.4,
+        }),
+      }).addTo(atlasMap);
+    });
+  }
+
+  // Legend
+  showMapLegend.value = true;
+  const title = level === 'civilizations' ? 'Civilizations' : 'Sub-Regions';
+  const visitedGroups = legendItems.filter(i => i.hasVisited).length;
+  let html = `<div style="font-size:10px;color:#94a3b8;margin-bottom:6px">${title} (${visitedGroups}/${legendItems.length} visited)</div>`;
+  let lastRegion = '';
+  legendItems.forEach(item => {
+    if (item.region !== lastRegion) {
+      html += `<div style="font-size:9px;color:#64748b;margin-top:6px;text-transform:uppercase;letter-spacing:0.05em">${item.region}</div>`;
+      lastRegion = item.region;
+    }
+    const dotColor = item.hasVisited ? item.color : '#334155';
+    const textColor = item.hasVisited ? 'inherit' : '#475569';
+    html += `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:8px;height:8px;background:${dotColor};border-radius:2px;flex-shrink:0"></div><span style="font-size:10px;color:${textColor}">${item.name}</span></div>`;
+  });
+  mapLegendContent.value = html;
+}
+
+function setPoliticalLevel(level: 'civilizations' | 'subregions') {
+  politicalLevel.value = level;
+  renderPoliticalMap();
 }
 
 // Theme/Collections functions

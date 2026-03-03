@@ -604,6 +604,89 @@
             height: 14px;
         }
 
+        /* PGP Public Key section */
+        .pgp-section {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .pgp-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .pgp-header svg {
+            width: 20px;
+            height: 20px;
+            color: var(--aurora-2);
+            flex-shrink: 0;
+        }
+
+        .pgp-header span {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .pgp-fingerprint {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+
+        .pgp-fingerprint .config-label {
+            margin-bottom: 8px;
+        }
+
+        .pgp-fingerprint .config-value {
+            font-size: 11px;
+            word-break: break-all;
+            line-height: 1.6;
+        }
+
+        .pgp-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .pgp-download {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.3) 0%, rgba(241, 7, 163, 0.3) 100%);
+            border: 1px solid rgba(123, 47, 247, 0.3);
+            border-radius: 12px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pgp-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(123, 47, 247, 0.3);
+            background: linear-gradient(135deg, rgba(123, 47, 247, 0.5) 0%, rgba(241, 7, 163, 0.5) 100%);
+        }
+
+        .pgp-download svg {
+            width: 16px;
+            height: 16px;
+        }
+
         /* Footer navigation */
         .footer-nav {
             position: fixed;
@@ -912,6 +995,44 @@
                     <polyline points="9 12 12 15 16 10"/>
                 </svg>
                 End-to-end encrypted
+            </div>
+
+            <!-- PGP Public Key -->
+            <div class="pgp-section">
+                <div class="pgp-header">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                    </svg>
+                    <span>PGP Public Key</span>
+                </div>
+
+                <div class="pgp-fingerprint">
+                    <div class="config-label">Fingerprint</div>
+                    <div class="config-value">
+                        <span id="pgp-fp">A597 D379 58A5 3FE1 EDA8 C4FF FA31 9D63 749E 3F19</span>
+                        <button class="copy-btn" onclick="copyValue(this, 'A597D37958A53FE1EDA8C4FFFA319D63749E3F19')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+                    </div>
+                </div>
+
+                <div class="pgp-meta">
+                    <div class="config-item">
+                        <div class="config-label">Algorithm</div>
+                        <div class="config-value">Ed25519 / cv25519</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label">Expires</div>
+                        <div class="config-value">2028-03-01</div>
+                    </div>
+                </div>
+
+                <a href="public-key.asc" download class="pgp-download">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Download Public Key (.asc)
+                </a>
             </div>
         </div>
     </div>

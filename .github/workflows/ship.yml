@@ -309,8 +309,11 @@ jobs:
           echo "✅ Carto build complete"
       - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mytrips
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/')
+        if: >-
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/') ||
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/vite.config') ||
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/package.json') ||
+          contains(steps.changed-files.outputs.all_changed_files, 'build.sh')
 
         run: |
           echo "🔨 Building MyTrips..."

@@ -869,6 +869,47 @@
 
           </div><!-- end stats-topic: Data Breakdown -->
 
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <!-- SECTION 8: FESTIVITIES - Holidays & Events Calendar             -->
+          <!-- ═══════════════════════════════════════════════════════════════ -->
+          <div class="stats-topic">
+            <div class="stats-topic__header">
+              <h2 class="stats-topic__title"><i class="ph-fill ph-confetti"></i> Festivities & Events</h2>
+            </div>
+
+            <div class="festivities-section">
+              <div class="festivities-table-wrap">
+                <table class="festivities-table">
+                  <thead>
+                    <tr>
+                      <th class="festivities-table__event">Event</th>
+                      <th v-for="year in festivityYears" :key="year">{{ year }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="fest in festivitiesData" :key="fest.event" :class="fest.rowClass">
+                      <td class="festivities-table__label">
+                        <span class="festivities-table__icon">{{ fest.icon }}</span>
+                        <span>
+                          <strong>{{ fest.event }}</strong>
+                          <small>{{ fest.date }}</small>
+                        </span>
+                      </td>
+                      <td v-for="year in festivityYears" :key="year" class="festivities-table__cell">
+                        <template v-if="fest.cities[year]">
+                          <span class="festivities-table__city">{{ fest.cities[year].city }}</span>
+                          <span class="festivities-table__country">{{ fest.cities[year].country }}</span>
+                        </template>
+                        <span v-else class="festivities-table__empty">—</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div><!-- end stats-topic: Festivities -->
+
         </div>
       </div>
     </main>
@@ -2461,6 +2502,93 @@ const citiesBreakdown = computed(() => {
       .sort((a, b) => b.count - a.count)
   };
 });
+
+// ── Festivities & Events Calendar ──────────────────────────────
+const festivityYears = [2020, 2021, 2022, 2023, 2024, 2025, 2026];
+
+const festivitiesData = [
+  {
+    event: 'Lunar New Year', date: 'Jan / Feb', icon: '🏮', rowClass: '',
+    cities: {
+      2020: { city: 'Hong Kong', country: 'HK' },
+      2021: { city: 'Taipei', country: 'TW' },
+      2022: { city: 'Singapore', country: 'SG' },
+      2023: { city: 'Seoul', country: 'KR' },
+      2024: { city: 'Hanoi', country: 'VN' },
+      2025: { city: 'Shanghai', country: 'CN' },
+      2026: { city: 'Kuala Lumpur', country: 'MY' },
+    }
+  },
+  {
+    event: 'Carnival', date: '~Feb', icon: '🎭', rowClass: '',
+    cities: {
+      2020: { city: 'Rio de Janeiro', country: 'BR' },
+      2021: { city: 'Venice', country: 'IT' },
+      2022: { city: 'Salvador', country: 'BR' },
+      2023: { city: 'Trinidad', country: 'TT' },
+      2024: { city: 'Cologne', country: 'DE' },
+      2025: { city: 'New Orleans', country: 'US' },
+      2026: { city: 'Barranquilla', country: 'CO' },
+    }
+  },
+  {
+    event: 'Midsummer', date: 'Jun 23', icon: '☀️', rowClass: '',
+    cities: {
+      2020: { city: 'Stockholm', country: 'SE' },
+      2021: { city: 'Reykjavik', country: 'IS' },
+      2022: { city: 'Helsinki', country: 'FI' },
+      2023: { city: 'Tallinn', country: 'EE' },
+      2024: { city: 'Copenhagen', country: 'DK' },
+      2025: { city: 'Riga', country: 'LV' },
+      2026: { city: 'Oslo', country: 'NO' },
+    }
+  },
+  {
+    event: 'Mid-Autumn', date: 'Sep / Oct', icon: '🥮', rowClass: '',
+    cities: {
+      2020: { city: 'Beijing', country: 'CN' },
+      2021: { city: 'Hanoi', country: 'VN' },
+      2022: { city: 'Taipei', country: 'TW' },
+      2023: { city: 'Seoul', country: 'KR' },
+      2024: { city: 'Hong Kong', country: 'HK' },
+      2025: { city: 'Singapore', country: 'SG' },
+      2026: { city: 'Kyoto', country: 'JP' },
+    }
+  },
+  {
+    event: 'Day of the Dead', date: 'Nov 1', icon: '💀', rowClass: '',
+    cities: {
+      2020: { city: 'Oaxaca', country: 'MX' },
+      2021: { city: 'CDMX', country: 'MX' },
+      2022: { city: 'Mixquic', country: 'MX' },
+      2023: { city: 'Patzcuaro', country: 'MX' },
+      2024: { city: 'Merida', country: 'MX' },
+      2025: { city: 'Guadalajara', country: 'MX' },
+      2026: { city: 'Janitzio', country: 'MX' },
+    }
+  },
+  {
+    event: 'World Cup / Olympics', date: 'varies', icon: '🏆', rowClass: 'festivities-table__row--highlight',
+    cities: {
+      2021: { city: 'Tokyo', country: 'JP' },
+      2022: { city: 'Doha', country: 'QA' },
+      2024: { city: 'Paris', country: 'FR' },
+      2026: { city: 'Milano', country: 'IT' },
+    }
+  },
+  {
+    event: "New Year's Eve", date: 'Dec 31', icon: '🎆', rowClass: '',
+    cities: {
+      2020: { city: 'Sydney', country: 'AU' },
+      2021: { city: 'Dubai', country: 'AE' },
+      2022: { city: 'Rio de Janeiro', country: 'BR' },
+      2023: { city: 'Tokyo', country: 'JP' },
+      2024: { city: 'New York', country: 'US' },
+      2025: { city: 'Berlin', country: 'DE' },
+      2026: { city: 'Bangkok', country: 'TH' },
+    }
+  },
+];
 
 function initCharts() {
   if (!chartVelocity.value || !chartContinents.value) return;

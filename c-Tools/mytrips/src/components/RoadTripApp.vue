@@ -1079,9 +1079,5 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .sidebar { width: 100%; }
   .legend { display: none; }
-  .controls { top: 10px; left: 10px; }
-  .zoom-controls { bottom: 12px; right: 12px; }
-  .menu-btn { width: 40px; height: 40px; }
-  .zoom-btn { width: 36px; height: 36px; }
 }
 </style>

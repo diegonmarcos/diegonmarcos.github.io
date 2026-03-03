@@ -1,4 +1,5 @@
 // Loading Screen Module - Network diagnostics and asset preloading
+import { startAsciiAnim, stopAsciiAnim } from './ascii-anim';
 
 interface NetworkStats {
   downloadSpeed: number; // Mbps
@@ -286,6 +287,7 @@ function updateDetails(text: string): void {
  */
 function hideLoadingScreen(): void {
   updateDetails('Complete! Entering experience...');
+  stopAsciiAnim();
 
   setTimeout(() => {
     loadingScreen.style.opacity = '0';
@@ -318,6 +320,7 @@ export async function initLoader(): Promise<void> {
 
   // Show loading screen
   loadingScreen.classList.add('active');
+  startAsciiAnim();
 
   try {
     // Check cache first

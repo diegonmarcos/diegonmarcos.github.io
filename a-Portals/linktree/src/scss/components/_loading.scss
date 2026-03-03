@@ -43,110 +43,24 @@
   }
 }
 
-// ── Code bracket spinner ───────────────────────────────────────────
-.code-spinner {
+// ── ASCII art animation ────────────────────────────────────────────
+.ascii-art {
   font-family: 'Courier New', monospace;
-  font-size: 2.5rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  line-height: 1.3;
+  color: #60a5fa;
+  white-space: pre;
   margin: 0 auto 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.15em;
-  height: 60px;
-
-  .bracket {
-    color: #60a5fa;
-    display: inline-block;
-
-    &.left {
-      animation: bracket-left 1.5s ease-in-out infinite;
-    }
-
-    &.right {
-      animation: bracket-right 1.5s ease-in-out infinite;
-    }
-  }
-
-  .slash {
-    color: #f472b6;
-    display: inline-block;
-    animation: slash-spin 1.5s ease-in-out infinite;
-  }
+  text-align: center;
+  min-height: 7.5em;
+  text-shadow: 0 0 8px rgba(96, 165, 250, 0.4);
+  animation: ascii-glow 2s ease-in-out infinite alternate;
 }
 
-@keyframes bracket-left {
-  0%, 100% { transform: translateX(0); opacity: 1; }
-  50% { transform: translateX(-8px); opacity: 0.6; }
-}
-
-@keyframes bracket-right {
-  0%, 100% { transform: translateX(0); opacity: 1; }
-  50% { transform: translateX(8px); opacity: 0.6; }
-}
-
-@keyframes slash-spin {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(360deg) scale(1.2); }
-}
-
-// ── Glitch text ────────────────────────────────────────────────────
-.glitch {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #fff;
-  margin: 1rem 0 0.5rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  position: relative;
-  display: inline-block;
-  animation: glitch-skew 4s infinite linear alternate-reverse;
-
-  &::before,
-  &::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  &::before {
-    color: #0ff;
-    animation: glitch-top 3s infinite linear alternate-reverse;
-    clip-path: inset(0 0 60% 0);
-  }
-
-  &::after {
-    color: #f0f;
-    animation: glitch-bottom 2.5s infinite linear alternate-reverse;
-    clip-path: inset(60% 0 0 0);
-  }
-}
-
-@keyframes glitch-top {
-  0%, 90%, 100% { transform: translate(0); }
-  92% { transform: translate(-3px, -1px); }
-  94% { transform: translate(3px, 1px); }
-  96% { transform: translate(-2px, 0); }
-  98% { transform: translate(2px, -1px); }
-}
-
-@keyframes glitch-bottom {
-  0%, 88%, 100% { transform: translate(0); }
-  90% { transform: translate(2px, 1px); }
-  93% { transform: translate(-3px, 0); }
-  95% { transform: translate(3px, -1px); }
-  97% { transform: translate(-2px, 1px); }
-}
-
-@keyframes glitch-skew {
-  0%, 85%, 100% { transform: skew(0deg); }
-  87% { transform: skew(-0.5deg); }
-  90% { transform: skew(0.5deg); }
-  93% { transform: skew(0deg); }
+@keyframes ascii-glow {
+  0% { text-shadow: 0 0 6px rgba(96, 165, 250, 0.3); color: #60a5fa; }
+  50% { text-shadow: 0 0 14px rgba(244, 114, 182, 0.5); color: #f472b6; }
+  100% { text-shadow: 0 0 10px rgba(52, 211, 153, 0.4); color: #34d399; }
 }
 
 // ── Cycling subtitle phrases ───────────────────────────────────────
@@ -261,13 +175,9 @@
     padding: 1.5rem;
   }
 
-  .glitch {
-    font-size: 1.5rem;
-  }
-
-  .code-spinner {
-    font-size: 2rem;
-    height: 50px;
+  .ascii-art {
+    font-size: 0.7rem;
+    min-height: 6.5em;
   }
 
   .stat-label,

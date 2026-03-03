@@ -930,7 +930,6 @@
 </template>
 
 <script setup lang="ts">
-// Atlas: dual-layer merged polygons + visited-only coloring
 import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import type { City, ViewType } from '@/types/mytrips';
 import { initData } from '@/utils/mytrips-data';

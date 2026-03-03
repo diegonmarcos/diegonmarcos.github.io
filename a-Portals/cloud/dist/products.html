@@ -760,37 +760,36 @@
                             </div>
                         </a>
 
-                        <!-- Sauron Logs -->
-                        <a href="https://logs.diegonmarcos.com" target="_blank" class="app-card">
-                            <div class="app-card-header">
-                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <circle cx="12" cy="12" r="4"/>
-                                        <circle cx="12" cy="12" r="1"/>
-                                    </svg>
-                                </div>
-                                <h3 class="app-card-title">Sauron Logs</h3>
-                            </div>
-                            <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Logs</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Centralized</span>
-                            </div>
-                        </a>
-
-                        <!-- Firewall -->
-                        <a href="https://cloud.oracle.com" target="_blank" class="app-card">
+                        <!-- Auth (Authelia 2FA) -->
+                        <a href="https://auth.diegonmarcos.com" target="_blank" class="app-card">
                             <div class="app-card-header">
                                 <div class="app-card-icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                                     </svg>
                                 </div>
-                                <h3 class="app-card-title">Firewall</h3>
+                                <h3 class="app-card-title">Auth</h3>
                             </div>
                             <div class="app-card-footer">
-                                <span class="app-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">Security</span>
-                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">Cloud Console</span>
+                                <span class="app-card-badge" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;">Authelia 2FA</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-proxy</span>
+                            </div>
+                        </a>
+
+                        <!-- ntfy Push -->
+                        <a href="https://rss.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">ntfy Push</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Notifications</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">gcp-proxy</span>
                             </div>
                         </a>
 
@@ -1388,26 +1387,6 @@
                                     <div class="vm-box-content">
                                         <div class="vm-box-section">
                                             <div class="vm-box-section-label">Front</div>
-                                            <div class="vm-item" data-mode="on">
-                                                <span class="vm-item-status on"></span>
-                                                <span class="vm-item-name">cloud-app</span>
-                                                <div class="vm-item-actions">
-                                                    <span class="vm-live-status online" title="Online"></span>
-                                                    <button class="vm-action-btn btn-url" data-url="https://dashboard.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
-                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="vm-box-section">
-                                            <div class="vm-box-section-label">Back</div>
-                                            <div class="vm-item" data-mode="on">
-                                                <span class="vm-item-status on"></span>
-                                                <span class="vm-item-name">n8n-infra-app</span>
-                                                <div class="vm-item-actions">
-                                                    <span class="vm-live-status online" title="Online"></span>
-                                                    <button class="vm-action-btn btn-url" data-url="https://n8n.diegonmarcos.com" title="Open URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
-                                                    <button class="vm-action-btn btn-ssh" disabled title="No SSH"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></button>
-                                                </div>
                                             </div>
                                             <div class="vm-item" data-mode="on">
                                                 <span class="vm-item-status on"></span>
@@ -2092,8 +2071,6 @@
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-web</td><td></td><td>130.110.251.193:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-oracle-services</td><td></td><td>129.151.228.66:81</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ npm-gcloud</td><td></td><td>pending</td><td>128-256MB</td><td>100-500MB</td><td><span class="health-badge pending">Dev</span></td></tr>
-                                <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>n8n (Infra)</strong></td><td>n8n.diegonmarcos.com</td><td>:5678</td><td>256-512MB</td><td>500MB-2GB</td><td><span class="health-badge online">Healthy</span></td></tr>
-                                <tr class="component-row"><td></td><td class="component-name">↳ n8n</td><td></td><td>130.110.251.193:5678</td><td>256-512MB</td><td>500MB-2GB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge on">ON</span></td><td><strong>Flask Server</strong></td><td>cloud.diegonmarcos.com</td><td>:5000</td><td>64-128MB</td><td>50-100MB</td><td><span class="health-badge online">Healthy</span></td></tr>
                                 <tr class="component-row"><td></td><td class="component-name">↳ flask-server</td><td></td><td>130.110.251.193:5000</td><td>64-128MB</td><td>50-100MB</td><td></td></tr>
                                 <tr class="service-row"><td><span class="status-badge hold">HOLD</span></td><td><strong>Redis</strong></td><td>-</td><td>:6379</td><td>64-256MB</td><td>100MB-1GB</td><td><span class="health-badge pending">Hold</span></td></tr>

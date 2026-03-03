@@ -36,7 +36,7 @@ jobs:
         id: build-c-root
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Root/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Root Index (e-Root)..."
           cd e-Root
@@ -47,7 +47,7 @@ jobs:
         id: build-landpage
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Landpage..."
           cd b-Profiles/landpage
@@ -58,7 +58,7 @@ jobs:
         id: build-linktree
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Linktree..."
           cd a-Portals/linktree
@@ -69,7 +69,7 @@ jobs:
         id: build-linktree-mindmap
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_mindmap/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Linktree Mindmap..."
           cd a-Portals/linktree_mindmap
@@ -80,7 +80,7 @@ jobs:
         id: build-linktree-pixel-world
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/linktree_pixel-world/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Linktree Pixel World..."
           cd a-Portals/linktree_pixel-world
@@ -91,7 +91,7 @@ jobs:
         id: build-cv-web
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building CV Web..."
           cd b-Profiles/cv_web
@@ -102,7 +102,7 @@ jobs:
         id: build-myfeed
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyFeed..."
           cd c-Tools/myfeed
@@ -113,7 +113,7 @@ jobs:
         id: build-mygames
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyGames..."
           cd c-Tools/mygames
@@ -124,7 +124,7 @@ jobs:
         id: build-nexus
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Nexus..."
           cd b-Profiles/nexus
@@ -135,7 +135,7 @@ jobs:
         id: build-cloud
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'a-Portals/cloud/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Cloud Dashboard..."
           cd a-Portals/cloud
@@ -146,7 +146,7 @@ jobs:
         id: build-feed-yourself
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Feed Yourself..."
           cd c-Tools/feed_yourself
@@ -157,7 +157,7 @@ jobs:
         id: build-others
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Others/others/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Others..."
           cd e-Others/others
@@ -168,7 +168,7 @@ jobs:
         id: build-sailytics
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Sailytics..."
           cd e-Others/sailytics
@@ -179,7 +179,7 @@ jobs:
         id: build-mymail
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymail/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyMail..."
           cd c-Suite/mymail
@@ -190,7 +190,7 @@ jobs:
         id: build-myphotos
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyPhotos..."
           cd c-Suite/myphotos
@@ -201,7 +201,7 @@ jobs:
         id: build-myanalytics
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyAnalytics..."
           cd c-Suite/myanalytics
@@ -212,7 +212,7 @@ jobs:
         id: build-suite
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Suite..."
           cd c-Suite/suite
@@ -223,7 +223,7 @@ jobs:
         id: build-health-tracker
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Health Tracker..."
           cd c-Tools/health_tracker
@@ -234,7 +234,7 @@ jobs:
         id: build-market-watch
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Market Watch..."
           cd c-Tools/market_watch
@@ -245,7 +245,7 @@ jobs:
         id: build-central-bank
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Central Bank..."
           cd c-Tools/central_bank
@@ -256,7 +256,7 @@ jobs:
         id: build-myprofile
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/myprofile/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyProfile..."
           cd b-Profiles/myprofile
@@ -267,7 +267,7 @@ jobs:
         id: build-mymovies
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyMovies..."
           cd c-Tools/mymovies
@@ -278,7 +278,7 @@ jobs:
         id: build-mymusic
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyMusic..."
           cd c-Tools/mymusic
@@ -289,7 +289,7 @@ jobs:
         id: build-json-vision
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/json-vision/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building JSON Vision..."
           cd c-Suite/json-vision
@@ -300,7 +300,7 @@ jobs:
         id: build-carto
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Carto..."
           cd c-Tools/carto
@@ -311,7 +311,7 @@ jobs:
         id: build-mytrips
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyTrips..."
           cd c-Tools/mytrips
@@ -322,7 +322,7 @@ jobs:
         id: build-leafy
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Leafy..."
           cd b-Profiles/leafy
@@ -333,7 +333,7 @@ jobs:
         id: build-mymaps-svelte
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building MyMaps SvelteKit..."
           cd c-Tools/mymaps
@@ -344,7 +344,7 @@ jobs:
         id: build-maps-classic
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Maps Classic..."
           cd c-Tools/maps
@@ -358,7 +358,7 @@ jobs:
         id: build-cv-pdf
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_pdf/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building CV PDF..."
           cd b-Profiles/cv_pdf
@@ -369,7 +369,7 @@ jobs:
         id: build-astro
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/astro/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Astro..."
           cd c-Tools/astro
@@ -380,7 +380,7 @@ jobs:
         id: build-skills-mcp
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/skills_mcp/src/')
-        continue-on-error: true
+
         run: |
           echo "🔨 Building Skills & MCP Docs..."
           cd d-Cloud/skills_mcp

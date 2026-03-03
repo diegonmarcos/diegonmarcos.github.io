@@ -192,7 +192,7 @@ resolve_deps() {
             log_info "Installing missing deps at $install_dir..."
             log_verbose "missing: $missing"
             if command -v npm >/dev/null 2>&1; then
-                (cd "$install_dir" && npm install --save-dev --no-fund --no-audit $missing 2>&1 | tail -5) || true
+                (cd "$install_dir" && npm install --save-dev --no-fund --no-audit --legacy-peer-deps $missing 2>&1 | tail -5) || true
             else
                 log_error "npm not found -- cannot install: $missing"
                 return $EXIT_DEPS
@@ -218,7 +218,7 @@ resolve_deps() {
     if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
         local install_dir="${repo_root:-$pkg_dir}"
         log_info "Installing all dependencies in $install_dir..."
-        (cd "$install_dir" && npm install --no-fund --no-audit 2>&1 | tail -3)
+        (cd "$install_dir" && npm install --no-fund --no-audit --legacy-peer-deps 2>&1 | tail -3)
         if [ -d "$install_dir/node_modules" ]; then
             [ -n "$repo_root" ] && {
                 export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"

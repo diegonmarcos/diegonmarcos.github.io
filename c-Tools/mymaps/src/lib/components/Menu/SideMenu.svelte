@@ -178,6 +178,16 @@
             {/if}
           {:else if section.id === 'maps'}
             <div class="menu-maps-list">
+              <a
+                href="https://diegonmarcos.github.io/maps"
+                class="menu-map-item"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick={close}
+              >
+                <span class="menu-map-icon">🏠</span>
+                <span class="menu-map-name">Home</span>
+              </a>
               {#each mapProjections as projection}
                 <a
                   href="/maps/?projection={projection.id}"

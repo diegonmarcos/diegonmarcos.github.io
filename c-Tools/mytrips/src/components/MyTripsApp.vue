@@ -25,10 +25,7 @@
           <i :class="`nav-item__icon ph ph-${view.icon}`"></i>
           <span v-show="!sidebarCollapsed">{{ view.label }}</span>
         </button>
-        <a href="./myroadtrip.html" class="nav-item" title="Cultural Regions Map">
-          <i class="nav-item__icon ph ph-globe-hemisphere-west"></i>
-          <span v-show="!sidebarCollapsed">Cultural Regions Map</span>
-        </a>
+
       </nav>
     </aside>
 
@@ -60,7 +57,7 @@
           </div>
         </div>
 
-        <!-- Atlas View -->
+        <!-- Atlas View (MapLibre GL) -->
         <div v-if="currentView === 'atlas'" class="view-section fade-in atlas-view">
           <div ref="atlasMapContainer" id="map-main" class="atlas-map"></div>
           <!-- Map Layer Controls -->
@@ -992,6 +989,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { union } from '@turf/union';
 import { featureCollection } from '@turf/helpers';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 
 declare const L: {
   map: (el: HTMLElement, options: any) => any;
@@ -1016,21 +1015,26 @@ const DB = ref<City[]>([]);
 const chartVelocity = ref<HTMLCanvasElement | null>(null);
 const chartContinents = ref<HTMLCanvasElement | null>(null);
 const globeContainer = ref<HTMLElement | null>(null);
-const atlasMapContainer = ref<HTMLElement | null>(null);
 const sidebarCollapsed = ref(true);
 
 // Timeline state
 const timelineFilter = ref({ continent: '', country: '', region: '' });
 const timelineSort = ref({ field: 'dateIn' as string, asc: true });
 
-// Atlas map state
-let atlasMap: any = null;
+// Atlas (MapLibre) state
+const atlasMapContainer = ref<HTMLElement | null>(null);
+let atlasMap: maplibregl.Map | null = null;
 const currentMapMode = ref('political');
 const politicalLevel = ref<'civilizations' | 'subregions'>('civilizations');
 const showMapLegend = ref(false);
 const mapLegendContent = ref('');
 const polSidebarCollapsed = ref(false);
 const polLockedGroup = ref<string | null>(null);
+const isoToColor_cached = ref<Record<string, string>>({});
+let cachedGeoJSON: any = null;
+const mergedPolygonsCache: { civilizations: Map<string, any> | null; subregions: Map<string, any> | null } = { civilizations: null, subregions: null };
+let atlasPopup: maplibregl.Popup | null = null;
+
 const mapModes = [
   { id: 'political', name: 'Political Cultural Regions' },
   { id: 'country', name: 'Countries' },
@@ -1220,6 +1224,11 @@ const CULTURAL_REGIONS = [
   }
 ];
 
+// Region emoji lookup
+const REGION_EMOJIS: Record<string, string> = {
+  EUROPE: '🔷', AMERICAS: '🌎', OCEANIA: '🔥', ASIA: '🟣', AFRICA: '🪨'
+};
+
 // ISO to Flag conversion
 function isoToFlag(iso: string): string {
   if (!iso || iso.length !== 2) return '';
@@ -1295,7 +1304,7 @@ let animationId: number | null = null;
 
 const views = [
   { id: 'dashboard', label: 'Home', icon: 'house' },
-  { id: 'atlas', label: 'Atlas', icon: 'map-trifold' },
+  { id: 'atlas', label: 'Atlas', icon: 'compass' },
   { id: 'themes', label: 'Collections', icon: 'cards' },
   { id: 'analytics', label: 'Stats', icon: 'chart-polar' },
   { id: 'timeline', label: 'Timeline', icon: 'clock-clockwise' }
@@ -1534,17 +1543,20 @@ const timelineByYearGroups = computed(() => {
 const uniqueContinents = computed(() => [...new Set(travelData.trips.map(t => t.continent))].sort());
 const uniqueCountries = computed(() => [...new Set(travelData.trips.map(t => t.country))].sort());
 
+// Country name → ISO 2-letter code lookup function
+function countryNameToISO(name: string): string {
+  if (!name) return '';
+  for (const [iso, n] of Object.entries(COUNTRY_ISO_MAP)) {
+    if (n === name || n.toLowerCase() === name.toLowerCase()) return iso;
+  }
+  return '';
+}
+
 // Get visited country codes from travel data
 const visitedCountryCodes = computed(() => {
   const visited = new Set<string>();
-  const countryNameToISO: Record<string, string> = {};
-  // Reverse mapping
-  for (const [iso, name] of Object.entries(COUNTRY_ISO_MAP)) {
-    countryNameToISO[name] = iso;
-    countryNameToISO[name.toLowerCase()] = iso;
-  }
   travelData.trips.forEach(trip => {
-    const iso = countryNameToISO[trip.country] || countryNameToISO[trip.country.toLowerCase()];
+    const iso = countryNameToISO(trip.country);
     if (iso) visited.add(iso);
   });
   return visited;
@@ -1724,14 +1736,10 @@ watch(currentView, async (newView, oldView) => {
     console.log('[MyTrips] Globe cleanup complete');
   }
 
-  // Cleanup atlas when leaving atlas view
+  // Cleanup atlas when leaving
   if (oldView === 'atlas' && newView !== 'atlas') {
-    console.log('[MyTrips] Cleaning up atlas...');
-    if (atlasMap) {
-      atlasMap.remove();
-      atlasMap = null;
-    }
-    console.log('[MyTrips] Atlas cleanup complete');
+    if (atlasMap) { atlasMap.remove(); atlasMap = null; }
+    if (atlasPopup) { atlasPopup.remove(); atlasPopup = null; }
   }
 
   if (currentView.value === 'analytics') {
@@ -1745,7 +1753,6 @@ watch(currentView, async (newView, oldView) => {
     initGlobe();
   }
   if (currentView.value === 'atlas') {
-    console.log('[MyTrips] Initializing atlas...');
     await nextTick();
     initAtlasMap();
   }
@@ -1963,375 +1970,334 @@ function initGlobe() {
   });
 }
 
-// Atlas Map initialization
+// =======================================================================
+// ATLAS (MapLibre GL)
+// =======================================================================
+
 function initAtlasMap() {
-  console.log('[MyTrips] initAtlasMap called', { hasContainer: !!atlasMapContainer.value, hasAtlasMap: !!atlasMap });
-  if (!atlasMapContainer.value || atlasMap) {
-    console.log('[MyTrips] initAtlasMap skipped - already initialized or no container');
-    return;
-  }
-
+  if (!atlasMapContainer.value || atlasMap) return;
   const container = atlasMapContainer.value;
-  console.log('[MyTrips] Atlas container size:', container.clientWidth, 'x', container.clientHeight);
-
   if (container.clientWidth === 0 || container.clientHeight === 0) {
-    console.log('[MyTrips] Atlas container has no size, retrying in 100ms');
     setTimeout(initAtlasMap, 100);
     return;
   }
 
-  console.log('[MyTrips] Creating atlas map...');
-  atlasMap = L.map(container, {
-    center: [20, 0],
-    zoom: 2,
-    minZoom: 2,
-    maxZoom: 18,
-    zoomControl: false
+  // MapLibre uses getBoundingClientRect() for canvas sizing.
+  // Inside CSS transform:scale(), BCR returns scaled (small) dimensions.
+  // Override BCR to return the unscaled CSS layout dimensions instead.
+  const w = container.clientWidth;
+  const h = container.clientHeight;
+  const origBCR = container.getBoundingClientRect.bind(container);
+  (container as any).getBoundingClientRect = () => ({
+    width: w, height: h, top: 0, left: 0, right: w, bottom: h, x: 0, y: 0,
+    toJSON() { return this; }
   });
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    subdomains: 'abcd',
-    maxZoom: 19
-  }).addTo(atlasMap);
+  atlasMap = new maplibregl.Map({
+    container,
+    trackResize: false,
+    style: {
+      version: 8,
+      sources: {
+        'carto': {
+          type: 'raster',
+          tiles: ['https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+                  'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+                  'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'],
+          tileSize: 256,
+          attribution: '© CARTO © OpenStreetMap'
+        }
+      },
+      layers: [{ id: 'carto-layer', type: 'raster', source: 'carto' }]
+    },
+    center: [0, 20],
+    zoom: 2,
+    minZoom: 1,
+    maxZoom: 18
+  });
 
-  // Set default mode
-  setMapMode(currentMapMode.value);
+  atlasMap.addControl(new maplibregl.NavigationControl(), 'bottom-right');
+  atlasPopup = new maplibregl.Popup({ closeButton: false, closeOnClick: false });
+
+  atlasMap.on('load', () => {
+    // Restore original BCR and resize so interaction coords are correct
+    (container as any).getBoundingClientRect = origBCR;
+    atlasMap!.resize();
+    setMapMode(currentMapMode.value);
+  });
 }
 
-// Set map visualization mode
-// GeoJSON country name → ISO mapping (common mismatches)
-// Build dynamic GeoJSON name → ISO lookup from travel data
-const travelNameToISO: Record<string, string> = {};
-travelData.trips.forEach(t => { travelNameToISO[t.country] = t.countryISO; });
-
-// GeoJSON-specific name mismatches (names that differ from travel data)
-const geoNameToISO: Record<string, string> = {
-  'United States of America': 'US', 'The Bahamas': 'BS',
-  'Republic of the Congo': 'CG', 'Democratic Republic of the Congo': 'CD',
-  'United Republic of Tanzania': 'TZ', 'Ivory Coast': 'CI',
-  'East Timor': 'TL', 'Timor-Leste': 'TL',
-  'Republic of Serbia': 'RS', 'Guinea Bissau': 'GW',
-  'West Bank': 'PS', 'Northern Cyprus': 'CY',
-  'Somaliland': 'SO', 'Kosovo': 'XK',
-  ...travelNameToISO,  // Travel data names (most match GeoJSON directly)
-};
-
-function countryNameToISO(name: string): string {
-  if (geoNameToISO[name]) return geoNameToISO[name];
-  // Try matching against travel data country names
-  const trip = travelData.trips.find(t => t.country === name);
-  if (trip) return trip.countryISO;
-  // Fallback: try 2-letter from common patterns
-  return '';
+function clearAtlasLayers() {
+  if (!atlasMap) return;
+  const style = atlasMap.getStyle();
+  if (!style) return;
+  // Remove all non-base layers/sources
+  const layersToRemove = style.layers.filter((l: any) => l.id !== 'carto-layer').map((l: any) => l.id);
+  layersToRemove.forEach((id: string) => { try { atlasMap!.removeLayer(id); } catch {} });
+  const sources = Object.keys(style.sources || {}).filter(s => s !== 'carto');
+  sources.forEach(s => { try { atlasMap!.removeSource(s); } catch {} });
+  if (atlasPopup) atlasPopup.remove();
 }
 
 async function setMapMode(mode: string) {
   if (!atlasMap) return;
   currentMapMode.value = mode;
-
-  // Clear existing layers (except tile layer)
-  atlasMap.eachLayer((layer: any) => {
-    if (layer._url === undefined) atlasMap.removeLayer(layer);
-  });
-
+  clearAtlasLayers();
   showMapLegend.value = false;
 
   if (mode === 'pin') {
-    // Cities mode - pin markers
-    travelData.trips.forEach(trip => {
-      const marker = L.circleMarker([trip.lat, trip.lng], {
-        radius: 4,
-        fillColor: '#06b6d4',
-        color: 'transparent',
-        fillOpacity: 0.8
-      }).addTo(atlasMap);
-
-      marker.bindPopup(`
-        <b style="color:#06b6d4">${trip.city}</b><br>
-        <span style="color:#cbd5e1">${trip.country} - ${trip.dateIn}</span>
-      `);
+    const features = travelData.trips.map(t => ({
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: [t.lng, t.lat] },
+      properties: { city: t.city, country: t.country, date: t.dateIn }
+    }));
+    atlasMap.addSource('a2-cities', { type: 'geojson', data: { type: 'FeatureCollection', features } });
+    atlasMap.addLayer({ id: 'a2-cities-circle', type: 'circle', source: 'a2-cities',
+      paint: { 'circle-radius': 4, 'circle-color': '#06b6d4', 'circle-opacity': 0.8, 'circle-stroke-width': 0 }
     });
+    atlasMap.on('click', 'a2-cities-circle', (e: any) => {
+      const p = e.features[0].properties;
+      atlasPopup!.setLngLat(e.lngLat).setHTML(
+        `<b style="color:#06b6d4">${p.city}</b><br><span style="color:#cbd5e1">${p.country} - ${p.date}</span>`
+      ).addTo(atlasMap!);
+    });
+    atlasMap.on('mouseenter', 'a2-cities-circle', () => { atlasMap!.getCanvas().style.cursor = 'pointer'; });
+    atlasMap.on('mouseleave', 'a2-cities-circle', () => { atlasMap!.getCanvas().style.cursor = ''; });
+
   } else if (mode === 'region') {
-    // NomadMania Regions mode
+    const colorPalette = ['#06b6d4','#f59e0b','#10b981','#8b5cf6','#ec4899','#3b82f6','#14b8a6','#f43f5e','#84cc16','#6366f1','#22c55e','#eab308','#0ea5e9','#a855f7','#ef4444'];
     const regionColors: Record<string, string> = {};
     const regions = [...new Set(travelData.trips.map(t => t.nomadRegion))];
-    const colorPalette = [
-      '#06b6d4', '#f59e0b', '#10b981', '#8b5cf6', '#ec4899',
-      '#3b82f6', '#14b8a6', '#f43f5e', '#84cc16', '#6366f1',
-      '#22c55e', '#eab308', '#0ea5e9', '#a855f7', '#ef4444'
-    ];
-    regions.forEach((region, i) => {
-      regionColors[region] = colorPalette[i % colorPalette.length];
-    });
+    regions.forEach((r, i) => { regionColors[r] = colorPalette[i % colorPalette.length]; });
 
-    travelData.trips.forEach(trip => {
-      const marker = L.circleMarker([trip.lat, trip.lng], {
-        radius: 6,
-        fillColor: regionColors[trip.nomadRegion] || '#06b6d4',
-        color: '#0b0f19',
-        weight: 1,
-        fillOpacity: 0.9
-      }).addTo(atlasMap);
-
-      marker.bindPopup(`
-        <b style="color:${regionColors[trip.nomadRegion]}">${trip.city}</b><br>
-        <span style="color:#cbd5e1">${trip.nomadRegion}</span><br>
-        <span style="color:#64748b">${trip.country}</span>
-      `);
+    const features = travelData.trips.map(t => ({
+      type: 'Feature' as const,
+      geometry: { type: 'Point' as const, coordinates: [t.lng, t.lat] },
+      properties: { city: t.city, country: t.country, region: t.nomadRegion, color: regionColors[t.nomadRegion] || '#06b6d4' }
+    }));
+    atlasMap.addSource('a2-regions', { type: 'geojson', data: { type: 'FeatureCollection', features } });
+    atlasMap.addLayer({ id: 'a2-regions-circle', type: 'circle', source: 'a2-regions',
+      paint: { 'circle-radius': 6, 'circle-color': ['get', 'color'], 'circle-opacity': 0.9, 'circle-stroke-color': '#0b0f19', 'circle-stroke-width': 1 }
     });
+    atlasMap.on('click', 'a2-regions-circle', (e: any) => {
+      const p = e.features[0].properties;
+      atlasPopup!.setLngLat(e.lngLat).setHTML(
+        `<b style="color:${p.color}">${p.city}</b><br><span style="color:#cbd5e1">${p.region}</span><br><span style="color:#64748b">${p.country}</span>`
+      ).addTo(atlasMap!);
+    });
+    atlasMap.on('mouseenter', 'a2-regions-circle', () => { atlasMap!.getCanvas().style.cursor = 'pointer'; });
+    atlasMap.on('mouseleave', 'a2-regions-circle', () => { atlasMap!.getCanvas().style.cursor = ''; });
 
     showMapLegend.value = true;
     mapLegendContent.value = `<div style="font-size:10px;color:#94a3b8;margin-bottom:4px">NomadMania Regions (${regions.length})</div>` +
-      regions.slice(0, 12).map(r =>
-        `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:10px;height:10px;background:${regionColors[r]};border-radius:2px"></div><span style="font-size:11px">${r}</span></div>`
-      ).join('') + (regions.length > 12 ? `<div style="margin-top:4px;font-size:10px;color:#64748b">+${regions.length - 12} more...</div>` : '');
+      regions.slice(0, 12).map(r => `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:10px;height:10px;background:${regionColors[r]};border-radius:2px"></div><span style="font-size:11px">${r}</span></div>`).join('') +
+      (regions.length > 12 ? `<div style="margin-top:4px;font-size:10px;color:#64748b">+${regions.length - 12} more...</div>` : '');
+
   } else {
-    // GeoJSON-based modes: country, political
-    try {
-      const res = await fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json');
-      const data = await res.json();
+    // country or political — need world GeoJSON
+    if (!cachedGeoJSON) {
+      try {
+        const res = await fetch('https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json');
+        cachedGeoJSON = await res.json();
+      } catch (e) { console.error('[Atlas2] Failed to load GeoJSON:', e); return; }
+    }
 
-      // Build visited ISO set from travel data (ISO-based matching avoids name mismatches)
-      const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
-      const visitedCount = visitedISOs.size;
+    const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
 
-      if (mode === 'country') {
-        L.geoJSON(data, {
-          style: (feature: any) => {
-            const iso = countryNameToISO(feature.properties.name);
-            const visited = visitedISOs.has(iso);
-            return {
-              fillColor: visited ? '#06b6d4' : '#1e293b',
-              weight: 1,
-              color: '#0b0f19',
-              fillOpacity: visited ? 0.7 : 0.3
-            };
-          },
-          onEachFeature: (feature: any, layer: any) => {
-            const iso = countryNameToISO(feature.properties.name);
-            if (visitedISOs.has(iso)) {
-              layer.bindPopup(`<b style="color:#06b6d4">${feature.properties.name}</b>`);
-            }
-          }
-        }).addTo(atlasMap);
+    // Enrich features with iso property
+    const enriched = {
+      ...cachedGeoJSON,
+      features: cachedGeoJSON.features.map((f: any) => ({
+        ...f,
+        properties: { ...f.properties, iso: countryNameToISO(f.properties.name) }
+      }))
+    };
 
-        showMapLegend.value = true;
-        mapLegendContent.value = `<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#06b6d4;border-radius:2px"></div> Visited (${visitedCount})</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#1e293b;border:1px solid #334155;border-radius:2px"></div> Not visited</div>`;
-      } else if (mode === 'political') {
-        renderPoliticalMap(data);
-      }
-    } catch (e: unknown) {
-      console.error('Failed to load GeoJSON:', e);
+    if (mode === 'country') {
+      const visited = [...visitedISOs];
+      const colorExpr: any[] = ['match', ['get', 'iso'], ...visited.flatMap(iso => [iso, '#06b6d4']), '#1e293b'];
+      const opacityExpr: any[] = ['match', ['get', 'iso'], ...visited.flatMap(iso => [iso, 0.7]), 0.3];
+
+      atlasMap.addSource('a2-world', { type: 'geojson', data: enriched });
+      atlasMap.addLayer({ id: 'a2-country-fill', type: 'fill', source: 'a2-world',
+        paint: { 'fill-color': colorExpr, 'fill-opacity': opacityExpr }
+      });
+      atlasMap.addLayer({ id: 'a2-country-border', type: 'line', source: 'a2-world',
+        paint: { 'line-color': '#0b0f19', 'line-width': 0.5 }
+      });
+      atlasMap.on('click', 'a2-country-fill', (e: any) => {
+        const p = e.features[0].properties;
+        if (visitedISOs.has(p.iso)) {
+          atlasPopup!.setLngLat(e.lngLat).setHTML(`<b style="color:#06b6d4">${p.name}</b>`).addTo(atlasMap!);
+        }
+      });
+
+      showMapLegend.value = true;
+      mapLegendContent.value = `<div style="display:flex;gap:8px;align-items:center"><div style="width:12px;height:12px;background:#06b6d4;border-radius:2px"></div> Visited (${visitedISOs.size})</div><div style="display:flex;gap:8px;align-items:center;margin-top:4px"><div style="width:12px;height:12px;background:#1e293b;border:1px solid #334155;border-radius:2px"></div> Not visited</div>`;
+
+    } else if (mode === 'political') {
+      renderPoliticalMap(enriched);
     }
   }
 }
 
-// Political map rendering (supports both levels)
-let cachedGeoJSON: any = null;
-const mergedPolygonsCache: {
-  civilizations: Map<string, any> | null;
-  subregions: Map<string, any> | null;
-} = { civilizations: null, subregions: null };
+function renderPoliticalMap(enrichedGeoData?: any) {
+  if (!atlasMap) return;
+  if (enrichedGeoData) cachedGeoJSON = enrichedGeoData;
+  if (!cachedGeoJSON) return;
 
-function buildMergedPolygons(geoData: any) {
-  // Build ISO → GeoJSON feature map
-  const isoToFeature = new Map<string, any[]>();
-  for (const feature of geoData.features) {
-    const iso = countryNameToISO(feature.properties.name);
-    if (!iso) continue;
-    if (!isoToFeature.has(iso)) isoToFeature.set(iso, []);
-    isoToFeature.get(iso)!.push(feature);
-  }
+  clearAtlasLayers();
 
-  // Build merged polygons for each level
-  for (const level of ['civilizations', 'subregions'] as const) {
-    const merged = new Map<string, any>();
-    POLITICAL_REGIONS_CONFIG.forEach(rc => {
-      rc.civilizations.forEach(civ => {
-        if (level === 'civilizations') {
-          // Merge all countries in the civilization
-          const features: any[] = [];
-          civ.subregions.forEach(sr => {
-            sr.countries.forEach(iso => {
-              const feats = isoToFeature.get(iso);
-              if (feats) features.push(...feats);
-            });
-          });
-          if (features.length === 0) return;
-          if (features.length === 1) {
-            merged.set(civ.name, features[0]);
+  // Re-enrich if needed
+  const enriched = cachedGeoJSON.features[0]?.properties?.iso !== undefined
+    ? cachedGeoJSON
+    : { ...cachedGeoJSON, features: cachedGeoJSON.features.map((f: any) => ({ ...f, properties: { ...f.properties, iso: countryNameToISO(f.properties.name) } })) };
+
+  // Build merged polygons (reuse Atlas logic)
+  if (!mergedPolygonsCache.civilizations) {
+    const isoToFeature = new Map<string, any[]>();
+    for (const f of enriched.features) {
+      const iso = f.properties.iso;
+      if (!iso) continue;
+      if (!isoToFeature.has(iso)) isoToFeature.set(iso, []);
+      isoToFeature.get(iso)!.push(f);
+    }
+    for (const level of ['civilizations', 'subregions'] as const) {
+      const merged = new Map<string, any>();
+      POLITICAL_REGIONS_CONFIG.forEach(rc => {
+        rc.civilizations.forEach(civ => {
+          if (level === 'civilizations') {
+            const feats: any[] = [];
+            civ.subregions.forEach(sr => sr.countries.forEach(iso => { const fs = isoToFeature.get(iso); if (fs) feats.push(...fs); }));
+            if (!feats.length) return;
+            try { merged.set(civ.name, feats.length === 1 ? feats[0] : union(featureCollection(feats)) || feats[0]); } catch { merged.set(civ.name, feats[0]); }
           } else {
-            try {
-              const result = union(featureCollection(features));
-              if (result) merged.set(civ.name, result);
-            } catch { merged.set(civ.name, features[0]); }
-          }
-        } else {
-          // Merge all countries in each subregion
-          civ.subregions.forEach(sr => {
-            const features: any[] = [];
-            sr.countries.forEach(iso => {
-              const feats = isoToFeature.get(iso);
-              if (feats) features.push(...feats);
+            civ.subregions.forEach(sr => {
+              const feats: any[] = [];
+              sr.countries.forEach(iso => { const fs = isoToFeature.get(iso); if (fs) feats.push(...fs); });
+              if (!feats.length) return;
+              try { merged.set(sr.name, feats.length === 1 ? feats[0] : union(featureCollection(feats)) || feats[0]); } catch { merged.set(sr.name, feats[0]); }
             });
-            if (features.length === 0) return;
-            if (features.length === 1) {
-              merged.set(sr.name, features[0]);
-            } else {
-              try {
-                const result = union(featureCollection(features));
-                if (result) merged.set(sr.name, result);
-              } catch { merged.set(sr.name, features[0]); }
-            }
-          });
-        }
+          }
+        });
       });
-    });
-    mergedPolygonsCache[level] = merged;
+      mergedPolygonsCache[level] = merged;
+    }
   }
-}
-
-function renderPoliticalMap(geoData?: any) {
-  if (geoData) cachedGeoJSON = geoData;
-  if (!atlasMap || !cachedGeoJSON) return;
-
-  // Build merged polygons on first call
-  if (!mergedPolygonsCache.civilizations) buildMergedPolygons(cachedGeoJSON);
-
-  // Clear non-tile layers
-  atlasMap.eachLayer((layer: any) => {
-    if (layer._url === undefined) atlasMap.removeLayer(layer);
-  });
 
   const level = politicalLevel.value;
-  const colorPalette = [
-    '#3b82f6', '#06b6d4', '#0ea5e9', '#6366f1',
-    '#22c55e', '#10b981', '#14b8a6', '#84cc16',
-    '#f59e0b', '#f97316', '#eab308',
-    '#a855f7', '#8b5cf6', '#ec4899',
-    '#f43f5e', '#ef4444',
-    '#0ea5e9', '#84cc16', '#6366f1', '#14b8a6',
-  ];
-
-  // Visited ISOs
   const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  const colorPalette = ['#3b82f6','#06b6d4','#0ea5e9','#6366f1','#22c55e','#10b981','#14b8a6','#84cc16','#f59e0b','#f97316','#eab308','#a855f7','#8b5cf6','#ec4899','#f43f5e','#ef4444','#0ea5e9','#84cc16','#6366f1','#14b8a6'];
 
-  // Build group→color + group→ISOs + legend
+  const isoToColor: Record<string, string> = {};
   const groupToColor: Record<string, string> = {};
   const groupToISOs: Record<string, string[]> = {};
-  const isoToColor: Record<string, string> = {};
-  const legendItems: { name: string; color: string; region: string; hasVisited: boolean }[] = [];
   let colorIdx = 0;
 
   if (level === 'civilizations') {
-    POLITICAL_REGIONS_CONFIG.forEach(rc => {
-      rc.civilizations.forEach(civ => {
-        const col = colorPalette[colorIdx % colorPalette.length];
-        colorIdx++;
-        const isos: string[] = [];
-        civ.subregions.forEach(sr => {
-          sr.countries.forEach(iso => { isos.push(iso); isoToColor[iso] = col; });
-        });
-        groupToColor[civ.name] = col;
-        groupToISOs[civ.name] = isos;
-        const hasVisited = isos.some(iso => visitedISOs.has(iso));
-        legendItems.push({ name: civ.name, color: col, region: rc.region, hasVisited });
-      });
-    });
+    POLITICAL_REGIONS_CONFIG.forEach(rc => rc.civilizations.forEach(civ => {
+      const col = colorPalette[colorIdx++ % colorPalette.length];
+      groupToColor[civ.name] = col;
+      const isos: string[] = [];
+      civ.subregions.forEach(sr => sr.countries.forEach(iso => { isos.push(iso); isoToColor[iso] = col; }));
+      groupToISOs[civ.name] = isos;
+    }));
   } else {
-    POLITICAL_REGIONS_CONFIG.forEach(rc => {
-      rc.civilizations.forEach(civ => {
-        civ.subregions.forEach(sr => {
-          const col = colorPalette[colorIdx % colorPalette.length];
-          colorIdx++;
-          groupToColor[sr.name] = col;
-          groupToISOs[sr.name] = sr.countries;
-          sr.countries.forEach(iso => { isoToColor[iso] = col; });
-          const hasVisited = sr.countries.some(iso => visitedISOs.has(iso));
-          legendItems.push({ name: sr.name, color: col, region: rc.region, hasVisited });
-        });
-      });
-    });
+    POLITICAL_REGIONS_CONFIG.forEach(rc => rc.civilizations.forEach(civ => civ.subregions.forEach(sr => {
+      const col = colorPalette[colorIdx++ % colorPalette.length];
+      groupToColor[sr.name] = col;
+      groupToISOs[sr.name] = sr.countries;
+      sr.countries.forEach(iso => { isoToColor[iso] = col; });
+    })));
   }
 
-  // Cache for sidebar legend
   isoToColor_cached.value = { ...isoToColor };
 
-  // Layer 1: Individual country fills (no internal borders)
-  L.geoJSON(cachedGeoJSON, {
-    style: (feature: any) => {
-      const iso = countryNameToISO(feature.properties.name);
-      const col = isoToColor[iso];
-      if (col && visitedISOs.has(iso)) {
-        return { fillColor: col, fillOpacity: 0.65, weight: 0, color: 'transparent' };
-      } else if (col) {
-        return { fillColor: '#1e293b', fillOpacity: 0.3, weight: 0, color: 'transparent' };
-      }
-      return { fillColor: '#0f172a', fillOpacity: 0.2, weight: 0.5, color: '#1e293b' };
-    },
-    onEachFeature: (feature: any, layer: any) => {
-      const iso = countryNameToISO(feature.properties.name);
-      const info = isoToPolitical[iso];
-      if (info) {
-        const col = isoToColor[iso];
-        const visited = visitedISOs.has(iso);
-        layer.bindPopup(
-          `<b style="color:${visited ? col : '#64748b'}">${feature.properties.name}</b>` +
-          (visited ? '' : ' <span style="color:#475569;font-size:11px">(not visited)</span>') +
-          `<br><span style="color:#cbd5e1">${info.subregion}</span>` +
-          `<br><span style="color:#94a3b8">${info.civilization}</span>` +
-          `<br><span style="color:#64748b">${info.region}</span>`
-        );
-      }
-    }
-  }).addTo(atlasMap);
+  // Fill layer: data-driven by iso
+  const isoList = Object.keys(isoToColor);
+  const fillColorExpr: any[] = ['match', ['get', 'iso'],
+    ...isoList.flatMap(iso => [iso, visitedISOs.has(iso) ? isoToColor[iso] : '#1e293b']),
+    '#0f172a'
+  ];
+  const fillOpacityExpr: any[] = ['match', ['get', 'iso'],
+    ...isoList.flatMap(iso => [iso, visitedISOs.has(iso) ? 0.65 : 0.3]),
+    0.2
+  ];
 
-  // Layer 2: Merged group outlines
+  atlasMap.addSource('a2-world', { type: 'geojson', data: enriched });
+  atlasMap.addLayer({ id: 'a2-pol-fill', type: 'fill', source: 'a2-world',
+    paint: { 'fill-color': fillColorExpr, 'fill-opacity': fillOpacityExpr }
+  });
+
+  // Popup on click
+  atlasMap.on('click', 'a2-pol-fill', (e: any) => {
+    const p = e.features[0].properties;
+    const info = isoToPolitical[p.iso];
+    const visited = visitedISOs.has(p.iso);
+    const col = isoToColor[p.iso] || '#64748b';
+    if (info) {
+      atlasPopup!.setLngLat(e.lngLat).setHTML(
+        `<b style="color:${visited ? col : '#64748b'}">${p.name}</b>${!visited ? ' <span style="color:#475569;font-size:11px">(not visited)</span>' : ''}` +
+        `<br><span style="color:#cbd5e1">${info.subregion}</span><br><span style="color:#94a3b8">${info.civilization}</span><br><span style="color:#64748b">${info.region}</span>`
+      ).addTo(atlasMap!);
+    }
+  });
+  atlasMap.on('mouseenter', 'a2-pol-fill', () => { atlasMap!.getCanvas().style.cursor = 'pointer'; });
+  atlasMap.on('mouseleave', 'a2-pol-fill', () => { atlasMap!.getCanvas().style.cursor = ''; });
+
+  // Group outline layers from merged polygons
   const mergedMap = mergedPolygonsCache[level];
   if (mergedMap) {
-    mergedMap.forEach((mergedFeature: any, groupName: string) => {
+    const outlineFeatures: any[] = [];
+    mergedMap.forEach((feat: any, groupName: string) => {
       const col = groupToColor[groupName];
       const isos = groupToISOs[groupName] || [];
       const hasVisited = isos.some(iso => visitedISOs.has(iso));
-      L.geoJSON(mergedFeature, {
-        style: () => ({
-          fillOpacity: 0,
-          weight: hasVisited ? 2.5 : 1,
-          color: hasVisited ? col : '#334155',
-          opacity: hasVisited ? 0.9 : 0.4,
-        }),
-      }).addTo(atlasMap);
+      outlineFeatures.push({ ...feat, properties: { ...feat.properties, groupName, color: hasVisited ? col : '#334155', opacity: hasVisited ? 0.9 : 0.4, width: hasVisited ? 2.5 : 1 } });
+    });
+    atlasMap.addSource('a2-outlines', { type: 'geojson', data: { type: 'FeatureCollection', features: outlineFeatures } });
+    atlasMap.addLayer({ id: 'a2-outline-line', type: 'line', source: 'a2-outlines',
+      paint: { 'line-color': ['get', 'color'], 'line-width': ['get', 'width'], 'line-opacity': ['get', 'opacity'] }
     });
   }
-
-  // Legend
-  showMapLegend.value = true;
-  const title = level === 'civilizations' ? 'Civilizations' : 'Sub-Regions';
-  const visitedGroups = legendItems.filter(i => i.hasVisited).length;
-  let html = `<div style="font-size:10px;color:#94a3b8;margin-bottom:6px">${title} (${visitedGroups}/${legendItems.length} visited)</div>`;
-  let lastRegion = '';
-  legendItems.forEach(item => {
-    if (item.region !== lastRegion) {
-      html += `<div style="font-size:9px;color:#64748b;margin-top:6px;text-transform:uppercase;letter-spacing:0.05em">${item.region}</div>`;
-      lastRegion = item.region;
-    }
-    const dotColor = item.hasVisited ? item.color : '#334155';
-    const textColor = item.hasVisited ? 'inherit' : '#475569';
-    html += `<div style="display:flex;gap:6px;align-items:center;margin-top:2px"><div style="width:8px;height:8px;background:${dotColor};border-radius:2px;flex-shrink:0"></div><span style="font-size:10px;color:${textColor}">${item.name}</span></div>`;
-  });
-  mapLegendContent.value = html;
 }
 
 function setPoliticalLevel(level: 'civilizations' | 'subregions') {
   politicalLevel.value = level;
   polLockedGroup.value = null;
-  renderPoliticalMap();
+  if (cachedGeoJSON) renderPoliticalMap();
 }
 
-// Political sidebar legend data
-const REGION_EMOJIS: Record<string, string> = {
-  EUROPE: '🔷', AMERICAS: '🌎', OCEANIA: '🔥', ASIA: '🟣', AFRICA: '🪨'
-};
+function togglePolGroup(name: string) {
+  polLockedGroup.value = polLockedGroup.value === name ? null : name;
+}
+
+function highlightPolGroup(groupName: string) {
+  if (!atlasMap) return;
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  const isoList = Object.keys(isoToColor_cached.value);
+  const opacityExpr: any[] = ['match', ['get', 'iso'],
+    ...isoList.flatMap(iso => {
+      const info = isoToPolitical[iso];
+      if (!info) return [iso, 0.05];
+      const match = politicalLevel.value === 'civilizations' ? info.civilization === groupName : info.subregion === groupName;
+      return [iso, match ? (visitedISOs.has(iso) ? 0.85 : 0.35) : 0.05];
+    }),
+    0.05
+  ];
+  try { atlasMap.setPaintProperty('a2-pol-fill', 'fill-opacity', opacityExpr); } catch {}
+}
+
+function resetPolHighlight() {
+  if (!atlasMap) return;
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  const isoList = Object.keys(isoToColor_cached.value);
+  const opacityExpr: any[] = ['match', ['get', 'iso'],
+    ...isoList.flatMap(iso => [iso, visitedISOs.has(iso) ? 0.65 : 0.3]),
+    0.2
+  ];
+  try { atlasMap.setPaintProperty('a2-pol-fill', 'fill-opacity', opacityExpr); } catch {}
+}
 
 const polLegendData = computed(() => {
   const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
@@ -2344,34 +2310,18 @@ const polLegendData = computed(() => {
         const subs: any[] = [];
         civ.subregions.forEach(sr => {
           allISOs.push(...sr.countries);
-          const visitedFlags = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
-          const unvisitedFlags = sr.countries.filter(iso => !visitedISOs.has(iso)).map(iso => isoToFlag(iso)).join(' ');
-          subs.push({ name: sr.name, flags: visitedFlags + (visitedFlags && unvisitedFlags ? '  ' : '') + unvisitedFlags });
+          const vf = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
+          const uf = sr.countries.filter(iso => !visitedISOs.has(iso)).map(isoToFlag).join(' ');
+          subs.push({ name: sr.name, flags: vf + (vf && uf ? '  ' : '') + uf });
         });
-        groups.push({
-          name: civ.name,
-          color: isoToColor_cached.value[allISOs[0]] || '#64748b',
-          hasVisited: allISOs.some(iso => visitedISOs.has(iso)),
-          visitedCount: allISOs.filter(iso => visitedISOs.has(iso)).length,
-          totalCount: allISOs.length,
-          subregions: subs,
-        });
+        groups.push({ name: civ.name, color: isoToColor_cached.value[allISOs[0]] || '#64748b', hasVisited: allISOs.some(iso => visitedISOs.has(iso)), visitedCount: allISOs.filter(iso => visitedISOs.has(iso)).length, totalCount: allISOs.length, subregions: subs });
       });
     } else {
-      rc.civilizations.forEach(civ => {
-        civ.subregions.forEach(sr => {
-          const visitedFlags = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
-          const unvisitedFlags = sr.countries.filter(iso => !visitedISOs.has(iso)).map(isoToFlag).join(' ');
-          groups.push({
-            name: sr.name,
-            color: isoToColor_cached.value[sr.countries[0]] || '#64748b',
-            hasVisited: sr.countries.some(iso => visitedISOs.has(iso)),
-            visitedCount: sr.countries.filter(iso => visitedISOs.has(iso)).length,
-            totalCount: sr.countries.length,
-            subregions: [{ name: sr.name, flags: visitedFlags + (visitedFlags && unvisitedFlags ? '  ' : '') + unvisitedFlags }],
-          });
-        });
-      });
+      rc.civilizations.forEach(civ => civ.subregions.forEach(sr => {
+        const vf = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
+        const uf = sr.countries.filter(iso => !visitedISOs.has(iso)).map(isoToFlag).join(' ');
+        groups.push({ name: sr.name, color: isoToColor_cached.value[sr.countries[0]] || '#64748b', hasVisited: sr.countries.some(iso => visitedISOs.has(iso)), visitedCount: sr.countries.filter(iso => visitedISOs.has(iso)).length, totalCount: sr.countries.length, subregions: [{ name: sr.name, flags: vf + (vf && uf ? '  ' : '') + uf }] });
+      }));
     }
     return { region: rc.region, emoji: REGION_EMOJIS[rc.region] || '', groups };
   });
@@ -2380,63 +2330,16 @@ const polLegendData = computed(() => {
 const polStats = computed(() => {
   const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
   let countries = 0, visited = 0, groups = 0;
-  POLITICAL_REGIONS_CONFIG.forEach(rc => {
-    rc.civilizations.forEach(civ => {
-      if (politicalLevel.value === 'civilizations') {
-        groups++;
-        civ.subregions.forEach(sr => {
-          sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; });
-        });
-      } else {
-        civ.subregions.forEach(sr => {
-          groups++;
-          sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; });
-        });
-      }
-    });
-  });
+  POLITICAL_REGIONS_CONFIG.forEach(rc => rc.civilizations.forEach(civ => {
+    if (politicalLevel.value === 'civilizations') {
+      groups++;
+      civ.subregions.forEach(sr => sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; }));
+    } else {
+      civ.subregions.forEach(sr => { groups++; sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; }); });
+    }
+  }));
   return { visited, countries, groups };
 });
-
-// Cache isoToColor from last render for the sidebar legend
-const isoToColor_cached = ref<Record<string, string>>({});
-
-function togglePolGroup(name: string) {
-  polLockedGroup.value = polLockedGroup.value === name ? null : name;
-}
-
-function highlightPolGroup(groupName: string) {
-  if (!atlasMap) return;
-  atlasMap.eachLayer((layer: any) => {
-    if (layer.feature && layer.setStyle) {
-      const iso = countryNameToISO(layer.feature.properties?.name);
-      const info = isoToPolitical[iso];
-      if (!info) return;
-      const match = politicalLevel.value === 'civilizations'
-        ? info.civilization === groupName
-        : info.subregion === groupName;
-      layer.setStyle({ fillOpacity: match ? 0.8 : 0.08 });
-    }
-  });
-}
-
-function resetPolHighlight() {
-  if (!atlasMap) return;
-  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
-  atlasMap.eachLayer((layer: any) => {
-    if (layer.feature && layer.setStyle) {
-      const iso = countryNameToISO(layer.feature.properties?.name);
-      const col = isoToColor_cached.value[iso];
-      if (col && visitedISOs.has(iso)) {
-        layer.setStyle({ fillOpacity: 0.65 });
-      } else if (col) {
-        layer.setStyle({ fillOpacity: 0.3 });
-      } else {
-        layer.setStyle({ fillOpacity: 0.2 });
-      }
-    }
-  });
-}
 
 // Theme/Collections functions
 function openTheme(theme: any) {

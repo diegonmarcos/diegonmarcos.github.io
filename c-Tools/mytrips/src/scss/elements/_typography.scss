@@ -1,6 +1,8 @@
 // ============================================
 // ELEMENTS - Typography
 // ============================================
+@use "sass:color";
+@use "../_shared" as *;
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
@@ -24,6 +26,6 @@ a {
   transition: $transition-base;
 
   &:hover {
-    color: darken($color-primary, 10%);
+    color: color.adjust($color-primary, $lightness: -10%);
   }
 }

@@ -4,4 +4,3 @@ import './scss/main.scss';
 
 const app = createApp(MyTripsApp);
 app.mount('#app');
-// v2

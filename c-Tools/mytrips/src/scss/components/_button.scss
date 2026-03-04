@@ -1,6 +1,8 @@
 // ============================================
 // COMPONENTS - Button
 // ============================================
+@use "sass:color";
+@use "../_shared" as *;
 
 .c-btn {
   @include flex-center;
@@ -23,7 +25,7 @@
   color: white;
 
   &:hover:not(:disabled) {
-    background-color: darken($color-primary, 10%);
+    background-color: color.adjust($color-primary, $lightness: -10%);
   }
 }
 
@@ -32,7 +34,7 @@
   color: white;
 
   &:hover:not(:disabled) {
-    background-color: darken($color-secondary, 10%);
+    background-color: color.adjust($color-secondary, $lightness: -10%);
   }
 }
 

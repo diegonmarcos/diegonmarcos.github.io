@@ -11,10 +11,10 @@ export default defineConfig({
   build: {
     outDir: '../dist',
     emptyOutDir: true,
+    chunkSizeWarningLimit: 3000,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'src/index.html'),
-        roadtrip: resolve(__dirname, 'src/myroadtrip.html')
+        main: resolve(__dirname, 'src/index.html')
       }
     }
   },
@@ -26,7 +26,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/scss/settings/_variables.scss"; @import "@/scss/tools/_mixins.scss";`
+        additionalData: `@use "@/scss/_shared" as *;`
       }
     }
   },

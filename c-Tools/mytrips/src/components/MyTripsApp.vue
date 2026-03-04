@@ -91,8 +91,61 @@
               @click="setPoliticalLevel('subregions')"
             >Sub-Regions</button>
           </div>
-          <!-- Map Legend -->
-          <div v-if="showMapLegend" class="atlas-legend glass">
+          <!-- Political Regions Sidebar -->
+          <aside v-if="currentMapMode === 'political'" class="pol-sidebar" :class="{ 'pol-sidebar--collapsed': polSidebarCollapsed }">
+            <header class="pol-sidebar__header">
+              <h3>Cultural Regions</h3>
+              <button class="pol-sidebar__close" @click="polSidebarCollapsed = true">&times;</button>
+            </header>
+            <div class="pol-sidebar__stats">
+              <div class="pol-sidebar__stat">
+                <div class="pol-sidebar__stat-val">{{ polStats.visited }}</div>
+                <div class="pol-sidebar__stat-lbl">Visited</div>
+              </div>
+              <div class="pol-sidebar__stat">
+                <div class="pol-sidebar__stat-val">{{ polStats.countries }}</div>
+                <div class="pol-sidebar__stat-lbl">Countries</div>
+              </div>
+              <div class="pol-sidebar__stat">
+                <div class="pol-sidebar__stat-val">{{ polStats.groups }}</div>
+                <div class="pol-sidebar__stat-lbl">{{ politicalLevel === 'civilizations' ? 'Civilizations' : 'Sub-Regions' }}</div>
+              </div>
+            </div>
+            <div class="pol-sidebar__body">
+              <div v-for="rc in polLegendData" :key="rc.region" class="pol-sidebar__region">
+                <div class="pol-sidebar__region-title">{{ rc.emoji }} {{ rc.region }}</div>
+                <div
+                  v-for="grp in rc.groups"
+                  :key="grp.name"
+                  class="pol-sidebar__group"
+                  :class="{ 'pol-sidebar__group--pinned': polLockedGroup === grp.name, 'pol-sidebar__group--dim': !grp.hasVisited }"
+                  :style="{ borderLeftColor: grp.color }"
+                  @click="togglePolGroup(grp.name)"
+                  @mouseenter="!polLockedGroup && highlightPolGroup(grp.name)"
+                  @mouseleave="!polLockedGroup && resetPolHighlight()"
+                >
+                  <div class="pol-sidebar__group-header">
+                    <span class="pol-sidebar__dot" :style="{ background: grp.hasVisited ? grp.color : '#334155' }"></span>
+                    <span class="pol-sidebar__group-name">{{ grp.name }}</span>
+                    <span class="pol-sidebar__group-count">{{ grp.visitedCount }}/{{ grp.totalCount }}</span>
+                  </div>
+                  <div v-if="polLockedGroup === grp.name" class="pol-sidebar__subgroups">
+                    <div v-for="sub in grp.subregions" :key="sub.name" class="pol-sidebar__sub">
+                      <span class="pol-sidebar__sub-name">{{ sub.name }}</span>
+                      <span class="pol-sidebar__sub-flags">{{ sub.flags }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+          <button
+            v-if="currentMapMode === 'political' && polSidebarCollapsed"
+            class="pol-sidebar__open glass"
+            @click="polSidebarCollapsed = false"
+          ><i class="ph ph-list"></i></button>
+          <!-- Map Legend (non-political modes) -->
+          <div v-if="showMapLegend && currentMapMode !== 'political'" class="atlas-legend glass">
             <div class="atlas-legend__content" v-html="mapLegendContent"></div>
           </div>
         </div>
@@ -976,6 +1029,8 @@ const currentMapMode = ref('political');
 const politicalLevel = ref<'civilizations' | 'subregions'>('civilizations');
 const showMapLegend = ref(false);
 const mapLegendContent = ref('');
+const polSidebarCollapsed = ref(false);
+const polLockedGroup = ref<string | null>(null);
 const mapModes = [
   { id: 'political', name: 'Political Cultural Regions' },
   { id: 'country', name: 'Countries' },
@@ -2199,6 +2254,9 @@ function renderPoliticalMap(geoData?: any) {
     });
   }
 
+  // Cache for sidebar legend
+  isoToColor_cached.value = { ...isoToColor };
+
   // Layer 1: Individual country fills (no internal borders)
   L.geoJSON(cachedGeoJSON, {
     style: (feature: any) => {
@@ -2266,7 +2324,118 @@ function renderPoliticalMap(geoData?: any) {
 
 function setPoliticalLevel(level: 'civilizations' | 'subregions') {
   politicalLevel.value = level;
+  polLockedGroup.value = null;
   renderPoliticalMap();
+}
+
+// Political sidebar legend data
+const REGION_EMOJIS: Record<string, string> = {
+  EUROPE: '🔷', AMERICAS: '🌎', OCEANIA: '🔥', ASIA: '🟣', AFRICA: '🪨'
+};
+
+const polLegendData = computed(() => {
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  const level = politicalLevel.value;
+  return POLITICAL_REGIONS_CONFIG.map(rc => {
+    const groups: any[] = [];
+    if (level === 'civilizations') {
+      rc.civilizations.forEach(civ => {
+        const allISOs: string[] = [];
+        const subs: any[] = [];
+        civ.subregions.forEach(sr => {
+          allISOs.push(...sr.countries);
+          const visitedFlags = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
+          const unvisitedFlags = sr.countries.filter(iso => !visitedISOs.has(iso)).map(iso => isoToFlag(iso)).join(' ');
+          subs.push({ name: sr.name, flags: visitedFlags + (visitedFlags && unvisitedFlags ? '  ' : '') + unvisitedFlags });
+        });
+        groups.push({
+          name: civ.name,
+          color: isoToColor_cached.value[allISOs[0]] || '#64748b',
+          hasVisited: allISOs.some(iso => visitedISOs.has(iso)),
+          visitedCount: allISOs.filter(iso => visitedISOs.has(iso)).length,
+          totalCount: allISOs.length,
+          subregions: subs,
+        });
+      });
+    } else {
+      rc.civilizations.forEach(civ => {
+        civ.subregions.forEach(sr => {
+          const visitedFlags = sr.countries.filter(iso => visitedISOs.has(iso)).map(isoToFlag).join(' ');
+          const unvisitedFlags = sr.countries.filter(iso => !visitedISOs.has(iso)).map(isoToFlag).join(' ');
+          groups.push({
+            name: sr.name,
+            color: isoToColor_cached.value[sr.countries[0]] || '#64748b',
+            hasVisited: sr.countries.some(iso => visitedISOs.has(iso)),
+            visitedCount: sr.countries.filter(iso => visitedISOs.has(iso)).length,
+            totalCount: sr.countries.length,
+            subregions: [{ name: sr.name, flags: visitedFlags + (visitedFlags && unvisitedFlags ? '  ' : '') + unvisitedFlags }],
+          });
+        });
+      });
+    }
+    return { region: rc.region, emoji: REGION_EMOJIS[rc.region] || '', groups };
+  });
+});
+
+const polStats = computed(() => {
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  let countries = 0, visited = 0, groups = 0;
+  POLITICAL_REGIONS_CONFIG.forEach(rc => {
+    rc.civilizations.forEach(civ => {
+      if (politicalLevel.value === 'civilizations') {
+        groups++;
+        civ.subregions.forEach(sr => {
+          sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; });
+        });
+      } else {
+        civ.subregions.forEach(sr => {
+          groups++;
+          sr.countries.forEach(iso => { countries++; if (visitedISOs.has(iso)) visited++; });
+        });
+      }
+    });
+  });
+  return { visited, countries, groups };
+});
+
+// Cache isoToColor from last render for the sidebar legend
+const isoToColor_cached = ref<Record<string, string>>({});
+
+function togglePolGroup(name: string) {
+  polLockedGroup.value = polLockedGroup.value === name ? null : name;
+}
+
+function highlightPolGroup(groupName: string) {
+  if (!atlasMap) return;
+  atlasMap.eachLayer((layer: any) => {
+    if (layer.feature && layer.setStyle) {
+      const iso = countryNameToISO(layer.feature.properties?.name);
+      const info = isoToPolitical[iso];
+      if (!info) return;
+      const match = politicalLevel.value === 'civilizations'
+        ? info.civilization === groupName
+        : info.subregion === groupName;
+      layer.setStyle({ fillOpacity: match ? 0.8 : 0.08 });
+    }
+  });
+}
+
+function resetPolHighlight() {
+  if (!atlasMap) return;
+  const visitedISOs = new Set(travelData.trips.map(t => t.countryISO));
+  atlasMap.eachLayer((layer: any) => {
+    if (layer.feature && layer.setStyle) {
+      const iso = countryNameToISO(layer.feature.properties?.name);
+      const col = isoToColor_cached.value[iso];
+      if (col && visitedISOs.has(iso)) {
+        layer.setStyle({ fillOpacity: 0.65 });
+      } else if (col) {
+        layer.setStyle({ fillOpacity: 0.3 });
+      } else {
+        layer.setStyle({ fillOpacity: 0.2 });
+      }
+    }
+  });
 }
 
 // Theme/Collections functions

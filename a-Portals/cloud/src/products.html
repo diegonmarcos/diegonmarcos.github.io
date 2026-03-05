@@ -108,7 +108,7 @@
             </div>
             <!-- Level 2: Page Tabs -->
             <div class="nav-level2 active" id="nav-products">
-                <button class="view-btn active" data-page="products">Products</button>
+                <button class="view-btn active" data-page="products">Solutions</button>
                 <button class="view-btn" data-page="admin">Admin</button>
                 <button class="view-btn" data-page="apps">Apps</button>
                 <span style="color: rgba(255,255,255,0.3); margin: 0 0.25rem;">|</span>
@@ -116,7 +116,7 @@
             </div>
             <!-- Level 3: Dynamic Title -->
             <div class="nav-level3-wrapper">
-                <h2 class="nav-level3-title" id="page-title">Products</h2>
+                <h2 class="nav-level3-title" id="page-title">Solutions</h2>
                 <p class="nav-level3-subtitle" id="page-subtitle">Service Catalog</p>
             </div>
         </header>
@@ -134,7 +134,7 @@
 
                 // Page titles
                 var pageTitles = {
-                    products: { title: 'Products', subtitle: 'Service Catalog' },
+                    products: { title: 'Solutions', subtitle: 'Service Catalog' },
                     apps: { title: 'Apps', subtitle: 'Cloud Infrastructure Access' },
                     features: { title: 'Features', subtitle: 'Cloud Portal Capabilities' },
                     admin: { title: 'Admin', subtitle: 'Admin Tools & Consoles' }
@@ -319,15 +319,6 @@
                                 </div>
                                 <h3>MCP Servers</h3>
                                 <p>Model Context Protocol</p>
-                            </div>
-                            <div class="card" data-service="workflows" data-url="https://workflows.diegonmarcos.com" data-product-category="dev">
-                                <div class="card-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-                                    </svg>
-                                </div>
-                                <h3>Workflows</h3>
-                                <p>DAG Scheduler &amp; Pipelines</p>
                             </div>
                         </div>
                     </div>
@@ -837,6 +828,22 @@
                             <div class="app-card-footer">
                                 <span class="app-card-badge" style="background: rgba(139, 92, 246, 0.15); color: #a78bfa;">Analytics</span>
                                 <span class="app-card-status" style="color: rgba(255,255,255,0.5);">oci-f-micro_2</span>
+                            </div>
+                        </a>
+
+                        <!-- Workflows -->
+                        <a href="https://workflows.diegonmarcos.com" target="_blank" class="app-card">
+                            <div class="app-card-header">
+                                <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                    </svg>
+                                </div>
+                                <h3 class="app-card-title">Workflows</h3>
+                            </div>
+                            <div class="app-card-footer">
+                                <span class="app-card-badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24;">Automation</span>
+                                <span class="app-card-status" style="color: rgba(255,255,255,0.5);">DAG Scheduler</span>
                             </div>
                         </a>
 

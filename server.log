@@ -18463,3 +18463,189 @@ Press Ctrl+C to stop
 [2026-02-05 17:59:49] [2026-02-05 15:59:49] 200 GET /c_Personal_Profiles/myprofile/dist/_app/immutable/nodes/8.BUTOt177.js
 [2026-02-05 17:59:49] [2026-02-05 15:59:49] 200 GET /c_Personal_Profiles/myprofile/dist/_app/immutable/assets/8.iQGP1Avt.css
 [2026-02-05 17:59:49] [2026-02-05 15:59:49] 200 GET /c_Personal_Profiles/myprofile/dist/favicon.ico
+[2026-03-04 18:24:59] Static Server with Eruda DevTools
+[2026-03-04 18:24:59]   URL:   http://localhost:8000
+[2026-03-04 18:24:59]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 18:24:59]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 18:24:59] 
+[2026-03-04 18:24:59] Press Ctrl+C to stop
+[2026-03-04 18:25:15] [2026-03-04 16:25:15] 200 GET / (index.html)
+[2026-03-04 18:25:15] [2026-03-04 16:25:15] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:25:15] [2026-03-04 16:25:15] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:25:15] [2026-03-04 16:25:15] 200 GET /assets/main-u0ppXuVZ.js
+[2026-03-04 18:25:17] [2026-03-04 16:25:17] 404 GET /favicon.ico
+[2026-03-04 18:35:13] Static Server with Eruda DevTools
+[2026-03-04 18:35:13]   URL:   http://localhost:8000
+[2026-03-04 18:35:13]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 18:35:13]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 18:35:13] 
+[2026-03-04 18:35:13] Press Ctrl+C to stop
+[2026-03-04 18:35:31] [2026-03-04 16:35:31] 200 GET / (index.html)
+[2026-03-04 18:35:31] [2026-03-04 16:35:31] 200 GET /assets/main-fLOj6_do.js
+[2026-03-04 18:35:31] [2026-03-04 16:35:31] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:35:31] [2026-03-04 16:35:31] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:35:31] [2026-03-04 16:35:31] 200 GET /assets/main-kWVbv8B-.css
+[2026-03-04 18:38:40] Static Server with Eruda DevTools
+[2026-03-04 18:38:40]   URL:   http://localhost:8000
+[2026-03-04 18:38:41]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 18:38:41]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 18:38:41] 
+[2026-03-04 18:38:41] Press Ctrl+C to stop
+[2026-03-04 18:38:41] [2026-03-04 16:38:41] 200 GET / (index.html)
+[2026-03-04 18:38:41] [2026-03-04 16:38:41] 200 GET /assets/main-Bll7HDmW.js
+[2026-03-04 18:38:41] [2026-03-04 16:38:41] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:38:41] [2026-03-04 16:38:41] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:38:41] [2026-03-04 16:38:41] 200 GET /assets/main-kWVbv8B-.css
+[2026-03-04 18:40:58] [2026-03-04 16:40:58] 200 GET /myroadtrip.html
+[2026-03-04 18:40:59] [2026-03-04 16:40:59] 200 GET /assets/roadtrip-DfhXtZvc.js
+[2026-03-04 18:41:00] [2026-03-04 16:40:59] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:41:00] [2026-03-04 16:40:59] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:41:00] [2026-03-04 16:40:59] 200 GET /assets/roadtrip-DV-J_ihQ.css
+[2026-03-04 18:41:13] [2026-03-04 16:41:13] 200 GET /index.html
+[2026-03-04 18:41:13] [2026-03-04 16:41:13] 200 GET /assets/main-Bll7HDmW.js
+[2026-03-04 18:41:13] [2026-03-04 16:41:13] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:41:13] [2026-03-04 16:41:13] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:41:13] [2026-03-04 16:41:13] 200 GET /assets/main-kWVbv8B-.css
+[2026-03-04 18:42:55] [2026-03-04 16:42:55] 200 GET /myroadtrip.html
+[2026-03-04 18:42:56] [2026-03-04 16:42:56] 200 GET /assets/roadtrip-DfhXtZvc.js
+[2026-03-04 18:42:56] [2026-03-04 16:42:56] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:42:56] [2026-03-04 16:42:56] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:42:56] [2026-03-04 16:42:56] 200 GET /assets/roadtrip-DV-J_ihQ.css
+[2026-03-04 18:44:05] [2026-03-04 16:44:05] 200 GET /index.html
+[2026-03-04 18:44:05] [2026-03-04 16:44:05] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:44:05] [2026-03-04 16:44:05] 200 GET /assets/main-kWVbv8B-.css
+[2026-03-04 18:44:05] [2026-03-04 16:44:05] 200 GET /assets/main-Bll7HDmW.js
+[2026-03-04 18:44:05] [2026-03-04 16:44:05] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:44:33] [2026-03-04 16:44:33] 200 GET /index.html
+[2026-03-04 18:44:33] [2026-03-04 16:44:33] 200 GET /assets/main-Bll7HDmW.js
+[2026-03-04 18:44:33] [2026-03-04 16:44:33] 200 GET /assets/main-Btzlhqa2.css
+[2026-03-04 18:44:33] [2026-03-04 16:44:33] 200 GET /assets/main-B94d4ah3.js
+[2026-03-04 18:44:33] [2026-03-04 16:44:33] 200 GET /assets/main-kWVbv8B-.css
+[2026-03-04 18:52:02] Static Server with Eruda DevTools
+[2026-03-04 18:52:03]   URL:   http://localhost:8000
+[2026-03-04 18:52:03]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 18:52:03]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 18:52:03] 
+[2026-03-04 18:52:03] Press Ctrl+C to stop
+[2026-03-04 18:52:09] [2026-03-04 16:52:08] 200 GET / (index.html)
+[2026-03-04 18:52:09] [2026-03-04 16:52:09] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:52:09] [2026-03-04 16:52:09] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:13] [2026-03-04 16:53:13] 200 GET / (index.html)
+[2026-03-04 18:53:13] [2026-03-04 16:53:13] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:13] [2026-03-04 16:53:13] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:15] [2026-03-04 16:53:15] 200 GET / (index.html)
+[2026-03-04 18:53:15] [2026-03-04 16:53:15] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:15] [2026-03-04 16:53:15] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:20] [2026-03-04 16:53:20] 200 GET / (index.html)
+[2026-03-04 18:53:20] [2026-03-04 16:53:20] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:20] [2026-03-04 16:53:20] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:22] [2026-03-04 16:53:22] 200 GET / (index.html)
+[2026-03-04 18:53:22] [2026-03-04 16:53:22] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:22] [2026-03-04 16:53:22] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:24] [2026-03-04 16:53:24] 200 GET / (index.html)
+[2026-03-04 18:53:24] [2026-03-04 16:53:24] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:24] [2026-03-04 16:53:24] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:35] [2026-03-04 16:53:35] 404 GET /git/front/b-Profiles/leafy/dist/
+[2026-03-04 18:53:40] [2026-03-04 16:53:40] 200 GET / (index.html)
+[2026-03-04 18:53:41] [2026-03-04 16:53:41] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:53:41] [2026-03-04 16:53:41] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:53:42] [2026-03-04 16:53:42] 404 GET /git/cloud/a_solutions/
+[2026-03-04 18:54:18] [2026-03-04 16:54:18] 200 GET / (index.html)
+[2026-03-04 18:54:18] [2026-03-04 16:54:18] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:54:18] [2026-03-04 16:54:18] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 18:54:33] [2026-03-04 16:54:33] 200 GET / (index.html)
+[2026-03-04 18:54:34] [2026-03-04 16:54:33] 200 GET /assets/main-STIn_uFI.js
+[2026-03-04 18:54:34] [2026-03-04 16:54:33] 200 GET /assets/main-IwHZsX90.css
+[2026-03-04 19:01:13] Static Server with Eruda DevTools
+[2026-03-04 19:01:13]   URL:   http://localhost:8000
+[2026-03-04 19:01:13]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 19:01:13]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 19:01:13] 
+[2026-03-04 19:01:13] Press Ctrl+C to stop
+[2026-03-04 19:01:17] [2026-03-04 17:01:17] 200 GET / (index.html)
+[2026-03-04 19:01:18] [2026-03-04 17:01:17] 200 GET /assets/main-GhfvYziS.js
+[2026-03-04 19:01:18] [2026-03-04 17:01:17] 200 GET /assets/main-CdxgAIXt.css
+[2026-03-04 19:01:18] [2026-03-04 17:01:18] 200 GET / (index.html)
+[2026-03-04 19:01:18] [2026-03-04 17:01:18] 200 GET /assets/main-CdxgAIXt.css
+[2026-03-04 19:01:18] [2026-03-04 17:01:18] 200 GET /assets/main-GhfvYziS.js
+[2026-03-04 19:05:28] [2026-03-04 17:05:28] 200 GET / (listing)
+[2026-03-04 19:05:31] [2026-03-04 17:05:31] 200 GET / (listing)
+[2026-03-04 19:05:33] [2026-03-04 17:05:33] 200 GET / (listing)
+[2026-03-04 19:05:34] [2026-03-04 17:05:34] 200 GET / (listing)
+[2026-03-04 19:05:47] [2026-03-04 17:05:47] 200 GET / (index.html)
+[2026-03-04 19:05:48] [2026-03-04 17:05:48] 200 GET /assets/main-C5L7cj7A.js
+[2026-03-04 19:05:48] [2026-03-04 17:05:48] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:05:55] Static Server with Eruda DevTools
+[2026-03-04 19:05:55]   URL:   http://localhost:8000
+[2026-03-04 19:05:55]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 19:05:55]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 19:05:56] 
+[2026-03-04 19:05:56] Press Ctrl+C to stop
+[2026-03-04 19:06:49] Static Server with Eruda DevTools
+[2026-03-04 19:06:49]   URL:   http://localhost:8000
+[2026-03-04 19:06:49]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 19:06:49]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 19:06:49] 
+[2026-03-04 19:06:49] Press Ctrl+C to stop
+[2026-03-04 19:06:57] [2026-03-04 17:06:57] 200 GET / (index.html)
+[2026-03-04 19:06:57] [2026-03-04 17:06:57] 200 GET /assets/main-C5L7cj7A.js
+[2026-03-04 19:06:57] [2026-03-04 17:06:57] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:07:04] [2026-03-04 17:07:04] 200 GET / (index.html)
+[2026-03-04 19:07:04] [2026-03-04 17:07:04] 200 GET /assets/main-C5L7cj7A.js
+[2026-03-04 19:07:04] [2026-03-04 17:07:04] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:09:56] [2026-03-04 17:09:56] 200 GET / (index.html)
+[2026-03-04 19:09:57] [2026-03-04 17:09:57] 200 GET /assets/main-CJMAU7Be.js
+[2026-03-04 19:09:57] [2026-03-04 17:09:57] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:10:13] [2026-03-04 17:10:13] 200 GET / (index.html)
+[2026-03-04 19:10:13] [2026-03-04 17:10:13] 200 GET /assets/main-CJMAU7Be.js
+[2026-03-04 19:10:13] [2026-03-04 17:10:13] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:10:36] [2026-03-04 17:10:36] 200 GET / (listing)
+[2026-03-04 19:14:28] [2026-03-04 17:14:28] 200 GET / (listing)
+[2026-03-04 19:14:29] [2026-03-04 17:14:29] 200 GET / (listing)
+[2026-03-04 19:14:31] [2026-03-04 17:14:31] 200 GET / (listing)
+[2026-03-04 19:14:35] [2026-03-04 17:14:35] 200 GET / (listing)
+[2026-03-04 19:14:38] [2026-03-04 17:14:38] 200 GET / (listing)
+[2026-03-04 19:14:49] [2026-03-04 17:14:49] 200 GET / (index.html)
+[2026-03-04 19:14:49] [2026-03-04 17:14:49] 200 GET /assets/main-CP8rynbk.js
+[2026-03-04 19:14:49] [2026-03-04 17:14:49] 200 GET /assets/main-JDCMfZSU.css
+[2026-03-04 19:15:07] Static Server with Eruda DevTools
+[2026-03-04 19:15:07]   URL:   http://localhost:8000
+[2026-03-04 19:15:07]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 19:15:07]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 19:15:07] 
+[2026-03-04 19:15:07] Press Ctrl+C to stop
+[2026-03-04 19:18:02] [2026-03-04 17:18:01] 200 GET / (listing)
+[2026-03-04 19:18:04] [2026-03-04 17:18:04] 200 GET / (listing)
+[2026-03-04 19:18:05] [2026-03-04 17:18:05] 200 GET / (listing)
+[2026-03-04 19:18:07] [2026-03-04 17:18:07] 200 GET / (listing)
+[2026-03-04 19:18:09] [2026-03-04 17:18:09] 200 GET / (listing)
+[2026-03-04 19:18:10] [2026-03-04 17:18:10] 200 GET / (listing)
+[2026-03-04 19:18:11] [2026-03-04 17:18:11] 200 GET / (listing)
+[2026-03-04 19:18:12] [2026-03-04 17:18:12] 200 GET / (listing)
+[2026-03-04 19:18:14] [2026-03-04 17:18:14] 200 GET / (listing)
+[2026-03-04 19:18:16] [2026-03-04 17:18:16] 200 GET / (listing)
+[2026-03-04 19:18:17] [2026-03-04 17:18:17] 200 GET / (listing)
+[2026-03-04 19:18:18] [2026-03-04 17:18:18] 200 GET / (listing)
+[2026-03-04 19:18:19] [2026-03-04 17:18:19] 200 GET / (listing)
+[2026-03-04 19:18:20] [2026-03-04 17:18:20] 200 GET / (listing)
+[2026-03-04 19:18:29] [2026-03-04 17:18:29] 200 GET / (listing)
+[2026-03-04 19:18:30] [2026-03-04 17:18:30] 200 GET / (listing)
+[2026-03-04 19:18:32] [2026-03-04 17:18:32] 200 GET / (listing)
+[2026-03-04 19:19:14] [2026-03-04 17:19:14] 200 GET / (listing)
+[2026-03-04 19:19:15] [2026-03-04 17:19:15] 200 GET / (listing)
+[2026-03-04 19:20:05] [2026-03-04 17:20:05] 200 GET / (listing)
+[2026-03-04 19:20:06] [2026-03-04 17:20:06] 200 GET / (listing)
+[2026-03-04 19:20:43] [2026-03-04 17:20:42] 200 GET / (listing)
+[2026-03-04 19:20:44] [2026-03-04 17:20:44] 200 GET / (listing)
+[2026-03-04 19:21:11] Static Server with Eruda DevTools
+[2026-03-04 19:21:11]   URL:   http://localhost:8000
+[2026-03-04 19:21:11]   Mount: /data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist
+[2026-03-04 19:21:11]   Mode:  Eruda auto-injection (no logging)
+[2026-03-04 19:21:11] 
+[2026-03-04 19:21:12] Press Ctrl+C to stop
+[2026-03-04 19:21:28] [2026-03-04 17:21:28] 200 GET / (index.html)
+[2026-03-04 19:21:28] [2026-03-04 17:21:28] 200 GET /assets/main-DYor20xm.js
+[2026-03-04 19:21:28] [2026-03-04 17:21:28] 200 GET /assets/main-BJzpCeKi.css
+[2026-03-04 19:22:26] [2026-03-04 17:22:26] 200 GET / (index.html)
+[2026-03-04 19:22:27] [2026-03-04 17:22:26] 200 GET /assets/main-DYor20xm.js
+[2026-03-04 19:22:27] [2026-03-04 17:22:27] 200 GET /assets/main-BJzpCeKi.css

@@ -1,8 +1,8 @@
 {
   "port": 8000,
-  "mount_point": "/data/data/com.termux.nix/files/home",
-  "pid": 10277,
+  "mount_point": "/data/data/com.termux.nix/files/home/git/front/c-Tools/mytrips/dist",
+  "pid": 0,
   "log_receiver_pid": 0,
   "mode": "static",
-  "mount_locked": "false"
+  "mount_locked": "true"
 }

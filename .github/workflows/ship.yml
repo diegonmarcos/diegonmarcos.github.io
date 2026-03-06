@@ -23,12 +23,9 @@ jobs:
       - name: 📦 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: '.node-version'
       - name: 📦 Install Dependencies
-        run: |
-          echo "📦 Generating merged package.json and installing..."
-          bash deploy.sh deps
-          echo "✅ Dependencies installed"
+        run: bash build.sh deps
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================

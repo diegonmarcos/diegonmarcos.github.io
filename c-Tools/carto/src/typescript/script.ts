@@ -179,6 +179,35 @@ const LENORMAND_CARDS: { name: string; symbol: string; meaning: string }[] = [
 let currentDeck: 'tarot' | 'lenormand' = 'tarot';
 
 // ==========================================
+// TREE OF LIFE CONSTANTS
+// ==========================================
+
+interface ToLPosition {
+    id: number;
+    name: string;
+    hebrew: string;
+    meaning: string;
+    description: string;
+    pillar: 'left' | 'middle' | 'right';
+    // Position as fraction of viewport: xPct, row index
+    xPct: number;
+    row: number;
+}
+
+const TOL_POSITIONS: ToLPosition[] = [
+    { id: 1, name: 'Keter', hebrew: 'Crown', meaning: 'Spiritual purpose', description: 'The root of the issue. The spiritual "why."', pillar: 'middle', xPct: 0.5, row: 0 },
+    { id: 2, name: 'Chokmah', hebrew: 'Wisdom', meaning: 'Creative force', description: 'The initial impulse or creative energy.', pillar: 'right', xPct: 0.75, row: 1 },
+    { id: 3, name: 'Binah', hebrew: 'Understanding', meaning: 'Structure', description: 'The structure that gives the idea form.', pillar: 'left', xPct: 0.25, row: 1 },
+    { id: 4, name: 'Chesed', hebrew: 'Mercy', meaning: 'Expansion', description: 'What is expanding or being given freely.', pillar: 'right', xPct: 0.75, row: 3 },
+    { id: 5, name: 'Gevurah', hebrew: 'Severity', meaning: 'Boundaries', description: 'Obstacles or things that need to be cut away.', pillar: 'left', xPct: 0.25, row: 3 },
+    { id: 6, name: 'Tiferet', hebrew: 'Beauty', meaning: 'Balance', description: 'The heart of the matter. Finding harmony.', pillar: 'middle', xPct: 0.5, row: 4 },
+    { id: 7, name: 'Netzach', hebrew: 'Victory', meaning: 'Desires', description: 'Your emotions, desires, and what keeps you going.', pillar: 'right', xPct: 0.75, row: 5 },
+    { id: 8, name: 'Hod', hebrew: 'Splendor', meaning: 'Intellect', description: 'Logic, communication, and mental processing.', pillar: 'left', xPct: 0.25, row: 5 },
+    { id: 9, name: 'Yesod', hebrew: 'Foundation', meaning: 'Subconscious', description: 'Hidden patterns and the bridge to reality.', pillar: 'middle', xPct: 0.5, row: 6 },
+    { id: 10, name: 'Malkuth', hebrew: 'Kingdom', meaning: 'Outcome', description: 'The physical manifestation. The grounded result.', pillar: 'middle', xPct: 0.5, row: 7 },
+];
+
+// ==========================================
 // STATE
 // ==========================================
 
@@ -266,53 +295,310 @@ function injectSupports(x: number, y: number): void {
 }
 
 async function dealSpreads(): Promise<void> {
-    const cardY = window.innerHeight * 0.4;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const isMobile = vw <= 900;
+
     const SEQUENCE: SequenceItem[] = [
         { pct: 0.17, heroId: 'hero-past', sup: [0, 1], txt: 'txt-past' },
         { pct: 0.5, heroId: 'hero-pres', sup: [2, 3], txt: 'txt-pres' },
         { pct: 0.83, heroId: 'hero-fut', sup: [4, 5], txt: 'txt-fut' }
     ];
 
+    // Enable scrolling for the reading layout
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+    document.body.style.minHeight = '100vh';
+
     let globalZ = 300;
+    const revealH = isMobile ? 180 : (vw >= 1200 ? 290 : 220);
+    const supportH = isMobile ? 95 : 115;
 
-    for (const item of SEQUENCE) {
-        const xPos = window.innerWidth * item.pct;
-        const s1 = deck.find(c => c.supportIndex === item.sup[0])!;
-        const s2 = deck.find(c => c.supportIndex === item.sup[1])!;
-        const hero = deck.find(c => c.heroId === item.heroId)!;
+    // Mobile: stack vertically; Desktop: 3 columns
+    let cardY: number;
 
-        s1.el.style.zIndex = (globalZ++).toString();
-        s1.el.classList.add('revealed-support');
-        s1.el.style.left = `${xPos - 50}px`;
-        s1.el.style.top = `${cardY + 40}px`;
-        s1.el.style.transform = `translate(-50%, -50%) rotate(-12deg)`;
+    if (isMobile) {
+        cardY = 80;
+        let currentY = cardY;
 
-        s2.el.style.zIndex = (globalZ++).toString();
-        s2.el.classList.add('revealed-support');
-        s2.el.style.left = `${xPos + 50}px`;
-        s2.el.style.top = `${cardY + 40}px`;
-        s2.el.style.transform = `translate(-50%, -50%) rotate(12deg)`;
+        for (let i = 0; i < SEQUENCE.length; i++) {
+            const item = SEQUENCE[i];
+            const xPos = vw / 2;
+            const s1 = deck.find(c => c.supportIndex === item.sup[0])!;
+            const s2 = deck.find(c => c.supportIndex === item.sup[1])!;
+            const hero = deck.find(c => c.heroId === item.heroId)!;
 
-        await wait(200);
+            s1.el.style.zIndex = (globalZ++).toString();
+            s1.el.classList.add('revealed-support');
+            s1.el.style.left = `${xPos - 40}px`;
+            s1.el.style.top = `${currentY + 30}px`;
+            s1.el.style.transform = `translate(-50%, -50%) rotate(-12deg)`;
 
-        hero.el.style.zIndex = (globalZ + 50).toString();
-        hero.el.classList.add('revealed-tarot');
-        hero.el.style.left = `${xPos}px`;
-        hero.el.style.top = `${cardY}px`;
-        hero.el.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+            s2.el.style.zIndex = (globalZ++).toString();
+            s2.el.classList.add('revealed-support');
+            s2.el.style.left = `${xPos + 40}px`;
+            s2.el.style.top = `${currentY + 30}px`;
+            s2.el.style.transform = `translate(-50%, -50%) rotate(12deg)`;
 
-        await wait(600);
+            await wait(200);
 
-        hero.el.classList.remove('is-flipped');
-        await wait(250);
-        s1.el.classList.remove('is-flipped');
-        s2.el.classList.remove('is-flipped');
+            hero.el.style.zIndex = (globalZ + 50).toString();
+            hero.el.classList.add('revealed-tarot');
+            hero.el.style.left = `${xPos}px`;
+            hero.el.style.top = `${currentY}px`;
+            hero.el.style.transform = `translate(-50%, -50%) rotate(0deg)`;
 
-        document.getElementById(item.txt)?.classList.add('visible');
-        await wait(800);
+            await wait(600);
+
+            hero.el.classList.remove('is-flipped');
+            await wait(250);
+            s1.el.classList.remove('is-flipped');
+            s2.el.classList.remove('is-flipped');
+
+            // Position reading text under this card
+            const txtEl = document.getElementById(item.txt);
+            if (txtEl) {
+                txtEl.classList.add('visible');
+                txtEl.style.position = 'absolute';
+                txtEl.style.left = '5%';
+                txtEl.style.width = '90%';
+                txtEl.style.maxWidth = 'none';
+                txtEl.style.top = `${currentY + revealH / 2 + supportH / 2 + 15}px`;
+                txtEl.style.zIndex = '500';
+            }
+
+            currentY += revealH / 2 + supportH / 2 + 160;
+            await wait(800);
+        }
+
+        // Final phrase after all cards+texts
+        const finalEl = document.getElementById('finalPhrase');
+        if (finalEl) {
+            finalEl.classList.add('visible');
+            finalEl.style.top = `${currentY + 10}px`;
+            finalEl.style.bottom = 'auto';
+        }
+
+        // Extend body to fit all content
+        document.body.style.minHeight = `${currentY + 100}px`;
+
+    } else {
+        // Desktop: 3 columns
+        cardY = vh * 0.25;
+
+        for (const item of SEQUENCE) {
+            const xPos = vw * item.pct;
+            const s1 = deck.find(c => c.supportIndex === item.sup[0])!;
+            const s2 = deck.find(c => c.supportIndex === item.sup[1])!;
+            const hero = deck.find(c => c.heroId === item.heroId)!;
+
+            s1.el.style.zIndex = (globalZ++).toString();
+            s1.el.classList.add('revealed-support');
+            s1.el.style.left = `${xPos - 50}px`;
+            s1.el.style.top = `${cardY + 40}px`;
+            s1.el.style.transform = `translate(-50%, -50%) rotate(-12deg)`;
+
+            s2.el.style.zIndex = (globalZ++).toString();
+            s2.el.classList.add('revealed-support');
+            s2.el.style.left = `${xPos + 50}px`;
+            s2.el.style.top = `${cardY + 40}px`;
+            s2.el.style.transform = `translate(-50%, -50%) rotate(12deg)`;
+
+            await wait(200);
+
+            hero.el.style.zIndex = (globalZ + 50).toString();
+            hero.el.classList.add('revealed-tarot');
+            hero.el.style.left = `${xPos}px`;
+            hero.el.style.top = `${cardY}px`;
+            hero.el.style.transform = `translate(-50%, -50%) rotate(0deg)`;
+
+            await wait(600);
+
+            hero.el.classList.remove('is-flipped');
+            await wait(250);
+            s1.el.classList.remove('is-flipped');
+            s2.el.classList.remove('is-flipped');
+
+            // Position reading text under its card
+            const txtEl = document.getElementById(item.txt);
+            if (txtEl) {
+                txtEl.classList.add('visible');
+                txtEl.style.position = 'absolute';
+                txtEl.style.left = `${xPos}px`;
+                txtEl.style.transform = 'translateX(-50%)';
+                txtEl.style.top = `${cardY + revealH / 2 + supportH / 2 + 20}px`;
+                txtEl.style.zIndex = '500';
+            }
+
+            await wait(800);
+        }
+
+        // Final phrase below reading texts
+        const textBottom = cardY + revealH / 2 + supportH / 2 + 200;
+        const finalEl = document.getElementById('finalPhrase');
+        if (finalEl) {
+            finalEl.classList.add('visible');
+            finalEl.style.top = `${textBottom}px`;
+            finalEl.style.bottom = 'auto';
+        }
+
+        document.body.style.minHeight = `${textBottom + 80}px`;
     }
 
-    document.getElementById('finalPhrase')?.classList.add('visible');
+    document.getElementById('reloadContainer')?.classList.add('visible');
+}
+
+// ==========================================
+// TREE OF LIFE SPREAD
+// ==========================================
+
+function shuffleArray<T>(arr: T[]): T[] {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+async function dealTreeOfLife(): Promise<void> {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+
+    // Reference layout dimensions (designed at this size, then scaled to fit)
+    const refW = 1000;
+    const refH = 1200;
+    const scaleX = vw / refW;
+    const scaleY = vh / refH;
+    const scale = Math.min(scaleX, scaleY, 1);
+    const offsetX = (vw - refW * scale) / 2;
+    const offsetY = (vh - refH * scale) / 2;
+
+    // Pick 10 random cards
+    const shuffled = shuffleArray(RWS_ASSETS);
+    const pickedCards = shuffled.slice(0, 10);
+    const pickedIndices = pickedCards.map(url => RWS_ASSETS.indexOf(url));
+
+    // Clear the ToL reading container
+    const tolContainer = document.getElementById('tolReadingContainer') as HTMLElement;
+    tolContainer.innerHTML = '';
+
+    // Scale both table and text container identically
+    const transformCSS = `scale(${scale})`;
+    const originCSS = 'top left';
+
+    table.style.transformOrigin = originCSS;
+    table.style.transform = transformCSS;
+    table.style.width = `${refW}px`;
+    table.style.height = `${refH}px`;
+    table.style.left = `${offsetX}px`;
+    table.style.top = `${offsetY}px`;
+
+    tolContainer.style.transformOrigin = originCSS;
+    tolContainer.style.transform = transformCSS;
+    tolContainer.style.width = `${refW}px`;
+    tolContainer.style.height = `${refH}px`;
+    tolContainer.style.position = 'absolute';
+    tolContainer.style.top = `${offsetY}px`;
+    tolContainer.style.left = `${offsetX}px`;
+    tolContainer.style.pointerEvents = 'none';
+
+    // Card sizing at reference dimensions
+    const cardW = 90;
+    const cardH = 153;
+    const rowSpacing = 140;
+    const startY = 100;
+
+    // Pillar X positions
+    const leftX = refW * 0.2;
+    const rightX = refW * 0.8;
+    const centerX = refW * 0.5;
+
+    const rowY = (row: number) => startY + row * rowSpacing;
+
+    let globalZ = 300;
+
+    for (let i = 0; i < TOL_POSITIONS.length; i++) {
+        const pos = TOL_POSITIONS[i];
+        const cardUrl = pickedCards[i];
+        const cardIndex = pickedIndices[i];
+        const meta = getCardMeta(cardIndex);
+
+        let xPos: number;
+        if (pos.pillar === 'left') xPos = leftX;
+        else if (pos.pillar === 'right') xPos = rightX;
+        else xPos = centerX;
+
+        const yPos = rowY(pos.row);
+
+        const deckCard = deck[i];
+        if (!deckCard) continue;
+
+        const el = deckCard.el;
+        const frontFace = el.querySelector('.face-front') as HTMLElement;
+        frontFace.style.backgroundImage = `url('${cardUrl}')`;
+
+        el.style.zIndex = (globalZ++).toString();
+        el.style.width = `${cardW}px`;
+        el.style.height = `${cardH}px`;
+        el.style.left = `${xPos}px`;
+        el.style.top = `${yPos}px`;
+        el.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+        el.style.animation = 'none';
+        el.style.filter = 'drop-shadow(0 0 15px rgba(255, 215, 0, 0.4))';
+
+        await wait(250);
+        el.classList.remove('is-flipped');
+
+        // "At home" bonus glow
+        const isAtHome = (cardIndex + 1) === pos.id || (cardIndex >= 22 && ((cardIndex - 22) % 14) + 1 === pos.id);
+        if (isAtHome) {
+            el.style.filter = 'drop-shadow(0 0 25px rgba(255, 215, 0, 0.8))';
+        }
+
+        // Reading text beside the card
+        const txtDiv = document.createElement('div');
+        txtDiv.className = 'tol-reading-text';
+        txtDiv.style.width = '160px';
+        txtDiv.style.zIndex = '500';
+
+        if (pos.pillar === 'left') {
+            txtDiv.style.left = `${xPos + cardW / 2 + 8}px`;
+            txtDiv.style.top = `${yPos - cardH / 2}px`;
+        } else if (pos.pillar === 'right') {
+            txtDiv.style.left = `${xPos - cardW / 2 - 168}px`;
+            txtDiv.style.top = `${yPos - cardH / 2}px`;
+        } else {
+            txtDiv.style.left = `${xPos + cardW / 2 + 8}px`;
+            txtDiv.style.top = `${yPos - cardH / 2}px`;
+        }
+        txtDiv.style.transform = 'none';
+
+        txtDiv.innerHTML = `
+            <h4>${pos.id}. ${pos.name}</h4>
+            <div class="tol-sephira">${pos.hebrew} — ${pos.meaning}</div>
+            <p><strong>${meta.name}</strong><br>${pos.description}</p>
+        `;
+
+        tolContainer.appendChild(txtDiv);
+        await wait(150);
+        txtDiv.classList.add('visible');
+        await wait(300);
+    }
+
+    // Final phrase — positioned at bottom of reference frame
+    const finalEl = document.getElementById('finalPhrase');
+    if (finalEl) {
+        finalEl.textContent = '"As above, so below. The Lightning Flash descends, and the Serpent of Wisdom ascends."';
+        finalEl.style.position = 'absolute';
+        finalEl.style.bottom = '10px';
+        finalEl.style.top = 'auto';
+        finalEl.classList.add('visible');
+    }
+
     document.getElementById('reloadContainer')?.classList.add('visible');
 }
 
@@ -376,16 +662,41 @@ function renderGallery(deckType: 'tarot' | 'lenormand' = 'tarot'): void {
 // EVENT HANDLERS
 // ==========================================
 
-document.getElementById('triggerObj')?.addEventListener('click', async () => {
-    const triggerEl = document.getElementById('triggerObj') as HTMLElement;
+function hideMainUI(): void {
+    const triggersRow = document.querySelector('.triggers-row') as HTMLElement;
     const mainTitle = document.getElementById('mainTitle') as HTMLElement;
     const btnInfo = document.getElementById('btnInfo') as HTMLElement;
 
-    triggerEl.style.opacity = '0';
-    triggerEl.style.pointerEvents = 'none';
+    triggersRow.style.opacity = '0';
+    triggersRow.style.pointerEvents = 'none';
     mainTitle.style.opacity = '0';
     btnInfo.style.opacity = '0';
     btnInfo.style.pointerEvents = 'none';
+}
+
+async function gatherAndShuffle(): Promise<void> {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2;
+
+    deck.forEach((c, i) => {
+        c.el.style.animation = 'none';
+        c.el.classList.add('is-flipped');
+        c.el.style.left = `${cx}px`;
+        c.el.style.top = `${cy}px`;
+        c.el.style.transform = `translate(-50%, -50%) rotate(${Math.random() * 10 - 5}deg)`;
+        c.el.style.zIndex = i.toString();
+    });
+
+    await wait(1200);
+
+    document.querySelectorAll('.card').forEach(el => el.classList.add('shuffling'));
+    await wait(1000);
+    document.querySelectorAll('.card').forEach(el => el.classList.remove('shuffling'));
+}
+
+// Arcanum Triad trigger
+document.getElementById('triggerObj')?.addEventListener('click', async () => {
+    hideMainUI();
 
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
@@ -410,22 +721,53 @@ document.getElementById('triggerObj')?.addEventListener('click', async () => {
     dealSpreads();
 });
 
+// Tree of Life trigger
+document.getElementById('triggerToL')?.addEventListener('click', async () => {
+    hideMainUI();
+    await gatherAndShuffle();
+    dealTreeOfLife();
+});
+
 document.getElementById('btnRestart')?.addEventListener('click', () => {
-    const triggerEl = document.getElementById('triggerObj') as HTMLElement;
+    const triggersRow = document.querySelector('.triggers-row') as HTMLElement;
     const mainTitle = document.getElementById('mainTitle') as HTMLElement;
     const btnInfo = document.getElementById('btnInfo') as HTMLElement;
     const reloadContainer = document.getElementById('reloadContainer') as HTMLElement;
     const finalPhrase = document.getElementById('finalPhrase') as HTMLElement;
+    const tolContainer = document.getElementById('tolReadingContainer') as HTMLElement;
 
-    triggerEl.style.opacity = '1';
-    triggerEl.style.pointerEvents = 'auto';
+    triggersRow.style.opacity = '1';
+    triggersRow.style.pointerEvents = 'auto';
     mainTitle.style.opacity = '1';
     btnInfo.style.opacity = '1';
     btnInfo.style.pointerEvents = 'auto';
     reloadContainer.classList.remove('visible');
     finalPhrase.classList.remove('visible');
+    finalPhrase.style.top = '';
+    finalPhrase.style.bottom = '';
+    finalPhrase.textContent = '"From the shadows of the past, through the silence of the present, into the golden light of the future."';
 
-    document.querySelectorAll('.reading-text').forEach(el => el.classList.remove('visible'));
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    document.body.style.minHeight = '';
+    window.scrollTo(0, 0);
+
+    document.querySelectorAll('.reading-text').forEach(el => {
+        (el as HTMLElement).classList.remove('visible');
+        (el as HTMLElement).style.cssText = '';
+    });
+
+    tolContainer.innerHTML = '';
+    tolContainer.style.cssText = '';
+
+    // Reset table transform from ToL scaling
+    const tableEl = document.getElementById('table') as HTMLElement;
+    tableEl.style.transform = '';
+    tableEl.style.transformOrigin = '';
+    tableEl.style.width = '';
+    tableEl.style.height = '';
+    tableEl.style.left = '';
+    tableEl.style.top = '';
 
     init();
 });

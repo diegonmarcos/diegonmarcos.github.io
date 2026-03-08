@@ -1,0 +1,70 @@
+// ==========================================
+// MEDIA QUERIES
+// ==========================================
+
+@media (min-width: 1200px) {
+    :root {
+        --card-w: 75px;
+        --card-h: 128px;
+        --reveal-w: 170px;
+        --reveal-h: 290px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --reveal-w: 110px;
+        --reveal-h: 180px;
+        --support-w: 60px;
+        --support-h: 95px;
+    }
+
+    .reading-text {
+        h3 {
+            font-size: 0.9rem;
+        }
+
+        p {
+            font-size: 0.8rem;
+        }
+    }
+
+    .final-phrase {
+        font-size: 0.85rem;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .reading-text {
+        padding: 10px;
+
+        h3 {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        p {
+            font-size: 0.75rem;
+            line-height: 1.3;
+        }
+    }
+
+    .final-phrase {
+        font-size: 0.75rem;
+    }
+
+    .gallery-grid {
+        gap: 5px;
+        padding: 10px;
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+
+    .g-name {
+        font-size: 0.5rem;
+    }
+
+    .g-mean {
+        font-size: 0.4rem;
+    }
+}

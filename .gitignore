@@ -1,59 +1,65 @@
-#GITIGNORE FILE
+# ══════════════════════════════════════════════════════════
+# REPO: front (PUBLIC)
+# https://github.com/diegonmarcos/diegonmarcos.github.io
+# ══════════════════════════════════════════════════════════
 
+# ── Secrets & Credentials (reinforces global gitignore) ──
+# KEEP IN SYNC with global gitignore: ~/git/unix/ba_flakes_desktop/src/modules/programs/git.nix
+#                                      ~/git/unix/bb_flakes_termux/src/modules/programs/git.nix
+## Decrypted secrets output
+.secrets
+*.secrets
+**/.secrets
+.secrets.d/
+**/.secrets.d/
+## Environment files
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+## Private keys & certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+## Auth tokens & credentials
+*.token
+*credentials*.json
+*_token.json
+*_tokens.json
+## Cloud provider configs
+.oci/
+.gcloud/
+## GPG & age
+*.asc
+*.age
+!*.age.pub
+## Terraform secrets
+terraform.tfvars
+*.tfvars
+!*.tfvars.example
 
-# General files to ignore
-## IDE files
-.vscode/
-.idea/
-
-## OS files
-.DS_Store
-Thumbs.db
-
-# Symlinks to external directories
-
-
-# Jekyll
-## Jekyll build output
+# ── Repo-specific ──
+## Dependencies
+vendor/
+**/1.ops/node_modules/
+## Jekyll
 _site/
 .jekyll-cache/
 .jekyll-metadata
 Gemfile.lock
-
 ## Temporary build directories
 blog_output/
 final_site/
-
-
-
-# Node and Sass build artifacts
-## Dependency directories (located in 3.sass/0.json/)
-node_modules/
-vendor/
-**/1.ops/node_modules/
-#1.ops/package-lock.json
-
 ## Sass/CSS build artifacts
 *.backup
-
-# LOGS
-## Build logs and source maps
-#1.ops/logs/
-#*.css.map
+## Build logs
 1.ops/build_main.log
 1.ops/.build-status
 1.ops/.dev-servers.pid
-
-# Dev mode symlinks (public folder in src_static)
-
-
-
-
+## Obsidian
 .obsidian/workspace-mobile.json
-
-# Secrets (decrypted output — never commit)
-*.secrets
-.secrets
-**/.secrets
-.secrets.d/
-**/.secrets.d/

@@ -50,3 +50,10 @@ vendor/
 
 
 .obsidian/workspace-mobile.json
+
+# Secrets (decrypted output — never commit)
+*.secrets
+.secrets
+**/.secrets
+.secrets.d/
+**/.secrets.d/

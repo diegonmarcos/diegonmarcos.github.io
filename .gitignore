@@ -63,3 +63,4 @@ final_site/
 1.ops/.dev-servers.pid
 ## Obsidian
 .obsidian/workspace-mobile.json
+node_modules/

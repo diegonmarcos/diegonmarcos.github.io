@@ -55,6 +55,8 @@ function handleToggleClick(toggle: HTMLElement): void {
     // Close the collapsible
     removeClass(content, 'open');
     removeClass(toggle, 'open');
+    const plusIcon = toggle.querySelector('.plus-icon');
+    if (plusIcon) plusIcon.classList.add('was-open');
     content.style.maxHeight = '0px';
 
     // Update parent heights after closing
@@ -63,6 +65,8 @@ function handleToggleClick(toggle: HTMLElement): void {
     // Open the collapsible
     addClass(content, 'open');
     addClass(toggle, 'open');
+    const plusIcon = toggle.querySelector('.plus-icon');
+    if (plusIcon) plusIcon.classList.remove('was-open');
     content.style.maxHeight = content.scrollHeight + 'px';
 
     // Update this collapsible's height after a moment

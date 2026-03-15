@@ -11,6 +11,8 @@ import { initPerformanceMode } from './modules/performanceMode';
 import { initSmoothSnap } from './modules/smoothSnap';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
 import { initVmControl } from './modules/vmControl';
+import { initProfilePicSwiper } from './modules/profilePicSwiper';
+import { initCardSwiper } from './modules/cardSwiper';
 
 /**
  * Initialize all application modules
@@ -18,6 +20,9 @@ import { initVmControl } from './modules/vmControl';
 function initApp(): void {
   // Initialize collapsible sections
   initCollapsibleSections();
+
+  initProfilePicSwiper();
+  initCardSwiper();
 
   // Initialize controls toggle
   initControlsToggle();

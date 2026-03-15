@@ -164,11 +164,84 @@
     <video autoplay muted loop playsinline id="background-video" poster="public/images/background_static.jpg">
     </video>
     <div class="container">
-        <header>
-            <img src="https://ugc.production.linktr.ee/61669d4d-f89f-476d-a8e6-08051302e895_image.jpeg?io=true&size=avatar-v3_0" alt="Profile Picture" class="profile-pic">
+        <div class="snap-group">
+        <div class="header-spacer"></div>
+
+        <header class="header-left">
+            <div class="profile-pic-swiper profile-pic-large">
+                <img src="public/images/diego_linkedin-picture.jpg" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide active">
+                <img src="https://ugc.production.linktr.ee/61669d4d-f89f-476d-a8e6-08051302e895_image.jpeg?io=true&size=avatar-v3_0" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide">
+            </div>
             <h1 data-text="DIEGO NEPOMUCENO MARCOS">DIEGO NEPOMUCENO MARCOS</h1>
-            <p>| <img src="public/icons/brain.svg" alt="Software" class="inline-icon"> Product n' Software Eng Std  | <img src="public/icons/rocket.svg" alt="Venture Capital" class="inline-icon">  Venture Capital n' Portfolio Manager Analyst | <img src="public/icons/settings.svg" alt="Engineering" class="inline-icon"> Civil Engineer B.Sc.  | <img src="public/icons/world.svg" alt="Location" class="inline-icon"> @BERlin.de  |</p>
+            <p>| <img src="public/icons/brain.svg" alt="Software" class="inline-icon"> Product n' Software Engineering | <img src="public/icons/rocket.svg" alt="Venture Capital" class="inline-icon"> Venture Capital n' Portfolio Management |</p>
+            <p>| <img src="public/icons/settings.svg" alt="Engineering" class="inline-icon"> Civil Structural Engineer B.Sc. |</p>
+            <p>| <img src="public/icons/world.svg" alt="Location" class="inline-icon"> Brazilian/Spanish | @BERlin.de |</p>
+            <button class="more-toggle prisma-toggle" data-target="professional-header-more">
+                <span class="plus-icon">+</span>
+            </button>
+            <div class="collapsible-content" id="professional-header-more">
+                <div class="personal-description description-left">
+                    <p><strong>About:</strong></p>
+                    <pre class="experience-block">- Designing The Products of Tomorrow;
+- Edge Technologies crafted with Aesthetic UX;
+- Async mode, OOM Seekers, Declarative way, Penguin worshipers;
+- Over 15y performing in high paced working environments;
+- Building with dreamers in a ice breaker towards disruption!</pre>
+                    <br>
+                    <p><strong>Experience:</strong></p>
+                    <pre class="experience-block">@tl;dr 🚲
+&gt; ABOUT
+    "At 38 years old holds a B.Sc. as a Civil Structural Engineer, Corporate Analyst for 3y, Investment Banker and Private Equity analyst for 10y, pivoting into Software and Product Engineering. For 5y lived in 5 EU cities, moved over 170+ cities across 40+ countries, with Spanish and Brazilian roots based in Germany."
+
+---
+
+@experiences ⛵
+&gt;&gt; COMPUTER SCIENCE
+      In a three-years Software Engineering course pursuing a career shift. Projects handling: Data Structures in C, Algorithms in C, System Process in Unix, Network Architecture and Web Servers, Computer Graphics and Games.
+&gt;&gt; CAPITAL MARKETS
+      For 10 years in Capital Markets, played roles as Investment Banker, Venture Capital Analyst, Portfolio Manager in Wealth Management and Real Estate Private Equity Analyst.
+&gt;&gt; CORPORATE BUSINESS
+      For 4 years in Real Estate Development played roles in: Business Development, FP&amp;A and Investor Relations.
+&gt;&gt; CIVIL ENGINEERING
+      For 2 years managed on-site construction of 2 residential towers and builded 9 emergency houses for poverty alleviation.
+
+&gt;&gt;&gt; INTERNATIONAL EXPERIENCE
+      For 5 years travelled to 170+ cities over 40+ countries across 5 continents; Lived in 5 european cities, born and raised in São Paulo.
+&gt;&gt;&gt; NGO
+      For 2 years worked at an NGO on social development and poverty alleviation.
+&gt;&gt;&gt; ARMY
+      For 1 year forged as a cadet in the Army Reserve Officers' Training Corps; Commissioned as a 2nd Lieutenant, Ordnance Corps.
+
+@studies ✒️
+ &gt;&gt; COMPUTER SCIENCE
+      Course Software Engineering (3 years); Course Product Management (3 months).
+ &gt;&gt; CAPITAL MARKETS
+      Specialization in Investment Banking, Private Equity and Portfolio Management (1 year); Course Macro Economics Modeling (3 months).
+ &gt;&gt; ENGINEERING
+      B.Sc. Civil Engineering (5 years). Majors: Structural, Water and Transportation. Minors: Math and Physics.
+ &gt;&gt; LANGUAGES
+      Portuguese (Native), English (C1), Spanish (B2), Gallego (B1) and Deutsche (A1); Holds Spanish and Brazilian citizenship.
+
+@personal ⚖️
+•  INTERESTS
+      Modern Physics (Quantum and Particle), Global Macro, Mediterranean and Vegetarian Cooking, Backpacking, Jazzy Music.
+•  ENDURANCE
+      Hiking, Rock Climbing, Cycling, Skydiving and Bungee Jump.
+•  COMPETING
+      Tennis (5y), Handball (3y), Rugby (1y) and Waterpolo (1y).
+•  MINDFULNESS
+      Aikido, Yoga and Meditation.
+•  PURSUITS
+      Oceans Seven Endurance, pre-Tour de France cycling and Seven Summits hike.
+
+
+
+🔗 https://linktree.diegonmarcos</pre>
+                    <br><br>
+                </div>
+            </div>
         </header>
+        </div>
         <main>
             <!-- Professional Section Box -->
             <section class="section-box professional-section">
@@ -181,7 +254,10 @@
                         <div class="swiper-slide">
                             <div class="link-section">
                                 <h2 class="section-title">PROFILE</h2>
-                <img src="public/images/professional.png" alt="Professional" class="featured-image">
+                <div class="card-swiper">
+                    <img src="https://i.pinimg.com/736x/92/b7/e4/92b7e4210fc475367178ec928b859412.jpg" alt="Professional" class="featured-image card-slide active">
+                    <video src="https://v1.pinimg.com/videos/mc/720p/d1/0d/22/d10d22deed19360b09173ecbf49dad6a.mp4" autoplay muted loop playsinline class="featured-image card-slide"></video>
+                </div>
                 <div class="links-container">
                     <br>
                     <h3 class="subsection-title">Contact</h3>
@@ -327,6 +403,47 @@
                 <!-- End Professional Row -->
             </section>
 
+            <hr class="section-separator">
+
+            <header class="header-left">
+                <div class="header-spacer"></div>
+                <div class="profile-pic-swiper profile-pic-large">
+                    <img src="public/images/diego-coelho-marcos-cafe.jpg" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide active">
+                    <img src="public/images/diego-coelho-marcos-garden.jpg" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide">
+                </div>
+                <h1 data-text="DIEGO COELHO MARCOS">DIEGO COELHO MARCOS</h1>
+                <p>| <img src="public/icons/world.svg" alt="Nomad" class="inline-icon"> Not Following the sun | <img src="public/icons/rocket.svg" alt="Nomadic" class="inline-icon"> Nomadic Life Mode |</p>
+                <p>| <img src="public/icons/heart.svg" alt="Grateful" class="inline-icon"> A practicer of the art of being grateful, impermanent and forgiven |</p>
+                <p>| <img src="public/icons/brain.svg" alt="Languages" class="inline-icon"> Portuguese/Galego/Spanish/Englisch und a bissen Deutsche... |</p>
+                <button class="more-toggle prisma-toggle" data-target="personal-header-more">
+                    <span class="plus-icon">+</span>
+                </button>
+                <div class="collapsible-content" id="personal-header-more">
+                    <div class="personal-description">
+                        <p>𓅮𓅯𓅰𓅧</p>
+                        <br>
+                        <p>__</p>
+                        <br>
+                        <p>"I'm sorry<br>Please forgive me<br>Thank u<br>I Love u"</p>
+                        <p>__</p>
+                        <br>
+                        <p>"be Humble<br>stay Hungry<br>always Hustle"</p>
+                        <p>__</p>
+                        <br>
+                        <p>"Quod obstat viae, fit via"</p>
+                        <p>__</p>
+                        <br>
+                        <p>"शून्यता 道"</p>
+                        <p>.<br>.<br>.</p>
+                        <p>"सि द्  ध र्थ"</p>
+                        <p>__</p>
+                        <br>
+                        <p>🪶 🪬🪶</p>
+                        <br>
+                    </div>
+                </div>
+            </header>
+
             <!-- Personal Section Box -->
             <section class="section-box personal-section">
                 <h2 class="box-title">Personal</h2>
@@ -338,7 +455,10 @@
                         <div class="swiper-slide">
                             <div class="link-section">
                                 <h2 class="section-title">PROFILE</h2>
-                <img src="public/images/personal.png" alt="Personal" class="featured-image">
+                <div class="card-swiper">
+                    <img src="public/images/personal.png" alt="Personal" class="featured-image card-slide active">
+                    <img src="public/images/professional.png" alt="Professional" class="featured-image card-slide">
+                </div>
                 <div class="links-container">
                     <br>
                     <h3 class="subsection-title">MyContact</h3>
@@ -638,6 +758,18 @@
                 <!-- End Personal Row -->
             </section>
         </main>
+
+        <footer class="linktree-footer">
+            <a href="https://linktr.ee/diegonmarcos" class="linktree-footer-btn" target="_blank">Linktree</a>
+            <div class="footer-icons">
+                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io" class="github-footer-btn github-holographic" target="_blank" title="Front-end Repo">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+                <a href="https://github.com/diegonmarcos/cloud" class="github-footer-btn" target="_blank" title="Cloud Repo">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+            </div>
+        </footer>
 
     </div>
 

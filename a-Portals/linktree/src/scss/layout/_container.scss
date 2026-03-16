@@ -88,3 +88,10 @@
                 margin-top 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
                 all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
+
+.impersonal-section {
+    border-left: 3px solid rgba(150, 255, 100, 0.4);
+    transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                margin-top 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
+                all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
+}

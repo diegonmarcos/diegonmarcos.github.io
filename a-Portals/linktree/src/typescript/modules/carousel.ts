@@ -10,12 +10,16 @@ declare const Swiper: new (selector: string, options: SwiperOptions) => SwiperIn
 let selectedCarousel: CarouselType = 'professional';
 let professionalSwiper: SwiperInstance;
 let personalSwiper: SwiperInstance;
+let impersonalSwiper: SwiperInstance;
 let professionalRow: HTMLElement;
 let personalRow: HTMLElement;
+let impersonalRow: HTMLElement;
 let professionalPrev: HTMLElement;
 let professionalNext: HTMLElement;
 let personalPrev: HTMLElement;
 let personalNext: HTMLElement;
+let impersonalPrev: HTMLElement;
+let impersonalNext: HTMLElement;
 
 // Trackpad debounce
 let trackpadDebounce = false;
@@ -64,18 +68,38 @@ const swiperConfig: SwiperOptions = {
   speed: 900,
 };
 
+interface CarouselSet {
+  swiper: SwiperInstance;
+  row: HTMLElement;
+  prev: HTMLElement;
+  next: HTMLElement;
+  el: HTMLElement;
+}
+
+function getCarouselSet(type: CarouselType): CarouselSet {
+  if (type === 'professional') {
+    return { swiper: professionalSwiper, row: professionalRow, prev: professionalPrev, next: professionalNext, el: querySelector<HTMLElement>('.professional-swiper')! };
+  } else if (type === 'impersonal') {
+    return { swiper: impersonalSwiper, row: impersonalRow, prev: impersonalPrev, next: impersonalNext, el: querySelector<HTMLElement>('.impersonal-swiper')! };
+  }
+  return { swiper: personalSwiper, row: personalRow, prev: personalPrev, next: personalNext, el: querySelector<HTMLElement>('.personal-swiper')! };
+}
+
+const allTypes: CarouselType[] = ['professional', 'personal', 'impersonal'];
+
 /**
  * Select a carousel
  */
 export function selectCarousel(carousel: CarouselType): void {
   selectedCarousel = carousel;
 
-  if (carousel === 'professional') {
-    addClass(professionalRow, 'selected');
-    removeClass(personalRow, 'selected');
-  } else {
-    addClass(personalRow, 'selected');
-    removeClass(professionalRow, 'selected');
+  for (const t of allTypes) {
+    const set = getCarouselSet(t);
+    if (t === carousel) {
+      addClass(set.row, 'selected');
+    } else {
+      removeClass(set.row, 'selected');
+    }
   }
 }
 
@@ -83,51 +107,29 @@ export function selectCarousel(carousel: CarouselType): void {
  * Update arrow and touch states based on selected carousel
  */
 export function updateArrowStates(): void {
-  const professionalSwiperEl = querySelector<HTMLElement>('.professional-swiper');
-  const personalSwiperEl = querySelector<HTMLElement>('.personal-swiper');
+  for (const t of allTypes) {
+    const set = getCarouselSet(t);
+    if (!set.el) continue;
 
-  if (!professionalSwiperEl || !personalSwiperEl) return;
-
-  if (selectedCarousel === 'professional') {
-    // Enable professional carousel
-    professionalPrev.style.opacity = '1';
-    professionalNext.style.opacity = '1';
-    professionalPrev.style.pointerEvents = 'auto';
-    professionalNext.style.pointerEvents = 'auto';
-    professionalSwiper.allowTouchMove = true;
-    professionalSwiper.enable();
-    addClass(professionalSwiperEl, 'swiper-enabled');
-    removeClass(professionalSwiperEl, 'swiper-disabled');
-
-    // Disable personal carousel
-    personalPrev.style.opacity = '0.3';
-    personalNext.style.opacity = '0.3';
-    personalPrev.style.pointerEvents = 'none';
-    personalNext.style.pointerEvents = 'none';
-    personalSwiper.allowTouchMove = false;
-    personalSwiper.disable();
-    addClass(personalSwiperEl, 'swiper-disabled');
-    removeClass(personalSwiperEl, 'swiper-enabled');
-  } else {
-    // Enable personal carousel
-    personalPrev.style.opacity = '1';
-    personalNext.style.opacity = '1';
-    personalPrev.style.pointerEvents = 'auto';
-    personalNext.style.pointerEvents = 'auto';
-    personalSwiper.allowTouchMove = true;
-    personalSwiper.enable();
-    addClass(personalSwiperEl, 'swiper-enabled');
-    removeClass(personalSwiperEl, 'swiper-disabled');
-
-    // Disable professional carousel
-    professionalPrev.style.opacity = '0.3';
-    professionalNext.style.opacity = '0.3';
-    professionalPrev.style.pointerEvents = 'none';
-    professionalNext.style.pointerEvents = 'none';
-    professionalSwiper.allowTouchMove = false;
-    professionalSwiper.disable();
-    addClass(professionalSwiperEl, 'swiper-disabled');
-    removeClass(professionalSwiperEl, 'swiper-enabled');
+    if (t === selectedCarousel) {
+      set.prev.style.opacity = '1';
+      set.next.style.opacity = '1';
+      set.prev.style.pointerEvents = 'auto';
+      set.next.style.pointerEvents = 'auto';
+      set.swiper.allowTouchMove = true;
+      set.swiper.enable();
+      addClass(set.el, 'swiper-enabled');
+      removeClass(set.el, 'swiper-disabled');
+    } else {
+      set.prev.style.opacity = '0.3';
+      set.next.style.opacity = '0.3';
+      set.prev.style.pointerEvents = 'none';
+      set.next.style.pointerEvents = 'none';
+      set.swiper.allowTouchMove = false;
+      set.swiper.disable();
+      addClass(set.el, 'swiper-disabled');
+      removeClass(set.el, 'swiper-enabled');
+    }
   }
 }
 
@@ -169,16 +171,26 @@ function personalTrackpadHandler(e: WheelEvent): void {
 }
 
 /**
+ * Impersonal trackpad handler
+ */
+function impersonalTrackpadHandler(e: WheelEvent): void {
+  handleTrackpadSwipe(e, impersonalSwiper);
+}
+
+/**
  * Update trackpad listeners
  */
 function updateTrackpadListeners(): void {
   professionalRow.removeEventListener('wheel', professionalTrackpadHandler);
   personalRow.removeEventListener('wheel', personalTrackpadHandler);
+  impersonalRow.removeEventListener('wheel', impersonalTrackpadHandler);
 
   if (selectedCarousel === 'professional') {
     professionalRow.addEventListener('wheel', professionalTrackpadHandler, { passive: false });
-  } else {
+  } else if (selectedCarousel === 'personal') {
     personalRow.addEventListener('wheel', personalTrackpadHandler, { passive: false });
+  } else {
+    impersonalRow.addEventListener('wheel', impersonalTrackpadHandler, { passive: false });
   }
 }
 
@@ -187,8 +199,10 @@ function updateTrackpadListeners(): void {
  */
 function initTwoFingerSwipe(): void {
   let isTwoFingerSwipe = false;
+  const rows = [professionalRow, personalRow, impersonalRow];
+  const types: CarouselType[] = ['professional', 'personal', 'impersonal'];
 
-  [professionalRow, personalRow].forEach((row, index) => {
+  rows.forEach((row, index) => {
     row.addEventListener('touchstart', (e: TouchEvent) => {
       if (e.touches.length === 2) {
         isTwoFingerSwipe = true;
@@ -203,7 +217,7 @@ function initTwoFingerSwipe(): void {
 
     row.addEventListener('touchend', () => {
       if (isTwoFingerSwipe) {
-        selectCarousel(index === 0 ? 'professional' : 'personal');
+        selectCarousel(types[index]);
         updateArrowStates();
         isTwoFingerSwipe = false;
       }
@@ -215,25 +229,27 @@ function initTwoFingerSwipe(): void {
  * Initialize keyboard navigation
  */
 function initKeyboardNavigation(): void {
+  const order: CarouselType[] = ['professional', 'personal', 'impersonal'];
+
   document.addEventListener('keydown', (e: KeyboardEvent) => {
+    const currentSwiper = getCarouselSet(selectedCarousel).swiper;
+
     if (e.key === 'ArrowLeft') {
-      if (selectedCarousel === 'professional') {
-        professionalSwiper.slidePrev();
-      } else {
-        personalSwiper.slidePrev();
-      }
+      currentSwiper.slidePrev();
     } else if (e.key === 'ArrowRight') {
-      if (selectedCarousel === 'professional') {
-        professionalSwiper.slideNext();
-      } else {
-        personalSwiper.slideNext();
-      }
+      currentSwiper.slideNext();
     } else if (e.key === 'ArrowDown') {
-      selectCarousel('personal');
-      updateArrowStates();
+      const idx = order.indexOf(selectedCarousel);
+      if (idx < order.length - 1) {
+        selectCarousel(order[idx + 1]);
+        updateArrowStates();
+      }
     } else if (e.key === 'ArrowUp') {
-      selectCarousel('professional');
-      updateArrowStates();
+      const idx = order.indexOf(selectedCarousel);
+      if (idx > 0) {
+        selectCarousel(order[idx - 1]);
+        updateArrowStates();
+      }
     }
   });
 }
@@ -242,21 +258,20 @@ function initKeyboardNavigation(): void {
  * Initialize click selection (tap/click to select a carousel)
  */
 function initClickSelection(): void {
-  professionalRow.addEventListener('click', (e) => {
-    // Don't select if clicking on a link or button
-    if ((e.target as HTMLElement).closest('a, button')) return;
-    selectCarousel('professional');
-    updateArrowStates();
-    updateTrackpadListeners();
-  });
+  const pairs: [HTMLElement, CarouselType][] = [
+    [professionalRow, 'professional'],
+    [personalRow, 'personal'],
+    [impersonalRow, 'impersonal'],
+  ];
 
-  personalRow.addEventListener('click', (e) => {
-    // Don't select if clicking on a link or button
-    if ((e.target as HTMLElement).closest('a, button')) return;
-    selectCarousel('personal');
-    updateArrowStates();
-    updateTrackpadListeners();
-  });
+  for (const [row, type] of pairs) {
+    row.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a, button')) return;
+      selectCarousel(type);
+      updateArrowStates();
+      updateTrackpadListeners();
+    });
+  }
 }
 
 /**
@@ -272,24 +287,30 @@ export function initCarousels(): void {
   // Get carousel rows
   const profRow = querySelector<HTMLElement>('.professional-section .carousel-row');
   const persRow = querySelector<HTMLElement>('.personal-section .carousel-row');
+  const imperRow = querySelector<HTMLElement>('.impersonal-section .carousel-row');
 
-  if (!profRow || !persRow) return;
+  if (!profRow || !persRow || !imperRow) return;
 
   professionalRow = profRow;
   personalRow = persRow;
+  impersonalRow = imperRow;
 
   // Get navigation elements
   const profPrev = querySelector<HTMLElement>('.professional-prev');
   const profNext = querySelector<HTMLElement>('.professional-next');
   const persPrev = querySelector<HTMLElement>('.personal-prev');
   const persNext = querySelector<HTMLElement>('.personal-next');
+  const imperPrev = querySelector<HTMLElement>('.impersonal-prev');
+  const imperNext = querySelector<HTMLElement>('.impersonal-next');
 
-  if (!profPrev || !profNext || !persPrev || !persNext) return;
+  if (!profPrev || !profNext || !persPrev || !persNext || !imperPrev || !imperNext) return;
 
   professionalPrev = profPrev;
   professionalNext = profNext;
   personalPrev = persPrev;
   personalNext = persNext;
+  impersonalPrev = imperPrev;
+  impersonalNext = imperNext;
 
   // Initialize Swiper instances
   professionalSwiper = new Swiper('.professional-swiper', {
@@ -312,6 +333,18 @@ export function initCarousels(): void {
     },
     pagination: {
       el: '.personal-pagination',
+      clickable: true,
+    },
+  });
+
+  impersonalSwiper = new Swiper('.impersonal-swiper', {
+    ...swiperConfig,
+    navigation: {
+      nextEl: '.impersonal-next',
+      prevEl: '.impersonal-prev',
+    },
+    pagination: {
+      el: '.impersonal-pagination',
       clickable: true,
     },
   });

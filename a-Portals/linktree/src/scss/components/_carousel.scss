@@ -22,7 +22,8 @@
 }
 
 .professional-swiper,
-.personal-swiper {
+.personal-swiper,
+.impersonal-swiper {
     width: 100%;
     max-width: 100%;
     padding-top: 1rem;
@@ -114,8 +115,8 @@
     }
 }
 
-.swiper-button-prev, .professional-prev, .personal-prev { left: 10px; }
-.swiper-button-next, .professional-next, .personal-next { right: 10px; }
+.swiper-button-prev, .professional-prev, .personal-prev, .impersonal-prev { left: 10px; }
+.swiper-button-next, .professional-next, .personal-next, .impersonal-next { right: 10px; }
 
 // Swiper Pagination
 .swiper-pagination {

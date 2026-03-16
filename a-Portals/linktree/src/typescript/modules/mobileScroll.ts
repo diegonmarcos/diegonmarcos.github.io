@@ -3,10 +3,12 @@
 
 import { selectCarousel, updateArrowStates, getSelectedCarousel } from './carousel';
 import { querySelector } from '../utils/dom';
+import type { CarouselType } from '../types';
 
 // Store element references
 let professionalRow: HTMLElement | null = null;
 let personalRow: HTMLElement | null = null;
+let impersonalRow: HTMLElement | null = null;
 
 /**
  * Throttle function to limit event frequency
@@ -36,27 +38,23 @@ function getElementCenterY(element: HTMLElement): number {
  * Select carousel based on which one is closest to viewport center
  */
 function selectCarouselByScroll(): void {
-  if (!professionalRow || !personalRow) return;
+  if (!professionalRow || !personalRow || !impersonalRow) return;
 
   const viewportCenter = window.innerHeight / 2;
 
-  const professionalCenter = getElementCenterY(professionalRow);
-  const personalCenter = getElementCenterY(personalRow);
+  const distances: [number, CarouselType][] = [
+    [Math.abs(viewportCenter - getElementCenterY(professionalRow)), 'professional'],
+    [Math.abs(viewportCenter - getElementCenterY(personalRow)), 'personal'],
+    [Math.abs(viewportCenter - getElementCenterY(impersonalRow)), 'impersonal'],
+  ];
 
-  const professionalDistance = Math.abs(viewportCenter - professionalCenter);
-  const personalDistance = Math.abs(viewportCenter - personalCenter);
+  // Select whichever is closest to viewport center
+  distances.sort((a, b) => a[0] - b[0]);
+  const closest = distances[0][1];
 
-  // Select whichever is closer to viewport center
-  if (professionalDistance < personalDistance) {
-    if (getSelectedCarousel() !== 'professional') {
-      selectCarousel('professional');
-      updateArrowStates();
-    }
-  } else {
-    if (getSelectedCarousel() !== 'personal') {
-      selectCarousel('personal');
-      updateArrowStates();
-    }
+  if (getSelectedCarousel() !== closest) {
+    selectCarousel(closest);
+    updateArrowStates();
   }
 }
 
@@ -66,8 +64,9 @@ function selectCarouselByScroll(): void {
 export function initMobileScrollSelection(): void {
   professionalRow = querySelector<HTMLElement>('.professional-section .carousel-row');
   personalRow = querySelector<HTMLElement>('.personal-section .carousel-row');
+  impersonalRow = querySelector<HTMLElement>('.impersonal-section .carousel-row');
 
-  if (!professionalRow || !personalRow) return;
+  if (!professionalRow || !personalRow || !impersonalRow) return;
 
   // Throttled scroll handler
   const throttledSelect = throttle(selectCarouselByScroll, 100);

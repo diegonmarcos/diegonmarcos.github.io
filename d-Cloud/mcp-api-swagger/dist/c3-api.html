@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>C3 REST API — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,58 +61,119 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "C3 REST API",
+  subtitle: "api.diegonmarcos.com/c3-api — live infrastructure REST API",
+  base: "https://api.diegonmarcos.com/c3-api",
   auth: {
-    type: "bearer",
-    key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    type: "none"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Topology",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Get Topology",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/topology",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "Security Topology",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/topology/security",
+          params: []
+        },
+        {
+          name: "Config Drift",
+          method: "GET",
+          path: "/topology/drift",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "Health",
       endpoints: [
         {
-          name: "List Users",
+          name: "Health Status",
           method: "GET",
-          path: "/api/v1/user",
+          path: "/health/status",
           params: []
         },
         {
-          name: "Get User",
+          name: "Tier 1 — Reachability",
           method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/health/tier1",
+          params: []
+        },
+        {
+          name: "Tier 2 — SSH Auth",
+          method: "GET",
+          path: "/health/tier2",
+          params: []
+        },
+        {
+          name: "Tier 3 — Resources",
+          method: "GET",
+          path: "/health/tier3",
+          params: []
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "Services",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "List Services",
           method: "GET",
-          path: "/api/v1/alias",
+          path: "/services",
           params: []
+        },
+        {
+          name: "Get Service",
+          method: "GET",
+          path: "/services/{name}",
+          params: [{ name: "name", label: "Service name", type: "text", placeholder: "c3-mcp-api" }]
+        },
+        {
+          name: "Service Spec",
+          method: "GET",
+          path: "/services/{name}/spec",
+          params: [{ name: "name", label: "Service name", type: "text", placeholder: "c3-mcp-api" }]
+        }
+      ]
+    },
+    {
+      label: "Infra",
+      endpoints: [
+        {
+          name: "List VMs",
+          method: "GET",
+          path: "/infra/vms",
+          params: []
+        },
+        {
+          name: "VM Status",
+          method: "GET",
+          path: "/infra/vms/{vm}/status",
+          params: [{ name: "vm", label: "VM name", type: "text", placeholder: "oci-apps" }]
+        },
+        {
+          name: "VM Containers",
+          method: "GET",
+          path: "/infra/vms/{vm}/containers",
+          params: [{ name: "vm", label: "VM name", type: "text", placeholder: "oci-apps" }]
+        }
+      ]
+    },
+    {
+      label: "Tests",
+      endpoints: [
+        {
+          name: "Run Test Suite",
+          method: "GET",
+          path: "/tests/{suite}",
+          params: [{ name: "suite", label: "Suite", type: "select", options: ["connectivity","dns","tls","routes","containers","wireguard","full"] }]
         }
       ]
     }

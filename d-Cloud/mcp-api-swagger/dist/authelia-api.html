@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>Authelia — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,57 +61,69 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "Authelia",
+  subtitle: "auth.diegonmarcos.com — 2FA / OIDC gateway",
+  base: "https://auth.diegonmarcos.com",
   auth: {
     type: "bearer",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "Bearer Token",
+    placeholder: "paste your Authelia/OIDC access token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Health",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Health Check",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/api/health",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "Build Info",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/api/buildinfo",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "OIDC",
       endpoints: [
         {
-          name: "List Users",
+          name: "OIDC Discovery",
           method: "GET",
-          path: "/api/v1/user",
+          path: "/.well-known/openid-configuration",
           params: []
         },
         {
-          name: "Get User",
+          name: "User Info",
           method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/api/oidc/userinfo",
+          params: []
+        },
+        {
+          name: "Token Introspect",
+          method: "POST",
+          path: "/api/oidc/introspect",
+          params: [{ name: "token", label: "Token to Introspect", type: "text", placeholder: "access_token..." }]
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "State",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "Verify (auth check)",
           method: "GET",
-          path: "/api/v1/alias",
+          path: "/api/verify",
+          params: []
+        },
+        {
+          name: "State",
+          method: "GET",
+          path: "/api/state",
           params: []
         }
       ]

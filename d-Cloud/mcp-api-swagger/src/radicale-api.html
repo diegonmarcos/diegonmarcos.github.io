@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>Radicale — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,58 +61,45 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "Radicale",
+  subtitle: "cal.diegonmarcos.com — CalDAV / CardDAV server",
+  base: "https://cal.diegonmarcos.com",
   auth: {
-    type: "bearer",
+    type: "basic",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "user:password (base64)",
+    placeholder: "user:password"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Collections",
       endpoints: [
         {
-          name: "List Domains",
+          name: "List Root Collections",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/",
+          desc: "PROPFIND root — lists all collections (use curl for full CalDAV, browser GET shows HTML)",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "User Collections",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/{user}/",
+          params: [{ name: "user", label: "Username", type: "text", placeholder: "diego" }]
         }
       ]
     },
     {
-      label: "Users",
+      label: "CalDAV",
       endpoints: [
         {
-          name: "List Users",
+          name: "Get Calendar",
           method: "GET",
-          path: "/api/v1/user",
-          params: []
-        },
-        {
-          name: "Get User",
-          method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
-        }
-      ]
-    },
-    {
-      label: "Aliases",
-      endpoints: [
-        {
-          name: "List Aliases",
-          method: "GET",
-          path: "/api/v1/alias",
-          params: []
+          path: "/{user}/{calendar}/",
+          params: [
+            { name: "user", label: "Username", type: "text", placeholder: "diego" },
+            { name: "calendar", label: "Calendar slug", type: "text", placeholder: "calendar" }
+          ]
         }
       ]
     }

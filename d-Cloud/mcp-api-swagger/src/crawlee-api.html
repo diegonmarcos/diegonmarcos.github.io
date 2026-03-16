@@ -3,55 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crawlee API — Dashboard</title>
+<title>Crawlee Cloud — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<header>
-<nav class="nav">
-  <div class="nav__row nav__row--primary">
-    <span class="nav__row-label">MCP</span>
-    <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="unix-mcp.html">Unix MCP</a>
-    <a class="nav-link" href="c3-mcp-api.html">C3 MCP API</a>
-    <a class="nav-link" href="c3-services-mcp-api.html">C3 Services MCP API</a>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar__header">
+    <div class="sidebar__logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
+      <span>Cloud MCP API</span>
+    </div>
   </div>
-  <div class="nav__row nav__row--secondary">
-    <span class="nav__row-label">APIs</span>
-    <a class="nav-link" href="c3-api.html">C3 API</a>
-    <a class="nav-link" href="matomo-api.html">Matomo</a>
-    <a class="nav-link" href="vaultwarden-api.html">Vaultwarden</a>
-    <a class="nav-link" href="ntfy-api.html">ntfy</a>
-    <a class="nav-link" href="mailu-api.html">Mailu</a>
-    <a class="nav-link" href="syncthing-api.html">Syncthing</a>
-    <a class="nav-link" href="photoprism-api.html">PhotoPrism</a>
-    <a class="nav-link" href="nocodb-api.html">NocoDB</a>
-    <a class="nav-link" href="windmill-api.html">Windmill</a>
-    <a class="nav-link" href="crawlee-api.html">Crawlee</a>
-    <a class="nav-link" href="affine-api.html">AFFiNE</a>
-    <a class="nav-link" href="authelia-api.html">Authelia</a>
-    <a class="nav-link" href="mattermost-api.html">Mattermost</a>
-  </div>
-</nav>
-</header>
-
-
+  <nav class="sidebar__nav">
+    <div class="sidebar__section">
+      <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--mcp">M</span> MCP</div>
+      <a class="sidebar__link" href="index.html">Home</a>
+      <a class="sidebar__link" href="unix-mcp.html">Unix MCP</a>
+      <a class="sidebar__link" href="c3-mcp-api.html">C3 MCP API</a>
+      <a class="sidebar__link" href="c3-services-mcp-api.html">C3 Services MCP API</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--api">A</span> APIs</div>
+      <a class="sidebar__link" href="c3-api.html">C3 API</a>
+      <a class="sidebar__link" href="matomo-api.html">Matomo</a>
+      <a class="sidebar__link" href="vaultwarden-api.html">Vaultwarden</a>
+      <a class="sidebar__link" href="ntfy-api.html">ntfy</a>
+      <a class="sidebar__link" href="mailu-api.html">Mailu</a>
+      <a class="sidebar__link" href="syncthing-api.html">Syncthing</a>
+      <a class="sidebar__link" href="radicale-api.html">Radicale</a>
+      <a class="sidebar__link" href="photoprism-api.html">PhotoPrism</a>
+      <a class="sidebar__link" href="nocodb-api.html">NocoDB</a>
+      <a class="sidebar__link" href="windmill-api.html">Windmill</a>
+      <a class="sidebar__link" href="crawlee-api.html">Crawlee</a>
+      <a class="sidebar__link" href="affine-api.html">AFFiNE</a>
+      <a class="sidebar__link" href="authelia-api.html">Authelia</a>
+      <a class="sidebar__link" href="mattermost-api.html">Mattermost</a>
+    </div>
+  </nav>
+</aside>
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
 
 <div class="stars" id="stars"></div>
 <div class="container">
-
-<h1>Crawlee API</h1>
-<p class="subtitle">Web scraping actors, runs, and dataset extraction</p>
-<hr>
-
-<div class="card">
-  <div class="card-hdr"><h3>Status</h3></div>
-  <div><span class="st-off">Coming soon</span></div>
-</div>
-
+  <div id="api-page-root"></div>
 </div>
 <script src="script.js"></script>
-<script src="script.js"></script>
-<script src="c3-dash.js"></script>
+<script>
+window.API_PAGE = {
+  title: "Crawlee Cloud",
+  subtitle: "api.diegonmarcos.com/crawlee — web scraping actors, runs, datasets",
+  base: "https://api.diegonmarcos.com/crawlee",
+  auth: {
+    type: "none"
+  },
+  groups: [
+    {
+      label: "Actors",
+      endpoints: [
+        {
+          name: "List Actors",
+          method: "GET",
+          path: "/v2/acts",
+          params: []
+        },
+        {
+          name: "Get Actor",
+          method: "GET",
+          path: "/v2/acts/{actorId}",
+          params: [{ name: "actorId", label: "Actor ID", type: "text", placeholder: "actor-id" }]
+        }
+      ]
+    },
+    {
+      label: "Runs",
+      endpoints: [
+        {
+          name: "List Actor Runs",
+          method: "GET",
+          path: "/v2/acts/{actorId}/runs",
+          params: [
+            { name: "actorId", label: "Actor ID", type: "text", placeholder: "actor-id" },
+            { name: "limit", label: "Limit", type: "text", placeholder: "10" }
+          ]
+        },
+        {
+          name: "Get Run",
+          method: "GET",
+          path: "/v2/actor-runs/{runId}",
+          params: [{ name: "runId", label: "Run ID", type: "text", placeholder: "run-id" }]
+        }
+      ]
+    },
+    {
+      label: "Datasets",
+      endpoints: [
+        {
+          name: "List Datasets",
+          method: "GET",
+          path: "/v2/datasets",
+          params: []
+        },
+        {
+          name: "Get Dataset Items",
+          method: "GET",
+          path: "/v2/datasets/{datasetId}/items",
+          params: [
+            { name: "datasetId", label: "Dataset ID", type: "text", placeholder: "dataset-id" },
+            { name: "limit", label: "Limit", type: "text", placeholder: "25" }
+          ]
+        }
+      ]
+    },
+    {
+      label: "KV Stores",
+      endpoints: [
+        {
+          name: "List KV Stores",
+          method: "GET",
+          path: "/v2/key-value-stores",
+          params: []
+        },
+        {
+          name: "Get KV Store Keys",
+          method: "GET",
+          path: "/v2/key-value-stores/{storeId}/keys",
+          params: [{ name: "storeId", label: "Store ID", type: "text", placeholder: "store-id" }]
+        }
+      ]
+    }
+  ]
+};
+</script>
+<script src="api-page.js"></script>
 </body>
 </html>

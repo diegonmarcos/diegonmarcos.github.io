@@ -1,60 +1,139 @@
 @use '../settings/variables' as *;
 
-.nav {
+// ─── Sidebar ────────────────────────────────────────────────────────────────
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100vh;
+  background: $color-surface;
+  border-right: 1px solid $color-border;
   display: flex;
   flex-direction: column;
-  padding: 0.4rem 0;
-  border-bottom: 1px solid $color-border;
-  margin: 0 auto $space-6;
-  max-width: 1600px;
+  z-index: 100;
+  overflow: hidden;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+
+  &.is-open { transform: translateX(0); }
+
+  &__header {
+    padding: $space-4;
+    border-bottom: 1px solid $color-border;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    svg { width: 24px; height: 24px; color: $color-blue; }
+    span { font-size: $font-size-lg; font-weight: bold; color: $color-text; }
+  }
+
+  &__nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: $space-2 0;
+    scrollbar-width: thin;
+    scrollbar-color: $color-surface-2 transparent;
+  }
+
+  &__section { margin-bottom: $space-3; }
+
+  &__section-title {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-4;
+    font-size: $font-size-xs;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $color-text;
+  }
+
+  &__icon {
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $radius-sm;
+    font-size: 9px;
+    font-weight: bold;
+    color: #fff;
+
+    &--mcp   { background: linear-gradient(135deg, #67e8f9, #06b6d4); }
+    &--api   { background: linear-gradient(135deg, #6ee7b7, #10b981); }
+    &--skill { background: linear-gradient(135deg, #c084fc, #a855f7); }
+  }
+
+  &__link {
+    display: block;
+    padding: $space-1 $space-4;
+    padding-left: calc(#{$space-4} + 22px);
+    font-size: $font-size-xs;
+    color: $color-muted;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+
+    &:hover {
+      background: rgba($color-blue, 0.1);
+      color: $color-text;
+    }
+
+    &--active, &[aria-current="page"] {
+      background: rgba($color-blue, 0.15);
+      color: $color-blue;
+      border-left-color: $color-blue;
+    }
+  }
+
+  &__footer {
+    padding: $space-2 $space-4;
+    border-top: 1px solid $color-border;
+    font-size: $font-size-xs;
+    color: $color-muted;
+    a { color: $color-blue; }
+  }
 }
 
-.nav__row {
+// ─── Hamburger toggle ───────────────────────────────────────────────────────
+.sidebar-toggle {
+  position: fixed;
+  top: $space-3;
+  left: $space-3;
+  z-index: 99;
+  background: $color-surface-2;
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: $space-1;
+  cursor: pointer;
+  color: $color-text;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
-  gap: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  white-space: nowrap;
-  padding: 0.2rem 0;
+  justify-content: center;
+  transition: all 0.15s;
 
-  &::-webkit-scrollbar { display: none; }
-
-  &--primary { border-bottom: 1px solid $color-border; }
+  svg { width: 18px; height: 18px; }
+  &:hover { border-color: $color-blue; color: $color-blue; }
 }
 
-.nav__row-label {
-  color: $color-muted;
-  font-size: $font-size-xs;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.35rem 0.5rem;
-  flex-shrink: 0;
-}
+// ─── Overlay ────────────────────────────────────────────────────────────────
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba($color-bg, 0.6);
+  z-index: 99;
 
-.nav-link {
-  color: $color-muted;
-  font-size: $font-size-xs;
-  padding: 0.35rem 0.7rem;
-  border-bottom: 2px solid transparent;
-  text-decoration: none;
-  transition: all 0.2s;
-  flex-shrink: 0;
-  border-top: none;
-  border-left: none;
-  border-right: none;
-
-  &:hover {
-    color: $color-text;
-    border-bottom-color: $color-blue;
-    text-decoration: none;
-  }
-
-  &--active, &[aria-current="page"] {
-    color: #fff;
-    border-bottom: 2px solid;
-    border-image: linear-gradient(135deg, $color-purple, $color-blue, $color-green) 1;
-  }
+  &.is-visible { display: block; }
 }

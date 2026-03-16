@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>NocoDB — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,58 +61,57 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "NocoDB",
+  subtitle: "db.diegonmarcos.com — open-source Airtable alternative",
+  base: "https://db.diegonmarcos.com",
   auth: {
-    type: "bearer",
-    key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    type: "header",
+    key: "xc-token",
+    label: "API Token",
+    placeholder: "paste your NocoDB API token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Meta",
       endpoints: [
         {
-          name: "List Domains",
+          name: "List Bases",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/api/v1/meta/tables",
+          desc: "List all bases/projects",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "App Info",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/api/v1/meta/nocodb/info",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "Tables",
       endpoints: [
         {
-          name: "List Users",
+          name: "List Tables in Base",
           method: "GET",
-          path: "/api/v1/user",
-          params: []
-        },
-        {
-          name: "Get User",
-          method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/api/v1/meta/tables",
+          params: [{ name: "baseId", label: "Base ID", type: "text", placeholder: "p_..." }]
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "Records",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "List Records",
           method: "GET",
-          path: "/api/v1/alias",
-          params: []
+          path: "/api/v1/db/data/noco/{baseId}/{tableId}",
+          params: [
+            { name: "baseId", label: "Base ID", type: "text", placeholder: "p_..." },
+            { name: "tableId", label: "Table ID", type: "text", placeholder: "md_..." },
+            { name: "limit", label: "Limit", type: "text", placeholder: "25" }
+          ]
         }
       ]
     }

@@ -15,6 +15,13 @@
   align-items: start;
 }
 
+.three-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: $space-6;
+  align-items: start;
+}
+
 .section { padding: $space-6 0; }
 
 // stars background (decorative, driven by JS)

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>PhotoPrism — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,57 +61,65 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "PhotoPrism",
+  subtitle: "photos.diegonmarcos.com — photo library",
+  base: "https://photos.diegonmarcos.com",
   auth: {
     type: "bearer",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "Session Token",
+    placeholder: "paste your PhotoPrism session token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Photos",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Search Photos",
           method: "GET",
-          path: "/api/v1/domain",
-          params: []
+          path: "/api/v1/photos",
+          params: [
+            { name: "count", label: "Count", type: "text", placeholder: "24" },
+            { name: "q", label: "Query", type: "text", placeholder: "" }
+          ]
         },
         {
-          name: "Get Domain",
+          name: "Get Photo",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/api/v1/photos/{uid}",
+          params: [{ name: "uid", label: "Photo UID", type: "text", placeholder: "pqz..." }]
         }
       ]
     },
     {
-      label: "Users",
+      label: "Albums",
       endpoints: [
         {
-          name: "List Users",
+          name: "List Albums",
           method: "GET",
-          path: "/api/v1/user",
-          params: []
-        },
-        {
-          name: "Get User",
-          method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/api/v1/albums",
+          params: [{ name: "count", label: "Count", type: "text", placeholder: "24" }]
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "Labels",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "List Labels",
           method: "GET",
-          path: "/api/v1/alias",
+          path: "/api/v1/labels",
+          params: [{ name: "count", label: "Count", type: "text", placeholder: "50" }]
+        }
+      ]
+    },
+    {
+      label: "Status",
+      endpoints: [
+        {
+          name: "App Config",
+          method: "GET",
+          path: "/api/v1/config",
           params: []
         }
       ]

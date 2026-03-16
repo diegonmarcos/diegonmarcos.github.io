@@ -114,3 +114,68 @@
   .tab-btn   { font-size: 0.6rem; padding: 0.3rem 0.5rem; }
   .grid-2    { grid-template-columns: 1fr; }
 }
+
+// ─── api-page.js engine styles ────────────────────────────────────────────────
+
+// Auth bar
+.auth-bar {
+  display: flex; align-items: center; gap: $space-2; flex-wrap: wrap;
+  background: $color-surface-2; border: 1px solid $color-border;
+  border-radius: $radius-lg; padding: 0.5rem 0.75rem;
+  margin-bottom: $space-4;
+
+  input { background: $color-bg; border: 1px solid $color-border; border-radius: $radius-md;
+    color: $color-text; font-family: inherit; font-size: $font-size-sm; padding: 0.3rem 0.5rem; }
+}
+.auth-label { color: $color-purple; font-size: $font-size-xs; font-weight: bold;
+  text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.auth-hint  { color: $color-green; font-size: $font-size-xs; }
+
+// Endpoint cards
+.ep-title {
+  display: flex; align-items: center; gap: $space-2; flex-wrap: wrap; min-width: 0;
+}
+.ep-name { font-weight: bold; color: $color-text; }
+.ep-path { font-size: $font-size-xs; color: $color-muted; background: $color-surface-2;
+  border: 1px solid $color-border; border-radius: $radius-sm; padding: 0.1em 0.4em; }
+.ep-desc { font-size: $font-size-xs; color: $color-muted; margin: $space-1 0; }
+.ep-out  { margin-top: $space-2; }
+.ep-params { display: flex; gap: $space-3; flex-wrap: wrap; margin: $space-2 0; }
+.ep-param {
+  display: flex; flex-direction: column; gap: 0.2rem;
+  label { font-size: $font-size-xs; color: $color-muted; }
+  input, select { background: $color-bg; border: 1px solid $color-border; border-radius: $radius-md;
+    color: $color-text; font-family: inherit; font-size: $font-size-sm; padding: 0.25rem 0.4rem; }
+}
+
+// HTTP method badges
+.method-badge {
+  display: inline-block; font-size: $font-size-xs; font-weight: bold;
+  padding: 0.1em 0.45em; border-radius: $radius-sm; text-transform: uppercase;
+  letter-spacing: 0.04em; white-space: nowrap;
+}
+.method-get    { background: rgba($color-green,  0.15); color: $color-green;  border: 1px solid rgba($color-green,  0.3); }
+.method-post   { background: rgba($color-blue,   0.15); color: $color-blue;   border: 1px solid rgba($color-blue,   0.3); }
+.method-put    { background: rgba($color-yellow, 0.15); color: $color-yellow; border: 1px solid rgba($color-yellow, 0.3); }
+.method-patch  { background: rgba($color-purple, 0.15); color: $color-purple; border: 1px solid rgba($color-purple, 0.3); }
+.method-delete { background: rgba($color-red,    0.15); color: $color-red;    border: 1px solid rgba($color-red,    0.3); }
+
+// JSON output
+.json-out {
+  background: $color-surface-2; border: 1px solid $color-border; border-radius: $radius-md;
+  padding: $space-3; overflow-x: auto; font-size: $font-size-xs; line-height: 1.6; margin: 0;
+}
+.jk { color: $color-blue; }
+.js { color: $color-green; }
+.jn { color: $color-yellow; }
+.jb { color: $color-purple; }
+
+// Table output
+.out-table {
+  width: 100%; border-collapse: collapse; font-size: $font-size-xs;
+  th { background: $color-surface-2; color: $color-muted; text-align: left;
+    padding: 0.3rem 0.5rem; border: 1px solid $color-border; font-weight: bold; }
+  td { padding: 0.25rem 0.5rem; border: 1px solid $color-border; color: $color-text;
+    max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  tr:hover td { background: $color-surface-2; }
+}

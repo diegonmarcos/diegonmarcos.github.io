@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>ntfy — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,58 +61,57 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "ntfy",
+  subtitle: "rss.diegonmarcos.com — push notifications",
+  base: "https://rss.diegonmarcos.com",
   auth: {
     type: "bearer",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "Bearer Token",
+    placeholder: "paste your ntfy token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Stats",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Server Stats",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/v1/stats",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "Health Check",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/v1/health",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "Topics",
       endpoints: [
         {
-          name: "List Users",
+          name: "Get Cached Messages",
           method: "GET",
-          path: "/api/v1/user",
-          params: []
-        },
-        {
-          name: "Get User",
-          method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/{topic}/json",
+          desc: "Returns cached messages for a topic as newline-delimited JSON",
+          params: [{ name: "topic", label: "Topic", type: "text", placeholder: "alerts" }]
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "Publish",
       endpoints: [
         {
-          name: "List Aliases",
-          method: "GET",
-          path: "/api/v1/alias",
-          params: []
+          name: "Publish Message",
+          method: "POST",
+          path: "/{topic}",
+          desc: "Publish a message to a topic",
+          params: [
+            { name: "topic", label: "Topic", type: "text", placeholder: "alerts" },
+            { name: "message", label: "Message (body)", type: "text", placeholder: "Hello from dashboard" }
+          ]
         }
       ]
     }

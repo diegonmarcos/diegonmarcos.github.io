@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>AFFiNE — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,57 +61,40 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "AFFiNE",
+  subtitle: "drive-notes-affine.diegonmarcos.com — notes and workspaces",
+  base: "https://drive-notes-affine.diegonmarcos.com",
   auth: {
     type: "bearer",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "Access Token",
+    placeholder: "paste your AFFiNE access token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Server",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Server Info",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/info",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "Health Check",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/healthz",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "Workspaces",
       endpoints: [
         {
-          name: "List Users",
+          name: "List Workspaces",
           method: "GET",
-          path: "/api/v1/user",
-          params: []
-        },
-        {
-          name: "Get User",
-          method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
-        }
-      ]
-    },
-    {
-      label: "Aliases",
-      endpoints: [
-        {
-          name: "List Aliases",
-          method: "GET",
-          path: "/api/v1/alias",
+          path: "/api/workspaces",
           params: []
         }
       ]

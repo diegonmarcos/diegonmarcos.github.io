@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>Vaultwarden — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,57 +61,63 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "Vaultwarden",
+  subtitle: "vault.diegonmarcos.com — self-hosted Bitwarden",
+  base: "https://vault.diegonmarcos.com",
   auth: {
     type: "bearer",
     key: "Authorization",
-    label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    label: "Access Token",
+    placeholder: "paste your Vaultwarden access token"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Account",
       endpoints: [
         {
-          name: "List Domains",
+          name: "Account Info",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/api/accounts/profile",
           params: []
-        },
-        {
-          name: "Get Domain",
-          method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
         }
       ]
     },
     {
-      label: "Users",
+      label: "Ciphers",
       endpoints: [
         {
-          name: "List Users",
+          name: "List Ciphers",
           method: "GET",
-          path: "/api/v1/user",
+          path: "/api/ciphers",
           params: []
         },
         {
-          name: "Get User",
+          name: "Get Cipher",
           method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/api/ciphers/{id}",
+          params: [{ name: "id", label: "Cipher ID", type: "text", placeholder: "uuid..." }]
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "Folders",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "List Folders",
           method: "GET",
-          path: "/api/v1/alias",
+          path: "/api/folders",
+          params: []
+        }
+      ]
+    },
+    {
+      label: "Admin",
+      endpoints: [
+        {
+          name: "Admin — Diagnostics",
+          method: "GET",
+          path: "/admin/diagnostics",
+          desc: "Requires admin token, not user token",
           params: []
         }
       ]

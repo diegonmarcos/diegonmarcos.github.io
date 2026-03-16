@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mailu — Cloud MCP API Skills Hub</title>
+<title>Syncthing — Cloud MCP API Skills Hub</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -61,58 +61,96 @@
 <script src="script.js"></script>
 <script>
 window.API_PAGE = {
-  title: "Mailu",
-  subtitle: "mail.diegonmarcos.com — self-hosted email server",
-  base: "https://mail.diegonmarcos.com",
+  title: "Syncthing",
+  subtitle: "sync.diegonmarcos.com — file synchronisation",
+  base: "https://sync.diegonmarcos.com",
   auth: {
-    type: "bearer",
-    key: "Authorization",
+    type: "header",
+    key: "X-API-Key",
     label: "API Key",
-    placeholder: "paste your Mailu admin API key"
+    placeholder: "paste your Syncthing API key"
   },
   groups: [
     {
-      label: "Domains",
+      label: "Status",
       endpoints: [
         {
-          name: "List Domains",
+          name: "System Status",
           method: "GET",
-          path: "/api/v1/domain",
+          path: "/rest/system/status",
           params: []
         },
         {
-          name: "Get Domain",
+          name: "System Version",
           method: "GET",
-          path: "/api/v1/domain/{name}",
-          params: [{ name: "name", label: "Domain", type: "text", placeholder: "diegonmarcos.com" }]
+          path: "/rest/system/version",
+          params: []
+        },
+        {
+          name: "Connections",
+          method: "GET",
+          path: "/rest/system/connections",
+          params: []
+        },
+        {
+          name: "Ping",
+          method: "GET",
+          path: "/rest/system/ping",
+          params: []
         }
       ]
     },
     {
-      label: "Users",
+      label: "Config",
       endpoints: [
         {
-          name: "List Users",
+          name: "Get Full Config",
           method: "GET",
-          path: "/api/v1/user",
+          path: "/rest/config",
           params: []
         },
         {
-          name: "Get User",
+          name: "List Folders",
           method: "GET",
-          path: "/api/v1/user/{email}",
-          params: [{ name: "email", label: "Email", type: "text", placeholder: "me@diegonmarcos.com" }]
+          path: "/rest/config/folders",
+          params: []
+        },
+        {
+          name: "List Devices",
+          method: "GET",
+          path: "/rest/config/devices",
+          params: []
         }
       ]
     },
     {
-      label: "Aliases",
+      label: "DB",
       endpoints: [
         {
-          name: "List Aliases",
+          name: "Folder Status",
           method: "GET",
-          path: "/api/v1/alias",
-          params: []
+          path: "/rest/db/status",
+          params: [{ name: "folder", label: "Folder ID", type: "text", placeholder: "default" }]
+        },
+        {
+          name: "Folder Completion",
+          method: "GET",
+          path: "/rest/db/completion",
+          params: [
+            { name: "folder", label: "Folder ID", type: "text", placeholder: "default" },
+            { name: "device", label: "Device ID (optional)", type: "text", placeholder: "" }
+          ]
+        }
+      ]
+    },
+    {
+      label: "Events",
+      endpoints: [
+        {
+          name: "Recent Events",
+          method: "GET",
+          path: "/rest/events",
+          params: [{ name: "limit", label: "Limit", type: "text", placeholder: "10" }]
         }
       ]
     }

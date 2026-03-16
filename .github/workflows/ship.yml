@@ -384,6 +384,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Skills & MCP Docs build complete"
+      - name: 🔨 Build MCP API Swagger
+        id: build-mcp-api-swagger
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/mcp-api-swagger/src/')
+
+        run: |
+          echo "🔨 Building MCP API Swagger..."
+          cd d-Cloud/mcp-api-swagger
+          bash build.sh build
+          cd ../..
+          echo "✅ MCP API Swagger build complete"
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
       - name: 📂 Deploy All Projects to _site
@@ -427,6 +438,7 @@ jobs:
             "c-Tools/mymusic:mymusic"
             "c-Tools/mytrips:mytrips"
             "d-Cloud/api:api"
+            "d-Cloud/mcp-api-swagger:mcp-api-swagger"
             "d-Cloud/skills_mcp:skills_mcp"
             "e-Others/others:others"
             "e-Others/sailytics:sailytics"

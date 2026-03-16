@@ -1,0 +1,18 @@
+{
+  "name": "mcp-api-swagger",
+  "framework": "vanilla",
+  "port": 8024,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "copy", "files": "index.html,style.css,script.js,unix-mcp.html,c3-mcp-api-dash.html,c3-services-mcp-api.html,crawlee-api.html,mailu-mcp-api.html,mattermost-mcp-api.html", "from": "src" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+
+  "deploy": {}
+}

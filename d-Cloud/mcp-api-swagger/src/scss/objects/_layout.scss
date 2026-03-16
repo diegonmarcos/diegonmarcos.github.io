@@ -24,6 +24,14 @@
 
 .section { padding: $space-6 0; }
 
+.agents-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: $space-4;
+  align-items: start;
+  padding: $space-6 0;
+}
+
 // stars background (decorative, driven by JS)
 .stars {
   position: fixed; top: 0; left: 0;

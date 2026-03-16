@@ -20,14 +20,8 @@
   </div>
   <nav class="sidebar__nav">
     <div class="sidebar__section">
-      <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--mcp">M</span> MCP</div>
-      <a class="sidebar__link" href="index.html">Home</a>
-      <a class="sidebar__link" href="unix-mcp.html">Unix MCP</a>
-      <a class="sidebar__link" href="c3-mcp-api.html">C3 MCP API</a>
-      <a class="sidebar__link" href="c3-services-mcp-api.html">C3 Services MCP API</a>
-    </div>
-    <div class="sidebar__section">
       <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--api">A</span> APIs</div>
+      <a class="sidebar__link" href="index.html">Home</a>
       <a class="sidebar__link" href="c3-api.html">C3 API</a>
       <a class="sidebar__link" href="matomo-api.html">Matomo</a>
       <a class="sidebar__link" href="vaultwarden-api.html">Vaultwarden</a>
@@ -42,6 +36,12 @@
       <a class="sidebar__link" href="affine-api.html">AFFiNE</a>
       <a class="sidebar__link" href="authelia-api.html">Authelia</a>
       <a class="sidebar__link" href="mattermost-api.html">Mattermost</a>
+    </div>
+    <div class="sidebar__section">
+      <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--mcp">M</span> MCP</div>
+      <a class="sidebar__link" href="unix-mcp.html">Unix MCP</a>
+      <a class="sidebar__link" href="c3-mcp-api.html">C3 MCP API</a>
+      <a class="sidebar__link" href="c3-services-mcp-api.html">C3 Services MCP API</a>
     </div>
     <div class="sidebar__section">
       <div class="sidebar__section-title"><span class="sidebar__icon sidebar__icon--skill">S</span> Skills</div>
@@ -91,21 +91,367 @@
   </svg>
 </button>
 
-
-
 <div class="stars" id="stars"></div>
 <div class="container">
 
 <h1>Unix MCP</h1>
-<p class="subtitle">NixOS &amp; home-manager flake operations</p>
+<p class="subtitle">NixOS &amp; home-manager flake operations &mdash; 36 tools across 7 modules</p>
 <hr>
 
-<div class="card">
-  <div class="card-hdr"><h3>Status</h3></div>
-  <div><span class="st-off">Coming soon</span></div>
+<table class="tab-table"><tr>
+  <td class="tab-cell"><button class="tab-btn active" data-tab="unix-shell">Shell</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-nix">Nix</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-git">Git</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-system">System</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-scripts">Scripts</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-drift">Drift</button></td>
+  <td class="tab-cell"><button class="tab-btn" data-tab="unix-shell-config">Shell Config</button></td>
+</tr></table>
+
+<!-- Shell (3 tools) -->
+<div class="tab-content active" id="tab-unix-shell">
+  <h2>Shell (3 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">shell_exec</span></div></div>
+    <p class="ep-desc">Execute a shell command and return stdout/stderr. Runs in the user's default shell with PATH configured for nix-profile.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>command</label><code>string</code> &mdash; Shell command to execute</div>
+      <div class="ep-param"><label>cwd</label><code>string?</code> &mdash; Working directory (default: $HOME)</div>
+      <div class="ep-param"><label>timeout</label><code>number?</code> &mdash; Timeout in ms (default: 30000)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">shell_read_file</span></div></div>
+    <p class="ep-desc">Read a file from the local filesystem. Supports text files and returns content with line numbers.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>path</label><code>string</code> &mdash; Absolute file path</div>
+      <div class="ep-param"><label>lines</label><code>number?</code> &mdash; Max lines to read (default: all)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">shell_write_file</span></div></div>
+    <p class="ep-desc">Write content to a file. Creates parent directories if needed.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>path</label><code>string</code> &mdash; Absolute file path</div>
+      <div class="ep-param"><label>content</label><code>string</code> &mdash; File content</div>
+    </div>
+  </div>
+</div>
+
+<!-- Nix (6 tools) -->
+<div class="tab-content" id="tab-unix-nix">
+  <h2>Nix (6 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_build</span></div></div>
+    <p class="ep-desc">Run <code>nix build</code> in a flake directory. Returns build output path.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>flake_dir</label><code>string</code> &mdash; Path to flake directory</div>
+      <div class="ep-param"><label>target</label><code>string?</code> &mdash; Build target (default: default package)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_switch</span></div></div>
+    <p class="ep-desc">Apply a NixOS or home-manager configuration via <code>build.sh switch</code>.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>flake_dir</label><code>string</code> &mdash; Path to flake directory</div>
+      <div class="ep-param"><label>profile</label><code>string?</code> &mdash; Configuration profile name</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_search</span></div></div>
+    <p class="ep-desc">Search nixpkgs for a package by name. Returns matching packages with version and description.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>query</label><code>string</code> &mdash; Package name to search</div>
+      <div class="ep-param"><label>channel</label><code>string?</code> &mdash; Nixpkgs channel (default: nixos-24.11)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_info</span></div></div>
+    <p class="ep-desc">Get detailed info about a nix package &mdash; version, dependencies, description, license.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>package</label><code>string</code> &mdash; Package attribute path (e.g. nixpkgs#ripgrep)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_flake_metadata</span></div></div>
+    <p class="ep-desc">Get metadata for a flake &mdash; inputs, locks, last modified dates.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>flake_dir</label><code>string</code> &mdash; Path to flake directory</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">nix_flake_update</span></div></div>
+    <p class="ep-desc">Update flake inputs (nixpkgs, home-manager, etc.) via <code>nix flake update</code>.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>flake_dir</label><code>string</code> &mdash; Path to flake directory</div>
+      <div class="ep-param"><label>input</label><code>string?</code> &mdash; Specific input to update (default: all)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Git (4 tools) -->
+<div class="tab-content" id="tab-unix-git">
+  <h2>Git (4 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">git_status</span></div></div>
+    <p class="ep-desc">Show working tree status for a repository. Returns modified, staged, and untracked files.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>repo</label><code>string</code> &mdash; Repository path</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">git_log</span></div></div>
+    <p class="ep-desc">Show recent commit history with hash, author, date, and message.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>repo</label><code>string</code> &mdash; Repository path</div>
+      <div class="ep-param"><label>count</label><code>number?</code> &mdash; Number of commits (default: 10)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">git_diff</span></div></div>
+    <p class="ep-desc">Show diff of working tree or between commits.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>repo</label><code>string</code> &mdash; Repository path</div>
+      <div class="ep-param"><label>ref</label><code>string?</code> &mdash; Commit ref or range (default: HEAD)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">git_commit</span></div></div>
+    <p class="ep-desc">Stage files and create a commit.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>repo</label><code>string</code> &mdash; Repository path</div>
+      <div class="ep-param"><label>message</label><code>string</code> &mdash; Commit message</div>
+      <div class="ep-param"><label>files</label><code>string[]?</code> &mdash; Files to stage (default: all modified)</div>
+    </div>
+  </div>
+</div>
+
+<!-- System (5 tools) -->
+<div class="tab-content" id="tab-unix-system">
+  <h2>System (5 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">system_info</span></div></div>
+    <p class="ep-desc">Get system information &mdash; OS, kernel, arch, hostname, uptime, memory, disk usage.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">system_processes</span></div></div>
+    <p class="ep-desc">List running processes with PID, CPU%, MEM%, and command. Sorted by resource usage.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>sort</label><code>string?</code> &mdash; Sort by: cpu, mem, pid (default: cpu)</div>
+      <div class="ep-param"><label>limit</label><code>number?</code> &mdash; Max processes to return</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">system_services</span></div></div>
+    <p class="ep-desc">List systemd services with status (running, stopped, failed).</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>filter</label><code>string?</code> &mdash; Filter by name pattern</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">system_journal</span></div></div>
+    <p class="ep-desc">Read systemd journal logs for a unit or the whole system.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>unit</label><code>string?</code> &mdash; Systemd unit name</div>
+      <div class="ep-param"><label>lines</label><code>number?</code> &mdash; Number of recent lines (default: 50)</div>
+      <div class="ep-param"><label>priority</label><code>string?</code> &mdash; Min priority: emerg, alert, crit, err, warning, notice, info, debug</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">system_network</span></div></div>
+    <p class="ep-desc">Show network interfaces, IP addresses, routes, and listening ports.</p>
+  </div>
+</div>
+
+<!-- Scripts (8 tools) -->
+<div class="tab-content" id="tab-unix-scripts">
+  <h2>Scripts (8 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_list</span></div></div>
+    <p class="ep-desc">List available custom scripts from nix-profile bin directory.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_run</span></div></div>
+    <p class="ep-desc">Execute a named script with arguments.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+      <div class="ep-param"><label>args</label><code>string[]?</code> &mdash; Arguments to pass</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_create</span></div></div>
+    <p class="ep-desc">Create a new shell script in the flake's script directory.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+      <div class="ep-param"><label>content</label><code>string</code> &mdash; Script content</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_edit</span></div></div>
+    <p class="ep-desc">Edit an existing script's content.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+      <div class="ep-param"><label>content</label><code>string</code> &mdash; New script content</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_delete</span></div></div>
+    <p class="ep-desc">Remove a script from the flake.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_show</span></div></div>
+    <p class="ep-desc">Display a script's source code.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_search</span></div></div>
+    <p class="ep-desc">Search scripts by name or content pattern.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>query</label><code>string</code> &mdash; Search pattern</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">script_deps</span></div></div>
+    <p class="ep-desc">Analyze script dependencies &mdash; which commands/packages a script requires.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Script name</div>
+    </div>
+  </div>
+</div>
+
+<!-- Drift (3 tools) -->
+<div class="tab-content" id="tab-unix-drift">
+  <h2>Drift (3 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">drift_check</span></div></div>
+    <p class="ep-desc">Check version drift across all tracked packages and flake inputs. Compares current vs latest versions.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>filter</label><code>string?</code> &mdash; Filter by package name</div>
+      <div class="ep-param"><label>outdated_only</label><code>boolean?</code> &mdash; Show only outdated entries</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">drift_plan</span></div></div>
+    <p class="ep-desc">Generate an update plan for outdated packages. Computes new hashes, shows diffs.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>package</label><code>string?</code> &mdash; Specific package to plan (default: all outdated)</div>
+      <div class="ep-param"><label>dry_run</label><code>boolean?</code> &mdash; Show plan without applying (default: true)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">drift_apply</span></div></div>
+    <p class="ep-desc">Apply a drift update plan &mdash; update version strings, hashes, and flake inputs in source files.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>plan_id</label><code>string?</code> &mdash; Plan ID from drift_plan (default: latest)</div>
+    </div>
+  </div>
+</div>
+
+<!-- Shell Config (7 tools) -->
+<div class="tab-content" id="tab-unix-shell-config">
+  <h2>Shell Config (7 tools)</h2>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_list_modules</span></div></div>
+    <p class="ep-desc">List all home-manager modules in the current flake with their status (enabled/disabled).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_get_module</span></div></div>
+    <p class="ep-desc">Read the source of a specific home-manager module.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Module name (e.g. fish, git, tmux)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_edit_module</span></div></div>
+    <p class="ep-desc">Edit a home-manager module's source code.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>name</label><code>string</code> &mdash; Module name</div>
+      <div class="ep-param"><label>content</label><code>string</code> &mdash; New module content</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_list_packages</span></div></div>
+    <p class="ep-desc">List all packages declared in the flake with their attribute paths.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_add_package</span></div></div>
+    <p class="ep-desc">Add a package to the flake's package list.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>package</label><code>string</code> &mdash; Package attribute (e.g. pkgs.ripgrep)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_remove_package</span></div></div>
+    <p class="ep-desc">Remove a package from the flake's package list.</p>
+    <div class="ep-params">
+      <div class="ep-param"><label>package</label><code>string</code> &mdash; Package attribute to remove</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hdr"><div class="ep-title"><span class="badge badge-purple">MCP</span><span class="ep-name">config_list_dotfiles</span></div></div>
+    <p class="ep-desc">List dotfiles managed by home-manager (home.file entries) with their source and target paths.</p>
+  </div>
 </div>
 
 </div>
 <script src="script.js"></script>
+<script>
+(function () {
+  document.querySelectorAll('.tab-table .tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var table = btn.closest('.tab-table');
+      if (!table) return;
+      table.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      var target = document.getElementById('tab-' + btn.dataset.tab);
+      if (!target) return;
+      var parent = target.parentElement;
+      parent.querySelectorAll(':scope > .tab-content').forEach(function (c) { c.classList.remove('active'); });
+      target.classList.add('active');
+    });
+  });
+})();
+</script>
 </body>
 </html>

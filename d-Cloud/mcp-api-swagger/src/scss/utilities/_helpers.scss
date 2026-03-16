@@ -1,6 +1,6 @@
 @use '../settings/variables' as *;
 
-.text-muted  { color: $color-text-muted; }
+.text-muted  { color: $color-muted; }
 .text-accent { color: $color-accent; }
 .text-sm     { font-size: $font-size-sm; }
 .text-mono   { font-family: $font-mono; }

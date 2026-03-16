@@ -1,92 +1,60 @@
 @use '../settings/variables' as *;
-@use '../tools/mixins' as *;
 
 .nav {
-  background: $color-surface;
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0;
   border-bottom: 1px solid $color-border;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  margin: 0 auto $space-6;
+  max-width: 1600px;
+}
 
-  &__inner {
-    @include flex-row(space-between, stretch, 0);
-    flex-direction: column;
-  }
+.nav__row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  white-space: nowrap;
+  padding: 0.2rem 0;
 
-  &__brand {
-    @include flex-row(flex-start, center, $space-2);
-    padding: $space-3 0;
-    font-family: $font-mono;
-    font-size: $font-size-sm;
-    font-weight: 600;
-    color: $color-accent;
-    letter-spacing: 0.05em;
-  }
+  &::-webkit-scrollbar { display: none; }
 
-  &__row {
-    @include flex-row(flex-start, center, $space-1);
-    padding: $space-1 0;
-    gap: $space-1;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    flex-wrap: nowrap;
+  &--primary { border-bottom: 1px solid $color-border; }
+}
 
-    &::-webkit-scrollbar { display: none; }
-
-    &--primary {
-      border-bottom: 1px solid $color-border;
-      flex-wrap: wrap; // primary row can wrap on desktop
-    }
-
-    &--secondary {
-      gap: $space-1;
-    }
-  }
-
-  &__row-label {
-    font-size: $font-size-xs;
-    color: $color-text-muted;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    margin-right: $space-2;
-    white-space: nowrap;
-  }
+.nav__row-label {
+  color: $color-muted;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.35rem 0.5rem;
+  flex-shrink: 0;
 }
 
 .nav-link {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-1;
-  padding: $space-1 $space-3;
-  border-radius: $radius-md;
-  font-size: $font-size-sm;
-  color: $color-text-muted;
-  transition: background 0.15s, color 0.15s;
-  white-space: nowrap;
+  color: $color-muted;
+  font-size: $font-size-xs;
+  padding: 0.35rem 0.7rem;
+  border-bottom: 2px solid transparent;
   text-decoration: none;
-  border: 1px solid transparent;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  border-top: none;
+  border-left: none;
+  border-right: none;
 
   &:hover {
-    background: $color-surface-2;
     color: $color-text;
+    border-bottom-color: $color-blue;
     text-decoration: none;
   }
 
   &--active, &[aria-current="page"] {
-    background: $color-tag;
-    color: $color-accent;
-    border-color: rgba($color-accent, 0.3);
-  }
-
-  &--primary {
-    font-weight: 500;
-    font-size: $font-size-sm;
-  }
-
-  &--secondary {
-    font-size: $font-size-xs;
-    padding: $space-1 $space-2;
+    color: #fff;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(135deg, $color-purple, $color-blue, $color-green) 1;
   }
 }

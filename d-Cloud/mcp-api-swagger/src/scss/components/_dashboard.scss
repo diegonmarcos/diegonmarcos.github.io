@@ -1,0 +1,116 @@
+@use '../settings/variables' as *;
+
+// ─── Tab table ────────────────────────────────────────────────────────────────
+.tab-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: $space-6 0;
+  display: table;
+  overflow: visible;
+
+  td { padding: 0.35rem 0.5rem; border: 1px solid $color-border; vertical-align: middle; }
+}
+
+.tab-label {
+  color: $color-purple;
+  font-size: $font-size-xs;
+  font-weight: bold;
+  white-space: nowrap;
+  width: 70px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tab-cell { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+
+.tab-btn {
+  background: $color-surface-2;
+  color: $color-text;
+  border: 1px solid $color-border;
+  padding: 0.4rem 0.8rem;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: $font-size-xs;
+  transition: all 0.2s;
+  border-bottom: 2px solid transparent;
+
+  &:hover { color: #fff; border-bottom-color: $color-blue; }
+
+  &.active {
+    color: #fff;
+    border-bottom: 2px solid;
+    border-image: linear-gradient(135deg, $color-purple, $color-blue, $color-green) 1;
+  }
+}
+
+.tab-content { display: none; &.active { display: block; } }
+
+// ─── Refresh buttons ──────────────────────────────────────────────────────────
+.rbtn {
+  background: $color-surface-2;
+  color: $color-green;
+  border: 1px solid $color-green;
+  padding: 0.25rem 0.6rem;
+  border-radius: $radius-md;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: $font-size-xs;
+  transition: all 0.2s;
+
+  &:hover    { background: $color-green; color: $color-bg; }
+  &:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  &.warn   { border-color: $color-yellow; color: $color-yellow; &:hover { background: $color-yellow; color: $color-bg; } }
+  &.danger { border-color: $color-red;    color: $color-red;    &:hover { background: $color-red;    color: $color-bg; } }
+  &.blue   { border-color: $color-blue;   color: $color-blue;   &:hover { background: $color-blue;   color: $color-bg; } }
+}
+
+// ─── Status indicators ────────────────────────────────────────────────────────
+.st-ok   { color: $color-green;  }
+.st-warn { color: $color-yellow; }
+.st-err  { color: $color-red;    }
+.st-off  { color: $color-muted;  }
+.loading { color: $color-blue; font-style: italic; }
+
+// ─── Badges ───────────────────────────────────────────────────────────────────
+.badge {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: bold;
+  margin-left: 0.4rem;
+}
+.badge-ok     { background: rgba($color-green,  0.2); color: $color-green;  border: 1px solid rgba($color-green,  0.27); }
+.badge-warn   { background: rgba($color-yellow, 0.2); color: $color-yellow; border: 1px solid rgba($color-yellow, 0.27); }
+.badge-err    { background: rgba($color-red,    0.2); color: $color-red;    border: 1px solid rgba($color-red,    0.27); }
+.badge-off    { background: rgba($color-muted,  0.2); color: $color-muted;  border: 1px solid rgba($color-muted,  0.27); }
+.badge-purple { background: rgba($color-purple, 0.2); color: $color-purple; border: 1px solid rgba($color-purple, 0.27); }
+
+.tier-lbl { color: $color-muted; font-size: $font-size-xs; margin-left: 0.4rem; }
+
+// ─── Modal ────────────────────────────────────────────────────────────────────
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba($color-bg, 0.85); z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal {
+  background: $color-surface; border: 1px solid $color-border;
+  border-radius: $radius-lg; padding: $space-6; max-width: 400px; width: 90%;
+  h3 { color: $color-red; margin-bottom: 0.75rem; }
+  p  { margin-bottom: $space-4; font-size: $font-size-sm; }
+}
+
+// ─── Misc ─────────────────────────────────────────────────────────────────────
+.subtitle    { text-align: center; color: $color-muted; font-size: $font-size-sm; margin-bottom: $space-6; }
+.flex-row    { display: flex; gap: $space-2; align-items: center; flex-wrap: wrap; }
+.auto-refresh { font-size: $font-size-xs; color: $color-muted; &.active { color: $color-blue; } }
+.grid-2      { display: grid; grid-template-columns: 1fr 1fr; gap: $space-2; }
+
+@media (max-width: 700px) {
+  table, pre { font-size: $font-size-xs; }
+  .tab-btn   { font-size: 0.6rem; padding: 0.3rem 0.5rem; }
+  .grid-2    { grid-template-columns: 1fr; }
+}

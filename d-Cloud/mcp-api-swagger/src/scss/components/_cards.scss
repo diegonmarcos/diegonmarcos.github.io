@@ -1,116 +1,97 @@
 @use '../settings/variables' as *;
-@use '../tools/mixins' as *;
+
+// ─── Home page cards ───────────────────────────────────────────────────────────
+.col-header {
+  color: $color-purple;
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: $space-2;
+  margin-bottom: $space-3;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
 
 .card {
-  @include card;
-  padding: $space-4;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: 0.75rem $space-4;
+  margin: 0;
+  transition: border-color 0.2s;
 
-  @include mq(md) { padding: $space-6; }
+  &:hover { border-color: $color-blue; }
 
   &__tag {
     display: inline-block;
     font-size: $font-size-xs;
-    font-family: $font-mono;
-    background: $color-tag;
-    color: $color-accent;
-    border: 1px solid rgba($color-accent, 0.2);
+    background: rgba($color-purple, 0.15);
+    color: $color-purple;
+    border: 1px solid rgba($color-purple, 0.3);
     border-radius: $radius-sm;
-    padding: 0.1em $space-2;
+    padding: 0.1em 0.4em;
     margin-bottom: $space-2;
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
 
   &__title {
-    font-size: $font-size-md;
-    font-weight: 600;
+    font-size: $font-size-xl;
+    font-weight: bold;
+    color: $color-blue;
     margin-bottom: $space-1;
-    color: $color-text;
-
-    @include mq(md) { font-size: $font-size-lg; }
   }
 
   &__desc {
     font-size: $font-size-sm;
-    color: $color-text-muted;
+    color: $color-muted;
     margin-bottom: $space-3;
     line-height: 1.5;
   }
 
-  &__links {
-    @include flex-row(flex-start, center, $space-2);
-    flex-wrap: wrap;
-  }
+  &__links { display: flex; gap: $space-2; flex-wrap: wrap; }
 
   &__link {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-1;
     font-size: $font-size-xs;
-    color: $color-accent;
-    padding: $space-1 $space-2;
-    border: 1px solid rgba($color-accent, 0.3);
+    color: $color-green;
+    border: 1px solid rgba($color-green, 0.4);
+    padding: 0.2em 0.6em;
     border-radius: $radius-md;
     transition: background 0.15s;
-
-    @include mq(md) { font-size: $font-size-sm; padding: $space-1 $space-3; }
+    text-decoration: none;
 
     &:hover {
-      background: $color-tag;
+      background: rgba($color-green, 0.15);
+      border-color: $color-green;
       text-decoration: none;
     }
   }
 }
 
-.col-header {
-  font-size: $font-size-xs;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: $color-text-muted;
-  border-bottom: 1px solid $color-border;
-  padding-bottom: $space-2;
-  margin-bottom: $space-3;
-}
-
-// On wide desktop, service cards go 2-col within the right column
-.card-list {
+// ─── Dashboard card (tab pages) ───────────────────────────────────────────────
+.card-hdr {
   display: flex;
-  flex-direction: column;
-  gap: $space-3;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-2;
 
-  &--grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-3;
-
-    @include mq(lg) {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
+  h3 { margin: 0; }
 }
 
+// ─── Hero ─────────────────────────────────────────────────────────────────────
 .hero {
   padding: $space-6 0 $space-4;
   border-bottom: 1px solid $color-border;
   margin-bottom: $space-6;
 
-  @include mq(md) { padding: $space-8 0 $space-6; }
-
-  &__title {
-    font-size: clamp(1.25rem, 3vw, 2rem);
-    font-weight: 700;
-    margin-bottom: $space-2;
-    background: linear-gradient(90deg, $color-text 0%, $color-accent 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
   &__sub {
-    color: $color-text-muted;
+    text-align: center;
+    color: $color-muted;
     font-size: $font-size-sm;
-    max-width: 600px;
-
-    @include mq(md) { font-size: $font-size-md; }
+    margin-bottom: $space-6;
   }
 }

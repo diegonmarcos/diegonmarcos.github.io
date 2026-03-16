@@ -1,30 +1,109 @@
 @use '../settings/variables' as *;
 
 body {
-  font-family: $font-sans;
-  font-size: $font-size-md;
   background: $color-bg;
   color: $color-text;
-  line-height: 1.6;
+  font-family: $font-mono;
+  font-size: $font-size-md;
   min-height: 100vh;
+  overflow-x: hidden;
+  padding: 0 $space-4 $space-8;
 }
+
+h1 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: bold;
+  background: linear-gradient(135deg, $color-purple, $color-blue, $color-green);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+h2 {
+  color: $color-purple;
+  font-size: $font-size-xl;
+  margin: $space-6 0 0.75rem;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: 0.3rem;
+}
+
+h3 { color: $color-blue; font-size: $font-size-lg; margin: $space-4 0 $space-2; }
+
+p, li { line-height: 1.6; margin: 0.3rem 0; }
+em    { color: $color-yellow; font-style: normal; }
+strong { color: $color-red; }
 
 a {
-  color: $color-accent;
+  color: $color-blue;
   text-decoration: none;
-
-  &:hover { text-decoration: underline; }
+  border-bottom: 1px dashed $color-blue;
+  transition: color 0.2s;
+  &:hover { color: $color-purple; border-color: $color-purple; }
 }
 
-h1, h2, h3, h4 {
-  font-weight: 600;
-  line-height: 1.3;
-}
+hr { border: none; border-top: 1px solid $color-border; margin: $space-6 0; }
 
 code {
-  font-family: $font-mono;
+  color: $color-green;
+  background: $color-surface;
+  padding: 0.15rem 0.4rem;
+  border-radius: $radius-md;
+  font-size: 0.85em;
+}
+
+pre {
+  background: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $space-4;
+  overflow-x: auto;
+  font-size: $font-size-xs;
+  line-height: 1.5;
+  color: $color-muted;
+  margin: 0.75rem 0;
+  max-height: 500px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+
+  code { background: none; padding: 0; color: inherit; }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: $font-size-xs;
+  display: block;
+  overflow-x: auto;
+}
+
+th {
+  background: $color-surface;
+  color: $color-green;
+  text-align: left;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid $color-border;
+  white-space: nowrap;
+}
+
+td {
+  padding: 0.4rem 0.6rem;
+  border: 1px solid $color-border;
+  white-space: nowrap;
+}
+
+tr:hover td { background: $color-surface; }
+
+select, input[type="text"] {
+  background: $color-surface;
+  color: $color-text;
+  border: 1px solid $color-border;
+  padding: 0.3rem 0.5rem;
+  border-radius: $radius-md;
+  font-family: inherit;
   font-size: $font-size-sm;
-  background: $color-surface-2;
-  padding: 0.1em 0.4em;
-  border-radius: $radius-sm;
+  &:focus { outline: none; border-color: $color-blue; }
 }

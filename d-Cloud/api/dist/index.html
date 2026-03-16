@@ -246,16 +246,16 @@
         </ul>
     </div>
     <div class="quick-links" style="margin-top:0.5rem;border-left-color:#8a7a5a">
-        <h3>Crawlee API <code>/c3-api/crawlee</code> <span style="font-size:0.75rem;color:var(--text-muted);font-weight:normal">(proxied through C3 API — see Swagger above)</span></h3>
+        <h3>Crawlee API <code>/crawlee</code> <span style="font-size:0.75rem;color:var(--text-muted);font-weight:normal">(independent API — spec at /crawlee/docs/json)</span></h3>
         <ul>
-            <li><strong>List actors:</strong> <code>GET /crawlee/actors</code></li>
-            <li><strong>Run actor:</strong> <code>POST /crawlee/actors/{actorId}/run</code></li>
-            <li><strong>List runs:</strong> <code>GET /crawlee/runs</code></li>
-            <li><strong>Run details:</strong> <code>GET /crawlee/runs/{runId}</code></li>
-            <li><strong>Dataset:</strong> <code>GET /crawlee/runs/{runId}/dataset</code></li>
-            <li><strong>Logs:</strong> <code>GET /crawlee/runs/{runId}/logs</code></li>
-            <li><strong>Abort:</strong> <code>POST /crawlee/runs/{runId}/abort</code></li>
-            <li><strong>Native dashboard:</strong> <a href="https://api.diegonmarcos.com/crawlee/" target="_blank" rel="noopener">api.diegonmarcos.com/crawlee/</a></li>
+            <li><strong>Actors:</strong> <code>GET/POST /v2/acts</code></li>
+            <li><strong>Run actor:</strong> <code>POST /v2/acts/{actorId}/runs</code></li>
+            <li><strong>Runs:</strong> <code>GET /v2/actor-runs</code></li>
+            <li><strong>Run status:</strong> <code>GET /v2/actor-runs/{runId}</code></li>
+            <li><strong>Dataset:</strong> <code>GET /v2/actor-runs/{runId}/dataset/items</code></li>
+            <li><strong>Logs:</strong> <code>GET /v2/actor-runs/{runId}/logs</code></li>
+            <li><strong>Abort:</strong> <code>POST /v2/actor-runs/{runId}/abort</code></li>
+            <li><strong>Dashboard:</strong> <a href="https://api.diegonmarcos.com/crawlee/" target="_blank" rel="noopener">api.diegonmarcos.com/crawlee/</a></li>
         </ul>
     </div>
 
@@ -283,10 +283,11 @@
         // C3 API includes Crawlee proxy routes (Crawlee Cloud has no native OpenAPI spec)
         window.ui = SwaggerUIBundle({
             urls: [
-                { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API (Infra + Crawlee + Security + FinOps)' },
-                { url: 'https://api.diegonmarcos.com/services/docs/json', name: 'C3 Services API (Matomo, Mailu, Syncthing, ntfy, Ollama, Radicale)' }
+                { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API' },
+                { url: 'https://api.diegonmarcos.com/services/docs/json', name: 'C3 Services API' },
+                { url: 'https://api.diegonmarcos.com/crawlee/docs/json', name: 'Crawlee API' }
             ],
-            "urls.primaryName": "C3 API (Infra + Crawlee + Security + FinOps)",
+            "urls.primaryName": "C3 API",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [

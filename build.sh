@@ -95,6 +95,11 @@ cmd_deps() {
     _generate_package_json
     log "Installing node dependencies..."
     cd "$SCRIPT_DIR" && npm install --no-fund --no-audit --legacy-peer-deps
+
+    # Generate front-deps.json (consolidated deps grouped by language)
+    log "Generating front-deps.json..."
+    _generate_front_deps_json
+
     log "All dependencies installed."
 }
 
@@ -174,6 +179,74 @@ with open(os.path.join(repo, 'package.json'), 'w') as f:
 total = len(deps) + len(dev)
 print(f'package.json: {total} packages ({len(deps)} deps + {len(dev)} devDeps)')
 "
+}
+
+# =============================================================================
+# Generate front-deps.json (same grouped format as cloud-deps.json)
+# =============================================================================
+
+_generate_front_deps_json() {
+    node -e "
+const fs = require('fs');
+const path = require('path');
+const { execSync } = require('child_process');
+
+const repo = '$SCRIPT_DIR';
+const glob = execSync('find . -maxdepth 3 -name build.json -not -path ./build.json -not -path \"./z_Archive/*\"', {cwd: repo})
+    .toString().trim().split('\n').filter(Boolean);
+
+const perService = [];
+const mergedDeps = {};
+const mergedDevDeps = {};
+
+for (const bjson of glob) {
+    const dir = path.join(repo, path.dirname(bjson));
+    const pkgPath = path.join(dir, 'package.json');
+    if (!fs.existsSync(pkgPath)) continue;
+
+    const bj = JSON.parse(fs.readFileSync(path.join(repo, bjson), 'utf8'));
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+    const deps = pkg.dependencies || {};
+    const devDeps = pkg.devDependencies || {};
+
+    Object.entries(deps).forEach(([k, v]) => {
+        if (!mergedDeps[k] || v > mergedDeps[k]) mergedDeps[k] = v;
+    });
+    Object.entries(devDeps).forEach(([k, v]) => {
+        if (!mergedDevDeps[k] || v > mergedDevDeps[k]) mergedDevDeps[k] = v;
+    });
+
+    perService.push({
+        service: bj.name || path.basename(dir),
+        folder: path.dirname(bjson).replace(/^\.\/?/, ''),
+        category: bj.category || 'unknown',
+        dependencies: deps,
+        devDependencies: devDeps
+    });
+}
+
+const sort = obj => Object.fromEntries(Object.entries(obj).sort(([a],[b]) => a.localeCompare(b)));
+const total = Object.keys(mergedDeps).length + Object.keys(mergedDevDeps).length;
+
+const output = {
+    _meta: {
+        generated_by: 'front/build.sh deps',
+        generated_at: new Date().toISOString(),
+        total_services: perService.length,
+        total_packages: total
+    },
+    node: {
+        merged: {
+            dependencies: sort(mergedDeps),
+            devDependencies: sort(mergedDevDeps)
+        },
+        per_service: perService.sort((a, b) => a.folder.localeCompare(b.folder))
+    }
+};
+
+fs.writeFileSync(path.join(repo, 'front-deps.json'), JSON.stringify(output, null, 2) + '\n');
+console.log('front-deps.json: ' + total + ' packages from ' + perService.length + ' projects');
+" 2>/dev/null || log "SKIP front-deps.json (node not available)"
 }
 
 # =============================================================================

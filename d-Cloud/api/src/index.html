@@ -192,42 +192,67 @@
     <!-- Header -->
     <div class="api-header">
         <h1>&#9729;&#65039; Cloud Control API</h1>
-        <p>RESTful API for Cloud Infrastructure Monitoring & Management</p>
-        <span class="version">v1.0.0</span>
-        <span class="api-badge">Live spec &mdash; auto-generated from Rust API</span>
+        <p>RESTful APIs for Cloud Infrastructure, Services &amp; Scraping</p>
+        <span class="version">v3.0.0</span>
+        <span class="api-badge">Live specs &mdash; auto-generated from C3 API + Services API</span>
     </div>
 
     <!-- Links -->
     <div class="api-links">
-        <strong>Quick Access:</strong>
-        <a href="https://cloud.diegonmarcos.com" target="_blank">Dashboard</a>
-        <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/c3-api/health/status" target="_blank">C3 Health</a>
-        <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/c3-api/topology" target="_blank">Topology</a>
-        <span class="separator">|</span>
+        <strong>Dashboards:</strong>
         <a href="https://api.diegonmarcos.com/c3-api/dash" target="_blank">C3 Dashboard</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/c3-api/docs/json" target="_blank">C3 Spec (JSON)</a>
+        <a href="https://cloud.diegonmarcos.com" target="_blank">Cloud Portal</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/services/docs/json" target="_blank">Services Spec (JSON)</a>
+        <a href="https://api.diegonmarcos.com/crawlee/" target="_blank">Crawlee</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/crawlee/" target="_blank">Crawlee Dashboard</a>
+        <a href="https://analytics.diegonmarcos.com" target="_blank">Matomo</a>
+        <span class="separator">|</span>
+        <a href="https://mail.diegonmarcos.com" target="_blank">Mailu</a>
+        <span class="separator">&middot;</span>
+        <strong>Specs:</strong>
+        <a href="https://api.diegonmarcos.com/c3-api/docs/json" target="_blank">C3 API</a>
+        <span class="separator">|</span>
+        <a href="https://api.diegonmarcos.com/services/docs/json" target="_blank">Services API</a>
     </div>
 
     <!-- Quick Links -->
     <div class="quick-links">
-        <h3>Key Endpoints</h3>
+        <h3>Key Endpoints — C3 API <code>/c3-api</code></h3>
         <ul>
-            <li><strong>Heartbeat:</strong> <code>GET /api/health/alive</code></li>
-            <li><strong>Full Status:</strong> <code>GET /api/health/status</code></li>
-            <li><strong>Drift:</strong> <code>GET /api/health/drift</code></li>
-            <li><strong>Deployed:</strong> <code>GET /api/health/deployed/{vm_id}</code></li>
-            <li><strong>VM Control:</strong> <code>POST /api/vms/{vm_id}/start|stop|reset</code></li>
-            <li><strong>Containers:</strong> <code>POST /api/vms/{vm_id}/containers/{name}/start|stop</code></li>
-            <li><strong>Profiling:</strong> <code>GET /api/profiling/container/{name}</code></li>
-            <li><strong>Services:</strong> <code>GET /api/services</code></li>
-            <li><strong>C3 Dashboard:</strong> <a href="https://api.diegonmarcos.com/c3-api/dash" target="_blank" rel="noopener">api.diegonmarcos.com/c3-api/dash</a></li>
+            <li><strong>Health:</strong> <code>GET /health/status</code></li>
+            <li><strong>Topology:</strong> <code>GET /topology</code></li>
+            <li><strong>Drift:</strong> <code>GET /health/drift</code></li>
+            <li><strong>Up check:</strong> <code>GET /up/{target}</code></li>
+            <li><strong>VM Control:</strong> <code>POST /vms/{vmId}/start|stop|reset</code></li>
+            <li><strong>Containers:</strong> <code>POST /vms/{vmId}/containers/{name}/start|stop</code></li>
+            <li><strong>Profiling:</strong> <code>GET /v2/profiling/{target}</code></li>
+            <li><strong>Tests:</strong> <code>GET /tests/run/{suite}</code></li>
+            <li><strong>Security:</strong> <code>GET /security/scan</code></li>
+            <li><strong>Cloud:</strong> <code>GET /cloud/summary</code></li>
+        </ul>
+    </div>
+    <div class="quick-links" style="margin-top:0.5rem">
+        <h3>Key Endpoints — Services API <code>/services</code></h3>
+        <ul>
+            <li><strong>Registry:</strong> <code>GET /</code></li>
+            <li><strong>Service proxy:</strong> <code>POST /{service}/proxy</code></li>
+            <li><strong>Matomo:</strong> <code>GET /matomo/visits</code></li>
+            <li><strong>Mailu:</strong> <code>GET /mailu/domains</code></li>
+            <li><strong>Syncthing:</strong> <code>GET /syncthing/status</code></li>
+            <li><strong>ntfy:</strong> <code>POST /ntfy/publish</code></li>
+            <li><strong>Ollama:</strong> <code>POST /ollama/chat</code></li>
+            <li><strong>Radicale:</strong> <code>GET /radicale/calendars</code></li>
+        </ul>
+    </div>
+    <div class="quick-links" style="margin-top:0.5rem;border-left-color:#8a7a5a">
+        <h3>Crawlee API <code>/crawlee</code> <span style="font-size:0.75rem;color:var(--text-muted);font-weight:normal">(REST — no OpenAPI spec)</span></h3>
+        <ul>
+            <li><strong>Actors:</strong> <code>GET /api/actors</code></li>
+            <li><strong>Actor runs:</strong> <code>POST /api/actors/{id}/run</code></li>
+            <li><strong>Run status:</strong> <code>GET /api/actors/{id}/runs/{runId}</code></li>
+            <li><strong>Datasets:</strong> <code>GET /api/actors/{id}/runs/{runId}/dataset</code></li>
+            <li><strong>Dashboard:</strong> <a href="https://api.diegonmarcos.com/crawlee/" target="_blank" rel="noopener">api.diegonmarcos.com/crawlee/</a></li>
         </ul>
     </div>
 
@@ -251,14 +276,14 @@
     <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-standalone-preset.js"></script>
 
     <script>
-        // Initialize Swagger UI with both APIs
+        // Initialize Swagger UI — only OpenAPI-compatible specs
+        // Crawlee has no OpenAPI spec; its endpoints are documented in the Quick Links above
         window.ui = SwaggerUIBundle({
             urls: [
-                { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API' },
-                { url: 'https://api.diegonmarcos.com/services/docs/json', name: 'C3 Services API' },
-                { url: 'https://api.diegonmarcos.com/crawlee/openapi.json', name: 'Crawlee API' }
+                { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API (Infrastructure)' },
+                { url: 'https://api.diegonmarcos.com/services/docs/json', name: 'C3 Services API (Matomo, Mailu, Syncthing, ntfy, Ollama, Radicale)' }
             ],
-            "urls.primaryName": "C3 API",
+            "urls.primaryName": "C3 API (Infrastructure)",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [

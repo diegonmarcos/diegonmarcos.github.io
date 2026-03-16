@@ -3,6 +3,9 @@
 
 .card {
   @include card;
+  padding: $space-4;
+
+  @include mq(md) { padding: $space-6; }
 
   &__tag {
     display: inline-block;
@@ -13,22 +16,24 @@
     border: 1px solid rgba($color-accent, 0.2);
     border-radius: $radius-sm;
     padding: 0.1em $space-2;
-    margin-bottom: $space-3;
+    margin-bottom: $space-2;
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
 
   &__title {
-    font-size: $font-size-lg;
+    font-size: $font-size-md;
     font-weight: 600;
-    margin-bottom: $space-2;
+    margin-bottom: $space-1;
     color: $color-text;
+
+    @include mq(md) { font-size: $font-size-lg; }
   }
 
   &__desc {
     font-size: $font-size-sm;
     color: $color-text-muted;
-    margin-bottom: $space-4;
+    margin-bottom: $space-3;
     line-height: 1.5;
   }
 
@@ -41,12 +46,14 @@
     display: inline-flex;
     align-items: center;
     gap: $space-1;
-    font-size: $font-size-sm;
+    font-size: $font-size-xs;
     color: $color-accent;
-    padding: $space-1 $space-3;
+    padding: $space-1 $space-2;
     border: 1px solid rgba($color-accent, 0.3);
     border-radius: $radius-md;
     transition: background 0.15s;
+
+    @include mq(md) { font-size: $font-size-sm; padding: $space-1 $space-3; }
 
     &:hover {
       background: $color-tag;
@@ -62,24 +69,37 @@
   color: $color-text-muted;
   border-bottom: 1px solid $color-border;
   padding-bottom: $space-2;
-  margin-bottom: $space-4;
+  margin-bottom: $space-3;
 }
 
+// On wide desktop, service cards go 2-col within the right column
 .card-list {
   display: flex;
   flex-direction: column;
-  gap: $space-4;
+  gap: $space-3;
+
+  &--grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-3;
+
+    @include mq(lg) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 }
 
 .hero {
-  padding: $space-12 0 $space-8;
+  padding: $space-6 0 $space-4;
   border-bottom: 1px solid $color-border;
-  margin-bottom: $space-8;
+  margin-bottom: $space-6;
+
+  @include mq(md) { padding: $space-8 0 $space-6; }
 
   &__title {
-    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-size: clamp(1.25rem, 3vw, 2rem);
     font-weight: 700;
-    margin-bottom: $space-3;
+    margin-bottom: $space-2;
     background: linear-gradient(90deg, $color-text 0%, $color-accent 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -88,7 +108,9 @@
 
   &__sub {
     color: $color-text-muted;
-    font-size: $font-size-lg;
+    font-size: $font-size-sm;
     max-width: 600px;
+
+    @include mq(md) { font-size: $font-size-md; }
   }
 }

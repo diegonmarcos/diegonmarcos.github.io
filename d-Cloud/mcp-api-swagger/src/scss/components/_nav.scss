@@ -25,12 +25,19 @@
 
   &__row {
     @include flex-row(flex-start, center, $space-1);
-    padding: $space-2 0;
-    flex-wrap: wrap;
+    padding: $space-1 0;
     gap: $space-1;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+
+    &::-webkit-scrollbar { display: none; }
 
     &--primary {
       border-bottom: 1px solid $color-border;
+      flex-wrap: wrap; // primary row can wrap on desktop
     }
 
     &--secondary {

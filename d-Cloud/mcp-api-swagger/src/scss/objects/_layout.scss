@@ -1,0 +1,24 @@
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $space-4;
+
+  @include mq(md) { padding: 0 $space-8; }
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-8;
+
+  @include mq(lg) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.section {
+  padding: $space-8 0;
+}

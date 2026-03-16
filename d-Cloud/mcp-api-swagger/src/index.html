@@ -1,56 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>C3 — Dashboard Hub</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Hub — Cloud Control Center</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<nav class="top-nav">
-  <a href="index.html" class="active">Home</a>
-  <a href="unix-mcp.html">Unix MCP</a>
-  <a href="c3-mcp-api-dash.html">C3 MCP API</a>
-  <a href="c3-services-mcp-api.html">C3 Services MCP API</a>
-  <a href="crawlee-api.html">Crawlee API</a>
-  <a href="mailu-mcp-api.html">Mailu MCP API</a>
-  <a href="mattermost-mcp-api.html">Mattermost MCP API</a>
-</nav>
-<div class="stars" id="stars"></div>
-<div class="container">
 
-<h1>C3 — Dashboard Hub</h1>
-<p class="subtitle">API &amp; MCP dashboards for <em>diegonmarcos.com</em> infrastructure</p>
-<hr>
+<header>
+  <nav class="nav">
+    <div class="container">
+      <div class="nav__inner">
 
-<div class="grid-2">
-  <a href="c3-mcp-api-dash.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>C3 MCP API</h3>
-    <p class="st-off">Cloud Control Center — topology, health, control, tests, swagger</p>
-  </a>
-  <a href="unix-mcp.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>Unix MCP</h3>
-    <p class="st-off">NixOS &amp; home-manager flake operations</p>
-  </a>
-  <a href="c3-services-mcp-api.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>C3 Services MCP API</h3>
-    <p class="st-off">Per-service API discovery and proxy calls</p>
-  </a>
-  <a href="crawlee-api.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>Crawlee API</h3>
-    <p class="st-off">Web scraping actors, runs, and dataset extraction</p>
-  </a>
-  <a href="mailu-mcp-api.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>Mailu MCP API</h3>
-    <p class="st-off">Mail server administration and monitoring</p>
-  </a>
-  <a href="mattermost-mcp-api.html" class="card" style="text-decoration:none;border-bottom:none">
-    <h3>Mattermost MCP API</h3>
-    <p class="st-off">Team messaging and channel management</p>
-  </a>
-</div>
+        <!-- Row 1: Parent MCP APIs -->
+        <div class="nav__row nav__row--primary">
+          <span class="nav__row-label">MCP</span>
+          <a class="nav-link nav-link--primary" href="index.html">Home</a>
+          <a class="nav-link nav-link--primary" href="unix-mcp.html">Unix MCP</a>
+          <a class="nav-link nav-link--primary" href="c3-mcp-api.html">C3 MCP API</a>
+          <a class="nav-link nav-link--primary" href="c3-services-mcp-api.html">C3 Services MCP API</a>
+        </div>
 
-</div>
+        <!-- Row 2: Per-service REST APIs -->
+        <div class="nav__row nav__row--secondary">
+          <span class="nav__row-label">APIs</span>
+          <a class="nav-link nav-link--secondary" href="c3-api.html">C3 API</a>
+          <a class="nav-link nav-link--secondary" href="matomo-api.html">Matomo</a>
+          <a class="nav-link nav-link--secondary" href="vaultwarden-api.html">Vaultwarden</a>
+          <a class="nav-link nav-link--secondary" href="ntfy-api.html">ntfy</a>
+          <a class="nav-link nav-link--secondary" href="mailu-api.html">Mailu</a>
+          <a class="nav-link nav-link--secondary" href="syncthing-api.html">Syncthing</a>
+          <a class="nav-link nav-link--secondary" href="radicale-api.html">Radicale</a>
+          <a class="nav-link nav-link--secondary" href="photoprism-api.html">PhotoPrism</a>
+          <a class="nav-link nav-link--secondary" href="nocodb-api.html">NocoDB</a>
+          <a class="nav-link nav-link--secondary" href="windmill-api.html">Windmill</a>
+          <a class="nav-link nav-link--secondary" href="crawlee-api.html">Crawlee</a>
+          <a class="nav-link nav-link--secondary" href="affine-api.html">AFFiNE</a>
+          <a class="nav-link nav-link--secondary" href="authelia-api.html">Authelia</a>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="container">
+
+    <div class="hero">
+      <h1 class="hero__title">Cloud API Hub</h1>
+      <p class="hero__sub">All MCP servers and service APIs in one place.</p>
+    </div>
+
+    <div class="two-col section">
+
+      <!-- Left: Parent MCP APIs -->
+      <div>
+        <p class="col-header">Parent MCP APIs</p>
+        <div class="card-list">
+
+          <div class="card">
+            <span class="card__tag">MCP</span>
+            <h2 class="card__title">Unix MCP</h2>
+            <p class="card__desc">NixOS + Termux system management. Flakes, home-manager, build system, shell config.</p>
+            <div class="card__links">
+              <a class="card__link" href="unix-mcp.html">Docs →</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">MCP</span>
+            <h2 class="card__title">C3 MCP API</h2>
+            <p class="card__desc">Cloud Control Center — 70 tools for infra management: SSH, Docker, health, build pipeline, topology.</p>
+            <div class="card__links">
+              <a class="card__link" href="c3-mcp-api.html">Docs →</a>
+              <a class="card__link" href="https://api.diegonmarcos.com/c3-api/docs" target="_blank">REST Swagger ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">MCP</span>
+            <h2 class="card__title">C3 Services MCP API</h2>
+            <p class="card__desc">Per-service MCP wrappers — interact with Matomo, NocoDB, Windmill, Crawlee, and more via natural language.</p>
+            <div class="card__links">
+              <a class="card__link" href="c3-services-mcp-api.html">Docs →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: Per-service REST APIs -->
+      <div>
+        <p class="col-header">Per-Service REST APIs</p>
+        <div class="card-list">
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">C3 API</h2>
+            <p class="card__desc">Unified cloud infrastructure REST API — inventory, operations, observability, security, FinOps.</p>
+            <div class="card__links">
+              <a class="card__link" href="https://api.diegonmarcos.com/c3-api/docs" target="_blank">Swagger ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Matomo Analytics</h2>
+            <p class="card__desc">Web analytics — visitor stats, event tracking, goal funnels.</p>
+            <div class="card__links">
+              <a class="card__link" href="matomo-api.html">Docs →</a>
+              <a class="card__link" href="https://analytics.diegonmarcos.com" target="_blank">Dashboard ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">NocoDB</h2>
+            <p class="card__desc">Open-source Airtable alternative — database views, forms, REST/GraphQL.</p>
+            <div class="card__links">
+              <a class="card__link" href="nocodb-api.html">Docs →</a>
+              <a class="card__link" href="https://db.diegonmarcos.com" target="_blank">App ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Windmill</h2>
+            <p class="card__desc">Workflow automation — scripts, flows, schedules, webhooks.</p>
+            <div class="card__links">
+              <a class="card__link" href="windmill-api.html">Docs →</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Crawlee</h2>
+            <p class="card__desc">Web scraping cloud — actors, runs, datasets, key-value stores.</p>
+            <div class="card__links">
+              <a class="card__link" href="crawlee-api.html">Docs →</a>
+              <a class="card__link" href="https://api.diegonmarcos.com/crawlee/" target="_blank">API ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Mailu</h2>
+            <p class="card__desc">Self-hosted email — SMTP, IMAP, aliases, domains, admin API.</p>
+            <div class="card__links">
+              <a class="card__link" href="mailu-api.html">Docs →</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Syncthing</h2>
+            <p class="card__desc">File synchronisation — devices, folders, events, config API.</p>
+            <div class="card__links">
+              <a class="card__link" href="syncthing-api.html">Docs →</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">PhotoPrism</h2>
+            <p class="card__desc">Photo library — albums, search, labels, index, faces.</p>
+            <div class="card__links">
+              <a class="card__link" href="photoprism-api.html">Docs →</a>
+              <a class="card__link" href="https://photos.diegonmarcos.com" target="_blank">App ↗</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">ntfy</h2>
+            <p class="card__desc">Push notifications — publish, subscribe, topics, auth.</p>
+            <div class="card__links">
+              <a class="card__link" href="ntfy-api.html">Docs →</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <span class="card__tag">REST</span>
+            <h2 class="card__title">Authelia</h2>
+            <p class="card__desc">2FA / OIDC gateway — token introspection, user info, session.</p>
+            <div class="card__links">
+              <a class="card__link" href="authelia-api.html">Docs →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
 <script src="script.js"></script>
 </body>
 </html>

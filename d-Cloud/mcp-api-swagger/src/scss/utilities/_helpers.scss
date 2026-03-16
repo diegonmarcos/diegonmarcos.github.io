@@ -1,0 +1,9 @@
+@use '../settings/variables' as *;
+
+.text-muted  { color: $color-text-muted; }
+.text-accent { color: $color-accent; }
+.text-sm     { font-size: $font-size-sm; }
+.text-mono   { font-family: $font-mono; }
+.mt-4        { margin-top: $space-4; }
+.mt-8        { margin-top: $space-8; }
+.hidden      { display: none; }

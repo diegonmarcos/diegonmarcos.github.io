@@ -1,0 +1,94 @@
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+.card {
+  @include card;
+
+  &__tag {
+    display: inline-block;
+    font-size: $font-size-xs;
+    font-family: $font-mono;
+    background: $color-tag;
+    color: $color-accent;
+    border: 1px solid rgba($color-accent, 0.2);
+    border-radius: $radius-sm;
+    padding: 0.1em $space-2;
+    margin-bottom: $space-3;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__title {
+    font-size: $font-size-lg;
+    font-weight: 600;
+    margin-bottom: $space-2;
+    color: $color-text;
+  }
+
+  &__desc {
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+    margin-bottom: $space-4;
+    line-height: 1.5;
+  }
+
+  &__links {
+    @include flex-row(flex-start, center, $space-2);
+    flex-wrap: wrap;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    font-size: $font-size-sm;
+    color: $color-accent;
+    padding: $space-1 $space-3;
+    border: 1px solid rgba($color-accent, 0.3);
+    border-radius: $radius-md;
+    transition: background 0.15s;
+
+    &:hover {
+      background: $color-tag;
+      text-decoration: none;
+    }
+  }
+}
+
+.col-header {
+  font-size: $font-size-xs;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: $color-text-muted;
+  border-bottom: 1px solid $color-border;
+  padding-bottom: $space-2;
+  margin-bottom: $space-4;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.hero {
+  padding: $space-12 0 $space-8;
+  border-bottom: 1px solid $color-border;
+  margin-bottom: $space-8;
+
+  &__title {
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: $space-3;
+    background: linear-gradient(90deg, $color-text 0%, $color-accent 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__sub {
+    color: $color-text-muted;
+    font-size: $font-size-lg;
+    max-width: 600px;
+  }
+}

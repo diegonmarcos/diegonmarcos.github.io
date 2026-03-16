@@ -1,0 +1,85 @@
+@use '../settings/variables' as *;
+@use '../tools/mixins' as *;
+
+.nav {
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &__inner {
+    @include flex-row(space-between, stretch, 0);
+    flex-direction: column;
+  }
+
+  &__brand {
+    @include flex-row(flex-start, center, $space-2);
+    padding: $space-3 0;
+    font-family: $font-mono;
+    font-size: $font-size-sm;
+    font-weight: 600;
+    color: $color-accent;
+    letter-spacing: 0.05em;
+  }
+
+  &__row {
+    @include flex-row(flex-start, center, $space-1);
+    padding: $space-2 0;
+    flex-wrap: wrap;
+    gap: $space-1;
+
+    &--primary {
+      border-bottom: 1px solid $color-border;
+    }
+
+    &--secondary {
+      gap: $space-1;
+    }
+  }
+
+  &__row-label {
+    font-size: $font-size-xs;
+    color: $color-text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: $space-2;
+    white-space: nowrap;
+  }
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: $space-1 $space-3;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+  border: 1px solid transparent;
+
+  &:hover {
+    background: $color-surface-2;
+    color: $color-text;
+    text-decoration: none;
+  }
+
+  &--active, &[aria-current="page"] {
+    background: $color-tag;
+    color: $color-accent;
+    border-color: rgba($color-accent, 0.3);
+  }
+
+  &--primary {
+    font-weight: 500;
+    font-size: $font-size-sm;
+  }
+
+  &--secondary {
+    font-size: $font-size-xs;
+    padding: $space-1 $space-2;
+  }
+}

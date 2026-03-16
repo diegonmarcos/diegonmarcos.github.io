@@ -6,12 +6,18 @@
   "dist": "dist",
 
   "build": [
-    { "mod": "copy", "files": "index.html,style.css,script.js,unix-mcp.html,c3-mcp-api-dash.html,c3-services-mcp-api.html,crawlee-api.html,mailu-mcp-api.html,mattermost-mcp-api.html", "from": "src" }
+    { "mod": "sass", "input": "src/scss/main.scss", "output": "style.css" },
+    { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
+    { "mod": "copy", "files": "*.html", "from": "src" }
   ],
 
   "serve": {
     "mode": "auto",
-    "dir": "src"
+    "dir": "src",
+    "watch": [
+      { "mod": "sass", "input": "scss/main.scss", "output": "style.css" },
+      { "mod": "esbuild", "input": "typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" }
+    ]
   },
 
   "deploy": {}

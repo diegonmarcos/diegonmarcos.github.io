@@ -12,6 +12,9 @@
 
 set -e  # Exit on error
 
+# Shared node_modules — ESM resolution needs NODE_PATH
+export NODE_PATH="${NODE_PATH:-$HOME/.node_modules/node_modules}"
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'

@@ -210,14 +210,7 @@
         <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/c3-api/docs/json" target="_blank">C3 Spec (JSON)</a>
         <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/rust-api/docs/openapi.json" target="_blank">Rust Spec (JSON)</a>
-        <span class="separator">|</span>
-        <a href="https://api.diegonmarcos.com/flask/apispec.json" target="_blank">Flask Spec (Experimental)</a>
-        <span class="separator">|</span>
         <a href="https://api.diegonmarcos.com/crawlee/" target="_blank">Crawlee Dashboard</a>
-        <span class="separator">|</span>
-        <a href="cloud_central_api.md" target="_blank">Central API (MD)</a>
-        <a href="cloud_ondemand_api.md" target="_blank">On-Demand API (MD)</a>
     </div>
 
     <!-- Quick Links -->
@@ -260,12 +253,9 @@
         window.ui = SwaggerUIBundle({
             urls: [
                 { url: 'https://api.diegonmarcos.com/c3-api/docs/json', name: 'C3 API' },
-                { url: 'https://api.diegonmarcos.com/crawlee/openapi.json', name: 'Crawlee API' },
-                { url: 'https://api.diegonmarcos.com/rust-api/docs/openapi.json', name: 'Rust API (Experimental)' },
-                { url: 'https://api.diegonmarcos.com/flask/apispec.json', name: 'Flask API (Experimental)' },
-                { url: 'https://api.diegonmarcos.com/go/docs/openapi.json', name: 'Go API (Experimental)' }
+                { url: 'https://api.diegonmarcos.com/crawlee/openapi.json', name: 'Crawlee API' }
             ],
-            "urls.primaryName": "C3 API (Primary)",
+            "urls.primaryName": "C3 API",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [

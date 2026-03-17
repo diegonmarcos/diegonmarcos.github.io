@@ -6,6 +6,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_FILE="$SCRIPT_DIR/config.json"
+NODE_VERSION_FILE="$SCRIPT_DIR/.node-version"
 
 # =============================================================================
 # Helpers

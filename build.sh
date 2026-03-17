@@ -5,8 +5,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-DEPS_FILE="$SCRIPT_DIR/deps.json"
-NODE_VERSION_FILE="$SCRIPT_DIR/.node-version"
+CONFIG_FILE="$SCRIPT_DIR/config.json"
 
 # =============================================================================
 # Helpers
@@ -29,11 +28,11 @@ confirm() {
 }
 
 # =============================================================================
-# Dependency Engine — reads deps.json + .node-version
+# Dependency Engine — reads config.json .deps section
 # =============================================================================
 
-deps_binaries() { jq -r '.system.required | keys[]' "$DEPS_FILE" | tr '\n' ' '; }
-deps_pkg_name() { jq -r ".system.required[\"$1\"][\"$2\"] // empty" "$DEPS_FILE"; }
+deps_binaries() { jq -r '.deps.system | keys[]' "$CONFIG_FILE" | tr '\n' ' '; }
+deps_pkg_name() { jq -r ".deps.system[\"$1\"][\"$2\"] // empty" "$CONFIG_FILE"; }
 
 check_deps() {
     missing=""
@@ -52,7 +51,7 @@ check_deps() {
 }
 
 cmd_deps() {
-    log "Installing all dependencies from deps.json..."
+    log "Installing all dependencies from config.json..."
 
     # System deps
     missing=""
@@ -94,7 +93,11 @@ cmd_deps() {
     log "Scanning projects and generating root package.json..."
     _generate_package_json
     log "Installing node dependencies..."
-    cd "$SCRIPT_DIR" && npm install --no-fund --no-audit --legacy-peer-deps
+    local npm_flags="--no-fund --no-audit --legacy-peer-deps"
+    if [ -f "$CONFIG_FILE" ] && command -v node >/dev/null 2>&1; then
+        npm_flags="$(node -p 'var c=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));(c.deps&&c.deps.npm&&c.deps.npm.flags)||""' "$CONFIG_FILE" 2>/dev/null)" || npm_flags="--no-fund --no-audit --legacy-peer-deps"
+    fi
+    cd "$SCRIPT_DIR" && npm install $npm_flags
 
     # Generate front-deps.json (consolidated deps grouped by language)
     log "Generating front-deps.json..."
@@ -386,6 +389,21 @@ cmd_clean() {
 }
 
 # =============================================================================
+# Analytics — audit/inject tracking tags across all projects
+# =============================================================================
+
+cmd_analytics() {
+    sub="${1:-check}"
+    extra="${2:-}"
+    log "Analytics $sub across all projects..."
+    for bjson in $(find "$SCRIPT_DIR" -maxdepth 3 -name "build.json" -not -path "$SCRIPT_DIR/build.json" -not -path "*/z_Archive/*" | sort); do
+        dir="$(dirname "$bjson")"
+        [ -f "$dir/build.sh" ] || continue
+        (cd "$dir" && sh build.sh analytics "$sub" "$extra")
+    done
+}
+
+# =============================================================================
 # Usage
 # =============================================================================
 
@@ -401,6 +419,8 @@ SETUP:
 PIPELINE:
     build [project]       Build one or all projects via _engine.sh
     clean                 Remove all dist/ folders
+    analytics [check|inject|remove <provider>]
+                          Audit/inject/remove tracking tags in source HTML
 
 CONFIG:
     config                Generate front-topology.json from all build.json files
@@ -430,6 +450,7 @@ case "$command" in
     deps)     cmd_deps ;;
     build)    cmd_build "$@" ;;
     clean)    cmd_clean ;;
+    analytics) cmd_analytics "$@" ;;
     config)   cmd_config ;;
     ""|help)  usage ;;
     *)        log_error "Unknown: $command"; usage ;;

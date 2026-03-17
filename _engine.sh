@@ -44,6 +44,46 @@ cleanup() {
 }
 trap cleanup EXIT
 
+# ─── REPO CONFIG ───────────────────────────────────────────
+# Reads config.json (repo root) into RC_* shell variables
+REPO_ROOT=""
+RC_NPM_FLAGS="--no-fund --no-audit --legacy-peer-deps"
+RC_DEFAULT_SRC="src"
+RC_DEFAULT_DIST="dist"
+RC_DEFAULT_PORT=8000
+RC_DEFAULT_FW="vanilla"
+
+parse_repo_config() {
+    REPO_ROOT="$(cd "$PROJECT_DIR" && git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT=""
+    local rc="${REPO_ROOT}/config.json"
+    [ -f "$rc" ] || return 0
+
+    local _rc_parsed=""
+    if command -v node >/dev/null 2>&1; then
+        _rc_parsed="$(node -e '
+var c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
+var d = c.defaults || {};
+console.log("RC_NPM_FLAGS=\"" + (c.deps && c.deps.npm && c.deps.npm.flags || "") + "\"");
+console.log("RC_DEFAULT_SRC=\"" + (d.src || "src") + "\"");
+console.log("RC_DEFAULT_DIST=\"" + (d.dist || "dist") + "\"");
+console.log("RC_DEFAULT_PORT=" + (d.port || 8000));
+console.log("RC_DEFAULT_FW=\"" + (d.framework || "vanilla") + "\"");
+' "$rc" 2>/dev/null)" || _rc_parsed=""
+    elif command -v python3 >/dev/null 2>&1; then
+        _rc_parsed="$(python3 -c "
+import json, sys
+c = json.load(open(sys.argv[1]))
+d = c.get('defaults', {})
+print('RC_NPM_FLAGS=\"' + c.get('deps', {}).get('npm', {}).get('flags', '') + '\"')
+print('RC_DEFAULT_SRC=\"' + d.get('src', 'src') + '\"')
+print('RC_DEFAULT_DIST=\"' + d.get('dist', 'dist') + '\"')
+print('RC_DEFAULT_PORT=' + str(d.get('port', 8000)))
+print('RC_DEFAULT_FW=\"' + d.get('framework', 'vanilla') + '\"')
+" "$rc" 2>/dev/null)" || _rc_parsed=""
+    fi
+    [ -n "$_rc_parsed" ] && eval "$_rc_parsed"
+}
+
 # ─── CONFIG PARSER ──────────────────────────────────────────
 # Reads build.json into CFG_* shell variables using node or python3
 parse_config() {
@@ -56,17 +96,18 @@ parse_config() {
 
     # Try node first (always available for Node.js projects)
     if command -v node >/dev/null 2>&1; then
-        _parsed="$(CF="$CONFIG_FILE" node -e '
+        _parsed="$(CF="$CONFIG_FILE" RC_FW="$RC_DEFAULT_FW" RC_PORT="$RC_DEFAULT_PORT" RC_SRC="$RC_DEFAULT_SRC" RC_DIST="$RC_DEFAULT_DIST" node -e '
 var c = JSON.parse(require("fs").readFileSync(process.env.CF, "utf8"));
+var e = process.env;
 function p(k, v) {
     v = String(v == null ? "" : v).replace(/\\/g,"\\\\").replace(/"/g,"\\\"").replace(/\$/g,"\\$").replace(/`/g,"\\`");
     console.log(k + "=\"" + v + "\"");
 }
 p("CFG_NAME", c.name);
-p("CFG_FW", c.framework || "vanilla");
-p("CFG_PORT", c.port || 8000);
-p("CFG_SRC", c.src || "src");
-p("CFG_DIST", c.dist || "dist");
+p("CFG_FW", c.framework || e.RC_FW);
+p("CFG_PORT", c.port || e.RC_PORT);
+p("CFG_SRC", c.src || e.RC_SRC);
+p("CFG_DIST", c.dist || e.RC_DIST);
 var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
@@ -101,17 +142,18 @@ tn.forEach(function(n, i) {
 
     # Fallback to python3
     if [ -z "$_parsed" ] && command -v python3 >/dev/null 2>&1; then
-        _parsed="$(CF="$CONFIG_FILE" python3 -c '
+        _parsed="$(CF="$CONFIG_FILE" RC_FW="$RC_DEFAULT_FW" RC_PORT="$RC_DEFAULT_PORT" RC_SRC="$RC_DEFAULT_SRC" RC_DIST="$RC_DEFAULT_DIST" python3 -c '
 import json, os
 c = json.load(open(os.environ["CF"]))
+e = os.environ
 def p(k, v):
     v = str(v if v is not None else "").replace("\\\\","\\\\\\\\").replace("\"","\\\\\"").replace("$","\\\\$").replace("`","\\\\`")
     print(f"{k}=\"{v}\"")
 p("CFG_NAME", c.get("name"))
-p("CFG_FW", c.get("framework","vanilla"))
-p("CFG_PORT", c.get("port",8000))
-p("CFG_SRC", c.get("src","src"))
-p("CFG_DIST", c.get("dist","dist"))
+p("CFG_FW", c.get("framework", e.get("RC_FW","vanilla")))
+p("CFG_PORT", c.get("port", int(e.get("RC_PORT","8000"))))
+p("CFG_SRC", c.get("src", e.get("RC_SRC","src")))
+p("CFG_DIST", c.get("dist", e.get("RC_DIST","dist")))
 b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
@@ -192,7 +234,7 @@ resolve_deps() {
             log_info "Installing missing deps at $install_dir..."
             log_verbose "missing: $missing"
             if command -v npm >/dev/null 2>&1; then
-                (cd "$install_dir" && npm install --save-dev --no-fund --no-audit --legacy-peer-deps $missing 2>&1 | tail -5) || true
+                (cd "$install_dir" && npm install --save-dev $RC_NPM_FLAGS $missing 2>&1 | tail -5) || true
             else
                 log_error "npm not found -- cannot install: $missing"
                 return $EXIT_DEPS
@@ -218,7 +260,7 @@ resolve_deps() {
     if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
         local install_dir="${repo_root:-$pkg_dir}"
         log_info "Installing all dependencies in $install_dir..."
-        (cd "$install_dir" && npm install --no-fund --no-audit --legacy-peer-deps 2>&1 | tail -3)
+        (cd "$install_dir" && npm install $RC_NPM_FLAGS 2>&1 | tail -3)
         if [ -d "$install_dir/node_modules" ]; then
             [ -n "$repo_root" ] && {
                 export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
@@ -1066,11 +1108,148 @@ cmd_status() {
     printf "\n"
 }
 
+# ─── ANALYTICS ─────────────────────────────────────────────
+
+cmd_analytics() {
+    local sub="${1:-check}"
+    local src_dir="$PROJECT_DIR/$CFG_SRC"
+    [ -d "$src_dir" ] || src_dir="$PROJECT_DIR/src_static"
+    [ -d "$src_dir" ] || { log_warn "analytics: no src dir found"; return 0; }
+
+    # Read analytics config from config.json (single source of truth)
+    local repo_config="${REPO_ROOT}/config.json"
+
+    local umami_site_id="PENDING_FIRST_DEPLOY"
+    if [ -f "$repo_config" ] && command -v node >/dev/null 2>&1; then
+        umami_site_id="$(node -p 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).analytics.umami.site_id' "$repo_config" 2>/dev/null)" || umami_site_id="PENDING_FIRST_DEPLOY"
+    elif [ -f "$repo_config" ] && command -v python3 >/dev/null 2>&1; then
+        umami_site_id="$(python3 -c "import json;print(json.load(open('$repo_config'))['analytics']['umami']['site_id'])" 2>/dev/null)" || umami_site_id="PENDING_FIRST_DEPLOY"
+    fi
+
+    if [ "$umami_site_id" = "PENDING_FIRST_DEPLOY" ] && [ "$sub" = "inject" ]; then
+        log_error "Umami site_id not configured yet — update config.json after first deploy"
+        return 1
+    fi
+
+    local matomo_marker="container_odwLIyPV"
+    local umami_marker="analytics.diegonmarcos.com/umami"
+
+    local matomo_tag='<!-- Matomo Tag Manager -->\
+<script>\
+var _mtm = window._mtm = window._mtm || [];\
+_mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'"'mtm.Start'"'"'});\
+(function() {\
+  var d=document, g=d.createElement('"'"'script'"'"'), s=d.getElementsByTagName('"'"'script'"'"')[0];\
+  g.async=true; g.src='"'"'https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'"'"';\
+  s.parentNode.insertBefore(g,s);\
+})();\
+</script>\
+<!-- End Matomo Tag Manager -->'
+
+    local umami_tag="<!-- Umami Analytics -->
+<script defer src=\"https://analytics.diegonmarcos.com/umami/script.js\" data-website-id=\"${umami_site_id}\"></script>
+<!-- End Umami Analytics -->"
+
+    case "$sub" in
+        check)
+            log_info "Analytics audit: $CFG_NAME"
+            local total=0 has_both=0 has_matomo=0 has_umami=0 has_none=0
+            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+                total=$((total + 1))
+                local _rel="${f#$PROJECT_DIR/}"
+                local _m=false _u=false
+                grep -q "$matomo_marker" "$f" && _m=true
+                grep -q "$umami_marker" "$f" && _u=true
+                if [ "$_m" = true ] && [ "$_u" = true ]; then
+                    has_both=$((has_both + 1))
+                    log_step "$_rel ${GREEN}matomo+umami${NC}"
+                elif [ "$_m" = true ]; then
+                    has_matomo=$((has_matomo + 1))
+                    log_step "$_rel ${YELLOW}matomo only${NC}"
+                elif [ "$_u" = true ]; then
+                    has_umami=$((has_umami + 1))
+                    log_step "$_rel ${YELLOW}umami only${NC}"
+                else
+                    has_none=$((has_none + 1))
+                    log_step "$_rel ${RED}none${NC}"
+                fi
+            done
+            printf "\n"
+            log_info "Total: $total | Both: $has_both | Matomo: $has_matomo | Umami: $has_umami | None: $has_none"
+            ;;
+        inject)
+            log_info "Injecting analytics tags: $CFG_NAME"
+            local injected=0 skipped=0
+            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+                local _rel="${f#$PROJECT_DIR/}"
+                grep -q "</head>" "$f" || { log_step "skip (no </head>): $_rel"; skipped=$((skipped + 1)); continue; }
+
+                local _need_matomo=false _need_umami=false
+                grep -q "$matomo_marker" "$f" || _need_matomo=true
+                grep -q "$umami_marker" "$f" || _need_umami=true
+
+                if [ "$_need_matomo" = false ] && [ "$_need_umami" = false ]; then
+                    log_step "skip (has both): $_rel"
+                    skipped=$((skipped + 1))
+                    continue
+                fi
+
+                local _inject=""
+                [ "$_need_matomo" = true ] && _inject="$matomo_tag"
+                if [ "$_need_umami" = true ]; then
+                    [ -n "$_inject" ] && _inject="$_inject
+"
+                    _inject="$_inject$umami_tag"
+                fi
+
+                awk -v tag="$_inject" '/<\/head>/ { print tag } { print }' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+                injected=$((injected + 1))
+                local _what=""
+                [ "$_need_matomo" = true ] && _what="matomo"
+                [ "$_need_umami" = true ] && _what="${_what:+$_what+}umami"
+                log_success "injected $_what: $_rel"
+            done
+            printf "\n"
+            log_info "Injected: $injected | Skipped: $skipped"
+            ;;
+        remove)
+            local provider="${2:-}"
+            [ -z "$provider" ] && { log_error "Usage: build.sh analytics remove <matomo|umami>"; return 1; }
+            log_info "Removing $provider tags: $CFG_NAME"
+            local removed=0
+            local start_marker="" end_marker=""
+            case "$provider" in
+                matomo) start_marker="<!-- Matomo Tag Manager -->"; end_marker="<!-- End Matomo Tag Manager -->" ;;
+                umami)  start_marker="<!-- Umami Analytics -->"; end_marker="<!-- End Umami Analytics -->" ;;
+                *)      log_error "Unknown provider: $provider (use matomo or umami)"; return 1 ;;
+            esac
+            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+                local _rel="${f#$PROJECT_DIR/}"
+                if grep -q "$start_marker" "$f"; then
+                    awk -v s="$start_marker" -v e="$end_marker" '
+                        $0 ~ s { skip=1; next }
+                        $0 ~ e { skip=0; next }
+                        !skip { print }
+                    ' "$f" > "$f.tmp" && mv "$f.tmp" "$f"
+                    removed=$((removed + 1))
+                    log_success "removed $provider: $_rel"
+                fi
+            done
+            log_info "Removed from $removed files"
+            ;;
+        *)
+            log_error "Unknown analytics subcommand: $sub (use check, inject, remove)"
+            return 1
+            ;;
+    esac
+}
+
 # ─── MAIN ───────────────────────────────────────────────────
 main() {
     # Parse options
     _action=""
     _deploy_target=""
+    _extra_arg=""
     for arg in "$@"; do
         case "$arg" in
             --verbose)  OPT_VERBOSE=true ;;
@@ -1080,14 +1259,19 @@ main() {
             *)
                 if [ -z "$_action" ]; then
                     _action="$arg"
-                else
+                elif [ -z "$_deploy_target" ]; then
                     _deploy_target="$arg"
+                else
+                    _extra_arg="$arg"
                 fi
                 ;;
         esac
     done
 
-    # Parse config (needed for all commands except help with no config)
+    # Load repo-wide config (config.json at repo root)
+    parse_repo_config
+
+    # Parse project config (build.json)
     if [ -f "$CONFIG_FILE" ]; then
         parse_config
         DIST_DIR="$PROJECT_DIR/$CFG_DIST"
@@ -1110,6 +1294,7 @@ main() {
         deploy)     cmd_deploy "$_deploy_target" ;;
         deps)       cmd_deps ;;
         status)     cmd_status ;;
+        analytics)  cmd_analytics "$_deploy_target" "$_extra_arg" ;;
         help|-h|--help) print_helper ;;
         *)
             log_error "Unknown command: $_action"

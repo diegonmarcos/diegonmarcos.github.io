@@ -37,7 +37,10 @@ load_secrets() {
     printf "${C_RED}sops not found — install via: nix-env -iA nixpkgs.sops${C_RESET}\n" >&2
     return 1
   fi
-  eval "$(sops -d --output-type dotenv "$SECRETS_FILE" 2>/dev/null | sed "/^$/d; s/=\(.*\)/='\1'/; s/^/export /")"
+  while IFS='=' read -r key val; do
+    [ -z "$key" ] && continue
+    export "$key=$val"
+  done < <(sops -d --output-type dotenv "$SECRETS_FILE" 2>/dev/null)
 }
 
 load_secrets || exit 1

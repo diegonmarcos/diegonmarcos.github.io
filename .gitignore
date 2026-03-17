@@ -64,6 +64,4 @@ final_site/
 ## Obsidian
 .obsidian/workspace-mobile.json
 node_modules/
-## Generated data files (canonical copies live in front-data/ submodule)
-front-deps.json
-front-topology.json
+## Generated data files → symlinks to front-data/ submodule (tracked)

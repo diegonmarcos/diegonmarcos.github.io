@@ -1,0 +1,38 @@
+{
+  "analytics": {
+    "matomo": {
+      "container_id": "container_odwLIyPV",
+      "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+    },
+    "umami": {
+      "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+      "url": "https://analytics.diegonmarcos.com/umami/script.js"
+    }
+  },
+
+  "defaults": {
+    "src": "src",
+    "dist": "dist",
+    "port": 8000,
+    "framework": "vanilla"
+  },
+
+  "deploy": {
+    "branch": "main"
+  },
+
+  "deps": {
+    "system": {
+      "node": { "nix": "nodejs_22", "apt": "nodejs", "version": "22" },
+      "npm":  { "nix": "nodejs_22", "apt": "npm" },
+      "git":  { "nix": "git",       "apt": "git" }
+    },
+    "optional": {
+      "rsync":  { "nix": "rsync",  "apt": "rsync" },
+      "rclone": { "nix": "rclone", "apt": "rclone" }
+    },
+    "npm": {
+      "flags": "--no-fund --no-audit --legacy-peer-deps"
+    }
+  }
+}

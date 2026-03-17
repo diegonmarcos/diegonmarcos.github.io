@@ -1,0 +1,31 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.loading {
+  height: 60vh;
+  @include flex-center;
+  flex-direction: column;
+  color: $purple-400;
+}
+
+.loading__icon {
+  font-size: 3rem;
+  margin-bottom: $space-4;
+  animation: spin 1s linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 48px;
+    height: 48px;
+    stroke: $purple-400;
+    fill: none;
+  }
+}
+
+.loading__text {
+  color: $text-muted;
+  font-size: $text-sm;
+  animation: pulse-opacity 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

@@ -1,0 +1,142 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: $space-4;
+
+  @include responsive($bp-sm) {
+    align-items: center;
+  }
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  cursor: pointer;
+}
+
+.modal-dialog {
+  position: relative;
+  background: $bg-primary;
+  border: 1px solid $border-secondary;
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 32rem;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: $shadow-2xl;
+  animation: modal-in 0.3s ease-out;
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-4;
+  border-bottom: 1px solid $border-primary;
+  background: $bg-highlight;
+}
+
+.modal-header__brand {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+}
+
+.modal-header__icon {
+  font-size: $text-2xl;
+  line-height: 1;
+}
+
+.modal-header__title {
+  font-weight: 700;
+  font-size: $text-lg;
+}
+
+.modal-close {
+  padding: $space-2;
+  border-radius: $radius-full;
+  transition: background $transition-fast;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+    stroke: $text-muted;
+    fill: none;
+  }
+
+  &:hover { background: $bg-secondary; }
+}
+
+.modal-body {
+  padding: $space-5;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.modal-section {
+  margin-bottom: $space-4;
+
+  &:last-child { margin-bottom: 0; }
+}
+
+.modal-section__label {
+  font-size: $text-xs;
+  text-transform: uppercase;
+  color: $text-dimmed;
+  margin-bottom: $space-2;
+}
+
+.modal-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+  font-size: $text-xs;
+
+  .grid-label { color: $text-dimmed; }
+  .grid-value { color: $text-tertiary; }
+  .grid-value--exalted { color: $emerald-400; }
+  .grid-value--detriment { color: $orange-400; }
+  .grid-value--fall { color: $red-400; }
+}
+
+.strength-tag {
+  display: inline-block;
+  font-size: $text-xs;
+  padding: 0.125rem $space-2;
+  border-radius: $radius-sm;
+  margin: 2px;
+  background: rgba($emerald-400, 0.15);
+  color: $emerald-300;
+}
+
+.challenge-tag {
+  display: inline-block;
+  font-size: $text-xs;
+  padding: 0.125rem $space-2;
+  border-radius: $radius-sm;
+  margin: 2px;
+  background: rgba(#ef4444, 0.15);
+  color: $red-300;
+}

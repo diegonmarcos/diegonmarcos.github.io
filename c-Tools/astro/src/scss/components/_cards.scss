@@ -1,0 +1,334 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// ── Base card ──
+.card {
+  @include card;
+}
+
+// ── Profile card ──
+.profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-6;
+  align-items: center;
+}
+
+.profile-avatar {
+  background: $bg-secondary;
+  padding: $space-4;
+  border-radius: $radius-full;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 24px;
+    height: 24px;
+    stroke: $purple-400;
+    fill: none;
+  }
+}
+
+.profile-info__name {
+  font-size: $text-2xl;
+  font-weight: 700;
+  color: $text-white;
+}
+
+.profile-info__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  color: $text-muted;
+  font-size: $text-xs;
+  margin-top: $space-1;
+
+  span {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+  }
+
+  svg {
+    width: 12px;
+    height: 12px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+  }
+}
+
+.sign-btn {
+  background: $bg-highlight;
+  padding: $space-3;
+  border-radius: $radius-lg;
+  border: 1px solid $border-primary;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color $transition-fast;
+
+  &:hover { border-color: rgba($purple-500, 0.5); }
+  &--sun:hover { border-color: rgba($yellow-400, 0.5); }
+  &--moon:hover { border-color: rgba($text-faint, 0.5); }
+  &--rising:hover { border-color: rgba($purple-500, 0.5); }
+  &--chinese:hover { border-color: rgba(#ef4444, 0.5); }
+}
+
+.sign-btn__label {
+  font-size: $text-10;
+  text-transform: uppercase;
+  color: $text-dimmed;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-1;
+  margin-bottom: $space-1;
+
+  svg {
+    width: 10px;
+    height: 10px;
+    stroke: currentColor;
+    fill: none;
+    opacity: 0;
+    transition: opacity $transition-fast;
+  }
+}
+
+.sign-btn:hover .sign-btn__label svg { opacity: 1; }
+
+.sign-btn__value {
+  font-size: $text-lg;
+  font-weight: 600;
+}
+
+// ── Info box ──
+.info-box {
+  @include card-inner;
+}
+
+.info-box__label {
+  font-size: $text-xs;
+  text-transform: uppercase;
+  color: $text-dimmed;
+  margin-bottom: $space-1;
+}
+
+.info-box__value {
+  font-size: $text-lg;
+  font-weight: 700;
+  color: $text-secondary;
+}
+
+.info-box__desc {
+  font-size: $text-xs;
+  color: $text-muted;
+  margin-top: $space-2;
+}
+
+// ── Keyword tags ──
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-1;
+  margin-top: $space-2;
+}
+
+.keyword-tag {
+  font-size: $text-10;
+  background: $bg-secondary;
+  padding: 0.125rem $space-2;
+  border-radius: $radius-sm;
+  color: $text-tertiary;
+}
+
+// ── Lunar card ──
+.lunar-grid {
+  display: grid;
+  gap: $space-4;
+
+  @include responsive($bp-sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.node-row {
+  font-size: $text-sm;
+  margin-bottom: $space-2;
+
+  &__label {
+    font-weight: 700;
+  }
+
+  &__sign {
+    color: $text-tertiary;
+    margin-left: $space-2;
+  }
+
+  &__desc {
+    font-size: $text-10;
+    color: $text-dimmed;
+    margin-top: 2px;
+  }
+}
+
+// ── Element / Modality cards ──
+.element-grid {
+  display: grid;
+  gap: $space-6;
+
+  @include responsive($bp-sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  margin-bottom: $space-2;
+}
+
+.progress-label {
+  width: 4rem;
+  font-size: $text-xs;
+  text-transform: capitalize;
+}
+
+.progress-bar {
+  flex: 1;
+  background: $bg-secondary;
+  border-radius: $radius-full;
+  height: 0.5rem;
+  overflow: hidden;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  border-radius: $radius-full;
+  transition: width $transition-normal;
+
+  &--fire { background: #f97316; }
+  &--earth { background: #22c55e; }
+  &--air { background: $cyan-500; }
+  &--water { background: $blue-500; }
+  &--cardinal, &--fixed, &--mutable { background: $cyan-500; }
+}
+
+.progress-count {
+  font-size: $text-xs;
+  color: $text-dimmed;
+  width: 1.5rem;
+}
+
+.dominant-summary {
+  @include card-inner;
+  font-size: $text-xs;
+  margin-top: $space-4;
+
+  .dominant-label { color: $text-muted; }
+  .dominant-value { font-weight: 700; text-transform: capitalize; }
+  .divider { color: $text-dimmed; margin: 0 $space-2; }
+}
+
+// ── Future predictions card ──
+.future-card {
+  @include card;
+  border-left: 4px solid $blue-500;
+}
+
+.future-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: $text-sm;
+  border-bottom: 1px solid $border-primary;
+  padding-bottom: $space-2;
+  margin-bottom: $space-3;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+  }
+}
+
+.future-item__time {
+  color: $blue-200;
+  font-weight: 700;
+  white-space: nowrap;
+  margin-right: $space-3;
+}
+
+.future-item__pred {
+  color: $text-muted;
+  font-size: $text-xs;
+  text-align: right;
+}
+
+// ── Power cities card ──
+.cities-scroll {
+  max-height: 12rem;
+  overflow-y: auto;
+}
+
+.cities-planet-group {
+  margin-bottom: $space-3;
+  font-size: $text-xs;
+}
+
+.cities-planet-label {
+  font-weight: 700;
+  display: block;
+  margin-bottom: $space-1;
+}
+
+.city-tag {
+  display: inline-block;
+  background: $bg-secondary;
+  padding: $space-1 $space-2;
+  border-radius: $radius-sm;
+  border: 1px solid $border-secondary;
+  margin: 2px;
+}
+
+// ── Map section ──
+.map-section {
+  background: $bg-primary;
+  border: 1px solid $border-primary;
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: $shadow-2xl;
+}
+
+.map-label {
+  position: absolute;
+  top: $space-4;
+  left: $space-4;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  color: $purple-400;
+  font-weight: 700;
+  font-size: $text-sm;
+  background: rgba(0, 0, 0, 0.5);
+  padding: $space-1 $space-3;
+  border-radius: $radius-full;
+  pointer-events: none;
+  z-index: 10;
+
+  svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+  }
+}
+
+.footer-note {
+  text-align: center;
+  font-size: $text-xs;
+  color: $text-faint;
+}

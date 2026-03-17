@@ -1,0 +1,49 @@
+@use 'variables' as *;
+
+@mixin card {
+  background: $bg-primary;
+  border: 1px solid $border-primary;
+  border-radius: $radius-xl;
+  padding: $space-5;
+  box-shadow: $shadow-lg;
+}
+
+@mixin card-inner {
+  background: $bg-highlight;
+  padding: $space-4;
+  border-radius: $radius-lg;
+  border: 1px solid $border-primary;
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin section-header($color) {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-4;
+  font-weight: 700;
+  color: $color;
+}
+
+@mixin responsive($bp) {
+  @media (min-width: $bp) {
+    @content;
+  }
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

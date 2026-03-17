@@ -1,0 +1,88 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.aspect-grid {
+  padding: $space-4;
+  display: grid;
+  gap: $space-3;
+
+  @include responsive($bp-sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include responsive($bp-lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.aspect-card {
+  padding: $space-3;
+  border-radius: $radius-lg;
+  border: 1px solid $border-secondary;
+  font-size: $text-xs;
+  background: $bg-secondary;
+
+  &--harmonious {
+    background: $emerald-900;
+    border-color: #065f46;
+  }
+
+  &--challenging {
+    background: $red-900;
+    border-color: #7f1d1d;
+  }
+}
+
+.aspect-card__header {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-1;
+}
+
+.aspect-card__symbols {
+  color: $text-muted;
+}
+
+.aspect-badge {
+  margin-left: auto;
+  font-size: $text-10;
+  padding: 0.125rem $space-2;
+  border-radius: $radius-sm;
+  font-weight: 700;
+  background: $bg-secondary;
+  color: $text-tertiary;
+
+  &--harmonious {
+    background: #065f46;
+    color: $emerald-200;
+  }
+
+  &--challenging {
+    background: #7f1d1d;
+    color: $red-200;
+  }
+}
+
+.aspect-card__planets {
+  color: $text-muted;
+}
+
+// Transit badges
+.transit-badge {
+  display: inline-block;
+  padding: 0.125rem $space-2;
+  border-radius: $radius-sm;
+  font-size: $text-10;
+  font-weight: 700;
+
+  &--harmonious {
+    background: #065f46;
+    color: $emerald-200;
+  }
+
+  &--challenging {
+    background: #7f1d1d;
+    color: $red-200;
+  }
+}

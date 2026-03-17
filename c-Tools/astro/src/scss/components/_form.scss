@@ -1,0 +1,93 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.form-card {
+  max-width: 28rem;
+  margin: 0 auto;
+  @include card;
+  animation: fade-in 0.3s ease-out, zoom-in 0.3s ease-out;
+}
+
+.form-card__title {
+  font-size: $text-xl;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: $space-4;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-4;
+}
+
+.form-input {
+  width: 100%;
+  background: $bg-body;
+  border: 1px solid $border-secondary;
+  border-radius: $radius-lg;
+  padding: $space-2 $space-3;
+  color: $text-primary;
+  font-size: $text-sm;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: $purple-500;
+  }
+
+  &::placeholder {
+    color: $text-faint;
+  }
+}
+
+.form-city-wrapper {
+  position: relative;
+}
+
+.city-dropdown {
+  position: absolute;
+  z-index: 50;
+  width: 100%;
+  margin-top: $space-1;
+  background: $bg-secondary;
+  border: 1px solid $border-secondary;
+  border-radius: $radius-lg;
+  max-height: 12rem;
+  overflow-y: auto;
+  box-shadow: $shadow-xl;
+  list-style: none;
+}
+
+.city-dropdown__item {
+  padding: $space-2 $space-3;
+  font-size: $text-sm;
+  cursor: pointer;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $border-secondary;
+  }
+}
+
+.form-submit {
+  width: 100%;
+  background: $purple-600;
+  color: $text-white;
+  font-weight: 700;
+  padding: $space-3;
+  border-radius: $radius-lg;
+  margin-top: $space-2;
+  font-size: $text-base;
+  transition: background $transition-fast;
+
+  &:hover {
+    background: $purple-500;
+  }
+}

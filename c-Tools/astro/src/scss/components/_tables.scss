@@ -1,0 +1,101 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.data-card {
+  background: $bg-primary;
+  border: 1px solid $border-primary;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-lg;
+}
+
+.data-card__header {
+  padding: $space-4;
+  background: $bg-highlight;
+  border-bottom: 1px solid $border-primary;
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  font-weight: 700;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  .header-note {
+    font-size: $text-xs;
+    color: $text-dimmed;
+    font-weight: 400;
+    margin-left: $space-2;
+  }
+}
+
+.data-table {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+    font-size: $text-xs;
+    text-align: left;
+  }
+
+  thead tr {
+    background: $bg-highlight;
+  }
+
+  th {
+    padding: $space-2;
+    color: $text-dimmed;
+    text-transform: uppercase;
+    font-size: $text-10;
+    font-weight: 700;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border-primary;
+    transition: background $transition-fast;
+
+    &:hover { background: rgba($bg-secondary, 0.5); }
+    &:last-child { border-bottom: none; }
+  }
+
+  td {
+    padding: $space-3 $space-3;
+    vertical-align: middle;
+  }
+
+  .planet-cell {
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    svg {
+      width: 12px;
+      height: 12px;
+      stroke: $text-faint;
+      fill: none;
+    }
+  }
+
+  .position-cell {
+    color: $text-tertiary;
+    font-family: $font-mono;
+    font-size: 0.6875rem;
+  }
+
+  .sign-cell {
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+  }
+
+  .meaning-cell {
+    color: $text-dimmed;
+    font-style: italic;
+  }
+
+  .cursor-pointer { cursor: pointer; }
+}

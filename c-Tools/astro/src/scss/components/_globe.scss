@@ -1,0 +1,11 @@
+@use '../abstracts/variables' as *;
+
+.globe-container {
+  width: 100%;
+  height: 400px;
+  background: #0f172a;
+  border-radius: $radius-xl;
+  border: 1px solid $border-secondary;
+  touch-action: none;
+  overflow: hidden;
+}

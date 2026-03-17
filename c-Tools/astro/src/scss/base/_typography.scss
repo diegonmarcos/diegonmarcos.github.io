@@ -1,0 +1,24 @@
+@use '../abstracts/variables' as *;
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.text-xs { font-size: $text-xs; }
+.text-sm { font-size: $text-sm; }
+.text-lg { font-size: $text-lg; }
+.text-xl { font-size: $text-xl; }
+.text-2xl { font-size: $text-2xl; }
+
+.font-bold { font-weight: 700; }
+.font-mono { font-family: $font-mono; }
+.italic { font-style: italic; }
+.uppercase { text-transform: uppercase; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+.text-white { color: $text-white; }
+.text-muted { color: $text-muted; }
+.text-dimmed { color: $text-dimmed; }
+.text-faint { color: $text-faint; }

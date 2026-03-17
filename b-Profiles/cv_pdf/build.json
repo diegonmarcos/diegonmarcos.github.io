@@ -7,7 +7,8 @@
 
   "build": [
     { "mod": "copy", "files": "*.html", "from": "src_static" },
-    { "mod": "symlink", "files": "public" }
+    { "mod": "symlink", "files": "public" },
+    { "mod": "symlink", "files": "assets" }
   ],
 
   "serve": {

@@ -1,226 +1,246 @@
 # Front-End Monorepo
 
-Portfolio of 32+ web projects deployed to GitHub Pages.
+30+ web projects deployed to [diegonmarcos.github.io](https://diegonmarcos.github.io) via GitHub Pages.
 
-**Live**: [diegonmarcos.github.io](https://diegonmarcos.github.io)
+Built with a universal `build.sh` engine — one engine, per-project `build.json` config, zero boilerplate.
 
 ---
 
-## Build System
+## A) Overview
 
-Every project uses `build.sh` (engine) + `build.json` (config) at project root.
+### Quick Start
 
 ```bash
-# Master build orchestrator (all projects)
-~/git/front/1.ops/build_main.sh           # Interactive TUI
-~/git/front/1.ops/build_main.sh build     # Build all
-~/git/front/1.ops/build_main.sh dev       # Dev servers for all
+# Install all dependencies (merged from all 30+ projects)
+./build.sh deps
 
-# Individual project
-~/git/front/<category>/<project>/build.sh build    # Production build
-~/git/front/<category>/<project>/build.sh dev      # Dev server
+# Build a single project
+cd a-Portals/linktree && bash build.sh build
+
+# Dev server with hot reload
+cd c-Tools/mymovies && bash build.sh dev
+
+# Build everything
+./build.sh build
+
+# Generate project topology
+./build.sh config
 ```
 
-CI/CD: GitHub Actions (`.github/workflows/deploy.yml`) — conditional per-project builds on push to `main`.
-
----
-
-## Project Categories
-
-### a_Portals/
-
-| Project | Type | Framework | Port |
-|---------|------|-----------|------|
-| cloud | Dashboard | Sass+esbuild | :8006 |
-| linktree | Digital Card | Sass+esbuild | :8001 |
-| linktree_mindmap | Digital Card | Sass+esbuild | — |
-
-### b_Work_Profiles/
-
-| Project | Type | Framework | Port |
-|---------|------|-----------|------|
-| landpage | Digital Card | Sass+tsc | :8000 |
-| cv_web | Digital Card | Sass+esbuild | :8002 |
-| cv_pdf | Static Copy | — | — |
-| nexus | Digital Card | Sass+esbuild | :8005 |
-| leafy | Digital Card | Sass+tsc | :8021 |
-
-### b_Work_Tools/
-
-| Project | Type | Framework | Port |
-|---------|------|-----------|------|
-| mymaps | Browser Tool | Vite | :8014 |
-| myanalytics | Dashboard | Static Copy | — |
-| suite | Browser Tool | Sass+esbuild | :8021 |
-| mymail | Browser Tool | Static Copy | — |
-| myphotos | Browser Tool | Static Copy | — |
-| skills_mcp | Documentation | Sass+esbuild | — |
-| api | API Docs | Static (Swagger) | — |
-
-### c_Personal_Profiles/
-
-| Project | Type | Framework | Port |
-|---------|------|-----------|------|
-| myprofile | Platform | SvelteKit | :8013 |
-
-### c_Personal_Tools/
-
-| Project | Type | Framework | Port |
-|---------|------|-----------|------|
-| myfeed | Dashboard | Sass+esbuild (Vue 3) | :8003 |
-| mygames | Browser Tool | SvelteKit | :8004 |
-| mymaps | Browser Tool | SvelteKit (MapLibre) | — |
-| mymovies | Browser Tool | Vite (Vue 3) | :8015 |
-| mymusic | Browser Tool | Vite (Vue 3) | :8016 |
-| mytrips | Browser Tool | Vite (Vue 3) | :8022 |
-| json-vision | Browser Tool | Vite (Vue 3) | :8017 |
-| central_bank | Browser Tool | Vite | :8011 |
-| market_watch | Dashboard | Sass+esbuild | :8010 |
-| maps | Browser Tool | React+Vite | — |
-| carto | Browser Tool | Sass+tsc | :8020 |
-| astro | Browser Tool | Nuxt | :8019 |
-| astro_life | Browser Tool | — | — |
-| feed_yourself | Browser Tool | Sass+esbuild | :8007 |
-| health_tracker | Digital Card | Static Copy | :8009 |
-| others | Scripts | Python | :8008 |
-
-### c_root/
-
-Main index page — 3D cube navigation. Vite + Sass + TypeScript.
-
----
-
-## Project Archetypes
-
-| Archetype | Build | Projects |
-|-----------|-------|----------|
-| **Vite** | Vite HMR | c_root, mymovies, mymusic, json-vision, central_bank, b_Work_Tools/mymaps, mytrips |
-| **SvelteKit** | Vite + SSR | mygames, myprofile, c_Personal_Tools/mymaps |
-| **Sass+esbuild** | sass + esbuild | linktree, myfeed, cloud, market_watch, nexus, cv_web, skills_mcp, linktree_mindmap |
-| **Sass+tsc** | sass + tsc | carto, landpage, leafy |
-| **Copy** | Static file copy | cv_pdf, health_tracker, myanalytics, mymail, myphotos |
-| **Nuxt** | Nuxt (nuxt.config.ts) | astro |
-
----
-
-## Project Folder Structure
-
-```
-<project>/
-├── build.sh            # Build engine (universal)
-├── build.json          # Build config (framework, port, paths)
-├── 0.spec/             # Specs & docs
-├── 1.ops/              # Legacy build scripts (being migrated to root)
-├── src/ | src_static/  # Source files
-│   ├── scss/           # Sass (ITCSS methodology)
-│   ├── typescript/     # TypeScript source
-│   └── index.html      # Entry HTML
-├── dist/               # Build output
-└── public/             # Static assets
-```
-
----
-
-## Repository Structure
+### Project Map
 
 ```
 front/
-├── 0.spec/                    # Archived specifications
-├── 1.ops/                     # Master build scripts & specs
-│   ├── build_main.sh          # Orchestrator for all projects
-│   ├── 00_Stack_Main.md       # Master stack specification
-│   ├── 01_Analytics.md        # Matomo tracking docs
-│   ├── 03_Folder_Structure.md # Folder structure spec
-│   └── 30_Code_Practise.md    # Code standards
+├── a-Portals/            Portal & entry-point sites
+│   ├── cloud             Cloud dashboard (Sass+esbuild)
+│   ├── linktree          Digital card (Sass+esbuild)
+│   ├── linktree_mindmap  Digital card variant
+│   └── linktree_pixel-world  Pixel art card
 │
-├── a_Portals/                 # Portal & entry-point projects
-├── b_Work_Profiles/           # Work-related profiles (CV, landpage)
-├── b_Work_Tools/              # Work-related tools (maps, analytics)
-├── c_Personal_Profiles/       # Personal profiles (myprofile)
-├── c_Personal_Tools/          # Personal tools (games, movies, music)
-├── c_root/                    # Main index (3D cube navigation)
+├── b-Profiles/           Work profiles & company sites
+│   ├── cv_pdf            PDF resume (static copy)
+│   ├── cv_web            Web resume (Sass+esbuild)
+│   ├── landpage          Landing page (Sass+tsc)
+│   ├── leafy             Plant tracker (Sass+tsc)
+│   ├── myprofile         Portfolio platform (SvelteKit)
+│   └── nexus             Company site (Sass+esbuild)
 │
-├── .github/workflows/         # CI/CD (conditional per-project deploy)
-├── package.json               # Root package config
-└── README.md
+├── c-Suite/              Tools suite
+│   ├── json-vision       JSON editor (Vue 3 + Vite)
+│   ├── myanalytics       Analytics dashboard (static copy)
+│   ├── mymail            Mail client (static copy)
+│   ├── myphotos          Photo viewer (static copy)
+│   └── suite             Browser tools (Sass+esbuild)
+│
+├── c-Tools/              Personal tools (14+ projects)
+│   ├── astro             Astronomy viewer (Nuxt)
+│   ├── carto             Cartography games (Sass+tsc)
+│   ├── central_bank      Banking tool (Vite)
+│   ├── feed_yourself     Nutrition calculator (Sass+esbuild)
+│   ├── health_tracker    Health tracker (static copy)
+│   ├── maps              Interactive maps (React+Vite)
+│   ├── market_watch      Market tracker (Sass+esbuild)
+│   ├── myfeed            Feed aggregator (Vue 3)
+│   ├── mygames           Games collection (SvelteKit)
+│   ├── mymaps            Strategic maps (SvelteKit+MapLibre)
+│   ├── mymovies          Movie browser (Vue 3+Vite)
+│   ├── mymusic           Music library (Vue 3+Vite)
+│   ├── mytrips           Travel planner (Vue 3+Vite)
+│   └── sailytics         Sailing analytics (Sass+esbuild)
+│
+├── d-Cloud/              Cloud & API documentation
+│   ├── api               API docs (static Swagger)
+│   ├── mcp-api-swagger   MCP API documentation
+│   └── skills_mcp        Skills MCP docs (Sass+esbuild)
+│
+├── e-Others/             Miscellaneous
+│   └── others            Python scripts
+│
+└── e-Root/               Main index — 3D cube navigation (Vite+Sass+TS)
 ```
 
----
+### Frameworks Used
 
-## Domains
+| Framework | Projects | Build |
+|-----------|----------|-------|
+| **Vite** | mymovies, mymusic, json-vision, central_bank, mytrips, mymaps (work) | Vite HMR |
+| **SvelteKit** | mygames, myprofile, mymaps (personal) | Vite + SSR |
+| **Vue 3** | myfeed, mymovies, mymusic, mytrips, json-vision | Composition API + `<script setup>` |
+| **React** | maps | Vite + MapLibre |
+| **Sass+esbuild** | linktree, cv_web, cloud, market_watch, nexus, skills_mcp | sass → CSS, esbuild → JS |
+| **Sass+tsc** | carto, landpage, leafy | sass → CSS, tsc → JS |
+| **Nuxt** | astro | SSR + nuxt.config.ts |
+| **Static copy** | cv_pdf, health_tracker, myanalytics, mymail, myphotos | File copy only |
 
-- **Main**: diegonmarcos.com (Cloudflare DNS)
+### Domains
+
 - **GitHub Pages**: [diegonmarcos.github.io](https://diegonmarcos.github.io)
+- **Main**: diegonmarcos.com (Cloudflare DNS)
 
 ---
 
-## Code Standards (Summary)
+## B) Engineering Specification
 
-> Full details: [Code Practices](./1.ops/30_Code_Practise.md)
+### B.1 Build System Architecture
 
-### TypeScript
-- **Strict Mode**: No `any`, handle `null`/`undefined`
-- **DOM**: Cast elements explicitly, check null
-- **ES Modules**: Use `import`/`export`
+**Pattern**: Universal engine + declarative config
 
-### Svelte 5 (Runes Mode)
-```typescript
-let { propName }: { propName: Type } = $props();  // Props
-let count = $state(0);                             // State
-let doubled = $derived(count * 2);                 // Computed
-// Events: use standard HTML (onclick, not on:click)
+```
+_engine.sh              Universal build engine (shared, 48K)
+build.sh                Root orchestrator (deps/build/clean/config/status)
+config.json             Root config (analytics, defaults, system deps)
+<project>/build.sh      Symlink → ../../_engine.sh
+<project>/build.json    Per-project declarative config
 ```
 
-### Vue 3 (Composition API)
-```typescript
-// Always use <script setup lang="ts">
-defineProps<{ id: number; name: string }>();
-const user = ref<User | null>(null);
+**Engine commands** (per-project):
+
+| Command | Action |
+|---------|--------|
+| `build` | Compile src/ → dist/ using build modules |
+| `dev` | Start dev server with hot reload |
+| `stop` | Stop running dev server |
+| `clean` | Remove dist/ and build artifacts |
+| `status` | Show server state from .build.pid |
+
+**Root orchestrator commands**:
+
+| Command | Action |
+|---------|--------|
+| `deps` | Merge all package.json → root, npm install |
+| `build` | Build all projects |
+| `clean` | Clean all dist/ directories |
+| `config` | Generate front-topology.json (project registry) |
+| `status` | Show all running dev servers |
+
+### B.2 Build Modules
+
+Each project's `build.json` declares a pipeline of build modules:
+
+| Module | Input | Output | Purpose |
+|--------|-------|--------|---------|
+| `esbuild` | `.ts` | `.js` | Fast TypeScript bundling (IIFE/ESM) |
+| `sass` | `.scss` | `.css` | ITCSS stylesheet compilation |
+| `copy` | files list | dist/ | Static file copying |
+| `symlink` | directory | dist/ | Symlink public assets (images, fonts) |
+| `inline` | HTML+CSS+JS | single HTML | Inline all assets into one file |
+
+**Dev server fallback chain**: vite → sveltekit → live-server → node-static → python3 → busybox → php
+
+### B.3 build.json Schema
+
+```json
+{
+  "name": "Project Name",
+  "framework": "vanilla | vue | svelte | react | nuxt",
+  "port": 8001,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
+    { "mod": "sass", "input": "src/scss/main.scss", "output": "style.css" },
+    { "mod": "copy", "files": "index.html", "from": "src" },
+    { "mod": "symlink", "files": "public" }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src",
+    "watch": ["src/scss/**/*.scss", "src/typescript/**/*.ts"]
+  }
+}
 ```
 
-### SCSS Rules
-```scss
-@include mq(sm|md|lg|xl)           // Breakpoints
-@include flex-center;               // Center anything
-@include flex-row(justify, align, gap);
-@include grid-auto-fit(min-size, gap);
+### B.4 config.json Schema (Root)
+
+```json
+{
+  "analytics": {
+    "matomo": { "container_id": "container_odwLIyPV", "url": "..." },
+    "umami": { "site_id": "...", "url": "..." }
+  },
+  "defaults": { "src": "src", "dist": "dist", "port": 8000, "framework": "vanilla" },
+  "deploy": { "branch": "main" },
+  "deps": {
+    "system": { "node": { "nix": "nodejs_22" }, "npm": {...}, "git": {...} },
+    "npm": { "flags": "--no-fund --no-audit --legacy-peer-deps" }
+  }
+}
 ```
 
-### CRITICAL: NO INLINE CSS
-- **NEVER** use `style=""` attributes in HTML
-- **ALWAYS** create SCSS classes in appropriate `_*.scss` file
-- ALL styling must go through the SCSS build pipeline
+### B.5 CI/CD Pipeline
 
-### HTML Standards
-- **Semantic**: Use `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`
-- **Links vs Buttons**: `<a>` for navigation, `<button>` for actions
-- **Accessibility**: All `<img>` have `alt`, inputs have `<label>`
+**Workflow**: `.github/workflows/ship.yml`
+
+1. **Trigger**: Push to `main`
+2. **Setup**: Node.js 22, `bash build.sh deps`
+3. **Conditional builds**: Each project checks `changed-files` — only rebuilds on source changes
+4. **Assembly**: All `dist/` folders → `_site/<project>/`, `e-Root/dist/` → `_site/` root
+5. **Deploy**: Upload artifact → GitHub Pages
+
+**Config generation**: `.github/workflows/gen-configs.yml`
+- Trigger: Changes to any `build.json` or root `build.sh`
+- Runs `bash build.sh config` → commits `front-topology.json`
+
+### B.6 Per-Project Structure
+
+```
+<project>/
+├── build.sh            → ../../_engine.sh (symlink)
+├── build.json          Declarative build config
+├── src/
+│   ├── scss/           ITCSS stylesheets
+│   ├── typescript/     TypeScript source
+│   ├── index.html      Entry HTML
+│   └── public/         Static assets (images, fonts)
+└── dist/               Build output (gitignored)
+```
+
+### B.7 Code Standards
+
+**TypeScript**: Strict mode, no `any`, explicit null handling, ES Modules only.
+
+**Svelte 5** (Runes): `$props()`, `$state()`, `$derived()`, standard HTML events.
+
+**Vue 3**: `<script setup lang="ts">`, `defineProps<{}>()`, `ref<T>()`.
+
+**SCSS**: ITCSS methodology, `@include mq()` breakpoints, `flex-center`, `flex-row`, `grid-auto-fit`. **Never inline styles**.
+
+**HTML**: Semantic tags, `<a>` for navigation, `<button>` for actions, `alt` on images, `<label>` on inputs.
+
+**Analytics**: Matomo tag manager required in every `<head>` (container_odwLIyPV).
+
+### B.8 Generated Data
+
+| File | Source | Content |
+|------|--------|---------|
+| `front-topology.json` | `build.sh config` | Project registry (name, framework, port, category) |
+| `front-data/front-deps.json` | C3 engine | Merged npm dependencies per project |
+| `package.json` | `build.sh deps` | Merged dependencies from all projects |
+
+### B.9 Dev Server Ports
+
+Ports 8000-8023, assigned per project in `build.json`. No conflicts — each project has a unique port.
 
 ---
 
-## Analytics (Matomo)
-
-> Full details: [Analytics Spec](./1.ops/01_Analytics.md)
-
-**Required in every HTML `<head>`:**
-```html
-<script>
-var _mtm = window._mtm = window._mtm || [];
-_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
-(function() {
-  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
-  s.parentNode.insertBefore(g,s);
-})();
-</script>
-```
-
----
-
-## Specs & Documentation
-
-- [Stack Specification](./1.ops/00_Stack_Main.md)
-- [Code Practices](./1.ops/30_Code_Practise.md)
-- [Folder Structure](./1.ops/03_Folder_Structure.md)
-- [Analytics](./1.ops/01_Analytics.md)
-- [DevOps](./1.ops/20_a_DevOps.md)
+**Last Updated**: 2026-03-18

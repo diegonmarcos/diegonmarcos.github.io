@@ -956,23 +956,25 @@
             <div class="client-config">
                 <div class="config-title">Email Client Settings</div>
                 <div class="config-grid">
-                    <div class="config-item">
-                        <div class="config-label">IMAP</div>
-                        <div class="config-value"><span data-copy="993">:993 SSL</span><button class="copy-btn" onclick="copyValue(this, '993')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label">SMTP</div>
-                        <div class="config-value"><span data-copy="465">:465 SSL</span><button class="copy-btn" onclick="copyValue(this, '465')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                    <div class="config-item" style="grid-column: 1 / -1;">
+                        <div class="config-label">Server (IMAP + SMTP)</div>
+                        <div class="config-value"><span>mail.diegonmarcos.com</span><button class="copy-btn" onclick="copyValue(this, 'mail.diegonmarcos.com')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
                 <div class="config-grid" style="margin-top: 12px;">
                     <div class="config-item">
-                        <div class="config-label">IMAP Server</div>
-                        <div class="config-value"><span>imap.diegonmarcos.com</span><button class="copy-btn" onclick="copyValue(this, 'imap.diegonmarcos.com')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                        <div class="config-label">IMAP <span title="Receive mail. Encrypted from first byte (implicit TLS)." style="cursor:help;opacity:0.5">&#9432;</span></div>
+                        <div class="config-value"><span data-copy="993">:993 SSL/TLS</span><button class="copy-btn" onclick="copyValue(this, '993')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                     <div class="config-item">
-                        <div class="config-label">SMTP Server</div>
-                        <div class="config-value"><span>smtp.diegonmarcos.com</span><button class="copy-btn" onclick="copyValue(this, 'smtp.diegonmarcos.com')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                        <div class="config-label">SMTP <span title="Send mail. Encrypted from first byte (implicit TLS). Recommended for most clients." style="cursor:help;opacity:0.5">&#9432;</span></div>
+                        <div class="config-value"><span data-copy="465">:465 SSL/TLS</span><button class="copy-btn" onclick="copyValue(this, '465')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
+                    </div>
+                </div>
+                <div class="config-grid" style="margin-top: 12px;">
+                    <div class="config-item" style="grid-column: 1 / -1;">
+                        <div class="config-label">SMTP alt <span title="Send mail. Starts unencrypted, upgrades via STARTTLS. Use if your client doesn't support port 465." style="cursor:help;opacity:0.5">&#9432;</span></div>
+                        <div class="config-value"><span data-copy="587">:587 STARTTLS</span><button class="copy-btn" onclick="copyValue(this, '587')"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></div>
                     </div>
                 </div>
                 <div class="config-grid" style="margin-top: 12px;">

@@ -1,3 +1,6 @@
 [submodule "front-data"]
 	path = front-data
 	url = git@github.com:diegonmarcos/front-data.git
+[submodule "tools"]
+	path = tools
+	url = git@github.com:diegonmarcos/ops-Tooling.git

@@ -319,7 +319,7 @@
     }
   }
 
-  // git/front/a-Portals/linktree/src/typescript/modules/status.ts
+  // git/front/a-Portals/linktree/src/typescript/modules/status/diagnostics.ts
   var DIAGNOSTIC_ASSETS = [
     "public/videos/background.mp4",
     "public/videos/background2.mp4",
@@ -632,6 +632,8 @@
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return `${(bytes / Math.pow(k, i)).toFixed(2)} ${sizes[i]}`;
   }
+
+  // git/front/a-Portals/linktree/src/typescript/modules/status/modal.ts
   function renderDiagnostics(data) {
     const totalSize = data.assets.reduce((sum, asset) => {
       const match = asset.size.match(/([0-9.]+)\s*(B|KB|MB|GB)/);
@@ -1033,6 +1035,7 @@
     slidesPerView: 1,
     spaceBetween: 0,
     loop: true,
+    autoHeight: false,
     creativeEffect: {
       prev: {
         shadow: false,
@@ -1063,7 +1066,31 @@
     touchEventsTarget: "container",
     threshold: 10,
     passiveListeners: true,
-    speed: 900
+    speed: 900,
+    on: {
+      afterInit: function(swiper) {
+        const forceLayout = () => {
+          swiper.el.style.setProperty("height", "85dvh", "important");
+          swiper.el.style.setProperty("max-height", "85dvh", "important");
+          swiper.wrapperEl.style.setProperty("height", "100%", "important");
+          swiper.el.querySelectorAll(".swiper-slide").forEach((s) => {
+            s.style.setProperty("height", "100%", "important");
+          });
+        };
+        forceLayout();
+        setTimeout(forceLayout, 0);
+        setTimeout(forceLayout, 100);
+        setTimeout(forceLayout, 500);
+      },
+      slideChangeTransitionEnd: function(swiper) {
+        swiper.el.style.setProperty("height", "85dvh", "important");
+        swiper.el.style.setProperty("max-height", "85dvh", "important");
+        swiper.wrapperEl.style.setProperty("height", "100%", "important");
+        swiper.el.querySelectorAll(".swiper-slide").forEach((s) => {
+          s.style.setProperty("height", "100%", "important");
+        });
+      }
+    }
   };
   function getCarouselSet(type) {
     if (type === "professional") {

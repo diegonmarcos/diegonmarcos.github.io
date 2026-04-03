@@ -1,14 +1,13 @@
 // Main entry point for Linktree application
 
 import { initLoader } from './modules/loader';
-import { initStatusModal } from './modules/status';
+import { initStatusModal } from './modules/status/modal';
 import { initCollapsibleSections, initControlsToggle } from './modules/collapsible';
 import { initVideoBackground, initVideoToggle } from './modules/videoBackground';
 import { initCarousels } from './modules/carousel';
 import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
-import { initSmoothSnap } from './modules/smoothSnap';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
@@ -50,9 +49,6 @@ function initApp(): void {
 
   // Initialize performance/fast mode toggle
   initPerformanceMode();
-
-  // DISABLED: Smooth snap might be causing page resize issues
-  // initSmoothSnap();
 
   // Initialize VM control buttons (on-demand VPS)
   initVmControl();

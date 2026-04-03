@@ -35,6 +35,7 @@ const swiperConfig: SwiperOptions = {
   slidesPerView: 1,
   spaceBetween: 0,
   loop: true,
+  autoHeight: false,
   creativeEffect: {
     prev: {
       shadow: false,
@@ -66,6 +67,31 @@ const swiperConfig: SwiperOptions = {
   threshold: 10,
   passiveListeners: true,
   speed: 900,
+  on: {
+    afterInit: function (swiper: any) {
+      const forceLayout = () => {
+        // Force swiper container to 85dvh
+        swiper.el.style.setProperty('height', '85dvh', 'important');
+        swiper.el.style.setProperty('max-height', '85dvh', 'important');
+        swiper.wrapperEl.style.setProperty('height', '100%', 'important');
+        swiper.el.querySelectorAll('.swiper-slide').forEach((s: HTMLElement) => {
+          s.style.setProperty('height', '100%', 'important');
+        });
+      };
+      forceLayout();
+      setTimeout(forceLayout, 0);
+      setTimeout(forceLayout, 100);
+      setTimeout(forceLayout, 500);
+    },
+    slideChangeTransitionEnd: function (swiper: any) {
+      swiper.el.style.setProperty('height', '85dvh', 'important');
+      swiper.el.style.setProperty('max-height', '85dvh', 'important');
+      swiper.wrapperEl.style.setProperty('height', '100%', 'important');
+      swiper.el.querySelectorAll('.swiper-slide').forEach((s: HTMLElement) => {
+        s.style.setProperty('height', '100%', 'important');
+      });
+    },
+  },
 };
 
 interface CarouselSet {

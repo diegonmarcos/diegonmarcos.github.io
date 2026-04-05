@@ -1,0 +1,228 @@
+// =====================
+// STARK BASE
+// =====================
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--stark-void);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.gpu {
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.gpu-filter {
+    will-change: filter;
+    transform: translateZ(0);
+}
+
+// =====================
+// FULL PAGE SECTIONS
+// =====================
+
+.page {
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+// =====================
+// SHADER BACKGROUNDS
+// =====================
+
+.shader-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+
+    canvas {
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 100vw;
+        min-height: 100vh;
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.page-content {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+// =====================
+// SECTION HEADERS
+// =====================
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+.section-title {
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.section-subtitle {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+// =====================
+// CONTACT SECTION
+// =====================
+
+.contact-content {
+    text-align: center;
+    gap: 30px;
+}
+
+.contact-text {
+    max-width: 550px;
+    font-size: 1.05rem;
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-secondary);
+}
+
+.cta-btn {
+    display: inline-block;
+    font-family: 'Chakra Petch', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--stark-void);
+    background: var(--cyan);
+    padding: 16px 48px;
+    border: none;
+    position: relative;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: background 0.3s, transform 0.2s;
+
+    &:hover {
+        background: var(--cyan-light);
+        transform: translateY(-2px);
+    }
+}
+
+footer {
+    margin-top: 60px;
+
+    p {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        color: var(--text-dim);
+    }
+}
+
+// =====================
+// LINKTREE FAB
+// =====================
+
+.linktree-fab {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--stark-dark);
+    border: 1px solid var(--cyan-dark);
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    color: var(--cyan);
+    text-decoration: none;
+    transition: border-color 0.3s, background 0.3s;
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    &:hover {
+        border-color: var(--cyan);
+        background: var(--stark-medium);
+    }
+}
+
+// =====================
+// SCROLL INDICATOR
+// =====================
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.5;
+
+    span {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--cyan);
+    }
+
+    .scroll-arrow {
+        width: 1px;
+        height: 30px;
+        background: linear-gradient(to bottom, var(--cyan), transparent);
+        animation: scrollPulse 2s ease-in-out infinite;
+    }
+}

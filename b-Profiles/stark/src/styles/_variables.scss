@@ -1,0 +1,30 @@
+// =====================
+// STARK DESIGN TOKENS
+// =====================
+
+:root {
+    // Cyan plasma accent
+    --cyan: #00d4ff;
+    --cyan-light: #66e5ff;
+    --cyan-bright: #00f0ff;
+    --cyan-dark: #0077aa;
+    --cyan-glow: rgba(0, 212, 255, 0.3);
+
+    // Red alert secondary
+    --red: #ff2d55;
+    --red-dark: #cc1a3a;
+    --red-glow: rgba(255, 45, 85, 0.3);
+
+    // Industrial dark palette
+    --stark-void: #06060c;
+    --stark-black: #0a0a12;
+    --stark-dark: #10101a;
+    --stark-medium: #1a1a2e;
+    --stark-light: #252540;
+
+    // Text
+    --white: #e8eaed;
+    --text-primary: #e8eaed;
+    --text-secondary: #6b7394;
+    --text-dim: #3d4260;
+}

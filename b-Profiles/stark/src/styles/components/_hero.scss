@@ -1,0 +1,58 @@
+// =====================
+// HERO — STARK TITLE
+// =====================
+
+.hero-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .page-content {
+        text-align: center;
+        gap: 24px;
+    }
+}
+
+.hero-logo {
+    width: clamp(200px, 35vw, 450px);
+    height: auto;
+    margin-bottom: 16px;
+
+    .bar {
+        fill: var(--cyan);
+        filter: drop-shadow(0 0 12px var(--cyan-glow));
+    }
+}
+
+.hero-tagline {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+    font-weight: 300;
+    letter-spacing: 3px;
+    color: var(--text-secondary);
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+.hero-division-tags {
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
+
+    .tag {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.6rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        padding: 6px 16px;
+        border: 1px solid var(--stark-light);
+        clip-path: polygon(4px 0%, 100% 0%, calc(100% - 4px) 100%, 0% 100%);
+        transition: border-color 0.3s, color 0.3s;
+
+        &:hover {
+            border-color: var(--cyan-dark);
+            color: var(--cyan);
+        }
+    }
+}

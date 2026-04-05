@@ -1,0 +1,31 @@
+// =====================
+// RESPONSIVE
+// =====================
+
+@media (max-width: 768px) {
+    .nav {
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    .page-content {
+        padding: 80px 20px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cursor {
+        display: none;
+    }
+
+    .hero-division-tags {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+}

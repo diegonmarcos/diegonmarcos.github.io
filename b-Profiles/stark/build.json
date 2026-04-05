@@ -1,0 +1,25 @@
+{
+  "name": "Stark",
+  "framework": "vanilla",
+  "port": 8022,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sass", "input": "src/styles/main.scss", "output": "styles/main.css" },
+    { "mod": "tsc", "dir": "src/scripts" },
+    { "mod": "copy", "files": "*.html", "from": "src" },
+    { "mod": "symlink", "files": "src/shaders", "output": "shaders" }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src",
+    "watch": [
+      { "mod": "sass", "input": "styles/main.scss", "output": "styles/main.css" },
+      { "mod": "tsc", "input": "scripts" }
+    ]
+  },
+
+  "deploy": {}
+}

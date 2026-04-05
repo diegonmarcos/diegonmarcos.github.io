@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STARK | Autonomous Industry & Space Colonization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@200;300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();</script><!-- End Matomo Tag Manager -->
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor gpu"></div>
+
+    <!-- Loading Screen -->
+    <div class="loader">
+        <svg class="loader-logo" viewBox="0 0 220 50" xmlns="http://www.w3.org/2000/svg">
+            <!-- S -->
+            <rect class="bar" x="0" y="0" width="28" height="4" />
+            <rect class="bar" x="0" y="0" width="4" height="24" />
+            <rect class="bar" x="0" y="22" width="28" height="4" />
+            <rect class="bar" x="24" y="24" width="4" height="24" />
+            <rect class="bar" x="0" y="46" width="28" height="4" />
+            <!-- T -->
+            <rect class="bar" x="40" y="0" width="28" height="4" />
+            <rect class="bar" x="52" y="4" width="4" height="46" />
+            <!-- A -->
+            <polygon class="bar" points="80,50 84,50 96,0 92,0" />
+            <polygon class="bar" points="92,0 96,0 108,50 104,50" />
+            <rect class="bar" x="86" y="28" width="16" height="4" />
+            <!-- R -->
+            <rect class="bar" x="120" y="0" width="4" height="50" />
+            <rect class="bar" x="120" y="0" width="22" height="4" />
+            <rect class="bar" x="138" y="0" width="4" height="24" />
+            <rect class="bar" x="120" y="22" width="22" height="4" />
+            <polygon class="bar" points="134,26 138,26 148,50 144,50" />
+            <!-- K -->
+            <rect class="bar" x="160" y="0" width="4" height="50" />
+            <polygon class="bar" points="164,26 164,22 186,0 190,0 168,24" />
+            <polygon class="bar" points="168,26 164,28 164,32 190,50 186,50" />
+        </svg>
+        <p class="loader-text">Initializing Systems</p>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav gpu">
+        <svg class="nav-logo" viewBox="0 0 220 50" xmlns="http://www.w3.org/2000/svg">
+            <!-- S -->
+            <rect class="bar" x="0" y="0" width="28" height="4" />
+            <rect class="bar" x="0" y="0" width="4" height="24" />
+            <rect class="bar" x="0" y="22" width="28" height="4" />
+            <rect class="bar" x="24" y="24" width="4" height="24" />
+            <rect class="bar" x="0" y="46" width="28" height="4" />
+            <!-- T -->
+            <rect class="bar" x="40" y="0" width="28" height="4" />
+            <rect class="bar" x="52" y="4" width="4" height="46" />
+            <!-- A -->
+            <polygon class="bar" points="80,50 84,50 96,0 92,0" />
+            <polygon class="bar" points="92,0 96,0 108,50 104,50" />
+            <rect class="bar" x="86" y="28" width="16" height="4" />
+            <!-- R -->
+            <rect class="bar" x="120" y="0" width="4" height="50" />
+            <rect class="bar" x="120" y="0" width="22" height="4" />
+            <rect class="bar" x="138" y="0" width="4" height="24" />
+            <rect class="bar" x="120" y="22" width="22" height="4" />
+            <polygon class="bar" points="134,26 138,26 148,50 144,50" />
+            <!-- K -->
+            <rect class="bar" x="160" y="0" width="4" height="50" />
+            <polygon class="bar" points="164,26 164,22 186,0 190,0 168,24" />
+            <polygon class="bar" points="168,26 164,28 164,32 190,50 186,50" />
+        </svg>
+        <ul class="nav-links">
+            <li><a href="#divisions">Divisions</a></li>
+            <li><a href="#technology">Technology</a></li>
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- PAGE 1: HERO -->
+    <section class="page hero-page" id="home">
+        <div class="shader-container">
+            <canvas id="hero-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <svg class="hero-logo gpu" viewBox="0 0 220 50" xmlns="http://www.w3.org/2000/svg">
+                <!-- S -->
+                <rect class="bar" x="0" y="0" width="28" height="4" />
+                <rect class="bar" x="0" y="0" width="4" height="24" />
+                <rect class="bar" x="0" y="22" width="28" height="4" />
+                <rect class="bar" x="24" y="24" width="4" height="24" />
+                <rect class="bar" x="0" y="46" width="28" height="4" />
+                <!-- T -->
+                <rect class="bar" x="40" y="0" width="28" height="4" />
+                <rect class="bar" x="52" y="4" width="4" height="46" />
+                <!-- A -->
+                <polygon class="bar" points="80,50 84,50 96,0 92,0" />
+                <polygon class="bar" points="92,0 96,0 108,50 104,50" />
+                <rect class="bar" x="86" y="28" width="16" height="4" />
+                <!-- R -->
+                <rect class="bar" x="120" y="0" width="4" height="50" />
+                <rect class="bar" x="120" y="0" width="22" height="4" />
+                <rect class="bar" x="138" y="0" width="4" height="24" />
+                <rect class="bar" x="120" y="22" width="22" height="4" />
+                <polygon class="bar" points="134,26 138,26 148,50 144,50" />
+                <!-- K -->
+                <rect class="bar" x="160" y="0" width="4" height="50" />
+                <polygon class="bar" points="164,26 164,22 186,0 190,0 168,24" />
+                <polygon class="bar" points="168,26 164,28 164,32 190,50 186,50" />
+            </svg>
+            <p class="hero-tagline gpu">Autonomous Industry. Space Colonization. Humanity's Next Chapter.</p>
+            <div class="hero-division-tags">
+                <span class="tag">Earth: Autonomous Factories</span>
+                <span class="tag">Space: Colonization Systems</span>
+            </div>
+        </div>
+        <div class="scroll-indicator gpu">
+            <span>Scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: DIVISIONS -->
+    <section class="page info-page" id="divisions">
+        <div class="shader-container">
+            <canvas id="services-shader"></canvas>
+        </div>
+        <div class="page-content services-content">
+            <div class="section-header">
+                <p class="section-label">Core Divisions</p>
+                <h2 class="section-title">What We Build</h2>
+                <p class="section-subtitle">Two pillars. One mission. Total autonomy.</p>
+            </div>
+
+            <!-- Interactive 3D Cube -->
+            <div class="cube-container">
+                <div class="cube-wrapper">
+                    <canvas id="cube-shader" class="cube-canvas"></canvas>
+                    <div class="cube" id="services-cube">
+                        <!-- Front: Autonomous Assembly -->
+                        <div class="cube-face cube-front" data-face="0">
+                            <span class="card-number">01</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <rect x="8" y="30" width="34" height="14" rx="2" />
+                                <line x1="15" y1="30" x2="15" y2="18" />
+                                <line x1="25" y1="30" x2="25" y2="12" />
+                                <line x1="35" y1="30" x2="35" y2="18" />
+                                <circle cx="15" cy="16" r="3" />
+                                <circle cx="25" cy="10" r="3" />
+                                <circle cx="35" cy="16" r="3" />
+                            </svg>
+                            <h3>Autonomous Assembly</h3>
+                            <p>Zero-human factories. Robotic production lines that design, build, and quality-test without intervention.</p>
+                        </div>
+                        <!-- Right: AI Core -->
+                        <div class="cube-face cube-right" data-face="1">
+                            <span class="card-number">02</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <circle cx="25" cy="25" r="12" />
+                                <circle cx="25" cy="25" r="6" />
+                                <circle cx="25" cy="25" r="2" />
+                                <line x1="25" y1="5" x2="25" y2="13" />
+                                <line x1="25" y1="37" x2="25" y2="45" />
+                                <line x1="5" y1="25" x2="13" y2="25" />
+                                <line x1="37" y1="25" x2="45" y2="25" />
+                            </svg>
+                            <h3>AI Core Systems</h3>
+                            <p>Neural architecture that governs all factory operations. Self-optimizing. Self-healing. Always learning.</p>
+                        </div>
+                        <!-- Back: Orbital Launch -->
+                        <div class="cube-face cube-back" data-face="2">
+                            <span class="card-number">03</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <polygon points="25,5 18,40 25,35 32,40" />
+                                <line x1="18" y1="42" x2="14" y2="48" />
+                                <line x1="25" y1="38" x2="25" y2="48" />
+                                <line x1="32" y1="42" x2="36" y2="48" />
+                            </svg>
+                            <h3>Orbital Launch Systems</h3>
+                            <p>Reusable heavy-lift vehicles built in our factories. Earth-to-orbit in autonomous cycles.</p>
+                        </div>
+                        <!-- Left: Habitat Systems -->
+                        <div class="cube-face cube-left" data-face="3">
+                            <span class="card-number">04</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <ellipse cx="25" cy="25" rx="20" ry="12" />
+                                <line x1="25" y1="13" x2="25" y2="37" />
+                                <line x1="5" y1="25" x2="45" y2="25" />
+                                <path d="M12 18 Q25 10 38 18" fill="none" />
+                                <path d="M12 32 Q25 40 38 32" fill="none" />
+                            </svg>
+                            <h3>Habitat Engineering</h3>
+                            <p>Self-sustaining colonies. Pressurized modules, life support, radiation shielding — all manufactured in-space.</p>
+                        </div>
+                        <!-- Top: Resource Mining -->
+                        <div class="cube-face cube-top" data-face="4">
+                            <span class="card-number">05</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <polygon points="25,8 10,20 10,36 25,44 40,36 40,20" fill="none" />
+                                <line x1="25" y1="8" x2="25" y2="44" />
+                                <line x1="10" y1="20" x2="40" y2="36" />
+                                <line x1="40" y1="20" x2="10" y2="36" />
+                            </svg>
+                            <h3>Asteroid Mining</h3>
+                            <p>Autonomous extraction fleets. Rare minerals. Water ice. The raw materials for off-world manufacturing.</p>
+                        </div>
+                        <!-- Bottom: Propulsion Lab -->
+                        <div class="cube-face cube-bottom" data-face="5">
+                            <span class="card-number">06</span>
+                            <svg class="card-icon" viewBox="0 0 50 50">
+                                <circle cx="25" cy="25" r="16" fill="none" />
+                                <circle cx="25" cy="25" r="8" fill="none" />
+                                <path d="M25 9 L25 5" />
+                                <path d="M25 45 L25 41" />
+                                <path d="M9 25 L5 25" />
+                                <path d="M45 25 L41 25" />
+                                <path d="M13 13 L10 10" />
+                                <path d="M40 40 L37 37" />
+                                <path d="M37 13 L40 10" />
+                                <path d="M10 40 L13 37" />
+                            </svg>
+                            <h3>Propulsion Laboratory</h3>
+                            <p>Next-generation drive systems. Ion, plasma, and experimental propulsion for deep-space transit.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="cube-nav">
+                    <button class="cube-nav-btn" data-face="0">Assembly</button>
+                    <button class="cube-nav-btn" data-face="1">AI Core</button>
+                    <button class="cube-nav-btn" data-face="2">Launch</button>
+                    <button class="cube-nav-btn" data-face="3">Habitat</button>
+                    <button class="cube-nav-btn" data-face="4">Mining</button>
+                    <button class="cube-nav-btn" data-face="5">Propulsion</button>
+                </div>
+                <p class="cube-hint">Swipe or drag to rotate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: TECHNOLOGY -->
+    <section class="page info-page" id="technology">
+        <div class="shader-container">
+            <canvas id="gallery-shader"></canvas>
+        </div>
+        <div class="page-content">
+            <div class="section-header">
+                <p class="section-label">R&D Lab</p>
+                <h2 class="section-title">Core Technology</h2>
+                <p class="section-subtitle">Real-time simulation & proprietary systems</p>
+            </div>
+            <!-- Interactive 3D Diamond -->
+            <div class="diamond-container">
+                <div class="diamond-wrapper">
+                    <div class="diamond" id="shader-diamond">
+                        <!-- Upper Front -->
+                        <div class="diamond-face diamond-upper diamond-upper-front" data-face="0" data-shader="seascape.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Fluid Dynamics</h3>
+                                <p>Coolant Systems</p>
+                            </div>
+                        </div>
+                        <!-- Upper Right -->
+                        <div class="diamond-face diamond-upper diamond-upper-right" data-face="1" data-shader="clouds.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Atmosphere Gen</h3>
+                                <p>Terraforming</p>
+                            </div>
+                        </div>
+                        <!-- Upper Back -->
+                        <div class="diamond-face diamond-upper diamond-upper-back" data-face="2" data-shader="aurora.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Plasma Shield</h3>
+                                <p>Radiation Defense</p>
+                            </div>
+                        </div>
+                        <!-- Upper Left -->
+                        <div class="diamond-face diamond-upper diamond-upper-left" data-face="3" data-shader="starnest.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Navigation AI</h3>
+                                <p>Deep Space</p>
+                            </div>
+                        </div>
+                        <!-- Lower Front -->
+                        <div class="diamond-face diamond-lower diamond-lower-front" data-face="4" data-shader="flame.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Fusion Core</h3>
+                                <p>Power Systems</p>
+                            </div>
+                        </div>
+                        <!-- Lower Right -->
+                        <div class="diamond-face diamond-lower diamond-lower-right" data-face="5" data-shader="volcanic.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Forge Process</h3>
+                                <p>Manufacturing</p>
+                            </div>
+                        </div>
+                        <!-- Lower Back -->
+                        <div class="diamond-face diamond-lower diamond-lower-back" data-face="6" data-shader="calm.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Cryo Systems</h3>
+                                <p>Long Transit</p>
+                            </div>
+                        </div>
+                        <!-- Lower Left -->
+                        <div class="diamond-face diamond-lower diamond-lower-left" data-face="7" data-shader="glassy.glsl">
+                            <canvas class="diamond-shader-canvas" width="300" height="300"></canvas>
+                            <div class="diamond-content">
+                                <h3>Optics Array</h3>
+                                <p>Sensor Suite</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="diamond-nav">
+                    <button class="diamond-nav-btn" data-face="0">Fluid</button>
+                    <button class="diamond-nav-btn" data-face="1">Atmo</button>
+                    <button class="diamond-nav-btn" data-face="2">Plasma</button>
+                    <button class="diamond-nav-btn" data-face="3">Nav AI</button>
+                    <button class="diamond-nav-btn" data-face="4">Fusion</button>
+                    <button class="diamond-nav-btn" data-face="5">Forge</button>
+                    <button class="diamond-nav-btn" data-face="6">Cryo</button>
+                    <button class="diamond-nav-btn" data-face="7">Optics</button>
+                </div>
+                <p class="diamond-hint">Swipe or drag to rotate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: MISSION -->
+    <section class="page info-page" id="mission">
+        <div class="shader-container">
+            <canvas id="about-shader"></canvas>
+        </div>
+        <div class="page-content services-content">
+            <div class="section-header">
+                <p class="section-label">Directive</p>
+                <h2 class="section-title">The Mission</h2>
+            </div>
+
+            <!-- Interactive 3D Pyramid -->
+            <div class="pyramid-container">
+                <div class="pyramid-wrapper">
+                    <canvas id="pyramid-shader" class="pyramid-canvas"></canvas>
+                    <div class="pyramid" id="vision-pyramid">
+                        <!-- Front: Autonomy -->
+                        <div class="pyramid-face pyramid-front" data-face="0">
+                            <div class="pyramid-content">
+                                <span class="face-number">01</span>
+                                <h3>Autonomy</h3>
+                                <p>Factories that run themselves. Machines that build machines. Zero human dependency.</p>
+                            </div>
+                        </div>
+                        <!-- Right: Expansion -->
+                        <div class="pyramid-face pyramid-right" data-face="1">
+                            <div class="pyramid-content">
+                                <span class="face-number">02</span>
+                                <h3>Expansion</h3>
+                                <p>Mars. Europa. Titan. Every body in the system is a potential colony.</p>
+                            </div>
+                        </div>
+                        <!-- Back: Resilience -->
+                        <div class="pyramid-face pyramid-back" data-face="2">
+                            <div class="pyramid-content">
+                                <span class="face-number">03</span>
+                                <h3>Resilience</h3>
+                                <p>Humanity must not be a single-planet species. Redundancy is survival.</p>
+                            </div>
+                        </div>
+                        <!-- Left: Legacy -->
+                        <div class="pyramid-face pyramid-left" data-face="3">
+                            <div class="pyramid-content">
+                                <span class="face-number">04</span>
+                                <h3>Legacy</h3>
+                                <p>Build infrastructure that outlasts us. Civilizations measured in millennia, not decades.</p>
+                            </div>
+                        </div>
+                        <!-- Base -->
+                        <div class="pyramid-face pyramid-base"></div>
+                    </div>
+                </div>
+                <div class="pyramid-nav">
+                    <button class="pyramid-nav-btn" data-face="0">Autonomy</button>
+                    <button class="pyramid-nav-btn" data-face="1">Expansion</button>
+                    <button class="pyramid-nav-btn" data-face="2">Resilience</button>
+                    <button class="pyramid-nav-btn" data-face="3">Legacy</button>
+                </div>
+                <p class="pyramid-hint">Swipe or drag to rotate</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 5: CONTACT -->
+    <section class="page info-page contact-section" id="contact">
+        <div class="shader-container">
+            <canvas id="contact-shader"></canvas>
+        </div>
+        <div class="page-content contact-content">
+            <div class="section-header contact-header">
+                <p class="section-label">Comms Channel</p>
+                <h2 class="section-title">Initiate Contact</h2>
+            </div>
+            <p class="contact-text">We partner with governments, space agencies, and visionary organizations to deploy autonomous infrastructure — on Earth and beyond.</p>
+            <a href="mailto:contact@starkindustries.com" class="cta-btn gpu">Open Channel</a>
+            <footer>
+                <p>&copy; 2026 Stark Industries. Autonomous Industry &amp; Space Colonization.</p>
+            </footer>
+        </div>
+    </section>
+
+    <!-- Linktree FAB -->
+    <a href="https://linktree.diegonmarcos.com" target="_blank" rel="noopener" class="linktree-fab gpu" aria-label="Linktree">
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+            <line x1="20" y1="38" x2="20" y2="18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="20" y1="28" x2="12" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="20" y1="28" x2="28" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="20" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="16" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="24" cy="10" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <circle cx="20" cy="15" r="2.5" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+    </a>
+
+    <!-- Fallback loader hide -->
+    <script>
+        setTimeout(function() {
+            var loader = document.querySelector('.loader');
+            if (loader) {
+                loader.classList.add('hidden');
+                console.log('Fallback: Loader hidden');
+            }
+        }, 2000);
+    </script>
+
+    <script type="module" src="scripts/main.js"></script>
+</body>
+</html>

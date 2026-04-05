@@ -1,0 +1,35 @@
+// =====================
+// STARK KEYFRAMES
+// =====================
+
+@keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: translateY(0); }
+    50% { opacity: 0.8; transform: translateY(8px); }
+}
+
+@keyframes scanLine {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+@keyframes glitchFlicker {
+    0%, 92%, 100% { opacity: 1; }
+    93% { opacity: 0.8; transform: translateX(-2px); }
+    95% { opacity: 0.6; transform: translateX(2px); }
+    97% { opacity: 0.9; transform: translateX(0); }
+}
+
+@keyframes dataStream {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 0% 100%; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.1); }
+    50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+}

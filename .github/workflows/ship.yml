@@ -326,6 +326,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Leafy build complete"
+      - name: 🔨 Build Stark (TypeScript + SCSS + Shaders)
+        id: build-stark
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/stark/src/')
+
+        run: |
+          echo "🔨 Building Stark..."
+          cd b-Profiles/stark
+          bash build.sh build
+          cd ../..
+          echo "✅ Stark build complete"
       - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
         id: build-mymaps-svelte
         if:
@@ -419,6 +430,7 @@ jobs:
             "b-Profiles/leafy:leafy"
             "b-Profiles/myprofile:myprofile"
             "b-Profiles/nexus:nexus"
+            "b-Profiles/stark:stark"
             "c-Suite/json-vision:json-vision"
             "c-Suite/myanalytics:myanalytics"
             "c-Suite/mymail:mymail"

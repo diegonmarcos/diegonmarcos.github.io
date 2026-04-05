@@ -619,14 +619,12 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
         }
       },
       (anchor_node2) => {
-        if (context) {
-          push({});
-          var ctx = (
-            /** @type {ComponentContext} */
-            component_context
-          );
-          ctx.c = context;
-        }
+        push({});
+        var ctx = (
+          /** @type {ComponentContext} */
+          component_context
+        );
+        if (context) ctx.c = context;
         if (events) {
           props.$$events = events;
         }
@@ -646,9 +644,7 @@ function _mount(Component, { target, anchor, props = {}, events, context, intro 
             throw HYDRATION_ERROR;
           }
         }
-        if (context) {
-          pop();
-        }
+        pop();
       }
     );
     return () => {
@@ -856,13 +852,13 @@ function Root($$renderer, $$props) {
     if (constructors[1]) {
       $$renderer2.push("<!--[-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, {
         data: data_0,
         form,
         params: page.params,
         children: ($$renderer3) => {
-          $$renderer3.push(`<!---->`);
+          $$renderer3.push("<!---->");
           Pyramid_1?.($$renderer3, { data: data_1, form, params: page.params });
           $$renderer3.push(`<!---->`);
         },
@@ -872,7 +868,7 @@ function Root($$renderer, $$props) {
     } else {
       $$renderer2.push("<!--[!-->");
       const Pyramid_0 = constructors[0];
-      $$renderer2.push(`<!---->`);
+      $$renderer2.push("<!---->");
       Pyramid_0?.($$renderer2, { data: data_0, form, params: page.params });
       $$renderer2.push(`<!---->`);
     }
@@ -901,7 +897,14 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets + '/favicon.png" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<meta name="description" content="Geographic Data Visualization with d3-geo" />\n		<title>Maps - Geographic Visualization</title>\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets + '/favicon.png" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		<meta name="description" content="Geographic Data Visualization with d3-geo" />\n		<title>Maps - Geographic Visualization</title>\n		' + head + `
+<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();<\/script><!-- End Matomo Tag Manager -->
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"><\/script>
+<!-- End Umami Analytics -->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">` + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -973,7 +976,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "durlh6"
+  version_hash: "hpq9mj"
 };
 async function get_hooks() {
   let handle;

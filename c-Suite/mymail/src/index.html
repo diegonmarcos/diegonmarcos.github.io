@@ -409,7 +409,7 @@
             box-shadow: 0 8px 30px rgba(0, 217, 255, 0.4);
         }
 
-        /* Config button (Stalwart) */
+        /* Config button (Maddy) */
         .btn-config {
             background: linear-gradient(135deg, rgba(255, 165, 0, 0.8) 0%, rgba(255, 100, 50, 0.8) 100%);
             color: #fff;
@@ -887,12 +887,12 @@
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                             <polyline points="15 3 21 3 21 9"/>
                             <line x1="10" y1="14" x2="21" y2="3"/>
-                        </svg><span id="tool-name-app">Stalwart</span> App</a>
+                        </svg><span id="tool-name-app">Maddy</span> App</a>
                     <a id="go-config-btn" class="access-btn btn-config" href="#">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="3"/>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-                        </svg><span id="tool-name-config">Stalwart</span> Config</a>
+                        </svg><span id="tool-name-config">Maddy</span> Config</a>
                 </div>
             </div>
 
@@ -900,19 +900,19 @@
             <div class="tools-section">
                 <div class="config-title">Select Tool</div>
                 <div class="tools-grid">
-                    <button class="tool-btn active" data-tool="snappymail" data-url="https://webmail.diegonmarcos.com/" data-config-url="https://mail.diegonmarcos.com/">
+                    <button class="tool-btn active" data-tool="snappymail" data-url="https://mail.diegonmarcos.com/webmail/" data-config-url="https://mail.diegonmarcos.com/webmail/?admin">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                             <polyline points="22,6 12,13 2,6"/>
                         </svg>
                         SnappyMail
                     </button>
-                    <button class="tool-btn" data-tool="stalwart" data-url="https://mail.diegonmarcos.com/" data-config-url="https://mail.diegonmarcos.com/">
+                    <button class="tool-btn" data-tool="maddy" data-url="https://mail.diegonmarcos.com/servermail/" data-config-url="https://mail.diegonmarcos.com/servermail/config">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"/>
                             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15"/>
                         </svg>
-                        Stalwart Admin
+                        Maddy Server
                     </button>
                 </div>
             </div>
@@ -1135,7 +1135,7 @@
 
         // Update action button names and hrefs
         function updateActionButtons() {
-            const toolName = selectedTool ? selectedTool.textContent.trim() : 'Stalwart';
+            const toolName = selectedTool ? selectedTool.textContent.trim() : 'Maddy';
             document.getElementById('tool-name-app').textContent = toolName;
             document.getElementById('tool-name-config').textContent = toolName;
 

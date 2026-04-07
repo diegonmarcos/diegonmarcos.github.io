@@ -54,12 +54,12 @@ This directory contains the orchestration scripts for building and developing al
 │   ├── myfeed/1.ops/build.sh       # MyFeed (Vue 3 + Vite)
 │   ├── mygames/1.ops/build.sh      # MyGames (SvelteKit)
 │   ├── nexus/1.ops/build.sh        # Nexus (Vanilla + Sass+TW + TypeScript)
-│   ├── feed_yourself/1.ops/build.sh # Feed Yourself (Vanilla + Sass)
+│   ├── myhealth-feedyourself/1.ops/build.sh # Feed Yourself (Vanilla + Sass)
 │   ├── others/1.ops/build.sh       # Others (Python)
-│   ├── health_tracker/1.ops/build.sh # Health Tracker (Vanilla + Tailwind)
+│   ├── myhealth-profile/1.ops/build.sh # Health Tracker (Vanilla + Tailwind)
 │   ├── market_watch/1.ops/build.sh # Market Watch (Vanilla + Sass + TypeScript)
 │   ├── central_bank/1.ops/build.sh # Central Bank (Vanilla + Tailwind + TypeScript)
-│   ├── mymaps/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
+│   ├── mymaps-navigation/1.ops/build.sh       # MyMaps (Next.js + Sass + TypeScript)
 │   ├── myprofile/1.ops/build.sh    # MyProfile (Nuxt 4 + Sass + TypeScript)
 │   ├── mymusic/1.ops/build.sh      # MyMusic (Vue 3 + Sass + TypeScript)
 │   ├── mymovies/1.ops/build.sh     # MyMovies (Vue 3 + Sass + TypeScript)
@@ -109,7 +109,7 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh build-health
 ./1.ops/build_main.sh build-market
 ./1.ops/build_main.sh build-centralbank
-./1.ops/build_main.sh build-mymaps
+./1.ops/build_main.sh build-mymaps-navigation
 ./1.ops/build_main.sh build-myprofile
 ./1.ops/build_main.sh build-mymusic
 ./1.ops/build_main.sh build-mymovies
@@ -135,7 +135,7 @@ Running without arguments launches an interactive TUI with project status, build
 ./1.ops/build_main.sh dev-market        # :8010
 ./1.ops/build_main.sh dev-centralbank   # :8011
 ./1.ops/build_main.sh dev-myprofile     # :8013
-./1.ops/build_main.sh dev-mymaps        # :8014
+./1.ops/build_main.sh dev-mymaps-navigation        # :8014
 ./1.ops/build_main.sh dev-mymovies      # :8015
 ./1.ops/build_main.sh dev-mymusic       # :8016
 ./1.ops/build_main.sh dev-json-vision   # :8017
@@ -166,7 +166,7 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `build-health` | Build Health Tracker (Vanilla + Tailwind) |
 | `build-market` | Build Market Watch (Vanilla + Sass + TypeScript) |
 | `build-centralbank` | Build Central Bank (Vanilla + Tailwind + TypeScript) |
-| `build-mymaps` | Build MyMaps (Next.js + Sass + TypeScript) |
+| `build-mymaps-navigation` | Build MyMaps (Next.js + Sass + TypeScript) |
 | `build-myprofile` | Build MyProfile (Nuxt 4 + Sass + TypeScript) |
 | `build-mymusic` | Build MyMusic (Vue 3 + Sass + TypeScript) |
 | `build-mymovies` | Build MyMovies (Vue 3 + Sass + TypeScript) |
@@ -193,7 +193,7 @@ The `build_main.sh` script orchestrates all sub-projects:
 | `dev-health` | Health Tracker - npm-live :8009 |
 | `dev-market` | Market Watch - npm-live :8010 |
 | `dev-centralbank` | Central Bank - npm-live :8011 |
-| `dev-mymaps` | MyMaps - Next.js :8014 |
+| `dev-mymaps-navigation` | MyMaps - Next.js :8014 |
 | `dev-myprofile` | MyProfile - Nuxt :8013 |
 | `dev-mymusic` | MyMusic - Vite :8016 |
 | `dev-mymovies` | MyMovies - Vite :8015 |
@@ -318,7 +318,7 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 | Build CV Web | `./1.ops/build_main.sh build-cv-web` |
 | Build MyFeed | `./1.ops/build_main.sh build-myfeed` |
 | Build MyGames | `./1.ops/build_main.sh build-mygames` |
-| Build MyMaps | `./1.ops/build_main.sh build-mymaps` |
+| Build MyMaps | `./1.ops/build_main.sh build-mymaps-navigation` |
 | Build MyProfile | `./1.ops/build_main.sh build-myprofile` |
 | Build MyMusic | `./1.ops/build_main.sh build-mymusic` |
 | Build MyMovies | `./1.ops/build_main.sh build-mymovies` |
@@ -341,7 +341,7 @@ This build system replicates the GitHub Actions workflow (`.github/workflows/dep
 # Verify builds exist
 ls -lah myfeed/dist/
 ls -lah mygames/dist/
-ls -lah mymaps/.next/
+ls -lah mymaps-navigation/.next/
 ls -lah myprofile/.output/
 ```
 
@@ -382,7 +382,7 @@ ls -lah myprofile/.output/
 # Install all npm dependencies per project
 cd myfeed && npm install
 cd ../mygames && npm install
-cd ../mymaps && npm install
+cd ../mymaps-navigation && npm install
 cd ../myprofile && npm install
 
 # Or use the orchestrator (recommended)

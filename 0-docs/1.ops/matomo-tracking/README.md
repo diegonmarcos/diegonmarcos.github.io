@@ -20,7 +20,7 @@ Page-specific tracking scripts for Matomo analytics integration.
 | `myfeed.js` | `/myfeed/` | 1.7KB | Feed items, filters |
 | `mygames.js` | `/mygames/` | 2.9KB | SPA navigation, games |
 | `cloud.js` | `/cloud/` | 1.8KB | Service cards, docs |
-| `feed_yourself.js` | `/feed_yourself/` | 1.1KB | Actions, content |
+| `myhealth-feedyourself.js` | `/myhealth-feedyourself/` | 1.1KB | Actions, content |
 
 **Total**: 9 scripts, ~22KB
 

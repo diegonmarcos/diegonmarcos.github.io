@@ -98,22 +98,22 @@ jobs:
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/myfeed/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myfeed/src/')
 
         run: |
           echo "🔨 Building MyFeed..."
-          cd c-Tools/myfeed
+          cd c-MyTools/myfeed
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
       - name: 🔨 Build MyGames
         id: build-mygames
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mygames/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mygames/src/')
 
         run: |
           echo "🔨 Building MyGames..."
-          cd c-Tools/mygames
+          cd c-MyTools/mygames
           bash build.sh build
           cd ../..
           echo "✅ MyGames build complete"
@@ -139,17 +139,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Cloud Dashboard build complete"
-      - name: 🔨 Build Feed Yourself
-        id: build-feed-yourself
+      - name: 🔨 Build MyHealth FeedYourself
+        id: build-myhealth-feedyourself
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/feed_yourself/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myhealth-feedyourself/src/')
 
         run: |
-          echo "🔨 Building Feed Yourself..."
-          cd c-Tools/feed_yourself
+          echo "🔨 Building MyHealth FeedYourself..."
+          cd c-MyTools/myhealth-feedyourself
           bash build.sh build
           cd ../..
-          echo "✅ Feed Yourself build complete"
+          echo "✅ MyHealth FeedYourself build complete"
       - name: 🔨 Build Others
         id: build-others
         if:
@@ -164,11 +164,11 @@ jobs:
       - name: 🔨 Build Sailytics
         id: build-sailytics
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'e-Others/sailytics/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/sailytics/src/')
 
         run: |
           echo "🔨 Building Sailytics..."
-          cd e-Others/sailytics
+          cd c-LabTools/sailytics
           bash build.sh build
           cd ../..
           echo "✅ Sailytics build complete"
@@ -186,11 +186,11 @@ jobs:
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myphotos/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myphotos/src/')
 
         run: |
           echo "🔨 Building MyPhotos..."
-          cd c-Suite/myphotos
+          cd c-MyTools/myphotos
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
@@ -216,36 +216,36 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Suite build complete"
-      - name: 🔨 Build Health Tracker
-        id: build-health-tracker
+      - name: 🔨 Build MyHealth Profile
+        id: build-myhealth-profile
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/health_tracker/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myhealth-profile/src/')
 
         run: |
-          echo "🔨 Building Health Tracker..."
-          cd c-Tools/health_tracker
+          echo "🔨 Building MyHealth Profile..."
+          cd c-MyTools/myhealth-profile
           bash build.sh build
           cd ../..
-          echo "✅ Health Tracker build complete"
+          echo "✅ MyHealth Profile build complete"
       - name: 🔨 Build Market Watch
         id: build-market-watch
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/market_watch/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/market_watch/src/')
 
         run: |
           echo "🔨 Building Market Watch..."
-          cd c-Tools/market_watch
+          cd c-LabTools/market_watch
           bash build.sh build
           cd ../..
           echo "✅ Market Watch build complete"
       - name: 🔨 Build Central Bank
         id: build-central-bank
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/central_bank/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/central_bank/src/')
 
         run: |
           echo "🔨 Building Central Bank..."
-          cd c-Tools/central_bank
+          cd c-LabTools/central_bank
           bash build.sh build
           cd ../..
           echo "✅ Central Bank build complete"
@@ -263,22 +263,22 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymovies/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymovies/src/')
 
         run: |
           echo "🔨 Building MyMovies..."
-          cd c-Tools/mymovies
+          cd c-MyTools/mymovies
           bash build.sh build
           cd ../..
           echo "✅ MyMovies build complete"
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymusic/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymusic/src/')
 
         run: |
           echo "🔨 Building MyMusic..."
-          cd c-Tools/mymusic
+          cd c-MyTools/mymusic
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
@@ -296,25 +296,25 @@ jobs:
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/carto/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/carto/src/')
 
         run: |
           echo "🔨 Building Carto..."
-          cd c-Tools/carto
+          cd c-LabTools/carto
           bash build.sh build
           cd ../..
           echo "✅ Carto build complete"
-      - name: 🔨 Build MyTrips (Vue 3 + TypeScript + SCSS)
-        id: build-mytrips
+      - name: 🔨 Build MyMaps MyTrips (Vue 3 + TypeScript + SCSS)
+        id: build-mymaps-mytrips
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mytrips/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-mytrips/src/')
 
         run: |
-          echo "🔨 Building MyTrips..."
-          cd c-Tools/mytrips
+          echo "🔨 Building MyMaps MyTrips..."
+          cd c-MyTools/mymaps-mytrips
           bash build.sh build
           cd ../..
-          echo "✅ MyTrips build complete"
+          echo "✅ MyMaps MyTrips build complete"
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
         if:
@@ -337,28 +337,28 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Stark build complete"
-      - name: 🔨 Build MyMaps SvelteKit (SvelteKit + MapLibre)
-        id: build-mymaps-svelte
+      - name: 🔨 Build MyMaps Navigation (SvelteKit + MapLibre)
+        id: build-mymaps-navigation
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/mymaps/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-navigation/src/')
 
         run: |
-          echo "🔨 Building MyMaps SvelteKit..."
-          cd c-Tools/mymaps
+          echo "🔨 Building MyMaps Navigation..."
+          cd c-MyTools/mymaps-navigation
           bash build.sh build
           cd ../..
-          echo "✅ MyMaps SvelteKit build complete"
-      - name: 🔨 Build Maps Classic (React + Vite)
-        id: build-maps-classic
+          echo "✅ MyMaps Navigation build complete"
+      - name: 🔨 Build MyMaps Maps (SvelteKit)
+        id: build-mymaps-maps
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/maps/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-maps/src/')
 
         run: |
-          echo "🔨 Building Maps Classic..."
-          cd c-Tools/maps
+          echo "🔨 Building MyMaps Maps..."
+          cd c-MyTools/mymaps-maps
           bash build.sh build
           cd ../..
-          echo "✅ Maps Classic build complete"
+          echo "✅ MyMaps Maps build complete"
       # ============================================
       # MISSING BUILD STEPS (Previously only had copy steps)
       # ============================================
@@ -376,11 +376,11 @@ jobs:
       - name: 🔨 Build Astro
         id: build-astro
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Tools/astro/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/astro/src/')
 
         run: |
           echo "🔨 Building Astro..."
-          cd c-Tools/astro
+          cd c-MyTools/astro
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
@@ -434,26 +434,26 @@ jobs:
             "c-Suite/json-vision:json-vision"
             "c-Suite/myanalytics:myanalytics"
             "c-Suite/mymail:mymail"
-            "c-Suite/myphotos:myphotos"
+            "c-MyTools/myphotos:myphotos"
             "c-Suite/suite:suite"
-            "c-Tools/astro:astro"
-            "c-Tools/carto:carto"
-            "c-Tools/central_bank:central_bank"
-            "c-Tools/feed_yourself:feed_yourself"
-            "c-Tools/health_tracker:health_tracker"
-            "c-Tools/maps:maps"
-            "c-Tools/market_watch:market_watch"
-            "c-Tools/myfeed:myfeed"
-            "c-Tools/mygames:mygames"
-            "c-Tools/mymaps:mymaps"
-            "c-Tools/mymovies:mymovies"
-            "c-Tools/mymusic:mymusic"
-            "c-Tools/mytrips:mytrips"
+            "c-MyTools/astro:astro"
+            "c-LabTools/carto:carto"
+            "c-LabTools/central_bank:central_bank"
+            "c-MyTools/myhealth-feedyourself:myhealth-feedyourself"
+            "c-MyTools/myhealth-profile:myhealth-profile"
+            "c-MyTools/mymaps-maps:mymaps-maps"
+            "c-LabTools/market_watch:market_watch"
+            "c-MyTools/myfeed:myfeed"
+            "c-MyTools/mygames:mygames"
+            "c-MyTools/mymaps-navigation:mymaps-navigation"
+            "c-MyTools/mymovies:mymovies"
+            "c-MyTools/mymusic:mymusic"
+            "c-MyTools/mymaps-mytrips:mymaps-mytrips"
             "d-Cloud/api:api"
             "d-Cloud/mcp-api-swagger:mcp-api-swagger"
             "d-Cloud/skills_mcp:skills_mcp"
             "e-Others/others:others"
-            "e-Others/sailytics:sailytics"
+            "c-LabTools/sailytics:sailytics"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

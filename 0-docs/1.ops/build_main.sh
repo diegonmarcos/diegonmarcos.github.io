@@ -196,7 +196,7 @@ get_running_servers() {
         _servers="${_servers}  ${GREEN}*${NC} Central Bank       ${BLUE}${URL_CENTRALBANK}${NC}\n"
         _count=$((_count + 1))
     fi
-    if pgrep -f "next.*dev.*8014" >/dev/null 2>&1 || pgrep -f "mymaps.*next" >/dev/null 2>&1; then
+    if pgrep -f "next.*dev.*8014" >/dev/null 2>&1 || pgrep -f "mymaps-navigation.*next" >/dev/null 2>&1; then
         _servers="${_servers}  ${CYAN}*${NC} MyMaps (Next.js)   ${BLUE}${URL_MYMAPS}${NC}\n"
         _count=$((_count + 1))
     fi
@@ -273,7 +273,7 @@ get_running_servers() {
 
     # Check tmux sessions
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-suite; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps-navigation build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-suite; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 case "$session" in
                     build-landpage-sass)  _servers="${_servers}  ${GREEN}*${NC} Landpage (tmux)    ${BLUE}${URL_LANDPAGE}${NC}\n" ;;
@@ -289,7 +289,7 @@ get_running_servers() {
                     build-health)     _servers="${_servers}  ${GREEN}*${NC} Health (tmux)      ${BLUE}${URL_HEALTH}${NC}\n" ;;
                     build-market)     _servers="${_servers}  ${GREEN}*${NC} Market (tmux)      ${BLUE}${URL_MARKET}${NC}\n" ;;
                     build-centralbank) _servers="${_servers}  ${GREEN}*${NC} Central Bank (tmux) ${BLUE}${URL_CENTRALBANK}${NC}\n" ;;
-                    build-mymaps) _servers="${_servers}  ${GREEN}*${NC} MyMaps (tmux)      ${BLUE}${URL_MYMAPS}${NC}\n" ;;
+                    build-mymaps-navigation) _servers="${_servers}  ${GREEN}*${NC} MyMaps (tmux)      ${BLUE}${URL_MYMAPS}${NC}\n" ;;
                     build-myprofile) _servers="${_servers}  ${GREEN}*${NC} MyProfile (tmux)   ${BLUE}${URL_MYPROFILE}${NC}\n" ;;
                     build-mymusic) _servers="${_servers}  ${GREEN}*${NC} MyMusic (tmux)     ${BLUE}${URL_MYMUSIC}${NC}\n" ;;
                     build-mymovies) _servers="${_servers}  ${GREEN}*${NC} MyMovies (tmux)    ${BLUE}${URL_MYMOVIES}${NC}\n" ;;
@@ -353,7 +353,7 @@ print_usage() {
     printf "  ${GREEN}build-health${NC}       # Health Tracker - Vanilla + Tailwind\n"
     printf "  ${GREEN}build-market${NC}       # Market Watch - Vanilla + Sass + TypeScript\n"
     printf "  ${GREEN}build-centralbank${NC}  # Central Bank - Vanilla + Tailwind + TypeScript\n"
-    printf "  ${GREEN}build-mymaps${NC}       # MyMaps - Next.js + Sass + TypeScript\n"
+    printf "  ${GREEN}build-mymaps-navigation${NC}       # MyMaps - Next.js + Sass + TypeScript\n"
     printf "  ${GREEN}build-myprofile${NC}    # MyProfile - Nuxt 4 + Sass + TypeScript\n"
     printf "  ${GREEN}build-mymusic${NC}      # MyMusic - Vue 3 + Sass + TypeScript\n"
     printf "  ${GREEN}build-mymovies${NC}     # MyMovies - Vue 3 + Sass + TypeScript\n"
@@ -376,7 +376,7 @@ print_usage() {
     printf "  ${GREEN}dev-health${NC}         # Health Tracker - npm-live :8009\n"
     printf "  ${GREEN}dev-market${NC}         # Market Watch - npm-live :8010\n"
     printf "  ${GREEN}dev-centralbank${NC}    # Central Bank - npm-live :8011\n"
-    printf "  ${GREEN}dev-mymaps${NC}         # MyMaps - Next.js :8014\n"
+    printf "  ${GREEN}dev-mymaps-navigation${NC}         # MyMaps - Next.js :8014\n"
     printf "  ${GREEN}dev-myprofile${NC}      # MyProfile - Nuxt :8013\n"
     printf "  ${GREEN}dev-mymusic${NC}        # MyMusic - Vite :8016\n"
     printf "  ${GREEN}dev-mymovies${NC}       # MyMovies - Vite :8015\n"
@@ -528,12 +528,12 @@ build_all() {
     execute_build "b_Linktree/myfeed" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/mygames" "build" || _failed=$((_failed + 1))
     execute_build "a_Cloud" "build" || _failed=$((_failed + 1))
-    execute_build "b_Linktree/feed_yourself" "build" || _failed=$((_failed + 1))
+    execute_build "b_Linktree/myhealth-feedyourself" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/others" "build" || _failed=$((_failed + 1))
-    execute_build "b_Linktree/health_tracker" "build" || _failed=$((_failed + 1))
+    execute_build "b_Linktree/myhealth-profile" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/market_watch" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/central_bank" "build" || _failed=$((_failed + 1))
-    execute_build "b_Linktree/mymaps" "build" || _failed=$((_failed + 1))
+    execute_build "b_Linktree/mymaps-navigation" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/myprofile" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/mymusic" "build" || _failed=$((_failed + 1))
     execute_build "b_Linktree/mymovies" "build" || _failed=$((_failed + 1))
@@ -561,12 +561,12 @@ clean_all_builds() {
     execute_build "b_Linktree/myfeed" "clean" || true
     execute_build "b_Linktree/mygames" "clean" || true
     execute_build "a_Cloud" "clean" || true
-    execute_build "b_Linktree/feed_yourself" "clean" || true
+    execute_build "b_Linktree/myhealth-feedyourself" "clean" || true
     execute_build "b_Linktree/others" "clean" || true
-    execute_build "b_Linktree/health_tracker" "clean" || true
+    execute_build "b_Linktree/myhealth-profile" "clean" || true
     execute_build "b_Linktree/market_watch" "clean" || true
     execute_build "b_Linktree/central_bank" "clean" || true
-    execute_build "b_Linktree/mymaps" "clean" || true
+    execute_build "b_Linktree/mymaps-navigation" "clean" || true
     execute_build "b_Linktree/myprofile" "clean" || true
     execute_build "b_Linktree/mymusic" "clean" || true
     execute_build "b_Linktree/mymovies" "clean" || true
@@ -655,12 +655,12 @@ dev_all() {
         tmux new-session -d -s build-mygames "cd $PROJECT_ROOT/b_Linktree/mygames/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-nexus "cd $PROJECT_ROOT/b_Linktree/nexus/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-cloud "cd $PROJECT_ROOT/a_Cloud/1.ops && sh build.sh dev" 2>/dev/null || true
-        tmux new-session -d -s build-feed "cd $PROJECT_ROOT/b_Linktree/feed_yourself/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-feed "cd $PROJECT_ROOT/b_Linktree/myhealth-feedyourself/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-others "cd $PROJECT_ROOT/b_Linktree/others/1.ops && sh build.sh dev" 2>/dev/null || true
-        tmux new-session -d -s build-health "cd $PROJECT_ROOT/b_Linktree/health_tracker/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-health "cd $PROJECT_ROOT/b_Linktree/myhealth-profile/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-market "cd $PROJECT_ROOT/b_Linktree/market_watch/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-centralbank "cd $PROJECT_ROOT/b_Linktree/central_bank/1.ops && sh build.sh dev" 2>/dev/null || true
-        tmux new-session -d -s build-mymaps "cd $PROJECT_ROOT/b_Linktree/mymaps/1.ops && sh build.sh dev" 2>/dev/null || true
+        tmux new-session -d -s build-mymaps-navigation "cd $PROJECT_ROOT/b_Linktree/mymaps-navigation/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-myprofile "cd $PROJECT_ROOT/b_Linktree/myprofile/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-mymusic "cd $PROJECT_ROOT/b_Linktree/mymusic/1.ops && sh build.sh dev" 2>/dev/null || true
         tmux new-session -d -s build-mymovies "cd $PROJECT_ROOT/b_Linktree/mymovies/1.ops && sh build.sh dev" 2>/dev/null || true
@@ -730,14 +730,14 @@ dev_all() {
         log_info "Starting cloud..."
         nohup sh "$PROJECT_ROOT/a_Cloud/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/cloud-dev.log" 2>&1 &
 
-        log_info "Starting feed_yourself..."
-        nohup sh "$PROJECT_ROOT/b_Linktree/feed_yourself/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/feed-dev.log" 2>&1 &
+        log_info "Starting myhealth-feedyourself..."
+        nohup sh "$PROJECT_ROOT/b_Linktree/myhealth-feedyourself/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/feed-dev.log" 2>&1 &
 
         log_info "Starting others..."
         nohup sh "$PROJECT_ROOT/b_Linktree/others/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/others-dev.log" 2>&1 &
 
-        log_info "Starting health_tracker..."
-        nohup sh "$PROJECT_ROOT/b_Linktree/health_tracker/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/health-dev.log" 2>&1 &
+        log_info "Starting myhealth-profile..."
+        nohup sh "$PROJECT_ROOT/b_Linktree/myhealth-profile/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/health-dev.log" 2>&1 &
 
         log_info "Starting market_watch..."
         nohup sh "$PROJECT_ROOT/b_Linktree/market_watch/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/market-dev.log" 2>&1 &
@@ -745,8 +745,8 @@ dev_all() {
         log_info "Starting central_bank..."
         nohup sh "$PROJECT_ROOT/b_Linktree/central_bank/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/centralbank-dev.log" 2>&1 &
 
-        log_info "Starting mymaps..."
-        nohup sh "$PROJECT_ROOT/b_Linktree/mymaps/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymaps-dev.log" 2>&1 &
+        log_info "Starting mymaps-navigation..."
+        nohup sh "$PROJECT_ROOT/b_Linktree/mymaps-navigation/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/mymaps-navigation-dev.log" 2>&1 &
 
         log_info "Starting myprofile..."
         nohup sh "$PROJECT_ROOT/b_Linktree/myprofile/1.ops/build.sh" dev > "$PROJECT_ROOT/1.ops/logs/myprofile-dev.log" 2>&1 &
@@ -834,7 +834,7 @@ dev_single() {
             execute_build "a_Cloud" "dev"
             ;;
         feed)
-            execute_build "b_Linktree/feed_yourself" "dev" &
+            execute_build "b_Linktree/myhealth-feedyourself" "dev" &
             sleep 2
             print_server_started "Feed Yourself" "$_url"
             wait
@@ -846,7 +846,7 @@ dev_single() {
             wait
             ;;
         health)
-            execute_build "b_Linktree/health_tracker" "dev" &
+            execute_build "b_Linktree/myhealth-profile" "dev" &
             sleep 2
             print_server_started "Health Tracker" "$_url"
             wait
@@ -857,8 +857,8 @@ dev_single() {
         centralbank)
             execute_build "b_Linktree/central_bank" "dev"
             ;;
-        mymaps)
-            execute_build "b_Linktree/mymaps" "dev" &
+        mymaps-navigation)
+            execute_build "b_Linktree/mymaps-navigation" "dev" &
             sleep 2
             print_server_started "MyMaps" "$_url"
             wait
@@ -892,7 +892,7 @@ kill_servers() {
 
     # Kill tmux sessions if they exist
     if command -v tmux >/dev/null 2>&1; then
-        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-suite; do
+        for session in build-landpage-sass build-landpage-ts build-linktree build-cv-web build-myfeed build-mygames build-nexus build-cloud build-feed build-others build-health build-market build-centralbank build-mymaps-navigation build-myprofile build-mymusic build-mymovies build-mymail build-myphotos build-myanalytics build-suite; do
             if tmux has-session -t "$session" 2>/dev/null; then
                 log_info "Killing tmux session: $session"
                 tmux kill-session -t "$session" 2>/dev/null && _killed=$((_killed + 1)) || true
@@ -1288,7 +1288,7 @@ tui_build_all() {
     log_to_file "Starting build all..."
 
     # Build each project and mark success if successful
-    for _proj in b_Linktree/landpage b_Linktree b_Linktree/cv_web b_Linktree/cv_pdf b_Linktree/myfeed b_Linktree/mygames b_Linktree/nexus a_Cloud b_Linktree/feed_yourself b_Linktree/others b_Linktree/health_tracker b_Linktree/market_watch b_Linktree/central_bank b_Linktree/mymaps b_Linktree/myprofile b_Linktree/mymusic mymovies; do
+    for _proj in b_Linktree/landpage b_Linktree b_Linktree/cv_web b_Linktree/cv_pdf b_Linktree/myfeed b_Linktree/mygames b_Linktree/nexus a_Cloud b_Linktree/myhealth-feedyourself b_Linktree/others b_Linktree/myhealth-profile b_Linktree/market_watch b_Linktree/central_bank b_Linktree/mymaps-navigation b_Linktree/myprofile b_Linktree/mymusic mymovies; do
         _build_script="$PROJECT_ROOT/$_proj/1.ops/build.sh"
         if [ -f "$_build_script" ]; then
             log_to_file "Building: $_proj"
@@ -1336,7 +1336,7 @@ tui_simple() {
         _s10=$(get_status 'pgrep -f "live-server.*8009"')
         _s11=$(get_status 'pgrep -f "live-server.*8010"')
         _s12=$(get_status 'pgrep -f "live-server.*8011"')
-        _s13=$(get_status 'pgrep -f "next.*dev.*8014" || pgrep -f "mymaps.*next"')
+        _s13=$(get_status 'pgrep -f "next.*dev.*8014" || pgrep -f "mymaps-navigation.*next"')
         _s14=$(get_status 'pgrep -f "nuxt.*dev.*8013" || pgrep -f "myprofile.*nuxt"')
         _s15=$(get_status 'pgrep -f "mymusic.*vite" || pgrep -f "vite.*mymusic"')
         _s16=$(get_status 'pgrep -f "mymovies.*vite" || pgrep -f "vite.*mymovies"')
@@ -1349,12 +1349,12 @@ tui_simple() {
         _b5=$(get_build_status "b_Linktree/mygames")
         _b6=$(get_build_status "b_Linktree/nexus")
         _b7=$(get_build_status "a_Cloud")
-        _b8=$(get_build_status "b_Linktree/feed_yourself")
+        _b8=$(get_build_status "b_Linktree/myhealth-feedyourself")
         _b9=$(get_build_status "b_Linktree/others")
-        _b10=$(get_build_status "b_Linktree/health_tracker")
+        _b10=$(get_build_status "b_Linktree/myhealth-profile")
         _b11=$(get_build_status "b_Linktree/market_watch")
         _b12=$(get_build_status "b_Linktree/central_bank")
-        _b13=$(get_build_status "b_Linktree/mymaps")
+        _b13=$(get_build_status "b_Linktree/mymaps-navigation")
         _b14=$(get_build_status "b_Linktree/myprofile")
         _b15=$(get_build_status "b_Linktree/mymusic")
         _b16=$(get_build_status "b_Linktree/mymovies")
@@ -1424,7 +1424,7 @@ tui_simple() {
             b10)               _cmd="build-health"; _last_msg="Building Health Tracker" ;;
             b11)               _cmd="build-market"; _last_msg="Building Market Watch" ;;
             b12)               _cmd="build-centralbank"; _last_msg="Building Central Bank" ;;
-            b13)               _cmd="build-mymaps"; _last_msg="Building MyMaps" ;;
+            b13)               _cmd="build-mymaps-navigation"; _last_msg="Building MyMaps" ;;
             b14)               _cmd="build-myprofile"; _last_msg="Building MyProfile" ;;
             b15)               _cmd="build-mymusic"; _last_msg="Building MyMusic" ;;
             b16)               _cmd="build-mymovies"; _last_msg="Building MyMovies" ;;
@@ -1446,7 +1446,7 @@ tui_simple() {
             d10)               _cmd="dev-health"; _last_msg="Started Health Tracker :8009" ;;
             d11)               _cmd="dev-market"; _last_msg="Started Market Watch :8010" ;;
             d12)               _cmd="dev-centralbank"; _last_msg="Started Central Bank :8011" ;;
-            d13)               _cmd="dev-mymaps"; _last_msg="Started MyMaps :8014" ;;
+            d13)               _cmd="dev-mymaps-navigation"; _last_msg="Started MyMaps :8014" ;;
             d14)               _cmd="dev-myprofile"; _last_msg="Started MyProfile :8013" ;;
             d15)               _cmd="dev-mymusic"; _last_msg="Started MyMusic :8016" ;;
             d16)               _cmd="dev-mymovies"; _last_msg="Started MyMovies :8015" ;;
@@ -1490,12 +1490,12 @@ tui_simple() {
             dev-mygames)     log_to_file "Starting dev: mygames"; sh "$PROJECT_ROOT/b_Linktree/mygames/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-nexus)       log_to_file "Starting dev: nexus"; sh "$PROJECT_ROOT/b_Linktree/nexus/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-cloud)       log_to_file "Starting dev: cloud"; sh "$PROJECT_ROOT/a_Cloud/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
-            dev-feed)        log_to_file "Starting dev: feed_yourself"; sh "$PROJECT_ROOT/b_Linktree/feed_yourself/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-feed)        log_to_file "Starting dev: myhealth-feedyourself"; sh "$PROJECT_ROOT/b_Linktree/myhealth-feedyourself/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-others)      log_to_file "Starting dev: others"; sh "$PROJECT_ROOT/b_Linktree/others/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
-            dev-health)      log_to_file "Starting dev: health_tracker"; sh "$PROJECT_ROOT/b_Linktree/health_tracker/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-health)      log_to_file "Starting dev: myhealth-profile"; sh "$PROJECT_ROOT/b_Linktree/myhealth-profile/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-market)      log_to_file "Starting dev: market_watch"; sh "$PROJECT_ROOT/b_Linktree/market_watch/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-centralbank) log_to_file "Starting dev: central_bank"; sh "$PROJECT_ROOT/b_Linktree/central_bank/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
-            dev-mymaps)      log_to_file "Starting dev: mymaps"; sh "$PROJECT_ROOT/b_Linktree/mymaps/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
+            dev-mymaps-navigation)      log_to_file "Starting dev: mymaps-navigation"; sh "$PROJECT_ROOT/b_Linktree/mymaps-navigation/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-myprofile)   log_to_file "Starting dev: myprofile"; sh "$PROJECT_ROOT/b_Linktree/myprofile/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-mymusic)     log_to_file "Starting dev: mymusic"; sh "$PROJECT_ROOT/b_Linktree/mymusic/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
             dev-mymovies)    log_to_file "Starting dev: mymovies"; sh "$PROJECT_ROOT/b_Linktree/mymovies/1.ops/build.sh" dev >> "$LOG_FILE" 2>&1 & ;;
@@ -1512,12 +1512,12 @@ tui_simple() {
             build-mygames)     log_to_file "Building: mygames"; (sh "$PROJECT_ROOT/b_Linktree/mygames/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/mygames") & ;;
             build-nexus)       log_to_file "Building: nexus"; (sh "$PROJECT_ROOT/b_Linktree/nexus/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/nexus") & ;;
             build-cloud)       log_to_file "Building: cloud"; (sh "$PROJECT_ROOT/a_Cloud/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "a_Cloud") & ;;
-            build-feed)        log_to_file "Building: feed_yourself"; (sh "$PROJECT_ROOT/b_Linktree/feed_yourself/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/feed_yourself") & ;;
+            build-feed)        log_to_file "Building: myhealth-feedyourself"; (sh "$PROJECT_ROOT/b_Linktree/myhealth-feedyourself/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/myhealth-feedyourself") & ;;
             build-others)      log_to_file "Building: others"; (sh "$PROJECT_ROOT/b_Linktree/others/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/others") & ;;
-            build-health)      log_to_file "Building: health_tracker"; (sh "$PROJECT_ROOT/b_Linktree/health_tracker/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/health_tracker") & ;;
+            build-health)      log_to_file "Building: myhealth-profile"; (sh "$PROJECT_ROOT/b_Linktree/myhealth-profile/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/myhealth-profile") & ;;
             build-market)      log_to_file "Building: market_watch"; (sh "$PROJECT_ROOT/b_Linktree/market_watch/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/market_watch") & ;;
             build-centralbank) log_to_file "Building: central_bank"; (sh "$PROJECT_ROOT/b_Linktree/central_bank/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/central_bank") & ;;
-            build-mymaps)      log_to_file "Building: mymaps"; (sh "$PROJECT_ROOT/b_Linktree/mymaps/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/mymaps") & ;;
+            build-mymaps-navigation)      log_to_file "Building: mymaps-navigation"; (sh "$PROJECT_ROOT/b_Linktree/mymaps-navigation/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/mymaps-navigation") & ;;
             build-myprofile)   log_to_file "Building: myprofile"; (sh "$PROJECT_ROOT/b_Linktree/myprofile/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/myprofile") & ;;
             build-mymusic)     log_to_file "Building: mymusic"; (sh "$PROJECT_ROOT/b_Linktree/mymusic/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/mymusic") & ;;
             build-mymovies)    log_to_file "Building: mymovies"; (sh "$PROJECT_ROOT/b_Linktree/mymovies/1.ops/build.sh" build >> "$LOG_FILE" 2>&1 && mark_build_success "b_Linktree/mymovies") & ;;
@@ -1602,13 +1602,13 @@ main() {
             execute_build "a_Cloud" "build"
             ;;
         build-feed)
-            execute_build "b_Linktree/feed_yourself" "build"
+            execute_build "b_Linktree/myhealth-feedyourself" "build"
             ;;
         build-others)
             execute_build "b_Linktree/others" "build"
             ;;
         build-health)
-            execute_build "b_Linktree/health_tracker" "build"
+            execute_build "b_Linktree/myhealth-profile" "build"
             ;;
         build-market)
             execute_build "b_Linktree/market_watch" "build"
@@ -1616,8 +1616,8 @@ main() {
         build-centralbank)
             execute_build "b_Linktree/central_bank" "build"
             ;;
-        build-mymaps)
-            execute_build "b_Linktree/mymaps" "build"
+        build-mymaps-navigation)
+            execute_build "b_Linktree/mymaps-navigation" "build"
             ;;
         build-myprofile)
             execute_build "b_Linktree/myprofile" "build"
@@ -1679,8 +1679,8 @@ main() {
         dev-centralbank)
             dev_single "centralbank" "$URL_CENTRALBANK"
             ;;
-        dev-mymaps)
-            dev_single "b_Linktree/mymaps" "$URL_MYMAPS"
+        dev-mymaps-navigation)
+            dev_single "b_Linktree/mymaps-navigation" "$URL_MYMAPS"
             ;;
         dev-myprofile)
             dev_single "b_Linktree/myprofile" "$URL_MYPROFILE"

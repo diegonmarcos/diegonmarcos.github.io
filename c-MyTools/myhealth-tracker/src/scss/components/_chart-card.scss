@@ -1,0 +1,53 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.chart-card {
+  @include card;
+  @include flex-col($gap: $spacing-md);
+}
+
+.chart-card--wide {
+  @media (min-width: $bp-md) {
+    grid-column: span 2;
+  }
+}
+
+.chart-card__title {
+  @include label-caps;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1px solid $border;
+}
+
+.chart-card__body {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+
+  canvas {
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.section-title {
+  @include label-caps;
+  font-size: $font-size-sm;
+  padding-bottom: $spacing-sm;
+  margin-bottom: $spacing-md;
+  border-bottom: 1px solid $border;
+  position: relative;
+
+  // Gold accent
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: $gold;
+    border-radius: 1px;
+  }
+}

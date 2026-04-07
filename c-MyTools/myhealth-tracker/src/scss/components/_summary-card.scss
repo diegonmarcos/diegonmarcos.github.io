@@ -1,0 +1,67 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.summary-card {
+  @include card;
+  @include flex-col($gap: $spacing-xs);
+  text-align: center;
+  min-width: 0;
+  padding: $spacing-lg $spacing-md;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  // Ambient glow on hover
+  &:hover {
+    transform: translateY(-2px);
+    border-color: $border-accent;
+  }
+}
+
+.summary-card__icon {
+  font-size: $font-size-lg;
+  line-height: 1;
+  opacity: 0.7;
+}
+
+.summary-card__value {
+  font-size: $font-size-2xl;
+  @include stat-value;
+  line-height: $line-height-tight;
+  color: $text-primary;
+
+  @include mq(lg) {
+    font-size: $font-size-3xl;
+  }
+}
+
+.summary-card__label {
+  @include label-caps;
+  margin-top: $spacing-2xs;
+}
+
+// Type-specific glow effects
+.summary-card--duration {
+  .summary-card__value { color: $color-run; }
+  &:hover { box-shadow: 0 4px 20px rgba($color-run, 0.1); }
+}
+
+.summary-card--distance {
+  .summary-card__value { color: $color-cycle; }
+  &:hover { box-shadow: 0 4px 20px rgba($color-cycle, 0.1); }
+}
+
+.summary-card--activities {
+  .summary-card__value { color: $color-swim; }
+  &:hover { box-shadow: 0 4px 20px rgba($color-swim, 0.1); }
+}
+
+.summary-card--calories {
+  .summary-card__value { color: $gold; }
+  &:hover { box-shadow: 0 4px 20px rgba($gold, 0.1); }
+}
+
+.summary-card--elevation {
+  .summary-card__value { color: $color-hike; }
+  &:hover { box-shadow: 0 4px 20px rgba($color-hike, 0.1); }
+}

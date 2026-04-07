@@ -55,7 +55,7 @@ Built with a universal `build.sh` engine — one engine, per-project `build.json
 cd a-Portals/linktree && bash build.sh build
 
 # Dev server with hot reload
-cd c-Tools/mymovies && bash build.sh dev
+cd c-MyTools/mymovies && bash build.sh dev
 
 # Build everything
 ./build.sh build
@@ -86,24 +86,30 @@ front/
 │   ├── json-vision       JSON editor (Vue 3 + Vite)
 │   ├── myanalytics       Analytics dashboard (static copy)
 │   ├── mymail            Mail client (static copy)
-│   ├── myphotos          Photo viewer (static copy)
 │   └── suite             Browser tools (Sass+esbuild)
 │
-├── c-Tools/              Personal tools (14+ projects)
-│   ├── astro             Astronomy viewer (Nuxt)
-│   ├── carto             Cartography games (Sass+tsc)
-│   ├── central_bank      Banking tool (Vite)
-│   ├── feed_yourself     Nutrition calculator (Sass+esbuild)
-│   ├── health_tracker    Health tracker (static copy)
-│   ├── maps              Interactive maps (React+Vite)
-│   ├── market_watch      Market tracker (Sass+esbuild)
-│   ├── myfeed            Feed aggregator (Vue 3)
-│   ├── mygames           Games collection (SvelteKit)
-│   ├── mymaps            Strategic maps (SvelteKit+MapLibre)
-│   ├── mymovies          Movie browser (Vue 3+Vite)
-│   ├── mymusic           Music library (Vue 3+Vite)
-│   ├── mytrips           Travel planner (Vue 3+Vite)
-│   └── sailytics         Sailing analytics (Sass+esbuild)
+├── c-MyTools/            Personal tools & apps
+│   ├── astro                 Astronomy viewer (Nuxt)
+│   ├── myfeed                Feed aggregator (Vue 3)
+│   ├── mygames               Games collection (SvelteKit)
+│   ├── myhealth              Health portal (landing page)
+│   ├── myhealth-feedyourself Nutrition calculator (Sass+esbuild)
+│   ├── myhealth-profile      Health profile (static copy)
+│   ├── myhealth-tracker      Health tracker dashboard
+│   ├── mymaps                Maps portal (landing page)
+│   ├── mymaps-maps           Interactive maps (SvelteKit)
+│   ├── mymaps-mytrips        Travel planner (Vue 3+Vite)
+│   ├── mymaps-navigation     Strategic maps (SvelteKit+MapLibre)
+│   ├── mymovies              Movie browser (Vue 3+Vite)
+│   ├── mymusic               Music library (Vue 3+Vite)
+│   ├── myphotos              Photo viewer (static copy)
+│   └── myphotos-myorkut      Social network homage (dark Orkut)
+│
+├── c-LabTools/           Lab experiments & data tools
+│   ├── carto                 Cartography games (Sass+tsc)
+│   ├── central_bank          Banking tool (Vite)
+│   ├── market_watch          Market tracker (Sass+esbuild)
+│   └── sailytics             Sailing analytics (Sass+esbuild)
 │
 ├── d-Cloud/              Cloud & API documentation
 │   ├── api               API docs (static Swagger)
@@ -123,7 +129,8 @@ front/
 | Portals | `a-Portals/` | 4 | Entry points, dashboards, digital cards |
 | Profiles | `b-Profiles/` | 6 | CV, portfolio, landing pages, company sites |
 | Suite | `c-Suite/` | 5 | Integrated tools (JSON editor, analytics, mail, photos) |
-| Tools | `c-Tools/` | 14+ | Standalone apps (maps, movies, music, games, finance) |
+| MyTools | `c-MyTools/` | 15 | Personal apps (health, maps, movies, music, games, photos) |
+| LabTools | `c-LabTools/` | 4 | Lab experiments & data tools (carto, finance, sailing) |
 | Cloud | `d-Cloud/` | 3 | API docs, MCP docs, Swagger UI |
 | Others | `e-Others/` | 1 | Python scripts, misc |
 | Root | `e-Root/` | 1 | Main 3D cube index page |
@@ -132,14 +139,14 @@ front/
 
 | Archetype | Build Pipeline | Projects |
 |-----------|---------------|----------|
-| **Vite** | Vite HMR + bundler | mymovies, mymusic, json-vision, central_bank, mytrips, mymaps (work) |
-| **SvelteKit** | Vite + SSR | mygames, myprofile, mymaps (personal) |
-| **Vue 3** | Composition API + `<script setup>` | myfeed, mymovies, mymusic, mytrips, json-vision |
+| **Vite** | Vite HMR + bundler | mymovies, mymusic, json-vision, central_bank, mymaps-mytrips |
+| **SvelteKit** | Vite + SSR | mygames, myprofile, mymaps-navigation, mymaps-maps |
+| **Vue 3** | Composition API + `<script setup>` | myfeed, mymovies, mymusic, mymaps-mytrips, json-vision |
 | **React** | Vite + MapLibre | maps |
 | **Sass+esbuild** | sass → CSS, esbuild → JS | linktree, cv_web, cloud, market_watch, nexus, skills_mcp |
 | **Sass+tsc** | sass → CSS, tsc → JS | carto, landpage, leafy |
 | **Nuxt** | SSR + nuxt.config.ts | astro |
-| **Static copy** | File copy only | cv_pdf, health_tracker, myanalytics, mymail, myphotos |
+| **Static copy** | File copy only | cv_pdf, myhealth-profile, myanalytics, mymail, myphotos |
 
 ### A.5 Analytics
 

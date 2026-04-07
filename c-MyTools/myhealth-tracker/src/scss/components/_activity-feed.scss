@@ -1,0 +1,107 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.feed-list {
+  @include flex-col($gap: 0);
+  list-style: none;
+}
+
+.feed-item {
+  @include flex-row($gap: $spacing-md);
+  padding: $spacing-md $spacing-lg;
+  border-bottom: 1px solid $border;
+  transition: all 0.2s ease;
+  border-left: 2px solid transparent;
+
+  &:hover {
+    background: $bg-card;
+    border-left-color: $gold;
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.feed-item__icon {
+  @include flex-center;
+  width: 44px;
+  height: 44px;
+  border-radius: $radius-md;
+  font-size: $font-size-lg;
+  flex-shrink: 0;
+  border: 1px solid $border;
+}
+
+.feed-item__icon--swim {
+  background: rgba($color-swim, 0.1);
+  border-color: rgba($color-swim, 0.2);
+}
+.feed-item__icon--cycle {
+  background: rgba($color-cycle, 0.1);
+  border-color: rgba($color-cycle, 0.2);
+}
+.feed-item__icon--run {
+  background: rgba($color-run, 0.1);
+  border-color: rgba($color-run, 0.2);
+}
+.feed-item__icon--hike {
+  background: rgba($color-hike, 0.1);
+  border-color: rgba($color-hike, 0.2);
+}
+.feed-item__icon--walk {
+  background: rgba($color-walk, 0.1);
+  border-color: rgba($color-walk, 0.2);
+}
+
+.feed-item__body {
+  @include flex-col($gap: $spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.feed-item__title {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $text-primary;
+  @include truncate;
+}
+
+.feed-item__stats {
+  @include flex-row($gap: $spacing-md);
+  flex-wrap: wrap;
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.feed-item__stat {
+  @include flex-row($gap: $spacing-2xs);
+  white-space: nowrap;
+  font-family: $font-mono;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $text-secondary;
+  letter-spacing: 0;
+
+  // Separator dot
+  &:not(:last-child)::after {
+    content: '\00b7';
+    margin-left: $spacing-sm;
+    color: $text-dim;
+  }
+}
+
+.feed-item__date {
+  font-size: $font-size-xs;
+  color: $text-dim;
+  letter-spacing: $letter-spacing-wide;
+}
+
+.feed-item__feeling {
+  margin-left: auto;
+  font-size: $font-size-md;
+  flex-shrink: 0;
+  opacity: 0.8;
+}

@@ -1,0 +1,32 @@
+// ITCSS — Inverted Triangle CSS Architecture
+// Settings → Tools → Generic → Elements → Objects → Components → Utilities
+
+// 1. Settings: variables, colors, typography, breakpoints
+@use 'settings/colors';
+@use 'settings/typography';
+@use 'settings/breakpoints';
+
+// 2. Tools: mixins, functions (no output)
+@use 'tools/mixins';
+
+// 3. Generic: resets, box-sizing
+@use 'generic/reset';
+
+// 4. Elements: bare HTML element styles
+@use 'elements/base';
+
+// 5. Objects: layout patterns (OOCSS)
+@use 'objects/grid';
+@use 'objects/card';
+
+// 6. Components: UI components
+@use 'components/header';
+@use 'components/summary-card';
+@use 'components/chart-card';
+@use 'components/activity-feed';
+@use 'components/calendar-heatmap';
+@use 'components/records';
+
+// 7. Utilities: helper classes (highest specificity)
+@use 'utilities/helpers';
+@use 'utilities/animations';

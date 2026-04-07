@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyHealth — Your Health, Your Data</title>
+  <meta name="description" content="MyHealth portal — own your fitness and nutrition data">
+  <meta name="theme-color" content="#08090c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow">
+    <div class="glow-orb glow-orb--gold"></div>
+    <div class="glow-orb glow-orb--green"></div>
+    <div class="glow-orb glow-orb--blue"></div>
+  </div>
+
+  <!-- Floating pulse lines (ECG style) -->
+  <div class="bg-pulse">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+      <path class="pulse-line pulse-line--1" d="M0,60 L200,60 L220,20 L240,100 L260,40 L280,80 L300,60 L1200,60" />
+      <path class="pulse-line pulse-line--2" d="M0,60 L400,60 L420,30 L440,90 L460,45 L480,75 L500,60 L1200,60" />
+    </svg>
+  </div>
+
+  <div class="overlay"></div>
+
+  <!-- Main content -->
+  <div class="container">
+
+    <!-- Header -->
+    <header class="hero">
+      <div class="hero__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+        </svg>
+      </div>
+      <h1 class="hero__title">MyHealth</h1>
+      <p class="hero__tagline">Your health. Your data. Your dashboard.</p>
+    </header>
+
+    <!-- App Cards Grid -->
+    <section class="apps" id="apps-grid">
+
+      <a href="/myhealth-tracker/" class="app-card app-card--tracker">
+        <div class="app-card__glow"></div>
+        <div class="app-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+        </div>
+        <div class="app-card__body">
+          <h2 class="app-card__title">Tracker</h2>
+          <p class="app-card__desc">Performance dashboard — training volume, heart rate zones, pace trends, personal records</p>
+        </div>
+        <div class="app-card__tags">
+          <span class="tag tag--swim">Swim</span>
+          <span class="tag tag--cycle">Cycle</span>
+          <span class="tag tag--run">Run</span>
+          <span class="tag tag--hike">Hike</span>
+        </div>
+        <div class="app-card__arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="/myhealth-profile/" class="app-card app-card--profile">
+        <div class="app-card__glow"></div>
+        <div class="app-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <div class="app-card__body">
+          <h2 class="app-card__title">Profile</h2>
+          <p class="app-card__desc">Health profile — body metrics, vitals history, sleep patterns, wellness scores</p>
+        </div>
+        <div class="app-card__tags">
+          <span class="tag tag--profile">Vitals</span>
+          <span class="tag tag--profile">Sleep</span>
+          <span class="tag tag--profile">Body</span>
+        </div>
+        <div class="app-card__arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+      <a href="/myhealth-feedyourself/" class="app-card app-card--nutrition">
+        <div class="app-card__glow"></div>
+        <div class="app-card__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/>
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/>
+            <line x1="6" y1="1" x2="6" y2="4"/>
+            <line x1="10" y1="1" x2="10" y2="4"/>
+            <line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <div class="app-card__body">
+          <h2 class="app-card__title">FeedYourself</h2>
+          <p class="app-card__desc">Nutrition planner — meal designer, macro tracker, recipe collection, calorie targets</p>
+        </div>
+        <div class="app-card__tags">
+          <span class="tag tag--nutrition">Meals</span>
+          <span class="tag tag--nutrition">Macros</span>
+          <span class="tag tag--nutrition">Recipes</span>
+        </div>
+        <div class="app-card__arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </a>
+
+    </section>
+
+    <!-- Footer tagline -->
+    <footer class="footer">
+      <p class="footer__text">Own your data. No cloud lock-in. No subscriptions.</p>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

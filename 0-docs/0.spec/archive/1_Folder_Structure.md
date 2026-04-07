@@ -153,11 +153,11 @@ SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 
 ---
 
-# app/ (Next.js - mymaps)
+# app/ (Next.js - mymaps-navigation)
 
-Next.js App Router (`/mymaps`)
+Next.js App Router (`/mymaps-navigation`)
 ```
-/mymaps
+/mymaps-navigation
 ├── 1.ops/
 │   └──   build.sh          # Build script
 ├── app/                    # Next.js App Router
@@ -228,14 +228,14 @@ Nuxt 4 App (`/myprofile`)
 ├── cloud/
 ├── cv_pdf/
 ├── cv_web/
-├── feed_yourself/
-├── health_tracker/
+├── myhealth-feedyourself/
+├── myhealth-profile/
 ├── landpage/
 ├── linktree/
 ├── market_watch/
 ├── myfeed/
 ├── mygames/
-├── mymaps/
+├── mymaps-navigation/
 ├── myprofile/
 ├── nexus/
 ├── others/

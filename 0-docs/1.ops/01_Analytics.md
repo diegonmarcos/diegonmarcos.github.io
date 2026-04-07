@@ -72,15 +72,15 @@ if (typeof _paq !== 'undefined') {
 | cloud | ✅ | ✅ | ✅ | ✅ | ✅ |
 | cv_pdf | ✅ | ✅ | ❌ | ❌ | ❌ |
 | cv_web | ✅ | ✅ | ✅ | ✅ | ✅ |
-| feed_yourself | ✅ | ✅ | ❌ | ❌ | ❌ |
-| health_tracker | ✅ | ✅ | ❌ | ❌ | ❌ |
+| myhealth-feedyourself | ✅ | ✅ | ❌ | ❌ | ❌ |
+| myhealth-profile | ✅ | ✅ | ❌ | ❌ | ❌ |
 | landpage | ✅ | ✅ | ✅ | ✅ | ✅ |
 | linktree | ✅ | ✅ | ✅ | ✅ | ✅ |
 | market_watch | ✅ | ✅ | ✅ | ✅ | ✅ |
 | myfeed | ✅ | ✅ | ✅ | ✅ | ✅ |
 | mymusic | ✅ | ✅ | ✅ | ✅ | ✅ |
 | mygames | ✅ | ✅* | ✅ | ✅ | ✅ |
-| mymaps | ✅ | ✅* | ❌ | ❌ | ❌ |
+| mymaps-navigation | ✅ | ✅* | ❌ | ❌ | ❌ |
 | myprofile | ✅ | ✅ | ✅ | ❌ | ❌ |
 | mymovies | ✅ | ✅ | ✅ | ❌ | ✅ |
 | nexus | ✅ | ✅ | ✅ | ❌ | ✅ |
@@ -90,7 +90,7 @@ if (typeof _paq !== 'undefined') {
 **Legend:**
 - ✅ = Implemented
 - ❌ = Missing
-- ✅* = Located in non-standard path (mygames: `src/static/mygames_matomo.js`, mymaps: `public/mymaps_matomo.js`)
+- ✅* = Located in non-standard path (mygames: `src/static/mygames_matomo.js`, mymaps-navigation: `public/mymaps-navigation_matomo.js`)
 
 ---
 
@@ -141,14 +141,14 @@ if (typeof _paq !== 'undefined') {
 | CV Engagement | Section Toggle | Section expand/collapse |
 | CV | View Source | GitHub link clicks |
 
-### feed_yourself
+### myhealth-feedyourself
 | Event Category | Action | Description |
 |----------------|--------|-------------|
 | Feed Yourself | Action | General user actions |
 | Feed Yourself | Content Link | Content link clicks |
 | Feed Yourself | Page | Page load tracking |
 
-### health_tracker
+### myhealth-profile
 | Event Category | Action | Description |
 |----------------|--------|-------------|
 | HealthTracker | Metric Click | Health metric card clicks |
@@ -215,7 +215,7 @@ if (typeof _paq !== 'undefined') {
 | MyGames | Navigation | Navigation link clicks |
 | MyGames | Games Available | Games count on load |
 
-### mymaps
+### mymaps-navigation
 | Event Category | Action | Description |
 |----------------|--------|-------------|
 | MyMaps | Marker Click | Map marker interactions |
@@ -281,15 +281,15 @@ if (typeof _paq !== 'undefined') {
 | cloud | `public/matomo.js` |
 | cv_pdf | `public/matomo.js` |
 | cv_web | `public/matomo.js` |
-| feed_yourself | `public/matomo.js` |
-| health_tracker | `public/matomo.js` |
+| myhealth-feedyourself | `public/matomo.js` |
+| myhealth-profile | `public/matomo.js` |
 | landpage | `public/matomo.js` |
 | linktree | `public/matomo.js` |
 | market_watch | `public/matomo.js` |
 | myfeed | `public/matomo.js` |
 | mymusic | `public/matomo.js` |
 | mygames | `src/static/mygames_matomo.js` |
-| mymaps | `public/mymaps_matomo.js` |
+| mymaps-navigation | `public/mymaps-navigation_matomo.js` |
 | myprofile | `public/matomo.js` |
 | mymovies | `public/matomo.js` |
 | nexus | `public/matomo.js` |
@@ -308,15 +308,15 @@ All matomo tracking files are symlinked in:
 ├── cloud.js -> ../../cloud/public/matomo.js
 ├── cv_pdf.js -> ../../cv_pdf/public/matomo.js
 ├── cv_web.js -> ../../cv_web/public/matomo.js
-├── feed_yourself.js -> ../../feed_yourself/public/matomo.js
-├── health_tracker.js -> ../../health_tracker/public/matomo.js
+├── myhealth-feedyourself.js -> ../../myhealth-feedyourself/public/matomo.js
+├── myhealth-profile.js -> ../../myhealth-profile/public/matomo.js
 ├── landpage.js -> ../../landpage/public/matomo.js
 ├── linktree.js -> ../../linktree/public/matomo.js
 ├── market_watch.js -> ../../market_watch/public/matomo.js
 ├── myfeed.js -> ../../myfeed/public/matomo.js
 ├── mymusic.js -> ../../mymusic/public/matomo.js
 ├── mygames.js -> ../../mygames/src/static/mygames_matomo.js
-├── mymaps.js -> ../../mymaps/public/mymaps_matomo.js
+├── mymaps-navigation.js -> ../../mymaps-navigation/public/mymaps-navigation_matomo.js
 ├── mymovies.js -> ../../mymovies/public/matomo.js
 ├── myprofile.js -> ../../myprofile/public/matomo.js
 ├── nexus.js -> ../../nexus/public/matomo.js

@@ -1,0 +1,119 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.app-header {
+  @include flex-row(space-between, center, $spacing-md);
+  flex-wrap: wrap;
+  padding: $spacing-lg $spacing-xl;
+  background: $bg-surface;
+  border-bottom: 1px solid $border;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  // Gold accent line at top
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: $gradient-gold;
+    opacity: 0.6;
+  }
+
+  @include mq(md) {
+    padding: $spacing-lg $spacing-2xl;
+  }
+}
+
+.app-header__brand {
+  @include flex-row($gap: $spacing-md);
+}
+
+.app-header__logo {
+  width: 24px;
+  height: 24px;
+  color: $gold;
+  filter: drop-shadow(0 0 6px rgba($gold, 0.3));
+}
+
+.app-header__title {
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  letter-spacing: $letter-spacing-wide;
+  text-transform: uppercase;
+  color: $platinum-bright;
+}
+
+.app-header__nav {
+  @include flex-row($gap: $spacing-sm);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-tf-group {
+  @include flex-row($gap: 2px);
+  background: $bg-card;
+  border-radius: $radius-pill;
+  padding: 2px;
+  border: 1px solid $border;
+}
+
+.nav-btn {
+  @include flex-center;
+  width: 32px;
+  height: 32px;
+  border-radius: $radius-md;
+  background: $bg-card;
+  border: 1px solid $border;
+  color: $text-dim;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-light;
+
+  &:hover {
+    background: $bg-elevated;
+    color: $gold;
+    border-color: $border-accent;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.nav-label {
+  @include flex-center;
+  padding: 0 $spacing-lg;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-muted;
+  min-width: 180px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.tf-btn {
+  padding: $spacing-xs $spacing-md;
+  border-radius: $radius-pill;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-dim;
+  letter-spacing: $letter-spacing-wide;
+  text-transform: uppercase;
+
+  &:hover {
+    color: $text-secondary;
+  }
+
+  &--active {
+    background: $gold;
+    color: $bg-deep;
+    box-shadow: 0 0 12px rgba($gold, 0.3);
+  }
+}

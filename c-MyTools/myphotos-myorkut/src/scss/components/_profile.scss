@@ -1,0 +1,129 @@
+@use 'sass:color';
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.profile-card {
+  @include box;
+  @include flex-col($spacing-lg);
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+  // Pink top accent
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, $orkut-pink-dim, $orkut-pink, $orkut-pink-dim);
+  }
+}
+
+.profile-card__avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid $orkut-pink;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba($orkut-pink, 0.2);
+}
+
+.profile-card__avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+  background: linear-gradient(135deg, $orkut-pink-dim, $orkut-pink);
+  color: white;
+  font-size: $font-size-2xl;
+  font-weight: 700;
+}
+
+.profile-card__name {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.profile-card__tagline {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.profile-card__stats {
+  @include flex-row($spacing-xl);
+  width: 100%;
+  justify-content: center;
+  padding-top: $spacing-md;
+  border-top: 1px solid $border;
+}
+
+.profile-card__stat {
+  @include flex-col($spacing-2xs);
+  align-items: center;
+}
+
+.profile-card__stat-value {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $orkut-pink;
+}
+
+.profile-card__stat-label {
+  font-size: $font-size-xs;
+  color: $text-dim;
+  text-transform: lowercase;
+}
+
+// Classic Orkut trust meter!
+.trust-meter {
+  width: 100%;
+  @include flex-col($spacing-sm);
+}
+
+.trust-meter__row {
+  @include flex-row($spacing-md);
+}
+
+.trust-meter__label {
+  font-size: $font-size-xs;
+  color: $text-dim;
+  width: 48px;
+  text-align: right;
+  text-transform: lowercase;
+  font-weight: 500;
+}
+
+.trust-meter__bar {
+  flex: 1;
+  height: 8px;
+  background: $bg-input;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.trust-meter__fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &--cool {
+    width: 85%;
+    background: linear-gradient(90deg, $trust-cool, color.adjust($trust-cool, $lightness: 10%));
+    box-shadow: 0 0 8px rgba($trust-cool, 0.4);
+  }
+
+  &--trusty {
+    width: 92%;
+    background: linear-gradient(90deg, $trust-trusty, color.adjust($trust-trusty, $lightness: 10%));
+    box-shadow: 0 0 8px rgba($trust-trusty, 0.4);
+  }
+
+  &--sexy {
+    width: 78%;
+    background: linear-gradient(90deg, $trust-sexy, color.adjust($trust-sexy, $lightness: 10%));
+    box-shadow: 0 0 8px rgba($trust-sexy, 0.4);
+  }
+}

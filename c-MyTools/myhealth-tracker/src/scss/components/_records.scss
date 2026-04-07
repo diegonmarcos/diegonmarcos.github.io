@@ -1,0 +1,53 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.records-grid {
+  @include grid-auto-fit(260px, $spacing-md);
+}
+
+.record-card {
+  @include card;
+  @include flex-row($gap: $spacing-lg);
+  padding: $spacing-lg;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: $gold-dim;
+    box-shadow: 0 4px 20px rgba($gold, 0.06);
+  }
+}
+
+.record-card__icon {
+  font-size: $font-size-xl;
+  flex-shrink: 0;
+  @include flex-center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  background: rgba($gold, 0.08);
+  border: 1px solid rgba($gold, 0.15);
+}
+
+.record-card__body {
+  @include flex-col($gap: $spacing-2xs);
+  min-width: 0;
+}
+
+.record-card__category {
+  @include label-caps;
+}
+
+.record-card__value {
+  font-size: $font-size-xl;
+  @include stat-value;
+  color: $gold;
+}
+
+.record-card__date {
+  font-size: $font-size-xs;
+  color: $text-dim;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,0 +1,99 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.scrap-composer {
+  @include flex-col($spacing-md);
+  padding-bottom: $spacing-lg;
+  border-bottom: 1px solid $border;
+}
+
+.scrap-input {
+  width: 100%;
+  padding: $spacing-md;
+  background: $bg-input;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  color: $text-primary;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder { color: $text-dim; }
+  &:focus { border-color: $orkut-pink-dim; }
+}
+
+.scrap-send {
+  align-self: flex-end;
+  padding: $spacing-sm $spacing-xl;
+  background: $orkut-pink;
+  color: white;
+  font-weight: 600;
+  font-size: $font-size-sm;
+  border-radius: $radius-sm;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $orkut-pink-bright;
+    box-shadow: 0 0 16px rgba($orkut-pink, 0.3);
+  }
+}
+
+.scraps-list {
+  @include flex-col(0);
+}
+
+.scrap {
+  @include flex-row($spacing-md);
+  align-items: flex-start;
+  padding: $spacing-lg 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child { border-bottom: none; }
+}
+
+.scrap__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid $border-light;
+}
+
+.scrap__avatar-inner {
+  width: 100%;
+  height: 100%;
+  @include flex-center;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: white;
+}
+
+.scrap__body {
+  @include flex-col($spacing-xs);
+  flex: 1;
+  min-width: 0;
+}
+
+.scrap__header {
+  @include flex-row($spacing-sm);
+}
+
+.scrap__author {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $orkut-pink;
+}
+
+.scrap__time {
+  font-size: $font-size-xs;
+  color: $text-dim;
+}
+
+.scrap__text {
+  font-size: $font-size-base;
+  color: $text-secondary;
+  line-height: 1.5;
+}

@@ -1,0 +1,14 @@
+@use '../settings/colors' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.calendar-wrapper {
+  @include card;
+  overflow-x: auto;
+  padding: $spacing-lg;
+
+  canvas {
+    min-width: 700px;
+    height: 140px;
+  }
+}

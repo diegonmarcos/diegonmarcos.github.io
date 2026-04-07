@@ -40,13 +40,13 @@ This document defines the **folder structure and file organization** for all pro
 ├── central_bank/
 ├── cv_pdf/
 ├── cv_web/
-├── feed_yourself/
-├── health_tracker/
+├── myhealth-feedyourself/
+├── myhealth-profile/
 ├── landpage/
 ├── market_watch/
 ├── myfeed/
 ├── mygames/
-├── mymaps/
+├── mymaps-navigation/
 ├── myprofile/
 ├── nexus/
 ├── others/
@@ -291,16 +291,16 @@ SvelteKit Source Files (`/mygames/1.3.svelte/src`)
 
 ---
 
-# src/ (Python - mymaps)
+# src/ (Python - mymaps-navigation)
 
-Python Map Generator (`/mymaps`)
+Python Map Generator (`/mymaps-navigation`)
 
 ```
-/mymaps
+/mymaps-navigation
 ├──   index.html          # Menu with cards linking to maps
 ├──   README.md
 ├── src/
-│   ├──   mymaps.py       # Map generator script
+│   ├──   mymaps-navigation.py       # Map generator script
 │   ├──   gui.py          # Tkinter GUI for configuration
 │   ├──   config.csv      # Map configuration
 │   └──   input_data.csv  # Country/region data with spheres

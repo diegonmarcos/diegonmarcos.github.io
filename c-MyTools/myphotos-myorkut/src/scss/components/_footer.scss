@@ -1,0 +1,22 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+
+.footer {
+  text-align: center;
+  padding: $spacing-2xl;
+  border-top: 1px solid $border;
+  margin-top: $spacing-2xl;
+}
+
+.footer__text {
+  font-size: $font-size-sm;
+  color: $text-dim;
+}
+
+.footer__sub {
+  font-size: $font-size-xs;
+  color: $orkut-pink-dim;
+  margin-top: $spacing-sm;
+  font-style: italic;
+}

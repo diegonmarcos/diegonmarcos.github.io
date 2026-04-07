@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyHealth Tracker — Elite Performance Dashboard</title>
+  <meta name="description" content="Elite athlete performance dashboard — own your data from Strava and Garmin">
+  <meta name="theme-color" content="#08090c">
+  <link rel="stylesheet" href="style.css">
+  <script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__brand">
+      <svg class="app-header__logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+      </svg>
+      <h1 class="app-header__title">MyHealth</h1>
+    </div>
+    <nav class="app-header__nav" id="date-nav"></nav>
+  </header>
+
+  <main class="dashboard">
+    <section class="dashboard__summary" id="summary-cards"></section>
+
+    <section class="dashboard__charts">
+      <article class="chart-card chart-card--wide">
+        <h2 class="chart-card__title">Training Volume</h2>
+        <div class="chart-card__body">
+          <canvas id="chart-bar"></canvas>
+        </div>
+      </article>
+      <article class="chart-card">
+        <h2 class="chart-card__title">Sport Distribution</h2>
+        <div class="chart-card__body">
+          <canvas id="chart-donut"></canvas>
+        </div>
+      </article>
+      <article class="chart-card chart-card--wide">
+        <h2 class="chart-card__title">Performance Trends</h2>
+        <div class="chart-card__body">
+          <canvas id="chart-line"></canvas>
+        </div>
+      </article>
+      <article class="chart-card">
+        <h2 class="chart-card__title">Heart Rate Zones</h2>
+        <div class="chart-card__body">
+          <canvas id="chart-zones"></canvas>
+        </div>
+      </article>
+    </section>
+
+    <section class="dashboard__calendar">
+      <h2 class="section-title">Training Calendar</h2>
+      <div class="calendar-wrapper">
+        <canvas id="calendar-heatmap"></canvas>
+      </div>
+    </section>
+
+    <section class="dashboard__records" id="records">
+      <h2 class="section-title">Personal Records</h2>
+    </section>
+
+    <section class="dashboard__feed" id="activity-feed">
+      <h2 class="section-title">Activity Log</h2>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

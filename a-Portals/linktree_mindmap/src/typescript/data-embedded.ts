@@ -290,8 +290,8 @@ export const GRAPH_DATA: GraphData = {
       "icon": "heart",
       "color": "#F48FB1",
       "links": [
-        { "label": "Feed Yourself", "url": "https://diegonmarcos.github.io/feed_yourself", "icon": "brain" },
-        { "label": "Health Tracker", "url": "https://diegonmarcos.github.io/health_tracker", "icon": "heart" }
+        { "label": "MyHealth FeedYourself", "url": "https://diegonmarcos.github.io/myhealth-feedyourself", "icon": "brain" },
+        { "label": "MyHealth Profile", "url": "https://diegonmarcos.github.io/myhealth-profile", "icon": "heart" }
       ]
     },
     "finance-tools": {
@@ -310,7 +310,7 @@ export const GRAPH_DATA: GraphData = {
       "icon": "map-pin-2",
       "color": "#F48FB1",
       "links": [
-        { "label": "MyMaps", "url": "https://diegonmarcos.github.io/mymaps", "icon": "map-pin-2" }
+        { "label": "MyMaps Navigation", "url": "https://diegonmarcos.github.io/mymaps-navigation", "icon": "map-pin-2" }
       ]
     },
     "games": {

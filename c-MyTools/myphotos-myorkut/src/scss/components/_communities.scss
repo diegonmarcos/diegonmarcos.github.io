@@ -1,0 +1,97 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.communities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $spacing-md;
+
+  @include mq(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.community-card {
+  @include flex-row($spacing-md);
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  background: $bg-card-hover;
+  border: 1px solid $border;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    border-color: $orkut-pink-dim;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+}
+
+.community-card__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: $radius-sm;
+  @include flex-center;
+  font-size: $font-size-lg;
+  flex-shrink: 0;
+}
+
+.community-card__body {
+  @include flex-col(2px);
+  min-width: 0;
+}
+
+.community-card__name {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $text-primary;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.community-card__members {
+  font-size: $font-size-xs;
+  color: $text-dim;
+}
+
+// Testimonials
+.testimonials-list {
+  @include flex-col(0);
+}
+
+.testimonial {
+  padding: $spacing-lg 0;
+  border-bottom: 1px solid $border;
+  @include flex-col($spacing-sm);
+
+  &:last-child { border-bottom: none; }
+}
+
+.testimonial__header {
+  @include flex-row($spacing-sm);
+}
+
+.testimonial__author {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $orkut-pink;
+}
+
+.testimonial__date {
+  font-size: $font-size-xs;
+  color: $text-dim;
+}
+
+.testimonial__text {
+  font-size: $font-size-base;
+  color: $text-secondary;
+  line-height: 1.6;
+  font-style: italic;
+
+  &::before { content: '\201C'; color: $orkut-pink; font-size: $font-size-lg; }
+  &::after { content: '\201D'; color: $orkut-pink; font-size: $font-size-lg; }
+}

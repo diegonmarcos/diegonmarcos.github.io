@@ -12,8 +12,8 @@ PAGE_META = {
     'about.html': {'icon': '👤', 'title': 'About', 'desc': 'Learn more about me'},
     'cv.html': {'icon': '📄', 'title': 'CV', 'desc': 'My curriculum vitae'},
     'earth.html': {'icon': '🌍', 'title': 'Earth', 'desc': 'Interactive globe'},
-    'feed_yourself.html': {'icon': '🍽️', 'title': 'Feed Yourself', 'desc': 'Recipe collection'},
-    'health_tracker.html': {'icon': '💪', 'title': 'Health Tracker', 'desc': 'Track your health'},
+    'myhealth-feedyourself.html': {'icon': '🍽️', 'title': 'MyHealth FeedYourself', 'desc': 'Recipe collection'},
+    'myhealth-profile.html': {'icon': '💪', 'title': 'MyHealth Profile', 'desc': 'Track your health'},
     'quill.html': {'icon': '✒️', 'title': 'Quill', 'desc': 'Writing tool'},
     'repos.html': {'icon': '📦', 'title': 'Repos', 'desc': 'GitHub repositories'},
 }

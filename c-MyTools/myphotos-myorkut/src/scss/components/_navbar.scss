@@ -1,0 +1,106 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.navbar {
+  background: $bg-surface;
+  border-bottom: 2px solid $orkut-pink-dim;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  // Pink glow at bottom
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $orkut-pink, transparent);
+    opacity: 0.6;
+  }
+}
+
+.navbar__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: $spacing-md $spacing-xl;
+  @include flex-row($spacing-xl);
+  flex-wrap: wrap;
+}
+
+.navbar__logo {
+  @include flex-row($spacing-xs);
+  text-decoration: none;
+  font-size: $font-size-xl;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+
+  &:hover { text-decoration: none; }
+}
+
+.navbar__logo-text { color: $text-primary; }
+.navbar__logo-accent {
+  color: $orkut-pink;
+  text-shadow: 0 0 20px rgba($orkut-pink, 0.4);
+}
+
+.navbar__search {
+  @include flex-row(0);
+  flex: 1;
+  max-width: 360px;
+  position: relative;
+}
+
+.navbar__search-input {
+  width: 100%;
+  padding: $spacing-sm $spacing-lg;
+  padding-right: 40px;
+  background: $bg-input;
+  border: 1px solid $border;
+  border-radius: 100px;
+  color: $text-primary;
+  font-size: $font-size-sm;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &::placeholder { color: $text-dim; }
+  &:focus { border-color: $orkut-pink-dim; }
+}
+
+.navbar__search-btn {
+  position: absolute;
+  right: 8px;
+  background: none;
+  color: $text-dim;
+  padding: $spacing-xs;
+
+  svg { width: 16px; height: 16px; }
+  &:hover { color: $orkut-pink; }
+}
+
+.navbar__links {
+  @include flex-row($spacing-lg);
+}
+
+.navbar__link {
+  font-size: $font-size-sm;
+  font-weight: 500;
+  color: $text-muted;
+  text-decoration: none;
+  padding: $spacing-xs 0;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+
+  &:hover {
+    color: $orkut-pink;
+    text-decoration: none;
+  }
+
+  &--active {
+    color: $orkut-pink;
+    border-bottom-color: $orkut-pink;
+  }
+}

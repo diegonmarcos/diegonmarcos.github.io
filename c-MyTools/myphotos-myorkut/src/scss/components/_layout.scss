@@ -1,0 +1,23 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-xl;
+
+  @include mq(md) {
+    grid-template-columns: 300px 1fr;
+  }
+}
+
+.sidebar {
+  @include flex-col($spacing-xl);
+}
+
+.content {
+  @include flex-col($spacing-xl);
+}

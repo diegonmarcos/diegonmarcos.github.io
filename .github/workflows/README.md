@@ -45,7 +45,9 @@ a_Portals
    * myphotos
    * myanalytics
    * suite
-   * mymaps
+   * mymaps-navigation
+   * mymaps-maps
+   * mymaps-mytrips
    * skills_mcp
    * api (Swagger UI)
 
@@ -55,9 +57,9 @@ a_Portals
   c_Personal_Tools
    * myfeed
    * mygames
-   * feed_yourself
+   * myhealth-feedyourself
    * others
-   * health_tracker
+   * myhealth-profile
    * market_watch
    * central_bank
    * mymovies

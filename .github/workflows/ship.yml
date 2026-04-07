@@ -194,18 +194,7 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
-      - name: 🔨 Build MyAnalytics
-        id: build-myanalytics
-        if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myanalytics/src/')
-
-        run: |
-          echo "🔨 Building MyAnalytics..."
-          cd c-Suite/myanalytics
-          bash build.sh build
-          cd ../..
-          echo "✅ MyAnalytics build complete"
-      - name: 🔨 Build Suite
+- name: 🔨 Build Suite
         id: build-suite
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')
@@ -432,7 +421,6 @@ jobs:
             "b-Profiles/nexus:nexus"
             "b-Profiles/stark:stark"
             "c-Suite/json-vision:json-vision"
-            "c-Suite/myanalytics:myanalytics"
             "c-Suite/mymail:mymail"
             "c-MyTools/myphotos:myphotos"
             "c-Suite/suite:suite"

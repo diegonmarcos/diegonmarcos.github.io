@@ -22,12 +22,21 @@
 .profile-icons {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 1.5rem;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
     margin-top: 1rem;
     margin-bottom: 1rem;
 
-    a { @include holographic-icon-square; }
+    a {
+        @include holographic-icon-square;
+        padding: 8px;
+        border-radius: 8px;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
 }
 
 .inline-icon {

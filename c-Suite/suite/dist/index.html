@@ -8,6 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();</script><!-- End Matomo Tag Manager -->
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
 </head>
 <body>
     <!-- Isometric Grid Background -->
@@ -237,6 +241,13 @@
                         <line x1="17" y1="7" x2="22" y2="7"/>
                     </svg>
                     Videos
+                </button>
+                <button class="category-tab" data-category="devtools">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="16 18 22 12 16 6"/>
+                        <polyline points="8 6 2 12 8 18"/>
+                    </svg>
+                    Dev Tools
                 </button>
             </div>
 
@@ -514,6 +525,26 @@
                         <div class="service-info">
                             <div class="service-name">NocoDB</div>
                             <div class="service-desc">Airtable alternative - database as spreadsheet</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DEV TOOLS OPTIONS -->
+                <div class="service-table" data-category="devtools">
+                    <div class="service-option active" data-name="JSON Vision" data-url="https://diegonmarcos.github.io/json-vision/" data-config="https://diegonmarcos.github.io/json-vision/">
+                        <div class="radio"></div>
+                        <div class="service-icon jsonvision"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">JSON Vision</div>
+                            <div class="service-desc">Interactive JSON editor & visualizer</div>
+                        </div>
+                    </div>
+                    <div class="service-option active" data-name="Code Server" data-url="https://ide.diegonmarcos.com/" data-config="https://ide.diegonmarcos.com/">
+                        <div class="radio"></div>
+                        <div class="service-icon codeserver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+                        <div class="service-info">
+                            <div class="service-name">Code Server</div>
+                            <div class="service-desc">VS Code in the browser - WebIDE</div>
                         </div>
                     </div>
                 </div>

@@ -84,7 +84,6 @@ front/
 │
 ├── c-Suite/              Tools suite
 │   ├── json-vision       JSON editor (Vue 3 + Vite)
-│   ├── myanalytics       Analytics dashboard (static copy)
 │   ├── mymail            Mail client (static copy)
 │   └── suite             Browser tools (Sass+esbuild)
 │
@@ -146,7 +145,7 @@ front/
 | **Sass+esbuild** | sass → CSS, esbuild → JS | linktree, cv_web, cloud, market_watch, nexus, skills_mcp |
 | **Sass+tsc** | sass → CSS, tsc → JS | carto, landpage, leafy |
 | **Nuxt** | SSR + nuxt.config.ts | astro |
-| **Static copy** | File copy only | cv_pdf, myhealth-profile, myanalytics, mymail, myphotos |
+| **Static copy** | File copy only | cv_pdf, myhealth-profile, mymail, myphotos |
 
 ### A.5 Analytics
 

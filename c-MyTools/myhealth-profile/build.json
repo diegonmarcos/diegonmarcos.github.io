@@ -2,17 +2,17 @@
   "name": "MyHealth Profile",
   "framework": "vanilla",
   "port": 8009,
-  "src": "src_static",
+  "src": "src",
   "dist": "dist",
 
   "build": [
-    { "mod": "copy", "files": "*.html", "from": "src_static" },
+    { "mod": "copy", "files": "*.html", "from": "src" },
     { "mod": "symlink", "files": "public" }
   ],
 
   "serve": {
     "mode": "auto",
-    "dir": "src_static"
+    "dir": "src"
   },
 
   "deploy": {}

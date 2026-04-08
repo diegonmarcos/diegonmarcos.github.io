@@ -296,7 +296,7 @@ jobs:
       - name: 🔨 Build GDELT News
         id: build-news
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/news/src_static/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/news/src/')
 
         run: |
           echo "🔨 Building GDELT News..."

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.25, maximum-scale=3, user-scalable=yes">
+    <title>GDELT News Terminal</title>
+    <meta name="description" content="GDELT News Terminal — Real-time global news aggregator with sentiment analysis">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://news.diegonmarcos.com/">
+    <meta property="og:title" content="GDELT News Terminal">
+    <meta property="og:description" content="Real-time global news aggregator with sentiment analysis powered by GDELT">
+    <meta property="og:site_name" content="Diego Nepomuceno Marcos">
+    <meta name="author" content="Diego Nepomuceno Marcos">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GDELT News Terminal">
+    <meta name="twitter:description" content="Real-time global news aggregator with sentiment analysis powered by GDELT">
+
+    <!-- Matomo Tag Manager -->
+    <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+      s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__brand">
+            <span class="header__logo">GDELT</span>
+            <span class="header__title">NEWS TERMINAL</span>
+        </div>
+        <nav class="header__topics" id="topic-pills"></nav>
+        <div class="header__search">
+            <input type="text" class="header__input" id="search-input" placeholder="Search news..." aria-label="Search news topics">
+            <button class="header__btn" id="search-btn" type="button">GO</button>
+        </div>
+        <time class="header__clock" id="clock"></time>
+    </header>
+
+    <main class="main-grid">
+        <section class="panel panel--articles" aria-label="Articles">
+            <div class="panel__header">
+                <h2 class="panel__title">ARTICLES</h2>
+                <span class="panel__count" id="article-count">0</span>
+            </div>
+            <div class="panel__body" id="article-list"></div>
+        </section>
+
+        <section class="panel panel--timeline" aria-label="Volume Timeline">
+            <div class="panel__header">
+                <h2 class="panel__title">VOLUME TIMELINE</h2>
+            </div>
+            <div class="panel__body" id="timeline-chart"></div>
+        </section>
+
+        <section class="panel panel--tone" aria-label="Sentiment Analysis">
+            <div class="panel__header">
+                <h2 class="panel__title">SENTIMENT ANALYSIS</h2>
+            </div>
+            <div class="panel__body" id="tone-chart"></div>
+        </section>
+
+        <section class="panel panel--topics" aria-label="Topics">
+            <div class="panel__header">
+                <h2 class="panel__title">TOPICS</h2>
+            </div>
+            <div class="panel__body" id="topic-cards"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <span class="footer__key">F1 HELP</span>
+        <span class="footer__key">F2 TOPICS</span>
+        <span class="footer__key">F3 SEARCH</span>
+        <span class="footer__key">F4 REFRESH</span>
+        <span class="footer__spacer"></span>
+        <span class="footer__status" id="status-text">READY</span>
+        <span class="footer__source">GDELT v2</span>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

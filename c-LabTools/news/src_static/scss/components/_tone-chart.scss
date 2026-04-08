@@ -1,0 +1,85 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.tone-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px;
+  height: 100%;
+  overflow-y: auto;
+  @include scrollbar-dark;
+}
+
+.tone-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: $font-size-tiny;
+
+  &__label {
+    @include text-truncate;
+    flex: 0 0 120px;
+    color: $color-text-muted;
+  }
+
+  &__track {
+    flex: 1;
+    height: 10px;
+    background-color: $color-bg-panel-alt;
+    position: relative;
+    border-radius: 1px;
+  }
+
+  &__fill {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 1px;
+    min-width: 2px;
+
+    &--positive {
+      left: 50%;
+      background-color: $positive;
+    }
+
+    &--negative {
+      right: 50%;
+      background-color: $negative;
+    }
+  }
+
+  &__center {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: $color-border-light;
+  }
+
+  &__value {
+    flex: 0 0 40px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: bold;
+
+    &--positive {
+      color: $positive;
+    }
+
+    &--negative {
+      color: $negative;
+    }
+
+    &--neutral {
+      color: $neutral;
+    }
+  }
+}
+
+.tone-empty {
+  @include flex-center;
+  height: 100%;
+  color: $color-text-muted;
+}

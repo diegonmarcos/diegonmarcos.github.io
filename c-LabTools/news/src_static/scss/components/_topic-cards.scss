@@ -1,0 +1,60 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.topic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 4px;
+  padding: 4px;
+}
+
+.topic-card {
+  padding: 8px;
+  background-color: $color-bg-panel-alt;
+  border: 1px solid $color-border;
+  cursor: pointer;
+  transition: border-color 0.1s;
+
+  &:hover {
+    border-color: $color-text-accent;
+  }
+
+  &__label {
+    color: $color-text-accent;
+    font-size: $font-size-small;
+    font-weight: bold;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  &__count {
+    color: $color-text-primary;
+    font-size: $font-size-large;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__articles {
+    color: $color-text-muted;
+    font-size: $font-size-tiny;
+  }
+
+  &__tone {
+    margin-top: 4px;
+    font-size: $font-size-tiny;
+    font-weight: bold;
+
+    &--positive {
+      color: $positive;
+    }
+
+    &--negative {
+      color: $negative;
+    }
+
+    &--neutral {
+      color: $neutral;
+    }
+  }
+}

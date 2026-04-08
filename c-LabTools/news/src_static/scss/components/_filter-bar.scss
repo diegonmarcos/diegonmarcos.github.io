@@ -1,0 +1,29 @@
+@use '../abstracts/variables' as *;
+
+.topic-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: $font-size-tiny;
+  color: $color-text-muted;
+  background-color: $color-bg-panel;
+  border: 1px solid $color-border;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.1s;
+
+  &:hover {
+    border-color: $color-text-accent;
+    color: $color-text-primary;
+  }
+
+  &--active {
+    background-color: $color-text-accent;
+    color: $color-bg-global;
+    border-color: $color-text-accent;
+    font-weight: bold;
+
+    &:hover {
+      color: $color-bg-global;
+    }
+  }
+}

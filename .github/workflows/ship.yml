@@ -293,6 +293,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Carto build complete"
+      - name: 🔨 Build GDELT News
+        id: build-news
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/news/src_static/')
+
+        run: |
+          echo "🔨 Building GDELT News..."
+          cd c-LabTools/news
+          bash build.sh build
+          cd ../..
+          echo "✅ GDELT News build complete"
       - name: 🔨 Build MyMaps MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mymaps-mytrips
         if:
@@ -442,6 +453,7 @@ jobs:
             "d-Cloud/skills_mcp:skills_mcp"
             "e-Others/others:others"
             "c-LabTools/sailytics:sailytics"
+            "c-LabTools/news:news"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

@@ -1,0 +1,35 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.footer {
+  @include flex-between;
+  height: $footer-height;
+  padding: 0 8px;
+  background-color: $color-bg-header;
+  border-top: 1px solid $color-border;
+  font-size: $font-size-tiny;
+  flex-shrink: 0;
+
+  &__key {
+    color: $color-text-muted;
+    padding: 0 8px;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  &__spacer {
+    flex: 1;
+  }
+
+  &__status {
+    color: $color-text-green;
+    padding: 0 8px;
+  }
+
+  &__source {
+    color: $color-text-accent;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,13 @@
+// GDELT News Terminal — Main stylesheet
+// ITCSS architecture: abstracts → base → layout → components
+
+@use 'base/reset';
+@use 'layout/app';
+@use 'components/header';
+@use 'components/panel';
+@use 'components/article-list';
+@use 'components/timeline';
+@use 'components/tone-chart';
+@use 'components/filter-bar';
+@use 'components/footer';
+@use 'components/topic-cards';

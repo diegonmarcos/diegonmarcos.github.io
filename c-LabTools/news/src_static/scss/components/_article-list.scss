@@ -1,0 +1,65 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.article-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-small;
+}
+
+.article-row {
+  border-bottom: 1px solid $color-border;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $color-bg-selection;
+  }
+
+  &__cell {
+    padding: $cell-padding;
+    vertical-align: top;
+    line-height: $row-height;
+  }
+
+  &__title {
+    @include text-truncate;
+    max-width: 300px;
+    color: $color-text-primary;
+  }
+
+  &__source {
+    color: $color-text-muted;
+    white-space: nowrap;
+  }
+
+  &__date {
+    color: $color-text-muted;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__tone {
+    text-align: right;
+    font-weight: bold;
+    white-space: nowrap;
+
+    &--positive {
+      color: $positive;
+    }
+
+    &--negative {
+      color: $negative;
+    }
+
+    &--neutral {
+      color: $neutral;
+    }
+  }
+}
+
+.article-empty {
+  @include flex-center;
+  height: 100%;
+  color: $color-text-muted;
+  font-size: $font-size-base;
+}

@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src_static/typescript",
+    "declaration": false,
+    "noEmit": true
+  },
+  "include": ["src_static/typescript/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

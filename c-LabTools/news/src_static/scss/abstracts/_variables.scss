@@ -1,0 +1,49 @@
+/* GDELT NEWS TERMINAL - DESIGN SYSTEM
+ * Bloomberg Terminal palette — shared with market_watch
+ */
+
+// --- 1. Color Palette ---
+
+// Backgrounds
+$color-bg-global:       #000000;
+$color-bg-panel:        #121212;
+$color-bg-panel-alt:    #1a1a1a;
+$color-bg-selection:    #003366;
+$color-bg-header:       #1a1a1a;
+
+// Text Colors
+$color-text-primary:    #e0e0e0;
+$color-text-muted:      #999999;
+$color-text-accent:     #ff9800; // Bloomberg Amber
+$color-text-green:      #00ff00; // Terminal Green — positive tone
+$color-text-red:        #ff3333; // Alert Red — negative tone
+$color-text-blue:       #4fc3f7; // Info Blue
+
+// Accents & Borders
+$color-border:          #333333;
+$color-border-light:    #444444;
+
+// --- 2. Typography ---
+
+$font-mono:             'Consolas', 'Monaco', 'Andale Mono', monospace;
+$font-size-base:        12px;
+$font-size-tiny:        11px;
+$font-size-small:       10px;
+$font-size-large:       14px;
+
+// --- 3. Sizing & Spacing ---
+
+$row-height:            22px;
+$cell-padding:          2px 6px;
+$header-padding:        4px 8px;
+$panel-gap:             1px;
+
+// --- 4. Aliases ---
+
+$positive:              $color-text-green;
+$negative:              $color-text-red;
+$neutral:               $color-text-muted;
+$accent:                $color-text-accent;
+
+// Footer
+$footer-height:         24px;

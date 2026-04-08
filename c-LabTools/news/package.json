@@ -1,0 +1,20 @@
+{
+  "name": "gdelt-news-terminal",
+  "version": "1.0.0",
+  "description": "GDELT News Terminal — Bloomberg-style global news dashboard",
+  "main": "dist/index.html",
+  "scripts": {
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "sass src_static/scss/main.scss dist/style.css --style=compressed --no-source-map",
+    "build:js": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --minify --target=es2015",
+    "dev:css": "sass src_static/scss/main.scss dist/style.css --watch --style=expanded --source-map",
+    "dev:js": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch --sourcemap"
+  },
+  "author": "Diego Nepomuceno Marcos",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "sass": "^1.83.0",
+    "typescript": "^5.7.0"
+  }
+}

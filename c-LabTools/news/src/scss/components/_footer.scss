@@ -13,9 +13,19 @@
   &__key {
     color: $color-text-muted;
     padding: 0 8px;
+    text-decoration: none;
 
     &:first-child {
       padding-left: 0;
+    }
+
+    &--link {
+      color: $color-text-green;
+      font-weight: bold;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 

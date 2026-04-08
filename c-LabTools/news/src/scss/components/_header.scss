@@ -70,10 +70,43 @@
     }
   }
 
+  &__demo {
+    color: $color-text-accent;
+    font-size: $font-size-tiny;
+    font-weight: bold;
+    border: 1px solid $color-text-accent;
+    padding: 0 4px;
+  }
+
+  &__actions {
+    flex-shrink: 0;
+  }
+
+  &__live-btn {
+    display: inline-block;
+    padding: 2px 10px;
+    background-color: $color-text-green;
+    color: $color-bg-global;
+    font-size: $font-size-tiny;
+    font-weight: bold;
+    text-decoration: none;
+    animation: pulse-live 2s infinite;
+
+    &:hover {
+      text-decoration: none;
+      background-color: #33ff33;
+    }
+  }
+
   &__clock {
     color: $color-text-accent;
     font-size: $font-size-small;
     flex-shrink: 0;
     font-variant-numeric: tabular-nums;
   }
+}
+
+@keyframes pulse-live {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }

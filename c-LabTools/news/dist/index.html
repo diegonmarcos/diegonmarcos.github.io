@@ -37,11 +37,11 @@
         <div class="header__brand">
             <span class="header__logo">GDELT</span>
             <span class="header__title">NEWS TERMINAL</span>
+            <span class="header__demo">DEMO</span>
         </div>
         <nav class="header__topics" id="topic-pills"></nav>
-        <div class="header__search">
-            <input type="text" class="header__input" id="search-input" placeholder="Search news..." aria-label="Search news topics">
-            <button class="header__btn" id="search-btn" type="button">GO</button>
+        <div class="header__actions">
+            <a href="http://10.0.0.6:3019/" class="header__live-btn" title="Live dashboard (VPN required)">LIVE DASHBOARD</a>
         </div>
         <time class="header__clock" id="clock"></time>
     </header>
@@ -50,7 +50,7 @@
         <section class="panel panel--articles" aria-label="Articles">
             <div class="panel__header">
                 <h2 class="panel__title">ARTICLES</h2>
-                <span class="panel__count" id="article-count">0</span>
+                <span class="panel__count" id="article-count">8</span>
             </div>
             <div class="panel__body" id="article-list"></div>
         </section>
@@ -78,13 +78,11 @@
     </main>
 
     <footer class="footer">
-        <span class="footer__key">F1 HELP</span>
-        <span class="footer__key">F2 TOPICS</span>
-        <span class="footer__key">F3 SEARCH</span>
-        <span class="footer__key">F4 REFRESH</span>
+        <a href="http://10.0.0.6:3019/" class="footer__key footer__key--link">LIVE DASHBOARD (VPN)</a>
+        <span class="footer__key">GDELT v2 API</span>
         <span class="footer__spacer"></span>
-        <span class="footer__status" id="status-text">READY</span>
-        <span class="footer__source">GDELT v2</span>
+        <span class="footer__status" id="status-text">DEMO MODE</span>
+        <span class="footer__source">diegonmarcos.com</span>
     </footer>
 
     <script src="script.js"></script>

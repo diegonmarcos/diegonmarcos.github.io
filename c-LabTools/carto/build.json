@@ -9,7 +9,6 @@
     { "mod": "sass", "input": "src/scss/style.scss", "output": "style.css" },
     { "mod": "tsc", "dir": "src/typescript", "output": "script.js" },
     { "mod": "copy", "files": "index.html", "from": "src" },
-    { "mod": "inline", "html": "index.html", "css": "style.css", "js": "script.js" },
     { "mod": "symlink", "files": "public" }
   ],
 

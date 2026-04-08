@@ -9,7 +9,6 @@
     { "mod": "esbuild", "input": "src/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
     { "mod": "sass", "input": "src/scss/main.scss", "output": "style.css" },
     { "mod": "copy", "files": "index.html", "from": "src" },
-    { "mod": "inline", "html": "index.html", "css": "style.css", "js": "script.js" },
     { "mod": "symlink", "files": "public" }
   ],
 

@@ -3,10 +3,10 @@
   "version": "2.0.0",
   "description": "Nexus Holdings - Capital & Corporate Services (Vanilla)",
   "scripts": {
-    "build:css": "sass src_static/scss/main.scss dist/styles.css --style=compressed --no-source-map",
-    "build:ts": "tsc src_static/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --strict",
-    "dev:css": "sass src_static/scss/main.scss dist/styles.css --style=expanded --source-map --watch",
-    "dev:ts": "tsc src_static/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --watch"
+    "build:css": "sass src/scss/main.scss dist/styles.css --style=compressed --no-source-map",
+    "build:ts": "tsc src/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --strict",
+    "dev:css": "sass src/scss/main.scss dist/styles.css --style=expanded --source-map --watch",
+    "dev:ts": "tsc src/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --watch"
   },
   "devDependencies": {
     "sass": "^1.77.0",

@@ -194,7 +194,7 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
-- name: 🔨 Build Suite
+      - name: 🔨 Build Suite
         id: build-suite
         if:
           contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/suite/src/')

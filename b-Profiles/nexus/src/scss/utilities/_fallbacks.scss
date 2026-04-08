@@ -1,0 +1,11 @@
+// ==========================================================================
+// Backdrop Blur Fallback
+// ==========================================================================
+
+@supports not (backdrop-filter: blur(10px)) {
+    .backdrop-blur-sm,
+    .backdrop-blur,
+    .backdrop-blur-md {
+        background-color: rgba(0, 0, 0, 0.8) !important;
+    }
+}

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudFeed | Central Alert System</title>
+  <meta name="description" content="Central Alert & Log Audit Center">
+  <link rel="icon" type="image/png" href="./public/favicon.png">
+
+  <!-- Matomo Tag Manager -->
+  <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+
+  <link rel="stylesheet" href="./style.css">
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
+</head>
+<body>
+  <div class="cloudfeed central-alerts">
+    <header class="app-header">
+      <div class="header__inner">
+        <div class="header__logo"><a href="index.html">MyFeed</a></div>
+        <nav class="header__nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="appsfeed.html" class="nav-link">AppsFeed</a>
+          <a href="newsfeed.html" class="nav-link">NewsFeed</a>
+          <a href="cloudfeed.html" class="nav-link active">CloudFeed</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Dashboard Header -->
+    <div class="dashboard-header">
+      <div class="dashboard-title">
+        <h1>Central Alert System</h1>
+        <span class="live-indicator" id="live-indicator">
+          <span class="pulse"></span> LIVE
+        </span>
+      </div>
+      <div class="dashboard-controls">
+        <select id="time-filter" class="time-filter">
+          <option value="1h">Last 1 Hour</option>
+          <option value="24h" selected>Last 24 Hours</option>
+          <option value="7d">Last 7 Days</option>
+        </select>
+        <button class="refresh-btn" id="refresh-btn">
+          <span id="refresh-icon">&#8635;</span> Refresh
+        </button>
+        <span class="last-update" id="last-update"></span>
+      </div>
+    </div>
+
+    <!-- Alert Counters -->
+    <div class="alert-counters">
+      <div class="counter-card critical" id="counter-critical">
+        <div class="counter-icon">&#9888;</div>
+        <div class="counter-value">0</div>
+        <div class="counter-label">Critical</div>
+      </div>
+      <div class="counter-card high" id="counter-high">
+        <div class="counter-icon">&#9888;</div>
+        <div class="counter-value">0</div>
+        <div class="counter-label">High</div>
+      </div>
+      <div class="counter-card default" id="counter-default">
+        <div class="counter-icon">&#8505;</div>
+        <div class="counter-value">0</div>
+        <div class="counter-label">Info</div>
+      </div>
+      <div class="counter-card total" id="counter-total">
+        <div class="counter-icon">&#8721;</div>
+        <div class="counter-value">0</div>
+        <div class="counter-label">Total</div>
+      </div>
+    </div>
+
+    <!-- Status Grid: VMs and Services -->
+    <div class="status-grid">
+      <!-- VM Status -->
+      <div class="status-section">
+        <h3 class="status-title">VM Status</h3>
+        <div class="status-cards" id="vm-status"></div>
+      </div>
+      <!-- Service Status -->
+      <div class="status-section">
+        <h3 class="status-title">Service Status</h3>
+        <div class="status-cards" id="service-status"></div>
+      </div>
+    </div>
+
+    <!-- Main Alert Categories -->
+    <div class="alert-categories">
+      <!-- Category Tabs -->
+      <div class="category-tabs">
+        <button class="tab-btn active" data-category="all">All</button>
+        <button class="tab-btn" data-category="security">Security (Who)</button>
+        <button class="tab-btn" data-category="health">Health (What/How)</button>
+        <button class="tab-btn" data-category="debug">Debug</button>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="alert-filters">
+        <input type="text" id="search-input" placeholder="Search alerts..." class="search-input">
+        <select id="vm-filter" class="filter-select">
+          <option value="">All VMs</option>
+        </select>
+        <select id="service-filter" class="filter-select">
+          <option value="">All Services</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Alert Feed -->
+    <div class="alert-feed" id="alert-feed">
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading alerts...</p>
+      </div>
+    </div>
+
+    <!-- Alert Legend -->
+    <details class="alert-legend">
+      <summary>Alert Categories Legend</summary>
+      <div class="legend-grid">
+        <div class="legend-section">
+          <h4>Security (Who)</h4>
+          <ul>
+            <li><span class="badge auth">auth</span> Login attempts, 2FA, authentication</li>
+            <li><span class="badge ssh">ssh</span> SSH access, failed logins</li>
+            <li><span class="badge sauron">sauron</span> Malware scans, threats detected</li>
+          </ul>
+        </div>
+        <div class="legend-section">
+          <h4>Health (What/How)</h4>
+          <ul>
+            <li><span class="badge system">system</span> Critical system logs</li>
+            <li><span class="badge docker">docker</span> Container crashes, resources</li>
+            <li><span class="badge npm">npm</span> Proxy errors, SSL, response times</li>
+            <li><span class="badge mailu">mailu</span> Mail queue, delivery issues</li>
+          </ul>
+        </div>
+        <div class="legend-section">
+          <h4>Priority Levels</h4>
+          <ul>
+            <li><span class="priority-badge urgent">Urgent</span> Immediate action required</li>
+            <li><span class="priority-badge high">High</span> Important, review soon</li>
+            <li><span class="priority-badge default">Default</span> Normal events</li>
+            <li><span class="priority-badge low">Low</span> Informational</li>
+          </ul>
+        </div>
+      </div>
+    </details>
+
+    <!-- Service Matrix (Collapsible) -->
+    <details class="matrix-section">
+      <summary>Service Monitoring Matrix</summary>
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Health (What/How)</th>
+            <th>Security (Who)</th>
+            <th>VM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="service-badge npm">NPM</span></td>
+            <td>Proxy errors, SSL, response times</td>
+            <td>Access logs, blocked requests</td>
+            <td>gcp-arch</td>
+          </tr>
+          <tr>
+            <td><span class="service-badge authelia">Authelia</span></td>
+            <td>Config reload, failures</td>
+            <td>Login attempts, 2FA events</td>
+            <td>gcp-arch</td>
+          </tr>
+          <tr>
+            <td><span class="service-badge docker">Docker</span></td>
+            <td>Container crash, resources</td>
+            <td>-</td>
+            <td>all</td>
+          </tr>
+          <tr>
+            <td><span class="service-badge ssh">SSH</span></td>
+            <td>Connection events</td>
+            <td>User logins, failed attempts</td>
+            <td>all</td>
+          </tr>
+          <tr>
+            <td><span class="service-badge mailu">Mailu</span></td>
+            <td>Queue errors, delivery</td>
+            <td>Auth attempts, relay denies</td>
+            <td>oci-micro</td>
+          </tr>
+          <tr>
+            <td><span class="service-badge sauron">Sauron</span></td>
+            <td>-</td>
+            <td>YARA malware scans</td>
+            <td>oci-flex</td>
+          </tr>
+        </tbody>
+      </table>
+    </details>
+
+    <!-- API Endpoints Reference -->
+    <details class="api-reference">
+      <summary>API & Data Sources</summary>
+      <div class="api-grid">
+        <div class="api-item">
+          <strong>Alerts API</strong>
+          <code>https://alerts.diegonmarcos.com/api/alerts</code>
+        </div>
+        <div class="api-item">
+          <strong>ntfy (Fallback)</strong>
+          <code>https://rss.diegonmarcos.com/{topic}/json</code>
+        </div>
+        <div class="api-item">
+          <strong>Topics</strong>
+          <code>system</code> <code>auth</code> <code>sauron</code>
+        </div>
+      </div>
+    </details>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+      <span class="toast-message"></span>
+    </div>
+  </div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

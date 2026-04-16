@@ -66,6 +66,7 @@
     -webkit-backdrop-filter: blur(8px);
     transition: all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
     scroll-snap-align: start;
+    scroll-snap-stop: always;
 
     &:hover {
         border-color: rgba(255, 255, 255, 0.2);

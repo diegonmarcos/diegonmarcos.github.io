@@ -65,6 +65,7 @@ const swiperConfig: SwiperOptions = {
   allowTouchMove: true,
   touchEventsTarget: 'container',
   threshold: 10,
+  longSwipes: false,
   passiveListeners: true,
   speed: 900,
   on: {

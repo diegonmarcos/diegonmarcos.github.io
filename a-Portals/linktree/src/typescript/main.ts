@@ -73,31 +73,12 @@ function initApp(): void {
   });
 }
 
-// Declare Swiper as global
-declare const Swiper: unknown;
-
-// Initialize when DOM is ready and Swiper is loaded
-function startApp(): void {
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', async () => {
+  await initLoader();
   requestAnimationFrame(() => {
     requestAnimationFrame(initApp);
   });
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  // Run loading screen first
-  await initLoader();
-
-  // Then check if Swiper is already loaded
-  if (typeof Swiper !== 'undefined') {
-    startApp();
-  } else {
-    // Wait for Swiper to load (max 5s timeout, then init anyway for non-carousel features)
-    const timeout = setTimeout(startApp, 5000);
-    window.addEventListener('swiperReady', () => {
-      clearTimeout(timeout);
-      startApp();
-    });
-  }
 });
 
 // Export for potential external use

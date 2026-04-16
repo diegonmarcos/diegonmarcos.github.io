@@ -1,10 +1,11 @@
 // Carousel module - Swiper.js integration
 
+import Swiper from 'swiper';
+import { EffectCreative, Navigation, Pagination, Keyboard } from 'swiper/modules';
 import { querySelector, addClass, removeClass } from '../utils/dom';
-import type { CarouselType, SwiperOptions, Swiper as SwiperInstance } from '../types';
+import type { CarouselType } from '../types';
 
-// Declare global Swiper constructor
-declare const Swiper: new (selector: string, options: SwiperOptions) => SwiperInstance;
+type SwiperInstance = Swiper;
 
 // State
 let selectedCarousel: CarouselType = 'professional';
@@ -28,8 +29,9 @@ const TRACKPAD_DEBOUNCE_TIME = 300;
 /**
  * Common Swiper configuration
  */
-const swiperConfig: SwiperOptions = {
-  effect: 'creative',
+const swiperConfig = {
+  modules: [EffectCreative, Navigation, Pagination, Keyboard],
+  effect: 'creative' as const,
   grabCursor: true,
   centeredSlides: false,
   slidesPerView: 1,
@@ -305,12 +307,6 @@ function initClickSelection(): void {
  * Initialize carousels
  */
 export function initCarousels(): void {
-  // Check if Swiper is available
-  if (typeof Swiper === 'undefined') {
-    console.warn('Swiper not loaded - carousel disabled');
-    return;
-  }
-
   // Get carousel rows
   const profRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
   const persRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');

@@ -80,18 +80,18 @@
     }
 }
 
-.professional-section {
+.professional-profiles-section {
     border-left: 3px solid rgba(100, 150, 255, 0.4);
 }
 
-.personal-section {
+.personal-profiles-section {
     border-left: 3px solid rgba(255, 100, 150, 0.4);
     transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
                 margin-top 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
                 all 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-.impersonal-section {
+.personal-tools-section {
     border-left: 3px solid rgba(150, 255, 100, 0.4);
     transition: transform 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),
                 margin-top 0.5s cubic-bezier(0.4, 0.0, 0.2, 1),

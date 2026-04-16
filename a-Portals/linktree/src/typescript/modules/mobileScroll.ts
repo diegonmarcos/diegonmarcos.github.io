@@ -8,7 +8,7 @@ import type { CarouselType } from '../types';
 // Store element references
 let professionalRow: HTMLElement | null = null;
 let personalRow: HTMLElement | null = null;
-let impersonalRow: HTMLElement | null = null;
+let personalToolsRow: HTMLElement | null = null;
 
 /**
  * Throttle function to limit event frequency
@@ -38,14 +38,14 @@ function getElementCenterY(element: HTMLElement): number {
  * Select carousel based on which one is closest to viewport center
  */
 function selectCarouselByScroll(): void {
-  if (!professionalRow || !personalRow || !impersonalRow) return;
+  if (!professionalRow || !personalRow || !personalToolsRow) return;
 
   const viewportCenter = window.innerHeight / 2;
 
   const distances: [number, CarouselType][] = [
     [Math.abs(viewportCenter - getElementCenterY(professionalRow)), 'professional'],
     [Math.abs(viewportCenter - getElementCenterY(personalRow)), 'personal'],
-    [Math.abs(viewportCenter - getElementCenterY(impersonalRow)), 'impersonal'],
+    [Math.abs(viewportCenter - getElementCenterY(personalToolsRow)), 'personalTools'],
   ];
 
   // Select whichever is closest to viewport center
@@ -62,11 +62,11 @@ function selectCarouselByScroll(): void {
  * Initialize scroll-based auto-selection
  */
 export function initMobileScrollSelection(): void {
-  professionalRow = querySelector<HTMLElement>('.professional-section .carousel-row');
-  personalRow = querySelector<HTMLElement>('.personal-section .carousel-row');
-  impersonalRow = querySelector<HTMLElement>('.impersonal-section .carousel-row');
+  professionalRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
+  personalRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');
+  personalToolsRow = querySelector<HTMLElement>('.personal-tools-section .carousel-row');
 
-  if (!professionalRow || !personalRow || !impersonalRow) return;
+  if (!professionalRow || !personalRow || !personalToolsRow) return;
 
   // Throttled scroll handler
   const throttledSelect = throttle(selectCarouselByScroll, 100);

@@ -10,16 +10,16 @@ declare const Swiper: new (selector: string, options: SwiperOptions) => SwiperIn
 let selectedCarousel: CarouselType = 'professional';
 let professionalSwiper: SwiperInstance;
 let personalSwiper: SwiperInstance;
-let impersonalSwiper: SwiperInstance;
+let personalToolsSwiper: SwiperInstance;
 let professionalRow: HTMLElement;
 let personalRow: HTMLElement;
-let impersonalRow: HTMLElement;
+let personalToolsRow: HTMLElement;
 let professionalPrev: HTMLElement;
 let professionalNext: HTMLElement;
 let personalPrev: HTMLElement;
 let personalNext: HTMLElement;
-let impersonalPrev: HTMLElement;
-let impersonalNext: HTMLElement;
+let personalToolsPrev: HTMLElement;
+let personalToolsNext: HTMLElement;
 
 // Trackpad debounce
 let trackpadDebounce = false;
@@ -105,13 +105,13 @@ interface CarouselSet {
 function getCarouselSet(type: CarouselType): CarouselSet {
   if (type === 'professional') {
     return { swiper: professionalSwiper, row: professionalRow, prev: professionalPrev, next: professionalNext, el: querySelector<HTMLElement>('.professional-swiper')! };
-  } else if (type === 'impersonal') {
-    return { swiper: impersonalSwiper, row: impersonalRow, prev: impersonalPrev, next: impersonalNext, el: querySelector<HTMLElement>('.impersonal-swiper')! };
+  } else if (type === 'personalTools') {
+    return { swiper: personalToolsSwiper, row: personalToolsRow, prev: personalToolsPrev, next: personalToolsNext, el: querySelector<HTMLElement>('.personal-tools-swiper')! };
   }
   return { swiper: personalSwiper, row: personalRow, prev: personalPrev, next: personalNext, el: querySelector<HTMLElement>('.personal-swiper')! };
 }
 
-const allTypes: CarouselType[] = ['professional', 'personal', 'impersonal'];
+const allTypes: CarouselType[] = ['professional', 'personal', 'personalTools'];
 
 /**
  * Select a carousel
@@ -197,10 +197,10 @@ function personalTrackpadHandler(e: WheelEvent): void {
 }
 
 /**
- * Impersonal trackpad handler
+ * Personal Tools trackpad handler
  */
-function impersonalTrackpadHandler(e: WheelEvent): void {
-  handleTrackpadSwipe(e, impersonalSwiper);
+function personalToolsTrackpadHandler(e: WheelEvent): void {
+  handleTrackpadSwipe(e, personalToolsSwiper);
 }
 
 /**
@@ -209,14 +209,14 @@ function impersonalTrackpadHandler(e: WheelEvent): void {
 function updateTrackpadListeners(): void {
   professionalRow.removeEventListener('wheel', professionalTrackpadHandler);
   personalRow.removeEventListener('wheel', personalTrackpadHandler);
-  impersonalRow.removeEventListener('wheel', impersonalTrackpadHandler);
+  personalToolsRow.removeEventListener('wheel', personalToolsTrackpadHandler);
 
   if (selectedCarousel === 'professional') {
     professionalRow.addEventListener('wheel', professionalTrackpadHandler, { passive: false });
   } else if (selectedCarousel === 'personal') {
     personalRow.addEventListener('wheel', personalTrackpadHandler, { passive: false });
   } else {
-    impersonalRow.addEventListener('wheel', impersonalTrackpadHandler, { passive: false });
+    personalToolsRow.addEventListener('wheel', personalToolsTrackpadHandler, { passive: false });
   }
 }
 
@@ -225,8 +225,8 @@ function updateTrackpadListeners(): void {
  */
 function initTwoFingerSwipe(): void {
   let isTwoFingerSwipe = false;
-  const rows = [professionalRow, personalRow, impersonalRow];
-  const types: CarouselType[] = ['professional', 'personal', 'impersonal'];
+  const rows = [professionalRow, personalRow, personalToolsRow];
+  const types: CarouselType[] = ['professional', 'personal', 'personalTools'];
 
   rows.forEach((row, index) => {
     row.addEventListener('touchstart', (e: TouchEvent) => {
@@ -255,7 +255,7 @@ function initTwoFingerSwipe(): void {
  * Initialize keyboard navigation
  */
 function initKeyboardNavigation(): void {
-  const order: CarouselType[] = ['professional', 'personal', 'impersonal'];
+  const order: CarouselType[] = ['professional', 'personal', 'personalTools'];
 
   document.addEventListener('keydown', (e: KeyboardEvent) => {
     const currentSwiper = getCarouselSet(selectedCarousel).swiper;
@@ -287,7 +287,7 @@ function initClickSelection(): void {
   const pairs: [HTMLElement, CarouselType][] = [
     [professionalRow, 'professional'],
     [personalRow, 'personal'],
-    [impersonalRow, 'impersonal'],
+    [personalToolsRow, 'personalTools'],
   ];
 
   for (const [row, type] of pairs) {
@@ -311,32 +311,32 @@ export function initCarousels(): void {
   }
 
   // Get carousel rows
-  const profRow = querySelector<HTMLElement>('.professional-section .carousel-row');
-  const persRow = querySelector<HTMLElement>('.personal-section .carousel-row');
-  const imperRow = querySelector<HTMLElement>('.impersonal-section .carousel-row');
+  const profRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
+  const persRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');
+  const pToolsRow = querySelector<HTMLElement>('.personal-tools-section .carousel-row');
 
-  if (!profRow || !persRow || !imperRow) return;
+  if (!profRow || !persRow || !pToolsRow) return;
 
   professionalRow = profRow;
   personalRow = persRow;
-  impersonalRow = imperRow;
+  personalToolsRow = pToolsRow;
 
   // Get navigation elements
   const profPrev = querySelector<HTMLElement>('.professional-prev');
   const profNext = querySelector<HTMLElement>('.professional-next');
   const persPrev = querySelector<HTMLElement>('.personal-prev');
   const persNext = querySelector<HTMLElement>('.personal-next');
-  const imperPrev = querySelector<HTMLElement>('.impersonal-prev');
-  const imperNext = querySelector<HTMLElement>('.impersonal-next');
+  const pToolsPrev = querySelector<HTMLElement>('.personal-tools-prev');
+  const pToolsNext = querySelector<HTMLElement>('.personal-tools-next');
 
-  if (!profPrev || !profNext || !persPrev || !persNext || !imperPrev || !imperNext) return;
+  if (!profPrev || !profNext || !persPrev || !persNext || !pToolsPrev || !pToolsNext) return;
 
   professionalPrev = profPrev;
   professionalNext = profNext;
   personalPrev = persPrev;
   personalNext = persNext;
-  impersonalPrev = imperPrev;
-  impersonalNext = imperNext;
+  personalToolsPrev = pToolsPrev;
+  personalToolsNext = pToolsNext;
 
   // Initialize Swiper instances
   professionalSwiper = new Swiper('.professional-swiper', {
@@ -363,14 +363,14 @@ export function initCarousels(): void {
     },
   });
 
-  impersonalSwiper = new Swiper('.impersonal-swiper', {
+  personalToolsSwiper = new Swiper('.personal-tools-swiper', {
     ...swiperConfig,
     navigation: {
-      nextEl: '.impersonal-next',
-      prevEl: '.impersonal-prev',
+      nextEl: '.personal-tools-next',
+      prevEl: '.personal-tools-prev',
     },
     pagination: {
-      el: '.impersonal-pagination',
+      el: '.personal-tools-pagination',
       clickable: true,
     },
   });

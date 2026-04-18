@@ -6,7 +6,7 @@
   "dist": "dist",
 
   "build": [
-    { "mod": "copy", "files": "*.html, *.asc, CNAME", "from": "src" }
+    { "mod": "copy", "files": "*.html, *.css, *.js, *.asc, CNAME", "from": "src" }
   ],
 
   "serve": {

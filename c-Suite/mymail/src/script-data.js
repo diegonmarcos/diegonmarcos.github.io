@@ -18,11 +18,13 @@ const MYMAIL = {
 
   user: {
     frontends: [
-      { label: "SnappyMail", href: "https://webmail.diegonmarcos.com", css: "qb-webmail", icon: "mail", desc: "Webmail client" },
+      { label: "SnappyMail", href: "https://mail.diegonmarcos.com/snappy", css: "qb-webmail", icon: "mail", desc: "Webmail client" },
+      { label: "SnappyMail (direct)", href: "https://webmail.diegonmarcos.com", css: "qb-webmail", icon: "mail", desc: "Direct access" },
     ],
     backends: [
-      { label: "Stalwart Admin", href: "https://mail-stalwart.diegonmarcos.com", css: "qb-stalwart", icon: "shield", desc: "Admin + JMAP" },
-      { label: "Maddy Server", href: "#maddy-info", css: "qb-maddy", icon: "gear", desc: "Primary MTA (CLI)" },
+      { label: "Stalwart Admin", href: "https://mail.diegonmarcos.com/stalwart", css: "qb-stalwart", icon: "shield", desc: "Admin + JMAP" },
+      { label: "Stalwart (direct)", href: "https://mail-stalwart.diegonmarcos.com", css: "qb-stalwart", icon: "shield", desc: "Direct subdomain" },
+      { label: "Maddy Server", href: "https://mail.diegonmarcos.com/maddy", css: "qb-maddy", icon: "gear", desc: "Primary MTA (info)" },
     ],
     apis: [
       { label: "mail-mcp", href: "https://mcp.diegonmarcos.com/mail-mcp/mcp", css: "qb-mcp", icon: "code", desc: "MCP Streamable HTTP" },
@@ -119,10 +121,13 @@ const MYMAIL = {
     },
     urls: {
       "Public HTTPS (Caddy L7)": [
-        { url: "webmail.diegonmarcos.com", desc: "SnappyMail" },
+        { url: "mail.diegonmarcos.com", desc: "Mail hub (this page)" },
+        { url: "mail.diegonmarcos.com/snappy", desc: "SnappyMail via hub" },
+        { url: "mail.diegonmarcos.com/maddy", desc: "Maddy info via hub" },
+        { url: "mail.diegonmarcos.com/stalwart", desc: "Stalwart via hub" },
+        { url: "webmail.diegonmarcos.com", desc: "SnappyMail (direct)" },
         { url: "smtp.diegonmarcos.com", desc: "smtp-proxy" },
-        { url: "mail-stalwart.diegonmarcos.com", desc: "Stalwart" },
-        { url: "mail.diegonmarcos.com", desc: "\u2192 webmail redirect" },
+        { url: "mail-stalwart.diegonmarcos.com", desc: "Stalwart (direct)" },
       ],
       "Private (.app WireGuard)": [
         { url: "snappymail.app", port: ":8888" },

@@ -1112,9 +1112,18 @@ cmd_status() {
 
 cmd_analytics() {
     local sub="${1:-check}"
-    local src_dir="$PROJECT_DIR/$CFG_SRC"
-    [ -d "$src_dir" ] || src_dir="$PROJECT_DIR/src_static"
-    [ -d "$src_dir" ] || { log_warn "analytics: no src dir found"; return 0; }
+    # Build ordered list of candidate src dirs. Pattern $CFG_SRC first, then known
+    # alternates — a project may use src/ as a stub and src_static/ as the real one
+    # (e.g. central_bank), so collect all existing dirs rather than stopping at first.
+    local _src_dirs=""
+    for _candidate in "$CFG_SRC" src src_static; do
+        local _d="$PROJECT_DIR/$_candidate"
+        [ -d "$_d" ] || continue
+        # de-dupe (in case $CFG_SRC == src)
+        case " $_src_dirs " in *" $_d "*) ;; *) _src_dirs="$_src_dirs $_d" ;; esac
+    done
+    _src_dirs="${_src_dirs# }"
+    [ -n "$_src_dirs" ] || { log_warn "analytics: no src dir found"; return 0; }
 
     # Read analytics config from config.json (single source of truth)
     local repo_config="${REPO_ROOT}/config.json"
@@ -1154,7 +1163,7 @@ _mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'
         check)
             log_info "Analytics audit: $CFG_NAME"
             local total=0 has_both=0 has_matomo=0 has_umami=0 has_none=0
-            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+            for f in $(find $_src_dirs -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
                 total=$((total + 1))
                 local _rel="${f#$PROJECT_DIR/}"
                 local _m=false _u=false
@@ -1180,7 +1189,7 @@ _mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'
         inject)
             log_info "Injecting analytics tags: $CFG_NAME"
             local injected=0 skipped=0
-            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+            for f in $(find $_src_dirs -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
                 local _rel="${f#$PROJECT_DIR/}"
                 grep -q "</head>" "$f" || { log_step "skip (no </head>): $_rel"; skipped=$((skipped + 1)); continue; }
 
@@ -1223,7 +1232,7 @@ _mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'
                 umami)  start_marker="<!-- Umami Analytics -->"; end_marker="<!-- End Umami Analytics -->" ;;
                 *)      log_error "Unknown provider: $provider (use matomo or umami)"; return 1 ;;
             esac
-            for f in $(find "$src_dir" -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
+            for f in $(find $_src_dirs -name "*.html" -type f -not -path "*/dist/*" -not -path "*/node_modules/*" -not -path "*/.svelte-kit/*" 2>/dev/null); do
                 local _rel="${f#$PROJECT_DIR/}"
                 if grep -q "$start_marker" "$f"; then
                     awk -v s="$start_marker" -v e="$end_marker" '

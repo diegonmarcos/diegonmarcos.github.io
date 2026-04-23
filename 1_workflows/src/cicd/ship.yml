@@ -1,15 +1,3 @@
-# ╔══════════════════════════════════════════════════════════════════╗
-# ║                                                                  ║
-# ║   GENERATED FILE — DO NOT EDIT                                   ║
-# ║                                                                  ║
-# ║   Source : 1_workflows/src/cicd/ship.yml
-# ║   Engine : 1_workflows/src/scripts/front-ship-repo-workflow-engine.sh
-# ║   Rebuild: ./1_workflows/build.sh
-# ║                                                                  ║
-# ║   Manual edits will be overwritten on next build.                ║
-# ║                                                                  ║
-# ╚══════════════════════════════════════════════════════════════════╝
-
 name: GitHub Pages Deployment (CI)
 on:
   push:

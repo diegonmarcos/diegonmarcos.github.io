@@ -1,0 +1,42 @@
+name: "Regenerate front-topology"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/build.json'
+      - 'build.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gen-configs
+  cancel-in-progress: true
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Generate front-topology.json
+        run: bash build.sh config
+
+      - name: Commit and push updated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add front-topology.json
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "auto: regenerate front-topology [skip ci]"
+          git pull --rebase origin main
+          git push

@@ -38,12 +38,26 @@ describe('screen-specs.json', () => {
 
 describe('screen-registry.json (custom)', () => {
   const customs = (customRegistry as { custom: Array<{ id: string; title: string; category: string; module: string }> }).custom;
-  it('has exactly 15 custom screens (egui 10 + Markets dashboard + DSGE + ML-ABM + Valuation Modelling + FX Hedge Cost)', () => {
-    expect(customs.length).toBe(15);
+  it('has exactly 31 custom screens (egui 10 + Markets + DSGE + ML-ABM + 10 CBM subreports + 7 Valuation types + FX Hedge)', () => {
+    expect(customs.length).toBe(31);
   });
-  it('Central Bank Modelling section has TWO entries (DSGE + ML-ABM) under category "central-bank-modelling"', () => {
+  it('Valuation Modelling section has 7 method screens', () => {
+    const vm = customs.filter(c => c.category === 'valuation-modelling').map(c => c.id);
+    expect(vm.length).toBe(7);
+    for (const id of ['val-dcf', 'val-multiples', 'val-ddm', 'val-residual-income', 'val-sotp', 'val-nav', 'val-comparables']) {
+      expect(vm, `expected ${id} under Valuation Modelling`).toContain(id);
+    }
+  });
+  it('Central Bank Modelling section has 12 entries: DSGE + ML-ABM + 10 macro subreports', () => {
     const cbm = customs.filter(c => c.category === 'central-bank-modelling').map(c => c.id);
-    expect(cbm).toEqual(['dsge', 'ml-abm']);
+    expect(cbm.length).toBe(12);
+    expect(cbm).toContain('dsge');
+    expect(cbm).toContain('ml-abm');
+    for (const id of [
+      'cbm-inflation', 'cbm-unemployment', 'cbm-gdp', 'cbm-money-supply',
+      'cbm-interest-rates', 'cbm-banking-credit', 'cbm-external',
+      'cbm-financial-conditions', 'cbm-surveys', 'cbm-fiscal',
+    ]) expect(cbm, `expected ${id} under CBM section`).toContain(id);
   });
   it('FX Hedge Cost lives under category "forex" alongside spec-driven Forex screens', () => {
     const fx = customs.find(c => c.id === 'fx-hedge-cost');
@@ -60,11 +74,10 @@ describe('screen-registry.json (custom)', () => {
     expect(homeIds).not.toContain('ml-abm');
   });
   it('Valuation Modelling is its OWN section (not a home dashboard)', () => {
-    const vm = customs.find(c => c.id === 'valuation-modelling');
-    expect(vm).toBeDefined();
-    expect(vm!.category).toBe('valuation-modelling');
     const homeIds = customs.filter(c => c.category === 'home').map(c => c.id);
-    expect(homeIds).not.toContain('valuation-modelling');
+    for (const id of ['val-dcf', 'val-multiples', 'val-ddm', 'val-sotp']) {
+      expect(homeIds).not.toContain(id);
+    }
   });
   it('every custom screen has id, title, category, module', () => {
     for (const c of customs) {

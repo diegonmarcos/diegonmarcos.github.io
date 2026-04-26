@@ -9,7 +9,7 @@ import { renderDashboard } from './dashboard';
 import { renderMarketsDashboard } from './markets-dashboard';
 import { renderDsge } from './dsge';
 import { renderMlAbm } from './ml-abm';
-import { renderValuationModelling } from './valuation-modelling';
+import { renderMacroReport, listSubreports, listValuationTypes } from './_macro-report';
 import { renderFxHedgeCost } from './fx-hedge-cost';
 import { renderMarkets } from './markets';
 import { renderWatchlist } from './watchlist';
@@ -48,20 +48,27 @@ const CUSTOM_RENDERERS: Record<string, ScreenEntry['render']> = {
   'markets-dashboard':        renderMarketsDashboard,
   'dsge':                     renderDsge,
   'ml-abm':                   renderMlAbm,
-  'valuation-modelling':      renderValuationModelling,
   'fx-hedge-cost':            renderFxHedgeCost,
   'markets':                  renderMarkets,
   'watchlist':                renderWatchlist,
-  'news':             renderNews,
-  'equity-research':  renderEquityResearch,
-  'portfolio':        renderPortfolio,
-  'trading':          renderTrading,
-  'crypto':           renderCrypto,
-  'economics':        renderEconomics,
-  'settings':         renderSettings,
+  'news':                     renderNews,
+  'equity-research':          renderEquityResearch,
+  'portfolio':                renderPortfolio,
+  'trading':                  renderTrading,
+  'crypto':                   renderCrypto,
+  'economics':                renderEconomics,
+  'settings':                 renderSettings,
 };
 
-// Spec-driven screens that we intentionally OVERRIDE with live API renderers.
+// Wire CBM macro subreports + valuation types in bulk: each id from
+// data/cbm-subreports.json + data/valuation-types.json gets its own
+// renderer that dispatches to the shared _macro-report renderer.
+// Adding a new report = one entry in the relevant JSON + one entry in
+// screen-registry.json — no code change here.
+for (const r of [...listSubreports(), ...listValuationTypes()]) {
+  CUSTOM_RENDERERS[r.id] = (host, ctx) => renderMacroReport(host, ctx, r.id);
+}
+
 const SPEC_OVERRIDES: Record<string, ScreenEntry['render']> = {
   'developer-datahub': renderDeveloperDataHub,
   'mcp-inspector':     renderMcpInspector,
@@ -86,7 +93,6 @@ export function buildRegistry(): ScreenEntry[] {
       render: override ?? ((host, ctx) => renderSpecScreen(host, ctx, s)),
     });
   }
-  // Uniqueness invariant — would mask routing bugs otherwise.
   const seen = new Set<string>();
   for (const e of out) {
     if (seen.has(e.id)) throw new Error(`screen-registry: duplicate id "${e.id}"`);

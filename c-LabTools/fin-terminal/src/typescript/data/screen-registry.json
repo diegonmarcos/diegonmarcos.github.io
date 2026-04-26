@@ -1,20 +1,40 @@
 {
-  "description": "15 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with two screens — DSGE and ML-ABM — each rendered as a separate nav entry (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (native Bloomberg port of treasury-fx-hedge.html). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+  "description": "Custom screens organised by section (`category`). HOME holds the top-level dashboards. CENTRAL-BANK-MODELLING has 12 screens: DSGE + ML-ABM (the two simulation models) plus 10 macro subreports (Inflation, Unemployment, GDP, Money Supply, Interest Rates, Banking & Credit, Trade & External, Financial Conditions, Surveys, Fiscal). VALUATION-MODELLING has 7 valuation method screens (DCF, Multiples, DDM, Residual Income, SOTP, NAV, Precedent Transactions). FOREX extends the spec-driven Forex group with the native FX Hedge Cost port. The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
   "custom": [
-    { "id": "dashboard",                "title": "Dashboard",               "category": "home",       "module": "dashboard" },
-    { "id": "markets-dashboard",        "title": "Markets",                 "category": "home",       "module": "markets-dashboard" },
+    { "id": "dashboard",                "title": "Dashboard",               "category": "home",                    "module": "dashboard" },
+    { "id": "markets-dashboard",        "title": "Markets",                 "category": "home",                    "module": "markets-dashboard" },
+
     { "id": "dsge",                     "title": "DSGE",                    "category": "central-bank-modelling",  "module": "dsge" },
     { "id": "ml-abm",                   "title": "ML-ABM",                  "category": "central-bank-modelling",  "module": "ml-abm" },
-    { "id": "valuation-modelling",      "title": "Valuation Modelling",     "category": "valuation-modelling",     "module": "valuation-modelling" },
+    { "id": "cbm-inflation",            "title": "Inflation",               "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-unemployment",         "title": "Unemployment & Labor",    "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-gdp",                  "title": "GDP & Output",            "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-money-supply",         "title": "Money Supply & Reserves", "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-interest-rates",       "title": "Interest Rates & Curve",  "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-banking-credit",       "title": "Banking & Credit",        "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-external",             "title": "Trade & External",        "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-financial-conditions", "title": "Financial Conditions",    "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-surveys",              "title": "Surveys & Expectations",  "category": "central-bank-modelling",  "module": "_macro-report" },
+    { "id": "cbm-fiscal",               "title": "Fiscal & Debt",           "category": "central-bank-modelling",  "module": "_macro-report" },
+
+    { "id": "val-dcf",                  "title": "DCF — Discounted Cash Flow", "category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-multiples",            "title": "Multiples — P/E · EV/EBITDA","category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-ddm",                  "title": "DDM — Dividend Discount",    "category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-residual-income",      "title": "Residual Income (EVA)",      "category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-sotp",                 "title": "SOTP — Sum of the Parts",    "category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-nav",                  "title": "Asset-based / NAV",          "category": "valuation-modelling",  "module": "_macro-report" },
+    { "id": "val-comparables",          "title": "Precedent Transactions",     "category": "valuation-modelling",  "module": "_macro-report" },
+
     { "id": "fx-hedge-cost",            "title": "FX Hedge Cost",           "category": "forex",                   "module": "fx-hedge-cost" },
-    { "id": "markets",          "title": "Markets (basic)",   "category": "markets",   "module": "markets" },
-    { "id": "watchlist",        "title": "Watchlist",         "category": "markets",   "module": "watchlist" },
-    { "id": "news",             "title": "News",              "category": "news",      "module": "news" },
-    { "id": "equity-research",  "title": "Equity Research",   "category": "research",  "module": "equity-research" },
-    { "id": "portfolio",        "title": "Portfolio",         "category": "portfolio", "module": "portfolio" },
-    { "id": "trading",          "title": "Trading",           "category": "trading",   "module": "trading" },
-    { "id": "crypto",           "title": "Crypto",            "category": "crypto",    "module": "crypto" },
-    { "id": "economics",        "title": "Economics",         "category": "economics", "module": "economics" },
-    { "id": "settings",         "title": "Settings",          "category": "system",    "module": "settings" }
+
+    { "id": "markets",                  "title": "Markets (basic)",         "category": "markets",                 "module": "markets" },
+    { "id": "watchlist",                "title": "Watchlist",               "category": "markets",                 "module": "watchlist" },
+    { "id": "news",                     "title": "News",                    "category": "news",                    "module": "news" },
+    { "id": "equity-research",          "title": "Equity Research",         "category": "research",                "module": "equity-research" },
+    { "id": "portfolio",                "title": "Portfolio",               "category": "portfolio",               "module": "portfolio" },
+    { "id": "trading",                  "title": "Trading",                 "category": "trading",                 "module": "trading" },
+    { "id": "crypto",                   "title": "Crypto",                  "category": "crypto",                  "module": "crypto" },
+    { "id": "economics",                "title": "Economics",               "category": "economics",               "module": "economics" },
+    { "id": "settings",                 "title": "Settings",                "category": "system",                  "module": "settings" }
   ]
 }

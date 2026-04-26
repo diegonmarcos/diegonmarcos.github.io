@@ -8387,8 +8387,8 @@
 
   // src/typescript/api/client.ts
   var ApiClient = class {
-    constructor(cfg3) {
-      this.cfg = cfg3;
+    constructor(cfg4) {
+      this.cfg = cfg4;
     }
     async get(path) {
       const r3 = await fetch(`${this.cfg.base}${path}`, { headers: { Accept: "application/json" } });
@@ -8447,8 +8447,8 @@
 
   // src/typescript/api/ws.ts
   var WsClient = class {
-    constructor(url2, heartbeatMs = 25e3) {
-      this.url = url2;
+    constructor(url, heartbeatMs = 25e3) {
+      this.url = url;
       this.heartbeatMs = heartbeatMs;
       __publicField(this, "socket");
       __publicField(this, "state", "closed");
@@ -9062,13 +9062,29 @@
 
   // src/typescript/data/screen-registry.json
   var screen_registry_default = {
-    description: "15 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with two screens \u2014 DSGE and ML-ABM \u2014 each rendered as a separate nav entry (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (native Bloomberg port of treasury-fx-hedge.html). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+    description: "Custom screens organised by section (`category`). HOME holds the top-level dashboards. CENTRAL-BANK-MODELLING has 12 screens: DSGE + ML-ABM (the two simulation models) plus 10 macro subreports (Inflation, Unemployment, GDP, Money Supply, Interest Rates, Banking & Credit, Trade & External, Financial Conditions, Surveys, Fiscal). VALUATION-MODELLING has 7 valuation method screens (DCF, Multiples, DDM, Residual Income, SOTP, NAV, Precedent Transactions). FOREX extends the spec-driven Forex group with the native FX Hedge Cost port. The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
     custom: [
       { id: "dashboard", title: "Dashboard", category: "home", module: "dashboard" },
       { id: "markets-dashboard", title: "Markets", category: "home", module: "markets-dashboard" },
       { id: "dsge", title: "DSGE", category: "central-bank-modelling", module: "dsge" },
       { id: "ml-abm", title: "ML-ABM", category: "central-bank-modelling", module: "ml-abm" },
-      { id: "valuation-modelling", title: "Valuation Modelling", category: "valuation-modelling", module: "valuation-modelling" },
+      { id: "cbm-inflation", title: "Inflation", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-unemployment", title: "Unemployment & Labor", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-gdp", title: "GDP & Output", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-money-supply", title: "Money Supply & Reserves", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-interest-rates", title: "Interest Rates & Curve", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-banking-credit", title: "Banking & Credit", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-external", title: "Trade & External", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-financial-conditions", title: "Financial Conditions", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-surveys", title: "Surveys & Expectations", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "cbm-fiscal", title: "Fiscal & Debt", category: "central-bank-modelling", module: "_macro-report" },
+      { id: "val-dcf", title: "DCF \u2014 Discounted Cash Flow", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-multiples", title: "Multiples \u2014 P/E \xB7 EV/EBITDA", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-ddm", title: "DDM \u2014 Dividend Discount", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-residual-income", title: "Residual Income (EVA)", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-sotp", title: "SOTP \u2014 Sum of the Parts", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-nav", title: "Asset-based / NAV", category: "valuation-modelling", module: "_macro-report" },
+      { id: "val-comparables", title: "Precedent Transactions", category: "valuation-modelling", module: "_macro-report" },
       { id: "fx-hedge-cost", title: "FX Hedge Cost", category: "forex", module: "fx-hedge-cost" },
       { id: "markets", title: "Markets (basic)", category: "markets", module: "markets" },
       { id: "watchlist", title: "Watchlist", category: "markets", module: "watchlist" },
@@ -10017,47 +10033,615 @@
     renderCbmModel(host, ctx, "ml-abm");
   }
 
-  // src/typescript/screens/_embed-app.ts
-  function makeEmbedAppScreen(opts) {
-    return function render(host, _ctx) {
-      host.style.padding = "0";
-      if (!opts.url) {
-        host.appendChild(el("h2", {}, [opts.title]));
-        host.appendChild(el("p", { class: "t-amber u-mt" }, [
-          `Section "${opts.section}" is wired but no app URL is configured.`
-        ]));
-        host.appendChild(el("p", { class: "t-muted u-mt-s" }, [
-          `Set apps.${opts.section}.url in build.json to point at the external app.`
-        ]));
-        return;
+  // src/typescript/data/cbm-subreports.json
+  var cbm_subreports_default = {
+    description: "Macro subreports surfaced under the Central Bank Modelling section. Each entry is a self-contained report with KPI tiles, a components data-table, and a synthetic time-series chart. Numbers are realistic April-2026 baselines (USA-centric where applicable). Replace with live DataHub topics in a later phase \u2014 the schema stays the same.",
+    indicator_units: "see each tile; common: %, bp (basis points), $T, $B, idx",
+    subreports: [
+      {
+        id: "cbm-inflation",
+        title: "Inflation",
+        summary: "Headline + core price indices, expectations and breakevens.",
+        indicators: [
+          { label: "CPI YoY", value: 3.2, unit: "%", change: -0.3, trend: "down" },
+          { label: "Core CPI YoY", value: 3.6, unit: "%", change: -0.2, trend: "down" },
+          { label: "PCE Core YoY", value: 2.8, unit: "%", change: -0.1, trend: "down" },
+          { label: "5Y5Y Breakeven", value: 2.35, unit: "%", change: 0.02, trend: "up" }
+        ],
+        components: {
+          title: "PRICE COMPONENTS",
+          columns: [
+            { key: "name", label: "Series" },
+            { key: "yoy", label: "YoY %", numeric: true, signed: true },
+            { key: "mom", label: "MoM %", numeric: true, signed: true },
+            { key: "weight", label: "Weight", numeric: true }
+          ],
+          rows: [
+            { name: "Food", yoy: 2.1, mom: 0.1, weight: 13.4 },
+            { name: "Energy", yoy: -1.4, mom: -0.5, weight: 6.9 },
+            { name: "Shelter", yoy: 5.4, mom: 0.4, weight: 36.2 },
+            { name: "Transportation", yoy: 1.6, mom: 0.2, weight: 16.5 },
+            { name: "Medical Care", yoy: 2.7, mom: 0.2, weight: 8 },
+            { name: "Recreation", yoy: 1.4, mom: 0.1, weight: 5.4 },
+            { name: "Education & Comm.", yoy: 1.7, mom: 0.1, weight: 6.5 },
+            { name: "Apparel", yoy: 0.4, mom: 0, weight: 2.5 },
+            { name: "Other Goods & Services", yoy: 4.1, mom: 0.3, weight: 4.6 }
+          ]
+        },
+        chart: { title: "CPI YoY \u2014 last 24m (synthetic)", base: 3.4, volatility: 0.25, points: 24, y_unit: "%" }
+      },
+      {
+        id: "cbm-unemployment",
+        title: "Unemployment & Labor",
+        summary: "Headline rate, payrolls, participation, wages.",
+        indicators: [
+          { label: "U-3 RATE", value: 3.7, unit: "%", change: -0.1, trend: "down" },
+          { label: "U-6 RATE", value: 7, unit: "%", change: -0.2, trend: "down" },
+          { label: "PAYROLLS (NFP)", value: 187, unit: "k", change: -38, trend: "down" },
+          { label: "AVG HRLY EARN", value: 4.3, unit: "%YoY", change: 0.1, trend: "up" }
+        ],
+        components: {
+          title: "LABOR MARKET BREAKDOWN",
+          columns: [
+            { key: "name", label: "Series" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "unit", label: "Unit" },
+            { key: "trend", label: "1M \u0394", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "Labor Force Participation", value: 62.7, unit: "%", trend: 0 },
+            { name: "Employment-Population", value: 60.4, unit: "%", trend: 0.1 },
+            { name: "Initial Jobless Claims", value: 215, unit: "k/wk", trend: -3 },
+            { name: "Continuing Claims", value: 1842, unit: "k", trend: 4 },
+            { name: "JOLTS Openings", value: 8.79, unit: "M", trend: -0.06 },
+            { name: "Quits Rate", value: 2.2, unit: "%", trend: -0.1 },
+            { name: "Avg Weekly Hours", value: 34.3, unit: "h", trend: 0 }
+          ]
+        },
+        chart: { title: "U-3 unemployment \u2014 last 24m (synthetic)", base: 3.7, volatility: 0.15, points: 24, y_unit: "%" }
+      },
+      {
+        id: "cbm-gdp",
+        title: "GDP & Output",
+        summary: "Real GDP, industrial production, output gap.",
+        indicators: [
+          { label: "REAL GDP YoY", value: 2.4, unit: "%", change: 0.1, trend: "up" },
+          { label: "REAL GDP QoQ AR", value: 2.8, unit: "%", change: 0.5, trend: "up" },
+          { label: "INDUSTRIAL PROD", value: 0.5, unit: "%MoM", change: 0.2, trend: "up" },
+          { label: "OUTPUT GAP", value: -0.3, unit: "%", change: 0.1, trend: "up" }
+        ],
+        components: {
+          title: "GDP CONTRIBUTIONS \u2014 % POINTS",
+          columns: [
+            { key: "name", label: "Component" },
+            { key: "qoq", label: "QoQ AR ppt", numeric: true, signed: true },
+            { key: "share", label: "% of GDP", numeric: true }
+          ],
+          rows: [
+            { name: "Personal Consumption", qoq: 1.8, share: 68 },
+            { name: "Gross Private Inv.", qoq: 0.4, share: 18.2 },
+            { name: "Govt Consumption", qoq: 0.3, share: 17.4 },
+            { name: "Net Exports", qoq: 0.3, share: -3.6 },
+            { name: "Inventory Change", qoq: 0, share: 0 }
+          ]
+        },
+        chart: { title: "Real GDP YoY \u2014 last 24m (synthetic)", base: 2.4, volatility: 0.5, points: 24, y_unit: "%" }
+      },
+      {
+        id: "cbm-money-supply",
+        title: "Money Supply & Reserves",
+        summary: "M1 / M2 / M3, monetary base, bank reserves.",
+        indicators: [
+          { label: "M2", value: 21, unit: "$T", change: 0.1, trend: "up" },
+          { label: "M2 YoY", value: 1.4, unit: "%", change: 0.2, trend: "up" },
+          { label: "MONETARY BASE", value: 5.6, unit: "$T", change: -0.05, trend: "down" },
+          { label: "BANK RESERVES", value: 3.36, unit: "$T", change: -0.04, trend: "down" }
+        ],
+        components: {
+          title: "MONEY AGGREGATES",
+          columns: [
+            { key: "name", label: "Aggregate" },
+            { key: "value", label: "Level", numeric: true },
+            { key: "unit", label: "Unit" },
+            { key: "yoy", label: "YoY %", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "M1 (currency + checkable dep.)", value: 18.1, unit: "$T", yoy: 0.6 },
+            { name: "M2 (M1 + savings + small TD)", value: 21, unit: "$T", yoy: 1.4 },
+            { name: "Currency in circulation", value: 2.34, unit: "$T", yoy: 4 },
+            { name: "Checkable deposits", value: 4.81, unit: "$T", yoy: -1.8 },
+            { name: "Bank Required Reserves", value: 0, unit: "$T", yoy: 0 },
+            { name: "Bank Excess Reserves", value: 3.36, unit: "$T", yoy: -8.5 }
+          ]
+        },
+        chart: { title: "M2 YoY % \u2014 last 36m (synthetic)", base: 2, volatility: 1, points: 36, y_unit: "%" }
+      },
+      {
+        id: "cbm-interest-rates",
+        title: "Interest Rates & Curve",
+        summary: "Policy rate, Fed funds corridor, Treasury yield curve, forward rates.",
+        indicators: [
+          { label: "FED FUNDS UPPER", value: 5.5, unit: "%", change: 0, trend: "stable" },
+          { label: "10Y TREASURY", value: 4.35, unit: "%", change: 0.01, trend: "up" },
+          { label: "2Y10Y SLOPE", value: -40, unit: "bp", change: 3, trend: "up" },
+          { label: "REAL 10Y (TIPS)", value: 1.95, unit: "%", change: 0.02, trend: "up" }
+        ],
+        components: {
+          title: "TREASURY YIELD CURVE",
+          columns: [
+            { key: "tenor", label: "Tenor" },
+            { key: "yield", label: "Yield %", numeric: true },
+            { key: "chg_bp", label: "\u0394 (bp)", numeric: true, signed: true }
+          ],
+          rows: [
+            { tenor: "1M", yield: 5.45, chg_bp: 0 },
+            { tenor: "3M", yield: 5.42, chg_bp: -1 },
+            { tenor: "6M", yield: 5.3, chg_bp: -2 },
+            { tenor: "1Y", yield: 5.05, chg_bp: -1 },
+            { tenor: "2Y", yield: 4.75, chg_bp: -2 },
+            { tenor: "3Y", yield: 4.55, chg_bp: -1 },
+            { tenor: "5Y", yield: 4.4, chg_bp: -1 },
+            { tenor: "7Y", yield: 4.38, chg_bp: 0 },
+            { tenor: "10Y", yield: 4.35, chg_bp: 1 },
+            { tenor: "20Y", yield: 4.55, chg_bp: 2 },
+            { tenor: "30Y", yield: 4.5, chg_bp: 2 }
+          ]
+        },
+        chart: { title: "10Y Treasury yield \u2014 last 24m (synthetic)", base: 4.3, volatility: 0.15, points: 24, y_unit: "%" }
+      },
+      {
+        id: "cbm-banking-credit",
+        title: "Banking & Credit",
+        summary: "Loan growth, capital ratios, delinquencies, net interest margin.",
+        indicators: [
+          { label: "LOAN GROWTH YoY", value: 2.1, unit: "%", change: -0.4, trend: "down" },
+          { label: "CRE DELINQUENCY", value: 1.27, unit: "%", change: 0.08, trend: "up" },
+          { label: "TIER-1 CAPITAL", value: 13.6, unit: "%", change: 0.1, trend: "up" },
+          { label: "NET INT. MARGIN", value: 3.31, unit: "%", change: -0.04, trend: "down" }
+        ],
+        components: {
+          title: "LENDING BREAKDOWN \u2014 % YoY",
+          columns: [
+            { key: "name", label: "Loan Category" },
+            { key: "yoy", label: "YoY %", numeric: true, signed: true },
+            { key: "stock", label: "Stock $T", numeric: true },
+            { key: "delinq", label: "Delinq %", numeric: true }
+          ],
+          rows: [
+            { name: "C&I (Commercial & Industrial)", yoy: -0.6, stock: 2.79, delinq: 1.2 },
+            { name: "CRE (Commercial Real Estate)", yoy: 1.4, stock: 3.1, delinq: 1.27 },
+            { name: "Residential Mortgages", yoy: 3, stock: 2.65, delinq: 1.65 },
+            { name: "Consumer (excl. credit cards)", yoy: 2.2, stock: 1.92, delinq: 1.85 },
+            { name: "Credit Cards", yoy: 6.5, stock: 1.04, delinq: 3.21 },
+            { name: "Auto Loans", yoy: 1.8, stock: 1.59, delinq: 4.22 }
+          ]
+        },
+        chart: { title: "Bank loan growth YoY \u2014 last 24m (synthetic)", base: 2.5, volatility: 0.6, points: 24, y_unit: "%" }
+      },
+      {
+        id: "cbm-external",
+        title: "Trade & External",
+        summary: "Trade balance, current account, FX reserves, REER.",
+        indicators: [
+          { label: "TRADE BALANCE", value: -67.4, unit: "$B/m", change: -3.2, trend: "down" },
+          { label: "CURRENT ACCOUNT", value: -3.4, unit: "%GDP", change: -0.1, trend: "down" },
+          { label: "FX RESERVES", value: 244, unit: "$B", change: 0.5, trend: "up" },
+          { label: "USD REER", value: 117.8, unit: "idx", change: 0.4, trend: "up" }
+        ],
+        components: {
+          title: "TRADE FLOWS \u2014 $B / month",
+          columns: [
+            { key: "name", label: "Flow" },
+            { key: "value", label: "Latest", numeric: true, signed: true },
+            { key: "yoy", label: "YoY %", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "Goods Exports", value: 170.4, yoy: 2.3 },
+            { name: "Goods Imports", value: -271.2, yoy: 4.1 },
+            { name: "Services Exports", value: 91.6, yoy: 6.8 },
+            { name: "Services Imports", value: -58.2, yoy: 5 },
+            { name: "Net Petroleum", value: -3.2, yoy: 12 }
+          ]
+        },
+        chart: { title: "Monthly trade balance \u2014 last 24m (synthetic)", base: -65, volatility: 6, points: 24, y_unit: "$B" }
+      },
+      {
+        id: "cbm-financial-conditions",
+        title: "Financial Conditions",
+        summary: "Financial Conditions Index, VIX, credit spreads, equity drawdown.",
+        indicators: [
+          { label: "FCI (Bloomberg)", value: 0.12, unit: "z", change: 0.03, trend: "up" },
+          { label: "VIX", value: 14.2, unit: "", change: -0.4, trend: "down" },
+          { label: "HY OAS", value: 332, unit: "bp", change: 4, trend: "up" },
+          { label: "IG OAS", value: 105, unit: "bp", change: 1, trend: "up" }
+        ],
+        components: {
+          title: "RISK GAUGES",
+          columns: [
+            { key: "name", label: "Gauge" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "unit", label: "Unit" },
+            { key: "z1y", label: "Z-score (1y)", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "Bloomberg US FCI", value: 0.12, unit: "z", z1y: 0.4 },
+            { name: "VIX", value: 14.2, unit: "", z1y: -0.6 },
+            { name: "MOVE Index", value: 92, unit: "", z1y: 0.1 },
+            { name: "HY OAS", value: 332, unit: "bp", z1y: 0 },
+            { name: "IG OAS", value: 105, unit: "bp", z1y: 0.1 },
+            { name: "TED spread", value: 18, unit: "bp", z1y: -0.2 },
+            { name: "Equity drawdown (S&P)", value: -2.1, unit: "%", z1y: 0.5 }
+          ]
+        },
+        chart: { title: "Bloomberg US FCI \u2014 last 24m (synthetic z-score)", base: 0, volatility: 0.3, points: 24, y_unit: "z" }
+      },
+      {
+        id: "cbm-surveys",
+        title: "Surveys & Expectations",
+        summary: "PMI, consumer & business sentiment, BACEN Focus snapshot.",
+        indicators: [
+          { label: "ISM MFG PMI", value: 50.3, unit: "", change: 0.4, trend: "up" },
+          { label: "ISM SVCS PMI", value: 53.4, unit: "", change: 0.7, trend: "up" },
+          { label: "U. MICH SENT.", value: 79.4, unit: "idx", change: 1.2, trend: "up" },
+          { label: "CONFERENCE CCI", value: 104.7, unit: "idx", change: -0.6, trend: "down" }
+        ],
+        components: {
+          title: "DIFFUSION & SENTIMENT",
+          columns: [
+            { key: "name", label: "Survey" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "unit", label: "Unit" },
+            { key: "trend", label: "1M \u0394", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "ISM Manufacturing PMI", value: 50.3, unit: "", trend: 0.4 },
+            { name: "ISM New Orders", value: 51.4, unit: "", trend: 1.2 },
+            { name: "ISM Prices Paid", value: 53.6, unit: "", trend: 2.1 },
+            { name: "ISM Services PMI", value: 53.4, unit: "", trend: 0.7 },
+            { name: "Empire State Mfg", value: -8.7, unit: "", trend: 3 },
+            { name: "Philly Fed Mfg", value: 3.2, unit: "", trend: -1 },
+            { name: "NFIB Small Business", value: 90.1, unit: "idx", trend: 0.4 }
+          ]
+        },
+        chart: { title: "ISM Manufacturing PMI \u2014 last 24m (synthetic)", base: 49.5, volatility: 1.5, points: 24, y_unit: "" }
+      },
+      {
+        id: "cbm-fiscal",
+        title: "Fiscal & Debt",
+        summary: "Federal debt, deficit, primary balance, debt service.",
+        indicators: [
+          { label: "DEBT / GDP", value: 122, unit: "%", change: 1.2, trend: "up" },
+          { label: "DEFICIT / GDP", value: -6.3, unit: "%", change: -0.4, trend: "down" },
+          { label: "INTEREST / GDP", value: 3.6, unit: "%", change: 0.2, trend: "up" },
+          { label: "TAX RECEIPTS YoY", value: 4.2, unit: "%", change: 0.3, trend: "up" }
+        ],
+        components: {
+          title: "FEDERAL FINANCES \u2014 TTM (US)",
+          columns: [
+            { key: "name", label: "Line item" },
+            { key: "value", label: "Value $T", numeric: true, signed: true },
+            { key: "yoy", label: "YoY %", numeric: true, signed: true }
+          ],
+          rows: [
+            { name: "Total Receipts", value: 4.69, yoy: 4.2 },
+            { name: "Individual Income Tax", value: 2.18, yoy: 3.7 },
+            { name: "Corporate Income Tax", value: 0.46, yoy: 12.3 },
+            { name: "Payroll Tax", value: 1.65, yoy: 4.5 },
+            { name: "Total Outlays", value: -6.41, yoy: 6 },
+            { name: "Net Interest", value: -0.96, yoy: 30 },
+            { name: "Defense", value: -0.85, yoy: 6.5 },
+            { name: "Mandatory (SS, Medicare,Medicaid)", value: -3.85, yoy: 5 },
+            { name: "Deficit", value: -1.72, yoy: 9.5 }
+          ]
+        },
+        chart: { title: "Federal debt / GDP \u2014 last 36m (synthetic)", base: 121, volatility: 1.2, points: 36, y_unit: "%" }
       }
-      const wrap = el("div", { class: "embed" });
-      wrap.appendChild(el("div", { class: "embed__header" }, [
-        el("span", {}, [`${opts.title.toUpperCase()} \u2014 ${opts.url}`]),
-        el("a", {
-          class: "embed__open",
-          href: opts.url,
-          target: "_blank",
-          rel: "noopener"
-        }, ["\u2197 open in new tab"])
-      ]));
-      wrap.appendChild(el("iframe", {
-        src: opts.url,
-        title: opts.title,
-        loading: "lazy",
-        referrerpolicy: "no-referrer"
-      }));
-      host.appendChild(wrap);
-    };
-  }
+    ]
+  };
 
-  // src/typescript/screens/valuation-modelling.ts
-  var url = build_default.apps?.valuation?.url ?? "/valuation/";
-  var renderValuationModelling = makeEmbedAppScreen({
-    title: "Valuation Modelling",
-    section: "valuation",
-    url
-  });
+  // src/typescript/data/valuation-types.json
+  var valuation_types_default = {
+    description: "Equity valuation methods exposed under the Valuation Modelling section. Each type has the same shape as CBM subreports \u2014 KPI tiles for headline outputs, a components table for inputs/assumptions, a chart for sensitivity. Worked example values are realistic but indicative; replace with live company data when /api/v1/personas/:id/score is wired through.",
+    ticker: "AAPL",
+    types: [
+      {
+        id: "val-dcf",
+        title: "DCF \u2014 Discounted Cash Flow",
+        summary: "Project free cash flows, discount at WACC, add terminal value. AAPL worked example.",
+        indicators: [
+          { label: "IMPLIED PRICE", value: 192.4, unit: "$", change: 4.5, trend: "up" },
+          { label: "EQUITY VALUE", value: 2.91, unit: "$T", change: 0.07, trend: "up" },
+          { label: "WACC", value: 8.7, unit: "%", change: 0, trend: "stable" },
+          { label: "TERMINAL g", value: 2.5, unit: "%", change: 0, trend: "stable" }
+        ],
+        components: {
+          title: "DCF ASSUMPTIONS \u2014 5Y EXPLICIT + TERMINAL",
+          columns: [
+            { key: "name", label: "Input" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "unit", label: "Unit" },
+            { key: "note", label: "Note" }
+          ],
+          rows: [
+            { name: "Revenue Y1", value: 393, unit: "$B", note: "Latest TTM" },
+            { name: "Revenue CAGR Y1-5", value: 5, unit: "%", note: "Consensus midpoint" },
+            { name: "EBIT margin (steady)", value: 32, unit: "%", note: "Operating leverage capped" },
+            { name: "Tax rate", value: 16, unit: "%", note: "Effective" },
+            { name: "D&A / sales", value: 3, unit: "%", note: "" },
+            { name: "CapEx / sales", value: 3, unit: "%", note: "Maintenance + growth" },
+            { name: "\u0394NWC / sales", value: 0.5, unit: "%", note: "" },
+            { name: "WACC", value: 8.7, unit: "%", note: "Re=10%, Rd=4%, debt 8%" },
+            { name: "Terminal growth (g)", value: 2.5, unit: "%", note: "Long-run nominal GDP" },
+            { name: "Net debt / cash", value: -65, unit: "$B", note: "Negative = net cash" },
+            { name: "Diluted shares", value: 15.1, unit: "B", note: "" }
+          ]
+        },
+        chart: { title: "Implied price vs WACC sensitivity (synthetic)", base: 195, volatility: 8, points: 11, y_unit: "$" }
+      },
+      {
+        id: "val-multiples",
+        title: "Multiples \u2014 P/E \xB7 EV/EBITDA \xB7 P/B \xB7 P/S",
+        summary: "Trading multiples across the comp set.",
+        indicators: [
+          { label: "P/E TTM", value: 30.4, unit: "x", change: -0.2, trend: "down" },
+          { label: "EV/EBITDA TTM", value: 22.1, unit: "x", change: -0.3, trend: "down" },
+          { label: "P/B", value: 47.5, unit: "x", change: 0.4, trend: "up" },
+          { label: "P/S TTM", value: 7.2, unit: "x", change: 0, trend: "stable" }
+        ],
+        components: {
+          title: "PEER COMP TABLE \u2014 TRAILING MULTIPLES",
+          columns: [
+            { key: "ticker", label: "Ticker" },
+            { key: "pe", label: "P/E", numeric: true },
+            { key: "evebit", label: "EV/EBITDA", numeric: true },
+            { key: "pb", label: "P/B", numeric: true },
+            { key: "ps", label: "P/S", numeric: true }
+          ],
+          rows: [
+            { ticker: "AAPL", pe: 30.4, evebit: 22.1, pb: 47.5, ps: 7.2 },
+            { ticker: "MSFT", pe: 36.2, evebit: 23.4, pb: 11.8, ps: 12.1 },
+            { ticker: "GOOGL", pe: 25.6, evebit: 16.8, pb: 6.9, ps: 6 },
+            { ticker: "META", pe: 27, evebit: 14.5, pb: 7.8, ps: 8.5 },
+            { ticker: "AMZN", pe: 49, evebit: 19.2, pb: 8.4, ps: 3.2 },
+            { ticker: "MEDIAN", pe: 30.4, evebit: 19.2, pb: 8.4, ps: 7.2 }
+          ]
+        },
+        chart: { title: "Implied price by P/E percentile of comps (synthetic)", base: 188, volatility: 6.5, points: 9, y_unit: "$" }
+      },
+      {
+        id: "val-ddm",
+        title: "DDM \u2014 Dividend Discount Model",
+        summary: "Gordon growth on per-share dividends.",
+        indicators: [
+          { label: "IMPLIED PRICE", value: 47.2, unit: "$", change: 0.4, trend: "up" },
+          { label: "DIVIDEND TTM", value: 0.96, unit: "$", change: 0.04, trend: "up" },
+          { label: "PAYOUT RATIO", value: 15.4, unit: "%", change: 0, trend: "stable" },
+          { label: "REQ. RETURN", value: 10, unit: "%", change: 0, trend: "stable" }
+        ],
+        components: {
+          title: "GORDON-GROWTH INPUTS",
+          columns: [
+            { key: "name", label: "Input" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "unit", label: "Unit" }
+          ],
+          rows: [
+            { name: "D0 (last dividend)", value: 0.96, unit: "$" },
+            { name: "g (long-run growth)", value: 7.5, unit: "%" },
+            { name: "Re (required equity ret.)", value: 10, unit: "%" },
+            { name: "D1 = D0 \xD7 (1+g)", value: 1.032, unit: "$" },
+            { name: "P0 = D1 / (Re - g)", value: 41.28, unit: "$" }
+          ]
+        },
+        chart: { title: "DDM price vs growth assumption (synthetic)", base: 45, volatility: 4, points: 9, y_unit: "$" }
+      },
+      {
+        id: "val-residual-income",
+        title: "Residual Income (EVA-style)",
+        summary: "Book value + present value of expected residual earnings (ROE \u2212 Re) \xD7 BV.",
+        indicators: [
+          { label: "IMPLIED PRICE", value: 178.5, unit: "$", change: 1, trend: "up" },
+          { label: "BOOK VALUE", value: 3.85, unit: "$/sh", change: 0.05, trend: "up" },
+          { label: "ROE", value: 165, unit: "%", change: -2, trend: "down" },
+          { label: "Re (CAPM)", value: 10, unit: "%", change: 0, trend: "stable" }
+        ],
+        components: {
+          title: "RESIDUAL INCOME PROJECTION",
+          columns: [
+            { key: "year", label: "Year" },
+            { key: "bv", label: "BV/sh", numeric: true },
+            { key: "roe", label: "ROE %", numeric: true },
+            { key: "re", label: "Re %", numeric: true },
+            { key: "ri", label: "RI/sh", numeric: true }
+          ],
+          rows: [
+            { year: "Y1", bv: 3.85, roe: 165, re: 10, ri: 5.97 },
+            { year: "Y2", bv: 4.5, roe: 150, re: 10, ri: 6.3 },
+            { year: "Y3", bv: 5.1, roe: 130, re: 10, ri: 6.12 },
+            { year: "Y4", bv: 5.65, roe: 110, re: 10, ri: 5.65 },
+            { year: "Y5", bv: 6.1, roe: 90, re: 10, ri: 4.88 }
+          ]
+        },
+        chart: { title: "Residual income / share \u2014 5y projection (synthetic)", base: 5.5, volatility: 0.6, points: 5, y_unit: "$" }
+      },
+      {
+        id: "val-sotp",
+        title: "SOTP \u2014 Sum of the Parts",
+        summary: "Per-segment EV / multiple, summed and bridged to equity.",
+        indicators: [
+          { label: "IMPLIED PRICE", value: 205, unit: "$", change: 3, trend: "up" },
+          { label: "EV (SUM)", value: 3.05, unit: "$T", change: 0.05, trend: "up" },
+          { label: "NET DEBT", value: -65, unit: "$B", change: 0, trend: "stable" },
+          { label: "EQUITY VALUE", value: 3.1, unit: "$T", change: 0.05, trend: "up" }
+        ],
+        components: {
+          title: "SEGMENT VALUATION",
+          columns: [
+            { key: "segment", label: "Segment" },
+            { key: "metric", label: "Metric" },
+            { key: "value", label: "Value", numeric: true },
+            { key: "mult", label: "Mult", numeric: true },
+            { key: "ev", label: "EV $B", numeric: true }
+          ],
+          rows: [
+            { segment: "iPhone", metric: "EBITDA", value: 90, mult: 14, ev: 1260 },
+            { segment: "Mac", metric: "EBITDA", value: 7.5, mult: 12, ev: 90 },
+            { segment: "iPad", metric: "EBITDA", value: 5.5, mult: 12, ev: 66 },
+            { segment: "Wearables/Home", metric: "EBITDA", value: 8, mult: 18, ev: 144 },
+            { segment: "Services", metric: "EBITDA", value: 40, mult: 35, ev: 1400 },
+            { segment: "Cash & investments", metric: "Mkt val", value: 165, mult: 1, ev: 165 },
+            { segment: "TOTAL EV", metric: "\u2014", value: 0, mult: 0, ev: 3125 }
+          ]
+        },
+        chart: { title: "EV breakdown by segment (synthetic)", base: 200, volatility: 50, points: 7, y_unit: "$B" }
+      },
+      {
+        id: "val-nav",
+        title: "Asset-based / NAV",
+        summary: "Mark every asset to fair value, subtract liabilities at fair value.",
+        indicators: [
+          { label: "NAV / SHARE", value: 16.4, unit: "$", change: 0.1, trend: "up" },
+          { label: "ASSETS", value: 365, unit: "$B", change: 2, trend: "up" },
+          { label: "LIABILITIES", value: 117, unit: "$B", change: 1, trend: "up" },
+          { label: "EQUITY", value: 248, unit: "$B", change: 1, trend: "up" }
+        ],
+        components: {
+          title: "FAIR-VALUE BALANCE SHEET",
+          columns: [
+            { key: "name", label: "Item" },
+            { key: "value", label: "$B", numeric: true, signed: true },
+            { key: "method", label: "Method" }
+          ],
+          rows: [
+            { name: "Cash & equivalents", value: 62, method: "Mark-to-market" },
+            { name: "ST marketable securities", value: 35, method: "Mark-to-market" },
+            { name: "LT marketable securities", value: 100, method: "Mark-to-market" },
+            { name: "Receivables", value: 40, method: "Aged + reserves" },
+            { name: "Inventory", value: 6.5, method: "FIFO + reserves" },
+            { name: "PP&E (gross)", value: 44.5, method: "Replacement cost" },
+            { name: "Intangibles & goodwill", value: 15, method: "Impairment-tested" },
+            { name: "Other LT assets", value: 62, method: "Various" },
+            { name: "ST debt", value: -10, method: "Par" },
+            { name: "LT debt", value: -95, method: "Mark-to-market" },
+            { name: "Pension & OPEB", value: -5, method: "PV of future" },
+            { name: "Other liabilities", value: -7, method: "Carried value" }
+          ]
+        },
+        chart: { title: "NAV/share over last 8q (synthetic)", base: 16, volatility: 0.4, points: 8, y_unit: "$" }
+      },
+      {
+        id: "val-comparables",
+        title: "Precedent Transactions",
+        summary: "M&A multiples paid in comparable deals \u2014 control premium baseline.",
+        indicators: [
+          { label: "IMPL. EV/EBITDA", value: 19.5, unit: "x", change: 0, trend: "stable" },
+          { label: "IMPL. EV / SALES", value: 4.6, unit: "x", change: 0, trend: "stable" },
+          { label: "PREMIUM PAID", value: 32, unit: "%", change: 0, trend: "stable" },
+          { label: "DEALS IN SAMPLE", value: 9, unit: "n", change: 0, trend: "stable" }
+        ],
+        components: {
+          title: "DEAL SAMPLE",
+          columns: [
+            { key: "year", label: "Year" },
+            { key: "target", label: "Target" },
+            { key: "ev", label: "EV $B", numeric: true },
+            { key: "evebit", label: "EV/EBITDA", numeric: true },
+            { key: "evsales", label: "EV/Sales", numeric: true },
+            { key: "prem", label: "Premium %", numeric: true }
+          ],
+          rows: [
+            { year: 2024, target: "TGT-A", ev: 35, evebit: 18, evsales: 4.2, prem: 28 },
+            { year: 2024, target: "TGT-B", ev: 62, evebit: 21.5, evsales: 5.1, prem: 36 },
+            { year: 2023, target: "TGT-C", ev: 18.5, evebit: 16, evsales: 3.8, prem: 25 },
+            { year: 2023, target: "TGT-D", ev: 92, evebit: 22.2, evsales: 5.6, prem: 41 },
+            { year: 2022, target: "TGT-E", ev: 8.5, evebit: 14, evsales: 3, prem: 18 },
+            { year: 2022, target: "TGT-F", ev: 44, evebit: 19.4, evsales: 4.5, prem: 33 },
+            { year: 2021, target: "TGT-G", ev: 27.5, evebit: 17.6, evsales: 4, prem: 30 },
+            { year: 2021, target: "TGT-H", ev: 15, evebit: 20.8, evsales: 5.4, prem: 38 },
+            { year: 2020, target: "TGT-I", ev: 56, evebit: 25, evsales: 6.2, prem: 47 }
+          ]
+        },
+        chart: { title: "EV/EBITDA paid by year (synthetic)", base: 19.5, volatility: 2.5, points: 9, y_unit: "x" }
+      }
+    ]
+  };
+
+  // src/typescript/screens/_macro-report.ts
+  var SUBREPORTS = [
+    ...cbm_subreports_default.subreports,
+    ...valuation_types_default.types
+  ];
+  var BY_ID = new Map(SUBREPORTS.map((r3) => [r3.id, r3]));
+  function listSubreports() {
+    return cbm_subreports_default.subreports;
+  }
+  function listValuationTypes() {
+    return valuation_types_default.types;
+  }
+  function indicatorToKpi2(i) {
+    const tone = i.trend === "up" ? "pos" : i.trend === "down" ? "neg" : "neutral";
+    const value = `${formatNum2(i.value)}${i.unit ? " " + i.unit : ""}`;
+    const sign = i.change >= 0 ? "+" : "";
+    const hint = i.change === 0 ? "\u2014" : `${sign}${formatNum2(i.change)}${i.unit ?? ""}`;
+    return { label: i.label, value, tone, hint };
+  }
+  function formatNum2(n) {
+    if (Math.abs(n) >= 1e3)
+      return n.toLocaleString("en-US", { maximumFractionDigits: 1 });
+    if (Math.abs(n) >= 1)
+      return n.toFixed(2);
+    return n.toFixed(3);
+  }
+  function deterministicSeries(spec, seedKey) {
+    let v2 = spec.base;
+    let seed = hashStr2(seedKey) >>> 0;
+    const out = [];
+    for (let i = 0; i < spec.points; i++) {
+      seed = seed * 1664525 + 1013904223 >>> 0;
+      const r3 = (seed / 4294967295 - 0.5) * spec.volatility;
+      v2 = v2 + r3;
+      out.push({ x: i, y: parseFloat(v2.toFixed(3)) });
+    }
+    return out;
+  }
+  function hashStr2(s) {
+    let h2 = 2166136261;
+    for (let i = 0; i < s.length; i++) {
+      h2 ^= s.charCodeAt(i);
+      h2 = Math.imul(h2, 16777619);
+    }
+    return h2;
+  }
+  function toColumn(c2) {
+    const col = { key: c2.key, label: c2.label };
+    if (c2.numeric)
+      col.numeric = true;
+    if (c2.signed)
+      col.signed = true;
+    if (c2.numeric)
+      col.format = (v2) => v2 === null || v2 === void 0 ? "\u2014" : formatNum2(v2);
+    return col;
+  }
+  function renderMacroReport(host, _ctx, reportId) {
+    const r3 = BY_ID.get(reportId);
+    if (!r3) {
+      host.appendChild(el("p", { class: "t-neg" }, [`unknown report: ${reportId}`]));
+      return;
+    }
+    host.appendChild(el("h2", {}, [r3.title]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [r3.summary]));
+    host.appendChild(renderKpiGrid(r3.indicators.map(indicatorToKpi2)));
+    host.appendChild(el("div", { class: "mkt-section__title u-mt" }, [r3.components.title]));
+    host.appendChild(renderDataTable({
+      columns: r3.components.columns.map(toColumn),
+      rows: r3.components.rows
+    }));
+    host.appendChild(el("div", { class: "u-mt" }));
+    host.appendChild(renderLineChart({
+      points: deterministicSeries(r3.chart, r3.id),
+      label: r3.chart.title
+    }));
+  }
 
   // src/typescript/widgets/loading-overlay.ts
   function renderLoadingOverlay(message = "LOADING\u2026") {
@@ -10706,11 +11290,155 @@
     }));
   }
 
+  // src/typescript/data/news-config.json
+  var news_config_default = {
+    description: "GDELT-backed news config \u2014 same backend as c-LabTools/news (api.diegonmarcos.com/news). Default topics mirror that project's DEFAULT_TOPICS.",
+    api_base: "https://api.diegonmarcos.com/news",
+    max_articles: 25,
+    refresh_ms: 6e4,
+    topics: [
+      { topic: "economy", label: "Economy" },
+      { topic: "finance markets", label: "Finance" },
+      { topic: "central bank", label: "Central Bank" },
+      { topic: "geopolitics", label: "Geopolitics" },
+      { topic: "technology", label: "Technology" },
+      { topic: "artificial intelligence", label: "AI" },
+      { topic: "energy", label: "Energy" },
+      { topic: "climate change", label: "Climate" },
+      { topic: "health", label: "Health" }
+    ]
+  };
+
   // src/typescript/screens/news.ts
+  var cfg3 = news_config_default;
+  var ARTICLE_COLUMNS = [
+    { key: "when", label: "When" },
+    {
+      key: "tone",
+      label: "Tone",
+      numeric: true,
+      signed: true,
+      format: (v2) => v2.toFixed(2)
+    },
+    {
+      key: "title",
+      label: "Headline",
+      format: (_v, row) => {
+        const r3 = row;
+        return `${r3.title}`;
+      }
+    },
+    { key: "domain", label: "Source" },
+    { key: "lang", label: "Lang" }
+  ];
+  function fmtDate(seendate) {
+    if (seendate.length < 15)
+      return seendate;
+    return `${seendate.slice(0, 4)}-${seendate.slice(4, 6)}-${seendate.slice(6, 8)} ${seendate.slice(9, 11)}:${seendate.slice(11, 13)}`;
+  }
   function renderNews(host, _ctx) {
+    let activeTopic = cfg3.topics[0].topic;
+    let timer = null;
     host.appendChild(el("h2", {}, ["News"]));
-    host.appendChild(renderLoadingOverlay("LOADING NEWS FEED\u2026"));
-    host.appendChild(el("p", { class: "t-muted u-mt" }, ["Wire to /api/v1/topics on news:* in Phase 2."]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [`Live: GDELT via ${cfg3.api_base} \u2014 refresh every ${(cfg3.refresh_ms / 1e3).toFixed(0)}s`]));
+    const tabs = el("nav", { class: "tabs", role: "tablist" });
+    host.appendChild(tabs);
+    const body = el("div");
+    host.appendChild(body);
+    const refreshTopicBar = () => {
+      clear(tabs);
+      for (const t of cfg3.topics) {
+        const btn = el("button", {
+          class: `tabs__btn${t.topic === activeTopic ? " tabs__btn--active" : ""}`,
+          type: "button"
+        }, [t.label.toUpperCase()]);
+        btn.addEventListener("click", () => {
+          activeTopic = t.topic;
+          refreshTopicBar();
+          void load();
+        });
+        tabs.appendChild(btn);
+      }
+    };
+    const load = async () => {
+      clear(body);
+      const loading = renderLoadingOverlay(`FETCHING ${activeTopic.toUpperCase()}\u2026`);
+      body.appendChild(loading);
+      try {
+        const url = `${cfg3.api_base}/articles?q=${encodeURIComponent(activeTopic)}&limit=${cfg3.max_articles}`;
+        const r3 = await fetch(url, { headers: { Accept: "application/json" } });
+        if (!r3.ok)
+          throw new Error(`GDELT HTTP ${r3.status}`);
+        const data3 = await r3.json();
+        loading.remove();
+        if (!data3.articles || data3.articles.length === 0) {
+          body.appendChild(el("p", { class: "t-amber" }, ["(no articles for this topic)"]));
+          return;
+        }
+        const tones = data3.articles.map((a2) => a2.tone).filter(Number.isFinite);
+        const avgTone = tones.reduce((s, n) => s + n, 0) / Math.max(1, tones.length);
+        const positive = tones.filter((t) => t > 1).length;
+        const negative = tones.filter((t) => t < -1).length;
+        const neutral = tones.length - positive - negative;
+        body.appendChild(renderKpiGrid([
+          { label: "ARTICLES", value: String(data3.count) },
+          {
+            label: "AVG TONE",
+            value: avgTone.toFixed(2),
+            tone: avgTone > 0.5 ? "pos" : avgTone < -0.5 ? "neg" : "neutral"
+          },
+          { label: "POS / NEU / NEG", value: `${positive} / ${neutral} / ${negative}` },
+          { label: "TOPIC", value: activeTopic.toUpperCase(), tone: "info" }
+        ]));
+        const rows = data3.articles.map((a2) => ({
+          when: fmtDate(a2.seendate),
+          tone: a2.tone,
+          title: a2.title,
+          url: a2.url,
+          domain: a2.domain,
+          lang: a2.language
+        }));
+        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, [`${activeTopic.toUpperCase()} \u2014 TOP ${data3.articles.length}`]));
+        const table = renderDataTable({
+          columns: ARTICLE_COLUMNS,
+          rows
+        });
+        const trList = table.querySelectorAll("tbody tr");
+        trList.forEach((tr2, i) => {
+          tr2.classList.add("is-clickable");
+          tr2.style.cursor = "pointer";
+          tr2.addEventListener("click", () => {
+            const r4 = rows[i];
+            if (r4?.url)
+              window.open(r4.url, "_blank", "noopener");
+          });
+        });
+        const tdList = table.querySelectorAll("tbody tr");
+        tdList.forEach((tr2, i) => {
+          const r4 = rows[i];
+          const toneCell = tr2.children[1];
+          if (toneCell && r4) {
+            if (r4.tone > 1)
+              toneCell.classList.add("t-pos");
+            else if (r4.tone < -1)
+              toneCell.classList.add("t-neg");
+            else
+              toneCell.classList.add("t-muted");
+          }
+        });
+        body.appendChild(table);
+      } catch (err) {
+        loading.remove();
+        body.appendChild(renderError(`GDELT fetch failed \u2014 ${err.message}`));
+      }
+    };
+    const start = () => {
+      if (timer)
+        clearInterval(timer);
+      timer = setInterval(() => void load(), cfg3.refresh_ms);
+    };
+    refreshTopicBar();
+    void load().then(start);
   }
 
   // src/typescript/screens/equity-research.ts
@@ -10966,7 +11694,6 @@
     "markets-dashboard": renderMarketsDashboard,
     "dsge": renderDsge,
     "ml-abm": renderMlAbm,
-    "valuation-modelling": renderValuationModelling,
     "fx-hedge-cost": renderFxHedgeCost,
     "markets": renderMarkets,
     "watchlist": renderWatchlist,
@@ -10978,6 +11705,9 @@
     "economics": renderEconomics,
     "settings": renderSettings
   };
+  for (const r3 of [...listSubreports(), ...listValuationTypes()]) {
+    CUSTOM_RENDERERS[r3.id] = (host, ctx) => renderMacroReport(host, ctx, r3.id);
+  }
   var SPEC_OVERRIDES = {
     "developer-datahub": renderDeveloperDataHub,
     "mcp-inspector": renderMcpInspector,

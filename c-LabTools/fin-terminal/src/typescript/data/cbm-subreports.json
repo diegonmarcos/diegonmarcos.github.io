@@ -1,0 +1,304 @@
+{
+  "description": "Macro subreports surfaced under the Central Bank Modelling section. Each entry is a self-contained report with KPI tiles, a components data-table, and a synthetic time-series chart. Numbers are realistic April-2026 baselines (USA-centric where applicable). Replace with live DataHub topics in a later phase — the schema stays the same.",
+  "indicator_units": "see each tile; common: %, bp (basis points), $T, $B, idx",
+  "subreports": [
+    {
+      "id": "cbm-inflation",
+      "title": "Inflation",
+      "summary": "Headline + core price indices, expectations and breakevens.",
+      "indicators": [
+        { "label": "CPI YoY",       "value": 3.2,  "unit": "%", "change": -0.3, "trend": "down" },
+        { "label": "Core CPI YoY",  "value": 3.6,  "unit": "%", "change": -0.2, "trend": "down" },
+        { "label": "PCE Core YoY",  "value": 2.8,  "unit": "%", "change": -0.1, "trend": "down" },
+        { "label": "5Y5Y Breakeven","value": 2.35, "unit": "%", "change":  0.02,"trend": "up"   }
+      ],
+      "components": {
+        "title": "PRICE COMPONENTS",
+        "columns": [
+          { "key": "name",   "label": "Series" },
+          { "key": "yoy",    "label": "YoY %",     "numeric": true, "signed": true },
+          { "key": "mom",    "label": "MoM %",     "numeric": true, "signed": true },
+          { "key": "weight", "label": "Weight",    "numeric": true }
+        ],
+        "rows": [
+          { "name": "Food",                  "yoy": 2.1, "mom": 0.1,  "weight": 13.4 },
+          { "name": "Energy",                "yoy": -1.4,"mom": -0.5, "weight":  6.9 },
+          { "name": "Shelter",               "yoy": 5.4, "mom": 0.4,  "weight": 36.2 },
+          { "name": "Transportation",        "yoy": 1.6, "mom": 0.2,  "weight": 16.5 },
+          { "name": "Medical Care",          "yoy": 2.7, "mom": 0.2,  "weight":  8.0 },
+          { "name": "Recreation",            "yoy": 1.4, "mom": 0.1,  "weight":  5.4 },
+          { "name": "Education & Comm.",     "yoy": 1.7, "mom": 0.1,  "weight":  6.5 },
+          { "name": "Apparel",               "yoy": 0.4, "mom": 0.0,  "weight":  2.5 },
+          { "name": "Other Goods & Services","yoy": 4.1, "mom": 0.3,  "weight":  4.6 }
+        ]
+      },
+      "chart": { "title": "CPI YoY — last 24m (synthetic)", "base": 3.4, "volatility": 0.25, "points": 24, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-unemployment",
+      "title": "Unemployment & Labor",
+      "summary": "Headline rate, payrolls, participation, wages.",
+      "indicators": [
+        { "label": "U-3 RATE",       "value": 3.7,    "unit": "%",   "change": -0.1, "trend": "down" },
+        { "label": "U-6 RATE",       "value": 7.0,    "unit": "%",   "change": -0.2, "trend": "down" },
+        { "label": "PAYROLLS (NFP)", "value": 187,    "unit": "k",   "change": -38,  "trend": "down" },
+        { "label": "AVG HRLY EARN",  "value": 4.3,    "unit": "%YoY","change":  0.1, "trend": "up"   }
+      ],
+      "components": {
+        "title": "LABOR MARKET BREAKDOWN",
+        "columns": [
+          { "key": "name",  "label": "Series" },
+          { "key": "value", "label": "Value", "numeric": true },
+          { "key": "unit",  "label": "Unit" },
+          { "key": "trend", "label": "1M Δ",  "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "Labor Force Participation", "value": 62.7,    "unit": "%",   "trend":  0.0 },
+          { "name": "Employment-Population",     "value": 60.4,    "unit": "%",   "trend":  0.1 },
+          { "name": "Initial Jobless Claims",    "value": 215,     "unit": "k/wk","trend": -3.0 },
+          { "name": "Continuing Claims",         "value": 1842,    "unit": "k",   "trend":  4.0 },
+          { "name": "JOLTS Openings",            "value": 8.79,    "unit": "M",   "trend": -0.06 },
+          { "name": "Quits Rate",                "value": 2.2,     "unit": "%",   "trend": -0.1 },
+          { "name": "Avg Weekly Hours",          "value": 34.3,    "unit": "h",   "trend":  0.0 }
+        ]
+      },
+      "chart": { "title": "U-3 unemployment — last 24m (synthetic)", "base": 3.7, "volatility": 0.15, "points": 24, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-gdp",
+      "title": "GDP & Output",
+      "summary": "Real GDP, industrial production, output gap.",
+      "indicators": [
+        { "label": "REAL GDP YoY",     "value": 2.4,  "unit": "%",  "change":  0.1, "trend": "up" },
+        { "label": "REAL GDP QoQ AR",  "value": 2.8,  "unit": "%",  "change":  0.5, "trend": "up" },
+        { "label": "INDUSTRIAL PROD",  "value": 0.5,  "unit": "%MoM","change":  0.2, "trend": "up" },
+        { "label": "OUTPUT GAP",       "value": -0.3, "unit": "%",  "change":  0.1, "trend": "up" }
+      ],
+      "components": {
+        "title": "GDP CONTRIBUTIONS — % POINTS",
+        "columns": [
+          { "key": "name",     "label": "Component" },
+          { "key": "qoq",      "label": "QoQ AR ppt", "numeric": true, "signed": true },
+          { "key": "share",    "label": "% of GDP",   "numeric": true }
+        ],
+        "rows": [
+          { "name": "Personal Consumption",   "qoq":  1.8, "share": 68.0 },
+          { "name": "Gross Private Inv.",     "qoq":  0.4, "share": 18.2 },
+          { "name": "Govt Consumption",       "qoq":  0.3, "share": 17.4 },
+          { "name": "Net Exports",            "qoq":  0.3, "share": -3.6 },
+          { "name": "Inventory Change",       "qoq":  0.0, "share":  0.0 }
+        ]
+      },
+      "chart": { "title": "Real GDP YoY — last 24m (synthetic)", "base": 2.4, "volatility": 0.5, "points": 24, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-money-supply",
+      "title": "Money Supply & Reserves",
+      "summary": "M1 / M2 / M3, monetary base, bank reserves.",
+      "indicators": [
+        { "label": "M2",            "value": 21.0,  "unit": "$T", "change":  0.1, "trend": "up" },
+        { "label": "M2 YoY",        "value": 1.4,   "unit": "%",  "change":  0.2, "trend": "up" },
+        { "label": "MONETARY BASE", "value": 5.6,   "unit": "$T", "change": -0.05,"trend": "down" },
+        { "label": "BANK RESERVES", "value": 3.36,  "unit": "$T", "change": -0.04,"trend": "down" }
+      ],
+      "components": {
+        "title": "MONEY AGGREGATES",
+        "columns": [
+          { "key": "name",  "label": "Aggregate" },
+          { "key": "value", "label": "Level", "numeric": true },
+          { "key": "unit",  "label": "Unit" },
+          { "key": "yoy",   "label": "YoY %", "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "M1 (currency + checkable dep.)", "value": 18.1, "unit": "$T", "yoy":  0.6 },
+          { "name": "M2 (M1 + savings + small TD)",   "value": 21.0, "unit": "$T", "yoy":  1.4 },
+          { "name": "Currency in circulation",        "value": 2.34, "unit": "$T", "yoy":  4.0 },
+          { "name": "Checkable deposits",             "value": 4.81, "unit": "$T", "yoy": -1.8 },
+          { "name": "Bank Required Reserves",         "value": 0.00, "unit": "$T", "yoy":  0.0 },
+          { "name": "Bank Excess Reserves",           "value": 3.36, "unit": "$T", "yoy": -8.5 }
+        ]
+      },
+      "chart": { "title": "M2 YoY % — last 36m (synthetic)", "base": 2.0, "volatility": 1.0, "points": 36, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-interest-rates",
+      "title": "Interest Rates & Curve",
+      "summary": "Policy rate, Fed funds corridor, Treasury yield curve, forward rates.",
+      "indicators": [
+        { "label": "FED FUNDS UPPER", "value": 5.50, "unit": "%", "change":  0.0,  "trend": "stable" },
+        { "label": "10Y TREASURY",   "value": 4.35, "unit": "%", "change":  0.01, "trend": "up"   },
+        { "label": "2Y10Y SLOPE",    "value": -40,  "unit": "bp","change":  3,    "trend": "up"   },
+        { "label": "REAL 10Y (TIPS)","value": 1.95, "unit": "%", "change":  0.02, "trend": "up"   }
+      ],
+      "components": {
+        "title": "TREASURY YIELD CURVE",
+        "columns": [
+          { "key": "tenor", "label": "Tenor" },
+          { "key": "yield", "label": "Yield %", "numeric": true },
+          { "key": "chg_bp","label": "Δ (bp)",  "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "tenor": "1M",  "yield": 5.45, "chg_bp":  0 },
+          { "tenor": "3M",  "yield": 5.42, "chg_bp": -1 },
+          { "tenor": "6M",  "yield": 5.30, "chg_bp": -2 },
+          { "tenor": "1Y",  "yield": 5.05, "chg_bp": -1 },
+          { "tenor": "2Y",  "yield": 4.75, "chg_bp": -2 },
+          { "tenor": "3Y",  "yield": 4.55, "chg_bp": -1 },
+          { "tenor": "5Y",  "yield": 4.40, "chg_bp": -1 },
+          { "tenor": "7Y",  "yield": 4.38, "chg_bp":  0 },
+          { "tenor": "10Y", "yield": 4.35, "chg_bp":  1 },
+          { "tenor": "20Y", "yield": 4.55, "chg_bp":  2 },
+          { "tenor": "30Y", "yield": 4.50, "chg_bp":  2 }
+        ]
+      },
+      "chart": { "title": "10Y Treasury yield — last 24m (synthetic)", "base": 4.3, "volatility": 0.15, "points": 24, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-banking-credit",
+      "title": "Banking & Credit",
+      "summary": "Loan growth, capital ratios, delinquencies, net interest margin.",
+      "indicators": [
+        { "label": "LOAN GROWTH YoY",  "value": 2.1,   "unit": "%",  "change": -0.4, "trend": "down" },
+        { "label": "CRE DELINQUENCY",  "value": 1.27,  "unit": "%",  "change":  0.08,"trend": "up"   },
+        { "label": "TIER-1 CAPITAL",   "value": 13.6,  "unit": "%",  "change":  0.1, "trend": "up"   },
+        { "label": "NET INT. MARGIN",  "value": 3.31,  "unit": "%",  "change": -0.04,"trend": "down" }
+      ],
+      "components": {
+        "title": "LENDING BREAKDOWN — % YoY",
+        "columns": [
+          { "key": "name",   "label": "Loan Category" },
+          { "key": "yoy",    "label": "YoY %",     "numeric": true, "signed": true },
+          { "key": "stock",  "label": "Stock $T",  "numeric": true },
+          { "key": "delinq", "label": "Delinq %",  "numeric": true }
+        ],
+        "rows": [
+          { "name": "C&I (Commercial & Industrial)", "yoy": -0.6, "stock": 2.79, "delinq": 1.20 },
+          { "name": "CRE (Commercial Real Estate)",  "yoy":  1.4, "stock": 3.10, "delinq": 1.27 },
+          { "name": "Residential Mortgages",         "yoy":  3.0, "stock": 2.65, "delinq": 1.65 },
+          { "name": "Consumer (excl. credit cards)", "yoy":  2.2, "stock": 1.92, "delinq": 1.85 },
+          { "name": "Credit Cards",                  "yoy":  6.5, "stock": 1.04, "delinq": 3.21 },
+          { "name": "Auto Loans",                    "yoy":  1.8, "stock": 1.59, "delinq": 4.22 }
+        ]
+      },
+      "chart": { "title": "Bank loan growth YoY — last 24m (synthetic)", "base": 2.5, "volatility": 0.6, "points": 24, "y_unit": "%" }
+    },
+    {
+      "id": "cbm-external",
+      "title": "Trade & External",
+      "summary": "Trade balance, current account, FX reserves, REER.",
+      "indicators": [
+        { "label": "TRADE BALANCE",   "value": -67.4, "unit": "$B/m","change":  -3.2, "trend": "down" },
+        { "label": "CURRENT ACCOUNT", "value": -3.4,  "unit": "%GDP","change":  -0.1, "trend": "down" },
+        { "label": "FX RESERVES",     "value": 244,   "unit": "$B",  "change":   0.5, "trend": "up"   },
+        { "label": "USD REER",        "value": 117.8, "unit": "idx", "change":   0.4, "trend": "up"   }
+      ],
+      "components": {
+        "title": "TRADE FLOWS — $B / month",
+        "columns": [
+          { "key": "name",     "label": "Flow" },
+          { "key": "value",    "label": "Latest", "numeric": true, "signed": true },
+          { "key": "yoy",      "label": "YoY %",  "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "Goods Exports",       "value":  170.4, "yoy":  2.3 },
+          { "name": "Goods Imports",       "value": -271.2, "yoy":  4.1 },
+          { "name": "Services Exports",    "value":   91.6, "yoy":  6.8 },
+          { "name": "Services Imports",    "value":  -58.2, "yoy":  5.0 },
+          { "name": "Net Petroleum",       "value":   -3.2, "yoy": 12.0 }
+        ]
+      },
+      "chart": { "title": "Monthly trade balance — last 24m (synthetic)", "base": -65, "volatility": 6, "points": 24, "y_unit": "$B" }
+    },
+    {
+      "id": "cbm-financial-conditions",
+      "title": "Financial Conditions",
+      "summary": "Financial Conditions Index, VIX, credit spreads, equity drawdown.",
+      "indicators": [
+        { "label": "FCI (Bloomberg)",    "value":  0.12, "unit": "z",   "change":  0.03, "trend": "up" },
+        { "label": "VIX",                "value": 14.2,  "unit": "",    "change": -0.4,  "trend": "down" },
+        { "label": "HY OAS",             "value": 332,   "unit": "bp",  "change":  4,    "trend": "up" },
+        { "label": "IG OAS",             "value": 105,   "unit": "bp",  "change":  1,    "trend": "up" }
+      ],
+      "components": {
+        "title": "RISK GAUGES",
+        "columns": [
+          { "key": "name",  "label": "Gauge" },
+          { "key": "value", "label": "Value", "numeric": true },
+          { "key": "unit",  "label": "Unit" },
+          { "key": "z1y",   "label": "Z-score (1y)", "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "Bloomberg US FCI",      "value":   0.12, "unit": "z",  "z1y":  0.4 },
+          { "name": "VIX",                   "value":  14.2,  "unit": "",   "z1y": -0.6 },
+          { "name": "MOVE Index",            "value":  92.0,  "unit": "",   "z1y":  0.1 },
+          { "name": "HY OAS",                "value": 332,    "unit": "bp", "z1y":  0.0 },
+          { "name": "IG OAS",                "value": 105,    "unit": "bp", "z1y":  0.1 },
+          { "name": "TED spread",            "value":  18,    "unit": "bp", "z1y": -0.2 },
+          { "name": "Equity drawdown (S&P)", "value":  -2.1,  "unit": "%",  "z1y":  0.5 }
+        ]
+      },
+      "chart": { "title": "Bloomberg US FCI — last 24m (synthetic z-score)", "base": 0.0, "volatility": 0.3, "points": 24, "y_unit": "z" }
+    },
+    {
+      "id": "cbm-surveys",
+      "title": "Surveys & Expectations",
+      "summary": "PMI, consumer & business sentiment, BACEN Focus snapshot.",
+      "indicators": [
+        { "label": "ISM MFG PMI",    "value": 50.3,  "unit": "",     "change":  0.4, "trend": "up" },
+        { "label": "ISM SVCS PMI",   "value": 53.4,  "unit": "",     "change":  0.7, "trend": "up" },
+        { "label": "U. MICH SENT.",  "value": 79.4,  "unit": "idx",  "change":  1.2, "trend": "up" },
+        { "label": "CONFERENCE CCI", "value": 104.7, "unit": "idx",  "change": -0.6, "trend": "down" }
+      ],
+      "components": {
+        "title": "DIFFUSION & SENTIMENT",
+        "columns": [
+          { "key": "name",  "label": "Survey" },
+          { "key": "value", "label": "Value", "numeric": true },
+          { "key": "unit",  "label": "Unit" },
+          { "key": "trend", "label": "1M Δ",  "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "ISM Manufacturing PMI",    "value": 50.3, "unit": "",    "trend":  0.4 },
+          { "name": "ISM New Orders",           "value": 51.4, "unit": "",    "trend":  1.2 },
+          { "name": "ISM Prices Paid",          "value": 53.6, "unit": "",    "trend":  2.1 },
+          { "name": "ISM Services PMI",         "value": 53.4, "unit": "",    "trend":  0.7 },
+          { "name": "Empire State Mfg",         "value":  -8.7,"unit": "",    "trend":  3.0 },
+          { "name": "Philly Fed Mfg",           "value":   3.2,"unit": "",    "trend": -1.0 },
+          { "name": "NFIB Small Business",      "value":  90.1,"unit": "idx", "trend":  0.4 }
+        ]
+      },
+      "chart": { "title": "ISM Manufacturing PMI — last 24m (synthetic)", "base": 49.5, "volatility": 1.5, "points": 24, "y_unit": "" }
+    },
+    {
+      "id": "cbm-fiscal",
+      "title": "Fiscal & Debt",
+      "summary": "Federal debt, deficit, primary balance, debt service.",
+      "indicators": [
+        { "label": "DEBT / GDP",       "value": 122.0, "unit": "%",   "change":  1.2, "trend": "up" },
+        { "label": "DEFICIT / GDP",    "value":  -6.3, "unit": "%",   "change": -0.4, "trend": "down" },
+        { "label": "INTEREST / GDP",   "value":   3.6, "unit": "%",   "change":  0.2, "trend": "up" },
+        { "label": "TAX RECEIPTS YoY", "value":   4.2, "unit": "%",   "change":  0.3, "trend": "up" }
+      ],
+      "components": {
+        "title": "FEDERAL FINANCES — TTM (US)",
+        "columns": [
+          { "key": "name",   "label": "Line item" },
+          { "key": "value",  "label": "Value $T", "numeric": true, "signed": true },
+          { "key": "yoy",    "label": "YoY %",   "numeric": true, "signed": true }
+        ],
+        "rows": [
+          { "name": "Total Receipts",         "value":  4.69, "yoy":  4.2 },
+          { "name": "Individual Income Tax",  "value":  2.18, "yoy":  3.7 },
+          { "name": "Corporate Income Tax",   "value":  0.46, "yoy": 12.3 },
+          { "name": "Payroll Tax",            "value":  1.65, "yoy":  4.5 },
+          { "name": "Total Outlays",          "value": -6.41, "yoy":  6.0 },
+          { "name": "Net Interest",           "value": -0.96, "yoy": 30.0 },
+          { "name": "Defense",                "value": -0.85, "yoy":  6.5 },
+          { "name": "Mandatory (SS, Medicare,Medicaid)", "value": -3.85, "yoy": 5.0 },
+          { "name": "Deficit",                "value": -1.72, "yoy":  9.5 }
+        ]
+      },
+      "chart": { "title": "Federal debt / GDP — last 36m (synthetic)", "base": 121.0, "volatility": 1.2, "points": 36, "y_unit": "%" }
+    }
+  ]
+}

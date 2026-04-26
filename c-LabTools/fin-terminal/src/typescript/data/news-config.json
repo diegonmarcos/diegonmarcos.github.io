@@ -1,0 +1,17 @@
+{
+  "description": "GDELT-backed news config — same backend as c-LabTools/news (api.diegonmarcos.com/news). Default topics mirror that project's DEFAULT_TOPICS.",
+  "api_base":   "https://api.diegonmarcos.com/news",
+  "max_articles": 25,
+  "refresh_ms": 60000,
+  "topics": [
+    { "topic": "economy",                  "label": "Economy" },
+    { "topic": "finance markets",          "label": "Finance" },
+    { "topic": "central bank",             "label": "Central Bank" },
+    { "topic": "geopolitics",              "label": "Geopolitics" },
+    { "topic": "technology",               "label": "Technology" },
+    { "topic": "artificial intelligence",  "label": "AI" },
+    { "topic": "energy",                   "label": "Energy" },
+    { "topic": "climate change",           "label": "Climate" },
+    { "topic": "health",                   "label": "Health" }
+  ]
+}

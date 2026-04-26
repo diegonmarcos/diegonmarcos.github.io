@@ -41,7 +41,7 @@ describe('shell mounts full chrome', () => {
     const root = document.getElementById('app')!;
     await new App().mount(root);
     const items = root.querySelectorAll('.nav__item');
-    expect(items.length).toBe(56);
+    expect(items.length).toBe(72);
   });
 
   it('default theme applies Bloomberg amber on root CSS variable', async () => {

@@ -238,6 +238,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Central Bank build complete"
+      - name: 🔨 Build Fin Terminal
+        id: build-fin-terminal
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/fin-terminal/src/')
+
+        run: |
+          echo "🔨 Building Fin Terminal..."
+          cd c-LabTools/fin-terminal
+          bash build.sh build
+          cd ../..
+          echo "✅ Fin Terminal build complete"
       - name: 🔨 Build MyProfile
         id: build-myprofile
         if:
@@ -454,6 +465,7 @@ jobs:
             "e-Others/others:others"
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"
+            "c-LabTools/fin-terminal:fin-terminal"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

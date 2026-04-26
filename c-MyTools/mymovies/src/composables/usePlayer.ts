@@ -25,7 +25,7 @@ export function usePlayer() {
 
     // Set default streamer if not provided
     if (!item.streamer) {
-      item.streamer = 'vids'
+      item.streamer = 'vidsrc'
     }
 
     currentMovie.value = item

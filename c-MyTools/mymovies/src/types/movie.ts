@@ -1,5 +1,6 @@
 export interface Movie {
   imdbID: string
+  tmdbId?: number
   Title: string
   Year: string
   Type: 'movie' | 'series' | 'episode'
@@ -12,6 +13,8 @@ export interface Movie {
   Runtime?: string
   streamer?: string
 }
+
+export type StreamProvider = 'vidsrc' | 'vidsrcme'
 
 export interface OmdbSearchResponse {
   Search?: Movie[]

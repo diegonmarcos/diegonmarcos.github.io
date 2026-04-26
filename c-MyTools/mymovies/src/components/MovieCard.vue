@@ -167,6 +167,16 @@ const handleMouseLeave = () => {
         </span>
       </div>
 
+      <div class="card-ids">
+        <span class="id-badge imdb" @click="copyImdbId(movie.imdbID)" :title="movie.imdbID">
+          IMDb: {{ movie.imdbID }}
+        </span>
+        <span v-if="movie.tmdbId" class="id-badge tmdb" @click="copyImdbId(String(movie.tmdbId))" :title="String(movie.tmdbId)">
+          TMDB: {{ movie.tmdbId }}
+        </span>
+        <span v-else class="id-badge tmdb pending">TMDB: —</span>
+      </div>
+
       <div class="card-actions">
         <button class="btn btn-red" @click="emit('watch', movie)">
           TRAILER
@@ -373,6 +383,53 @@ const handleMouseLeave = () => {
   &::before {
     content: '★ ';
     font-size: 0.7rem;
+  }
+}
+
+.card-ids {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.id-badge {
+  font-family: 'Source Sans Pro', monospace;
+  font-size: 0.6rem;
+  padding: 2px 5px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+  transition: background 0.2s;
+
+  &.imdb {
+    color: var(--noir-gold);
+    background: rgba(184, 134, 11, 0.1);
+    border: 1px solid rgba(184, 134, 11, 0.3);
+
+    &:hover {
+      background: rgba(184, 134, 11, 0.2);
+    }
+  }
+
+  &.tmdb {
+    color: #01d277;
+    background: rgba(1, 210, 119, 0.1);
+    border: 1px solid rgba(1, 210, 119, 0.3);
+
+    &:hover {
+      background: rgba(1, 210, 119, 0.2);
+    }
+
+    &.pending {
+      color: var(--text-muted);
+      border-color: rgba(255, 255, 255, 0.1);
+      background: transparent;
+      cursor: default;
+    }
   }
 }
 

@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import type { StreamProvider } from '@/types/movie'
 
 const props = defineProps<{
   imdbId: string
+  tmdbId?: number
   movieType: 'movie' | 'series' | 'episode'
   title: string
 }>()
@@ -13,7 +15,10 @@ const emit = defineEmits<{
 
 // Editable fields
 const currentImdbId = ref(props.imdbId)
-const currentStreamer = ref('vids')
+const currentTmdbId = ref(props.tmdbId?.toString() ?? '')
+const currentProvider = ref<StreamProvider>('vidsrc')
+const season = ref('1')
+const episode = ref('1')
 
 // Separate minimize states for player and controls
 const isPlayerMinimized = ref(false)
@@ -23,17 +28,19 @@ const isControlsMinimized = ref(false)
 const isPlayerClosed = ref(false)
 const isControlsClosed = ref(false)
 
-// Compute the stream URL based on current values
-const streamUrl = computed(() => {
-  // Map OMDb 'Type' to streaming service 'type'
-  // OMDb: 'movie', 'series', 'episode'
-  // Vidsrc: 'movie', 'tv'
-  let type = 'movie'
-  if (props.movieType === 'series' || props.movieType === 'episode') {
-    type = 'tv'
-  }
+const isTv = computed(() => props.movieType === 'series' || props.movieType === 'episode')
 
-  return `https://${currentStreamer.value}.cc/v2/embed/${type}/${currentImdbId.value}`
+// Map OMDb type to embed type
+const embedType = computed(() => isTv.value ? 'tv' : 'movie')
+
+// Compute the stream URL based on provider
+const streamUrl = computed(() => {
+  if (currentProvider.value === 'vidsrcme') {
+    const id = currentTmdbId.value || currentImdbId.value
+    const base = `https://vidsrcme.su/embed/${embedType.value}/${id}`
+    return isTv.value ? `${base}/${season.value}/${episode.value}` : base
+  }
+  return `https://vidsrc.cc/v2/embed/${embedType.value}/${currentImdbId.value}`
 })
 
 const updatePlayer = () => {
@@ -113,6 +120,13 @@ const checkIfAllClosed = () => {
       <div v-show="!isControlsMinimized" class="window-content">
         <div class="control-inputs">
           <div class="control-group">
+            <label for="provider">Provider:</label>
+            <select id="provider" v-model="currentProvider" @change="updatePlayer">
+              <option value="vidsrc">vidsrc.cc (IMDB)</option>
+              <option value="vidsrcme">vidsrcme.su (TMDB)</option>
+            </select>
+          </div>
+          <div class="control-group">
             <label for="imdb-id">IMDb ID:</label>
             <input
               id="imdb-id"
@@ -123,15 +137,39 @@ const checkIfAllClosed = () => {
             />
           </div>
           <div class="control-group">
-            <label for="streamer">Streamer:</label>
+            <label for="tmdb-id">TMDB ID:</label>
             <input
-              id="streamer"
-              v-model="currentStreamer"
+              id="tmdb-id"
+              v-model="currentTmdbId"
               type="text"
-              placeholder="vids"
+              placeholder="12345"
               @change="updatePlayer"
             />
           </div>
+          <template v-if="isTv && currentProvider === 'vidsrcme'">
+            <div class="control-group control-group--small">
+              <label for="season">S:</label>
+              <input
+                id="season"
+                v-model="season"
+                type="number"
+                min="1"
+                placeholder="1"
+                @change="updatePlayer"
+              />
+            </div>
+            <div class="control-group control-group--small">
+              <label for="episode">E:</label>
+              <input
+                id="episode"
+                v-model="episode"
+                type="number"
+                min="1"
+                placeholder="1"
+                @change="updatePlayer"
+              />
+            </div>
+          </template>
           <button class="update-btn" @click="updatePlayer">Update Player</button>
         </div>
       </div>
@@ -301,13 +339,20 @@ const checkIfAllClosed = () => {
   flex: 1;
   min-width: 150px;
 
+  &--small {
+    flex: 0;
+    min-width: 60px;
+    max-width: 80px;
+  }
+
   label {
     font-size: 0.9em;
     color: #aaa;
     font-weight: 500;
   }
 
-  input {
+  input,
+  select {
     padding: 10px;
     background-color: #333;
     border: 1px solid #444;
@@ -320,9 +365,18 @@ const checkIfAllClosed = () => {
       outline: none;
       border-color: var(--accent-color, #e50914);
     }
+  }
 
-    &::placeholder {
-      color: #666;
+  input::placeholder {
+    color: #666;
+  }
+
+  select {
+    cursor: pointer;
+
+    option {
+      background-color: #333;
+      color: white;
     }
   }
 }

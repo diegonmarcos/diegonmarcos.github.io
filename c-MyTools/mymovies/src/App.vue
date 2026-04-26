@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { watch } from 'vue'
 import { useMovies } from '@/composables/useMovies'
 import { usePlayer } from '@/composables/usePlayer'
+import { useTmdb } from '@/composables/useTmdb'
 import AppHeader from '@/components/AppHeader.vue'
 import MovieCard from '@/components/MovieCard.vue'
 import WebPlayer from '@/components/WebPlayer.vue'
@@ -33,11 +35,35 @@ const {
   closeWebPlayer
 } = usePlayer()
 
+const {
+  tempTmdbKey,
+  hasTmdbKey,
+  saveTmdbKey,
+  clearTmdbKey,
+  fetchTmdbId
+} = useTmdb()
+
+// Resolve TMDB IDs for visible movies when TMDB key is available
+const resolveTmdbIds = async () => {
+  if (!hasTmdbKey.value) return
+  for (const movie of movies.value) {
+    if (!movie.tmdbId) {
+      const id = await fetchTmdbId(movie.imdbID, movie.Type)
+      if (id) movie.tmdbId = id
+    }
+  }
+}
+
+watch([movies, hasTmdbKey], resolveTmdbIds, { immediate: true })
+
 const handleWatch = (movie: Movie) => {
   openTrailer(movie)
 }
 
-const handleWebPlayer = (movie: Movie) => {
+const handleWebPlayer = async (movie: Movie) => {
+  if (!movie.tmdbId && hasTmdbKey.value) {
+    movie.tmdbId = await fetchTmdbId(movie.imdbID, movie.Type)
+  }
   openWebPlayer(movie)
 }
 
@@ -98,16 +124,21 @@ const handleOpenWebPlayerFromHeader = () => {
   <div id="app">
     <AppHeader
       :hasApiKey="hasApiKey"
+      :hasTmdbKey="hasTmdbKey"
       :tempApiKey="tempApiKey"
+      :tempTmdbKey="tempTmdbKey"
       :view="view"
       :searchQuery="searchQuery"
       :bulkInput="bulkInput"
       :showBulkInput="showBulkInput"
       @update:tempApiKey="tempApiKey = $event"
+      @update:tempTmdbKey="tempTmdbKey = $event"
       @update:searchQuery="searchQuery = $event"
       @update:bulkInput="bulkInput = $event"
       @saveKey="saveApiKey"
       @clearKey="clearApiKey"
+      @saveTmdbKey="saveTmdbKey"
+      @clearTmdbKey="clearTmdbKey"
       @setView="setView"
       @search="debouncedSearch"
       @openWebPlayer="handleOpenWebPlayerFromHeader"
@@ -155,6 +186,7 @@ const handleOpenWebPlayerFromHeader = () => {
     <WebPlayer
       v-if="showPlayer && currentMovie"
       :imdbId="currentMovie.imdbID"
+      :tmdbId="currentMovie.tmdbId"
       :movieType="currentMovie.Type"
       :title="currentMovie.Title"
       @close="closeWebPlayer"

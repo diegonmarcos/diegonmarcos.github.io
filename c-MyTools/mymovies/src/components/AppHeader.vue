@@ -3,7 +3,9 @@ import type { ViewType } from '@/types/movie'
 
 defineProps<{
   hasApiKey: boolean
+  hasTmdbKey: boolean
   tempApiKey: string
+  tempTmdbKey: string
   view: ViewType
   searchQuery: string
   bulkInput: string
@@ -12,10 +14,13 @@ defineProps<{
 
 const emit = defineEmits<{
   'update:tempApiKey': [value: string]
+  'update:tempTmdbKey': [value: string]
   'update:searchQuery': [value: string]
   'update:bulkInput': [value: string]
   saveKey: []
   clearKey: []
+  saveTmdbKey: []
+  clearTmdbKey: []
   setView: [view: ViewType]
   search: []
   openWebPlayer: []
@@ -43,13 +48,24 @@ const emit = defineEmits<{
             :value="tempApiKey"
             @input="emit('update:tempApiKey', ($event.target as HTMLInputElement).value)"
             type="text"
-            placeholder="API KEY"
+            placeholder="OMDB KEY"
             class="api-input"
           />
           <button class="btn-save" @click="emit('saveKey')">ENTER</button>
         </template>
         <div v-else class="key-actions">
-          <button class="btn-ghost" @click="emit('clearKey')">KEY</button>
+          <button class="btn-ghost" @click="emit('clearKey')">OMDB</button>
+          <template v-if="!hasTmdbKey">
+            <input
+              :value="tempTmdbKey"
+              @input="emit('update:tempTmdbKey', ($event.target as HTMLInputElement).value)"
+              type="text"
+              placeholder="TMDB KEY"
+              class="api-input tmdb-input"
+            />
+            <button class="btn-save tmdb-save" @click="emit('saveTmdbKey')">TMDB</button>
+          </template>
+          <button v-else class="btn-ghost tmdb-key" @click="emit('clearTmdbKey')">TMDB</button>
           <button class="btn-gold" @click="emit('openWebPlayer')">PLAYER</button>
           <button :class="['btn-ghost', { active: view === 'search' }]" @click="emit('setView', 'search')">SEARCH</button>
           <button :class="['btn-ghost bulk', { active: view === 'bulk' || showBulkInput }]" @click="emit('toggleBulkInput')">+ BULK</button>
@@ -389,6 +405,36 @@ h1 {
       border-color: var(--noir-gold);
       color: var(--noir-gold);
     }
+  }
+
+  .btn-ghost.tmdb-key {
+    color: #01d277;
+    border-color: rgba(1, 210, 119, 0.3);
+
+    &:hover {
+      border-color: #01d277;
+      color: #01d277;
+    }
+  }
+}
+
+.tmdb-input {
+  border-color: rgba(1, 210, 119, 0.3) !important;
+  width: 110px !important;
+
+  &:focus {
+    border-color: #01d277 !important;
+    box-shadow: 0 0 15px rgba(1, 210, 119, 0.2) !important;
+  }
+}
+
+.tmdb-save {
+  background: #01d277 !important;
+  color: #000 !important;
+
+  &:hover {
+    background: #00b868 !important;
+    box-shadow: 0 0 20px rgba(1, 210, 119, 0.5) !important;
   }
 }
 

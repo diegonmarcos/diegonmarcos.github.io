@@ -1,0 +1,55 @@
+@use "../abstracts/mixins";
+
+.field {
+  @include mixins.col(2px);
+  margin-bottom: var(--pad-section);
+}
+.field__label {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.field__input,
+.field__textarea,
+.field__select {
+  @include mixins.hard-rect();
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  padding: var(--pad-tight) var(--pad-cell);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-body);
+  width: 100%;
+}
+.field__input:focus,
+.field__textarea:focus,
+.field__select:focus {
+  border-color: var(--color-info);
+}
+
+.btn {
+  @include mixins.button-reset;
+  @include mixins.hard-rect(var(--color-action-key));
+  color: var(--color-action-key);
+  background: var(--color-background);
+  padding: var(--pad-tight) var(--pad-section);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.btn:hover { background: var(--color-action-key); color: var(--color-background); }
+.btn--cancel { border-color: var(--color-cancel-key); color: var(--color-cancel-key); }
+.btn--cancel:hover { background: var(--color-cancel-key); color: var(--color-background); }
+
+.code-block {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: var(--pad-section);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  color: var(--color-text-primary);
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 220px;
+  overflow: auto;
+}

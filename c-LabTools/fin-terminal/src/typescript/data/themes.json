@@ -1,0 +1,17 @@
+{
+  "default": "bloomberg-dark",
+  "themes": [
+    {
+      "id": "bloomberg-dark",
+      "name": "Bloomberg Dark",
+      "file": "palette-bloomberg-dark.json"
+    },
+    {
+      "id": "egui-dark",
+      "name": "egui — GitHub Dark",
+      "file": "palette-egui-dark.json",
+      "source_of_truth": "fin-api/src/code/assets/themes/dark.json",
+      "description": "Copied verbatim from the egui desktop's dark theme (GitHub-dark palette). Diff-guarded by tests."
+    }
+  ]
+}

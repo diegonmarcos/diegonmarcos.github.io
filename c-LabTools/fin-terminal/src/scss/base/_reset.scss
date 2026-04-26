@@ -1,0 +1,25 @@
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; padding: 0; }
+html, body, #app { height: 100%; width: 100%; }
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: auto;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+img, svg, canvas { display: block; max-width: 100%; }
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: 0;
+}
+input::placeholder { color: var(--color-text-muted); opacity: 1; }
+ul, ol { list-style: none; }
+a { color: var(--color-info); text-decoration: none; }
+a:hover { text-decoration: underline; }
+hr { border: 0; border-top: 1px solid var(--color-border); }
+::selection { background: var(--color-text); color: var(--color-background); }

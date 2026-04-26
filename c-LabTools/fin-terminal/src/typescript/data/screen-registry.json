@@ -1,0 +1,18 @@
+{
+  "description": "13 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` and `valuation-modelling` are their own sections, each with a single iframe screen embedding the matching app from build.json `apps.*.url`. The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+  "custom": [
+    { "id": "dashboard",                "title": "Dashboard",               "category": "home",       "module": "dashboard" },
+    { "id": "markets-dashboard",        "title": "Markets",                 "category": "home",       "module": "markets-dashboard" },
+    { "id": "central-bank-modelling",   "title": "Central Bank Modelling",  "category": "central-bank-modelling",  "module": "central-bank-modelling" },
+    { "id": "valuation-modelling",      "title": "Valuation Modelling",     "category": "valuation-modelling",     "module": "valuation-modelling" },
+    { "id": "markets",          "title": "Markets (basic)",   "category": "markets",   "module": "markets" },
+    { "id": "watchlist",        "title": "Watchlist",         "category": "markets",   "module": "watchlist" },
+    { "id": "news",             "title": "News",              "category": "news",      "module": "news" },
+    { "id": "equity-research",  "title": "Equity Research",   "category": "research",  "module": "equity-research" },
+    { "id": "portfolio",        "title": "Portfolio",         "category": "portfolio", "module": "portfolio" },
+    { "id": "trading",          "title": "Trading",           "category": "trading",   "module": "trading" },
+    { "id": "crypto",           "title": "Crypto",            "category": "crypto",    "module": "crypto" },
+    { "id": "economics",        "title": "Economics",         "category": "economics", "module": "economics" },
+    { "id": "settings",         "title": "Settings",          "category": "system",    "module": "settings" }
+  ]
+}

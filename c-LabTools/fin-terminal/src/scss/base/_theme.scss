@@ -1,0 +1,52 @@
+// Theme defaults — overridden at runtime by shell/theme.ts which sets
+// each --color-* and --font-* on :root from the active palette JSON.
+//
+// These are fallback values used before theme.ts loads, so the boot screen
+// has the right look. Defaults match palette-bloomberg-dark.json.
+:root {
+  --color-background:   #000000;
+  --color-surface:      #0a0a0a;
+  --color-surface-alt:  #141414;
+  --color-border:       #2a2a2a;
+  --color-text:         #FFA028;
+  --color-text-muted:   #8a6a30;
+  --color-text-primary: #FFFFFF;
+  --color-accent:       #FFA028;
+  --color-positive:     #4AF6C3;
+  --color-negative:     #FF433D;
+  --color-warning:      #FFFF00;
+  --color-info:         #0068FF;
+  --color-function-key: #FFFF00;
+  --color-action-key:   #4AF6C3;
+  --color-cancel-key:   #FF433D;
+  --color-grid:         #1c1c1c;
+
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+  --font-size-small:   11px;
+  --font-size-body:    12px;
+  --font-size-heading: 14px;
+  --font-size-data:    12px;
+
+  // Layout tokens (not theme-dependent)
+  --row-h: 18px;
+  --pad-tight: 4px;
+  --pad-cell: 6px;
+  --pad-section: 8px;
+  --bar-h-command: 28px;
+  --bar-h-function: 28px;
+  --bar-h-status: 22px;
+  --nav-w: 200px;
+}
+
+.boot {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  color: var(--color-text);
+  letter-spacing: 0.1em;
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink { 50% { opacity: 0.3; } }

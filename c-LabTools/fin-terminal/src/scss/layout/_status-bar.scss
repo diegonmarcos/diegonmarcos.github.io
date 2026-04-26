@@ -1,0 +1,40 @@
+@use "../abstracts/mixins";
+
+.status-bar {
+  @include mixins.row(0);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  height: var(--bar-h-status);
+  font-size: var(--font-size-small);
+  padding: 0 var(--pad-section);
+}
+
+.status-bar__cell {
+  @include mixins.row(4px);
+  padding: 0 var(--pad-section);
+  border-right: 1px solid var(--color-border);
+  height: 100%;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+.status-bar__cell:last-child { border-right: 0; margin-left: auto; }
+
+.status-bar__dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-muted);
+}
+.status-bar__cell--ok    .status-bar__dot { background: var(--color-positive); }
+.status-bar__cell--warn  .status-bar__dot { background: var(--color-warning); }
+.status-bar__cell--down  .status-bar__dot { background: var(--color-negative); }
+
+.status-bar__value { color: var(--color-text-primary); @include mixins.tnum; }
+
+.status-bar__theme-switch {
+  @include mixins.button-reset;
+  color: var(--color-info);
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+.status-bar__theme-switch:hover { color: var(--color-text); }

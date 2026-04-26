@@ -1,0 +1,37 @@
+@use "../abstracts/mixins";
+
+.function-bar {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  background: var(--color-background);
+  border-top: 1px solid var(--color-border);
+  height: var(--bar-h-function);
+  font-size: var(--font-size-small);
+}
+
+.function-bar__key {
+  @include mixins.button-reset;
+  @include mixins.row(4px);
+  justify-content: center;
+  border-right: 1px solid var(--color-border);
+  height: 100%;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.function-bar__key:last-child { border-right: 0; }
+
+.function-bar__key-label {
+  color: var(--color-function-key);
+  font-weight: 700;
+}
+.function-bar__key--action .function-bar__key-label { color: var(--color-action-key); }
+.function-bar__key--cancel .function-bar__key-label { color: var(--color-cancel-key); }
+
+.function-bar__key-name {
+  color: var(--color-text-primary);
+  font-weight: 700;
+}
+
+.function-bar__key:hover { background: var(--color-surface-alt); }
+.function-bar__key:active { background: var(--color-surface); }

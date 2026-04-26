@@ -1,0 +1,37 @@
+@use "../abstracts/mixins";
+
+body {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-body);
+  line-height: 1.35;
+  @include mixins.tnum;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--font-size-heading);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+.t-mono   { font-family: var(--font-mono); @include mixins.tnum; }
+.t-amber  { color: var(--color-text); }
+.t-white  { color: var(--color-text-primary); }
+.t-muted  { color: var(--color-text-muted); }
+.t-pos    { color: var(--color-positive); }
+.t-neg    { color: var(--color-negative); }
+.t-warn   { color: var(--color-warning); }
+.t-info   { color: var(--color-info); }
+.t-strong { font-weight: 700; }
+.t-small  { font-size: var(--font-size-small); }
+.t-up::before   { content: "▲ "; }
+.t-down::before { content: "▼ "; }
+.t-flat::before { content: "▬ "; }
+
+.t-numeric {
+  font-family: var(--font-mono);
+  text-align: right;
+  @include mixins.tnum;
+}

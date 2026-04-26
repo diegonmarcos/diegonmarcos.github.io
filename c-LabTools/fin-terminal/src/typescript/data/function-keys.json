@@ -1,0 +1,17 @@
+{
+  "description": "F1-F12 mapping inspired by Bloomberg's yellow market-sector keys. Maps function keys to existing screen IDs from screen-registry.json + screen-specs.json. F1=HELP is special (opens settings).",
+  "keys": [
+    { "key": "F1",  "label": "HELP",   "color": "action_key",   "screen": "settings" },
+    { "key": "F2",  "label": "EQUITY", "color": "function_key", "screen": "markets-dashboard" },
+    { "key": "F3",  "label": "GOVT",   "color": "function_key", "screen": "fixed-income-curve" },
+    { "key": "F4",  "label": "CORP",   "color": "function_key", "screen": "fixed-income-credit" },
+    { "key": "F5",  "label": "RSCH",   "color": "function_key", "screen": "equity-research" },
+    { "key": "F6",  "label": "PORT",   "color": "function_key", "screen": "portfolio" },
+    { "key": "F7",  "label": "CMDTY",  "color": "function_key", "screen": "commodities" },
+    { "key": "F8",  "label": "INDEX",  "color": "function_key", "screen": "markets-indices" },
+    { "key": "F9",  "label": "CRNCY",  "color": "function_key", "screen": "forex-majors" },
+    { "key": "F10", "label": "CRYPTO", "color": "function_key", "screen": "crypto" },
+    { "key": "F11", "label": "NEWS",   "color": "function_key", "screen": "news" },
+    { "key": "F12", "label": "AI",     "color": "function_key", "screen": "ai-chat" }
+  ]
+}

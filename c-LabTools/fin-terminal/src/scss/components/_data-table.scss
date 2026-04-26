@@ -1,0 +1,48 @@
+@use "../abstracts/mixins";
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-data);
+  font-family: var(--font-mono);
+  @include mixins.tnum;
+  table-layout: fixed;
+}
+
+.data-table th, .data-table td {
+  padding: var(--pad-tight) var(--pad-cell);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  height: var(--row-h);
+  line-height: calc(var(--row-h) - 2px);
+  @include mixins.ellipsis;
+}
+.data-table th:last-child, .data-table td:last-child { border-right: 0; }
+
+.data-table thead th {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  user-select: none;
+}
+.data-table thead th.is-sortable { cursor: pointer; }
+.data-table thead th.is-sortable:hover { color: var(--color-text); }
+
+.data-table tbody tr:nth-child(odd) { background: var(--color-background); }
+.data-table tbody tr:nth-child(even) { background: #050505; }
+.data-table tbody tr:hover { background: var(--color-surface-alt); }
+
+.data-table th.numeric, .data-table td.numeric {
+  text-align: right;
+  color: var(--color-text-primary);
+}
+.data-table td.t-pos { color: var(--color-positive); }
+.data-table td.t-neg { color: var(--color-negative); }
+
+.data-table__sort {
+  margin-left: 4px;
+  color: var(--color-warning);
+}

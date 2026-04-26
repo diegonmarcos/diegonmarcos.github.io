@@ -1,0 +1,129 @@
+{
+  "description": "Bloomberg-style market sections shown by the Markets dashboard. Mirrors the universe defined in c-LabTools/market_watch/src/typescript/data.ts. Live values are filled in at render time (synthetic until DataHub wires).",
+  "sections": {
+    "dm_indexes": {
+      "title": "DEVELOPED MARKETS (DM)",
+      "panel": "indices",
+      "rows": [
+        { "ticker": "SPX Index",  "name": "S&P 500" },
+        { "ticker": "CCMP Index", "name": "NASDAQ 100" },
+        { "ticker": "INDU Index", "name": "DOW JONES" },
+        { "ticker": "SX5E Index", "name": "EURO STOXX 50" },
+        { "ticker": "UKX Index",  "name": "FTSE 100" },
+        { "ticker": "DAX Index",  "name": "DAX (GER)" },
+        { "ticker": "CAC Index",  "name": "CAC 40 (FRA)" },
+        { "ticker": "NKY Index",  "name": "NIKKEI 225" },
+        { "ticker": "AS51 Index", "name": "ASX 200" }
+      ]
+    },
+    "em_indexes": {
+      "title": "EMERGING MARKETS (EM)",
+      "panel": "indices",
+      "rows": [
+        { "ticker": "IBOV Index",   "name": "IBOVESPA" },
+        { "ticker": "SHCOMP Index", "name": "SHANGHAI COMP" },
+        { "ticker": "HSI Index",    "name": "HANG SENG" },
+        { "ticker": "NIFTY Index",  "name": "NIFTY 50" },
+        { "ticker": "MEXBOL Index", "name": "MEXICO BOLSA" },
+        { "ticker": "JALSH Index",  "name": "JSE AFRICA" },
+        { "ticker": "KOSPI Index",  "name": "KOSPI" },
+        { "ticker": "TWSE Index",   "name": "TAIEX" }
+      ]
+    },
+    "dm_currencies": {
+      "title": "G10 / DEVELOPED CURRENCIES",
+      "panel": "fx",
+      "rows": [
+        { "ticker": "DXY Curncy",    "name": "DOLLAR INDEX" },
+        { "ticker": "EURUSD Curncy", "name": "EUR-USD" },
+        { "ticker": "GBPUSD Curncy", "name": "GBP-USD" },
+        { "ticker": "USDJPY Curncy", "name": "USD-JPY" },
+        { "ticker": "USDCHF Curncy", "name": "USD-CHF" },
+        { "ticker": "USDCAD Curncy", "name": "USD-CAD" },
+        { "ticker": "AUDUSD Curncy", "name": "AUD-USD" },
+        { "ticker": "NZDUSD Curncy", "name": "NZD-USD" }
+      ]
+    },
+    "em_currencies": {
+      "title": "EMERGING MARKET CURRENCIES",
+      "panel": "fx",
+      "rows": [
+        { "ticker": "USDBRL Curncy", "name": "USD-BRL" },
+        { "ticker": "USDCNY Curncy", "name": "USD-CNY" },
+        { "ticker": "USDMXN Curncy", "name": "USD-MXN" },
+        { "ticker": "USDZAR Curncy", "name": "USD-ZAR" },
+        { "ticker": "USDTRY Curncy", "name": "USD-TRY" },
+        { "ticker": "USDINR Curncy", "name": "USD-INR" },
+        { "ticker": "USDKRW Curncy", "name": "USD-KRW" },
+        { "ticker": "USDPLN Curncy", "name": "USD-PLN" }
+      ]
+    },
+    "commodities": {
+      "title": "KEY COMMODITY FUTURES",
+      "panel": "alpha",
+      "rows": [
+        { "ticker": "XAU Curncy",  "name": "GOLD SPOT" },
+        { "ticker": "XAG Curncy",  "name": "SILVER SPOT" },
+        { "ticker": "CL1 Comdty",  "name": "WTI CRUDE" },
+        { "ticker": "CO1 Comdty",  "name": "BRENT CRUDE" },
+        { "ticker": "NG1 Comdty",  "name": "NAT GAS" },
+        { "ticker": "HG1 Comdty",  "name": "COPPER" },
+        { "ticker": "W 1 Comdty",  "name": "WHEAT" },
+        { "ticker": "S 1 Comdty",  "name": "SOYBEAN" }
+      ]
+    },
+    "buffett_portfolio": {
+      "title": "BUFFETT (BERKSHIRE) HOLDINGS",
+      "panel": "alpha",
+      "rows": [
+        { "ticker": "AAPL US Equity", "name": "APPLE INC" },
+        { "ticker": "BAC US Equity",  "name": "BANK OF AMER" },
+        { "ticker": "AXP US Equity",  "name": "AMER EXPRESS" },
+        { "ticker": "KO US Equity",   "name": "COCA-COLA" },
+        { "ticker": "CVX US Equity",  "name": "CHEVRON" },
+        { "ticker": "OXY US Equity",  "name": "OCCIDENTAL" },
+        { "ticker": "KHC US Equity",  "name": "KRAFT HEINZ" },
+        { "ticker": "MCO US Equity",  "name": "MOODYS" }
+      ]
+    },
+    "personal_watchlist": {
+      "title": "PERSONAL WATCHLIST",
+      "panel": "alpha",
+      "rows": [
+        { "ticker": "NVDA US Equity", "name": "NVIDIA" },
+        { "ticker": "MSFT US Equity", "name": "MICROSOFT" },
+        { "ticker": "TSLA US Equity", "name": "TESLA" },
+        { "ticker": "META US Equity", "name": "META" },
+        { "ticker": "AMD US Equity",  "name": "AMD" },
+        { "ticker": "PLTR US Equity", "name": "PALANTIR" },
+        { "ticker": "COIN US Equity", "name": "COINBASE" },
+        { "ticker": "PBR US Equity",  "name": "PETROBRAS" }
+      ]
+    }
+  },
+  "yields": {
+    "us_treasuries": {
+      "title": "US TREASURIES",
+      "rows": [
+        { "tenor": "2Y",  "last": 4.75, "chg": -0.02 },
+        { "tenor": "5Y",  "last": 4.40, "chg": -0.01 },
+        { "tenor": "10Y", "last": 4.35, "chg":  0.01 },
+        { "tenor": "30Y", "last": 4.50, "chg":  0.02 }
+      ]
+    },
+    "brazil_di": {
+      "title": "BRAZIL FUTURES (DI)",
+      "rows": [
+        { "tenor": "Jan25", "last": 10.40, "chg": -0.05 },
+        { "tenor": "Jan26", "last": 10.55, "chg": -0.03 },
+        { "tenor": "Jan27", "last": 10.80, "chg":  0.02 },
+        { "tenor": "Jan29", "last": 11.20, "chg":  0.05 }
+      ]
+    }
+  },
+  "yield_curves": {
+    "tenors": ["3M", "6M", "1Y", "2Y", "5Y", "10Y", "30Y"],
+    "us":     [5.38, 5.20, 4.90, 4.75, 4.40, 4.35, 4.50],
+    "br":     [10.55, 10.60, 10.50, 10.80, 11.20, 11.50, 11.80]
+  }
+}

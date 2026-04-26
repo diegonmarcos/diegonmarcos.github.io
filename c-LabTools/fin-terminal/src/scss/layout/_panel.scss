@@ -1,0 +1,60 @@
+@use "../abstracts/mixins";
+
+.panel {
+  @include mixins.col;
+  background: var(--color-background);
+  border-left: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.panel__chrome {
+  @include mixins.row(8px);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 var(--pad-section);
+  height: var(--bar-h-command);
+  font-size: var(--font-size-small);
+}
+
+.panel__chrome-title {
+  color: var(--color-text);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex: 1 1 auto;
+  @include mixins.ellipsis;
+}
+
+.panel__chrome-id {
+  color: var(--color-info);
+  font-weight: 700;
+}
+
+.panel__chrome-clock {
+  color: var(--color-text-muted);
+  @include mixins.tnum;
+}
+
+.panel__body {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: var(--pad-section);
+}
+
+.panel__body--spec h2 {
+  color: var(--color-text);
+  margin-bottom: 4px;
+}
+.panel__body--spec .spec-meta {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-small);
+  margin-bottom: var(--pad-section);
+}
+.panel__body--spec .spec-summary {
+  color: var(--color-text-primary);
+  margin-bottom: var(--pad-section);
+}
+.panel__body--spec .spec-pending {
+  color: var(--color-warning);
+  font-style: italic;
+}

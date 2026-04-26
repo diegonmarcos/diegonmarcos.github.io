@@ -1,0 +1,44 @@
+// Tabular numerics — column-aligned monospace digits
+@mixin tnum {
+  font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+}
+
+// Hard rectangle — Bloomberg uses sharp 0px corners everywhere
+@mixin hard-rect($border-color: var(--color-border)) {
+  border: 1px solid $border-color;
+  border-radius: 0;
+}
+
+// Reset button
+@mixin button-reset {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+// Truncate single-line
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Dense flex row (no gaps unless requested)
+@mixin row($gap: 0) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin col($gap: 0) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}

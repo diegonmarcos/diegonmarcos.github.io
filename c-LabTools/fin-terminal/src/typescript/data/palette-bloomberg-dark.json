@@ -1,0 +1,30 @@
+{
+  "id": "bloomberg-dark",
+  "name": "Bloomberg Dark",
+  "description": "Authentic Bloomberg-terminal amber-on-black. Sunshade #FFA028 default text on true black, hard rectangles, monospace everywhere.",
+  "palette": {
+    "background":   "#000000",
+    "surface":      "#0a0a0a",
+    "surface_alt":  "#141414",
+    "border":       "#2a2a2a",
+    "text":         "#FFA028",
+    "text_muted":   "#8a6a30",
+    "text_primary": "#FFFFFF",
+    "accent":       "#FFA028",
+    "positive":     "#4AF6C3",
+    "negative":     "#FF433D",
+    "warning":      "#FFFF00",
+    "info":         "#0068FF",
+    "function_key": "#FFFF00",
+    "action_key":   "#4AF6C3",
+    "cancel_key":   "#FF433D",
+    "grid":         "#1c1c1c"
+  },
+  "fonts": {
+    "monospace_family": "'IBM Plex Mono', 'JetBrains Mono', 'SF Mono', Menlo, Consolas, 'Courier New', monospace",
+    "size_small":   11.0,
+    "size_body":    12.0,
+    "size_heading": 14.0,
+    "size_data":    12.0
+  }
+}

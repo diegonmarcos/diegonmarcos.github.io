@@ -1,0 +1,65 @@
+{
+  "description": "Macro-group hierarchy above the per-category nav. Each group carries the letter-prefix label Diego specified and the list of `category` values that belong to it. Within a group, items keep their registry order. The test 'every registry category maps to a group' guards against orphans when new categories are added.",
+  "groups": [
+    {
+      "id": "home",
+      "label": "HOME",
+      "categories": ["home"]
+    },
+    {
+      "id": "A0",
+      "label": "A0) NEWS",
+      "categories": ["news"]
+    },
+    {
+      "id": "A1",
+      "label": "A1) RESEARCH REPORTS",
+      "categories": ["research", "reports"]
+    },
+    {
+      "id": "A2",
+      "label": "A2) GEO REPORTS",
+      "categories": ["geo"]
+    },
+    {
+      "id": "B0",
+      "label": "B0) YIELD CURVES & BONDS",
+      "categories": ["fixedincome"]
+    },
+    {
+      "id": "B1",
+      "label": "B1) FX",
+      "categories": ["forex"]
+    },
+    {
+      "id": "B2",
+      "label": "B2) EQUITY",
+      "categories": ["markets"]
+    },
+    {
+      "id": "B3",
+      "label": "B3) DERIVATIVES & FUTURES",
+      "categories": ["derivatives"]
+    },
+    {
+      "id": "C",
+      "label": "C) MACRO",
+      "categories": ["central-bank-modelling", "economics"]
+    },
+    {
+      "id": "D0",
+      "label": "D0) CORPORATE — VALUATIONS",
+      "categories": ["valuation-modelling"]
+    },
+    {
+      "id": "E",
+      "label": "E) PORTFOLIO ALLOCATION",
+      "categories": ["portfolio"]
+    },
+    {
+      "id": "F",
+      "label": "F) OTHERS",
+      "categories": ["crypto", "trading", "ai", "automation", "commodities", "developer", "auth", "system"]
+    }
+  ]
+}

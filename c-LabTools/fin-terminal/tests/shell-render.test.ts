@@ -50,4 +50,18 @@ describe('shell mounts full chrome', () => {
     const text = document.documentElement.style.getPropertyValue('--color-text').toUpperCase();
     expect(text).toContain('FFA028');
   });
+
+  it('nav surfaces the macro-group breakers (HOME + 11 letter groups)', async () => {
+    const root = document.getElementById('app')!;
+    await new App().mount(root);
+    const titles = Array.from(root.querySelectorAll('.nav__group-title')).map(n => n.textContent);
+    // HOME has no letter prefix; the rest carry their letter + ")"
+    expect(titles).toContain('HOME');
+    for (const id of ['A0', 'A1', 'A2', 'B0', 'B1', 'B2', 'B3', 'C', 'D0', 'E', 'F']) {
+      expect(titles.some(t => t?.startsWith(`${id})`)),
+        `expected nav group with prefix "${id})"`).toBe(true);
+    }
+    // No orphan group should appear once nav-groups.json covers all categories.
+    expect(titles).not.toContain('UNGROUPED');
+  });
 });

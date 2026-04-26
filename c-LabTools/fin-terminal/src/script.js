@@ -8848,30 +8848,124 @@
     return (/* @__PURE__ */ new Date()).toISOString().slice(11, 19) + " UTC";
   }
 
+  // src/typescript/data/nav-groups.json
+  var nav_groups_default = {
+    description: "Macro-group hierarchy above the per-category nav. Each group carries the letter-prefix label Diego specified and the list of `category` values that belong to it. Within a group, items keep their registry order. The test 'every registry category maps to a group' guards against orphans when new categories are added.",
+    groups: [
+      {
+        id: "home",
+        label: "HOME",
+        categories: ["home"]
+      },
+      {
+        id: "A0",
+        label: "A0) NEWS",
+        categories: ["news"]
+      },
+      {
+        id: "A1",
+        label: "A1) RESEARCH REPORTS",
+        categories: ["research", "reports"]
+      },
+      {
+        id: "A2",
+        label: "A2) GEO REPORTS",
+        categories: ["geo"]
+      },
+      {
+        id: "B0",
+        label: "B0) YIELD CURVES & BONDS",
+        categories: ["fixedincome"]
+      },
+      {
+        id: "B1",
+        label: "B1) FX",
+        categories: ["forex"]
+      },
+      {
+        id: "B2",
+        label: "B2) EQUITY",
+        categories: ["markets"]
+      },
+      {
+        id: "B3",
+        label: "B3) DERIVATIVES & FUTURES",
+        categories: ["derivatives"]
+      },
+      {
+        id: "C",
+        label: "C) MACRO",
+        categories: ["central-bank-modelling", "economics"]
+      },
+      {
+        id: "D0",
+        label: "D0) CORPORATE \u2014 VALUATIONS",
+        categories: ["valuation-modelling"]
+      },
+      {
+        id: "E",
+        label: "E) PORTFOLIO ALLOCATION",
+        categories: ["portfolio"]
+      },
+      {
+        id: "F",
+        label: "F) OTHERS",
+        categories: ["crypto", "trading", "ai", "automation", "commodities", "developer", "auth", "system"]
+      }
+    ]
+  };
+
   // src/typescript/shell/nav.ts
+  var NAV_GROUPS = nav_groups_default.groups;
   var Nav = class {
     constructor(entries, onActivate) {
       __publicField(this, "node");
       __publicField(this, "buttons", /* @__PURE__ */ new Map());
       this.node = el("aside", { class: "nav", role: "navigation" });
-      const groups = groupByCategory(entries);
-      for (const [category, items] of groups) {
-        const groupNode = el("div", { class: "nav__group" }, [
-          el("span", { class: "nav__group-title" }, [category])
-        ]);
-        for (const item of items) {
-          const btn = el("button", {
-            class: "nav__item",
-            type: "button",
-            "data-screen": item.id,
-            title: item.id.toUpperCase()
-          }, [item.title]);
-          btn.addEventListener("click", () => onActivate(item.id));
-          this.buttons.set(item.id, btn);
-          groupNode.appendChild(btn);
-        }
-        this.node.appendChild(groupNode);
+      const byCategory = /* @__PURE__ */ new Map();
+      for (const e2 of entries) {
+        if (!byCategory.has(e2.category))
+          byCategory.set(e2.category, []);
+        byCategory.get(e2.category).push(e2);
       }
+      const used = /* @__PURE__ */ new Set();
+      for (const g2 of NAV_GROUPS) {
+        const items = [];
+        for (const cat of g2.categories) {
+          const list = byCategory.get(cat);
+          if (list) {
+            items.push(...list);
+            used.add(cat);
+          }
+        }
+        if (items.length === 0)
+          continue;
+        this.node.appendChild(this.buildGroup(g2.label, items, onActivate));
+      }
+      const orphanItems = [];
+      for (const [cat, list] of byCategory)
+        if (!used.has(cat))
+          orphanItems.push(...list);
+      if (orphanItems.length > 0) {
+        this.node.appendChild(this.buildGroup("UNGROUPED", orphanItems, onActivate));
+      }
+    }
+    buildGroup(label, items, onActivate) {
+      const groupNode = el("div", { class: "nav__group" }, [
+        el("span", { class: "nav__group-title" }, [label])
+      ]);
+      for (const item of items) {
+        const btn = el("button", {
+          class: "nav__item",
+          type: "button",
+          "data-screen": item.id,
+          title: item.id.toUpperCase()
+        }, [item.title]);
+        btn.addEventListener("click", () => onActivate(item.id));
+        this.buttons.set(item.id, btn);
+        groupNode.appendChild(btn);
+      }
+      return groupNode;
     }
     setActive(id) {
       for (const [k2, btn] of this.buttons) {
@@ -8879,18 +8973,6 @@
       }
     }
   };
-  function groupByCategory(entries) {
-    const order = [];
-    const out = /* @__PURE__ */ new Map();
-    for (const e2 of entries) {
-      if (!out.has(e2.category)) {
-        order.push(e2.category);
-        out.set(e2.category, []);
-      }
-      out.get(e2.category).push(e2);
-    }
-    return out;
-  }
 
   // src/typescript/data/themes.json
   var themes_default = {

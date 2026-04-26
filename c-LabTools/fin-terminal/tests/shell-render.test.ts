@@ -51,17 +51,27 @@ describe('shell mounts full chrome', () => {
     expect(text).toContain('FFA028');
   });
 
-  it('nav surfaces the macro-group breakers (HOME + 11 letter groups)', async () => {
+  it('nav surfaces the top-letter SECTION breakers (A REPORTS / B MARKETS / C MACRO / D CORPORATE / E ALLOCATION / F OTHERS)', async () => {
+    const root = document.getElementById('app')!;
+    await new App().mount(root);
+    const sections = Array.from(root.querySelectorAll('.nav__section-title')).map(n => n.textContent);
+    for (const id of ['A', 'B', 'C', 'D', 'E', 'F']) {
+      expect(sections.some(t => t?.startsWith(`${id})`)),
+        `expected section breaker with prefix "${id})"`).toBe(true);
+    }
+    // HOME is rendered as just its single group; no separate section breaker.
+    // Orphan section should never appear once nav-groups.json covers all categories.
+    expect(sections).not.toContain('UNGROUPED');
+  });
+
+  it('nav surfaces all sub-group letter breakers (HOME + A0/A1/A2 + B0..B3 + C0 + D0 + E0 + F0)', async () => {
     const root = document.getElementById('app')!;
     await new App().mount(root);
     const titles = Array.from(root.querySelectorAll('.nav__group-title')).map(n => n.textContent);
-    // HOME has no letter prefix; the rest carry their letter + ")"
     expect(titles).toContain('HOME');
-    for (const id of ['A0', 'A1', 'A2', 'B0', 'B1', 'B2', 'B3', 'C', 'D0', 'E', 'F']) {
+    for (const id of ['A0', 'A1', 'A2', 'B0', 'B1', 'B2', 'B3', 'C', 'D0']) {
       expect(titles.some(t => t?.startsWith(`${id})`)),
-        `expected nav group with prefix "${id})"`).toBe(true);
+        `expected nav sub-group with prefix "${id})"`).toBe(true);
     }
-    // No orphan group should appear once nav-groups.json covers all categories.
-    expect(titles).not.toContain('UNGROUPED');
   });
 });

@@ -2,9 +2,10 @@ import { el } from './dom';
 import type { ScreenEntry } from '../screens/registry';
 import navGroupsJson from '../data/nav-groups.json';
 
-interface NavGroup { id: string; label: string; categories: string[]; }
-interface NavGroupsCfg { groups: NavGroup[]; }
-const NAV_GROUPS: NavGroup[] = (navGroupsJson as NavGroupsCfg).groups;
+interface NavSection { id: string; label: string; }
+interface NavGroup { id: string; section: string; label: string; categories: string[]; }
+interface NavGroupsCfg { sections: NavSection[]; groups: NavGroup[]; }
+const CFG = navGroupsJson as NavGroupsCfg;
 
 export class Nav {
   readonly node: HTMLElement;
@@ -18,24 +19,39 @@ export class Nav {
       if (!byCategory.has(e.category)) byCategory.set(e.category, []);
       byCategory.get(e.category)!.push(e);
     }
-    const used = new Set<string>();
+    const usedCats = new Set<string>();
 
-    for (const g of NAV_GROUPS) {
-      const items: ScreenEntry[] = [];
-      for (const cat of g.categories) {
-        const list = byCategory.get(cat);
-        if (list) { items.push(...list); used.add(cat); }
+    for (const section of CFG.sections) {
+      const sectionGroups = CFG.groups.filter(g => g.section === section.id);
+      // Collect items per group, skip empty.
+      const renderableGroups: Array<{ g: NavGroup; items: ScreenEntry[] }> = [];
+      for (const g of sectionGroups) {
+        const items: ScreenEntry[] = [];
+        for (const cat of g.categories) {
+          const list = byCategory.get(cat);
+          if (list) { items.push(...list); usedCats.add(cat); }
+        }
+        if (items.length > 0) renderableGroups.push({ g, items });
       }
-      if (items.length === 0) continue;
-      this.node.appendChild(this.buildGroup(g.label, items, onActivate));
+      if (renderableGroups.length === 0) continue;
+
+      // Section breaker (skip for HOME — its label already lives at the
+      // group level and a bare HOME header on its own would be redundant).
+      if (section.id !== 'home') {
+        this.node.appendChild(el('div', { class: 'nav__section-title' }, [section.label]));
+      }
+      for (const { g, items } of renderableGroups) {
+        this.node.appendChild(this.buildGroup(g.label, items, onActivate));
+      }
     }
 
     // Catch-all for any category not assigned in nav-groups.json. Surfaces
     // immediately rather than silently swallowing — partner test
-    // 'every registry category maps to a group' should make this empty.
+    // 'every registry category maps to a group' makes this empty in prod.
     const orphanItems: ScreenEntry[] = [];
-    for (const [cat, list] of byCategory) if (!used.has(cat)) orphanItems.push(...list);
+    for (const [cat, list] of byCategory) if (!usedCats.has(cat)) orphanItems.push(...list);
     if (orphanItems.length > 0) {
+      this.node.appendChild(el('div', { class: 'nav__section-title' }, ['UNGROUPED']));
       this.node.appendChild(this.buildGroup('UNGROUPED', orphanItems, onActivate));
     }
   }

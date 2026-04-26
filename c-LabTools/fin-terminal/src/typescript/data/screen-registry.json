@@ -1,10 +1,11 @@
 {
-  "description": "13 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` and `valuation-modelling` are their own sections, each with a single iframe screen embedding the matching app from build.json `apps.*.url`. The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+  "description": "14 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with native DSGE + ML-ABM tabs (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (standalone HTML iframe). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
   "custom": [
     { "id": "dashboard",                "title": "Dashboard",               "category": "home",       "module": "dashboard" },
     { "id": "markets-dashboard",        "title": "Markets",                 "category": "home",       "module": "markets-dashboard" },
     { "id": "central-bank-modelling",   "title": "Central Bank Modelling",  "category": "central-bank-modelling",  "module": "central-bank-modelling" },
     { "id": "valuation-modelling",      "title": "Valuation Modelling",     "category": "valuation-modelling",     "module": "valuation-modelling" },
+    { "id": "fx-hedge-cost",            "title": "FX Hedge Cost",           "category": "forex",                   "module": "fx-hedge-cost" },
     { "id": "markets",          "title": "Markets (basic)",   "category": "markets",   "module": "markets" },
     { "id": "watchlist",        "title": "Watchlist",         "category": "markets",   "module": "watchlist" },
     { "id": "news",             "title": "News",              "category": "news",      "module": "news" },

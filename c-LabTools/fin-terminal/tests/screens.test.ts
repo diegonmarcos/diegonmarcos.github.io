@@ -20,10 +20,10 @@ function ctxStub(): ScreenContext {
 }
 
 describe('screen registry', () => {
-  it('buildRegistry produces 54 screens (13 custom + 41 spec)', () => {
+  it('buildRegistry produces 55 screens (14 custom + 41 spec)', () => {
     const reg = buildRegistry();
-    expect(reg.length).toBe(54);
-    expect(reg.filter(s => s.source === 'custom').length).toBe(13);
+    expect(reg.length).toBe(55);
+    expect(reg.filter(s => s.source === 'custom').length).toBe(14);
     expect(reg.filter(s => s.source === 'spec').length).toBe(41);
   });
 

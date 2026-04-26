@@ -8565,13 +8565,13 @@
       ws: "wss://api.diegonmarcos.com/fin-api/api/v1/ws"
     },
     apps: {
-      central_bank: {
-        url: "/central_bank/",
-        _note: "Central Bank Modelling section. Parent webserver should mount c-LabTools/central_bank/dist at this path."
-      },
       valuation: {
         url: "/valuation/",
         _note: "Valuation Modelling section. Set to empty string to show placeholder until the valuation app is wired."
+      },
+      fx_hedge: {
+        url: "public/fx-hedge.html",
+        _note: "FX Hedge Cost screen \u2014 standalone Tailwind+Chart.js HTML page bundled in src/public/."
       }
     },
     build: [
@@ -9066,12 +9066,13 @@
 
   // src/typescript/data/screen-registry.json
   var screen_registry_default = {
-    description: "13 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` and `valuation-modelling` are their own sections, each with a single iframe screen embedding the matching app from build.json `apps.*.url`. The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+    description: "14 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with native DSGE + ML-ABM tabs (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (standalone HTML iframe). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
     custom: [
       { id: "dashboard", title: "Dashboard", category: "home", module: "dashboard" },
       { id: "markets-dashboard", title: "Markets", category: "home", module: "markets-dashboard" },
       { id: "central-bank-modelling", title: "Central Bank Modelling", category: "central-bank-modelling", module: "central-bank-modelling" },
       { id: "valuation-modelling", title: "Valuation Modelling", category: "valuation-modelling", module: "valuation-modelling" },
+      { id: "fx-hedge-cost", title: "FX Hedge Cost", category: "forex", module: "fx-hedge-cost" },
       { id: "markets", title: "Markets (basic)", category: "markets", module: "markets" },
       { id: "watchlist", title: "Watchlist", category: "markets", module: "watchlist" },
       { id: "news", title: "News", category: "news", module: "news" },
@@ -9568,127 +9569,6 @@
     return wrap;
   }
 
-  // src/typescript/screens/_embed-app.ts
-  function makeEmbedAppScreen(opts) {
-    return function render(host, _ctx) {
-      host.style.padding = "0";
-      if (!opts.url) {
-        host.appendChild(el("h2", {}, [opts.title]));
-        host.appendChild(el("p", { class: "t-amber u-mt" }, [
-          `Section "${opts.section}" is wired but no app URL is configured.`
-        ]));
-        host.appendChild(el("p", { class: "t-muted u-mt-s" }, [
-          `Set apps.${opts.section}.url in build.json to point at the external app.`
-        ]));
-        return;
-      }
-      const wrap = el("div", { class: "embed" });
-      wrap.appendChild(el("div", { class: "embed__header" }, [
-        el("span", {}, [`${opts.title.toUpperCase()} \u2014 ${opts.url}`]),
-        el("a", {
-          class: "embed__open",
-          href: opts.url,
-          target: "_blank",
-          rel: "noopener"
-        }, ["\u2197 open in new tab"])
-      ]));
-      wrap.appendChild(el("iframe", {
-        src: opts.url,
-        title: opts.title,
-        loading: "lazy",
-        referrerpolicy: "no-referrer"
-      }));
-      host.appendChild(wrap);
-    };
-  }
-
-  // src/typescript/screens/central-bank-modelling.ts
-  var url = build_default.apps?.central_bank?.url ?? "/central_bank/";
-  var renderCentralBankModelling = makeEmbedAppScreen({
-    title: "Central Bank Modelling",
-    section: "central_bank",
-    url
-  });
-
-  // src/typescript/screens/valuation-modelling.ts
-  var url2 = build_default.apps?.valuation?.url ?? "/valuation/";
-  var renderValuationModelling = makeEmbedAppScreen({
-    title: "Valuation Modelling",
-    section: "valuation",
-    url: url2
-  });
-
-  // src/typescript/screens/markets.ts
-  function renderMarkets(host, _ctx) {
-    host.appendChild(el("h2", {}, ["Markets"]));
-    host.appendChild(renderDataTable({
-      columns: [
-        { key: "symbol", label: "Symbol" },
-        { key: "last", label: "Last", numeric: true },
-        {
-          key: "chg",
-          label: "Chg %",
-          numeric: true,
-          signed: true,
-          format: (v2) => `${v2 >= 0 ? "+" : ""}${(v2 * 100).toFixed(2)}%`
-        }
-      ],
-      rows: [
-        { symbol: "^SPX", last: 5283.4, chg: 42e-4 },
-        { symbol: "^NDX", last: 18321.1, chg: 78e-4 },
-        { symbol: "^VIX", last: 14.25, chg: -0.021 },
-        { symbol: "^DJI", last: 39281.2, chg: 21e-4 },
-        { symbol: "^FTSE", last: 8224.5, chg: 11e-4 },
-        { symbol: "^N225", last: 38911, chg: -47e-4 }
-      ],
-      sort: { key: "symbol", dir: "asc" }
-    }));
-  }
-
-  // src/typescript/screens/watchlist.ts
-  function renderWatchlist(host, _ctx) {
-    host.appendChild(el("h2", {}, ["Watchlist"]));
-    host.appendChild(renderDataTable({
-      columns: [
-        { key: "symbol", label: "Symbol" },
-        { key: "price", label: "Price", numeric: true }
-      ],
-      rows: [
-        { symbol: "AAPL", price: 187.5 },
-        { symbol: "MSFT", price: 421.8 },
-        { symbol: "NVDA", price: 932.1 }
-      ],
-      sort: { key: "symbol", dir: "asc" }
-    }));
-  }
-
-  // src/typescript/widgets/loading-overlay.ts
-  function renderLoadingOverlay(message = "LOADING\u2026") {
-    return el("div", { class: "loading-overlay", role: "status" }, [
-      el("span", { class: "loading-overlay__spinner", "aria-hidden": "true" }),
-      el("span", { class: "u-pad-s" }, [message])
-    ]);
-  }
-  function renderError(message) {
-    return el("div", { class: "loading-overlay t-neg", role: "alert" }, [
-      el("span", {}, [`ERROR \u2014 ${message}`])
-    ]);
-  }
-
-  // src/typescript/screens/news.ts
-  function renderNews(host, _ctx) {
-    host.appendChild(el("h2", {}, ["News"]));
-    host.appendChild(renderLoadingOverlay("LOADING NEWS FEED\u2026"));
-    host.appendChild(el("p", { class: "t-muted u-mt" }, ["Wire to /api/v1/topics on news:* in Phase 2."]));
-  }
-
-  // src/typescript/screens/equity-research.ts
-  function renderEquityResearch(host, _ctx) {
-    host.appendChild(el("h2", {}, ["Equity Research"]));
-    host.appendChild(el("p", { class: "t-amber" }, ["Type a symbol in the command bar to pull fundamentals + persona scoring."]));
-    host.appendChild(el("p", { class: "t-muted u-mt" }, ["Wired to /api/v1/personas/:id/score in Phase 2."]));
-  }
-
   // src/typescript/charts/line.ts
   function renderLineChart(opts) {
     const wrap = el("div", { class: "chart chart--line" });
@@ -9774,6 +9654,505 @@
     const last = pts[pts.length - 1];
     ctx.fillStyle = accent;
     ctx.fillRect(xs2(last.x) - 1, ys2(last.y) - 1, 3, 3);
+  }
+
+  // src/typescript/data/central-bank-modelling.json
+  var central_bank_modelling_default = {
+    description: "Central Bank Modelling \u2014 DSGE + ML-ABM. Extracted verbatim from c-LabTools/central_bank/src/{data,state,types}.ts. All numeric values are the original defaults; ranges come from the type comments. Scenarios are partial overrides applied on top of defaults when selected.",
+    tabs: [
+      { id: "dsge", label: "DSGE", title: "Dynamic Stochastic General Equilibrium" },
+      { id: "ml-abm", label: "ML-ABM", title: "Agent-Based Model + Machine Learning Nowcasting" }
+    ],
+    models: {
+      dsge: {
+        indicators: [
+          { label: "REAL GDP", value: 25462.7, unit: "B$", change: 2.4, trend: "up" },
+          { label: "INFLATION", value: 3.2, unit: "%", change: -0.3, trend: "down" },
+          { label: "UNEMPLOYMENT", value: 3.7, unit: "%", change: -0.1, trend: "down" },
+          { label: "INTEREST RATE", value: 5.25, unit: "%", change: 0.25, trend: "up" }
+        ],
+        param_groups: [
+          {
+            title: "HOUSEHOLD PREFERENCES",
+            params: [
+              { key: "beta", label: "Discount factor", value: 0.99, range: [0.9, 0.999] },
+              { key: "sigma", label: "Risk aversion / IES inv.", value: 1.5, range: [0.5, 5] },
+              { key: "phi", label: "Frisch elasticity (labor)", value: 2, range: [0.5, 5] },
+              { key: "h", label: "Habit persistence", value: 0.7, range: [0, 0.9] }
+            ]
+          },
+          {
+            title: "PRODUCTION TECHNOLOGY",
+            params: [
+              { key: "alpha", label: "Capital share", value: 0.33, range: [0.2, 0.5] },
+              { key: "delta", label: "Depreciation rate", value: 0.025, range: [0.01, 0.1] },
+              { key: "psi", label: "Capital adj. cost", value: 5, range: [0, 10] }
+            ]
+          },
+          {
+            title: "PRICE & WAGE RIGIDITY (CALVO)",
+            params: [
+              { key: "theta_p", label: "Price stickiness", value: 0.75, range: [0.5, 0.9] },
+              { key: "theta_w", label: "Wage stickiness", value: 0.75, range: [0.5, 0.9] },
+              { key: "xi_p", label: "Price indexation", value: 0.5, range: [0, 1] },
+              { key: "xi_w", label: "Wage indexation", value: 0.5, range: [0, 1] }
+            ]
+          },
+          {
+            title: "MONETARY POLICY (TAYLOR RULE)",
+            params: [
+              { key: "rho_r", label: "Interest rate smoothing", value: 0.8, range: [0.5, 0.95] },
+              { key: "phi_pi", label: "Inflation response", value: 1.5, range: [1.1, 3] },
+              { key: "phi_y", label: "Output gap response", value: 0.125, range: [0, 1] },
+              { key: "phi_dy", label: "Output growth response", value: 0.125, range: [0, 0.5] }
+            ]
+          },
+          {
+            title: "FISCAL POLICY",
+            params: [
+              { key: "g_y", label: "Govt spending / GDP", value: 0.2, range: [0.1, 0.3] },
+              { key: "tau_c", label: "Consumption tax", value: 0.1, range: [0, 0.3] },
+              { key: "tau_k", label: "Capital tax", value: 0.25, range: [0, 0.5] },
+              { key: "tau_l", label: "Labor tax", value: 0.3, range: [0, 0.5] },
+              { key: "rho_g", label: "Govt spending persistence", value: 0.9, range: [0.5, 0.99] }
+            ]
+          },
+          {
+            title: "SHOCK PROCESSES",
+            params: [
+              { key: "rho_a", label: "TFP persistence", value: 0.95, range: [0.5, 0.99] },
+              { key: "sigma_a", label: "TFP volatility", value: 7e-3, range: [1e-3, 0.02] },
+              { key: "rho_b", label: "Pref. shock persistence", value: 0.9, range: [0.5, 0.99] },
+              { key: "sigma_b", label: "Pref. shock volatility", value: 5e-3, range: [1e-3, 0.02] },
+              { key: "rho_i", label: "Inv. shock persistence", value: 0.85, range: [0.5, 0.99] },
+              { key: "sigma_i", label: "Inv. shock volatility", value: 0.01, range: [1e-3, 0.05] },
+              { key: "rho_p", label: "Markup price persist.", value: 0.7, range: [0.5, 0.99] },
+              { key: "sigma_p", label: "Markup price volatility", value: 5e-3, range: [1e-3, 0.02] },
+              { key: "rho_w", label: "Markup wage persist.", value: 0.7, range: [0.5, 0.99] },
+              { key: "sigma_w", label: "Markup wage volatility", value: 5e-3, range: [1e-3, 0.02] },
+              { key: "sigma_r", label: "Monetary shock volatility", value: 2e-3, range: [1e-3, 0.01] },
+              { key: "sigma_g", label: "Govt spending vol.", value: 0.01, range: [1e-3, 0.03] }
+            ]
+          }
+        ],
+        scenarios: {
+          baseline: {},
+          hawkish: { phi_pi: 2.5, phi_y: 0.25, rho_r: 0.9 },
+          dovish: { phi_pi: 1.2, phi_y: 0.05, rho_r: 0.7 },
+          fiscal_expansion: { g_y: 0.25, tau_c: 0.08, rho_g: 0.95 },
+          fiscal_austerity: { g_y: 0.15, tau_c: 0.15, tau_l: 0.35 },
+          high_rigidity: { theta_p: 0.85, theta_w: 0.85, xi_p: 0.7, xi_w: 0.7 },
+          flexible_prices: { theta_p: 0.5, theta_w: 0.5, xi_p: 0.2, xi_w: 0.2 },
+          high_volatility: { sigma_a: 0.015, sigma_b: 0.01, sigma_i: 0.03, sigma_r: 5e-3 },
+          crisis_mode: { sigma_a: 0.02, sigma_i: 0.05, sigma_r: 8e-3, phi_pi: 1.2 }
+        },
+        charts: [
+          { id: "gdp", title: "GDP \u2014 % deviation from steady state", base: 100, volatility: 3, points: 20, y_unit: "%" },
+          { id: "inflation", title: "Inflation \u2014 % YoY", base: 2.5, volatility: 0.5, points: 20, y_unit: "%" }
+        ]
+      },
+      "ml-abm": {
+        indicators: [
+          { label: "NOWCAST ACCURACY", value: 94.2, unit: "%", change: 1.3, trend: "up" },
+          { label: "DATA FEEDS", value: 47, unit: "src", change: 2, trend: "up" },
+          { label: "AGENT COUNT", value: 1e4, unit: "", change: 0, trend: "stable" },
+          { label: "REFRESH RATE", value: 15, unit: "min", change: 0, trend: "stable" }
+        ],
+        param_groups: [
+          {
+            title: "POPULATION",
+            params: [
+              { key: "numHouseholds", label: "# Households", value: 60, range: [50, 500] },
+              { key: "numFirms", label: "# Firms", value: 15, range: [10, 100] },
+              { key: "numBanks", label: "# Banks", value: 5, range: [2, 20] }
+            ]
+          },
+          {
+            title: "AGENT BEHAVIOR DISTRIBUTION (%)",
+            params: [
+              { key: "pctRational", label: "Rational", value: 40, range: [0, 100] },
+              { key: "pctAdaptive", label: "Adaptive", value: 40, range: [0, 100] },
+              { key: "pctHerding", label: "Herding", value: 20, range: [0, 100] }
+            ]
+          },
+          {
+            title: "BEHAVIORAL PARAMETERS",
+            params: [
+              { key: "adaptationRate", label: "Learning speed", value: 0.1, range: [0.01, 0.5] },
+              { key: "herdingStrength", label: "Network influence", value: 0.3, range: [0, 1] },
+              { key: "riskTolerance", label: "Risk appetite", value: 1, range: [0.1, 2] },
+              { key: "memoryLength", label: "Past periods (mem.)", value: 10, range: [1, 20] }
+            ]
+          },
+          {
+            title: "NETWORK TOPOLOGY",
+            params: [
+              { key: "networkDensity", label: "Connection prob.", value: 0.1, range: [0.05, 0.5] },
+              { key: "clusterCoeff", label: "Clustering coeff.", value: 0.3, range: [0, 1] }
+            ]
+          },
+          {
+            title: "MARKET MICROSTRUCTURE",
+            params: [
+              { key: "priceImpact", label: "Order impact", value: 0.01, range: [1e-3, 0.1] },
+              { key: "spreadBase", label: "Base bid-ask spread", value: 5e-3, range: [1e-3, 0.05] },
+              { key: "volatilityMem", label: "GARCH memory", value: 0.9, range: [0.5, 0.99] }
+            ]
+          },
+          {
+            title: "CREDIT & BANKING",
+            params: [
+              { key: "leverageMax", label: "Max leverage", value: 15, range: [5, 30] },
+              { key: "capitalReq", label: "Capital requirement", value: 0.08, range: [0.04, 0.12] },
+              { key: "interestSpread", label: "Lending spread", value: 0.03, range: [0.01, 0.1] },
+              { key: "defaultThreshold", label: "Bankruptcy trigger", value: 0.1, range: [0, 0.5] }
+            ]
+          },
+          {
+            title: "ML \u2014 MODEL SELECTION",
+            params: [
+              { key: "lstmLayers", label: "LSTM layers", value: 2, range: [1, 5] },
+              { key: "lstmUnits", label: "LSTM units", value: 64, range: [32, 256] },
+              { key: "lstmDropout", label: "LSTM dropout", value: 0.2, range: [0, 0.5] },
+              { key: "lstmLookback", label: "LSTM lookback (days)", value: 30, range: [5, 60] },
+              { key: "rfTrees", label: "RF trees", value: 200, range: [50, 500] },
+              { key: "rfMaxDepth", label: "RF max depth", value: 15, range: [5, 30] },
+              { key: "gbTrees", label: "GB trees", value: 200, range: [50, 500] },
+              { key: "gbLearningRate", label: "GB learn rate", value: 0.1, range: [0.01, 0.3] },
+              { key: "gbMaxDepth", label: "GB max depth", value: 6, range: [3, 15] }
+            ]
+          },
+          {
+            title: "ML \u2014 ENSEMBLE WEIGHTS",
+            params: [
+              { key: "ensembleWeightLSTM", label: "LSTM weight", value: 0.4, range: [0, 1] },
+              { key: "ensembleWeightRF", label: "RF weight", value: 0.3, range: [0, 1] },
+              { key: "ensembleWeightGB", label: "GB weight", value: 0.3, range: [0, 1] }
+            ]
+          },
+          {
+            title: "TRAINING",
+            params: [
+              { key: "trainTestSplit", label: "Train/test split", value: 0.8, range: [0.6, 0.9] },
+              { key: "crossValidFolds", label: "Cross-valid folds", value: 5, range: [3, 10] },
+              { key: "earlyStopPatience", label: "Early stop patience", value: 20, range: [5, 50] }
+            ]
+          },
+          {
+            title: "SIMULATION",
+            params: [
+              { key: "simSpeed", label: "Animation speed", value: 1, range: [0.5, 3] },
+              { key: "shockProb", label: "Random shock probability", value: 0.02, range: [0, 0.1] },
+              { key: "shockMagnitude", label: "Shock size", value: 0.2, range: [0.1, 0.5] }
+            ]
+          }
+        ],
+        scenarios: {
+          baseline: {},
+          rational_market: { pctRational: 80, pctAdaptive: 15, pctHerding: 5 },
+          herding_behavior: { pctRational: 20, pctAdaptive: 30, pctHerding: 50, herdingStrength: 0.6 },
+          high_leverage: { leverageMax: 25, capitalReq: 0.04, defaultThreshold: 0.15 },
+          tight_regulation: { leverageMax: 8, capitalReq: 0.12, defaultThreshold: 0.05 },
+          dense_network: { networkDensity: 0.3, clusterCoeff: 0.5 },
+          sparse_network: { networkDensity: 0.05, clusterCoeff: 0.1 },
+          volatile_market: { shockProb: 0.08, shockMagnitude: 0.4, volatilityMem: 0.95 }
+        },
+        nowcasts: [
+          { indicator: "GDP Growth (Q4)", actual: null, nowcast: 2.3, confidence: 0.87, sources: "Credit Cards / Employment", updated: "2 min ago" },
+          { indicator: "Retail Sales", actual: 3.1, nowcast: 3.2, confidence: 0.92, sources: "Credit Cards / Google Trends", updated: "5 min ago" },
+          { indicator: "Industrial Production", actual: 1.8, nowcast: 1.7, confidence: 0.84, sources: "Electricity / Shipping", updated: "12 min ago" },
+          { indicator: "Consumer Confidence", actual: null, nowcast: 102.5, confidence: 0.79, sources: "Social Media / Surveys", updated: "8 min ago" }
+        ],
+        charts: [
+          { id: "nowcast", title: "Nowcast \u2014 % growth (actual vs predicted)", base: 2, volatility: 0.8, points: 12, y_unit: "%" }
+        ]
+      }
+    }
+  };
+
+  // src/typescript/screens/central-bank-modelling.ts
+  var data2 = central_bank_modelling_default;
+  function indicatorToKpi(i) {
+    const tone = i.trend === "up" ? "pos" : i.trend === "down" ? "neg" : "neutral";
+    const value = `${formatNum(i.value)}${i.unit ? " " + i.unit : ""}`;
+    const sign = i.change >= 0 ? "+" : "";
+    const hint = i.change !== 0 ? `${sign}${formatNum(i.change)}${i.unit}` : "\u2014";
+    return { label: i.label, value, tone, hint };
+  }
+  function formatNum(n) {
+    if (Math.abs(n) >= 1e3)
+      return n.toLocaleString("en-US", { maximumFractionDigits: 1 });
+    if (Math.abs(n) >= 1)
+      return n.toFixed(2);
+    return n.toFixed(4);
+  }
+  function applyScenario(model, scenarioKey) {
+    const overrides = model.scenarios[scenarioKey] ?? {};
+    return model.param_groups.map((g2) => ({
+      title: g2.title,
+      params: g2.params.map((p2) => p2.key in overrides ? { ...p2, value: overrides[p2.key] } : p2)
+    }));
+  }
+  function syntheticSeries(spec) {
+    const out = [];
+    let v2 = spec.base;
+    let seed = hashStr(spec.id) >>> 0;
+    for (let i = 0; i < spec.points; i++) {
+      seed = seed * 1664525 + 1013904223 >>> 0;
+      const r3 = (seed / 4294967295 - 0.5) * spec.volatility;
+      v2 = v2 + r3;
+      out.push({ x: i, y: parseFloat(v2.toFixed(3)) });
+    }
+    return out;
+  }
+  function hashStr(s) {
+    let h2 = 2166136261;
+    for (let i = 0; i < s.length; i++) {
+      h2 ^= s.charCodeAt(i);
+      h2 = Math.imul(h2, 16777619);
+    }
+    return h2;
+  }
+  var PARAM_COLUMNS = [
+    { key: "label", label: "Parameter" },
+    {
+      key: "value",
+      label: "Value",
+      numeric: true,
+      format: (v2) => formatNum(v2)
+    },
+    {
+      key: "range",
+      label: "Range",
+      numeric: true,
+      format: (v2) => {
+        const r3 = v2;
+        return `${formatNum(r3[0])} \u2026 ${formatNum(r3[1])}`;
+      }
+    },
+    { key: "key", label: "Symbol" }
+  ];
+  var NOWCAST_COLUMNS = [
+    { key: "indicator", label: "Indicator" },
+    {
+      key: "actual",
+      label: "Actual",
+      numeric: true,
+      format: (v2) => v2 === null || v2 === void 0 ? "\u2014" : v2.toFixed(2)
+    },
+    {
+      key: "nowcast",
+      label: "Nowcast",
+      numeric: true,
+      format: (v2) => v2.toFixed(2)
+    },
+    {
+      key: "confidence",
+      label: "Confidence",
+      numeric: true,
+      format: (v2) => `${(v2 * 100).toFixed(0)}%`
+    },
+    { key: "sources", label: "Sources" },
+    { key: "updated", label: "Updated" }
+  ];
+  function renderCentralBankModelling(host, _ctx) {
+    let activeTabId = data2.tabs[0].id;
+    let activeScenarioByTab = {};
+    for (const t of data2.tabs)
+      activeScenarioByTab[t.id] = "baseline";
+    const tabsBar = el("nav", { class: "tabs", role: "tablist" });
+    const body = el("div");
+    const renderTabContent = () => {
+      clear(body);
+      const tab = data2.tabs.find((t) => t.id === activeTabId);
+      const model = data2.models[activeTabId];
+      const scenarioKey = activeScenarioByTab[activeTabId] ?? "baseline";
+      body.appendChild(el("p", { class: "t-muted u-mb-s" }, [tab.title]));
+      body.appendChild(renderKpiGrid(model.indicators.map(indicatorToKpi)));
+      const select = el("select", { class: "field__select" });
+      for (const key of Object.keys(model.scenarios)) {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = key.replace(/_/g, " ").toUpperCase();
+        if (key === scenarioKey)
+          opt.selected = true;
+        select.appendChild(opt);
+      }
+      select.addEventListener("change", () => {
+        activeScenarioByTab[activeTabId] = select.value;
+        renderTabContent();
+      });
+      body.appendChild(el("div", { class: "field" }, [
+        el("span", { class: "field__label" }, ["SCENARIO"]),
+        select
+      ]));
+      const groups = applyScenario(model, scenarioKey);
+      for (const g2 of groups) {
+        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, [g2.title]));
+        body.appendChild(renderDataTable({
+          columns: PARAM_COLUMNS,
+          rows: g2.params
+        }));
+      }
+      if (model.nowcasts && model.nowcasts.length > 0) {
+        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, ["NOWCASTS"]));
+        body.appendChild(renderDataTable({
+          columns: NOWCAST_COLUMNS,
+          rows: model.nowcasts
+        }));
+      }
+      body.appendChild(el("div", { class: "u-mt" }));
+      for (const c2 of model.charts) {
+        body.appendChild(renderLineChart({
+          points: syntheticSeries(c2),
+          label: c2.title
+        }));
+        body.appendChild(el("div", { class: "u-mb" }));
+      }
+    };
+    const renderTabsBar = () => {
+      clear(tabsBar);
+      for (const t of data2.tabs) {
+        const btn = el("button", {
+          class: `tabs__btn${t.id === activeTabId ? " tabs__btn--active" : ""}`,
+          type: "button",
+          role: "tab",
+          "aria-selected": t.id === activeTabId ? "true" : "false",
+          "data-tab": t.id
+        }, [t.label]);
+        btn.addEventListener("click", () => {
+          activeTabId = t.id;
+          renderTabsBar();
+          renderTabContent();
+        });
+        tabsBar.appendChild(btn);
+      }
+    };
+    host.appendChild(tabsBar);
+    host.appendChild(body);
+    renderTabsBar();
+    renderTabContent();
+  }
+
+  // src/typescript/screens/_embed-app.ts
+  function makeEmbedAppScreen(opts) {
+    return function render(host, _ctx) {
+      host.style.padding = "0";
+      if (!opts.url) {
+        host.appendChild(el("h2", {}, [opts.title]));
+        host.appendChild(el("p", { class: "t-amber u-mt" }, [
+          `Section "${opts.section}" is wired but no app URL is configured.`
+        ]));
+        host.appendChild(el("p", { class: "t-muted u-mt-s" }, [
+          `Set apps.${opts.section}.url in build.json to point at the external app.`
+        ]));
+        return;
+      }
+      const wrap = el("div", { class: "embed" });
+      wrap.appendChild(el("div", { class: "embed__header" }, [
+        el("span", {}, [`${opts.title.toUpperCase()} \u2014 ${opts.url}`]),
+        el("a", {
+          class: "embed__open",
+          href: opts.url,
+          target: "_blank",
+          rel: "noopener"
+        }, ["\u2197 open in new tab"])
+      ]));
+      wrap.appendChild(el("iframe", {
+        src: opts.url,
+        title: opts.title,
+        loading: "lazy",
+        referrerpolicy: "no-referrer"
+      }));
+      host.appendChild(wrap);
+    };
+  }
+
+  // src/typescript/screens/valuation-modelling.ts
+  var url = build_default.apps?.valuation?.url ?? "/valuation/";
+  var renderValuationModelling = makeEmbedAppScreen({
+    title: "Valuation Modelling",
+    section: "valuation",
+    url
+  });
+
+  // src/typescript/screens/fx-hedge-cost.ts
+  var url2 = build_default.apps?.fx_hedge?.url ?? "public/fx-hedge.html";
+  var renderFxHedgeCost = makeEmbedAppScreen({
+    title: "FX Hedge Cost",
+    section: "fx_hedge",
+    url: url2
+  });
+
+  // src/typescript/screens/markets.ts
+  function renderMarkets(host, _ctx) {
+    host.appendChild(el("h2", {}, ["Markets"]));
+    host.appendChild(renderDataTable({
+      columns: [
+        { key: "symbol", label: "Symbol" },
+        { key: "last", label: "Last", numeric: true },
+        {
+          key: "chg",
+          label: "Chg %",
+          numeric: true,
+          signed: true,
+          format: (v2) => `${v2 >= 0 ? "+" : ""}${(v2 * 100).toFixed(2)}%`
+        }
+      ],
+      rows: [
+        { symbol: "^SPX", last: 5283.4, chg: 42e-4 },
+        { symbol: "^NDX", last: 18321.1, chg: 78e-4 },
+        { symbol: "^VIX", last: 14.25, chg: -0.021 },
+        { symbol: "^DJI", last: 39281.2, chg: 21e-4 },
+        { symbol: "^FTSE", last: 8224.5, chg: 11e-4 },
+        { symbol: "^N225", last: 38911, chg: -47e-4 }
+      ],
+      sort: { key: "symbol", dir: "asc" }
+    }));
+  }
+
+  // src/typescript/screens/watchlist.ts
+  function renderWatchlist(host, _ctx) {
+    host.appendChild(el("h2", {}, ["Watchlist"]));
+    host.appendChild(renderDataTable({
+      columns: [
+        { key: "symbol", label: "Symbol" },
+        { key: "price", label: "Price", numeric: true }
+      ],
+      rows: [
+        { symbol: "AAPL", price: 187.5 },
+        { symbol: "MSFT", price: 421.8 },
+        { symbol: "NVDA", price: 932.1 }
+      ],
+      sort: { key: "symbol", dir: "asc" }
+    }));
+  }
+
+  // src/typescript/widgets/loading-overlay.ts
+  function renderLoadingOverlay(message = "LOADING\u2026") {
+    return el("div", { class: "loading-overlay", role: "status" }, [
+      el("span", { class: "loading-overlay__spinner", "aria-hidden": "true" }),
+      el("span", { class: "u-pad-s" }, [message])
+    ]);
+  }
+  function renderError(message) {
+    return el("div", { class: "loading-overlay t-neg", role: "alert" }, [
+      el("span", {}, [`ERROR \u2014 ${message}`])
+    ]);
+  }
+
+  // src/typescript/screens/news.ts
+  function renderNews(host, _ctx) {
+    host.appendChild(el("h2", {}, ["News"]));
+    host.appendChild(renderLoadingOverlay("LOADING NEWS FEED\u2026"));
+    host.appendChild(el("p", { class: "t-muted u-mt" }, ["Wire to /api/v1/topics on news:* in Phase 2."]));
+  }
+
+  // src/typescript/screens/equity-research.ts
+  function renderEquityResearch(host, _ctx) {
+    host.appendChild(el("h2", {}, ["Equity Research"]));
+    host.appendChild(el("p", { class: "t-amber" }, ["Type a symbol in the command bar to pull fundamentals + persona scoring."]));
+    host.appendChild(el("p", { class: "t-muted u-mt" }, ["Wired to /api/v1/personas/:id/score in Phase 2."]));
   }
 
   // src/typescript/screens/portfolio.ts
@@ -10022,6 +10401,7 @@
     "markets-dashboard": renderMarketsDashboard,
     "central-bank-modelling": renderCentralBankModelling,
     "valuation-modelling": renderValuationModelling,
+    "fx-hedge-cost": renderFxHedgeCost,
     "markets": renderMarkets,
     "watchlist": renderWatchlist,
     "news": renderNews,

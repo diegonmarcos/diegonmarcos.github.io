@@ -9,6 +9,7 @@ import { renderDashboard } from './dashboard';
 import { renderMarketsDashboard } from './markets-dashboard';
 import { renderCentralBankModelling } from './central-bank-modelling';
 import { renderValuationModelling } from './valuation-modelling';
+import { renderFxHedgeCost } from './fx-hedge-cost';
 import { renderMarkets } from './markets';
 import { renderWatchlist } from './watchlist';
 import { renderNews } from './news';
@@ -46,6 +47,7 @@ const CUSTOM_RENDERERS: Record<string, ScreenEntry['render']> = {
   'markets-dashboard':        renderMarketsDashboard,
   'central-bank-modelling':   renderCentralBankModelling,
   'valuation-modelling':      renderValuationModelling,
+  'fx-hedge-cost':            renderFxHedgeCost,
   'markets':                  renderMarkets,
   'watchlist':                renderWatchlist,
   'news':             renderNews,

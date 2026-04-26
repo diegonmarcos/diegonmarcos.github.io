@@ -11,13 +11,13 @@
   },
 
   "apps": {
-    "central_bank": {
-      "url": "/central_bank/",
-      "_note": "Central Bank Modelling section. Parent webserver should mount c-LabTools/central_bank/dist at this path."
-    },
     "valuation": {
       "url": "/valuation/",
       "_note": "Valuation Modelling section. Set to empty string to show placeholder until the valuation app is wired."
+    },
+    "fx_hedge": {
+      "url": "public/fx-hedge.html",
+      "_note": "FX Hedge Cost screen — standalone Tailwind+Chart.js HTML page bundled in src/public/."
     }
   },
 

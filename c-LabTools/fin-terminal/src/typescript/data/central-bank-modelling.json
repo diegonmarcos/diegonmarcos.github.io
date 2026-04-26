@@ -1,0 +1,212 @@
+{
+  "description": "Central Bank Modelling — DSGE + ML-ABM. Extracted verbatim from c-LabTools/central_bank/src/{data,state,types}.ts. All numeric values are the original defaults; ranges come from the type comments. Scenarios are partial overrides applied on top of defaults when selected.",
+  "tabs": [
+    { "id": "dsge",   "label": "DSGE",    "title": "Dynamic Stochastic General Equilibrium" },
+    { "id": "ml-abm", "label": "ML-ABM",  "title": "Agent-Based Model + Machine Learning Nowcasting" }
+  ],
+  "models": {
+    "dsge": {
+      "indicators": [
+        { "label": "REAL GDP",       "value": 25462.7, "unit": "B$", "change":  2.4, "trend": "up" },
+        { "label": "INFLATION",      "value": 3.2,     "unit": "%",  "change": -0.3, "trend": "down" },
+        { "label": "UNEMPLOYMENT",   "value": 3.7,     "unit": "%",  "change": -0.1, "trend": "down" },
+        { "label": "INTEREST RATE",  "value": 5.25,    "unit": "%",  "change":  0.25,"trend": "up" }
+      ],
+      "param_groups": [
+        {
+          "title": "HOUSEHOLD PREFERENCES",
+          "params": [
+            { "key": "beta",   "label": "Discount factor",          "value": 0.99,  "range": [0.9,   0.999] },
+            { "key": "sigma",  "label": "Risk aversion / IES inv.", "value": 1.5,   "range": [0.5,   5]     },
+            { "key": "phi",    "label": "Frisch elasticity (labor)","value": 2.0,   "range": [0.5,   5]     },
+            { "key": "h",      "label": "Habit persistence",        "value": 0.7,   "range": [0,     0.9]   }
+          ]
+        },
+        {
+          "title": "PRODUCTION TECHNOLOGY",
+          "params": [
+            { "key": "alpha",  "label": "Capital share",            "value": 0.33,  "range": [0.2, 0.5] },
+            { "key": "delta",  "label": "Depreciation rate",        "value": 0.025, "range": [0.01,0.1] },
+            { "key": "psi",    "label": "Capital adj. cost",        "value": 5.0,   "range": [0,   10]  }
+          ]
+        },
+        {
+          "title": "PRICE & WAGE RIGIDITY (CALVO)",
+          "params": [
+            { "key": "theta_p","label": "Price stickiness",         "value": 0.75,  "range": [0.5, 0.9] },
+            { "key": "theta_w","label": "Wage stickiness",          "value": 0.75,  "range": [0.5, 0.9] },
+            { "key": "xi_p",   "label": "Price indexation",         "value": 0.5,   "range": [0,   1]   },
+            { "key": "xi_w",   "label": "Wage indexation",          "value": 0.5,   "range": [0,   1]   }
+          ]
+        },
+        {
+          "title": "MONETARY POLICY (TAYLOR RULE)",
+          "params": [
+            { "key": "rho_r",  "label": "Interest rate smoothing",  "value": 0.8,   "range": [0.5, 0.95] },
+            { "key": "phi_pi", "label": "Inflation response",       "value": 1.5,   "range": [1.1, 3]    },
+            { "key": "phi_y",  "label": "Output gap response",      "value": 0.125, "range": [0,   1]    },
+            { "key": "phi_dy", "label": "Output growth response",   "value": 0.125, "range": [0,   0.5]  }
+          ]
+        },
+        {
+          "title": "FISCAL POLICY",
+          "params": [
+            { "key": "g_y",    "label": "Govt spending / GDP",      "value": 0.2,  "range": [0.1, 0.3]  },
+            { "key": "tau_c",  "label": "Consumption tax",          "value": 0.1,  "range": [0,   0.3]  },
+            { "key": "tau_k",  "label": "Capital tax",              "value": 0.25, "range": [0,   0.5]  },
+            { "key": "tau_l",  "label": "Labor tax",                "value": 0.3,  "range": [0,   0.5]  },
+            { "key": "rho_g",  "label": "Govt spending persistence","value": 0.9,  "range": [0.5, 0.99] }
+          ]
+        },
+        {
+          "title": "SHOCK PROCESSES",
+          "params": [
+            { "key": "rho_a",   "label": "TFP persistence",          "value": 0.95,  "range": [0.5,   0.99] },
+            { "key": "sigma_a", "label": "TFP volatility",           "value": 0.007, "range": [0.001, 0.02] },
+            { "key": "rho_b",   "label": "Pref. shock persistence",  "value": 0.9,   "range": [0.5,   0.99] },
+            { "key": "sigma_b", "label": "Pref. shock volatility",   "value": 0.005, "range": [0.001, 0.02] },
+            { "key": "rho_i",   "label": "Inv. shock persistence",   "value": 0.85,  "range": [0.5,   0.99] },
+            { "key": "sigma_i", "label": "Inv. shock volatility",    "value": 0.01,  "range": [0.001, 0.05] },
+            { "key": "rho_p",   "label": "Markup price persist.",    "value": 0.7,   "range": [0.5,   0.99] },
+            { "key": "sigma_p", "label": "Markup price volatility",  "value": 0.005, "range": [0.001, 0.02] },
+            { "key": "rho_w",   "label": "Markup wage persist.",     "value": 0.7,   "range": [0.5,   0.99] },
+            { "key": "sigma_w", "label": "Markup wage volatility",   "value": 0.005, "range": [0.001, 0.02] },
+            { "key": "sigma_r", "label": "Monetary shock volatility","value": 0.002, "range": [0.001, 0.01] },
+            { "key": "sigma_g", "label": "Govt spending vol.",       "value": 0.01,  "range": [0.001, 0.03] }
+          ]
+        }
+      ],
+      "scenarios": {
+        "baseline":         {},
+        "hawkish":          { "phi_pi": 2.5, "phi_y": 0.25, "rho_r": 0.9 },
+        "dovish":           { "phi_pi": 1.2, "phi_y": 0.05, "rho_r": 0.7 },
+        "fiscal_expansion": { "g_y": 0.25, "tau_c": 0.08, "rho_g": 0.95 },
+        "fiscal_austerity": { "g_y": 0.15, "tau_c": 0.15, "tau_l": 0.35 },
+        "high_rigidity":    { "theta_p": 0.85, "theta_w": 0.85, "xi_p": 0.7, "xi_w": 0.7 },
+        "flexible_prices":  { "theta_p": 0.5,  "theta_w": 0.5,  "xi_p": 0.2, "xi_w": 0.2 },
+        "high_volatility":  { "sigma_a": 0.015, "sigma_b": 0.01, "sigma_i": 0.03, "sigma_r": 0.005 },
+        "crisis_mode":      { "sigma_a": 0.02,  "sigma_i": 0.05, "sigma_r": 0.008, "phi_pi": 1.2 }
+      },
+      "charts": [
+        { "id": "gdp",       "title": "GDP — % deviation from steady state", "base":  100,  "volatility": 3,    "points": 20, "y_unit": "%" },
+        { "id": "inflation", "title": "Inflation — % YoY",                   "base":  2.5,  "volatility": 0.5,  "points": 20, "y_unit": "%" }
+      ]
+    },
+    "ml-abm": {
+      "indicators": [
+        { "label": "NOWCAST ACCURACY", "value": 94.2,  "unit": "%",   "change":  1.3, "trend": "up" },
+        { "label": "DATA FEEDS",       "value": 47,    "unit": "src", "change":  2,   "trend": "up" },
+        { "label": "AGENT COUNT",      "value": 10000, "unit": "",    "change":  0,   "trend": "stable" },
+        { "label": "REFRESH RATE",     "value": 15,    "unit": "min", "change":  0,   "trend": "stable" }
+      ],
+      "param_groups": [
+        {
+          "title": "POPULATION",
+          "params": [
+            { "key": "numHouseholds", "label": "# Households", "value": 60, "range": [50, 500] },
+            { "key": "numFirms",      "label": "# Firms",      "value": 15, "range": [10, 100] },
+            { "key": "numBanks",      "label": "# Banks",      "value": 5,  "range": [2,  20]  }
+          ]
+        },
+        {
+          "title": "AGENT BEHAVIOR DISTRIBUTION (%)",
+          "params": [
+            { "key": "pctRational", "label": "Rational",  "value": 40, "range": [0, 100] },
+            { "key": "pctAdaptive", "label": "Adaptive",  "value": 40, "range": [0, 100] },
+            { "key": "pctHerding",  "label": "Herding",   "value": 20, "range": [0, 100] }
+          ]
+        },
+        {
+          "title": "BEHAVIORAL PARAMETERS",
+          "params": [
+            { "key": "adaptationRate",  "label": "Learning speed",      "value": 0.1, "range": [0.01, 0.5] },
+            { "key": "herdingStrength", "label": "Network influence",   "value": 0.3, "range": [0,    1]   },
+            { "key": "riskTolerance",   "label": "Risk appetite",       "value": 1.0, "range": [0.1,  2]   },
+            { "key": "memoryLength",    "label": "Past periods (mem.)", "value": 10,  "range": [1,    20]  }
+          ]
+        },
+        {
+          "title": "NETWORK TOPOLOGY",
+          "params": [
+            { "key": "networkDensity", "label": "Connection prob.",  "value": 0.1, "range": [0.05, 0.5] },
+            { "key": "clusterCoeff",   "label": "Clustering coeff.", "value": 0.3, "range": [0,    1]   }
+          ]
+        },
+        {
+          "title": "MARKET MICROSTRUCTURE",
+          "params": [
+            { "key": "priceImpact",   "label": "Order impact",       "value": 0.01,  "range": [0.001, 0.1]  },
+            { "key": "spreadBase",    "label": "Base bid-ask spread","value": 0.005, "range": [0.001, 0.05] },
+            { "key": "volatilityMem", "label": "GARCH memory",       "value": 0.9,   "range": [0.5,   0.99] }
+          ]
+        },
+        {
+          "title": "CREDIT & BANKING",
+          "params": [
+            { "key": "leverageMax",      "label": "Max leverage",        "value": 15,  "range": [5,    30]  },
+            { "key": "capitalReq",       "label": "Capital requirement", "value": 0.08,"range": [0.04, 0.12]},
+            { "key": "interestSpread",   "label": "Lending spread",      "value": 0.03,"range": [0.01, 0.1] },
+            { "key": "defaultThreshold", "label": "Bankruptcy trigger",  "value": 0.1, "range": [0,    0.5] }
+          ]
+        },
+        {
+          "title": "ML — MODEL SELECTION",
+          "params": [
+            { "key": "lstmLayers",   "label": "LSTM layers",  "value": 2,   "range": [1, 5]   },
+            { "key": "lstmUnits",    "label": "LSTM units",   "value": 64,  "range": [32, 256] },
+            { "key": "lstmDropout",  "label": "LSTM dropout", "value": 0.2, "range": [0,  0.5] },
+            { "key": "lstmLookback", "label": "LSTM lookback (days)", "value": 30, "range": [5, 60] },
+            { "key": "rfTrees",      "label": "RF trees",     "value": 200, "range": [50, 500] },
+            { "key": "rfMaxDepth",   "label": "RF max depth", "value": 15,  "range": [5,  30]  },
+            { "key": "gbTrees",      "label": "GB trees",     "value": 200, "range": [50, 500] },
+            { "key": "gbLearningRate","label":"GB learn rate","value": 0.1, "range": [0.01, 0.3]},
+            { "key": "gbMaxDepth",   "label": "GB max depth", "value": 6,   "range": [3,  15]  }
+          ]
+        },
+        {
+          "title": "ML — ENSEMBLE WEIGHTS",
+          "params": [
+            { "key": "ensembleWeightLSTM", "label": "LSTM weight", "value": 0.4, "range": [0, 1] },
+            { "key": "ensembleWeightRF",   "label": "RF weight",   "value": 0.3, "range": [0, 1] },
+            { "key": "ensembleWeightGB",   "label": "GB weight",   "value": 0.3, "range": [0, 1] }
+          ]
+        },
+        {
+          "title": "TRAINING",
+          "params": [
+            { "key": "trainTestSplit",    "label": "Train/test split",     "value": 0.8, "range": [0.6, 0.9] },
+            { "key": "crossValidFolds",   "label": "Cross-valid folds",    "value": 5,   "range": [3,   10]  },
+            { "key": "earlyStopPatience", "label": "Early stop patience",  "value": 20,  "range": [5,   50]  }
+          ]
+        },
+        {
+          "title": "SIMULATION",
+          "params": [
+            { "key": "simSpeed",       "label": "Animation speed",          "value": 1.0,  "range": [0.5, 3]   },
+            { "key": "shockProb",      "label": "Random shock probability", "value": 0.02, "range": [0,   0.1] },
+            { "key": "shockMagnitude", "label": "Shock size",               "value": 0.2,  "range": [0.1, 0.5] }
+          ]
+        }
+      ],
+      "scenarios": {
+        "baseline":          {},
+        "rational_market":   { "pctRational": 80, "pctAdaptive": 15, "pctHerding": 5 },
+        "herding_behavior":  { "pctRational": 20, "pctAdaptive": 30, "pctHerding": 50, "herdingStrength": 0.6 },
+        "high_leverage":     { "leverageMax": 25, "capitalReq": 0.04, "defaultThreshold": 0.15 },
+        "tight_regulation":  { "leverageMax": 8,  "capitalReq": 0.12, "defaultThreshold": 0.05 },
+        "dense_network":     { "networkDensity": 0.3, "clusterCoeff": 0.5 },
+        "sparse_network":    { "networkDensity": 0.05, "clusterCoeff": 0.1 },
+        "volatile_market":   { "shockProb": 0.08, "shockMagnitude": 0.4, "volatilityMem": 0.95 }
+      },
+      "nowcasts": [
+        { "indicator": "GDP Growth (Q4)",       "actual": null, "nowcast": 2.3,   "confidence": 0.87, "sources": "Credit Cards / Employment",     "updated": "2 min ago"  },
+        { "indicator": "Retail Sales",          "actual": 3.1,  "nowcast": 3.2,   "confidence": 0.92, "sources": "Credit Cards / Google Trends",  "updated": "5 min ago"  },
+        { "indicator": "Industrial Production", "actual": 1.8,  "nowcast": 1.7,   "confidence": 0.84, "sources": "Electricity / Shipping",        "updated": "12 min ago" },
+        { "indicator": "Consumer Confidence",   "actual": null, "nowcast": 102.5, "confidence": 0.79, "sources": "Social Media / Surveys",        "updated": "8 min ago"  }
+      ],
+      "charts": [
+        { "id": "nowcast", "title": "Nowcast — % growth (actual vs predicted)", "base": 2.0, "volatility": 0.8, "points": 12, "y_unit": "%" }
+      ]
+    }
+  }
+}

@@ -38,8 +38,13 @@ describe('screen-specs.json', () => {
 
 describe('screen-registry.json (custom)', () => {
   const customs = (customRegistry as { custom: Array<{ id: string; title: string; category: string; module: string }> }).custom;
-  it('has exactly 13 custom screens (egui 10 + Markets dashboard + Central Bank Modelling + Valuation Modelling)', () => {
-    expect(customs.length).toBe(13);
+  it('has exactly 14 custom screens (egui 10 + Markets dashboard + CBM + Valuation Modelling + FX Hedge Cost)', () => {
+    expect(customs.length).toBe(14);
+  });
+  it('FX Hedge Cost lives under category "forex" alongside spec-driven Forex screens', () => {
+    const fx = customs.find(c => c.id === 'fx-hedge-cost');
+    expect(fx).toBeDefined();
+    expect(fx!.category).toBe('forex');
   });
   it('home section contains exactly Dashboard and Markets dashboards', () => {
     const home = customs.filter(c => c.category === 'home').map(c => c.id);

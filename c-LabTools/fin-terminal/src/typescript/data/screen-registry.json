@@ -1,9 +1,10 @@
 {
-  "description": "14 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with native DSGE + ML-ABM tabs (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (standalone HTML iframe). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+  "description": "15 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with two screens — DSGE and ML-ABM — each rendered as a separate nav entry (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (native Bloomberg port of treasury-fx-hedge.html). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
   "custom": [
     { "id": "dashboard",                "title": "Dashboard",               "category": "home",       "module": "dashboard" },
     { "id": "markets-dashboard",        "title": "Markets",                 "category": "home",       "module": "markets-dashboard" },
-    { "id": "central-bank-modelling",   "title": "Central Bank Modelling",  "category": "central-bank-modelling",  "module": "central-bank-modelling" },
+    { "id": "dsge",                     "title": "DSGE",                    "category": "central-bank-modelling",  "module": "dsge" },
+    { "id": "ml-abm",                   "title": "ML-ABM",                  "category": "central-bank-modelling",  "module": "ml-abm" },
     { "id": "valuation-modelling",      "title": "Valuation Modelling",     "category": "valuation-modelling",     "module": "valuation-modelling" },
     { "id": "fx-hedge-cost",            "title": "FX Hedge Cost",           "category": "forex",                   "module": "fx-hedge-cost" },
     { "id": "markets",          "title": "Markets (basic)",   "category": "markets",   "module": "markets" },

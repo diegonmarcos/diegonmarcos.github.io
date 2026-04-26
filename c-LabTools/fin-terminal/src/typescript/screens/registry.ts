@@ -7,7 +7,8 @@ import specsJson from '../data/screen-specs.json';
 import { renderSpecScreen } from './spec-screen';
 import { renderDashboard } from './dashboard';
 import { renderMarketsDashboard } from './markets-dashboard';
-import { renderCentralBankModelling } from './central-bank-modelling';
+import { renderDsge } from './dsge';
+import { renderMlAbm } from './ml-abm';
 import { renderValuationModelling } from './valuation-modelling';
 import { renderFxHedgeCost } from './fx-hedge-cost';
 import { renderMarkets } from './markets';
@@ -45,7 +46,8 @@ interface SpecEntry { id: string; title: string; category: string; summary: stri
 const CUSTOM_RENDERERS: Record<string, ScreenEntry['render']> = {
   'dashboard':                renderDashboard,
   'markets-dashboard':        renderMarketsDashboard,
-  'central-bank-modelling':   renderCentralBankModelling,
+  'dsge':                     renderDsge,
+  'ml-abm':                   renderMlAbm,
   'valuation-modelling':      renderValuationModelling,
   'fx-hedge-cost':            renderFxHedgeCost,
   'markets':                  renderMarkets,

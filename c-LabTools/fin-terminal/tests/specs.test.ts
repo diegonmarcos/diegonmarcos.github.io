@@ -38,8 +38,12 @@ describe('screen-specs.json', () => {
 
 describe('screen-registry.json (custom)', () => {
   const customs = (customRegistry as { custom: Array<{ id: string; title: string; category: string; module: string }> }).custom;
-  it('has exactly 14 custom screens (egui 10 + Markets dashboard + CBM + Valuation Modelling + FX Hedge Cost)', () => {
-    expect(customs.length).toBe(14);
+  it('has exactly 15 custom screens (egui 10 + Markets dashboard + DSGE + ML-ABM + Valuation Modelling + FX Hedge Cost)', () => {
+    expect(customs.length).toBe(15);
+  });
+  it('Central Bank Modelling section has TWO entries (DSGE + ML-ABM) under category "central-bank-modelling"', () => {
+    const cbm = customs.filter(c => c.category === 'central-bank-modelling').map(c => c.id);
+    expect(cbm).toEqual(['dsge', 'ml-abm']);
   });
   it('FX Hedge Cost lives under category "forex" alongside spec-driven Forex screens', () => {
     const fx = customs.find(c => c.id === 'fx-hedge-cost');
@@ -50,12 +54,10 @@ describe('screen-registry.json (custom)', () => {
     const home = customs.filter(c => c.category === 'home').map(c => c.id);
     expect(home).toEqual(['dashboard', 'markets-dashboard']);
   });
-  it('Central Bank Modelling is its OWN section (not a home dashboard)', () => {
-    const cbm = customs.find(c => c.id === 'central-bank-modelling');
-    expect(cbm).toBeDefined();
-    expect(cbm!.category).toBe('central-bank-modelling');
+  it('Central Bank Modelling section is NOT under home', () => {
     const homeIds = customs.filter(c => c.category === 'home').map(c => c.id);
-    expect(homeIds).not.toContain('central-bank-modelling');
+    expect(homeIds).not.toContain('dsge');
+    expect(homeIds).not.toContain('ml-abm');
   });
   it('Valuation Modelling is its OWN section (not a home dashboard)', () => {
     const vm = customs.find(c => c.id === 'valuation-modelling');

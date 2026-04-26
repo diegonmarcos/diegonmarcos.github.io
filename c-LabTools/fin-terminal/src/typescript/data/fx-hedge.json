@@ -1,0 +1,48 @@
+{
+  "description": "FX Hedge Cost — defaults + endpoints. Native Bloomberg port of /home/diego/treausurye-fx-hedge.txt. All form defaults are declared here so a copy/edit/rebuild changes them with no code edits. Symbol BRL=X = USD/BRL spot from Yahoo.",
+  "tabs": [
+    { "id": "hedge",  "label": "HEDGE MODELS" },
+    { "id": "tech",   "label": "TECH CHART" },
+    { "id": "bacen",  "label": "BACEN FOCUS" }
+  ],
+  "defaults": {
+    "spot":      5.0300,
+    "targetBRL": 10000000,
+    "ceiling":   5.70,
+    "cap":       6.20,
+    "rBRL":      10.75,
+    "rUSD":      3.69,
+    "vol":       15.0,
+    "t":         1.0
+  },
+  "ranges": {
+    "spot":      { "step": 0.0001, "min": 0.01 },
+    "targetBRL": { "step": 100000, "min": 0    },
+    "ceiling":   { "step": 0.01,   "min": 0.01 },
+    "cap":       { "step": 0.01,   "min": 0.01 },
+    "rBRL":      { "step": 0.1,    "min": 0    },
+    "rUSD":      { "step": 0.1,    "min": 0    },
+    "vol":       { "step": 0.5,    "min": 0    },
+    "t":         { "step": 0.1,    "min": 0.01 }
+  },
+  "endpoints": {
+    "yahoo_chart": {
+      "_note": "Yahoo Finance daily candles for BRL=X via allorigins JSON proxy (CORS-safe). Range/interval applied as URL params on the inner Yahoo URL.",
+      "proxy": "https://api.allorigins.win/get?url=",
+      "target": "https://query2.finance.yahoo.com/v8/finance/chart/BRL=X?range=3mo&interval=1d"
+    },
+    "spot_fallback": "https://open.er-api.com/v6/latest/USD",
+    "bacen_focus": {
+      "_note": "BCB Olinda OData — Câmbio annual expectations.",
+      "url": "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$filter=Indicador%20eq%20'C%C3%A2mbio'&$orderby=Data%20desc&$top=30&$format=json"
+    }
+  },
+  "ema_periods": [5, 10],
+  "labels": {
+    "options": [
+      { "id": "pure-call",   "tag": "OPT 1", "title": "PURE CALL",        "desc": "Unlimited protection above ceiling." },
+      { "id": "call-spread", "tag": "OPT 2", "title": "CALL SPREAD",      "desc": "Protected from ceiling, capped at cap." },
+      { "id": "collar",      "tag": "OPT 3", "title": "ZERO-COST COLLAR", "desc": "Required floor lock — no premium paid." }
+    ]
+  }
+}

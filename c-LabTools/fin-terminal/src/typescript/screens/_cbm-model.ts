@@ -21,8 +21,6 @@ interface CBM { tabs: Tab[]; models: Record<string, Model>; }
 
 const data = cbmData as CBM;
 
-// --- helpers ---------------------------------------------------------------
-
 function indicatorToKpi(i: Indicator): Kpi {
   const tone: Kpi['tone'] = i.trend === 'up' ? 'pos' : i.trend === 'down' ? 'neg' : 'neutral';
   const value = `${formatNum(i.value)}${i.unit ? ' ' + i.unit : ''}`;
@@ -48,7 +46,6 @@ function applyScenario(model: Model, scenarioKey: string): ParamGroup[] {
 function syntheticSeries(spec: ChartSpec): { x: number; y: number }[] {
   const out: { x: number; y: number }[] = [];
   let v = spec.base;
-  // Deterministic so re-renders are stable per chart id (no random flicker).
   let seed = hashStr(spec.id) >>> 0;
   for (let i = 0; i < spec.points; i++) {
     seed = (seed * 1664525 + 1013904223) >>> 0;
@@ -81,28 +78,23 @@ const NOWCAST_COLUMNS: Column[] = [
   { key: 'updated',    label: 'Updated' },
 ];
 
-// --- main render -----------------------------------------------------------
+// Shared renderer for both DSGE and ML-ABM screens. Each is its own nav entry
+// under the Central Bank Modelling section — no tab strip, just the model.
+export function renderCbmModel(host: HTMLElement, _ctx: ScreenContext, modelId: 'dsge' | 'ml-abm'): void {
+  const tabMeta = data.tabs.find(t => t.id === modelId)!;
+  const model = data.models[modelId]!;
+  let scenarioKey = 'baseline';
 
-export function renderCentralBankModelling(host: HTMLElement, _ctx: ScreenContext): void {
-  let activeTabId: string = data.tabs[0]!.id;
-  let activeScenarioByTab: Record<string, string> = {};
-  for (const t of data.tabs) activeScenarioByTab[t.id] = 'baseline';
-
-  const tabsBar = el('nav', { class: 'tabs', role: 'tablist' });
   const body = el('div');
+  host.appendChild(el('h2', {}, [tabMeta.label]));
+  host.appendChild(el('p', { class: 't-muted u-mb-s' }, [tabMeta.title]));
+  host.appendChild(body);
 
-  const renderTabContent = () => {
+  const renderBody = () => {
     clear(body);
-    const tab = data.tabs.find(t => t.id === activeTabId)!;
-    const model = data.models[activeTabId]!;
-    const scenarioKey = activeScenarioByTab[activeTabId] ?? 'baseline';
 
-    body.appendChild(el('p', { class: 't-muted u-mb-s' }, [tab.title]));
-
-    // KPI indicators row
     body.appendChild(renderKpiGrid(model.indicators.map(indicatorToKpi)));
 
-    // Scenario selector
     const select = el<HTMLSelectElement>('select', { class: 'field__select' });
     for (const key of Object.keys(model.scenarios)) {
       const opt = document.createElement('option');
@@ -112,15 +104,14 @@ export function renderCentralBankModelling(host: HTMLElement, _ctx: ScreenContex
       select.appendChild(opt);
     }
     select.addEventListener('change', () => {
-      activeScenarioByTab[activeTabId] = select.value;
-      renderTabContent();
+      scenarioKey = select.value;
+      renderBody();
     });
     body.appendChild(el('div', { class: 'field' }, [
       el('span', { class: 'field__label' }, ['SCENARIO']),
       select,
     ]));
 
-    // Parameters — grouped tables
     const groups = applyScenario(model, scenarioKey);
     for (const g of groups) {
       body.appendChild(el('div', { class: 'mkt-section__title u-mt' }, [g.title]));
@@ -130,7 +121,6 @@ export function renderCentralBankModelling(host: HTMLElement, _ctx: ScreenContex
       }));
     }
 
-    // Nowcasts table (ML-ABM only)
     if (model.nowcasts && model.nowcasts.length > 0) {
       body.appendChild(el('div', { class: 'mkt-section__title u-mt' }, ['NOWCASTS']));
       body.appendChild(renderDataTable({
@@ -139,7 +129,6 @@ export function renderCentralBankModelling(host: HTMLElement, _ctx: ScreenContex
       }));
     }
 
-    // Charts
     body.appendChild(el('div', { class: 'u-mt' }));
     for (const c of model.charts) {
       body.appendChild(renderLineChart({
@@ -150,27 +139,5 @@ export function renderCentralBankModelling(host: HTMLElement, _ctx: ScreenContex
     }
   };
 
-  const renderTabsBar = () => {
-    clear(tabsBar);
-    for (const t of data.tabs) {
-      const btn = el<HTMLButtonElement>('button', {
-        class: `tabs__btn${t.id === activeTabId ? ' tabs__btn--active' : ''}`,
-        type: 'button',
-        role: 'tab',
-        'aria-selected': t.id === activeTabId ? 'true' : 'false',
-        'data-tab': t.id,
-      }, [t.label]);
-      btn.addEventListener('click', () => {
-        activeTabId = t.id;
-        renderTabsBar();
-        renderTabContent();
-      });
-      tabsBar.appendChild(btn);
-    }
-  };
-
-  host.appendChild(tabsBar);
-  host.appendChild(body);
-  renderTabsBar();
-  renderTabContent();
+  renderBody();
 }

@@ -8387,8 +8387,8 @@
 
   // src/typescript/api/client.ts
   var ApiClient = class {
-    constructor(cfg2) {
-      this.cfg = cfg2;
+    constructor(cfg3) {
+      this.cfg = cfg3;
     }
     async get(path) {
       const r3 = await fetch(`${this.cfg.base}${path}`, { headers: { Accept: "application/json" } });
@@ -8447,8 +8447,8 @@
 
   // src/typescript/api/ws.ts
   var WsClient = class {
-    constructor(url3, heartbeatMs = 25e3) {
-      this.url = url3;
+    constructor(url2, heartbeatMs = 25e3) {
+      this.url = url2;
       this.heartbeatMs = heartbeatMs;
       __publicField(this, "socket");
       __publicField(this, "state", "closed");
@@ -8568,10 +8568,6 @@
       valuation: {
         url: "/valuation/",
         _note: "Valuation Modelling section. Set to empty string to show placeholder until the valuation app is wired."
-      },
-      fx_hedge: {
-        url: "public/fx-hedge.html",
-        _note: "FX Hedge Cost screen \u2014 standalone Tailwind+Chart.js HTML page bundled in src/public/."
       }
     },
     build: [
@@ -9066,11 +9062,12 @@
 
   // src/typescript/data/screen-registry.json
   var screen_registry_default = {
-    description: "14 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with native DSGE + ML-ABM tabs (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (standalone HTML iframe). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
+    description: "15 custom screens organised by section (`category`). `home` holds the top-level dashboards (Dashboard, Markets). `central-bank-modelling` is its own section with two screens \u2014 DSGE and ML-ABM \u2014 each rendered as a separate nav entry (data extracted from c-LabTools/central_bank). `valuation-modelling` is its own section (iframe placeholder). `forex` extends the spec-driven Forex group with FX Hedge Cost (native Bloomberg port of treasury-fx-hedge.html). The remaining 9 mirror egui ui-screens::default_registry() ordering. Spec screens (41) are loaded from screen-specs.json and appended after these.",
     custom: [
       { id: "dashboard", title: "Dashboard", category: "home", module: "dashboard" },
       { id: "markets-dashboard", title: "Markets", category: "home", module: "markets-dashboard" },
-      { id: "central-bank-modelling", title: "Central Bank Modelling", category: "central-bank-modelling", module: "central-bank-modelling" },
+      { id: "dsge", title: "DSGE", category: "central-bank-modelling", module: "dsge" },
+      { id: "ml-abm", title: "ML-ABM", category: "central-bank-modelling", module: "ml-abm" },
       { id: "valuation-modelling", title: "Valuation Modelling", category: "valuation-modelling", module: "valuation-modelling" },
       { id: "fx-hedge-cost", title: "FX Hedge Cost", category: "forex", module: "fx-hedge-cost" },
       { id: "markets", title: "Markets (basic)", category: "markets", module: "markets" },
@@ -9870,7 +9867,7 @@
     }
   };
 
-  // src/typescript/screens/central-bank-modelling.ts
+  // src/typescript/screens/_cbm-model.ts
   var data2 = central_bank_modelling_default;
   function indicatorToKpi(i) {
     const tone = i.trend === "up" ? "pos" : i.trend === "down" ? "neg" : "neutral";
@@ -9955,19 +9952,16 @@
     { key: "sources", label: "Sources" },
     { key: "updated", label: "Updated" }
   ];
-  function renderCentralBankModelling(host, _ctx) {
-    let activeTabId = data2.tabs[0].id;
-    let activeScenarioByTab = {};
-    for (const t of data2.tabs)
-      activeScenarioByTab[t.id] = "baseline";
-    const tabsBar = el("nav", { class: "tabs", role: "tablist" });
+  function renderCbmModel(host, _ctx, modelId) {
+    const tabMeta = data2.tabs.find((t) => t.id === modelId);
+    const model = data2.models[modelId];
+    let scenarioKey = "baseline";
     const body = el("div");
-    const renderTabContent = () => {
+    host.appendChild(el("h2", {}, [tabMeta.label]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [tabMeta.title]));
+    host.appendChild(body);
+    const renderBody = () => {
       clear(body);
-      const tab = data2.tabs.find((t) => t.id === activeTabId);
-      const model = data2.models[activeTabId];
-      const scenarioKey = activeScenarioByTab[activeTabId] ?? "baseline";
-      body.appendChild(el("p", { class: "t-muted u-mb-s" }, [tab.title]));
       body.appendChild(renderKpiGrid(model.indicators.map(indicatorToKpi)));
       const select = el("select", { class: "field__select" });
       for (const key of Object.keys(model.scenarios)) {
@@ -9979,8 +9973,8 @@
         select.appendChild(opt);
       }
       select.addEventListener("change", () => {
-        activeScenarioByTab[activeTabId] = select.value;
-        renderTabContent();
+        scenarioKey = select.value;
+        renderBody();
       });
       body.appendChild(el("div", { class: "field" }, [
         el("span", { class: "field__label" }, ["SCENARIO"]),
@@ -10010,28 +10004,17 @@
         body.appendChild(el("div", { class: "u-mb" }));
       }
     };
-    const renderTabsBar = () => {
-      clear(tabsBar);
-      for (const t of data2.tabs) {
-        const btn = el("button", {
-          class: `tabs__btn${t.id === activeTabId ? " tabs__btn--active" : ""}`,
-          type: "button",
-          role: "tab",
-          "aria-selected": t.id === activeTabId ? "true" : "false",
-          "data-tab": t.id
-        }, [t.label]);
-        btn.addEventListener("click", () => {
-          activeTabId = t.id;
-          renderTabsBar();
-          renderTabContent();
-        });
-        tabsBar.appendChild(btn);
-      }
-    };
-    host.appendChild(tabsBar);
-    host.appendChild(body);
-    renderTabsBar();
-    renderTabContent();
+    renderBody();
+  }
+
+  // src/typescript/screens/dsge.ts
+  function renderDsge(host, ctx) {
+    renderCbmModel(host, ctx, "dsge");
+  }
+
+  // src/typescript/screens/ml-abm.ts
+  function renderMlAbm(host, ctx) {
+    renderCbmModel(host, ctx, "ml-abm");
   }
 
   // src/typescript/screens/_embed-app.ts
@@ -10076,13 +10059,608 @@
     url
   });
 
+  // src/typescript/widgets/loading-overlay.ts
+  function renderLoadingOverlay(message = "LOADING\u2026") {
+    return el("div", { class: "loading-overlay", role: "status" }, [
+      el("span", { class: "loading-overlay__spinner", "aria-hidden": "true" }),
+      el("span", { class: "u-pad-s" }, [message])
+    ]);
+  }
+  function renderError(message) {
+    return el("div", { class: "loading-overlay t-neg", role: "alert" }, [
+      el("span", {}, [`ERROR \u2014 ${message}`])
+    ]);
+  }
+
+  // src/typescript/charts/multi-line.ts
+  function renderMultiLineChart(opts) {
+    const wrap = el("div", { class: "chart chart--line" });
+    if (opts.label)
+      wrap.appendChild(el("div", { class: "chart__header" }, [opts.label, el("span", { class: "t-muted" }, [`${opts.labels.length} pts`])]));
+    const canvas = document.createElement("canvas");
+    if (opts.height)
+      wrap.style.height = `${opts.height}px`;
+    wrap.appendChild(canvas);
+    const repaint = () => paint2(canvas, opts);
+    queueMicrotask(repaint);
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(repaint);
+      ro.observe(wrap);
+    }
+    return wrap;
+  }
+  function cssVar2(name, fallback) {
+    if (typeof document === "undefined")
+      return fallback;
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+  }
+  function resolveColor(c2, fallback) {
+    if (!c2)
+      return fallback;
+    if (c2.startsWith("var(") && c2.endsWith(")")) {
+      const name = c2.slice(4, -1).trim();
+      return cssVar2(name, fallback);
+    }
+    return c2;
+  }
+  function paint2(canvas, opts) {
+    const dpr = typeof devicePixelRatio !== "undefined" ? devicePixelRatio : 1;
+    const w2 = canvas.clientWidth || 600, h2 = canvas.clientHeight || 360;
+    canvas.width = w2 * dpr;
+    canvas.height = h2 * dpr;
+    const ctx = canvas.getContext("2d");
+    if (!ctx)
+      return;
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, w2, h2);
+    const bg = cssVar2("--color-background", "#000");
+    const grid = cssVar2("--color-grid", "#1c1c1c");
+    const muted = cssVar2("--color-text-muted", "#8a6a30");
+    const fontMono = cssVar2("--font-mono", "monospace");
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w2, h2);
+    if (opts.labels.length === 0 || opts.series.length === 0)
+      return;
+    const padL = 56, padR = 8, padT = 8, padB = 22;
+    const innerW = w2 - padL - padR, innerH = h2 - padT - padB;
+    const n = opts.labels.length;
+    let minY = Infinity, maxY = -Infinity;
+    for (const s of opts.series)
+      for (const v2 of s.values) {
+        if (Number.isFinite(v2)) {
+          if (v2 < minY)
+            minY = v2;
+          if (v2 > maxY)
+            maxY = v2;
+        }
+      }
+    for (const h3 of opts.hLines ?? []) {
+      if (h3.value < minY)
+        minY = h3.value;
+      if (h3.value > maxY)
+        maxY = h3.value;
+    }
+    if (!Number.isFinite(minY) || !Number.isFinite(maxY) || minY === maxY) {
+      minY -= 1;
+      maxY += 1;
+    }
+    const ypad = (maxY - minY) * 0.05;
+    minY -= ypad;
+    maxY += ypad;
+    const xs2 = (i) => padL + i / Math.max(1, n - 1) * innerW;
+    const ys2 = (v2) => padT + (1 - (v2 - minY) / (maxY - minY)) * innerH;
+    ctx.strokeStyle = grid;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 0; i <= 4; i++) {
+      const y2 = padT + innerH * i / 4;
+      ctx.moveTo(padL, y2);
+      ctx.lineTo(w2 - padR, y2);
+    }
+    ctx.stroke();
+    ctx.fillStyle = muted;
+    ctx.font = `11px ${fontMono}`;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    for (let i = 0; i <= 4; i++) {
+      const y2 = padT + innerH * i / 4;
+      const v2 = maxY - (maxY - minY) * i / 4;
+      ctx.fillText(v2.toFixed(3), padL - 4, y2);
+    }
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    const stride = Math.max(1, Math.floor(n / 8));
+    for (let i = 0; i < n; i += stride) {
+      ctx.fillText(opts.labels[i] ?? "", xs2(i), h2 - padB + 4);
+    }
+    for (const ln2 of opts.hLines ?? []) {
+      const y2 = ys2(ln2.value);
+      ctx.strokeStyle = resolveColor(ln2.color, muted);
+      ctx.lineWidth = 1;
+      if (ln2.dash)
+        ctx.setLineDash(ln2.dash);
+      else
+        ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.moveTo(padL, y2);
+      ctx.lineTo(w2 - padR, y2);
+      ctx.stroke();
+      if (ln2.label) {
+        ctx.fillStyle = resolveColor(ln2.color, muted);
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.fillText(ln2.label, w2 - padR + 2, y2);
+      }
+    }
+    ctx.setLineDash([]);
+    for (const s of opts.series) {
+      const color = resolveColor(s.color, cssVar2("--color-accent", "#FFA028"));
+      ctx.strokeStyle = color;
+      ctx.lineWidth = s.width ?? 1.25;
+      if (s.dash)
+        ctx.setLineDash(s.dash);
+      else
+        ctx.setLineDash([]);
+      ctx.beginPath();
+      s.values.forEach((v2, i) => {
+        const x2 = xs2(i), y2 = ys2(v2);
+        if (i === 0)
+          ctx.moveTo(x2, y2);
+        else
+          ctx.lineTo(x2, y2);
+      });
+      ctx.stroke();
+    }
+    ctx.setLineDash([]);
+    ctx.font = `11px ${fontMono}`;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    let lx = padL + 4, ly = padT + 4;
+    for (const s of opts.series) {
+      const color = resolveColor(s.color, cssVar2("--color-accent", "#FFA028"));
+      ctx.fillStyle = color;
+      ctx.fillRect(lx, ly + 4, 10, 2);
+      ctx.fillStyle = cssVar2("--color-text-muted", "#8a6a30");
+      ctx.fillText(s.name, lx + 14, ly);
+      lx += 14 + ctx.measureText(s.name).width + 12;
+    }
+  }
+
+  // src/typescript/lib/fx-math.ts
+  function normalCDF(x2) {
+    const t = 1 / (1 + 0.2316419 * Math.abs(x2));
+    const d2 = 0.3989423 * Math.exp(-x2 * x2 / 2);
+    const p2 = d2 * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+    return x2 > 0 ? 1 - p2 : p2;
+  }
+  function priceGK(S2, K2, t, r_d, r_f, vol, type) {
+    if (t <= 0 || vol <= 0)
+      return Math.max(0, type === "call" ? S2 - K2 : K2 - S2);
+    const rd_c = Math.log(1 + r_d);
+    const rf_c = Math.log(1 + r_f);
+    const d1 = (Math.log(S2 / K2) + (rd_c - rf_c + vol * vol / 2) * t) / (vol * Math.sqrt(t));
+    const d2 = d1 - vol * Math.sqrt(t);
+    if (type === "call")
+      return S2 * Math.exp(-rf_c * t) * normalCDF(d1) - K2 * Math.exp(-rd_c * t) * normalCDF(d2);
+    return K2 * Math.exp(-rd_c * t) * normalCDF(-d2) - S2 * Math.exp(-rf_c * t) * normalCDF(-d1);
+  }
+  function solveCollarFloor(S2, t, r_d, r_f, vol, callPremiumUnit, iterations = 60) {
+    let low = 0.01, high = 15, mid = S2;
+    for (let i = 0; i < iterations; i++) {
+      mid = (low + high) / 2;
+      const putPrem = priceGK(S2, mid, t, r_d, r_f, vol, "put");
+      if (putPrem > callPremiumUnit)
+        high = mid;
+      else
+        low = mid;
+    }
+    return mid;
+  }
+  function computeHedge(i) {
+    const S2 = i.spot;
+    const rd = i.rBRL / 100, rf = i.rUSD / 100, v2 = i.vol / 100, t = i.t;
+    const targetUSD = i.targetBRL / i.ceiling;
+    const callPremiumUnit = priceGK(S2, i.ceiling, t, rd, rf, v2, "call");
+    const capPremiumUnit = priceGK(S2, i.cap, t, rd, rf, v2, "call");
+    const callPremiumTotal = callPremiumUnit * targetUSD;
+    const spreadPremiumTotal = (callPremiumUnit - capPremiumUnit) * targetUSD;
+    const collarFloor = solveCollarFloor(S2, t, rd, rf, v2, callPremiumUnit);
+    const beVsCall = collarFloor - callPremiumTotal / targetUSD;
+    const beVsSpread = collarFloor - spreadPremiumTotal / targetUSD;
+    return {
+      targetUSD,
+      callPremiumUnit,
+      callPremiumTotal,
+      spreadPremiumTotal,
+      collarFloor,
+      beVsCall,
+      beVsSpread,
+      callPremiumPct: callPremiumTotal / i.targetBRL * 100,
+      spreadPremiumPct: spreadPremiumTotal / i.targetBRL * 100
+    };
+  }
+  function ema(values, period) {
+    if (values.length === 0)
+      return [];
+    const k2 = 2 / (period + 1);
+    const out = [values[0]];
+    for (let i = 1; i < values.length; i++) {
+      out.push(values[i] * k2 + out[i - 1] * (1 - k2));
+    }
+    return out;
+  }
+  function classicPivots(yHigh, yLow, yClose) {
+    const P2 = (yHigh + yLow + yClose) / 3;
+    return {
+      P: P2,
+      R1: P2 * 2 - yLow,
+      R2: P2 + (yHigh - yLow),
+      R3: yHigh + 2 * (P2 - yLow),
+      S1: P2 * 2 - yHigh,
+      S2: P2 - (yHigh - yLow),
+      S3: yLow - 2 * (yHigh - P2)
+    };
+  }
+
+  // src/typescript/data/fx-hedge.json
+  var fx_hedge_default = {
+    description: "FX Hedge Cost \u2014 defaults + endpoints. Native Bloomberg port of /home/diego/treausurye-fx-hedge.txt. All form defaults are declared here so a copy/edit/rebuild changes them with no code edits. Symbol BRL=X = USD/BRL spot from Yahoo.",
+    tabs: [
+      { id: "hedge", label: "HEDGE MODELS" },
+      { id: "tech", label: "TECH CHART" },
+      { id: "bacen", label: "BACEN FOCUS" }
+    ],
+    defaults: {
+      spot: 5.03,
+      targetBRL: 1e7,
+      ceiling: 5.7,
+      cap: 6.2,
+      rBRL: 10.75,
+      rUSD: 3.69,
+      vol: 15,
+      t: 1
+    },
+    ranges: {
+      spot: { step: 1e-4, min: 0.01 },
+      targetBRL: { step: 1e5, min: 0 },
+      ceiling: { step: 0.01, min: 0.01 },
+      cap: { step: 0.01, min: 0.01 },
+      rBRL: { step: 0.1, min: 0 },
+      rUSD: { step: 0.1, min: 0 },
+      vol: { step: 0.5, min: 0 },
+      t: { step: 0.1, min: 0.01 }
+    },
+    endpoints: {
+      yahoo_chart: {
+        _note: "Yahoo Finance daily candles for BRL=X via allorigins JSON proxy (CORS-safe). Range/interval applied as URL params on the inner Yahoo URL.",
+        proxy: "https://api.allorigins.win/get?url=",
+        target: "https://query2.finance.yahoo.com/v8/finance/chart/BRL=X?range=3mo&interval=1d"
+      },
+      spot_fallback: "https://open.er-api.com/v6/latest/USD",
+      bacen_focus: {
+        _note: "BCB Olinda OData \u2014 C\xE2mbio annual expectations.",
+        url: "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/ExpectativasMercadoAnuais?$filter=Indicador%20eq%20'C%C3%A2mbio'&$orderby=Data%20desc&$top=30&$format=json"
+      }
+    },
+    ema_periods: [5, 10],
+    labels: {
+      options: [
+        { id: "pure-call", tag: "OPT 1", title: "PURE CALL", desc: "Unlimited protection above ceiling." },
+        { id: "call-spread", tag: "OPT 2", title: "CALL SPREAD", desc: "Protected from ceiling, capped at cap." },
+        { id: "collar", tag: "OPT 3", title: "ZERO-COST COLLAR", desc: "Required floor lock \u2014 no premium paid." }
+      ]
+    }
+  };
+
   // src/typescript/screens/fx-hedge-cost.ts
-  var url2 = build_default.apps?.fx_hedge?.url ?? "public/fx-hedge.html";
-  var renderFxHedgeCost = makeEmbedAppScreen({
-    title: "FX Hedge Cost",
-    section: "fx_hedge",
-    url: url2
-  });
+  var cfg2 = fx_hedge_default;
+  var fmtBRL = (v2) => new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(v2);
+  var fmtUSD = (v2) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v2);
+  var fmtRate = (v2) => `R$ ${v2.toFixed(4)}`;
+  function renderFxHedgeCost(host, _ctx) {
+    let activeTabId = cfg2.tabs[0].id;
+    const inputs = { ...cfg2.defaults };
+    const tabsBar = el("nav", { class: "tabs", role: "tablist" });
+    const body = el("div");
+    host.appendChild(el("h2", {}, ["FX Hedge Cost"]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, ["Treasury FX Suite \u2014 options hedging, EMA technical chart, BACEN Focus expectations."]));
+    host.appendChild(tabsBar);
+    host.appendChild(body);
+    const renderTabsBar = () => {
+      clear(tabsBar);
+      for (const t of cfg2.tabs) {
+        const btn = el("button", {
+          class: `tabs__btn${t.id === activeTabId ? " tabs__btn--active" : ""}`,
+          type: "button",
+          role: "tab",
+          "data-tab": t.id
+        }, [t.label]);
+        btn.addEventListener("click", () => {
+          activeTabId = t.id;
+          renderTabsBar();
+          renderTabBody();
+        });
+        tabsBar.appendChild(btn);
+      }
+    };
+    const renderTabBody = () => {
+      clear(body);
+      if (activeTabId === "hedge")
+        renderHedgeTab(body, inputs);
+      else if (activeTabId === "tech")
+        renderTechTab(body);
+      else if (activeTabId === "bacen")
+        renderBacenTab(body);
+    };
+    renderTabsBar();
+    renderTabBody();
+  }
+  function renderHedgeTab(host, inputs) {
+    const wrap = el("div");
+    const inputsCol = el("div", { class: "u-col u-pad u-mb" });
+    const outputsCol = el("div");
+    const out = computeHedge(inputs);
+    inputsCol.appendChild(el("div", { class: "mkt-section__title" }, ["HEDGE INPUTS"]));
+    const fieldsSpec = [
+      { key: "spot", label: "Spot Rate" },
+      { key: "targetBRL", label: "Target Notional (BRL)" },
+      { key: "ceiling", label: "Ceiling (Risk)" },
+      { key: "cap", label: "Spread Cap" },
+      { key: "rBRL", label: "Selic (%)" },
+      { key: "rUSD", label: "US Rate (%)" },
+      { key: "vol", label: "Implied Vol (%)" },
+      { key: "t", label: "Maturity (Yrs)" }
+    ];
+    const refresh = () => {
+      const newOut = computeHedge(inputs);
+      clear(outputsCol);
+      outputsCol.appendChild(renderKpiGrid([
+        { label: "USD TARGET", value: fmtUSD(newOut.targetUSD), tone: "info" },
+        { label: "PURE CALL PREMIUM", value: fmtBRL(newOut.callPremiumTotal), hint: `${newOut.callPremiumPct.toFixed(2)}% of notional`, tone: "warn" },
+        { label: "CALL SPREAD PREMIUM", value: fmtBRL(newOut.spreadPremiumTotal), hint: `${newOut.spreadPremiumPct.toFixed(2)}% of notional`, tone: "warn" },
+        { label: "COLLAR FLOOR", value: fmtRate(newOut.collarFloor), hint: "put strike where premium = call premium", tone: "pos" }
+      ]));
+      outputsCol.appendChild(el("div", { class: "mkt-section__title u-mt" }, ["HEDGE OPTIONS \u2014 DETAIL"]));
+      outputsCol.appendChild(renderOptionsTable(inputs, newOut));
+      outputsCol.appendChild(el("div", { class: "mkt-section__title u-mt" }, ["EXACT BREAKEVENS \u2014 OPPORTUNITY COST"]));
+      outputsCol.appendChild(renderBreakevensTable(newOut));
+    };
+    for (const f2 of fieldsSpec) {
+      const range = cfg2.ranges[f2.key];
+      const input = el("input", {
+        class: "field__input",
+        type: "number",
+        step: String(range.step),
+        min: String(range.min),
+        value: String(inputs[f2.key]),
+        "data-field": String(f2.key)
+      });
+      input.addEventListener("input", () => {
+        const v2 = parseFloat(input.value);
+        if (!isNaN(v2) && v2 > 0) {
+          inputs[f2.key] = v2;
+          refresh();
+        }
+      });
+      inputsCol.appendChild(el("div", { class: "field" }, [
+        el("span", { class: "field__label" }, [f2.label]),
+        input
+      ]));
+    }
+    wrap.appendChild(inputsCol);
+    wrap.appendChild(outputsCol);
+    host.appendChild(wrap);
+    refresh();
+    inputsCol.style.maxWidth = "420px";
+    inputsCol.style.borderRight = "1px solid var(--color-border)";
+    inputsCol.style.float = "left";
+    outputsCol.style.marginLeft = "440px";
+    outputsCol.style.minWidth = "0";
+    if (window.innerWidth < 1100) {
+      inputsCol.style.maxWidth = "";
+      inputsCol.style.borderRight = "";
+      inputsCol.style.float = "";
+      outputsCol.style.marginLeft = "";
+    }
+  }
+  var OPTIONS_COLUMNS = [
+    { key: "tag", label: "Tag" },
+    { key: "title", label: "Strategy" },
+    { key: "strikes", label: "Strikes" },
+    { key: "premium", label: "Premium (BRL)", numeric: true },
+    {
+      key: "pct",
+      label: "% Notional",
+      numeric: true,
+      format: (v2) => `${v2.toFixed(2)}%`
+    },
+    { key: "desc", label: "Description" }
+  ];
+  function renderOptionsTable(i, o2) {
+    const opt = cfg2.labels.options;
+    const rows = [
+      {
+        tag: opt[0].tag,
+        title: opt[0].title,
+        strikes: `K = ${i.ceiling.toFixed(2)}`,
+        premium: fmtBRL(o2.callPremiumTotal),
+        pct: o2.callPremiumPct,
+        desc: opt[0].desc
+      },
+      {
+        tag: opt[1].tag,
+        title: opt[1].title,
+        strikes: `K1=${i.ceiling.toFixed(2)} / K2=${i.cap.toFixed(2)}`,
+        premium: fmtBRL(o2.spreadPremiumTotal),
+        pct: o2.spreadPremiumPct,
+        desc: opt[1].desc
+      },
+      {
+        tag: opt[2].tag,
+        title: opt[2].title,
+        strikes: `Floor = ${o2.collarFloor.toFixed(4)}, Ceiling = ${i.ceiling.toFixed(2)}`,
+        premium: fmtBRL(0),
+        pct: 0,
+        desc: opt[2].desc
+      }
+    ];
+    return renderDataTable({ columns: OPTIONS_COLUMNS, rows });
+  }
+  var BREAKEVEN_COLUMNS = [
+    { key: "vs", label: "Compared with" },
+    { key: "breakeven", label: "Breakeven Spot", numeric: true },
+    { key: "note", label: "Interpretation" }
+  ];
+  function renderBreakevensTable(o2) {
+    const rows = [
+      {
+        vs: "OPT 1 \u2014 Pure Call",
+        breakeven: fmtRate(o2.beVsCall),
+        note: "If real USD/BRL drops below this, the Collar hurts more than paying Opt 1 premium."
+      },
+      {
+        vs: "OPT 2 \u2014 Call Spread",
+        breakeven: fmtRate(o2.beVsSpread),
+        note: "If real USD/BRL drops below this, the Collar hurts more than paying Opt 2 premium."
+      }
+    ];
+    return renderDataTable({ columns: BREAKEVEN_COLUMNS, rows });
+  }
+  function renderTechTab(host) {
+    host.appendChild(el("div", { class: "mkt-section__title" }, ["USD/BRL \u2014 DAILY CLOSE + EMA + PIVOTS"]));
+    const status = el("p", { class: "t-muted u-mb-s" }, ["Live: Yahoo Finance via allorigins proxy."]);
+    host.appendChild(status);
+    const loading = renderLoadingOverlay("FETCHING USD/BRL HISTORY\u2026");
+    host.appendChild(loading);
+    void fetchYahooSeries().then((series) => {
+      loading.remove();
+      if (!series) {
+        host.appendChild(renderError("Yahoo / allorigins unreachable."));
+        return;
+      }
+      const closes = series.closes;
+      const periods = cfg2.ema_periods;
+      const ema5 = ema(closes, periods[0] ?? 5);
+      const ema10 = ema(closes, periods[1] ?? 10);
+      const yHigh = series.highs[series.highs.length - 2] ?? closes[closes.length - 1];
+      const yLow = series.lows[series.lows.length - 2] ?? closes[closes.length - 1];
+      const yClose = closes[closes.length - 2] ?? closes[closes.length - 1];
+      const piv = classicPivots(yHigh, yLow, yClose);
+      host.appendChild(renderKpiGrid([
+        { label: "LATEST CLOSE", value: fmtRate(closes[closes.length - 1]), tone: "info" },
+        { label: "PIVOT (P)", value: fmtRate(piv.P) },
+        { label: "R1 / R2 / R3", value: `${piv.R1.toFixed(3)} / ${piv.R2.toFixed(3)} / ${piv.R3.toFixed(3)}`, tone: "warn" },
+        { label: "S1 / S2 / S3", value: `${piv.S1.toFixed(3)} / ${piv.S2.toFixed(3)} / ${piv.S3.toFixed(3)}`, tone: "pos" }
+      ]));
+      host.appendChild(renderMultiLineChart({
+        label: "USD/BRL \u2014 Close + EMA + Pivots",
+        labels: series.dates,
+        series: [
+          { name: "Close", values: closes, color: "var(--color-info)", width: 2 },
+          { name: `EMA${periods[0] ?? 5}`, values: ema5, color: "var(--color-warning)", width: 1.25 },
+          { name: `EMA${periods[1] ?? 10}`, values: ema10, color: "var(--color-accent)", width: 1.25 }
+        ],
+        hLines: [
+          { value: piv.R3, label: "R3", color: "var(--color-negative)", dash: [4, 4] },
+          { value: piv.R2, label: "R2", color: "var(--color-negative)", dash: [4, 4] },
+          { value: piv.R1, label: "R1", color: "var(--color-negative)", dash: [4, 4] },
+          { value: piv.P, label: "P", color: "var(--color-text-muted)", dash: [2, 2] },
+          { value: piv.S1, label: "S1", color: "var(--color-positive)", dash: [4, 4] },
+          { value: piv.S2, label: "S2", color: "var(--color-positive)", dash: [4, 4] },
+          { value: piv.S3, label: "S3", color: "var(--color-positive)", dash: [4, 4] }
+        ]
+      }));
+    }).catch((err) => {
+      loading.remove();
+      host.appendChild(renderError(err.message));
+    });
+  }
+  async function fetchYahooSeries() {
+    try {
+      const target = encodeURIComponent(cfg2.endpoints.yahoo_chart.target);
+      const proxyUrl = `${cfg2.endpoints.yahoo_chart.proxy}${target}`;
+      const r3 = await fetch(proxyUrl);
+      const wrapper = await r3.json();
+      if (!wrapper.contents)
+        return null;
+      const data3 = JSON.parse(wrapper.contents);
+      const result = data3?.chart?.result?.[0];
+      if (!result)
+        return null;
+      const ts2 = result.timestamp;
+      const q2 = result.indicators.quote[0];
+      const dates = [];
+      const closes = [];
+      const highs = [];
+      const lows = [];
+      for (let i = 0; i < ts2.length; i++) {
+        if (q2.close[i] != null && q2.high[i] != null && q2.low[i] != null) {
+          const d2 = new Date(ts2[i] * 1e3);
+          dates.push(`${d2.getDate()}/${d2.getMonth() + 1}`);
+          closes.push(q2.close[i]);
+          highs.push(q2.high[i]);
+          lows.push(q2.low[i]);
+        }
+      }
+      return closes.length ? { dates, closes, highs, lows } : null;
+    } catch {
+      return null;
+    }
+  }
+  var BACEN_COLUMNS = [
+    { key: "year", label: "Year" },
+    { key: "base", label: "Calc Base" },
+    {
+      key: "max",
+      label: "Max",
+      numeric: true,
+      format: (v2) => v2 === null || v2 === void 0 ? "\u2014" : `R$ ${v2.toFixed(2)}`
+    },
+    {
+      key: "median",
+      label: "Median",
+      numeric: true,
+      format: (v2) => v2 === null || v2 === void 0 ? "\u2014" : `R$ ${v2.toFixed(2)}`
+    },
+    {
+      key: "min",
+      label: "Min",
+      numeric: true,
+      format: (v2) => v2 === null || v2 === void 0 ? "\u2014" : `R$ ${v2.toFixed(2)}`
+    }
+  ];
+  function renderBacenTab(host) {
+    host.appendChild(el("div", { class: "mkt-section__title" }, ["BACEN FOCUS \u2014 C\xC2MBIO USD/BRL ANNUAL EXPECTATIONS"]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, ["Live: Olinda OData (Banco Central do Brasil)."]));
+    const loading = renderLoadingOverlay("FETCHING BACEN\u2026");
+    host.appendChild(loading);
+    void fetch(cfg2.endpoints.bacen_focus.url).then((r3) => {
+      if (!r3.ok)
+        throw new Error("BACEN HTTP " + r3.status);
+      return r3.json();
+    }).then((json) => {
+      loading.remove();
+      if (!json.value || json.value.length === 0) {
+        host.appendChild(el("p", { class: "t-amber" }, ["(no records returned)"]));
+        return;
+      }
+      const latestDate = json.value[0].Data;
+      const latest = json.value.filter((r3) => r3.Data === latestDate);
+      latest.sort((a2, b2) => a2.DataReferencia === b2.DataReferencia ? a2.baseCalculo - b2.baseCalculo : a2.DataReferencia.localeCompare(b2.DataReferencia));
+      const rows = latest.map((r3) => ({
+        year: r3.DataReferencia,
+        base: r3.baseCalculo === 0 ? "Broad Market" : "Top 5 Institui\xE7\xF5es",
+        max: r3.Maximo,
+        median: r3.Mediana,
+        min: r3.Minimo
+      }));
+      host.appendChild(renderDataTable({ columns: BACEN_COLUMNS, rows }));
+      host.appendChild(el("p", { class: "t-muted u-mt" }, [`Latest report Data = ${latestDate}`]));
+    }).catch((err) => {
+      loading.remove();
+      host.appendChild(renderError(err.message));
+    });
+  }
 
   // src/typescript/screens/markets.ts
   function renderMarkets(host, _ctx) {
@@ -10128,19 +10706,6 @@
     }));
   }
 
-  // src/typescript/widgets/loading-overlay.ts
-  function renderLoadingOverlay(message = "LOADING\u2026") {
-    return el("div", { class: "loading-overlay", role: "status" }, [
-      el("span", { class: "loading-overlay__spinner", "aria-hidden": "true" }),
-      el("span", { class: "u-pad-s" }, [message])
-    ]);
-  }
-  function renderError(message) {
-    return el("div", { class: "loading-overlay t-neg", role: "alert" }, [
-      el("span", {}, [`ERROR \u2014 ${message}`])
-    ]);
-  }
-
   // src/typescript/screens/news.ts
   function renderNews(host, _ctx) {
     host.appendChild(el("h2", {}, ["News"]));
@@ -10179,7 +10744,7 @@
       lwcPromise = Promise.resolve().then(() => (init_lightweight_charts_production(), lightweight_charts_production_exports));
     return lwcPromise;
   }
-  function cssVar2(name, fallback) {
+  function cssVar3(name, fallback) {
     if (typeof document === "undefined")
       return fallback;
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
@@ -10195,24 +10760,24 @@
         width: host.clientWidth || 600,
         height: host.clientHeight || 320,
         layout: {
-          background: { color: cssVar2("--color-background", "#000") },
-          textColor: cssVar2("--color-text-muted", "#8a6a30"),
-          fontFamily: cssVar2("--font-mono", "monospace")
+          background: { color: cssVar3("--color-background", "#000") },
+          textColor: cssVar3("--color-text-muted", "#8a6a30"),
+          fontFamily: cssVar3("--font-mono", "monospace")
         },
         grid: {
-          vertLines: { color: cssVar2("--color-grid", "#1c1c1c") },
-          horzLines: { color: cssVar2("--color-grid", "#1c1c1c") }
+          vertLines: { color: cssVar3("--color-grid", "#1c1c1c") },
+          horzLines: { color: cssVar3("--color-grid", "#1c1c1c") }
         },
-        timeScale: { borderColor: cssVar2("--color-border", "#2a2a2a") },
-        rightPriceScale: { borderColor: cssVar2("--color-border", "#2a2a2a") }
+        timeScale: { borderColor: cssVar3("--color-border", "#2a2a2a") },
+        rightPriceScale: { borderColor: cssVar3("--color-border", "#2a2a2a") }
       });
       const series = chart.addSeries(CandlestickSeries, {
-        upColor: cssVar2("--color-positive", "#4AF6C3"),
-        downColor: cssVar2("--color-negative", "#FF433D"),
-        borderUpColor: cssVar2("--color-positive", "#4AF6C3"),
-        borderDownColor: cssVar2("--color-negative", "#FF433D"),
-        wickUpColor: cssVar2("--color-positive", "#4AF6C3"),
-        wickDownColor: cssVar2("--color-negative", "#FF433D")
+        upColor: cssVar3("--color-positive", "#4AF6C3"),
+        downColor: cssVar3("--color-negative", "#FF433D"),
+        borderUpColor: cssVar3("--color-positive", "#4AF6C3"),
+        borderDownColor: cssVar3("--color-negative", "#FF433D"),
+        wickUpColor: cssVar3("--color-positive", "#4AF6C3"),
+        wickDownColor: cssVar3("--color-negative", "#FF433D")
       });
       series.setData(opts.bars.map((b2) => ({
         time: b2.time,
@@ -10399,7 +10964,8 @@
   var CUSTOM_RENDERERS = {
     "dashboard": renderDashboard,
     "markets-dashboard": renderMarketsDashboard,
-    "central-bank-modelling": renderCentralBankModelling,
+    "dsge": renderDsge,
+    "ml-abm": renderMlAbm,
     "valuation-modelling": renderValuationModelling,
     "fx-hedge-cost": renderFxHedgeCost,
     "markets": renderMarkets,

@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { renderCentralBankModelling } from '../src/typescript/screens/central-bank-modelling';
+import { renderDsge } from '../src/typescript/screens/dsge';
+import { renderMlAbm } from '../src/typescript/screens/ml-abm';
 import { ApiClient } from '../src/typescript/api/client';
 import { WsClient } from '../src/typescript/api/ws';
 import cbm from '../src/typescript/data/central-bank-modelling.json';
@@ -11,49 +12,26 @@ function ctx(): ScreenContext {
   return { api, ws, cycleTheme: () => {}, currentThemeName: () => 'Bloomberg Dark' };
 }
 
-describe('central-bank-modelling tabs', () => {
+describe('Central Bank Modelling — separate DSGE + ML-ABM screens', () => {
   beforeEach(() => { document.body.innerHTML = ''; });
 
-  it('renders a tab strip with both DSGE and ML-ABM tabs', () => {
+  it('DSGE screen renders KPI grid + parameter sections + chart, NO tab strip', () => {
     const host = document.createElement('div'); document.body.appendChild(host);
-    renderCentralBankModelling(host, ctx());
-    const tabs = host.querySelectorAll('.tabs__btn');
-    expect(tabs.length).toBe(2);
-    const labels = Array.from(tabs).map(t => t.textContent);
-    expect(labels).toContain('DSGE');
-    expect(labels).toContain('ML-ABM');
-  });
-
-  it('DSGE tab is active by default and renders KPI grid + parameter sections + chart', () => {
-    const host = document.createElement('div'); document.body.appendChild(host);
-    renderCentralBankModelling(host, ctx());
-    const active = host.querySelector('.tabs__btn--active');
-    expect(active?.textContent).toBe('DSGE');
+    renderDsge(host, ctx());
     expect(host.querySelector('.kpi-grid'), 'kpi grid').not.toBeNull();
     expect(host.querySelectorAll('.mkt-section__title').length).toBeGreaterThan(0);
     expect(host.querySelector('.chart'), 'chart container').not.toBeNull();
+    // Per Diego: no tabs — section nav holds DSGE/ML-ABM as separate items
+    expect(host.querySelectorAll('.tabs__btn').length).toBe(0);
   });
 
-  it('clicking ML-ABM swaps active tab and re-renders content', () => {
+  it('ML-ABM screen renders KPI grid + NOWCASTS table, NO tab strip', () => {
     const host = document.createElement('div'); document.body.appendChild(host);
-    renderCentralBankModelling(host, ctx());
-    const tabs = host.querySelectorAll<HTMLButtonElement>('.tabs__btn');
-    const mlAbm = Array.from(tabs).find(t => t.textContent === 'ML-ABM')!;
-    mlAbm.click();
-    const activeAfter = host.querySelector('.tabs__btn--active');
-    expect(activeAfter?.textContent).toBe('ML-ABM');
-    // ML-ABM model defines the NOWCASTS section title
+    renderMlAbm(host, ctx());
+    expect(host.querySelector('.kpi-grid')).not.toBeNull();
     const titles = Array.from(host.querySelectorAll('.mkt-section__title')).map(n => n.textContent);
     expect(titles).toContain('NOWCASTS');
-  });
-
-  it('scenario selector cycles available presets for the active tab', () => {
-    const host = document.createElement('div'); document.body.appendChild(host);
-    renderCentralBankModelling(host, ctx());
-    const select = host.querySelector<HTMLSelectElement>('.field__select');
-    expect(select).not.toBeNull();
-    const dsgeScenarios = Object.keys((cbm as { models: { dsge: { scenarios: Record<string, unknown> } } }).models.dsge.scenarios);
-    expect(select!.options.length).toBe(dsgeScenarios.length);
+    expect(host.querySelectorAll('.tabs__btn').length).toBe(0);
   });
 
   it('every parameter referenced by every scenario across both models maps to a defined param', () => {

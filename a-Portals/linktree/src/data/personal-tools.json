@@ -1,0 +1,62 @@
+{
+  "_description": "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as the standard `.link-section > .featured-image + .tools-dashboard > .tools-column` pattern. As we migrate other slides (PROFILE, MY TOOLS, SUITE, CIRCUS, CLOUD), each can either reuse `kind=tools` or declare a new kind handled by portal-render.ts. Only LAB TOOLS is migrated in this first pass.",
+  "section": {
+    "id": "personal-tools",
+    "title": "Personal Tools",
+    "swiper_class": "personal-tools-swiper"
+  },
+  "slides": [
+    {
+      "id": "lab-tools",
+      "kind": "tools",
+      "title": "LAB TOOLS",
+      "image": {
+        "src": "https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif",
+        "alt": "Lab Tools"
+      },
+      "dashboard_modifier": "tools-dashboard--4",
+      "columns": [
+        {
+          "header": "Data Science",
+          "links": [
+            { "label": "Colab",        "url": "https://colab.research.google.com",           "icon": "sparkles.svg" },
+            { "label": "Kaggle",       "url": "https://kaggle.com",                          "icon": "brain.svg" },
+            { "label": "HuggingFace",  "url": "https://huggingface.co",                      "icon": "robot.svg" },
+            { "label": "PyTorch",      "url": "https://pytorch.org",                         "icon": "bolt.svg" },
+            { "label": "TensorFlow",   "url": "https://tensorflow.org",                      "icon": "bolt.svg" },
+            { "label": "Scikit-learn", "url": "https://scikit-learn.org",                    "icon": "code.svg" }
+          ]
+        },
+        {
+          "header": "Quantum",
+          "links": [
+            { "label": "IBM Quantum",  "url": "https://quantum.ibm.com",                     "icon": "rocket.svg" },
+            { "label": "Qiskit",       "url": "https://qiskit.org",                          "icon": "code.svg" },
+            { "label": "Google QAI",   "url": "https://quantumai.google",                    "icon": "sparkles.svg" },
+            { "label": "Cirq",         "url": "https://quantumai.google/cirq",               "icon": "code.svg" },
+            { "label": "PennyLane",    "url": "https://pennylane.ai",                        "icon": "bolt.svg" },
+            { "label": "Braket",       "url": "https://aws.amazon.com/braket",               "icon": "rocket.svg" },
+            { "label": "Azure QC",     "url": "https://azure.microsoft.com/products/quantum","icon": "world.svg" },
+            { "label": "QInspire",     "url": "https://www.quantum-inspire.com",             "icon": "brain.svg" }
+          ]
+        },
+        {
+          "header": "Markets",
+          "links": [
+            { "label": "Fin Terminal", "url": "https://diegonmarcos.github.io/fin-terminal", "icon": "database.svg" },
+            { "label": "GDELT News",   "url": "https://news.diegonmarcos.com",               "icon": "world.svg" },
+            { "label": "MarketWatch",  "url": "https://diegonmarcos.github.io/market_watch", "icon": "database.svg" },
+            { "label": "CentralBank",  "url": "https://diegonmarcos.github.io/central_bank", "icon": "database.svg" }
+          ]
+        },
+        {
+          "header": "Engineer",
+          "links": [
+            { "label": "Sailytics",    "url": "https://diegonmarcos.github.io/sailytics",    "icon": "world.svg" },
+            { "label": "OpenRevit",    "url": "https://diegonmarcos.github.io/openrevit",    "icon": "settings.svg" }
+          ]
+        }
+      ]
+    }
+  ]
+}

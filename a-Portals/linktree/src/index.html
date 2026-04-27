@@ -933,61 +933,8 @@
                         </div>
                         <!-- End Suite Card -->
 
-                        <!-- Slide 4: Lab Tools Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">LAB TOOLS</h2>
-                                <img src="https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif" alt="Lab Tools" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard tools-dashboard--4">
-                                        <!-- Column 1: Data Science -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Data Science</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://colab.research.google.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/sparkles.svg">Colab</a>
-                                                <a href="https://kaggle.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">Kaggle</a>
-                                                <a href="https://huggingface.co" class="tool-link" target="_blank"><img class="icon" src="public/icons/robot.svg">HuggingFace</a>
-                                                <a href="https://pytorch.org" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">PyTorch</a>
-                                                <a href="https://tensorflow.org" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">TensorFlow</a>
-                                                <a href="https://scikit-learn.org" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">Scikit-learn</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Quantum -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Quantum</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://quantum.ibm.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/rocket.svg">IBM Quantum</a>
-                                                <a href="https://qiskit.org" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">Qiskit</a>
-                                                <a href="https://quantumai.google" class="tool-link" target="_blank"><img class="icon" src="public/icons/sparkles.svg">Google QAI</a>
-                                                <a href="https://quantumai.google/cirq" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">Cirq</a>
-                                                <a href="https://pennylane.ai" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">PennyLane</a>
-                                                <a href="https://aws.amazon.com/braket" class="tool-link" target="_blank"><img class="icon" src="public/icons/rocket.svg">Braket</a>
-                                                <a href="https://azure.microsoft.com/products/quantum" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Azure QC</a>
-                                                <a href="https://www.quantum-inspire.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">QInspire</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Capital Markets -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Markets</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/fin-terminal" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Fin Terminal</a>
-                                                <a href="https://news.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">GDELT News</a>
-                                                <a href="https://diegonmarcos.github.io/market_watch" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">MarketWatch</a>
-                                                <a href="https://diegonmarcos.github.io/central_bank" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">CentralBank</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 4: Engineer Lab -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Engineer</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/sailytics" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Sailytics</a>
-                                                <a href="https://diegonmarcos.github.io/openrevit" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">OpenRevit</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Slide 4: Lab Tools Card — declarative, hydrated from src/data/personal-tools.json by modules/portal-render.ts -->
+                        <div data-portal-mount="lab-tools"></div>
                         <!-- End Lab Tools Card -->
 
                         <!-- Slide 5: Circus Card -->

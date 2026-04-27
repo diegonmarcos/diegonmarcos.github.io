@@ -12,11 +12,16 @@ import { initMindmapOverlay } from './modules/mindmap-overlay';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
 import { initCardSwiper } from './modules/cardSwiper';
+import { initPortalRender } from './modules/portal-render';
 
 /**
  * Initialize all application modules
  */
 function initApp(): void {
+  // Hydrate declarative portal slides FIRST so subsequent modules
+  // (Swiper carousels in particular) see the rendered DOM.
+  initPortalRender();
+
   // Initialize collapsible sections
   initCollapsibleSections();
 

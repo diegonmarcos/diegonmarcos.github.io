@@ -14,6 +14,7 @@ import { renderFxHedgeCost } from './fx-hedge-cost';
 import { renderMarkets } from './markets';
 import { renderWatchlist } from './watchlist';
 import { renderNews } from './news';
+import { renderMaNews } from './m-a-news';
 import { renderEquityResearch } from './equity-research';
 import { renderPortfolio } from './portfolio';
 import { renderTrading } from './trading';
@@ -52,6 +53,7 @@ const CUSTOM_RENDERERS: Record<string, ScreenEntry['render']> = {
   'markets':                  renderMarkets,
   'watchlist':                renderWatchlist,
   'news':                     renderNews,
+  'm-a-news':                 renderMaNews,
   'equity-research':          renderEquityResearch,
   'portfolio':                renderPortfolio,
   'trading':                  renderTrading,

@@ -32,9 +32,15 @@ describe('nav-groups.json — groups pinned to sections', () => {
     }
   });
 
-  it('A) REPORTS has A0 + A1 + A2 sub-groups', () => {
+  it('A) REPORTS has A0 + A1 + A2 + A3 sub-groups (NEWS / RESEARCH / GEO / M&A)', () => {
     const a = cfg.groups.filter(g => g.section === 'A').map(g => g.id);
-    expect(a).toEqual(['A0', 'A1', 'A2']);
+    expect(a).toEqual(['A0', 'A1', 'A2', 'A3']);
+  });
+  it('A3) M&A DEALS maps to category "ma-deals"', () => {
+    const a3 = cfg.groups.find(g => g.id === 'A3')!;
+    expect(a3.section).toBe('A');
+    expect(a3.label.toUpperCase()).toContain('M&A');
+    expect(a3.categories).toContain('ma-deals');
   });
 
   it('B) MARKETS has B0 + B1 + B2 + B3 sub-groups', () => {

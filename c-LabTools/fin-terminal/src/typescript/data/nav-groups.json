@@ -15,6 +15,7 @@
     { "id": "A0",   "section": "A",    "label": "A0) NEWS",                   "categories": ["news"] },
     { "id": "A1",   "section": "A",    "label": "A1) RESEARCH REPORTS",       "categories": ["research", "reports"] },
     { "id": "A2",   "section": "A",    "label": "A2) GEO REPORTS",            "categories": ["geo"] },
+    { "id": "A3",   "section": "A",    "label": "A3) M&A DEALS",              "categories": ["ma-deals"] },
 
     { "id": "B0",   "section": "B",    "label": "B0) YIELD CURVES & BONDS",   "categories": ["fixedincome"] },
     { "id": "B1",   "section": "B",    "label": "B1) FX",                     "categories": ["forex"] },

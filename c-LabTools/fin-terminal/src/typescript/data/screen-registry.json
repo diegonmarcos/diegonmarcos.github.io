@@ -30,6 +30,7 @@
     { "id": "markets",                  "title": "Markets (basic)",         "category": "markets",                 "module": "markets" },
     { "id": "watchlist",                "title": "Watchlist",               "category": "markets",                 "module": "watchlist" },
     { "id": "news",                     "title": "News",                    "category": "news",                    "module": "news" },
+    { "id": "m-a-news",                 "title": "M&A Deals",               "category": "ma-deals",                "module": "m-a-news" },
     { "id": "equity-research",          "title": "Equity Research",         "category": "research",                "module": "equity-research" },
     { "id": "portfolio",                "title": "Portfolio",               "category": "portfolio",               "module": "portfolio" },
     { "id": "trading",                  "title": "Trading",                 "category": "trading",                 "module": "trading" },

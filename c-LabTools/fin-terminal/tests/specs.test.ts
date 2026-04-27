@@ -38,8 +38,13 @@ describe('screen-specs.json', () => {
 
 describe('screen-registry.json (custom)', () => {
   const customs = (customRegistry as { custom: Array<{ id: string; title: string; category: string; module: string }> }).custom;
-  it('has exactly 31 custom screens (egui 10 + Markets + DSGE + ML-ABM + 10 CBM subreports + 7 Valuation types + FX Hedge)', () => {
-    expect(customs.length).toBe(31);
+  it('has exactly 32 custom screens (egui 10 + Markets + DSGE + ML-ABM + 10 CBM subreports + 7 Valuation types + FX Hedge + M&A News)', () => {
+    expect(customs.length).toBe(32);
+  });
+  it('M&A Deals lives under its own ma-deals section, not generic news', () => {
+    const ma = customs.find(c => c.id === 'm-a-news');
+    expect(ma).toBeDefined();
+    expect(ma!.category).toBe('ma-deals');
   });
   it('Valuation Modelling section has 7 method screens', () => {
     const vm = customs.filter(c => c.category === 'valuation-modelling').map(c => c.id);

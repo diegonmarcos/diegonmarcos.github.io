@@ -8387,8 +8387,8 @@
 
   // src/typescript/api/client.ts
   var ApiClient = class {
-    constructor(cfg4) {
-      this.cfg = cfg4;
+    constructor(cfg3) {
+      this.cfg = cfg3;
     }
     async get(path) {
       const r3 = await fetch(`${this.cfg.base}${path}`, { headers: { Accept: "application/json" } });
@@ -8865,6 +8865,7 @@
       { id: "A0", section: "A", label: "A0) NEWS", categories: ["news"] },
       { id: "A1", section: "A", label: "A1) RESEARCH REPORTS", categories: ["research", "reports"] },
       { id: "A2", section: "A", label: "A2) GEO REPORTS", categories: ["geo"] },
+      { id: "A3", section: "A", label: "A3) M&A DEALS", categories: ["ma-deals"] },
       { id: "B0", section: "B", label: "B0) YIELD CURVES & BONDS", categories: ["fixedincome"] },
       { id: "B1", section: "B", label: "B1) FX", categories: ["forex"] },
       { id: "B2", section: "B", label: "B2) EQUITY", categories: ["markets"] },
@@ -9144,6 +9145,7 @@
       { id: "markets", title: "Markets (basic)", category: "markets", module: "markets" },
       { id: "watchlist", title: "Watchlist", category: "markets", module: "watchlist" },
       { id: "news", title: "News", category: "news", module: "news" },
+      { id: "m-a-news", title: "M&A Deals", category: "ma-deals", module: "m-a-news" },
       { id: "equity-research", title: "Equity Research", category: "research", module: "equity-research" },
       { id: "portfolio", title: "Portfolio", category: "portfolio", module: "portfolio" },
       { id: "trading", title: "Trading", category: "trading", module: "trading" },
@@ -11347,25 +11349,46 @@
 
   // src/typescript/data/news-config.json
   var news_config_default = {
-    description: "GDELT-backed news config \u2014 same backend as c-LabTools/news (api.diegonmarcos.com/news). Default topics mirror that project's DEFAULT_TOPICS.",
+    description: "GDELT-backed news config \u2014 same backend as c-LabTools/news (api.diegonmarcos.com/news, declared in cloud-data/news-gdelt/src/endpoints.json). Topic list is intentionally broad so the News screen surfaces FULL GDELT-style sections across macro/markets, technology, geopolitics, energy/climate, health, and corporate. Order is meaningful \u2014 first topic is the default tab.",
     api_base: "https://api.diegonmarcos.com/news",
     max_articles: 25,
     refresh_ms: 6e4,
     topics: [
       { topic: "economy", label: "Economy" },
-      { topic: "finance markets", label: "Finance" },
+      { topic: "finance markets", label: "Markets" },
+      { topic: "banking", label: "Banking" },
       { topic: "central bank", label: "Central Bank" },
-      { topic: "geopolitics", label: "Geopolitics" },
-      { topic: "technology", label: "Technology" },
+      { topic: "monetary policy", label: "Monetary" },
+      { topic: "fiscal policy", label: "Fiscal" },
+      { topic: "mergers acquisitions", label: "M&A" },
+      { topic: "IPO listing", label: "IPO" },
+      { topic: "earnings results", label: "Earnings" },
+      { topic: "commodities", label: "Commodities" },
+      { topic: "real estate housing", label: "Real Estate" },
+      { topic: "cryptocurrency", label: "Crypto" },
+      { topic: "technology", label: "Tech" },
       { topic: "artificial intelligence", label: "AI" },
+      { topic: "cybersecurity", label: "Cyber" },
+      { topic: "semiconductors chips", label: "Chips" },
+      { topic: "biotechnology", label: "Biotech" },
+      { topic: "geopolitics", label: "Geopolitics" },
+      { topic: "defense military", label: "Defense" },
+      { topic: "war conflict", label: "War" },
+      { topic: "trade tariffs", label: "Trade" },
+      { topic: "sanctions", label: "Sanctions" },
       { topic: "energy", label: "Energy" },
+      { topic: "oil gas", label: "Oil & Gas" },
+      { topic: "renewable energy", label: "Renewables" },
       { topic: "climate change", label: "Climate" },
-      { topic: "health", label: "Health" }
+      { topic: "health", label: "Health" },
+      { topic: "pharmaceuticals", label: "Pharma" },
+      { topic: "labor employment", label: "Labor" },
+      { topic: "regulation", label: "Regulation" }
     ]
   };
 
-  // src/typescript/screens/news.ts
-  var cfg3 = news_config_default;
+  // src/typescript/screens/_news-shared.ts
+  var NEWS_CFG = news_config_default;
   var ARTICLE_COLUMNS = [
     { key: "when", label: "When" },
     {
@@ -11375,59 +11398,32 @@
       signed: true,
       format: (v2) => v2.toFixed(2)
     },
-    {
-      key: "title",
-      label: "Headline",
-      format: (_v, row) => {
-        const r3 = row;
-        return `${r3.title}`;
-      }
-    },
+    { key: "title", label: "Headline" },
     { key: "domain", label: "Source" },
     { key: "lang", label: "Lang" }
   ];
-  function fmtDate(seendate) {
+  function fmtGdeltDate(seendate) {
     if (seendate.length < 15)
       return seendate;
     return `${seendate.slice(0, 4)}-${seendate.slice(4, 6)}-${seendate.slice(6, 8)} ${seendate.slice(9, 11)}:${seendate.slice(11, 13)}`;
   }
-  function renderNews(host, _ctx) {
-    let activeTopic = cfg3.topics[0].topic;
+  function renderTopicArticles(host, opts) {
+    const limit = opts.limit ?? NEWS_CFG.max_articles;
+    const label = (opts.label ?? opts.topic).toUpperCase();
     let timer = null;
-    host.appendChild(el("h2", {}, ["News"]));
-    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [`Live: GDELT via ${cfg3.api_base} \u2014 refresh every ${(cfg3.refresh_ms / 1e3).toFixed(0)}s`]));
-    const tabs = el("nav", { class: "tabs", role: "tablist" });
-    host.appendChild(tabs);
-    const body = el("div");
-    host.appendChild(body);
-    const refreshTopicBar = () => {
-      clear(tabs);
-      for (const t of cfg3.topics) {
-        const btn = el("button", {
-          class: `tabs__btn${t.topic === activeTopic ? " tabs__btn--active" : ""}`,
-          type: "button"
-        }, [t.label.toUpperCase()]);
-        btn.addEventListener("click", () => {
-          activeTopic = t.topic;
-          refreshTopicBar();
-          void load();
-        });
-        tabs.appendChild(btn);
-      }
-    };
     const load = async () => {
-      clear(body);
-      const loading = renderLoadingOverlay(`FETCHING ${activeTopic.toUpperCase()}\u2026`);
-      body.appendChild(loading);
+      clear(host);
+      const loading = renderLoadingOverlay(`FETCHING ${label}\u2026`);
+      host.appendChild(loading);
       try {
-        const url = `${cfg3.api_base}/articles?q=${encodeURIComponent(activeTopic)}&limit=${cfg3.max_articles}`;
+        const url = `${NEWS_CFG.api_base}/articles?q=${encodeURIComponent(opts.topic)}&limit=${limit}`;
         const r3 = await fetch(url, { headers: { Accept: "application/json" } });
         if (!r3.ok)
           throw new Error(`GDELT HTTP ${r3.status}`);
         const data3 = await r3.json();
         loading.remove();
         if (!data3.articles || data3.articles.length === 0) {
-          body.appendChild(el("p", { class: "t-amber" }, ["(no articles for this topic)"]));
+          host.appendChild(el("p", { class: "t-amber" }, [`(no articles for "${opts.topic}")`]));
           return;
         }
         const tones = data3.articles.map((a2) => a2.tone).filter(Number.isFinite);
@@ -11435,7 +11431,7 @@
         const positive = tones.filter((t) => t > 1).length;
         const negative = tones.filter((t) => t < -1).length;
         const neutral = tones.length - positive - negative;
-        body.appendChild(renderKpiGrid([
+        host.appendChild(renderKpiGrid([
           { label: "ARTICLES", value: String(data3.count) },
           {
             label: "AVG TONE",
@@ -11443,33 +11439,29 @@
             tone: avgTone > 0.5 ? "pos" : avgTone < -0.5 ? "neg" : "neutral"
           },
           { label: "POS / NEU / NEG", value: `${positive} / ${neutral} / ${negative}` },
-          { label: "TOPIC", value: activeTopic.toUpperCase(), tone: "info" }
+          { label: "TOPIC", value: label, tone: "info" }
         ]));
         const rows = data3.articles.map((a2) => ({
-          when: fmtDate(a2.seendate),
+          when: fmtGdeltDate(a2.seendate),
           tone: a2.tone,
           title: a2.title,
           url: a2.url,
           domain: a2.domain,
           lang: a2.language
         }));
-        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, [`${activeTopic.toUpperCase()} \u2014 TOP ${data3.articles.length}`]));
+        host.appendChild(el("div", { class: "mkt-section__title u-mt" }, [`${label} \u2014 TOP ${data3.articles.length}`]));
         const table = renderDataTable({
           columns: ARTICLE_COLUMNS,
           rows
         });
         const trList = table.querySelectorAll("tbody tr");
         trList.forEach((tr2, i) => {
-          tr2.classList.add("is-clickable");
           tr2.style.cursor = "pointer";
           tr2.addEventListener("click", () => {
-            const r4 = rows[i];
-            if (r4?.url)
-              window.open(r4.url, "_blank", "noopener");
+            const r5 = rows[i];
+            if (r5?.url)
+              window.open(r5.url, "_blank", "noopener");
           });
-        });
-        const tdList = table.querySelectorAll("tbody tr");
-        tdList.forEach((tr2, i) => {
           const r4 = rows[i];
           const toneCell = tr2.children[1];
           if (toneCell && r4) {
@@ -11481,19 +11473,66 @@
               toneCell.classList.add("t-muted");
           }
         });
-        body.appendChild(table);
+        host.appendChild(table);
       } catch (err) {
         loading.remove();
-        body.appendChild(renderError(`GDELT fetch failed \u2014 ${err.message}`));
+        host.appendChild(renderError(`GDELT fetch failed \u2014 ${err.message}`));
       }
     };
-    const start = () => {
+    void load();
+    if (opts.autoRefresh !== false) {
+      timer = setInterval(() => void load(), NEWS_CFG.refresh_ms);
+    }
+    return () => {
       if (timer)
         clearInterval(timer);
-      timer = setInterval(() => void load(), cfg3.refresh_ms);
+    };
+  }
+
+  // src/typescript/screens/news.ts
+  function renderNews(host, _ctx) {
+    let activeTopic = NEWS_CFG.topics[0].topic;
+    let stopRefresh = null;
+    host.appendChild(el("h2", {}, ["News"]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [
+      `Live: GDELT via ${NEWS_CFG.api_base} \u2014 ${NEWS_CFG.topics.length} topics, refresh every ${(NEWS_CFG.refresh_ms / 1e3).toFixed(0)}s`
+    ]));
+    const tabs = el("nav", { class: "tabs", role: "tablist" });
+    host.appendChild(tabs);
+    const body = el("div");
+    host.appendChild(body);
+    const refreshTopicBar = () => {
+      clear(tabs);
+      for (const t of NEWS_CFG.topics) {
+        const btn = el("button", {
+          class: `tabs__btn${t.topic === activeTopic ? " tabs__btn--active" : ""}`,
+          type: "button"
+        }, [t.label.toUpperCase()]);
+        btn.addEventListener("click", () => {
+          activeTopic = t.topic;
+          refreshTopicBar();
+          if (stopRefresh)
+            stopRefresh();
+          const meta2 = NEWS_CFG.topics.find((x2) => x2.topic === activeTopic);
+          stopRefresh = renderTopicArticles(body, { topic: activeTopic, label: meta2?.label });
+        });
+        tabs.appendChild(btn);
+      }
     };
     refreshTopicBar();
-    void load().then(start);
+    const meta = NEWS_CFG.topics.find((x2) => x2.topic === activeTopic);
+    stopRefresh = renderTopicArticles(body, { topic: activeTopic, label: meta?.label });
+  }
+
+  // src/typescript/screens/m-a-news.ts
+  function renderMaNews(host, _ctx) {
+    host.appendChild(el("h2", {}, ["M&A Deals"]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [
+      'Live GDELT feed locked to "mergers acquisitions" \u2014 fold-overs, takeovers, divestitures.'
+    ]));
+    const body = el("div");
+    host.appendChild(body);
+    renderTopicArticles(body, { topic: "mergers acquisitions", label: "M&A Deals" });
   }
 
   // src/typescript/screens/equity-research.ts
@@ -11753,6 +11792,7 @@
     "markets": renderMarkets,
     "watchlist": renderWatchlist,
     "news": renderNews,
+    "m-a-news": renderMaNews,
     "equity-research": renderEquityResearch,
     "portfolio": renderPortfolio,
     "trading": renderTrading,

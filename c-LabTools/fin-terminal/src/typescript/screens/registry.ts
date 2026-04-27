@@ -15,6 +15,7 @@ import { renderMarkets } from './markets';
 import { renderWatchlist } from './watchlist';
 import { renderNews } from './news';
 import { renderMaNews } from './m-a-news';
+import { renderNewsSentiment } from './news-sentiment';
 import { renderEquityResearch } from './equity-research';
 import { renderPortfolio } from './portfolio';
 import { renderTrading } from './trading';
@@ -75,6 +76,7 @@ const SPEC_OVERRIDES: Record<string, ScreenEntry['render']> = {
   'developer-datahub': renderDeveloperDataHub,
   'mcp-inspector':     renderMcpInspector,
   'auth-profile':      renderAuthProfile,
+  'news-sentiment':    renderNewsSentiment,
 };
 
 export function buildRegistry(): ScreenEntry[] {

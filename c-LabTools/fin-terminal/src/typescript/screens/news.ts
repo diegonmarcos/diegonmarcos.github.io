@@ -6,7 +6,7 @@ export function renderNews(host: HTMLElement, _ctx: ScreenContext): void {
   let activeTopic: string = NEWS_CFG.topics[0]!.topic;
   let stopRefresh: (() => void) | null = null;
 
-  host.appendChild(el('h2', {}, ['News']));
+  host.appendChild(el('h2', {}, ['News by Topic']));
   host.appendChild(el('p', { class: 't-muted u-mb-s' }, [
     `Live: GDELT via ${NEWS_CFG.api_base} — ${NEWS_CFG.topics.length} topics, refresh every ${(NEWS_CFG.refresh_ms / 1000).toFixed(0)}s`,
   ]));

@@ -9144,7 +9144,7 @@
       { id: "fx-hedge-cost", title: "FX Hedge Cost", category: "forex", module: "fx-hedge-cost" },
       { id: "markets", title: "Markets (basic)", category: "markets", module: "markets" },
       { id: "watchlist", title: "Watchlist", category: "markets", module: "watchlist" },
-      { id: "news", title: "News", category: "news", module: "news" },
+      { id: "news", title: "News by Topic", category: "news", module: "news" },
       { id: "m-a-news", title: "M&A Deals", category: "ma-deals", module: "m-a-news" },
       { id: "equity-research", title: "Equity Research", category: "research", module: "equity-research" },
       { id: "portfolio", title: "Portfolio", category: "portfolio", module: "portfolio" },
@@ -11493,7 +11493,7 @@
   function renderNews(host, _ctx) {
     let activeTopic = NEWS_CFG.topics[0].topic;
     let stopRefresh = null;
-    host.appendChild(el("h2", {}, ["News"]));
+    host.appendChild(el("h2", {}, ["News by Topic"]));
     host.appendChild(el("p", { class: "t-muted u-mb-s" }, [
       `Live: GDELT via ${NEWS_CFG.api_base} \u2014 ${NEWS_CFG.topics.length} topics, refresh every ${(NEWS_CFG.refresh_ms / 1e3).toFixed(0)}s`
     ]));
@@ -11533,6 +11533,143 @@
     const body = el("div");
     host.appendChild(body);
     renderTopicArticles(body, { topic: "mergers acquisitions", label: "M&A Deals" });
+  }
+
+  // src/typescript/screens/news-sentiment.ts
+  var TONE_COLUMNS = [
+    {
+      key: "tone",
+      label: "Tone",
+      numeric: true,
+      signed: true,
+      format: (v2) => v2.toFixed(2)
+    },
+    { key: "title", label: "Headline" },
+    { key: "domain", label: "Source" }
+  ];
+  function renderNewsSentiment(host, _ctx) {
+    let activeTopic = NEWS_CFG.topics[0].topic;
+    host.appendChild(el("h2", {}, ["News Sentiment"]));
+    host.appendChild(el("p", { class: "t-muted u-mb-s" }, [
+      `Live: GDELT /tone + /timeline via ${NEWS_CFG.api_base} \u2014 Adanos-style sentiment aggregator across ${NEWS_CFG.topics.length} topics.`
+    ]));
+    const tabs = el("nav", { class: "tabs", role: "tablist" });
+    host.appendChild(tabs);
+    const body = el("div");
+    host.appendChild(body);
+    const refreshTopicBar = () => {
+      clear(tabs);
+      for (const t of NEWS_CFG.topics) {
+        const btn = el("button", {
+          class: `tabs__btn${t.topic === activeTopic ? " tabs__btn--active" : ""}`,
+          type: "button"
+        }, [t.label.toUpperCase()]);
+        btn.addEventListener("click", () => {
+          activeTopic = t.topic;
+          refreshTopicBar();
+          void load();
+        });
+        tabs.appendChild(btn);
+      }
+    };
+    const load = async () => {
+      clear(body);
+      const loading = renderLoadingOverlay(`FETCHING ${activeTopic.toUpperCase()} SENTIMENT\u2026`);
+      body.appendChild(loading);
+      try {
+        const [toneRes, timelineRes] = await Promise.all([
+          fetch(`${NEWS_CFG.api_base}/tone?q=${encodeURIComponent(activeTopic)}`, { headers: { Accept: "application/json" } }),
+          fetch(`${NEWS_CFG.api_base}/timeline?q=${encodeURIComponent(activeTopic)}`, { headers: { Accept: "application/json" } })
+        ]);
+        if (!toneRes.ok)
+          throw new Error(`tone HTTP ${toneRes.status}`);
+        if (!timelineRes.ok)
+          throw new Error(`timeline HTTP ${timelineRes.status}`);
+        const tone = await toneRes.json();
+        const timeline = await timelineRes.json();
+        loading.remove();
+        const tones = (tone.tone ?? []).map((t) => t.tone).filter(Number.isFinite);
+        const n = tones.length;
+        const avg = n > 0 ? tones.reduce((s, x2) => s + x2, 0) / n : 0;
+        const variance = n > 1 ? tones.reduce((s, x2) => s + (x2 - avg) ** 2, 0) / (n - 1) : 0;
+        const stddev = Math.sqrt(variance);
+        const positive = tones.filter((t) => t > 1).length;
+        const negative = tones.filter((t) => t < -1).length;
+        const neutral = n - positive - negative;
+        const polarity = n > 0 ? (positive - negative) / n * 100 : 0;
+        body.appendChild(renderKpiGrid([
+          { label: "TOPIC", value: activeTopic.toUpperCase(), tone: "info" },
+          { label: "ARTICLES", value: String(tone.count) },
+          {
+            label: "AVG TONE",
+            value: avg.toFixed(2),
+            tone: avg > 0.5 ? "pos" : avg < -0.5 ? "neg" : "neutral",
+            hint: `\u03C3=${stddev.toFixed(2)}`
+          },
+          {
+            label: "POLARITY",
+            value: `${polarity > 0 ? "+" : ""}${polarity.toFixed(0)}%`,
+            tone: polarity > 10 ? "pos" : polarity < -10 ? "neg" : "neutral",
+            hint: `${positive} pos \xB7 ${neutral} neu \xB7 ${negative} neg`
+          }
+        ]));
+        if (timeline.timeline.length > 0) {
+          const points = timeline.timeline.map((p2, i) => ({ x: i, y: p2.value }));
+          body.appendChild(el("div", { class: "mkt-section__title u-mt" }, [`ARTICLE VOLUME \u2014 last ${timeline.points} buckets`]));
+          body.appendChild(renderLineChart({
+            points,
+            label: `${activeTopic} \u2014 volume timeline`
+          }));
+        }
+        const sorted = [...tone.tone ?? []].sort((a2, b2) => b2.tone - a2.tone);
+        const top = sorted.slice(0, 10);
+        const bottom = sorted.slice(-10).reverse();
+        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, ["MOST POSITIVE \u2014 TOP 10"]));
+        body.appendChild(decorateClickable(renderDataTable({
+          columns: TONE_COLUMNS,
+          rows: top,
+          sort: { key: "tone", dir: "desc" }
+        }), top));
+        body.appendChild(el("div", { class: "mkt-section__title u-mt" }, ["MOST NEGATIVE \u2014 BOTTOM 10"]));
+        body.appendChild(decorateClickable(renderDataTable({
+          columns: TONE_COLUMNS,
+          rows: bottom,
+          sort: { key: "tone", dir: "asc" }
+        }), bottom));
+        if (n === 0) {
+          body.appendChild(el("p", { class: "t-amber u-mt" }, [
+            "(no tone records \u2014 GDELT cache empty for this topic)"
+          ]));
+        }
+      } catch (err) {
+        loading.remove();
+        body.appendChild(renderError(`GDELT fetch failed \u2014 ${err.message}`));
+      }
+    };
+    refreshTopicBar();
+    void load();
+  }
+  function decorateClickable(table, rows) {
+    const trList = table.querySelectorAll("tbody tr");
+    trList.forEach((tr2, i) => {
+      tr2.style.cursor = "pointer";
+      tr2.addEventListener("click", () => {
+        const r4 = rows[i];
+        if (r4?.url)
+          window.open(r4.url, "_blank", "noopener");
+      });
+      const r3 = rows[i];
+      const toneCell = tr2.children[0];
+      if (toneCell && r3) {
+        if (r3.tone > 1)
+          toneCell.classList.add("t-pos");
+        else if (r3.tone < -1)
+          toneCell.classList.add("t-neg");
+        else
+          toneCell.classList.add("t-muted");
+      }
+    });
+    return table;
   }
 
   // src/typescript/screens/equity-research.ts
@@ -11806,7 +11943,8 @@
   var SPEC_OVERRIDES = {
     "developer-datahub": renderDeveloperDataHub,
     "mcp-inspector": renderMcpInspector,
-    "auth-profile": renderAuthProfile
+    "auth-profile": renderAuthProfile,
+    "news-sentiment": renderNewsSentiment
   };
   function buildRegistry() {
     const out = [];

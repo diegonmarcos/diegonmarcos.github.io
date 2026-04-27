@@ -1,0 +1,169 @@
+// ============================================
+// Sidebar navigation — private banking
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid $c-border;
+  padding: $s-5 $s-3 $s-5;
+  overflow-y: auto;
+  @include scroll-thin;
+  background: $c-bg-deep;
+}
+
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: $s-4;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: $s-2;
+    padding: $s-2 $s-3 8px;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover .nav-section__label { color: $c-text-secondary; }
+  }
+
+  &__id {
+    @include mono;
+    font-size: 0.62rem;
+    font-weight: 500;
+    color: $c-gold;
+    letter-spacing: 0.08em;
+  }
+
+  &__label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: $c-text-tertiary;
+    flex: 1;
+    transition: color $dur-fast ease;
+  }
+
+  &__chevron {
+    width: 9px;
+    height: 9px;
+    color: $c-text-tertiary;
+    transition: transform $dur-base $ease-out;
+    svg { width: 100%; height: 100%; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  }
+
+  &.is-collapsed .nav-section__chevron { transform: rotate(-90deg); }
+  &.is-collapsed .nav-section__items { display: none; }
+
+  &__items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: $s-3;
+  padding: 7px $s-3 7px 28px;
+  font-size: 0.80rem;
+  color: $c-text-secondary;
+  cursor: pointer;
+  position: relative;
+  transition: color $dur-fast $ease-out;
+
+  &:hover { color: $c-text; }
+
+  &.is-active {
+    color: $c-gold;
+
+    .nav-link__icon { color: $c-gold; }
+    .nav-link__id   { color: $c-gold; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 2px;
+      height: 14px;
+      background: $c-gold;
+    }
+  }
+
+  &__id {
+    @include mono;
+    font-size: 0.60rem;
+    color: $c-text-tertiary;
+    width: 22px;
+    flex: none;
+    letter-spacing: 0.04em;
+  }
+
+  &__icon {
+    width: 13px;
+    height: 13px;
+    color: currentColor;
+    flex: none;
+    svg {
+      width: 100%; height: 100%;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round; stroke-linejoin: round;
+    }
+  }
+
+  &__label { flex: 1; @include truncate; }
+
+  &__badge {
+    font-size: 0.62rem;
+    @include mono;
+    color: $c-text-tertiary;
+    padding: 1px 5px;
+    border: 1px solid $c-border;
+    letter-spacing: 0.04em;
+  }
+}
+
+.nav-divider {
+  border: none;
+  height: 1px;
+  background: $c-border;
+  margin: $s-4 $s-3;
+}
+
+.nav-footer {
+  margin-top: auto;
+  padding: $s-3;
+  display: flex;
+  flex-direction: column;
+  gap: $s-2;
+}
+
+.workspace-card {
+  padding: $s-3;
+  border-top: 1px solid $c-border;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__title {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: $c-text;
+    letter-spacing: 0.01em;
+  }
+  &__meta {
+    font-size: 0.68rem;
+    color: $c-text-tertiary;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}

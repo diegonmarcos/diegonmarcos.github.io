@@ -1,0 +1,102 @@
+// ============================================
+// Ledger — Design Tokens
+// Private-banking aesthetic · champagne gold accent
+// ============================================
+
+// ─── Color: Surface scale ──────────────────────
+$c-bg-deep:        #08090C;
+$c-bg:             #0E1014;
+$c-bg-raised:      #14171D;
+$c-bg-elevated:    #1A1E26;
+$c-bg-overlay:     rgba(8, 9, 12, 0.78);
+
+// ─── Color: Hairlines ─────────────────────────
+$c-border:         rgba(184, 153, 104, 0.10);
+$c-border-strong:  rgba(184, 153, 104, 0.22);
+$c-border-soft:    rgba(184, 153, 104, 0.05);
+
+// ─── Color: Text scale (warm neutral) ─────────
+$c-text:           #E8E2D5;
+$c-text-secondary: #9B9484;
+$c-text-tertiary:  #6A6357;
+$c-text-disabled:  #3A372D;
+
+// ─── Color: Brand — champagne gold ────────────
+$c-brand:          #B89968;
+$c-brand-soft:     rgba(184, 153, 104, 0.10);
+$c-brand-glow:     rgba(184, 153, 104, 0.20);
+$c-gold:           #B89968;
+$c-gold-deep:      #8C7142;
+
+// ─── Color: Secondary — petrol (institutional) ─
+$c-petrol:         #2D4A52;
+$c-petrol-soft:    rgba(45, 74, 82, 0.18);
+
+// ─── Color: Semantic (muted, institutional) ───
+$c-positive:       #6FA78A;
+$c-positive-soft:  rgba(111, 167, 138, 0.10);
+$c-negative:       #B66758;
+$c-negative-soft:  rgba(182, 103, 88, 0.10);
+$c-warning:        #C89456;
+$c-warning-soft:   rgba(200, 148, 86, 0.10);
+$c-info:           #7B95A8;
+
+// ─── Category palette — restrained ────────────
+$cat-1: #B89968;  // gold
+$cat-2: #6FA78A;  // sage
+$cat-3: #7B95A8;  // slate
+$cat-4: #A07B8C;  // mauve
+$cat-5: #C89456;  // amber
+$cat-6: #5F7884;  // steel
+$cat-7: #8C7A6B;  // bronze
+$cat-8: #6E665D;  // stone
+
+// ─── Type ─────────────────────────────────────
+$ff-sans:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+$ff-mono:    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+$ff-display: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+
+$num-features: 'tnum' 1, 'lnum' 1;
+
+// ─── Scale ────────────────────────────────────
+$r-xs:   2px;
+$r-sm:   3px;
+$r-md:   4px;
+$r-lg:   6px;
+$r-xl:   8px;
+$r-pill: 999px;
+
+$s-1:  4px;
+$s-2:  8px;
+$s-3:  12px;
+$s-4:  16px;
+$s-5:  20px;
+$s-6:  24px;
+$s-7:  32px;
+$s-8:  40px;
+$s-9:  56px;
+$s-10: 72px;
+
+// ─── Layout ───────────────────────────────────
+$nav-w: 240px;
+$topbar-h: 60px;
+$app-min-w: 1280px;   // workable minimum — below this, page scrolls horizontally
+$content-max-w: 1480px;
+
+// ─── Effects (restrained) ─────────────────────
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.30);
+$shadow-md: 0 4px 14px rgba(0, 0, 0, 0.30);
+$shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.40);
+
+// ─── Motion ───────────────────────────────────
+$ease-out:  cubic-bezier(0.32, 0.72, 0.24, 1);
+$ease-in:   cubic-bezier(0.40, 0.00, 1.00, 1.00);
+$dur-fast:  120ms;
+$dur-base:  180ms;
+$dur-slow:  320ms;
+
+// ─── Breakpoints ──────────────────────────────
+$bp-sm: 640px;
+$bp-md: 900px;
+$bp-lg: 1200px;
+$bp-xl: 1500px;

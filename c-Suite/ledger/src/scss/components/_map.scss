@@ -1,0 +1,152 @@
+// ============================================
+// Map view
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.map-shell {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $s-5;
+
+  @include mq(lg) {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+}
+
+.map-canvas {
+  @include panel;
+  height: 620px;
+  overflow: hidden;
+  position: relative;
+
+  // Leaflet override — dark theme
+  .leaflet-container {
+    background: $c-bg !important;
+    height: 100% !important;
+    font-family: $ff-sans;
+  }
+
+  .leaflet-control-attribution {
+    background: rgba(7, 9, 15, 0.85) !important;
+    color: $c-text-tertiary !important;
+    font-size: 10px !important;
+    border-radius: $r-sm 0 0 0 !important;
+
+    a { color: $c-text-secondary !important; }
+  }
+
+  .leaflet-control-zoom {
+    border: 1px solid $c-border !important;
+    box-shadow: $shadow-md !important;
+
+    a {
+      background: $c-bg-raised !important;
+      color: $c-text !important;
+      border-bottom: 1px solid $c-border !important;
+
+      &:hover { background: $c-bg-elevated !important; }
+    }
+  }
+
+  // Tile-grayscale filter for dark feel even with light tiles
+  .leaflet-tile-pane {
+    filter: invert(100%) hue-rotate(190deg) brightness(0.92) contrast(0.96) saturate(0.55);
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: $c-bg-raised !important;
+    color: $c-text !important;
+    border: 1px solid $c-border !important;
+    border-radius: $r-md !important;
+    box-shadow: $shadow-lg !important;
+  }
+  .leaflet-popup-tip { background: $c-bg-raised !important; border: 1px solid $c-border !important; }
+  .leaflet-popup-content { margin: 10px 14px !important; font-size: 0.82rem; }
+
+  .leaflet-popup-close-button { color: $c-text-tertiary !important; }
+}
+
+// Custom pin
+.map-pin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: $c-gold;
+  border: 2px solid $c-bg;
+  box-shadow: 0 0 0 1px rgba(184, 153, 104, 0.5);
+  cursor: pointer;
+  transition: transform $dur-fast $ease-out;
+
+  &:hover { transform: scale(1.4); }
+
+  &--lg { width: 22px; height: 22px; }
+  &--md { width: 17px; height: 17px; }
+}
+
+.map-popup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+
+  &__city {
+    font-weight: 600;
+    color: $c-text;
+    font-size: 0.92rem;
+  }
+  &__country {
+    font-size: 0.74rem;
+    color: $c-text-tertiary;
+  }
+  &__amount {
+    @include mono;
+    font-size: 1rem;
+    color: $c-gold;
+    margin-top: 4px;
+  }
+  &__count {
+    font-size: 0.70rem;
+    color: $c-text-tertiary;
+  }
+}
+
+.map-side {
+  display: flex;
+  flex-direction: column;
+  gap: $s-4;
+}
+
+.city-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 540px;
+  overflow-y: auto;
+  @include scroll-thin;
+}
+
+.city-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: $s-3;
+  padding: $s-3 $s-4;
+  border-bottom: 1px solid $c-border-soft;
+  cursor: pointer;
+  transition: background $dur-fast ease;
+
+  &:hover { background: rgba(255,255,255,0.02); }
+  &:last-child { border-bottom: none; }
+  &.is-active { background: $c-brand-soft; color: $c-gold; }
+
+  &__main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  &__city { font-weight: 500; color: $c-text; @include truncate; }
+  &__meta { font-size: 0.70rem; color: $c-text-tertiary; @include truncate; }
+  &__amount { @include mono; font-weight: 500; color: $c-text; text-align: right; }
+  &__bar {
+    width: 3px;
+    background: $c-gold;
+    align-self: stretch;
+    opacity: 0.55;
+  }
+}

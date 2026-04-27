@@ -1,0 +1,108 @@
+// ============================================
+// Custom SVG charts — institutional palette
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.chart {
+  width: 100%;
+  display: block;
+
+  text {
+    font-family: $ff-mono;
+    font-size: 9.5px;
+    fill: $c-text-tertiary;
+    letter-spacing: 0.04em;
+  }
+
+  .chart__axis-line {
+    stroke: $c-border;
+    stroke-width: 1;
+  }
+
+  .chart__grid-line {
+    stroke: $c-border-soft;
+    stroke-width: 1;
+  }
+
+  .chart__bar {
+    transition: opacity $dur-fast ease;
+  }
+
+  .chart__bar--income { fill: $c-positive; opacity: 0.85; }
+  .chart__bar--expense { fill: $c-negative; opacity: 0.80; }
+  .chart__bar--neutral { fill: $c-gold; opacity: 0.75; }
+
+  .chart__line {
+    fill: none;
+    stroke: $c-gold;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .chart__line--positive { stroke: $c-positive; }
+
+  .chart__dot {
+    fill: $c-bg-raised;
+    stroke: $c-gold;
+    stroke-width: 1.5;
+  }
+
+  .chart__spark { fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+  .chart__donut-track { fill: $c-bg-elevated; }
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $s-3 $s-4;
+  font-size: 0.76rem;
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: $s-2;
+
+    &-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--legend-color, $c-gold);
+    }
+
+    &-label { color: $c-text-secondary; }
+    &-value { @include mono; color: $c-text; margin-left: 4px; }
+  }
+}
+
+.donut-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  &__center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    text-align: center;
+    gap: 3px;
+  }
+
+  &__label {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: $c-text-tertiary;
+  }
+
+  &__value {
+    @include mono;
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: $c-text;
+    letter-spacing: -0.01em;
+  }
+}

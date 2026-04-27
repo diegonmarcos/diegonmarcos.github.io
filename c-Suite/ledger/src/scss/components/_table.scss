@@ -1,0 +1,103 @@
+// ============================================
+// Data tables — institutional
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.tbl {
+  width: 100%;
+  font-size: 0.82rem;
+
+  thead th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: $c-gold;
+    padding: $s-3 $s-4;
+    background: transparent;
+    border-bottom: 1px solid $c-border;
+    white-space: nowrap;
+
+    &.num { text-align: right; }
+  }
+
+  tbody tr {
+    transition: background $dur-fast ease;
+    border-bottom: 1px solid $c-border-soft;
+
+    &:hover { background: rgba(184, 153, 104, 0.02); }
+    &:last-child { border-bottom: none; }
+  }
+
+  tbody td {
+    padding: $s-3 $s-4;
+    color: $c-text;
+    vertical-align: middle;
+
+    &.num {
+      text-align: right;
+      @include mono;
+    }
+
+    &.dim { color: $c-text-secondary; }
+  }
+}
+
+.tbl-cell {
+  display: flex;
+  align-items: center;
+  gap: $s-3;
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+    border-radius: $r-xs;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: 1px solid var(--cell-color, $c-border);
+    color: var(--cell-color, $c-text-secondary);
+    flex: none;
+
+    svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.5; }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
+  }
+
+  &__title {
+    font-weight: 500;
+    color: $c-text;
+    @include truncate;
+  }
+
+  &__meta {
+    font-size: 0.70rem;
+    color: $c-text-tertiary;
+    @include truncate;
+  }
+}
+
+.dual-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+
+  &__primary {
+    @include mono;
+    color: $c-text;
+  }
+  &__native {
+    @include mono;
+    font-size: 0.68rem;
+    color: $c-text-tertiary;
+    margin-top: 2px;
+  }
+}

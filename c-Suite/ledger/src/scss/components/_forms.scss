@@ -1,0 +1,78 @@
+// ============================================
+// Form controls — filters
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $s-2;
+  padding: $s-3 $s-4;
+  background: transparent;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+}
+
+.filters__label {
+  font-size: 0.66rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: $c-text-tertiary;
+  padding-right: $s-2;
+  margin-right: $s-1;
+  border-right: 1px solid $c-border;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  font-size: 0.74rem;
+  border-radius: $r-xs;
+  background: transparent;
+  border: 1px solid $c-border;
+  color: $c-text-secondary;
+  cursor: pointer;
+  transition: all $dur-fast $ease-out;
+
+  &:hover { color: $c-text; border-color: $c-border-strong; }
+
+  &.is-active {
+    color: $c-gold;
+    border-color: $c-gold;
+  }
+
+  &__dot {
+    width: 5px;
+    height: 5px;
+    background: var(--chip-color, $c-text-tertiary);
+  }
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  background: $c-bg;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+  font-size: 0.78rem;
+  color: $c-text;
+  min-width: 140px;
+
+  &:focus-within { border-color: $c-gold; }
+
+  svg { width: 11px; height: 11px; stroke: $c-text-tertiary; fill: none; stroke-width: 1.6; }
+
+  input {
+    flex: 1; background: none; border: none; outline: none;
+    color: $c-text; min-width: 0;
+    &::placeholder { color: $c-text-tertiary; }
+  }
+}

@@ -1,0 +1,147 @@
+// ============================================
+// Report-specific blocks (tax filing, statements)
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.report-banner {
+  display: flex;
+  align-items: center;
+  gap: $s-5;
+  padding: $s-5 $s-6;
+  background: $c-bg-raised;
+  border: 1px solid $c-gold;
+  border-radius: $r-md;
+  position: relative;
+
+  &__seal {
+    width: 52px;
+    height: 52px;
+    border: 1px solid $c-gold;
+    display: grid;
+    place-items: center;
+    flex: none;
+
+    svg { width: 26px; height: 26px; stroke: $c-gold; fill: none; stroke-width: 1.4; }
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    h3 {
+      @include serif-display;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: $c-text;
+      letter-spacing: 0.005em;
+    }
+    p {
+      font-size: 0.80rem;
+      color: $c-text-secondary;
+      line-height: 1.5;
+      max-width: 580px;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: $s-2;
+    align-items: flex-end;
+  }
+}
+
+.report-section {
+  display: flex;
+  flex-direction: column;
+  gap: $s-3;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: $s-3;
+    padding-bottom: $s-3;
+    border-bottom: 1px solid $c-border;
+
+    .num {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid $c-gold;
+      color: $c-gold;
+      font-size: 0.70rem;
+      font-weight: 500;
+      flex: none;
+      @include mono;
+    }
+
+    h3 {
+      @include serif-display;
+      font-size: 1rem;
+      font-weight: 500;
+      color: $c-text;
+      flex: 1;
+    }
+
+    .meta {
+      font-size: 0.70rem;
+      color: $c-text-tertiary;
+      @include mono;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: $s-4;
+}
+
+.kv {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: $s-3 $s-4;
+  background: $c-bg-raised;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+
+  &__label {
+    font-size: 0.62rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: $c-text-tertiary;
+  }
+
+  &__value {
+    @include mono;
+    font-size: 1rem;
+    font-weight: 400;
+    color: $c-text;
+  }
+
+  &__note {
+    font-size: 0.68rem;
+    color: $c-text-tertiary;
+    letter-spacing: 0.02em;
+  }
+}
+
+.disclaim {
+  font-size: 0.72rem;
+  color: $c-text-tertiary;
+  line-height: 1.55;
+  padding: $s-3 $s-4;
+  background: transparent;
+  border-left: 2px solid $c-warning;
+  margin-top: $s-2;
+
+  strong { color: $c-warning; font-weight: 500; }
+}

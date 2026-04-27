@@ -1,0 +1,187 @@
+// ============================================
+// App Layout — sidebar + topbar + content
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.app {
+  display: grid;
+  grid-template-columns: $nav-w 1fr;
+  grid-template-rows: $topbar-h 1fr;
+  grid-template-areas:
+    'brand topbar'
+    'nav   main';
+  height: 100%;
+  // Fill the #app wrapper but never collapse below the workable minimum.
+  // When the viewport narrows below $app-min-w, the wrapper provides
+  // a horizontal scrollbar instead of crushing the layout.
+  min-width: $app-min-w;
+  width: 100%;
+  background: $c-bg-deep;
+}
+
+.app__brand {
+  grid-area: brand;
+  display: flex;
+  align-items: center;
+  padding: 0 $s-5;
+  border-right: 1px solid $c-border;
+  border-bottom: 1px solid $c-border;
+  gap: $s-3;
+  background: $c-bg-deep;
+}
+
+.brand-mark {
+  width: 30px;
+  height: 30px;
+  border: 1px solid $c-gold;
+  display: grid;
+  place-items: center;
+  color: $c-gold;
+  letter-spacing: 0;
+
+  span {
+    @include serif-display;
+    font-size: 1rem;
+    font-weight: 500;
+    color: $c-gold;
+    line-height: 1;
+  }
+}
+
+.brand-name {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+
+  &__word {
+    @include serif-display;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: $c-text;
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+
+  &__tag {
+    font-size: 0.58rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: $c-text-tertiary;
+  }
+}
+
+.app__topbar { grid-area: topbar; }
+.app__nav    { grid-area: nav; }
+
+.app__main {
+  grid-area: main;
+  overflow: auto;
+  @include scroll-thin;
+  background: $c-bg;
+}
+
+.view {
+  padding: $s-7 $s-7 $s-9;
+  max-width: $content-max-w;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $s-6;
+}
+
+.view__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: $s-4;
+
+  .view__title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+.view__actions {
+  display: flex;
+  gap: $s-2;
+  align-items: center;
+}
+
+// View-level tab strip (under header)
+.view-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid $c-border;
+  margin-bottom: (-$s-2);
+
+  &__tab {
+    padding: 10px 18px 14px;
+    font-size: 0.82rem;
+    font-weight: 400;
+    color: $c-text-secondary;
+    cursor: pointer;
+    position: relative;
+    transition: color $dur-fast ease;
+    background: transparent;
+    border: none;
+    letter-spacing: 0.01em;
+
+    &:hover { color: $c-text; }
+
+    &.is-active {
+      color: $c-gold;
+      font-weight: 500;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 14px;
+        right: 14px;
+        bottom: -1px;
+        height: 1px;
+        background: $c-gold;
+      }
+    }
+  }
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  color: $c-text-tertiary;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+
+  &__sep { opacity: 0.4; }
+  &__current { color: $c-text-secondary; }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $s-5;
+  @include mq(lg) { grid-template-columns: 2fr 1fr; }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $s-4;
+  @include mq(md) { grid-template-columns: repeat(2, 1fr); }
+  @include mq(lg) { grid-template-columns: repeat(3, 1fr); }
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $s-4;
+  @include mq(md) { grid-template-columns: repeat(4, 1fr); }
+}

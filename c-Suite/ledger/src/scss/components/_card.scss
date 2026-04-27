@@ -1,0 +1,96 @@
+// ============================================
+// Cards & surfaces — flat, hairline-bordered
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.card {
+  @include panel;
+  padding: $s-5;
+  display: flex;
+  flex-direction: column;
+  gap: $s-4;
+  position: relative;
+
+  &--flush { padding: 0; }
+  &--compact { padding: $s-4; gap: $s-3; }
+
+  &__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: $s-3;
+  }
+
+  &__title {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: $c-text;
+    letter-spacing: 0.005em;
+  }
+
+  &__subtitle {
+    font-size: 0.74rem;
+    color: $c-text-tertiary;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $s-2;
+    align-items: center;
+  }
+}
+
+.card__head--bordered {
+  padding: $s-4 $s-5;
+  margin: (-$s-5) (-$s-5) 0;
+  border-bottom: 1px solid $c-border;
+}
+
+.tabbar {
+  display: inline-flex;
+  background: $c-bg;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+  padding: 2px;
+  gap: 1px;
+
+  &__tab {
+    padding: 4px 12px;
+    font-size: 0.74rem;
+    font-weight: 400;
+    color: $c-text-secondary;
+    border-radius: $r-xs;
+    cursor: pointer;
+    transition: all $dur-fast $ease-out;
+    letter-spacing: 0.01em;
+
+    &:hover { color: $c-text; }
+
+    &.is-active {
+      color: $c-gold;
+      background: $c-bg-elevated;
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $s-3;
+  padding: $s-9 $s-4;
+  color: $c-text-tertiary;
+  text-align: center;
+
+  svg {
+    width: 28px;
+    height: 28px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.4;
+  }
+}

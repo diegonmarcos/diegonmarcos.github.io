@@ -1,0 +1,55 @@
+// ============================================
+// Reset & root
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: $ff-sans;
+  font-feature-settings: 'cv11' 1, 'ss03' 1;
+  color: $c-text;
+  background: $c-bg-deep;
+  // Hide default body scroll — the app frame provides scoped scrollbars
+  overflow: hidden;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  // When viewport is narrower than the workable minimum, the app frame
+  // expands and a horizontal scrollbar appears at the bottom of the page.
+  overflow-x: auto;
+  overflow-y: hidden;
+  @include scroll-frame;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+input, select, textarea { font: inherit; color: inherit; }
+ul, ol { list-style: none; }
+img, svg { display: block; max-width: 100%; }
+table { border-collapse: collapse; border-spacing: 0; width: 100%; }
+
+::selection {
+  background: $c-brand-glow;
+  color: $c-text;
+}

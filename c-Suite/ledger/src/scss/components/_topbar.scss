@@ -1,0 +1,184 @@
+// ============================================
+// Topbar — global header
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: $s-4;
+  padding: 0 $s-6;
+  border-bottom: 1px solid $c-border;
+  background: $c-bg-deep;
+}
+
+.topbar__search {
+  flex: 1;
+  max-width: 460px;
+  display: flex;
+  align-items: center;
+  gap: $s-2;
+  height: 32px;
+  padding: 0 $s-3;
+  background: transparent;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+  color: $c-text-secondary;
+  transition: border-color $dur-base $ease-out;
+
+  &:focus-within {
+    border-color: $c-border-strong;
+    color: $c-text;
+  }
+
+  svg {
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    flex: none;
+  }
+
+  input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    font-size: 0.82rem;
+    color: $c-text;
+    &::placeholder { color: $c-text-tertiary; }
+  }
+
+  kbd {
+    @include mono;
+    font-size: 0.62rem;
+    color: $c-text-tertiary;
+    border: 1px solid $c-border;
+    border-radius: $r-xs;
+    padding: 1px 5px;
+  }
+}
+
+.topbar__spacer { flex: 1; }
+
+.topbar__group {
+  display: flex;
+  align-items: center;
+  gap: $s-3;
+}
+
+.fx-pill {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 0;
+  font-size: 0.72rem;
+  color: $c-text-secondary;
+  @include mono;
+
+  .fx-pill__pair {
+    color: $c-text-tertiary;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+  }
+  .fx-pill__rate { color: $c-text; }
+
+  & + & { border-left: 1px solid $c-border; padding-left: $s-3; }
+}
+
+.period-select,
+.currency-select {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  height: 28px;
+  background: transparent;
+  border: 1px solid $c-border;
+  border-radius: $r-sm;
+  font-size: 0.78rem;
+  color: $c-text;
+  cursor: pointer;
+  transition: border-color $dur-base $ease-out;
+
+  &:hover { border-color: $c-border-strong; }
+  &:focus-visible { @include focus-ring; }
+
+  svg {
+    width: 11px;
+    height: 11px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+  }
+}
+
+.currency-select {
+  font-weight: 500;
+  color: $c-gold;
+
+  .currency-flag {
+    font-size: 0.95rem;
+    line-height: 1;
+    filter: grayscale(0.2);
+  }
+
+  .currency-code {
+    @include mono;
+    letter-spacing: 0.05em;
+  }
+}
+
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: $r-sm;
+  color: $c-text-secondary;
+  cursor: pointer;
+  transition: all $dur-base $ease-out;
+
+  &:hover {
+    color: $c-text;
+    border-color: $c-border;
+  }
+
+  svg {
+    width: 13px;
+    height: 13px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+  }
+
+  &__dot { position: relative; }
+  &__dot::after {
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: $c-gold;
+    border-radius: 50%;
+    transform: translate(7px, -7px);
+  }
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: $c-bg-elevated;
+  border: 1px solid $c-gold;
+  display: grid;
+  place-items: center;
+  font-size: 0.70rem;
+  font-weight: 500;
+  color: $c-gold;
+  letter-spacing: 0.06em;
+}

@@ -1,0 +1,82 @@
+// ============================================
+// Badges & pills
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  font-size: 0.66rem;
+  font-weight: 500;
+  border-radius: $r-xs;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  &--neutral {
+    color: $c-text-secondary;
+    border-color: $c-border;
+  }
+
+  &--positive {
+    color: $c-positive;
+    border-color: rgba(111, 167, 138, 0.30);
+  }
+
+  &--negative {
+    color: $c-negative;
+    border-color: rgba(182, 103, 88, 0.30);
+  }
+
+  &--warning {
+    color: $c-warning;
+    border-color: rgba(200, 148, 86, 0.30);
+  }
+
+  &--brand,
+  &--gold {
+    color: $c-gold;
+    border-color: rgba(184, 153, 104, 0.32);
+  }
+
+  &__dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.70rem;
+  padding: 1px 6px;
+  border-radius: $r-xs;
+  background: transparent;
+  color: $c-text-secondary;
+  @include mono;
+  letter-spacing: 0.04em;
+
+  &__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 1px;
+    background: var(--tag-color, $c-gold);
+  }
+}
+
+.fx-tag {
+  @include mono;
+  font-size: 0.66rem;
+  padding: 1px 6px;
+  border-radius: $r-xs;
+  color: $c-text-tertiary;
+  border: 1px solid $c-border;
+  letter-spacing: 0.06em;
+}

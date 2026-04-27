@@ -1,0 +1,50 @@
+// ============================================
+// Utilities
+// ============================================
+@use '../abstracts/variables' as *;
+
+.is-hidden { display: none !important; }
+.is-invisible { visibility: hidden; }
+
+.flex-1 { flex: 1; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-4 { margin-bottom: 16px; }
+
+.right { text-align: right; }
+.center { text-align: center; }
+
+.row { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.col { display: flex; flex-direction: column; }
+.between { justify-content: space-between; }
+
+.divider {
+  height: 1px;
+  background: $c-border;
+  border: none;
+  margin: $s-4 0;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fade-in $dur-slow $ease-out both; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, $c-bg-raised 0%, $c-bg-elevated 50%, $c-bg-raised 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: $r-sm;
+}

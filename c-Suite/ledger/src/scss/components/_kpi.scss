@@ -1,0 +1,73 @@
+// ============================================
+// KPI tiles — restrained, label/value/delta
+// ============================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.kpi {
+  @include panel;
+  padding: $s-4 $s-5;
+  display: flex;
+  flex-direction: column;
+  gap: $s-2;
+  position: relative;
+  min-height: 122px;
+
+  &__label {
+    font-size: 0.66rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: $c-text-tertiary;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .kpi__currency {
+      @include mono;
+      font-size: 0.62rem;
+      padding: 0;
+      color: $c-gold;
+      letter-spacing: 0.06em;
+    }
+  }
+
+  &__value {
+    @include mono;
+    font-size: 1.55rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    color: $c-text;
+    margin-top: 4px;
+  }
+
+  &__sub {
+    display: flex;
+    align-items: baseline;
+    gap: $s-2;
+    font-size: 0.74rem;
+    margin-top: auto;
+  }
+
+  &__delta {
+    @include mono;
+    font-size: 0.74rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+
+    svg { width: 9px; height: 9px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    &--up   { color: $c-positive; }
+    &--down { color: $c-negative; }
+    &--flat { color: $c-text-tertiary; }
+  }
+
+  &__caption {
+    color: $c-text-tertiary;
+    font-size: 0.70rem;
+    margin-top: auto;
+    letter-spacing: 0.02em;
+  }
+}

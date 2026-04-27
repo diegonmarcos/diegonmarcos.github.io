@@ -7187,13 +7187,98 @@
 
   // a-Portals/linktree/src/data/personal-tools.json
   var personal_tools_default = {
-    _description: "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as the standard `.link-section > .featured-image + .tools-dashboard > .tools-column` pattern. As we migrate other slides (PROFILE, MY TOOLS, SUITE, CIRCUS, CLOUD), each can either reuse `kind=tools` or declare a new kind handled by portal-render.ts. Only LAB TOOLS is migrated in this first pass.",
+    _description: "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
     section: {
       id: "personal-tools",
       title: "Personal Tools",
       swiper_class: "personal-tools-swiper"
     },
     slides: [
+      {
+        id: "suite",
+        kind: "tools",
+        title: "SUITE",
+        image: {
+          src: "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2YyZGNoOTlqanVkYTQ0ZXF5bjdoMXN2aXpsMXpmNDRnMzdqbmk0ciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/F4nBKBWxcWzcdMJX2W/giphy.gif",
+          alt: "Suite"
+        },
+        dashboard_modifier: "tools-dashboard--5",
+        columns: [
+          {
+            header: "AI & IDE",
+            links: [
+              { label: "Goose", url: "https://github.com/block/goose", icon: "robot.svg" },
+              { label: "Claude CLI", url: "https://claude.ai", icon: "robot.svg" },
+              { label: "Gitea", url: "https://git.diegonmarcos.com", icon: "code.svg" },
+              { label: "JSON Vision", url: "https://diegonmarcos.github.io/json-vision", icon: "code.svg" },
+              { label: "WebIDE", url: "https://ide.diegonmarcos.com", icon: "device-desktop.svg" },
+              { label: "Jupyter NB", url: "https://jupyter.diegonmarcos.com", icon: "code.svg" }
+            ]
+          },
+          {
+            header: "Suite",
+            header_url: "https://diegonmarcos.github.io/suite",
+            links: [
+              { label: "Notes", url: "https://hedgedoc.diegonmarcos.com", icon: "file-stack.svg" },
+              { label: "Sheets", url: "https://sheets.diegonmarcos.com", icon: "database.svg" },
+              { label: "Docs", url: "https://docs.diegonmarcos.com", icon: "file-stack.svg" },
+              { label: "Slides", url: "https://slides.diegonmarcos.com", icon: "slideshow.svg" },
+              { label: "Photos", url: "https://photos.app.diegonmarcos.com", icon: "slideshow.svg" },
+              { label: "Files", url: "https://files.diegonmarcos.com", icon: "file-stack.svg" }
+            ]
+          },
+          {
+            header: "Comms",
+            links: [
+              { label: "Mail", url: "https://diegonmarcos.github.io/mymail", icon: "mail.svg" },
+              { label: "Mattermost", url: "https://chat.diegonmarcos.com", icon: "send.svg" },
+              { label: "ntfy", url: "https://ntfy.diegonmarcos.com", icon: "checklist.svg" }
+            ]
+          },
+          {
+            header: "Nav",
+            header_url: "https://diegonmarcos.github.io/mymaps",
+            links: [
+              { label: "Navigation", url: "https://diegonmarcos.github.io/mymaps-navigation", icon: "map-pin-2.svg" },
+              { label: "Maps", url: "https://diegonmarcos.github.io/mymaps-maps", icon: "world.svg" },
+              { label: "MyTrips", url: "https://diegonmarcos.github.io/mymaps-mytrips", icon: "world-longitude.svg" }
+            ]
+          },
+          {
+            header: "Data",
+            links: [
+              { label: "Feed", url: "https://diegonmarcos.github.io/myfeed", icon: "device-desktop.svg" },
+              { label: "Movies", url: "https://diegonmarcos.github.io/mymovies", icon: "device-desktop.svg" },
+              { label: "Music", url: "https://diegonmarcos.github.io/mymusic", icon: "device-desktop.svg" },
+              { label: "Photos", url: "https://diegonmarcos.github.io/myphotos", icon: "device-desktop.svg" },
+              { label: "Games", url: "https://diegonmarcos.github.io/mygames", icon: "device-desktop.svg" },
+              { label: "NocoDB", url: "https://nocodb.diegonmarcos.com", icon: "database.svg" },
+              { label: "Vault", url: "https://vault.diegonmarcos.com", icon: "lock.svg" },
+              { label: "PhotoPrism", url: "https://photos.diegonmarcos.com", icon: "slideshow.svg" }
+            ]
+          }
+        ]
+      },
+      {
+        id: "my-health",
+        kind: "tools",
+        title: "MY HEALTH",
+        image: {
+          src: "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
+          alt: "My Health"
+        },
+        columns: [
+          {
+            header: "MyHealth",
+            header_url: "https://diegonmarcos.github.io/myhealth",
+            links: [
+              { label: "Tracker", url: "https://diegonmarcos.github.io/myhealth-tracker", icon: "heart.svg" },
+              { label: "FeedYourself", url: "https://diegonmarcos.github.io/myhealth-feedyourself", icon: "brain.svg" },
+              { label: "Profile", url: "https://diegonmarcos.github.io/myhealth-profile", icon: "heart.svg" }
+            ]
+          }
+        ]
+      },
       {
         id: "lab-tools",
         kind: "tools",

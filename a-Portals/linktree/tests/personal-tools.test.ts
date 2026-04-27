@@ -13,6 +13,56 @@ describe('personal-tools.json — declarative source of truth', () => {
     expect(cfg.section.title).toBe('Personal Tools');
   });
 
+  it('exposes 3 migrated slides: suite + my-health + lab-tools', () => {
+    expect(listSlideIds()).toEqual(['suite', 'my-health', 'lab-tools']);
+  });
+
+  it('SUITE slide has the 5 columns Diego specified (AI&IDE, Suite, Comms, Nav, Data)', () => {
+    const suite = cfg.slides.find(s => s.id === 'suite')!;
+    expect(suite).toBeDefined();
+    expect(suite.title).toBe('SUITE');
+    expect(suite.columns.map(c => c.header)).toEqual(['AI & IDE', 'Suite', 'Comms', 'Nav', 'Data']);
+  });
+
+  it('SUITE Comms column has exactly Mail + Mattermost + ntfy', () => {
+    const suite = cfg.slides.find(s => s.id === 'suite')!;
+    const comms = suite.columns.find(c => c.header === 'Comms')!;
+    expect(comms.links.map(l => l.label)).toEqual(['Mail', 'Mattermost', 'ntfy']);
+  });
+
+  it('SUITE Data column has the merged MyMedia + NocoDB + Vault + PhotoPrism', () => {
+    const suite = cfg.slides.find(s => s.id === 'suite')!;
+    const dataCol = suite.columns.find(c => c.header === 'Data')!;
+    const labels = dataCol.links.map(l => l.label);
+    for (const required of ['Feed', 'Movies', 'Music', 'Photos', 'Games', 'NocoDB', 'Vault']) {
+      expect(labels, `expected ${required} in Data column`).toContain(required);
+    }
+  });
+
+  it('SUITE Nav column has Navigation + Maps (from old MyMaps)', () => {
+    const suite = cfg.slides.find(s => s.id === 'suite')!;
+    const nav = suite.columns.find(c => c.header === 'Nav')!;
+    const labels = nav.links.map(l => l.label);
+    expect(labels).toContain('Navigation');
+    expect(labels).toContain('Maps');
+  });
+
+  it('SUITE has no MY TOOLS leftovers — old "Calendar"/"AI Chat"/"Others" headers gone', () => {
+    const suite = cfg.slides.find(s => s.id === 'suite')!;
+    const headers = new Set(suite.columns.map(c => c.header));
+    expect(headers.has('Others')).toBe(false);
+    const allLabels = suite.columns.flatMap(c => c.links.map(l => l.label));
+    expect(allLabels).not.toContain('Calendar');
+    expect(allLabels).not.toContain('AI Chat');
+  });
+
+  it('MY HEALTH slide preserves the 3 health links from old MY TOOLS', () => {
+    const mh = cfg.slides.find(s => s.id === 'my-health')!;
+    expect(mh).toBeDefined();
+    expect(mh.title).toBe('MY HEALTH');
+    expect(mh.columns[0]!.links.map(l => l.label)).toEqual(['Tracker', 'FeedYourself', 'Profile']);
+  });
+
   it('lab-tools slide has the 4 expected columns in the right order', () => {
     const labTools = cfg.slides.find(s => s.id === 'lab-tools')!;
     expect(labTools).toBeDefined();

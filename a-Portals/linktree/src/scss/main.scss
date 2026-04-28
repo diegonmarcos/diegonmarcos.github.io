@@ -5,9 +5,16 @@
 // ==========================================================================
 
 // ---------------------------------------------------------------------------
-// 1. UTILITIES - Animations (loaded first for use in components)
+// 1. ABSTRACTS - Registered custom properties (loaded first so any
+//    component referencing them gets compositor-thread interpolation).
+// ---------------------------------------------------------------------------
+@use 'abstracts/properties';
+
+// ---------------------------------------------------------------------------
+// 2. UTILITIES - Animations + perf (loaded first for use in components)
 // ---------------------------------------------------------------------------
 @use 'utilities/animations';
+@use 'utilities/perf';
 
 // ---------------------------------------------------------------------------
 // 2. BASE - Reset, Typography
@@ -35,6 +42,7 @@
 @use 'components/cookie-banner';
 @use 'components/gallery';
 @use 'components/lite-mode';
+@use 'components/theme-light';
 @use 'components/vm-control';
 @use 'components/footer';
 

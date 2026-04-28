@@ -1,44 +1,140 @@
-// Declarative renderer for Personal Tools slides. Reads
-// src/data/personal-tools.json and replaces any element marked with
+// Declarative renderer for ALL three section-boxes — Personal Tools,
+// Personal Profiles, Professional Profiles. Reads three JSON files, each
+// describing one section with multiple slides. Hydrates any element marked
 // `data-portal-mount="<slide-id>"` with the rendered DOM tree.
+//
 // Output HTML is byte-equivalent to the hand-coded markup so SCSS keeps
-// matching without changes. New tool? Edit the JSON, no HTML edit.
+// matching without changes. Adding a tool / link / column = JSON edit only.
 
 import personalTools from '../../data/personal-tools.json';
+import personalProfiles from '../../data/personal-profiles.json';
+import professionalProfiles from '../../data/professional-profiles.json';
 
-interface Link    { label: string; url: string; icon: string; }
-interface Column  { header: string; header_url?: string | null; links: Link[]; }
+// --------------------------------------------------------------------------
+// Schema
+// --------------------------------------------------------------------------
+
+interface Link        { label: string; url: string; icon: string; preview?: string; download?: string; }
+interface IconItem    { url: string; title?: string; label?: string; icon: string; preview?: string; }
+interface Column      { header: string; header_url?: string | null; links: Link[]; row?: number; }
+interface ToolsExtras { primary_link?: Link; profile_icons?: IconItem[]; }
+
 interface SlideTools {
-  id: string;
-  kind: 'tools';
-  title: string;
+  id: string; kind: 'tools'; title: string;
   image?: { src: string; alt?: string };
   dashboard_modifier?: string;
   columns: Column[];
+  extras?: ToolsExtras;
 }
-type Slide = SlideTools;
-interface PersonalToolsCfg {
+
+interface CardSwiperItem { type?: 'image' | 'video'; src: string; alt?: string; active?: boolean; }
+interface SubSection { subsection?: string; title?: string; }
+interface ContactIconsBlock extends SubSection { icons: IconItem[]; }
+interface ProfilesBlock    extends SubSection { primary_link?: Link; icons?: IconItem[]; }
+interface CollapsibleGroup extends SubSection { links: Link[]; }
+interface CollapsibleBlock { toggle_target?: string; id?: string; groups?: CollapsibleGroup[]; sections?: ProfileSection[]; }
+
+interface ProfileSection {
+  title: string;
+  layout: 'contact-icons' | 'mixed' | 'links' | 'links-grid';
+  items?: IconItem[];
+  links?: Link[];
+  icon_links?: IconItem[];
+  grid?: string;
+  grid_groups?: Link[][];
+}
+
+interface SlideProfileCard {
+  id: string; kind: 'profile-card'; title: string;
+  card_swiper: CardSwiperItem[];
+  contact_icons?: ContactIconsBlock;       // Personal-style
+  profiles?: ProfilesBlock;                // Personal-style
+  sections?: ProfileSection[];             // Professional-style
+  collapsible?: CollapsibleBlock;
+}
+
+interface SlideRepos {
+  id: string; kind: 'repos'; title: string;
+  image?: { src: string; alt?: string };
+  top_links?: Link[];
+  dashboard_modifier?: string;
+  columns: Column[];
+}
+
+interface SlideVentureCard {
+  id: string; kind: 'venture-card'; title: string;
+  image?: { src: string; alt?: string };
+  sections: ProfileSection[];
+}
+
+type Slide = SlideTools | SlideProfileCard | SlideRepos | SlideVentureCard;
+
+interface SectionCfg {
   section: { id: string; title: string; swiper_class: string };
   slides: Slide[];
 }
 
-const CFG = personalTools as unknown as PersonalToolsCfg;
+// --------------------------------------------------------------------------
+// Loaded data — flatten across all three sources keyed by slide id.
+// --------------------------------------------------------------------------
 
-function el(tag: string, attrs: Record<string, string> = {}, children: Array<HTMLElement | string> = []): HTMLElement {
-  const node = document.createElement(tag);
+const SECTIONS: SectionCfg[] = [
+  personalTools as unknown as SectionCfg,
+  personalProfiles as unknown as SectionCfg,
+  professionalProfiles as unknown as SectionCfg,
+];
+const SLIDES_BY_ID: Map<string, Slide> = new Map();
+for (const s of SECTIONS) for (const sl of s.slides) SLIDES_BY_ID.set(`${s.section.id}/${sl.id}`, sl);
+// Also key by bare id (for backwards compat with single-section mounts where ids are unique)
+for (const s of SECTIONS) for (const sl of s.slides) {
+  if (!SLIDES_BY_ID.has(sl.id)) SLIDES_BY_ID.set(sl.id, sl);
+}
+
+// --------------------------------------------------------------------------
+// DOM helpers
+// --------------------------------------------------------------------------
+
+function el<E extends HTMLElement = HTMLElement>(tag: string, attrs: Record<string, string> = {}, children: Array<HTMLElement | string> = []): E {
+  const node = document.createElement(tag) as E;
   for (const [k, v] of Object.entries(attrs)) {
     if (k === 'class') node.className = v;
     else node.setAttribute(k, v);
   }
-  for (const c of children) {
-    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
-  }
+  for (const c of children) node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
   return node;
 }
 
+function iconImg(icon: string, alt = ''): HTMLElement {
+  return el('img', {
+    class: 'icon',
+    src: `public/icons/${icon}`,
+    alt,
+    loading: 'lazy',
+    decoding: 'async',
+  });
+}
+
+// Featured tools/repos/venture images all sit below the fold, so they're
+// always lazy + low-priority. The above-the-fold hero is the active
+// card_swiper image — that path passes eager=true.
+function featuredImg(src: string, alt: string, eager: boolean): HTMLElement {
+  const attrs: Record<string, string> = { src, alt, class: 'featured-image', decoding: 'async' };
+  if (eager) {
+    attrs['fetchpriority'] = 'high';
+  } else {
+    attrs['loading'] = 'lazy';
+    attrs['fetchpriority'] = 'low';
+  }
+  return el('img', attrs);
+}
+
+// --------------------------------------------------------------------------
+// kind: tools
+// --------------------------------------------------------------------------
+
 function renderToolLink(link: Link): HTMLElement {
   const a = el('a', { class: 'tool-link', href: link.url, target: '_blank' });
-  a.appendChild(el('img', { class: 'icon', src: `public/icons/${link.icon}` }));
+  a.appendChild(iconImg(link.icon));
   a.appendChild(document.createTextNode(link.label));
   return a;
 }
@@ -59,41 +155,247 @@ function renderColumn(col: Column): HTMLElement {
 function renderToolsSlide(slide: SlideTools): HTMLElement {
   const linkSection = el('div', { class: 'link-section' });
   linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
-  if (slide.image) {
-    linkSection.appendChild(el('img', {
-      src: slide.image.src,
-      alt: slide.image.alt ?? slide.title,
-      class: 'featured-image',
-    }));
+  if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
+
+  // Multi-row layout: when ANY column carries `row`, group columns by row
+  // and emit one .tools-dashboard per row with an auto-derived `--N`
+  // modifier (where N = column count in that row). When NO column has
+  // `row`, fall back to the legacy single-dashboard mode honoring the
+  // slide's explicit `dashboard_modifier`.
+  const linksContainer = el('div', { class: 'links-container' });
+  const hasRows = slide.columns.some(c => typeof c.row === 'number');
+  if (hasRows) {
+    const byRow = new Map<number, Column[]>();
+    for (const c of slide.columns) {
+      const r = c.row ?? 0;
+      if (!byRow.has(r)) byRow.set(r, []);
+      byRow.get(r)!.push(c);
+    }
+    const rows = Array.from(byRow.keys()).sort((a, b) => a - b);
+    for (const r of rows) {
+      const cols = byRow.get(r)!;
+      const dash = el('div', { class: `tools-dashboard tools-dashboard--${cols.length}` });
+      for (const col of cols) dash.appendChild(renderColumn(col));
+      linksContainer.appendChild(dash);
+    }
+  } else {
+    const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
+    const dashboard = el('div', { class: dashClass });
+    for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
+    linksContainer.appendChild(dashboard);
   }
-  const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
-  const dashboard = el('div', { class: dashClass });
-  for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
-  linkSection.appendChild(el('div', { class: 'links-container' }, [dashboard]));
+  if (slide.extras?.primary_link) {
+    const lk = slide.extras.primary_link;
+    const a = el('a', { class: 'link', href: lk.url, target: '_blank' });
+    a.appendChild(iconImg(lk.icon));
+    a.appendChild(document.createTextNode(lk.label));
+    linksContainer.appendChild(a);
+  }
+  if (slide.extras?.profile_icons?.length) {
+    const row = el('div', { class: 'profile-icons' });
+    for (const it of slide.extras.profile_icons) {
+      const a = el('a', { href: it.url, title: it.title ?? it.label ?? '', target: '_blank' });
+      a.appendChild(el('img', { src: `public/icons/${it.icon}`, alt: it.title ?? it.label ?? '', loading: 'lazy', decoding: 'async' }));
+      row.appendChild(a);
+    }
+    linksContainer.appendChild(row);
+  }
+  linkSection.appendChild(linksContainer);
   return el('div', { class: 'swiper-slide' }, [linkSection]);
 }
 
+// --------------------------------------------------------------------------
+// Shared widget renderers
+// --------------------------------------------------------------------------
+
+function renderCardSwiper(items: CardSwiperItem[]): HTMLElement {
+  const wrap = el('div', { class: 'card-swiper' });
+  for (const item of items) {
+    const cls = `featured-image card-slide${item.active ? ' active' : ''}`;
+    if (item.type === 'video') {
+      wrap.appendChild(el('video', { class: cls, src: item.src, autoplay: '', loop: '', muted: '', playsinline: '', preload: 'metadata' }));
+    } else {
+      const imgAttrs: Record<string, string> = { class: cls, src: item.src, alt: item.alt ?? '', decoding: 'async' };
+      if (item.active) {
+        imgAttrs['fetchpriority'] = 'high';
+      } else {
+        imgAttrs['loading'] = 'lazy';
+        imgAttrs['fetchpriority'] = 'low';
+      }
+      wrap.appendChild(el('img', imgAttrs));
+    }
+  }
+  return wrap;
+}
+
+function renderIconAnchor(it: IconItem): HTMLElement {
+  const attrs: Record<string, string> = { href: it.url, title: it.title ?? it.label ?? '', target: '_blank' };
+  if (it.preview) attrs['data-preview'] = it.preview;
+  const a = el('a', attrs);
+  a.appendChild(el('img', { src: `public/icons/${it.icon}`, alt: it.title ?? it.label ?? '', loading: 'lazy', decoding: 'async' }));
+  return a;
+}
+
+function renderLinkAnchor(link: Link): HTMLElement {
+  const attrs: Record<string, string> = { class: 'link', href: link.url, target: '_blank' };
+  if (link.preview) attrs['data-preview'] = link.preview;
+  if (link.download) attrs['download'] = link.download;
+  const a = el('a', attrs);
+  a.appendChild(iconImg(link.icon));
+  a.appendChild(document.createTextNode(link.label));
+  return a;
+}
+
+function renderProfileSection(sec: ProfileSection): HTMLElement {
+  const wrap = el('div', { class: 'profile-section' });
+  wrap.appendChild(el('h3', { class: 'subsection-title' }, [sec.title]));
+  if (sec.layout === 'contact-icons') {
+    const row = el('div', { class: 'profile-icons' });
+    for (const it of sec.items ?? []) row.appendChild(renderIconAnchor(it));
+    wrap.appendChild(row);
+  } else if (sec.layout === 'links') {
+    for (const lk of sec.links ?? []) wrap.appendChild(renderLinkAnchor(lk));
+  } else if (sec.layout === 'mixed') {
+    for (const lk of sec.links ?? []) wrap.appendChild(renderLinkAnchor(lk));
+    if (sec.icon_links?.length) {
+      const row = el('div', { class: 'profile-icons' });
+      for (const it of sec.icon_links) row.appendChild(renderIconAnchor(it));
+      wrap.appendChild(row);
+    }
+  } else if (sec.layout === 'links-grid') {
+    const gridClass = `links-grid${sec.grid ? ' ' + sec.grid : ''}`;
+    if (sec.grid_groups?.length) {
+      for (const group of sec.grid_groups) {
+        const grid = el('div', { class: gridClass });
+        for (const lk of group) grid.appendChild(renderLinkAnchor(lk));
+        wrap.appendChild(grid);
+      }
+    } else if (sec.links?.length) {
+      const grid = el('div', { class: gridClass });
+      for (const lk of sec.links) grid.appendChild(renderLinkAnchor(lk));
+      wrap.appendChild(grid);
+    }
+  }
+  return wrap;
+}
+
+// --------------------------------------------------------------------------
+// kind: profile-card
+// --------------------------------------------------------------------------
+
+function renderProfileCardSlide(slide: SlideProfileCard): HTMLElement {
+  const linkSection = el('div', { class: 'link-section' });
+  linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
+  linkSection.appendChild(renderCardSwiper(slide.card_swiper));
+
+  const linksContainer = el('div', { class: 'links-container' });
+
+  if (slide.contact_icons) {
+    if (slide.contact_icons.subsection) linksContainer.appendChild(el('h3', { class: 'subsection-title' }, [slide.contact_icons.subsection]));
+    const row = el('div', { class: 'profile-icons' });
+    for (const it of slide.contact_icons.icons) row.appendChild(renderIconAnchor(it));
+    linksContainer.appendChild(row);
+  }
+  if (slide.profiles) {
+    if (slide.profiles.subsection) linksContainer.appendChild(el('h3', { class: 'subsection-title' }, [slide.profiles.subsection]));
+    if (slide.profiles.primary_link) linksContainer.appendChild(renderLinkAnchor(slide.profiles.primary_link));
+    if (slide.profiles.icons?.length) {
+      const row = el('div', { class: 'profile-icons' });
+      for (const it of slide.profiles.icons) row.appendChild(renderIconAnchor(it));
+      linksContainer.appendChild(row);
+    }
+  }
+  if (slide.sections) for (const sec of slide.sections) linksContainer.appendChild(renderProfileSection(sec));
+
+  if (slide.collapsible) {
+    const targetId = slide.collapsible.toggle_target ?? slide.collapsible.id ?? `${slide.id}-more`;
+    const toggle = el('button', { class: 'more-toggle', type: 'button', 'data-target': targetId });
+    toggle.appendChild(el('span', { class: 'arrow' }, ['⌄']));
+    linksContainer.appendChild(toggle);
+    const collapsibleContent = el('div', { class: 'collapsible-content', id: targetId });
+    if (slide.collapsible.groups) {
+      for (const g of slide.collapsible.groups) {
+        if (g.subsection) collapsibleContent.appendChild(el('h3', { class: 'subsection-title' }, [g.subsection]));
+        for (const lk of g.links) collapsibleContent.appendChild(renderLinkAnchor(lk));
+      }
+    }
+    if (slide.collapsible.sections) for (const sec of slide.collapsible.sections) collapsibleContent.appendChild(renderProfileSection(sec));
+    linksContainer.appendChild(collapsibleContent);
+  }
+
+  linkSection.appendChild(linksContainer);
+  return el('div', { class: 'swiper-slide' }, [linkSection]);
+}
+
+// --------------------------------------------------------------------------
+// kind: repos
+// --------------------------------------------------------------------------
+
+function renderReposSlide(slide: SlideRepos): HTMLElement {
+  const linkSection = el('div', { class: 'link-section' });
+  linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
+  if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
+  const linksContainer = el('div', { class: 'links-container' });
+  for (const lk of slide.top_links ?? []) linksContainer.appendChild(renderLinkAnchor(lk));
+  const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
+  const dashboard = el('div', { class: dashClass });
+  for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
+  linksContainer.appendChild(dashboard);
+  linkSection.appendChild(linksContainer);
+  return el('div', { class: 'swiper-slide' }, [linkSection]);
+}
+
+// --------------------------------------------------------------------------
+// kind: venture-card
+// --------------------------------------------------------------------------
+
+function renderVentureCardSlide(slide: SlideVentureCard): HTMLElement {
+  const linkSection = el('div', { class: 'link-section' });
+  linkSection.appendChild(el('h2', { class: 'section-title' }, [slide.title]));
+  if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
+  const linksContainer = el('div', { class: 'links-container' });
+  for (const sec of slide.sections) linksContainer.appendChild(renderProfileSection(sec));
+  linkSection.appendChild(linksContainer);
+  return el('div', { class: 'swiper-slide' }, [linkSection]);
+}
+
+// --------------------------------------------------------------------------
+// Public API
+// --------------------------------------------------------------------------
+
 export function renderSlide(id: string): HTMLElement | null {
-  const slide = CFG.slides.find(s => s.id === id);
+  const slide = SLIDES_BY_ID.get(id);
   if (!slide) return null;
-  if (slide.kind === 'tools') return renderToolsSlide(slide);
+  switch (slide.kind) {
+    case 'tools':         return renderToolsSlide(slide);
+    case 'profile-card':  return renderProfileCardSlide(slide);
+    case 'repos':         return renderReposSlide(slide);
+    case 'venture-card':  return renderVentureCardSlide(slide);
+  }
   return null;
 }
 
-// Mounts every `[data-portal-mount="<slide-id>"]` placeholder. Idempotent
-// (re-mounting the same id replaces the previous render).
+// Idempotent — replaces every `[data-portal-mount="<slide-id>"]` placeholder.
 export function initPortalRender(): void {
   const mounts = document.querySelectorAll<HTMLElement>('[data-portal-mount]');
   for (const m of mounts) {
     const id = m.dataset['portalMount'];
     if (!id) continue;
     const tree = renderSlide(id);
-    if (tree) {
-      m.parentElement?.replaceChild(tree, m);
-    }
+    if (tree) m.parentElement?.replaceChild(tree, m);
   }
 }
 
 // Test/inspection helpers
-export function listSlideIds(): string[] { return CFG.slides.map(s => s.id); }
-export function getSlide(id: string): Slide | undefined { return CFG.slides.find(s => s.id === id); }
+export function listSlideIds(): string[] {
+  // Return only the bare-id form for backwards compat with existing tests.
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const s of SECTIONS) for (const sl of s.slides) {
+    if (!seen.has(sl.id)) { seen.add(sl.id); out.push(sl.id); }
+  }
+  return out;
+}
+export function getSlide(id: string): Slide | undefined { return SLIDES_BY_ID.get(id); }
+export function listSectionIds(): string[] { return SECTIONS.map(s => s.section.id); }
+export function getSection(id: string): SectionCfg | undefined { return SECTIONS.find(s => s.section.id === id); }

@@ -50,6 +50,13 @@
     <title>DNM | Linktree</title>
     <meta name="description" content="Product & Software Engineer, Venture Capital & Portfolio Manager Analyst, Civil Engineer B.Sc. | Berlin, Germany">
     <link rel="icon" type="image/jpeg" href="public/favicon.jpg">
+    <link rel="manifest" href="manifest.webmanifest">
+
+    <!-- Preload above-the-fold hero image (active card_swiper of the first
+         section-box). Saves one round-trip on first paint. Local-only —
+         banner asset, see _data/banners.json. -->
+    <link rel="preload" as="image" fetchpriority="high"
+          href="public/images/banners/professional-profile.jpg">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -171,7 +178,7 @@
         <header class="header-left">
             <div class="profile-pic-swiper profile-pic-large">
                 <img src="public/images/diego_linkedin-picture.jpg" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide active">
-                <img src="https://ugc.production.linktr.ee/61669d4d-f89f-476d-a8e6-08051302e895_image.jpeg?io=true&size=avatar-v3_0" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide">
+                <img src="public/images/banners/professional-pic.jpeg" alt="Profile Picture" class="profile-pic profile-pic-large profile-pic-slide">
             </div>
             <h1 data-text="DIEGO NEPOMUCENO MARCOS">DIEGO NEPOMUCENO MARCOS</h1>
             <p>| <img src="public/icons/brain.svg" alt="Software" class="inline-icon"> Product n' Software Engineering | <img src="public/icons/rocket.svg" alt="Venture Capital" class="inline-icon"> Venture Capital n' Portfolio Management |</p>
@@ -252,229 +259,23 @@
                     <div class="swiper-wrapper">
 
                         <!-- Slide 1: Profile Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">PROFILE</h2>
-                <div class="card-swiper">
-                    <img src="https://i.pinimg.com/originals/0a/17/73/0a1773b2fbb9b0918090afa415f8edc8.jpg" alt="Professional" class="featured-image card-slide active">
-                    <video src="https://v1.pinimg.com/videos/mc/720p/d1/0d/22/d10d22deed19360b09173ecbf49dad6a.mp4" autoplay muted loop playsinline class="featured-image card-slide"></video>
-                </div>
-                <div class="links-container">
-                    <br>
-                    <h3 class="subsection-title">Contact</h3>
-                    <hr>
-                    <div class="contact-icons">
-                        <a href="mailto:me@diegonmarcos.com" title="Email" target="_blank" data-preview="https://s.wordpress.com/mshots/v1/mailto:me@diegonmarcos.com"><img src="public/icons/mail.svg" alt="Email"></a>
-                        <a href="https://linkedin.com/in/diegonmarcos" title="LinkedIn" target="_blank" data-preview="public/thumbnails/github_com.jpg"><img src="public/icons/brand-linkedin.svg" alt="LinkedIn"></a>
-                        <a href="public/diegonmarcos-contact_photo.vcf" title="vCard" download="Diego_Nepomuceno_Marcos.vcf"><img src="public/icons/user.svg" alt="vCard"></a>
-                    </div>
-                    <br>
-                    <h3 class="subsection-title">Profiles</h3>
-                    <hr>
-                    <a href="https://diegonmarcos.com/" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/world.svg">Landpage</a>
-                    <div class="profile-icons">
-                        <a href="https://linkedin.com/in/diegonmarcos" title="LinkedIn" target="_blank" data-preview="public/thumbnails/github_com.jpg"><img src="public/icons/brand-linkedin.svg" alt="LinkedIn"></a>
-                        <a href="https://github.com/diegonmarcos" title="GitHub" target="_blank" data-preview="public/thumbnails/github_com.jpg"><img src="public/icons/brand-github.svg" alt="GitHub"></a>
-                    </div>
-                    <br>
-                    <h3 class="subsection-title">Ventures</h3>
-                    <hr>
-                    <div class="contact-icons">
-                        <a href="https://diegonmarcos.github.io/nexus/" title="Nexus" target="_blank" data-preview="public/images/professional.png"><img src="public/icons/rocket.svg" alt="Nexus"></a>
-                        <a href="https://diegonmarcos.github.io/leafy/" title="Leafy" target="_blank" data-preview="public/thumbnails_new/leafy_thumbnail.png"><img src="public/icons/christmas-tree.svg" alt="Leafy"></a>
-                        <a href="https://diegonmarcos.github.io/stark/" title="Stark" target="_blank" data-preview="public/thumbnails_new/stark_thumbnail.png"><img src="public/icons/bolt.svg" alt="Stark"></a>
-                    </div>
-                    <br>
-                    <button class="more-toggle" data-target="professional-more">
-                        <span class="arrow">⌄</span>
-                    </button>
-                    <div class="collapsible-content" id="professional-more">
-                    <h3 class="subsection-title">Curriculum</h3>
-                    <hr>
-                    <a href="https://diegonmarcos.github.io/cv_web" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/file-type-html.svg">Curriculum (web)</a>
-                    <a href="https://diegonmarcos.github.io/cv_pdf" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/file-type-pdf.svg">Curriculum (pdf)</a>
-                    <br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="professional-profile"></div>
                         <!-- End Profile Card -->
 
                         <!-- Slide 2: Repos Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">REPOS</h2>
-                                <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXY3MjNidTNpNWthMmdwanl6OXlsdnhicnQ4a2tobmR3Y3l6NXdzMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZaidDjVkPzM7mi7HGy/giphy.gif" alt="Coding" class="featured-image">
-                                <div class="links-container">
-                                    <a href="https://github.com/diegonmarcos" class="link" target="_blank" data-preview="public/thumbnails/github_com.jpg"><img class="icon" src="public/icons/brand-github.svg">Github</a>
-                                    <div class="tools-dashboard tools-dashboard--5">
-                                        <!-- Column 1: Front-end -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Front-end</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Portals</a>
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles" class="tool-link" target="_blank"><img class="icon" src="public/icons/file-type-html.svg">Profiles</a>
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">Work Tools</a>
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools" class="tool-link" target="_blank"><img class="icon" src="public/icons/device-desktop.svg">Personal Tools</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Cloud -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Cloud</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://github.com/diegonmarcos/cloud" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Cloud</a>
-                                                <a href="https://github.com/diegonmarcos/unix" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">Unix</a>
-                                                <a href="https://github.com/diegonmarcos/vault" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">Vault</a>
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Front</a>
-                                                <a href="https://github.com/diegonmarcos/ops-Tooling" class="tool-link" target="_blank"><img class="icon" src="public/icons/git-branch.svg">Tooling</a>
-                                                <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">MCP Servers</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Low Level -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Low Level</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://github.com/diegonmarcos/ops-Mylibs" class="tool-link" target="_blank"><img class="icon" src="public/icons/git-branch.svg">My Libs</a>
-                                                <a href="https://github.com/diegonmarcos/back-Algo" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">Algorithms</a>
-                                                <a href="https://github.com/diegonmarcos/back-System" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">System</a>
-                                                <a href="https://github.com/diegonmarcos/back-Graphic" class="tool-link" target="_blank"><img class="icon" src="public/icons/device-desktop.svg">Graphics</a>
-                                                <a href="https://github.com/diegonmarcos/cyber-Cyberwarfare" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">Cyber</a>
-                                                <a href="https://github.com/diegonmarcos/lecole42" class="tool-link" target="_blank"><img class="icon" src="public/icons/rocket.svg">42 School</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 4: ML -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">ML</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://github.com/diegonmarcos/ml-Agentic" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">Agentic AI</a>
-                                                <a href="https://github.com/diegonmarcos/ml-MachineLearning" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">Machine Learning</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 5: Data -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Data</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://github.com/diegonmarcos/ml-DataScience" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Data Science</a>
-                                                <a href="https://github.com/diegonmarcos/cveng_AFrame" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">Civil Eng</a>
-                                                <a href="https://github.com/diegonmarcos/ecoqt-thesis1" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Macro/Quant</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="repos"></div>
                         <!-- End Repos Card -->
 
                         <!-- Slide 3: Nexus Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section venture-card">
-                                <h2 class="section-title">NEXUS</h2>
-                                <img src="https://images.squarespace-cdn.com/content/v1/62b8b53ddecd3441cbee091d/ffee989d-1ab3-4a81-8fbb-764b6a42fd1b/JKP_0180revd.jpg" alt="Nexus" class="featured-image">
-                                <div class="links-container">
-                                    <br>
-                                    <h3 class="subsection-title">Contact</h3>
-                                    <hr>
-                                    <div class="contact-icons">
-                                        <a href="mailto:me@diegonmarcos.com" title="Email" target="_blank"><img src="public/icons/mail.svg" alt="Email"></a>
-                                        <a href="https://linkedin.com/in/diegonmarcos" title="LinkedIn" target="_blank"><img src="public/icons/brand-linkedin.svg" alt="LinkedIn"></a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Venture</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/nexus/" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/rocket.svg">Nexus Website</a>
-                                    <br>
-                                    <h3 class="subsection-title">Cores</h3>
-                                    <hr>
-                                    <div class="links-grid grid-3">
-                                        <a href="https://diegonmarcos.github.io/nexus/" class="link" target="_blank"><img class="icon" src="public/icons/briefcase.svg">Nexus Ventures</a>
-                                        <a href="https://diegonmarcos.github.io/nexus/" class="link" target="_blank"><img class="icon" src="public/icons/user.svg">Nexus Partners</a>
-                                        <a href="https://diegonmarcos.github.io/nexus/" class="link" target="_blank"><img class="icon" src="public/icons/bulb.svg">Nexus Solutions</a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Material</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/nexus/slides" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/slideshow.svg">Nexus Institutional Presentation</a>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="nexus"></div>
                         <!-- End Nexus Card -->
 
                         <!-- Slide 4: Leafy Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section venture-card">
-                                <h2 class="section-title">LEAFY</h2>
-                                <img src="public/images/leafy.jpg" alt="Leafy" class="featured-image">
-                                <div class="links-container">
-                                    <br>
-                                    <h3 class="subsection-title">Contact</h3>
-                                    <hr>
-                                    <div class="contact-icons">
-                                        <a href="mailto:me@diegonmarcos.com" title="Email" target="_blank"><img src="public/icons/mail.svg" alt="Email"></a>
-                                        <a href="https://linkedin.com/in/diegonmarcos" title="LinkedIn" target="_blank"><img src="public/icons/brand-linkedin.svg" alt="LinkedIn"></a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Venture</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/christmas-tree.svg">Leafy Website</a>
-                                    <br>
-                                    <h3 class="subsection-title">Cores</h3>
-                                    <hr>
-                                    <div class="links-grid grid-3">
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/sparkles.svg">AR/XR</a>
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/code.svg">Front-ends</a>
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/video.svg">Drone Shows</a>
-                                    </div>
-                                    <div class="links-grid grid-3">
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/database.svg">Cloud</a>
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/brain.svg">AGI</a>
-                                        <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank"><img class="icon" src="public/icons/device-desktop.svg">Software Graphics Engineering</a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Material</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/leafy/" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/slideshow.svg">Leafy Institutional Presentation</a>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="leafy"></div>
                         <!-- End Leafy Card -->
 
                         <!-- Slide 5: Stark Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section venture-card">
-                                <h2 class="section-title">STARK</h2>
-                                <img src="public/images/stark.jpg" alt="Stark" class="featured-image">
-                                <div class="links-container">
-                                    <br>
-                                    <h3 class="subsection-title">Contact</h3>
-                                    <hr>
-                                    <div class="contact-icons">
-                                        <a href="mailto:me@diegonmarcos.com" title="Email" target="_blank"><img src="public/icons/mail.svg" alt="Email"></a>
-                                        <a href="https://linkedin.com/in/diegonmarcos" title="LinkedIn" target="_blank"><img src="public/icons/brand-linkedin.svg" alt="LinkedIn"></a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Venture</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/bolt.svg">Stark Website</a>
-                                    <br>
-                                    <h3 class="subsection-title">Divisions</h3>
-                                    <hr>
-                                    <div class="links-grid grid-3">
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/robot.svg">Autonomous Assembly</a>
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/brain.svg">AI Core Systems</a>
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/rocket.svg">Orbital Launch</a>
-                                    </div>
-                                    <div class="links-grid grid-3">
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/world.svg">Habitat Engineering</a>
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/sparkles.svg">Asteroid Mining</a>
-                                        <a href="https://diegonmarcos.github.io/stark/" class="link" target="_blank"><img class="icon" src="public/icons/bolt.svg">Propulsion Lab</a>
-                                    </div>
-                                    <br>
-                                    <h3 class="subsection-title">Material</h3>
-                                    <hr>
-                                    <a href="https://diegonmarcos.github.io/stark/slides" class="link" target="_blank" data-preview="public/images/professional.png"><img class="icon" src="public/icons/slideshow.svg">Stark Institutional Presentation</a>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="stark"></div>
                         <!-- End Stark Card -->
 
                     </div>
@@ -538,222 +339,23 @@
                     <div class="swiper-wrapper">
 
                         <!-- Slide 1: Profile Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">PROFILE</h2>
-                <div class="card-swiper">
-                    <img src="public/images/professional.png" alt="Professional" class="featured-image card-slide active">
-                    <img src="public/images/personal.png" alt="Personal" class="featured-image card-slide">
-                </div>
-                <div class="links-container">
-                    <br>
-                    <h3 class="subsection-title">MyContact</h3>
-                    <hr>
-                    <div class="contact-icons">
-                        <a href="https://t.me/diegonmarcos" title="Telegram" target="_blank" data-preview="https://s.wordpress.com/mshots/v1/https://t.me/diegonmarcos"><img src="public/icons/send.svg" alt="Telegram"></a>
-                        <a href="https://wa.me/34634769833" title="WhatsApp" target="_blank" data-preview="https://s.wordpress.com/mshots/v1/https://wa.me"><img src="public/icons/brand-whatsapp.svg" alt="WhatsApp"></a>
-                    </div>
-                    <br>
-                    <h3 class="subsection-title">Profiles</h3>
-                    <hr>
-                    <a href="https://diegonmarcos.github.io/myprofile" class="link" target="_blank" data-preview="public/thumbnails/linktree_diegonmarcos_com.jpg"><img class="icon" src="public/icons/user.svg">MyProfile</a>
-                    <div class="profile-icons">
-                        <a href="https://tidal.com/@diegonmarcos" title="TIDAL" target="_blank" data-preview="public/thumbnails/tidal_com.jpg"><img src="public/icons/headphones.svg" alt="TIDAL"></a>
-                        <a href="https://www.youtube.com/@diegonmarcos1" title="YouTube" target="_blank" data-preview="public/thumbnails/youtube_com.jpg"><img src="public/icons/brand-youtube.svg" alt="YouTube"></a>
-                        <a href="https://www.pinterest.com/diegonmarcos" title="Pinterest" target="_blank" data-preview="public/thumbnails/pinterest_com.jpg"><img src="public/icons/slideshow.svg" alt="Pinterest"></a>
-                        <a href="https://www.instagram.com/diegonmarcos" title="Instagram" target="_blank" data-preview="public/thumbnails/instagram_com.jpg"><img src="public/icons/brand-instagram.svg" alt="Instagram"></a>
-                        <a href="https://www.komoot.com/user/2474200810898/routes" title="Komoot" target="_blank" data-preview="public/thumbnails/komoot_com.jpg"><img src="public/icons/christmas-tree.svg" alt="Komoot"></a>
-                        <a href="https://www.strava.com/athletes/4662170" title="Strava" target="_blank" data-preview="public/thumbnails/strava_com.jpg"><img src="public/icons/bike.svg" alt="Strava"></a>
-                        <a href="https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing" title="Maps" target="_blank" data-preview="public/thumbnails/google_com.jpg"><img src="public/icons/map-pin-2.svg" alt="Maps"></a>
-                        <a href="https://bucketlistjourney.net/my-bucket-list" title="MyBucket" target="_blank" data-preview="public/thumbnails/bucketlistjourney_net.jpg"><img src="public/icons/checklist.svg" alt="MyBucket"></a>
-                        <a href="https://diegonmarcos.github.io/astro" title="Astro" target="_blank" data-preview="public/thumbnails/diegonmarcos_github_io.jpg"><img src="public/icons/world.svg" alt="Astro"></a>
-                        <a href="https://diegonmarcos.github.io/myphotos-myorkut" title="myOrkut" target="_blank" data-preview="public/thumbnails/diegonmarcos_github_io.jpg"><img src="public/icons/heart.svg" alt="myOrkut"></a>
-                    </div>
-                    <br>
-                    <button class="more-toggle" data-target="personal-more">
-                        <span class="arrow">⌄</span>
-                    </button>
-                    <div class="collapsible-content" id="personal-more">
-                    <h3 class="subsection-title">MyMedia</h3>
-                    <hr>
-                    <a href="https://tidal.com/@diegonmarcos" class="link" target="_blank" data-preview="public/thumbnails/tidal_com.jpg"><img class="icon" src="public/icons/headphones.svg">TIDAL</a>
-                    <a href="https://www.youtube.com/@diegonmarcos1" class="link" target="_blank" data-preview="public/thumbnails/youtube_com.jpg"><img class="icon" src="public/icons/brand-youtube.svg">YouTube</a>
-                    <a href="https://www.pinterest.com/diegonmarcos" class="link" target="_blank" data-preview="public/thumbnails/pinterest_com.jpg"><img class="icon" src="public/icons/slideshow.svg">Pinterest</a>
-                    <a href="https://www.instagram.com/diegonmarcos" class="link" target="_blank" data-preview="public/thumbnails/instagram_com.jpg"><img class="icon" src="public/icons/brand-instagram.svg">Instagram</a>
-                    <br>
-                    <h3 class="subsection-title">MyEndurance</h3>
-                    <hr>
-                    <a href="https://www.komoot.com/user/2474200810898/routes" class="link" target="_blank" data-preview="public/thumbnails/komoot_com.jpg"><img class="icon" src="public/icons/christmas-tree.svg">Komoot</a>
-                    <a href="https://www.strava.com/athletes/4662170" class="link" target="_blank" data-preview="public/thumbnails/strava_com.jpg"><img class="icon" src="public/icons/bike.svg">Strava</a>
-                    <br>
-                    <h3 class="subsection-title">MyMaps</h3>
-                    <hr>
-                    <a href="https://nomadmania.com/profile/73889" class="link" target="_blank" data-preview="public/thumbnails/nomadmania_com.jpg"><img class="icon" src="public/icons/brand-google-maps.svg">NomadMania</a>
-                    <a href="https://www.google.com/maps/d/u/0/edit?mid=1Wpors-fGHMZOYPx41nDtyF9vXOJcpsY&usp=sharing" class="link" target="_blank" data-preview="public/thumbnails/google_com.jpg"><img class="icon" src="public/icons/map-pin-2.svg">Maps</a>
-                    <a href="https://earth.google.com/earth/d/1WF5_9NDew9IB5xkTqXPpm9e9n8JM0a3H?usp=sharing " class="link" target="_blank" data-preview="public/thumbnails/google_com.jpg"><img class="icon" src="public/icons/world-longitude.svg">Earth</a>
-                    <br>
-                    <h3 class="subsection-title">My Bucket</h3>
-                    <hr>
-                    <a href="https://bucketlistjourney.net/my-bucket-list" class="link" target="_blank" data-preview="public/thumbnails/bucketlistjourney_net.jpg"><img class="icon" src="public/icons/checklist.svg">My Bucket (50 things)</a>
-                    <a href="https://bucketlistjourney.net/my-bucket-list" class="link" target="_blank" data-preview="public/thumbnails/bucketlistjourney_net.jpg"><img class="icon" src="public/icons/checklist.svg">My Bucket (Endurance)</a>
-                    <a href="https://bucketlistjourney.net/my-bucket-list" class="link" target="_blank" data-preview="public/thumbnails/bucketlistjourney_net.jpg"><img class="icon" src="public/icons/heart.svg">My Bucket (Inner)</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="personal-profile"></div>
                         <!-- End Profile Card -->
 
                         <!-- Slide 2: Media Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">MEDIA</h2>
-                                <img src="https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif" alt="Media" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard">
-                                        <!-- Column 1: Photos -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Photos</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://www.instagram.com/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/brand-instagram.svg">Instagram</a>
-                                                <a href="https://diegonmarcos.github.io/myphotos-myorkut" class="tool-link" target="_blank"><img class="icon" src="public/icons/heart.svg">myOrkut</a>
-                                                <a href="https://www.facebook.com/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/user.svg">Facebook</a>
-                                                <a href="https://www.pinterest.com/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/slideshow.svg">Pinterest</a>
-                                                <a href="https://diegonmarcos.github.io/myfeed" class="tool-link" target="_blank"><img class="icon" src="public/icons/device-desktop.svg">Feed</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Videos -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Videos</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://www.youtube.com/@diegonmarcos1" class="tool-link" target="_blank"><img class="icon" src="public/icons/brand-youtube.svg">YouTube</a>
-                                                <a href="https://diegonmarcos.github.io/myvideos" class="tool-link" target="_blank"><img class="icon" src="public/icons/video.svg">MyVideos</a>
-                                                <a href="https://diegonmarcos.github.io/mymovies" class="tool-link" target="_blank"><img class="icon" src="public/icons/brand-youtube.svg">MyMovies</a>
-                                                <a href="https://diegonmarcos.github.io/mygames" class="tool-link" target="_blank"><img class="icon" src="public/icons/device-gamepad.svg">MyGames</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Music -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Music</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://tidal.com/@diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/headphones.svg">TIDAL</a>
-                                                <a href="https://open.spotify.com/user/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/headphones.svg">Spotify</a>
-                                                <a href="https://diegonmarcos.github.io/mymusic" class="tool-link" target="_blank"><img class="icon" src="public/icons/headphones.svg">MyMusic</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="media"></div>
                         <!-- End Media Card -->
 
                         <!-- Slide 3: Data Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">DATA</h2>
-                                <img src="https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif" alt="Data" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard">
-                                        <!-- Column 1: Health -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Health</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/myhealth" class="tool-link" target="_blank"><img class="icon" src="public/icons/heart.svg">MyHealth</a>
-                                                <a href="https://diegonmarcos.github.io/astro" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Astro</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Endurance -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Endurance</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/myhealth-tracker" class="tool-link" target="_blank"><img class="icon" src="public/icons/heart.svg">Tracker</a>
-                                                <a href="https://www.komoot.com/user/2474200810898/routes" class="tool-link" target="_blank"><img class="icon" src="public/icons/christmas-tree.svg">Komoot</a>
-                                                <a href="https://www.strava.com/athletes/4662170" class="tool-link" target="_blank"><img class="icon" src="public/icons/bike.svg">Strava</a>
-                                                <a href="https://connect.garmin.com/modern/profile/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/heart.svg">Garmin</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Achieves -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Achieves</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://nomadmania.com/profile/73889" class="tool-link" target="_blank"><img class="icon" src="public/icons/brand-google-maps.svg">NomadMania</a>
-                                                <a href="https://diegonmarcos.github.io/mymaps-mytrips" class="tool-link" target="_blank"><img class="icon" src="public/icons/world-longitude.svg">MyTrips</a>
-                                                <a href="https://bucketlistjourney.net/my-bucket-list" class="tool-link" target="_blank"><img class="icon" src="public/icons/checklist.svg">Bucket (50 things)</a>
-                                                <a href="https://bucketlistjourney.net/my-bucket-list" class="tool-link" target="_blank"><img class="icon" src="public/icons/checklist.svg">Bucket (Endurance)</a>
-                                                <a href="https://bucketlistjourney.net/my-bucket-list" class="tool-link" target="_blank"><img class="icon" src="public/icons/heart.svg">Bucket (Inner)</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="data"></div>
                         <!-- End Data Card -->
 
                         <!-- Slide 4: Brucheion Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">BRUCHEION</h2>
-                                <img src="public/images/brucheion.jpg" alt="Brucheion" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard">
-                                        <!-- Column 1: Basileia -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Basileia</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/sparkles.svg">Basileia</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Mousseion -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Mousseion</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/books.svg">Mousseion</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Paneion -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Paneion</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/bulb.svg">Paneion</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="brucheion"></div>
                         <!-- End Brucheion Card -->
 
                         <!-- Slide 5: Serapeum Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">SERAPEUM</h2>
-                                <img src="public/images/serapeum.jpg" alt="Serapeum" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard">
-                                        <!-- Column 1: Akropolis -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Akropolis</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/rocket.svg">Akropolis</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Bibliotheke -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Bibliotheke</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/books.svg">Bibliotheke</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Adyton -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Adyton</div>
-                                            <div class="tools-column__links">
-                                                <a href="#" class="tool-link"><img class="icon" src="public/icons/bolt.svg">Adyton</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div data-portal-mount="serapeum"></div>
                         <!-- End Serapeum Card -->
 
                     </div>
@@ -780,24 +382,22 @@
                         <!-- Slide 1: Tools Profile Card -->
                         <div class="swiper-slide">
                             <div class="link-section">
-                                <h2 class="section-title">PROFILE</h2>
+                                <h2 class="section-title">TOOLCHAIN</h2>
                 <div class="card-swiper">
                     <img src="public/images/personal.png" alt="Tools" class="featured-image card-slide active">
                     <img src="public/images/professional.png" alt="Professional" class="featured-image card-slide">
+                    <!-- Recovered MY TOOLS banner — was lost when the MY TOOLS slide
+                         dissolved into SUITE. Aliased from media.gif by
+                         _data/banners.json + front-localize-assets.sh. -->
+                    <img src="public/images/banners/mytools.gif" alt="My Tools" class="featured-image card-slide">
                 </div>
                 <div class="links-container">
                     <br>
                     <h3 class="subsection-title">Sections</h3>
                     <hr>
+                    <!-- 4-column overview of the next 4 slides: Suite / Lab Tools / Circus / Cloud.
+                         "My Tools" column was retired when MyTools merged into Suite. -->
                     <div class="tools-dashboard tools-dashboard--4">
-                        <div class="tools-column">
-                            <a href="https://diegonmarcos.github.io/myfeed" class="link" target="_blank"><img class="icon" src="public/icons/device-desktop.svg">My Tools</a>
-                            <div class="profile-icons">
-                                <a href="https://diegonmarcos.github.io/myfeed" title="Feed" target="_blank"><img src="public/icons/device-desktop.svg" alt="Feed"></a>
-                                <a href="https://diegonmarcos.github.io/mymaps" title="Maps" target="_blank"><img src="public/icons/map-pin-2.svg" alt="Maps"></a>
-                                <a href="https://diegonmarcos.github.io/myhealth" title="Health" target="_blank"><img src="public/icons/heart.svg" alt="Health"></a>
-                            </div>
-                        </div>
                         <div class="tools-column">
                             <a href="https://hedgedoc.diegonmarcos.com" class="link" target="_blank"><img class="icon" src="public/icons/file-stack.svg">Suite</a>
                             <div class="profile-icons">
@@ -807,6 +407,16 @@
                                 <a href="https://cal.diegonmarcos.com" title="Calendar" target="_blank"><img src="public/icons/checklist.svg" alt="Calendar"></a>
                                 <a href="https://vault.diegonmarcos.com" title="Vault" target="_blank"><img src="public/icons/lock.svg" alt="Vault"></a>
                                 <a href="https://ide.diegonmarcos.com" title="WebIDE" target="_blank"><img src="public/icons/code.svg" alt="WebIDE"></a>
+                            </div>
+                        </div>
+                        <div class="tools-column">
+                            <a href="https://diegonmarcos.github.io/fin-terminal" class="link" target="_blank"><img class="icon" src="public/icons/sparkles.svg">Lab Tools</a>
+                            <div class="profile-icons">
+                                <a href="https://diegonmarcos.github.io/fin-terminal" title="Fin Terminal" target="_blank"><img src="public/icons/rocket.svg" alt="Fin Terminal"></a>
+                                <a href="https://diegonmarcos.github.io/quant" title="Data Science &amp; ML" target="_blank"><img src="public/icons/brain.svg" alt="Data Science &amp; ML"></a>
+                                <a href="https://diegonmarcos.github.io/myledger" title="Ledger" target="_blank"><img src="public/icons/database.svg" alt="Ledger"></a>
+                                <a href="https://diegonmarcos.github.io/myastro" title="Astro" target="_blank"><img src="public/icons/world-longitude.svg" alt="Astro"></a>
+                                <a href="https://ide.diegonmarcos.com" title="Engineer" target="_blank"><img src="public/icons/code.svg" alt="Engineer"></a>
                             </div>
                         </div>
                         <div class="tools-column">
@@ -835,11 +445,7 @@
                         </div>
                         <!-- End Tools Profile Card -->
 
-                        <!-- Slide 2: My Health (was MY TOOLS — MyMedia/MyMaps merged into SUITE) — declarative -->
-                        <div data-portal-mount="my-health"></div>
-                        <!-- End My Health Card -->
-
-                        <!-- Slide 3: Suite Card — 5-column SUITE absorbs old MY TOOLS — declarative -->
+                        <!-- Slide 2: 5-column SUITE absorbs old MY TOOLS + MyHealth → declarative -->
                         <div data-portal-mount="suite"></div>
                         <!-- End Suite Card -->
 
@@ -847,124 +453,12 @@
                         <div data-portal-mount="lab-tools"></div>
                         <!-- End Lab Tools Card -->
 
-                        <!-- Slide 5: Circus Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">CIRCUS</h2>
-                                <img src="https://media1.tenor.com/m/kIF7PM-7BAsAAAAC/penguin-exercise.gif" alt="Circus" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard">
-                                        <!-- Column 1: Games -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Games</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/mygames" class="tool-link" target="_blank"><img class="icon" src="public/icons/device-gamepad.svg">MyGames</a>
-                                                <a href="https://diegonmarcos.github.io/carto/" class="tool-link" target="_blank"><img class="icon" src="public/icons/cards.svg">Carto</a>
-                                                <a href="https://diegonmarcos.github.io/astro" class="tool-link" target="_blank"><img class="icon" src="public/icons/world-longitude.svg">Astro</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Video -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Video</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/myvideos" class="tool-link" target="_blank"><img class="icon" src="public/icons/video.svg">MyVideos</a>
-                                                <a href="https://diegonmarcos.github.io/mymovies/" class="tool-link" target="_blank"><img class="icon" src="public/icons/brand-youtube.svg">MyMovies</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Audio -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">Audio</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://diegonmarcos.github.io/mymusic/" class="tool-link" target="_blank"><img class="icon" src="public/icons/headphones.svg">MyMusic</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Slide 5: Circus Card — declarative -->
+                        <div data-portal-mount="circus"></div>
                         <!-- End Circus Card -->
 
-                        <!-- Slide 6: Cloud Card -->
-                        <div class="swiper-slide">
-                            <div class="link-section">
-                                <h2 class="section-title">CLOUD</h2>
-                                <img src="https://miro.medium.com/v2/resize:fit:720/format:webp/1*0N8CVKix7OGfBDsgh9DzrQ.gif" alt="Coding" class="featured-image">
-                                <div class="links-container">
-                                    <div class="tools-dashboard tools-dashboard--5">
-                                        <!-- Column 1: Security -->
-                                        <div class="tools-column">
-                                            <a href="https://diegonmarcos.github.io/cloud" class="tools-column__header" target="_blank">Security</a>
-                                            <div class="tools-column__links">
-                                                <a href="https://auth.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/lock.svg">Authelia</a>
-                                                <a href="https://vault.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/lock.svg">Vault</a>
-                                                <a href="https://proxy.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Caddy</a>
-                                                <a href="https://introspect.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/lock.svg">Introspect</a>
-                                                <a href="https://dns.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Hickory DNS</a>
-                                                <a href="https://sauron.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">Sauron YARA</a>
-                                                <a href="https://siem.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">SIEM</a>
-                                                <a href="https://wg.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/lock.svg">WG0</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 2: Ops -->
-                                        <div class="tools-column">
-                                            <a href="https://diegonmarcos.github.io/cloud" class="tools-column__header" target="_blank">Ops</a>
-                                            <div class="tools-column__links">
-                                                <a href="https://workflows.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/settings.svg">Dagu</a>
-                                                <a href="https://grafana.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Grafana</a>
-                                                <a href="https://rss.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/bolt.svg">ntfy</a>
-                                                <a href="https://github.com/diegonmarcos/cloud/actions" class="tool-link" target="_blank"><img class="icon" src="public/icons/git-branch.svg">GHA</a>
-                                                <a href="https://github.com/orgs/diegonmarcos/packages" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">GHCR</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 3: Data -->
-                                        <div class="tools-column">
-                                            <a href="https://diegonmarcos.github.io/cloud" class="tools-column__header" target="_blank">Data</a>
-                                            <div class="tools-column__links">
-                                                <a href="https://analytics.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Matomo</a>
-                                                <a href="https://git.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">Gitea</a>
-                                                <a href="https://logs.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/file-stack.svg">Dozzle</a>
-                                                <a href="https://dbgate.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">DBGate</a>
-                                                <a href="https://backup.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/file-stack.svg">Rustic</a>
-                                                <a href="https://umami.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Umami</a>
-                                                <a href="https://nocodb.diegonmarcos.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">NocoDB</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 4: MCP & API -->
-                                        <div class="tools-column">
-                                            <div class="tools-column__header">MCP & API</div>
-                                            <div class="tools-column__links">
-                                                <a href="https://api.diegonmarcos.com/c3-api" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">c3-infra-api</a>
-                                                <a href="https://diegonmarcos.github.io/skills_mcp" class="tool-link" target="_blank"><img class="icon" src="public/icons/robot.svg">c3-infra-mcp</a>
-                                                <a href="https://api.diegonmarcos.com/c3-services" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">c3-services-api</a>
-                                                <a href="https://diegonmarcos.github.io/skills_mcp" class="tool-link" target="_blank"><img class="icon" src="public/icons/robot.svg">c3-services-mcp</a>
-                                                <a href="https://diegonmarcos.github.io/skills_mcp" class="tool-link" target="_blank"><img class="icon" src="public/icons/robot.svg">cgc-mcp</a>
-                                                <a href="https://diegonmarcos.github.io/skills_mcp" class="tool-link" target="_blank"><img class="icon" src="public/icons/robot.svg">dtk-mcp</a>
-                                            </div>
-                                        </div>
-                                        <!-- Column 5: VPS -->
-                                        <div class="tools-column">
-                                            <a href="https://diegonmarcos.github.io/cloud" class="tools-column__header" target="_blank">VPS</a>
-                                            <div class="tools-column__links">
-                                                <a href="https://cloud.oracle.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Oracle</a>
-                                                <a href="https://console.cloud.google.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">GCloud</a>
-                                                <a href="https://dash.cloudflare.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/world.svg">Cloudflare</a>
-                                                <a href="https://github.com/diegonmarcos" class="tool-link" target="_blank"><img class="icon" src="public/icons/code.svg">GitHub</a>
-                                                <a href="https://console.hetzner.cloud" class="tool-link" target="_blank"><img class="icon" src="public/icons/database.svg">Hetzner</a>
-                                                <a href="https://build.nvidia.com" class="tool-link" target="_blank"><img class="icon" src="public/icons/brain.svg">Nvidia LLM</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <a href="https://diegonmarcos.github.io/cloud" class="link" target="_blank"><img class="icon" src="public/icons/settings.svg">Cloud Portal</a>
-                                    <div class="profile-icons">
-                                        <a href="https://github.com/diegonmarcos/diegonmarcos.github.io" title="Front" target="_blank"><img src="public/icons/world.svg" alt="Front"></a>
-                                        <a href="https://github.com/diegonmarcos/cloud" title="Cloud" target="_blank"><img src="public/icons/database.svg" alt="Cloud"></a>
-                                        <a href="https://github.com/diegonmarcos/cloud-data" title="Cloud-data" target="_blank"><img src="public/icons/database.svg" alt="Cloud-data"></a>
-                                        <a href="https://github.com/diegonmarcos/ops-Tooling" title="Tools" target="_blank"><img src="public/icons/git-branch.svg" alt="Tools"></a>
-                                        <a href="https://github.com/diegonmarcos/unix" title="Unix" target="_blank"><img src="public/icons/settings.svg" alt="Unix"></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Slide 6: Cloud Card — declarative -->
+                        <div data-portal-mount="cloud"></div>
                         <!-- End Cloud Card -->
 
                     </div>
@@ -981,7 +475,7 @@
         </main>
 
         <footer class="linktree-footer">
-            <a href="https://linktr.ee/diegonmarcos" class="linktree-footer-btn" target="_blank">Linktree</a>
+            <a href="https://diegonmarcos.github.io/linktree/" class="linktree-footer-btn" target="_self">Linktree</a>
             <div class="footer-icons">
                 <a href="https://github.com/diegonmarcos/diegonmarcos.github.io" class="github-footer-btn github-holographic" target="_blank" title="Front-end Repo">
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -1006,11 +500,11 @@
             <button id="gallery-toggle" class="icon-btn" data-fab="icon-btn" title="Gallery View">
                 <img src="public/icons/slideshow.svg" alt="Gallery" data-fab-img>
             </button>
-            <button id="video-toggle" class="icon-btn active" data-fab="icon-btn" title="Video Background">
-                <img src="public/icons/video.svg" alt="Video" data-fab-img>
-            </button>
             <button id="lite-toggle" class="icon-btn" data-fab="icon-btn" title="Lite Mode">
                 <img src="public/icons/bolt.svg" alt="Lite" data-fab-img>
+            </button>
+            <button id="theme-toggle" class="icon-btn" data-fab="icon-btn" title="Toggle Light / Dark Theme">
+                <img src="public/icons/bulb.svg" alt="Theme" data-fab-img>
             </button>
         </div>
         <button class="controls-fab" id="controls-fab" data-fab="controls-fab" title="Settings">

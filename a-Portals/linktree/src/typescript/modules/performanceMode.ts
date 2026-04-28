@@ -10,12 +10,11 @@ let isLiteMode = false;
 function enableLiteMode(): void {
   document.body.classList.add('lite-mode');
   isLiteMode = true;
-
-  // Stop video if playing
-  const videoToggle = getElementById<HTMLButtonElement>('video-toggle');
-  if (videoToggle && videoToggle.classList.contains('active')) {
-    videoToggle.click();
-  }
+  // The .lite-mode CSS hides #background-video with display:none, so the
+  // browser stops decoding it. We also pause the element directly here in
+  // case the user toggles back; that releases any decoder threads.
+  const video = document.getElementById('background-video') as HTMLVideoElement | null;
+  if (video && !video.paused) video.pause();
 }
 
 /**
@@ -24,12 +23,8 @@ function enableLiteMode(): void {
 function disableLiteMode(): void {
   document.body.classList.remove('lite-mode');
   isLiteMode = false;
-
-  // Play video if stopped
-  const videoToggle = getElementById<HTMLButtonElement>('video-toggle');
-  if (videoToggle && !videoToggle.classList.contains('active')) {
-    videoToggle.click();
-  }
+  const video = document.getElementById('background-video') as HTMLVideoElement | null;
+  if (video && video.paused) video.play().catch(() => { /* autoplay can be blocked */ });
 }
 
 /**

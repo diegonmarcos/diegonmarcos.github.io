@@ -381,6 +381,33 @@ export function initCarousels(): void {
   initKeyboardNavigation();
   initClickSelection();
   updateTrackpadListeners();
+
+  // B1 — pre-promote the active slide to a compositor layer ONLY during
+  // pointer/touch interaction. Constant `will-change` on every slide
+  // wastes GPU memory; this gives us first-frame smoothness without the
+  // memory cost.
+  initWillChangeOnInteraction();
+}
+
+function initWillChangeOnInteraction(): void {
+  const swipers = ['.professional-swiper', '.personal-swiper', '.personal-tools-swiper'];
+  for (const sel of swipers) {
+    const root = document.querySelector<HTMLElement>(sel);
+    if (!root) continue;
+    const setActive = () => {
+      const active = root.querySelector<HTMLElement>('.swiper-slide-active');
+      if (active) active.style.willChange = 'transform';
+    };
+    const clear = () => {
+      root.querySelectorAll<HTMLElement>('.swiper-slide').forEach(s => { s.style.willChange = ''; });
+    };
+    root.addEventListener('pointerdown', setActive, { passive: true });
+    root.addEventListener('touchstart', setActive, { passive: true });
+    root.addEventListener('pointerup', clear, { passive: true });
+    root.addEventListener('pointercancel', clear, { passive: true });
+    root.addEventListener('touchend', clear, { passive: true });
+    root.addEventListener('touchcancel', clear, { passive: true });
+  }
 }
 
 /**

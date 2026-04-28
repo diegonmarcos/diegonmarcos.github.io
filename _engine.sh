@@ -112,8 +112,10 @@ var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
     var x = "CFG_B" + i + "_";
-    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir"].forEach(function(k) {
-        p(x + k.toUpperCase(), s[k]);
+    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","source","out","bg"].forEach(function(k) {
+        var v = s[k];
+        if (Array.isArray(v)) v = v.join(",");
+        p(x + k.toUpperCase(), v);
     });
 });
 var sv = c.serve || {};
@@ -158,7 +160,7 @@ b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
     x = f"CFG_B{i}_"
-    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir"]:
+    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","source","out","bg"]:
         v = s.get(k,"")
         if isinstance(v, list): v = ",".join(str(x) for x in v)
         p(x + k.upper(), v)
@@ -328,6 +330,125 @@ mod_esbuild() {
     run_tool esbuild "$input" $args
     [ -f "$output" ] || { log_error "esbuild produced no output"; return $EXIT_BUILD; }
     log_success "esbuild: $(basename "$2")"
+}
+
+# esbuild for Service Workers — content-aware. Reads `hash_of` (comma-list
+# of dist filenames) and `precache` (comma-list of precache URLs) from
+# build.json. Computes a 12-char hash via the engine
+# `1_workflows/dist/scripts/front-cache-hash.sh` and injects two compile-
+# time constants into the SW bundle:
+#   declare const BUILD_HASH: string;        // → "8079f2bb6fc1"
+#   declare const BUILD_PRECACHE: string[];  // → ["./", ...]
+# The SW then derives its cache name from BUILD_HASH, so any byte change
+# in `hash_of` files → new hash → new SW bytes → browser re-installs →
+# old caches purged. Fully data-driven, zero manual VERSION bumps.
+mod_esbuild_sw() {
+    local input="$PROJECT_DIR/$1"
+    local output="$DIST_DIR/$2"
+    local hash_of="$3"
+    local precache="$4"
+    local mode="${5:-prod}"
+    local format="${6:-iife}"
+    local target="${7:-es2020}"
+
+    [ -f "$input" ] || { log_error "esbuild_sw: input not found: $input"; return $EXIT_BUILD; }
+    [ -n "$hash_of" ] || { log_error "esbuild_sw: hash_of (list of dist files) is required"; return $EXIT_BUILD; }
+    mkdir -p "$(dirname "$output")"
+
+    # Resolve hash_of paths against dist/ + verify each exists.
+    local hash_paths=""
+    _IFS="$IFS"; IFS=","
+    for f in $hash_of; do
+        IFS="$_IFS"
+        f="$(echo "$f" | sed 's/^ *//;s/ *$//')"
+        local p="$DIST_DIR/$f"
+        [ -f "$p" ] || { log_error "esbuild_sw: hash_of file missing in dist: $p"; return $EXIT_BUILD; }
+        hash_paths="$hash_paths $p"
+    done
+    IFS="$_IFS"
+
+    # Locate the cache-hash engine. Prefer the deployed copy under
+    # 1_workflows/dist/, fall back to src/ for dev work.
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-cache-hash.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-cache-hash.sh"
+    [ -x "$engine" ] || { log_error "esbuild_sw: front-cache-hash.sh not found / not executable"; return $EXIT_BUILD; }
+
+    local hash
+    hash="$("$engine" $hash_paths)" || { log_error "esbuild_sw: hash engine failed"; return $EXIT_BUILD; }
+    [ -n "$hash" ] || { log_error "esbuild_sw: empty hash"; return $EXIT_BUILD; }
+
+    # Build the precache JSON literal. esbuild --define expects a string
+    # whose value, when parsed as JS, yields the constant. So for an array
+    # we pass the literal JSON array text.
+    local precache_json="[]"
+    if [ -n "$precache" ]; then
+        # Convert "a,b,c" → ["a","b","c"]
+        precache_json="$(node -e "
+          const s = process.env.PRE || '';
+          const arr = s.split(',').map(x => x.trim()).filter(Boolean);
+          process.stdout.write(JSON.stringify(arr));
+        " PRE="$precache" 2>/dev/null)" \
+            || precache_json="$(echo "$precache" | awk -F, '{
+                printf "["
+                for (i=1; i<=NF; i++) {
+                    gsub(/^ +| +$/, "", $i)
+                    printf "%s\"%s\"", (i>1?",":""), $i
+                }
+                printf "]"
+            }')"
+    fi
+
+    local args="--bundle --format=$format --target=$target --outfile=$output"
+    args="$args --define:BUILD_HASH=\"\\\"$hash\\\"\""
+    args="$args --define:BUILD_PRECACHE='$precache_json'"
+    if [ "$mode" = "dev" ]; then
+        args="$args --sourcemap"
+    else
+        args="$args --minify"
+    fi
+
+    eval run_tool esbuild "\"$input\"" $args
+    [ -f "$output" ] || { log_error "esbuild_sw produced no output"; return $EXIT_BUILD; }
+    log_success "esbuild_sw: $(basename "$2") (hash=$hash, precache=$(echo "$precache" | awk -F, '{print NF}') files)"
+}
+
+# Generate the full PWA icon set from one source image. Wraps the engine
+# `1_workflows/dist/scripts/front-pwa-icons.sh` so build.json can drive
+# the source / output / safe-zone-bg fully declaratively.
+#
+# build.json fields:
+#   source — path to source image (relative to project)
+#   out    — directory to drop generated icons into (relative to project)
+#   bg     — hex colour for the maskable safe-zone padding (default #000000)
+#
+# Idempotent: skips when every expected icon already exists AND is newer
+# than the source image. Re-runs whenever the source is updated.
+mod_pwa_icons() {
+    local source="$PROJECT_DIR/$1"
+    local out="$PROJECT_DIR/$2"
+    local bg="${3:-#000000}"
+
+    [ -f "$source" ] || { log_error "pwa_icons: source not found: $source"; return $EXIT_BUILD; }
+
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-pwa-icons.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-pwa-icons.sh"
+    [ -x "$engine" ] || { log_error "pwa_icons: front-pwa-icons.sh not found / not executable"; return $EXIT_BUILD; }
+
+    # Skip when every expected output already exists and is newer than source.
+    local up_to_date=1
+    for f in icon-192.png icon-512.png icon-maskable-512.png apple-touch-icon-180.png; do
+        if [ ! -f "$out/$f" ] || [ "$source" -nt "$out/$f" ]; then
+            up_to_date=0; break
+        fi
+    done
+    if [ $up_to_date -eq 1 ]; then
+        log_step "pwa_icons: 4 icons up-to-date (skipping)"
+        return 0
+    fi
+
+    "$engine" "$source" "$out" "$bg" >/dev/null \
+        || { log_error "pwa_icons: engine failed"; return $EXIT_BUILD; }
+    log_success "pwa_icons: 4 icons regenerated from $(basename "$source")"
 }
 
 # TypeScript compiler
@@ -515,6 +636,11 @@ run_build() {
         eval "local _exclude=\$CFG_B${i}_EXCLUDE"
         eval "local _script=\$CFG_B${i}_SCRIPT"
         eval "local _dir=\$CFG_B${i}_DIR"
+        eval "local _hash_of=\$CFG_B${i}_HASH_OF"
+        eval "local _precache=\$CFG_B${i}_PRECACHE"
+        eval "local _source=\$CFG_B${i}_SOURCE"
+        eval "local _out=\$CFG_B${i}_OUT"
+        eval "local _bg=\$CFG_B${i}_BG"
 
         log_info "Step $_n/$step_n: $_mod"
 
@@ -527,6 +653,8 @@ run_build() {
         case "$_mod" in
             sass)         mod_sass "$_input" "$_output" "prod" ;;
             esbuild)      mod_esbuild "$_input" "$_output" "prod" "$_format" "$_target" ;;
+            esbuild_sw)   mod_esbuild_sw "$_input" "$_output" "$_hash_of" "$_precache" "prod" "$_format" "$_target" ;;
+            pwa_icons)    mod_pwa_icons "$_source" "$_out" "$_bg" ;;
             tsc)          mod_tsc "$_dir" "$_output" "prod" ;;
             vite)         mod_vite ;;
             sveltekit)    mod_sveltekit ;;
@@ -664,6 +792,46 @@ h.createServer(function(req,res){
     esac
 }
 
+# Reap any pre-existing watcher whose argv or cwd matches `$2`. Idempotent: makes
+# `build.sh dev` safe to run twice without piling up duplicate `--watch=forever`
+# processes (the leak that orphans esbuild after a closed terminal — nohup
+# detaches them from SIGHUP, so they survive the parent shell forever).
+#
+# $1 = tool name (esbuild, sass, tsc) — must be argv[0] or end of an absolute argv[0]
+# $2 = unique fingerprint string — typically the absolute output path (esbuild,
+#      sass) or the absolute project subdir (tsc, which has no path in argv).
+#
+# Matches when the tool's command line OR its cwd contains $2 — covers both
+# argv-tagged watchers (esbuild, sass) and cwd-tagged ones (tsc).
+_kill_existing_watcher() {
+    local mode="$1" match="$2"
+    [ -z "$mode" ] || [ -z "$match" ] && return 0
+    [ -d /proc ] || return 0  # only Linux
+
+    local hits="" entry pid cmd cwd
+    for entry in /proc/[0-9]*/cmdline; do
+        [ -r "$entry" ] || continue
+        cmd=$(tr '\0' ' ' < "$entry" 2>/dev/null)
+        case "$cmd" in
+            "$mode "*|*"/$mode "*) ;;
+            *) continue ;;
+        esac
+        pid="${entry#/proc/}"; pid="${pid%/cmdline}"
+        cwd=$(readlink "/proc/$pid/cwd" 2>/dev/null)
+        case "$cmd $cwd" in
+            *"$match"*) hits="$hits $pid" ;;
+        esac
+    done
+    [ -z "$hits" ] && return 0
+
+    log_step "reaping stale ${mode} watcher(s):${hits}"
+    # shellcheck disable=SC2086
+    kill $hits 2>/dev/null || true
+    sleep 0.3
+    # shellcheck disable=SC2086
+    kill -9 $hits 2>/dev/null || true
+}
+
 # Start file watchers for dev mode
 start_watchers() {
     local i=0
@@ -678,6 +846,7 @@ start_watchers() {
 
         case "$_mod" in
             sass)
+                _kill_existing_watcher sass "$serve_dir/$_output"
                 nohup sass "$serve_dir/$_input" "$serve_dir/$_output" --watch --style=expanded --source-map > /dev/null 2>&1 &
                 _append_pid "$!" "sass"
                 log_step "watcher: sass"
@@ -685,6 +854,7 @@ start_watchers() {
             esbuild)
                 local fmt="${_format:-iife}"
                 local tgt="${_target:-es2020}"
+                _kill_existing_watcher esbuild "$serve_dir/$_output"
                 nohup esbuild "$serve_dir/$_input" --bundle --outfile="$serve_dir/$_output" --format="$fmt" --target="$tgt" --sourcemap --watch=forever > /dev/null 2>&1 &
                 _append_pid "$!" "esbuild"
                 log_step "watcher: esbuild"
@@ -692,6 +862,7 @@ start_watchers() {
             tsc)
                 local tsc_dir="$serve_dir"
                 [ -n "$_input" ] && tsc_dir="$serve_dir/$_input"
+                _kill_existing_watcher tsc "$tsc_dir"
                 cd "$tsc_dir"
                 nohup tsc --watch > /dev/null 2>&1 &
                 _append_pid "$!" "tsc"
@@ -1075,6 +1246,23 @@ cmd_stop() {
     stop_server
 }
 
+# Reap orphan dev watchers across the whole front/ tree (any project whose
+# build.sh dev was started in a since-closed terminal — nohup detaches the
+# watcher from SIGHUP so it survives forever, accumulating between sessions).
+# Uses REPO_ROOT (set by parse_repo_config) as the unique substring — every
+# legitimate watcher under front/ has the front/ prefix in its argv or cwd.
+cmd_kill_orphans() {
+    local front_root="$REPO_ROOT"
+    [ -z "$front_root" ] && front_root="$(cd "$PROJECT_DIR" && git rev-parse --show-toplevel 2>/dev/null)"
+    [ -z "$front_root" ] && { log_error "kill-orphans: cannot resolve front/ repo root"; return 1; }
+
+    log_info "Reaping orphan dev watchers under $front_root ..."
+    _kill_existing_watcher esbuild "$front_root/"
+    _kill_existing_watcher sass    "$front_root/"
+    _kill_existing_watcher tsc     "$front_root/"
+    log_success "Orphan reap complete"
+}
+
 cmd_clean() {
     log_info "Cleaning build artifacts..."
     rm -rf "$DIST_DIR"
@@ -1299,6 +1487,7 @@ main() {
         build)      cmd_build ;;
         dev|watch)  cmd_dev ;;
         stop|kill)  cmd_stop ;;
+        kill-orphans|reap) cmd_kill_orphans ;;
         clean)      cmd_clean ;;
         deploy)     cmd_deploy "$_deploy_target" ;;
         deps)       cmd_deps ;;

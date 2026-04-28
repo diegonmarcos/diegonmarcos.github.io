@@ -98,4 +98,17 @@ body.light-theme {
     .swiper-pagination-bullet-active {
         background: rgba(0, 0, 0, 0.7) !important;
     }
+
+    // Multi-row separator between stacked tools-dashboard rows — flips
+    // from white-on-dark to black-on-light to stay visible.
+    .row-divider {
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(0, 0, 0, 0.12) 20%,
+            rgba(0, 0, 0, 0.22) 50%,
+            rgba(0, 0, 0, 0.12) 80%,
+            transparent 100%
+        ) !important;
+    }
 }

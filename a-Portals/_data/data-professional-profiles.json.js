@@ -329,7 +329,7 @@
       "kind": "venture-card",
       "title": "NEXUS",
       "image": {
-        "src": "public/images/banners/nexus.jpg",
+        "src": "public/images/banners/nexus.webp",
         "alt": "Nexus"
       },
       "sections": [

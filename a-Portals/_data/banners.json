@@ -18,8 +18,9 @@
     },
     {
       "slide": "nexus",
+      "_doc": "Squarespace CDN content-negotiates and serves WebP regardless of the .jpg URL suffix — local extension MUST match real content (.webp), or browsers fail to render the file.",
       "remote": "https://images.squarespace-cdn.com/content/v1/62b8b53ddecd3441cbee091d/ffee989d-1ab3-4a81-8fbb-764b6a42fd1b/JKP_0180revd.jpg",
-      "local": "public/images/banners/nexus.jpg"
+      "local": "public/images/banners/nexus.webp"
     },
     {
       "slide": "suite",

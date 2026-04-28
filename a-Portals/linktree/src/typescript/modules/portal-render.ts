@@ -172,12 +172,16 @@ function renderToolsSlide(slide: SlideTools): HTMLElement {
       byRow.get(r)!.push(c);
     }
     const rows = Array.from(byRow.keys()).sort((a, b) => a - b);
-    for (const r of rows) {
+    rows.forEach((r, idx) => {
       const cols = byRow.get(r)!;
       const dash = el('div', { class: `tools-dashboard tools-dashboard--${cols.length}` });
       for (const col of cols) dash.appendChild(renderColumn(col));
       linksContainer.appendChild(dash);
-    }
+      // Visual separator between consecutive rows (none after the last).
+      if (idx < rows.length - 1) {
+        linksContainer.appendChild(el('hr', { class: 'row-divider' }));
+      }
+    });
   } else {
     const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
     const dashboard = el('div', { class: dashClass });

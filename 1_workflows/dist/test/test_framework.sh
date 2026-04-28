@@ -67,7 +67,8 @@ done
 # Engine scripts: SVG sprite + image encoder + lighthouse must be deployed
 # with executable bits + each carries a documented Usage block.
 for s in front-svg-sprite.sh front-image-encoder.sh front-lighthouse-snapshot.sh \
-         front-data-json-js-wrapper.sh front-localize-assets.sh front-cache-hash.sh; do
+         front-data-json-js-wrapper.sh front-localize-assets.sh front-cache-hash.sh \
+         front-pwa-icons.sh; do
     deployed="1_workflows/dist/scripts/$s"
     [ -f "$deployed" ] || fail "engine script $deployed missing"
     [ -x "$deployed" ] || fail "engine script $deployed not executable"
@@ -144,5 +145,29 @@ echo "alpha-changed" > "$fixt3/a.txt"
 H3=$(bash 1_workflows/dist/scripts/front-cache-hash.sh "$fixt3/a.txt" "$fixt3/b.txt")
 [ "$H1" != "$H3" ] || fail "front-cache-hash.sh did not change after byte edit"
 pass "front-cache-hash.sh produces deterministic 12-char hex hash, sensitive to byte changes"
+
+# PWA icon engine: feed it any source image, verify the 4 outputs land at
+# the right dimensions. Skips gracefully when ImageMagick is missing.
+if command -v magick >/dev/null 2>&1 || command -v convert >/dev/null 2>&1; then
+    fixt4="$(mktemp -d)"
+    trap 'rm -rf "$fixt2" "$fixt3" "$fixt4"' EXIT
+    # Synthesize a tiny known-size source via ImageMagick itself.
+    if command -v magick >/dev/null 2>&1; then
+        magick -size 1024x1024 xc:red "$fixt4/src.png"
+    else
+        convert -size 1024x1024 xc:red "$fixt4/src.png"
+    fi
+    bash 1_workflows/dist/scripts/front-pwa-icons.sh "$fixt4/src.png" "$fixt4/out" "#112233" >/dev/null \
+        || fail "front-pwa-icons.sh failed against fixture"
+    for spec in "icon-192.png:192" "icon-512.png:512" "icon-maskable-512.png:512" "apple-touch-icon-180.png:180"; do
+        f="${spec%:*}"; want="${spec#*:}"
+        [ -f "$fixt4/out/$f" ] || fail "pwa_icons: $f missing"
+        got=$(identify -format '%w' "$fixt4/out/$f")
+        [ "$got" = "$want" ] || fail "pwa_icons: $f is ${got}px wide, expected ${want}px"
+    done
+    pass "front-pwa-icons.sh emits 192/512/maskable-512/apple-180 at correct dimensions"
+else
+    pass "front-pwa-icons.sh present (ImageMagick not in PATH; runtime test skipped)"
+fi
 
 echo "=== all checks passed ==="

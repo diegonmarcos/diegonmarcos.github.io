@@ -103,6 +103,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     onIdle(() => {
       navigator.serviceWorker.register('./script-service-worker.js').catch(() => undefined);
     });
+
+    // Auto-reload the page once a NEW Service Worker takes control. Without
+    // this, a fresh build only takes effect on the user's SECOND refresh:
+    //   1st refresh → browser detects new sw bytes, installs+activates new SW
+    //                 in the background, but the page rendered moments ago
+    //                 was still served from the OLD SW's cache.
+    //   2nd refresh → new SW intercepts, serves fresh content.
+    // `controllerchange` fires the moment the new SW claims the page; we
+    // reload immediately so the user sees fresh content on the FIRST refresh.
+    let _swReloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (_swReloading) return;
+      _swReloading = true;
+      location.reload();
+    });
+
+    // Console escape-hatch: paste `__resetSW()` in DevTools to unregister
+    // the SW + drop every cache + reload. Useful when iterating locally.
+    (window as unknown as { __resetSW: () => Promise<void> }).__resetSW = async () => {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(regs.map((r) => r.unregister()));
+      const keys = await caches.keys();
+      await Promise.all(keys.map((k) => caches.delete(k)));
+      location.reload();
+    };
   }
 });
 

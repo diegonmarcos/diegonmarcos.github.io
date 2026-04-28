@@ -33,13 +33,12 @@
             rgba(0, 255, 128, 0.3),
             rgba(255, 128, 0, 0.3)
         );
-        background-size: 300% 300%;
         opacity: 0;
         transition: opacity $transition-medium;
         z-index: 0;
-        animation: holographicShift 3s ease infinite;
-        backdrop-filter: $glass-blur;
-        -webkit-backdrop-filter: $glass-blur;
+        // animation, background-size, backdrop-filter only attach on :hover
+        // (gating an opacity:0 filtered+animated layer otherwise keeps the
+        // compositor pinning a raster surface alive every frame)
     }
 
     &::after {
@@ -81,7 +80,13 @@
         backdrop-filter: blur(12px) saturate(200%);
         -webkit-backdrop-filter: blur(12px) saturate(200%);
 
-        &::before { opacity: 1; }
+        &::before {
+            opacity: 1;
+            background-size: 300% 300%;
+            animation: holographicShift 3s ease infinite;
+            backdrop-filter: $glass-blur;
+            -webkit-backdrop-filter: $glass-blur;
+        }
         &::after { opacity: 1; left: 150%; }
     }
 
@@ -132,13 +137,10 @@
             rgba(0, 255, 128, 0.3),
             rgba(255, 128, 0, 0.3)
         );
-        background-size: 300% 300%;
         opacity: 0;
         transition: opacity $transition-medium;
         z-index: 0;
-        animation: holographicShift 3s ease infinite;
-        backdrop-filter: $glass-blur;
-        -webkit-backdrop-filter: $glass-blur;
+        // animation, background-size, backdrop-filter only attach on :hover
     }
 
     &::after {
@@ -180,7 +182,13 @@
         backdrop-filter: blur(12px) saturate(200%);
         -webkit-backdrop-filter: blur(12px) saturate(200%);
 
-        &::before { opacity: 1; }
+        &::before {
+            opacity: 1;
+            background-size: 300% 300%;
+            animation: holographicShift 3s ease infinite;
+            backdrop-filter: $glass-blur;
+            -webkit-backdrop-filter: $glass-blur;
+        }
         &::after { opacity: 1; left: 150%; }
     }
 

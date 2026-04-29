@@ -33,7 +33,7 @@ jobs:
         # Excludes test_framework + test_watcher_reap (flaky in headless
         # CI; tracked separately). Runs the deterministic SW + cache
         # tests added by the SW-hashing modularization.
-        run: bash 1_workflows/src/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register"
+        run: bash 1_workflows/src/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob"
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================

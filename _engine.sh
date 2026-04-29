@@ -522,11 +522,22 @@ mod_copy() {
 
     mkdir -p "$DIST_DIR"
 
-    # Handle comma-separated file list or glob
+    # Handle comma-separated file list or glob.
+    # IMPORTANT: noglob (`set -f`) for the OUTER for-loop. Without it,
+    # an unquoted `$files` containing only "*" globs against the current
+    # working directory (= PROJECT_DIR) before the inner loop sees it,
+    # so e.g. `files: "*"` from build.json silently degenerates into
+    # the names of the project's top-level files (build.json, build.sh,
+    # dist, src, …) — none of which exist in src_base, so nothing gets
+    # copied. With noglob the CSV split treats "*" as a literal pattern
+    # and the inner `"$src_base"/$pattern` is the only place that
+    # actually expands the glob.
+    set -f
     _IFS="$IFS"; IFS=","
     for pattern in $files; do
         IFS="$_IFS"
         pattern="$(echo "$pattern" | sed 's/^ *//;s/ *$//')"
+        set +f
         for file in "$src_base"/$pattern; do
             [ -f "$file" ] || continue
             _basename="$(basename "$file")"
@@ -539,8 +550,10 @@ mod_copy() {
             cp "$file" "$DIST_DIR/$_basename"
             log_step "copy: $_basename"
         done
+        set -f
     done
     IFS="$_IFS"
+    set +f
 }
 
 # Inline CSS and JS into HTML

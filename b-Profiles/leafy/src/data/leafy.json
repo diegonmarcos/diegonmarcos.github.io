@@ -1,0 +1,4 @@
+{
+  "_description": "Bootstrap data-driven entry. Add fields here; consume them in HTML/TS via globalThis.PORTAL_DATA[\"leafy\"].<field>.",
+  "title": "Leaf Studios | Where Edge Technology meets Design"
+}

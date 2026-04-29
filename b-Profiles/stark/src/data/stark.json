@@ -1,0 +1,4 @@
+{
+  "_description": "Bootstrap data-driven entry. Add fields here; consume them in HTML/TS via globalThis.PORTAL_DATA[\"stark\"].<field>.",
+  "title": "STARK | Autonomous Industry & Space Colonization"
+}

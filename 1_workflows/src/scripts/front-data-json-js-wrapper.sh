@@ -24,10 +24,10 @@
 # ──────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
-# When invoked via a symlink (e.g. a-Portals/_data/build.sh → this script),
+# When invoked via a symlink (e.g. a-Portals/linktree/src/data/build.sh → this script),
 # default DIR to the SYMLINK's directory, not the script target's. That makes
-# `bash a-Portals/_data/build.sh` (no args) wrap the JSONs sitting next to
-# the symlink. Override with an explicit DIR arg.
+# `bash a-Portals/linktree/src/data/build.sh` (no args) wrap the JSONs sitting
+# next to the symlink. Override with an explicit DIR arg.
 DIR="${1:-$(dirname "${BASH_SOURCE[0]}")}"
 if [ ! -d "$DIR" ]; then
     echo "✗ not a directory: $DIR" >&2
@@ -47,7 +47,7 @@ for f in *.json; do
     fi
     {
         printf '// GENERATED FROM %s by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.\n' "$f"
-        printf '// Re-generate with: bash a-Portals/_data/build.sh\n'
+        printf '// Re-generate with: bash a-Portals/linktree/src/data/build.sh\n'
         printf '(function () {\n'
         printf '  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);\n'
         printf '  g.PORTAL_DATA = g.PORTAL_DATA || {};\n'

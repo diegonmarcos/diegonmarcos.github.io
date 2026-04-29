@@ -1,14 +1,15 @@
-// Builds mindmap GraphData by walking the SHARED linktree JSON sources
-// (a-Portals/_data/*.json) plus a local view-config.json that supplies
-// presentation-only metadata (colors per section, root identity, default icon).
+// Builds mindmap GraphData by walking the linktree-owned JSON sources
+// (linktree/src/data/*.json, exposed here via the src/data symlink)
+// plus a local view-config.json that supplies presentation-only metadata
+// (colors per section, root identity, default icon).
 //
 // Linktree owns the LINK DATA. Mindmap owns the VIEW CONFIG. Adding a new
 // tool in linktree → appears here automatically on the next rebuild.
 
-import personalTools        from '../../../../_data/personal-tools.json';
-import personalProfiles     from '../../../../_data/personal-profiles.json';
-import professionalProfiles from '../../../../_data/professional-profiles.json';
-import viewConfig           from '../../data/view-config.json';
+import personalTools        from '../../data/personal-tools.json';
+import personalProfiles     from '../../data/personal-profiles.json';
+import professionalProfiles from '../../data/professional-profiles.json';
+import viewConfig           from '../../view-config.json';
 import type { GraphData, NodeData, LinkData } from '../types';
 
 interface RawLink   { label: string; url: string; icon: string; download?: string; preview?: string; }

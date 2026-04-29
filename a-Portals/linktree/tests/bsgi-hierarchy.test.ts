@@ -7,7 +7,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const dataDir = resolve(__dirname, '..', '..', '_data');
+const dataDir = resolve(__dirname, '..', 'src', 'data');
 const files = ['personal-tools.json', 'personal-profiles.json', 'professional-profiles.json'];
 
 interface Item   { item: number; [k: string]: unknown }

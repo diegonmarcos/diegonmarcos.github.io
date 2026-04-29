@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { buildMindmapData } from '../src/typescript/modules/data-from-linktree';
 import { GRAPH_DATA } from '../src/typescript/data-embedded';
 
-describe('mindmap — derived from shared linktree _data/', () => {
+describe('mindmap — derived from linktree/src/data/ (via src/data symlink)', () => {
   const data = buildMindmapData();
 
   it('has the canonical root with 3 section children', () => {

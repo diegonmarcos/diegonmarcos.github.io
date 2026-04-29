@@ -1,6 +1,6 @@
 // Asset-locality + TOOLCHAIN structure regression tests.
 //
-// 1. Banner manifest at _data/banners.json is the source of truth for
+// 1. Banner manifest at data/banners.json is the source of truth for
 //    URL → local-path mappings. Every declared `local` path must exist
 //    on disk under linktree/.
 // 2. Slide JSONs (personal-tools / personal-profiles / professional-profiles)
@@ -15,13 +15,14 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 
 const linktreeRoot = resolve(__dirname, '..');
-const dataDir      = resolve(linktreeRoot, '..', '_data');
+const srcRoot      = resolve(linktreeRoot, 'src');
+const dataDir      = resolve(srcRoot, 'data');
 const manifestPath = resolve(dataDir, 'banners.json');
 
 interface BannerAsset { slide: string; remote: string; local: string; aliases?: string[] }
 interface BannerManifest { assets: BannerAsset[] }
 
-describe('asset locality — _data/banners.json manifest', () => {
+describe('asset locality — data/banners.json manifest', () => {
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8')) as BannerManifest;
 
   it('manifest declares at least one asset per slide that previously used a remote banner', () => {
@@ -32,9 +33,9 @@ describe('asset locality — _data/banners.json manifest', () => {
     }
   });
 
-  it('every declared `local` file actually exists on disk under linktree/', () => {
+  it('every declared `local` file actually exists on disk under linktree/src/', () => {
     for (const a of manifest.assets) {
-      const onDisk = resolve(linktreeRoot, a.local);
+      const onDisk = resolve(srcRoot, a.local);
       expect(existsSync(onDisk), `expected ${a.local} on disk (downloaded by front-localize-assets.sh)`).toBe(true);
     }
   });
@@ -59,7 +60,7 @@ describe('asset locality — _data/banners.json manifest', () => {
       return 'unknown';
     };
     for (const a of manifest.assets) {
-      const onDisk = resolve(linktreeRoot, a.local);
+      const onDisk = resolve(srcRoot, a.local);
       const buf = readFileSync(onDisk);
       const detected = magic(buf);
       const ext = a.local.split('.').pop()!.toLowerCase();
@@ -74,9 +75,9 @@ describe('asset locality — _data/banners.json manifest', () => {
     let aliasCount = 0;
     for (const a of manifest.assets) {
       if (!a.aliases?.length) continue;
-      const canonical = readFileSync(resolve(linktreeRoot, a.local));
+      const canonical = readFileSync(resolve(srcRoot, a.local));
       for (const aliasRel of a.aliases) {
-        const aliasPath = resolve(linktreeRoot, aliasRel);
+        const aliasPath = resolve(srcRoot, aliasRel);
         expect(existsSync(aliasPath), `alias ${aliasRel} missing`).toBe(true);
         const aliasBytes = readFileSync(aliasPath);
         expect(aliasBytes.length, `alias ${aliasRel} byte-length mismatch`).toBe(canonical.length);

@@ -1,1 +1,0 @@
-../../1_workflows/dist/scripts/front-data-json-js-wrapper.sh

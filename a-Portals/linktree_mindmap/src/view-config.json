@@ -1,5 +1,5 @@
 {
-  "_description": "Mindmap-only presentation config — colors, root metadata, default icon. Combined with the shared link data in a-Portals/_data/ to build GraphData. Section colors: Professional=green (career), Personal Profiles=pink (life), Personal Tools=amber (utilities).",
+  "_description": "Mindmap-only presentation config — colors, root metadata, default icon. Combined with the linktree-owned link data in linktree/src/data/ (exposed here via src/data symlink) to build GraphData. Section colors: Professional=green (career), Personal Profiles=pink (life), Personal Tools=amber (utilities).",
   "root": {
     "id":        "dnm",
     "label":     "DNM",

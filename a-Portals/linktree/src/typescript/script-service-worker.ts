@@ -1,16 +1,24 @@
+/// <reference lib="webworker" />
 // Service Worker — cache-first for static assets, stale-while-revalidate
-// for the GDELT proxy. The cache version + precache list are INJECTED at
-// build time by the `mod_esbuild_sw` step (see build.json + build.sh):
-//   • BUILD_HASH       — 12-char content hash of (index.html + script.js +
-//                        style.css). Any byte change → new hash → SW bytes
-//                        change → browser re-installs → caches purge.
-//   • BUILD_PRECACHE   — array of URLs to precache at install time, sourced
-//                        from build.json's `service_worker.precache`.
-// Both are esbuild --define constants. Zero hardcoded data in this file.
+// for the GDELT proxy. Build-time constants are INJECTED by the
+// `mod_esbuild_sw` step (see build.json + _engine.sh + front-sw-build.sh):
+//
+//   • BUILD_HASH         — 12-char content hash of the `hash_of` files.
+//                          Any byte change → new hash → new SW bytes →
+//                          browser re-installs → caches purge.
+//   • BUILD_PRECACHE     — URLs to precache at install time.
+//   • BUILD_ASSET_HASHES — per-asset 12-char SHA-256 prefix map. On cache
+//                          miss, the SW hashes the response body and
+//                          compares — if a CDN edge returned stale bytes,
+//                          the SW retries with `?v=<hash>` to bust the
+//                          edge cache. `{}` when verify=false.
+//
+// All three are esbuild --define constants. Zero hardcoded data.
 
 declare const self: ServiceWorkerGlobalScope;
 declare const BUILD_HASH: string;
 declare const BUILD_PRECACHE: string[];
+declare const BUILD_ASSET_HASHES: Record<string, string>;
 
 const STATIC_CACHE  = `static-${BUILD_HASH}`;
 const RUNTIME_CACHE = `runtime-${BUILD_HASH}`;
@@ -34,6 +42,48 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+// Convert a request URL to the "./<file>" form used as the key in
+// BUILD_ASSET_HASHES. The map is keyed by SW-scope-relative paths so
+// it survives nested deploy paths (GitHub Pages, sub-directory hosting).
+function scopeRelative(reqUrl: string): string {
+  const scope = self.registration.scope;
+  const noQuery = reqUrl.split('?')[0];
+  if (noQuery.startsWith(scope)) return './' + noQuery.slice(scope.length);
+  return './' + new URL(noQuery).pathname.replace(/^\//, '');
+}
+
+// First 12 hex chars of SHA-256(buf) — same truncation rule as the
+// build-side `front-cache-hash.sh` engine.
+async function sha256_12(buf: ArrayBuffer): Promise<string> {
+  const hash = await crypto.subtle.digest('SHA-256', buf);
+  let hex = '';
+  const view = new Uint8Array(hash);
+  for (let i = 0; i < 6; i++) hex += view[i].toString(16).padStart(2, '0');
+  return hex;
+}
+
+// CDN-edge verification. Compare response bytes against the expected
+// hash. If they differ, refetch with a `?v=<hash>` cache-buster — most
+// CDNs key on the full URL, so this forces an origin pull. On any
+// failure (network, crypto, missing key) fall back to the original
+// response — never make caching strictly worse than the no-verify path.
+async function verifyAsset(req: Request, res: Response): Promise<Response> {
+  try {
+    const expected = BUILD_ASSET_HASHES[scopeRelative(req.url)];
+    if (!expected) return res;
+    const got = await sha256_12(await res.clone().arrayBuffer());
+    if (got === expected) return res;
+    const bustUrl = new URL(req.url);
+    bustUrl.searchParams.set('v', expected);
+    const fresh = await fetch(bustUrl.toString(), { cache: 'reload' });
+    if (!fresh.ok) return res;
+    const freshHash = await sha256_12(await fresh.clone().arrayBuffer());
+    return freshHash === expected ? fresh : res;
+  } catch {
+    return res;
+  }
+}
+
 const isGdeltProxy = (url: URL) =>
   url.host.endsWith('diegonmarcos.com') && url.pathname.startsWith('/news');
 
@@ -43,7 +93,8 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
 
   // Stale-while-revalidate for the GDELT proxy: serve cached if present,
-  // refresh in the background.
+  // refresh in the background. No verification — the proxy returns
+  // dynamic data, not build-time-hashed assets.
   if (isGdeltProxy(url)) {
     event.respondWith((async () => {
       const cache = await caches.open(RUNTIME_CACHE);
@@ -65,8 +116,10 @@ self.addEventListener('fetch', (event) => {
     if (hit) return hit;
     try {
       const res = await fetch(req);
-      if (res.ok) cache.put(req, res.clone()).catch(() => undefined);
-      return res;
+      if (!res.ok) return res;
+      const verified = await verifyAsset(req, res);
+      if (verified.ok) cache.put(req, verified.clone()).catch(() => undefined);
+      return verified;
     } catch {
       const fallback = await caches.match('./index.html');
       return fallback ?? Response.error();

@@ -27,6 +27,14 @@ jobs:
       - name: 📦 Install Dependencies
         run: bash build.sh deps
       # ============================================
+      # ENGINE PREFLIGHT — block deploy if engine tests fail
+      # ============================================
+      - name: 🧪 Engine tests — SW + cache subset
+        # Excludes test_framework + test_watcher_reap (flaky in headless
+        # CI; tracked separately). Runs the deterministic SW + cache
+        # tests added by the SW-hashing modularization.
+        run: bash 1_workflows/src/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*"
+      # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================
       - name: 🔨 Build Root Index (e-Root)

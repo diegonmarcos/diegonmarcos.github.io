@@ -574,6 +574,29 @@ mod_symlink() {
     fi
 }
 
+# Wrap every *.json in $1 (default: src/data) as a *.json.js companion that
+# assigns the parsed JSON to globalThis.PORTAL_DATA[<key>], so HTML can load
+# the data via <script src="data-NAME.json.js"></script> with no fetch / no
+# CORS — works under file:// too. Source-of-truth lives in the project's
+# src/data/; the wrapped data-*.json.js are emitted alongside the JSON
+# (next-step `copy` mod ships them to dist/).
+#
+# Engine: 1_workflows/{src,dist}/scripts/front-data-json-js-wrapper.sh
+# This module just dispatches to the universal engine.
+mod_data_wrap() {
+    local dir="${1:-src/data}"
+    local abs_dir="$PROJECT_DIR/$dir"
+    [ -d "$abs_dir" ] || { log_warn "data_wrap: $dir not found, skipping"; return 0; }
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-data-json-js-wrapper.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-data-json-js-wrapper.sh"
+    [ -x "$engine" ] || { log_error "data_wrap: front-data-json-js-wrapper.sh not found"; return $EXIT_BUILD; }
+    local out
+    out="$("$engine" "$abs_dir" 2>&1)" || { log_error "data_wrap failed: $out"; return $EXIT_BUILD; }
+    local n
+    n="$(echo "$out" | grep -c '^✓ ')"
+    log_step "data_wrap: $n JSON file(s) wrapped in $dir/"
+}
+
 # ─── BUILD RUNNER ───────────────────────────────────────────
 run_build() {
     local i=0
@@ -625,6 +648,7 @@ run_build() {
             inline)       mod_inline "$_html" "$_css" "$_js" ;;
             strip-module) mod_strip_module "$_files" ;;
             symlink)      mod_symlink "$_files" "$_output" ;;
+            data_wrap)    mod_data_wrap "$_dir" ;;
             *)            log_warn "Unknown module: $_mod" ;;
         esac
 

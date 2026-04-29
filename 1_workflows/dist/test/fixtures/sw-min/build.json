@@ -1,0 +1,19 @@
+{
+  "name": "sw-min",
+  "framework": "vanilla",
+  "port": 8999,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
+    { "mod": "copy", "files": "index.html", "from": "src" },
+    { "mod": "copy", "files": "style.css", "from": "src" },
+    { "mod": "esbuild_sw",
+      "input": "src/typescript/script-service-worker.ts",
+      "output": "script-service-worker.js",
+      "format": "iife", "target": "es2020",
+      "hash_of": ["index.html", "script.js", "style.css"],
+      "precache": ["./", "./index.html", "./style.css", "./script.js"]
+    }
+  ]
+}

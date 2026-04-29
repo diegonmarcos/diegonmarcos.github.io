@@ -284,4 +284,62 @@ else
     pass "dev/watch contract (node + esbuild + sass not all in PATH; runtime test skipped)"
 fi
 
+# Data-driven framework: every vanilla project must be wired via the
+# data_wrap engine module. Asserts:
+#   1. front-init-data-wrap.sh is deployed + documented
+#   2. mod_data_wrap is registered in the build dispatch
+#   3. Every framework=vanilla project has src/data/ + a data_wrap step
+#      in build.json (the templater succeeded; new projects must opt in)
+[ -f "1_workflows/dist/scripts/front-init-data-wrap.sh" ] \
+    || fail "front-init-data-wrap.sh templater not deployed"
+grep -q '^# Usage:' "1_workflows/dist/scripts/front-init-data-wrap.sh" \
+    || fail "front-init-data-wrap.sh missing Usage block"
+pass "front-init-data-wrap.sh templater deployed + documented"
+
+grep -q 'data_wrap)' "$REPO_ROOT/_engine.sh" \
+    || fail "_engine.sh: mod_data_wrap not registered in run_build dispatch"
+grep -q '^mod_data_wrap()' "$REPO_ROOT/_engine.sh" \
+    || fail "_engine.sh: mod_data_wrap function not defined"
+pass "_engine.sh: data_wrap module registered + defined"
+
+# Walk every vanilla project. Each must (a) have src/data/, (b) have a
+# data_wrap step in build.json. We don't enforce HTML wiring because some
+# vanilla projects have no src/index.html (templater logs + skips those).
+unwired=""
+for f in $(find "$REPO_ROOT" -name "build.json" -not -path "*/node_modules/*" -not -path "*/dist/*" -not -path "*/test/fixtures/*" -not -path "*z_Archive*" 2>/dev/null); do
+    fw=$(node -e 'try{var c=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));console.log(c.framework||"none")}catch(e){console.log("ERR")}' "$f" 2>/dev/null)
+    [ "$fw" = "vanilla" ] || continue
+    proj_dir="$(dirname "$f")"
+    rel="${proj_dir#$REPO_ROOT/}"
+    [ -d "$proj_dir/src/data" ] || { unwired="$unwired\n  - $rel: missing src/data/"; continue; }
+    has_wrap=$(node -e 'var c=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"));console.log((c.build||[]).some(function(s){return s.mod==="data_wrap"})?"yes":"no")' "$f" 2>/dev/null)
+    [ "$has_wrap" = "yes" ] || unwired="$unwired\n  - $rel: build.json missing data_wrap step"
+done
+if [ -n "$unwired" ]; then
+    printf "    unwired vanilla projects:%b\n" "$unwired" >&2
+    fail "vanilla projects not wired with data-driven framework"
+fi
+pass "every framework=vanilla project has data-driven wiring (src/data + data_wrap step)"
+
+# data_wrap module: feed it a fixture and verify it produces the right
+# data-*.json.js companions (engine smoke test, no project required).
+fixt_dw="$(mktemp -d)"
+trap 'rm -rf "$fixt2" "$fixt3" "$fixt4" "${fixt5:-}" "$fixt_dw"; [ -n "${dev_pid_file:-}" ] && [ -f "$dev_pid_file" ] && kill $(cat "$dev_pid_file") 2>/dev/null; true' EXIT
+mkdir -p "$fixt_dw/src/data"
+cat > "$fixt_dw/src/data/foo.json" <<'EOF'
+{ "title": "Foo Page", "_description": "test fixture" }
+EOF
+cat > "$fixt_dw/src/data/bar.json" <<'EOF'
+{ "title": "Bar Page" }
+EOF
+bash 1_workflows/dist/scripts/front-data-json-js-wrapper.sh "$fixt_dw/src/data" >/dev/null \
+    || fail "front-data-json-js-wrapper.sh failed against fixture"
+[ -f "$fixt_dw/src/data/data-foo.json.js" ] || fail "data-foo.json.js not produced"
+[ -f "$fixt_dw/src/data/data-bar.json.js" ] || fail "data-bar.json.js not produced"
+grep -q 'PORTAL_DATA\["foo"\]' "$fixt_dw/src/data/data-foo.json.js" \
+    || fail "data-foo.json.js missing PORTAL_DATA[\"foo\"] assignment"
+grep -q '"title": "Foo Page"' "$fixt_dw/src/data/data-foo.json.js" \
+    || fail "data-foo.json.js missing original JSON content"
+pass "data_wrap engine wraps every src/data/*.json into PORTAL_DATA[<key>] companion"
+
 echo "=== all checks passed ==="

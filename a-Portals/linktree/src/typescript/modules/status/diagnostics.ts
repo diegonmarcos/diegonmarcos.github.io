@@ -7,6 +7,15 @@ import type {
   AssetInfo,
   PerformanceMetrics,
   GPUCPUMetrics,
+  ServiceWorkerInfo,
+  StorageInfo,
+  FeatureSupport,
+  CodecSupport,
+  DisplayInfo,
+  WebVitals,
+  Warning,
+  WarningSeverity,
+  DiagnosticData,
 } from './types';
 
 // Asset lists
@@ -136,25 +145,103 @@ export function getCacheDiagnostics(): CacheDiagnostics {
 }
 
 /**
- * Get system information
+ * Get system information — extensive snapshot of identity, locale, display,
+ * hardware, privacy, document state, and JS heap. Every field is wrapped
+ * in a try/catch via safe() because feature support varies wildly across
+ * browsers (e.g. NavigatorUAData is Chromium-only, performance.memory is
+ * not in Firefox, navigator.connection is patchy).
  */
 export function getSystemInfo(): SystemInfo {
   const nav = navigator as any;
+  const safe = <T>(fn: () => T, fallback: T): T => { try { return fn(); } catch { return fallback; } };
+
+  const memory = (performance as any).memory;
+  const tzOffset = new Date().getTimezoneOffset();
+  const tzOffsetStr = `UTC${tzOffset <= 0 ? '+' : '-'}${Math.abs(Math.floor(tzOffset / 60)).toString().padStart(2,'0')}:${Math.abs(tzOffset % 60).toString().padStart(2,'0')}`;
+  const screenOrient = (screen as any).orientation;
 
   return {
+    // Identity
     browser: getBrowserName(),
     browserVersion: getBrowserVersion(),
+    browserEngine: getBrowserEngine(),
     os: getOS(),
+    osVersion: getOSVersion(),
     platform: nav.platform || 'Unknown',
+    userAgent: nav.userAgent || 'Unknown',
+    // Locale & time
     language: nav.language || 'Unknown',
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || 'Unknown',
+    languages: Array.isArray(nav.languages) ? nav.languages.join(', ') : 'Unknown',
+    timezone: safe(() => Intl.DateTimeFormat().resolvedOptions().timeZone, 'Unknown'),
+    timezoneOffset: tzOffsetStr,
+    locale: safe(() => Intl.DateTimeFormat().resolvedOptions().locale, 'Unknown'),
+    currentTime: new Date().toISOString(),
+    // Display
     screenResolution: `${screen.width}x${screen.height}`,
+    screenAvailable: `${screen.availWidth}x${screen.availHeight}`,
+    screenColorDepth: `${screen.colorDepth}-bit`,
+    screenPixelDepth: `${screen.pixelDepth}-bit`,
+    devicePixelRatio: `${window.devicePixelRatio || 1}x`,
     viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+    windowOuterSize: `${window.outerWidth}x${window.outerHeight}`,
+    scrollPosition: `${Math.round(window.scrollX)},${Math.round(window.scrollY)}`,
+    orientation: screenOrient ? `${screenOrient.type} (${screenOrient.angle}°)` : 'Unknown',
+    // Hardware
     deviceMemory: nav.deviceMemory ? `${nav.deviceMemory} GB` : 'Unknown',
     hardwareConcurrency: nav.hardwareConcurrency ? `${nav.hardwareConcurrency} cores` : 'Unknown',
+    maxTouchPoints: typeof nav.maxTouchPoints === 'number' ? `${nav.maxTouchPoints}` : 'Unknown',
+    isMobile: detectMobile() ? 'Yes' : 'No',
+    // Privacy & security
     cookiesEnabled: nav.cookieEnabled ? 'Yes' : 'No',
     doNotTrack: nav.doNotTrack === '1' ? 'Yes' : 'No',
+    isSecureContext: window.isSecureContext ? 'Yes' : 'No',
+    crossOriginIsolated: (window as any).crossOriginIsolated ? 'Yes' : 'No',
+    // Document state
+    readyState: document.readyState,
+    visibilityState: document.visibilityState,
+    hasFocus: document.hasFocus() ? 'Yes' : 'No',
+    pageURL: window.location.href,
+    pageReferrer: document.referrer || '(none)',
+    pageTitle: document.title,
+    pageEncoding: document.characterSet,
+    // Memory (JS heap — Chromium only)
+    jsHeapUsed: memory ? formatBytes(memory.usedJSHeapSize) : 'Unsupported',
+    jsHeapTotal: memory ? formatBytes(memory.totalJSHeapSize) : 'Unsupported',
+    jsHeapLimit: memory ? formatBytes(memory.jsHeapSizeLimit) : 'Unsupported',
   };
+}
+
+/**
+ * Browser engine inference from UA string.
+ */
+export function getBrowserEngine(): string {
+  const ua = navigator.userAgent;
+  if (/Gecko\/\d/.test(ua)) return 'Gecko';
+  if (/AppleWebKit\/.+\bSafari/.test(ua) && !/Chrome|Chromium|Edg/.test(ua)) return 'WebKit';
+  if (/Chrome|Chromium|Edg|OPR/.test(ua)) return 'Blink';
+  return 'Unknown';
+}
+
+/**
+ * Best-effort OS version extraction.
+ */
+export function getOSVersion(): string {
+  const ua = navigator.userAgent;
+  let m = ua.match(/Windows NT ([0-9.]+)/);    if (m) return m[1];
+  m     = ua.match(/Mac OS X ([0-9_]+)/);      if (m) return m[1].replace(/_/g, '.');
+  m     = ua.match(/Android ([0-9.]+)/);       if (m) return m[1];
+  m     = ua.match(/(?:iPhone|iPad).+OS ([0-9_]+)/); if (m) return m[1].replace(/_/g, '.');
+  m     = ua.match(/X11.+Linux ([^;)]+)/);     if (m) return m[1].trim();
+  return 'Unknown';
+}
+
+/**
+ * Mobile heuristic — UA-CH first, fall back to UA string regex.
+ */
+export function detectMobile(): boolean {
+  const uaData = (navigator as any).userAgentData;
+  if (uaData && typeof uaData.mobile === 'boolean') return uaData.mobile;
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
 
 /**
@@ -282,17 +369,41 @@ export function getPerformanceMetrics(): PerformanceMetrics {
 }
 
 /**
- * Get GPU and CPU usage metrics
+ * Detect software vs hardware rendering by inspecting the WebGL renderer
+ * string. Software fallbacks like SwiftShader (Chromium), llvmpipe (Mesa),
+ * Mesa Software Rasterizer, Microsoft Basic Render Driver, and ANGLE
+ * software/SwiftShader variants all produce ~5–10× lower FPS on canvas-
+ * heavy pages — flag them prominently.
+ */
+function isSoftwareRenderer(renderer: string): boolean {
+  if (!renderer) return false;
+  const r = renderer.toLowerCase();
+  return /swiftshader|llvmpipe|software|microsoft basic render|mesa offscreen|vmware|virtualbox/.test(r);
+}
+
+/**
+ * Get GPU and CPU usage metrics, plus hardware-acceleration detection
+ * and a snapshot of WebGL/WebGPU capabilities.
  */
 export async function getGPUCPUMetrics(): Promise<GPUCPUMetrics> {
-  // Get GPU info via WebGL
   let gpuRenderer = 'Unknown';
   let gpuVendor = 'Unknown';
   let gpuUsage = 0;
+  let webglVersion = 'Unsupported';
+  let webglMaxTextureSize = 'N/A';
+  let webglAntialias = 'N/A';
+  let webglExtensions = 0;
 
   try {
     const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl') as WebGLRenderingContext | null;
+    // Prefer WebGL2 for capability reporting.
+    let gl: any = canvas.getContext('webgl2');
+    if (gl) {
+      webglVersion = 'WebGL 2.0';
+    } else {
+      gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+      if (gl) webglVersion = 'WebGL 1.0';
+    }
 
     if (gl) {
       const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
@@ -300,16 +411,21 @@ export async function getGPUCPUMetrics(): Promise<GPUCPUMetrics> {
         gpuRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || 'Unknown';
         gpuVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL) || 'Unknown';
       }
-
-      // Estimate GPU usage from memory if available
-      const glMemory = (gl as any).getParameter((gl as any).GPU_DISJOINT_EXT);
-      if (glMemory !== undefined) {
-        gpuUsage = Math.min(glMemory / 1000, 100); // Rough estimate
-      }
+      try { webglMaxTextureSize = `${gl.getParameter(gl.MAX_TEXTURE_SIZE)}px`; } catch {}
+      try {
+        const attrs = gl.getContextAttributes();
+        webglAntialias = attrs && attrs.antialias ? 'Yes' : 'No';
+      } catch {}
+      try {
+        const ext = gl.getSupportedExtensions();
+        webglExtensions = Array.isArray(ext) ? ext.length : 0;
+      } catch {}
     }
   } catch (e) {
     console.warn('Could not get GPU info:', e);
   }
+
+  const webgpuSupported = !!(navigator as any).gpu;
 
   // Measure FPS over 1 second
   const fps = await measureFPS();
@@ -359,6 +475,7 @@ export async function getGPUCPUMetrics(): Promise<GPUCPUMetrics> {
     return 'Critical';
   };
 
+  const sw = isSoftwareRenderer(gpuRenderer);
   return {
     cpuUsage: Math.round(cpuUsage),
     gpuUsage: Math.round(gpuUsage),
@@ -368,7 +485,390 @@ export async function getGPUCPUMetrics(): Promise<GPUCPUMetrics> {
     gpuStatus: getGPUStatus(gpuUsage),
     fps: Math.round(fps),
     frameTiming: `${(1000 / fps).toFixed(2)}ms`,
+    hardwareAccelerated: !sw && gpuRenderer !== 'Unknown',
+    accelerationStatus: sw ? 'software' : (gpuRenderer === 'Unknown' ? 'unknown' : 'hardware'),
+    webglVersion,
+    webglMaxTextureSize,
+    webglAntialias,
+    webglExtensions,
+    webgpuSupported,
   };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Service Worker
+// ════════════════════════════════════════════════════════════════════
+export async function getServiceWorkerInfo(): Promise<ServiceWorkerInfo> {
+  const supported = 'serviceWorker' in navigator;
+  if (!supported) {
+    return { supported: false, registered: false, active: false, controlling: false,
+             scope: 'N/A', scriptURL: 'N/A', state: 'N/A',
+             cacheNames: [], cacheEntries: 0, cacheTotalBytes: 'N/A' };
+  }
+  try {
+    const reg = await navigator.serviceWorker.getRegistration();
+    const active = reg?.active;
+    let cacheNames: string[] = [];
+    let cacheEntries = 0;
+    let cacheTotalBytes = 'Unknown';
+    if ('caches' in self) {
+      cacheNames = await caches.keys();
+      let total = 0; let bytes = 0;
+      for (const name of cacheNames) {
+        const c = await caches.open(name);
+        const keys = await c.keys();
+        total += keys.length;
+        // Best-effort byte count: HEAD-style content-length per cached request
+        for (const req of keys.slice(0, 50)) {
+          try {
+            const resp = await c.match(req);
+            const cl = resp?.headers.get('content-length');
+            if (cl) bytes += parseInt(cl, 10) || 0;
+          } catch {}
+        }
+      }
+      cacheEntries = total;
+      cacheTotalBytes = bytes > 0 ? formatBytes(bytes) : 'Unknown';
+    }
+    return {
+      supported: true,
+      registered: !!reg,
+      active: !!active,
+      controlling: !!navigator.serviceWorker.controller,
+      scope: reg?.scope || 'N/A',
+      scriptURL: active?.scriptURL || 'N/A',
+      state: active?.state || 'none',
+      cacheNames,
+      cacheEntries,
+      cacheTotalBytes,
+    };
+  } catch {
+    return { supported: true, registered: false, active: false, controlling: false,
+             scope: 'N/A', scriptURL: 'N/A', state: 'error',
+             cacheNames: [], cacheEntries: 0, cacheTotalBytes: 'N/A' };
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Storage
+// ════════════════════════════════════════════════════════════════════
+export async function getStorageInfo(): Promise<StorageInfo> {
+  const out: StorageInfo = {
+    quotaSupported: false, quota: 'N/A', usage: 'N/A', usagePercent: 'N/A',
+    persisted: 'Unknown', localStorageItems: 0, localStorageBytes: '0 B',
+    sessionStorageItems: 0, sessionStorageBytes: '0 B',
+    indexedDBDatabases: 'N/A', cookieCount: 0,
+  };
+  // navigator.storage — quota/usage
+  if (navigator.storage && typeof navigator.storage.estimate === 'function') {
+    try {
+      const est = await navigator.storage.estimate();
+      out.quotaSupported = true;
+      out.quota = est.quota ? formatBytes(est.quota) : 'Unknown';
+      out.usage = est.usage ? formatBytes(est.usage) : '0 B';
+      if (est.quota && est.usage) {
+        out.usagePercent = `${((est.usage / est.quota) * 100).toFixed(2)}%`;
+      }
+    } catch {}
+    if (typeof navigator.storage.persisted === 'function') {
+      try { out.persisted = (await navigator.storage.persisted()) ? 'Yes' : 'No'; } catch {}
+    }
+  }
+  // localStorage / sessionStorage size estimate
+  try {
+    let lsBytes = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i)!; const v = localStorage.getItem(k) || '';
+      lsBytes += (k.length + v.length) * 2; // UTF-16
+    }
+    out.localStorageItems = localStorage.length;
+    out.localStorageBytes = formatBytes(lsBytes);
+  } catch {}
+  try {
+    let ssBytes = 0;
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const k = sessionStorage.key(i)!; const v = sessionStorage.getItem(k) || '';
+      ssBytes += (k.length + v.length) * 2;
+    }
+    out.sessionStorageItems = sessionStorage.length;
+    out.sessionStorageBytes = formatBytes(ssBytes);
+  } catch {}
+  // IndexedDB
+  if ((indexedDB as any).databases) {
+    try {
+      const dbs = await (indexedDB as any).databases();
+      out.indexedDBDatabases = `${dbs.length} (${dbs.map((d: any) => d.name).filter(Boolean).join(', ') || 'none'})`;
+    } catch { out.indexedDBDatabases = 'Error'; }
+  } else {
+    out.indexedDBDatabases = 'Unsupported (Firefox/Safari)';
+  }
+  // Cookies (only this document's, not HttpOnly)
+  out.cookieCount = (document.cookie || '').split(';').filter(c => c.trim().length > 0).length;
+  return out;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Feature support — boolean flags for every API the page may consume
+// ════════════════════════════════════════════════════════════════════
+export function getFeatureSupport(): FeatureSupport {
+  const w = window as any;
+  const n = navigator as any;
+  return {
+    webAssembly:        typeof w.WebAssembly !== 'undefined',
+    webGL:              !!document.createElement('canvas').getContext('webgl'),
+    webGL2:             !!document.createElement('canvas').getContext('webgl2'),
+    webGPU:             !!n.gpu,
+    webRTC:             typeof w.RTCPeerConnection !== 'undefined',
+    webUSB:             !!n.usb,
+    webHID:             !!n.hid,
+    webMIDI:            typeof n.requestMIDIAccess === 'function',
+    webBluetooth:       !!n.bluetooth,
+    webShare:           typeof n.share === 'function',
+    webAuthn:           !!(n.credentials && n.credentials.create),
+    webCrypto:          !!(w.crypto && w.crypto.subtle),
+    serviceWorker:      'serviceWorker' in n,
+    pushManager:        typeof w.PushManager !== 'undefined',
+    notifications:      typeof w.Notification !== 'undefined',
+    geolocation:        !!n.geolocation,
+    intersectionObserver: typeof w.IntersectionObserver !== 'undefined',
+    resizeObserver:     typeof w.ResizeObserver !== 'undefined',
+    mutationObserver:   typeof w.MutationObserver !== 'undefined',
+    performanceObserver: typeof w.PerformanceObserver !== 'undefined',
+    abortController:    typeof w.AbortController !== 'undefined',
+    broadcastChannel:   typeof w.BroadcastChannel !== 'undefined',
+    offscreenCanvas:    typeof w.OffscreenCanvas !== 'undefined',
+    audioContext:       typeof (w.AudioContext || w.webkitAudioContext) !== 'undefined',
+    speechSynthesis:    typeof w.speechSynthesis !== 'undefined',
+    speechRecognition:  typeof (w.SpeechRecognition || w.webkitSpeechRecognition) !== 'undefined',
+    paymentRequest:     typeof w.PaymentRequest !== 'undefined',
+    fileSystemAccess:   typeof w.showOpenFilePicker === 'function',
+    clipboard:          !!(n.clipboard && n.clipboard.writeText),
+    pictureInPicture:   typeof (document as any).pictureInPictureEnabled !== 'undefined',
+    fullscreen:         typeof document.documentElement.requestFullscreen === 'function',
+    vibration:          typeof n.vibrate === 'function',
+    wakeLock:           !!n.wakeLock,
+    storageAccess:      typeof (document as any).requestStorageAccess === 'function',
+  };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Codec support — every common video/audio codec, plus MediaSource MSE
+// ════════════════════════════════════════════════════════════════════
+export function getCodecSupport(): CodecSupport {
+  const v = document.createElement('video');
+  const a = document.createElement('audio');
+  const videoChecks: Array<[string, string]> = [
+    ['H.264 (MP4)',         'video/mp4; codecs="avc1.42E01E"'],
+    ['H.265/HEVC',          'video/mp4; codecs="hev1.1.6.L93.B0"'],
+    ['VP8',                 'video/webm; codecs="vp8"'],
+    ['VP9',                 'video/webm; codecs="vp9"'],
+    ['AV1',                 'video/mp4; codecs="av01.0.05M.08"'],
+    ['Theora',              'video/ogg; codecs="theora"'],
+  ];
+  const audioChecks: Array<[string, string]> = [
+    ['AAC',                 'audio/mp4; codecs="mp4a.40.2"'],
+    ['MP3',                 'audio/mpeg'],
+    ['Opus',                'audio/webm; codecs="opus"'],
+    ['Vorbis',              'audio/webm; codecs="vorbis"'],
+    ['FLAC',                'audio/flac'],
+    ['WAV',                 'audio/wav'],
+  ];
+  const mseSupported = typeof (window as any).MediaSource !== 'undefined';
+  const mseChecks: Array<[string, string]> = mseSupported
+    ? videoChecks.map(([n, t]) => [n, t])
+    : [];
+  return {
+    video:       videoChecks.map(([name, type]) => ({ name, type, supported: v.canPlayType(type) || 'no' })),
+    audio:       audioChecks.map(([name, type]) => ({ name, type, supported: a.canPlayType(type) || 'no' })),
+    mediaSource: mseChecks.map(([name, type]) => ({ name, type,
+      supported: mseSupported && (window as any).MediaSource.isTypeSupported(type) ? 'yes' : 'no' })),
+  };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Display capabilities — color gamut, HDR, motion preferences, pointer
+// ════════════════════════════════════════════════════════════════════
+export function getDisplayInfo(): DisplayInfo {
+  const mm = (q: string): boolean => { try { return window.matchMedia(q).matches; } catch { return false; } };
+  let colorGamut = 'srgb';
+  if (mm('(color-gamut: rec2020)')) colorGamut = 'rec2020';
+  else if (mm('(color-gamut: p3)')) colorGamut = 'p3';
+  let dynamicRange = 'standard';
+  if (mm('(dynamic-range: high)')) dynamicRange = 'high';
+
+  let prefersColorScheme = 'no-preference';
+  if (mm('(prefers-color-scheme: dark)'))  prefersColorScheme = 'dark';
+  else if (mm('(prefers-color-scheme: light)')) prefersColorScheme = 'light';
+
+  let prefersContrast = 'no-preference';
+  if (mm('(prefers-contrast: more)')) prefersContrast = 'more';
+  else if (mm('(prefers-contrast: less)')) prefersContrast = 'less';
+  else if (mm('(prefers-contrast: custom)')) prefersContrast = 'custom';
+
+  let hover = 'none';
+  if (mm('(hover: hover)')) hover = 'hover';
+  let pointer = 'none';
+  if (mm('(pointer: coarse)')) pointer = 'coarse';
+  else if (mm('(pointer: fine)')) pointer = 'fine';
+  let anyPointer = 'none';
+  if (mm('(any-pointer: coarse)')) anyPointer = 'coarse';
+  if (mm('(any-pointer: fine)'))   anyPointer = anyPointer === 'coarse' ? 'fine + coarse' : 'fine';
+
+  return {
+    colorGamut,
+    dynamicRange,
+    prefersColorScheme,
+    prefersReducedMotion:        mm('(prefers-reduced-motion: reduce)') ? 'reduce' : 'no-preference',
+    prefersReducedTransparency:  mm('(prefers-reduced-transparency: reduce)') ? 'reduce' : 'no-preference',
+    prefersContrast,
+    forcedColors:                mm('(forced-colors: active)') ? 'active' : 'none',
+    hover, pointer, anyPointer,
+    refreshRate:                 'Unknown', // populated by measureRefreshRate if needed
+  };
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Web Vitals — LCP, CLS, INP, TTFB, FCP via Performance APIs
+// ════════════════════════════════════════════════════════════════════
+export function getWebVitals(): WebVitals {
+  const out: WebVitals = {
+    lcp: 'N/A', cls: 'N/A', inp: 'N/A', ttfb: 'N/A', fcp: 'N/A',
+    longTasks: 0, longTasksTotalTime: '0ms',
+  };
+  try {
+    // FCP from paint timing
+    const fcp = performance.getEntriesByType('paint').find(e => e.name === 'first-contentful-paint');
+    if (fcp) out.fcp = `${Math.round(fcp.startTime)}ms`;
+    // TTFB from navigation timing
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    if (nav) out.ttfb = `${Math.round(nav.responseStart - nav.requestStart)}ms`;
+    // LCP from buffered LCP entries (if PerformanceObserver was used elsewhere we'd capture more)
+    const lcps = performance.getEntriesByType('largest-contentful-paint') as any[];
+    if (lcps.length > 0) out.lcp = `${Math.round(lcps[lcps.length - 1].startTime)}ms`;
+    // CLS / INP — buffered layout-shift / event entries
+    const ls = performance.getEntriesByType('layout-shift') as any[];
+    if (ls.length > 0) {
+      let cls = 0;
+      ls.forEach(e => { if (!e.hadRecentInput) cls += e.value; });
+      out.cls = cls.toFixed(4);
+    }
+    const events = performance.getEntriesByType('event') as any[];
+    if (events.length > 0) {
+      const max = events.reduce((m, e) => Math.max(m, e.duration || 0), 0);
+      out.inp = `${Math.round(max)}ms`;
+    }
+    // Long tasks
+    const lt = performance.getEntriesByType('longtask') as any[];
+    out.longTasks = lt.length;
+    out.longTasksTotalTime = `${Math.round(lt.reduce((s, t) => s + t.duration, 0))}ms`;
+  } catch {}
+  return out;
+}
+
+// ════════════════════════════════════════════════════════════════════
+// Warnings synthesis — inspect the gathered data and produce an array
+// of severity-tagged advisories. Rendered as a banner at the top of
+// the diagnostics modal.
+// ════════════════════════════════════════════════════════════════════
+export function synthesizeWarnings(d: Omit<DiagnosticData, 'warnings'>): Warning[] {
+  const w: Warning[] = [];
+  const push = (severity: WarningSeverity, title: string, message: string) =>
+    w.push({ severity, title, message });
+
+  // GPU acceleration (the explicit ask).
+  if (d.gpuCpu.accelerationStatus === 'software') {
+    push('critical', 'No GPU hardware acceleration',
+      `Browser is using a software renderer (${d.gpuCpu.gpuRenderer}). ` +
+      `This typically means hardware acceleration is disabled in browser settings, ` +
+      `the GPU driver is missing/blacklisted, or the OS is running in a VM without GPU passthrough. ` +
+      `Effect: low FPS (${d.gpuCpu.fps}), high CPU, choppy animations.`);
+  } else if (d.gpuCpu.accelerationStatus === 'unknown') {
+    push('medium', 'Could not detect GPU',
+      `WEBGL_debug_renderer_info extension blocked or WebGL unavailable. Renderer reported "${d.gpuCpu.gpuRenderer}".`);
+  }
+
+  // FPS / responsiveness
+  if (d.gpuCpu.fps < 30) {
+    push('high', `Low frame rate (${d.gpuCpu.fps} FPS)`,
+      `Frame budget is ${d.gpuCpu.frameTiming} per frame (60 FPS target = 16.67ms). Animations and scrolling will feel sluggish.`);
+  }
+
+  // Service Worker
+  if (d.serviceWorker.supported && !d.serviceWorker.registered) {
+    push('high', 'Service Worker not registered',
+      `The PWA service worker did not install. Offline support, asset caching, and the cache-bust pipeline are all inactive.`);
+  } else if (d.serviceWorker.registered && !d.serviceWorker.controlling) {
+    push('medium', 'Service Worker registered but not yet controlling',
+      `First load after a deploy — the new SW is installed but only takes control after the next navigation.`);
+  }
+
+  // Storage pressure
+  const usagePct = parseFloat(d.storage.usagePercent);
+  if (!isNaN(usagePct) && usagePct > 80) {
+    push('high', `Storage usage critical (${d.storage.usagePercent})`,
+      `${d.storage.usage} of ${d.storage.quota} consumed. The browser may evict cache entries unexpectedly.`);
+  } else if (!isNaN(usagePct) && usagePct > 50) {
+    push('medium', `Storage usage elevated (${d.storage.usagePercent})`,
+      `${d.storage.usage} of ${d.storage.quota} consumed.`);
+  }
+
+  // Memory pressure (Chromium only)
+  const heapMatch = d.system.jsHeapUsed.match(/^([0-9.]+)/);
+  const limitMatch = d.system.jsHeapLimit.match(/^([0-9.]+)/);
+  if (heapMatch && limitMatch) {
+    const used = parseFloat(heapMatch[1]);
+    const lim  = parseFloat(limitMatch[1]);
+    if (lim > 0 && used / lim > 0.8) {
+      push('high', 'JS heap near limit',
+        `Used ${d.system.jsHeapUsed} of ${d.system.jsHeapLimit}. OOM risk.`);
+    }
+  }
+
+  // Security
+  if (!window.isSecureContext) {
+    push('high', 'Insecure context',
+      `Page not served over HTTPS — secure-context APIs (Service Worker, Clipboard, WebCrypto.subtle, etc.) are unavailable.`);
+  }
+
+  // Asset payload
+  const totalBytes = d.assets.reduce((s, a) => {
+    const m = a.size.match(/([0-9.]+)\s*(B|KB|MB|GB)/);
+    if (!m) return s;
+    const mult = ({ B: 1, KB: 1024, MB: 1048576, GB: 1073741824 } as Record<string, number>)[m[2]] || 1;
+    return s + parseFloat(m[1]) * mult;
+  }, 0);
+  if (totalBytes > 30 * 1024 * 1024) {
+    push('medium', `Large asset payload (${formatBytes(totalBytes)})`,
+      `${d.assets.length} assets reported, total ${formatBytes(totalBytes)}. Consider lazy-loading or video poster fallback.`);
+  }
+
+  // None cached?
+  const cachedCount = d.assets.filter(a => a.cached).length;
+  if (d.assets.length > 0 && cachedCount === 0) {
+    push('medium', 'No assets reported as cached',
+      `0 of ${d.assets.length} assets show cache hits. Either the SW precache list is missing these URLs, the panel reads cache state from response headers (x-cache: HIT) the server doesn't emit, or this is a fresh visit.`);
+  }
+
+  // Codecs
+  const noH264 = !d.codecs.video.find(c => c.name === 'H.264 (MP4)' && c.supported && c.supported !== 'no');
+  if (noH264) {
+    push('high', 'H.264/MP4 not supported',
+      `Browser cannot play .mp4 video. Background videos will not render.`);
+  }
+
+  // Reduced motion preference
+  if (d.display.prefersReducedMotion === 'reduce') {
+    push('info', 'User prefers reduced motion',
+      `Page-wide animations should be disabled or simplified.`);
+  }
+
+  // Network (effective type)
+  if (d.network.effectiveType === 'slow-2g' || d.network.effectiveType === '2g') {
+    push('high', `Slow network (${d.network.effectiveType})`,
+      `Disable autoplay video, reduce asset loads.`);
+  }
+
+  return w;
 }
 
 /**

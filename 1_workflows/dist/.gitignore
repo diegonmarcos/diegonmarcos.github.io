@@ -77,6 +77,13 @@ a-Portals/*/src/script.js
 a-Portals/*/src/script.js.map
 a-Portals/*/src/style.css
 a-Portals/*/src/style.css.map
+## tsc emits leaking into src/typescript/ (regression guard).
+## _engine.sh mod_tsc forces --outDir=dist/.tsc-tmp so tsc never writes
+## back to src/. Project tsconfigs default outDir to "." for IDE
+## resolution, which would leak .js/.js.map next to every .ts file
+## without the CLI override. These patterns catch any future regression.
+**/src/typescript/*.js
+**/src/typescript/*.js.map
 ## Build logs
 1.ops/build_main.log
 1.ops/.build-status

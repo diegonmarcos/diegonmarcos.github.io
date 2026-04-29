@@ -57,6 +57,14 @@ blog_output/
 final_site/
 ## Sass/CSS build artifacts
 *.backup
+## Dev/watch outputs leaking into src/ (regression guard).
+## _engine.sh start_watchers() writes to <project>/dist/watch/ — these
+## patterns under src/ exist only as a belt-and-braces trap if a future
+## engine bug ever rewires watchers back to src/.
+a-Portals/*/src/script.js
+a-Portals/*/src/script.js.map
+a-Portals/*/src/style.css
+a-Portals/*/src/style.css.map
 ## Build logs
 1.ops/build_main.log
 1.ops/.build-status

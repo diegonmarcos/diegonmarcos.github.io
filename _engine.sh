@@ -112,7 +112,7 @@ var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
     var x = "CFG_B" + i + "_";
-    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","source","out","bg"].forEach(function(k) {
+    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"].forEach(function(k) {
         var v = s[k];
         if (Array.isArray(v)) v = v.join(",");
         p(x + k.toUpperCase(), v);
@@ -160,7 +160,7 @@ b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
     x = f"CFG_B{i}_"
-    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","source","out","bg"]:
+    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"]:
         v = s.get(k,"")
         if isinstance(v, list): v = ",".join(str(x) for x in v)
         p(x + k.upper(), v)
@@ -332,84 +332,45 @@ mod_esbuild() {
     log_success "esbuild: $(basename "$2")"
 }
 
-# esbuild for Service Workers — content-aware. Reads `hash_of` (comma-list
-# of dist filenames) and `precache` (comma-list of precache URLs) from
-# build.json. Computes a 12-char hash via the engine
-# `1_workflows/dist/scripts/front-cache-hash.sh` and injects two compile-
-# time constants into the SW bundle:
-#   declare const BUILD_HASH: string;        // → "8079f2bb6fc1"
-#   declare const BUILD_PRECACHE: string[];  // → ["./", ...]
-# The SW then derives its cache name from BUILD_HASH, so any byte change
-# in `hash_of` files → new hash → new SW bytes → browser re-installs →
-# old caches purged. Fully data-driven, zero manual VERSION bumps.
+# esbuild for Service Workers — thin wrapper over `front-sw-build.sh`.
+# Mirrors the `mod_pwa_icons → front-pwa-icons.sh` delegation pattern.
+# All SW-specific logic (hash, per-asset map, precache JSON, esbuild
+# invocation, output validation) lives in the orchestrator script.
+#
+# build.json fields consumed:
+#   input    — SW source (.ts), relative to project.
+#   output   — SW bundle (.js), relative to dist/.
+#   hash_of  — dist-relative paths whose bytes feed BUILD_HASH +
+#              BUILD_ASSET_HASHES. Required.
+#   precache — URLs to precache on install. Optional.
+#   verify   — bool (default true). When true, BUILD_ASSET_HASHES is
+#              populated and the SW does runtime SHA-256 verification on
+#              first cache miss per asset, recovering with `?v=<hash>`
+#              if the CDN edge served stale bytes.
+#   format   — esbuild --format (default "iife").
+#   target   — esbuild --target (default "es2020").
 mod_esbuild_sw() {
     local input="$PROJECT_DIR/$1"
     local output="$DIST_DIR/$2"
     local hash_of="$3"
     local precache="$4"
-    local mode="${5:-prod}"
-    local format="${6:-iife}"
-    local target="${7:-es2020}"
+    local verify="${5:-true}"
+    local mode="${6:-prod}"
+    local format="${7:-iife}"
+    local target="${8:-es2020}"
 
-    [ -f "$input" ] || { log_error "esbuild_sw: input not found: $input"; return $EXIT_BUILD; }
-    [ -n "$hash_of" ] || { log_error "esbuild_sw: hash_of (list of dist files) is required"; return $EXIT_BUILD; }
-    mkdir -p "$(dirname "$output")"
+    # Default verify=true when build.json omits the field.
+    [ -z "$verify" ] && verify="true"
 
-    # Resolve hash_of paths against dist/ + verify each exists.
-    local hash_paths=""
-    _IFS="$IFS"; IFS=","
-    for f in $hash_of; do
-        IFS="$_IFS"
-        f="$(echo "$f" | sed 's/^ *//;s/ *$//')"
-        local p="$DIST_DIR/$f"
-        [ -f "$p" ] || { log_error "esbuild_sw: hash_of file missing in dist: $p"; return $EXIT_BUILD; }
-        hash_paths="$hash_paths $p"
-    done
-    IFS="$_IFS"
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-sw-build.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-sw-build.sh"
+    [ -x "$engine" ] || { log_error "esbuild_sw: front-sw-build.sh not found / not executable"; return $EXIT_BUILD; }
 
-    # Locate the cache-hash engine. Prefer the deployed copy under
-    # 1_workflows/dist/, fall back to src/ for dev work.
-    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-cache-hash.sh"
-    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-cache-hash.sh"
-    [ -x "$engine" ] || { log_error "esbuild_sw: front-cache-hash.sh not found / not executable"; return $EXIT_BUILD; }
+    local summary
+    summary="$("$engine" "$input" "$output" "$hash_of" "$precache" "$verify" "$mode" "$format" "$target" "$DIST_DIR" "$REPO_ROOT")" \
+        || { log_error "esbuild_sw: orchestrator failed"; return $EXIT_BUILD; }
 
-    local hash
-    hash="$("$engine" $hash_paths)" || { log_error "esbuild_sw: hash engine failed"; return $EXIT_BUILD; }
-    [ -n "$hash" ] || { log_error "esbuild_sw: empty hash"; return $EXIT_BUILD; }
-
-    # Build the precache JSON literal. esbuild --define expects a string
-    # whose value, when parsed as JS, yields the constant. So for an array
-    # we pass the literal JSON array text.
-    local precache_json="[]"
-    if [ -n "$precache" ]; then
-        # Convert "a,b,c" → ["a","b","c"]
-        precache_json="$(node -e "
-          const s = process.env.PRE || '';
-          const arr = s.split(',').map(x => x.trim()).filter(Boolean);
-          process.stdout.write(JSON.stringify(arr));
-        " PRE="$precache" 2>/dev/null)" \
-            || precache_json="$(echo "$precache" | awk -F, '{
-                printf "["
-                for (i=1; i<=NF; i++) {
-                    gsub(/^ +| +$/, "", $i)
-                    printf "%s\"%s\"", (i>1?",":""), $i
-                }
-                printf "]"
-            }')"
-    fi
-
-    local args="--bundle --format=$format --target=$target --outfile=$output"
-    args="$args --define:BUILD_HASH=\"\\\"$hash\\\"\""
-    args="$args --define:BUILD_PRECACHE='$precache_json'"
-    if [ "$mode" = "dev" ]; then
-        args="$args --sourcemap"
-    else
-        args="$args --minify"
-    fi
-
-    eval run_tool esbuild "\"$input\"" $args
-    [ -f "$output" ] || { log_error "esbuild_sw produced no output"; return $EXIT_BUILD; }
-    log_success "esbuild_sw: $(basename "$2") (hash=$hash, precache=$(echo "$precache" | awk -F, '{print NF}') files)"
+    log_success "esbuild_sw: $summary"
 }
 
 # Generate the full PWA icon set from one source image. Wraps the engine
@@ -638,6 +599,7 @@ run_build() {
         eval "local _dir=\$CFG_B${i}_DIR"
         eval "local _hash_of=\$CFG_B${i}_HASH_OF"
         eval "local _precache=\$CFG_B${i}_PRECACHE"
+        eval "local _verify=\$CFG_B${i}_VERIFY"
         eval "local _source=\$CFG_B${i}_SOURCE"
         eval "local _out=\$CFG_B${i}_OUT"
         eval "local _bg=\$CFG_B${i}_BG"
@@ -653,7 +615,7 @@ run_build() {
         case "$_mod" in
             sass)         mod_sass "$_input" "$_output" "prod" ;;
             esbuild)      mod_esbuild "$_input" "$_output" "prod" "$_format" "$_target" ;;
-            esbuild_sw)   mod_esbuild_sw "$_input" "$_output" "$_hash_of" "$_precache" "prod" "$_format" "$_target" ;;
+            esbuild_sw)   mod_esbuild_sw "$_input" "$_output" "$_hash_of" "$_precache" "$_verify" "prod" "$_format" "$_target" ;;
             pwa_icons)    mod_pwa_icons "$_source" "$_out" "$_bg" ;;
             tsc)          mod_tsc "$_dir" "$_output" "prod" ;;
             vite)         mod_vite ;;
@@ -692,11 +654,31 @@ h.createServer(function(req,res){
     ' "$dir" "$port"
 }
 
-# Start dev server with fallback chain
+# Start dev server with fallback chain.
+#
+# For vanilla static projects with watchers (CFG_WN > 0), the server root
+# is $DIST_DIR (the prod build output) with $DIST_DIR/watch/ overlaid on
+# top — so /script.js, /style.css resolve to the watcher's live build,
+# falling back to the prod build. node-static is the only mode that
+# implements the overlay; when watchers are present, auto-detect is
+# overridden to node-static. live-server / python / busybox / php see
+# only $DIST_DIR (no overlay; watcher updates not visible).
+#
+# For projects without watchers, server root is $serve_dir (legacy
+# behaviour — typically src/ or dist/ depending on build.json).
 start_server() {
     local serve_dir="$PROJECT_DIR/$CFG_SD"
+    local overlay_dir=""
     local port="$CFG_PORT"
     local mode="$CFG_SM"
+
+    # When watchers are configured, the dev server serves $DIST_DIR with
+    # $DIST_DIR/watch/ as a priority overlay. Outside of watcher mode,
+    # the legacy $serve_dir (build.json's serve.dir) is preserved.
+    if [ "$CFG_WN" -gt 0 ]; then
+        serve_dir="$DIST_DIR"
+        overlay_dir="$DIST_DIR/watch"
+    fi
 
     # Detect mode if auto
     if [ "$mode" = "auto" ]; then
@@ -720,6 +702,24 @@ start_server() {
             log_error "No HTTP server found. Install one of: node, python3, busybox, php"
             return $EXIT_SERVER
         fi
+    fi
+
+    # Watchers need the dist/watch overlay; only node-static implements it.
+    # Force node-static for vanilla modes when watchers are present so the
+    # watcher's live output wins over the prod build's stale artefacts.
+    if [ -n "$overlay_dir" ]; then
+        case "$mode" in
+            vite|sveltekit) ;;  # framework-managed, skip
+            node-static)    ;;  # already correct
+            *)
+                if command -v node >/dev/null 2>&1; then
+                    log_step "watchers present — forcing node-static (overlay support)"
+                    mode="node-static"
+                else
+                    log_warn "watchers configured but node missing; serving without overlay"
+                fi
+                ;;
+        esac
     fi
 
     # Check if port is already in use
@@ -753,21 +753,27 @@ start_server() {
             ;;
         node-static)
             [ -d "$serve_dir" ] || serve_dir="$PROJECT_DIR"
-            nohup sh -c '_node_static_server "$1" "$2"' _ "$serve_dir" "$port" > /dev/null 2>&1 &
-            # Use inline approach since function won't be available in nohup subshell
+            # Inline server with optional dist/watch/ overlay. Args:
+            #   $1 = root (dist/ when watchers present, else serve.dir)
+            #   $2 = port
+            #   $3 = overlay dir (dist/watch/) or "" for no overlay
             nohup node -e '
-var h=require("http"),f=require("fs"),p=require("path"),d=process.argv[1],port=process.argv[2];
-var m={"html":"text/html","css":"text/css","js":"application/javascript","json":"application/json",
-"png":"image/png","jpg":"image/jpeg","svg":"image/svg+xml","ico":"image/x-icon"};
+var h=require("http"),f=require("fs"),p=require("path");
+var d=process.argv[1], port=process.argv[2], overlay=process.argv[3]||"";
+var m={"html":"text/html","css":"text/css","js":"application/javascript","mjs":"application/javascript",
+"json":"application/json","map":"application/json","webmanifest":"application/manifest+json",
+"png":"image/png","jpg":"image/jpeg","jpeg":"image/jpeg","gif":"image/gif","webp":"image/webp",
+"svg":"image/svg+xml","ico":"image/x-icon","mp4":"video/mp4","woff":"font/woff","woff2":"font/woff2","ttf":"font/ttf"};
+function resolveIn(root,u){var fp=p.join(root,u);try{if(f.statSync(fp).isDirectory())fp=p.join(fp,"index.html");}catch(e){}return f.existsSync(fp)?fp:null;}
 h.createServer(function(req,res){
-    var u=decodeURIComponent(req.url.split("?")[0]);var fp=p.join(d,u);
-    try{if(f.statSync(fp).isDirectory())fp=p.join(fp,"index.html")}catch(e){}
-    if(!f.existsSync(fp)){res.writeHead(404);res.end("Not Found");return}
+    var u=decodeURIComponent(req.url.split("?")[0]);
+    var fp=(overlay&&resolveIn(overlay,u))||resolveIn(d,u);
+    if(!fp){res.writeHead(404);res.end("Not Found");return;}
     var ext=p.extname(fp).slice(1);
-    res.writeHead(200,{"Content-Type":m[ext]||"application/octet-stream"});
+    res.writeHead(200,{"Content-Type":m[ext]||"application/octet-stream","Cache-Control":"no-cache"});
     f.createReadStream(fp).pipe(res);
 }).listen(port,function(){});
-            ' "$serve_dir" "$port" > /dev/null 2>&1 &
+            ' "$serve_dir" "$port" "$overlay_dir" > /dev/null 2>&1 &
             _write_pid "$!" "$port" "node-static"
             ;;
         python)
@@ -832,10 +838,19 @@ _kill_existing_watcher() {
     kill -9 $hits 2>/dev/null || true
 }
 
-# Start file watchers for dev mode
+# Start file watchers for dev mode.
+#
+# Inputs are read from $serve_dir (build.json's `serve.dir`, default src/).
+# Outputs go to $DIST_DIR/watch/ — NEVER back into src/. Keeps generated
+# artefacts out of the source tree (no leaks into git, no script.js /
+# style.css polluting src/). The dev server overlays dist/watch/ on top
+# of dist/ so /script.js, /style.css resolve to the watcher's live build
+# first, falling back to the prod build.
 start_watchers() {
     local i=0
     local serve_dir="$PROJECT_DIR/$CFG_SD"
+    local watch_dir="$DIST_DIR/watch"
+    mkdir -p "$watch_dir"
 
     while [ "$i" -lt "$CFG_WN" ]; do
         eval "local _mod=\$CFG_W${i}_MOD"
@@ -846,20 +861,22 @@ start_watchers() {
 
         case "$_mod" in
             sass)
-                _kill_existing_watcher sass "$serve_dir/$_output"
-                nohup sass "$serve_dir/$_input" "$serve_dir/$_output" --watch --style=expanded --source-map > /dev/null 2>&1 &
+                _kill_existing_watcher sass "$watch_dir/$_output"
+                nohup sass "$serve_dir/$_input" "$watch_dir/$_output" --watch --style=expanded --source-map > /dev/null 2>&1 &
                 _append_pid "$!" "sass"
-                log_step "watcher: sass"
+                log_step "watcher: sass → dist/watch/$_output"
                 ;;
             esbuild)
                 local fmt="${_format:-iife}"
                 local tgt="${_target:-es2020}"
-                _kill_existing_watcher esbuild "$serve_dir/$_output"
-                nohup esbuild "$serve_dir/$_input" --bundle --outfile="$serve_dir/$_output" --format="$fmt" --target="$tgt" --sourcemap --watch=forever > /dev/null 2>&1 &
+                _kill_existing_watcher esbuild "$watch_dir/$_output"
+                nohup esbuild "$serve_dir/$_input" --bundle --outfile="$watch_dir/$_output" --format="$fmt" --target="$tgt" --sourcemap --watch=forever > /dev/null 2>&1 &
                 _append_pid "$!" "esbuild"
-                log_step "watcher: esbuild"
+                log_step "watcher: esbuild → dist/watch/$_output"
                 ;;
             tsc)
+                # tsc honours its own tsconfig.json's outDir — that tsconfig
+                # MUST point outDir at "<dist>/watch" for the overlay to work.
                 local tsc_dir="$serve_dir"
                 [ -n "$_input" ] && tsc_dir="$serve_dir/$_input"
                 _kill_existing_watcher tsc "$tsc_dir"
@@ -867,7 +884,7 @@ start_watchers() {
                 nohup tsc --watch > /dev/null 2>&1 &
                 _append_pid "$!" "tsc"
                 cd "$PROJECT_DIR"
-                log_step "watcher: tsc"
+                log_step "watcher: tsc (tsconfig outDir must be dist/watch)"
                 ;;
         esac
 
@@ -877,26 +894,49 @@ start_watchers() {
 
 # ─── SERVER MANAGEMENT ──────────────────────────────────────
 
-# Write PID file (JSON)
+# Write PID file (JSON). Preserves any watcher PIDs already recorded by
+# _append_pid (which seeds a skeleton when watchers start before the
+# server) — merges into the existing file rather than overwriting.
 _write_pid() {
     local pid="$1" port="$2" server_type="$3"
     local now
     now="$(date -u +%Y-%m-%dT%H:%M:%S 2>/dev/null || date +%s)"
 
+    if [ -f "$PID_FILE" ] && command -v node >/dev/null 2>&1; then
+        node -e '
+var fs=require("fs"),f=process.argv[1];
+var p={};try{p=JSON.parse(fs.readFileSync(f,"utf8"));}catch(e){}
+p.port=parseInt(process.argv[2]);
+p.server=process.argv[3];
+p.started=process.argv[4];
+p.pids=p.pids||{};
+p.pids[process.argv[3]]=parseInt(process.argv[5]);
+fs.writeFileSync(f,JSON.stringify(p)+"\n");
+        ' "$PID_FILE" "$port" "$server_type" "$now" "$pid" 2>/dev/null && return
+    fi
     printf '{"port":%s,"server":"%s","started":"%s","pids":{"%s":%s}}\n' \
         "$port" "$server_type" "$now" "$server_type" "$pid" > "$PID_FILE"
 }
 
-# Append a PID to existing pidfile
+# Append a PID to existing pidfile (or seed a fresh skeleton if missing).
+# cmd_dev starts watchers BEFORE start_server, so the file may not exist
+# yet on the first append — without seeding, watcher PIDs would be lost
+# and `build.sh stop` couldn't reap them. Seeding with `pids:{}` makes
+# the first watcher's append succeed; start_server's later _write_pid
+# preserves any already-recorded watcher PIDs by merging instead of
+# overwriting.
 _append_pid() {
     local pid="$1" name="$2"
-    if [ -f "$PID_FILE" ] && command -v node >/dev/null 2>&1; then
-        node -e '
+    command -v node >/dev/null 2>&1 || return 0
+    if [ ! -f "$PID_FILE" ]; then
+        printf '{"pids":{}}\n' > "$PID_FILE"
+    fi
+    node -e '
 var fs=require("fs"),f=process.argv[1],p=JSON.parse(fs.readFileSync(f,"utf8"));
+p.pids = p.pids || {};
 p.pids[process.argv[2]]=parseInt(process.argv[3]);
 fs.writeFileSync(f,JSON.stringify(p)+"\n");
-        ' "$PID_FILE" "$name" "$pid" 2>/dev/null || true
-    fi
+    ' "$PID_FILE" "$name" "$pid" 2>/dev/null || true
 }
 
 # Check if server is running
@@ -1222,12 +1262,23 @@ cmd_dev() {
     log_info "Starting $CFG_NAME dev environment..."
     resolve_deps
 
-    # Start watchers first (for static projects)
+    # Prime dist/ with the prod build BEFORE starting watchers/server.
+    # Watchers write live outputs to dist/watch/; the server overlays
+    # dist/watch/ on dist/, so dist/ must hold the static assets (HTML,
+    # public/ symlink, data wrappers, ...) for the server to find them
+    # while the watchers' compiled outputs override script.js / style.css.
+    if [ "$CFG_BN" -gt 0 ]; then
+        rm -rf "$DIST_DIR"
+        mkdir -p "$DIST_DIR"
+        run_build
+    fi
+
+    # Start watchers (write into dist/watch/ — see start_watchers comment)
     if [ "$CFG_WN" -gt 0 ]; then
         start_watchers
     fi
 
-    # Start server
+    # Start server (serves dist/ with dist/watch/ overlay when watchers present)
     start_server
 
     sleep 1

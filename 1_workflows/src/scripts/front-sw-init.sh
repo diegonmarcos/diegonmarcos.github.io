@@ -38,8 +38,9 @@ TEMPLATE="$REPO_ROOT/1_workflows/src/templates/script-service-worker.ts"
 
 mode="all"
 case "${1:-}" in
-    --suggest)        mode="suggest";       shift ;;
-    --copy-template)  mode="copy-template"; shift ;;
+    --suggest)           mode="suggest";          shift ;;
+    --suggest-register)  mode="suggest-register"; shift ;;
+    --copy-template)     mode="copy-template";    shift ;;
 esac
 
 PROJECT="${1:-}"
@@ -159,8 +160,72 @@ process.stdout.write("\n");
 '
 }
 
+# ─── Suggest sw_register block (HTML files in dist) ───────────
+# Mirrors the suggest() data flow but emits a `sw_register` step. The
+# `files` field becomes a CSV of HTML basenames discovered in build.json's
+# build steps + dist/ glob expansion (excluding files that get inlined-
+# away). Prints the block as JSON on stdout. Exit 3 if no HTMLs found
+# (rollout treats that as a SKIP — projects with no HTML can't host a
+# <script> registration block).
+suggest_register() {
+    PROJECT="$PROJECT" node -e '
+const fs = require("fs");
+const path = require("path");
+const proj = process.env.PROJECT;
+const cfg = JSON.parse(fs.readFileSync(path.join(proj, "build.json"), "utf8"));
+const build = cfg.build || [];
+
+if (build.some(s => s.mod === "sw_register")) {
+  process.stderr.write("→ sw_register already present, no suggestion needed\n");
+  process.exit(0);
+}
+
+// Same inline-aware filter as the esbuild_sw suggester: an HTML that
+// is the TARGET of an inline step is OK to inject into. CSS/JS that
+// get inlined-AWAY are not relevant here (we only inject into HTML).
+const htmls = new Set();
+
+for (const step of build) {
+  if (!step.mod) continue;
+  if (step.output && /\.html$/i.test(step.output)) htmls.add(step.output);
+  if (step.mod === "inline" && step.html) htmls.add(step.html);
+  if (step.mod === "copy" && step.files) {
+    const items = String(step.files).split(",").map(s => s.trim()).filter(Boolean);
+    for (const it of items) {
+      if (it.includes("*")) {
+        // Glob — peek at dist/ for matching .html files. When the
+        // pattern has no extension (e.g. "*"), accept .html only —
+        // the engine module excludes anything else.
+        try {
+          for (const f of fs.readdirSync(path.join(proj, "dist"))) {
+            if (f.toLowerCase().endsWith(".html")) htmls.add(f);
+          }
+        } catch { /* dist not built yet */ }
+      } else if (/\.html$/i.test(it)) {
+        htmls.add(it);
+      }
+    }
+  }
+}
+
+if (htmls.size === 0) {
+  process.stderr.write("→ no HTML files in dist/ — sw_register not applicable\n");
+  process.exit(3);
+}
+
+const block = {
+  _doc: "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+  mod: "sw_register",
+  files: [...htmls].sort().join(", ")
+};
+process.stdout.write(JSON.stringify(block, null, 2));
+process.stdout.write("\n");
+'
+}
+
 case "$mode" in
-    all)            copy_template; suggest ;;
-    suggest)        suggest ;;
-    copy-template)  copy_template ;;
+    all)               copy_template; suggest ;;
+    suggest)           suggest ;;
+    suggest-register)  suggest_register ;;
+    copy-template)     copy_template ;;
 esac

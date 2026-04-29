@@ -56,6 +56,14 @@ do_build() {
         log "Built tests"
     fi
 
+    # Templates (src/templates/ → dist/templates/) — markup/code snippets
+    # consumed by engine modules at build time (e.g. mod_sw_register
+    # injects sw-register-snippet.html into project HTMLs).
+    if [ -d "$SRC_DIR/templates" ]; then
+        inject_header_tree "$SRC_DIR/templates" "$DIST_DIR/templates"
+        log "Built templates"
+    fi
+
     # Gitmodules (src/modules/gitmodules → dist/.gitmodules)
     if [ -f "$SRC_DIR/modules/gitmodules" ]; then
         inject_header "$SRC_DIR/modules/gitmodules" "$DIST_DIR/.gitmodules"

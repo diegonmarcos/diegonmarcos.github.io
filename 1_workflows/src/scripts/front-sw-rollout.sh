@@ -71,9 +71,8 @@ record() {
 "
 }
 
-# Patch build.json: append the suggested block to the `build` array,
+# Patch build.json: append the esbuild_sw block to the `build` array,
 # preserve everything else verbatim, write back with 2-space indent.
-# Returns 0 on success, non-zero on parse/write failure.
 patch_build_json() {
     local project="$1"
     local block_json="$2"
@@ -83,6 +82,25 @@ const cfg = JSON.parse(fs.readFileSync(process.env.BJ, "utf8"));
 const block = JSON.parse(process.env.BLOCK);
 cfg.build = cfg.build || [];
 cfg.build.push(block);
+fs.writeFileSync(process.env.BJ, JSON.stringify(cfg, null, 2) + "\n");
+'
+}
+
+# Patch build.json: insert the sw_register block IMMEDIATELY BEFORE
+# the esbuild_sw step (so the registration <script> is part of the
+# HTML hashed by BUILD_HASH). No-op when sw_register is already there.
+patch_build_json_register() {
+    local project="$1"
+    local block_json="$2"
+    BJ="$project/build.json" BLOCK="$block_json" node -e '
+const fs = require("fs");
+const cfg = JSON.parse(fs.readFileSync(process.env.BJ, "utf8"));
+const block = JSON.parse(process.env.BLOCK);
+cfg.build = cfg.build || [];
+if (cfg.build.some(s => s.mod === "sw_register")) process.exit(0);
+let i = cfg.build.findIndex(s => s.mod === "esbuild_sw");
+if (i < 0) i = cfg.build.length;
+cfg.build.splice(i, 0, block);
 fs.writeFileSync(process.env.BJ, JSON.stringify(cfg, null, 2) + "\n");
 '
 }
@@ -102,11 +120,13 @@ if (owners.length) {
   console.log("SKIP:bundler-owned=" + owners.join(","));
   process.exit(0);
 }
-if (build.some(s => s.mod === "esbuild_sw")) {
-  console.log("SKIP:already-has-esbuild_sw");
+const hasSwBuild = build.some(s => s.mod === "esbuild_sw");
+const hasSwReg   = build.some(s => s.mod === "sw_register");
+if (hasSwBuild && hasSwReg) {
+  console.log("SKIP:fully-patched");
   process.exit(0);
 }
-console.log("OK");
+console.log("OK:" + (hasSwBuild ? "needs-register" : "needs-both"));
 '
 }
 
@@ -121,12 +141,13 @@ process_project() {
     }
     case "$elig" in
         SKIP:*) record SKIP "$rel" "${elig#SKIP:}"; return ;;
-        OK)     ;;
+        OK:*)   ;;
         *)      record FAIL "$rel" "unexpected eligibility: $elig"; return ;;
     esac
+    local need="${elig#OK:}"  # "needs-both" | "needs-register"
 
     if [ $DRY_RUN -eq 1 ]; then
-        record OK "$rel" "(dry-run) eligible"
+        record OK "$rel" "(dry-run) eligible — $need"
         return
     fi
 
@@ -142,39 +163,69 @@ process_project() {
         return
     fi
 
-    # 3. Get suggested esbuild_sw block. Suggester exit 3 = no hashable
-    # assets (refuses to suggest a broken block) → record as SKIP.
-    local block
-    block="$("$INIT_SCRIPT" --suggest "$project" 2>/dev/null)"
-    local sug_rc=$?
-    if [ $sug_rc -eq 3 ]; then
-        record SKIP "$rel" "no hashable assets in dist/"
-        return
-    fi
-    if [ -z "$block" ] || ! printf '%s' "$block" | head -c1 | grep -q '{'; then
-        record FAIL "$rel" "suggester produced no block (rc=$sug_rc)"
-        return
+    # 3. Add esbuild_sw if missing.
+    if [ "$need" = "needs-both" ]; then
+        local block
+        block="$("$INIT_SCRIPT" --suggest "$project" 2>/dev/null)"
+        local sug_rc=$?
+        if [ $sug_rc -eq 3 ]; then
+            record SKIP "$rel" "no hashable assets in dist/"
+            return
+        fi
+        if [ -z "$block" ] || ! printf '%s' "$block" | head -c1 | grep -q '{'; then
+            record FAIL "$rel" "esbuild_sw suggester produced no block (rc=$sug_rc)"
+            return
+        fi
+        if ! patch_build_json "$project" "$block"; then
+            record FAIL "$rel" "build.json patch (esbuild_sw) failed"
+            return
+        fi
     fi
 
-    # 4. Patch build.json.
-    if ! patch_build_json "$project" "$block"; then
-        record FAIL "$rel" "build.json patch failed"
+    # 4. Add sw_register if missing. Project may have HTMLs (suggester
+    # emits a block) or none (exit 3 → record as success on the
+    # esbuild_sw front but flag missing-register).
+    local rblock
+    rblock="$("$INIT_SCRIPT" --suggest-register "$project" 2>/dev/null)"
+    local rrc=$?
+    if [ $rrc -eq 3 ]; then
+        # No HTMLs to inject into. The SW will still be built but won't
+        # auto-register. Project owner must register manually.
+        record OK "$rel" "esbuild_sw added; no HTMLs for sw_register"
         return
     fi
+    if [ -z "$rblock" ]; then
+        # Already has sw_register, or empty for some other reason — fine.
+        :
+    else
+        if ! printf '%s' "$rblock" | head -c1 | grep -q '{'; then
+            record FAIL "$rel" "sw_register suggester produced invalid block (rc=$rrc)"
+            return
+        fi
+        if ! patch_build_json_register "$project" "$rblock"; then
+            record FAIL "$rel" "build.json patch (sw_register) failed"
+            return
+        fi
+    fi
 
-    # 5. Re-build to verify the new step works.
+    # 5. Re-build to verify both new steps work.
     if ! ( cd "$project" && ./build.sh build >/tmp/sw-rollout.log 2>&1 ); then
         record FAIL "$rel" "post-patch build failed (see /tmp/sw-rollout.log)"
         return
     fi
 
-    # 6. Confirm the SW bundle was actually produced.
+    # 6. Confirm the SW bundle was actually produced + registration
+    # snippet is present in at least one HTML.
     if [ ! -f "$project/dist/script-service-worker.js" ]; then
         record FAIL "$rel" "no dist/script-service-worker.js after rebuild"
         return
     fi
+    if ! grep -lqr "sw-register: injected" "$project/dist" 2>/dev/null; then
+        record FAIL "$rel" "no HTML contains the sw-register marker"
+        return
+    fi
 
-    record OK "$rel" "patched + built"
+    record OK "$rel" "patched + built + registered"
 }
 
 # ─── Main loop ─────────────────────────────────────────────────

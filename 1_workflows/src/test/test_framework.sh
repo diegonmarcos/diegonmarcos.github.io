@@ -56,7 +56,7 @@ done
 for s in front-svg-sprite.sh front-image-encoder.sh front-lighthouse-snapshot.sh \
          front-data-json-js-wrapper.sh front-localize-assets.sh front-cache-hash.sh \
          front-pwa-icons.sh front-cache-hashes-map.sh front-sw-precache.sh \
-         front-sw-build.sh; do
+         front-sw-build.sh front-sw-register.sh; do
     deployed="1_workflows/dist/scripts/$s"
     [ -f "$deployed" ] || fail "engine script $deployed missing"
     [ -x "$deployed" ] || fail "engine script $deployed not executable"
@@ -341,5 +341,67 @@ grep -q 'PORTAL_DATA\["foo"\]' "$fixt_dw/src/data/data-foo.json.js" \
 grep -q '"title": "Foo Page"' "$fixt_dw/src/data/data-foo.json.js" \
     || fail "data-foo.json.js missing original JSON content"
 pass "data_wrap engine wraps every src/data/*.json into PORTAL_DATA[<key>] companion"
+
+# _engine.sh mod_tsc contract: tsc must NEVER emit .js / .js.map next to
+# the .ts sources under src/typescript/. Project tsconfigs default outDir
+# to "." (for IDE resolution), so a naive `tsc` invocation leaks .js back
+# into src/. The engine forces --outDir to a temp dir under dist/, then
+# moves the named output and discards the rest.
+#
+# Tester: build a tiny vanilla project with a tsc step + 2 .ts files
+# (the named output + a sibling), run build.sh build, assert:
+#   1. dist/<output>.js exists (engine moved the named output)
+#   2. src/typescript/<output>.js does NOT exist (no leak)
+#   3. src/typescript/<sibling>.js does NOT exist (no leak from sibling .ts)
+if command -v node >/dev/null 2>&1 \
+   && (command -v tsc >/dev/null 2>&1 || [ -x "$REPO_ROOT/node_modules/.bin/tsc" ]); then
+    fixt_tsc="$(mktemp -d)"
+    trap 'rm -rf "$fixt2" "$fixt3" "$fixt4" "${fixt5:-}" "$fixt_dw" "$fixt_tsc"; [ -n "${dev_pid_file:-}" ] && [ -f "$dev_pid_file" ] && kill $(cat "$dev_pid_file") 2>/dev/null; true' EXIT
+    mkdir -p "$fixt_tsc/src/typescript"
+    cat > "$fixt_tsc/src/typescript/main.ts" <<'EOF'
+const greeting: string = "tsc-no-leak-fixture";
+console.log(greeting);
+EOF
+    cat > "$fixt_tsc/src/typescript/sibling.ts" <<'EOF'
+export const sibling: string = "would-leak-without-engine-fix";
+EOF
+    cat > "$fixt_tsc/src/typescript/tsconfig.json" <<'EOF'
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "outDir": ".",
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["./**/*.ts"]
+}
+EOF
+    cat > "$fixt_tsc/build.json" <<'EOF'
+{
+  "name": "tsc-no-leak-fixture",
+  "framework": "vanilla",
+  "port": 9999,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    { "mod": "tsc", "dir": "src/typescript", "output": "main.js" }
+  ],
+  "deploy": {}
+}
+EOF
+    ln -sf "$REPO_ROOT/_engine.sh" "$fixt_tsc/build.sh"
+    (cd "$fixt_tsc" && ./build.sh build --no-deps > /dev/null 2>&1) \
+        || fail "tsc fixture build failed"
+    [ -f "$fixt_tsc/dist/main.js" ] || fail "tsc fixture: dist/main.js missing"
+    [ -f "$fixt_tsc/src/typescript/main.js" ] \
+        && fail "tsc fixture LEAKED main.js into src/typescript/ (engine bug regression)"
+    [ -f "$fixt_tsc/src/typescript/sibling.js" ] \
+        && fail "tsc fixture LEAKED sibling.js into src/typescript/ (engine bug regression)"
+    pass "mod_tsc never emits .js / .js.map into src/typescript/ (forced --outDir)"
+else
+    pass "mod_tsc no-leak contract (tsc not in PATH; runtime test skipped)"
+fi
 
 echo "=== all checks passed ==="

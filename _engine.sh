@@ -373,6 +373,46 @@ mod_esbuild_sw() {
     log_success "esbuild_sw: $summary"
 }
 
+# Inject the SW-registration <script> block into HTML files. Wraps the
+# engine `1_workflows/dist/scripts/front-sw-register.sh` so build.json
+# can drive which HTMLs get the registration declaratively.
+#
+# build.json fields:
+#   files — comma-separated list of dist-relative HTML file names, OR
+#           "*" to inject into every dist/*.html (excluding any HTML
+#           that already has the marker comment from a prior run).
+#
+# Idempotent — the snippet starts with a marker comment that
+# front-sw-register.sh detects, so re-running is a no-op for files
+# that already have the snippet.
+#
+# Pairs with `esbuild_sw`: order in build.json matters — register the
+# tag BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.
+mod_sw_register() {
+    local files="$1"
+    [ -n "$files" ] || { log_error "sw_register: files (HTML list) is required"; return $EXIT_BUILD; }
+
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-sw-register.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-sw-register.sh"
+    [ -x "$engine" ] || { log_error "sw_register: front-sw-register.sh not found / not executable"; return $EXIT_BUILD; }
+
+    # Expand "*" → every *.html in dist/ (sorted, deterministic).
+    if [ "$files" = "*" ]; then
+        files=""
+        for f in "$DIST_DIR"/*.html; do
+            [ -f "$f" ] || continue
+            files="${files:+$files,}$(basename "$f")"
+        done
+        [ -n "$files" ] || { log_warn "sw_register: no *.html in dist/, skipping"; return 0; }
+    fi
+
+    local summary
+    summary="$("$engine" "$DIST_DIR" "$REPO_ROOT" "$files")" \
+        || { log_error "sw_register: engine failed"; return $EXIT_BUILD; }
+
+    log_success "sw_register: $summary"
+}
+
 # Generate the full PWA icon set from one source image. Wraps the engine
 # `1_workflows/dist/scripts/front-pwa-icons.sh` so build.json can drive
 # the source / output / safe-zone-bg fully declaratively.
@@ -420,20 +460,30 @@ mod_tsc() {
 
     [ -d "$dir" ] || { log_error "tsc: dir not found: $dir"; return $EXIT_BUILD; }
 
+    # Force --outDir to a temp dir under dist/. Critical: project tsconfigs
+    # commonly set "outDir": "." (so IDE resolution stays in-tree), which
+    # makes a bare `tsc` emit .js + .js.map next to every .ts source — i.e.
+    # generated artefacts polluting src/. CLI --outDir overrides tsconfig,
+    # so the engine forces a clean emit dir. Move the named output to dist/,
+    # then nuke the temp (other tsc by-products are not engine-managed).
+    local tsc_tmp="$DIST_DIR/.tsc-tmp"
+    rm -rf "$tsc_tmp"
+    mkdir -p "$tsc_tmp"
+
     cd "$dir"
     if [ "$mode" = "dev" ]; then
-        run_tool tsc --sourceMap
+        run_tool tsc --outDir "$tsc_tmp" --sourceMap
     else
-        run_tool tsc
+        run_tool tsc --outDir "$tsc_tmp"
     fi
 
-    # Move output to dist if specified
-    if [ -n "$output_file" ] && [ -f "$dir/$output_file" ]; then
-        mv "$dir/$output_file" "$DIST_DIR/$output_file"
-        [ -f "$dir/${output_file}.map" ] && mv "$dir/${output_file}.map" "$DIST_DIR/${output_file}.map"
+    if [ -n "$output_file" ] && [ -f "$tsc_tmp/$output_file" ]; then
+        mv "$tsc_tmp/$output_file" "$DIST_DIR/$output_file"
+        [ -f "$tsc_tmp/${output_file}.map" ] && mv "$tsc_tmp/${output_file}.map" "$DIST_DIR/${output_file}.map"
     fi
+    rm -rf "$tsc_tmp"
     cd "$PROJECT_DIR"
-    log_success "tsc: compiled"
+    log_success "tsc: compiled (outDir forced to dist/.tsc-tmp, no src/ leaks)"
 }
 
 # Vite build
@@ -639,6 +689,7 @@ run_build() {
             sass)         mod_sass "$_input" "$_output" "prod" ;;
             esbuild)      mod_esbuild "$_input" "$_output" "prod" "$_format" "$_target" ;;
             esbuild_sw)   mod_esbuild_sw "$_input" "$_output" "$_hash_of" "$_precache" "$_verify" "prod" "$_format" "$_target" ;;
+            sw_register)  mod_sw_register "$_files" ;;
             pwa_icons)    mod_pwa_icons "$_source" "$_out" "$_bg" ;;
             tsc)          mod_tsc "$_dir" "$_output" "prod" ;;
             vite)         mod_vite ;;

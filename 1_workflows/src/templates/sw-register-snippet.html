@@ -1,0 +1,25 @@
+<!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
+<script>
+(function(){
+  if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
+  var reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if (reloading) return;
+    reloading = true;
+    location.reload();
+  });
+  function reg(){
+    navigator.serviceWorker.register('./script-service-worker.js').catch(function(){});
+  }
+  if ('requestIdleCallback' in window) requestIdleCallback(reg); else setTimeout(reg, 1);
+  window.__resetSW = function(){
+    return navigator.serviceWorker.getRegistrations().then(function(regs){
+      return Promise.all(regs.map(function(r){ return r.unregister(); }));
+    }).then(function(){
+      return caches.keys().then(function(keys){
+        return Promise.all(keys.map(function(k){ return caches.delete(k); }));
+      });
+    }).then(function(){ location.reload(); });
+  };
+})();
+</script>

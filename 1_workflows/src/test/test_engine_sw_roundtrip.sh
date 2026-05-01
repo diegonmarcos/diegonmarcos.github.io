@@ -19,7 +19,7 @@ fail() { echo "FAIL: $1" >&2; exit 1; }
 pass() { echo "  ✓ $1"; }
 
 [ -d "$FIXTURE" ] || fail "fixture not found: $FIXTURE"
-[ -x "$REPO_ROOT/_engine.sh" ] || fail "_engine.sh not executable"
+[ -x "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" ] || fail "_engine.sh not executable"
 
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
@@ -34,7 +34,7 @@ cp -r "$FIXTURE" "$WORK"
 trap 'rm -rf "$WORK" "$TMP"' EXIT
 
 # Project-level build.sh symlink, just like every real project.
-ln -sf "$REPO_ROOT/_engine.sh" "$WORK/build.sh"
+ln -sf "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" "$WORK/build.sh"
 
 build() {
     ( cd "$WORK" && ./build.sh build >/tmp/sw-roundtrip.log 2>&1 ) || {

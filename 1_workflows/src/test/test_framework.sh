@@ -36,7 +36,7 @@ grep -q "git config --file .gitmodules" "1_workflows/dist/hooks/pre-commit" \
 pass "pre-commit data-driven for submodules"
 
 # Preserve domain engine: _engine.sh must still exist + executable
-[ -x "$REPO_ROOT/_engine.sh" ] \
+[ -x "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" ] \
     || fail "_engine.sh (web-project domain engine) missing or not executable"
 pass "_engine.sh (domain engine) preserved"
 
@@ -212,7 +212,7 @@ EOF
   "deploy": {}
 }
 EOF
-    ln -sf "$REPO_ROOT/_engine.sh" "$fixt5/build.sh"
+    ln -sf "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" "$fixt5/build.sh"
 
     # Start dev (cmd_dev runs cmd_build first, then watchers, then server).
     # --no-deps skips npm resolution (fixture has no package.json — esbuild +
@@ -296,9 +296,9 @@ grep -q '^# Usage:' "1_workflows/dist/scripts/front-init-data-wrap.sh" \
     || fail "front-init-data-wrap.sh missing Usage block"
 pass "front-init-data-wrap.sh templater deployed + documented"
 
-grep -q 'data_wrap)' "$REPO_ROOT/_engine.sh" \
+grep -q 'data_wrap)' "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" \
     || fail "_engine.sh: mod_data_wrap not registered in run_build dispatch"
-grep -q '^mod_data_wrap()' "$REPO_ROOT/_engine.sh" \
+grep -q '^mod_data_wrap()' "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" \
     || fail "_engine.sh: mod_data_wrap function not defined"
 pass "_engine.sh: data_wrap module registered + defined"
 
@@ -391,7 +391,7 @@ EOF
   "deploy": {}
 }
 EOF
-    ln -sf "$REPO_ROOT/_engine.sh" "$fixt_tsc/build.sh"
+    ln -sf "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" "$fixt_tsc/build.sh"
     (cd "$fixt_tsc" && ./build.sh build --no-deps > /dev/null 2>&1) \
         || fail "tsc fixture build failed"
     [ -f "$fixt_tsc/dist/main.js" ] || fail "tsc fixture: dist/main.js missing"

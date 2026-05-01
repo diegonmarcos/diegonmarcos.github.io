@@ -15,7 +15,7 @@ REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 fail() { echo "FAIL: $1" >&2; exit 1; }
 pass() { echo "  ✓ $1"; }
 
-[ -x "$REPO_ROOT/_engine.sh" ] || fail "_engine.sh not executable"
+[ -x "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" ] || fail "_engine.sh not executable"
 
 # Materialise a tiny fixture under the repo so $REPO_ROOT inside _engine.sh
 # resolves correctly (mod_copy reads PROJECT_DIR + REPO_ROOT from
@@ -44,7 +44,7 @@ cat > "$WORK/build.json" <<'EOF'
 }
 EOF
 
-ln -sf "$REPO_ROOT/_engine.sh" "$WORK/build.sh"
+ln -sf "$REPO_ROOT/1_workflows/src/scripts/_engine.sh" "$WORK/build.sh"
 
 ( cd "$WORK" && ./build.sh build > /tmp/copy-glob-test.log 2>&1 ) || {
     cat /tmp/copy-glob-test.log

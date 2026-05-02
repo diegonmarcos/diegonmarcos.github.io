@@ -1,9 +1,6 @@
 // ============================================
 // Data loader — reads from globalThis.PORTAL_DATA
 // ============================================
-// No fetch(): all JSON is wrapped at build time as data-<key>.json.js
-// (front-data-json-js-wrapper.sh) and loaded via <script> in index.html
-// BEFORE this module runs. CORS-free, file://-friendly, SW-safe.
 import type { Dataset, NavTree } from './types';
 
 const DATA_KEY = 'mock';
@@ -13,12 +10,15 @@ declare const globalThis: { PORTAL_DATA?: Record<string, unknown> };
 
 function readPortalData<T>(key: string): T {
   const bag = globalThis.PORTAL_DATA;
+  console.info('[loader] PORTAL_DATA bag keys =', bag ? Object.keys(bag) : '(undefined)');
   if (!bag || !(key in bag)) {
-    throw new Error(
-      `PORTAL_DATA["${key}"] not found. Make sure <script src="data-${key}.json.js"></script> is loaded BEFORE script.js in index.html.`,
-    );
+    const msg = `PORTAL_DATA["${key}"] not found. Loaded keys: ${bag ? Object.keys(bag).join(', ') : 'none'}`;
+    console.error('[loader]', msg);
+    throw new Error(msg);
   }
-  return bag[key] as T;
+  const value = bag[key];
+  console.info(`[loader] PORTAL_DATA["${key}"] type=`, typeof value, 'isArray=', Array.isArray(value), 'topKeys=', value && typeof value === 'object' ? Object.keys(value as object).slice(0, 10) : value);
+  return value as T;
 }
 
 let cachedData: Dataset | null = null;

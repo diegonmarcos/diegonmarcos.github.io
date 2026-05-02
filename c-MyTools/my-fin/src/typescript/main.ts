@@ -1,5 +1,5 @@
 // ============================================
-// Ledger — entry
+// My Financials — entry
 // ============================================
 import { store } from './modules/state';
 import { loadDataset, loadNav } from './modules/loader';
@@ -39,23 +39,45 @@ const VIEWS: Record<string, ViewFn> = {
   'accounting/taxes':          renderAccountingTaxes,
 };
 
+function showFatal(stage: string, err: unknown) {
+  const message = err instanceof Error ? `${err.message}\n\n${err.stack ?? ''}` : String(err);
+  console.error(`[bootstrap] FATAL @ ${stage}:`, err);
+  const pre = document.createElement('pre');
+  pre.style.cssText = 'background:#200;color:#f88;padding:1rem;margin:1rem;font:12px/1.4 ui-monospace,monospace;white-space:pre-wrap;border:1px solid #f44;border-radius:4px;';
+  pre.textContent = `MyFin boot failed @ ${stage}\n\n${message}`;
+  document.body.appendChild(pre);
+}
+
 async function bootstrap() {
-  const root = document.getElementById('app')!;
-  renderShell(root);
-  const main = document.getElementById('main')!;
+  console.info('[bootstrap] start  PORTAL_DATA keys=', globalThis.PORTAL_DATA ? Object.keys(globalThis.PORTAL_DATA) : '(none)');
+  const root = document.getElementById('app');
+  if (!root) { showFatal('getElementById(app)', new Error('#app element not found in DOM')); return; }
+  console.info('[bootstrap] #app found');
+
+  try { renderShell(root); console.info('[bootstrap] renderShell ok'); }
+  catch (e) { showFatal('renderShell', e); return; }
+
+  const main = document.getElementById('main');
+  if (!main) { showFatal('getElementById(main)', new Error('#main element not found after renderShell')); return; }
   main.innerHTML = '<div class="view"><div class="empty-state"><div class="skeleton" style="width: 320px; height: 32px"></div></div></div>';
 
   let data: Dataset; let nav: NavTree;
   try {
+    console.info('[bootstrap] loading dataset + nav...');
     [data, nav] = await Promise.all([loadDataset(), loadNav()]);
+    console.info('[bootstrap] data loaded — meta=', (data as unknown as { meta?: unknown }).meta);
   } catch (e) {
     main.innerHTML = `<div class="view"><div class="empty-state"><h3 class="t-h2">Could not load data</h3><p class="t-meta">${(e as Error).message}</p></div></div>`;
+    showFatal('loadDataset/loadNav', e);
     return;
   }
-  store.set({ data, nav, loading: false });
-  store.subscribe(() => render());
-  onRouteChange(nav, (route) => store.set({ route }));
-  render();
+  try {
+    store.set({ data, nav, loading: false });
+    store.subscribe(() => render());
+    onRouteChange(nav, (route) => store.set({ route }));
+    render();
+    console.info('[bootstrap] initial render complete');
+  } catch (e) { showFatal('store/render init', e); }
 }
 
 function render() {
@@ -71,4 +93,9 @@ function render() {
   fn(main, data, found.item, route.tab || (found.item.tabs?.[0]?.id ?? ''));
 }
 
-bootstrap();
+// Catch ANY uncaught error so the user sees something instead of a blank page.
+window.addEventListener('error',           (ev) => { showFatal('window.onerror', ev.error ?? ev.message); });
+window.addEventListener('unhandledrejection', (ev) => { showFatal('unhandledrejection', ev.reason); });
+console.info('[main.ts] module loaded — DOM readyState=', document.readyState);
+
+bootstrap().catch((e) => showFatal('bootstrap()', e));

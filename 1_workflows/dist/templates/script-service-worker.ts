@@ -101,6 +101,25 @@ async function verifyAsset(req: Request, res: Response): Promise<Response> {
   }
 }
 
+// Reject pathological responses before they enter the cache. Catches
+// the failure modes that produced the historical "blank page on
+// deploy" symptom:
+//   • zero-byte body — truncated stream / partial fetch / aborted load.
+//   • content-type that contradicts the request destination —
+//     classic "SPA fallback poisoned the cache" where a script/style
+//     request was served with text/html. The browser silently rejects
+//     the load, no error fires, page sits blank.
+async function isCacheable(req: Request, res: Response): Promise<boolean> {
+  try {
+    const buf = await res.clone().arrayBuffer();
+    if (buf.byteLength === 0) return false;
+  } catch { return false; }
+  const ct = (res.headers.get('content-type') || '').toLowerCase();
+  if (req.destination === 'script' && ct && !/javascript|ecmascript/.test(ct)) return false;
+  if (req.destination === 'style'  && ct && !/css/.test(ct))                   return false;
+  return true;
+}
+
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
@@ -111,16 +130,38 @@ self.addEventListener('fetch', (event) => {
   event.respondWith((async () => {
     const cache = await caches.open(RUNTIME_CACHE);
     const hit = await cache.match(req);
-    if (hit) return hit;
+
+    // Cache hit: re-verify against BUILD_ASSET_HASHES if we have an
+    // expected hash for this asset. Poisoned entries (corrupt body,
+    // wrong content-type cached by an older buggy SW version) get
+    // evicted and the request falls through to network. Assets without
+    // a known hash trust the cache — same behaviour as before.
+    if (hit) {
+      const expected = BUILD_ASSET_HASHES[scopeRelative(req.url)];
+      if (!expected) return hit;
+      try {
+        const got = await sha256_12(await hit.clone().arrayBuffer());
+        if (got === expected) return hit;
+      } catch { /* fall through to network on hash failure */ }
+      cache.delete(req).catch(() => undefined);
+    }
+
     try {
       const res = await fetch(req);
       if (!res.ok) return res;
       const verified = await verifyAsset(req, res);
-      if (verified.ok) cache.put(req, verified.clone()).catch(() => undefined);
+      if (verified.ok && await isCacheable(req, verified)) {
+        cache.put(req, verified.clone()).catch(() => undefined);
+      }
       return verified;
     } catch {
-      const fallback = await caches.match('./index.html');
-      return fallback ?? Response.error();
+      // Offline shell fallback — ONLY for top-level navigations, never
+      // for sub-resources. Returning index.html for a script/style
+      // request poisons the page (HTML parsed as JS/CSS, silent fail).
+      if (req.mode === 'navigate' || req.destination === 'document') {
+        return (await caches.match('./index.html')) ?? Response.error();
+      }
+      return Response.error();
     }
   })());
 });

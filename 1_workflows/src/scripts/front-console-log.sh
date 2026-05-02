@@ -77,6 +77,20 @@ SNIPPET="$REPO_ROOT/1_workflows/dist/templates/console-log-snippet.html"
 [ -f "$SNIPPET" ] || SNIPPET="$REPO_ROOT/1_workflows/src/templates/console-log-snippet.html"
 [ -f "$SNIPPET" ] || { echo "✗ console-log: snippet not found (dist/templates or src/templates)" >&2; exit 2; }
 
+# Companion reader/locator — TypeScript source compiled to a same-origin
+# console-logs.js shipped alongside index.html so the inline writer's
+# `<script src="console-logs.js">` resolves locally. Always overwrite
+# (file is small, deterministic, no per-project content).
+TS_SRC="$REPO_ROOT/1_workflows/dist/templates/console-logs.ts"
+[ -f "$TS_SRC" ] || TS_SRC="$REPO_ROOT/1_workflows/src/templates/console-logs.ts"
+[ -f "$TS_SRC" ] || { echo "✗ console-log: console-logs.ts not found (dist/templates or src/templates)" >&2; exit 2; }
+ESBUILD_BIN="esbuild"
+command -v esbuild >/dev/null 2>&1 || ESBUILD_BIN="npx esbuild"
+$ESBUILD_BIN "$TS_SRC" --bundle --format=iife --target=es2020 --minify \
+    --outfile="$DIST_DIR/console-logs.js" >/dev/null 2>&1 \
+    || { echo "✗ console-log: esbuild failed for $TS_SRC" >&2; exit 2; }
+printf '  ✓ %s (companion reader API)\n' 'console-logs.js'
+
 MARKER='<!-- console-log: injected by mod_console_log'
 
 injected=0

@@ -49,12 +49,12 @@ function showFatal(stage: string, err: unknown) {
 }
 
 async function bootstrap() {
-  console.info('[bootstrap] start  PORTAL_DATA keys=', globalThis.PORTAL_DATA ? Object.keys(globalThis.PORTAL_DATA) : '(none)');
+  console.log('[bootstrap] start  PORTAL_DATA keys=', globalThis.PORTAL_DATA ? Object.keys(globalThis.PORTAL_DATA) : '(none)');
   const root = document.getElementById('app');
   if (!root) { showFatal('getElementById(app)', new Error('#app element not found in DOM')); return; }
-  console.info('[bootstrap] #app found');
+  console.log('[bootstrap] #app found');
 
-  try { renderShell(root); console.info('[bootstrap] renderShell ok'); }
+  try { renderShell(root); console.log('[bootstrap] renderShell ok'); }
   catch (e) { showFatal('renderShell', e); return; }
 
   const main = document.getElementById('main');
@@ -63,9 +63,9 @@ async function bootstrap() {
 
   let data: Dataset; let nav: NavTree;
   try {
-    console.info('[bootstrap] loading dataset + nav...');
+    console.log('[bootstrap] loading dataset + nav...');
     [data, nav] = await Promise.all([loadDataset(), loadNav()]);
-    console.info('[bootstrap] data loaded — meta=', (data as unknown as { meta?: unknown }).meta);
+    console.log('[bootstrap] data loaded — meta=', (data as unknown as { meta?: unknown }).meta);
   } catch (e) {
     main.innerHTML = `<div class="view"><div class="empty-state"><h3 class="t-h2">Could not load data</h3><p class="t-meta">${(e as Error).message}</p></div></div>`;
     showFatal('loadDataset/loadNav', e);
@@ -76,7 +76,7 @@ async function bootstrap() {
     store.subscribe(() => render());
     onRouteChange(nav, (route) => store.set({ route }));
     render();
-    console.info('[bootstrap] initial render complete');
+    console.log('[bootstrap] initial render complete');
   } catch (e) { showFatal('store/render init', e); }
 }
 
@@ -96,6 +96,9 @@ function render() {
 // Catch ANY uncaught error so the user sees something instead of a blank page.
 window.addEventListener('error',           (ev) => { showFatal('window.onerror', ev.error ?? ev.message); });
 window.addEventListener('unhandledrejection', (ev) => { showFatal('unhandledrejection', ev.reason); });
-console.info('[main.ts] module loaded — DOM readyState=', document.readyState);
+(globalThis as unknown as { __myFinBooted?: boolean }).__myFinBooted = true;
+const bootDiag = (globalThis as unknown as { __bootDiag?: (l: string, m: string) => void }).__bootDiag;
+if (bootDiag) bootDiag('ok', '4. script.js IIFE executing — main.ts module body running');
+console.log('[main.ts] module loaded — DOM readyState=', document.readyState);
 
 bootstrap().catch((e) => showFatal('bootstrap()', e));

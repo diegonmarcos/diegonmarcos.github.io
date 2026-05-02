@@ -55,6 +55,33 @@
   </head>
 <body>
     <div id="app"></div>
+    <div id="boot-diag" style="position:fixed;bottom:0;left:0;right:0;z-index:99999;font:11px/1.3 ui-monospace,monospace;background:#001;color:#0f0;padding:6px 10px;border-top:2px solid #0f0;max-height:40vh;overflow:auto;"></div>
+    <script>
+    // Boot diagnostics — inline so it ALWAYS runs, even if script.js parse-fails or is blocked.
+    (function(){
+      var d = document.getElementById('boot-diag');
+      function log(level, msg) {
+        var ts = new Date().toISOString().slice(11,23);
+        var color = level === 'err' ? '#f44' : level === 'warn' ? '#ff0' : '#0f0';
+        d.innerHTML += '<div style="color:'+color+'">' + ts + ' ' + msg.replace(/[<&]/g, function(c){return c==='<'?'&lt;':'&amp;';}) + '</div>';
+        d.scrollTop = d.scrollHeight;
+        (console[level === 'err' ? 'error' : 'log'])('[boot-diag]', msg);
+      }
+      window.__bootDiag = log;
+      log('ok', '1. HTML parsed — body ready');
+      log('ok', '2. PORTAL_DATA keys = ' + (window.PORTAL_DATA ? Object.keys(window.PORTAL_DATA).join(',') : '(undefined)'));
+      window.addEventListener('error', function(ev){
+        log('err', 'window.onerror: ' + (ev.message || ev) + (ev.filename ? ' @ ' + ev.filename + ':' + ev.lineno : ''));
+      });
+      window.addEventListener('unhandledrejection', function(ev){
+        log('err', 'unhandledrejection: ' + (ev.reason && ev.reason.message ? ev.reason.message : String(ev.reason)));
+      });
+      // Heartbeat: if script.js never executes, this proves it.
+      setTimeout(function(){
+        if (!window.__myFinBooted) log('warn', '3. WARNING: script.js did NOT execute within 3s of HTML parse');
+      }, 3000);
+    })();
+    </script>
     <script src="script.js" defer></script>
 </body>
 </html>

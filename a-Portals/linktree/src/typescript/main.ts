@@ -16,6 +16,7 @@ import { initPortalRender } from './modules/portal-render';
 import { initThemeToggle } from './modules/themeToggle';
 import { initTilt3d } from './modules/tilt3d';
 import { initCanvasBackground } from './modules/canvas-bg';
+import { setupSwAutoReload } from './utils/sw-auto-reload';
 
 // requestIdleCallback shim for Safari / older WebKit. Falls through to a
 // 100 ms setTimeout — same yield discipline, slightly less efficient.
@@ -104,19 +105,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       navigator.serviceWorker.register('./script-service-worker.js').catch(() => undefined);
     });
 
-    // Auto-reload the page once a NEW Service Worker takes control. Without
-    // this, a fresh build only takes effect on the user's SECOND refresh:
-    //   1st refresh → browser detects new sw bytes, installs+activates new SW
-    //                 in the background, but the page rendered moments ago
-    //                 was still served from the OLD SW's cache.
-    //   2nd refresh → new SW intercepts, serves fresh content.
-    // `controllerchange` fires the moment the new SW claims the page; we
-    // reload immediately so the user sees fresh content on the FIRST refresh.
-    let _swReloading = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (_swReloading) return;
-      _swReloading = true;
-      location.reload();
+    // Auto-reload on post-deploy SW updates only — never on first-ever
+    // activation (where the page was already loaded from network and the
+    // reload would just be cosmetic noise). See utils/sw-auto-reload.ts.
+    setupSwAutoReload({
+      serviceWorker: navigator.serviceWorker,
+      reload: () => location.reload(),
     });
 
     // Console escape-hatch: paste `__resetSW()` in DevTools to unregister

@@ -1,0 +1,167 @@
+// GENERATED FROM food-table-inputs.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["food-table-inputs"] = {
+  "_description": "Authored layer — merged with raw/ inputs (USDA SR Legacy + AFCD + GI overlay) by build-food-library.ts to produce food-library.json. EVERYTHING needed at runtime is precomputed at build time. NO runtime calculation.",
+
+  "category_aliases": {
+    "_doc": "Maps semantic groups to upstream category strings (USDA foodGroup / AFCD classification). Used by tag_rules.",
+    "meat":       ["Beef Products", "Pork Products", "Lamb, Veal, and Game Products", "Sausages and Luncheon Meats"],
+    "poultry":    ["Poultry Products"],
+    "fish":       ["Finfish and Shellfish Products"],
+    "dairy":      ["Dairy and Egg Products"],
+    "eggs":       ["Dairy and Egg Products"],
+    "grains":     ["Cereal Grains and Pasta", "Baked Products", "Breakfast Cereals"],
+    "legumes":    ["Legumes and Legume Products"],
+    "vegetables": ["Vegetables and Vegetable Products"],
+    "fruits":     ["Fruits and Fruit Juices"],
+    "nuts":       ["Nut and Seed Products"],
+    "fats_oils":  ["Fats and Oils"],
+    "sweets":     ["Sweets"],
+    "beverages":  ["Beverages"],
+    "spices":     ["Spices and Herbs"]
+  },
+
+  "tag_rules": {
+    "_doc": "Each rule produces a boolean tag. Evaluated at build time. exclude_groups = item must NOT belong to any of these. include_groups = item MUST belong to ANY of these (positive evidence). max_per_100g/min_per_100g = numeric thresholds. name_excludes = description regex must NOT match. name_includes = must match.",
+
+    "_inclusion-style (require positive group membership)": "----------------------",
+    "vegan":            { "include_groups": ["vegetables","fruits","legumes","nuts","grains","fats_oils","spices","beverages"], "exclude_groups": ["meat","poultry","fish","dairy","eggs"] },
+    "vegetarian":       { "include_groups": ["vegetables","fruits","legumes","nuts","grains","fats_oils","spices","beverages","dairy","eggs"], "exclude_groups": ["meat","poultry","fish"] },
+    "pescatarian":      { "include_groups": ["vegetables","fruits","legumes","nuts","grains","fats_oils","spices","beverages","dairy","eggs","fish"], "exclude_groups": ["meat","poultry"] },
+    "carnivore":        { "include_groups": ["meat","poultry","fish","dairy","eggs"] },
+    "omnivore":         { "always": true },
+
+    "_exclusion-style (default-yes; only fails on positive evidence of conflict)": "--------",
+    "lactose-free":     { "exclude_groups": ["dairy"], "name_excludes": "milk|cream|cheese|yogurt|butter|whey|casein|lactose" },
+    "gluten-free":      { "exclude_groups": ["grains"], "name_excludes": "wheat|barley|rye|spelt|kamut|farro|seitan|couscous|bulgur|bread|pasta|noodle" },
+    "no-grains":        { "exclude_groups": ["grains"], "name_excludes": "wheat|barley|rye|oat|rice|corn|quinoa|millet|bread|pasta|noodle|cereal" },
+    "no-legumes":       { "exclude_groups": ["legumes"], "name_excludes": "bean|lentil|chickpea|pea,? |peanut|soy|tofu|tempeh|edamame" },
+    "no-refined-sugar": { "exclude_groups": ["sweets"], "name_excludes": "sugar|syrup|sweetened|candy|chocolate|honey|caramel|frosting|glaze" },
+    "no-sugar":         { "max_per_100g": { "sugar_g": 1 } },
+
+    "_numeric": "----------------------",
+    "low-ldl":          { "max_per_100g": { "fat_sat_g": 2 } },
+    "low-sodium":       { "max_per_100g": { "sodium_mg": 140 } },
+    "low-carb":         { "max_per_100g": { "carb_g": 15 } },
+    "keto":             { "max_per_100g": { "carb_g": 10 } },
+
+    "_manual": "----------------------",
+    "low-fodmap":       { "manual_only": true },
+    "paleo":            { "include_groups": ["meat","poultry","fish","eggs","vegetables","fruits","nuts","fats_oils","spices"], "exclude_groups": ["grains","legumes","dairy","sweets"] }
+  },
+
+  "presets": {
+    "_doc": "DIET row chips. Selecting one auto-fills protein/carb/restrictions sub-rows. 'restrictions' is multi-select AND. Values must reference existing tag keys.",
+    "vegan":         { "label": "Vegan",         "protein": "vegan",       "carb": "all",      "restrictions": [] },
+    "vegetarian":    { "label": "Vegetarian",    "protein": "vegetarian",  "carb": "all",      "restrictions": [] },
+    "pescatarian":   { "label": "Pescatarian",   "protein": "pescatarian", "carb": "all",      "restrictions": [] },
+    "keto":          { "label": "Keto",          "protein": "all",         "carb": "keto",     "restrictions": [] },
+    "low-carb":      { "label": "Low-Carb",      "protein": "all",         "carb": "low-carb", "restrictions": [] },
+    "paleo":         { "label": "Paleo",         "protein": "omnivore",    "carb": "all",      "restrictions": ["lactose-free","gluten-free","no-legumes","no-refined-sugar"] },
+    "carnivore":     { "label": "Carnivore",     "protein": "carnivore",   "carb": "keto",     "restrictions": [] },
+    "mediterranean": { "label": "Mediterranean", "protein": "pescatarian", "carb": "all",      "restrictions": ["low-sodium","no-refined-sugar"] },
+    "whole30":       { "label": "Whole30",       "protein": "omnivore",    "carb": "all",      "restrictions": ["lactose-free","gluten-free","no-legumes","no-sugar"] },
+    "dash":          { "label": "DASH",          "protein": "omnivore",    "carb": "all",      "restrictions": ["low-ldl","low-sodium"] },
+    "fodmap-low":    { "label": "FODMAP-low",    "protein": "all",         "carb": "all",      "restrictions": ["low-fodmap"] }
+  },
+
+  "ui_rows": {
+    "_doc": "Definitive list of chip rows shown in the UI. Order matters — first is rendered at top.",
+    "diet":          { "label": "Diet",          "selectMode": "single", "options": ["vegan","vegetarian","pescatarian","keto","low-carb","paleo","carnivore","mediterranean","whole30","dash","fodmap-low","custom","all"] },
+    "diet-protein":  { "label": "Diet Protein",  "selectMode": "single", "options": ["vegan","vegetarian","pescatarian","omnivore","carnivore","all"] },
+    "diet-carb":     { "label": "Diet Carb",     "selectMode": "single", "options": ["keto","low-carb","all"] },
+    "restrictions":  { "label": "Restrictions",  "selectMode": "multi",  "options": ["lactose-free","gluten-free","no-legumes","no-refined-sugar","no-sugar","low-ldl","low-sodium","low-fodmap","all"] }
+  },
+
+  "computed_ratios": {
+    "_doc": "All computed at BUILD time and baked into food-library.json. NO runtime math.",
+    "kcal_per_prot":   { "formula": "kcal_per_100g / prot_g",                         "default_dir": "asc",  "decimals": 2 },
+    "prot_per_kcal":   { "formula": "prot_g / kcal_per_100g",                         "default_dir": "desc", "decimals": 3 },
+    "prot_per_carb":   { "formula": "prot_g / carb_g",                                "default_dir": "desc", "decimals": 2 },
+    "fat_good_g":      { "formula": "fat_mono_g + fat_poly_g",                        "default_dir": "desc", "decimals": 2 },
+    "fat_bad_g":       { "formula": "fat_sat_g",                                      "default_dir": "asc",  "decimals": 2 },
+    "net_carb_g":      { "formula": "carb_g - fiber_g",                               "default_dir": "asc",  "decimals": 2 },
+    "glycemic_load":   { "formula": "(gi * carb_g) / 100",                            "default_dir": "asc",  "decimals": 1 },
+    "kcal_per_g":      { "formula": "kcal_per_100g / 100",                            "default_dir": "asc",  "decimals": 2 }
+  },
+
+  "table_columns": {
+    "_doc": "Column metadata for the two displayed tables. Columns reference fields in the merged food record (raw or computed).",
+    "protein": [
+      { "key": "name",          "label": "Food",                  "align": "left",  "sortable": true,  "default_dir": "asc" },
+      { "key": "kcal_per_prot", "label": "kcal / Prot",           "align": "right", "sortable": true,  "default_dir": "asc",  "primary": true },
+      { "key": "prot_g",        "label": "Prot (g/100g)",         "align": "right", "sortable": true,  "default_dir": "desc" },
+      { "key": "kcal_per_100g", "label": "kcal/100g",             "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "carb_g",        "label": "Carb (g)",              "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "fat_g",         "label": "Fat total (g)",         "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "fat_good_g",    "label": "Fat good",              "align": "right", "sortable": true,  "default_dir": "desc", "tone": "good" },
+      { "key": "fat_sat_g",     "label": "Fat bad (sat)",         "align": "right", "sortable": true,  "default_dir": "asc",  "tone": "bad" }
+    ],
+    "carb": [
+      { "key": "name",            "label": "Food",                "align": "left",  "sortable": true,  "default_dir": "asc" },
+      { "key": "gi",              "label": "GI",                  "align": "right", "sortable": true,  "default_dir": "asc",  "primary": true },
+      { "key": "glycemic_load",   "label": "GL (per 100g)",       "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "prot_per_carb",   "label": "Prot/Carb",           "align": "right", "sortable": true,  "default_dir": "desc" },
+      { "key": "carb_g",          "label": "Carb (g/100g)",       "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "net_carb_g",      "label": "Net carb (g)",        "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "fiber_g",         "label": "Fiber (g)",           "align": "right", "sortable": true,  "default_dir": "desc" },
+      { "key": "fat_g",           "label": "Fat total (g)",       "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "fat_good_g",      "label": "Fat good",            "align": "right", "sortable": true,  "default_dir": "desc", "tone": "good" },
+      { "key": "fat_sat_g",       "label": "Fat bad (sat)",       "align": "right", "sortable": true,  "default_dir": "asc",  "tone": "bad" }
+    ]
+  },
+
+  "table_filters": {
+    "_doc": "Inclusion thresholds per displayed table.",
+    "protein": { "min": { "prot_g": 9 } },
+    "carb":    { "min": { "carb_g": 10 }, "require": ["gi"] }
+  },
+
+  "name_aliases": {
+    "_doc": "Override clinical USDA names with shorter display names. Key = exact USDA description; value = display name.",
+    "Beef, ground, 90% lean meat / 10% fat, raw": "Lean Ground Beef (raw)",
+    "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw": "Chicken Breast (raw)"
+  },
+
+  "gi_overrides": {
+    "_doc": "Manual GI values keyed by normalized food key (slug of name). Wins over gi-mygi.json.",
+    "sweet_potato_boiled": 63,
+    "potato_boiled": 78
+  },
+
+  "tag_overrides": {
+    "_doc": "Per-food tag adjustments. Keyed by normalized food key. add = force tags ON, remove = force tags OFF. Useful when category-based rules misclassify."
+  },
+
+  "name_pattern_overrides": {
+    "_doc": "Pattern-based tag overrides applied at build time. Each entry: a regex matched (case-insensitive) against the food description; if it matches, add/remove tags. Runs AFTER category-based tag_rules, BEFORE per-food tag_overrides.",
+    "rules": [
+      {
+        "_why": "Eggs sit in USDA's 'Dairy and Egg Products' but are not dairy. They're vegetarian, pescatarian, keto, paleo.",
+        "match": "^egg(s|,| )|chicken egg|duck egg|quail egg|egg white|egg yolk",
+        "add":    ["vegetarian", "pescatarian", "keto", "paleo"],
+        "remove": []
+      },
+      {
+        "_why": "Honey/syrups/sugars are sweets and break paleo/whole30 even if not in 'Sweets' category.",
+        "match": "honey|maple syrup|agave|corn syrup|table sugar|brown sugar|cane sugar",
+        "add":    [],
+        "remove": ["paleo", "no-refined-sugar", "no-sugar"]
+      }
+    ]
+  },
+
+  "extra_foods": {
+    "_doc": "Foods we want that aren't in USDA/AFCD. Same schema as merged record. Will be appended after merge."
+  },
+
+  "whitelist": {
+    "_doc": "If non-empty, only foods whose normalized key is in this list make it to food-library.json. Empty = all foods pass.",
+    "ids": []
+  }
+}
+;
+})();

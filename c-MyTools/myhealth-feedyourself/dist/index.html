@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Recipes - Feed Yourself</title>
+    <title>Menu Designer Pro</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <meta name="description" content="Recipe collection for healthy meal planning">
+    <meta name="description" content="Menu Designer Pro - Design and manage your menus">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://diegonmarcos.github.io/feed_yourself/recipes.html">
-    <meta property="og:title" content="Recipes - Feed Yourself">
-    <meta property="og:description" content="Recipe collection for healthy meal planning">
+    <meta property="og:url" content="https://diegonmarcos.github.io/feed_yourself/">
+    <meta property="og:title" content="Menu Designer Pro">
+    <meta property="og:description" content="Menu Designer Pro - Design and manage your menus">
     <meta property="og:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Menu Designer Pro">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Recipes - Feed Yourself">
-    <meta name="twitter:description" content="Recipe collection for healthy meal planning">
+    <meta name="twitter:url" content="https://diegonmarcos.github.io/feed_yourself/">
+    <meta name="twitter:title" content="Menu Designer Pro">
+    <meta name="twitter:description" content="Menu Designer Pro - Design and manage your menus">
+    <meta name="twitter:image" content="https://diegonmarcos.github.io/feed_yourself/public/feed_yourself_thumbnail.png">
+    <meta name="twitter:image:alt" content="Menu Designer Pro">
 
     <!-- Matomo Tag Manager -->
     <script>
@@ -30,55 +36,11 @@
     </script>
     <!-- End Matomo Tag Manager -->
 
-<style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:rgba(0,0,0,0)}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(circle at 50% 0%, #2c3e50, #000000 80%);background-attachment:fixed;color:#f5f5f7;margin:0;padding:15px;min-height:100vh;overflow-x:hidden}
-.app-container{max-width:1200px;margin:0 auto;padding-bottom:100px}
-header{margin-bottom:20px;text-align:center}
-h1{margin:0;font-size:1.8rem;letter-spacing:-0.5px;font-weight:700}
-.app-subtitle{color:#98989d;font-size:.9rem;margin-top:5px}
-.page-tabs{display:flex;justify-content:center;gap:0;margin-top:15px;background:rgba(0,0,0,.3);border-radius:12px;padding:4px;border:1px solid hsla(0,0%,100%,.1);max-width:500px;margin-left:auto;margin-right:auto}
-.page-tab{flex:1;text-align:center;color:#98989d;text-decoration:none;font-size:.85rem;font-weight:600;padding:10px 15px;border-radius:10px;transition:all .2s ease;background:transparent}
-.page-tab:hover{color:#fff;background:rgba(255,255,255,.05)}
-.page-tab.active{background:#0a84ff;color:#fff;box-shadow:0 4px 12px rgba(10,132,255,.4)}
-.category-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding:10px 0;flex-wrap:wrap;justify-content:center}
-.category-tab{padding:10px 18px;font-size:.85rem;font-weight:600;background:rgba(0,0,0,.3);border:1px solid hsla(0,0%,100%,.1);border-radius:20px;color:#98989d;cursor:pointer;transition:all .2s ease;white-space:nowrap}
-.category-tab:hover{border-color:hsla(0,0%,100%,.3);color:#fff}
-.category-tab.active{background:#0a84ff;border-color:#0a84ff;color:#fff}
-.category-section{margin-bottom:30px;display:none}
-.category-section.active{display:block;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.category-title{font-size:1.3rem;font-weight:600;margin-bottom:15px;color:#fff;display:flex;align-items:center;gap:10px}
-.category-title::before{content:'';display:inline-block;width:4px;height:24px;background:#0a84ff;border-radius:2px}
-.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px}
-.recipe-card{background:rgba(28,28,30,.6);border:1px solid hsla(0,0%,100%,.1);border-radius:18px;overflow:hidden;cursor:pointer;transition:all .3s ease;position:relative}
-.recipe-card:hover{border-color:#0a84ff;transform:translateY(-5px);box-shadow:0 15px 40px rgba(10,132,255,.2)}
-.recipe-card__image{width:100%;height:180px;object-fit:cover;background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);display:flex;align-items:center;justify-content:center;color:#98989d;font-size:3rem;overflow:hidden}
-.recipe-card__image img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
-.recipe-card:hover .recipe-card__image img{transform:scale(1.05)}
-.recipe-card__content{padding:15px}
-.recipe-card__title{font-size:1rem;font-weight:600;color:#fff;margin-bottom:8px;line-height:1.3}
-.recipe-card__description{font-size:.8rem;color:#98989d;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.recipe-card__badge{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);padding:5px 10px;border-radius:8px;font-size:.7rem;font-weight:600;color:#0a84ff;text-transform:uppercase}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;padding:15px;z-index:1000;backdrop-filter:blur(10px)}
-.modal.active{display:flex}
-.modal-content{background:rgba(28,28,30,.98);border:1px solid hsla(0,0%,100%,.15);border-radius:22px;padding:0;max-width:700px;width:100%;max-height:90vh;overflow:hidden;position:relative;animation:modalIn .3s ease}
-@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
-.modal-image{width:100%;height:250px;object-fit:cover}
-.modal-body{padding:25px;max-height:calc(90vh - 250px);overflow-y:auto}
-.modal-close{position:absolute;top:15px;right:15px;background:rgba(0,0,0,.7);border:none;color:#fff;font-size:1.5rem;cursor:pointer;width:40px;height:40px;border-radius:50%;transition:all .2s;z-index:10;display:flex;align-items:center;justify-content:center}
-.modal-close:hover{background:rgba(255,255,255,.2)}
-.modal-title{font-size:1.5rem;font-weight:700;margin-bottom:10px;color:#fff}
-.modal-quote{font-size:.9rem;color:#98989d;font-style:italic;margin-bottom:20px;padding-left:15px;border-left:3px solid #0a84ff}
-.modal-section{margin-bottom:20px}
-.modal-section h3{font-size:1rem;font-weight:600;color:#0a84ff;margin-bottom:10px}
-.modal-section ul,.modal-section ol{padding-left:20px;color:#d1d1d6;line-height:1.8}
-.modal-section li{margin-bottom:8px}
-.linktree-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;margin:30px auto;max-width:280px;background:linear-gradient(110deg, #3b82f6 0%, #3b82f6 40%, #60a5fa 50%, #3b82f6 60%, #3b82f6 100%);background-size:200% 100%;animation:shimmer 3s linear infinite;border:1px solid rgba(59, 130, 246, 0.5);border-radius:12px;color:#fff;text-decoration:none;font-size:.95rem;font-weight:600;transition:all .3s ease}
-.linktree-btn:hover{transform:scale(1.05);box-shadow:0 0 25px rgba(59, 130, 246, 0.5)}
-@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-@media(max-width:640px){.recipe-grid{grid-template-columns:1fr}.category-tabs{justify-content:flex-start}}
-</style>
+    <link rel="stylesheet" href="style-index.css">
+
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>
 (function(){
@@ -113,443 +75,750 @@ h1{margin:0;font-size:1.8rem;letter-spacing:-0.5px;font-weight:700}
         <h1>Feed Yourself</h1>
         <div class="app-subtitle">Nutrition Planning Suite</div>
         <nav class="page-tabs">
-            <a href="../dist/index.html" class="page-tab">Menu Designer</a>
-            <a href="../dist/meal_designer.html" class="page-tab">Meal Designer</a>
-            <a href="index.html" class="page-tab active">Recipes</a>
+            <a href="index.html" class="page-tab active">Menu Designer</a>
+            <a href="meal_designer.html" class="page-tab">Meal Designer</a>
+            <a href="recipes.html" class="page-tab">Recipes</a>
+            <a href="food_tables.html" class="page-tab">Food Tables</a>
         </nav>
     </header>
 
-    <div class="category-tabs">
-        <button class="category-tab active" data-category="all">📚 All</button>
-        <button class="category-tab" data-category="salads">🥗 Salads</button>
-        <button class="category-tab" data-category="breads">🍞 Breads</button>
-        <button class="category-tab" data-category="pies">🥧 Pies</button>
-        <button class="category-tab" data-category="mains">🍲 Main Dishes</button>
-        <button class="category-tab" data-category="dips">🫕 Dips</button>
-        <button class="category-tab" data-category="desserts">🍰 Desserts</button>
-        <button class="category-tab" data-category="others">📦 Others</button>
-    </div>
+    <section class="glass-panel">
+        <div class="section-title">Configuration</div>
+        <blockquote class="section-quote">Math is hard. Eating is easy.</blockquote>
+        
+        <div class="config-grid">
+            <div class="inputs-container">
+                <div class="input-group">
+                    <label class="input-label">BMR (kcal)</label>
+                    <input type="number" id="inBase" class="glass-input" value="2000" onchange="calculate()">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Active (kcal)</label>
+                    <input type="number" id="inActive" class="glass-input" value="200" onchange="calculate()">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Deficit</label>
+                    <input type="number" id="inDeficit" class="glass-input" value="50" onchange="calculate()">
+                </div>
 
-    <!-- Salads Section -->
-    <section id="salads" class="category-section active">
-        <h2 class="category-title">Salads</h2>
-        <div class="recipe-grid" id="salads-grid"></div>
-    </section>
+                <div class="input-group">
+                    <label class="input-label">Protein Target</label>
+                    <select id="inProtein" class="glass-input" onchange="calculate()">
+                        <option value="60">Minimum (60g)</option>
+                        <option value="80">Ideal (80g)</option>
+                        <option value="100" selected>High (100g)</option>
+                        <option value="150">Bodybuilding (150g)</option>
+                    </select>
+                </div>
 
-    <!-- Breads Section -->
-    <section id="breads" class="category-section">
-        <h2 class="category-title">Breads</h2>
-        <div class="recipe-grid" id="breads-grid"></div>
-    </section>
+                <div class="input-group">
+                    <label class="input-label">Carb Mode</label>
+                    <select id="inCarbMode" class="glass-input" onchange="calculate()">
+                        <option value="50">Keto (<50g)</option>
+                        <option value="150" selected>Low Carb (150g)</option>
+                        <option value="250">Normal (250g)</option>
+                        <option value="400">Bodybuilding (High)</option>
+                    </select>
+                </div>
 
-    <!-- Pies Section -->
-    <section id="pies" class="category-section">
-        <h2 class="category-title">Pies</h2>
-        <div class="recipe-grid" id="pies-grid"></div>
-    </section>
-
-    <!-- Main Dishes Section -->
-    <section id="mains" class="category-section">
-        <h2 class="category-title">Main Dishes</h2>
-        <div class="recipe-grid" id="mains-grid"></div>
-    </section>
-
-    <!-- Dips Section -->
-    <section id="dips" class="category-section">
-        <h2 class="category-title">Dips & Spreads</h2>
-        <div class="recipe-grid" id="dips-grid"></div>
-    </section>
-
-    <!-- Desserts Section -->
-    <section id="desserts" class="category-section">
-        <h2 class="category-title">Desserts</h2>
-        <div class="recipe-grid" id="desserts-grid"></div>
-    </section>
-
-    <!-- Others Section -->
-    <section id="others" class="category-section">
-        <h2 class="category-title">Others</h2>
-        <div class="recipe-grid" id="others-grid"></div>
-    </section>
-
-    <a href="https://linktree.diegonmarcos.com" target="_blank" class="linktree-btn">
-        <span>LINKTREE</span>
-        <span>→</span>
-    </a>
-
-</div>
-
-<!-- Recipe Modal -->
-<div id="recipe-modal" class="modal">
-    <div class="modal-content">
-        <button class="modal-close" onclick="closeModal()">&times;</button>
-        <img id="modal-image" class="modal-image" src="" alt="">
-        <div class="modal-body">
-            <h2 id="modal-title" class="modal-title"></h2>
-            <p id="modal-quote" class="modal-quote"></p>
-            <div class="modal-section">
-                <h3>Ingredients</h3>
-                <ul id="modal-ingredients"></ul>
+                <div class="input-group">
+                    <label class="input-label">Prot Cost (kcal/g)</label>
+                    <select id="inCost" class="glass-input" onchange="calculate()">
+                        <option value="5">Cheap (5)</option>
+                        <option value="7" selected>Medium (7)</option>
+                        <option value="10">Expensive (10)</option>
+                    </select>
+                </div>
             </div>
-            <div class="modal-section">
-                <h3>Instructions</h3>
-                <ol id="modal-instructions"></ol>
+
+            <div class="calc-display">
+                <div class="section-title" style="font-size:0.9rem; margin-bottom:10px; opacity:0.8;">Daily Targets</div>
+                <table class="calc-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Daily</th>
+                            <th>Per Meal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Net Kcal Budget</td>
+                            <td class="val-col" id="outTotalKcal" style="color:white; font-size:1.1rem;">0</td>
+                            <td class="val-col" id="outTotalKcalMeal" style="color:var(--text-muted); font-size:1rem;">0</td>
+                        </tr>
+                        <tr>
+                            <td>Target Protein</td>
+                            <td class="val-col" id="outProtG">0g</td>
+                            <td class="val-col" id="outProtGMeal">0g</td>
+                        </tr>
+                        <tr>
+                            <td>Target Carbs (Limit)</td>
+                            <td class="val-col" id="outCarbsLimit">0g</td>
+                            <td class="val-col" id="outCarbsLimitMeal">0g</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:10px; border:none; opacity:0.6; font-size:0.75rem;" colspan="3">Budget Allocation</td>
+                        </tr>
+                        <tr>
+                            <td>↳ Protein Sources</td>
+                            <td class="val-col" id="outProtKcal">0</td>
+                            <td class="val-col" id="outProtKcalMeal">0</td>
+                        </tr>
+                        <tr>
+                            <td>↳ Sides/Fats (Leftover)</td>
+                            <td class="val-col" style="color:var(--accent)" id="outSidesKcal">0</td>
+                            <td class="val-col" style="color:var(--accent)" id="outSidesKcalMeal">0</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Protein Source</div>
+        <blockquote class="section-quote">Tap: 1x Breakfast, 2x Lunch, 3x Dinner</blockquote>
+
+        <div class="category-header">Vegan Sources</div>
+        <div class="swipe-row" id="row-vegan"></div>
+
+        <div class="category-header">Vegetarian</div>
+        <div class="swipe-row" id="row-veg"></div>
+
+        <div class="category-header">Meat & Fish</div>
+        <div class="swipe-row" id="row-meat"></div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Sides</div>
+        <blockquote class="section-quote">Greens & Beige Carbs. Swipe to explore.</blockquote>
+        
+        <div class="category-header">Vegan Sides</div>
+        <div class="swipe-row" id="row-side-vegan"></div>
+        
+        <div class="category-header">Vegetarian/Dairy Sides</div>
+        <div class="swipe-row" id="row-side-veg"></div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Selected Menu</div>
+        <blockquote class="section-quote">Your daily masterpiece.</blockquote>
+        <div class="selected-grid">
+            <div class="selected-col" id="col-b">
+                <h4>Breakfast</h4>
+                <div id="list-b"></div>
+            </div>
+            <div class="selected-col" id="col-l">
+                <h4>Lunch</h4>
+                <div id="list-l"></div>
+            </div>
+            <div class="selected-col" id="col-d">
+                <h4>Dinner</h4>
+                <div id="list-d"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Summary</div>
+        <blockquote class="section-quote">The nutritional damage report.</blockquote>
+
+        <div class="summary-wrapper">
+            <table class="summary-table">
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Meal</th>
+                        <th style="width: 15%">Kcal</th>
+                        <th style="width: 15%">Prot</th>
+                        <th style="width: 15%">Carb</th>
+                        <th style="width: 15%">Fat</th>
+                        <th style="width: 15%">Kcal/P</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="dot" style="background:var(--warning)"></span> Bkfst</td>
+                        <td id="m1-kcal">0</td>
+                        <td id="m1-prot">0</td>
+                        <td id="m1-carb">0</td>
+                        <td id="m1-fat">0</td>
+                        <td id="m1-ratio">-</td>
+                    </tr>
+                    <tr>
+                        <td><span class="dot" style="background:var(--success)"></span> Lunch</td>
+                        <td id="m2-kcal">0</td>
+                        <td id="m2-prot">0</td>
+                        <td id="m2-carb">0</td>
+                        <td id="m2-fat">0</td>
+                        <td id="m2-ratio">-</td>
+                    </tr>
+                    <tr>
+                        <td><span class="dot" style="background:var(--purple)"></span> Dinner</td>
+                        <td id="m3-kcal">0</td>
+                        <td id="m3-prot">0</td>
+                        <td id="m3-carb">0</td>
+                        <td id="m3-fat">0</td>
+                        <td id="m3-ratio">-</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td id="grand-total" style="color:var(--accent);">0</td>
+                        <td id="grand-prot">0</td>
+                        <td id="grand-carb">0</td>
+                        <td id="grand-fat">0</td>
+                        <td id="grand-ratio">-</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Shopping List</div>
+        <blockquote class="section-quote">Shopping List. Don't go hungry.</blockquote>
+        <div class="summary-table" style="margin-bottom:10px;">
+            <div class="shop-item" style="border-bottom:1px solid var(--glass-border); color:var(--text-muted); font-size:0.7rem;">
+                <span>ITEM</span>
+                <span style="text-align:right">GRAMS</span>
+                <span style="text-align:right">UNITS</span>
+                <span style="text-align:right">$/KG</span>
+                <span style="text-align:right">TOTAL $</span>
+            </div>
+        </div>
+        <div id="shopping-list-container">
+            <div style="text-align:center; color:#666; padding:20px; font-size:0.8rem;">Add items to menu to generate list</div>
+        </div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Price</div>
+        <blockquote class="section-quote">Where it hurts</blockquote>
+        
+        <div id="price-analysis-container">
+            <div class="placeholder-box">Add items to menu to calculate costs</div>
+        </div>
+    </section>
+
+    <section class="glass-panel">
+        <div class="section-title">Chef's Table</div>
+        <blockquote class="section-quote">Recipes where the magic happens.</blockquote>
+        
+        <div class="chef-grid">
+            <div class="chef-jump">Quick Prep</div>
+            <div class="chef-jump">Batch Cook</div>
+            <div class="chef-jump">Sauces</div>
+            <div class="chef-jump">Spices</div>
+        </div>
+    </section>
+
+    <div class="ascii-art">
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣶⣶⣶⣶⣶⣦⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠏⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⢿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⠁⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⡶⠶⠶⠶⠶⠶⢶⣦⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡿⠁⠀⠀⠀⠀⠀⠀⢿⣇⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡇⠀⠀⠀⠀⠀⠀⠀⢸⣿⡀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡀⠀⠀⠀⠀⠀⠀⠀⢀⣿⡇⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣇⠀⠀⠀⠀⠀⠀⠀⣸⡿⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠿⣦⣤⣤⣤⣤⣤⣴⠿⠁⠀⠀⠀
+        FEED YOURSELF
     </div>
+
 </div>
 
 <script>
-// Using Unsplash images for dish representations
-const recipes = {
-    salads: [
-        {
-            id: "caesar",
-            name: "Maya's Caesar Salad",
-            image: "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=400&h=300&fit=crop",
-            quote: "A vegan twist on the classic that'll make Julius proud. Creamy, garlicky, and absolutely addictive.",
-            ingredients: ["Lettuce", "Any vegetables you want", "1 part canola oil", "1/2 part olive oil", "1.5 parts soy milk", "1 part lemon juice", "Capful of vinegar", "4-6 heads garlic", "Salt to taste"],
-            instructions: ["Blend canola oil, soy milk, and vinegar until thick like mayo", "Add lemon juice, olive oil, garlic, and salt", "Wash lettuce and vegetables", "Dress immediately before serving"]
-        },
-        {
-            id: "rice-chickpea",
-            name: "Rice & Chickpea Salad",
-            image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop",
-            quote: "The ultimate Middle Eastern comfort bowl with crispy fried onions on top.",
-            ingredients: ["Cooked rice", "Chickpeas", "Crispy fried onions", "Middle Eastern spices", "Fresh herbs", "Olive oil", "Lemon juice"],
-            instructions: ["Cook rice and let cool", "Mix with chickpeas", "Add spices and herbs", "Top with crispy fried onions", "Dress with olive oil and lemon"]
-        },
-        {
-            id: "cabbage",
-            name: "Noa's Cabbage Salad",
-            image: "https://images.unsplash.com/photo-1607532941433-304659e8198a?w=400&h=300&fit=crop",
-            quote: "Crunchy, nutty, and dangerously addictive. Asian-inspired dressing transforms humble cabbage.",
-            ingredients: ["Cabbage, shredded", "Nuts (almonds or peanuts)", "Asian dressing", "Sesame seeds", "Green onions"],
-            instructions: ["Shred cabbage finely", "Toast nuts", "Mix dressing ingredients", "Combine all and toss", "Top with sesame seeds"]
-        },
-        {
-            id: "lentil-sweet-potato",
-            name: "Lentil & Sweet Potato Salad",
-            image: "https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=400&h=300&fit=crop",
-            quote: "Sweet meets earthy in this colorful powerhouse. The silan dressing adds Israeli magic.",
-            ingredients: ["Lentils, cooked", "Sweet potato, roasted", "Silan (date syrup)", "Olive oil", "Lemon", "Fresh herbs"],
-            instructions: ["Cook lentils until tender", "Roast sweet potato cubes", "Make silan dressing", "Combine all ingredients", "Garnish with fresh herbs"]
-        }
-    ],
-    breads: [
-        {
-            id: "challah",
-            name: "Laudae's Challah",
-            image: "https://images.unsplash.com/photo-1603379016822-e6d5e2770ece?w=400&h=300&fit=crop",
-            quote: "The golden, braided beauty that makes Friday nights magical. Fluffy, slightly sweet, and gorgeous.",
-            ingredients: ["500g flour", "7g dry yeast", "1/4 cup sugar", "2 eggs + 1 for wash", "1/4 cup oil", "1 cup warm water", "1 tsp salt"],
-            instructions: ["Mix yeast with warm water and sugar", "Add eggs, oil, and salt", "Gradually add flour and knead", "Let rise for 1 hour", "Braid and let rise again", "Egg wash and bake at 180°C for 30 min"]
-        },
-        {
-            id: "vegan-challah",
-            name: "Maya's Vegan Challah",
-            image: "https://images.unsplash.com/photo-1549931319-a545dcf3bc73?w=400&h=300&fit=crop",
-            quote: "Who says challah needs eggs? Plant-based beauty with whole wheat goodness.",
-            ingredients: ["Whole wheat flour", "Dry yeast", "Maple syrup", "Olive oil", "Warm water", "Salt", "Za'atar or garlic (for stuffing)"],
-            instructions: ["Mix yeast with warm water", "Add maple syrup and oil", "Knead with flour", "Let rise", "Stuff with za'atar or garlic", "Braid and bake"]
-        },
-        {
-            id: "pizza-dough",
-            name: "Vegan Pizza Dough",
-            image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
-            quote: "Four perfect pizza bases from scratch. Crispy outside, chewy inside. Friday night sorted.",
-            ingredients: ["500g flour", "7g dry yeast", "1 tsp sugar", "1.5 cups warm water", "2 tbsp olive oil", "1 tsp salt"],
-            instructions: ["Activate yeast in warm water with sugar", "Add oil and salt", "Mix in flour gradually", "Knead until smooth", "Let rise 1 hour", "Divide into 4 balls"]
-        },
-        {
-            id: "jerusalem-bagels",
-            name: "Jerusalem Bagels",
-            image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=400&h=300&fit=crop",
-            quote: "Soft, sesame-covered rings of joy. Not NYC bagels - pillowy, oblong, and addictive.",
-            ingredients: ["500g flour", "10g dry yeast", "1 tbsp sugar", "1.5 cups warm water", "1 tsp salt", "Sesame seeds", "Egg wash"],
-            instructions: ["Mix yeast with water and sugar", "Add flour and salt, knead", "Let rise 1 hour", "Shape into oblong rings", "Dip in sesame seeds", "Bake at 200°C until golden"]
-        }
-    ],
-    pies: [
-        {
-            id: "cheese-onion",
-            name: "Cheese & Onion Pie",
-            image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400&h=300&fit=crop",
-            quote: "A cheesy, buttery hug in pie form. Crispy pastry meets gooey filling in the most comforting way.",
-            ingredients: ["Pie dough", "3 large onions, sliced", "200g cheese (mix of cheddar and feta)", "2 eggs", "1 cup cream", "Butter for frying", "Salt and pepper"],
-            instructions: ["Caramelize onions slowly in butter", "Prepare pie dough in pan", "Mix eggs, cream, and cheese", "Add cooled onions", "Pour into crust", "Bake at 180°C for 40 min"]
-        },
-        {
-            id: "basic-dough",
-            name: "Basic Pie Dough",
-            image: "https://images.unsplash.com/photo-1464305795204-6f5bbfc7fb81?w=400&h=300&fit=crop",
-            quote: "The foundation of all great pies - flaky, buttery, and surprisingly easy.",
-            ingredients: ["2.5 cups flour", "200g cold butter, cubed", "1 tsp salt", "1 tbsp sugar", "6-8 tbsp ice water"],
-            instructions: ["Combine flour, salt, and sugar", "Cut in cold butter until pea-sized", "Add ice water gradually", "Form into disc", "Chill for 1 hour", "Roll out as needed"]
-        },
-        {
-            id: "sweet-potato-goat",
-            name: "Sweet Potato & Goat Cheese Pie",
-            image: "https://images.unsplash.com/photo-1600626334440-9c9f0b2d0b8e?w=400&h=300&fit=crop",
-            quote: "Creamy, sweet, tangy perfection. Pine nuts add crunch, goat cheese brings the funk.",
-            ingredients: ["Pie dough", "2 sweet potatoes, cubed", "150g goat cheese", "2 eggs", "1/2 cup cream", "Pine nuts", "Fresh thyme"],
-            instructions: ["Roast sweet potato cubes", "Pre-bake pie crust", "Mix eggs, cream, and goat cheese", "Layer sweet potato in crust", "Pour egg mixture over", "Top with pine nuts", "Bake until golden"]
-        },
-        {
-            id: "fatair",
-            name: "Fatair (Spinach Pies)",
-            image: "https://images.unsplash.com/photo-1601924582970-9238bcb495d9?w=400&h=300&fit=crop",
-            quote: "Crispy pockets of herby, lemony, sumac-kissed goodness. Perfect for sharing (or not).",
-            ingredients: ["Dough for pastries", "Fresh spinach", "Onion, diced", "Lemon juice", "Sumac", "Olive oil", "Salt"],
-            instructions: ["Make or buy dough", "Chop spinach and mix with onion", "Season with lemon, sumac, salt, oil", "Form triangular pockets", "Bake until golden and crispy"]
-        }
-    ],
-    mains: [
-        {
-            id: "dal",
-            name: "Dal",
-            image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop",
-            quote: "The ultimate comfort food. Spiced lentils simmered with sweet potato. India meets your kitchen.",
-            ingredients: ["2 cups lentils", "1 sweet potato, cubed", "1 potato, cubed", "1 onion", "2 tomatoes", "Garlic, ginger", "Turmeric, cumin, cinnamon", "Coconut cream"],
-            instructions: ["Soak lentils 1 hour", "Fry onion and potatoes", "Add spices and tomatoes", "Add lentils and water", "Simmer 40 minutes", "Finish with coconut cream"]
-        },
-        {
-            id: "stuffed-veg",
-            name: "Stuffed Summer Vegetables",
-            image: "https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?w=400&h=300&fit=crop",
-            quote: "Gorgeous eggplants and peppers with herby, lemony, lentil-rice filling. Worth every minute.",
-            ingredients: ["Eggplants and peppers", "Rice", "Lentils", "Onion", "Fresh herbs", "Lemon juice", "Olive oil", "Spices"],
-            instructions: ["Hollow out vegetables", "Make rice-lentil filling", "Season with herbs and lemon", "Stuff vegetables", "Cook slowly in sauce", "Finish in oven"]
-        },
-        {
-            id: "stuffed-zucchini",
-            name: "Stuffed Zucchini",
-            image: "https://images.unsplash.com/photo-1600803907087-f56d462fd26b?w=400&h=300&fit=crop",
-            quote: "Little green tubes of herby, lemony, rice-filled happiness. Yogurt dip takes it to unforgettable.",
-            ingredients: ["Zucchini", "Rice", "Fresh herbs", "Lemon", "Yogurt for dip", "Garlic", "Mint"],
-            instructions: ["Hollow zucchini carefully", "Prepare herbed rice filling", "Stuff zucchini", "Cook in lemony broth", "Serve with yogurt-garlic dip"]
-        },
-        {
-            id: "tofu-shawarma",
-            name: "Noa's Tofu Shawarma",
-            image: "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?w=400&h=300&fit=crop",
-            quote: "The vegan shawarma that fooled carnivores. Crispy, spicy, legitimately delicious.",
-            ingredients: ["Firm tofu", "Shawarma spice mix", "Olive oil", "Lemon juice", "Garlic", "Paprika, cumin, turmeric"],
-            instructions: ["Press and slice tofu", "Make shawarma spice marinade", "Marinate tofu 30 min+", "Pan fry until crispy", "Serve in pita with hummus"]
-        },
-        {
-            id: "grape-leaves",
-            name: "Stuffed Grape Leaves",
-            image: "https://images.unsplash.com/photo-1541518763669-27fef04b14ea?w=400&h=300&fit=crop",
-            quote: "The art of rolling tiny parcels of lemony, herby rice. Tedious? Yes. Worth it? Absolutely.",
-            ingredients: ["Grape leaves", "Rice", "Fresh herbs (parsley, mint, dill)", "Lemon juice", "Olive oil", "Onion"],
-            instructions: ["Rinse grape leaves", "Make herbed rice filling", "Place filling on leaves", "Roll tightly", "Pack in pot", "Cook slowly with lemon and oil"]
-        },
-        {
-            id: "aloo-gobi",
-            name: "Aloo Gobi",
-            image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&h=300&fit=crop",
-            quote: "The Indian classic. Humble veggies become a golden, aromatic masterpiece.",
-            ingredients: ["Cauliflower", "Potatoes", "Onion", "Tomatoes", "Turmeric, cumin, coriander", "Ginger, garlic", "Fresh cilantro"],
-            instructions: ["Cut cauliflower and potatoes", "Fry onions with spices", "Add vegetables", "Cook until tender", "Garnish with cilantro"]
-        },
-        {
-            id: "fritters",
-            name: "Chard & Eggplant Fritters",
-            image: "https://images.unsplash.com/photo-1564671165093-20688ff1fffa?w=400&h=300&fit=crop",
-            quote: "Crispy outside, tender inside, packed with hidden veggies. Healthy-ish comfort food.",
-            ingredients: ["Chard leaves", "Eggplant", "Eggs", "Flour", "Onion", "Fresh herbs", "Spices"],
-            instructions: ["Cook and chop chard", "Roast and mash eggplant", "Mix with eggs and flour", "Add herbs and spices", "Form patties and fry"]
-        },
-        {
-            id: "special-rice",
-            name: "Rice Ma Sheyesh",
-            image: "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&h=300&fit=crop",
-            quote: "The 'whatever you have' rice that always turns out amazing. 3 onions per cup is the secret.",
-            ingredients: ["Rice", "3 onions per cup rice", "Raisins", "Toasted nuts", "Cinnamon, cardamom", "Olive oil or butter"],
-            instructions: ["Caramelize onions slowly", "Toast rice in oil", "Add water and spices", "Cook until fluffy", "Mix in raisins and nuts"]
-        },
-        {
-            id: "potato-mash",
-            name: "George's Potato Mash",
-            image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&h=300&fit=crop",
-            quote: "The mashed potatoes that broke the dinner table. Creamy, garlicky, oniony perfection.",
-            ingredients: ["Potatoes", "Butter (lots)", "Cream or milk", "Garlic", "Caramelized onions", "Salt and pepper"],
-            instructions: ["Boil potatoes until tender", "Mash with butter and cream", "Add roasted garlic", "Mix in caramelized onions", "Trust your instincts"]
-        },
-        {
-            id: "bean-burgers",
-            name: "Bean Burgers",
-            image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&h=300&fit=crop",
-            quote: "The simplest bean patty recipe that works. If it falls apart, make Hecshia instead.",
-            ingredients: ["Canned beans", "Onion", "Garlic", "Breadcrumbs", "Spices", "Egg or flax egg"],
-            instructions: ["Mash beans roughly", "Mix with aromatics and binder", "Form patties", "Fry until golden", "Serve in buns"]
-        }
-    ],
-    dips: [
-        {
-            id: "baba-ganoush",
-            name: "George's Baba Ganoush",
-            image: "https://images.unsplash.com/photo-1593001874117-c99c800e3eb7?w=400&h=300&fit=crop",
-            quote: "Smoky, creamy, lemony perfection. Roast eggplants until charred and drain ALL the liquid.",
-            ingredients: ["2 large eggplants", "3 tbsp tahini", "2 garlic cloves", "Juice of 1 lemon", "Olive oil", "Salt", "Parsley"],
-            instructions: ["Char eggplants over flame until collapsed", "Scoop out flesh, drain well", "Mash with tahini and garlic", "Add lemon juice and salt", "Drizzle with olive oil", "Garnish with parsley"]
-        },
-        {
-            id: "pepper-spread",
-            name: "Roasted Pepper Spread",
-            image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400&h=300&fit=crop",
-            quote: "Sweet, smoky, utterly addictive. The oregano is non-negotiable.",
-            ingredients: ["Red peppers", "Garlic", "Olive oil", "Oregano (don't skip!)", "Salt", "Chili flakes (optional)"],
-            instructions: ["Roast peppers until charred", "Peel and remove seeds", "Blend with garlic and oil", "Season with oregano and salt", "Let flavors meld"]
-        },
-        {
-            id: "shani-tomatoes",
-            name: "Eyal Shani Tomatoes",
-            image: "https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=400&h=300&fit=crop",
-            quote: "Deceptively simple dish that'll blow your mind. Crushed tomatoes, sour cream, olive oil, challah.",
-            ingredients: ["Ripe tomatoes", "Sour cream or labneh", "Good olive oil", "Flaky salt", "Fresh challah"],
-            instructions: ["Crush ripe tomatoes roughly", "Dollop sour cream on top", "Drizzle generously with olive oil", "Sprinkle flaky salt", "Scoop with challah"]
-        }
-    ],
-    desserts: [
-        {
-            id: "carrot-cake",
-            name: "George's Birthday Carrot Cake",
-            image: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?w=400&h=300&fit=crop",
-            quote: "The legendary carrot cake. Moist, spiced, loaded with pineapple and nuts.",
-            ingredients: ["Grated carrots", "Crushed pineapple", "Walnuts", "Flour, sugar, eggs", "Cinnamon, nutmeg", "Cream cheese frosting"],
-            instructions: ["Mix wet ingredients", "Combine dry ingredients", "Fold together gently", "Add carrots, pineapple, nuts", "Bake at 180°C", "Cool and frost generously"]
-        },
-        {
-            id: "banana-bread",
-            name: "Banana Bread",
-            image: "https://images.unsplash.com/photo-1605466153246-30c8c3c41e40?w=400&h=300&fit=crop",
-            quote: "Rescues overripe bananas. Walnuts and chocolate chips are 'optional' but not really.",
-            ingredients: ["4 ripe bananas", "1/2 cup sugar", "1/2 cup butter", "2 eggs", "1.5 cups flour", "Baking soda, cinnamon", "Walnuts, chocolate chips"],
-            instructions: ["Mash bananas", "Mix with sugar, butter, eggs", "Add dry ingredients", "DON'T OVERMIX", "Fold in nuts and chips", "Bake 50-60 min at 180°C"]
-        },
-        {
-            id: "chocotorta",
-            name: "Vale's Chocotorta",
-            image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400&h=300&fit=crop",
-            quote: "Argentinian no-bake cake. Layers of milk-soaked cookies and dulce de leche cream cheese.",
-            ingredients: ["Chocolate cookies", "Coffee or milk", "Dulce de leche", "Cream cheese", "Heavy cream"],
-            instructions: ["Dip cookies in coffee/milk", "Layer in pan", "Mix dulce de leche with cream cheese", "Spread over cookies", "Repeat layers", "Freeze 4+ hours"]
-        },
-        {
-            id: "cheesecake",
-            name: "Noa's Cheesecake",
-            image: "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400&h=300&fit=crop",
-            quote: "Aussie-style cheesecake with biscuit base. Cool in oven with door ajar for perfect texture.",
-            ingredients: ["Biscuit crumbs", "Butter", "Cream cheese", "Sugar", "Eggs", "Vanilla", "Sour cream", "Berry coulis"],
-            instructions: ["Make biscuit base", "Beat cream cheese smooth", "Add eggs one at a time", "Pour over base", "Bake, then cool slowly", "Top with berry coulis"]
-        },
-        {
-            id: "matzah-brittle",
-            name: "Rina's Matzah Brittle",
-            image: "https://images.unsplash.com/photo-1548848221-0c2e497ed557?w=400&h=300&fit=crop",
-            quote: "Passover treat that transcends the holiday. Caramel, chocolate, and crunchy matzah.",
-            ingredients: ["Matzah sheets", "1 cup butter", "1 cup brown sugar", "Chocolate chips", "Sea salt", "Nuts (optional)"],
-            instructions: ["Line pan with matzah", "Boil butter and sugar to caramel", "Pour over matzah", "Bake 5 min", "Top with chocolate chips", "Spread and add salt/nuts", "Chill and break into pieces"]
-        },
-        {
-            id: "zucchini-bread",
-            name: "George's Zucchini Bread",
-            image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&h=300&fit=crop",
-            quote: "Sneaky way to eat vegetables for dessert. Don't squeeze the zucchini - that moisture is your friend.",
-            ingredients: ["Grated zucchini", "3 eggs", "1 cup oil", "2 cups sugar", "3 cups flour", "Cinnamon, baking soda", "Walnuts"],
-            instructions: ["Grate zucchini (don't squeeze)", "Beat eggs, oil, sugar", "Add dry ingredients", "Fold in zucchini and walnuts", "Divide into 2 loaf pans", "Bake 1 hour at 175°C"]
-        }
-    ],
-    others: [
-        {
-            id: "granola",
-            name: "Homemade Granola",
-            image: "https://images.unsplash.com/photo-1517686469429-8bdb88b9f907?w=400&h=300&fit=crop",
-            quote: "Costs a fortune at fancy stores but 30 minutes at home. Crunchy, nutty, customizable.",
-            ingredients: ["3 cups oats", "1 cup nuts (any mix)", "1/2 cup honey/maple", "1/4 cup oil", "Cinnamon, salt", "Dried fruit (after baking)"],
-            instructions: ["Mix oats and nuts", "Combine honey and oil", "Toss together with spices", "Spread on baking sheet", "Bake at 150°C for 25-30 min", "Stir halfway", "Add dried fruit when cool"]
-        }
-    ]
-};
+    /* --- DATA (Enhanced with Fat/Carbs/UnitSize/PricePerKg) --- */
+    // Added 'priceKg' (Approx $) to items
+    const proteins = [
+        // Vegan
+        { id: 'p1', name: 'Firm Tofu', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 400, unitName: 'pack', shopCat: 'Fridge (Vegan)', prot: 16, carb: 4, fat: 9, kcal: 160, priceKg: 8.00, img: 'https://images.pexels.com/photos/4518657/pexels-photo-4518657.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 'p2', name: 'Tempeh', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 200, unitName: 'pack', shopCat: 'Fridge (Vegan)', prot: 28, carb: 13, fat: 15, kcal: 300, priceKg: 14.00, img: 'https://images.pexels.com/photos/6544381/pexels-photo-6544381.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 'p3', name: 'Edamame', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 500, unitName: 'bag', shopCat: 'Freezer', prot: 22, carb: 16, fat: 10, kcal: 240, priceKg: 5.00, img: 'https://images.pexels.com/photos/7020679/pexels-photo-7020679.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 'p4', name: 'Lentils', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 400, unitName: 'jar', shopCat: 'Pantry', prot: 18, carb: 40, fat: 1, kcal: 230, priceKg: 2.50, img: 'https://images.pexels.com/photos/8108166/pexels-photo-8108166.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 'p5', name: 'Chickpeas', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 400, unitName: 'jar', shopCat: 'Pantry', prot: 14, carb: 50, fat: 4, kcal: 280, priceKg: 2.00, img: 'https://images.pexels.com/photos/6316515/pexels-photo-6316515.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 'p6', name: 'Seitan', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 250, unitName: 'pack', shopCat: 'Fridge (Vegan)', prot: 38, carb: 6, fat: 3, kcal: 180, priceKg: 12.00, img: 'https://images.pexels.com/photos/5966431/pexels-photo-5966431.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        // Vegetarian
+        { id: 'p7', name: 'Greek Yogurt', type: 'Veg', sub: 'veg', grams: 250, unitG: 500, unitName: 'tub', shopCat: 'Dairy', prot: 25, carb: 10, fat: 0, kcal: 145, priceKg: 4.50, img: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400' },
+        { id: 'p8', name: 'Cottage Cheese', type: 'Veg', sub: 'veg', grams: 200, unitG: 250, unitName: 'tub', shopCat: 'Dairy', prot: 22, carb: 6, fat: 8, kcal: 180, priceKg: 5.00, img: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400' },
+        { id: 'p9', name: 'Eggs (3)', type: 'Veg', sub: 'veg', grams: 150, unitG: 50, unitName: 'egg', shopCat: 'Dairy', prot: 19, carb: 2, fat: 15, kcal: 215, priceKg: 3.50, img: 'https://images.unsplash.com/photo-1582722872445-44dc5f7e3c8f?w=400' },
+        { id: 'p10', name: 'Skyr', type: 'Veg', sub: 'veg', grams: 200, unitG: 450, unitName: 'tub', shopCat: 'Dairy', prot: 22, carb: 8, fat: 0, kcal: 130, priceKg: 5.50, img: 'https://images.unsplash.com/photo-1571212515416-fef01fc43637?w=400' },
+        // Meat & Fish
+        { id: 'p11', name: 'Chicken Breast', type: 'Meat', sub: 'meat', grams: 150, unitG: 300, unitName: 'piece', shopCat: 'Meat', prot: 35, carb: 0, fat: 4, kcal: 175, priceKg: 10.50, img: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=400' },
+        { id: 'p12', name: 'Turkey', type: 'Meat', sub: 'meat', grams: 150, unitG: 300, unitName: 'piece', shopCat: 'Meat', prot: 33, carb: 0, fat: 2, kcal: 150, priceKg: 9.00, img: 'https://images.unsplash.com/photo-1606728035253-49e8a23146de?w=400' },
+        { id: 'p13', name: 'Salmon', type: 'Meat', sub: 'meat', grams: 150, unitG: 150, unitName: 'fillet', shopCat: 'Fish', prot: 30, carb: 0, fat: 20, kcal: 310, priceKg: 18.00, img: 'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400' },
+        { id: 'p14', name: 'White Fish', type: 'Meat', sub: 'meat', grams: 200, unitG: 200, unitName: 'fillet', shopCat: 'Fish', prot: 34, carb: 0, fat: 2, kcal: 160, priceKg: 14.00, img: 'https://images.unsplash.com/photo-1510130387422-82bed34b37e9?w=400' },
+        { id: 'p15', name: 'Tuna (canned)', type: 'Meat', sub: 'meat', grams: 120, unitG: 120, unitName: 'can', shopCat: 'Pantry', prot: 30, carb: 0, fat: 1, kcal: 130, priceKg: 15.00, img: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400' },
+        { id: 'p16', name: 'Shrimp', type: 'Meat', sub: 'meat', grams: 150, unitG: 300, unitName: 'bag', shopCat: 'Freezer', prot: 27, carb: 0, fat: 2, kcal: 130, priceKg: 12.00, img: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=400' },
+    ];
 
-let showAll = true;
+    const sides = [
+        // Vegan Sides - Carbs
+        { id: 's1', name: 'Basmati Rice', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 1000, unitName: 'bag', shopCat: 'Pantry', prot: 4, carb: 45, fat: 0, kcal: 195, priceKg: 2.50, img: 'https://images.pexels.com/photos/4110251/pexels-photo-4110251.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 's2', name: 'Sweet Potato', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 200, unitName: 'piece', shopCat: 'Veggies', prot: 3, carb: 40, fat: 0, kcal: 170, priceKg: 2.50, img: 'https://images.pexels.com/photos/89247/pexels-photo-89247.png?auto=compress&cs=tinysrgb&w=400' },
+        { id: 's3', name: 'Quinoa', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 500, unitName: 'bag', shopCat: 'Pantry', prot: 6, carb: 32, fat: 3, kcal: 180, priceKg: 8.00, img: 'https://images.pexels.com/photos/6740535/pexels-photo-6740535.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 's4', name: 'Potato', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 200, unitName: 'piece', shopCat: 'Veggies', prot: 4, carb: 34, fat: 0, kcal: 150, priceKg: 1.20, img: 'https://images.pexels.com/photos/144248/potatoes-vegetables-erdfrucht-bio-144248.jpeg?auto=compress&cs=tinysrgb&w=400' },
+        { id: 's5', name: 'Whole Wheat Bread', type: 'Vegan', sub: 'vegan', grams: 80, unitG: 500, unitName: 'loaf', shopCat: 'Pantry', prot: 7, carb: 36, fat: 2, kcal: 190, priceKg: 3.00, img: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400' },
+        // Vegan Sides - Vegetables
+        { id: 's6', name: 'Broccoli', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 400, unitName: 'head', shopCat: 'Veggies', prot: 4, carb: 10, fat: 0, kcal: 50, priceKg: 3.50, img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Broccoli_and_cross_section_edit.jpg/440px-Broccoli_and_cross_section_edit.jpg' },
+        { id: 's7', name: 'Spinach', type: 'Vegan', sub: 'vegan', grams: 100, unitG: 300, unitName: 'bag', shopCat: 'Veggies', prot: 3, carb: 4, fat: 0, kcal: 25, priceKg: 4.00, img: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400' },
+        { id: 's8', name: 'Avocado', type: 'Vegan', sub: 'vegan', grams: 100, unitG: 150, unitName: 'piece', shopCat: 'Veggies', prot: 2, carb: 9, fat: 15, kcal: 160, priceKg: 6.00, img: 'https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400' },
+        { id: 's9', name: 'Mushrooms', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 400, unitName: 'box', shopCat: 'Veggies', prot: 5, carb: 5, fat: 0, kcal: 35, priceKg: 4.50, img: 'https://images.unsplash.com/photo-1552825897-bb5efa93f2f7?w=400' },
+        { id: 's10', name: 'Zucchini', type: 'Vegan', sub: 'vegan', grams: 200, unitG: 200, unitName: 'piece', shopCat: 'Veggies', prot: 2, carb: 6, fat: 0, kcal: 35, priceKg: 2.00, img: 'https://images.unsplash.com/photo-1563252722-6434563a985d?w=400' },
+        { id: 's11', name: 'Green Beans', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 400, unitName: 'bag', shopCat: 'Veggies', prot: 3, carb: 10, fat: 0, kcal: 50, priceKg: 4.00, img: 'https://images.unsplash.com/photo-1567375698348-5d9d5ae99de0?w=400' },
+        { id: 's12', name: 'Cauliflower', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 600, unitName: 'head', shopCat: 'Veggies', prot: 3, carb: 8, fat: 0, kcal: 40, priceKg: 2.50, img: 'https://images.unsplash.com/photo-1568702846914-96b305d2aca9?w=400' },
+        { id: 's13', name: 'Bell Peppers', type: 'Vegan', sub: 'vegan', grams: 150, unitG: 500, unitName: 'pack', shopCat: 'Veggies', prot: 2, carb: 9, fat: 0, kcal: 40, priceKg: 3.00, img: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=400' },
+        // Vegetarian Sides
+        { id: 's14', name: 'Whole Wheat Pasta', type: 'Veg', sub: 'veg', grams: 100, unitG: 500, unitName: 'box', shopCat: 'Pantry', prot: 5, carb: 30, fat: 1, kcal: 150, priceKg: 2.50, img: 'https://images.unsplash.com/photo-1551462147-ff29053bfc14?w=400' },
+        { id: 's15', name: 'Couscous', type: 'Veg', sub: 'veg', grams: 100, unitG: 500, unitName: 'bag', shopCat: 'Pantry', prot: 4, carb: 35, fat: 0, kcal: 160, priceKg: 3.50, img: 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=400' },
+        { id: 's16', name: 'Mixed Salad', type: 'Veg', sub: 'veg', grams: 100, unitG: 150, unitName: 'bag', shopCat: 'Veggies', prot: 1, carb: 4, fat: 0, kcal: 20, priceKg: 3.00, img: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400' },
+    ];
 
-// Category switching
-document.querySelectorAll('.category-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-        const category = tab.dataset.category;
+    const allFood = [...proteins, ...sides];
+    let selections = {}; 
 
-        // Update tabs
-        document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
+    function init() {
+        // Render Proteins
+        renderGroup(proteins, 'vegan', 'row-vegan');
+        renderGroup(proteins, 'veg', 'row-veg');
+        renderGroup(proteins, 'meat', 'row-meat');
+        
+        // Render Sides
+        renderGroup(sides, 'vegan', 'row-side-vegan');
+        renderGroup(sides, 'veg', 'row-side-veg');
+        
+        // Start Scroll Spy for Mobile
+        setupScrollSpy();
 
-        if (category === 'all') {
-            showAll = true;
-            document.querySelectorAll('.category-section').forEach(s => s.classList.add('active'));
-        } else {
-            showAll = false;
-            document.querySelectorAll('.category-section').forEach(s => s.classList.remove('active'));
-            document.getElementById(category).classList.add('active');
-        }
-    });
-});
+        calculate();
+    }
 
-// Render recipes
-function renderRecipes() {
-    for (const [category, items] of Object.entries(recipes)) {
-        const grid = document.getElementById(`${category}-grid`);
-        if (!grid) continue;
+    function setupScrollSpy() {
+        // Intersection Observer for highlighting sections on scroll
+        const options = {
+            root: null,
+            rootMargin: '-40% 0px -40% 0px', // Trigger when element is in the vertical center
+            threshold: 0
+        };
 
-        grid.innerHTML = items.map(recipe => `
-            <div class="recipe-card" onclick="openModal('${category}', '${recipe.id}')">
-                <div class="recipe-card__image">
-                    <img src="${recipe.image}" alt="${recipe.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='🍽️'">
-                </div>
-                <div class="recipe-card__content">
-                    <h3 class="recipe-card__title">${recipe.name}</h3>
-                    <p class="recipe-card__description">${recipe.quote}</p>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    // Remove highlight from others
+                    document.querySelectorAll('.glass-panel').forEach(p => p.classList.remove('highlighted'));
+                    // Add to current
+                    entry.target.classList.add('highlighted');
+                }
+            });
+        }, options);
+
+        document.querySelectorAll('.glass-panel').forEach(panel => {
+            observer.observe(panel);
+        });
+    }
+
+    function renderGroup(data, sub, elId) {
+        const container = document.getElementById(elId);
+        container.innerHTML = data.filter(i => i.sub === sub).map(item => `
+            <div class="food-card" id="card-${item.id}" onclick="tapCard('${item.id}')">
+                <div class="meal-indicator" id="badge-${item.id}"></div>
+                <img src="${item.img}" class="card-img" loading="lazy">
+                <div class="card-content">
+                    <div class="card-title">${item.name}</div>
+                    <div class="card-details">
+                        <span>${item.kcal} kc</span>
+                        <span>${item.prot}p</span>
+                    </div>
                 </div>
             </div>
         `).join('');
     }
-}
 
-// Modal functions
-function openModal(category, id) {
-    const recipe = recipes[category].find(r => r.id === id);
-    if (!recipe) return;
+    /* --- LOGIC: MULTI-TAP --- */
+    function tapCard(id) {
+        if (!selections[id]) selections[id] = 0;
+        selections[id]++;
+        if (selections[id] > 3) selections[id] = 0;
 
-    document.getElementById('modal-image').src = recipe.image;
-    document.getElementById('modal-title').textContent = recipe.name;
-    document.getElementById('modal-quote').textContent = recipe.quote;
-    document.getElementById('modal-ingredients').innerHTML = recipe.ingredients.map(i => `<li>${i}</li>`).join('');
-    document.getElementById('modal-instructions').innerHTML = recipe.instructions.map(i => `<li>${i}</li>`).join('');
+        updateVisuals(id);
+        updateState();
+    }
 
-    document.getElementById('recipe-modal').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
+    function updateVisuals(id) {
+        const card = document.getElementById(`card-${id}`);
+        const badge = document.getElementById(`badge-${id}`);
+        const state = selections[id];
 
-function closeModal() {
-    document.getElementById('recipe-modal').classList.remove('active');
-    document.body.style.overflow = '';
-}
+        card.classList.remove('active');
+        badge.className = 'meal-indicator';
+        badge.innerText = '';
 
-// Close modal on backdrop click
-document.getElementById('recipe-modal').addEventListener('click', (e) => {
-    if (e.target.id === 'recipe-modal') closeModal();
-});
+        if (state > 0) {
+            card.classList.add('active');
+            if (state === 1) { badge.classList.add('status-b'); badge.innerText = 'B'; }
+            if (state === 2) { badge.classList.add('status-l'); badge.innerText = 'L'; }
+            if (state === 3) { badge.classList.add('status-d'); badge.innerText = 'D'; }
+        }
+    }
 
-// Close on escape
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-});
+    function updateState() {
+        // Data structure for 3 meals
+        const meals = { 
+            1: {k:0, p:0, c:0, f:0, i:[]}, 
+            2: {k:0, p:0, c:0, f:0, i:[]}, 
+            3: {k:0, p:0, c:0, f:0, i:[]} 
+        };
+        
+        // Clear selected views
+        ['list-b', 'list-l', 'list-d'].forEach(id => document.getElementById(id).innerHTML = '');
 
-// Initialize - show all sections by default
-renderRecipes();
-document.querySelectorAll('.category-section').forEach(s => s.classList.add('active'));
+        const colMap = {1:'list-b', 2:'list-l', 3:'list-d'};
+        const clsMap = {1:'sel-b', 2:'sel-l', 3:'sel-d'};
+
+        Object.keys(selections).forEach(id => {
+            const qty = selections[id];
+            if (qty > 0) {
+                const item = allFood.find(f => f.id === id);
+                // Macros Sum
+                meals[qty].k += (item.kcal || 0);
+                meals[qty].p += (item.prot || 0);
+                meals[qty].c += (item.carb || 0);
+                meals[qty].f += (item.fat || 0);
+                meals[qty].i.push(item.name);
+
+                // Render Tiny Card in Selected Column (With Image)
+                const div = document.createElement('div');
+                div.className = `selected-card ${clsMap[qty]}`;
+                div.innerHTML = `
+                    <img src="${item.img}">
+                    <div class="info">${item.name}</div>
+                `;
+                document.getElementById(colMap[qty]).appendChild(div);
+            }
+        });
+
+        // Update Summary Table Rows
+        updateSumRow(1, meals[1]);
+        updateSumRow(2, meals[2]);
+        updateSumRow(3, meals[3]);
+
+        // Grand Totals
+        const tK = meals[1].k + meals[2].k + meals[3].k;
+        const tP = meals[1].p + meals[2].p + meals[3].p;
+        const tC = meals[1].c + meals[2].c + meals[3].c;
+        const tF = meals[1].f + meals[2].f + meals[3].f;
+        
+        const gTotal = document.getElementById('grand-total');
+        gTotal.innerText = tK;
+        
+        // Color warning if over budget
+        const budget = parseInt(document.getElementById('outTotalKcal').innerText) || 9999;
+        gTotal.style.color = tK > budget ? 'var(--danger)' : 'var(--accent)';
+        
+        document.getElementById('grand-prot').innerText = tP;
+        document.getElementById('grand-carb').innerText = tC;
+        document.getElementById('grand-fat').innerText = tF;
+
+        // Ratio for Grand Total
+        const gRatio = tP > 0 ? (tK / tP).toFixed(1) : '-';
+        document.getElementById('grand-ratio').innerText = gRatio;
+
+        renderShoppingList();
+    }
+
+    function updateSumRow(n, data) {
+        // data = { k, p, c, f, i }
+        document.getElementById(`m${n}-kcal`).innerText = data.k;
+        document.getElementById(`m${n}-prot`).innerText = data.p;
+        document.getElementById(`m${n}-carb`).innerText = data.c;
+        document.getElementById(`m${n}-fat`).innerText = data.f;
+        
+        // Calc Kcal/Protein Ratio
+        const ratio = data.p > 0 ? (data.k / data.p).toFixed(1) : '-';
+        document.getElementById(`m${n}-ratio`).innerText = ratio;
+    }
+
+    /* --- SHOPPING LIST WITH UNITS & PRICES --- */
+    function renderShoppingList() {
+        const container = document.getElementById('shopping-list-container');
+        const shopData = {};
+        // Explicit ordering
+        const cats = ['Veggies', 'Fruits', 'Fridge (Vegan)', 'Dairy', 'Meat', 'Freezer', 'Pantry', 'Others'];
+
+        // Aggregate
+        Object.keys(selections).forEach(id => {
+            const count = selections[id];
+            if(count > 0) {
+                const item = allFood.find(f => f.id === id);
+                const cat = item.shopCat || 'Others';
+                if(!shopData[cat]) shopData[cat] = [];
+                
+                // Check if item exists in cat to sum grams
+                const existing = shopData[cat].find(x => x.name === item.name);
+                if(existing) {
+                    existing.g += (item.grams * count);
+                } else {
+                    shopData[cat].push({ 
+                        name: item.name, 
+                        g: item.grams * count,
+                        unitSize: item.unitG || 100,
+                        priceKg: item.priceKg,
+                        isProtein: item.id.startsWith('p') // Simple check based on ID prefix for second table
+                    });
+                }
+            }
+        });
+
+        // Render Shopping List
+        let html = '';
+        let hasItems = false;
+        let flatItemsForPrice = [];
+        
+        cats.forEach(cat => {
+            if(shopData[cat] && shopData[cat].length > 0) {
+                hasItems = true;
+                html += `<div class="shop-category">${cat}</div>`;
+                shopData[cat].forEach(i => {
+                    // Calculate Units
+                    const units = (i.g / i.unitSize).toFixed(1);
+                    const unitDisplay = units.endsWith('.0') ? units.slice(0, -2) : units;
+                    
+                    // Calculate Price
+                    const priceTotal = (i.g / 1000) * i.priceKg;
+                    
+                    // Add to flat array for price tables
+                    flatItemsForPrice.push({...i, cat: cat, total: priceTotal});
+
+                    html += `
+                        <div class="shop-item">
+                            <span>${i.name}</span>
+                            <span class="shop-amt">${i.g}g</span>
+                            <span class="shop-unit">${unitDisplay} u</span>
+                            <span class="shop-amt">$${i.priceKg.toFixed(2)}</span>
+                            <span class="shop-unit" style="color:var(--success)">$${priceTotal.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        if(!hasItems) html = '<div style="text-align:center; color:#666; padding:20px; font-size:0.8rem;">Add items to menu to generate list</div>';
+        container.innerHTML = html;
+
+        // Trigger Price Tables Render
+        renderPriceTables(flatItemsForPrice, cats, hasItems);
+    }
+
+    function renderPriceTables(items, cats, hasItems) {
+        const container = document.getElementById('price-analysis-container');
+        if(!hasItems) {
+             container.innerHTML = '<div class="placeholder-box">Add items to menu to calculate costs</div>';
+             return;
+        }
+
+        // --- Table 1: Organized by Category (ONLY) ---
+        let t1 = `
+        <div class="category-header" style="margin-top:0;">Breakdown by Category</div>
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Total Amt (g)</th>
+                    <th>Total $</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+        
+        let grandTotal = 0;
+
+        cats.forEach(cat => {
+            const catItems = items.filter(i => i.cat === cat);
+            if(catItems.length > 0) {
+                // Sum totals for this category
+                const catTotal = catItems.reduce((sum, item) => sum + item.total, 0);
+                const catWeight = catItems.reduce((sum, item) => sum + item.g, 0);
+                
+                grandTotal += catTotal;
+                
+                // Add ONE row for the category
+                t1 += `
+                    <tr>
+                        <td style="color:var(--accent); font-weight:500;">${cat}</td>
+                        <td>${catWeight}g</td>
+                        <td>$${catTotal.toFixed(2)}</td>
+                    </tr>
+                `;
+            }
+        });
+        
+        t1 += `
+            <tr style="border-top: 1px solid white;">
+                <td colspan="2" style="font-weight:bold; color:white;">Total</td>
+                <td style="font-weight:bold; color:var(--success);">$${grandTotal.toFixed(2)}</td>
+            </tr>
+            </tbody></table>`;
+
+
+        // --- Table 2: Protein Items vs Sides Items (UNCHANGED) ---
+        let protSum = 0;
+        let sideSum = 0;
+        
+        const protItems = items.filter(i => i.isProtein);
+        const sideItems = items.filter(i => !i.isProtein);
+
+        let t2 = `
+        <div class="category-header">Breakdown by Types</div>
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Amt (g)</th>
+                    <th>Avg $/kg</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+        `;
+
+        // Protein Row
+        if(protItems.length > 0) {
+            const totalG = protItems.reduce((a,b) => a + b.g, 0);
+            const totalCost = protItems.reduce((a,b) => a + b.total, 0);
+            const avgPrice = (totalCost / (totalG/1000));
+            protSum = totalCost;
+            
+            t2 += `
+                <tr>
+                    <td style="color:var(--accent)">Protein Items</td>
+                    <td>${totalG}</td>
+                    <td>${avgPrice.toFixed(2)}</td>
+                    <td>$${totalCost.toFixed(2)}</td>
+                </tr>
+            `;
+        }
+
+        // Side Row
+        if(sideItems.length > 0) {
+            const totalG = sideItems.reduce((a,b) => a + b.g, 0);
+            const totalCost = sideItems.reduce((a,b) => a + b.total, 0);
+            const avgPrice = (totalCost / (totalG/1000));
+            sideSum = totalCost;
+            
+            t2 += `
+                <tr>
+                    <td style="color:var(--warning)">Sides Items</td>
+                    <td>${totalG}</td>
+                    <td>${avgPrice.toFixed(2)}</td>
+                    <td>$${totalCost.toFixed(2)}</td>
+                </tr>
+            `;
+        }
+
+        t2 += `
+            <tr style="border-top: 1px solid white;">
+                <td colspan="3" style="font-weight:bold; color:white;">Total</td>
+                <td style="font-weight:bold; color:var(--success);">$${(protSum + sideSum).toFixed(2)}</td>
+            </tr>
+            </tbody></table>`;
+
+        container.innerHTML = t1 + t2;
+    }
+
+    /* --- CALCULATOR --- */
+    function calculate() {
+        const base = parseInt(document.getElementById('inBase').value) || 0;
+        const active = parseInt(document.getElementById('inActive').value) || 0;
+        const deficit = parseInt(document.getElementById('inDeficit').value) || 0;
+        const proteinTarget = parseInt(document.getElementById('inProtein').value) || 0;
+        const cost = parseInt(document.getElementById('inCost').value) || 10;
+        
+        // Carb Mode
+        const carbLimit = parseInt(document.getElementById('inCarbMode').value) || 250;
+
+        const totalNet = base + active - deficit;
+        const proteinKcal = proteinTarget * cost; // Approx cost of protein source
+        const sidesKcal = totalNet - proteinKcal;
+        
+        // Update DOM
+        const set = (id, val) => document.getElementById(id).innerText = val;
+
+        // Daily
+        set('outTotalKcal', totalNet);
+        set('outProtKcal', proteinKcal);
+        set('outSidesKcal', sidesKcal);
+        set('outProtG', proteinTarget + 'g');
+        set('outCarbsLimit', carbLimit + 'g');
+
+        // Per Meal (/3)
+        set('outTotalKcalMeal', Math.round(totalNet / 3));
+        set('outProtKcalMeal', Math.round(proteinKcal / 3));
+        set('outSidesKcalMeal', Math.round(sidesKcal / 3));
+        set('outProtGMeal', Math.round(proteinTarget / 3) + 'g');
+        set('outCarbsLimitMeal', Math.round(carbLimit / 3) + 'g');
+        
+        // Dynamic re-render to check budget coloring
+        updateState();
+    }
+
+    window.onload = init;
 </script>
+
+<!-- Linktree Button -->
+<a href="https://linktree.diegonmarcos.com" target="_blank" title="diegonmarcos" class="linktree-btn">
+    <span class="linktree-icon">🔗</span>
+    <span class="linktree-text">LINKTREE</span>
+    <span class="linktree-arrow">→</span>
+</a>
+
+<style>
+    @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    .linktree-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 14px 24px;
+        margin: 20px auto 30px;
+        max-width: 280px;
+        background: linear-gradient(110deg, #3b82f6 0%, #3b82f6 40%, #60a5fa 50%, #3b82f6 60%, #3b82f6 100%);
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+        border: 1px solid rgba(59, 130, 246, 0.5);
+        border-radius: 12px;
+        color: #fff;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 0.95rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    .linktree-btn:hover {
+        animation: shimmer 1.5s linear infinite;
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
+    }
+    .linktree-icon { font-size: 1.1rem; }
+    .linktree-text { font-weight: 600; }
+    .linktree-arrow { opacity: 0.8; }
+    .linktree-btn:hover .linktree-arrow { opacity: 1; }
+</style>
 
 </body>
 </html>
+

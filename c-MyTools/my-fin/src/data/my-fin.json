@@ -1,4 +1,4 @@
 {
-  "_description": "Bootstrap data-driven entry. Add fields here; consume them in HTML/TS via globalThis.PORTAL_DATA[\"ledger\"].<field>.",
-  "title": "Ledger — Personal Accounting"
+  "_description": "Bootstrap data-driven entry. Add fields here; consume them in HTML/TS via globalThis.PORTAL_DATA[\"my-fin\"].<field>.",
+  "title": "My Financials — Personal Accounting"
 }

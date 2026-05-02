@@ -10,15 +10,10 @@ declare const globalThis: { PORTAL_DATA?: Record<string, unknown> };
 
 function readPortalData<T>(key: string): T {
   const bag = globalThis.PORTAL_DATA;
-  console.log('[loader] PORTAL_DATA bag keys =', bag ? Object.keys(bag) : '(undefined)');
   if (!bag || !(key in bag)) {
-    const msg = `PORTAL_DATA["${key}"] not found. Loaded keys: ${bag ? Object.keys(bag).join(', ') : 'none'}`;
-    console.error('[loader]', msg);
-    throw new Error(msg);
+    throw new Error(`PORTAL_DATA["${key}"] not found. Make sure data-${key}.json.js is loaded BEFORE script.js in index.html.`);
   }
-  const value = bag[key];
-  console.log(`[loader] PORTAL_DATA["${key}"] type=`, typeof value, 'isArray=', Array.isArray(value), 'topKeys=', value && typeof value === 'object' ? Object.keys(value as object).slice(0, 10) : value);
-  return value as T;
+  return bag[key] as T;
 }
 
 let cachedData: Dataset | null = null;

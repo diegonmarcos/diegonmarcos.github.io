@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // ============================================
-// Ledger — mock.json generator
+// My Financials — mock.json generator
 // 1 year of data:
 //   • Salary 20k BRL/mo (job in Brazil)
 //   • Portfolio: ETFs only, ~$500k USD aggregate

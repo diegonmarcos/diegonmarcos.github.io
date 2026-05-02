@@ -21,9 +21,9 @@ export function renderShell(host: HTMLElement) {
   host.innerHTML = `
     <div class="app">
       <div class="app__brand">
-        <div class="brand-mark"><span>L</span></div>
+        <div class="brand-mark"><span>M</span></div>
         <div class="brand-name">
-          <span class="brand-name__word">Ledger</span>
+          <span class="brand-name__word">My Financials</span>
           <span class="brand-name__tag">Private Wealth</span>
         </div>
       </div>

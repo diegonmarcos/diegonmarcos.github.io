@@ -1,5 +1,5 @@
 // ============================================
-// Domain types — Ledger
+// Domain types — My Financials
 // ============================================
 
 export type Currency = 'USD' | 'EUR' | 'BRL' | 'GBP';

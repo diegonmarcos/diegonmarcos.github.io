@@ -1,5 +1,5 @@
 {
-  "name": "Ledger",
+  "name": "My Financials",
   "framework": "vanilla",
   "port": 8030,
   "src": "src",
@@ -31,16 +31,6 @@
     {
       "mod": "copy",
       "files": "index.html",
-      "from": "src"
-    },
-    {
-      "mod": "copy",
-      "files": "data/mock.json",
-      "from": "src"
-    },
-    {
-      "mod": "copy",
-      "files": "data/nav.json",
       "from": "src"
     },
     {

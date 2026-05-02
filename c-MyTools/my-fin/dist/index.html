@@ -22,8 +22,10 @@
     <script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
     <!-- End Umami Analytics -->
 
-    <!-- Data-driven framework: PORTAL_DATA["my-fin"] hydrated by front-data-json-js-wrapper.sh -->
+    <!-- Data-driven framework: PORTAL_DATA hydrated by front-data-json-js-wrapper.sh — must precede script.js -->
     <script src="data-my-fin.json.js"></script>
+    <script src="data-mock.json.js"></script>
+    <script src="data-nav.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["my-fin"];if(d&&d.title)document.title=d.title;})();</script>
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>

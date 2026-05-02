@@ -7,13 +7,19 @@ echo 1000 > /proc/$$/oom_score_adj 2>/dev/null
 # Memory Limit: Cap RAM usage at 1GB
 ulimit -v 1048576 2>/dev/null
 
-# Use absolute paths for utilities (socat subprocess may not inherit PATH)
-CAT="/bin/cat"
-HEAD="/usr/bin/head"
-TAIL="/usr/bin/tail"
-AWK="/usr/bin/awk"
-SED="/bin/sed"
-TR="/usr/bin/tr"
+# Resolve utility paths at startup. socat's EXEC: spawns a clean shell
+# that may not inherit our $PATH on every platform — so we capture the
+# absolute path here and substitute it directly. `command -v` works
+# uniformly across Termux (/data/data/com.termux/files/usr/bin/...),
+# NixOS (~/.nix-profile/bin/... or /run/current-system/sw/bin/...),
+# Debian (/bin/..., /usr/bin/...), and macOS.
+resolve() { command -v "$1" 2>/dev/null || { echo "Error: '$1' not found in PATH" >&2; exit 1; }; }
+CAT=$(resolve cat)
+HEAD=$(resolve head)
+TAIL=$(resolve tail)
+AWK=$(resolve awk)
+SED=$(resolve sed)
+TR=$(resolve tr)
 
 LOG_FILE="browser-console.log"
 PORT=19001

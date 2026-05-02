@@ -10,6 +10,11 @@ declare const globalThis: { PORTAL_DATA?: Record<string, unknown> };
 
 function readPortalData<T>(key: string): T {
   const bag = globalThis.PORTAL_DATA;
+  console.info('[my-fin]', 'loader.readPortalData', {
+    key,
+    bagKeys: bag ? Object.keys(bag) : null,
+    valueType: bag && key in bag ? (Array.isArray(bag[key]) ? 'array' : typeof bag[key]) : 'missing',
+  });
   if (!bag || !(key in bag)) {
     throw new Error(`PORTAL_DATA["${key}"] not found. Make sure data-${key}.json.js is loaded BEFORE script.js in index.html.`);
   }

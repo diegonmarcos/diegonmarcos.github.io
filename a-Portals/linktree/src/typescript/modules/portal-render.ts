@@ -19,11 +19,17 @@ interface IconItem    { url: string; title?: string; label?: string; icon: strin
 interface Column      { header: string; header_url?: string | null; links: Link[]; row?: number; }
 interface ToolsExtras { primary_link?: Link; profile_icons?: IconItem[]; }
 
+interface RowHeader   { title?: string; }
 interface SlideTools {
   id: string; kind: 'tools'; title: string;
   image?: { src: string; alt?: string };
   dashboard_modifier?: string;
   columns: Column[];
+  // Optional sub-headers rendered above each row's dashboard when columns
+  // declare a `row` index. Indexed by the row number itself, NOT by array
+  // position — `row_headers[2]` annotates the dashboard built from columns
+  // with `row: 2`. Sparse arrays are fine; missing entries skip the header.
+  row_headers?: RowHeader[];
   extras?: ToolsExtras;
 }
 
@@ -36,12 +42,18 @@ interface CollapsibleBlock { toggle_target?: string; id?: string; groups?: Colla
 
 interface ProfileSection {
   title: string;
-  layout: 'contact-icons' | 'mixed' | 'links' | 'links-grid';
+  // 'tool-links' — REPOS-style compact list: each link rendered as
+  // <a class="tool-link"> (small icon + label, dense vertical stack).
+  // Distinct from 'links' which emits the large <a class="link"> pills.
+  layout: 'contact-icons' | 'mixed' | 'links' | 'links-grid' | 'tool-links';
   items?: IconItem[];
   links?: Link[];
   icon_links?: IconItem[];
   grid?: string;
   grid_groups?: Link[][];
+  // For 'tool-links' layout: number of grid columns (1col mobile, N cols
+  // at ≥420px). Maps to .tools-column__links--N modifier in _links.scss.
+  cols?: number;
 }
 
 interface SlideProfileCard {
@@ -174,6 +186,10 @@ function renderToolsSlide(slide: SlideTools): HTMLElement {
     const rows = Array.from(byRow.keys()).sort((a, b) => a - b);
     rows.forEach((r, idx) => {
       const cols = byRow.get(r)!;
+      const header = slide.row_headers?.[r];
+      if (header?.title) {
+        linksContainer.appendChild(el('h3', { class: 'subsection-title row-header' }, [header.title]));
+      }
       const dash = el('div', { class: `tools-dashboard tools-dashboard--${cols.length}` });
       for (const col of cols) dash.appendChild(renderColumn(col));
       linksContainer.appendChild(dash);
@@ -259,6 +275,15 @@ function renderProfileSection(sec: ProfileSection): HTMLElement {
     wrap.appendChild(row);
   } else if (sec.layout === 'links') {
     for (const lk of sec.links ?? []) wrap.appendChild(renderLinkAnchor(lk));
+  } else if (sec.layout === 'tool-links') {
+    // REPOS-style: compact .tool-link rows (small icon + label) inside a
+    // .tools-column__links container so they pick up the column-internal
+    // typography + alignment defined in _links.scss. `cols` opts into a
+    // multi-column grid (1col mobile, N cols ≥420px).
+    const cls = `tools-column__links${sec.cols ? ` tools-column__links--${sec.cols}` : ''}`;
+    const list = el('div', { class: cls });
+    for (const lk of sec.links ?? []) list.appendChild(renderToolLink(lk));
+    wrap.appendChild(list);
   } else if (sec.layout === 'mixed') {
     for (const lk of sec.links ?? []) wrap.appendChild(renderLinkAnchor(lk));
     if (sec.icon_links?.length) {

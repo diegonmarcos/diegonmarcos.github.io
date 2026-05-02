@@ -348,6 +348,13 @@
               "url": "https://linkedin.com/in/diegonmarcos",
               "icon": "brand-linkedin.svg",
               "item": 1
+            },
+            {
+              "label": "Nexus Institutional Presentation",
+              "url": "https://diegonmarcos.github.io/nexus/slides",
+              "icon": "slideshow.svg",
+              "preview": "public/images/professional.png",
+              "item": 2
             }
           ],
           "group": 0
@@ -368,8 +375,8 @@
         },
         {
           "title": "Cores",
-          "layout": "links-grid",
-          "grid": "grid-3",
+          "layout": "tool-links",
+          "cols": 3,
           "links": [
             {
               "label": "Nexus Ventures",
@@ -391,20 +398,6 @@
             }
           ],
           "group": 2
-        },
-        {
-          "title": "Material",
-          "layout": "links",
-          "links": [
-            {
-              "label": "Nexus Institutional Presentation",
-              "url": "https://diegonmarcos.github.io/nexus/slides",
-              "icon": "slideshow.svg",
-              "preview": "public/images/professional.png",
-              "item": 0
-            }
-          ],
-          "group": 3
         }
       ],
       "slide": 2
@@ -433,6 +426,13 @@
               "url": "https://linkedin.com/in/diegonmarcos",
               "icon": "brand-linkedin.svg",
               "item": 1
+            },
+            {
+              "label": "Leafy Institutional Presentation",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "slideshow.svg",
+              "preview": "public/images/professional.png",
+              "item": 2
             }
           ],
           "group": 0
@@ -453,65 +453,47 @@
         },
         {
           "title": "Cores",
-          "layout": "links-grid",
-          "grid": "grid-3",
-          "grid_groups": [
-            [
-              {
-                "label": "AR/XR",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "sparkles.svg",
-                "item": 0
-              },
-              {
-                "label": "Front-ends",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "code.svg",
-                "item": 1
-              },
-              {
-                "label": "Drone Shows",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "video.svg",
-                "item": 2
-              }
-            ],
-            [
-              {
-                "label": "Cloud",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "database.svg",
-                "item": 3
-              },
-              {
-                "label": "AGI",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "brain.svg",
-                "item": 4
-              },
-              {
-                "label": "Software Graphics Engineering",
-                "url": "https://diegonmarcos.github.io/leafy/",
-                "icon": "device-desktop.svg",
-                "item": 5
-              }
-            ]
-          ],
-          "group": 2
-        },
-        {
-          "title": "Material",
-          "layout": "links",
+          "layout": "tool-links",
+          "cols": 3,
           "links": [
             {
-              "label": "Leafy Institutional Presentation",
+              "label": "AR/XR",
               "url": "https://diegonmarcos.github.io/leafy/",
-              "icon": "slideshow.svg",
-              "preview": "public/images/professional.png",
+              "icon": "sparkles.svg",
               "item": 0
+            },
+            {
+              "label": "Front-ends",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "code.svg",
+              "item": 1
+            },
+            {
+              "label": "Drone Shows",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "video.svg",
+              "item": 2
+            },
+            {
+              "label": "Cloud",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "database.svg",
+              "item": 3
+            },
+            {
+              "label": "AGI",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "brain.svg",
+              "item": 4
+            },
+            {
+              "label": "Software Graphics Engineering",
+              "url": "https://diegonmarcos.github.io/leafy/",
+              "icon": "device-desktop.svg",
+              "item": 5
             }
           ],
-          "group": 3
+          "group": 2
         }
       ],
       "slide": 3
@@ -540,6 +522,13 @@
               "url": "https://linkedin.com/in/diegonmarcos",
               "icon": "brand-linkedin.svg",
               "item": 1
+            },
+            {
+              "label": "Stark Institutional Presentation",
+              "url": "https://diegonmarcos.github.io/stark/slides",
+              "icon": "slideshow.svg",
+              "preview": "public/images/professional.png",
+              "item": 2
             }
           ],
           "group": 0
@@ -559,66 +548,48 @@
           "group": 1
         },
         {
-          "title": "Divisions",
-          "layout": "links-grid",
-          "grid": "grid-3",
-          "grid_groups": [
-            [
-              {
-                "label": "Autonomous Assembly",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "robot.svg",
-                "item": 0
-              },
-              {
-                "label": "AI Core Systems",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "brain.svg",
-                "item": 1
-              },
-              {
-                "label": "Orbital Launch",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "rocket.svg",
-                "item": 2
-              }
-            ],
-            [
-              {
-                "label": "Habitat Engineering",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "world.svg",
-                "item": 3
-              },
-              {
-                "label": "Asteroid Mining",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "sparkles.svg",
-                "item": 4
-              },
-              {
-                "label": "Propulsion Lab",
-                "url": "https://diegonmarcos.github.io/stark/",
-                "icon": "bolt.svg",
-                "item": 5
-              }
-            ]
-          ],
-          "group": 2
-        },
-        {
-          "title": "Material",
-          "layout": "links",
+          "title": "Cores",
+          "layout": "tool-links",
+          "cols": 3,
           "links": [
             {
-              "label": "Stark Institutional Presentation",
-              "url": "https://diegonmarcos.github.io/stark/slides",
-              "icon": "slideshow.svg",
-              "preview": "public/images/professional.png",
+              "label": "Autonomous Assembly",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "robot.svg",
               "item": 0
+            },
+            {
+              "label": "AI Core Systems",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "brain.svg",
+              "item": 1
+            },
+            {
+              "label": "Orbital Launch",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "rocket.svg",
+              "item": 2
+            },
+            {
+              "label": "Habitat Engineering",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "world.svg",
+              "item": 3
+            },
+            {
+              "label": "Asteroid Mining",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "sparkles.svg",
+              "item": 4
+            },
+            {
+              "label": "Propulsion Lab",
+              "url": "https://diegonmarcos.github.io/stark/",
+              "icon": "bolt.svg",
+              "item": 5
             }
           ],
-          "group": 3
+          "group": 2
         }
       ],
       "slide": 4

@@ -1,4 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import data from '../src/data/personal-tools.json';
 import { initPortalRender, listSlideIds, getSlide, renderSlide } from '../src/typescript/modules/portal-render';
 
@@ -13,13 +15,15 @@ describe('personal-tools.json — declarative source of truth', () => {
     expect(cfg.section.title).toBe('Personal Tools');
   });
 
-  it('exposes all 14 migrated slides across 3 boxes (4 personal-tools + 5 personal-profiles + 5 professional-profiles)', () => {
+  it('exposes all 13 migrated slides across 3 boxes (4 personal-tools + 4 personal-profiles + 5 professional-profiles)', () => {
     const ids = listSlideIds();
-    expect(ids.length).toBe(14);
+    expect(ids.length).toBe(13);
     // Personal Tools — TOOLCHAIN stays hand-coded
     for (const id of ['suite', 'lab-tools', 'circus', 'cloud']) expect(ids).toContain(id);
-    // Personal Profiles
-    for (const id of ['personal-profile', 'media', 'data', 'brucheion', 'serapeum']) expect(ids).toContain(id);
+    // Personal Profiles — brucheion + serapeum merged into `projects`
+    for (const id of ['personal-profile', 'media', 'data', 'projects']) expect(ids).toContain(id);
+    expect(ids).not.toContain('brucheion');
+    expect(ids).not.toContain('serapeum');
     // Professional Profiles
     for (const id of ['professional-profile', 'repos', 'nexus', 'leafy', 'stark']) expect(ids).toContain(id);
   });
@@ -199,6 +203,149 @@ describe('portal-render — DOM output', () => {
     const tree = renderSlide('lab-tools')!;
     const finLink = Array.from(tree.querySelectorAll<HTMLAnchorElement>('a.tool-link')).find(a => a.textContent?.includes('Fin Terminal'));
     expect(finLink!.href).toBe('https://diegonmarcos.github.io/fin-terminal');
+  });
+});
+
+describe('PROJECTS slide — Brucheion + Serapeum merged into one two-row slide', () => {
+  it('personal-profiles.json carries a single `projects` slide with row_headers ["Brucheion","Serapeum"] and 6 columns split row 0/1', () => {
+    const personal = JSON.parse(
+      readFileSync(resolve(__dirname, '..', 'src', 'data', 'personal-profiles.json'), 'utf8'),
+    ) as { slides: Array<{ id: string; title?: string; row_headers?: Array<{ title?: string }>; columns?: Array<{ row?: number; header: string }> }> };
+    const projects = personal.slides.find(s => s.id === 'projects');
+    expect(projects, 'projects slide must exist').toBeDefined();
+    expect(projects!.title).toBe('PROJECTS');
+    expect(projects!.row_headers?.map(h => h.title)).toEqual(['Brucheion', 'Serapeum']);
+    const cols = projects!.columns!;
+    expect(cols.length).toBe(6);
+    expect(cols.filter(c => c.row === 0).map(c => c.header)).toEqual(['Basileia', 'Mousseion', 'Paneion']);
+    expect(cols.filter(c => c.row === 1).map(c => c.header)).toEqual(['Akropolis', 'Bibliotheke', 'Adyton']);
+  });
+
+  it('renderSlide("projects") emits 2 dashboards, each preceded by an .row-header sub-title, separated by a .row-divider', () => {
+    const tree = renderSlide('projects')!;
+    expect(tree.classList.contains('swiper-slide')).toBe(true);
+    expect(tree.querySelector('h2.section-title')?.textContent).toBe('PROJECTS');
+
+    const linksContainer = tree.querySelector('.links-container')!;
+    const headers = Array.from(linksContainer.querySelectorAll<HTMLElement>('h3.row-header')).map(h => h.textContent);
+    expect(headers).toEqual(['Brucheion', 'Serapeum']);
+
+    const dashboards = linksContainer.querySelectorAll('.tools-dashboard');
+    expect(dashboards.length).toBe(2);
+    expect(dashboards[0]!.classList.contains('tools-dashboard--3')).toBe(true);
+    expect(dashboards[1]!.classList.contains('tools-dashboard--3')).toBe(true);
+    expect(Array.from(dashboards[0]!.querySelectorAll('.tools-column__header')).map(h => h.textContent?.trim()))
+      .toEqual(['Basileia', 'Mousseion', 'Paneion']);
+    expect(Array.from(dashboards[1]!.querySelectorAll('.tools-column__header')).map(h => h.textContent?.trim()))
+      .toEqual(['Akropolis', 'Bibliotheke', 'Adyton']);
+
+    const dividers = linksContainer.querySelectorAll('hr.row-divider');
+    expect(dividers.length).toBe(1);
+
+    // DOM order: header(B) → dash(B) → divider → header(S) → dash(S)
+    const expectedOrder = ['h3.row-header', '.tools-dashboard', 'hr.row-divider', 'h3.row-header', '.tools-dashboard'];
+    const actualOrder = Array.from(linksContainer.children)
+      .map(c => expectedOrder.find(sel => c.matches(sel)))
+      .filter(Boolean);
+    expect(actualOrder).toEqual(expectedOrder);
+    const headerOrder = Array.from(linksContainer.children)
+      .filter(c => c.matches('h3.row-header'))
+      .map(h => h.textContent);
+    expect(headerOrder).toEqual(['Brucheion', 'Serapeum']);
+
+    // PROJECTS keeps the standard one-banner-per-slide convention used by
+    // every other tools slide: exactly ONE .featured-image at the top, NOT
+    // one per row (the user explicitly opted out of per-half hero images).
+    const banners = tree.querySelectorAll('img.featured-image');
+    expect(banners.length).toBe(1);
+    // The banner must sit ABOVE the .links-container, not inside it.
+    expect(linksContainer.querySelector('img.featured-image')).toBeNull();
+  });
+
+  it('the legacy brucheion + serapeum slide ids are gone from the data + the renderer', () => {
+    expect(getSlide('brucheion')).toBeUndefined();
+    expect(getSlide('serapeum')).toBeUndefined();
+  });
+});
+
+describe('Professional venture cards — Cores section consistency (NEXUS, LEAFY, STARK)', () => {
+  interface ContactItem { label: string; url: string; icon: string; item: number }
+  interface VentureSection { title: string; layout: string; cols?: number; items?: ContactItem[]; links?: Array<{ label: string }>; grid?: string; grid_groups?: unknown }
+  interface VentureSlide   { id: string; sections: VentureSection[] }
+  const cfg = JSON.parse(
+    readFileSync(resolve(__dirname, '..', 'src', 'data', 'professional-profiles.json'), 'utf8'),
+  ) as { slides: VentureSlide[] };
+  const VENTURES = ['nexus', 'leafy', 'stark'] as const;
+
+  it('STARK no longer has a "Divisions" section — renamed to "Cores" for consistency', () => {
+    const stark = cfg.slides.find(s => s.id === 'stark')!;
+    expect(stark.sections.find(sec => sec.title === 'Divisions'), 'Divisions must be gone').toBeUndefined();
+    expect(stark.sections.find(sec => sec.title === 'Cores'), 'Cores must be present').toBeDefined();
+  });
+
+  it.each(VENTURES)('%s carries a "Cores" section using the REPOS-style compact List UI (layout="tool-links", cols=3)', (id) => {
+    const slide = cfg.slides.find(s => s.id === id)!;
+    const cores = slide.sections.find(sec => sec.title === 'Cores')!;
+    expect(cores, `${id} must declare a Cores section`).toBeDefined();
+    expect(cores.layout).toBe('tool-links');
+    expect(cores.cols, `${id} Cores must declare cols: 3 for the 3-column grid`).toBe(3);
+    expect(Array.isArray(cores.links)).toBe(true);
+    expect(cores.links!.length).toBeGreaterThan(0);
+    // Button-grid artefacts must be gone.
+    expect(cores.grid, `${id} Cores must not declare a grid`).toBeUndefined();
+    expect(cores.grid_groups, `${id} Cores must not declare grid_groups`).toBeUndefined();
+  });
+
+  it.each(VENTURES)('renderSlide("%s") emits the Cores section as REPOS-style <a class="tool-link"> rows inside a .tools-column__links.tools-column__links--3 grid — no big <a class="link"> pills, no .links-grid', (id) => {
+    const tree = renderSlide(id)!;
+    const subTitles = Array.from(tree.querySelectorAll<HTMLElement>('.profile-section h3.subsection-title'));
+    const coresSection = subTitles.find(h => h.textContent === 'Cores')?.parentElement!;
+    expect(coresSection, `${id} must render a Cores .profile-section`).not.toBeNull();
+
+    // Wrong styles must NOT appear inside Cores.
+    expect(coresSection.querySelector('.links-grid'), `${id} Cores must not render a .links-grid wrapper`).toBeNull();
+    expect(coresSection.querySelector(':scope > a.link'), `${id} Cores must not render big .link pills`).toBeNull();
+
+    // Correct REPOS-style structure with the 3-column modifier class.
+    const list = coresSection.querySelector(':scope > .tools-column__links.tools-column__links--3');
+    expect(list, `${id} Cores must render a .tools-column__links--3 grid wrapper`).not.toBeNull();
+    const toolLinks = list!.querySelectorAll(':scope > a.tool-link');
+    const expectedCount = (cfg.slides.find(s => s.id === id)!.sections.find(sec => sec.title === 'Cores')!.links!).length;
+    expect(toolLinks.length).toBe(expectedCount);
+    // Each .tool-link must carry an icon + a non-empty label, like REPOS.
+    for (const a of Array.from(toolLinks)) {
+      expect(a.querySelector('img.icon'), `${id} Cores tool-link missing icon`).not.toBeNull();
+      expect(a.textContent?.trim().length, `${id} Cores tool-link missing label`).toBeGreaterThan(0);
+      expect(a.getAttribute('target')).toBe('_blank');
+    }
+  });
+
+  it.each(VENTURES)('%s Contact section absorbed the Institutional Presentation slideshow icon (Email + LinkedIn + slideshow), and the standalone "Material" section is gone', (id) => {
+    const slide = cfg.slides.find(s => s.id === id)!;
+    expect(slide.sections.find(sec => sec.title === 'Material'), `${id} Material section must be removed`).toBeUndefined();
+    const contact = slide.sections.find(sec => sec.title === 'Contact')!;
+    expect(contact.layout).toBe('contact-icons');
+    expect(contact.items?.length, `${id} Contact must have 3 icons (Email, LinkedIn, Institutional Presentation)`).toBe(3);
+    const labels = contact.items!.map(it => it.label);
+    expect(labels.slice(0, 2)).toEqual(['Email', 'LinkedIn']);
+    expect(labels[2]).toMatch(/Institutional Presentation$/);
+    expect(contact.items![2]!.icon).toBe('slideshow.svg');
+    // Item numbers stay unique within the Contact group.
+    expect(new Set(contact.items!.map(it => it.item)).size).toBe(3);
+  });
+
+  it.each(VENTURES)('renderSlide("%s") puts the Institutional Presentation icon inside the Contact .profile-icons row (no big <a class="link"> pill anywhere)', (id) => {
+    const tree = renderSlide(id)!;
+    const subTitles = Array.from(tree.querySelectorAll<HTMLElement>('.profile-section h3.subsection-title'));
+    const contactSection = subTitles.find(h => h.textContent === 'Contact')?.parentElement!;
+    expect(contactSection, `${id} must render a Contact .profile-section`).not.toBeNull();
+    const iconAnchors = contactSection.querySelectorAll('.profile-icons > a');
+    expect(iconAnchors.length).toBe(3);
+    const slideshow = Array.from(iconAnchors).find(a => a.querySelector('img[src$="slideshow.svg"]'));
+    expect(slideshow, `${id} Contact must include a slideshow.svg icon`).toBeDefined();
+    // No leftover Material section anywhere in the rendered tree.
+    const materialHeader = subTitles.find(h => h.textContent === 'Material');
+    expect(materialHeader, `${id} must not render a Material subsection`).toBeUndefined();
   });
 });
 

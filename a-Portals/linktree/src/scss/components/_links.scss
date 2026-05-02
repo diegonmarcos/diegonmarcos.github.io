@@ -216,6 +216,27 @@
     gap: 0.15rem;
     text-align: left;
     padding-left: 0.5rem;
+
+    // Multi-column variants for stand-alone (no .tools-column wrapper)
+    // .tool-links sections — e.g. NEXUS/LEAFY/STARK Cores. 1col on mobile,
+    // N cols at ≥420px to match .tools-dashboard breakpoint.
+    &--2,
+    &--3,
+    &--4,
+    &--5 {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 1fr;
+        column-gap: 0.5rem;
+        padding-left: 0;
+    }
+
+    @media (min-width: 420px) {
+        &--2 { grid-template-columns: repeat(2, 1fr); }
+        &--3 { grid-template-columns: repeat(3, 1fr); }
+        &--4 { grid-template-columns: repeat(4, 1fr); }
+        &--5 { grid-template-columns: repeat(5, 1fr); }
+    }
 }
 
 .tool-link {

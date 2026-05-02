@@ -443,15 +443,20 @@
       "slide": 2
     },
     {
-      "id": "brucheion",
+      "id": "projects",
       "kind": "tools",
-      "title": "BRUCHEION",
+      "title": "PROJECTS",
       "image": {
         "src": "public/images/brucheion.jpg",
-        "alt": "Brucheion"
+        "alt": "Projects"
       },
+      "row_headers": [
+        { "title": "Brucheion" },
+        { "title": "Serapeum" }
+      ],
       "columns": [
         {
+          "row": 0,
           "header": "Basileia",
           "links": [
             {
@@ -464,6 +469,7 @@
           "group": 0
         },
         {
+          "row": 0,
           "header": "Mousseion",
           "links": [
             {
@@ -476,6 +482,7 @@
           "group": 1
         },
         {
+          "row": 0,
           "header": "Paneion",
           "links": [
             {
@@ -486,20 +493,9 @@
             }
           ],
           "group": 2
-        }
-      ],
-      "slide": 3
-    },
-    {
-      "id": "serapeum",
-      "kind": "tools",
-      "title": "SERAPEUM",
-      "image": {
-        "src": "public/images/serapeum.jpg",
-        "alt": "Serapeum"
-      },
-      "columns": [
+        },
         {
+          "row": 1,
           "header": "Akropolis",
           "links": [
             {
@@ -509,9 +505,10 @@
               "item": 0
             }
           ],
-          "group": 0
+          "group": 3
         },
         {
+          "row": 1,
           "header": "Bibliotheke",
           "links": [
             {
@@ -521,9 +518,10 @@
               "item": 0
             }
           ],
-          "group": 1
+          "group": 4
         },
         {
+          "row": 1,
           "header": "Adyton",
           "links": [
             {
@@ -533,10 +531,10 @@
               "item": 0
             }
           ],
-          "group": 2
+          "group": 5
         }
       ],
-      "slide": 4
+      "slide": 3
     }
   ]
 }

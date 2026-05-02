@@ -46,6 +46,20 @@ log_success() { printf "${GREEN}✓${NC} %s\n" "$1"; }
 log_error()   { printf "${RED}✗${NC} %s\n" "$1" >&2; }
 log_warn()    { printf "${YELLOW}!${NC} %s\n" "$1"; }
 log_step()    { printf "  ${CYAN}→${NC} %s\n" "$1"; }
+
+# Tiny dispatcher — locates a sibling step script (dist preferred, src
+# fallback) and execs it with the given args. Lets every `mod` case
+# branch be a single line, so _engine.sh stays a pure orchestrator and
+# all per-step logic lives in dedicated scripts. Usage:
+#   _run <script-name> <args...>
+#   e.g.  _run front-console-log.sh "$DIST_DIR" "$REPO_ROOT" "$_files"
+_run() {
+    local s="$REPO_ROOT/1_workflows/dist/scripts/$1"
+    [ -x "$s" ] || s="$REPO_ROOT/1_workflows/src/scripts/$1"
+    [ -x "$s" ] || { log_error "$1: not found / not executable"; return $EXIT_BUILD; }
+    shift
+    "$s" "$@"
+}
 log_verbose() { [ "$OPT_VERBOSE" = true ] && printf "  ${DIM}%s${NC}\n" "$1" || true; }
 
 # ─── ERROR HANDLING ─────────────────────────────────────────
@@ -426,6 +440,14 @@ mod_sw_register() {
     log_success "sw_register: $summary"
 }
 
+# NOTE: console_log dispatch is handled inline in the case statement
+# below (no mod_console_log wrapper). The standalone script
+# `front-console-log.sh` owns ALL the logic — including the "*" → *.html
+# expansion and the dist↔src snippet template fallback. _engine.sh just
+# orchestrates: locate the script (dist preferred, src fallback) and
+# exec it with (DIST_DIR, REPO_ROOT, files). Pattern to follow when
+# extracting other mods out of _engine.sh.
+
 # Generate the full PWA icon set from one source image. Wraps the engine
 # `1_workflows/dist/scripts/front-pwa-icons.sh` so build.json can drive
 # the source / output / safe-zone-bg fully declaratively.
@@ -716,6 +738,12 @@ run_build() {
             esbuild)      mod_esbuild "$_input" "$_output" "prod" "$_format" "$_target" ;;
             esbuild_sw)   mod_esbuild_sw "$_input" "$_output" "$_hash_of" "$_precache" "$_verify" "prod" "$_format" "$_target" ;;
             sw_register)  mod_sw_register "$_files" ;;
+            console_log)  _e="$REPO_ROOT/1_workflows/dist/scripts/front-console-log.sh"; \
+                          [ -x "$_e" ] || _e="$REPO_ROOT/1_workflows/src/scripts/front-console-log.sh"; \
+                          [ -x "$_e" ] || { log_error "console_log: front-console-log.sh not found"; return $EXIT_BUILD; }; \
+                          _s="$("$_e" "$DIST_DIR" "$REPO_ROOT" "$_files")" \
+                              || { log_error "console_log: engine failed"; return $EXIT_BUILD; }; \
+                          log_success "console_log: $_s" ;;
             pwa_icons)    mod_pwa_icons "$_source" "$_out" "$_bg" ;;
             tsc)          mod_tsc "$_dir" "$_output" "prod" ;;
             vite)         mod_vite ;;

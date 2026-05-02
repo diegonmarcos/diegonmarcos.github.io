@@ -387,8 +387,8 @@
               "item": 3
             },
             {
-              "label": "Ledger",
-              "url": "https://www.ledger.com",
+              "label": "My Financials",
+              "url": "https://diegonmarcos.github.io/my-fin",
               "icon": "ledger.svg",
               "item": 4
             }

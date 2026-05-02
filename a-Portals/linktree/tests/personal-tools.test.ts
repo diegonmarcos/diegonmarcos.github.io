@@ -111,14 +111,18 @@ describe('personal-tools.json — declarative source of truth', () => {
     }
   });
 
-  it('Markets column has Fin Terminal first and Ledger present', () => {
+  it('Markets column has Fin Terminal first and My Financials (renamed from Ledger) pointing to the local /my-fin route', () => {
     const labTools = cfg.slides.find(s => s.id === 'lab-tools')!;
     const markets = labTools.columns.find(c => c.header === 'Markets')!;
     expect(markets.links[0]!.label).toBe('Fin Terminal');
     expect(markets.links[0]!.url).toBe('https://diegonmarcos.github.io/fin-terminal');
-    const ledger = markets.links.find(l => l.label === 'Ledger');
-    expect(ledger).toBeDefined();
-    expect(ledger!.icon).toBe('ledger.svg');
+    const myFin = markets.links.find(l => l.label === 'My Financials');
+    expect(myFin, 'My Financials entry must replace the old "Ledger" button').toBeDefined();
+    expect(myFin!.url).toBe('https://diegonmarcos.github.io/my-fin');
+    expect(myFin!.icon).toBe('ledger.svg');
+    // The old wrong external link must be gone.
+    expect(markets.links.find(l => l.label === 'Ledger')).toBeUndefined();
+    expect(markets.links.find(l => l.url === 'https://www.ledger.com')).toBeUndefined();
   });
 
   it('every link has a non-empty label, https URL, and icon filename', () => {

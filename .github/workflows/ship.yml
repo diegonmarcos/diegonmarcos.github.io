@@ -45,7 +45,7 @@ jobs:
         # Excludes test_framework + test_watcher_reap (flaky in headless
         # CI; tracked separately). Runs the deterministic SW + cache
         # tests added by the SW-hashing modularization.
-        run: bash 1_workflows/src/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*"
+        run: bash 1_workflows/src/test/run.sh "test_front_cache_*" "test_front_sw_*" "test_engine_sw_*" "test_front_sw_register" "test_engine_copy_glob"
       # ============================================
       # PROJECT BUILDS (All use build.sh)
       # ============================================
@@ -302,6 +302,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
+      - name: 🔨 Build My Financials
+        id: build-my-fin
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/my-fin/src/')
+
+        run: |
+          echo "🔨 Building My Financials..."
+          cd c-MyTools/my-fin
+          bash build.sh build
+          cd ../..
+          echo "✅ My Financials build complete"
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if:
@@ -486,6 +497,7 @@ jobs:
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
+            "c-MyTools/my-fin:my-fin"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

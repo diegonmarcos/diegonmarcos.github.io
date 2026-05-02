@@ -290,6 +290,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
+      - name: 🔨 Build My Financials
+        id: build-my-fin
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/my-fin/src/')
+
+        run: |
+          echo "🔨 Building My Financials..."
+          cd c-MyTools/my-fin
+          bash build.sh build
+          cd ../..
+          echo "✅ My Financials build complete"
       - name: 🔨 Build JSON Vision (Vue 3)
         id: build-json-vision
         if:
@@ -474,6 +485,7 @@ jobs:
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
+            "c-MyTools/my-fin:my-fin"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

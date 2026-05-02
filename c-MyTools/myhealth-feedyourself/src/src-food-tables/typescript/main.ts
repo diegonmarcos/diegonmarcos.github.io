@@ -4,7 +4,7 @@
 
 import type { ColumnDef, FilterTag, FoodItem, FoodLibrary, Preset, UiRow } from "./types";
 
-const ROW_ORDER = ["diet", "diet-protein", "diet-carb", "restrictions"] as const;
+const ROW_ORDER = ["diet", "diet-protein", "diet-carb", "restrictions", "customs"] as const;
 const PARENT_ROW = "diet";
 const CUSTOM_TAG: FilterTag = "custom";
 const ALL_TAG: FilterTag = "all";
@@ -18,15 +18,19 @@ const state: {
   active: Map<string, Set<FilterTag>>;
   protSort: SortState;
   carbSort: SortState;
+  customSort: SortState;
   protView: TableViewState;
   carbView: TableViewState;
+  customView: TableViewState;
 } = {
   lib: null,
   active: new Map(),
-  protSort: { key: "kcal_per_prot", dir: "asc" },
-  carbSort: { key: "gi", dir: "asc" },
-  protView: { page: 1, query: "" },
-  carbView: { page: 1, query: "" },
+  protSort:   { key: "kcal_per_prot", dir: "asc" },
+  carbSort:   { key: "gi",            dir: "asc" },
+  customSort: { key: "umami_score",   dir: "desc" },
+  protView:   { page: 1, query: "" },
+  carbView:   { page: 1, query: "" },
+  customView: { page: 1, query: "" },
 };
 
 function getLibrary(): FoodLibrary | null {
@@ -41,8 +45,34 @@ function rows(): Array<[string, UiRow]> {
     .map(id => [id, state.lib!.ui_rows[id]] as [string, UiRow]);
 }
 
-function defaultDir(table: "protein" | "carb", key: string): "asc" | "desc" {
-  const col = (state.lib?.table_columns[table] ?? []).find(c => c.key === key);
+type TableSlot = "protein" | "carb" | "custom";
+
+function viewOf(slot: TableSlot): TableViewState {
+  return slot === "protein" ? state.protView : slot === "carb" ? state.carbView : state.customView;
+}
+function sortOf(slot: TableSlot): SortState {
+  return slot === "protein" ? state.protSort : slot === "carb" ? state.carbSort : state.customSort;
+}
+
+function activeCustomKey(): string | null {
+  // Returns the active custom view key (e.g. "umami") or null when "all" / nothing.
+  const sel = state.active.get("customs");
+  if (!sel) return null;
+  for (const t of sel) if (t !== ALL_TAG && t !== CUSTOM_TAG) return t;
+  return null;
+}
+
+function tableColumnsKey(slot: TableSlot): string {
+  if (slot === "custom") {
+    const ck = activeCustomKey();
+    return ck ? `custom-${ck}` : "";
+  }
+  return slot;
+}
+
+function defaultDir(slot: TableSlot, key: string): "asc" | "desc" {
+  const colsKey = tableColumnsKey(slot);
+  const col = (state.lib?.table_columns[colsKey] ?? []).find(c => c.key === key);
   return col?.default_dir ?? "asc";
 }
 
@@ -252,7 +282,7 @@ function applyTableFilter(items: FoodItem[], filter: { min?: Record<string,numbe
   });
 }
 
-function renderPager(slot: "protein" | "carb", total: number, page: number, totalPages: number): string {
+function renderPager(slot: TableSlot, total: number, page: number, totalPages: number): string {
   const prevDisabled = page <= 1;
   const nextDisabled = page >= totalPages;
   const start = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
@@ -266,12 +296,17 @@ function renderPager(slot: "protein" | "carb", total: number, page: number, tota
   `;
 }
 
-function renderTable(slot: "protein" | "carb"): string {
+function renderTable(slot: TableSlot): string {
   if (!state.lib) return "";
-  const cols = state.lib.table_columns[slot] ?? [];
-  const filter = state.lib.table_filters[slot];
-  const view = slot === "protein" ? state.protView : state.carbView;
-  const sortRef = slot === "protein" ? state.protSort : state.carbSort;
+  const colsKey = tableColumnsKey(slot);
+  // Custom table is hidden when no specific custom view is active
+  if (slot === "custom" && !colsKey) {
+    return `<div class="ft-table-head"><h2>Custom View</h2><p class="ft-subtitle">Pick a chip in <strong>Customs</strong> above (e.g. <em>Umami</em>) to populate this table.</p></div>`;
+  }
+  const cols = state.lib.table_columns[colsKey] ?? [];
+  const filter = state.lib.table_filters[colsKey];
+  const view = viewOf(slot);
+  const sortRef = sortOf(slot);
 
   let filtered = applyTableFilter(state.lib.items, filter).filter(passesFilters);
   if (view.query.trim()) {
@@ -289,10 +324,21 @@ function renderTable(slot: "protein" | "carb"): string {
   // Re-rank labels are 1..PAGE_SIZE per page; show absolute rank instead
   const indexedItems = pageItems.map((it, i) => ({ ...it, _rank: pageStart + i + 1 }));
 
+  const ck = activeCustomKey();
   const subtitle = slot === "protein"
     ? "Click any column to sort. Default: lowest kcal per gram of protein (leanest first)."
-    : "Click any column to sort. Default: lowest Glycemic Index (slowest blood-sugar rise).";
-  const heading = slot === "protein" ? "Protein Sources" : "Carbohydrate Sources";
+    : slot === "carb"
+      ? "Click any column to sort. Default: lowest Glycemic Index (slowest blood-sugar rise)."
+      : ck === "umami"
+        ? "Click any column to sort. Ranked by umami score (free glutamate + 5×(IMP+GMP) + synergy bonus)."
+        : "";
+  const heading = slot === "protein"
+    ? "Protein Sources"
+    : slot === "carb"
+      ? "Carbohydrate Sources"
+      : ck === "umami"
+        ? "Umami Foods"
+        : "Custom View";
   return `
     <div class="ft-table-head">
       <h2>${heading}</h2>
@@ -330,8 +376,10 @@ function escapeAttr(s: string): string {
 function rerenderTables(): void {
   const protSlot = document.getElementById("ft-protein");
   const carbSlot = document.getElementById("ft-carb");
-  if (protSlot) protSlot.innerHTML = renderTable("protein");
-  if (carbSlot) carbSlot.innerHTML = renderTable("carb");
+  const customSlot = document.getElementById("ft-custom");
+  if (protSlot)   protSlot.innerHTML   = renderTable("protein");
+  if (carbSlot)   carbSlot.innerHTML   = renderTable("carb");
+  if (customSlot) customSlot.innerHTML = renderTable("custom");
 }
 
 function rerenderFilters(): void {
@@ -350,15 +398,16 @@ function bindFilterClicks(): void {
     const tag = chip.dataset.tag as FilterTag | undefined;
     if (!rowId || !tag) return;
     toggleFilter(rowId, tag);
-    // Reset both tables to page 1 since filter set changed
+    // Reset all tables to page 1 since filter set changed
     state.protView.page = 1;
     state.carbView.page = 1;
+    state.customView.page = 1;
     rerenderFilters();
     rerenderTables();
   });
 }
 
-function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
+function bindTableEvents(slotId: string, slot: TableSlot): void {
   const el = document.getElementById(slotId);
   if (!el) return;
 
@@ -369,7 +418,7 @@ function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
     if (th) {
       const key = th.dataset.key;
       if (!key) return;
-      const sortRef = slot === "protein" ? state.protSort : state.carbSort;
+      const sortRef = sortOf(slot);
       if (sortRef.key === key) {
         sortRef.dir = sortRef.dir === "asc" ? "desc" : "asc";
       } else {
@@ -377,7 +426,7 @@ function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
         sortRef.dir = defaultDir(slot, key);
       }
       // Reset to page 1 on sort change
-      const view = slot === "protein" ? state.protView : state.carbView;
+      const view = viewOf(slot);
       view.page = 1;
       rerenderTables();
       return;
@@ -385,7 +434,7 @@ function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
     // Pager buttons
     const pageBtn = target?.closest<HTMLButtonElement>(".ft-pager-btn");
     if (pageBtn && !pageBtn.disabled) {
-      const view = slot === "protein" ? state.protView : state.carbView;
+      const view = viewOf(slot);
       if (pageBtn.dataset.page === "prev") view.page = Math.max(1, view.page - 1);
       if (pageBtn.dataset.page === "next") view.page = view.page + 1;
       rerenderTables();
@@ -403,10 +452,10 @@ function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
       ke.preventDefault();
       const key = th.dataset.key;
       if (!key) return;
-      const sortRef = slot === "protein" ? state.protSort : state.carbSort;
+      const sortRef = sortOf(slot);
       if (sortRef.key === key) sortRef.dir = sortRef.dir === "asc" ? "desc" : "asc";
       else { sortRef.key = key; sortRef.dir = defaultDir(slot, key); }
-      const view = slot === "protein" ? state.protView : state.carbView;
+      const view = viewOf(slot);
       view.page = 1;
       rerenderTables();
     }
@@ -416,11 +465,10 @@ function bindTableEvents(slotId: string, slot: "protein" | "carb"): void {
   el.addEventListener("input", (ev) => {
     const target = ev.target as HTMLInputElement | null;
     if (!target?.classList.contains("ft-search")) return;
-    const view = slot === "protein" ? state.protView : state.carbView;
+    const view = viewOf(slot);
     view.query = target.value;
     view.page = 1;
-    // Re-render only this slot to preserve input focus
-    const slotEl = document.getElementById(slot === "protein" ? "ft-protein" : "ft-carb");
+    const slotEl = document.getElementById(slotId);
     if (slotEl) {
       slotEl.innerHTML = renderTable(slot);
       const newInput = slotEl.querySelector<HTMLInputElement>(".ft-search");
@@ -448,6 +496,7 @@ function init(): void {
   bindFilterClicks();
   bindTableEvents("ft-protein", "protein");
   bindTableEvents("ft-carb",    "carb");
+  bindTableEvents("ft-custom",  "custom");
 }
 
 if (document.readyState === "loading") {

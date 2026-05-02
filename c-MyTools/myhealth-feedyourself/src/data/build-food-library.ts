@@ -34,6 +34,7 @@ interface Inputs {
   gi_overrides: Record<string, number>;
   tag_overrides: Record<string, { add?: string[]; remove?: string[] }>;
   name_pattern_overrides?: { _doc?: string; rules: Array<{ match: string; add?: string[]; remove?: string[]; _why?: string }> };
+  umami_data?: { _doc?: string; tag_threshold: number; rules: Array<{ match: string; glutamate_mg: number; imp_mg: number; gmp_mg: number }> };
   extra_foods: Record<string, FoodRecord>;
   whitelist: { ids: string[] };
 }
@@ -68,6 +69,9 @@ interface FoodRecord {
   fat_poly_g: number | null;
   sodium_mg: number | null;
   gi: number | null;
+  glutamate_mg: number | null;
+  imp_mg: number | null;
+  gmp_mg: number | null;
   diet_tags: string[];
   // populated by computed_ratios
   [extra: string]: unknown;
@@ -123,7 +127,7 @@ async function readUsdaSrLegacy(): Promise<FoodRecord[]> {
       category,
       kcal_per_100g: null, prot_g: null, carb_g: null, fiber_g: null,
       sugar_g: null, fat_g: null, fat_sat_g: null, fat_mono_g: null,
-      fat_poly_g: null, sodium_mg: null, gi: null, diet_tags: [],
+      fat_poly_g: null, sodium_mg: null, gi: null, glutamate_mg: null, imp_mg: null, gmp_mg: null, diet_tags: [],
     };
     // Extract nutrients (kcal stays in kcal, mg→mg, g→g — USDA already uses these units for our targets)
     let kcalAlt: number | null = null;
@@ -198,6 +202,9 @@ function readAfcd(): FoodRecord[] {
       fat_poly_g: num(AFCD_COL.fat_poly_g),
       sodium_mg:  num(AFCD_COL.sodium_mg),
       gi: null,
+      glutamate_mg: null,
+      imp_mg: null,
+      gmp_mg: null,
       diet_tags: [],
     };
     out.push(rec);
@@ -307,7 +314,7 @@ function applyTagRules(
 // ─── Ratio computation ────────────────────────────────────────────────────────
 function compileFormula(formula: string): (rec: FoodRecord) => number | null {
   // Whitelist field tokens to avoid eval injection. Build a function (a,b,c,...) => expr.
-  const fields = ["kcal_per_100g","prot_g","carb_g","fiber_g","sugar_g","fat_g","fat_sat_g","fat_mono_g","fat_poly_g","sodium_mg","gi"];
+  const fields = ["kcal_per_100g","prot_g","carb_g","fiber_g","sugar_g","fat_g","fat_sat_g","fat_mono_g","fat_poly_g","sodium_mg","gi","glutamate_mg","imp_mg","gmp_mg"];
   // Validate formula contains only allowed identifiers + operators + numbers
   const safe = formula.replace(/[a-zA-Z_][a-zA-Z0-9_]*/g, (m) => {
     if (!fields.includes(m)) throw new Error(`Unknown identifier in formula: ${m}`);
@@ -368,6 +375,18 @@ async function main(): Promise<void> {
     if (inputs.gi_overrides[key] != null) rec.gi = inputs.gi_overrides[key];
     else rec.gi = findGi(rec.name, gi);
 
+    // Umami data — first matching rule wins (rules are ordered most-specific first)
+    if (inputs.umami_data) {
+      for (const ur of inputs.umami_data.rules) {
+        if (new RegExp(ur.match, "i").test(rec.name)) {
+          rec.glutamate_mg = ur.glutamate_mg;
+          rec.imp_mg = ur.imp_mg;
+          rec.gmp_mg = ur.gmp_mg;
+          break;
+        }
+      }
+    }
+
     // Diet tags via rules
     rec.diet_tags = applyTagRules(rec, inputs.tag_rules, groupIdx);
 
@@ -394,8 +413,15 @@ async function main(): Promise<void> {
       rec.diet_tags = Array.from(set);
     }
 
-    // Computed ratios
+    // Computed ratios (must run AFTER umami_data so umami_score sees the values)
     applyComputedRatios(rec, inputs.computed_ratios);
+
+    // Umami tag based on threshold
+    const threshold = inputs.umami_data?.tag_threshold ?? 100;
+    const score = (rec as any).umami_score;
+    if (typeof score === "number" && score >= threshold) {
+      const set = new Set(rec.diet_tags); set.add("umami"); rec.diet_tags = Array.from(set);
+    }
   }
 
   // Append extra_foods (already shaped)

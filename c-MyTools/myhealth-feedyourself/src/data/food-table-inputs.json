@@ -68,7 +68,8 @@
     "diet":          { "label": "Diet",          "selectMode": "single", "options": ["vegan","vegetarian","pescatarian","keto","low-carb","paleo","carnivore","mediterranean","whole30","dash","fodmap-low","custom","all"] },
     "diet-protein":  { "label": "Diet Protein",  "selectMode": "single", "options": ["vegan","vegetarian","pescatarian","omnivore","carnivore","all"] },
     "diet-carb":     { "label": "Diet Carb",     "selectMode": "single", "options": ["keto","low-carb","all"] },
-    "restrictions":  { "label": "Restrictions",  "selectMode": "multi",  "options": ["lactose-free","gluten-free","no-legumes","no-refined-sugar","no-sugar","low-ldl","low-sodium","low-fodmap","all"] }
+    "restrictions":  { "label": "Restrictions",  "selectMode": "multi",  "options": ["lactose-free","gluten-free","no-legumes","no-refined-sugar","no-sugar","low-ldl","low-sodium","low-fodmap","all"] },
+    "customs":       { "label": "Customs",       "selectMode": "single", "options": ["umami","all"] }
   },
 
   "computed_ratios": {
@@ -80,7 +81,8 @@
     "fat_bad_g":       { "formula": "fat_sat_g",                                      "default_dir": "asc",  "decimals": 2 },
     "net_carb_g":      { "formula": "carb_g - fiber_g",                               "default_dir": "asc",  "decimals": 2 },
     "glycemic_load":   { "formula": "(gi * carb_g) / 100",                            "default_dir": "asc",  "decimals": 1 },
-    "kcal_per_g":      { "formula": "kcal_per_100g / 100",                            "default_dir": "asc",  "decimals": 2 }
+    "kcal_per_g":      { "formula": "kcal_per_100g / 100",                            "default_dir": "asc",  "decimals": 2 },
+    "umami_score":     { "formula": "glutamate_mg + 5 * (imp_mg + gmp_mg) + 0.001 * glutamate_mg * (imp_mg + gmp_mg)", "default_dir": "desc", "decimals": 0 }
   },
 
   "table_columns": {
@@ -106,13 +108,23 @@
       { "key": "fat_g",           "label": "Fat total (g)",       "align": "right", "sortable": true,  "default_dir": "asc" },
       { "key": "fat_good_g",      "label": "Fat good",            "align": "right", "sortable": true,  "default_dir": "desc", "tone": "good" },
       { "key": "fat_sat_g",       "label": "Fat bad (sat)",       "align": "right", "sortable": true,  "default_dir": "asc",  "tone": "bad" }
+    ],
+    "custom-umami": [
+      { "key": "name",            "label": "Food",                "align": "left",  "sortable": true,  "default_dir": "asc" },
+      { "key": "umami_score",     "label": "Umami Score",         "align": "right", "sortable": true,  "default_dir": "desc", "primary": true },
+      { "key": "glutamate_mg",    "label": "Glutamate (mg)",      "align": "right", "sortable": true,  "default_dir": "desc" },
+      { "key": "imp_mg",          "label": "IMP (mg)",            "align": "right", "sortable": true,  "default_dir": "desc", "tone": "good" },
+      { "key": "gmp_mg",          "label": "GMP (mg)",            "align": "right", "sortable": true,  "default_dir": "desc", "tone": "good" },
+      { "key": "kcal_per_100g",   "label": "kcal/100g",           "align": "right", "sortable": true,  "default_dir": "asc" },
+      { "key": "prot_g",          "label": "Prot (g)",            "align": "right", "sortable": true,  "default_dir": "desc" }
     ]
   },
 
   "table_filters": {
     "_doc": "Inclusion thresholds per displayed table.",
-    "protein": { "min": { "prot_g": 9 } },
-    "carb":    { "min": { "carb_g": 10 }, "require": ["gi"] }
+    "protein":      { "min": { "prot_g": 9 } },
+    "carb":         { "min": { "carb_g": 10 }, "require": ["gi"] },
+    "custom-umami": { "min": { "umami_score": 50 } }
   },
 
   "name_aliases": {
@@ -129,6 +141,45 @@
 
   "tag_overrides": {
     "_doc": "Per-food tag adjustments. Keyed by normalized food key. add = force tags ON, remove = force tags OFF. Useful when category-based rules misclassify."
+  },
+
+  "umami_data": {
+    "_doc": "Per-name regex umami compound mapping. Free-glutamate / IMP / GMP in mg per 100g, sourced from Mouritsen 'Umami: Unlocking the Secrets of the Fifth Taste' and Yamaguchi & Ninomiya 2000. First matching rule wins. Foods not matched stay at 0/0/0 (no umami score).",
+    "tag_threshold": 100,
+    "rules": [
+      { "match": "\\bkombu(?!cha)\\b|\\bkelp\\b|seaweed",  "glutamate_mg": 3000, "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "marmite|vegemite|yeast extract",         "glutamate_mg": 1750, "imp_mg": 0,   "gmp_mg": 60  },
+      { "match": "roquefort|blue cheese|stilton|gorgonzola", "glutamate_mg": 1280, "imp_mg": 0, "gmp_mg": 0   },
+      { "match": "parmesan|parmigiano|grana padano",       "glutamate_mg": 1200, "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "soy sauce|shoyu|tamari",                 "glutamate_mg": 1090, "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "fish sauce|nuoc mam",                    "glutamate_mg": 950,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "miso",                                   "glutamate_mg": 700,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "walnut",                                 "glutamate_mg": 658,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "tomato.*paste|sun.dried tomato|sundried tomato", "glutamate_mg": 650, "imp_mg": 0, "gmp_mg": 0 },
+      { "match": "anchov",                                 "glutamate_mg": 630,  "imp_mg": 200, "gmp_mg": 0   },
+      { "match": "ham,? cured|prosciutto|jamon|jamón|serrano|iberico", "glutamate_mg": 340, "imp_mg": 30, "gmp_mg": 0 },
+      { "match": "bonito|katsuobushi",                     "glutamate_mg": 30,   "imp_mg": 700, "gmp_mg": 0   },
+      { "match": "tomato",                                 "glutamate_mg": 246,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "cheddar|gruyere|gruyère|emmental|comte|comté|gouda|edam|manchego", "glutamate_mg": 180, "imp_mg": 0, "gmp_mg": 0 },
+      { "match": "broccoli",                               "glutamate_mg": 176,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "shiitake",                               "glutamate_mg": 70,   "imp_mg": 0,   "gmp_mg": 150 },
+      { "match": "scallop",                                "glutamate_mg": 140,  "imp_mg": 80,  "gmp_mg": 0   },
+      { "match": "oyster, raw|oyster, cooked",             "glutamate_mg": 137,  "imp_mg": 80,  "gmp_mg": 0   },
+      { "match": "sardine|mackerel",                       "glutamate_mg": 280,  "imp_mg": 230, "gmp_mg": 0   },
+      { "match": "tuna",                                   "glutamate_mg": 180,  "imp_mg": 290, "gmp_mg": 0   },
+      { "match": "morel|porcini|cep",                      "glutamate_mg": 60,   "imp_mg": 0,   "gmp_mg": 70  },
+      { "match": "mushroom.*(white|button|champignon|crimini)|mushroom, raw", "glutamate_mg": 42, "imp_mg": 0, "gmp_mg": 5 },
+      { "match": "asparagus",                              "glutamate_mg": 49,   "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "corn",                                   "glutamate_mg": 130,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "scallion|green onion|spring onion",      "glutamate_mg": 51,   "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "potato(?!.*chip)",                       "glutamate_mg": 102,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "spinach",                                "glutamate_mg": 39,   "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "garlic, raw|garlic powder",              "glutamate_mg": 110,  "imp_mg": 0,   "gmp_mg": 0   },
+      { "match": "chicken(?!.*broth|.*soup|.*stock)",      "glutamate_mg": 22,   "imp_mg": 200, "gmp_mg": 0   },
+      { "match": "pork(?!.*broth|.*stock)",                "glutamate_mg": 23,   "imp_mg": 230, "gmp_mg": 0   },
+      { "match": "beef(?!.*broth|.*stock|.*soup)",         "glutamate_mg": 33,   "imp_mg": 90,  "gmp_mg": 4   },
+      { "match": "shrimp|prawn",                           "glutamate_mg": 43,   "imp_mg": 92,  "gmp_mg": 0   }
+    ]
   },
 
   "name_pattern_overrides": {

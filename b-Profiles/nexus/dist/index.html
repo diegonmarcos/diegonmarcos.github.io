@@ -46,8 +46,16 @@
 <script>
 (function(){
   if (!('serviceWorker' in navigator) || !location.protocol.startsWith('http')) return;
+  // Capture controller state at REGISTRATION time. Only reload on
+  // controllerchange when there was an OLD SW being replaced by a NEW one
+  // (post-deploy update). On the FIRST-EVER activation, the page was just
+  // loaded fresh from network with no controller — reloading would abort
+  // the in-flight `defer` script.js (it wouldn't have executed yet),
+  // landing in an infinite reload loop where the SPA never boots.
+  var hadController = navigator.serviceWorker.controller !== null;
   var reloading = false;
   navigator.serviceWorker.addEventListener('controllerchange', function(){
+    if (!hadController) return;
     if (reloading) return;
     reloading = true;
     location.reload();

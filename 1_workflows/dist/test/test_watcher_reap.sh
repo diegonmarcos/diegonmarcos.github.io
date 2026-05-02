@@ -35,7 +35,7 @@ set -u  # NB: not -e — we handle failures explicitly via fail() to keep error
         # messages clean and to ensure cleanup runs even on assertion failure.
 
 REPO_ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
-ENGINE="$REPO_ROOT/_engine.sh"
+ENGINE="$REPO_ROOT/1_workflows/src/scripts/_engine.sh"
 
 fail() { echo "FAIL: $1" >&2; cleanup_test; exit 1; }
 pass() { echo "  ✓ $1"; }

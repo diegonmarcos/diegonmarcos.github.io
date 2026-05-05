@@ -637,6 +637,9 @@
   };
 })();
 </script>
+<!-- console-log: injected by mod_console_log — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). Single-namespace observability SDK (Sentry/OpenObserve-style). All logic ships in console-logs.js (compiled from console-logs.ts). Loaded synchronously, NO async/defer, so console.* + window.onerror + unhandledrejection are patched BEFORE any other script runs. Public API on window.consoleLogs.{captureException, captureMessage, addBreadcrumb, path, sessionId, exists, size, read, readJSON, tail, clear, download}. JSON Lines on disk in the origin's OPFS sandbox at console.log. -->
+<script src="console-logs.js"></script>
+<!-- end console-log -->
   </head>
 <body>
     <!-- Terminal Frame -->

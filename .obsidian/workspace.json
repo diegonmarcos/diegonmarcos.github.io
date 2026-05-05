@@ -11,17 +11,12 @@
             "id": "7a339bdf384c6363",
             "type": "leaf",
             "state": {
-              "type": "canvas",
+              "type": "release-notes",
               "state": {
-                "file": "a-Portals/linktree/dist/UI.canvas",
-                "viewState": {
-                  "x": -619.0584749062061,
-                  "y": 1931.7308985248283,
-                  "zoom": -1.147324503623039
-                }
+                "currentVersion": "1.12.7"
               },
-              "icon": "lucide-layout-dashboard",
-              "title": "UI"
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.12.7"
             }
           }
         ]

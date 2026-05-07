@@ -1,0 +1,5398 @@
+{
+  "_meta": {
+    "generated_by": "2_configs/build.sh consolidate",
+    "timestamp": "2026-05-07T14:47:25+02:00",
+    "schema": "front-data/v1"
+  },
+  "root_config": {
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "defaults": {
+      "src": "src",
+      "dist": "dist",
+      "port": 8000,
+      "framework": "vanilla"
+    },
+    "deploy": {
+      "branch": "main"
+    },
+    "deps": {
+      "system": {
+        "node": {
+          "nix": "nodejs_22",
+          "apt": "nodejs",
+          "version": "22"
+        },
+        "npm": {
+          "nix": "nodejs_22",
+          "apt": "npm"
+        },
+        "git": {
+          "nix": "git",
+          "apt": "git"
+        }
+      },
+      "optional": {
+        "rsync": {
+          "nix": "rsync",
+          "apt": "rsync"
+        },
+        "rclone": {
+          "nix": "rclone",
+          "apt": "rclone"
+        }
+      },
+      "npm": {
+        "flags": "--no-fund --no-audit --legacy-peer-deps"
+      }
+    }
+  },
+  "projects": [
+    {
+      "category": "a-Companies",
+      "project": "leafy",
+      "key": "a-Companies__leafy",
+      "path": "a-Companies/leafy",
+      "build": {
+        "name": "Leafy",
+        "framework": "vanilla",
+        "port": 8021,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/styles/main.scss",
+            "output": "styles/main.css"
+          },
+          {
+            "mod": "tsc",
+            "dir": "src/scripts"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "src/shaders",
+            "output": "shaders"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "styles/main.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./styles/main.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "styles/main.scss",
+              "output": "styles/main.css"
+            },
+            {
+              "mod": "tsc",
+              "input": "scripts"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "leaf-studios",
+        "version": "1.0.0",
+        "description": "Leaf Studios - Where Edge Technologies Meets Design",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "bash 1.ops/build.sh",
+          "dev": "bash 1.ops/build.sh && cd dist && python3 -m http.server 8080",
+          "clean": "rm -rf dist/*"
+        },
+        "keywords": [
+          "webgl",
+          "shaders",
+          "animation",
+          "frontend"
+        ],
+        "author": "Leaf Studios",
+        "license": "MIT",
+        "devDependencies": {
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0"
+        }
+      }
+    },
+    {
+      "category": "a-Companies",
+      "project": "nexus",
+      "key": "a-Companies__nexus",
+      "path": "a-Companies/nexus",
+      "build": {
+        "name": "Nexus",
+        "framework": "vanilla",
+        "port": 8005,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "inline",
+            "html": "index.html",
+            "css": "style.css",
+            "js": "script.js"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html"
+            ],
+            "precache": [
+              "./",
+              "./index.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "nexus",
+        "version": "2.0.0",
+        "description": "Nexus Holdings - Capital & Corporate Services (Vanilla)",
+        "scripts": {
+          "build:css": "sass src/scss/main.scss dist/styles.css --style=compressed --no-source-map",
+          "build:ts": "tsc src/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --strict",
+          "dev:css": "sass src/scss/main.scss dist/styles.css --style=expanded --source-map --watch",
+          "dev:ts": "tsc src/typescript/main.ts --outFile dist/script.js --target ES2020 --module none --watch"
+        },
+        "devDependencies": {
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      }
+    },
+    {
+      "category": "a-Companies",
+      "project": "stark",
+      "key": "a-Companies__stark",
+      "path": "a-Companies/stark",
+      "build": {
+        "name": "Stark",
+        "framework": "vanilla",
+        "port": 8022,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/styles/main.scss",
+            "output": "styles/main.css"
+          },
+          {
+            "mod": "tsc",
+            "dir": "src/scripts"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "src/shaders",
+            "output": "shaders"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "styles/main.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./styles/main.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "styles/main.scss",
+              "output": "styles/main.css"
+            },
+            {
+              "mod": "tsc",
+              "input": "scripts"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "a-Individual",
+      "project": "cv_pdf",
+      "key": "a-Individual__cv_pdf",
+      "path": "a-Individual/cv_pdf",
+      "build": {
+        "name": "CV PDF",
+        "framework": "vanilla",
+        "port": 8012,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "mod": "symlink",
+            "files": "assets"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) block before </head> in listed HTMLs. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html"
+            ],
+            "precache": [
+              "./",
+              "./index.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "a-Individual",
+      "project": "cv_web",
+      "key": "a-Individual__cv_web",
+      "path": "a-Individual/cv_web",
+      "build": {
+        "name": "CV Web",
+        "framework": "vanilla",
+        "port": 8002,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "cv_web",
+        "version": "1.0.0",
+        "description": "CV website",
+        "main": "dist/main.js",
+        "type": "module",
+        "scripts": {
+          "build:css": "sass src/scss/main.scss style.css --style compressed",
+          "build:ts": "tsc",
+          "build:bundle": "esbuild src/main.ts --bundle --outfile=script.js --format=iife --target=es2020 --minify",
+          "build": "npm run build:ts && npm run build:bundle && npm run build:css",
+          "dev:css": "sass src/scss/main.scss style.css",
+          "dev:ts": "tsc --watch",
+          "dev:bundle": "esbuild src/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch",
+          "dev": "npm run build:bundle",
+          "watch:css": "sass --watch src/scss/main.scss:src/style.css",
+          "watch:ts": "npm run dev:bundle",
+          "typecheck": "tsc --noEmit"
+        },
+        "author": "Diego Nepomuceno Marcos",
+        "license": "ISC",
+        "dependencies": {
+          "sass": "^1.77.4"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "typescript": "^5.9.3"
+        }
+      }
+    },
+    {
+      "category": "a-Individual",
+      "project": "landpage",
+      "key": "a-Individual__landpage",
+      "path": "a-Individual/landpage",
+      "build": {
+        "name": "Landpage",
+        "framework": "vanilla",
+        "port": 8000,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/style.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "tsc",
+            "dir": "src/typescript",
+            "output": "script.js"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/style.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "tsc",
+              "input": "typescript"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "a-Portals",
+      "project": "cloud",
+      "key": "a-Portals__cloud",
+      "path": "a-Portals/cloud",
+      "build": {
+        "name": "Cloud",
+        "framework": "vanilla",
+        "port": 8006,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "styles.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2015"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "copy",
+            "files": "*.js",
+            "from": "src",
+            "exclude": "script.js"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "architecture.html, cloud_control.html, error.html, feed_docs.html, index.html, oauth-callback.html, products.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "architecture.html, cloud_control.html, error.html, feed_docs.html, index.html, oauth-callback.html, products.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "architecture.html",
+              "availability.js",
+              "cloud_control.html",
+              "costs.js",
+              "docker.js",
+              "error.html",
+              "feed_docs.html",
+              "index.html",
+              "monitor.js",
+              "oauth-callback.html",
+              "performance.js",
+              "products.html",
+              "script.js",
+              "security.js",
+              "styles.css",
+              "web.js"
+            ],
+            "precache": [
+              "./",
+              "./architecture.html",
+              "./availability.js",
+              "./cloud_control.html",
+              "./costs.js",
+              "./docker.js",
+              "./error.html",
+              "./feed_docs.html",
+              "./index.html",
+              "./monitor.js",
+              "./oauth-callback.html",
+              "./performance.js",
+              "./products.html",
+              "./script.js",
+              "./security.js",
+              "./styles.css",
+              "./web.js"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "styles.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2015"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "cloud-dashboard",
+        "version": "1.0.0",
+        "description": "Cloud Services Dashboard with TypeScript and Sass",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "npm run build:css && npm run build:js",
+          "build:css": "sass src_vanilla/scss/main.scss dist_vanilla/styles.css --style=compressed --no-source-map",
+          "build:js": "tsc && esbuild src_vanilla/typescript/main.ts --bundle --outfile=dist_vanilla/script.js --minify --target=es2015",
+          "dev": "npm run dev:css & npm run dev:js",
+          "dev:css": "sass src_vanilla/scss/main.scss dist_vanilla/styles.css --watch --style=expanded --source-map",
+          "dev:js": "tsc --watch & esbuild src_vanilla/typescript/main.ts --bundle --outfile=dist_vanilla/script.js --watch --sourcemap",
+          "clean": "rm -rf dist_vanilla/*.css dist_vanilla/*.js dist_vanilla/*.map",
+          "lint": "eslint src_vanilla/typescript/**/*.ts",
+          "format": "prettier --write \"src_vanilla/**/*.{ts,scss}\""
+        },
+        "keywords": [
+          "cloud",
+          "dashboard",
+          "typescript",
+          "sass"
+        ],
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^20.10.0",
+          "@typescript-eslint/eslint-plugin": "^6.13.0",
+          "@typescript-eslint/parser": "^6.13.0",
+          "esbuild": "^0.19.8",
+          "eslint": "^8.54.0",
+          "prettier": "^3.1.0",
+          "sass": "^1.69.5",
+          "typescript": "^5.3.2"
+        }
+      }
+    },
+    {
+      "category": "a-Portals",
+      "project": "linktree",
+      "key": "a-Portals__linktree",
+      "path": "a-Portals/linktree",
+      "build": {
+        "name": "Linktree",
+        "framework": "vanilla",
+        "port": 8001,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Generate the full PWA app-icon set from one source image. Idempotent — skips when outputs are newer than source. Re-runs only when public/favicon.jpg changes.",
+            "mod": "pwa_icons",
+            "source": "src/public/favicon.jpg",
+            "out": "src/public/pwa",
+            "bg": "#000000"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "copy",
+            "files": "manifest.webmanifest",
+            "from": "src"
+          },
+          {
+            "_doc": "Deploy the data-*.json.js wrappers from the linktree-owned data hub to dist root, so any consumer can <script src=\"data-NAME.json.js\"> with no fetch / no CORS. Source-of-truth lives in linktree/src/data/ (linktree owns the link data; sibling projects symlink in).",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "symlink",
+            "files": "src/public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./style.css",
+              "./script.js",
+              "./public/swiper.min.css",
+              "./public/swiper.min.js"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": true,
+      "package": {
+        "name": "linktree",
+        "version": "1.0.0",
+        "description": "Linktree - Personal links hub",
+        "main": "dist/main.js",
+        "type": "module",
+        "scripts": {
+          "build:css": "sass src_static/scss/main.scss style.css --style=compressed --no-source-map",
+          "build:ts": "tsc",
+          "build:bundle": "esbuild src_static/typescript/main.ts --bundle --outfile=script.js --format=iife --target=es2020 --minify",
+          "build": "npm run build:ts && npm run build:bundle && npm run build:css",
+          "dev:css": "sass src_static/scss/main.scss src_static/style.css --style=expanded --source-map --watch",
+          "dev:ts": "tsc --watch",
+          "dev:bundle": "esbuild src_static/typescript/main.ts --bundle --outfile=src_static/script.js --format=iife --target=es2020 --sourcemap --watch",
+          "dev": "npm run build:bundle",
+          "watch:css": "sass --watch src_static/scss/main.scss:src_static/style.css",
+          "watch:ts": "npm run dev:bundle",
+          "typecheck": "tsc --noEmit"
+        },
+        "author": "Diego Nepomuceno Marcos",
+        "license": "ISC",
+        "dependencies": {
+          "swiper": "^11.0.0"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      },
+      "manifest": {
+        "name": "Diego Nepomuceno Marcos | Linktree",
+        "short_name": "DNM",
+        "description": "Product & Software Engineer, VC & Portfolio Manager Analyst — Berlin",
+        "start_url": "./",
+        "scope": "./",
+        "id": "diegonmarcos-linktree",
+        "display": "standalone",
+        "display_override": [
+          "window-controls-overlay",
+          "standalone",
+          "minimal-ui"
+        ],
+        "orientation": "any",
+        "lang": "en",
+        "dir": "ltr",
+        "categories": [
+          "productivity",
+          "personalization"
+        ],
+        "background_color": "#000000",
+        "theme_color": "#000000",
+        "icons": [
+          {
+            "src": "public/pwa/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+          },
+          {
+            "src": "public/pwa/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+          },
+          {
+            "src": "public/pwa/icon-maskable-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+          }
+        ]
+      }
+    },
+    {
+      "category": "a-Portals",
+      "project": "linktree_mindmap",
+      "key": "a-Portals__linktree_mindmap",
+      "path": "a-Portals/linktree_mindmap",
+      "build": {
+        "name": "Linktree Mindmap",
+        "framework": "vanilla",
+        "port": 8018,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "linktree-mindmap",
+        "version": "1.0.0",
+        "description": "Linktree Mindmap - Obsidian-style interactive visualization",
+        "main": "dist/main.js",
+        "type": "module",
+        "scripts": {
+          "build:css": "sass src/scss/main.scss style.css --style=compressed --no-source-map",
+          "build:ts": "tsc",
+          "build:bundle": "node esbuild.config.cjs --minify",
+          "build": "npm run build:ts && npm run build:bundle && npm run build:css",
+          "dev:css": "sass src/scss/main.scss src/style.css --style=expanded --source-map --watch",
+          "dev:bundle": "esbuild src/typescript/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch",
+          "typecheck": "tsc --noEmit"
+        },
+        "author": "Diego Nepomuceno Marcos",
+        "license": "ISC",
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      }
+    },
+    {
+      "category": "a-Portals",
+      "project": "linktree_pixel-world",
+      "key": "a-Portals__linktree_pixel-world",
+      "path": "a-Portals/linktree_pixel-world",
+      "build": {
+        "name": "Linktree Pixel World",
+        "framework": "vanilla",
+        "port": 8019,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "linktree-pixel-world",
+        "version": "1.0.0",
+        "description": "Linktree Pixel World - Retro RPG pixel art link hub",
+        "main": "dist/main.js",
+        "type": "module",
+        "scripts": {
+          "build:css": "sass src/scss/main.scss style.css --style=compressed --no-source-map",
+          "build:ts": "tsc",
+          "build:bundle": "esbuild src/typescript/main.ts --bundle --outfile=dist/script.js --format=iife --target=es2020 --minify",
+          "build": "npm run build:ts && npm run build:bundle && npm run build:css",
+          "dev:css": "sass src/scss/main.scss src/style.css --style=expanded --source-map --watch",
+          "dev:bundle": "esbuild src/typescript/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch",
+          "typecheck": "tsc --noEmit"
+        },
+        "author": "Diego Nepomuceno Marcos",
+        "license": "ISC",
+        "dependencies": {
+          "pixi.js": "^8.6.0"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "typescript": "^5.9.3"
+        }
+      }
+    },
+    {
+      "category": "b-Data",
+      "project": "myAstro",
+      "key": "b-Data__myAstro",
+      "path": "b-Data/myAstro",
+      "build": {
+        "name": "myAstro",
+        "framework": "vanilla",
+        "port": 8019,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "myAstro-life",
+        "version": "2.0.0",
+        "description": "myAstroLife - Personal myAstrology Dashboard",
+        "type": "module",
+        "scripts": {
+          "build:css": "sass src/scss/main.scss style.css --style=compressed --no-source-map",
+          "build:bundle": "esbuild src/typescript/main.ts --bundle --outfile=script.js --format=iife --target=es2020 --minify",
+          "build": "npm run build:bundle && npm run build:css",
+          "dev:css": "sass src/scss/main.scss src/style.css --style=expanded --source-map --watch",
+          "dev:bundle": "esbuild src/typescript/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch",
+          "dev": "npm run build:bundle",
+          "typecheck": "tsc --noEmit"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.2",
+          "sass": "^1.77.0",
+          "three": "^0.162.0",
+          "typescript": "^5.3.3",
+          "@types/three": "^0.162.0"
+        }
+      }
+    },
+    {
+      "category": "b-Data",
+      "project": "myfeed",
+      "key": "b-Data__myfeed",
+      "path": "b-Data/myfeed",
+      "build": {
+        "name": "MyFeed",
+        "framework": "vue",
+        "port": 8003,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "myfeed",
+        "version": "1.0.0",
+        "private": true,
+        "type": "module",
+        "description": "Modern content aggregation platform with obsidian purple theme",
+        "scripts": {
+          "dev": "vite",
+          "build": "node build.js",
+          "build:check": "vue-tsc && node build.js",
+          "preview": "vite preview",
+          "test": "vitest",
+          "lint": "eslint . --ext .vue,.ts,.js",
+          "format": "prettier --write \"src/**/*.{vue,ts,js,css,scss}\""
+        },
+        "dependencies": {
+          "@floating-ui/vue": "^1.0.0",
+          "@formkit/auto-animate": "^0.8.0",
+          "@orama/orama": "^2.0.0",
+          "@sanity/client": "^6.12.0",
+          "@sanity/image-url": "^1.0.2",
+          "@tanstack/vue-query": "^5.28.0",
+          "@tanstack/vue-virtual": "^3.1.0",
+          "@vueuse/core": "^10.9.0",
+          "blurhash": "^2.0.0",
+          "clsx": "^2.1.0",
+          "date-fns": "^3.3.0",
+          "dompurify": "^3.0.0",
+          "lucide-vue-next": "^0.340.0",
+          "marked": "^12.0.0",
+          "pinia": "^2.1.0",
+          "radix-vue": "^1.5.0",
+          "shiki": "^1.0.0",
+          "unlazy": "^0.11.0",
+          "vue": "^3.4.0",
+          "vue-sonner": "^1.0.0",
+          "web-vitals": "^3.5.0"
+        },
+        "devDependencies": {
+          "@testing-library/vue": "^8.0.0",
+          "@types/dompurify": "^3.0.0",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "@vue/eslint-config-typescript": "^12.0.0",
+          "autoprefixer": "^10.4.0",
+          "class-variance-authority": "^0.7.1",
+          "eslint": "^8.57.0",
+          "eslint-plugin-vue": "^9.20.0",
+          "postcss": "^8.4.0",
+          "prettier": "^3.2.0",
+          "prettier-plugin-tailwindcss": "^0.5.0",
+          "sass": "^1.94.1",
+          "shadcn-vue": "^2.3.3",
+          "tailwind-merge": "^3.4.0",
+          "tailwindcss": "^3.4.0",
+          "tailwindcss-animate": "^1.0.7",
+          "terser": "^5.44.1",
+          "typescript": "^5.3.0",
+          "unplugin-auto-import": "^0.17.0",
+          "unplugin-vue-components": "^0.26.0",
+          "vite": "^5.1.0",
+          "vite-plugin-compression": "^0.5.0",
+          "vite-plugin-singlefile": "^2.3.0",
+          "vite-plugin-vue-devtools": "^7.0.0",
+          "vitest": "^1.3.0",
+          "vue-tsc": "^1.8.0"
+        }
+      }
+    },
+    {
+      "category": "b-Media",
+      "project": "myMoments",
+      "key": "b-Media__myMoments",
+      "path": "b-Media/myMoments",
+      "build": {
+        "name": "myMoments",
+        "framework": "vanilla",
+        "port": 8028,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "my-fin",
+      "key": "b-MyData__my-fin",
+      "path": "b-MyData/my-fin",
+      "build": {
+        "name": "My Financials",
+        "framework": "vanilla",
+        "port": 8030,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject the verbose console-capture snippet that ships console.* + window errors + SW lifecycle to localhost:19001 → server-log-receiver.sh → browser-console.log. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "myhealth",
+      "key": "b-MyData__myhealth",
+      "path": "b-MyData/myhealth",
+      "build": {
+        "name": "MyHealth",
+        "framework": "vanilla",
+        "port": 8026,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "myhealth-profile",
+      "key": "b-MyData__myhealth-profile",
+      "path": "b-MyData/myhealth-profile",
+      "build": {
+        "name": "MyHealth Profile",
+        "framework": "vanilla",
+        "port": 8009,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "health_tracker.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "health_tracker.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "health_tracker.html"
+            ],
+            "precache": [
+              "./",
+              "./health_tracker.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "myhealth-tracker",
+      "key": "b-MyData__myhealth-tracker",
+      "path": "b-MyData/myhealth-tracker",
+      "build": {
+        "name": "MyHealth Tracker",
+        "framework": "vanilla",
+        "port": 8025,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "myid",
+      "key": "b-MyData__myid",
+      "path": "b-MyData/myid",
+      "build": {
+        "name": "myID",
+        "framework": "vanilla",
+        "port": 8031,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Symlink public/ assets (ID scans, QR codes, PDFs) into dist/.",
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject the verbose console-capture snippet that ships console.* + window errors + SW lifecycle to localhost:19001 → server-log-receiver.sh → browser-console.log. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-MyData",
+      "project": "mymaps-mytrips",
+      "key": "b-MyData__mymaps-mytrips",
+      "path": "b-MyData/mymaps-mytrips",
+      "build": {
+        "name": "MyMaps MyTrips",
+        "framework": "vue",
+        "port": 8022,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "mytrips",
+        "version": "1.0.0",
+        "type": "module",
+        "description": "Travel planning and road trip planner",
+        "scripts": {
+          "dev": "vite",
+          "build": "vue-tsc --noEmit && vite build",
+          "preview": "vite preview"
+        },
+        "keywords": [
+          "travel",
+          "trips",
+          "roadtrip",
+          "planner"
+        ],
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "dependencies": {
+          "@types/d3": "^7.4.3",
+          "@types/topojson-client": "^3.1.5",
+          "chart.js": "^4.5.1",
+          "d3": "^7.9.0",
+          "@turf/helpers": "^7.0.0",
+          "@turf/union": "^7.0.0",
+          "three": "^0.182.0",
+          "topojson-client": "^3.1.0"
+        },
+        "devDependencies": {
+          "@tailwindcss/postcss": "^4.1.18",
+          "@tailwindcss/vite": "^4.1.18",
+          "@types/three": "^0.182.0",
+          "@vitejs/plugin-vue": "^6.0.3",
+          "autoprefixer": "^10.4.23",
+          "postcss": "^8.5.6",
+          "sass": "^1.97.3",
+          "tailwindcss": "^4.1.18",
+          "typescript": "^5.9.3",
+          "vite": "^7.3.1",
+          "vue": "^3.5.27",
+          "vue-tsc": "^3.2.4"
+        }
+      }
+    },
+    {
+      "category": "b-MyData",
+      "project": "myphotos",
+      "key": "b-MyData__myphotos",
+      "path": "b-MyData/myphotos",
+      "build": {
+        "name": "MyPhotos",
+        "framework": "vanilla",
+        "port": 8019,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html, oauth-callback.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html, oauth-callback.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "oauth-callback.html"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./oauth-callback.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "b-Profiles",
+      "project": "myprofile",
+      "key": "b-Profiles__myprofile",
+      "path": "b-Profiles/myprofile",
+      "build": {
+        "name": "MyProfile",
+        "framework": "sveltekit",
+        "port": 8013,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "myprofile",
+        "version": "1.0.0",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev --port 8013",
+          "build": "vite build",
+          "preview": "vite preview",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.0",
+          "@sveltejs/kit": "^2.0.0",
+          "@sveltejs/vite-plugin-svelte": "^5.0.0",
+          "sass": "^1.77.0",
+          "svelte": "^5.0.0",
+          "svelte-check": "^4.0.0",
+          "typescript": "^5.0.0",
+          "vite": "^6.0.0"
+        }
+      }
+    },
+    {
+      "category": "c-Circus",
+      "project": "carto",
+      "key": "c-Circus__carto",
+      "path": "c-Circus/carto",
+      "build": {
+        "name": "Carto",
+        "framework": "vanilla",
+        "port": 8020,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/style.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "tsc",
+            "dir": "src/typescript",
+            "output": "script.js"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/style.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "tsc",
+              "input": "typescript"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "c-Circus",
+      "project": "games",
+      "key": "c-Circus__games",
+      "path": "c-Circus/games",
+      "build": {
+        "name": "Games",
+        "framework": "sveltekit",
+        "port": 8004,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "svelte",
+        "private": true,
+        "version": "0.0.1",
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+          "lint": "prettier --check . && eslint .",
+          "format": "prettier --write ."
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-auto": "^7.0.0",
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "eslint": "^9.39.1",
+          "eslint-plugin-svelte": "^3.13.0",
+          "prettier": "^3.6.2",
+          "prettier-plugin-svelte": "^3.4.0",
+          "sass": "^1.94.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        }
+      }
+    },
+    {
+      "category": "c-Circus",
+      "project": "movies",
+      "key": "c-Circus__movies",
+      "path": "c-Circus/movies",
+      "build": {
+        "name": "Movies",
+        "framework": "vue",
+        "port": 8015,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          },
+          {
+            "mod": "copy",
+            "files": "matomo.js",
+            "from": "public"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "movies",
+        "version": "1.0.0",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite --port 8015",
+          "build": "vue-tsc -b && vite build",
+          "preview": "vite preview",
+          "typecheck": "vue-tsc --noEmit"
+        },
+        "dependencies": {
+          "axios": "^1.6.0",
+          "lodash-es": "^4.17.21",
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@types/lodash-es": "^4.17.12",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-plugin-singlefile": "^2.0.0",
+          "vue-tsc": "^2.0.0"
+        }
+      }
+    },
+    {
+      "category": "c-Circus",
+      "project": "music",
+      "key": "c-Circus__music",
+      "path": "c-Circus/music",
+      "build": {
+        "name": "Music",
+        "framework": "vue",
+        "port": 8016,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "music",
+        "version": "1.0.0",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite --port 8016",
+          "build": "vue-tsc -b && vite build",
+          "preview": "vite preview",
+          "typecheck": "vue-tsc --noEmit"
+        },
+        "dependencies": {
+          "axios": "^1.6.0",
+          "lodash-es": "^4.17.21",
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@types/lodash-es": "^4.17.12",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-plugin-singlefile": "^2.0.0",
+          "vue-tsc": "^2.0.0"
+        }
+      }
+    },
+    {
+      "category": "c-Cloud",
+      "project": "api",
+      "key": "c-Cloud__api",
+      "path": "c-Cloud/api",
+      "build": {
+        "name": "API",
+        "framework": "vanilla",
+        "port": 8023,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html,cloud_central_api.md,cloud_ondemand_api.md,costs_ai.js,costs_infra.js,infrastructure.js,monitor.js",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "costs_ai.js",
+              "costs_infra.js",
+              "index.html",
+              "infrastructure.js",
+              "monitor.js"
+            ],
+            "precache": [
+              "./",
+              "./costs_ai.js",
+              "./costs_infra.js",
+              "./index.html",
+              "./infrastructure.js",
+              "./monitor.js"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "c-Cloud",
+      "project": "mcp-api-swagger",
+      "key": "c-Cloud__mcp-api-swagger",
+      "path": "c-Cloud/mcp-api-swagger",
+      "build": {
+        "name": "mcp-api-swagger",
+        "framework": "vanilla",
+        "port": 8024,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html,c3-dash.js,api-page.js",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "affine-api.html, authelia-api.html, c3-api.html, c3-infra-mcp-api.html, c3-services-mcp-api.html, crawlee-api.html, index.html, mailu-api.html, matomo-api.html, mattermost-api.html, nocodb-api.html, ntfy-api.html, photoprism-api.html, radicale-api.html, syncthing-api.html, unix-mcp.html, vaultwarden-api.html, windmill-api.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "affine-api.html, authelia-api.html, c3-api.html, c3-infra-mcp-api.html, c3-services-mcp-api.html, crawlee-api.html, index.html, mailu-api.html, matomo-api.html, mattermost-api.html, nocodb-api.html, ntfy-api.html, photoprism-api.html, radicale-api.html, syncthing-api.html, unix-mcp.html, vaultwarden-api.html, windmill-api.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "affine-api.html",
+              "api-page.js",
+              "authelia-api.html",
+              "c3-api.html",
+              "c3-dash.js",
+              "c3-infra-mcp-api.html",
+              "c3-services-mcp-api.html",
+              "crawlee-api.html",
+              "index.html",
+              "mailu-api.html",
+              "matomo-api.html",
+              "mattermost-api.html",
+              "nocodb-api.html",
+              "ntfy-api.html",
+              "photoprism-api.html",
+              "radicale-api.html",
+              "script.js",
+              "style.css",
+              "syncthing-api.html",
+              "unix-mcp.html",
+              "vaultwarden-api.html",
+              "windmill-api.html"
+            ],
+            "precache": [
+              "./",
+              "./affine-api.html",
+              "./api-page.js",
+              "./authelia-api.html",
+              "./c3-api.html",
+              "./c3-dash.js",
+              "./c3-infra-mcp-api.html",
+              "./c3-services-mcp-api.html",
+              "./crawlee-api.html",
+              "./index.html",
+              "./mailu-api.html",
+              "./matomo-api.html",
+              "./mattermost-api.html",
+              "./nocodb-api.html",
+              "./ntfy-api.html",
+              "./photoprism-api.html",
+              "./radicale-api.html",
+              "./script.js",
+              "./style.css",
+              "./syncthing-api.html",
+              "./unix-mcp.html",
+              "./vaultwarden-api.html",
+              "./windmill-api.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "c-Cloud",
+      "project": "skills_mcp",
+      "key": "c-Cloud__skills_mcp",
+      "path": "c-Cloud/skills_mcp",
+      "build": {
+        "name": "Skills MCP",
+        "framework": "vanilla",
+        "port": 8018,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "npm",
+            "script": "build:data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "mod": "npm",
+            "script": "build:docs"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "skills-mcp-docs",
+        "version": "1.0.0",
+        "description": "Skills & MCP Tools Documentation",
+        "private": true,
+        "scripts": {
+          "build": "./1.ops/build.sh build",
+          "dev": "./1.ops/build.sh dev",
+          "clean": "./1.ops/build.sh clean",
+          "build:docs": "node scripts/build-docs.js",
+          "build:data": "node scripts/build-data.js"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.0",
+          "marked": "^15.0.12",
+          "sass": "^1.71.0",
+          "typescript": "^5.3.3"
+        },
+        "dependencies": {
+          "gray-matter": "^4.0.3"
+        }
+      }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "central_bank",
+      "key": "c-LabTools__central_bank",
+      "path": "c-LabTools/central_bank",
+      "build": {
+        "name": "CentralBank",
+        "framework": "vanilla",
+        "port": 8011,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "central-bank-modeling",
+        "version": "1.0.0",
+        "type": "module",
+        "scripts": {
+          "dev": "vite",
+          "build": "tsc && vite build",
+          "preview": "vite preview"
+        },
+        "devDependencies": {
+          "@tailwindcss/vite": "^4.0.0",
+          "sass": "^1.94.2",
+          "tailwindcss": "^4.0.0",
+          "typescript": "^5.6.0",
+          "vite": "^6.0.0",
+          "vite-plugin-singlefile": "^2.3.0"
+        },
+        "dependencies": {
+          "chart.js": "^4.4.0",
+          "lucide": "^0.460.0"
+        }
+      }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "fin-terminal",
+      "key": "c-LabTools__fin-terminal",
+      "path": "c-LabTools/fin-terminal",
+      "build": {
+        "name": "FinTerminal",
+        "framework": "vanilla",
+        "port": 8024,
+        "src": "src",
+        "dist": "dist",
+        "api": {
+          "base": "https://api.diegonmarcos.com/fin-api",
+          "ws": "wss://api.diegonmarcos.com/fin-api/api/v1/ws"
+        },
+        "apps": {
+          "valuation": {
+            "url": "/valuation/",
+            "_note": "Valuation Modelling section. Set to empty string to show placeholder until the valuation app is wired."
+          }
+        },
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "fin-terminal",
+        "version": "0.1.0",
+        "description": "Bloomberg-terminal-style web frontend for fin-api (formerly fincept-server)",
+        "type": "module",
+        "private": true,
+        "scripts": {
+          "test": "vitest run",
+          "test:watch": "vitest"
+        },
+        "devDependencies": {
+          "@types/node": "^22.0.0",
+          "esbuild": "^0.24.0",
+          "jsdom": "^25.0.0",
+          "sass": "^1.94.0",
+          "typescript": "^5.6.0",
+          "vitest": "^2.1.0"
+        },
+        "dependencies": {
+          "lightweight-charts": "^5.0.0"
+        }
+      }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "market_watch",
+      "key": "c-LabTools__market_watch",
+      "path": "c-LabTools/market_watch",
+      "build": {
+        "name": "MarketWatch",
+        "framework": "vanilla",
+        "port": 8010,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "market-watch-terminal",
+        "version": "1.0.0",
+        "description": "Bloomberg-style Market Watch Terminal with TypeScript and Sass",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "npm run build:css && npm run build:js",
+          "build:css": "sass src_static/scss/main.scss dist/styles.css --style=compressed --no-source-map",
+          "build:js": "tsc && esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --minify --target=es2015",
+          "dev": "npm run dev:css & npm run dev:js",
+          "dev:css": "sass src_static/scss/main.scss dist/styles.css --watch --style=expanded --source-map",
+          "dev:js": "tsc --watch & esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch --sourcemap",
+          "clean": "rm -rf dist/*.css dist/*.js dist/*.map",
+          "lint": "eslint src_static/typescript/**/*.ts",
+          "format": "prettier --write \"src_static/**/*.{ts,scss}\""
+        },
+        "keywords": [
+          "bloomberg",
+          "terminal",
+          "market-watch",
+          "typescript",
+          "sass"
+        ],
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^20.10.0",
+          "@typescript-eslint/eslint-plugin": "^6.13.0",
+          "@typescript-eslint/parser": "^6.13.0",
+          "esbuild": "^0.19.8",
+          "eslint": "^8.54.0",
+          "prettier": "^3.1.0",
+          "sass": "^1.69.5",
+          "typescript": "^5.3.2"
+        }
+      }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "news",
+      "key": "c-LabTools__news",
+      "path": "c-LabTools/news",
+      "build": {
+        "name": "GDELTNews",
+        "framework": "vanilla",
+        "port": 8029,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "gdelt-news-terminal",
+        "version": "1.0.0",
+        "description": "GDELT News Terminal — Bloomberg-style global news dashboard",
+        "main": "dist/index.html",
+        "scripts": {
+          "build": "npm run build:css && npm run build:js",
+          "build:css": "sass src_static/scss/main.scss dist/style.css --style=compressed --no-source-map",
+          "build:js": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --minify --target=es2015",
+          "dev:css": "sass src_static/scss/main.scss dist/style.css --watch --style=expanded --source-map",
+          "dev:js": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --watch --sourcemap"
+        },
+        "author": "Diego Nepomuceno Marcos",
+        "license": "MIT",
+        "devDependencies": {
+          "esbuild": "^0.24.0",
+          "sass": "^1.83.0",
+          "typescript": "^5.7.0"
+        }
+      }
+    },
+    {
+      "category": "c-LabTools",
+      "project": "sailytics",
+      "key": "c-LabTools__sailytics",
+      "path": "c-LabTools/sailytics",
+      "build": {
+        "name": "Sailyng",
+        "framework": "vanilla",
+        "port": 8023,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "sailyng",
+        "version": "1.0.0",
+        "private": true,
+        "dependencies": {
+          "three": "^0.170.0"
+        },
+        "devDependencies": {
+          "@types/three": "^0.170.0"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "json-vision",
+      "key": "c-Suite__json-vision",
+      "path": "c-Suite/json-vision",
+      "build": {
+        "name": "JSON Vision",
+        "framework": "vue",
+        "port": 8017,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "json-vision",
+        "version": "1.0.0",
+        "description": "A modern JSON visualization and path extraction tool",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite",
+          "build": "vue-tsc --noEmit && vite build",
+          "preview": "vite preview",
+          "typecheck": "vue-tsc --noEmit"
+        },
+        "dependencies": {
+          "lodash-es": "^4.17.21",
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@types/lodash-es": "^4.17.12",
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-plugin-singlefile": "^2.0.0",
+          "vue-tsc": "^2.0.0"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "myhealth-feedyourself",
+      "key": "c-Suite__myhealth-feedyourself",
+      "path": "c-Suite/myhealth-feedyourself",
+      "build": {
+        "name": "MyHealth FeedYourself",
+        "framework": "vanilla",
+        "port": 8007,
+        "src": "src/src-index",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Merge USDA SR Legacy + GI overlay + food-table-inputs.json -> src/data/food-library.json. Must run BEFORE data_wrap.",
+            "mod": "npm",
+            "script": "build:data"
+          },
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/src-index/scss/main.scss",
+            "output": "style-index.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/src-index/typescript/main.ts",
+            "output": "script-index.js",
+            "format": "iife",
+            "target": "es2015"
+          },
+          {
+            "mod": "sass",
+            "input": "src/src-recipes/scss/main.scss",
+            "output": "style-recipes.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/src-recipes/typescript/main.ts",
+            "output": "script-recipes.js",
+            "format": "iife",
+            "target": "es2015"
+          },
+          {
+            "mod": "sass",
+            "input": "src/src-food-tables/scss/main.scss",
+            "output": "style-food-tables.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/src-food-tables/typescript/main.ts",
+            "output": "script-food-tables.js",
+            "format": "iife",
+            "target": "es2015"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src/src-index"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src/src-meal-designer"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src/src-recipes"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src/src-food-tables"
+          },
+          {
+            "mod": "symlink",
+            "files": "public"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html, meal_designer.html, recipes.html, food_tables.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html, meal_designer.html, recipes.html, food_tables.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "meal_designer.html",
+              "recipes.html",
+              "food_tables.html",
+              "script-index.js",
+              "script-recipes.js",
+              "script-food-tables.js",
+              "style-index.css",
+              "style-recipes.css",
+              "style-food-tables.css",
+              "data-food-library.json.js"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./meal_designer.html",
+              "./recipes.html",
+              "./food_tables.html",
+              "./script-index.js",
+              "./script-recipes.js",
+              "./script-food-tables.js",
+              "./style-index.css",
+              "./style-recipes.css",
+              "./style-food-tables.css",
+              "./data-food-library.json.js"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "dist"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "myhealth-feedyourself",
+        "version": "1.0.0",
+        "description": "MyHealth FeedYourself - Menu Designer Pro",
+        "scripts": {
+          "build:data": "tsx src/data/build-food-library.ts",
+          "build:css": "sass src_static/scss/main.scss dist/style.css --style=compressed --no-source-map",
+          "build:css2": "sass src_static_2/scss/main.scss dist/style2.css --style=compressed --no-source-map",
+          "build:ts": "esbuild src_static/typescript/main.ts --bundle --minify --outfile=dist/script.js --target=es2020",
+          "build": "npm run build:css && npm run build:css2 && npm run build:ts",
+          "dev:css": "sass src_static/scss/main.scss dist/style.css --style=expanded --source-map --watch",
+          "dev:ts": "esbuild src_static/typescript/main.ts --bundle --outfile=dist/script.js --target=es2020 --watch",
+          "typecheck": "tsc --project src_static/typescript/tsconfig.json --noEmit"
+        },
+        "devDependencies": {
+          "esbuild": "^0.20.0",
+          "jszip": "^3.10.1",
+          "sass": "^1.77.0",
+          "tsx": "^4.19.0",
+          "typescript": "^5.4.0",
+          "xlsx": "^0.18.5"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymail",
+      "key": "c-Suite__mymail",
+      "path": "c-Suite/mymail",
+      "build": {
+        "name": "MyMail",
+        "framework": "vanilla",
+        "port": 8018,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html, *.css, *.js, *.asc, CNAME",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script-app.js",
+              "script-data.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script-app.js",
+              "./script-data.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps",
+      "key": "c-Suite__mymaps",
+      "path": "c-Suite/mymaps",
+      "build": {
+        "name": "MyMaps",
+        "framework": "vanilla",
+        "port": 8027,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps-maps",
+      "key": "c-Suite__mymaps-maps",
+      "path": "c-Suite/mymaps-maps",
+      "build": {
+        "name": "MyMaps Maps",
+        "framework": "sveltekit",
+        "port": 8014,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "maps",
+        "private": true,
+        "version": "2.0.0",
+        "type": "module",
+        "description": "Geographic Data Visualization with d3-geo",
+        "scripts": {
+          "dev": "vite dev --port 8014",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "@types/d3": "^7.4.3",
+          "@types/d3-geo": "^3.1.0",
+          "@types/topojson-client": "^3.1.5",
+          "sass": "^1.94.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        },
+        "dependencies": {
+          "d3-geo": "^3.1.1",
+          "d3-interpolate": "^3.0.1",
+          "d3-timer": "^3.0.1",
+          "topojson-client": "^3.1.0"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps-navigation",
+      "key": "c-Suite__mymaps-navigation",
+      "path": "c-Suite/mymaps-navigation",
+      "build": {
+        "name": "MyMaps Navigation",
+        "framework": "sveltekit",
+        "port": 8018,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "mymaps",
+        "private": true,
+        "version": "1.0.0",
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+          "lint": "prettier --check . && eslint .",
+          "format": "prettier --write ."
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "eslint": "^9.39.1",
+          "eslint-plugin-svelte": "^3.13.0",
+          "prettier": "^3.6.2",
+          "prettier-plugin-svelte": "^3.4.0",
+          "sass": "^1.94.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        },
+        "dependencies": {
+          "@mapbox/togeojson": "^0.16.2",
+          "jszip": "^3.10.1",
+          "maplibre-gl": "^5.17.0"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "suite",
+      "key": "c-Suite__suite",
+      "path": "c-Suite/suite",
+      "build": {
+        "name": "Suite",
+        "framework": "vanilla",
+        "port": 8021,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "e-Others",
+      "project": "others",
+      "key": "e-Others__others",
+      "path": "e-Others/others",
+      "build": {
+        "name": "Others",
+        "framework": "vanilla",
+        "port": 8008,
+        "src": ".",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html,*.css,*.js",
+            "from": "."
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "about.html",
+              "cv.html",
+              "earth.html",
+              "feed_yourself.html",
+              "health_tracker.html",
+              "index.html",
+              "quill.html",
+              "repos.html"
+            ],
+            "precache": [
+              "./",
+              "./about.html",
+              "./cv.html",
+              "./earth.html",
+              "./feed_yourself.html",
+              "./health_tracker.html",
+              "./index.html",
+              "./quill.html",
+              "./repos.html"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "."
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
+    },
+    {
+      "category": "-",
+      "project": "e-Root",
+      "key": "e-Root",
+      "path": "e-Root",
+      "build": {
+        "name": "c_root",
+        "framework": "vue",
+        "port": 5173,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          },
+          {
+            "mod": "strip-module",
+            "files": "index.html"
+          },
+          {
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src",
+            "exclude": "index.html"
+          },
+          {
+            "mod": "copy",
+            "files": "*.js",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "c_root",
+        "version": "1.0.0",
+        "description": "Root landing page for diegonmarcos.github.io",
+        "type": "module",
+        "scripts": {
+          "dev": "NODE_PATH=/home/diego/mnt_git/front-Github_io/node_modules vite",
+          "build": "NODE_PATH=/home/diego/mnt_git/front-Github_io/node_modules vite build",
+          "preview": "NODE_PATH=/home/diego/mnt_git/front-Github_io/node_modules vite preview"
+        },
+        "dependencies": {
+          "vue": "^3.4.0"
+        },
+        "devDependencies": {
+          "@vitejs/plugin-vue": "^5.0.0",
+          "sass": "^1.69.0",
+          "typescript": "^5.3.0",
+          "vite": "^5.0.0",
+          "vite-ssg": "^0.23.0",
+          "vue-tsc": "^1.8.0"
+        }
+      }
+    }
+  ],
+  "deploys": [
+    {
+      "path": "e-Root",
+      "deploy_name": "."
+    },
+    {
+      "path": "a-Portals/cloud",
+      "deploy_name": "cloud"
+    },
+    {
+      "path": "a-Portals/linktree",
+      "deploy_name": "linktree"
+    },
+    {
+      "path": "a-Portals/linktree_mindmap",
+      "deploy_name": "linktree_mindmap"
+    },
+    {
+      "path": "a-Portals/linktree_pixel-world",
+      "deploy_name": "linktree_pixel-world"
+    },
+    {
+      "path": "a-Individual/cv_pdf",
+      "deploy_name": "cv_pdf"
+    },
+    {
+      "path": "a-Individual/cv_web",
+      "deploy_name": "cv_web"
+    },
+    {
+      "path": "a-Individual/landpage",
+      "deploy_name": "landpage"
+    },
+    {
+      "path": "a-Companies/leafy",
+      "deploy_name": "leafy"
+    },
+    {
+      "path": "b-Profiles/myprofile",
+      "deploy_name": "myprofile"
+    },
+    {
+      "path": "a-Companies/nexus",
+      "deploy_name": "nexus"
+    },
+    {
+      "path": "a-Companies/stark",
+      "deploy_name": "stark"
+    },
+    {
+      "path": "c-Suite/json-vision",
+      "deploy_name": "json-vision"
+    },
+    {
+      "path": "c-Suite/mymail",
+      "deploy_name": "mymail"
+    },
+    {
+      "path": "b-MyData/myphotos",
+      "deploy_name": "myphotos"
+    },
+    {
+      "path": "c-Suite/suite",
+      "deploy_name": "suite"
+    },
+    {
+      "path": "b-Data/myAstro",
+      "deploy_name": "myAstro"
+    },
+    {
+      "path": "c-Circus/carto",
+      "deploy_name": "carto"
+    },
+    {
+      "path": "c-LabTools/central_bank",
+      "deploy_name": "central_bank"
+    },
+    {
+      "path": "c-Suite/myhealth-feedyourself",
+      "deploy_name": "myhealth-feedyourself"
+    },
+    {
+      "path": "b-MyData/myhealth-profile",
+      "deploy_name": "myhealth-profile"
+    },
+    {
+      "path": "c-Suite/mymaps-maps",
+      "deploy_name": "mymaps-maps"
+    },
+    {
+      "path": "c-LabTools/market_watch",
+      "deploy_name": "market_watch"
+    },
+    {
+      "path": "b-Data/myfeed",
+      "deploy_name": "myfeed"
+    },
+    {
+      "path": "c-Circus/games",
+      "deploy_name": "games"
+    },
+    {
+      "path": "c-Suite/mymaps-navigation",
+      "deploy_name": "mymaps-navigation"
+    },
+    {
+      "path": "c-Circus/movies",
+      "deploy_name": "movies"
+    },
+    {
+      "path": "c-Circus/music",
+      "deploy_name": "music"
+    },
+    {
+      "path": "b-MyData/mymaps-mytrips",
+      "deploy_name": "mymaps-mytrips"
+    },
+    {
+      "path": "c-Cloud/api",
+      "deploy_name": "api"
+    },
+    {
+      "path": "c-Cloud/mcp-api-swagger",
+      "deploy_name": "mcp-api-swagger"
+    },
+    {
+      "path": "c-Cloud/skills_mcp",
+      "deploy_name": "skills_mcp"
+    },
+    {
+      "path": "e-Others/others",
+      "deploy_name": "others"
+    },
+    {
+      "path": "c-LabTools/sailytics",
+      "deploy_name": "sailytics"
+    },
+    {
+      "path": "c-LabTools/news",
+      "deploy_name": "news"
+    },
+    {
+      "path": "c-LabTools/fin-terminal",
+      "deploy_name": "fin-terminal"
+    },
+    {
+      "path": "b-MyData/my-fin",
+      "deploy_name": "my-fin"
+    }
+  ],
+  "links": {
+    "sections": [
+      {
+        "id": "personal-profiles",
+        "title": "Personal Profiles",
+        "box": 1,
+        "slide_count": 4
+      },
+      {
+        "id": "personal-tools",
+        "title": "Personal Tools",
+        "box": 2,
+        "slide_count": 4
+      },
+      {
+        "id": "professional-profiles",
+        "title": "Professional Profiles",
+        "box": 0,
+        "slide_count": 5
+      }
+    ],
+    "slides": [
+      {
+        "section": "personal-profiles",
+        "id": "personal-profile",
+        "kind": "profile-card",
+        "title": "PROFILE"
+      },
+      {
+        "section": "personal-profiles",
+        "id": "media",
+        "kind": "tools",
+        "title": "MEDIA"
+      },
+      {
+        "section": "personal-profiles",
+        "id": "data",
+        "kind": "tools",
+        "title": "DATA"
+      },
+      {
+        "section": "personal-profiles",
+        "id": "projects",
+        "kind": "tools",
+        "title": "PROJECTS"
+      },
+      {
+        "section": "personal-tools",
+        "id": "suite",
+        "kind": "tools",
+        "title": "SUITE"
+      },
+      {
+        "section": "personal-tools",
+        "id": "lab-tools",
+        "kind": "tools",
+        "title": "LAB TOOLS"
+      },
+      {
+        "section": "personal-tools",
+        "id": "circus",
+        "kind": "tools",
+        "title": "CIRCUS"
+      },
+      {
+        "section": "personal-tools",
+        "id": "cloud",
+        "kind": "tools",
+        "title": "CLOUD"
+      },
+      {
+        "section": "professional-profiles",
+        "id": "professional-profile",
+        "kind": "profile-card",
+        "title": "PROFILE"
+      },
+      {
+        "section": "professional-profiles",
+        "id": "repos",
+        "kind": "repos",
+        "title": "REPOS"
+      },
+      {
+        "section": "professional-profiles",
+        "id": "nexus",
+        "kind": "venture-card",
+        "title": "NEXUS"
+      },
+      {
+        "section": "professional-profiles",
+        "id": "leafy",
+        "kind": "venture-card",
+        "title": "LEAFY"
+      },
+      {
+        "section": "professional-profiles",
+        "id": "stark",
+        "kind": "venture-card",
+        "title": "STARK"
+      }
+    ],
+    "links": [
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Photos",
+        "label": "Instagram",
+        "url": "https://www.instagram.com/diegonmarcos",
+        "icon": "brand-instagram.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Photos",
+        "label": "myOrkut",
+        "url": "https://diegonmarcos.github.io/myMoments",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Photos",
+        "label": "Facebook",
+        "url": "https://www.facebook.com/diegonmarcos",
+        "icon": "user.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Photos",
+        "label": "Pinterest",
+        "url": "https://www.pinterest.com/diegonmarcos",
+        "icon": "slideshow.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Photos",
+        "label": "Feed",
+        "url": "https://diegonmarcos.github.io/myfeed",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Videos",
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@diegonmarcos1",
+        "icon": "brand-youtube.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Videos",
+        "label": "MyVideos",
+        "url": "https://diegonmarcos.github.io/myvideos",
+        "icon": "video.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Videos",
+        "label": "Movies",
+        "url": "https://diegonmarcos.github.io/movies",
+        "icon": "brand-youtube.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Videos",
+        "label": "Games",
+        "url": "https://diegonmarcos.github.io/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Music",
+        "label": "TIDAL",
+        "url": "https://tidal.com/@diegonmarcos",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Music",
+        "label": "Spotify",
+        "url": "https://open.spotify.com/user/diegonmarcos",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Music",
+        "label": "Music",
+        "url": "https://diegonmarcos.github.io/music",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Health",
+        "label": "MyHealth",
+        "url": "https://diegonmarcos.github.io/myhealth",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Health",
+        "label": "myAstro",
+        "url": "https://diegonmarcos.github.io/myAstro",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Endurance",
+        "label": "Tracker",
+        "url": "https://diegonmarcos.github.io/myhealth-tracker",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Endurance",
+        "label": "Komoot",
+        "url": "https://www.komoot.com/user/2474200810898/routes",
+        "icon": "christmas-tree.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Endurance",
+        "label": "Strava",
+        "url": "https://www.strava.com/athletes/4662170",
+        "icon": "bike.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Endurance",
+        "label": "Garmin",
+        "url": "https://connect.garmin.com/modern/profile/diegonmarcos",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "NomadMania",
+        "url": "https://nomadmania.com/profile/73889",
+        "icon": "brand-google-maps.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "MyTrips",
+        "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "myID",
+        "url": "https://diegonmarcos.github.io/myid",
+        "icon": "id.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "Bucket (50 things)",
+        "url": "https://bucketlistjourney.net/my-bucket-list",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "Bucket (Endurance)",
+        "url": "https://bucketlistjourney.net/my-bucket-list",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Achieves",
+        "label": "Bucket (Inner)",
+        "url": "https://bucketlistjourney.net/my-bucket-list",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Basileia",
+        "label": "Basileia",
+        "url": "#",
+        "icon": "sparkles.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Mousseion",
+        "label": "Mousseion",
+        "url": "#",
+        "icon": "books.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Paneion",
+        "label": "Paneion",
+        "url": "#",
+        "icon": "bulb.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Akropolis",
+        "label": "Akropolis",
+        "url": "#",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Bibliotheke",
+        "label": "Bibliotheke",
+        "url": "#",
+        "icon": "books.svg"
+      },
+      {
+        "section": "personal-profiles",
+        "slide": "personal-profiles",
+        "column": "Adyton",
+        "label": "Adyton",
+        "url": "#",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "AI & IDE",
+        "label": "Goose",
+        "url": "https://github.com/block/goose",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "AI & IDE",
+        "label": "Claude CLI",
+        "url": "https://claude.ai",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "AI & IDE",
+        "label": "WebIDE",
+        "url": "https://ide.diegonmarcos.com",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "AI & IDE",
+        "label": "Jupyter NB",
+        "url": "https://jupyter.diegonmarcos.com",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Notes",
+        "url": "https://hedgedoc.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Sheets",
+        "url": "https://sheets.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Docs",
+        "url": "https://docs.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Slides",
+        "url": "https://slides.diegonmarcos.com",
+        "icon": "slideshow.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Calendar",
+        "url": "https://cal.diegonmarcos.com",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Contacts",
+        "url": "https://contacts.diegonmarcos.com",
+        "icon": "user.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Suite",
+        "label": "Files",
+        "url": "https://files.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Comms",
+        "label": "Mail",
+        "url": "https://diegonmarcos.github.io/mymail",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Comms",
+        "label": "Mattermost",
+        "url": "https://chat.diegonmarcos.com",
+        "icon": "send.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Comms",
+        "label": "ntfy",
+        "url": "https://ntfy.diegonmarcos.com",
+        "icon": "checklist.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Nav",
+        "label": "Navigation",
+        "url": "https://diegonmarcos.github.io/mymaps-navigation",
+        "icon": "map-pin-2.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Nav",
+        "label": "Maps",
+        "url": "https://diegonmarcos.github.io/mymaps-maps",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Media",
+        "label": "Feed",
+        "url": "https://diegonmarcos.github.io/myfeed",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Media",
+        "label": "Movies",
+        "url": "https://diegonmarcos.github.io/movies",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Media",
+        "label": "Music",
+        "url": "https://diegonmarcos.github.io/music",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Memory",
+        "label": "MyPhotos",
+        "url": "https://diegonmarcos.github.io/myphotos",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Memory",
+        "label": "MyTrips",
+        "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Memory",
+        "label": "PhotoPrism",
+        "url": "https://photos.diegonmarcos.com",
+        "icon": "slideshow.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Health",
+        "label": "Tracker",
+        "url": "https://diegonmarcos.github.io/myhealth-tracker",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Health",
+        "label": "FeedYourself",
+        "url": "https://diegonmarcos.github.io/myhealth-feedyourself",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Health",
+        "label": "Profile",
+        "url": "https://diegonmarcos.github.io/myhealth-profile",
+        "icon": "heart.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Tools",
+        "label": "Gitea",
+        "url": "https://git.diegonmarcos.com",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Tools",
+        "label": "JSON Vision",
+        "url": "https://diegonmarcos.github.io/json-vision",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Tools",
+        "label": "NocoDB",
+        "url": "https://nocodb.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Tools",
+        "label": "Vault",
+        "url": "https://vault.diegonmarcos.com",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Colab",
+        "url": "https://colab.research.google.com",
+        "icon": "sparkles.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Kaggle",
+        "url": "https://kaggle.com",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "HuggingFace",
+        "url": "https://huggingface.co",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "PyTorch",
+        "url": "https://pytorch.org",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "TensorFlow",
+        "url": "https://tensorflow.org",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Scikit-learn",
+        "url": "https://scikit-learn.org",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "IBM Quantum",
+        "url": "https://quantum.ibm.com",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Qiskit",
+        "url": "https://qiskit.org",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Google QAI",
+        "url": "https://quantumai.google",
+        "icon": "sparkles.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Cirq",
+        "url": "https://quantumai.google/cirq",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "PennyLane",
+        "url": "https://pennylane.ai",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Braket",
+        "url": "https://aws.amazon.com/braket",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "Azure QC",
+        "url": "https://azure.microsoft.com/products/quantum",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data Science & ML",
+        "label": "QInspire",
+        "url": "https://www.quantum-inspire.com",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Markets",
+        "label": "Fin Terminal",
+        "url": "https://diegonmarcos.github.io/fin-terminal",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Markets",
+        "label": "GDELT News",
+        "url": "https://news.diegonmarcos.com",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Markets",
+        "label": "MarketWatch",
+        "url": "https://diegonmarcos.github.io/market_watch",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Markets",
+        "label": "CentralBank",
+        "url": "https://diegonmarcos.github.io/central_bank",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Markets",
+        "label": "My Financials",
+        "url": "https://diegonmarcos.github.io/my-fin",
+        "icon": "ledger.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Engineer",
+        "label": "Sailytics",
+        "url": "https://diegonmarcos.github.io/sailytics",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Engineer",
+        "label": "OpenRevit",
+        "url": "https://diegonmarcos.github.io/openrevit",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Games",
+        "label": "Games",
+        "url": "https://diegonmarcos.github.io/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Games",
+        "label": "Carto",
+        "url": "https://diegonmarcos.github.io/carto/",
+        "icon": "cards.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Games",
+        "label": "myAstro",
+        "url": "https://diegonmarcos.github.io/myAstro",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Video",
+        "label": "MyVideos",
+        "url": "https://diegonmarcos.github.io/myvideos",
+        "icon": "video.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Video",
+        "label": "Movies",
+        "url": "https://diegonmarcos.github.io/movies/",
+        "icon": "brand-youtube.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Audio",
+        "label": "Music",
+        "url": "https://diegonmarcos.github.io/music/",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Authelia",
+        "url": "https://auth.diegonmarcos.com",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Vault",
+        "url": "https://vault.diegonmarcos.com",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Caddy",
+        "url": "https://proxy.diegonmarcos.com",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Introspect",
+        "url": "https://introspect.diegonmarcos.com",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Hickory DNS",
+        "url": "https://dns.diegonmarcos.com",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "Sauron YARA",
+        "url": "https://sauron.diegonmarcos.com",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "SIEM",
+        "url": "https://siem.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Security",
+        "label": "WG0",
+        "url": "https://wg.diegonmarcos.com",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Ops",
+        "label": "Dagu",
+        "url": "https://workflows.diegonmarcos.com",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Ops",
+        "label": "Grafana",
+        "url": "https://grafana.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Ops",
+        "label": "ntfy",
+        "url": "https://rss.diegonmarcos.com",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Ops",
+        "label": "GHA",
+        "url": "https://github.com/diegonmarcos/cloud/actions",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Ops",
+        "label": "GHCR",
+        "url": "https://github.com/orgs/diegonmarcos/packages",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "Matomo",
+        "url": "https://analytics.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "Gitea",
+        "url": "https://git.diegonmarcos.com",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "Dozzle",
+        "url": "https://logs.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "DBGate",
+        "url": "https://dbgate.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "Rustic",
+        "url": "https://backup.diegonmarcos.com",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "Umami",
+        "url": "https://umami.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Data",
+        "label": "NocoDB",
+        "url": "https://nocodb.diegonmarcos.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "c3-infra-api",
+        "url": "https://api.diegonmarcos.com/c3-api",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "c3-infra-mcp",
+        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "c3-services-api",
+        "url": "https://api.diegonmarcos.com/c3-services",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "c3-services-mcp",
+        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "cgc-mcp",
+        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "MCP & API",
+        "label": "dtk-mcp",
+        "url": "https://diegonmarcos.github.io/skills_mcp",
+        "icon": "robot.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "Oracle",
+        "url": "https://cloud.oracle.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "GCloud",
+        "url": "https://console.cloud.google.com",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "Cloudflare",
+        "url": "https://dash.cloudflare.com",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "GitHub",
+        "url": "https://github.com/diegonmarcos",
+        "icon": "code.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "Hetzner",
+        "url": "https://console.hetzner.cloud",
+        "icon": "database.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "VPS",
+        "label": "Nvidia LLM",
+        "url": "https://build.nvidia.com",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Front-end",
+        "label": "Portals",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+        "icon": "world.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Front-end",
+        "label": "Profiles",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Front-end",
+        "label": "Work Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Front-end",
+        "label": "Personal Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "Cloud",
+        "url": "https://github.com/diegonmarcos/cloud",
+        "icon": "world.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "Unix",
+        "url": "https://github.com/diegonmarcos/unix",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "Vault",
+        "url": "https://github.com/diegonmarcos/vault",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "Front",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
+        "icon": "world.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "Tooling",
+        "url": "https://github.com/diegonmarcos/ops-Tooling",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Cloud",
+        "label": "MCP Servers",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "My Libs",
+        "url": "https://github.com/diegonmarcos/ops-Mylibs",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "Algorithms",
+        "url": "https://github.com/diegonmarcos/back-Algo",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "System",
+        "url": "https://github.com/diegonmarcos/back-System",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "Graphics",
+        "url": "https://github.com/diegonmarcos/back-Graphic",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "Cyber",
+        "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Low Level",
+        "label": "42 School",
+        "url": "https://github.com/diegonmarcos/lecole42",
+        "icon": "rocket.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "ML",
+        "label": "Agentic AI",
+        "url": "https://github.com/diegonmarcos/ml-Agentic",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "ML",
+        "label": "Machine Learning",
+        "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Data",
+        "label": "Data Science",
+        "url": "https://github.com/diegonmarcos/ml-DataScience",
+        "icon": "database.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Data",
+        "label": "Civil Eng",
+        "url": "https://github.com/diegonmarcos/cveng_AFrame",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "professional-profiles",
+        "slide": "professional-profiles",
+        "column": "Data",
+        "label": "Macro/Quant",
+        "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+        "icon": "database.svg"
+      }
+    ]
+  }
+}

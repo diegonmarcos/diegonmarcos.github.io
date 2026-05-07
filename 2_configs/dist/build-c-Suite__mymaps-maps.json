@@ -1,0 +1,46 @@
+{
+  "name": "MyMaps Maps",
+  "framework": "sveltekit",
+  "port": 8014,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "sveltekit"
+    }
+  ],
+  "serve": {
+    "mode": "sveltekit"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-Suite/mymaps-maps",
+    "category": "c-Suite",
+    "project": "mymaps-maps",
+    "key": "c-Suite__mymaps-maps",
+    "port": 8014,
+    "framework": "sveltekit",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "mymaps-maps",
+      "url": "https://diegonmarcos.github.io/mymaps-maps"
+    },
+    "consumers": [
+      "Maps"
+    ],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

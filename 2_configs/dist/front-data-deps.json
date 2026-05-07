@@ -1,0 +1,472 @@
+{
+  "_meta": {
+    "project_count": 25
+  },
+  "per_project": [
+    {
+      "key": "a-Companies__leafy",
+      "path": "a-Companies/leafy",
+      "deps": {
+        "sass": "^1.69.0",
+        "typescript": "^5.3.0"
+      }
+    },
+    {
+      "key": "a-Companies__nexus",
+      "path": "a-Companies/nexus",
+      "deps": {
+        "sass": "^1.77.0",
+        "typescript": "^5.9.3"
+      }
+    },
+    {
+      "key": "a-Individual__cv_web",
+      "path": "a-Individual/cv_web",
+      "deps": {
+        "sass": "^1.77.4",
+        "esbuild": "^0.20.2",
+        "typescript": "^5.9.3"
+      }
+    },
+    {
+      "key": "a-Portals__cloud",
+      "path": "a-Portals/cloud",
+      "deps": {
+        "@types/node": "^20.10.0",
+        "@typescript-eslint/eslint-plugin": "^6.13.0",
+        "@typescript-eslint/parser": "^6.13.0",
+        "esbuild": "^0.19.8",
+        "eslint": "^8.54.0",
+        "prettier": "^3.1.0",
+        "sass": "^1.69.5",
+        "typescript": "^5.3.2"
+      }
+    },
+    {
+      "key": "a-Portals__linktree",
+      "path": "a-Portals/linktree",
+      "deps": {
+        "swiper": "^11.0.0",
+        "esbuild": "^0.20.2",
+        "sass": "^1.77.0",
+        "typescript": "^5.9.3"
+      }
+    },
+    {
+      "key": "a-Portals__linktree_mindmap",
+      "path": "a-Portals/linktree_mindmap",
+      "deps": {
+        "esbuild": "^0.20.2",
+        "sass": "^1.77.0",
+        "typescript": "^5.9.3"
+      }
+    },
+    {
+      "key": "a-Portals__linktree_pixel-world",
+      "path": "a-Portals/linktree_pixel-world",
+      "deps": {
+        "pixi.js": "^8.6.0",
+        "esbuild": "^0.20.2",
+        "sass": "^1.77.0",
+        "typescript": "^5.9.3"
+      }
+    },
+    {
+      "key": "b-Data__myAstro",
+      "path": "b-Data/myAstro",
+      "deps": {
+        "esbuild": "^0.20.2",
+        "sass": "^1.77.0",
+        "three": "^0.162.0",
+        "typescript": "^5.3.3",
+        "@types/three": "^0.162.0"
+      }
+    },
+    {
+      "key": "b-Data__myfeed",
+      "path": "b-Data/myfeed",
+      "deps": {
+        "@floating-ui/vue": "^1.0.0",
+        "@formkit/auto-animate": "^0.8.0",
+        "@orama/orama": "^2.0.0",
+        "@sanity/client": "^6.12.0",
+        "@sanity/image-url": "^1.0.2",
+        "@tanstack/vue-query": "^5.28.0",
+        "@tanstack/vue-virtual": "^3.1.0",
+        "@vueuse/core": "^10.9.0",
+        "blurhash": "^2.0.0",
+        "clsx": "^2.1.0",
+        "date-fns": "^3.3.0",
+        "dompurify": "^3.0.0",
+        "lucide-vue-next": "^0.340.0",
+        "marked": "^12.0.0",
+        "pinia": "^2.1.0",
+        "radix-vue": "^1.5.0",
+        "shiki": "^1.0.0",
+        "unlazy": "^0.11.0",
+        "vue": "^3.4.0",
+        "vue-sonner": "^1.0.0",
+        "web-vitals": "^3.5.0",
+        "@testing-library/vue": "^8.0.0",
+        "@types/dompurify": "^3.0.0",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "@vue/eslint-config-typescript": "^12.0.0",
+        "autoprefixer": "^10.4.0",
+        "class-variance-authority": "^0.7.1",
+        "eslint": "^8.57.0",
+        "eslint-plugin-vue": "^9.20.0",
+        "postcss": "^8.4.0",
+        "prettier": "^3.2.0",
+        "prettier-plugin-tailwindcss": "^0.5.0",
+        "sass": "^1.94.1",
+        "shadcn-vue": "^2.3.3",
+        "tailwind-merge": "^3.4.0",
+        "tailwindcss": "^3.4.0",
+        "tailwindcss-animate": "^1.0.7",
+        "terser": "^5.44.1",
+        "typescript": "^5.3.0",
+        "unplugin-auto-import": "^0.17.0",
+        "unplugin-vue-components": "^0.26.0",
+        "vite": "^5.1.0",
+        "vite-plugin-compression": "^0.5.0",
+        "vite-plugin-singlefile": "^2.3.0",
+        "vite-plugin-vue-devtools": "^7.0.0",
+        "vitest": "^1.3.0",
+        "vue-tsc": "^1.8.0"
+      }
+    },
+    {
+      "key": "b-MyData__mymaps-mytrips",
+      "path": "b-MyData/mymaps-mytrips",
+      "deps": {
+        "@types/d3": "^7.4.3",
+        "@types/topojson-client": "^3.1.5",
+        "chart.js": "^4.5.1",
+        "d3": "^7.9.0",
+        "@turf/helpers": "^7.0.0",
+        "@turf/union": "^7.0.0",
+        "three": "^0.182.0",
+        "topojson-client": "^3.1.0",
+        "@tailwindcss/postcss": "^4.1.18",
+        "@tailwindcss/vite": "^4.1.18",
+        "@types/three": "^0.182.0",
+        "@vitejs/plugin-vue": "^6.0.3",
+        "autoprefixer": "^10.4.23",
+        "postcss": "^8.5.6",
+        "sass": "^1.97.3",
+        "tailwindcss": "^4.1.18",
+        "typescript": "^5.9.3",
+        "vite": "^7.3.1",
+        "vue": "^3.5.27",
+        "vue-tsc": "^3.2.4"
+      }
+    },
+    {
+      "key": "b-Profiles__myprofile",
+      "path": "b-Profiles/myprofile",
+      "deps": {
+        "@sveltejs/adapter-static": "^3.0.0",
+        "@sveltejs/kit": "^2.0.0",
+        "@sveltejs/vite-plugin-svelte": "^5.0.0",
+        "sass": "^1.77.0",
+        "svelte": "^5.0.0",
+        "svelte-check": "^4.0.0",
+        "typescript": "^5.0.0",
+        "vite": "^6.0.0"
+      }
+    },
+    {
+      "key": "c-Circus__games",
+      "path": "c-Circus/games",
+      "deps": {
+        "@sveltejs/adapter-auto": "^7.0.0",
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.47.1",
+        "@sveltejs/vite-plugin-svelte": "^6.2.1",
+        "eslint": "^9.39.1",
+        "eslint-plugin-svelte": "^3.13.0",
+        "prettier": "^3.6.2",
+        "prettier-plugin-svelte": "^3.4.0",
+        "sass": "^1.94.0",
+        "svelte": "^5.41.0",
+        "svelte-check": "^4.3.3",
+        "typescript": "^5.9.3",
+        "vite": "^7.1.10"
+      }
+    },
+    {
+      "key": "c-Circus__movies",
+      "path": "c-Circus/movies",
+      "deps": {
+        "axios": "^1.6.0",
+        "lodash-es": "^4.17.21",
+        "vue": "^3.4.0",
+        "@types/lodash-es": "^4.17.12",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "sass": "^1.69.0",
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0",
+        "vite-plugin-singlefile": "^2.0.0",
+        "vue-tsc": "^2.0.0"
+      }
+    },
+    {
+      "key": "c-Circus__music",
+      "path": "c-Circus/music",
+      "deps": {
+        "axios": "^1.6.0",
+        "lodash-es": "^4.17.21",
+        "vue": "^3.4.0",
+        "@types/lodash-es": "^4.17.12",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "sass": "^1.69.0",
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0",
+        "vite-plugin-singlefile": "^2.0.0",
+        "vue-tsc": "^2.0.0"
+      }
+    },
+    {
+      "key": "c-Cloud__skills_mcp",
+      "path": "c-Cloud/skills_mcp",
+      "deps": {
+        "gray-matter": "^4.0.3",
+        "esbuild": "^0.20.0",
+        "marked": "^15.0.12",
+        "sass": "^1.71.0",
+        "typescript": "^5.3.3"
+      }
+    },
+    {
+      "key": "c-LabTools__central_bank",
+      "path": "c-LabTools/central_bank",
+      "deps": {
+        "chart.js": "^4.4.0",
+        "lucide": "^0.460.0",
+        "@tailwindcss/vite": "^4.0.0",
+        "sass": "^1.94.2",
+        "tailwindcss": "^4.0.0",
+        "typescript": "^5.6.0",
+        "vite": "^6.0.0",
+        "vite-plugin-singlefile": "^2.3.0"
+      }
+    },
+    {
+      "key": "c-LabTools__fin-terminal",
+      "path": "c-LabTools/fin-terminal",
+      "deps": {
+        "lightweight-charts": "^5.0.0",
+        "@types/node": "^22.0.0",
+        "esbuild": "^0.24.0",
+        "jsdom": "^25.0.0",
+        "sass": "^1.94.0",
+        "typescript": "^5.6.0",
+        "vitest": "^2.1.0"
+      }
+    },
+    {
+      "key": "c-LabTools__market_watch",
+      "path": "c-LabTools/market_watch",
+      "deps": {
+        "@types/node": "^20.10.0",
+        "@typescript-eslint/eslint-plugin": "^6.13.0",
+        "@typescript-eslint/parser": "^6.13.0",
+        "esbuild": "^0.19.8",
+        "eslint": "^8.54.0",
+        "prettier": "^3.1.0",
+        "sass": "^1.69.5",
+        "typescript": "^5.3.2"
+      }
+    },
+    {
+      "key": "c-LabTools__news",
+      "path": "c-LabTools/news",
+      "deps": {
+        "esbuild": "^0.24.0",
+        "sass": "^1.83.0",
+        "typescript": "^5.7.0"
+      }
+    },
+    {
+      "key": "c-LabTools__sailytics",
+      "path": "c-LabTools/sailytics",
+      "deps": {
+        "three": "^0.170.0",
+        "@types/three": "^0.170.0"
+      }
+    },
+    {
+      "key": "c-Suite__json-vision",
+      "path": "c-Suite/json-vision",
+      "deps": {
+        "lodash-es": "^4.17.21",
+        "vue": "^3.4.0",
+        "@types/lodash-es": "^4.17.12",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "sass": "^1.69.0",
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0",
+        "vite-plugin-singlefile": "^2.0.0",
+        "vue-tsc": "^2.0.0"
+      }
+    },
+    {
+      "key": "c-Suite__myhealth-feedyourself",
+      "path": "c-Suite/myhealth-feedyourself",
+      "deps": {
+        "esbuild": "^0.20.0",
+        "jszip": "^3.10.1",
+        "sass": "^1.77.0",
+        "tsx": "^4.19.0",
+        "typescript": "^5.4.0",
+        "xlsx": "^0.18.5"
+      }
+    },
+    {
+      "key": "c-Suite__mymaps-maps",
+      "path": "c-Suite/mymaps-maps",
+      "deps": {
+        "d3-geo": "^3.1.1",
+        "d3-interpolate": "^3.0.1",
+        "d3-timer": "^3.0.1",
+        "topojson-client": "^3.1.0",
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.47.1",
+        "@sveltejs/vite-plugin-svelte": "^6.2.1",
+        "@types/d3": "^7.4.3",
+        "@types/d3-geo": "^3.1.0",
+        "@types/topojson-client": "^3.1.5",
+        "sass": "^1.94.0",
+        "svelte": "^5.41.0",
+        "svelte-check": "^4.3.3",
+        "typescript": "^5.9.3",
+        "vite": "^7.1.10"
+      }
+    },
+    {
+      "key": "c-Suite__mymaps-navigation",
+      "path": "c-Suite/mymaps-navigation",
+      "deps": {
+        "@mapbox/togeojson": "^0.16.2",
+        "jszip": "^3.10.1",
+        "maplibre-gl": "^5.17.0",
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.47.1",
+        "@sveltejs/vite-plugin-svelte": "^6.2.1",
+        "eslint": "^9.39.1",
+        "eslint-plugin-svelte": "^3.13.0",
+        "prettier": "^3.6.2",
+        "prettier-plugin-svelte": "^3.4.0",
+        "sass": "^1.94.0",
+        "svelte": "^5.41.0",
+        "svelte-check": "^4.3.3",
+        "typescript": "^5.9.3",
+        "vite": "^7.1.10"
+      }
+    },
+    {
+      "key": "e-Root",
+      "path": "e-Root",
+      "deps": {
+        "vue": "^3.4.0",
+        "@vitejs/plugin-vue": "^5.0.0",
+        "sass": "^1.69.0",
+        "typescript": "^5.3.0",
+        "vite": "^5.0.0",
+        "vite-ssg": "^0.23.0",
+        "vue-tsc": "^1.8.0"
+      }
+    }
+  ],
+  "merged": {
+    "sass": "^1.69.0",
+    "typescript": "^5.3.0",
+    "esbuild": "^0.20.0",
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "swiper": "^11.0.0",
+    "pixi.js": "^8.6.0",
+    "three": "^0.170.0",
+    "@types/three": "^0.170.0",
+    "@floating-ui/vue": "^1.0.0",
+    "@formkit/auto-animate": "^0.8.0",
+    "@orama/orama": "^2.0.0",
+    "@sanity/client": "^6.12.0",
+    "@sanity/image-url": "^1.0.2",
+    "@tanstack/vue-query": "^5.28.0",
+    "@tanstack/vue-virtual": "^3.1.0",
+    "@vueuse/core": "^10.9.0",
+    "blurhash": "^2.0.0",
+    "clsx": "^2.1.0",
+    "date-fns": "^3.3.0",
+    "dompurify": "^3.0.0",
+    "lucide-vue-next": "^0.340.0",
+    "marked": "^15.0.12",
+    "pinia": "^2.1.0",
+    "radix-vue": "^1.5.0",
+    "shiki": "^1.0.0",
+    "unlazy": "^0.11.0",
+    "vue": "^3.4.0",
+    "vue-sonner": "^1.0.0",
+    "web-vitals": "^3.5.0",
+    "@testing-library/vue": "^8.0.0",
+    "@types/dompurify": "^3.0.0",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "autoprefixer": "^10.4.23",
+    "class-variance-authority": "^0.7.1",
+    "eslint-plugin-vue": "^9.20.0",
+    "postcss": "^8.5.6",
+    "prettier-plugin-tailwindcss": "^0.5.0",
+    "shadcn-vue": "^2.3.3",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.0.0",
+    "tailwindcss-animate": "^1.0.7",
+    "terser": "^5.44.1",
+    "unplugin-auto-import": "^0.17.0",
+    "unplugin-vue-components": "^0.26.0",
+    "vite": "^5.0.0",
+    "vite-plugin-compression": "^0.5.0",
+    "vite-plugin-singlefile": "^2.0.0",
+    "vite-plugin-vue-devtools": "^7.0.0",
+    "vitest": "^2.1.0",
+    "vue-tsc": "^1.8.0",
+    "@types/d3": "^7.4.3",
+    "@types/topojson-client": "^3.1.5",
+    "chart.js": "^4.4.0",
+    "d3": "^7.9.0",
+    "@turf/helpers": "^7.0.0",
+    "@turf/union": "^7.0.0",
+    "topojson-client": "^3.1.0",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@tailwindcss/vite": "^4.0.0",
+    "@sveltejs/adapter-static": "^3.0.10",
+    "@sveltejs/kit": "^2.47.1",
+    "@sveltejs/vite-plugin-svelte": "^6.2.1",
+    "svelte": "^5.41.0",
+    "svelte-check": "^4.3.3",
+    "@sveltejs/adapter-auto": "^7.0.0",
+    "eslint-plugin-svelte": "^3.13.0",
+    "prettier-plugin-svelte": "^3.4.0",
+    "axios": "^1.6.0",
+    "lodash-es": "^4.17.21",
+    "@types/lodash-es": "^4.17.12",
+    "gray-matter": "^4.0.3",
+    "lucide": "^0.460.0",
+    "lightweight-charts": "^5.0.0",
+    "jsdom": "^25.0.0",
+    "jszip": "^3.10.1",
+    "tsx": "^4.19.0",
+    "xlsx": "^0.18.5",
+    "d3-geo": "^3.1.1",
+    "d3-interpolate": "^3.0.1",
+    "d3-timer": "^3.0.1",
+    "@types/d3-geo": "^3.1.0",
+    "@mapbox/togeojson": "^0.16.2",
+    "maplibre-gl": "^5.17.0",
+    "vite-ssg": "^0.23.0"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "MyMaps Navigation",
+  "framework": "sveltekit",
+  "port": 8018,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "sveltekit"
+    }
+  ],
+  "serve": {
+    "mode": "sveltekit"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-Suite/mymaps-navigation",
+    "category": "c-Suite",
+    "project": "mymaps-navigation",
+    "key": "c-Suite__mymaps-navigation",
+    "port": 8018,
+    "framework": "sveltekit",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "mymaps-navigation",
+      "url": "https://diegonmarcos.github.io/mymaps-navigation"
+    },
+    "consumers": [
+      "Navigation"
+    ],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

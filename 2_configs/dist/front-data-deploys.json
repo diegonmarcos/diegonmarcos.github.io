@@ -1,0 +1,150 @@
+[
+  {
+    "path": "e-Root",
+    "deploy_name": "."
+  },
+  {
+    "path": "a-Portals/cloud",
+    "deploy_name": "cloud"
+  },
+  {
+    "path": "a-Portals/linktree",
+    "deploy_name": "linktree"
+  },
+  {
+    "path": "a-Portals/linktree_mindmap",
+    "deploy_name": "linktree_mindmap"
+  },
+  {
+    "path": "a-Portals/linktree_pixel-world",
+    "deploy_name": "linktree_pixel-world"
+  },
+  {
+    "path": "a-Individual/cv_pdf",
+    "deploy_name": "cv_pdf"
+  },
+  {
+    "path": "a-Individual/cv_web",
+    "deploy_name": "cv_web"
+  },
+  {
+    "path": "a-Individual/landpage",
+    "deploy_name": "landpage"
+  },
+  {
+    "path": "a-Companies/leafy",
+    "deploy_name": "leafy"
+  },
+  {
+    "path": "b-Profiles/myprofile",
+    "deploy_name": "myprofile"
+  },
+  {
+    "path": "a-Companies/nexus",
+    "deploy_name": "nexus"
+  },
+  {
+    "path": "a-Companies/stark",
+    "deploy_name": "stark"
+  },
+  {
+    "path": "c-Suite/json-vision",
+    "deploy_name": "json-vision"
+  },
+  {
+    "path": "c-Suite/mymail",
+    "deploy_name": "mymail"
+  },
+  {
+    "path": "b-MyData/myphotos",
+    "deploy_name": "myphotos"
+  },
+  {
+    "path": "c-Suite/suite",
+    "deploy_name": "suite"
+  },
+  {
+    "path": "b-Data/myAstro",
+    "deploy_name": "myAstro"
+  },
+  {
+    "path": "c-Circus/carto",
+    "deploy_name": "carto"
+  },
+  {
+    "path": "c-LabTools/central_bank",
+    "deploy_name": "central_bank"
+  },
+  {
+    "path": "c-Suite/myhealth-feedyourself",
+    "deploy_name": "myhealth-feedyourself"
+  },
+  {
+    "path": "b-MyData/myhealth-profile",
+    "deploy_name": "myhealth-profile"
+  },
+  {
+    "path": "c-Suite/mymaps-maps",
+    "deploy_name": "mymaps-maps"
+  },
+  {
+    "path": "c-LabTools/market_watch",
+    "deploy_name": "market_watch"
+  },
+  {
+    "path": "b-Data/myfeed",
+    "deploy_name": "myfeed"
+  },
+  {
+    "path": "c-Circus/games",
+    "deploy_name": "games"
+  },
+  {
+    "path": "c-Suite/mymaps-navigation",
+    "deploy_name": "mymaps-navigation"
+  },
+  {
+    "path": "c-Circus/movies",
+    "deploy_name": "movies"
+  },
+  {
+    "path": "c-Circus/music",
+    "deploy_name": "music"
+  },
+  {
+    "path": "b-MyData/mymaps-mytrips",
+    "deploy_name": "mymaps-mytrips"
+  },
+  {
+    "path": "c-Cloud/api",
+    "deploy_name": "api"
+  },
+  {
+    "path": "c-Cloud/mcp-api-swagger",
+    "deploy_name": "mcp-api-swagger"
+  },
+  {
+    "path": "c-Cloud/skills_mcp",
+    "deploy_name": "skills_mcp"
+  },
+  {
+    "path": "e-Others/others",
+    "deploy_name": "others"
+  },
+  {
+    "path": "c-LabTools/sailytics",
+    "deploy_name": "sailytics"
+  },
+  {
+    "path": "c-LabTools/news",
+    "deploy_name": "news"
+  },
+  {
+    "path": "c-LabTools/fin-terminal",
+    "deploy_name": "fin-terminal"
+  },
+  {
+    "path": "b-MyData/my-fin",
+    "deploy_name": "my-fin"
+  }
+]

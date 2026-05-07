@@ -1,0 +1,87 @@
+{
+  "name": "MyPhotos",
+  "framework": "vanilla",
+  "port": 8019,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+      "mod": "data_wrap",
+      "dir": "src/data"
+    },
+    {
+      "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+      "mod": "copy",
+      "files": "data-*.json.js",
+      "from": "src/data"
+    },
+    {
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src"
+    },
+    {
+      "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+      "mod": "sw_register",
+      "files": "index.html, oauth-callback.html"
+    },
+    {
+      "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+      "mod": "console_log",
+      "files": "index.html, oauth-callback.html"
+    },
+    {
+      "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+      "mod": "esbuild_sw",
+      "input": "src/typescript/script-service-worker.ts",
+      "output": "script-service-worker.js",
+      "format": "iife",
+      "target": "es2020",
+      "hash_of": [
+        "index.html",
+        "oauth-callback.html"
+      ],
+      "precache": [
+        "./",
+        "./index.html",
+        "./oauth-callback.html"
+      ]
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "b-MyData/myphotos",
+    "category": "b-MyData",
+    "project": "myphotos",
+    "key": "b-MyData__myphotos",
+    "port": 8019,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "myphotos",
+      "url": "https://diegonmarcos.github.io/myphotos"
+    },
+    "consumers": [
+      "MyPhotos"
+    ],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

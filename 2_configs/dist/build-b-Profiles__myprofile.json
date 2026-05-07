@@ -1,0 +1,44 @@
+{
+  "name": "MyProfile",
+  "framework": "sveltekit",
+  "port": 8013,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "sveltekit"
+    }
+  ],
+  "serve": {
+    "mode": "sveltekit"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "b-Profiles/myprofile",
+    "category": "b-Profiles",
+    "project": "myprofile",
+    "key": "b-Profiles__myprofile",
+    "port": 8013,
+    "framework": "sveltekit",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "myprofile",
+      "url": "https://diegonmarcos.github.io/myprofile"
+    },
+    "consumers": [],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

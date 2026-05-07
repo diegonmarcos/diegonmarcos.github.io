@@ -3,378 +3,504 @@
     "path": "a-Companies/leafy",
     "category": "a-Companies",
     "project": "leafy",
+    "key": "a-Companies__leafy",
     "name": "Leafy",
     "framework": "vanilla",
     "port": 8021,
-    "deploy_name": "leafy"
+    "deploy_name": "leafy",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "a-Companies/nexus",
     "category": "a-Companies",
     "project": "nexus",
+    "key": "a-Companies__nexus",
     "name": "Nexus",
     "framework": "vanilla",
     "port": 8005,
-    "deploy_name": "nexus"
+    "deploy_name": "nexus",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "a-Companies/stark",
     "category": "a-Companies",
     "project": "stark",
+    "key": "a-Companies__stark",
     "name": "Stark",
     "framework": "vanilla",
     "port": 8022,
-    "deploy_name": "stark"
+    "deploy_name": "stark",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "a-Individual/cv_pdf",
     "category": "a-Individual",
     "project": "cv_pdf",
+    "key": "a-Individual__cv_pdf",
     "name": "CV PDF",
     "framework": "vanilla",
     "port": 8012,
-    "deploy_name": "cv_pdf"
+    "deploy_name": "cv_pdf",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "a-Individual/cv_web",
     "category": "a-Individual",
     "project": "cv_web",
+    "key": "a-Individual__cv_web",
     "name": "CV Web",
     "framework": "vanilla",
     "port": 8002,
-    "deploy_name": "cv_web"
+    "deploy_name": "cv_web",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "a-Individual/landpage",
     "category": "a-Individual",
     "project": "landpage",
+    "key": "a-Individual__landpage",
     "name": "Landpage",
     "framework": "vanilla",
     "port": 8000,
-    "deploy_name": "landpage"
+    "deploy_name": "landpage",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "a-Portals/cloud",
     "category": "a-Portals",
     "project": "cloud",
+    "key": "a-Portals__cloud",
     "name": "Cloud",
     "framework": "vanilla",
     "port": 8006,
-    "deploy_name": "cloud"
+    "deploy_name": "cloud",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "a-Portals/linktree",
     "category": "a-Portals",
     "project": "linktree",
+    "key": "a-Portals__linktree",
     "name": "Linktree",
     "framework": "vanilla",
     "port": 8001,
-    "deploy_name": "linktree"
+    "deploy_name": "linktree",
+    "has_pwa": true,
+    "has_pkg": true
   },
   {
     "path": "a-Portals/linktree_mindmap",
     "category": "a-Portals",
     "project": "linktree_mindmap",
+    "key": "a-Portals__linktree_mindmap",
     "name": "Linktree Mindmap",
     "framework": "vanilla",
     "port": 8018,
-    "deploy_name": "linktree_mindmap"
+    "deploy_name": "linktree_mindmap",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "a-Portals/linktree_pixel-world",
     "category": "a-Portals",
     "project": "linktree_pixel-world",
+    "key": "a-Portals__linktree_pixel-world",
     "name": "Linktree Pixel World",
     "framework": "vanilla",
     "port": 8019,
-    "deploy_name": "linktree_pixel-world"
+    "deploy_name": "linktree_pixel-world",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "b-Data/myAstro",
     "category": "b-Data",
     "project": "myAstro",
+    "key": "b-Data__myAstro",
     "name": "myAstro",
     "framework": "vanilla",
     "port": 8019,
-    "deploy_name": "myAstro"
+    "deploy_name": "myAstro",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "b-Data/myfeed",
     "category": "b-Data",
     "project": "myfeed",
+    "key": "b-Data__myfeed",
     "name": "MyFeed",
     "framework": "vue",
     "port": 8003,
-    "deploy_name": "myfeed"
+    "deploy_name": "myfeed",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "b-Media/myMoments",
     "category": "b-Media",
     "project": "myMoments",
+    "key": "b-Media__myMoments",
     "name": "myMoments",
     "framework": "vanilla",
     "port": 8028,
-    "deploy_name": "myMoments"
+    "deploy_name": "myMoments",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/my-fin",
     "category": "b-MyData",
     "project": "my-fin",
+    "key": "b-MyData__my-fin",
     "name": "My Financials",
     "framework": "vanilla",
     "port": 8030,
-    "deploy_name": "my-fin"
+    "deploy_name": "my-fin",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/myhealth",
     "category": "b-MyData",
     "project": "myhealth",
+    "key": "b-MyData__myhealth",
     "name": "MyHealth",
     "framework": "vanilla",
     "port": 8026,
-    "deploy_name": "myhealth"
+    "deploy_name": "myhealth",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/myhealth-profile",
     "category": "b-MyData",
     "project": "myhealth-profile",
+    "key": "b-MyData__myhealth-profile",
     "name": "MyHealth Profile",
     "framework": "vanilla",
     "port": 8009,
-    "deploy_name": "myhealth-profile"
+    "deploy_name": "myhealth-profile",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/myhealth-tracker",
     "category": "b-MyData",
     "project": "myhealth-tracker",
+    "key": "b-MyData__myhealth-tracker",
     "name": "MyHealth Tracker",
     "framework": "vanilla",
     "port": 8025,
-    "deploy_name": "myhealth-tracker"
+    "deploy_name": "myhealth-tracker",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/myid",
     "category": "b-MyData",
     "project": "myid",
+    "key": "b-MyData__myid",
     "name": "myID",
     "framework": "vanilla",
     "port": 8031,
-    "deploy_name": "myid"
+    "deploy_name": "myid",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-MyData/mymaps-mytrips",
     "category": "b-MyData",
     "project": "mymaps-mytrips",
+    "key": "b-MyData__mymaps-mytrips",
     "name": "MyMaps MyTrips",
     "framework": "vue",
     "port": 8022,
-    "deploy_name": "mymaps-mytrips"
+    "deploy_name": "mymaps-mytrips",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "b-MyData/myphotos",
     "category": "b-MyData",
     "project": "myphotos",
+    "key": "b-MyData__myphotos",
     "name": "MyPhotos",
     "framework": "vanilla",
     "port": 8019,
-    "deploy_name": "myphotos"
+    "deploy_name": "myphotos",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "b-Profiles/myprofile",
     "category": "b-Profiles",
     "project": "myprofile",
+    "key": "b-Profiles__myprofile",
     "name": "MyProfile",
     "framework": "sveltekit",
     "port": 8013,
-    "deploy_name": "myprofile"
+    "deploy_name": "myprofile",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Circus/carto",
     "category": "c-Circus",
     "project": "carto",
+    "key": "c-Circus__carto",
     "name": "Carto",
     "framework": "vanilla",
     "port": 8020,
-    "deploy_name": "carto"
+    "deploy_name": "carto",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Circus/games",
     "category": "c-Circus",
     "project": "games",
+    "key": "c-Circus__games",
     "name": "Games",
     "framework": "sveltekit",
     "port": 8004,
-    "deploy_name": "games"
+    "deploy_name": "games",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Circus/movies",
     "category": "c-Circus",
     "project": "movies",
+    "key": "c-Circus__movies",
     "name": "Movies",
     "framework": "vue",
     "port": 8015,
-    "deploy_name": "movies"
+    "deploy_name": "movies",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Circus/music",
     "category": "c-Circus",
     "project": "music",
+    "key": "c-Circus__music",
     "name": "Music",
     "framework": "vue",
     "port": 8016,
-    "deploy_name": "music"
+    "deploy_name": "music",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Cloud/api",
     "category": "c-Cloud",
     "project": "api",
+    "key": "c-Cloud__api",
     "name": "API",
     "framework": "vanilla",
     "port": 8023,
-    "deploy_name": "api"
+    "deploy_name": "api",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Cloud/mcp-api-swagger",
     "category": "c-Cloud",
     "project": "mcp-api-swagger",
+    "key": "c-Cloud__mcp-api-swagger",
     "name": "mcp-api-swagger",
     "framework": "vanilla",
     "port": 8024,
-    "deploy_name": "mcp-api-swagger"
+    "deploy_name": "mcp-api-swagger",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Cloud/skills_mcp",
     "category": "c-Cloud",
     "project": "skills_mcp",
+    "key": "c-Cloud__skills_mcp",
     "name": "Skills MCP",
     "framework": "vanilla",
     "port": 8018,
-    "deploy_name": "skills_mcp"
+    "deploy_name": "skills_mcp",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-LabTools/central_bank",
     "category": "c-LabTools",
     "project": "central_bank",
+    "key": "c-LabTools__central_bank",
     "name": "CentralBank",
     "framework": "vanilla",
     "port": 8011,
-    "deploy_name": "central_bank"
+    "deploy_name": "central_bank",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-LabTools/fin-terminal",
     "category": "c-LabTools",
     "project": "fin-terminal",
+    "key": "c-LabTools__fin-terminal",
     "name": "FinTerminal",
     "framework": "vanilla",
     "port": 8024,
-    "deploy_name": "fin-terminal"
+    "deploy_name": "fin-terminal",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-LabTools/market_watch",
     "category": "c-LabTools",
     "project": "market_watch",
+    "key": "c-LabTools__market_watch",
     "name": "MarketWatch",
     "framework": "vanilla",
     "port": 8010,
-    "deploy_name": "market_watch"
+    "deploy_name": "market_watch",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-LabTools/news",
     "category": "c-LabTools",
     "project": "news",
+    "key": "c-LabTools__news",
     "name": "GDELTNews",
     "framework": "vanilla",
     "port": 8029,
-    "deploy_name": "news"
+    "deploy_name": "news",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-LabTools/sailytics",
     "category": "c-LabTools",
     "project": "sailytics",
+    "key": "c-LabTools__sailytics",
     "name": "Sailyng",
     "framework": "vanilla",
     "port": 8023,
-    "deploy_name": "sailytics"
+    "deploy_name": "sailytics",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Suite/json-vision",
     "category": "c-Suite",
     "project": "json-vision",
+    "key": "c-Suite__json-vision",
     "name": "JSON Vision",
     "framework": "vue",
     "port": 8017,
-    "deploy_name": "json-vision"
+    "deploy_name": "json-vision",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Suite/myhealth-feedyourself",
     "category": "c-Suite",
     "project": "myhealth-feedyourself",
+    "key": "c-Suite__myhealth-feedyourself",
     "name": "MyHealth FeedYourself",
     "framework": "vanilla",
     "port": 8007,
-    "deploy_name": "myhealth-feedyourself"
+    "deploy_name": "myhealth-feedyourself",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Suite/mymail",
     "category": "c-Suite",
     "project": "mymail",
+    "key": "c-Suite__mymail",
     "name": "MyMail",
     "framework": "vanilla",
     "port": 8018,
-    "deploy_name": "mymail"
+    "deploy_name": "mymail",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Suite/mymaps",
     "category": "c-Suite",
     "project": "mymaps",
+    "key": "c-Suite__mymaps",
     "name": "MyMaps",
     "framework": "vanilla",
     "port": 8027,
-    "deploy_name": "mymaps"
+    "deploy_name": "mymaps",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Suite/mymaps-maps",
     "category": "c-Suite",
     "project": "mymaps-maps",
+    "key": "c-Suite__mymaps-maps",
     "name": "MyMaps Maps",
     "framework": "sveltekit",
     "port": 8014,
-    "deploy_name": "mymaps-maps"
+    "deploy_name": "mymaps-maps",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Suite/mymaps-navigation",
     "category": "c-Suite",
     "project": "mymaps-navigation",
+    "key": "c-Suite__mymaps-navigation",
     "name": "MyMaps Navigation",
     "framework": "sveltekit",
     "port": 8018,
-    "deploy_name": "mymaps-navigation"
+    "deploy_name": "mymaps-navigation",
+    "has_pwa": false,
+    "has_pkg": true
   },
   {
     "path": "c-Suite/suite",
     "category": "c-Suite",
     "project": "suite",
+    "key": "c-Suite__suite",
     "name": "Suite",
     "framework": "vanilla",
     "port": 8021,
-    "deploy_name": "suite"
+    "deploy_name": "suite",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "e-Others/others",
     "category": "e-Others",
     "project": "others",
+    "key": "e-Others__others",
     "name": "Others",
     "framework": "vanilla",
     "port": 8008,
-    "deploy_name": "others"
+    "deploy_name": "others",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "e-Root",
-    "category": "e-Root",
-    "project": null,
+    "category": "-",
+    "project": "e-Root",
+    "key": "e-Root",
     "name": "c_root",
     "framework": "vue",
     "port": 5173,
-    "deploy_name": null
+    "deploy_name": "e-Root",
+    "has_pwa": false,
+    "has_pkg": true
   }
 ]

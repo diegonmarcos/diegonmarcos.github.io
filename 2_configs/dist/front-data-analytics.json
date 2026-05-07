@@ -1,0 +1,11 @@
+{
+  "matomo": {
+    "container_id": "container_odwLIyPV",
+    "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+  },
+  "umami": {
+    "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+    "url": "https://analytics.diegonmarcos.com/umami/script.js"
+  },
+  "note": "Front uses shared Matomo container + Umami website ID for all 42 projects (single-tenant)."
+}

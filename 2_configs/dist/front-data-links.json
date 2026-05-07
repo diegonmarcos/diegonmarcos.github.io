@@ -24,244 +24,79 @@
       "section": "personal-profiles",
       "id": "personal-profile",
       "kind": "profile-card",
-      "title": "PROFILE",
-      "columns": []
+      "title": "PROFILE"
     },
     {
       "section": "personal-profiles",
       "id": "media",
       "kind": "tools",
-      "title": "MEDIA",
-      "columns": [
-        {
-          "header": "Photos",
-          "link_count": 5
-        },
-        {
-          "header": "Videos",
-          "link_count": 4
-        },
-        {
-          "header": "Music",
-          "link_count": 3
-        }
-      ]
+      "title": "MEDIA"
     },
     {
       "section": "personal-profiles",
       "id": "data",
       "kind": "tools",
-      "title": "DATA",
-      "columns": [
-        {
-          "header": "Health",
-          "link_count": 2
-        },
-        {
-          "header": "Endurance",
-          "link_count": 4
-        },
-        {
-          "header": "Achieves",
-          "link_count": 5
-        }
-      ]
+      "title": "DATA"
     },
     {
       "section": "personal-profiles",
       "id": "projects",
       "kind": "tools",
-      "title": "PROJECTS",
-      "columns": [
-        {
-          "header": "Basileia",
-          "link_count": 1
-        },
-        {
-          "header": "Mousseion",
-          "link_count": 1
-        },
-        {
-          "header": "Paneion",
-          "link_count": 1
-        },
-        {
-          "header": "Akropolis",
-          "link_count": 1
-        },
-        {
-          "header": "Bibliotheke",
-          "link_count": 1
-        },
-        {
-          "header": "Adyton",
-          "link_count": 1
-        }
-      ]
+      "title": "PROJECTS"
     },
     {
       "section": "personal-tools",
       "id": "suite",
       "kind": "tools",
-      "title": "SUITE",
-      "columns": [
-        {
-          "header": "AI & IDE",
-          "link_count": 4
-        },
-        {
-          "header": "Suite",
-          "link_count": 7
-        },
-        {
-          "header": "Comms",
-          "link_count": 3
-        },
-        {
-          "header": "Nav",
-          "link_count": 2
-        },
-        {
-          "header": "Media",
-          "link_count": 3
-        },
-        {
-          "header": "Memory",
-          "link_count": 3
-        },
-        {
-          "header": "Health",
-          "link_count": 3
-        },
-        {
-          "header": "Tools",
-          "link_count": 4
-        }
-      ]
+      "title": "SUITE"
     },
     {
       "section": "personal-tools",
       "id": "lab-tools",
       "kind": "tools",
-      "title": "LAB TOOLS",
-      "columns": [
-        {
-          "header": "Data Science & ML",
-          "link_count": 14
-        },
-        {
-          "header": "Markets",
-          "link_count": 5
-        },
-        {
-          "header": "Engineer",
-          "link_count": 2
-        }
-      ]
+      "title": "LAB TOOLS"
     },
     {
       "section": "personal-tools",
       "id": "circus",
       "kind": "tools",
-      "title": "CIRCUS",
-      "columns": [
-        {
-          "header": "Games",
-          "link_count": 3
-        },
-        {
-          "header": "Video",
-          "link_count": 2
-        },
-        {
-          "header": "Audio",
-          "link_count": 1
-        }
-      ]
+      "title": "CIRCUS"
     },
     {
       "section": "personal-tools",
       "id": "cloud",
       "kind": "tools",
-      "title": "CLOUD",
-      "columns": [
-        {
-          "header": "Security",
-          "link_count": 8
-        },
-        {
-          "header": "Ops",
-          "link_count": 5
-        },
-        {
-          "header": "Data",
-          "link_count": 7
-        },
-        {
-          "header": "MCP & API",
-          "link_count": 6
-        },
-        {
-          "header": "VPS",
-          "link_count": 6
-        }
-      ]
+      "title": "CLOUD"
     },
     {
       "section": "professional-profiles",
       "id": "professional-profile",
       "kind": "profile-card",
-      "title": "PROFILE",
-      "columns": []
+      "title": "PROFILE"
     },
     {
       "section": "professional-profiles",
       "id": "repos",
       "kind": "repos",
-      "title": "REPOS",
-      "columns": [
-        {
-          "header": "Front-end",
-          "link_count": 4
-        },
-        {
-          "header": "Cloud",
-          "link_count": 6
-        },
-        {
-          "header": "Low Level",
-          "link_count": 6
-        },
-        {
-          "header": "ML",
-          "link_count": 2
-        },
-        {
-          "header": "Data",
-          "link_count": 3
-        }
-      ]
+      "title": "REPOS"
     },
     {
       "section": "professional-profiles",
       "id": "nexus",
       "kind": "venture-card",
-      "title": "NEXUS",
-      "columns": []
+      "title": "NEXUS"
     },
     {
       "section": "professional-profiles",
       "id": "leafy",
       "kind": "venture-card",
-      "title": "LEAFY",
-      "columns": []
+      "title": "LEAFY"
     },
     {
       "section": "professional-profiles",
       "id": "stark",
       "kind": "venture-card",
-      "title": "STARK",
-      "columns": []
+      "title": "STARK"
     }
   ],
   "links": [
@@ -424,6 +259,14 @@
       "label": "MyTrips",
       "url": "https://diegonmarcos.github.io/mymaps-mytrips",
       "icon": "world-longitude.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "myID",
+      "url": "https://diegonmarcos.github.io/myid",
+      "icon": "id.svg"
     },
     {
       "section": "personal-profiles",

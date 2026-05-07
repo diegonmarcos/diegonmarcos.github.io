@@ -1,18 +1,13 @@
 {
   "_meta": {
     "generated_by": "2_configs/build.sh",
-    "timestamp": "2026-05-07T14:16:17+02:00"
+    "timestamp": "2026-05-07T14:51:53+02:00",
+    "schema": "front-data/v1"
   },
-  "builds": 42,
   "projects": 42,
-  "links": {
-    "sections": 3,
-    "slides": 13,
-    "links": 138
-  },
-  "outputs": [
-    "dist/front-data-builds.json",
-    "dist/front-data-projects.json",
-    "dist/front-data-links.json"
-  ]
+  "outputs": {
+    "consolidated": 1,
+    "per_concern": 8,
+    "per_project": 42
+  }
 }

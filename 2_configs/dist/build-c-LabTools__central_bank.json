@@ -1,0 +1,57 @@
+{
+  "name": "CentralBank",
+  "framework": "vanilla",
+  "port": 8011,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+      "mod": "data_wrap",
+      "dir": "src/data"
+    },
+    {
+      "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+      "mod": "copy",
+      "files": "data-*.json.js",
+      "from": "src/data"
+    },
+    {
+      "mod": "vite"
+    }
+  ],
+  "serve": {
+    "mode": "vite"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-LabTools/central_bank",
+    "category": "c-LabTools",
+    "project": "central_bank",
+    "key": "c-LabTools__central_bank",
+    "port": 8011,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "central_bank",
+      "url": "https://diegonmarcos.github.io/central_bank"
+    },
+    "consumers": [
+      "CentralBank"
+    ],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

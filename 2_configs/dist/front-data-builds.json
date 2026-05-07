@@ -80,7 +80,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/leafy"
+    "_path": "a-Companies/leafy",
+    "_key": "a-Companies__leafy",
+    "_category": "a-Companies",
+    "_project": "leafy"
   },
   {
     "name": "Nexus",
@@ -172,7 +175,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/nexus"
+    "_path": "a-Companies/nexus",
+    "_key": "a-Companies__nexus",
+    "_category": "a-Companies",
+    "_project": "nexus"
   },
   {
     "name": "Stark",
@@ -255,7 +261,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Companies/stark"
+    "_path": "a-Companies/stark",
+    "_key": "a-Companies__stark",
+    "_category": "a-Companies",
+    "_project": "stark"
   },
   {
     "name": "CV PDF",
@@ -319,7 +328,10 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "a-Individual/cv_pdf"
+    "_path": "a-Individual/cv_pdf",
+    "_key": "a-Individual__cv_pdf",
+    "_category": "a-Individual",
+    "_project": "cv_pdf"
   },
   {
     "name": "CV Web",
@@ -409,7 +421,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Individual/cv_web"
+    "_path": "a-Individual/cv_web",
+    "_key": "a-Individual__cv_web",
+    "_category": "a-Individual",
+    "_project": "cv_web"
   },
   {
     "name": "Landpage",
@@ -494,7 +509,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Individual/landpage"
+    "_path": "a-Individual/landpage",
+    "_key": "a-Individual__landpage",
+    "_category": "a-Individual",
+    "_project": "landpage"
   },
   {
     "name": "Cloud",
@@ -616,7 +634,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/cloud"
+    "_path": "a-Portals/cloud",
+    "_key": "a-Portals__cloud",
+    "_category": "a-Portals",
+    "_project": "cloud"
   },
   {
     "name": "Linktree",
@@ -720,7 +741,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree"
+    "_path": "a-Portals/linktree",
+    "_key": "a-Portals__linktree",
+    "_category": "a-Portals",
+    "_project": "linktree"
   },
   {
     "name": "Linktree Mindmap",
@@ -810,7 +834,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree_mindmap"
+    "_path": "a-Portals/linktree_mindmap",
+    "_key": "a-Portals__linktree_mindmap",
+    "_category": "a-Portals",
+    "_project": "linktree_mindmap"
   },
   {
     "name": "Linktree Pixel World",
@@ -900,7 +927,10 @@
       ]
     },
     "deploy": {},
-    "_path": "a-Portals/linktree_pixel-world"
+    "_path": "a-Portals/linktree_pixel-world",
+    "_key": "a-Portals__linktree_pixel-world",
+    "_category": "a-Portals",
+    "_project": "linktree_pixel-world"
   },
   {
     "name": "myAstro",
@@ -986,7 +1016,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-Data/myAstro"
+    "_path": "b-Data/myAstro",
+    "_key": "b-Data__myAstro",
+    "_category": "b-Data",
+    "_project": "myAstro"
   },
   {
     "name": "MyFeed",
@@ -1003,7 +1036,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "b-Data/myfeed"
+    "_path": "b-Data/myfeed",
+    "_key": "b-Data__myfeed",
+    "_category": "b-Data",
+    "_project": "myfeed"
   },
   {
     "name": "myMoments",
@@ -1089,7 +1125,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-Media/myMoments"
+    "_path": "b-Media/myMoments",
+    "_key": "b-Media__myMoments",
+    "_category": "b-Media",
+    "_project": "myMoments"
   },
   {
     "name": "My Financials",
@@ -1175,7 +1214,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/my-fin"
+    "_path": "b-MyData/my-fin",
+    "_key": "b-MyData__my-fin",
+    "_category": "b-MyData",
+    "_project": "my-fin"
   },
   {
     "name": "MyHealth",
@@ -1261,7 +1303,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth"
+    "_path": "b-MyData/myhealth",
+    "_key": "b-MyData__myhealth",
+    "_category": "b-MyData",
+    "_project": "myhealth"
   },
   {
     "name": "MyHealth Profile",
@@ -1321,7 +1366,10 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth-profile"
+    "_path": "b-MyData/myhealth-profile",
+    "_key": "b-MyData__myhealth-profile",
+    "_category": "b-MyData",
+    "_project": "myhealth-profile"
   },
   {
     "name": "MyHealth Tracker",
@@ -1411,7 +1459,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myhealth-tracker"
+    "_path": "b-MyData/myhealth-tracker",
+    "_key": "b-MyData__myhealth-tracker",
+    "_category": "b-MyData",
+    "_project": "myhealth-tracker"
   },
   {
     "name": "myID",
@@ -1502,7 +1553,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-MyData/myid"
+    "_path": "b-MyData/myid",
+    "_key": "b-MyData__myid",
+    "_category": "b-MyData",
+    "_project": "myid"
   },
   {
     "name": "MyMaps MyTrips",
@@ -1519,7 +1573,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "b-MyData/mymaps-mytrips"
+    "_path": "b-MyData/mymaps-mytrips",
+    "_key": "b-MyData__mymaps-mytrips",
+    "_category": "b-MyData",
+    "_project": "mymaps-mytrips"
   },
   {
     "name": "MyPhotos",
@@ -1577,7 +1634,10 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "b-MyData/myphotos"
+    "_path": "b-MyData/myphotos",
+    "_key": "b-MyData__myphotos",
+    "_category": "b-MyData",
+    "_project": "myphotos"
   },
   {
     "name": "MyProfile",
@@ -1594,7 +1654,10 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Profiles/myprofile"
+    "_path": "b-Profiles/myprofile",
+    "_key": "b-Profiles__myprofile",
+    "_category": "b-Profiles",
+    "_project": "myprofile"
   },
   {
     "name": "Carto",
@@ -1679,7 +1742,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Circus/carto"
+    "_path": "c-Circus/carto",
+    "_key": "c-Circus__carto",
+    "_category": "c-Circus",
+    "_project": "carto"
   },
   {
     "name": "Games",
@@ -1696,7 +1762,10 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Circus/games"
+    "_path": "c-Circus/games",
+    "_key": "c-Circus__games",
+    "_category": "c-Circus",
+    "_project": "games"
   },
   {
     "name": "Movies",
@@ -1718,7 +1787,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Circus/movies"
+    "_path": "c-Circus/movies",
+    "_key": "c-Circus__movies",
+    "_category": "c-Circus",
+    "_project": "movies"
   },
   {
     "name": "Music",
@@ -1735,7 +1807,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Circus/music"
+    "_path": "c-Circus/music",
+    "_key": "c-Circus__music",
+    "_category": "c-Circus",
+    "_project": "music"
   },
   {
     "name": "API",
@@ -1799,7 +1874,10 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "c-Cloud/api"
+    "_path": "c-Cloud/api",
+    "_key": "c-Cloud__api",
+    "_category": "c-Cloud",
+    "_project": "api"
   },
   {
     "name": "mcp-api-swagger",
@@ -1923,7 +2001,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Cloud/mcp-api-swagger"
+    "_path": "c-Cloud/mcp-api-swagger",
+    "_key": "c-Cloud__mcp-api-swagger",
+    "_category": "c-Cloud",
+    "_project": "mcp-api-swagger"
   },
   {
     "name": "Skills MCP",
@@ -2021,7 +2102,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Cloud/skills_mcp"
+    "_path": "c-Cloud/skills_mcp",
+    "_key": "c-Cloud__skills_mcp",
+    "_category": "c-Cloud",
+    "_project": "skills_mcp"
   },
   {
     "name": "CentralBank",
@@ -2049,7 +2133,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-LabTools/central_bank"
+    "_path": "c-LabTools/central_bank",
+    "_key": "c-LabTools__central_bank",
+    "_category": "c-LabTools",
+    "_project": "central_bank"
   },
   {
     "name": "FinTerminal",
@@ -2149,7 +2236,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/fin-terminal"
+    "_path": "c-LabTools/fin-terminal",
+    "_key": "c-LabTools__fin-terminal",
+    "_category": "c-LabTools",
+    "_project": "fin-terminal"
   },
   {
     "name": "MarketWatch",
@@ -2239,7 +2329,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/market_watch"
+    "_path": "c-LabTools/market_watch",
+    "_key": "c-LabTools__market_watch",
+    "_category": "c-LabTools",
+    "_project": "market_watch"
   },
   {
     "name": "GDELTNews",
@@ -2329,7 +2422,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/news"
+    "_path": "c-LabTools/news",
+    "_key": "c-LabTools__news",
+    "_category": "c-LabTools",
+    "_project": "news"
   },
   {
     "name": "Sailyng",
@@ -2419,7 +2515,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-LabTools/sailytics"
+    "_path": "c-LabTools/sailytics",
+    "_key": "c-LabTools__sailytics",
+    "_category": "c-LabTools",
+    "_project": "sailytics"
   },
   {
     "name": "JSON Vision",
@@ -2436,7 +2535,10 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "c-Suite/json-vision"
+    "_path": "c-Suite/json-vision",
+    "_key": "c-Suite__json-vision",
+    "_category": "c-Suite",
+    "_project": "json-vision"
   },
   {
     "name": "MyHealth FeedYourself",
@@ -2572,7 +2674,10 @@
       "dir": "dist"
     },
     "deploy": {},
-    "_path": "c-Suite/myhealth-feedyourself"
+    "_path": "c-Suite/myhealth-feedyourself",
+    "_key": "c-Suite__myhealth-feedyourself",
+    "_category": "c-Suite",
+    "_project": "myhealth-feedyourself"
   },
   {
     "name": "MyMail",
@@ -2634,7 +2739,10 @@
       "dir": "src"
     },
     "deploy": {},
-    "_path": "c-Suite/mymail"
+    "_path": "c-Suite/mymail",
+    "_key": "c-Suite__mymail",
+    "_category": "c-Suite",
+    "_project": "mymail"
   },
   {
     "name": "MyMaps",
@@ -2720,7 +2828,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps"
+    "_path": "c-Suite/mymaps",
+    "_key": "c-Suite__mymaps",
+    "_category": "c-Suite",
+    "_project": "mymaps"
   },
   {
     "name": "MyMaps Maps",
@@ -2737,7 +2848,10 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps-maps"
+    "_path": "c-Suite/mymaps-maps",
+    "_key": "c-Suite__mymaps-maps",
+    "_category": "c-Suite",
+    "_project": "mymaps-maps"
   },
   {
     "name": "MyMaps Navigation",
@@ -2754,7 +2868,10 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "c-Suite/mymaps-navigation"
+    "_path": "c-Suite/mymaps-navigation",
+    "_key": "c-Suite__mymaps-navigation",
+    "_category": "c-Suite",
+    "_project": "mymaps-navigation"
   },
   {
     "name": "Suite",
@@ -2840,7 +2957,10 @@
       ]
     },
     "deploy": {},
-    "_path": "c-Suite/suite"
+    "_path": "c-Suite/suite",
+    "_key": "c-Suite__suite",
+    "_category": "c-Suite",
+    "_project": "suite"
   },
   {
     "name": "Others",
@@ -2910,7 +3030,10 @@
       "dir": "."
     },
     "deploy": {},
-    "_path": "e-Others/others"
+    "_path": "e-Others/others",
+    "_key": "e-Others__others",
+    "_category": "e-Others",
+    "_project": "others"
   },
   {
     "name": "c_root",
@@ -2942,6 +3065,9 @@
       "mode": "vite"
     },
     "deploy": {},
-    "_path": "e-Root"
+    "_path": "e-Root",
+    "_key": "e-Root",
+    "_category": "-",
+    "_project": "e-Root"
   }
 ]

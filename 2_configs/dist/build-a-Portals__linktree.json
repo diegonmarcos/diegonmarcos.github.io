@@ -1,0 +1,131 @@
+{
+  "name": "Linktree",
+  "framework": "vanilla",
+  "port": 8001,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+      "mod": "data_wrap",
+      "dir": "src/data"
+    },
+    {
+      "_doc": "Generate the full PWA app-icon set from one source image. Idempotent — skips when outputs are newer than source. Re-runs only when public/favicon.jpg changes.",
+      "mod": "pwa_icons",
+      "source": "src/public/favicon.jpg",
+      "out": "src/public/pwa",
+      "bg": "#000000"
+    },
+    {
+      "mod": "esbuild",
+      "input": "src/typescript/main.ts",
+      "output": "script.js",
+      "format": "iife",
+      "target": "es2020"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/main.scss",
+      "output": "style.css"
+    },
+    {
+      "mod": "copy",
+      "files": "index.html",
+      "from": "src"
+    },
+    {
+      "mod": "copy",
+      "files": "manifest.webmanifest",
+      "from": "src"
+    },
+    {
+      "_doc": "Deploy the data-*.json.js wrappers from the linktree-owned data hub to dist root, so any consumer can <script src=\"data-NAME.json.js\"> with no fetch / no CORS. Source-of-truth lives in linktree/src/data/ (linktree owns the link data; sibling projects symlink in).",
+      "mod": "copy",
+      "files": "data-*.json.js",
+      "from": "src/data"
+    },
+    {
+      "mod": "symlink",
+      "files": "src/public"
+    },
+    {
+      "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+      "mod": "sw_register",
+      "files": "index.html"
+    },
+    {
+      "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+      "mod": "console_log",
+      "files": "index.html"
+    },
+    {
+      "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+      "mod": "esbuild_sw",
+      "input": "src/typescript/script-service-worker.ts",
+      "output": "script-service-worker.js",
+      "format": "iife",
+      "target": "es2020",
+      "hash_of": [
+        "index.html",
+        "script.js",
+        "style.css"
+      ],
+      "precache": [
+        "./",
+        "./index.html",
+        "./style.css",
+        "./script.js",
+        "./public/swiper.min.css",
+        "./public/swiper.min.js"
+      ]
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src",
+    "watch": [
+      {
+        "mod": "sass",
+        "input": "scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      }
+    ]
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "a-Portals/linktree",
+    "category": "a-Portals",
+    "project": "linktree",
+    "key": "a-Portals__linktree",
+    "port": 8001,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "linktree",
+      "url": "https://diegonmarcos.github.io/linktree"
+    },
+    "consumers": [],
+    "has_package_json": true,
+    "has_manifest": true
+  }
+}

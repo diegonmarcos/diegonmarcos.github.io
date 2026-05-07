@@ -1,0 +1,46 @@
+{
+  "name": "Music",
+  "framework": "vue",
+  "port": 8016,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "vite"
+    }
+  ],
+  "serve": {
+    "mode": "vite"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-Circus/music",
+    "category": "c-Circus",
+    "project": "music",
+    "key": "c-Circus__music",
+    "port": 8016,
+    "framework": "vue",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": "music",
+      "url": "https://diegonmarcos.github.io/music"
+    },
+    "consumers": [
+      "Music"
+    ],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

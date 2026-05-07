@@ -1,0 +1,54 @@
+[
+  {
+    "category": "-",
+    "count": 1
+  },
+  {
+    "category": "a-Companies",
+    "count": 3
+  },
+  {
+    "category": "a-Individual",
+    "count": 3
+  },
+  {
+    "category": "a-Portals",
+    "count": 4
+  },
+  {
+    "category": "b-Data",
+    "count": 2
+  },
+  {
+    "category": "b-Media",
+    "count": 1
+  },
+  {
+    "category": "b-MyData",
+    "count": 7
+  },
+  {
+    "category": "b-Profiles",
+    "count": 1
+  },
+  {
+    "category": "c-Circus",
+    "count": 4
+  },
+  {
+    "category": "c-Cloud",
+    "count": 3
+  },
+  {
+    "category": "c-LabTools",
+    "count": 5
+  },
+  {
+    "category": "c-Suite",
+    "count": 7
+  },
+  {
+    "category": "e-Others",
+    "count": 1
+  }
+]

@@ -1,0 +1,59 @@
+{
+  "name": "c_root",
+  "framework": "vue",
+  "port": 5173,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "vite"
+    },
+    {
+      "mod": "strip-module",
+      "files": "index.html"
+    },
+    {
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src",
+      "exclude": "index.html"
+    },
+    {
+      "mod": "copy",
+      "files": "*.js",
+      "from": "src"
+    }
+  ],
+  "serve": {
+    "mode": "vite"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "e-Root",
+    "category": "-",
+    "project": "e-Root",
+    "key": "e-Root",
+    "port": 5173,
+    "framework": "vue",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": true,
+      "deploy_name": ".",
+      "url": "https://diegonmarcos.github.io/."
+    },
+    "consumers": [],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

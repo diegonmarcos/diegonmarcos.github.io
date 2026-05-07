@@ -28,23 +28,51 @@ declare const BUILD_ASSET_HASHES: Record<string, string>;
 const STATIC_CACHE  = `static-${BUILD_HASH}`;
 const RUNTIME_CACHE = `runtime-${BUILD_HASH}`;
 const PRECACHE: string[] = BUILD_PRECACHE;
+const TAG = '[sw]';
+
+// Always log lifecycle so the page console NEVER stays empty if the SW is
+// active. Empty console on a SW-controlled page is the canonical "I have
+// no idea what's running" debugging hell — we kill it by ensuring every
+// install/activate/fetch-error event leaves a trail.
+console.info(TAG, 'evaluated', { hash: BUILD_HASH, scope: self.registration?.scope });
 
 self.addEventListener('install', (event) => {
+  console.info(TAG, 'install', { hash: BUILD_HASH, precache: PRECACHE.length });
   event.waitUntil(
     caches.open(STATIC_CACHE)
-      .then((c) => c.addAll(PRECACHE).catch(() => undefined))
-      .then(() => self.skipWaiting()),
+      .then((c) => c.addAll(PRECACHE).catch((e) => {
+        console.warn(TAG, 'precache failed (continuing anyway)', e?.message);
+      }))
+      .then(() => self.skipWaiting())
+      .then(() => console.info(TAG, 'install complete · skipWaiting')),
   );
 });
 
 self.addEventListener('activate', (event) => {
+  console.info(TAG, 'activate', { hash: BUILD_HASH });
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys
-        .filter((k) => k !== STATIC_CACHE && k !== RUNTIME_CACHE)
-        .map((k) => caches.delete(k))),
-    ).then(() => self.clients.claim()),
+    caches.keys().then((keys) => {
+      const stale = keys.filter((k) => k !== STATIC_CACHE && k !== RUNTIME_CACHE);
+      console.info(TAG, 'activate · purging stale caches', { stale, keep: [STATIC_CACHE, RUNTIME_CACHE] });
+      return Promise.all(stale.map((k) => caches.delete(k)));
+    }).then(() => self.clients.claim())
+      .then(() => console.info(TAG, 'activate complete · clients.claim')),
   );
+});
+
+// Manual escape hatch — page can postMessage({ type: 'sw-kill' }) to nuke
+// this SW + caches in one shot. Mirrors window.__resetSW on the page.
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'sw-kill') {
+    console.warn(TAG, 'sw-kill received from client — unregistering');
+    event.waitUntil(
+      caches.keys()
+        .then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+        .then(() => self.registration.unregister())
+        .then(() => self.clients.matchAll({ includeUncontrolled: true }))
+        .then((clients) => clients.forEach((c) => 'navigate' in c && (c as WindowClient).navigate(c.url))),
+    );
+  }
 });
 
 // Convert a request URL to the "./<file>" form used as the key in
@@ -136,13 +164,17 @@ self.addEventListener('fetch', (event) => {
 
     try {
       const res = await fetch(req);
-      if (!res.ok) return res;
+      if (!res.ok) {
+        console.warn(TAG, 'fetch non-OK · passing through', { url: req.url, status: res.status });
+        return res;
+      }
       const verified = await verifyAsset(req, res);
       if (verified.ok && await isCacheable(req, verified)) {
         cache.put(req, verified.clone()).catch(() => undefined);
       }
       return verified;
-    } catch {
+    } catch (e) {
+      console.error(TAG, 'fetch failed', { url: req.url, err: (e as Error)?.message });
       // Offline shell fallback — ONLY for top-level navigations, never
       // for sub-resources. Returning index.html for a script/style
       // request poisons the page (HTML parsed as JS/CSS, silent fail).

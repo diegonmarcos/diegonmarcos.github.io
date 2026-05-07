@@ -232,6 +232,211 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
   };
 
   window.consoleLogs = API;
+
+  // ════════════════════════════════════════════════════════════════════════
+  // ── BOOT MANIFEST — comprehensive declarative environment dump on load ──
+  // ════════════════════════════════════════════════════════════════════════
+  // Always runs on every page. Self-contained, no external deps. Goal:
+  // the console NEVER stays empty — there's always a visible audit trail
+  // of {project, build, env, PORTAL_DATA, DOM, SW, perf, storage, features}.
+  // ════════════════════════════════════════════════════════════════════════
+  function bytes(n: number): string {
+    if (n < 1024) return n + 'B';
+    if (n < 1024 * 1024) return (n / 1024).toFixed(1) + 'KB';
+    return (n / 1024 / 1024).toFixed(2) + 'MB';
+  }
+  function rough(o: unknown): number { try { return JSON.stringify(o).length; } catch { return 0; } }
+  function feature(name: string, ok: boolean): string { return (ok ? '✓ ' : '✗ ') + name; }
+
+  function projectIdFromPath(): string {
+    // GitHub Pages / static hosts: path like /myid/, /my-fin/, /. Treat first
+    // segment as the project. Empty path → 'root'.
+    const seg = location.pathname.split('/').filter(Boolean)[0];
+    return seg || 'root';
+  }
+
+  function dumpBootManifest(): void {
+    const TAG = '[boot-manifest]';
+    const proj = projectIdFromPath();
+    const title = document.title || '(no title)';
+    const t0 = performance.now();
+    try {
+      console.group('%c' + TAG + ' ' + proj + ' · ' + title, 'background:#0B0F1A;color:#5B8DEF;font-weight:600;padding:2px 6px;border-radius:3px');
+
+      console.group('▸ identity');
+      console.log('project       :', proj);
+      console.log('title         :', title);
+      console.log('session       :', SESSION_ID);
+      console.log('boot-time     :', new Date().toISOString());
+      console.log('OPFS log path :', API.path());
+      console.groupEnd();
+
+      console.group('▸ location');
+      console.log('href      :', location.href);
+      console.log('origin    :', location.origin);
+      console.log('pathname  :', location.pathname);
+      console.log('hash      :', location.hash || '(none)');
+      console.log('protocol  :', location.protocol);
+      console.log('referrer  :', document.referrer || '(none)');
+      console.groupEnd();
+
+      console.group('▸ environment');
+      console.log('userAgent       :', navigator.userAgent);
+      console.log('languages       :', navigator.languages);
+      console.log('online          :', navigator.onLine);
+      console.log('viewport        :', window.innerWidth + '×' + window.innerHeight + ' @ ' + (window.devicePixelRatio || 1) + 'x');
+      console.log('colorScheme     :', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      console.log('reducedMotion   :', window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+      console.log('cookieEnabled   :', navigator.cookieEnabled);
+      console.log('hardwareConcur  :', (navigator as Navigator & { hardwareConcurrency?: number }).hardwareConcurrency || '?');
+      console.log('deviceMemory(GB):', (navigator as Navigator & { deviceMemory?: number }).deviceMemory || '?');
+      console.log('connection      :', (navigator as Navigator & { connection?: { effectiveType?: string; downlink?: number } }).connection?.effectiveType || '?');
+      console.log('timezone        :', Intl.DateTimeFormat().resolvedOptions().timeZone);
+      console.groupEnd();
+
+      console.group('▸ PORTAL_DATA  (data-driven hydration map)');
+      const bag = (globalThis as { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA;
+      if (!bag) {
+        console.warn('PORTAL_DATA not present — page may not be data-driven, or wrappers failed to load');
+      } else {
+        const keys = Object.keys(bag);
+        console.log('keys (' + keys.length + '):', keys);
+        const rows = keys.map(k => ({
+          key: k,
+          type: Array.isArray(bag[k]) ? 'array' : typeof bag[k],
+          size: bytes(rough(bag[k])),
+          topKeys: (typeof bag[k] === 'object' && bag[k]) ? Object.keys(bag[k] as object).slice(0, 6).join(', ') : '—'
+        }));
+        console.table(rows);
+      }
+      console.groupEnd();
+
+      console.group('▸ DOM');
+      console.log('readyState      :', document.readyState);
+      console.log('<body> children :', document.body?.childElementCount ?? '?');
+      console.log('#app present    :', !!document.getElementById('app'));
+      console.log('#main present   :', !!document.getElementById('main'));
+      console.log('#topbar present :', !!document.getElementById('topbar'));
+      console.log('#sidebar present:', !!document.getElementById('sidebar'));
+      console.log('charset         :', document.characterSet);
+      console.log('themeColor      :', document.querySelector('meta[name="theme-color"]')?.getAttribute('content') || '(none)');
+      console.log('description     :', document.querySelector('meta[name="description"]')?.getAttribute('content') || '(none)');
+      console.log('manifest        :', document.querySelector('link[rel="manifest"]')?.getAttribute('href') || '(none)');
+      console.groupEnd();
+
+      console.group('▸ scripts loaded (' + document.scripts.length + ')');
+      Array.from(document.scripts).forEach((s, i) => {
+        console.log((i + 1) + '. ' + (s.src ? s.src.replace(location.origin, '') : '<inline ' + (s.textContent?.length ?? 0) + 'B>') + (s.async ? ' [async]' : '') + (s.defer ? ' [defer]' : ''));
+      });
+      console.groupEnd();
+
+      console.group('▸ stylesheets (' + document.styleSheets.length + ')');
+      Array.from(document.styleSheets).forEach((ss, i) => {
+        try { console.log((i + 1) + '. ' + (ss.href || '<inline>') + ' (rules≈' + (ss.cssRules?.length ?? '?') + ')'); }
+        catch { console.log((i + 1) + '. ' + (ss.href || '<inline>') + ' (cross-origin)'); }
+      });
+      console.groupEnd();
+
+      console.group('▸ service worker');
+      if ('serviceWorker' in navigator) {
+        console.log('controller :', navigator.serviceWorker.controller?.scriptURL || '(none yet)');
+        navigator.serviceWorker.getRegistration().then(reg => {
+          if (!reg) { console.log('registration: none'); return; }
+          console.log('registration scope :', reg.scope);
+          console.log('  installing :', reg.installing?.scriptURL || 'no');
+          console.log('  waiting    :', reg.waiting?.scriptURL || 'no');
+          console.log('  active     :', reg.active?.scriptURL || 'no');
+          console.log('  state      :', reg.active?.state || '?');
+        });
+        if ('caches' in window) {
+          caches.keys().then(keys => console.log('cache keys :', keys.length ? keys : '(empty)'));
+        }
+      } else {
+        console.log('serviceWorker API: NOT supported');
+      }
+      console.groupEnd();
+
+      console.group('▸ performance');
+      const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+      if (nav) {
+        console.log('TTFB           :', Math.round(nav.responseStart - nav.requestStart) + 'ms');
+        console.log('DOM interactive:', Math.round(nav.domInteractive) + 'ms');
+        console.log('DOM complete   :', Math.round(nav.domComplete) + 'ms');
+        console.log('Load event     :', Math.round(nav.loadEventEnd) + 'ms');
+        console.log('transferSize   :', bytes(nav.transferSize ?? 0));
+      } else {
+        console.log('navigation timing: unavailable');
+      }
+      console.log('manifest dump  :', Math.round(performance.now() - t0) + 'ms');
+      console.groupEnd();
+
+      console.group('▸ storage');
+      try {
+        console.log('localStorage   :', Object.keys(localStorage).length + ' keys');
+        console.log('sessionStorage :', Object.keys(sessionStorage).length + ' keys');
+      } catch { console.log('storage: blocked (private mode?)'); }
+      console.log('cookies        :', document.cookie ? document.cookie.split(';').length : 0);
+      if (navigator.storage?.estimate) {
+        navigator.storage.estimate().then(est => {
+          console.log('quota          :', bytes(est.quota ?? 0) + ' (used: ' + bytes(est.usage ?? 0) + ')');
+        });
+      }
+      console.groupEnd();
+
+      console.group('▸ feature support');
+      console.log(feature('serviceWorker',     'serviceWorker' in navigator));
+      console.log(feature('OPFS',              !!(navigator.storage && navigator.storage.getDirectory)));
+      console.log(feature('caches',            'caches' in window));
+      console.log(feature('IntersectionObserver', 'IntersectionObserver' in window));
+      console.log(feature('ResizeObserver',    'ResizeObserver' in window));
+      console.log(feature('clipboard',         !!(navigator.clipboard)));
+      console.log(feature('share',             !!(navigator.share)));
+      console.log(feature('webShare',          'canShare' in navigator));
+      console.log(feature('mediaSession',      'mediaSession' in navigator));
+      console.log(feature('geolocation',       'geolocation' in navigator));
+      console.log(feature('notifications',     'Notification' in window));
+      console.log(feature('webGL',             !!document.createElement('canvas').getContext('webgl')));
+      console.log(feature('webGPU',            'gpu' in navigator));
+      console.log(feature('crypto.subtle',     !!(window.crypto && (crypto as Crypto & { subtle?: SubtleCrypto }).subtle)));
+      console.log(feature('BroadcastChannel',  'BroadcastChannel' in window));
+      console.log(feature('SharedArrayBuffer', typeof SharedArrayBuffer !== 'undefined'));
+      console.groupEnd();
+
+      console.group('▸ window.consoleLogs API');
+      console.log('Use these in DevTools to inspect captured logs:');
+      console.log('  await window.consoleLogs.read()       — full OPFS log as text');
+      console.log('  await window.consoleLogs.readJSON()   — parsed JSONL entries');
+      console.log('  await window.consoleLogs.size()       — bytes on disk');
+      console.log('  await window.consoleLogs.tail(cb)     — live-tail handler');
+      console.log('  await window.consoleLogs.download()   — save .log file');
+      console.log('  await window.consoleLogs.clear()      — wipe OPFS log');
+      console.log('Plus emergency:');
+      console.log('  window.__resetSW("manual")            — unregister SW + caches + reload');
+      console.log('  window.__bootManifest()               — re-dump this manifest');
+      console.groupEnd();
+
+      console.groupEnd();
+    } catch (e) {
+      // Manifest must NEVER throw — it's a debug helper, breaking it would
+      // mask real errors. Log the failure and move on.
+      console.error('[boot-manifest] dump failed', (e as Error)?.message);
+    }
+  }
+
+  // Expose for re-runs (developer can call from console)
+  (window as Window & { __bootManifest?: () => void }).__bootManifest = dumpBootManifest;
+
+  // Synchronous one-liner so the console NEVER stays empty even if
+  // DOMContentLoaded never fires (e.g. detached worker context).
+  console.info('[console-logs] live · session=' + SESSION_ID + ' · path=' + location.pathname + ' — call window.__bootManifest() to re-dump');
+
+  // Full dump on DOMContentLoaded (DOM is ready, scripts/sheets enumerable)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', dumpBootManifest, { once: true });
+  } else {
+    // Already past DCL — schedule ASAP without blocking the current task
+    setTimeout(dumpBootManifest, 0);
+  }
 })();
 
 export {};  // module-scope so `declare global` is allowed

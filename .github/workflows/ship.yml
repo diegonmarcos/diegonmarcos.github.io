@@ -498,6 +498,11 @@ jobs:
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
             "b-MyData/my-fin:my-fin"
+            "b-Media/myMoments:myMoments"
+            "b-MyData/myhealth:myhealth"
+            "b-MyData/myhealth-tracker:myhealth-tracker"
+            "b-MyData/myid:myid"
+            "c-Suite/mymaps:mymaps"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"

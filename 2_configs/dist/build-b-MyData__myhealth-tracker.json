@@ -106,10 +106,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "myhealth-tracker",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/myhealth-tracker"
     },
     "consumers": [
       "Tracker"

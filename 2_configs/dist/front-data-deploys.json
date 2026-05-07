@@ -146,5 +146,25 @@
   {
     "path": "b-MyData/my-fin",
     "deploy_name": "my-fin"
+  },
+  {
+    "path": "b-Media/myMoments",
+    "deploy_name": "myMoments"
+  },
+  {
+    "path": "b-MyData/myhealth",
+    "deploy_name": "myhealth"
+  },
+  {
+    "path": "b-MyData/myhealth-tracker",
+    "deploy_name": "myhealth-tracker"
+  },
+  {
+    "path": "b-MyData/myid",
+    "deploy_name": "myid"
+  },
+  {
+    "path": "c-Suite/mymaps",
+    "deploy_name": "mymaps"
   }
 ]

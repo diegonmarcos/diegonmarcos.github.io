@@ -1510,8 +1510,13 @@ _mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'
 </script>\
 <!-- End Matomo Tag Manager -->'
 
+    # IMPORTANT: async (not defer). When the user is on WireGuard, analytics.diegonmarcos.com
+    # resolves to a private IP from the browser's POV → Chrome PNA preflight stalls ~10s
+    # waiting for `Access-Control-Allow-Private-Network: true` before failing. With `defer`,
+    # this stall blocks the defer queue and prevents script.js from running → blank page.
+    # `async` decouples the analytics fetch from the page's critical path.
     local umami_tag="<!-- Umami Analytics -->
-<script defer src=\"https://analytics.diegonmarcos.com/umami/script.js\" data-website-id=\"${umami_site_id}\"></script>
+<script async src=\"https://analytics.diegonmarcos.com/umami/script.js\" data-website-id=\"${umami_site_id}\"></script>
 <!-- End Umami Analytics -->"
 
     case "$sub" in

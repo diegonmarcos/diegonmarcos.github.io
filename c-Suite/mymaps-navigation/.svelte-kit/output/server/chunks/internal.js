@@ -898,7 +898,14 @@ const options = {
   service_worker: false,
   service_worker_options: void 0,
   templates: {
-    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" type="image/svg+xml" href="' + assets + '/favicon.svg" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" type="image/svg+xml" href="' + assets + '/favicon.svg" />\n		<meta name="viewport" content="width=device-width, initial-scale=1" />\n		' + head + `
+<!-- Matomo Tag Manager --><script>var _mtm = window._mtm = window._mtm || [];_mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});(function() {  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];  g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';  s.parentNode.insertBefore(g,s);})();<\/script><!-- End Matomo Tag Manager -->
+<!-- Umami Analytics -->
+<script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"><\/script>
+<!-- End Umami Analytics -->
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">` + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!doctype html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -970,7 +977,7 @@ const options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1fhvud8"
+  version_hash: "1ld8w9i"
 };
 async function get_hooks() {
   let handle;

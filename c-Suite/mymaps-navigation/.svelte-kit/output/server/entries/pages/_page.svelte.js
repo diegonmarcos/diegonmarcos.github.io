@@ -257,7 +257,7 @@ function SideMenu($$renderer, $$props) {
         description: "Travel journal"
       }
     ];
-    const tripsBaseUrl = "https://diegonmarcos.github.io/mytrips";
+    const tripsBaseUrl = "https://diegonmarcos.github.io/mymaps-mytrips";
     const tripPages = [
       { id: "home", label: "Home", icon: "🏠", hash: "" },
       { id: "atlas", label: "Atlas", icon: "🗺️", hash: "#atlas" },
@@ -336,7 +336,7 @@ function SideMenu($$renderer, $$props) {
           $$renderer2.push("<!--[!-->");
           if (section.id === "maps") {
             $$renderer2.push("<!--[-->");
-            $$renderer2.push(`<div class="menu-maps-list"><!--[-->`);
+            $$renderer2.push(`<div class="menu-maps-list"><a href="https://diegonmarcos.github.io/mymaps-maps" class="menu-map-item" target="_blank" rel="noopener noreferrer"><span class="menu-map-icon">🏠</span> <span class="menu-map-name">Home</span></a> <!--[-->`);
             const each_array_3 = ensure_array_like(mapProjections);
             for (let $$index_2 = 0, $$length2 = each_array_3.length; $$index_2 < $$length2; $$index_2++) {
               let projection = each_array_3[$$index_2];

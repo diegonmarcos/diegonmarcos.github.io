@@ -1,0 +1,109 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.view {
+  padding: $sp-6;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.view__head {
+  @include flex-row(space-between, center, $sp-4);
+  margin-bottom: $sp-5;
+  flex-wrap: wrap;
+}
+
+.view__title { @include flex-col(center, flex-start, 2px); }
+.view__title h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.view__title p  { margin: 0; font-size: 13px; color: $text-3; }
+
+.view__count {
+  font-family: $ff-mono;
+  font-size: 12px;
+  padding: 6px 10px;
+  background: $bg-surface-2;
+  border: 1px solid $border-2;
+  border-radius: $radius-sm;
+  color: $text-2;
+}
+
+// Profile (holder) summary card at top of "all" view
+.holder-card {
+  @include card-surface;
+  padding: $sp-6;
+  margin-bottom: $sp-6;
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: $sp-5;
+  align-items: center;
+
+  &__avatar {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8B6BE6, $accent);
+    @include flex-center;
+    font-size: 36px; font-weight: 700;
+    color: $text-1;
+  }
+  &__name { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  &__sub  { font-size: 13px; color: $text-2; margin-top: 4px; }
+  &__chips { @include flex-row(flex-start, center, $sp-2); margin-top: $sp-3; flex-wrap: wrap; }
+  &__chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: $bg-surface-2;
+    border: 1px solid $border-2;
+    color: $text-2;
+    span { color: $text-3; margin-right: 4px; }
+  }
+  &__metrics { @include flex-col(center, flex-end, 2px); }
+  &__score   {
+    font-family: $ff-mono;
+    font-size: 28px;
+    font-weight: 700;
+    color: $success;
+    line-height: 1;
+  }
+  &__score-label {
+    font-size: 11px;
+    color: $text-3;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+}
+
+// Section heading inside "all" view
+.cat-section {
+  margin-bottom: $sp-7;
+  &__head {
+    @include flex-row(space-between, center, $sp-3);
+    margin-bottom: $sp-4;
+  }
+  &__title {
+    @include flex-row(flex-start, center, $sp-3);
+    h2 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+  &__icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    @include flex-center;
+    background: var(--cat-bg, rgba($accent, 0.12));
+    color: var(--cat-fg, $accent);
+    svg { width: 16px; height: 16px; }
+  }
+  &__count { font-size: 12px; color: $text-3; }
+  &__desc  { font-size: 12px; color: $text-3; margin: 0 0 $sp-3 0; }
+}
+
+.doc-grid { @include grid-auto-fit(260px, $sp-4); }
+
+.empty-state {
+  padding: $sp-9 $sp-6;
+  text-align: center;
+  color: $text-3;
+}

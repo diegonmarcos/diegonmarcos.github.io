@@ -63,11 +63,11 @@ jobs:
       - name: 🔨 Build Landpage
         id: build-landpage
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/landpage/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/landpage/src/')
 
         run: |
           echo "🔨 Building Landpage..."
-          cd b-Profiles/landpage
+          cd a-Individual/landpage
           bash build.sh build
           cd ../..
           echo "✅ Landpage build complete"
@@ -107,44 +107,44 @@ jobs:
       - name: 🔨 Build CV Web
         id: build-cv-web
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_web/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/cv_web/src/')
 
         run: |
           echo "🔨 Building CV Web..."
-          cd b-Profiles/cv_web
+          cd a-Individual/cv_web
           bash build.sh build
           cd ../..
           echo "✅ CV Web build complete"
       - name: 🔨 Build MyFeed
         id: build-myfeed
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myfeed/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Data/myfeed/src/')
 
         run: |
           echo "🔨 Building MyFeed..."
-          cd c-MyTools/myfeed
+          cd b-Data/myfeed
           bash build.sh build
           cd ../..
           echo "✅ MyFeed build complete"
       - name: 🔨 Build MyGames
         id: build-mygames
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mygames/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/games/src/')
 
         run: |
           echo "🔨 Building MyGames..."
-          cd c-MyTools/mygames
+          cd c-Circus/games
           bash build.sh build
           cd ../..
           echo "✅ MyGames build complete"
       - name: 🔨 Build Nexus
         id: build-nexus
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/nexus/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/nexus/src/')
 
         run: |
           echo "🔨 Building Nexus..."
-          cd b-Profiles/nexus
+          cd a-Companies/nexus
           bash build.sh build
           cd ../..
           echo "✅ Nexus build complete"
@@ -162,11 +162,11 @@ jobs:
       - name: 🔨 Build MyHealth FeedYourself
         id: build-myhealth-feedyourself
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myhealth-feedyourself/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/myhealth-feedyourself/src/')
 
         run: |
           echo "🔨 Building MyHealth FeedYourself..."
-          cd c-MyTools/myhealth-feedyourself
+          cd c-Suite/myhealth-feedyourself
           bash build.sh build
           cd ../..
           echo "✅ MyHealth FeedYourself build complete"
@@ -206,11 +206,11 @@ jobs:
       - name: 🔨 Build MyPhotos
         id: build-myphotos
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myphotos/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myphotos/src/')
 
         run: |
           echo "🔨 Building MyPhotos..."
-          cd c-MyTools/myphotos
+          cd b-MyData/myphotos
           bash build.sh build
           cd ../..
           echo "✅ MyPhotos build complete"
@@ -228,11 +228,11 @@ jobs:
       - name: 🔨 Build MyHealth Profile
         id: build-myhealth-profile
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/myhealth-profile/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/myhealth-profile/src/')
 
         run: |
           echo "🔨 Building MyHealth Profile..."
-          cd c-MyTools/myhealth-profile
+          cd b-MyData/myhealth-profile
           bash build.sh build
           cd ../..
           echo "✅ MyHealth Profile build complete"
@@ -283,33 +283,33 @@ jobs:
       - name: 🔨 Build MyMovies (Vue 3)
         id: build-mymovies
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymovies/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/movies/src/')
 
         run: |
           echo "🔨 Building MyMovies..."
-          cd c-MyTools/mymovies
+          cd c-Circus/movies
           bash build.sh build
           cd ../..
           echo "✅ MyMovies build complete"
       - name: 🔨 Build MyMusic (Vue 3)
         id: build-mymusic
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymusic/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/music/src/')
 
         run: |
           echo "🔨 Building MyMusic..."
-          cd c-MyTools/mymusic
+          cd c-Circus/music
           bash build.sh build
           cd ../..
           echo "✅ MyMusic build complete"
       - name: 🔨 Build My Financials
         id: build-my-fin
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/my-fin/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/my-fin/src/')
 
         run: |
           echo "🔨 Building My Financials..."
-          cd c-MyTools/my-fin
+          cd b-MyData/my-fin
           bash build.sh build
           cd ../..
           echo "✅ My Financials build complete"
@@ -327,11 +327,11 @@ jobs:
       - name: 🔨 Build Carto (TypeScript + Sass)
         id: build-carto
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/carto/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Circus/carto/src/')
 
         run: |
           echo "🔨 Building Carto..."
-          cd c-LabTools/carto
+          cd c-Circus/carto
           bash build.sh build
           cd ../..
           echo "✅ Carto build complete"
@@ -349,55 +349,55 @@ jobs:
       - name: 🔨 Build MyMaps MyTrips (Vue 3 + TypeScript + SCSS)
         id: build-mymaps-mytrips
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-mytrips/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-MyData/mymaps-mytrips/src/')
 
         run: |
           echo "🔨 Building MyMaps MyTrips..."
-          cd c-MyTools/mymaps-mytrips
+          cd b-MyData/mymaps-mytrips
           bash build.sh build
           cd ../..
           echo "✅ MyMaps MyTrips build complete"
       - name: 🔨 Build Leafy (TypeScript + SCSS + Shaders)
         id: build-leafy
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/leafy/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/leafy/src/')
 
         run: |
           echo "🔨 Building Leafy..."
-          cd b-Profiles/leafy
+          cd a-Companies/leafy
           bash build.sh build
           cd ../..
           echo "✅ Leafy build complete"
       - name: 🔨 Build Stark (TypeScript + SCSS + Shaders)
         id: build-stark
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/stark/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/stark/src/')
 
         run: |
           echo "🔨 Building Stark..."
-          cd b-Profiles/stark
+          cd a-Companies/stark
           bash build.sh build
           cd ../..
           echo "✅ Stark build complete"
       - name: 🔨 Build MyMaps Navigation (SvelteKit + MapLibre)
         id: build-mymaps-navigation
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-navigation/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymaps-navigation/src/')
 
         run: |
           echo "🔨 Building MyMaps Navigation..."
-          cd c-MyTools/mymaps-navigation
+          cd c-Suite/mymaps-navigation
           bash build.sh build
           cd ../..
           echo "✅ MyMaps Navigation build complete"
       - name: 🔨 Build MyMaps Maps (SvelteKit)
         id: build-mymaps-maps
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/mymaps-maps/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/mymaps-maps/src/')
 
         run: |
           echo "🔨 Building MyMaps Maps..."
-          cd c-MyTools/mymaps-maps
+          cd c-Suite/mymaps-maps
           bash build.sh build
           cd ../..
           echo "✅ MyMaps Maps build complete"
@@ -407,44 +407,44 @@ jobs:
       - name: 🔨 Build CV PDF
         id: build-cv-pdf
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Profiles/cv_pdf/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Individual/cv_pdf/src/')
 
         run: |
           echo "🔨 Building CV PDF..."
-          cd b-Profiles/cv_pdf
+          cd a-Individual/cv_pdf
           bash build.sh build
           cd ../..
           echo "✅ CV PDF build complete"
       - name: 🔨 Build Astro
         id: build-astro
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'c-MyTools/astro/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Data/myAstro/src/')
 
         run: |
           echo "🔨 Building Astro..."
-          cd c-MyTools/astro
+          cd b-Data/myAstro
           bash build.sh build
           cd ../..
           echo "✅ Astro build complete"
       - name: 🔨 Build Skills & MCP Docs
         id: build-skills-mcp
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/skills_mcp/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Cloud/skills_mcp/src/')
 
         run: |
           echo "🔨 Building Skills & MCP Docs..."
-          cd d-Cloud/skills_mcp
+          cd c-Cloud/skills_mcp
           bash build.sh build
           cd ../..
           echo "✅ Skills & MCP Docs build complete"
       - name: 🔨 Build MCP API Swagger
         id: build-mcp-api-swagger
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'd-Cloud/mcp-api-swagger/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Cloud/mcp-api-swagger/src/')
 
         run: |
           echo "🔨 Building MCP API Swagger..."
-          cd d-Cloud/mcp-api-swagger
+          cd c-Cloud/mcp-api-swagger
           bash build.sh build
           cd ../..
           echo "✅ MCP API Swagger build complete"
@@ -466,45 +466,45 @@ jobs:
             "a-Portals/linktree:linktree"
             "a-Portals/linktree_mindmap:linktree_mindmap"
             "a-Portals/linktree_pixel-world:linktree_pixel-world"
-            "b-Profiles/cv_pdf:cv_pdf"
-            "b-Profiles/cv_web:cv_web"
-            "b-Profiles/landpage:landpage"
-            "b-Profiles/leafy:leafy"
+            "a-Individual/cv_pdf:cv_pdf"
+            "a-Individual/cv_web:cv_web"
+            "a-Individual/landpage:landpage"
+            "a-Companies/leafy:leafy"
             "b-Profiles/myprofile:myprofile"
-            "b-Profiles/nexus:nexus"
-            "b-Profiles/stark:stark"
+            "a-Companies/nexus:nexus"
+            "a-Companies/stark:stark"
             "c-Suite/json-vision:json-vision"
             "c-Suite/mymail:mymail"
-            "c-MyTools/myphotos:myphotos"
+            "b-MyData/myphotos:myphotos"
             "c-Suite/suite:suite"
-            "c-MyTools/astro:astro"
-            "c-LabTools/carto:carto"
+            "b-Data/myAstro:myAstro"
+            "c-Circus/carto:carto"
             "c-LabTools/central_bank:central_bank"
-            "c-MyTools/myhealth-feedyourself:myhealth-feedyourself"
-            "c-MyTools/myhealth-profile:myhealth-profile"
-            "c-MyTools/mymaps-maps:mymaps-maps"
+            "c-Suite/myhealth-feedyourself:myhealth-feedyourself"
+            "b-MyData/myhealth-profile:myhealth-profile"
+            "c-Suite/mymaps-maps:mymaps-maps"
             "c-LabTools/market_watch:market_watch"
-            "c-MyTools/myfeed:myfeed"
-            "c-MyTools/mygames:mygames"
-            "c-MyTools/mymaps-navigation:mymaps-navigation"
-            "c-MyTools/mymovies:mymovies"
-            "c-MyTools/mymusic:mymusic"
-            "c-MyTools/mymaps-mytrips:mymaps-mytrips"
-            "d-Cloud/api:api"
-            "d-Cloud/mcp-api-swagger:mcp-api-swagger"
-            "d-Cloud/skills_mcp:skills_mcp"
+            "b-Data/myfeed:myfeed"
+            "c-Circus/games:games"
+            "c-Suite/mymaps-navigation:mymaps-navigation"
+            "c-Circus/movies:movies"
+            "c-Circus/music:music"
+            "b-MyData/mymaps-mytrips:mymaps-mytrips"
+            "c-Cloud/api:api"
+            "c-Cloud/mcp-api-swagger:mcp-api-swagger"
+            "c-Cloud/skills_mcp:skills_mcp"
             "e-Others/others:others"
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
-            "c-MyTools/my-fin:my-fin"
+            "b-MyData/my-fin:my-fin"
           )
           for entry in "${PROJECTS[@]}"; do
             SRC="${entry%%:*}"
             NAME="${entry##*:}"
             DIST="$SRC/dist"
             # Special cases
-            [ "$SRC" = "d-Cloud/api" ] && DIST="$SRC/src"
+            [ "$SRC" = "c-Cloud/api" ] && DIST="$SRC/src"
             if [ ! -d "$DIST" ]; then
               echo "⏭️  $NAME (no dist/)"
               SKIPPED=$((SKIPPED + 1))

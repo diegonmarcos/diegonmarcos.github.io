@@ -1,0 +1,20 @@
+// ============================================
+// myID — Personal Documents Wallet (ITCSS entry)
+// ============================================
+
+// 1. Settings & Tools (already imported by individual partials)
+
+// 2. Base
+@use 'base/reset';
+@use 'base/typography';
+
+// 3. Components
+@use 'components/layout';
+@use 'components/topbar';
+@use 'components/sidebar';
+@use 'components/card';
+@use 'components/grid';
+@use 'components/detail';
+
+// 4. Utilities (last so overrides win)
+@use 'utilities/helpers';

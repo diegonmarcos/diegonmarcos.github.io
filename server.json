@@ -1,6 +1,6 @@
 {
   "port": 8000,
-  "mount_point": "/data/data/com.termux.nix/files/home/git/front/c-MyTools/mymaps-mytrips/dist",
+  "mount_point": "/data/data/com.termux.nix/files/home/git/front/b-MyData/mymaps-mytrips/dist",
   "pid": 0,
   "log_receiver_pid": 0,
   "mode": "static",

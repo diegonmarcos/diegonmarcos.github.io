@@ -1,0 +1,2947 @@
+[
+  {
+    "name": "Leafy",
+    "framework": "vanilla",
+    "port": 8021,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/styles/main.scss",
+        "output": "styles/main.css"
+      },
+      {
+        "mod": "tsc",
+        "dir": "src/scripts"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "src/shaders",
+        "output": "shaders"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "styles/main.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./styles/main.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "styles/main.scss",
+          "output": "styles/main.css"
+        },
+        {
+          "mod": "tsc",
+          "input": "scripts"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Companies/leafy"
+  },
+  {
+    "name": "Nexus",
+    "framework": "vanilla",
+    "port": 8005,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "inline",
+        "html": "index.html",
+        "css": "style.css",
+        "js": "script.js"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html"
+        ],
+        "precache": [
+          "./",
+          "./index.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Companies/nexus"
+  },
+  {
+    "name": "Stark",
+    "framework": "vanilla",
+    "port": 8022,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/styles/main.scss",
+        "output": "styles/main.css"
+      },
+      {
+        "mod": "tsc",
+        "dir": "src/scripts"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "src/shaders",
+        "output": "shaders"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "styles/main.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./styles/main.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "styles/main.scss",
+          "output": "styles/main.css"
+        },
+        {
+          "mod": "tsc",
+          "input": "scripts"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Companies/stark"
+  },
+  {
+    "name": "CV PDF",
+    "framework": "vanilla",
+    "port": 8012,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "mod": "symlink",
+        "files": "assets"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) block before </head> in listed HTMLs. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html"
+        ],
+        "precache": [
+          "./",
+          "./index.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "a-Individual/cv_pdf"
+  },
+  {
+    "name": "CV Web",
+    "framework": "vanilla",
+    "port": 8002,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Individual/cv_web"
+  },
+  {
+    "name": "Landpage",
+    "framework": "vanilla",
+    "port": 8000,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/style.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "tsc",
+        "dir": "src/typescript",
+        "output": "script.js"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/style.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "tsc",
+          "input": "typescript"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Individual/landpage"
+  },
+  {
+    "name": "Cloud",
+    "framework": "vanilla",
+    "port": 8006,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "styles.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2015"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "copy",
+        "files": "*.js",
+        "from": "src",
+        "exclude": "script.js"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "architecture.html, cloud_control.html, error.html, feed_docs.html, index.html, oauth-callback.html, products.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "architecture.html, cloud_control.html, error.html, feed_docs.html, index.html, oauth-callback.html, products.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "architecture.html",
+          "availability.js",
+          "cloud_control.html",
+          "costs.js",
+          "docker.js",
+          "error.html",
+          "feed_docs.html",
+          "index.html",
+          "monitor.js",
+          "oauth-callback.html",
+          "performance.js",
+          "products.html",
+          "script.js",
+          "security.js",
+          "styles.css",
+          "web.js"
+        ],
+        "precache": [
+          "./",
+          "./architecture.html",
+          "./availability.js",
+          "./cloud_control.html",
+          "./costs.js",
+          "./docker.js",
+          "./error.html",
+          "./feed_docs.html",
+          "./index.html",
+          "./monitor.js",
+          "./oauth-callback.html",
+          "./performance.js",
+          "./products.html",
+          "./script.js",
+          "./security.js",
+          "./styles.css",
+          "./web.js"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "styles.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2015"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Portals/cloud"
+  },
+  {
+    "name": "Linktree",
+    "framework": "vanilla",
+    "port": 8001,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Generate the full PWA app-icon set from one source image. Idempotent — skips when outputs are newer than source. Re-runs only when public/favicon.jpg changes.",
+        "mod": "pwa_icons",
+        "source": "src/public/favicon.jpg",
+        "out": "src/public/pwa",
+        "bg": "#000000"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "copy",
+        "files": "manifest.webmanifest",
+        "from": "src"
+      },
+      {
+        "_doc": "Deploy the data-*.json.js wrappers from the linktree-owned data hub to dist root, so any consumer can <script src=\"data-NAME.json.js\"> with no fetch / no CORS. Source-of-truth lives in linktree/src/data/ (linktree owns the link data; sibling projects symlink in).",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "symlink",
+        "files": "src/public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./style.css",
+          "./script.js",
+          "./public/swiper.min.css",
+          "./public/swiper.min.js"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Portals/linktree"
+  },
+  {
+    "name": "Linktree Mindmap",
+    "framework": "vanilla",
+    "port": 8018,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Portals/linktree_mindmap"
+  },
+  {
+    "name": "Linktree Pixel World",
+    "framework": "vanilla",
+    "port": 8019,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "a-Portals/linktree_pixel-world"
+  },
+  {
+    "name": "myAstro",
+    "framework": "vanilla",
+    "port": 8019,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-Data/myAstro"
+  },
+  {
+    "name": "MyFeed",
+    "framework": "vue",
+    "port": 8003,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "b-Data/myfeed"
+  },
+  {
+    "name": "myMoments",
+    "framework": "vanilla",
+    "port": 8028,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-Media/myMoments"
+  },
+  {
+    "name": "My Financials",
+    "framework": "vanilla",
+    "port": 8030,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject the verbose console-capture snippet that ships console.* + window errors + SW lifecycle to localhost:19001 → server-log-receiver.sh → browser-console.log. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-MyData/my-fin"
+  },
+  {
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "port": 8026,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-MyData/myhealth"
+  },
+  {
+    "name": "MyHealth Profile",
+    "framework": "vanilla",
+    "port": 8009,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "health_tracker.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "health_tracker.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "health_tracker.html"
+        ],
+        "precache": [
+          "./",
+          "./health_tracker.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "b-MyData/myhealth-profile"
+  },
+  {
+    "name": "MyHealth Tracker",
+    "framework": "vanilla",
+    "port": 8025,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-MyData/myhealth-tracker"
+  },
+  {
+    "name": "myID",
+    "framework": "vanilla",
+    "port": 8031,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Symlink public/ assets (ID scans, QR codes, PDFs) into dist/.",
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject the verbose console-capture snippet that ships console.* + window errors + SW lifecycle to localhost:19001 → server-log-receiver.sh → browser-console.log. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-MyData/myid"
+  },
+  {
+    "name": "MyMaps MyTrips",
+    "framework": "vue",
+    "port": 8022,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "b-MyData/mymaps-mytrips"
+  },
+  {
+    "name": "MyPhotos",
+    "framework": "vanilla",
+    "port": 8019,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html, oauth-callback.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html, oauth-callback.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "oauth-callback.html"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./oauth-callback.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "b-MyData/myphotos"
+  },
+  {
+    "name": "MyProfile",
+    "framework": "sveltekit",
+    "port": 8013,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "b-Profiles/myprofile"
+  },
+  {
+    "name": "Carto",
+    "framework": "vanilla",
+    "port": 8020,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/style.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "tsc",
+        "dir": "src/typescript",
+        "output": "script.js"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/style.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "tsc",
+          "input": "typescript"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-Circus/carto"
+  },
+  {
+    "name": "Games",
+    "framework": "sveltekit",
+    "port": 8004,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "c-Circus/games"
+  },
+  {
+    "name": "Movies",
+    "framework": "vue",
+    "port": 8015,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      },
+      {
+        "mod": "copy",
+        "files": "matomo.js",
+        "from": "public"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "c-Circus/movies"
+  },
+  {
+    "name": "Music",
+    "framework": "vue",
+    "port": 8016,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "c-Circus/music"
+  },
+  {
+    "name": "API",
+    "framework": "vanilla",
+    "port": 8023,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html,cloud_central_api.md,cloud_ondemand_api.md,costs_ai.js,costs_infra.js,infrastructure.js,monitor.js",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "costs_ai.js",
+          "costs_infra.js",
+          "index.html",
+          "infrastructure.js",
+          "monitor.js"
+        ],
+        "precache": [
+          "./",
+          "./costs_ai.js",
+          "./costs_infra.js",
+          "./index.html",
+          "./infrastructure.js",
+          "./monitor.js"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "c-Cloud/api"
+  },
+  {
+    "name": "mcp-api-swagger",
+    "framework": "vanilla",
+    "port": 8024,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html,c3-dash.js,api-page.js",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "affine-api.html, authelia-api.html, c3-api.html, c3-infra-mcp-api.html, c3-services-mcp-api.html, crawlee-api.html, index.html, mailu-api.html, matomo-api.html, mattermost-api.html, nocodb-api.html, ntfy-api.html, photoprism-api.html, radicale-api.html, syncthing-api.html, unix-mcp.html, vaultwarden-api.html, windmill-api.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "affine-api.html, authelia-api.html, c3-api.html, c3-infra-mcp-api.html, c3-services-mcp-api.html, crawlee-api.html, index.html, mailu-api.html, matomo-api.html, mattermost-api.html, nocodb-api.html, ntfy-api.html, photoprism-api.html, radicale-api.html, syncthing-api.html, unix-mcp.html, vaultwarden-api.html, windmill-api.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "affine-api.html",
+          "api-page.js",
+          "authelia-api.html",
+          "c3-api.html",
+          "c3-dash.js",
+          "c3-infra-mcp-api.html",
+          "c3-services-mcp-api.html",
+          "crawlee-api.html",
+          "index.html",
+          "mailu-api.html",
+          "matomo-api.html",
+          "mattermost-api.html",
+          "nocodb-api.html",
+          "ntfy-api.html",
+          "photoprism-api.html",
+          "radicale-api.html",
+          "script.js",
+          "style.css",
+          "syncthing-api.html",
+          "unix-mcp.html",
+          "vaultwarden-api.html",
+          "windmill-api.html"
+        ],
+        "precache": [
+          "./",
+          "./affine-api.html",
+          "./api-page.js",
+          "./authelia-api.html",
+          "./c3-api.html",
+          "./c3-dash.js",
+          "./c3-infra-mcp-api.html",
+          "./c3-services-mcp-api.html",
+          "./crawlee-api.html",
+          "./index.html",
+          "./mailu-api.html",
+          "./matomo-api.html",
+          "./mattermost-api.html",
+          "./nocodb-api.html",
+          "./ntfy-api.html",
+          "./photoprism-api.html",
+          "./radicale-api.html",
+          "./script.js",
+          "./style.css",
+          "./syncthing-api.html",
+          "./unix-mcp.html",
+          "./vaultwarden-api.html",
+          "./windmill-api.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-Cloud/mcp-api-swagger"
+  },
+  {
+    "name": "Skills MCP",
+    "framework": "vanilla",
+    "port": 8018,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "npm",
+        "script": "build:data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "mod": "npm",
+        "script": "build:docs"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-Cloud/skills_mcp"
+  },
+  {
+    "name": "CentralBank",
+    "framework": "vanilla",
+    "port": 8011,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "c-LabTools/central_bank"
+  },
+  {
+    "name": "FinTerminal",
+    "framework": "vanilla",
+    "port": 8024,
+    "src": "src",
+    "dist": "dist",
+    "api": {
+      "base": "https://api.diegonmarcos.com/fin-api",
+      "ws": "wss://api.diegonmarcos.com/fin-api/api/v1/ws"
+    },
+    "apps": {
+      "valuation": {
+        "url": "/valuation/",
+        "_note": "Valuation Modelling section. Set to empty string to show placeholder until the valuation app is wired."
+      }
+    },
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/fin-terminal"
+  },
+  {
+    "name": "MarketWatch",
+    "framework": "vanilla",
+    "port": 8010,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/market_watch"
+  },
+  {
+    "name": "GDELTNews",
+    "framework": "vanilla",
+    "port": 8029,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/news"
+  },
+  {
+    "name": "Sailyng",
+    "framework": "vanilla",
+    "port": 8023,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/sailytics"
+  },
+  {
+    "name": "JSON Vision",
+    "framework": "vue",
+    "port": 8017,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "c-Suite/json-vision"
+  },
+  {
+    "name": "MyHealth FeedYourself",
+    "framework": "vanilla",
+    "port": 8007,
+    "src": "src/src-index",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Merge USDA SR Legacy + GI overlay + food-table-inputs.json -> src/data/food-library.json. Must run BEFORE data_wrap.",
+        "mod": "npm",
+        "script": "build:data"
+      },
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/src-index/scss/main.scss",
+        "output": "style-index.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/src-index/typescript/main.ts",
+        "output": "script-index.js",
+        "format": "iife",
+        "target": "es2015"
+      },
+      {
+        "mod": "sass",
+        "input": "src/src-recipes/scss/main.scss",
+        "output": "style-recipes.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/src-recipes/typescript/main.ts",
+        "output": "script-recipes.js",
+        "format": "iife",
+        "target": "es2015"
+      },
+      {
+        "mod": "sass",
+        "input": "src/src-food-tables/scss/main.scss",
+        "output": "style-food-tables.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/src-food-tables/typescript/main.ts",
+        "output": "script-food-tables.js",
+        "format": "iife",
+        "target": "es2015"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src/src-index"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src/src-meal-designer"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src/src-recipes"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src/src-food-tables"
+      },
+      {
+        "mod": "symlink",
+        "files": "public"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html, meal_designer.html, recipes.html, food_tables.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html, meal_designer.html, recipes.html, food_tables.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "meal_designer.html",
+          "recipes.html",
+          "food_tables.html",
+          "script-index.js",
+          "script-recipes.js",
+          "script-food-tables.js",
+          "style-index.css",
+          "style-recipes.css",
+          "style-food-tables.css",
+          "data-food-library.json.js"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./meal_designer.html",
+          "./recipes.html",
+          "./food_tables.html",
+          "./script-index.js",
+          "./script-recipes.js",
+          "./script-food-tables.js",
+          "./style-index.css",
+          "./style-recipes.css",
+          "./style-food-tables.css",
+          "./data-food-library.json.js"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "dist"
+    },
+    "deploy": {},
+    "_path": "c-Suite/myhealth-feedyourself"
+  },
+  {
+    "name": "MyMail",
+    "framework": "vanilla",
+    "port": 8018,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html, *.css, *.js, *.asc, CNAME",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script-app.js",
+          "script-data.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script-app.js",
+          "./script-data.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src"
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymail"
+  },
+  {
+    "name": "MyMaps",
+    "framework": "vanilla",
+    "port": 8027,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymaps"
+  },
+  {
+    "name": "MyMaps Maps",
+    "framework": "sveltekit",
+    "port": 8014,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymaps-maps"
+  },
+  {
+    "name": "MyMaps Navigation",
+    "framework": "sveltekit",
+    "port": 8018,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymaps-navigation"
+  },
+  {
+    "name": "Suite",
+    "framework": "vanilla",
+    "port": 8021,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-Suite/suite"
+  },
+  {
+    "name": "Others",
+    "framework": "vanilla",
+    "port": 8008,
+    "src": ".",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html,*.css,*.js",
+        "from": "."
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "about.html, cv.html, earth.html, feed_yourself.html, health_tracker.html, index.html, quill.html, repos.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "about.html",
+          "cv.html",
+          "earth.html",
+          "feed_yourself.html",
+          "health_tracker.html",
+          "index.html",
+          "quill.html",
+          "repos.html"
+        ],
+        "precache": [
+          "./",
+          "./about.html",
+          "./cv.html",
+          "./earth.html",
+          "./feed_yourself.html",
+          "./health_tracker.html",
+          "./index.html",
+          "./quill.html",
+          "./repos.html"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "."
+    },
+    "deploy": {},
+    "_path": "e-Others/others"
+  },
+  {
+    "name": "c_root",
+    "framework": "vue",
+    "port": 5173,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      },
+      {
+        "mod": "strip-module",
+        "files": "index.html"
+      },
+      {
+        "mod": "copy",
+        "files": "*.html",
+        "from": "src",
+        "exclude": "index.html"
+      },
+      {
+        "mod": "copy",
+        "files": "*.js",
+        "from": "src"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "e-Root"
+  }
+]

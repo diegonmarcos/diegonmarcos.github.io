@@ -10,7 +10,7 @@
 # ║                                                                  ║
 # ╚══════════════════════════════════════════════════════════════════╝
 
-name: "Regenerate front-topology"
+name: "Regenerate front-topology + 2_configs"
 
 on:
   push:
@@ -18,6 +18,9 @@ on:
     paths:
       - '**/build.json'
       - 'build.sh'
+      - 'a-Portals/linktree/src/data/**.json'
+      - '2_configs/build.sh'
+      - '2_configs/build.json'
   workflow_dispatch:
 
 permissions:
@@ -32,23 +35,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
 
-      - name: Generate front-topology.json
+      - name: Generate front-topology.json (legacy submodule)
         run: bash build.sh config
+
+      - name: Regenerate 2_configs/dist/ (unified manifest)
+        run: bash 2_configs/build.sh rebuild
 
       - name: Commit and push updated files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add front-topology.json
+          git add front-topology.json 2_configs/dist/ 2_configs/src/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "auto: regenerate front-topology [skip ci]"
+          git commit -m "auto: regenerate front-topology + 2_configs [skip ci]"
           git pull --rebase origin main
           git push

@@ -1,4 +1,0 @@
-{
-  "_description": "Bootstrap data-driven entry. Add fields here; consume them in HTML/TS via globalThis.PORTAL_DATA[\"myphotos-myorkut\"].<field>.",
-  "title": "myOrkut — The OG Social Network"
-}

@@ -319,7 +319,7 @@ export const GRAPH_DATA: GraphData = {
       "icon": "device-gamepad",
       "color": "#F48FB1",
       "links": [
-        { "label": "MyGames", "url": "https://diegonmarcos.github.io/mygames", "icon": "device-gamepad" }
+        { "label": "Games", "url": "https://diegonmarcos.github.io/games", "icon": "device-gamepad" }
       ]
     },
     "video": {
@@ -329,7 +329,7 @@ export const GRAPH_DATA: GraphData = {
       "color": "#F48FB1",
       "links": [
         { "label": "MyVideos", "url": "https://diegonmarcos.github.io/myvideos", "icon": "video" },
-        { "label": "MyMovies", "url": "https://diegonmarcos.github.io/mymovies/", "icon": "brand-youtube" }
+        { "label": "Movies", "url": "https://diegonmarcos.github.io/movies/", "icon": "brand-youtube" }
       ]
     },
     "audio": {
@@ -338,7 +338,7 @@ export const GRAPH_DATA: GraphData = {
       "icon": "headphones",
       "color": "#F48FB1",
       "links": [
-        { "label": "MyMusic", "url": "https://diegonmarcos.github.io/mymusic/", "icon": "headphones" }
+        { "label": "Music", "url": "https://diegonmarcos.github.io/music/", "icon": "headphones" }
       ]
     }
   }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>myOrkut — The OG Social Network</title>
+  <meta name="description" content="A dark mode homage to Orkut — the grandfather of social media">
+  <meta name="theme-color" content="#0a0c14">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+<!-- Umami Analytics -->
+<script defer src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
+
+    <!-- Data-driven framework: PORTAL_DATA["myMoments"] hydrated by front-data-json-js-wrapper.sh -->
+    <script src="data-myMoments.json.js"></script>
+    <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["myMoments"];if(d&&d.title)document.title=d.title;})();</script>
+  </head>
+<body>
+
+  <!-- Orkut Navbar -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="#" class="navbar__logo">
+        <span class="navbar__logo-text">my</span><span class="navbar__logo-accent">Orkut</span>
+      </a>
+      <div class="navbar__search">
+        <input type="text" class="navbar__search-input" placeholder="Search people, communities...">
+        <button class="navbar__search-btn" aria-label="Search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+      </div>
+      <div class="navbar__links">
+        <a href="#" class="navbar__link navbar__link--active">Home</a>
+        <a href="#" class="navbar__link">Profile</a>
+        <a href="#" class="navbar__link">Scraps</a>
+        <a href="#" class="navbar__link">Communities</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Layout: Sidebar + Content -->
+  <main class="layout">
+
+    <!-- Left Sidebar: Profile Card -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="profile-card__avatar" id="avatar">
+          <div class="profile-card__avatar-placeholder">D</div>
+        </div>
+        <h1 class="profile-card__name">Diego N. Marcos</h1>
+        <p class="profile-card__tagline">Software Engineer & Explorer</p>
+        <div class="profile-card__stats">
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value" id="friends-count">142</span>
+            <span class="profile-card__stat-label">friends</span>
+          </div>
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value">38</span>
+            <span class="profile-card__stat-label">communities</span>
+          </div>
+          <div class="profile-card__stat">
+            <span class="profile-card__stat-value">95</span>
+            <span class="profile-card__stat-label">fans</span>
+          </div>
+        </div>
+        <!-- Trust meter (classic Orkut!) -->
+        <div class="trust-meter">
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">cool</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--cool"></div></div>
+          </div>
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">trusty</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--trusty"></div></div>
+          </div>
+          <div class="trust-meter__row">
+            <span class="trust-meter__label">sexy</span>
+            <div class="trust-meter__bar"><div class="trust-meter__fill trust-meter__fill--sexy"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social section -->
+      <div class="box">
+        <h3 class="box__title">social</h3>
+        <div class="box__row"><span class="box__label">relationship:</span><span class="box__value">single</span></div>
+        <div class="box__row"><span class="box__label">birthday:</span><span class="box__value">November 15</span></div>
+        <div class="box__row"><span class="box__label">city:</span><span class="box__value">Berlin, Germany</span></div>
+        <div class="box__row"><span class="box__label">country:</span><span class="box__value">Brazil</span></div>
+      </div>
+
+      <!-- Photos -->
+      <div class="box">
+        <h3 class="box__title">photos <span class="box__count">(24)</span></h3>
+        <div class="photo-grid" id="photo-grid"></div>
+      </div>
+    </aside>
+
+    <!-- Right Content -->
+    <section class="content">
+
+      <!-- Friends Grid (the iconic 3x3 grid!) -->
+      <div class="box">
+        <h3 class="box__title">friends <span class="box__count" id="friends-label">(142)</span></h3>
+        <div class="friends-grid" id="friends-grid"></div>
+        <a href="#" class="box__more">view all friends</a>
+      </div>
+
+      <!-- Scraps (the legendary feature) -->
+      <div class="box">
+        <h3 class="box__title">scraps <span class="box__count">(47)</span></h3>
+        <div class="scrap-composer">
+          <textarea class="scrap-input" placeholder="Write a scrap..." rows="3"></textarea>
+          <button class="scrap-send">send scrap</button>
+        </div>
+        <div class="scraps-list" id="scraps-list"></div>
+      </div>
+
+      <!-- Communities -->
+      <div class="box">
+        <h3 class="box__title">communities <span class="box__count">(38)</span></h3>
+        <div class="communities-grid" id="communities-grid"></div>
+        <a href="#" class="box__more">view all communities</a>
+      </div>
+
+      <!-- Testimonials -->
+      <div class="box">
+        <h3 class="box__title">testimonials <span class="box__count">(12)</span></h3>
+        <div class="testimonials-list" id="testimonials-list"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer__text">myOrkut &mdash; a dark homage to the grandfather of social media (2004&ndash;2014)</p>
+    <p class="footer__sub">RIP Orkut. You were the best.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "myAstro-life",
+  "version": "2.0.0",
+  "description": "myAstroLife - Personal myAstrology Dashboard",
+  "type": "module",
+  "scripts": {
+    "build:css": "sass src/scss/main.scss style.css --style=compressed --no-source-map",
+    "build:bundle": "esbuild src/typescript/main.ts --bundle --outfile=script.js --format=iife --target=es2020 --minify",
+    "build": "npm run build:bundle && npm run build:css",
+    "dev:css": "sass src/scss/main.scss src/style.css --style=expanded --source-map --watch",
+    "dev:bundle": "esbuild src/typescript/main.ts --bundle --outfile=src/script.js --format=iife --target=es2020 --sourcemap --watch",
+    "dev": "npm run build:bundle",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "sass": "^1.77.0",
+    "three": "^0.162.0",
+    "typescript": "^5.3.3",
+    "@types/three": "^0.162.0"
+  }
+}

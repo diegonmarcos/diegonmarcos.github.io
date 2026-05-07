@@ -1,4 +1,4 @@
-// Deploy-freshness regression for the c-MyTools/my-fin project.
+// Deploy-freshness regression for the b-MyData/my-fin project.
 //
 // The first deploy of the Ledger -> My Financials rename shipped stale
 // dist artefacts (title still "Ledger", script src still data-ledger.json.js,
@@ -20,10 +20,10 @@ const DIST_DIR   = resolve(FRONT_ROOT, 'c-MyTools', 'my-fin', 'dist');
 
 function read(p: string): string { return readFileSync(p, 'utf8'); }
 
-describe('c-MyTools/my-fin — deploy artefacts in sync with source', () => {
-  it('the project lives at c-MyTools/my-fin (not the legacy c-Suite/ledger path)', () => {
-    expect(existsSync(SRC_DIR), 'c-MyTools/my-fin/src must exist').toBe(true);
-    expect(existsSync(DIST_DIR), 'c-MyTools/my-fin/dist must exist').toBe(true);
+describe('b-MyData/my-fin — deploy artefacts in sync with source', () => {
+  it('the project lives at b-MyData/my-fin (not the legacy c-Suite/ledger path)', () => {
+    expect(existsSync(SRC_DIR), 'b-MyData/my-fin/src must exist').toBe(true);
+    expect(existsSync(DIST_DIR), 'b-MyData/my-fin/dist must exist').toBe(true);
     expect(existsSync(resolve(FRONT_ROOT, 'c-Suite', 'ledger')), 'legacy c-Suite/ledger path must be gone').toBe(false);
   });
 

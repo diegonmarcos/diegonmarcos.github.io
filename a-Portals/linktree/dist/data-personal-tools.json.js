@@ -161,13 +161,13 @@
             },
             {
               "label": "Movies",
-              "url": "https://diegonmarcos.github.io/mymovies",
+              "url": "https://diegonmarcos.github.io/movies",
               "icon": "device-desktop.svg",
               "item": 1
             },
             {
               "label": "Music",
-              "url": "https://diegonmarcos.github.io/mymusic",
+              "url": "https://diegonmarcos.github.io/music",
               "icon": "device-desktop.svg",
               "item": 2
             }
@@ -429,8 +429,8 @@
           "header": "Games",
           "links": [
             {
-              "label": "MyGames",
-              "url": "https://diegonmarcos.github.io/mygames",
+              "label": "Games",
+              "url": "https://diegonmarcos.github.io/games",
               "icon": "device-gamepad.svg",
               "item": 0
             },
@@ -441,8 +441,8 @@
               "item": 1
             },
             {
-              "label": "Astro",
-              "url": "https://diegonmarcos.github.io/astro",
+              "label": "myAstro",
+              "url": "https://diegonmarcos.github.io/myAstro",
               "icon": "world-longitude.svg",
               "item": 2
             }
@@ -459,8 +459,8 @@
               "item": 0
             },
             {
-              "label": "MyMovies",
-              "url": "https://diegonmarcos.github.io/mymovies/",
+              "label": "Movies",
+              "url": "https://diegonmarcos.github.io/movies/",
               "icon": "brand-youtube.svg",
               "item": 1
             }
@@ -471,8 +471,8 @@
           "header": "Audio",
           "links": [
             {
-              "label": "MyMusic",
-              "url": "https://diegonmarcos.github.io/mymusic/",
+              "label": "Music",
+              "url": "https://diegonmarcos.github.io/music/",
               "icon": "headphones.svg",
               "item": 0
             }

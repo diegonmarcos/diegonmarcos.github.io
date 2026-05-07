@@ -1,0 +1,31 @@
+{
+  "_doc": "2_configs is the unified-manifest consolidator. Mirrors cloud's `cloud-data` pattern: src/ collects every per-project build.json + linktree's link data via symlinks; dist/ emits aggregated `front-data-*.json` files that downstream consumers (CI, reports, the linktree home page itself) can read as the SINGLE source of truth for the repo.",
+  "name": "2_configs",
+  "framework": "vanilla",
+  "src": "src",
+  "dist": "dist",
+  "consolidate": {
+    "_doc": "Outputs declared declaratively. The build.sh script reads this section and emits one file per output. Each output's `from` is a glob of symlinks under src/.",
+    "outputs": [
+      {
+        "path": "front-data-builds.json",
+        "from": "src/builds/*.build.json",
+        "shape": "array",
+        "description": "Per-project build.json — name, framework, port, build steps, deploy section."
+      },
+      {
+        "path": "front-data-links.json",
+        "from": "src/data-links/*.json",
+        "shape": "object",
+        "description": "Linktree's 3 box JSONs (personal-profiles, personal-tools, professional-profiles) merged + every link flattened with full {section, slide, column, label, url, icon}."
+      },
+      {
+        "path": "front-data-projects.json",
+        "from": "src/builds/*.build.json",
+        "shape": "object",
+        "description": "Project topology: derived from build.json paths — {category, slug, path, port, framework, deploy_name}."
+      }
+    ]
+  },
+  "deploy": {}
+}

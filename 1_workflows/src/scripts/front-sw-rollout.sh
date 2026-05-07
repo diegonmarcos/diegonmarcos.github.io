@@ -51,7 +51,7 @@ fi
 # Default category list — every top-level dir that holds projects today.
 # `1_workflows` and `_*` are tooling / hidden, not projects.
 if [ "$#" -eq 0 ]; then
-    set -- a-Portals b-Profiles c-Suite c-MyTools c-LabTools d-Cloud e-Others e-Root z_Archive
+    set -- a-Companies a-Individual a-Portals b-Data b-Media b-MyData b-Profiles b-Projects c-Circus c-Cloud c-LabTools c-Suite e-Others e-Root z_Archive
 fi
 
 ok_count=0

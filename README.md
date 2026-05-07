@@ -55,7 +55,7 @@ Built with a universal `build.sh` engine — one engine, per-project `build.json
 cd a-Portals/linktree && bash build.sh build
 
 # Dev server with hot reload
-cd c-MyTools/mymovies && bash build.sh dev
+cd c-Circus/movies && bash build.sh dev
 
 # Build everything
 ./build.sh build
@@ -110,7 +110,7 @@ front/
 │   ├── market_watch          Market tracker (Sass+esbuild)
 │   └── sailytics             Sailing analytics (Sass+esbuild)
 │
-├── d-Cloud/              Cloud & API documentation
+├── c-Cloud/              Cloud & API documentation
 │   ├── api               API docs (static Swagger)
 │   ├── mcp-api-swagger   MCP API documentation
 │   └── skills_mcp        Skills MCP docs (Sass+esbuild)
@@ -130,7 +130,7 @@ front/
 | Suite | `c-Suite/` | 5 | Integrated tools (JSON editor, analytics, mail, photos) |
 | MyTools | `c-MyTools/` | 15 | Personal apps (health, maps, movies, music, games, photos) |
 | LabTools | `c-LabTools/` | 4 | Lab experiments & data tools (carto, finance, sailing) |
-| Cloud | `d-Cloud/` | 3 | API docs, MCP docs, Swagger UI |
+| Cloud | `c-Cloud/` | 3 | API docs, MCP docs, Swagger UI |
 | Others | `e-Others/` | 1 | Python scripts, misc |
 | Root | `e-Root/` | 1 | Main 3D cube index page |
 

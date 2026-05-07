@@ -1,0 +1,1373 @@
+{
+  "sections": [
+    {
+      "id": "personal-profiles",
+      "title": "Personal Profiles",
+      "box": 1,
+      "slide_count": 4
+    },
+    {
+      "id": "personal-tools",
+      "title": "Personal Tools",
+      "box": 2,
+      "slide_count": 4
+    },
+    {
+      "id": "professional-profiles",
+      "title": "Professional Profiles",
+      "box": 0,
+      "slide_count": 5
+    }
+  ],
+  "slides": [
+    {
+      "section": "personal-profiles",
+      "id": "personal-profile",
+      "kind": "profile-card",
+      "title": "PROFILE",
+      "columns": []
+    },
+    {
+      "section": "personal-profiles",
+      "id": "media",
+      "kind": "tools",
+      "title": "MEDIA",
+      "columns": [
+        {
+          "header": "Photos",
+          "link_count": 5
+        },
+        {
+          "header": "Videos",
+          "link_count": 4
+        },
+        {
+          "header": "Music",
+          "link_count": 3
+        }
+      ]
+    },
+    {
+      "section": "personal-profiles",
+      "id": "data",
+      "kind": "tools",
+      "title": "DATA",
+      "columns": [
+        {
+          "header": "Health",
+          "link_count": 2
+        },
+        {
+          "header": "Endurance",
+          "link_count": 4
+        },
+        {
+          "header": "Achieves",
+          "link_count": 5
+        }
+      ]
+    },
+    {
+      "section": "personal-profiles",
+      "id": "projects",
+      "kind": "tools",
+      "title": "PROJECTS",
+      "columns": [
+        {
+          "header": "Basileia",
+          "link_count": 1
+        },
+        {
+          "header": "Mousseion",
+          "link_count": 1
+        },
+        {
+          "header": "Paneion",
+          "link_count": 1
+        },
+        {
+          "header": "Akropolis",
+          "link_count": 1
+        },
+        {
+          "header": "Bibliotheke",
+          "link_count": 1
+        },
+        {
+          "header": "Adyton",
+          "link_count": 1
+        }
+      ]
+    },
+    {
+      "section": "personal-tools",
+      "id": "suite",
+      "kind": "tools",
+      "title": "SUITE",
+      "columns": [
+        {
+          "header": "AI & IDE",
+          "link_count": 4
+        },
+        {
+          "header": "Suite",
+          "link_count": 7
+        },
+        {
+          "header": "Comms",
+          "link_count": 3
+        },
+        {
+          "header": "Nav",
+          "link_count": 2
+        },
+        {
+          "header": "Media",
+          "link_count": 3
+        },
+        {
+          "header": "Memory",
+          "link_count": 3
+        },
+        {
+          "header": "Health",
+          "link_count": 3
+        },
+        {
+          "header": "Tools",
+          "link_count": 4
+        }
+      ]
+    },
+    {
+      "section": "personal-tools",
+      "id": "lab-tools",
+      "kind": "tools",
+      "title": "LAB TOOLS",
+      "columns": [
+        {
+          "header": "Data Science & ML",
+          "link_count": 14
+        },
+        {
+          "header": "Markets",
+          "link_count": 5
+        },
+        {
+          "header": "Engineer",
+          "link_count": 2
+        }
+      ]
+    },
+    {
+      "section": "personal-tools",
+      "id": "circus",
+      "kind": "tools",
+      "title": "CIRCUS",
+      "columns": [
+        {
+          "header": "Games",
+          "link_count": 3
+        },
+        {
+          "header": "Video",
+          "link_count": 2
+        },
+        {
+          "header": "Audio",
+          "link_count": 1
+        }
+      ]
+    },
+    {
+      "section": "personal-tools",
+      "id": "cloud",
+      "kind": "tools",
+      "title": "CLOUD",
+      "columns": [
+        {
+          "header": "Security",
+          "link_count": 8
+        },
+        {
+          "header": "Ops",
+          "link_count": 5
+        },
+        {
+          "header": "Data",
+          "link_count": 7
+        },
+        {
+          "header": "MCP & API",
+          "link_count": 6
+        },
+        {
+          "header": "VPS",
+          "link_count": 6
+        }
+      ]
+    },
+    {
+      "section": "professional-profiles",
+      "id": "professional-profile",
+      "kind": "profile-card",
+      "title": "PROFILE",
+      "columns": []
+    },
+    {
+      "section": "professional-profiles",
+      "id": "repos",
+      "kind": "repos",
+      "title": "REPOS",
+      "columns": [
+        {
+          "header": "Front-end",
+          "link_count": 4
+        },
+        {
+          "header": "Cloud",
+          "link_count": 6
+        },
+        {
+          "header": "Low Level",
+          "link_count": 6
+        },
+        {
+          "header": "ML",
+          "link_count": 2
+        },
+        {
+          "header": "Data",
+          "link_count": 3
+        }
+      ]
+    },
+    {
+      "section": "professional-profiles",
+      "id": "nexus",
+      "kind": "venture-card",
+      "title": "NEXUS",
+      "columns": []
+    },
+    {
+      "section": "professional-profiles",
+      "id": "leafy",
+      "kind": "venture-card",
+      "title": "LEAFY",
+      "columns": []
+    },
+    {
+      "section": "professional-profiles",
+      "id": "stark",
+      "kind": "venture-card",
+      "title": "STARK",
+      "columns": []
+    }
+  ],
+  "links": [
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Photos",
+      "label": "Instagram",
+      "url": "https://www.instagram.com/diegonmarcos",
+      "icon": "brand-instagram.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Photos",
+      "label": "myOrkut",
+      "url": "https://diegonmarcos.github.io/myMoments",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Photos",
+      "label": "Facebook",
+      "url": "https://www.facebook.com/diegonmarcos",
+      "icon": "user.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Photos",
+      "label": "Pinterest",
+      "url": "https://www.pinterest.com/diegonmarcos",
+      "icon": "slideshow.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Photos",
+      "label": "Feed",
+      "url": "https://diegonmarcos.github.io/myfeed",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Videos",
+      "label": "YouTube",
+      "url": "https://www.youtube.com/@diegonmarcos1",
+      "icon": "brand-youtube.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Videos",
+      "label": "MyVideos",
+      "url": "https://diegonmarcos.github.io/myvideos",
+      "icon": "video.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Videos",
+      "label": "Movies",
+      "url": "https://diegonmarcos.github.io/movies",
+      "icon": "brand-youtube.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Videos",
+      "label": "Games",
+      "url": "https://diegonmarcos.github.io/games",
+      "icon": "device-gamepad.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Music",
+      "label": "TIDAL",
+      "url": "https://tidal.com/@diegonmarcos",
+      "icon": "headphones.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Music",
+      "label": "Spotify",
+      "url": "https://open.spotify.com/user/diegonmarcos",
+      "icon": "headphones.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Music",
+      "label": "Music",
+      "url": "https://diegonmarcos.github.io/music",
+      "icon": "headphones.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Health",
+      "label": "MyHealth",
+      "url": "https://diegonmarcos.github.io/myhealth",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Health",
+      "label": "myAstro",
+      "url": "https://diegonmarcos.github.io/myAstro",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Endurance",
+      "label": "Tracker",
+      "url": "https://diegonmarcos.github.io/myhealth-tracker",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Endurance",
+      "label": "Komoot",
+      "url": "https://www.komoot.com/user/2474200810898/routes",
+      "icon": "christmas-tree.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Endurance",
+      "label": "Strava",
+      "url": "https://www.strava.com/athletes/4662170",
+      "icon": "bike.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Endurance",
+      "label": "Garmin",
+      "url": "https://connect.garmin.com/modern/profile/diegonmarcos",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "NomadMania",
+      "url": "https://nomadmania.com/profile/73889",
+      "icon": "brand-google-maps.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "MyTrips",
+      "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+      "icon": "world-longitude.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "Bucket (50 things)",
+      "url": "https://bucketlistjourney.net/my-bucket-list",
+      "icon": "checklist.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "Bucket (Endurance)",
+      "url": "https://bucketlistjourney.net/my-bucket-list",
+      "icon": "checklist.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Achieves",
+      "label": "Bucket (Inner)",
+      "url": "https://bucketlistjourney.net/my-bucket-list",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Basileia",
+      "label": "Basileia",
+      "url": "#",
+      "icon": "sparkles.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Mousseion",
+      "label": "Mousseion",
+      "url": "#",
+      "icon": "books.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Paneion",
+      "label": "Paneion",
+      "url": "#",
+      "icon": "bulb.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Akropolis",
+      "label": "Akropolis",
+      "url": "#",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Bibliotheke",
+      "label": "Bibliotheke",
+      "url": "#",
+      "icon": "books.svg"
+    },
+    {
+      "section": "personal-profiles",
+      "slide": "personal-profiles",
+      "column": "Adyton",
+      "label": "Adyton",
+      "url": "#",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "AI & IDE",
+      "label": "Goose",
+      "url": "https://github.com/block/goose",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "AI & IDE",
+      "label": "Claude CLI",
+      "url": "https://claude.ai",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "AI & IDE",
+      "label": "WebIDE",
+      "url": "https://ide.diegonmarcos.com",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "AI & IDE",
+      "label": "Jupyter NB",
+      "url": "https://jupyter.diegonmarcos.com",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Notes",
+      "url": "https://hedgedoc.diegonmarcos.com",
+      "icon": "file-stack.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Sheets",
+      "url": "https://sheets.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Docs",
+      "url": "https://docs.diegonmarcos.com",
+      "icon": "file-stack.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Slides",
+      "url": "https://slides.diegonmarcos.com",
+      "icon": "slideshow.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Calendar",
+      "url": "https://cal.diegonmarcos.com",
+      "icon": "checklist.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Contacts",
+      "url": "https://contacts.diegonmarcos.com",
+      "icon": "user.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Suite",
+      "label": "Files",
+      "url": "https://files.diegonmarcos.com",
+      "icon": "file-stack.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Comms",
+      "label": "Mail",
+      "url": "https://diegonmarcos.github.io/mymail",
+      "icon": "mail.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Comms",
+      "label": "Mattermost",
+      "url": "https://chat.diegonmarcos.com",
+      "icon": "send.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Comms",
+      "label": "ntfy",
+      "url": "https://ntfy.diegonmarcos.com",
+      "icon": "checklist.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Nav",
+      "label": "Navigation",
+      "url": "https://diegonmarcos.github.io/mymaps-navigation",
+      "icon": "map-pin-2.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Nav",
+      "label": "Maps",
+      "url": "https://diegonmarcos.github.io/mymaps-maps",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Media",
+      "label": "Feed",
+      "url": "https://diegonmarcos.github.io/myfeed",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Media",
+      "label": "Movies",
+      "url": "https://diegonmarcos.github.io/movies",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Media",
+      "label": "Music",
+      "url": "https://diegonmarcos.github.io/music",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Memory",
+      "label": "MyPhotos",
+      "url": "https://diegonmarcos.github.io/myphotos",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Memory",
+      "label": "MyTrips",
+      "url": "https://diegonmarcos.github.io/mymaps-mytrips",
+      "icon": "world-longitude.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Memory",
+      "label": "PhotoPrism",
+      "url": "https://photos.diegonmarcos.com",
+      "icon": "slideshow.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Health",
+      "label": "Tracker",
+      "url": "https://diegonmarcos.github.io/myhealth-tracker",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Health",
+      "label": "FeedYourself",
+      "url": "https://diegonmarcos.github.io/myhealth-feedyourself",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Health",
+      "label": "Profile",
+      "url": "https://diegonmarcos.github.io/myhealth-profile",
+      "icon": "heart.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Tools",
+      "label": "Gitea",
+      "url": "https://git.diegonmarcos.com",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Tools",
+      "label": "JSON Vision",
+      "url": "https://diegonmarcos.github.io/json-vision",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Tools",
+      "label": "NocoDB",
+      "url": "https://nocodb.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Tools",
+      "label": "Vault",
+      "url": "https://vault.diegonmarcos.com",
+      "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Colab",
+      "url": "https://colab.research.google.com",
+      "icon": "sparkles.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Kaggle",
+      "url": "https://kaggle.com",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "HuggingFace",
+      "url": "https://huggingface.co",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "PyTorch",
+      "url": "https://pytorch.org",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "TensorFlow",
+      "url": "https://tensorflow.org",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Scikit-learn",
+      "url": "https://scikit-learn.org",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "IBM Quantum",
+      "url": "https://quantum.ibm.com",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Qiskit",
+      "url": "https://qiskit.org",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Google QAI",
+      "url": "https://quantumai.google",
+      "icon": "sparkles.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Cirq",
+      "url": "https://quantumai.google/cirq",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "PennyLane",
+      "url": "https://pennylane.ai",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Braket",
+      "url": "https://aws.amazon.com/braket",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "Azure QC",
+      "url": "https://azure.microsoft.com/products/quantum",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data Science & ML",
+      "label": "QInspire",
+      "url": "https://www.quantum-inspire.com",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Markets",
+      "label": "Fin Terminal",
+      "url": "https://diegonmarcos.github.io/fin-terminal",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Markets",
+      "label": "GDELT News",
+      "url": "https://news.diegonmarcos.com",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Markets",
+      "label": "MarketWatch",
+      "url": "https://diegonmarcos.github.io/market_watch",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Markets",
+      "label": "CentralBank",
+      "url": "https://diegonmarcos.github.io/central_bank",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Markets",
+      "label": "My Financials",
+      "url": "https://diegonmarcos.github.io/my-fin",
+      "icon": "ledger.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Engineer",
+      "label": "Sailytics",
+      "url": "https://diegonmarcos.github.io/sailytics",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Engineer",
+      "label": "OpenRevit",
+      "url": "https://diegonmarcos.github.io/openrevit",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Games",
+      "label": "Games",
+      "url": "https://diegonmarcos.github.io/games",
+      "icon": "device-gamepad.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Games",
+      "label": "Carto",
+      "url": "https://diegonmarcos.github.io/carto/",
+      "icon": "cards.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Games",
+      "label": "myAstro",
+      "url": "https://diegonmarcos.github.io/myAstro",
+      "icon": "world-longitude.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Video",
+      "label": "MyVideos",
+      "url": "https://diegonmarcos.github.io/myvideos",
+      "icon": "video.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Video",
+      "label": "Movies",
+      "url": "https://diegonmarcos.github.io/movies/",
+      "icon": "brand-youtube.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Audio",
+      "label": "Music",
+      "url": "https://diegonmarcos.github.io/music/",
+      "icon": "headphones.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Authelia",
+      "url": "https://auth.diegonmarcos.com",
+      "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Vault",
+      "url": "https://vault.diegonmarcos.com",
+      "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Caddy",
+      "url": "https://proxy.diegonmarcos.com",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Introspect",
+      "url": "https://introspect.diegonmarcos.com",
+      "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Hickory DNS",
+      "url": "https://dns.diegonmarcos.com",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "Sauron YARA",
+      "url": "https://sauron.diegonmarcos.com",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "SIEM",
+      "url": "https://siem.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "WG0",
+      "url": "https://wg.diegonmarcos.com",
+      "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Ops",
+      "label": "Dagu",
+      "url": "https://workflows.diegonmarcos.com",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Ops",
+      "label": "Grafana",
+      "url": "https://grafana.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Ops",
+      "label": "ntfy",
+      "url": "https://rss.diegonmarcos.com",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Ops",
+      "label": "GHA",
+      "url": "https://github.com/diegonmarcos/cloud/actions",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Ops",
+      "label": "GHCR",
+      "url": "https://github.com/orgs/diegonmarcos/packages",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "Matomo",
+      "url": "https://analytics.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "Gitea",
+      "url": "https://git.diegonmarcos.com",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "Dozzle",
+      "url": "https://logs.diegonmarcos.com",
+      "icon": "file-stack.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "DBGate",
+      "url": "https://dbgate.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "Rustic",
+      "url": "https://backup.diegonmarcos.com",
+      "icon": "file-stack.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "Umami",
+      "url": "https://umami.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Data",
+      "label": "NocoDB",
+      "url": "https://nocodb.diegonmarcos.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "c3-infra-api",
+      "url": "https://api.diegonmarcos.com/c3-api",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "c3-infra-mcp",
+      "url": "https://diegonmarcos.github.io/skills_mcp",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "c3-services-api",
+      "url": "https://api.diegonmarcos.com/c3-services",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "c3-services-mcp",
+      "url": "https://diegonmarcos.github.io/skills_mcp",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "cgc-mcp",
+      "url": "https://diegonmarcos.github.io/skills_mcp",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "MCP & API",
+      "label": "dtk-mcp",
+      "url": "https://diegonmarcos.github.io/skills_mcp",
+      "icon": "robot.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "Oracle",
+      "url": "https://cloud.oracle.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "GCloud",
+      "url": "https://console.cloud.google.com",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "Cloudflare",
+      "url": "https://dash.cloudflare.com",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "GitHub",
+      "url": "https://github.com/diegonmarcos",
+      "icon": "code.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "Hetzner",
+      "url": "https://console.hetzner.cloud",
+      "icon": "database.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "VPS",
+      "label": "Nvidia LLM",
+      "url": "https://build.nvidia.com",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Front-end",
+      "label": "Portals",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+      "icon": "world.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Front-end",
+      "label": "Profiles",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+      "icon": "file-type-html.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Front-end",
+      "label": "Work Tools",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Front-end",
+      "label": "Personal Tools",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "Cloud",
+      "url": "https://github.com/diegonmarcos/cloud",
+      "icon": "world.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "Unix",
+      "url": "https://github.com/diegonmarcos/unix",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "Vault",
+      "url": "https://github.com/diegonmarcos/vault",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "Front",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
+      "icon": "world.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "Tooling",
+      "url": "https://github.com/diegonmarcos/ops-Tooling",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Cloud",
+      "label": "MCP Servers",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "My Libs",
+      "url": "https://github.com/diegonmarcos/ops-Mylibs",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "Algorithms",
+      "url": "https://github.com/diegonmarcos/back-Algo",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "System",
+      "url": "https://github.com/diegonmarcos/back-System",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "Graphics",
+      "url": "https://github.com/diegonmarcos/back-Graphic",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "Cyber",
+      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Low Level",
+      "label": "42 School",
+      "url": "https://github.com/diegonmarcos/lecole42",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "ML",
+      "label": "Agentic AI",
+      "url": "https://github.com/diegonmarcos/ml-Agentic",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "ML",
+      "label": "Machine Learning",
+      "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Data",
+      "label": "Data Science",
+      "url": "https://github.com/diegonmarcos/ml-DataScience",
+      "icon": "database.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Data",
+      "label": "Civil Eng",
+      "url": "https://github.com/diegonmarcos/cveng_AFrame",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "professional-profiles",
+      "slide": "professional-profiles",
+      "column": "Data",
+      "label": "Macro/Quant",
+      "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+      "icon": "database.svg"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+// myAstroLife — ITCSS Main Entry
+// Layer order: abstracts → base → layout → components → utilities
+
+// 1. Abstracts (variables + mixins — not output directly)
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+// 2. Base
+@use 'base/reset';
+@use 'base/typography';
+
+// 3. Layout
+@use 'layout/page';
+
+// 4. Components
+@use 'components/header';
+@use 'components/form';
+@use 'components/loading';
+@use 'components/cards';
+@use 'components/tables';
+@use 'components/aspects';
+@use 'components/modal';
+@use 'components/globe';
+@use 'components/map';
+
+// 5. Utilities (last — highest override priority)
+@use 'utilities/animations';

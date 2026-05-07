@@ -114,14 +114,14 @@
             "item": 7
           },
           {
-            "url": "https://diegonmarcos.github.io/astro",
-            "title": "Astro",
+            "url": "https://diegonmarcos.github.io/myAstro",
+            "title": "myAstro",
             "icon": "world.svg",
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
             "item": 8
           },
           {
-            "url": "https://diegonmarcos.github.io/myphotos-myorkut",
+            "url": "https://diegonmarcos.github.io/myMoments",
             "title": "myOrkut",
             "icon": "heart.svg",
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
@@ -264,7 +264,7 @@
             },
             {
               "label": "myOrkut",
-              "url": "https://diegonmarcos.github.io/myphotos-myorkut",
+              "url": "https://diegonmarcos.github.io/myMoments",
               "icon": "heart.svg",
               "item": 1
             },
@@ -305,14 +305,14 @@
               "item": 1
             },
             {
-              "label": "MyMovies",
-              "url": "https://diegonmarcos.github.io/mymovies",
+              "label": "Movies",
+              "url": "https://diegonmarcos.github.io/movies",
               "icon": "brand-youtube.svg",
               "item": 2
             },
             {
-              "label": "MyGames",
-              "url": "https://diegonmarcos.github.io/mygames",
+              "label": "Games",
+              "url": "https://diegonmarcos.github.io/games",
               "icon": "device-gamepad.svg",
               "item": 3
             }
@@ -335,8 +335,8 @@
               "item": 1
             },
             {
-              "label": "MyMusic",
-              "url": "https://diegonmarcos.github.io/mymusic",
+              "label": "Music",
+              "url": "https://diegonmarcos.github.io/music",
               "icon": "headphones.svg",
               "item": 2
             }
@@ -365,8 +365,8 @@
               "item": 0
             },
             {
-              "label": "Astro",
-              "url": "https://diegonmarcos.github.io/astro",
+              "label": "myAstro",
+              "url": "https://diegonmarcos.github.io/myAstro",
               "icon": "world.svg",
               "item": 1
             }

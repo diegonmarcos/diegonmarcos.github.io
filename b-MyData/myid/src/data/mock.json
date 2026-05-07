@@ -1,0 +1,1132 @@
+{
+  "_description": "myID mock dataset — full due-diligence personal-data wallet for an example European person (dual ES/DE citizen, resident in Spain). Aggregates documents + history across identity, education, employment, residency, finance, legal, sanctions, AML, PEP, source-of-wealth, references, and digital identity.",
+  "meta": {
+    "generatedAt": "2026-05-07",
+    "schemaVersion": "myid/v0",
+    "locale": "en-EU",
+    "counts": { "categories": 13, "documents": 84 },
+    "kycScore": { "value": 92, "scale": "0-100", "rating": "low-risk", "asOf": "2026-05-01", "method": "World-Check + LexisNexis + ASNEF + SCHUFA + clean police records (ES/DE/FR/UK)" }
+  },
+
+  "holder": {
+    "fullName": "Alex Müller-García",
+    "preferredName": "Alex",
+    "givenNames": "Alex Jaime",
+    "familyNames": "Müller-García",
+    "previousNames": [],
+    "dateOfBirth": "1990-06-14",
+    "placeOfBirth": "Madrid, Spain",
+    "sex": "M",
+    "gender": "male",
+    "nationality": ["ES", "DE"],
+    "citizenshipAcquired": [
+      { "country": "ES", "method": "by birth (ius soli + ius sanguinis)", "since": "1990-06-14" },
+      { "country": "DE", "method": "by descent (German father)",          "since": "1990-06-14" }
+    ],
+    "residency": { "country": "ES", "since": "2014-09-01", "status": "permanent" },
+    "taxResidency": { "primary": "ES", "since": "2014-09-01", "previous": [{ "country": "DE", "from": "2010-09-01", "to": "2014-08-31" }] },
+    "taxIds": [
+      { "country": "ES", "type": "DNI",       "value": "12345678Z" },
+      { "country": "ES", "type": "NIE",       "value": "Y1234567Z" },
+      { "country": "DE", "type": "Steuer-ID", "value": "12 345 678 901" }
+    ],
+    "addresses": {
+      "current": [
+        { "type": "primary",   "line1": "Calle Mayor 12, 4º A", "city": "Madrid",  "postcode": "28013", "country": "ES", "since": "2019-12-01" },
+        { "type": "secondary", "line1": "Lessingstraße 27",     "city": "München", "postcode": "80336", "country": "DE", "since": "2020-06-15" }
+      ],
+      "history": [
+        { "line1": "Calle Velázquez 84, 2º",         "city": "Madrid",  "postcode": "28006", "country": "ES", "from": "2014-09-01", "to": "2019-11-30" },
+        { "line1": "Türkenstraße 19",                "city": "München", "postcode": "80799", "country": "DE", "from": "2010-09-01", "to": "2014-08-31" },
+        { "line1": "Calle de la Princesa 17",        "city": "Madrid",  "postcode": "28008", "country": "ES", "from": "2008-09-01", "to": "2010-08-31" }
+      ]
+    },
+    "biometrics": { "height_cm": 178, "eyes": "brown", "hair": "dark brown", "blood_type": "O+" },
+    "photo": "assets/holder/portrait.svg",
+    "signature": "assets/holder/signature.svg",
+
+    "family": {
+      "father":  { "fullName": "Klaus Müller",       "dob": "1958-04-12", "nationality": ["DE"],    "alive": true  },
+      "mother":  { "fullName": "María García López", "dob": "1962-09-30", "nationality": ["ES"],    "alive": true  },
+      "spouse":  { "fullName": "Eva Hansen",         "dob": "1992-03-21", "nationality": ["DK","ES"], "since": "2021-06-12", "marriage": "civil + religious" },
+      "children":[
+        { "fullName": "Lukas Müller-Hansen",  "dob": "2023-04-04", "nationality": ["ES","DE","DK"] }
+      ],
+      "siblings":[
+        { "fullName": "Clara Müller-García",  "dob": "1993-08-25", "nationality": ["ES","DE"] }
+      ]
+    },
+
+    "employmentHistory": [
+      { "employer": "Telefónica Cybersecurity & Cloud Tech S.L.U.", "country": "ES", "role": "Senior SRE",            "from": "2023-01-09", "to": null,         "type": "indefinite", "current": true },
+      { "employer": "BBVA Next Technologies",                       "country": "ES", "role": "Cloud Engineer",         "from": "2018-04-02", "to": "2022-12-31", "type": "indefinite" },
+      { "employer": "Siemens AG",                                   "country": "DE", "role": "Software Engineer (M.Sc thesis)", "from": "2015-10-01", "to": "2016-09-30", "type": "fixed-term" },
+      { "employer": "Indra Sistemas",                               "country": "ES", "role": "Junior Developer (intern)","from": "2013-09-01", "to": "2014-06-30", "type": "internship" }
+    ],
+
+    "educationHistory": [
+      { "institution": "Technische Universität München (TUM)",       "country": "DE", "qualification": "MSc Computer Science (Distinction)", "from": "2014-10-01", "to": "2016-09-30" },
+      { "institution": "Universidad Politécnica de Madrid (UPM)",    "country": "ES", "qualification": "BSc Telecommunications Engineering",  "from": "2008-09-01", "to": "2013-07-10" },
+      { "institution": "IES San Isidro",                             "country": "ES", "qualification": "Bachillerato (Sciences)",             "from": "2006-09-01", "to": "2008-06-22" }
+    ],
+
+    "travelHistory": {
+      "_doc": "Last 10 years of border crossings, derived from passport stamps + EU/EES.",
+      "summary": { "countriesVisited": 38, "longestStay": { "country": "JP", "days": 21, "year": 2024 } },
+      "highlights": [
+        { "country": "US", "purpose": "business",  "from": "2024-09-15", "to": "2024-09-22" },
+        { "country": "JP", "purpose": "leisure",   "from": "2024-04-02", "to": "2024-04-23" },
+        { "country": "BR", "purpose": "leisure",   "from": "2023-12-20", "to": "2024-01-08" }
+      ]
+    }
+  },
+
+  "categories": [
+    {
+      "id": "identity",
+      "label": "Identity & Citizenship",
+      "icon": "id-card",
+      "color": "#5B8DEF",
+      "description": "Government-issued primary identity documents: passports, national IDs, residence permits, civil status records.",
+      "documents": [
+        {
+          "id": "passport-de-001",
+          "type": "passport",
+          "label": "Reisepass — Biometric Passport (Germany)",
+          "issuer": { "name": "Bundesdruckerei / Auswärtiges Amt", "country": "DE" },
+          "documentNumber": "C0FXY1234",
+          "machineReadable": "P<DEUMUSTERMANN<<ERIKA<<<<<<<<<<<<<<<<<<<<<<\nC01X00T479D<<6408125F2010315<<<<<<<<<<<<<<<4",
+          "issueDate": "2017-08-15",
+          "expiryDate": "2027-08-14",
+          "status": "active",
+          "tags": ["travel", "primary-id", "biometric", "icao-9303", "eu"],
+          "verifications": [
+            { "type": "mrz",       "method": "ICAO 9303 checksum" },
+            { "type": "rfid",      "method": "BAC + Passive Auth + Active Auth" },
+            { "type": "biometric", "method": "facial + fingerprint on chip" }
+          ],
+          "assets": { "front": "assets/identity/passport-de-mustermann.jpg" },
+          "lastVerified": "2026-04-01",
+          "_source": "Wikimedia Commons · Mustermann_Reisepass_2017.jpg (specimen, public domain)"
+        },
+        {
+          "id": "passport-es-001",
+          "type": "passport",
+          "label": "EU Biometric Passport (Spain)",
+          "issuer": { "name": "Dirección General de la Policía", "country": "ES" },
+          "documentNumber": "PAA123456",
+          "issueDate": "2022-03-15",
+          "expiryDate": "2032-03-14",
+          "status": "active",
+          "tags": ["travel", "secondary-id", "biometric", "eu"],
+          "assets": { "thumb": "assets/identity/passport-es-thumb.svg" },
+          "lastVerified": "2026-04-01"
+        },
+        {
+          "id": "dni-es-001",
+          "type": "national_id",
+          "label": "DNI Electrónico 4.0 (Spain) — front",
+          "issuer": { "name": "Dirección General de la Policía", "country": "ES" },
+          "documentNumber": "12345678Z",
+          "issueDate": "2024-02-20",
+          "expiryDate": "2034-02-19",
+          "status": "active",
+          "tags": ["primary-id", "eid", "qualified-signature"],
+          "assets": { "front": "assets/identity/dni-es-front.webp", "back": "assets/identity/dni-es-back.webp" },
+          "_source": "Wikimedia Commons · Spanish_ID_card_(front_side).webp + (back_side).webp (specimen, public domain)"
+        },
+        {
+          "id": "personalausweis-de-001",
+          "type": "national_id",
+          "label": "Personalausweis 2021 (Germany)",
+          "issuer": { "name": "Stadt München · Kreisverwaltungsreferat", "country": "DE" },
+          "documentNumber": "T22000129",
+          "issueDate": "2021-05-14",
+          "expiryDate": "2031-05-13",
+          "status": "active",
+          "tags": ["primary-id", "eid", "online-id"],
+          "assets": { "front": "assets/identity/personalausweis-de-2021.jpg", "alt2010": "assets/identity/personalausweis-de-2010.jpg" },
+          "_source": "Wikimedia Commons · Deutscher_Personalausweis_(2021_Version).jpg"
+        },
+        {
+          "id": "cni-fr-001",
+          "type": "national_id",
+          "label": "Carte Nationale d'Identité (France) — sample",
+          "issuer": { "name": "République Française", "country": "FR" },
+          "documentNumber": "F-12345678",
+          "issueDate": "2021-08-02",
+          "expiryDate": "2031-08-01",
+          "status": "reference",
+          "tags": ["sample", "third-country", "reference"],
+          "assets": { "front": "assets/identity/cni-fr-recto-2021.png", "back": "assets/identity/cni-fr-verso-2021.png" },
+          "_source": "Wikimedia Commons · Carte_identité_électronique_française_(2021).png"
+        },
+        {
+          "id": "cartao-pt-001",
+          "type": "national_id",
+          "label": "Cartão de Cidadão (Portugal) — sample",
+          "issuer": { "name": "República Portuguesa", "country": "PT" },
+          "documentNumber": "12345678 9 ZZ1",
+          "status": "reference",
+          "tags": ["sample", "reference"],
+          "assets": { "front": "assets/identity/cartao-cidadao-pt.jpg" },
+          "_source": "Wikimedia Commons · Cartão_de_Cidadão_Português.jpg"
+        },
+        {
+          "id": "cie-it-001",
+          "type": "national_id",
+          "label": "Carta d'Identità Elettronica (Italy) — sample",
+          "issuer": { "name": "Repubblica Italiana", "country": "IT" },
+          "status": "reference",
+          "tags": ["sample", "reference"],
+          "assets": { "front": "assets/identity/cie-it-2022.jpg", "alt": "assets/identity/cie-it-fronte.jpg" },
+          "_source": "Wikimedia Commons · CIE_Italy(2022).jpg"
+        },
+        {
+          "id": "id-hr-001",
+          "type": "national_id",
+          "label": "Croatian ID Card — sample",
+          "issuer": { "name": "Republic of Croatia", "country": "HR" },
+          "status": "reference",
+          "assets": { "front": "assets/identity/croatian-id.jpg" },
+          "_source": "Wikimedia Commons · Croatian_ID_card_specimen.jpg"
+        },
+        {
+          "id": "id-ro-001",
+          "type": "national_id",
+          "label": "Romanian ID Card 2021 — sample",
+          "issuer": { "name": "România", "country": "RO" },
+          "status": "reference",
+          "assets": { "front": "assets/identity/romanian-id-2021.png" },
+          "_source": "Wikimedia Commons · New_Romanian_ID_Card_(2021).png"
+        },
+        {
+          "id": "id-is-001",
+          "type": "national_id",
+          "label": "Iceland Nafnskírteini 2024 — sample",
+          "issuer": { "name": "Þjóðskrá Íslands (National Registry)", "country": "IS" },
+          "status": "reference",
+          "assets": { "front": "assets/identity/iceland-id-front.png" },
+          "_source": "Wikimedia Commons · 2024_Iceland_ID_card_(Nafnskírteini)_-_front.png"
+        },
+        {
+          "id": "birth-cert-es-001",
+          "type": "birth_certificate",
+          "label": "Certificado Literal de Nacimiento",
+          "issuer": { "name": "Registro Civil de Madrid", "country": "ES" },
+          "documentNumber": "T-1990/06/14-MAD",
+          "issueDate": "1990-06-15",
+          "status": "active",
+          "tags": ["civil-registry", "permanent"],
+          "assets": { "thumb": "assets/identity/cert-generic-thumb.svg" }
+        },
+        {
+          "id": "marriage-cert-001",
+          "type": "marriage_certificate",
+          "label": "Certificado de Matrimonio",
+          "issuer": { "name": "Registro Civil de Madrid", "country": "ES" },
+          "documentNumber": "MAT-2021/06/12-MAD",
+          "issueDate": "2021-06-12",
+          "spouseRef": "Eva Hansen",
+          "status": "active",
+          "tags": ["civil-registry", "marital-status"]
+        },
+        {
+          "id": "residency-cert-es-001",
+          "type": "residency_certificate",
+          "label": "Certificado de Empadronamiento",
+          "issuer": { "name": "Ayuntamiento de Madrid", "country": "ES" },
+          "documentNumber": "EMP-2025-0847291",
+          "issueDate": "2025-11-02",
+          "expiryDate": "2026-05-02",
+          "status": "active",
+          "tags": ["proof-of-address", "renewable-6m"]
+        }
+      ]
+    },
+
+    {
+      "id": "education",
+      "label": "Education & Diplomas",
+      "icon": "graduation",
+      "color": "#A66BE6",
+      "description": "Academic qualifications, professional certifications, language credentials.",
+      "documents": [
+        {
+          "id": "edu-bachillerato-001",
+          "type": "high_school_diploma",
+          "label": "Bachillerato — Ciencias y Tecnología",
+          "issuer": { "name": "IES San Isidro, Madrid", "country": "ES" },
+          "issueDate": "2008-06-22",
+          "grade": "8.7 / 10",
+          "status": "active",
+          "tags": ["secondary-education", "lifetime"]
+        },
+        {
+          "id": "edu-bsc-001",
+          "type": "university_degree",
+          "label": "BSc Telecommunications Engineering",
+          "issuer": { "name": "Universidad Politécnica de Madrid (UPM)", "country": "ES" },
+          "documentNumber": "UPM-2013-TEL-04821",
+          "issueDate": "2013-07-10",
+          "grade": "Notable (8.1 / 10)",
+          "credits_ects": 240,
+          "status": "active",
+          "tags": ["bachelor", "stem", "eu-bologna"],
+          "verifications": [{ "type": "blockchain", "method": "EBSI Diploma · DID anchored" }]
+        },
+        {
+          "id": "edu-msc-001",
+          "type": "university_degree",
+          "label": "MSc Computer Science (Distinction)",
+          "issuer": { "name": "Technische Universität München (TUM)", "country": "DE" },
+          "documentNumber": "TUM-2016-INF-09112",
+          "issueDate": "2016-09-30",
+          "grade": "1.3 (Sehr gut) — Distinction",
+          "credits_ects": 120,
+          "status": "active",
+          "tags": ["master", "stem", "eu-bologna", "distinction"],
+          "verifications": [{ "type": "apostille", "method": "Hague Apostille (DE)" }]
+        },
+        {
+          "id": "edu-cert-aws-001",
+          "type": "certification",
+          "label": "AWS Certified Solutions Architect — Professional",
+          "issuer": { "name": "Amazon Web Services", "country": "US" },
+          "documentNumber": "AWS-PSA-2024-0048291",
+          "issueDate": "2024-10-15",
+          "expiryDate": "2027-10-15",
+          "status": "active",
+          "tags": ["cloud", "professional", "renewable"]
+        },
+        {
+          "id": "edu-cert-cfa-001",
+          "type": "certification",
+          "label": "CFA Charter — Level III",
+          "issuer": { "name": "CFA Institute", "country": "US" },
+          "documentNumber": "CFA-2020-CHARTER-12931",
+          "issueDate": "2020-08-22",
+          "status": "active",
+          "tags": ["finance", "professional", "lifetime"]
+        },
+        {
+          "id": "edu-lang-dele-001",
+          "type": "language_certificate",
+          "label": "DELE C2 (Spanish)",
+          "issuer": { "name": "Instituto Cervantes", "country": "ES" },
+          "documentNumber": "DELE-C2-2007-MAD-00821",
+          "issueDate": "2007-11-12",
+          "status": "active",
+          "tags": ["language", "cefr-c2", "lifetime"]
+        },
+        {
+          "id": "edu-lang-cpe-001",
+          "type": "language_certificate",
+          "label": "Cambridge C2 Proficiency (CPE)",
+          "issuer": { "name": "Cambridge Assessment English", "country": "GB" },
+          "documentNumber": "CPE-2010-072901",
+          "issueDate": "2010-06-18",
+          "status": "active",
+          "tags": ["language", "cefr-c2", "lifetime"]
+        },
+        {
+          "id": "edu-lang-goethe-001",
+          "type": "language_certificate",
+          "label": "Goethe-Zertifikat C1",
+          "issuer": { "name": "Goethe-Institut", "country": "DE" },
+          "documentNumber": "GI-C1-2014-MUC-04812",
+          "issueDate": "2014-04-05",
+          "status": "active",
+          "tags": ["language", "cefr-c1", "lifetime"]
+        }
+      ]
+    },
+
+    {
+      "id": "driving",
+      "label": "Driving & Mobility",
+      "icon": "car",
+      "color": "#F5A85F",
+      "description": "Driving permits, motorcycle, boat, aviation licences. EU + IDP + extras.",
+      "documents": [
+        {
+          "id": "drv-de-001",
+          "type": "drivers_licence",
+          "label": "EU Driving Licence (Germany 2013 model)",
+          "issuer": { "name": "Bundesdruckerei", "country": "DE" },
+          "documentNumber": "M0123456789",
+          "issueDate": "2013-09-12",
+          "expiryDate": "2028-09-11",
+          "categories": ["AM", "A2", "B", "BE"],
+          "status": "active",
+          "tags": ["eu-recognised", "renewable-15y"],
+          "assets": { "thumb": "assets/driving/eu-licence-thumb.svg" }
+        },
+        {
+          "id": "drv-no-001",
+          "type": "drivers_licence",
+          "label": "Førerkort (Norway) — sample",
+          "issuer": { "name": "Statens vegvesen", "country": "NO" },
+          "status": "reference",
+          "tags": ["sample", "eea", "reference"],
+          "assets": { "front": "assets/driving/eu-licence-no-front.jpg" },
+          "_source": "Wikimedia Commons · Førerkort fremside.jpg"
+        },
+        {
+          "id": "drv-idp-001",
+          "type": "international_driving_permit",
+          "label": "International Driving Permit (1968 Vienna)",
+          "issuer": { "name": "Real Automóvil Club de España (RACE)", "country": "ES" },
+          "documentNumber": "IDP-2024-RACE-08274",
+          "issueDate": "2024-12-01",
+          "expiryDate": "2027-12-01",
+          "status": "active",
+          "tags": ["travel", "non-eu"]
+        },
+        {
+          "id": "drv-boat-per-001",
+          "type": "boat_licence",
+          "label": "Patrón de Embarcaciones de Recreo (PER)",
+          "issuer": { "name": "Dirección General de la Marina Mercante", "country": "ES" },
+          "documentNumber": "PER-2018-BCN-12842",
+          "issueDate": "2018-07-22",
+          "expiryDate": "2028-07-22",
+          "status": "active",
+          "tags": ["boating", "coastal-12nm", "renewable-10y"],
+          "verifications": [{ "type": "ICC", "method": "Cross-recognised as ICC for inland EU waters" }]
+        },
+        {
+          "id": "drv-pilot-ppl-001",
+          "type": "pilot_licence",
+          "label": "EASA PPL(A) — Private Pilot Licence",
+          "issuer": { "name": "AESA — Agencia Estatal de Seguridad Aérea", "country": "ES" },
+          "documentNumber": "ESP.FCL.PPL.A.04812",
+          "issueDate": "2021-09-30",
+          "expiryDate": "2026-09-30",
+          "ratings": ["SEP(land)", "Night", "VFR"],
+          "status": "active",
+          "tags": ["aviation", "easa"]
+        }
+      ]
+    },
+
+    {
+      "id": "professional",
+      "label": "Career & Credentials",
+      "icon": "briefcase",
+      "color": "#3CC79F",
+      "description": "CV, employment contracts, professional registrations, references.",
+      "documents": [
+        {
+          "id": "prof-cv-001",
+          "type": "cv",
+          "label": "Curriculum Vitae (Europass)",
+          "issuer": { "name": "self", "country": "EU" },
+          "issueDate": "2026-04-15",
+          "status": "active",
+          "tags": ["europass", "self-issued"]
+        },
+        {
+          "id": "prof-contract-001",
+          "type": "employment_contract",
+          "label": "Indefinite Employment Contract — Senior SRE",
+          "issuer": { "name": "Telefónica Cybersecurity & Cloud Tech S.L.U.", "country": "ES" },
+          "documentNumber": "TEF-RH-2023-08291",
+          "issueDate": "2023-01-09",
+          "status": "active",
+          "tags": ["employment", "permanent", "convenio-tic"]
+        },
+        {
+          "id": "prof-reg-coit-001",
+          "type": "professional_registration",
+          "label": "Colegio Oficial de Ingenieros de Telecomunicación (COIT)",
+          "issuer": { "name": "COIT", "country": "ES" },
+          "documentNumber": "COIT-15782",
+          "issueDate": "2014-02-01",
+          "status": "active",
+          "tags": ["professional-body", "engineering", "lifetime"]
+        },
+        {
+          "id": "prof-cert-pmp-001",
+          "type": "certification",
+          "label": "PMP — Project Management Professional",
+          "issuer": { "name": "Project Management Institute (PMI)", "country": "US" },
+          "documentNumber": "PMP-2022-2891024",
+          "issueDate": "2022-03-10",
+          "expiryDate": "2025-03-10",
+          "status": "expired",
+          "tags": ["pm", "renewable-3y", "needs-renewal"]
+        },
+        {
+          "id": "prof-reference-001",
+          "type": "reference",
+          "label": "Professional Reference — Director of Engineering, BBVA Next",
+          "issuer": { "name": "Carlos Ruiz Hidalgo · Director, BBVA Next", "country": "ES" },
+          "issueDate": "2022-12-15",
+          "type_of_relationship": "direct manager",
+          "status": "active",
+          "tags": ["reference-letter", "professional"]
+        },
+        {
+          "id": "prof-reference-002",
+          "type": "reference",
+          "label": "Academic Reference — Prof. TUM Informatik",
+          "issuer": { "name": "Prof. Dr. Hans-Peter Bähr · TUM Informatik", "country": "DE" },
+          "issueDate": "2016-10-01",
+          "status": "active",
+          "tags": ["reference-letter", "academic"]
+        }
+      ]
+    },
+
+    {
+      "id": "financial",
+      "label": "Banking & Credit",
+      "icon": "credit-card",
+      "color": "#E66B7A",
+      "description": "Bank accounts, IBAN/BIC, credit cards, mortgage, investments, credit reports, tax returns.",
+      "documents": [
+        {
+          "id": "fin-iban-bbva-001",
+          "type": "bank_account",
+          "label": "BBVA Cuenta Online — primary",
+          "issuer": { "name": "BBVA", "country": "ES" },
+          "iban": "ES12 0182 1234 5612 3456 7890",
+          "bic":  "BBVAESMM",
+          "currency": "EUR",
+          "openedAt": "2014-09-15",
+          "status": "active",
+          "tags": ["primary", "salary", "sepa"]
+        },
+        {
+          "id": "fin-iban-n26-001",
+          "type": "bank_account",
+          "label": "N26 You — multi-currency",
+          "issuer": { "name": "N26 Bank AG", "country": "DE" },
+          "iban": "DE89 1001 1001 2987 6543 21",
+          "bic":  "NTSBDEB1XXX",
+          "currency": "EUR",
+          "openedAt": "2018-03-22",
+          "status": "active",
+          "tags": ["secondary", "travel", "sepa"]
+        },
+        {
+          "id": "fin-iban-revolut-001",
+          "type": "bank_account",
+          "label": "Revolut Premium — multi-currency",
+          "issuer": { "name": "Revolut Bank UAB", "country": "LT" },
+          "iban": "LT12 3250 0123 4567 8901",
+          "bic":  "REVOLT21",
+          "currency": "EUR",
+          "openedAt": "2017-06-10",
+          "status": "active",
+          "tags": ["fx", "fintech", "sepa"]
+        },
+        {
+          "id": "fin-card-visa-001",
+          "type": "credit_card",
+          "label": "Visa Platinum — BBVA",
+          "issuer": { "name": "BBVA / Visa", "country": "ES" },
+          "documentNumber": "**** **** **** 4821",
+          "expiryDate": "2028-08-31",
+          "currency": "EUR",
+          "status": "active",
+          "tags": ["credit", "platinum", "contactless"]
+        },
+        {
+          "id": "fin-mortgage-001",
+          "type": "mortgage",
+          "label": "Hipoteca Variable — Calle Mayor 12",
+          "issuer": { "name": "BBVA", "country": "ES" },
+          "documentNumber": "BBVA-MORTGAGE-2019-204812",
+          "issueDate": "2019-11-04",
+          "outstandingBalance": 218400,
+          "currency": "EUR",
+          "rate": "Euribor + 0.89%",
+          "termYears": 25,
+          "monthlyPayment": 982.40,
+          "status": "active",
+          "tags": ["mortgage", "variable-rate"]
+        },
+        {
+          "id": "fin-broker-degiro-001",
+          "type": "investment_account",
+          "label": "DEGIRO — taxable brokerage",
+          "issuer": { "name": "flatexDEGIRO Bank Dutch Branch", "country": "NL" },
+          "documentNumber": "DEGIRO-082910412",
+          "openedAt": "2018-04-18",
+          "currency": "EUR",
+          "status": "active",
+          "tags": ["brokerage", "taxable", "modelo-720"]
+        },
+        {
+          "id": "fin-credit-asnef-001",
+          "type": "credit_report",
+          "label": "ASNEF / Equifax (Spain) — Credit Report",
+          "issuer": { "name": "Equifax Ibérica S.L.", "country": "ES" },
+          "issueDate": "2026-04-30",
+          "score": 812,
+          "scoreScale": "300-900",
+          "status": "clean",
+          "tags": ["credit-bureau", "kyc", "due-diligence"]
+        },
+        {
+          "id": "fin-credit-schufa-001",
+          "type": "credit_report",
+          "label": "SCHUFA Bonitätsauskunft (Germany)",
+          "issuer": { "name": "SCHUFA Holding AG", "country": "DE" },
+          "issueDate": "2026-04-12",
+          "score": "98.2 (Sehr geringes Risiko)",
+          "status": "clean",
+          "tags": ["credit-bureau", "kyc", "due-diligence"]
+        },
+        {
+          "id": "fin-credit-experian-uk-001",
+          "type": "credit_report",
+          "label": "Experian UK — Credit Score",
+          "issuer": { "name": "Experian Ltd.", "country": "GB" },
+          "issueDate": "2025-12-01",
+          "score": 974,
+          "scoreScale": "0-999 (Excellent)",
+          "status": "clean",
+          "tags": ["credit-bureau", "kyc"]
+        },
+        {
+          "id": "fin-tax-irpf-2024",
+          "type": "tax_return",
+          "label": "Declaración IRPF 2024 — Modelo 100",
+          "issuer": { "name": "Agencia Tributaria (AEAT)", "country": "ES" },
+          "issueDate": "2025-06-30",
+          "status": "filed",
+          "tags": ["tax-return", "annual", "spain"]
+        },
+        {
+          "id": "fin-tax-irpf-2023",
+          "type": "tax_return",
+          "label": "Declaración IRPF 2023 — Modelo 100",
+          "issuer": { "name": "Agencia Tributaria (AEAT)", "country": "ES" },
+          "issueDate": "2024-06-30",
+          "status": "filed",
+          "tags": ["tax-return", "annual", "spain"]
+        },
+        {
+          "id": "fin-tax-modelo720-2024",
+          "type": "tax_return",
+          "label": "Modelo 720 — Bienes en el extranjero",
+          "issuer": { "name": "Agencia Tributaria (AEAT)", "country": "ES" },
+          "issueDate": "2024-03-31",
+          "status": "filed",
+          "tags": ["foreign-assets", "annual", "spain"]
+        }
+      ]
+    },
+
+    {
+      "id": "property",
+      "label": "Property & Housing",
+      "icon": "home",
+      "color": "#7B92AB",
+      "description": "Title deeds, leases, utilities, council tax / IBI.",
+      "documents": [
+        {
+          "id": "prop-deed-001",
+          "type": "property_deed",
+          "label": "Escritura de Compraventa — Calle Mayor 12, 4º A",
+          "issuer": { "name": "Notaría López-Mendoza, Madrid", "country": "ES" },
+          "documentNumber": "Protocolo 2019/4821",
+          "issueDate": "2019-11-04",
+          "registry": { "name": "Registro de la Propiedad nº 17 de Madrid", "finca": "F-04812-MAD" },
+          "status": "active",
+          "tags": ["primary-residence", "owned", "registered"]
+        },
+        {
+          "id": "prop-utility-iberdrola-001",
+          "type": "utility_bill",
+          "label": "Iberdrola — Electricity (last bill)",
+          "issuer": { "name": "Iberdrola Clientes S.A.U.", "country": "ES" },
+          "issueDate": "2026-04-28",
+          "status": "paid",
+          "tags": ["proof-of-address", "electricity"]
+        },
+        {
+          "id": "prop-ibi-2025",
+          "type": "property_tax",
+          "label": "IBI 2025 — Calle Mayor 12",
+          "issuer": { "name": "Ayuntamiento de Madrid", "country": "ES" },
+          "documentNumber": "IBI-2025-04812-MAD",
+          "issueDate": "2025-09-15",
+          "amount": 412.80,
+          "currency": "EUR",
+          "status": "paid",
+          "tags": ["municipal-tax", "annual"]
+        }
+      ]
+    },
+
+    {
+      "id": "health",
+      "label": "Medical Records",
+      "icon": "heart",
+      "color": "#E15D80",
+      "description": "EHIC, vaccinations, prescriptions, dental, optical, donor card.",
+      "documents": [
+        {
+          "id": "hlt-ehic-fr-001",
+          "type": "health_card",
+          "label": "Carte Européenne d'Assurance Maladie (France) — sample",
+          "issuer": { "name": "Caisse Primaire d'Assurance Maladie", "country": "FR" },
+          "status": "reference",
+          "tags": ["ehic", "eu-coverage", "sample"],
+          "assets": { "thumb": "assets/health/ehic-thumb.svg" }
+        },
+        {
+          "id": "hlt-ehic-si-001",
+          "type": "health_card",
+          "label": "EHIC (Slovenia) — sample",
+          "issuer": { "name": "Zavod za zdravstveno zavarovanje Slovenije", "country": "SI" },
+          "status": "reference",
+          "tags": ["ehic", "eu-coverage", "sample"],
+          "assets": { "front": "assets/health/ehic-si-front.jpg" },
+          "_source": "Wikimedia Commons · EHIC_Slovenia.jpg"
+        },
+        {
+          "id": "hlt-vacc-yellow-fever-001",
+          "type": "vaccination",
+          "label": "Yellow Fever — ICVP",
+          "issuer": { "name": "Centro de Vacunación Internacional, Madrid-Barajas", "country": "ES" },
+          "documentNumber": "ICVP-ES-2022-04829",
+          "issueDate": "2022-02-04",
+          "expiryDate": "2032-02-04",
+          "vaccine": "Stamaril",
+          "status": "active",
+          "tags": ["who-icvp", "international"]
+        },
+        {
+          "id": "hlt-vacc-covid-001",
+          "type": "vaccination",
+          "label": "COVID-19 (4 doses) — EU DCC",
+          "issuer": { "name": "Sistema Nacional de Salud", "country": "ES" },
+          "issueDate": "2023-10-22",
+          "doses": 4,
+          "vaccine": "BNT162b2 + bivalent booster",
+          "status": "active",
+          "tags": ["eu-dcc", "covid"]
+        },
+        {
+          "id": "hlt-blood-type-001",
+          "type": "blood_type_card",
+          "label": "Blood Type Card — O+",
+          "issuer": { "name": "Cruz Roja Española", "country": "ES" },
+          "issueDate": "2010-04-12",
+          "bloodType": "O+",
+          "status": "active",
+          "tags": ["emergency", "donor"]
+        },
+        {
+          "id": "hlt-donor-001",
+          "type": "organ_donor_card",
+          "label": "Tarjeta de Donante de Órganos",
+          "issuer": { "name": "Organización Nacional de Trasplantes (ONT)", "country": "ES" },
+          "issueDate": "2015-05-09",
+          "status": "active",
+          "tags": ["donor", "voluntary"]
+        },
+        {
+          "id": "hlt-allergies-001",
+          "type": "medical_record",
+          "label": "Allergies & Conditions — Summary",
+          "issuer": { "name": "self / GP", "country": "ES" },
+          "issueDate": "2025-12-01",
+          "allergies": ["penicillin", "shellfish"],
+          "conditions": ["mild asthma"],
+          "status": "active",
+          "tags": ["emergency", "self-maintained"]
+        }
+      ]
+    },
+
+    {
+      "id": "insurance",
+      "label": "Insurance Policies",
+      "icon": "shield",
+      "color": "#5B98D9",
+      "description": "Health, life, car, travel, liability.",
+      "documents": [
+        {
+          "id": "ins-health-sanitas-001",
+          "type": "insurance",
+          "label": "Sanitas Más Salud (private)",
+          "issuer": { "name": "Sanitas S.A. de Seguros", "country": "ES" },
+          "documentNumber": "POL-SAN-04812944",
+          "issueDate": "2024-01-01",
+          "expiryDate": "2026-12-31",
+          "premium_eur": 1290,
+          "status": "active",
+          "tags": ["health", "private", "annual"]
+        },
+        {
+          "id": "ins-car-mapfre-001",
+          "type": "insurance",
+          "label": "Seguro a Todo Riesgo — MAPFRE",
+          "issuer": { "name": "MAPFRE Familiar", "country": "ES" },
+          "documentNumber": "POL-MAP-CAR-19284",
+          "issueDate": "2025-09-12",
+          "expiryDate": "2026-09-12",
+          "premium_eur": 612,
+          "status": "active",
+          "tags": ["car", "comprehensive"]
+        },
+        {
+          "id": "ins-life-zurich-001",
+          "type": "insurance",
+          "label": "Zurich Vida Inversión",
+          "issuer": { "name": "Zurich Insurance Group", "country": "CH" },
+          "documentNumber": "POL-ZUR-LIF-78231",
+          "issueDate": "2023-03-15",
+          "expiryDate": "2053-03-15",
+          "coverage_eur": 250000,
+          "status": "active",
+          "tags": ["life", "30y-term"]
+        },
+        {
+          "id": "ins-travel-axa-001",
+          "type": "insurance",
+          "label": "AXA Travel Annual Worldwide",
+          "issuer": { "name": "AXA Assistance", "country": "FR" },
+          "documentNumber": "POL-AXA-TRV-92812",
+          "issueDate": "2026-01-01",
+          "expiryDate": "2026-12-31",
+          "status": "active",
+          "tags": ["travel", "annual", "worldwide"]
+        }
+      ]
+    },
+
+    {
+      "id": "legal",
+      "label": "Police & Court Records",
+      "icon": "scale",
+      "color": "#9D7BC6",
+      "description": "Police clearance certificates and court record extracts (per country, due-diligence ready).",
+      "documents": [
+        {
+          "id": "legal-cert-penales-es-001",
+          "type": "police_clearance",
+          "label": "Certificado de Antecedentes Penales (Spain)",
+          "issuer": { "name": "Ministerio de Justicia", "country": "ES" },
+          "documentNumber": "MJU-CAP-2026-04-19847",
+          "issueDate": "2026-03-14",
+          "expiryDate": "2026-09-14",
+          "result": "Sin antecedentes",
+          "status": "clean",
+          "tags": ["due-diligence", "kyc", "renewable-6m"],
+          "verifications": [{ "type": "csv", "method": "Código Seguro de Verificación · sede.mjusticia.gob.es" }]
+        },
+        {
+          "id": "legal-fuhrungszeugnis-de-001",
+          "type": "police_clearance",
+          "label": "Polizeiliches Führungszeugnis — N (Germany)",
+          "issuer": { "name": "Bundesamt für Justiz", "country": "DE" },
+          "documentNumber": "BfJ-FZ-2026-08291",
+          "issueDate": "2026-02-22",
+          "expiryDate": "2026-08-22",
+          "result": "Keine Eintragung",
+          "status": "clean",
+          "tags": ["due-diligence", "kyc", "renewable-6m"]
+        },
+        {
+          "id": "legal-casier-fr-001",
+          "type": "police_clearance",
+          "label": "Casier Judiciaire B3 (France)",
+          "issuer": { "name": "Casier Judiciaire National, Nantes", "country": "FR" },
+          "documentNumber": "CJN-B3-2025-1928412",
+          "issueDate": "2025-11-08",
+          "result": "Néant",
+          "status": "clean",
+          "tags": ["due-diligence", "kyc"]
+        },
+        {
+          "id": "legal-dbs-uk-001",
+          "type": "police_clearance",
+          "label": "DBS Basic Disclosure (UK)",
+          "issuer": { "name": "Disclosure and Barring Service", "country": "GB" },
+          "documentNumber": "DBS-001892410",
+          "issueDate": "2024-04-01",
+          "result": "No convictions",
+          "status": "clean",
+          "tags": ["due-diligence", "kyc"]
+        },
+        {
+          "id": "legal-court-civil-001",
+          "type": "court_record",
+          "label": "Civil Court Record — clean (Spain)",
+          "issuer": { "name": "Consejo General del Poder Judicial", "country": "ES" },
+          "issueDate": "2026-04-30",
+          "result": "No civil judgements",
+          "status": "clean",
+          "tags": ["due-diligence", "civil"]
+        },
+        {
+          "id": "legal-bankruptcy-001",
+          "type": "bankruptcy_check",
+          "label": "Insolvency Register — clean",
+          "issuer": { "name": "Registro Público Concursal", "country": "ES" },
+          "issueDate": "2026-04-30",
+          "result": "No insolvency proceedings",
+          "status": "clean",
+          "tags": ["due-diligence", "insolvency"]
+        }
+      ]
+    },
+
+    {
+      "id": "due-diligence",
+      "label": "Due Diligence & Background",
+      "icon": "search",
+      "color": "#C4814F",
+      "description": "Aggregated KYC/AML, sanctions screening, PEP, adverse media, source of wealth, source of funds, beneficial ownership.",
+      "documents": [
+        {
+          "id": "dd-kyc-001",
+          "type": "kyc_attestation",
+          "label": "KYC Pack — onboarding bundle",
+          "issuer": { "name": "self-aggregated", "country": "EU" },
+          "issueDate": "2026-04-30",
+          "components": ["passport-de-001", "residency-cert-es-001", "fin-iban-bbva-001", "legal-cert-penales-es-001"],
+          "status": "ready",
+          "tags": ["kyc", "shareable", "bundle"]
+        },
+        {
+          "id": "dd-sanctions-001",
+          "type": "sanctions_screening",
+          "label": "Sanctions & PEP Screening — World-Check",
+          "issuer": { "name": "Refinitiv World-Check One", "country": "GB" },
+          "issueDate": "2026-04-30",
+          "result": "No matches",
+          "lists": ["OFAC SDN", "EU consolidated", "UN", "HM Treasury", "PEP", "DFAT", "Swiss SECO"],
+          "status": "clean",
+          "tags": ["aml", "sanctions", "pep"]
+        },
+        {
+          "id": "dd-adverse-media-001",
+          "type": "adverse_media",
+          "label": "Adverse Media Scan — LexisNexis",
+          "issuer": { "name": "LexisNexis Risk Solutions", "country": "US" },
+          "issueDate": "2026-04-30",
+          "result": "No adverse hits across 2.5M sources, 12 languages",
+          "status": "clean",
+          "tags": ["aml", "adverse-media", "due-diligence"]
+        },
+        {
+          "id": "dd-pep-001",
+          "type": "pep_assessment",
+          "label": "PEP Assessment — non-PEP",
+          "issuer": { "name": "self-attested + Refinitiv check", "country": "EU" },
+          "issueDate": "2026-04-30",
+          "result": "Not a Politically Exposed Person; no immediate family ties to PEPs",
+          "status": "clean",
+          "tags": ["pep", "self-attested"]
+        },
+        {
+          "id": "dd-source-of-funds-001",
+          "type": "source_of_funds",
+          "label": "Source of Funds Statement",
+          "issuer": { "name": "self · attested by gestor", "country": "ES" },
+          "issueDate": "2026-04-30",
+          "supportingDocs": ["fin-tax-irpf-2024", "prof-contract-001"],
+          "status": "ready",
+          "tags": ["aml", "wealth", "self-attested"]
+        },
+        {
+          "id": "dd-source-of-wealth-001",
+          "type": "source_of_wealth",
+          "label": "Source of Wealth — narrative + tax records",
+          "issuer": { "name": "self", "country": "ES" },
+          "issueDate": "2026-04-30",
+          "summary": "Wealth accumulated through 12+ years of salaried employment in EU technology sector, supplemented by long-term ETF investments and a primary residence purchase in 2019. No inheritance, gifts, or third-party transfers.",
+          "status": "ready",
+          "tags": ["aml", "wealth", "narrative"]
+        },
+        {
+          "id": "dd-beneficial-ownership-001",
+          "type": "beneficial_ownership",
+          "label": "UBO Declaration — none above 25%",
+          "issuer": { "name": "self", "country": "EU" },
+          "issueDate": "2026-04-30",
+          "result": "Not a UBO of any legal entity above the 25% threshold (5th AML Directive)",
+          "status": "clean",
+          "tags": ["aml", "ubo", "5amld"]
+        },
+        {
+          "id": "dd-known-associates-001",
+          "type": "associate_network",
+          "label": "Known Associates / Counterparty Map",
+          "issuer": { "name": "self", "country": "EU" },
+          "issueDate": "2026-04-30",
+          "summary": "Counterparty graph extracted from bank statements: employer (Telefónica), brokerage (DEGIRO), mortgage (BBVA), utility providers — all sanctions-clean.",
+          "status": "clean",
+          "tags": ["aml", "graph"]
+        },
+        {
+          "id": "dd-background-check-001",
+          "type": "background_check",
+          "label": "Pre-Employment Background Check — HireRight",
+          "issuer": { "name": "HireRight EMEA Ltd.", "country": "IE" },
+          "issueDate": "2023-01-04",
+          "checks": [
+            { "name": "Identity verification",        "result": "verified" },
+            { "name": "Education verification (MSc)", "result": "verified" },
+            { "name": "Employment history (5y)",      "result": "verified" },
+            { "name": "Criminal record (ES, DE)",     "result": "clean" },
+            { "name": "Sanctions / PEP",              "result": "clear" },
+            { "name": "Credit (light)",               "result": "low risk" }
+          ],
+          "status": "passed",
+          "tags": ["pre-employment", "vendor-attested"]
+        }
+      ]
+    },
+
+    {
+      "id": "travel",
+      "label": "Travel & Visas",
+      "icon": "globe",
+      "color": "#4FB3D9",
+      "description": "Visa stamps, residence permits abroad, frequent flyer, trusted-traveller programs.",
+      "documents": [
+        {
+          "id": "trv-visa-us-001",
+          "type": "visa",
+          "label": "USA — B1/B2 Tourist/Business Visa",
+          "issuer": { "name": "U.S. Department of State", "country": "US" },
+          "documentNumber": "USA-B1B2-92841029",
+          "issueDate": "2023-06-12",
+          "expiryDate": "2033-06-11",
+          "status": "active",
+          "tags": ["non-eu", "10y", "multi-entry"]
+        },
+        {
+          "id": "trv-globalentry-001",
+          "type": "trusted_traveller",
+          "label": "Global Entry (US CBP)",
+          "issuer": { "name": "U.S. Customs and Border Protection", "country": "US" },
+          "documentNumber": "GE-928104812",
+          "issueDate": "2023-08-05",
+          "expiryDate": "2028-08-05",
+          "status": "active",
+          "tags": ["trusted-traveller", "fast-track"]
+        },
+        {
+          "id": "trv-ff-iberia-001",
+          "type": "frequent_flyer",
+          "label": "Iberia Plus — Platinum",
+          "issuer": { "name": "Iberia L.A.E.", "country": "ES" },
+          "documentNumber": "IBPLUS-04812944",
+          "tier": "Platinum",
+          "status": "active",
+          "tags": ["loyalty", "oneworld-emerald"]
+        },
+        {
+          "id": "trv-ff-lh-001",
+          "type": "frequent_flyer",
+          "label": "Lufthansa Miles & More — Senator",
+          "issuer": { "name": "Miles & More GmbH", "country": "DE" },
+          "documentNumber": "MM-2849210482",
+          "tier": "Senator",
+          "status": "active",
+          "tags": ["loyalty", "star-alliance-gold"]
+        }
+      ]
+    },
+
+    {
+      "id": "memberships",
+      "label": "Memberships",
+      "icon": "tag",
+      "color": "#9DB36F",
+      "description": "Library, museum, gym, alumni, professional associations.",
+      "documents": [
+        {
+          "id": "mem-bne-001",
+          "type": "library_card",
+          "label": "Biblioteca Nacional de España — Reader Card",
+          "issuer": { "name": "BNE", "country": "ES" },
+          "documentNumber": "BNE-LECT-082914",
+          "issueDate": "2018-10-04",
+          "status": "active",
+          "tags": ["library", "research"]
+        },
+        {
+          "id": "mem-prado-001",
+          "type": "museum_card",
+          "label": "Amigos del Museo del Prado",
+          "issuer": { "name": "Fundación Amigos del Prado", "country": "ES" },
+          "documentNumber": "AMP-92841",
+          "issueDate": "2020-01-15",
+          "expiryDate": "2026-01-14",
+          "status": "active",
+          "tags": ["museum", "annual"]
+        },
+        {
+          "id": "mem-tum-alumni-001",
+          "type": "alumni_card",
+          "label": "TUM Alumni & Career",
+          "issuer": { "name": "Technische Universität München", "country": "DE" },
+          "documentNumber": "TUM-ALUM-09112",
+          "status": "active",
+          "tags": ["alumni", "lifetime"]
+        }
+      ]
+    },
+
+    {
+      "id": "digital",
+      "label": "Digital Identity",
+      "icon": "key",
+      "color": "#67D3B5",
+      "description": "Hardware tokens, crypto wallets, domains, SSL certs.",
+      "documents": [
+        {
+          "id": "dig-yubikey-001",
+          "type": "hardware_token",
+          "label": "YubiKey 5C NFC — primary",
+          "issuer": { "name": "Yubico AB", "country": "SE" },
+          "documentNumber": "YK5-04812944",
+          "issueDate": "2023-05-02",
+          "status": "active",
+          "tags": ["fido2", "u2f", "totp", "pgp", "piv"]
+        },
+        {
+          "id": "dig-yubikey-002",
+          "type": "hardware_token",
+          "label": "YubiKey 5C NFC — backup",
+          "issuer": { "name": "Yubico AB", "country": "SE" },
+          "documentNumber": "YK5-04812945",
+          "issueDate": "2023-05-02",
+          "status": "active",
+          "tags": ["fido2", "backup", "vault"]
+        },
+        {
+          "id": "dig-cryptowallet-001",
+          "type": "crypto_wallet",
+          "label": "BTC Cold Wallet — Coldcard Mk4",
+          "issuer": { "name": "Coinkite (Coldcard Mk4)", "country": "CA" },
+          "documentNumber": "xpub-fingerprint: 5A9F1C2E",
+          "issueDate": "2024-01-12",
+          "status": "active",
+          "tags": ["bitcoin", "cold-storage", "multisig-2of3"]
+        },
+        {
+          "id": "dig-domain-001",
+          "type": "domain",
+          "label": "diegonmarcos.com",
+          "issuer": { "name": "Cloudflare Registrar", "country": "US" },
+          "issueDate": "2018-06-01",
+          "expiryDate": "2027-06-01",
+          "status": "active",
+          "tags": ["domain", "primary", "auto-renew"]
+        }
+      ]
+    }
+  ]
+}

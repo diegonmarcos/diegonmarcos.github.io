@@ -1,0 +1,61 @@
+// GENERATED FROM nav.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["nav"] = {
+  "sections": [
+    {
+      "id": "A",
+      "label": "Personal",
+      "icon": "user",
+      "items": [
+        { "id": "A0", "route": "wallet/all",        "label": "All documents",         "icon": "wallet" },
+        { "id": "A1", "route": "wallet/identity",   "label": "Identity & Citizenship","icon": "id-card" },
+        { "id": "A2", "route": "wallet/education",  "label": "Education & Diplomas",  "icon": "graduation" },
+        { "id": "A3", "route": "wallet/driving",    "label": "Driving & Mobility",    "icon": "car" }
+      ]
+    },
+    {
+      "id": "B",
+      "label": "Professional",
+      "icon": "briefcase",
+      "items": [
+        { "id": "B0", "route": "wallet/professional","label": "Career & Credentials", "icon": "award" },
+        { "id": "B1", "route": "wallet/financial",   "label": "Banking & Credit",     "icon": "credit-card" },
+        { "id": "B2", "route": "wallet/property",    "label": "Property & Housing",   "icon": "home" }
+      ]
+    },
+    {
+      "id": "C",
+      "label": "Health & Insurance",
+      "icon": "heart",
+      "items": [
+        { "id": "C0", "route": "wallet/health",      "label": "Medical Records",      "icon": "heart" },
+        { "id": "C1", "route": "wallet/insurance",   "label": "Insurance Policies",   "icon": "shield" }
+      ]
+    },
+    {
+      "id": "D",
+      "label": "Legal & Background",
+      "icon": "shield",
+      "items": [
+        { "id": "D0", "route": "wallet/legal",       "label": "Police & Court Records","icon": "scale" },
+        { "id": "D1", "route": "wallet/due-diligence","label": "Due Diligence",        "icon": "search", "badge": "KYC" }
+      ]
+    },
+    {
+      "id": "E",
+      "label": "Other",
+      "icon": "globe",
+      "items": [
+        { "id": "E0", "route": "wallet/travel",      "label": "Travel & Visas",       "icon": "globe" },
+        { "id": "E1", "route": "wallet/memberships", "label": "Memberships",          "icon": "tag" },
+        { "id": "E2", "route": "wallet/digital",     "label": "Digital Identity",     "icon": "key" }
+      ]
+    }
+  ],
+  "default": "wallet/all"
+}
+;
+})();

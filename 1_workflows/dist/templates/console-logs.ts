@@ -413,6 +413,7 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
       console.log('Plus emergency:');
       console.log('  window.__resetSW("manual")            — unregister SW + caches + reload');
       console.log('  window.__bootManifest()               — re-dump this manifest');
+      console.log('  window.__selfTest()                   — re-run the probe assertions');
       console.groupEnd();
 
       console.groupEnd();
@@ -426,17 +427,147 @@ declare global { interface Window { consoleLogs: ConsoleLogsAPI } }
   // Expose for re-runs (developer can call from console)
   (window as Window & { __bootManifest?: () => void }).__bootManifest = dumpBootManifest;
 
+  // ════════════════════════════════════════════════════════════════════════
+  // ── SELF-TEST PROBE — assertion-style health check, default on every page
+  // ════════════════════════════════════════════════════════════════════════
+  // Runs the diagnostic commands a developer would run manually to verify
+  // the page actually came up. Auto-fires AFTER the SPA has had time to
+  // mount (1.5s after DOMContentLoaded). Prints a one-line PASS/FAIL banner
+  // plus per-check results with the reason. If anything fails, this is
+  // the FIRST thing that should jump out of the console — formatted with
+  // a red banner to be impossible to miss.
+  // ════════════════════════════════════════════════════════════════════════
+  interface ProbeResult { name: string; pass: boolean; got: unknown; want: string }
+
+  function runSelfTest(): ProbeResult[] {
+    const proj = projectIdFromPath();
+    const probes: ProbeResult[] = [];
+    const bag = (globalThis as { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA;
+    const app = document.getElementById('app');
+    const reg = navigator.serviceWorker;
+
+    probes.push({
+      name: 'window.consoleLogs SDK live',
+      pass: !!window.consoleLogs?.sessionId,
+      got: window.consoleLogs?.sessionId || '(missing)',
+      want: 'string sessionId',
+    });
+    probes.push({
+      name: 'PORTAL_DATA hydrated',
+      pass: !!bag && Object.keys(bag).length > 0,
+      got: bag ? Object.keys(bag) : '(missing)',
+      want: '≥1 key',
+    });
+    probes.push({
+      name: 'PORTAL_DATA includes self-key',
+      pass: !!bag && proj in bag,
+      got: bag ? Object.keys(bag) : [],
+      want: 'contains "' + proj + '"',
+    });
+    probes.push({
+      name: '#app element present',
+      pass: !!app,
+      got: !!app,
+      want: 'true',
+    });
+    probes.push({
+      name: '#app mounted (children > 0)',
+      pass: !!app && app.childElementCount > 0,
+      got: app?.childElementCount ?? 0,
+      want: '≥1 child',
+    });
+    probes.push({
+      name: 'SPA shell rendered (#main present)',
+      pass: !!document.getElementById('main'),
+      got: !!document.getElementById('main'),
+      want: 'true (only if SPA uses #main)',
+    });
+    probes.push({
+      name: 'serviceWorker controller active',
+      pass: !!reg && !!reg.controller,
+      got: reg?.controller?.scriptURL ?? '(none)',
+      want: 'controller URL',
+    });
+    probes.push({
+      name: 'no uncaught errors recorded',
+      pass: true, // populated below by reading consoleLogs
+      got: 'pending',
+      want: '0',
+    });
+    probes.push({
+      name: 'document.title set',
+      pass: !!document.title && document.title !== '',
+      got: document.title || '(empty)',
+      want: 'non-empty',
+    });
+    probes.push({
+      name: 'HTTPS or localhost',
+      pass: location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1',
+      got: location.protocol,
+      want: 'https: or local',
+    });
+
+    // Async: scan OPFS log for error-level entries — populates the placeholder probe
+    if (window.consoleLogs?.readJSON) {
+      window.consoleLogs.readJSON().then(entries => {
+        const errors = entries.filter(e => e.level === 'error' || e.level === 'fatal');
+        const probe = probes[probes.length - 3];
+        probe.pass = errors.length === 0;
+        probe.got = errors.length === 0 ? 0 : errors.length + ' error(s) — first: ' + (errors[0]?.msg?.slice(0, 80) || '?');
+        // Re-print summary if errors found post-hoc
+        if (errors.length > 0) {
+          console.warn('[self-test] late-discovered errors in OPFS log:', errors.length);
+          errors.slice(0, 5).forEach(e => console.warn('  •', e.source, e.msg.slice(0, 200)));
+        }
+      }).catch(() => undefined);
+    }
+
+    const passed = probes.filter(p => p.pass).length;
+    const failed = probes.length - passed;
+    const allGreen = failed === 0;
+    const banner = allGreen
+      ? '%c[self-test] ✓ ' + passed + '/' + probes.length + ' PASS · ' + proj
+      : '%c[self-test] ✗ ' + failed + '/' + probes.length + ' FAIL · ' + proj + ' — page is broken';
+    const style = allGreen
+      ? 'background:#0e3b1f;color:#3CC79F;font-weight:600;padding:3px 10px;border-radius:3px'
+      : 'background:#5a1818;color:#ff7a8a;font-weight:700;padding:3px 10px;border-radius:3px';
+    console.log(banner, style);
+
+    console.group('[self-test] details');
+    probes.forEach(p => {
+      const icon = p.pass ? '✓' : '✗';
+      const fn = p.pass ? console.log : console.warn;
+      fn('  ' + icon + ' ' + p.name + ' · got=' + safe(p.got) + (p.pass ? '' : '  (want: ' + p.want + ')'));
+    });
+    console.groupEnd();
+
+    if (!allGreen) {
+      console.warn('[self-test] hint: run window.__resetSW("self-test failed") if a stale SW is suspected');
+    }
+    return probes;
+  }
+
+  (window as Window & { __selfTest?: () => ProbeResult[] }).__selfTest = runSelfTest;
+
   // Synchronous one-liner so the console NEVER stays empty even if
   // DOMContentLoaded never fires (e.g. detached worker context).
   console.info('[console-logs] live · session=' + SESSION_ID + ' · path=' + location.pathname + ' — call window.__bootManifest() to re-dump');
 
   // Full dump on DOMContentLoaded (DOM is ready, scripts/sheets enumerable)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', dumpBootManifest, { once: true });
-  } else {
-    // Already past DCL — schedule ASAP without blocking the current task
-    setTimeout(dumpBootManifest, 0);
+  function scheduleAfterDCL(fn: () => void, delayMs: number = 0): void {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded',
+        () => delayMs > 0 ? setTimeout(fn, delayMs) : fn(),
+        { once: true });
+    } else {
+      setTimeout(fn, delayMs);
+    }
   }
+  scheduleAfterDCL(dumpBootManifest, 0);
+  // Self-test runs 1.5s AFTER DCL — gives the SPA's defer script.js time
+  // to fetch data, render shell, mount #main/#topbar/#sidebar. The probe
+  // catches "page came up but never rendered" silently-broken states.
+  scheduleAfterDCL(runSelfTest, 1500);
 })();
 
 export {};  // module-scope so `declare global` is allowed

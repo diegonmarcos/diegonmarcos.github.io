@@ -189,6 +189,9 @@ const emit = defineEmits<{
           <button :class="['nav-btn legend', { active: view === 'tarantino' }]" @click="emit('setView', 'tarantino')">
             TARANTINO
           </button>
+          <button :class="['nav-btn legend', { active: view === 'ridleyscott' }]" @click="emit('setView', 'ridleyscott')">
+            RIDLEY SCOTT
+          </button>
         </div>
       </div>
 

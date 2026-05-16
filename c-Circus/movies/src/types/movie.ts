@@ -32,7 +32,7 @@ export type ViewType =
   | 'home' | 'search' | 'series2025' | 'ghibli' | 'european' | 'newnoirs' | 'scifi'
   | 'staffpicks' | 'epics' | 'thrillers' | 'epicseries'
   | 'oscars2025' | 'oscars2024' | 'oscars2023' | 'oscars2022' | 'oscars2021' | 'oscars2020'
-  | 'spielberg' | 'scorsese' | 'eastwood' | 'kubrick' | 'nolan' | 'tarantino'
+  | 'spielberg' | 'scorsese' | 'eastwood' | 'kubrick' | 'nolan' | 'tarantino' | 'ridleyscott'
   | 'streep' | 'nicholson' | 'alpacino' | 'deniro' | 'hanks' | 'dicaprio'
   | 'prestige20m' | 'prestigepre22' | 'prestigetier2'
   | 'bulk'

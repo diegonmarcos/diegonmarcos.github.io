@@ -339,13 +339,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 img.src = PUBLIC_DIR + '/' + qr.output;
                 wrap.appendChild(img);
 
-                const desc = document.createElement('p');
-                desc.className = 'qr-description';
-                desc.textContent = qr.description || '';
-
                 card.appendChild(h2);
                 card.appendChild(wrap);
-                card.appendChild(desc);
+                if (qr.description) {
+                    const desc = document.createElement('p');
+                    desc.className = 'qr-description';
+                    desc.textContent = qr.description;
+                    card.appendChild(desc);
+                }
                 grid.appendChild(card);
             }
         }

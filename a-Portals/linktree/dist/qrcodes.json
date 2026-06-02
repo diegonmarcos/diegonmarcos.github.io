@@ -125,15 +125,13 @@
       "id": "vcf",
       "category": "vcard",
       "title": "vCard",
-      "description": "Add contact (offline — vCard text is encoded directly in the QR, scanner saves directly without network)",
       "output": "qr-code-diegonmarcos-vcf.png",
       "source": { "type": "vcard", "includePhoto": false }
     },
     {
       "id": "vcf-photo",
       "category": "vcard",
-      "title": "vCard with Photo",
-      "description": "Add contact with full-resolution photo (qrcode.html?vcard=photo auto-downloads the .vcf)",
+      "title": "vCard-M",
       "output": "qr-code-diegonmarcos-vcf-photo.png",
       "source": { "type": "url", "ref": "vcard_photo_landing" }
     },
@@ -141,7 +139,6 @@
       "id": "linktree",
       "category": "web",
       "title": "Linktree",
-      "description": "Personal link hub",
       "output": "qr-code-diegonmarcos-linktree.png",
       "source": { "type": "url", "ref": "linktree" }
     },
@@ -149,7 +146,6 @@
       "id": "landpage",
       "category": "web",
       "title": "Landing Page",
-      "description": "Personal website",
       "output": "qr-code-diegonmarcos-landpage.png",
       "source": { "type": "url", "ref": "landpage" }
     },
@@ -157,7 +153,6 @@
       "id": "telegram",
       "category": "social",
       "title": "Telegram",
-      "description": "Direct chat on Telegram",
       "output": "qr-code-diegonmarcos-telegram.png",
       "source": { "type": "url", "ref": "telegram" }
     },
@@ -165,7 +160,6 @@
       "id": "whatsapp",
       "category": "social",
       "title": "WhatsApp",
-      "description": "Direct chat on WhatsApp",
       "output": "qr-code-diegonmarcos-whatsapp.png",
       "source": { "type": "url", "ref": "whatsapp" }
     }

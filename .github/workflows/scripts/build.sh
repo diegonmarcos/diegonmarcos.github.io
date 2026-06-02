@@ -316,7 +316,7 @@ for (const bjson of glob) {
     const hasDist = fs.existsSync(distPath);
 
     // Build steps
-    const buildSteps = (config.build || []).map(s => s.mod);
+    const buildSteps = Array.isArray(config.build) ? config.build.map(s => s.mod) : [];
 
     projects.push({
         name: config.name,

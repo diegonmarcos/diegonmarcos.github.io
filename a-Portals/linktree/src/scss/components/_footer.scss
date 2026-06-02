@@ -1,10 +1,26 @@
 .linktree-footer {
     scroll-snap-align: start;
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 3rem;
+    padding: 3rem 1rem;
+    flex-wrap: wrap;
+}
+
+.linktree-footer-col {
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 1.5rem;
-    padding: 3rem 0;
+    min-width: 8rem;
+}
+
+@media (max-width: 480px) {
+    .linktree-footer {
+        gap: 2rem;
+    }
 }
 
 .linktree-footer-btn {

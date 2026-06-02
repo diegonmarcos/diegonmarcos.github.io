@@ -126,7 +126,7 @@ var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
     var x = "CFG_B" + i + "_";
-    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"].forEach(function(k) {
+    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"].forEach(function(k) {
         var v = s[k];
         if (Array.isArray(v)) v = v.join(",");
         p(x + k.toUpperCase(), v);
@@ -174,7 +174,7 @@ b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
     x = f"CFG_B{i}_"
-    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"]:
+    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"]:
         v = s.get(k,"")
         if isinstance(v, list): v = ",".join(str(x) for x in v)
         p(x + k.upper(), v)
@@ -682,6 +682,23 @@ mod_data_wrap() {
     log_step "data_wrap: $n JSON file(s) wrapped in $dir/"
 }
 
+# ─── mod_qrcode_gen — generate vCard files + styled QR PNGs + qrcode.html ───
+# from a JSON manifest. Delegates to front-qrcode-gen.sh, which calls the
+# project's LOCAL tsx (never npx). Requires the project's package.json to
+# declare tsx + qr-code-styling + qrcode + sharp + jsdom in devDependencies.
+mod_qrcode_gen() {
+    local manifest="${1:-src/typescript/qrcode/qrcodes.json}"
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-qrcode-gen.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-qrcode-gen.sh"
+    [ -x "$engine" ] || { log_error "qrcode_gen: front-qrcode-gen.sh not found / not executable"; return $EXIT_BUILD; }
+    local out
+    out="$("$engine" "$PROJECT_DIR" "$manifest" 2>&1)" || { log_error "qrcode_gen failed:"; echo "$out" >&2; return $EXIT_BUILD; }
+    local n_qr n_vcf
+    n_qr="$(echo "$out"  | grep -c '\->')"
+    n_vcf="$(echo "$out" | grep -c '^\[vcf:')"
+    log_step "qrcode_gen: $n_qr QR PNG(s) + $n_vcf vcf file(s) + qrcode.html from $manifest"
+}
+
 # ─── BUILD RUNNER ───────────────────────────────────────────
 run_build() {
     local i=0
@@ -711,6 +728,7 @@ run_build() {
         eval "local _source=\$CFG_B${i}_SOURCE"
         eval "local _out=\$CFG_B${i}_OUT"
         eval "local _bg=\$CFG_B${i}_BG"
+        eval "local _manifest=\$CFG_B${i}_MANIFEST"
 
         log_info "Step $_n/$step_n: $_mod"
 
@@ -741,6 +759,7 @@ run_build() {
             strip-module) mod_strip_module "$_files" ;;
             symlink)      mod_symlink "$_files" "$_output" ;;
             data_wrap)    mod_data_wrap "$_dir" ;;
+            qrcode_gen)   mod_qrcode_gen "$_manifest" ;;
             *)            log_warn "Unknown module: $_mod" ;;
         esac
 

@@ -18,6 +18,11 @@
       "bg": "#000000"
     },
     {
+      "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (uses LOCAL tsx — deps declared in package.json: tsx, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
+      "mod": "qrcode_gen",
+      "manifest": "src/typescript/qrcode/qrcodes.json"
+    },
+    {
       "mod": "esbuild",
       "input": "src/typescript/main.ts",
       "output": "script.js",

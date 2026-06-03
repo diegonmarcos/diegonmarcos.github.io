@@ -38,14 +38,28 @@ MANIFEST_REL="${2:-src/typescript/qrcode/qrcodes.json}"
 
 GENERATOR="$PROJECT/src/typescript/qrcode/qr-code-generator.ts"
 MANIFEST="$PROJECT/$MANIFEST_REL"
-TSX_BIN="$PROJECT/node_modules/.bin/tsx"
 
 [ -f "$GENERATOR" ] || { echo "✗ qrcode generator not found: $GENERATOR" >&2; exit 1; }
 [ -f "$MANIFEST" ]  || { echo "✗ qrcode manifest not found: $MANIFEST" >&2; exit 1; }
-[ -x "$TSX_BIN" ]   || {
-    echo "✗ tsx not installed at: $TSX_BIN" >&2
-    echo "  Declare tsx + qr-code-styling + qrcode + sharp + jsdom in package.json devDependencies, then run:" >&2
-    echo "    (cd $PROJECT && npm install)" >&2
+
+# Resolve tsx via standard npm-monorepo lookup order:
+#   1) project-local node_modules/.bin/tsx
+#   2) walk up parent dirs until we find one (root node_modules/.bin/tsx
+#      when deps were hoisted by `npm install` at the repo root — which
+#      is what GHA does)
+TSX_BIN=""
+_dir="$PROJECT"
+while [ "$_dir" != "/" ] && [ -n "$_dir" ]; do
+    if [ -x "$_dir/node_modules/.bin/tsx" ]; then
+        TSX_BIN="$_dir/node_modules/.bin/tsx"
+        break
+    fi
+    _dir="$(dirname "$_dir")"
+done
+
+[ -x "$TSX_BIN" ] || {
+    echo "✗ tsx not found anywhere from $PROJECT upward" >&2
+    echo "  Declare tsx + qr-code-styling + qrcode + sharp + jsdom in package.json devDependencies (project or repo root) and run \`npm install\`." >&2
     exit 1
 }
 

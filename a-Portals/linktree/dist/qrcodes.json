@@ -25,6 +25,7 @@
     "tel": "+34 634 76 98 33",
     "telType": "mobile",
     "address": {
+      "type": "home",
       "street": "Harzer Straße 42",
       "city": "Berlin",
       "region": "Berlin",

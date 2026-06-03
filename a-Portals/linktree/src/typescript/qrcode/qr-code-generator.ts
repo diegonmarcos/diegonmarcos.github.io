@@ -40,6 +40,7 @@ type QrSource =
     | { type: 'vcard'; includePhoto?: boolean };
 
 interface ContactAddress {
+    type?: string;
     street?: string;
     city?: string;
     region?: string;
@@ -172,8 +173,12 @@ async function renderVcard(
     }
     if (contact.address) {
         const a = contact.address;
+        // ADR needs an explicit TYPE= for Apple Contacts to display it
+        // (Android is lenient, iOS is strict). Default to "home" when
+        // unset so the field still renders end-to-end.
+        const t = a.type ?? 'home';
         lines.push(
-            `ADR:;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`,
+            `ADR;TYPE=${t}:;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`,
         );
     }
     for (const u of contact.urls ?? []) {

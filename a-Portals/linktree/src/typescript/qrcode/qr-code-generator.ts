@@ -177,9 +177,15 @@ async function renderVcard(
         // (Android is lenient, iOS is strict). Default to "home" when
         // unset so the field still renders end-to-end.
         const t = a.type ?? 'home';
-        lines.push(
-            `ADR;TYPE=${t}:;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`,
-        );
+        const adrValue =
+            `;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`;
+        // Per vCard 3.0 (RFC 2426 §5.7) any property value containing
+        // non-ASCII bytes must declare CHARSET=UTF-8. Apple's QR-vCard
+        // parser drops the field silently without it (iOS' Contacts
+        // file-import parser sniffs the encoding so it works for .vcf
+        // downloads — but the QR path is strict).
+        const charsetParam = /[^\x00-\x7F]/.test(adrValue) ? ';CHARSET=UTF-8' : '';
+        lines.push(`ADR;TYPE=${t}${charsetParam}:${adrValue}`);
     }
     for (const u of contact.urls ?? []) {
         const resolved = resolveContactUrl(u, links);
@@ -199,7 +205,10 @@ async function renderVcard(
         lines.push('');
     }
     lines.push('END:VCARD');
-    return lines.join('\n');
+    // vCard 3.0 (RFC 2426 §3.1) calls for CRLF line endings. Apple's
+    // file-import parser tolerates LF; Apple's QR-vCard parser is
+    // stricter and can drop fields when the line break isn't CRLF.
+    return lines.join('\r\n');
 }
 
 function escapeHtmlText(s: string): string {

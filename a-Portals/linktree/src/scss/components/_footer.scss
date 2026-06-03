@@ -40,9 +40,44 @@
     }
 }
 
+.linktree-footer-title {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+}
+
 .footer-icons {
     display: flex;
     gap: 1rem;
+}
+
+// Platform icons (Web / Android / Apple) — smaller, ghosted variant of
+// the round github-footer-btn. Same hover treatment; smaller size keeps
+// the column scannable at a glance.
+.footer-platform-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.78);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+    }
+
+    &--disabled {
+        opacity: 0.45;
+        pointer-events: none; // until we have an actual iOS target
+    }
 }
 
 .github-footer-btn {

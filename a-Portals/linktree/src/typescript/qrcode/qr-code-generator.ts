@@ -164,28 +164,32 @@ async function renderVcard(
     lines.push(`N:${contact.family};${contact.given};`);
     lines.push(`FN:${contact.displayName ?? `${contact.given} ${contact.family}`}`);
     if (contact.email !== undefined) {
-        const t = contact.emailType ?? 'personal';
+        // Uppercase TYPE values — Samsung Contacts only matches them
+        // case-sensitively (HOME/WORK/PERSONAL etc.). iOS is lenient.
+        const t = (contact.emailType ?? 'personal').toUpperCase();
         lines.push(`EMAIL;TYPE=${t}:${contact.email}`);
     }
     if (contact.tel !== undefined && contact.tel !== '') {
-        const t = contact.telType ?? 'mobile';
+        const t = (contact.telType ?? 'mobile').toUpperCase();
         lines.push(`TEL;TYPE=${t}:${contact.tel}`);
     }
     if (contact.address) {
         const a = contact.address;
-        // ADR needs an explicit TYPE= for Apple Contacts to display it
-        // (Android is lenient, iOS is strict). Default to "home" when
-        // unset so the field still renders end-to-end.
-        const t = a.type ?? 'home';
-        const adrValue =
-            `;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`;
-        // Per vCard 3.0 (RFC 2426 §5.7) any property value containing
-        // non-ASCII bytes must declare CHARSET=UTF-8. Apple's QR-vCard
-        // parser drops the field silently without it (iOS' Contacts
-        // file-import parser sniffs the encoding so it works for .vcf
-        // downloads — but the QR path is strict).
-        const charsetParam = /[^\x00-\x7F]/.test(adrValue) ? ';CHARSET=UTF-8' : '';
-        lines.push(`ADR;TYPE=${t}${charsetParam}:${adrValue}`);
+        // ADR needs an explicit TYPE= for Apple/Samsung Contacts to
+        // display it. TYPE values are case-insensitive per RFC 2426
+        // §4.1 but Samsung Contacts treats them case-sensitively and
+        // only recognises UPPERCASE (HOME / WORK). Force uppercase so
+        // both iOS and Samsung accept the field.
+        const t = (a.type ?? 'home').toUpperCase();
+        // NOTE: CHARSET= is vCard 2.1 syntax; RFC 2426 (vCard 3.0) does
+        // NOT define it. UTF-8 is the implicit encoding. Emitting a
+        // CHARSET parameter on a 3.0 property makes strict parsers
+        // (notably Samsung's) reject the whole property — exactly the
+        // ADR-drop symptom. The bytes themselves are UTF-8; that's
+        // sufficient.
+        lines.push(
+            `ADR;TYPE=${t}:;;${a.street ?? ''};${a.city ?? ''};${a.region ?? ''};${a.postalCode ?? ''};${a.country ?? ''}`,
+        );
     }
     for (const u of contact.urls ?? []) {
         const resolved = resolveContactUrl(u, links);

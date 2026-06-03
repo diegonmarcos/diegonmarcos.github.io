@@ -1,0 +1,7 @@
+# vCard 3.0 (RFC 2426 §3.1) mandates CRLF line endings. Without this
+# rule git's autocrlf normalises the CRLF the renderer emits back to LF
+# on checkout (incl. CI runners), silently dropping the spec-compliance
+# fix and breaking Apple's QR vCard parser (which is stricter than the
+# Contacts.app file-import parser). Treat as binary so the byte content
+# is preserved exactly on every machine.
+*.vcf binary

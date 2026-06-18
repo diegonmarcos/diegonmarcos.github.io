@@ -49,12 +49,16 @@
             ></iframe>
           </div>
 
-          <!-- Left: Placeholder for future -->
+          <!-- Left: Milky Way Map -->
           <div class="c-cube__face c-cube__face--left" @click="handleFaceClick(3, $event)" @touchend="handleFaceTap(3, $event)">
-            <div class="c-cube__placeholder c-cube__placeholder--gradient-1">
-              <h2>Coming Soon</h2>
-              <p>Future content</p>
-            </div>
+            <iframe
+              v-if="isActive && shouldLoadFace(3)"
+              :src="pages.left"
+              class="c-cube__iframe"
+              title="Milky Way Map"
+              loading="eager"
+              allow="accelerometer; autoplay"
+            ></iframe>
           </div>
 
           <!-- Top -->
@@ -129,7 +133,7 @@ const faceUrls: (string | null)[] = [
   'prism_glass.html',       // Front - prism glass
   'cube_fractal_neon.html', // Right - neon cube
   'perspectives.html',      // Back - perspectives
-  null,                     // Left - coming soon
+  'milky_way_map.html',     // Left - milky way map
   null,                     // Top - projects (coming soon)
   null                      // Bottom - contact (coming soon)
 ];
@@ -137,7 +141,8 @@ const faceUrls: (string | null)[] = [
 const pages = {
   front: 'prism_glass.html',
   right: 'cube_fractal_neon.html',
-  back: 'perspectives.html'
+  back: 'perspectives.html',
+  left: 'milky_way_map.html'
 };
 
 // Track if click was a drag (to prevent navigation on drag)
@@ -210,8 +215,8 @@ const handleFaceTap = (faceIndex: number, event: TouchEvent) => {
 
 // Track which faces have been visited (lazy load iframes)
 // Using shallowRef since we manually trigger updates
-// Load front, right, back faces initially (they have content)
-const visitedFaces = shallowRef<Set<number>>(new Set([0, 1, 2]));
+// Load front, right, back, left faces initially (they have content)
+const visitedFaces = shallowRef<Set<number>>(new Set([0, 1, 2, 3]));
 
 // Check if a face should load its iframe
 const shouldLoadFace = (faceIndex: number) => {

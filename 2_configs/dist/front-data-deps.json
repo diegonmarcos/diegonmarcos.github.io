@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "project_count": 25
+    "project_count": 26
   },
   "per_project": [
     {
@@ -47,8 +47,16 @@
       "path": "a-Portals/linktree",
       "deps": {
         "swiper": "^11.0.0",
+        "@types/jsdom": "^21.1.7",
+        "@types/node": "^22.0.0",
+        "@types/qrcode": "^1.5.5",
         "esbuild": "^0.20.2",
+        "jsdom": "^25.0.0",
+        "qr-code-styling": "^1.9.2",
+        "qrcode": "^1.5.4",
         "sass": "^1.77.0",
+        "sharp": "^0.33.5",
+        "tsx": "^4.19.0",
         "typescript": "^5.9.3"
       }
     },
@@ -365,6 +373,20 @@
       }
     },
     {
+      "key": "c-Suite__tldraw",
+      "path": "c-Suite/tldraw",
+      "deps": {
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "tldraw": "^5.1.1",
+        "@types/react": "^18.3.0",
+        "@types/react-dom": "^18.3.0",
+        "@vitejs/plugin-react": "^4.3.0",
+        "typescript": "^5.6.0",
+        "vite": "^5.4.0"
+      }
+    },
+    {
       "key": "e-Root",
       "path": "e-Root",
       "deps": {
@@ -388,6 +410,13 @@
     "eslint": "^9.39.1",
     "prettier": "^3.6.2",
     "swiper": "^11.0.0",
+    "@types/jsdom": "^21.1.7",
+    "@types/qrcode": "^1.5.5",
+    "jsdom": "^25.0.0",
+    "qr-code-styling": "^1.9.2",
+    "qrcode": "^1.5.4",
+    "sharp": "^0.33.5",
+    "tsx": "^4.19.0",
     "pixi.js": "^8.6.0",
     "three": "^0.170.0",
     "@types/three": "^0.170.0",
@@ -457,9 +486,7 @@
     "gray-matter": "^4.0.3",
     "lucide": "^0.460.0",
     "lightweight-charts": "^5.0.0",
-    "jsdom": "^25.0.0",
     "jszip": "^3.10.1",
-    "tsx": "^4.19.0",
     "xlsx": "^0.18.5",
     "d3-geo": "^3.1.1",
     "d3-interpolate": "^3.0.1",
@@ -467,6 +494,12 @@
     "@types/d3-geo": "^3.1.0",
     "@mapbox/togeojson": "^0.16.2",
     "maplibre-gl": "^5.17.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tldraw": "^5.1.1",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.0",
     "vite-ssg": "^0.23.0"
   }
 }

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated_by": "2_configs/build.sh consolidate",
-    "timestamp": "2026-05-07T18:06:34+02:00",
+    "timestamp": "2026-06-19T15:04:16+03:00",
     "schema": "front-data/v1"
   },
   "root_config": {
@@ -851,6 +851,11 @@
             "bg": "#000000"
           },
           {
+            "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (uses LOCAL tsx — deps declared in package.json: tsx, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
+            "mod": "qrcode_gen",
+            "manifest": "src/typescript/qrcode/qrcodes.json"
+          },
+          {
             "mod": "esbuild",
             "input": "src/typescript/main.ts",
             "output": "script.js",
@@ -866,6 +871,18 @@
             "mod": "copy",
             "files": "index.html",
             "from": "src"
+          },
+          {
+            "_doc": "QR code gallery page (data-driven — fetches qrcodes.json at runtime).",
+            "mod": "copy",
+            "files": "qrcode.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Manifest consumed at runtime by qrcode.html (the cards) — same JSON the qr-code generator reads (the QRs + vCard files). Copied flat to dist root; the HTML fetches it as './qrcodes.json'.",
+            "mod": "copy",
+            "files": "qrcodes.json",
+            "from": "src/typescript/qrcode"
           },
           {
             "mod": "copy",
@@ -961,8 +978,16 @@
           "swiper": "^11.0.0"
         },
         "devDependencies": {
+          "@types/jsdom": "^21.1.7",
+          "@types/node": "^22.0.0",
+          "@types/qrcode": "^1.5.5",
           "esbuild": "^0.20.2",
+          "jsdom": "^25.0.0",
+          "qr-code-styling": "^1.9.2",
+          "qrcode": "^1.5.4",
           "sass": "^1.77.0",
+          "sharp": "^0.33.5",
+          "tsx": "^4.19.0",
           "typescript": "^5.9.3"
         }
       },
@@ -3891,6 +3916,55 @@
       "has_manifest": false
     },
     {
+      "category": "c-Suite",
+      "project": "tldraw",
+      "key": "c-Suite__tldraw",
+      "path": "c-Suite/tldraw",
+      "build": {
+        "name": "tldraw",
+        "framework": "react",
+        "port": 8032,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "vite"
+          }
+        ],
+        "serve": {
+          "mode": "vite"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "package": {
+        "name": "tldraw",
+        "version": "1.0.0",
+        "description": "tldraw infinite-canvas whiteboard — static SPA, local-only persistence (browser IndexedDB)",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite",
+          "build": "tsc --noEmit && vite build",
+          "preview": "vite preview",
+          "typecheck": "tsc --noEmit"
+        },
+        "dependencies": {
+          "react": "^18.3.1",
+          "react-dom": "^18.3.1",
+          "tldraw": "^5.1.1"
+        },
+        "devDependencies": {
+          "@types/react": "^18.3.0",
+          "@types/react-dom": "^18.3.0",
+          "@vitejs/plugin-react": "^4.3.0",
+          "typescript": "^5.6.0",
+          "vite": "^5.4.0"
+        }
+      }
+    },
+    {
       "category": "e-Others",
       "project": "others",
       "key": "e-Others__others",
@@ -4093,6 +4167,10 @@
     {
       "path": "c-Suite/suite",
       "deploy_name": "suite"
+    },
+    {
+      "path": "c-Suite/tldraw",
+      "deploy_name": "tldraw"
     },
     {
       "path": "b-Data/myAstro",

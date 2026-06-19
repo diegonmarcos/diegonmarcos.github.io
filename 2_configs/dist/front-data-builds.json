@@ -659,6 +659,11 @@
         "bg": "#000000"
       },
       {
+        "_doc": "Generate vCard files + styled QR PNGs + qrcode.html from src/typescript/qrcode/qrcodes.json. Engine: front-qrcode-gen.sh (uses LOCAL tsx — deps declared in package.json: tsx, qr-code-styling, qrcode, sharp, jsdom). MUST run BEFORE the copy steps that ship qrcode.html + qrcodes.json + the PNGs to dist/.",
+        "mod": "qrcode_gen",
+        "manifest": "src/typescript/qrcode/qrcodes.json"
+      },
+      {
         "mod": "esbuild",
         "input": "src/typescript/main.ts",
         "output": "script.js",
@@ -674,6 +679,18 @@
         "mod": "copy",
         "files": "index.html",
         "from": "src"
+      },
+      {
+        "_doc": "QR code gallery page (data-driven — fetches qrcodes.json at runtime).",
+        "mod": "copy",
+        "files": "qrcode.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Manifest consumed at runtime by qrcode.html (the cards) — same JSON the qr-code generator reads (the QRs + vCard files). Copied flat to dist root; the HTML fetches it as './qrcodes.json'.",
+        "mod": "copy",
+        "files": "qrcodes.json",
+        "from": "src/typescript/qrcode"
       },
       {
         "mod": "copy",
@@ -2961,6 +2978,26 @@
     "_key": "c-Suite__suite",
     "_category": "c-Suite",
     "_project": "suite"
+  },
+  {
+    "name": "tldraw",
+    "framework": "react",
+    "port": 8032,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "vite"
+      }
+    ],
+    "serve": {
+      "mode": "vite"
+    },
+    "deploy": {},
+    "_path": "c-Suite/tldraw",
+    "_key": "c-Suite__tldraw",
+    "_category": "c-Suite",
+    "_project": "tldraw"
   },
   {
     "name": "Others",

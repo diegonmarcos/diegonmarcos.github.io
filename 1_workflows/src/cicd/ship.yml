@@ -213,6 +213,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Suite build complete"
+      - name: 🔨 Build tldraw
+        id: build-tldraw
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-Suite/tldraw/src/')
+
+        run: |
+          echo "🔨 Building tldraw..."
+          cd c-Suite/tldraw
+          bash build.sh build
+          cd ../..
+          echo "✅ tldraw build complete"
       - name: 🔨 Build MyHealth Profile
         id: build-myhealth-profile
         if:
@@ -465,6 +476,7 @@ jobs:
             "c-Suite/mymail:mymail"
             "b-MyData/myphotos:myphotos"
             "c-Suite/suite:suite"
+            "c-Suite/tldraw:tldraw"
             "b-Data/myAstro:myAstro"
             "c-Circus/carto:carto"
             "c-LabTools/central_bank:central_bank"

@@ -64,6 +64,10 @@
     "deploy_name": "suite"
   },
   {
+    "path": "c-Suite/tldraw",
+    "deploy_name": "tldraw"
+  },
+  {
     "path": "b-Data/myAstro",
     "deploy_name": "myAstro"
   },

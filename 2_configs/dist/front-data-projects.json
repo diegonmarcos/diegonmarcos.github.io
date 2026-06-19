@@ -480,6 +480,18 @@
     "has_pkg": false
   },
   {
+    "path": "c-Suite/tldraw",
+    "category": "c-Suite",
+    "project": "tldraw",
+    "key": "c-Suite__tldraw",
+    "name": "tldraw",
+    "framework": "react",
+    "port": 8032,
+    "deploy_name": "tldraw",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "e-Others/others",
     "category": "e-Others",
     "project": "others",

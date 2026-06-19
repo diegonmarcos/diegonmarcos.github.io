@@ -328,7 +328,20 @@ const topology = {
     projects: projects
 };
 
-fs.writeFileSync(path.join(repo, 'front-topology.json'), JSON.stringify(topology, null, 2) + '\n');
+// front-topology.json may be a symlink into a submodule (e.g. I_front-data) that
+// is NOT checked out (submodules are read-only here and never force-registered).
+// Resolve the real target and ensure its parent exists so generation never dies
+// on a dangling symlink — that ENOENT was the gen-configs CI failure.
+const outPath = path.join(repo, 'front-topology.json');
+let realPath = outPath;
+try {
+    realPath = fs.realpathSync(outPath);
+} catch (e) {
+    try { realPath = path.resolve(path.dirname(outPath), fs.readlinkSync(outPath)); }
+    catch (e2) { realPath = outPath; }
+}
+fs.mkdirSync(path.dirname(realPath), { recursive: true });
+fs.writeFileSync(realPath, JSON.stringify(topology, null, 2) + '\n');
 console.log('front-topology.json: ' + projects.length + ' projects');
 
 // Summary by category

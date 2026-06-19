@@ -146,29 +146,35 @@ do_deploy() {
         log "Deployed $(basename "$f") → repo root"
     done
 
-    # Sync submodules: ensure all entries in .gitmodules are registered + cloned
+    # Submodules are READ-ONLY to this engine. Registering a submodule (`git
+    # submodule add`) stages a gitlink (160000) into the index — committing
+    # submodule pins from the parent is forbidden. So we NEVER add/register and
+    # NEVER stage submodule paths. We only check out already-registered ones
+    # (no index change), and as a safety net we unstage any submodule gitlink
+    # that some other step may have staged.
     if [ -f "$REPO_ROOT/.gitmodules" ]; then
-        # Read declared submodules from .gitmodules
+        # Report registration status (read-only); skip anything not registered.
         git -C "$REPO_ROOT" config --file .gitmodules --get-regexp 'submodule\..*\.path' 2>/dev/null | while read -r key path; do
             name=$(echo "$key" | sed 's/^submodule\.\(.*\)\.path$/\1/')
-            url=$(git -C "$REPO_ROOT" config --file .gitmodules "submodule.$name.url" 2>/dev/null || true)
-            # Check if submodule is already in git index
             if git -C "$REPO_ROOT" ls-files --stage "$path" 2>/dev/null | grep -q '^160000'; then
-                log "submodule '$name' already registered"
+                log "submodule '$name' registered (read-only)"
             else
-                # New submodule: add it (this registers gitlink + clones)
-                log "submodule '$name' not in index — adding from .gitmodules"
-                git -C "$REPO_ROOT" submodule add --force --name "$name" "$url" "$path" 2>&1 | while IFS= read -r line; do
-                    log "  $line"
-                done
+                log "submodule '$name' NOT registered — skipping (register manually; the engine never stages submodules)"
             fi
         done
-        # Sync URLs + update all
+        # Checkout already-registered submodules only — does not add/stage.
         git -C "$REPO_ROOT" submodule sync 2>/dev/null || true
         git -C "$REPO_ROOT" submodule update --init 2>&1 | while IFS= read -r line; do
             log "submodule: $line"
         done
-        log "Synced submodules"
+        # Safety net: unstage any submodule gitlink that ended up staged.
+        git -C "$REPO_ROOT" config --file .gitmodules --get-regexp 'submodule\..*\.path' 2>/dev/null | while read -r key path; do
+            if git -C "$REPO_ROOT" diff --cached --name-only -- "$path" 2>/dev/null | grep -q .; then
+                git -C "$REPO_ROOT" reset -q HEAD -- "$path" 2>/dev/null || true
+                log "unstaged submodule gitlink '$path' (read-only guard)"
+            fi
+        done
+        log "Synced submodules (read-only)"
     fi
 
     # Gitconfig → include in .git/config

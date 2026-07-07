@@ -37,7 +37,9 @@
       "deploy_name": "tldraw",
       "url": "https://diegonmarcos.github.io/tldraw"
     },
-    "consumers": [],
+    "consumers": [
+      "tldraw"
+    ],
     "has_package_json": true,
     "has_manifest": false
   }

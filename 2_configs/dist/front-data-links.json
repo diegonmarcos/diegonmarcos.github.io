@@ -575,6 +575,14 @@
     {
       "section": "personal-tools",
       "slide": "personal-tools",
+      "column": "Tools",
+      "label": "tldraw",
+      "url": "https://diegonmarcos.github.io/tldraw/",
+      "icon": "brush.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
       "column": "Data Science & ML",
       "label": "Colab",
       "url": "https://colab.research.google.com",
@@ -851,6 +859,14 @@
       "label": "WG0",
       "url": "https://wg.diegonmarcos.com",
       "icon": "lock.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Security",
+      "label": "CrowdSec",
+      "url": "https://crowdsec.diegonmarcos.com",
+      "icon": "bolt.svg"
     },
     {
       "section": "personal-tools",

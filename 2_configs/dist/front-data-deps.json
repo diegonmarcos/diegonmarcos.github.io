@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "project_count": 26
+    "project_count": 27
   },
   "per_project": [
     {
@@ -78,6 +78,11 @@
         "sass": "^1.77.0",
         "typescript": "^5.9.3"
       }
+    },
+    {
+      "key": "a-Projects__Warehouse",
+      "path": "a-Projects/Warehouse",
+      "deps": {}
     },
     {
       "key": "b-Data__myAstro",

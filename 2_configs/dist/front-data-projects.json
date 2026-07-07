@@ -120,6 +120,18 @@
     "has_pkg": true
   },
   {
+    "path": "a-Projects/Warehouse",
+    "category": "a-Projects",
+    "project": "Warehouse",
+    "key": "a-Projects__Warehouse",
+    "name": "SlabTwin 3D Warehouse",
+    "framework": "vanilla",
+    "port": 8020,
+    "deploy_name": "Warehouse",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "b-Data/myAstro",
     "category": "b-Data",
     "project": "myAstro",
@@ -168,18 +180,6 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth",
-    "category": "b-MyData",
-    "project": "myhealth",
-    "key": "b-MyData__myhealth",
-    "name": "MyHealth",
-    "framework": "vanilla",
-    "port": 8026,
-    "deploy_name": "myhealth",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "b-MyData/myhealth-profile",
     "category": "b-MyData",
     "project": "myhealth-profile",
@@ -200,6 +200,18 @@
     "framework": "vanilla",
     "port": 8025,
     "deploy_name": "myhealth-tracker",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "b-MyData/myhealth",
+    "category": "b-MyData",
+    "project": "myhealth",
+    "key": "b-MyData__myhealth",
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "port": 8026,
+    "deploy_name": "myhealth",
     "has_pwa": false,
     "has_pkg": false
   },
@@ -432,18 +444,6 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/mymaps",
-    "category": "c-Suite",
-    "project": "mymaps",
-    "key": "c-Suite__mymaps",
-    "name": "MyMaps",
-    "framework": "vanilla",
-    "port": 8027,
-    "deploy_name": "mymaps",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "c-Suite/mymaps-maps",
     "category": "c-Suite",
     "project": "mymaps-maps",
@@ -466,6 +466,18 @@
     "deploy_name": "mymaps-navigation",
     "has_pwa": false,
     "has_pkg": true
+  },
+  {
+    "path": "c-Suite/mymaps",
+    "category": "c-Suite",
+    "project": "mymaps",
+    "key": "c-Suite__mymaps",
+    "name": "MyMaps",
+    "framework": "vanilla",
+    "port": 8027,
+    "deploy_name": "mymaps",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Suite/suite",

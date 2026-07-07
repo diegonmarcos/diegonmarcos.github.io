@@ -1,0 +1,49 @@
+{
+  "name": "SlabTwin 3D Warehouse",
+  "framework": "vanilla",
+  "port": 8020,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Copy HTML, CSS, and JS files from src to dist",
+      "mod": "copy",
+      "files": "*.html,*.css,*.js",
+      "from": "src"
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "a-Projects/Warehouse",
+    "category": "a-Projects",
+    "project": "Warehouse",
+    "key": "a-Projects__Warehouse",
+    "port": 8020,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": false,
+      "deploy_name": "Warehouse",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
+    },
+    "consumers": [],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

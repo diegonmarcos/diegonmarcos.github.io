@@ -1221,11 +1221,11 @@ export class SlabWarehouseTwin {
     // Single source of truth for which nav icon is lit up — in both the
     // top icon bar AND the side drawer, since both carry data-tab="<id>".
     static TAB_TITLES = {
-        '3d': '3D Warehouse',
-        register: 'Stock Register',
-        visualizer: 'Slab Viewer',
+        '3d': 'Warehouse 3D',
         slider: 'Slab Slider',
-        flow: 'Inventory Flow',
+        visualizer: 'Slab Viewer',
+        register: 'Slab Registry',
+        flow: 'Supply Flow Dashboards',
         about: 'About',
     };
 
@@ -1501,6 +1501,37 @@ export class SlabWarehouseTwin {
             });
         }).join('');
 
+        // Sales Flow by stone type: same lifecycle stage breakdown, grouped
+        // by material instead of totalled across the whole warehouse.
+        const byMaterialLifecycle = new Map();
+        this.slabs.forEach(slab => {
+            if (!byMaterialLifecycle.has(slab.material)) {
+                const entry = { totalValue: 0, deliveredValue: 0 };
+                FlowSimulator.LIFECYCLE_STAGES.forEach(stage => { entry[stage] = 0; });
+                byMaterialLifecycle.set(slab.material, entry);
+            }
+            const entry = byMaterialLifecycle.get(slab.material);
+            const stage = FlowSimulator.deriveSlabFlowStage(slab);
+            entry[stage]++;
+            entry.totalValue += slab.price;
+            if (stage === 'Delivered') entry.deliveredValue += slab.price;
+        });
+
+        const lifecycleMaterialBody = document.getElementById('flow-lifecycle-material-body');
+        if (lifecycleMaterialBody) {
+            lifecycleMaterialBody.innerHTML = Array.from(byMaterialLifecycle.entries()).map(([material, d]) => `
+                <tr>
+                    <td class="py-2.5 px-3 font-bold text-amber-500">${material}</td>
+                    <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${d.Available}</td>
+                    <td class="py-2.5 px-2 text-center text-amber-400 font-bold">${d.Reserved}</td>
+                    <td class="py-2.5 px-2 text-center text-sky-400 font-bold">${d.Bought}</td>
+                    <td class="py-2.5 px-2 text-center text-violet-400 font-bold">${d.Delivering}</td>
+                    <td class="py-2.5 px-2 text-center text-slate-300 font-bold">${d.Delivered}</td>
+                    <td class="py-2.5 px-3 text-right font-bold">€${Math.round((isCash ? d.deliveredValue : d.totalValue) * usdToEur).toLocaleString()}</td>
+                </tr>
+            `).join('');
+        }
+
         // --- C) Inventory Balance: Quantity & Value (EUR), same stages, same card ---
         const grandTotal = this.slabs.reduce((sum, s) => sum + s.price, 0);
         const grandTotalEur = Math.round(grandTotal * usdToEur);
@@ -1539,6 +1570,39 @@ export class SlabWarehouseTwin {
                 : 'Grand total (accrual) across the full warehouse inventory',
             isTotal: true,
         });
+
+        // Balance by stone type: quantity plus a side-by-side Cash Realized /
+        // Accrued-Pending / Total breakdown per material — the same
+        // cash-vs-accounting distinction as the toggle above, just sliced by
+        // material instead of collapsed into one warehouse-wide number.
+        const byMaterialBalance = new Map();
+        this.slabs.forEach(slab => {
+            if (!byMaterialBalance.has(slab.material)) {
+                byMaterialBalance.set(slab.material, { count: 0, totalValue: 0, deliveredValue: 0 });
+            }
+            const entry = byMaterialBalance.get(slab.material);
+            entry.count++;
+            entry.totalValue += slab.price;
+            if (FlowSimulator.deriveSlabFlowStage(slab) === 'Delivered') entry.deliveredValue += slab.price;
+        });
+
+        const balanceMaterialBody = document.getElementById('flow-balance-material-body');
+        if (balanceMaterialBody) {
+            balanceMaterialBody.innerHTML = Array.from(byMaterialBalance.entries()).map(([material, d]) => {
+                const totalEur = Math.round(d.totalValue * usdToEur);
+                const cashEur = Math.round(d.deliveredValue * usdToEur);
+                const pendingEur = totalEur - cashEur;
+                return `
+                    <tr>
+                        <td class="py-2.5 px-3 font-bold text-amber-500">${material}</td>
+                        <td class="py-2.5 px-2 text-center text-white font-bold">${d.count}</td>
+                        <td class="py-2.5 px-2 text-right text-emerald-400 font-bold">€${cashEur.toLocaleString()}</td>
+                        <td class="py-2.5 px-2 text-right text-slate-400 font-bold">€${pendingEur.toLocaleString()}</td>
+                        <td class="py-2.5 px-3 text-right text-sky-400 font-bold">€${totalEur.toLocaleString()}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
     }
 
     setupUIHandlers() {

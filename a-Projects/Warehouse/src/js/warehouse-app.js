@@ -62,6 +62,7 @@ export class SlabWarehouseTwin {
             // 3. Load UI bindings
             this.renderDatabaseTable();
             this.setupUIHandlers();
+            this.setupTopbarLayout();
 
             // 4. Initiate 3D Warehouse Environment
             this.init3D();
@@ -1277,36 +1278,66 @@ export class SlabWarehouseTwin {
         this.renderFlowPanel();
     }
 
+    // Single reusable card renderer so Inventory Flow / Sales Flow / Inventory
+    // Balance all share one exact visual pattern: icon chip, stage name, unit
+    // count, € value, a progress bar against the section total, and a one-line
+    // resume. `usdToEur` conversion is applied by the caller before this runs.
+    buildFlowCard({ stage, label, count, unitLabel, valueEur, pct, resume, isTotal = false }) {
+        const meta = FlowSimulator.STAGE_META[stage] || FlowSimulator.STAGE_META.Delivered;
+        const totalClass = isTotal ? ' flow-total-card' : '';
+        const pctDisplay = pct === null ? '' : `
+            <div class="flow-card-bar-track">
+                <div class="flow-card-bar-fill ${meta.bar}" style="width:${pct}%"></div>
+            </div>
+        `;
+        return `
+            <div class="flow-card${totalClass}">
+                <div class="flow-card-head">
+                    <span class="flow-card-icon ${meta.soft}" style="color:${meta.color}">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${meta.icon}"/></svg>
+                    </span>
+                    <span class="flow-card-title">${label || stage}</span>
+                </div>
+                <div class="flow-card-body">
+                    <div>
+                        <span class="flow-card-units">${count}</span>
+                        <span class="flow-card-units-label">&nbsp;${unitLabel}</span>
+                    </div>
+                    <span class="flow-card-eur" style="color:${isTotal ? '#f59e0b' : '#34d399'}">€${valueEur.toLocaleString()}</span>
+                </div>
+                ${pctDisplay}
+                <div class="flow-card-resume">${resume}</div>
+            </div>
+        `;
+    }
+
     renderFlowPanel() {
         if (!this.purchaseOrders) {
             this.purchaseOrders = FlowSimulator.generatePurchaseOrders();
         }
+        const usdToEur = 0.92;
 
-        // --- A) Procurement flow: Requested / Shipped / Delivered ---
-        const procurementMeta = {
-            Requested: { textClass: 'text-sky-400', barClass: 'bg-sky-500' },
-            Shipped: { textClass: 'text-amber-400', barClass: 'bg-amber-500' },
-            Delivered: { textClass: 'text-emerald-400', barClass: 'bg-emerald-500' },
-        };
+        // --- A) Inventory Flow: Requested / Shipped / Delivered (purchase orders) ---
         const procurementStats = {};
         FlowSimulator.PROCUREMENT_STAGES.forEach(stage => { procurementStats[stage] = { count: 0, value: 0 }; });
         this.purchaseOrders.forEach(po => {
             procurementStats[po.status].count++;
             procurementStats[po.status].value += po.orderValue;
         });
+        const totalOrders = this.purchaseOrders.length;
 
         const stagesContainer = document.getElementById('flow-procurement-stages');
         stagesContainer.innerHTML = FlowSimulator.PROCUREMENT_STAGES.map(stage => {
             const data = procurementStats[stage];
-            const meta = procurementMeta[stage];
-            return `
-                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800/60">
-                    <span class="text-[9px] ${meta.textClass} uppercase font-black tracking-widest block mb-1.5">${stage}</span>
-                    <span class="text-2xl font-black text-white block font-mono">${data.count}</span>
-                    <span class="text-[10px] text-slate-500 font-mono">purchase orders</span>
-                    <span class="block text-sm font-bold text-emerald-400 font-mono mt-1.5">$${data.value.toLocaleString()}</span>
-                </div>
-            `;
+            const pct = ((data.count / totalOrders) * 100).toFixed(1);
+            return this.buildFlowCard({
+                stage,
+                count: data.count,
+                unitLabel: 'orders',
+                valueEur: Math.round(data.value * usdToEur),
+                pct,
+                resume: `${pct}% of all purchase orders currently ${stage.toLowerCase()}`,
+            });
         }).join('');
 
         // Sources (quarry / supplier) breakdown table
@@ -1326,24 +1357,17 @@ export class SlabWarehouseTwin {
         const sourcesBody = document.getElementById('flow-sources-body');
         sourcesBody.innerHTML = Array.from(bySource.entries()).map(([name, d]) => `
             <tr>
-                <td class="py-2.5 px-2 font-bold text-white">${name}</td>
+                <td class="py-2.5 px-3 font-bold text-white">${name}</td>
                 <td class="py-2.5 px-2 text-slate-400">${d.location}</td>
                 <td class="py-2.5 px-2 text-amber-500 font-bold">${d.material}</td>
                 <td class="py-2.5 px-2 text-center text-sky-400 font-bold">${d.Requested}</td>
                 <td class="py-2.5 px-2 text-center text-amber-400 font-bold">${d.Shipped}</td>
                 <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${d.Delivered}</td>
-                <td class="py-2.5 px-2 text-right font-bold">$${d.totalValue.toLocaleString()}</td>
+                <td class="py-2.5 px-3 text-right font-bold">€${Math.round(d.totalValue * usdToEur).toLocaleString()}</td>
             </tr>
         `).join('');
 
-        // --- B) Fulfillment lifecycle: Available / Reserved / Bought / Delivering / Delivered ---
-        const lifecycleMeta = {
-            Available: 'bg-emerald-500',
-            Reserved: 'bg-amber-500',
-            Bought: 'bg-sky-500',
-            Delivering: 'bg-violet-500',
-            Delivered: 'bg-slate-400',
-        };
+        // --- B) Sales Flow: Available / Reserved / Bought / Delivering / Delivered ---
         const lifecycleStats = {};
         FlowSimulator.LIFECYCLE_STAGES.forEach(stage => { lifecycleStats[stage] = { count: 0, value: 0 }; });
         this.slabs.forEach(slab => {
@@ -1353,43 +1377,44 @@ export class SlabWarehouseTwin {
         });
         const totalSlabCount = this.slabs.length;
 
-        const barsContainer = document.getElementById('flow-lifecycle-bars');
-        barsContainer.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
+        const lifecycleCardsContainer = document.getElementById('flow-lifecycle-cards');
+        lifecycleCardsContainer.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
             const data = lifecycleStats[stage];
             const pct = ((data.count / totalSlabCount) * 100).toFixed(1);
-            return `
-                <div>
-                    <div class="flex justify-between items-center text-xs font-mono mb-1">
-                        <span class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">${stage}</span>
-                        <span class="text-slate-400">${data.count} slabs &middot; ${pct}% &middot; <span class="text-emerald-400 font-bold">$${data.value.toLocaleString()}</span></span>
-                    </div>
-                    <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/60">
-                        <div class="h-full ${lifecycleMeta[stage]} rounded-full" style="width: ${pct}%"></div>
-                    </div>
-                </div>
-            `;
+            return this.buildFlowCard({
+                stage,
+                count: data.count,
+                unitLabel: 'slabs',
+                valueEur: Math.round(data.value * usdToEur),
+                pct,
+                resume: `${pct}% of total warehouse stock`,
+            });
         }).join('');
 
-        // --- C) Inventory Balance: Quantity & Value (EUR) ---
-        const amountsGrid = document.getElementById('flow-amounts-grid');
+        // --- C) Inventory Balance: Quantity & Value (EUR), same stages, same card ---
         const grandTotal = this.slabs.reduce((sum, s) => sum + s.price, 0);
-        const usdToEur = 0.92;
+        const amountsGrid = document.getElementById('flow-amounts-grid');
         amountsGrid.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
-            const valueEur = Math.round(lifecycleStats[stage].value * usdToEur);
-            return `
-                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/40 text-center">
-                    <span class="text-[9px] text-slate-500 uppercase font-black block tracking-wider">${stage}</span>
-                    <span class="text-xs font-bold text-slate-300 block mt-1.5 font-mono">${lifecycleStats[stage].count} units</span>
-                    <span class="text-sm font-black text-emerald-400 block mt-1 font-mono">€${valueEur.toLocaleString()}</span>
-                </div>
-            `;
-        }).join('') + `
-            <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-xl text-center">
-                <span class="text-[9px] text-amber-500 uppercase font-black block tracking-wider">Total Stock</span>
-                <span class="text-xs font-bold text-amber-300 block mt-1.5 font-mono">${this.slabs.length} units</span>
-                <span class="text-sm font-black text-amber-400 block mt-1 font-mono">€${Math.round(grandTotal * usdToEur).toLocaleString()}</span>
-            </div>
-        `;
+            const data = lifecycleStats[stage];
+            const pct = ((data.count / totalSlabCount) * 100).toFixed(1);
+            return this.buildFlowCard({
+                stage,
+                count: data.count,
+                unitLabel: 'units',
+                valueEur: Math.round(data.value * usdToEur),
+                pct,
+                resume: `Avg €${data.count ? Math.round((data.value * usdToEur) / data.count).toLocaleString() : 0} per unit`,
+            });
+        }).join('') + this.buildFlowCard({
+            stage: 'Delivered',
+            label: 'Grand Total',
+            count: this.slabs.length,
+            unitLabel: 'units (all stages)',
+            valueEur: Math.round(grandTotal * usdToEur),
+            pct: null,
+            resume: 'Grand total across the full warehouse inventory',
+            isTotal: true,
+        });
     }
 
     setupUIHandlers() {
@@ -1416,6 +1441,10 @@ export class SlabWarehouseTwin {
             mobileMenu.classList.add('hidden');
             mobileOverlay.classList.add('hidden');
         };
+
+        mobileOverlay.onclick = closeMenu;
+        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
+        if (mobileMenuCloseBtn) mobileMenuCloseBtn.onclick = closeMenu;
 
         const mobileBtns = [
             { id: 'nav-3d-btn-mobile', fn: () => this.activate3DTab() },
@@ -1497,6 +1526,29 @@ export class SlabWarehouseTwin {
                 }
             }
         };
+    }
+
+    // Measures the real, rendered height of the fixed #app-topbar (header +
+    // desktop nav, or header alone on mobile) and pushes #app-main down by
+    // exactly that much. Re-measured on resize/orientation change so the
+    // persistent top bar and the 3D viewport below it never fight over space,
+    // regardless of what the 3D engine's own resize() does to the canvas.
+    setupTopbarLayout() {
+        const topbar = document.getElementById('app-topbar');
+        const main = document.getElementById('app-main');
+        if (!topbar || !main) return;
+
+        const applyOffset = () => {
+            const h = topbar.getBoundingClientRect().height;
+            main.style.top = `${h}px`;
+        };
+
+        applyOffset();
+        window.addEventListener('resize', applyOffset);
+        window.addEventListener('orientationchange', applyOffset);
+        if (window.ResizeObserver) {
+            new ResizeObserver(applyOffset).observe(topbar);
+        }
     }
 
     showNotification(text) {

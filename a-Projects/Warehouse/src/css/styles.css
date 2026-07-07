@@ -1,104 +1,102 @@
-/* Navigation Bar Explicit Styling
-   Hardcoded fallback (not relying on Tailwind's runtime CDN compiler) so the tab
-   labels always render with a visible size/color/font even if the Play CDN JIT
-   fails to pick up arbitrary-value classes (text-[11px]) or runtime-toggled
-   utility classes (text-amber-500 / text-slate-400 swapped via classList in JS). */
-/* Full page skeleton pinned in plain CSS, independent of Tailwind's runtime-generated
-   utilities (min-h-screen, max-h-screen, flex-1, shrink-0, min-h-0 etc). The 3D canvas
-   drives window 'resize' (engine.resize()) during pointer interaction, and if any of
-   those Tailwind utilities didn't take effect, that relayout lets the flex algorithm
-   redistribute space away from header/nav toward main. Locking the whole chain with
-   concrete flex/height rules means header and nav can never be compressed, no matter
-   what triggers the reflow. */
+/* ==========================================================================
+   PERSISTENT TOP BAR
+   #app-topbar is position:fixed (see index.html), completely outside the
+   document's normal flex flow. Nothing that happens inside <main> — 3D
+   engine.resize() calls, canvas pointer drags, viewport reflows, mobile
+   address-bar show/hide — can touch its layout, size, or stacking order.
+   #app-main gets an explicit padding-top (set by JS to the topbar's real
+   measured height) so content starts right below it, on every breakpoint.
+   ========================================================================== */
 html, body {
     height: 100%;
-    max-height: 100vh;
-    /* 100dvh tracks the browser's real, current visible viewport (dvh = dynamic
-       viewport height). On mobile, dragging the 3D canvas is exactly the kind of
-       touch interaction that makes the address bar auto-hide/show, which changes
-       the visible viewport height out from under a plain 100vh. Progressive
-       enhancement: unsupported browsers just keep the 100vh rule above. */
-    max-height: 100dvh;
     overflow: hidden;
 }
 
 body {
-    display: flex !important;
-    flex-direction: column !important;
+    margin: 0;
 }
 
-header,
-nav {
-    flex: 0 0 auto !important;
-}
-
-main {
-    flex: 1 1 auto !important;
-    min-height: 0 !important;
-    position: relative;
-    overflow: hidden;
-}
-
-nav {
-    font-size: 11px;
-    line-height: 1.4;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    position: relative;
-    z-index: 10;
+#app-topbar {
+    /* Belt-and-braces: even if a Tailwind utility fails to apply, this
+       guarantees the bar renders on top, full width, undraggable. */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 999 !important;
     pointer-events: auto;
 }
 
-nav.hidden {
-    display: none !important;
+#app-topbar header,
+#app-topbar nav {
+    flex: 0 0 auto;
 }
 
-#mobile-menu {
-    scroll-behavior: smooth;
-}
-
-nav button {
+/* Header brand row: hard layout guarantees so the hamburger, logo and
+   title always sit in their own slots and never overlap/crowd each other,
+   independent of Tailwind CDN JIT timing. */
+#app-topbar header {
     display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    align-items: center !important;
+}
+#hamburger-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+#app-topbar h1 {
+    display: flex !important;
+    align-items: center;
+}
+
+#app-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 0;
+}
+
+/* Nav tab buttons: icon + label side by side, hard pixel sizing on the
+   icon (set inline in HTML) so a Tailwind CDN JIT hiccup can never
+   collapse it to 0x0. */
+.nav-tab-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     white-space: nowrap;
     min-height: 44px;
     flex-shrink: 0;
     color: #94a3b8;
+    transition: color .15s ease;
 }
+.nav-tab-btn:hover { color: #fff; }
+.nav-tab-btn.text-amber-500,
+.nav-tab-btn.border-amber-500 { color: #f59e0b !important; }
+.nav-tab-btn svg { flex-shrink: 0; display: block; }
+.nav-tab-btn span { display: inline-block !important; }
 
-nav button.text-amber-500 {
-    color: #f59e0b !important;
+.nav-tab-btn-mobile {
+    display: flex !important;
+    align-items: center;
+    min-height: 48px;
+    color: #94a3b8;
+    transition: background-color .15s ease, color .15s ease;
 }
+.nav-tab-btn-mobile:hover { background: rgba(30,41,59,.6); color: #fff; }
+.nav-tab-btn-mobile.text-amber-500 { color: #f59e0b !important; }
+.nav-tab-btn-mobile svg { flex-shrink: 0; display: block; }
 
-nav button.text-slate-400 {
-    color: #94a3b8 !important;
-}
-
-nav button svg {
-    flex-shrink: 0;
-}
-
-nav button span {
-    display: inline !important;
-}
+#mobile-menu { scroll-behavior: smooth; }
 
 /* Precision scrollbar layouts for nested scroll containers */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-::-webkit-scrollbar-track {
-    background: #030509;
-}
-::-webkit-scrollbar-thumb {
-    background: #1f2937;
-    border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: #374151;
-}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #030509; }
+::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #374151; }
+
 canvas {
     outline: none;
     -webkit-tap-highlight-color: transparent;
@@ -106,30 +104,169 @@ canvas {
     touch-action: none;
 }
 
-/* Mobile hamburger menu styles */
-@media (max-width: 1024px) {
-    #hamburger-toggle {
-        display: flex !important;
-    }
-
-    nav:not(.hidden) {
-        display: flex !important;
-    }
-}
-
-/* Ensure header and nav never overlap 3D canvas */
-header, nav {
-    will-change: transform;
-    backface-visibility: hidden;
-}
-
-/* Fix slab slider panel overflow on desktop */
-#viewport-slider {
-    overflow: hidden;
-}
-
+/* ==========================================================================
+   SLAB SLIDER — desktop right-column overflow fix
+   ========================================================================== */
+#viewport-slider { overflow: hidden; }
 #viewport-slider > div:last-child {
     height: 100%;
     display: flex;
     flex-direction: column;
+}
+
+/* ==========================================================================
+   SUPPLY FLOW — shared stage-card component
+   One visual pattern reused by Inventory Flow / Sales Flow / Inventory
+   Balance: icon chip, stage name, big unit count, € value, resume line.
+   ========================================================================== */
+.flow-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(30, 41, 59, 0.7);
+    border-radius: 16px;
+    padding: 16px;
+    min-width: 0;
+}
+
+.flow-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flow-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.flow-card-icon svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+.flow-card-title {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #cbd5e1;
+    line-height: 1.3;
+}
+
+.flow-card-body {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.flow-card-units {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+}
+
+.flow-card-units-label {
+    font-size: 9px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.flow-card-eur {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 15px;
+    font-weight: 800;
+    text-align: right;
+}
+
+.flow-card-bar-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(30, 41, 59, 0.6);
+    overflow: hidden;
+}
+
+.flow-card-bar-fill { height: 100%; border-radius: 999px; }
+
+.flow-card-resume {
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.flow-section {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(30, 41, 59, 0.8);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
+}
+
+.flow-section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid rgba(30, 41, 59, 0.85);
+}
+
+.flow-section-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 900;
+    flex-shrink: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.flow-section-titles { min-width: 0; }
+
+.flow-section-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: 0.02em;
+}
+
+.flow-section-sub {
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.flow-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 12px;
+}
+
+@media (min-width: 768px) {
+    .flow-cards-grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .flow-cards-grid.cols-5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1280px) {
+    .flow-cards-grid.cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+.flow-total-card {
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    background: rgba(245, 158, 11, 0.08);
 }

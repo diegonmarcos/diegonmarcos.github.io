@@ -1176,110 +1176,52 @@ export class SlabWarehouseTwin {
 
     /* --- TAB NAVIGATION CONTROL SWITCHERS --- */
 
+    // Single source of truth for which nav icon is lit up. Every tab button
+    // carries data-tab="<id>"; this just toggles one 'active' class instead
+    // of five buttons x four classes each.
+    setActiveNavTab(tabId) {
+        document.querySelectorAll('.nav-icon-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === tabId);
+        });
+    }
+
+    showViewport(viewportId) {
+        ['viewport-3d', 'viewport-register', 'viewport-visualizer', 'viewport-slider', 'viewport-flow'].forEach(id => {
+            document.getElementById(id).classList.toggle('hidden', id !== viewportId);
+        });
+    }
+
     activate3DTab() {
         this.activeTab = '3d';
-        document.getElementById('viewport-3d').classList.remove('hidden');
-        document.getElementById('viewport-register').classList.add('hidden');
-        document.getElementById('viewport-visualizer').classList.add('hidden');
-        document.getElementById('viewport-slider').classList.add('hidden');
-        document.getElementById('viewport-flow').classList.add('hidden');
-
-        document.getElementById('nav-3d-btn').classList.add('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-3d-btn').classList.remove('border-transparent', 'text-slate-400');
-        document.getElementById('nav-register-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
+        this.showViewport('viewport-3d');
+        this.setActiveNavTab('3d');
     }
 
     activateRegisterTab() {
         this.activeTab = 'register';
-        document.getElementById('viewport-3d').classList.add('hidden');
-        document.getElementById('viewport-register').classList.remove('hidden');
-        document.getElementById('viewport-visualizer').classList.add('hidden');
-        document.getElementById('viewport-slider').classList.add('hidden');
-        document.getElementById('viewport-flow').classList.add('hidden');
-
-        document.getElementById('nav-register-btn').classList.add('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-register-btn').classList.remove('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
+        this.showViewport('viewport-register');
+        this.setActiveNavTab('register');
     }
 
     activateVisualizerTab() {
         this.activeTab = 'visualizer';
-        document.getElementById('viewport-3d').classList.add('hidden');
-        document.getElementById('viewport-register').classList.add('hidden');
-        document.getElementById('viewport-visualizer').classList.remove('hidden');
-        document.getElementById('viewport-slider').classList.add('hidden');
-        document.getElementById('viewport-flow').classList.add('hidden');
-
-        document.getElementById('nav-visualizer-btn').classList.add('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-visualizer-btn').classList.remove('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-register-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
-
+        this.showViewport('viewport-visualizer');
+        this.setActiveNavTab('visualizer');
         this.renderVisualizerPanel();
     }
 
     activateSliderTab() {
         this.activeTab = 'slider';
-        document.getElementById('viewport-3d').classList.add('hidden');
-        document.getElementById('viewport-register').classList.add('hidden');
-        document.getElementById('viewport-visualizer').classList.add('hidden');
-        document.getElementById('viewport-slider').classList.remove('hidden');
-        document.getElementById('viewport-flow').classList.add('hidden');
-
-        document.getElementById('nav-slider-btn').classList.add('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-slider-btn').classList.remove('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-register-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
-
+        this.showViewport('viewport-slider');
+        this.setActiveNavTab('slider');
         this.initSlabSliderEngine();
         this.renderSliderSpecPanel();
     }
 
     activateFlowTab() {
         this.activeTab = 'flow';
-        document.getElementById('viewport-3d').classList.add('hidden');
-        document.getElementById('viewport-register').classList.add('hidden');
-        document.getElementById('viewport-visualizer').classList.add('hidden');
-        document.getElementById('viewport-slider').classList.add('hidden');
-        document.getElementById('viewport-flow').classList.remove('hidden');
-
-        document.getElementById('nav-flow-btn').classList.add('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-flow-btn').classList.remove('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-3d-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-register-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
-        document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
-        document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
-
+        this.showViewport('viewport-flow');
+        this.setActiveNavTab('flow');
         this.renderFlowPanel();
         // Section was just un-hidden, so button widths are only measurable now
         this.syncFlowModeThumb();
@@ -1532,51 +1474,13 @@ export class SlabWarehouseTwin {
     }
 
     setupUIHandlers() {
-        // Desktop Navigation
+        // Persistent icon-only top nav — same 5 buttons at every breakpoint,
+        // no mobile drawer, no duplicate button set to keep in sync.
         document.getElementById('nav-3d-btn').onclick = () => this.activate3DTab();
         document.getElementById('nav-register-btn').onclick = () => this.activateRegisterTab();
         document.getElementById('nav-visualizer-btn').onclick = () => this.activateVisualizerTab();
         document.getElementById('nav-slider-btn').onclick = () => this.activateSliderTab();
         document.getElementById('nav-flow-btn').onclick = () => this.activateFlowTab();
-
-        // Mobile Navigation
-        const hamburger = document.getElementById('hamburger-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const mobileOverlay = document.getElementById('mobile-menu-overlay');
-
-        if (hamburger) {
-            hamburger.onclick = () => {
-                mobileMenu.classList.toggle('hidden');
-                mobileOverlay.classList.toggle('hidden');
-            };
-        }
-
-        const closeMenu = () => {
-            mobileMenu.classList.add('hidden');
-            mobileOverlay.classList.add('hidden');
-        };
-
-        mobileOverlay.onclick = closeMenu;
-        const mobileMenuCloseBtn = document.getElementById('mobile-menu-close');
-        if (mobileMenuCloseBtn) mobileMenuCloseBtn.onclick = closeMenu;
-
-        const mobileBtns = [
-            { id: 'nav-3d-btn-mobile', fn: () => this.activate3DTab() },
-            { id: 'nav-register-btn-mobile', fn: () => this.activateRegisterTab() },
-            { id: 'nav-visualizer-btn-mobile', fn: () => this.activateVisualizerTab() },
-            { id: 'nav-slider-btn-mobile', fn: () => this.activateSliderTab() },
-            { id: 'nav-flow-btn-mobile', fn: () => this.activateFlowTab() },
-        ];
-
-        mobileBtns.forEach(btn => {
-            const el = document.getElementById(btn.id);
-            if (el) {
-                el.onclick = () => {
-                    btn.fn();
-                    closeMenu();
-                };
-            }
-        });
 
         // Supply Flow: Cash View / Accounting View mode switcher
         const flowCashBtn = document.getElementById('flow-mode-cash');

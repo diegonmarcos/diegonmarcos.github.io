@@ -1,52 +1,33 @@
 /* ==========================================================================
-   PERSISTENT TOP BAR
-   #app-topbar is position:fixed (see index.html), completely outside the
-   document's normal flex flow. Nothing that happens inside <main> — 3D
-   engine.resize() calls, canvas pointer drags, viewport reflows, mobile
-   address-bar show/hide — can touch its layout, size, or stacking order.
-   #app-main gets an explicit padding-top (set by JS to the topbar's real
-   measured height) so content starts right below it, on every breakpoint.
+   PERSISTENT TOP BAR — written from scratch, zero Tailwind dependency.
+   Every rule below is plain CSS with hard pixel values, so nothing about
+   this bar's layout, size or stacking can ever be broken by a Tailwind CDN
+   JIT timing issue, a missed utility class, or the 3D engine's resize().
+   #app-topbar is position:fixed, entirely outside the document's normal
+   flow. #app-main is offset by its measured height (see
+   setupTopbarLayout() in warehouse-app.js), recalculated on resize.
    ========================================================================== */
 html, body {
     height: 100%;
     overflow: hidden;
-}
-
-body {
     margin: 0;
 }
 
 #app-topbar {
-    /* Belt-and-braces: even if a Tailwind utility fails to apply, this
-       guarantees the bar renders on top, full width, undraggable. */
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    z-index: 999 !important;
-    pointer-events: auto;
-}
-
-#app-topbar header,
-#app-topbar nav {
-    flex: 0 0 auto;
-}
-
-/* Header brand row: hard layout guarantees so the hamburger, logo and
-   title always sit in their own slots and never overlap/crowd each other,
-   independent of Tailwind CDN JIT timing. */
-#app-topbar header {
-    display: flex !important;
-    align-items: center !important;
-}
-#hamburger-toggle {
-    display: flex !important;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    height: 56px;
+    display: flex;
     align-items: center;
-    justify-content: center;
-}
-#app-topbar h1 {
-    display: flex !important;
-    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    background: #070b13;
+    border-bottom: 1px solid #1e293b;
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
 }
 
 #app-main {
@@ -58,38 +39,136 @@ body {
     min-height: 0;
 }
 
-/* Nav tab buttons: icon + label side by side, hard pixel sizing on the
-   icon (set inline in HTML) so a Tailwind CDN JIT hiccup can never
-   collapse it to 0x0. */
-.nav-tab-btn {
-    display: flex !important;
+/* Brand: compact icon + wordmark, never competes for space with the tabs */
+.topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.topbar-brand-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    flex-shrink: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    background: linear-gradient(135deg, #fbbf24, #e11d48);
+    color: #fff;
+}
+.topbar-brand-icon svg { width: 17px; height: 17px; }
+
+.topbar-brand-text {
+    font-weight: 900;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    color: #fff;
     white-space: nowrap;
-    min-height: 44px;
-    flex-shrink: 0;
-    color: #94a3b8;
-    transition: color .15s ease;
 }
-.nav-tab-btn:hover { color: #fff; }
-.nav-tab-btn.text-amber-500,
-.nav-tab-btn.border-amber-500 { color: #f59e0b !important; }
-.nav-tab-btn svg { flex-shrink: 0; display: block; }
-.nav-tab-btn span { display: inline-block !important; }
+@media (max-width: 480px) {
+    .topbar-brand-text { display: none; }
+}
 
-.nav-tab-btn-mobile {
-    display: flex !important;
+/* Tab bar: icon-only buttons, evenly spaced, centered between brand and
+   stats. This is the whole fix — no text labels means nothing to overflow
+   at any viewport width, and the same 5 buttons render everywhere. */
+.topbar-tabs {
+    display: flex;
     align-items: center;
-    min-height: 48px;
-    color: #94a3b8;
-    transition: background-color .15s ease, color .15s ease;
+    gap: 4px;
+    margin: 0 auto;
+    flex-shrink: 0;
 }
-.nav-tab-btn-mobile:hover { background: rgba(30,41,59,.6); color: #fff; }
-.nav-tab-btn-mobile.text-amber-500 { color: #f59e0b !important; }
-.nav-tab-btn-mobile svg { flex-shrink: 0; display: block; }
 
-#mobile-menu { scroll-behavior: smooth; }
+.nav-icon-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    flex-shrink: 0;
+}
+
+.nav-icon-btn svg {
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    display: block;
+}
+
+.nav-icon-btn:hover {
+    color: #e2e8f0;
+    background: rgba(148, 163, 184, 0.08);
+}
+
+/* The one rule that matters most: active tab's icon is highlighted */
+.nav-icon-btn.active {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.4);
+}
+
+.nav-icon-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 3px;
+    border-radius: 999px;
+    background: #f59e0b;
+    color: #070b13;
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 14px;
+    text-align: center;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Live counters: desktop only */
+.topbar-stats {
+    display: none;
+    align-items: center;
+    gap: 22px;
+    flex-shrink: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+@media (min-width: 1024px) {
+    .topbar-stats { display: flex; }
+}
+
+.topbar-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.3;
+    padding-left: 18px;
+    border-left: 1px solid rgba(30, 41, 59, 0.8);
+}
+.topbar-stat:first-child { border-left: none; padding-left: 0; }
+
+.topbar-stat-label {
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+}
+
+.topbar-stat-value {
+    font-size: 13px;
+    font-weight: 900;
+    color: #fff;
+}
 
 /* Precision scrollbar layouts for nested scroll containers */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -269,6 +348,86 @@ canvas {
 .flow-total-card {
     border: 1px solid rgba(245, 158, 11, 0.35);
     background: rgba(245, 158, 11, 0.08);
+}
+
+/* ==========================================================================
+   SUPPLY FLOW — dense data mode on mobile.
+   This is an analysis dashboard, not a row of tap targets: below 640px
+   every flow-card collapses into one compact data row (icon, stage,
+   count, € value, tag) instead of a tall padded button-like block. No big
+   22px numbers, no progress bar eating vertical space, no wasted padding.
+   ========================================================================== */
+@media (max-width: 639px) {
+    .flow-section { padding: 12px; border-radius: 14px; }
+    .flow-section-head { gap: 8px; padding-bottom: 10px; margin-bottom: 10px; }
+    .flow-section-badge { width: 24px; height: 24px; font-size: 10px; border-radius: 7px; }
+    .flow-section-title { font-size: 12px; }
+    .flow-section-sub { font-size: 9px; }
+
+    .flow-summary-row { gap: 6px; margin-bottom: 10px; }
+    .flow-summary-chip { padding: 7px 10px; border-radius: 9px; }
+    .flow-summary-chip-value { font-size: 12px; }
+
+    .flow-cards-grid { gap: 6px; }
+
+    .flow-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-radius: 10px;
+    }
+
+    .flow-card-head {
+        gap: 7px;
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .flow-card-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 7px;
+    }
+    .flow-card-icon svg { width: 13px; height: 13px; }
+
+    .flow-card-title {
+        font-size: 9px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .flow-card-tag {
+        font-size: 7px;
+        padding: 1px 4px;
+    }
+
+    .flow-card-body {
+        flex: 1 1 auto;
+        min-width: 0;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .flow-card-units { font-size: 13px; }
+    .flow-card-units-label { font-size: 8px; }
+    .flow-card-eur { font-size: 12px; }
+
+    /* Progress bar + resume line are the two things that make a card tall;
+       drop both on mobile — the number + € figure is the data, the rest
+       is decoration this density budget can't afford. */
+    .flow-card-bar-track,
+    .flow-card-resume { display: none; }
+
+    /* Mode switcher: compact single row, description tucked away since the
+       chip labels + card tags already communicate the same thing */
+    .flow-mode-bar { padding: 8px 10px; gap: 8px; }
+    .flow-mode-label-sub { display: none; }
+    .flow-mode-label-title { font-size: 9px; }
+    .flow-mode-btn { padding: 6px 10px; font-size: 9px; }
+    .flow-mode-btn span { display: none; }
+    .flow-mode-btn svg { width: 15px; height: 15px; }
 }
 
 /* ==========================================================================

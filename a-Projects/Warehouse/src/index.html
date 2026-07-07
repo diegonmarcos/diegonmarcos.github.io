@@ -31,113 +31,56 @@
 </head>
 <body class="bg-warehouse-950 text-slate-100 font-sans">
 
-    <!-- PERSISTENT TOP BAR: header + nav pinned as ONE fixed block.
-         This is intentionally taken OUT of the body's flex flow and given
-         position:fixed so nothing downstream (3D engine.resize(), viewport
-         reflows, orientation changes) can ever compress, hide or push it. -->
-    <div id="app-topbar" class="fixed top-0 left-0 right-0 z-50 bg-warehouse-900 flex flex-col">
-
-        <!-- TOP CONTROL HEADER -->
-        <header class="border-b border-slate-800/80 px-3 lg:px-6 py-2.5 lg:py-3.5 flex items-center gap-3 lg:gap-4">
-            <!-- Hamburger (mobile only) — own slot, own divider, never crowds the brand -->
-            <button id="hamburger-toggle" class="lg:hidden flex items-center justify-center shrink-0 rounded-xl bg-slate-900/80 hover:bg-slate-800 active:scale-95 transition-all" style="width:40px;height:40px;border:1px solid #1e293b;">
-                <svg style="width:19px;height:19px;flex-shrink:0;" fill="none" stroke="#e2e8f0" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-            <div class="lg:hidden w-px self-stretch bg-slate-800/80 shrink-0"></div>
-
-            <!-- Brand identity -->
-            <div class="flex items-center gap-2.5 lg:gap-3.5 min-w-0 flex-1">
-                <div class="bg-gradient-to-tr from-amber-400 via-orange-600 to-rose-600 p-2 lg:p-2.5 rounded-xl text-white shadow-lg shadow-orange-950/40 shrink-0 ring-1 ring-white/10">
-                    <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                    </svg>
-                </div>
-                <div class="min-w-0">
-                    <h1 class="flex items-center gap-2 font-black text-lg lg:text-xl leading-none tracking-wide text-white font-sans truncate">
-                        <span class="bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">SLABTWIN</span>
-                        <span class="text-[9px] lg:text-[10px] tracking-widest bg-amber-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md shrink-0">3D PRO</span>
-                    </h1>
-                    <p class="hidden sm:block text-[9px] text-slate-500 font-mono tracking-[0.2em] mt-1.5 font-bold uppercase">High-Density A-Frame Stock Engine</p>
-                </div>
+    <!-- ==========================================================================
+         PERSISTENT TOP BAR — rewritten from scratch.
+         One fixed-position bar, one row, icon-only nav (no text labels to
+         overflow, no separate mobile menu to keep in sync). Same 5 buttons
+         render identically at every viewport width. The active tab's icon
+         is highlighted with a filled background + amber color.
+         ========================================================================== -->
+    <header id="app-topbar">
+        <div class="topbar-brand">
+            <div class="topbar-brand-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
             </div>
+            <span class="topbar-brand-text">SLABTWIN</span>
+        </div>
 
-            <!-- Live Counters -->
-            <div class="hidden lg:flex items-center space-x-10 text-xs font-mono shrink-0">
-                <div class="text-center">
-                    <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Total Stock</span>
-                    <span class="text-sm font-black text-white" id="stat-total">500 Slabs</span>
-                </div>
-                <div class="text-center border-l border-slate-800/80 pl-8">
-                    <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Active Weight</span>
-                    <span class="text-sm font-black text-amber-500" id="stat-weight">1,328.5 t</span>
-                </div>
-                <div class="text-center border-l border-slate-800/80 pl-8">
-                    <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Estimated Value</span>
-                    <span class="text-sm font-black text-emerald-400" id="stat-value">$2,084,500</span>
-                </div>
-                <div class="text-center border-l border-slate-800/80 pl-8">
-                    <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">A-Frame Racks</span>
-                    <span class="text-xs bg-slate-800 text-slate-300 font-bold px-2.5 py-0.5 rounded border border-slate-700">35 Units (70 V-Sides)</span>
-                </div>
-            </div>
-        </header>
-
-        <!-- FULL SCREEN NAVIGATION TAB BAR (Desktop Only) -->
-        <nav id="desktop-nav" class="hidden lg:flex border-b border-slate-800/80 text-[11px] font-bold tracking-wider font-mono">
-            <button id="nav-3d-btn" class="nav-tab-btn flex-1 py-4 text-center border-b-2 border-amber-500 text-amber-500">
-                <svg style="width:15px;height:15px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-                <span>3D WAREHOUSE</span>
+        <nav class="topbar-tabs">
+            <button id="nav-3d-btn" class="nav-icon-btn active" data-tab="3d" title="3D Warehouse" aria-label="3D Warehouse">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
             </button>
-            <button id="nav-register-btn" class="nav-tab-btn flex-1 py-4 text-center border-b-2 border-transparent text-slate-400">
-                <svg style="width:15px;height:15px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                <span>STOCK REGISTER</span>
+            <button id="nav-register-btn" class="nav-icon-btn" data-tab="register" title="Stock Register" aria-label="Stock Register">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
             </button>
-            <button id="nav-visualizer-btn" class="nav-tab-btn flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 relative">
-                <svg style="width:15px;height:15px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span>SLAB VIEWER</span>
-                <span id="tab-cache-badge" class="hidden absolute top-1 right-2 bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-full scale-90 font-mono">0</span>
+            <button id="nav-visualizer-btn" class="nav-icon-btn" data-tab="visualizer" title="Slab Viewer" aria-label="Slab Viewer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span id="tab-cache-badge" class="hidden nav-icon-badge">0</span>
             </button>
-            <button id="nav-slider-btn" class="nav-tab-btn flex-1 py-4 text-center border-b-2 border-transparent text-slate-400">
-                <svg style="width:15px;height:15px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-                <span>SLAB SLIDER</span>
+            <button id="nav-slider-btn" class="nav-icon-btn" data-tab="slider" title="Slab Slider" aria-label="Slab Slider">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
             </button>
-            <button id="nav-flow-btn" class="nav-tab-btn flex-1 py-4 text-center border-b-2 border-transparent text-slate-400">
-                <svg style="width:15px;height:15px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-                <span>INVENTORY FLOW</span>
+            <button id="nav-flow-btn" class="nav-icon-btn" data-tab="flow" title="Inventory Flow" aria-label="Inventory Flow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             </button>
         </nav>
-    </div>
 
-    <!-- MOBILE SIDEBAR MENU -->
-    <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden"></div>
-    <nav id="mobile-menu" class="hidden fixed left-0 top-0 h-screen w-72 bg-warehouse-900 border-r border-slate-800 overflow-y-auto z-50 lg:hidden flex flex-col pb-6">
-        <div class="flex items-center justify-between px-5 border-b border-slate-800/80" style="height:60px;">
-            <span class="font-black text-sm tracking-wider text-white">MENU</span>
-            <button id="mobile-menu-close" class="flex items-center justify-center rounded-lg hover:bg-slate-800" style="width:32px;height:32px;">
-                <svg style="width:18px;height:18px;" fill="none" stroke="#cbd5e1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-            </button>
+        <!-- Live Counters (desktop only, hidden below 1024px) -->
+        <div class="topbar-stats">
+            <div class="topbar-stat">
+                <span class="topbar-stat-label">Total Stock</span>
+                <span class="topbar-stat-value" id="stat-total">500 Slabs</span>
+            </div>
+            <div class="topbar-stat">
+                <span class="topbar-stat-label">Active Weight</span>
+                <span class="topbar-stat-value" style="color:#f59e0b" id="stat-weight">1,328.5 t</span>
+            </div>
+            <div class="topbar-stat">
+                <span class="topbar-stat-label">Estimated Value</span>
+                <span class="topbar-stat-value" style="color:#34d399" id="stat-value">$2,084,500</span>
+            </div>
         </div>
-        <button id="nav-3d-btn-mobile" class="nav-tab-btn-mobile px-6 py-4 text-left border-l-4 border-amber-500 bg-slate-800/50 text-amber-500 flex items-center gap-3 text-sm font-mono font-bold">
-            <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            <span>3D WAREHOUSE</span>
-        </button>
-        <button id="nav-register-btn-mobile" class="nav-tab-btn-mobile px-6 py-4 text-left border-l-4 border-transparent text-slate-400 flex items-center gap-3 text-sm font-mono font-bold">
-            <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            <span>STOCK REGISTER</span>
-        </button>
-        <button id="nav-visualizer-btn-mobile" class="nav-tab-btn-mobile px-6 py-4 text-left border-l-4 border-transparent text-slate-400 flex items-center gap-3 text-sm font-mono font-bold relative">
-            <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>SLAB VIEWER</span>
-        </button>
-        <button id="nav-slider-btn-mobile" class="nav-tab-btn-mobile px-6 py-4 text-left border-l-4 border-transparent text-slate-400 flex items-center gap-3 text-sm font-mono font-bold">
-            <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            <span>SLAB SLIDER</span>
-        </button>
-        <button id="nav-flow-btn-mobile" class="nav-tab-btn-mobile px-6 py-4 text-left border-l-4 border-transparent text-slate-400 flex items-center gap-3 text-sm font-mono font-bold">
-            <svg style="width:20px;height:20px;flex-shrink:0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-            <span>INVENTORY FLOW</span>
-        </button>
-    </nav>
+    </header>
 
     <!-- MAIN VIEWPORTS CONTAINER (padded below the fixed topbar) -->
     <main id="app-main" class="relative overflow-hidden">

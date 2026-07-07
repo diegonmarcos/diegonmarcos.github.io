@@ -1,6 +1,7 @@
 import { SeededPRNG } from './prng.js';
 import { MARBLE_DIF_CONFIG } from './marble-config.js';
 import { JSONDatabaseSim } from './database-sim.js';
+import { FlowSimulator } from './flow-sim.js';
 
 export class SlabWarehouseTwin {
     constructor() {
@@ -1175,6 +1176,7 @@ export class SlabWarehouseTwin {
         document.getElementById('viewport-register').classList.add('hidden');
         document.getElementById('viewport-visualizer').classList.add('hidden');
         document.getElementById('viewport-slider').classList.add('hidden');
+        document.getElementById('viewport-flow').classList.add('hidden');
 
         document.getElementById('nav-3d-btn').classList.add('border-amber-500', 'text-amber-500');
         document.getElementById('nav-3d-btn').classList.remove('border-transparent', 'text-slate-400');
@@ -1184,6 +1186,8 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
         document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
         document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
     }
 
     activateRegisterTab() {
@@ -1192,6 +1196,7 @@ export class SlabWarehouseTwin {
         document.getElementById('viewport-register').classList.remove('hidden');
         document.getElementById('viewport-visualizer').classList.add('hidden');
         document.getElementById('viewport-slider').classList.add('hidden');
+        document.getElementById('viewport-flow').classList.add('hidden');
 
         document.getElementById('nav-register-btn').classList.add('border-amber-500', 'text-amber-500');
         document.getElementById('nav-register-btn').classList.remove('border-transparent', 'text-slate-400');
@@ -1201,6 +1206,8 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
         document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
         document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
     }
 
     activateVisualizerTab() {
@@ -1209,6 +1216,7 @@ export class SlabWarehouseTwin {
         document.getElementById('viewport-register').classList.add('hidden');
         document.getElementById('viewport-visualizer').classList.remove('hidden');
         document.getElementById('viewport-slider').classList.add('hidden');
+        document.getElementById('viewport-flow').classList.add('hidden');
 
         document.getElementById('nav-visualizer-btn').classList.add('border-amber-500', 'text-amber-500');
         document.getElementById('nav-visualizer-btn').classList.remove('border-transparent', 'text-slate-400');
@@ -1218,6 +1226,8 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
         document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
         document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
 
         this.renderVisualizerPanel();
     }
@@ -1228,6 +1238,7 @@ export class SlabWarehouseTwin {
         document.getElementById('viewport-register').classList.add('hidden');
         document.getElementById('viewport-visualizer').classList.add('hidden');
         document.getElementById('viewport-slider').classList.remove('hidden');
+        document.getElementById('viewport-flow').classList.add('hidden');
 
         document.getElementById('nav-slider-btn').classList.add('border-amber-500', 'text-amber-500');
         document.getElementById('nav-slider-btn').classList.remove('border-transparent', 'text-slate-400');
@@ -1237,9 +1248,142 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
         document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
         document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-flow-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-flow-btn').classList.remove('border-amber-500', 'text-amber-500');
 
         this.initSlabSliderEngine();
         this.renderSliderSpecPanel();
+    }
+
+    activateFlowTab() {
+        this.activeTab = 'flow';
+        document.getElementById('viewport-3d').classList.add('hidden');
+        document.getElementById('viewport-register').classList.add('hidden');
+        document.getElementById('viewport-visualizer').classList.add('hidden');
+        document.getElementById('viewport-slider').classList.add('hidden');
+        document.getElementById('viewport-flow').classList.remove('hidden');
+
+        document.getElementById('nav-flow-btn').classList.add('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-flow-btn').classList.remove('border-transparent', 'text-slate-400');
+        document.getElementById('nav-3d-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-3d-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-register-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-register-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-visualizer-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-visualizer-btn').classList.remove('border-amber-500', 'text-amber-500');
+        document.getElementById('nav-slider-btn').classList.add('border-transparent', 'text-slate-400');
+        document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
+
+        this.renderFlowPanel();
+    }
+
+    renderFlowPanel() {
+        if (!this.purchaseOrders) {
+            this.purchaseOrders = FlowSimulator.generatePurchaseOrders();
+        }
+
+        // --- A) Procurement flow: Requested / Shipped / Delivered ---
+        const procurementMeta = {
+            Requested: { textClass: 'text-sky-400', barClass: 'bg-sky-500' },
+            Shipped: { textClass: 'text-amber-400', barClass: 'bg-amber-500' },
+            Delivered: { textClass: 'text-emerald-400', barClass: 'bg-emerald-500' },
+        };
+        const procurementStats = {};
+        FlowSimulator.PROCUREMENT_STAGES.forEach(stage => { procurementStats[stage] = { count: 0, value: 0 }; });
+        this.purchaseOrders.forEach(po => {
+            procurementStats[po.status].count++;
+            procurementStats[po.status].value += po.orderValue;
+        });
+
+        const stagesContainer = document.getElementById('flow-procurement-stages');
+        stagesContainer.innerHTML = FlowSimulator.PROCUREMENT_STAGES.map(stage => {
+            const data = procurementStats[stage];
+            const meta = procurementMeta[stage];
+            return `
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800/60">
+                    <span class="text-[9px] ${meta.textClass} uppercase font-black tracking-widest block mb-1.5">${stage}</span>
+                    <span class="text-2xl font-black text-white block font-mono">${data.count}</span>
+                    <span class="text-[10px] text-slate-500 font-mono">purchase orders</span>
+                    <span class="block text-sm font-bold text-emerald-400 font-mono mt-1.5">$${data.value.toLocaleString()}</span>
+                </div>
+            `;
+        }).join('');
+
+        // Sources (quarry / supplier) breakdown table
+        const bySource = new Map();
+        this.purchaseOrders.forEach(po => {
+            if (!bySource.has(po.source)) {
+                bySource.set(po.source, {
+                    location: po.sourceLocation, material: po.material,
+                    Requested: 0, Shipped: 0, Delivered: 0, totalValue: 0,
+                });
+            }
+            const entry = bySource.get(po.source);
+            entry[po.status]++;
+            entry.totalValue += po.orderValue;
+        });
+
+        const sourcesBody = document.getElementById('flow-sources-body');
+        sourcesBody.innerHTML = Array.from(bySource.entries()).map(([name, d]) => `
+            <tr>
+                <td class="py-2.5 px-2 font-bold text-white">${name}</td>
+                <td class="py-2.5 px-2 text-slate-400">${d.location}</td>
+                <td class="py-2.5 px-2 text-amber-500 font-bold">${d.material}</td>
+                <td class="py-2.5 px-2 text-center text-sky-400 font-bold">${d.Requested}</td>
+                <td class="py-2.5 px-2 text-center text-amber-400 font-bold">${d.Shipped}</td>
+                <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${d.Delivered}</td>
+                <td class="py-2.5 px-2 text-right font-bold">$${d.totalValue.toLocaleString()}</td>
+            </tr>
+        `).join('');
+
+        // --- B) Fulfillment lifecycle: Available / Reserved / Bought / Delivering / Delivered ---
+        const lifecycleMeta = {
+            Available: 'bg-emerald-500',
+            Reserved: 'bg-amber-500',
+            Bought: 'bg-sky-500',
+            Delivering: 'bg-violet-500',
+            Delivered: 'bg-slate-400',
+        };
+        const lifecycleStats = {};
+        FlowSimulator.LIFECYCLE_STAGES.forEach(stage => { lifecycleStats[stage] = { count: 0, value: 0 }; });
+        this.slabs.forEach(slab => {
+            const stage = FlowSimulator.deriveSlabFlowStage(slab);
+            lifecycleStats[stage].count++;
+            lifecycleStats[stage].value += slab.price;
+        });
+        const totalSlabCount = this.slabs.length;
+
+        const barsContainer = document.getElementById('flow-lifecycle-bars');
+        barsContainer.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
+            const data = lifecycleStats[stage];
+            const pct = ((data.count / totalSlabCount) * 100).toFixed(1);
+            return `
+                <div>
+                    <div class="flex justify-between items-center text-xs font-mono mb-1">
+                        <span class="font-bold text-slate-300 uppercase tracking-wider text-[10px]">${stage}</span>
+                        <span class="text-slate-400">${data.count} slabs &middot; ${pct}% &middot; <span class="text-emerald-400 font-bold">$${data.value.toLocaleString()}</span></span>
+                    </div>
+                    <div class="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800/60">
+                        <div class="h-full ${lifecycleMeta[stage]} rounded-full" style="width: ${pct}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // --- C) Total amounts breakdown ---
+        const amountsGrid = document.getElementById('flow-amounts-grid');
+        const grandTotal = this.slabs.reduce((sum, s) => sum + s.price, 0);
+        amountsGrid.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => `
+            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/40 text-center">
+                <span class="text-[9px] text-slate-500 uppercase font-black block tracking-wider">${stage}</span>
+                <span class="text-sm font-black text-white block mt-1 font-mono">$${lifecycleStats[stage].value.toLocaleString()}</span>
+            </div>
+        `).join('') + `
+            <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-xl text-center">
+                <span class="text-[9px] text-amber-500 uppercase font-black block tracking-wider">Grand Total</span>
+                <span class="text-sm font-black text-amber-400 block mt-1 font-mono">$${grandTotal.toLocaleString()}</span>
+            </div>
+        `;
     }
 
     setupUIHandlers() {
@@ -1247,6 +1391,7 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-register-btn').onclick = () => this.activateRegisterTab();
         document.getElementById('nav-visualizer-btn').onclick = () => this.activateVisualizerTab();
         document.getElementById('nav-slider-btn').onclick = () => this.activateSliderTab();
+        document.getElementById('nav-flow-btn').onclick = () => this.activateFlowTab();
 
         document.getElementById('toggle-view-2d').onclick = () => this.switchSlabViewerMode('2D');
         document.getElementById('toggle-view-3d').onclick = () => this.switchSlabViewerMode('3D');

@@ -85,6 +85,10 @@
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
             SLAB SLIDER
         </button>
+        <button id="nav-flow-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            SUPPLY FLOW
+        </button>
     </nav>
 
     <!-- MAIN VIEWPORTS CONTAINER -->
@@ -497,6 +501,53 @@
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- VIEWPORT 5: SUPPLY FLOW DASHBOARD -->
+        <section id="viewport-flow" class="absolute inset-0 w-full h-full bg-warehouse-900 flex flex-col p-6 gap-6 z-10 hidden overflow-y-auto">
+
+            <!-- A) PROCUREMENT FLOW -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    A) Procurement Flow — Requested / Shipped / Delivered (Warehouse Sources of Purchase)
+                </span>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" id="flow-procurement-stages"></div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300 min-w-[640px]">
+                        <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono">
+                            <tr>
+                                <th class="py-2 px-2 font-bold">Source (Quarry / Supplier)</th>
+                                <th class="py-2 px-2 font-bold">Location</th>
+                                <th class="py-2 px-2 font-bold">Material</th>
+                                <th class="py-2 px-2 font-bold text-center">Requested</th>
+                                <th class="py-2 px-2 font-bold text-center">Shipped</th>
+                                <th class="py-2 px-2 font-bold text-center">Delivered</th>
+                                <th class="py-2 px-2 font-bold text-right">Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flow-sources-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- B) FULFILLMENT LIFECYCLE -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    B) Warehouse Fulfillment Lifecycle — Available / Reserved / Bought / Delivering / Delivered
+                </span>
+                <div class="space-y-3.5" id="flow-lifecycle-bars"></div>
+            </div>
+
+            <!-- C) TOTAL AMOUNTS BREAKDOWN -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    C) Total Amounts Breakdown
+                </span>
+                <div class="grid grid-cols-2 lg:grid-cols-6 gap-3" id="flow-amounts-grid"></div>
+            </div>
+
         </section>
 
     </main>

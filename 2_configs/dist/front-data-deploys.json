@@ -132,6 +132,10 @@
     "deploy_name": "skills_mcp"
   },
   {
+    "path": "a-Projects/Warehouse",
+    "deploy_name": "Warehouse"
+  },
+  {
     "path": "e-Others/others",
     "deploy_name": "others"
   },

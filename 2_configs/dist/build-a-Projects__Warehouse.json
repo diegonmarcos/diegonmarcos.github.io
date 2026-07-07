@@ -6,10 +6,20 @@
   "dist": "dist",
   "build": [
     {
-      "_doc": "Copy HTML, CSS, and JS files from src to dist",
+      "_doc": "Copy index.html to dist root",
       "mod": "copy",
-      "files": "*.html,*.css,*.js",
+      "files": "*.html",
       "from": "src"
+    },
+    {
+      "_doc": "Ship css/ module folder as-is (symlinked in dev, resolved to real files on deploy)",
+      "mod": "symlink",
+      "files": "src/css"
+    },
+    {
+      "_doc": "Ship js/ ES module folder as-is (native <script type=module>, no bundler needed)",
+      "mod": "symlink",
+      "files": "src/js"
     }
   ],
   "serve": {
@@ -37,10 +47,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "Warehouse",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/Warehouse"
     },
     "consumers": [],
     "has_package_json": true,

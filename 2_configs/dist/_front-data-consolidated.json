@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated_by": "2_configs/build.sh consolidate",
-    "timestamp": "2026-07-07T09:00:30+00:00",
+    "timestamp": "2026-07-07T09:24:32+00:00",
     "schema": "front-data/v1"
   },
   "root_config": {
@@ -1291,10 +1291,20 @@
         "dist": "dist",
         "build": [
           {
-            "_doc": "Copy HTML, CSS, and JS files from src to dist",
+            "_doc": "Copy index.html to dist root",
             "mod": "copy",
-            "files": "*.html,*.css,*.js",
+            "files": "*.html",
             "from": "src"
+          },
+          {
+            "_doc": "Ship css/ module folder as-is (symlinked in dev, resolved to real files on deploy)",
+            "mod": "symlink",
+            "files": "src/css"
+          },
+          {
+            "_doc": "Ship js/ ES module folder as-is (native <script type=module>, no bundler needed)",
+            "mod": "symlink",
+            "files": "src/js"
           }
         ],
         "serve": {
@@ -4283,6 +4293,10 @@
     {
       "path": "c-Cloud/skills_mcp",
       "deploy_name": "skills_mcp"
+    },
+    {
+      "path": "a-Projects/Warehouse",
+      "deploy_name": "Warehouse"
     },
     {
       "path": "e-Others/others",

@@ -45,6 +45,27 @@ html, body {
     flex-shrink: 0;
 }
 
+/* Row 3: current page's title, directly under the icon tab it belongs to */
+.topbar-row3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    padding: 0 12px;
+    border-top: 1px solid rgba(30, 41, 59, 0.7);
+    background: rgba(15, 23, 42, 0.4);
+    flex-shrink: 0;
+}
+
+.topbar-page-title {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f59e0b;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
 #app-main {
     position: absolute;
     top: 0;

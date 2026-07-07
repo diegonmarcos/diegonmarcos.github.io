@@ -76,11 +76,35 @@ export class SlabWarehouseTwin {
 
             // 5. Populate initial statistics display
             this.updateGlobalWeights();
+
+            // 6. Lazily preload every other tab's heavy 3D assets in the
+            // background right now, instead of stalling on first click.
+            this.scheduleBackgroundPreload();
         } catch (e) {
             console.error("Core Initialization Error", e);
         } finally {
             const loader = document.getElementById('canvas-loader');
             if (loader) loader.classList.add('hidden');
+        }
+    }
+
+    // Builds the Slab Slider's Babylon engine/scene/meshes right after the
+    // main warehouse is up, while the browser is idle, so the tab is ready
+    // to render the instant it's clicked instead of paying that cost then.
+    // Deferred (idle callback, or a short timeout where unsupported) so it
+    // never competes with the first paint of the 3D Warehouse tab.
+    scheduleBackgroundPreload() {
+        const runPreload = () => {
+            try {
+                this.initSlabSliderEngine();
+            } catch (e) {
+                console.error('Background preload of Slab Slider failed', e);
+            }
+        };
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(runPreload, { timeout: 2500 });
+        } else {
+            setTimeout(runPreload, 400);
         }
     }
 
@@ -1196,10 +1220,20 @@ export class SlabWarehouseTwin {
 
     // Single source of truth for which nav icon is lit up — in both the
     // top icon bar AND the side drawer, since both carry data-tab="<id>".
+    static TAB_TITLES = {
+        '3d': '3D Warehouse',
+        register: 'Stock Register',
+        visualizer: 'Slab Viewer',
+        slider: 'Slab Slider',
+        flow: 'Inventory Flow',
+    };
+
     setActiveNavTab(tabId) {
         document.querySelectorAll('.nav-icon-btn, .drawer-item').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.tab === tabId);
         });
+        const titleEl = document.getElementById('topbar-page-title');
+        if (titleEl) titleEl.textContent = SlabWarehouseTwin.TAB_TITLES[tabId] || '';
     }
 
     showViewport(viewportId) {
@@ -1231,7 +1265,13 @@ export class SlabWarehouseTwin {
         this.activeTab = 'slider';
         this.showViewport('viewport-slider');
         this.setActiveNavTab('slider');
+        // No-op if the background preload already built it; this only
+        // covers the (currently theoretical) case where preload hasn't run yet.
         this.initSlabSliderEngine();
+        // The canvas was hidden (display:none) when the engine was built
+        // during background preload, so its render target was sized 0x0.
+        // Now that showViewport() just made it visible, resize to match.
+        if (this.sliderEngine) this.sliderEngine.resize();
         this.renderSliderSpecPanel();
     }
 

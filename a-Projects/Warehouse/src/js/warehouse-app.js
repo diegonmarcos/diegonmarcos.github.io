@@ -705,7 +705,6 @@ export class SlabWarehouseTwin {
             canv3d.classList.remove('hidden');
             this.updateSingleSlab3D();
         }
-        this.showNotification(`Switched viewer mode to ${mode}`);
     }
 
     /* --- VIEWPORT 4: SLAB SLIDER CAROUSEL RENDER ENGINE --- */

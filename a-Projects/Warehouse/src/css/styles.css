@@ -3,13 +3,34 @@
    labels always render with a visible size/color/font even if the Play CDN JIT
    fails to pick up arbitrary-value classes (text-[11px]) or runtime-toggled
    utility classes (text-amber-500 / text-slate-400 swapped via classList in JS). */
-/* body is a flex column of header/nav/main; without a locked flex-shrink these bars
-   can get squeezed when the 3D canvas triggers a layout pass (e.g. a resize event
-   during pointer interaction) and Tailwind's runtime-generated shrink-0 utility
-   doesn't hold up. Pin their size in plain CSS so they can never compress. */
+/* Full page skeleton pinned in plain CSS, independent of Tailwind's runtime-generated
+   utilities (min-h-screen, max-h-screen, flex-1, shrink-0, min-h-0 etc). The 3D canvas
+   drives window 'resize' (engine.resize()) during pointer interaction, and if any of
+   those Tailwind utilities didn't take effect, that relayout lets the flex algorithm
+   redistribute space away from header/nav toward main. Locking the whole chain with
+   concrete flex/height rules means header and nav can never be compressed, no matter
+   what triggers the reflow. */
+html, body {
+    height: 100%;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
 header,
 nav {
-    flex-shrink: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+main {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    position: relative;
+    overflow: hidden;
 }
 
 nav {

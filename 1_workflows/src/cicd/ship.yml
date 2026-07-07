@@ -447,6 +447,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MCP API Swagger build complete"
+      - name: 🔨 Build Warehouse
+        id: build-warehouse
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Projects/Warehouse/src/')
+
+        run: |
+          echo "🔨 Building Warehouse..."
+          cd a-Projects/Warehouse
+          bash build.sh build
+          cd ../..
+          echo "✅ Warehouse build complete"
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
       - name: 📂 Deploy All Projects to _site
@@ -493,6 +504,7 @@ jobs:
             "c-Cloud/api:api"
             "c-Cloud/mcp-api-swagger:mcp-api-swagger"
             "c-Cloud/skills_mcp:skills_mcp"
+            "a-Projects/Warehouse:Warehouse"
             "e-Others/others:others"
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"

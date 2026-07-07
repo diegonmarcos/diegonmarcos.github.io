@@ -13,6 +13,12 @@
 html, body {
     height: 100%;
     max-height: 100vh;
+    /* 100dvh tracks the browser's real, current visible viewport (dvh = dynamic
+       viewport height). On mobile, dragging the 3D canvas is exactly the kind of
+       touch interaction that makes the address bar auto-hide/show, which changes
+       the visible viewport height out from under a plain 100vh. Progressive
+       enhancement: unsupported browsers just keep the 100vh rule above. */
+    max-height: 100dvh;
     overflow: hidden;
 }
 

@@ -455,8 +455,9 @@ export class SlabWarehouseTwin {
             // Set eye-level beta, tilted slightly down for depth view
             const faceOnBeta = Math.PI / 2.1;
 
-            // Framed beautifully so the complete slab is visible without aggressive close-up cropping
-            const dynamicFramingRadius = Math.max(slabData.width, slabData.height) * 2.8;
+            // Framed beautifully so the complete slab is visible without aggressive close-up cropping,
+            // clamped so the camera doesn't fly through neighboring lines' racks
+            const dynamicFramingRadius = this.clampSlabViewRadius(Math.max(slabData.width, slabData.height) * 2.8);
 
             // Centering camera target directly to the middle of the slab's volumetric body
             const slabTargetCenter = mesh.position.clone();
@@ -497,6 +498,17 @@ export class SlabWarehouseTwin {
         const card = document.getElementById('quick-preview-card');
         card.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
         card.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
+    }
+
+    // Warehouse lines sit 4.5 units apart (see aisleX in buildAFrameRacksAndSlabs / focusAisle).
+    // Racks reach roughly 0.9 units into the aisle from either side, leaving a clear walkway
+    // of about 2.7 units between two lines. An unclamped framing radius (width/height * 2.8,
+    // which can reach 6-8 units) sends the camera straight through the neighboring line's rack —
+    // for a slab on line 2 it overshoots all the way past line 1. Clamp it so the camera always
+    // stays inside the local aisle gap and looks at the tapped slab from within its own line.
+    clampSlabViewRadius(rawRadius) {
+        const MAX_AISLE_VIEW_RADIUS = 2.2;
+        return Math.min(rawRadius, MAX_AISLE_VIEW_RADIUS);
     }
 
     smoothMoveCamera(targetPos, alpha, beta, radius) {
@@ -552,7 +564,7 @@ export class SlabWarehouseTwin {
         if (mesh) {
             this.highlightLayer.addMesh(mesh, new BABYLON.Color3(0.9, 0.9, 1.0));
             const targetAngle = targetSlab.side === 'Left' ? Math.PI : 0;
-            const dynamicFramingRadius = Math.max(targetSlab.width, targetSlab.height) * 2.8;
+            const dynamicFramingRadius = this.clampSlabViewRadius(Math.max(targetSlab.width, targetSlab.height) * 2.8);
             const slabTargetCenter = mesh.position.clone();
             slabTargetCenter.y = targetSlab.height / 2 + 0.11;
 
@@ -664,7 +676,7 @@ export class SlabWarehouseTwin {
         const mesh = this.slabMap.get(this.selectedSlab.id);
         if (mesh) {
             const targetAngle = this.selectedSlab.side === 'Left' ? Math.PI : 0;
-            const dynamicFramingRadius = Math.max(this.selectedSlab.width, this.selectedSlab.height) * 2.8;
+            const dynamicFramingRadius = this.clampSlabViewRadius(Math.max(this.selectedSlab.width, this.selectedSlab.height) * 2.8);
             const slabTargetCenter = mesh.position.clone();
             slabTargetCenter.y = this.selectedSlab.height / 2 + 0.11;
 

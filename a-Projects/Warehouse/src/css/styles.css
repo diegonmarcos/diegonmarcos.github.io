@@ -1,8 +1,17 @@
-/* Navigation Bar Explicit Styling */
+/* Navigation Bar Explicit Styling
+   Hardcoded fallback (not relying on Tailwind's runtime CDN compiler) so the tab
+   labels always render with a visible size/color/font even if the Play CDN JIT
+   fails to pick up arbitrary-value classes (text-[11px]) or runtime-toggled
+   utility classes (text-amber-500 / text-slate-400 swapped via classList in JS). */
 nav {
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 nav button {
@@ -11,6 +20,15 @@ nav button {
     opacity: 1 !important;
     white-space: nowrap;
     min-height: 44px;
+    color: #94a3b8;
+}
+
+nav button.text-amber-500 {
+    color: #f59e0b !important;
+}
+
+nav button.text-slate-400 {
+    color: #94a3b8 !important;
 }
 
 nav button svg {

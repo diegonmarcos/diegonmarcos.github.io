@@ -1,3 +1,26 @@
+/* Navigation Bar Explicit Styling */
+nav {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+nav button {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    white-space: nowrap;
+    min-height: 44px;
+}
+
+nav button svg {
+    flex-shrink: 0;
+}
+
+nav button span {
+    display: inline !important;
+}
+
 /* Precision scrollbar layouts for nested scroll containers */
 ::-webkit-scrollbar {
     width: 6px;

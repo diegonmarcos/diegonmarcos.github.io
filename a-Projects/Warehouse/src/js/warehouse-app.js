@@ -1194,11 +1194,10 @@ export class SlabWarehouseTwin {
 
     /* --- TAB NAVIGATION CONTROL SWITCHERS --- */
 
-    // Single source of truth for which nav icon is lit up. Every tab button
-    // carries data-tab="<id>"; this just toggles one 'active' class instead
-    // of five buttons x four classes each.
+    // Single source of truth for which nav icon is lit up — in both the
+    // top icon bar AND the side drawer, since both carry data-tab="<id>".
     setActiveNavTab(tabId) {
-        document.querySelectorAll('.nav-icon-btn').forEach(btn => {
+        document.querySelectorAll('.nav-icon-btn, .drawer-item').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.tab === tabId);
         });
     }
@@ -1496,13 +1495,44 @@ export class SlabWarehouseTwin {
     }
 
     setupUIHandlers() {
-        // Persistent icon-only top nav — same 5 buttons at every breakpoint,
-        // no mobile drawer, no duplicate button set to keep in sync.
+        // Persistent icon-only top nav — same 5 buttons at every breakpoint.
         document.getElementById('nav-3d-btn').onclick = () => this.activate3DTab();
         document.getElementById('nav-register-btn').onclick = () => this.activateRegisterTab();
         document.getElementById('nav-visualizer-btn').onclick = () => this.activateVisualizerTab();
         document.getElementById('nav-slider-btn').onclick = () => this.activateSliderTab();
         document.getElementById('nav-flow-btn').onclick = () => this.activateFlowTab();
+
+        // Side drawer: opened by the hamburger, same 5 destinations, labeled.
+        const hamburger = document.getElementById('hamburger-toggle');
+        const drawer = document.getElementById('mobile-menu');
+        const drawerOverlay = document.getElementById('mobile-menu-overlay');
+        const openDrawer = () => {
+            drawer.classList.remove('hidden');
+            drawerOverlay.classList.remove('hidden');
+        };
+        const closeDrawer = () => {
+            drawer.classList.add('hidden');
+            drawerOverlay.classList.add('hidden');
+        };
+        if (hamburger) hamburger.onclick = openDrawer;
+        if (drawerOverlay) drawerOverlay.onclick = closeDrawer;
+        const drawerCloseBtn = document.getElementById('mobile-menu-close');
+        if (drawerCloseBtn) drawerCloseBtn.onclick = closeDrawer;
+
+        const drawerTabActions = {
+            '3d': () => this.activate3DTab(),
+            register: () => this.activateRegisterTab(),
+            visualizer: () => this.activateVisualizerTab(),
+            slider: () => this.activateSliderTab(),
+            flow: () => this.activateFlowTab(),
+        };
+        document.querySelectorAll('.drawer-item[data-tab]').forEach(item => {
+            item.onclick = () => {
+                const action = drawerTabActions[item.dataset.tab];
+                if (action) action();
+                closeDrawer();
+            };
+        });
 
         // Supply Flow: Cash View / Accounting View mode switcher
         const flowCashBtn = document.getElementById('flow-mode-cash');

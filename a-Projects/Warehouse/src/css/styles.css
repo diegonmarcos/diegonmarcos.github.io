@@ -19,15 +19,30 @@ html, body {
     left: 0;
     right: 0;
     z-index: 999;
-    height: 56px;
     display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 12px;
+    flex-direction: column;
     background: #070b13;
     border-bottom: 1px solid #1e293b;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
     box-sizing: border-box;
+}
+
+/* Row 1: hamburger + page title, live stats on the right */
+.topbar-row1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 12px;
+    flex-shrink: 0;
+}
+
+/* Row 2: icon-only tab bar, one line, below row 1 */
+.topbar-row2 {
+    height: 48px;
+    padding: 0 12px;
+    border-top: 1px solid rgba(30, 41, 59, 0.7);
+    flex-shrink: 0;
 }
 
 #app-main {
@@ -39,18 +54,37 @@ html, body {
     min-height: 0;
 }
 
-/* Brand: compact icon + wordmark, never competes for space with the tabs */
+.hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 41, 59, 0.9);
+    background: rgba(148, 163, 184, 0.06);
+    color: #e2e8f0;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color .15s ease;
+}
+.hamburger-btn:hover { background: rgba(148, 163, 184, 0.14); }
+.hamburger-btn:active { transform: scale(0.94); }
+.hamburger-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+/* Brand: compact icon + page title, never competes for space with the tabs */
 .topbar-brand {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .topbar-brand-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 9px;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -58,28 +92,28 @@ html, body {
     background: linear-gradient(135deg, #fbbf24, #e11d48);
     color: #fff;
 }
-.topbar-brand-icon svg { width: 17px; height: 17px; }
+.topbar-brand-icon svg { width: 16px; height: 16px; }
 
 .topbar-brand-text {
     font-weight: 900;
     font-size: 14px;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.02em;
     color: #fff;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-@media (max-width: 480px) {
-    .topbar-brand-text { display: none; }
+@media (max-width: 400px) {
+    .topbar-brand-text { font-size: 12px; }
 }
 
-/* Tab bar: icon-only buttons, evenly spaced, centered between brand and
-   stats. This is the whole fix — no text labels means nothing to overflow
-   at any viewport width, and the same 5 buttons render everywhere. */
+/* Tab bar: icon-only buttons, one line, evenly spread across row 2. */
 .topbar-tabs {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
-    margin: 0 auto;
-    flex-shrink: 0;
+    height: 100%;
 }
 
 .nav-icon-btn {
@@ -134,12 +168,13 @@ html, body {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-/* Live counters: desktop only */
+/* Live counters: desktop only, pinned to the right of row 1 */
 .topbar-stats {
     display: none;
     align-items: center;
     gap: 22px;
     flex-shrink: 0;
+    margin-left: auto;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 @media (min-width: 1024px) {
@@ -168,6 +203,89 @@ html, body {
     font-size: 13px;
     font-weight: 900;
     color: #fff;
+}
+
+/* ==========================================================================
+   SIDE DRAWER — opened by the hamburger button. Same 5 destinations as the
+   icon tab bar, but labeled, for anyone who wants text over icon recall.
+   ========================================================================== */
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1000;
+}
+
+.drawer-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 84vw;
+    background: #070b13;
+    border-right: 1px solid #1e293b;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    box-shadow: 20px 0 60px -20px rgba(0, 0, 0, 0.7);
+}
+
+.drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    padding: 0 16px;
+    border-bottom: 1px solid rgba(30, 41, 59, 0.8);
+    flex-shrink: 0;
+}
+
+.drawer-header-title {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.drawer-close-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+}
+.drawer-close-btn:hover { background: rgba(148, 163, 184, 0.1); color: #fff; }
+.drawer-close-btn svg { width: 16px; height: 16px; }
+
+.drawer-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-left: 3px solid transparent;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+    flex-shrink: 0;
+}
+.drawer-item:hover { background: rgba(148, 163, 184, 0.06); color: #e2e8f0; }
+.drawer-item svg { width: 19px; height: 19px; flex-shrink: 0; }
+
+.drawer-item.active {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+    border-left-color: #f59e0b;
 }
 
 /* Precision scrollbar layouts for nested scroll containers */

@@ -32,21 +32,43 @@
 <body class="bg-warehouse-950 text-slate-100 font-sans">
 
     <!-- ==========================================================================
-         PERSISTENT TOP BAR — rewritten from scratch.
-         One fixed-position bar, one row, icon-only nav (no text labels to
-         overflow, no separate mobile menu to keep in sync). Same 5 buttons
-         render identically at every viewport width. The active tab's icon
-         is highlighted with a filled background + amber color.
+         PERSISTENT TOP BAR — two fixed rows.
+         Row 1: hamburger (opens the side drawer) + page title, stats on the
+         right. Row 2: icon-only tab bar, one line, same 5 buttons at every
+         viewport width. The active tab's icon is highlighted with a filled
+         background + amber color.
          ========================================================================== -->
     <header id="app-topbar">
-        <div class="topbar-brand">
-            <div class="topbar-brand-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        <div class="topbar-row1">
+            <button id="hamburger-toggle" class="hamburger-btn" aria-label="Open menu" title="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+
+            <div class="topbar-brand">
+                <div class="topbar-brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </div>
+                <span class="topbar-brand-text">Warehouse Control Centre</span>
             </div>
-            <span class="topbar-brand-text">SLABTWIN</span>
+
+            <!-- Live Counters (desktop only, hidden below 1024px) -->
+            <div class="topbar-stats">
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Total Stock</span>
+                    <span class="topbar-stat-value" id="stat-total">500 Slabs</span>
+                </div>
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Active Weight</span>
+                    <span class="topbar-stat-value" style="color:#f59e0b" id="stat-weight">1,328.5 t</span>
+                </div>
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Estimated Value</span>
+                    <span class="topbar-stat-value" style="color:#34d399" id="stat-value">$2,084,500</span>
+                </div>
+            </div>
         </div>
 
-        <nav class="topbar-tabs">
+        <nav class="topbar-row2 topbar-tabs">
             <button id="nav-3d-btn" class="nav-icon-btn active" data-tab="3d" title="3D Warehouse" aria-label="3D Warehouse">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
             </button>
@@ -64,23 +86,39 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             </button>
         </nav>
-
-        <!-- Live Counters (desktop only, hidden below 1024px) -->
-        <div class="topbar-stats">
-            <div class="topbar-stat">
-                <span class="topbar-stat-label">Total Stock</span>
-                <span class="topbar-stat-value" id="stat-total">500 Slabs</span>
-            </div>
-            <div class="topbar-stat">
-                <span class="topbar-stat-label">Active Weight</span>
-                <span class="topbar-stat-value" style="color:#f59e0b" id="stat-weight">1,328.5 t</span>
-            </div>
-            <div class="topbar-stat">
-                <span class="topbar-stat-label">Estimated Value</span>
-                <span class="topbar-stat-value" style="color:#34d399" id="stat-value">$2,084,500</span>
-            </div>
-        </div>
     </header>
+
+    <!-- SIDE DRAWER MENU (opened by the hamburger) — same 5 destinations,
+         labeled, for anyone who wants text instead of icon-only recall. -->
+    <div id="mobile-menu-overlay" class="hidden drawer-overlay"></div>
+    <nav id="mobile-menu" class="hidden drawer-menu">
+        <div class="drawer-header">
+            <span class="drawer-header-title">Menu</span>
+            <button id="mobile-menu-close" class="drawer-close-btn" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <button id="nav-3d-btn-drawer" class="drawer-item active" data-tab="3d">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <span>3D Warehouse</span>
+        </button>
+        <button id="nav-register-btn-drawer" class="drawer-item" data-tab="register">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>Stock Register</span>
+        </button>
+        <button id="nav-visualizer-btn-drawer" class="drawer-item" data-tab="visualizer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>Slab Viewer</span>
+        </button>
+        <button id="nav-slider-btn-drawer" class="drawer-item" data-tab="slider">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>Slab Slider</span>
+        </button>
+        <button id="nav-flow-btn-drawer" class="drawer-item" data-tab="flow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span>Inventory Flow</span>
+        </button>
+    </nav>
 
     <!-- MAIN VIEWPORTS CONTAINER (padded below the fixed topbar) -->
     <main id="app-main" class="relative overflow-hidden">

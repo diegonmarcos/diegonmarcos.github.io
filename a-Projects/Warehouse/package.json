@@ -1,0 +1,20 @@
+{
+  "name": "slabtwin-3d-warehouse",
+  "version": "1.0.0",
+  "description": "High-density A-Frame warehouse stock management engine with 3D visualization",
+  "main": "src/index.html",
+  "scripts": {
+    "serve": "python3 -m http.server 8020 --directory src",
+    "build": "echo 'Build process configured in build.json'"
+  },
+  "keywords": [
+    "warehouse",
+    "3d",
+    "inventory",
+    "marble",
+    "babylon.js",
+    "slab-management"
+  ],
+  "author": "Diego Marcos",
+  "license": "MIT"
+}

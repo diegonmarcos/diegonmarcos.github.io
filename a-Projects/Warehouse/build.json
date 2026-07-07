@@ -1,0 +1,20 @@
+{
+  "name": "SlabTwin 3D Warehouse",
+  "framework": "vanilla",
+  "port": 8020,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Copy HTML, CSS, and JS files from src to dist",
+      "mod": "copy",
+      "files": "*.html,*.css,*.js",
+      "from": "src"
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {}
+}

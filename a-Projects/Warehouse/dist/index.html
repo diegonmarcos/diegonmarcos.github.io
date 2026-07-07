@@ -66,8 +66,38 @@
         </div>
     </header>
 
-    <!-- FULL SCREEN NAVIGATION TAB BAR -->
-    <nav class="bg-warehouse-900 border-b border-slate-800/80 flex shrink-0 z-10 text-[11px] font-bold tracking-wider font-mono">
+    <!-- HAMBURGER MENU TOGGLE (Mobile) -->
+    <button id="hamburger-toggle" class="hidden fixed top-16 left-6 z-50 lg:hidden flex items-center justify-center w-10 h-10 bg-warehouse-900 border border-slate-800 rounded-lg hover:bg-slate-800 transition-all">
+        <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+
+    <!-- MOBILE SIDEBAR MENU -->
+    <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="this.hidden = true; document.getElementById('mobile-menu').classList.add('hidden')"></div>
+    <nav id="mobile-menu" class="hidden fixed left-0 top-0 h-screen w-64 bg-warehouse-900 border-r border-slate-800 overflow-y-auto z-40 lg:hidden flex flex-col pt-20 pb-6">
+        <button id="nav-3d-btn-mobile" class="px-6 py-4 text-left border-l-4 border-amber-500 bg-slate-800/50 text-amber-500 transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <span>3D WAREHOUSE</span>
+        </button>
+        <button id="nav-register-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>STOCK REGISTER</span>
+        </button>
+        <button id="nav-visualizer-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800 relative">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>SLAB VIEWER</span>
+        </button>
+        <button id="nav-slider-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>SLAB SLIDER</span>
+        </button>
+        <button id="nav-flow-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span>INVENTORY FLOW</span>
+        </button>
+    </nav>
+
+    <!-- FULL SCREEN NAVIGATION TAB BAR (Desktop Only) -->
+    <nav class="hidden lg:flex bg-warehouse-900 border-b border-slate-800/80 shrink-0 z-10 text-[11px] font-bold tracking-wider font-mono">
         <button id="nav-3d-btn" class="flex-1 py-4 text-center border-b-2 border-amber-500 text-amber-500 transition-all flex items-center justify-center gap-1.5">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
             3D WAREHOUSE
@@ -84,6 +114,10 @@
         <button id="nav-slider-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
             SLAB SLIDER
+        </button>
+        <button id="nav-flow-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            INVENTORY FLOW
         </button>
     </nav>
 
@@ -497,6 +531,53 @@
                     </div>
                 </div>
             </div>
+        </section>
+
+        <!-- VIEWPORT 5: SUPPLY FLOW DASHBOARD -->
+        <section id="viewport-flow" class="absolute inset-0 w-full h-full bg-warehouse-900 flex flex-col p-6 gap-6 z-10 hidden overflow-y-auto">
+
+            <!-- A) INVENTORY FLOW -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    A) Inventory Flow — Requested / Shipped / Delivered (Warehouse Sources of Purchase)
+                </span>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" id="flow-procurement-stages"></div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs text-slate-300 min-w-[640px]">
+                        <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono">
+                            <tr>
+                                <th class="py-2 px-2 font-bold">Source (Quarry / Supplier)</th>
+                                <th class="py-2 px-2 font-bold">Location</th>
+                                <th class="py-2 px-2 font-bold">Material</th>
+                                <th class="py-2 px-2 font-bold text-center">Requested</th>
+                                <th class="py-2 px-2 font-bold text-center">Shipped</th>
+                                <th class="py-2 px-2 font-bold text-center">Delivered</th>
+                                <th class="py-2 px-2 font-bold text-right">Total Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="flow-sources-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- B) SALES FLOW -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    B) Sales Flow — Available / Reserved / Bought / Delivering / Delivered
+                </span>
+                <div class="space-y-3.5" id="flow-lifecycle-bars"></div>
+            </div>
+
+            <!-- C) INVENTORY BALANCE -->
+            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
+                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
+                    C) Inventory Balance — Quantity & Value (EUR)
+                </span>
+                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3" id="flow-amounts-grid"></div>
+            </div>
+
         </section>
 
     </main>

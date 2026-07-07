@@ -40,14 +40,22 @@ main {
 }
 
 nav {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
     font-size: 11px;
     line-height: 1.4;
     font-weight: 700;
     letter-spacing: 0.05em;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+nav.hidden {
+    display: none !important;
+}
+
+#mobile-menu {
+    scroll-behavior: smooth;
 }
 
 nav button {
@@ -96,4 +104,21 @@ canvas {
     -webkit-tap-highlight-color: transparent;
     /* Prevent browser default gestures like double-tap zoom that interfere with 3D */
     touch-action: none;
+}
+
+/* Mobile hamburger menu styles */
+@media (max-width: 1024px) {
+    #hamburger-toggle {
+        display: flex !important;
+    }
+
+    nav:not(.hidden) {
+        display: flex !important;
+    }
+}
+
+/* Ensure header and nav never overlap 3D canvas */
+header, nav {
+    will-change: transform;
+    backface-visibility: hidden;
 }

@@ -1370,28 +1370,70 @@ export class SlabWarehouseTwin {
             `;
         }).join('');
 
-        // --- C) Total amounts breakdown ---
+        // --- C) Inventory Balance: Quantity & Value (EUR) ---
         const amountsGrid = document.getElementById('flow-amounts-grid');
         const grandTotal = this.slabs.reduce((sum, s) => sum + s.price, 0);
-        amountsGrid.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => `
-            <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/40 text-center">
-                <span class="text-[9px] text-slate-500 uppercase font-black block tracking-wider">${stage}</span>
-                <span class="text-sm font-black text-white block mt-1 font-mono">$${lifecycleStats[stage].value.toLocaleString()}</span>
-            </div>
-        `).join('') + `
+        const usdToEur = 0.92;
+        amountsGrid.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
+            const valueEur = Math.round(lifecycleStats[stage].value * usdToEur);
+            return `
+                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-slate-800/40 text-center">
+                    <span class="text-[9px] text-slate-500 uppercase font-black block tracking-wider">${stage}</span>
+                    <span class="text-xs font-bold text-slate-300 block mt-1.5 font-mono">${lifecycleStats[stage].count} units</span>
+                    <span class="text-sm font-black text-emerald-400 block mt-1 font-mono">€${valueEur.toLocaleString()}</span>
+                </div>
+            `;
+        }).join('') + `
             <div class="bg-amber-500/10 border border-amber-500/30 p-3.5 rounded-xl text-center">
-                <span class="text-[9px] text-amber-500 uppercase font-black block tracking-wider">Grand Total</span>
-                <span class="text-sm font-black text-amber-400 block mt-1 font-mono">$${grandTotal.toLocaleString()}</span>
+                <span class="text-[9px] text-amber-500 uppercase font-black block tracking-wider">Total Stock</span>
+                <span class="text-xs font-bold text-amber-300 block mt-1.5 font-mono">${this.slabs.length} units</span>
+                <span class="text-sm font-black text-amber-400 block mt-1 font-mono">€${Math.round(grandTotal * usdToEur).toLocaleString()}</span>
             </div>
         `;
     }
 
     setupUIHandlers() {
+        // Desktop Navigation
         document.getElementById('nav-3d-btn').onclick = () => this.activate3DTab();
         document.getElementById('nav-register-btn').onclick = () => this.activateRegisterTab();
         document.getElementById('nav-visualizer-btn').onclick = () => this.activateVisualizerTab();
         document.getElementById('nav-slider-btn').onclick = () => this.activateSliderTab();
         document.getElementById('nav-flow-btn').onclick = () => this.activateFlowTab();
+
+        // Mobile Navigation
+        const hamburger = document.getElementById('hamburger-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-menu-overlay');
+
+        if (hamburger) {
+            hamburger.onclick = () => {
+                mobileMenu.classList.toggle('hidden');
+                mobileOverlay.classList.toggle('hidden');
+            };
+        }
+
+        const closeMenu = () => {
+            mobileMenu.classList.add('hidden');
+            mobileOverlay.classList.add('hidden');
+        };
+
+        const mobileBtns = [
+            { id: 'nav-3d-btn-mobile', fn: () => this.activate3DTab() },
+            { id: 'nav-register-btn-mobile', fn: () => this.activateRegisterTab() },
+            { id: 'nav-visualizer-btn-mobile', fn: () => this.activateVisualizerTab() },
+            { id: 'nav-slider-btn-mobile', fn: () => this.activateSliderTab() },
+            { id: 'nav-flow-btn-mobile', fn: () => this.activateFlowTab() },
+        ];
+
+        mobileBtns.forEach(btn => {
+            const el = document.getElementById(btn.id);
+            if (el) {
+                el.onclick = () => {
+                    btn.fn();
+                    closeMenu();
+                };
+            }
+        });
 
         document.getElementById('toggle-view-2d').onclick = () => this.switchSlabViewerMode('2D');
         document.getElementById('toggle-view-3d').onclick = () => this.switchSlabViewerMode('3D');

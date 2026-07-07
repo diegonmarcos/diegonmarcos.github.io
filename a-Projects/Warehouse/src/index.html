@@ -473,11 +473,11 @@
             </div>
 
             <!-- Right Side: Unique Stock Profile Technical Parameters -->
-            <div class="w-full lg:w-[420px] flex flex-col space-y-4 shrink-0 overflow-y-auto min-h-0 select-none font-sans">
-                <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="w-full lg:w-[420px] flex flex-col space-y-4 shrink-0 overflow-y-auto min-h-0 select-none font-sans lg:max-h-full">
+                <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl flex flex-col h-full">
                     <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-2 border-b border-slate-850 font-mono">Unique Slab Configuration</span>
 
-                    <div class="space-y-3.5 font-mono">
+                    <div class="space-y-3.5 font-mono flex-1 overflow-y-auto">
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/40">
                                 <span class="text-[9px] text-slate-500 uppercase font-black block font-bold">Core Material</span>
@@ -519,15 +519,15 @@
                                 This exact slab size and material variation has been clustered across Cavalete V-stacks inside the warehouse lines. Click below to view the stock list or jump to their locations.
                             </div>
                         </div>
+                    </div>
 
-                        <div class="pt-2 border-t border-slate-850 flex gap-2 font-sans">
-                            <button onclick="window.warehouseApp.redirectSliderToRegister()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition shadow-md">
-                                VIEW REGISTER ENTRIES
-                            </button>
-                            <button onclick="window.warehouseApp.refocusSliderActive()" class="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black transition shadow-md">
-                                LOCATE IN 3D
-                            </button>
-                        </div>
+                    <div class="pt-2 border-t border-slate-850 flex gap-2 font-sans mt-auto shrink-0">
+                        <button onclick="window.warehouseApp.redirectSliderToRegister()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition shadow-md">
+                            VIEW REGISTER ENTRIES
+                        </button>
+                        <button onclick="window.warehouseApp.refocusSliderActive()" class="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black transition shadow-md">
+                            LOCATE IN 3D
+                        </button>
                     </div>
                 </div>
             </div>

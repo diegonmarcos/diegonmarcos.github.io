@@ -122,3 +122,14 @@ header, nav {
     will-change: transform;
     backface-visibility: hidden;
 }
+
+/* Fix slab slider panel overflow on desktop */
+#viewport-slider {
+    overflow: hidden;
+}
+
+#viewport-slider > div:last-child {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}

@@ -49,6 +49,11 @@ export class SlabWarehouseTwin {
             roughness: 0.12,
             goldSparkle: true
         };
+
+        // Supply Flow dashboard valuation basis: 'accounting' (accrual, full
+        // booked value at every stage) or 'cash' (only stages that have
+        // actually been paid/collected count toward value).
+        this.flowMode = 'accounting';
     }
 
     init() {
@@ -1276,34 +1281,42 @@ export class SlabWarehouseTwin {
         document.getElementById('nav-slider-btn').classList.remove('border-amber-500', 'text-amber-500');
 
         this.renderFlowPanel();
+        // Section was just un-hidden, so button widths are only measurable now
+        this.syncFlowModeThumb();
     }
 
     // Single reusable card renderer so Inventory Flow / Sales Flow / Inventory
     // Balance all share one exact visual pattern: icon chip, stage name, unit
     // count, € value, a progress bar against the section total, and a one-line
     // resume. `usdToEur` conversion is applied by the caller before this runs.
-    buildFlowCard({ stage, label, count, unitLabel, valueEur, pct, resume, isTotal = false }) {
+    // `muted` + `tag` reflect the active valuation basis (Cash View zeroes out
+    // and grays any stage whose money hasn't actually moved yet).
+    buildFlowCard({ stage, label, count, unitLabel, valueEur, pct, resume, isTotal = false, muted = false, tag = null }) {
         const meta = FlowSimulator.STAGE_META[stage] || FlowSimulator.STAGE_META.Delivered;
         const totalClass = isTotal ? ' flow-total-card' : '';
+        const mutedClass = muted ? ' muted' : '';
         const pctDisplay = pct === null ? '' : `
             <div class="flow-card-bar-track">
                 <div class="flow-card-bar-fill ${meta.bar}" style="width:${pct}%"></div>
             </div>
         `;
+        const tagMap = { cash: ['CASH IN', 'tag-cash'], pending: ['PENDING CASH', 'tag-pending'], accrued: ['ACCRUED', 'tag-accrued'] };
+        const tagHtml = tag && tagMap[tag] ? `<span class="flow-card-tag ${tagMap[tag][1]}">${tagMap[tag][0]}</span>` : '';
         return `
-            <div class="flow-card${totalClass}">
+            <div class="flow-card${totalClass}${mutedClass}">
                 <div class="flow-card-head">
                     <span class="flow-card-icon ${meta.soft}" style="color:${meta.color}">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${meta.icon}"/></svg>
                     </span>
                     <span class="flow-card-title">${label || stage}</span>
+                    ${tagHtml}
                 </div>
                 <div class="flow-card-body">
                     <div>
                         <span class="flow-card-units">${count}</span>
                         <span class="flow-card-units-label">&nbsp;${unitLabel}</span>
                     </div>
-                    <span class="flow-card-eur" style="color:${isTotal ? '#f59e0b' : '#34d399'}">€${valueEur.toLocaleString()}</span>
+                    <span class="flow-card-eur" style="color:${muted ? '' : (isTotal ? '#f59e0b' : '#34d399')}">€${valueEur.toLocaleString()}</span>
                 </div>
                 ${pctDisplay}
                 <div class="flow-card-resume">${resume}</div>
@@ -1311,11 +1324,77 @@ export class SlabWarehouseTwin {
         `;
     }
 
+    // Three-chip reconciliation strip shown under every section head:
+    // cash realized so far, what's still accrued/pending, and the accrual
+    // total — always visible so the two valuation bases can be compared
+    // side by side, with the currently active basis highlighted.
+    renderFlowSummary(containerId, realizedEur, pendingEur, totalEur) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const isCash = this.flowMode === 'cash';
+        el.innerHTML = `
+            <div class="flow-summary-chip${isCash ? ' emphasis' : ''}">
+                <span class="flow-summary-chip-label">Cash Realized</span>
+                <span class="flow-summary-chip-value" style="color:#34d399">€${realizedEur.toLocaleString()}</span>
+            </div>
+            <div class="flow-summary-chip">
+                <span class="flow-summary-chip-label">Accrued / Pending</span>
+                <span class="flow-summary-chip-value" style="color:#94a3b8">€${pendingEur.toLocaleString()}</span>
+            </div>
+            <div class="flow-summary-chip${!isCash ? ' emphasis' : ''}">
+                <span class="flow-summary-chip-label">Total (Accrual Basis)</span>
+                <span class="flow-summary-chip-value" style="color:${!isCash ? '#38bdf8' : '#fff'}">€${totalEur.toLocaleString()}</span>
+            </div>
+        `;
+    }
+
+    // Positions the sliding thumb + active label under the current
+    // this.flowMode without touching data. Called on tab activation (when
+    // the section becomes visible and button widths are first measurable)
+    // and after an explicit mode switch.
+    syncFlowModeThumb() {
+        const isCash = this.flowMode === 'cash';
+        document.querySelectorAll('.flow-mode-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === this.flowMode);
+        });
+        const thumb = document.getElementById('flow-mode-thumb');
+        const cashBtn = document.getElementById('flow-mode-cash');
+        const accountingBtn = document.getElementById('flow-mode-accounting');
+        if (thumb && cashBtn && accountingBtn) {
+            thumb.classList.toggle('mode-accounting', !isCash);
+            const targetBtn = isCash ? cashBtn : accountingBtn;
+            thumb.style.width = `${targetBtn.offsetWidth}px`;
+            thumb.style.transform = `translateX(${targetBtn.offsetLeft - cashBtn.offsetLeft}px)`;
+        }
+        const desc = document.getElementById('flow-mode-description');
+        if (desc) {
+            desc.textContent = isCash
+                ? 'Only stages where money has actually been paid or collected count toward value — everything else is shown as pending.'
+                : 'Accrual value at every stage — money not yet moved still counts as booked value.';
+        }
+    }
+
+    setFlowMode(mode) {
+        this.flowMode = mode;
+        this.syncFlowModeThumb();
+        this.renderFlowPanel();
+    }
+
     renderFlowPanel() {
         if (!this.purchaseOrders) {
             this.purchaseOrders = FlowSimulator.generatePurchaseOrders();
         }
         const usdToEur = 0.92;
+        const isCash = this.flowMode === 'cash';
+        // Cash View: a stage's € figure only counts once its status is
+        // "Delivered" (payment actually made/collected) — every earlier
+        // stage displays €0 and is visually muted. Accounting View shows
+        // the full accrued/booked value at every stage, unconditionally.
+        const displayValue = (stage, valueEur) => (isCash && !FlowSimulator.isCashRealized(stage)) ? 0 : valueEur;
+        const cardTag = (stage) => {
+            if (FlowSimulator.isCashRealized(stage)) return isCash ? 'cash' : 'accrued';
+            return isCash ? 'pending' : 'accrued';
+        };
 
         // --- A) Inventory Flow: Requested / Shipped / Delivered (purchase orders) ---
         const procurementStats = {};
@@ -1325,18 +1404,28 @@ export class SlabWarehouseTwin {
             procurementStats[po.status].value += po.orderValue;
         });
         const totalOrders = this.purchaseOrders.length;
+        const totalOrdersValueEur = Math.round(this.purchaseOrders.reduce((s, po) => s + po.orderValue, 0) * usdToEur);
+        const realizedOrdersValueEur = Math.round(procurementStats.Delivered.value * usdToEur);
+
+        this.renderFlowSummary('flow-procurement-summary', realizedOrdersValueEur, totalOrdersValueEur - realizedOrdersValueEur, totalOrdersValueEur);
 
         const stagesContainer = document.getElementById('flow-procurement-stages');
         stagesContainer.innerHTML = FlowSimulator.PROCUREMENT_STAGES.map(stage => {
             const data = procurementStats[stage];
             const pct = ((data.count / totalOrders) * 100).toFixed(1);
+            const valueEur = Math.round(data.value * usdToEur);
+            const muted = isCash && !FlowSimulator.isCashRealized(stage);
             return this.buildFlowCard({
                 stage,
                 count: data.count,
                 unitLabel: 'orders',
-                valueEur: Math.round(data.value * usdToEur),
+                valueEur: displayValue(stage, valueEur),
                 pct,
-                resume: `${pct}% of all purchase orders currently ${stage.toLowerCase()}`,
+                muted,
+                tag: cardTag(stage),
+                resume: muted
+                    ? `€${valueEur.toLocaleString()} accrued, not yet paid to supplier`
+                    : `${pct}% of all purchase orders currently ${stage.toLowerCase()}`,
             });
         }).join('');
 
@@ -1346,12 +1435,13 @@ export class SlabWarehouseTwin {
             if (!bySource.has(po.source)) {
                 bySource.set(po.source, {
                     location: po.sourceLocation, material: po.material,
-                    Requested: 0, Shipped: 0, Delivered: 0, totalValue: 0,
+                    Requested: 0, Shipped: 0, Delivered: 0, totalValue: 0, deliveredValue: 0,
                 });
             }
             const entry = bySource.get(po.source);
             entry[po.status]++;
             entry.totalValue += po.orderValue;
+            if (po.status === 'Delivered') entry.deliveredValue += po.orderValue;
         });
 
         const sourcesBody = document.getElementById('flow-sources-body');
@@ -1363,7 +1453,7 @@ export class SlabWarehouseTwin {
                 <td class="py-2.5 px-2 text-center text-sky-400 font-bold">${d.Requested}</td>
                 <td class="py-2.5 px-2 text-center text-amber-400 font-bold">${d.Shipped}</td>
                 <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${d.Delivered}</td>
-                <td class="py-2.5 px-3 text-right font-bold">€${Math.round(d.totalValue * usdToEur).toLocaleString()}</td>
+                <td class="py-2.5 px-3 text-right font-bold">€${Math.round((isCash ? d.deliveredValue : d.totalValue) * usdToEur).toLocaleString()}</td>
             </tr>
         `).join('');
 
@@ -1376,43 +1466,67 @@ export class SlabWarehouseTwin {
             lifecycleStats[stage].value += slab.price;
         });
         const totalSlabCount = this.slabs.length;
+        const totalSlabValueEur = Math.round(this.slabs.reduce((s, sl) => s + sl.price, 0) * usdToEur);
+        const realizedSlabValueEur = Math.round(lifecycleStats.Delivered.value * usdToEur);
+
+        this.renderFlowSummary('flow-lifecycle-summary', realizedSlabValueEur, totalSlabValueEur - realizedSlabValueEur, totalSlabValueEur);
 
         const lifecycleCardsContainer = document.getElementById('flow-lifecycle-cards');
         lifecycleCardsContainer.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
             const data = lifecycleStats[stage];
             const pct = ((data.count / totalSlabCount) * 100).toFixed(1);
+            const valueEur = Math.round(data.value * usdToEur);
+            const muted = isCash && !FlowSimulator.isCashRealized(stage);
             return this.buildFlowCard({
                 stage,
                 count: data.count,
                 unitLabel: 'slabs',
-                valueEur: Math.round(data.value * usdToEur),
+                valueEur: displayValue(stage, valueEur),
                 pct,
-                resume: `${pct}% of total warehouse stock`,
+                muted,
+                tag: cardTag(stage),
+                resume: muted
+                    ? `€${valueEur.toLocaleString()} booked, cash not yet collected`
+                    : `${pct}% of total warehouse stock`,
             });
         }).join('');
 
         // --- C) Inventory Balance: Quantity & Value (EUR), same stages, same card ---
         const grandTotal = this.slabs.reduce((sum, s) => sum + s.price, 0);
+        const grandTotalEur = Math.round(grandTotal * usdToEur);
+        const grandRealizedEur = realizedSlabValueEur;
+
+        this.renderFlowSummary('flow-balance-summary', grandRealizedEur, grandTotalEur - grandRealizedEur, grandTotalEur);
+
         const amountsGrid = document.getElementById('flow-amounts-grid');
         amountsGrid.innerHTML = FlowSimulator.LIFECYCLE_STAGES.map(stage => {
             const data = lifecycleStats[stage];
             const pct = ((data.count / totalSlabCount) * 100).toFixed(1);
+            const valueEur = Math.round(data.value * usdToEur);
+            const muted = isCash && !FlowSimulator.isCashRealized(stage);
             return this.buildFlowCard({
                 stage,
                 count: data.count,
                 unitLabel: 'units',
-                valueEur: Math.round(data.value * usdToEur),
+                valueEur: displayValue(stage, valueEur),
                 pct,
-                resume: `Avg €${data.count ? Math.round((data.value * usdToEur) / data.count).toLocaleString() : 0} per unit`,
+                muted,
+                tag: cardTag(stage),
+                resume: muted
+                    ? 'Not yet cash-settled'
+                    : `Avg €${data.count ? Math.round(valueEur / data.count).toLocaleString() : 0} per unit`,
             });
         }).join('') + this.buildFlowCard({
             stage: 'Delivered',
             label: 'Grand Total',
             count: this.slabs.length,
             unitLabel: 'units (all stages)',
-            valueEur: Math.round(grandTotal * usdToEur),
+            valueEur: isCash ? grandRealizedEur : grandTotalEur,
             pct: null,
-            resume: 'Grand total across the full warehouse inventory',
+            tag: isCash ? 'cash' : 'accrued',
+            resume: isCash
+                ? 'Cash actually collected across the full warehouse inventory'
+                : 'Grand total (accrual) across the full warehouse inventory',
             isTotal: true,
         });
     }
@@ -1463,6 +1577,14 @@ export class SlabWarehouseTwin {
                 };
             }
         });
+
+        // Supply Flow: Cash View / Accounting View mode switcher
+        const flowCashBtn = document.getElementById('flow-mode-cash');
+        const flowAccountingBtn = document.getElementById('flow-mode-accounting');
+        if (flowCashBtn && flowAccountingBtn) {
+            flowCashBtn.onclick = () => this.setFlowMode('cash');
+            flowAccountingBtn.onclick = () => this.setFlowMode('accounting');
+        }
 
         document.getElementById('toggle-view-2d').onclick = () => this.switchSlabViewerMode('2D');
         document.getElementById('toggle-view-3d').onclick = () => this.switchSlabViewerMode('3D');

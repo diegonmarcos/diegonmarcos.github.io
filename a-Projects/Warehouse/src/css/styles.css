@@ -270,3 +270,155 @@ canvas {
     border: 1px solid rgba(245, 158, 11, 0.35);
     background: rgba(245, 158, 11, 0.08);
 }
+
+/* ==========================================================================
+   SUPPLY FLOW — Cash View / Accounting View mode switcher
+   A real accounting-basis toggle: Cash View zeroes out any stage whose
+   money hasn't actually moved yet (everything except "Delivered"),
+   Accounting View shows the full accrued/booked value at every stage.
+   ========================================================================== */
+.flow-mode-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(30, 41, 59, 0.8);
+    border-radius: 16px;
+    padding: 14px 18px;
+}
+
+.flow-mode-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.flow-mode-label-title {
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+}
+
+.flow-mode-label-sub {
+    font-size: 10px;
+    color: #64748b;
+    font-weight: 600;
+    max-width: 440px;
+}
+
+.flow-mode-track {
+    position: relative;
+    display: flex;
+    background: #030509;
+    border: 1px solid rgba(30, 41, 59, 0.9);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+.flow-mode-btn {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    color: #64748b;
+    white-space: nowrap;
+    transition: color .2s ease;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.flow-mode-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.flow-mode-btn.active { color: #030509; }
+
+.flow-mode-btn[data-mode="cash"].active { color: #030509; }
+.flow-mode-btn[data-mode="accounting"].active { color: #030509; }
+
+.flow-mode-thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 3px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #34d399, #10b981);
+    transition: transform .25s cubic-bezier(.4,0,.2,1), width .25s ease;
+    z-index: 0;
+}
+
+.flow-mode-thumb.mode-accounting {
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}
+
+/* Reconciliation summary strip: three stat chips shown under every
+   section head, always visible so users can compare cash vs accrual
+   at a glance regardless of which mode is active. */
+.flow-summary-row {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 640px) {
+    .flow-summary-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.flow-summary-chip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: rgba(3, 5, 9, 0.5);
+    border: 1px solid rgba(30, 41, 59, 0.6);
+}
+
+.flow-summary-chip.emphasis {
+    border-color: rgba(52, 211, 153, 0.45);
+    background: rgba(52, 211, 153, 0.08);
+}
+
+.flow-summary-chip-label {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+}
+
+.flow-summary-chip-value {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 15px;
+    font-weight: 900;
+    color: #fff;
+}
+
+/* Muted cards: stage value hasn't hit cash yet (Cash View only) */
+.flow-card.muted .flow-card-eur { color: #64748b !important; }
+.flow-card.muted .flow-card-bar-fill { opacity: 0.35; }
+
+.flow-card-tag {
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.flow-card-tag.tag-cash { background: rgba(52, 211, 153, 0.15); color: #34d399; }
+.flow-card-tag.tag-pending { background: rgba(100, 116, 139, 0.15); color: #94a3b8; }
+.flow-card-tag.tag-accrued { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }

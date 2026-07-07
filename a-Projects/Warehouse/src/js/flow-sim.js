@@ -63,6 +63,13 @@ export class FlowSimulator {
         return orders;
     }
 
+    // Cash-basis accounting: money has only actually changed hands once a
+    // purchase order or a customer order reaches "Delivered" (payment on
+    // delivery). Every earlier stage is booked (accrual) but not yet cash.
+    static isCashRealized(stage) {
+        return stage === 'Delivered';
+    }
+
     // Existing slab status is only Available / Reserved / Sold. This extends
     // "Sold" deterministically into the fuller warehouse-to-customer lifecycle
     // (Bought -> Delivering -> Delivered) for the Supply Flow dashboard, without

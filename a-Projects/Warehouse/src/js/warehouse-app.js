@@ -56,6 +56,10 @@ export class SlabWarehouseTwin {
         this.flowMode = 'accounting';
         // Which of the three Supply Flow sections (A/B/C) is on screen.
         this.flowSection = 'A';
+
+        // 3D Warehouse tab: false = Babylon 3D canvas, true = the plain
+        // Canvas 2D architectural blueprint (top-view floor plan).
+        this.view2DActive = false;
     }
 
     init() {
@@ -247,7 +251,7 @@ export class SlabWarehouseTwin {
         this.setupInteractivePicking();
 
         this.engine.runRenderLoop(() => {
-            if (this.activeTab === '3d') {
+            if (this.activeTab === '3d' && !this.view2DActive) {
                 this.scene.render();
                 document.getElementById('render-fps').innerText = Math.round(this.engine.getFps()) + " FPS";
             }
@@ -547,6 +551,293 @@ export class SlabWarehouseTwin {
             this.clearSlabHighlight3DOnly();
             this.refocusIso();
         }
+    }
+
+    // Switches the 3D Warehouse tab between the Babylon 3D canvas and the
+    // plain Canvas 2D architectural blueprint. Nothing 3D-specific (camera
+    // presets, slab preview, orbit toggle) makes sense in the blueprint, so
+    // this also closes any active preview and hides the 3D-only dock.
+    setViewMode(mode) {
+        this.view2DActive = (mode === '2d');
+
+        document.querySelectorAll('.view-mode-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.mode === mode);
+        });
+
+        document.getElementById('render-canvas').classList.toggle('hidden', this.view2DActive);
+        document.getElementById('blueprint-canvas').classList.toggle('hidden', !this.view2DActive);
+
+        const dock = document.getElementById('geometric-dock');
+        if (dock) dock.classList.toggle('hidden', this.view2DActive);
+
+        if (this.view2DActive) {
+            this.exitSlabPreview();
+            this.renderBlueprint();
+        } else if (this.engine) {
+            // The 3D canvas was hidden (display:none) while in blueprint
+            // mode, so its render target may be stale-sized; correct it
+            // now that showViewport-equivalent visibility is restored.
+            this.engine.resize();
+        }
+    }
+
+    // Draws the architectural top-view floor plan on #blueprint-canvas using
+    // plain Canvas 2D — no Babylon, no 3D engine involved. Reuses the exact
+    // same layout math as buildAFrameRacksAndSlabs() (5 lines spaced 4.5
+    // units apart, 7 A-Frames per line spaced 2.75 units apart) so the plan
+    // matches the 3D model precisely, then renders it in a CAD/blueprint
+    // drafting style: dark navy background, cyan grid, dimension lines,
+    // corridor labels, a status-color legend and a drawing title block.
+    renderBlueprint() {
+        const canvas = document.getElementById('blueprint-canvas');
+        if (!canvas || !this.slabs.length) return;
+
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        const cssW = Math.max(rect.width, 1);
+        const cssH = Math.max(rect.height, 1);
+        canvas.width = cssW * dpr;
+        canvas.height = cssH * dpr;
+
+        const ctx = canvas.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, cssW, cssH);
+
+        // --- Palette ---
+        const INK = '#7dd3fc';           // cyan drafting lines
+        const INK_DIM = 'rgba(125, 211, 252, 0.18)';
+        const PAPER_BG = '#0a1628';
+        const TEXT = '#e0f2fe';
+        const STATUS_COLOR = { Available: '#34d399', Reserved: '#f59e0b', Sold: '#fb7185' };
+
+        ctx.fillStyle = PAPER_BG;
+        ctx.fillRect(0, 0, cssW, cssH);
+
+        // --- World bounds -> screen transform ---
+        // Lines: X = (line-3)*4.5 for line 1..5  => X in [-9, 9]
+        // A-Frames: Z = (aFrame-4)*2.75 for aFrame 1..7 => Z in [-8.25, 8.25]
+        // Each rack footprint is roughly 1.3 (X) x 1.9 (Z) units.
+        const worldMinX = -9 - 1.6, worldMaxX = 9 + 1.6;
+        const worldMinZ = -8.25 - 1.6, worldMaxZ = 8.25 + 1.6;
+        const worldW = worldMaxX - worldMinX;
+        const worldD = worldMaxZ - worldMinZ;
+
+        const titleBlockH = 70;
+        const dimMargin = 46;
+        const pad = 24;
+        const drawX0 = pad + dimMargin;
+        const drawY0 = pad;
+        const drawX1 = cssW - pad;
+        const drawY1 = cssH - pad - dimMargin - titleBlockH;
+        const drawW = Math.max(drawX1 - drawX0, 10);
+        const drawH = Math.max(drawY1 - drawY0, 10);
+
+        const scale = Math.min(drawW / worldW, drawH / worldD);
+        const offsetX = drawX0 + (drawW - worldW * scale) / 2;
+        const offsetY = drawY0 + (drawH - worldD * scale) / 2;
+        const toScreen = (wx, wz) => [offsetX + (wx - worldMinX) * scale, offsetY + (wz - worldMinZ) * scale];
+
+        // --- Faint drafting grid, every 1 world unit ---
+        ctx.strokeStyle = INK_DIM;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let gx = Math.ceil(worldMinX); gx <= worldMaxX; gx++) {
+            const [sx0, sy0] = toScreen(gx, worldMinZ);
+            const [, sy1] = toScreen(gx, worldMaxZ);
+            ctx.moveTo(Math.round(sx0) + 0.5, sy0);
+            ctx.lineTo(Math.round(sx0) + 0.5, sy1);
+        }
+        for (let gz = Math.ceil(worldMinZ); gz <= worldMaxZ; gz++) {
+            const [sx0, sy0] = toScreen(worldMinX, gz);
+            const [sx1] = toScreen(worldMaxX, gz);
+            ctx.moveTo(sx0, Math.round(sy0) + 0.5);
+            ctx.lineTo(sx1, Math.round(sy0) + 0.5);
+        }
+        ctx.stroke();
+
+        // --- Outer building envelope (double line, like an arch. floor plan) ---
+        const [envX0, envY0] = toScreen(worldMinX, worldMinZ);
+        const [envX1, envY1] = toScreen(worldMaxX, worldMaxZ);
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(envX0, envY0, envX1 - envX0, envY1 - envY0);
+        ctx.lineWidth = 1;
+        ctx.strokeRect(envX0 + 5, envY0 + 5, envX1 - envX0 - 10, envY1 - envY0 - 10);
+
+        // --- Racks: one rectangle per A-Frame per line, colored by the
+        // dominant slab status on that rack, plus a dashed aisle centerline ---
+        ctx.font = '600 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let line = 1; line <= 5; line++) {
+            const aisleX = (line - 3) * 4.5;
+
+            // Dashed centerline down the aisle
+            const [clX, clY0] = toScreen(aisleX, worldMinZ);
+            const [, clY1] = toScreen(aisleX, worldMaxZ);
+            ctx.save();
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = 'rgba(125, 211, 252, 0.35)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(clX, clY0);
+            ctx.lineTo(clX, clY1);
+            ctx.stroke();
+            ctx.restore();
+
+            // Corridor label above the line
+            ctx.fillStyle = TEXT;
+            ctx.font = '800 11px ui-monospace, SFMono-Regular, Menlo, monospace';
+            ctx.fillText(`L${line}`, clX, clY0 - 12);
+            ctx.font = '600 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+
+            for (let aFrame = 1; aFrame <= 7; aFrame++) {
+                const zCenter = (aFrame - 4) * 2.75;
+                const rackSlabs = this.slabs.filter(s => s.line === line && s.aFrame === aFrame);
+
+                const counts = { Available: 0, Reserved: 0, Sold: 0 };
+                rackSlabs.forEach(s => { counts[s.status] = (counts[s.status] || 0) + 1; });
+                let dominant = 'Available';
+                if (rackSlabs.length) {
+                    dominant = Object.keys(counts).reduce((a, b) => (counts[b] > counts[a] ? b : a));
+                }
+                const color = STATUS_COLOR[dominant] || INK;
+
+                const [rx0, ry0] = toScreen(aisleX - 0.65, zCenter - 0.95);
+                const [rx1, ry1] = toScreen(aisleX + 0.65, zCenter + 0.95);
+
+                ctx.fillStyle = this.hexToRgba(color, 0.16);
+                ctx.fillRect(rx0, ry0, rx1 - rx0, ry1 - ry0);
+
+                ctx.strokeStyle = INK;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(rx0, ry0, rx1 - rx0, ry1 - ry0);
+
+                if (scale > 14) {
+                    ctx.fillStyle = TEXT;
+                    ctx.fillText(`${line}-${aFrame}`, (rx0 + rx1) / 2, (ry0 + ry1) / 2);
+                }
+            }
+        }
+
+        // --- Dimension lines: overall width (bottom) and depth (left) ---
+        ctx.strokeStyle = INK;
+        ctx.fillStyle = TEXT;
+        ctx.lineWidth = 1;
+        ctx.font = '700 10px ui-monospace, SFMono-Regular, Menlo, monospace';
+
+        const dimY = envY1 + 22;
+        this.drawBlueprintDimLine(ctx, envX0, dimY, envX1, dimY, `${(worldW).toFixed(1)} m`, 'h');
+
+        const dimX = envX0 - 22;
+        this.drawBlueprintDimLine(ctx, dimX, envY0, dimX, envY1, `${(worldD).toFixed(1)} m`, 'v');
+
+        // --- Compass ---
+        const compassX = cssW - pad - 22;
+        const compassY = pad + 22;
+        ctx.save();
+        ctx.strokeStyle = INK;
+        ctx.fillStyle = TEXT;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(compassX, compassY, 16, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(compassX, compassY - 13);
+        ctx.lineTo(compassX - 5, compassY + 6);
+        ctx.lineTo(compassX + 5, compassY + 6);
+        ctx.closePath();
+        ctx.fillStyle = INK;
+        ctx.fill();
+        ctx.font = '700 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillStyle = TEXT;
+        ctx.textAlign = 'center';
+        ctx.fillText('N', compassX, compassY + 15);
+        ctx.restore();
+
+        // --- Legend (status colors) ---
+        const legendX = pad;
+        const legendY = envY1 + 20;
+        ctx.font = '700 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.textAlign = 'left';
+        let lx = legendX;
+        Object.entries(STATUS_COLOR).forEach(([label, color]) => {
+            ctx.fillStyle = this.hexToRgba(color, 0.6);
+            ctx.fillRect(lx, legendY + 26, 10, 10);
+            ctx.strokeStyle = color;
+            ctx.strokeRect(lx, legendY + 26, 10, 10);
+            ctx.fillStyle = TEXT;
+            ctx.fillText(label, lx + 14, legendY + 31);
+            lx += ctx.measureText(label).width + 34;
+        });
+
+        // --- Title block, bottom-right ---
+        const tbW = 260, tbH = titleBlockH;
+        const tbX = cssW - pad - tbW;
+        const tbY = cssH - pad - tbH;
+        ctx.strokeStyle = INK;
+        ctx.lineWidth = 1;
+        ctx.strokeRect(tbX, tbY, tbW, tbH);
+        ctx.beginPath();
+        ctx.moveTo(tbX, tbY + 22);
+        ctx.lineTo(tbX + tbW, tbY + 22);
+        ctx.stroke();
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = TEXT;
+        ctx.font = '800 11px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillText('WAREHOUSE FLOOR PLAN — TOP VIEW', tbX + 10, tbY + 14);
+
+        ctx.font = '600 9px ui-monospace, SFMono-Regular, Menlo, monospace';
+        ctx.fillStyle = 'rgba(224, 242, 254, 0.7)';
+        ctx.fillText(`SLABTWIN 3D PRO  ·  SCALE 1:${Math.max(1, Math.round(100 / scale))}`, tbX + 10, tbY + 36);
+        ctx.fillText(`5 CORRIDORS  ·  35 A-FRAME RACKS  ·  ${this.slabs.length} SLABS`, tbX + 10, tbY + 50);
+        ctx.fillText('DWG NO. SW-3D-001  ·  REV. A', tbX + 10, tbY + 64);
+    }
+
+    // Small helper: draws a dimension line with end-ticks and a centered
+    // measurement label, in either the horizontal or vertical orientation.
+    drawBlueprintDimLine(ctx, x0, y0, x1, y1, label, orientation) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.stroke();
+
+        const tick = 5;
+        ctx.beginPath();
+        if (orientation === 'h') {
+            ctx.moveTo(x0, y0 - tick); ctx.lineTo(x0, y0 + tick);
+            ctx.moveTo(x1, y1 - tick); ctx.lineTo(x1, y1 + tick);
+        } else {
+            ctx.moveTo(x0 - tick, y0); ctx.lineTo(x0 + tick, y0);
+            ctx.moveTo(x1 - tick, y1); ctx.lineTo(x1 + tick, y1);
+        }
+        ctx.stroke();
+
+        const midX = (x0 + x1) / 2;
+        const midY = (y0 + y1) / 2;
+        ctx.save();
+        if (orientation === 'v') {
+            ctx.translate(midX, midY);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.fillText(label, 0, -6);
+        } else {
+            ctx.textAlign = 'center';
+            ctx.fillText(label, midX, midY - 8);
+        }
+        ctx.restore();
+        ctx.restore();
+    }
+
+    hexToRgba(hex, alpha) {
+        const clean = hex.replace('#', '');
+        const r = parseInt(clean.substring(0, 2), 16);
+        const g = parseInt(clean.substring(2, 4), 16);
+        const b = parseInt(clean.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
     }
 
     // Warehouse lines sit 4.5 units apart (see aisleX in buildAFrameRacksAndSlabs / focusAisle).
@@ -1247,6 +1538,12 @@ export class SlabWarehouseTwin {
         this.activeTab = '3d';
         this.showViewport('viewport-3d');
         this.setActiveNavTab('3d');
+        // The viewport (and blueprint-canvas within it) was display:none on
+        // whatever other tab was active, so if the window was resized
+        // meanwhile the blueprint's raster is stale relative to its new
+        // CSS size. Redraw now that it's visible again.
+        if (this.view2DActive) this.renderBlueprint();
+        else if (this.engine) this.engine.resize();
     }
 
     activateRegisterTab() {
@@ -1729,6 +2026,17 @@ export class SlabWarehouseTwin {
         if (slabPreviewBackdrop) {
             slabPreviewBackdrop.onclick = () => this.exitSlabPreview();
         }
+
+        // 3D Warehouse: 3D / 2D Blueprint view toggle
+        const viewMode3dBtn = document.getElementById('view-mode-3d-btn');
+        const viewMode2dBtn = document.getElementById('view-mode-2d-btn');
+        if (viewMode3dBtn && viewMode2dBtn) {
+            viewMode3dBtn.onclick = () => this.setViewMode('3d');
+            viewMode2dBtn.onclick = () => this.setViewMode('2d');
+        }
+        window.addEventListener('resize', () => {
+            if (this.view2DActive) this.renderBlueprint();
+        });
     }
 
     // Measures the real, rendered height of the fixed #app-topbar (header +

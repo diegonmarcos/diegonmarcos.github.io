@@ -755,3 +755,32 @@ canvas {
 .flow-card-tag.tag-cash { background: rgba(52, 211, 153, 0.15); color: #34d399; }
 .flow-card-tag.tag-pending { background: rgba(100, 116, 139, 0.15); color: #94a3b8; }
 .flow-card-tag.tag-accrued { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+
+/* ==========================================================================
+   3D WAREHOUSE — 3D / 2D Blueprint view toggle
+   Small segmented pill matching the other floating HUD chips top-left of
+   the viewport. #blueprint-canvas is a plain Canvas 2D element, fully
+   independent of the Babylon engine — swapping to it costs nothing on
+   the 3D render loop (gated off via activeTab/view2DActive in JS).
+   ========================================================================== */
+.view-mode-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 10px;
+    border-radius: 9px;
+    background: transparent;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .15s ease, color .15s ease;
+}
+.view-mode-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.view-mode-btn:hover { color: #cbd5e1; }
+.view-mode-btn.active {
+    color: #0a1628;
+    background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+}

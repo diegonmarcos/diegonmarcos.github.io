@@ -149,6 +149,18 @@
                         <div class="w-8 h-4 bg-slate-850 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
                 </div>
+
+                <!-- 3D / 2D Blueprint view toggle -->
+                <div class="bg-warehouse-900/90 border border-slate-800 px-1 py-1 rounded-xl flex items-center gap-1 pointer-events-auto shadow-2xl backdrop-blur-md">
+                    <button id="view-mode-3d-btn" class="view-mode-btn active" data-mode="3d" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span>3D</span>
+                    </button>
+                    <button id="view-mode-2d-btn" class="view-mode-btn" data-mode="2d" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v18M3 9h18M4 4h16v16H4z"/></svg>
+                        <span>2D Blueprint</span>
+                    </button>
+                </div>
             </div>
 
             <!-- SLAB PREVIEW BACKDROP: while a slab is previewed (quick-preview-card
@@ -180,8 +192,10 @@
                 </div>
             </div>
 
-            <!-- GEOMETRIC DOCK: Native Sleek CAD Bottom-Centered Navigation Bar -->
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center bg-slate-950/85 border border-slate-800/80 px-4 py-2.5 rounded-2xl gap-3 shadow-2xl backdrop-blur-md pointer-events-auto shrink-0 select-none">
+            <!-- GEOMETRIC DOCK: Native Sleek CAD Bottom-Centered Navigation Bar
+                 (3D camera presets only — hidden while the 2D Blueprint is active,
+                 since there's no camera to move in an orthographic floor plan). -->
+            <div id="geometric-dock" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center bg-slate-950/85 border border-slate-800/80 px-4 py-2.5 rounded-2xl gap-3 shadow-2xl backdrop-blur-md pointer-events-auto shrink-0 select-none">
                 <!-- Global Preset -->
                 <button onclick="window.warehouseApp.refocusGlobal()" class="p-2.5 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-500 rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold text-[10px]" title="Global Overhead View">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 012.5 2.5v.5m-8.5 4h1.5a3 3 0 003-3V14a3 3 0 013-3h1.5m-3 4H14m-3-11h.01M21 12a9 9 0 11-18 0 9 9 0 1118 0z"/></svg>
@@ -211,6 +225,11 @@
 
             <!-- THE BABYLON 3D CANVAS -->
             <canvas id="render-canvas" class="w-full h-full block bg-warehouse-950"></canvas>
+
+            <!-- 2D BLUEPRINT CANVAS: architectural top-view floor plan, drawn with
+                 plain Canvas 2D (no 3D engine involved) — CAD-style plan of the
+                 same rack/line layout, toggled in place of the 3D canvas above. -->
+            <canvas id="blueprint-canvas" class="hidden w-full h-full block" style="background:#0a1628;"></canvas>
 
             <!-- Loading Mask -->
             <div id="canvas-loader" class="absolute inset-0 bg-warehouse-950 z-20 flex flex-col items-center justify-center space-y-4">

@@ -27,29 +27,7 @@
             }
         }
     </script>
-    <style>
-        /* Precision scrollbar layouts for nested scroll containers */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #030509;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1f2937;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #374151;
-        }
-        canvas {
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
-            /* Prevent browser default gestures like double-tap zoom that interfere with 3D */
-            touch-action: none;
-        }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-warehouse-950 text-slate-100 min-h-screen max-h-screen overflow-hidden font-sans flex flex-col">
 
@@ -529,16 +507,7 @@
         <span id="notif-text" class="leading-normal font-semibold text-slate-200"></span>
     </div>
 
-    <!-- PROGRAM CORE LOGIC - Compressed for brevity but maintains full functionality -->
-    <script>
-        // Full application code (see full HTML for complete implementation)
-        // This is a placeholder - the actual application requires the full SlabWarehouseTwin class
-
-        window.addEventListener('DOMContentLoaded', () => {
-            // Initialize application
-            console.log('SlabTwin 3D Warehouse initialized');
-            // Full implementation included in complete file
-        });
-    </script>
+    <!-- PROGRAM CORE LOGIC -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>

@@ -54,6 +54,8 @@ export class SlabWarehouseTwin {
         // booked value at every stage) or 'cash' (only stages that have
         // actually been paid/collected count toward value).
         this.flowMode = 'accounting';
+        // Which of the three Supply Flow sections (A/B/C) is on screen.
+        this.flowSection = 'A';
     }
 
     init() {
@@ -431,11 +433,8 @@ export class SlabWarehouseTwin {
                     const slabId = mesh.name;
                     this.previewSlab3DOnly(slabId);
                 } else {
-                    // If they tapped empty space or the floor, release the slab and go back to Iso ONLY if a slab is active
-                    if (this.currentlyHighlightedSlabId) {
-                        this.clearSlabHighlight3DOnly();
-                        this.refocusIso();
-                    }
+                    // Tapped empty space, the floor, or a rack — same exit as the backdrop
+                    this.exitSlabPreview();
                 }
             }
         });
@@ -493,6 +492,12 @@ export class SlabWarehouseTwin {
 
         card.classList.remove('translate-y-4', 'opacity-0', 'pointer-events-none');
         card.classList.add('translate-y-0', 'opacity-100', 'pointer-events-auto');
+
+        // Arm the full-viewport backdrop: any tap/click outside the card
+        // frame now returns to the previous 3D view, guaranteed by a plain
+        // DOM click handler rather than relying on the scene's own picking.
+        const backdrop = document.getElementById('slab-preview-backdrop');
+        if (backdrop) backdrop.classList.remove('hidden');
     }
 
     clearSlabHighlight3DOnly() {
@@ -505,6 +510,19 @@ export class SlabWarehouseTwin {
         const card = document.getElementById('quick-preview-card');
         card.classList.remove('translate-y-0', 'opacity-100', 'pointer-events-auto');
         card.classList.add('translate-y-4', 'opacity-0', 'pointer-events-none');
+
+        const backdrop = document.getElementById('slab-preview-backdrop');
+        if (backdrop) backdrop.classList.add('hidden');
+    }
+
+    // Returns from the slab preview to the previous free-roam 3D view.
+    // Called from the backdrop click AND kept as the scene-picking fallback
+    // (tapping the floor/racks/another slab) so both paths agree.
+    exitSlabPreview() {
+        if (this.currentlyHighlightedSlabId) {
+            this.clearSlabHighlight3DOnly();
+            this.refocusIso();
+        }
     }
 
     // Warehouse lines sit 4.5 units apart (see aisleX in buildAFrameRacksAndSlabs / focusAisle).
@@ -1223,8 +1241,8 @@ export class SlabWarehouseTwin {
         this.showViewport('viewport-flow');
         this.setActiveNavTab('flow');
         this.renderFlowPanel();
-        // Section was just un-hidden, so button widths are only measurable now
         this.syncFlowModeThumb();
+        this.setFlowSection(this.flowSection);
     }
 
     // Single reusable card renderer so Inventory Flow / Sales Flow / Inventory
@@ -1290,30 +1308,34 @@ export class SlabWarehouseTwin {
         `;
     }
 
-    // Positions the sliding thumb + active label under the current
-    // this.flowMode without touching data. Called on tab activation (when
-    // the section becomes visible and button widths are first measurable)
-    // and after an explicit mode switch.
+    // Solid two-button toggle, no sliding-thumb overlay to keep in sync —
+    // just mark whichever button matches the current mode as .active and
+    // update the description line underneath.
     syncFlowModeThumb() {
         const isCash = this.flowMode === 'cash';
         document.querySelectorAll('.flow-mode-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.mode === this.flowMode);
         });
-        const thumb = document.getElementById('flow-mode-thumb');
-        const cashBtn = document.getElementById('flow-mode-cash');
-        const accountingBtn = document.getElementById('flow-mode-accounting');
-        if (thumb && cashBtn && accountingBtn) {
-            thumb.classList.toggle('mode-accounting', !isCash);
-            const targetBtn = isCash ? cashBtn : accountingBtn;
-            thumb.style.width = `${targetBtn.offsetWidth}px`;
-            thumb.style.transform = `translateX(${targetBtn.offsetLeft - cashBtn.offsetLeft}px)`;
-        }
         const desc = document.getElementById('flow-mode-description');
         if (desc) {
             desc.textContent = isCash
                 ? 'Only stages where money has actually been paid or collected count toward value — everything else is shown as pending.'
                 : 'Accrual value at every stage — money not yet moved still counts as booked value.';
         }
+    }
+
+    // A / B / C section switcher: only one of Inventory Flow, Sales Flow,
+    // Inventory Balance is visible at a time, so the control bar and the
+    // data it governs always share the same viewport.
+    setFlowSection(sectionId) {
+        this.flowSection = sectionId;
+        document.querySelectorAll('.flow-section-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.section === sectionId);
+        });
+        ['A', 'B', 'C'].forEach(id => {
+            const panel = document.getElementById(`flow-panel-${id}`);
+            if (panel) panel.classList.toggle('hidden', id !== sectionId);
+        });
     }
 
     setFlowMode(mode) {
@@ -1490,6 +1512,11 @@ export class SlabWarehouseTwin {
             flowAccountingBtn.onclick = () => this.setFlowMode('accounting');
         }
 
+        // Supply Flow: A / B / C section switcher
+        document.querySelectorAll('.flow-section-tab').forEach(tab => {
+            tab.onclick = () => this.setFlowSection(tab.dataset.section);
+        });
+
         document.getElementById('toggle-view-2d').onclick = () => this.switchSlabViewerMode('2D');
         document.getElementById('toggle-view-3d').onclick = () => this.switchSlabViewerMode('3D');
 
@@ -1552,6 +1579,13 @@ export class SlabWarehouseTwin {
                 }
             }
         };
+
+        // Slab preview backdrop: tap/click anywhere outside the preview
+        // card's frame returns to the previous 3D view.
+        const slabPreviewBackdrop = document.getElementById('slab-preview-backdrop');
+        if (slabPreviewBackdrop) {
+            slabPreviewBackdrop.onclick = () => this.exitSlabPreview();
+        }
     }
 
     // Measures the real, rendered height of the fixed #app-topbar (header +

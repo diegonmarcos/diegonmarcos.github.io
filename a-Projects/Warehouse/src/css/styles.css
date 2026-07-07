@@ -3,6 +3,15 @@
    labels always render with a visible size/color/font even if the Play CDN JIT
    fails to pick up arbitrary-value classes (text-[11px]) or runtime-toggled
    utility classes (text-amber-500 / text-slate-400 swapped via classList in JS). */
+/* body is a flex column of header/nav/main; without a locked flex-shrink these bars
+   can get squeezed when the 3D canvas triggers a layout pass (e.g. a resize event
+   during pointer interaction) and Tailwind's runtime-generated shrink-0 utility
+   doesn't hold up. Pin their size in plain CSS so they can never compress. */
+header,
+nav {
+    flex-shrink: 0 !important;
+}
+
 nav {
     display: flex !important;
     visibility: visible !important;
@@ -20,6 +29,7 @@ nav button {
     opacity: 1 !important;
     white-space: nowrap;
     min-height: 44px;
+    flex-shrink: 0;
     color: #94a3b8;
 }
 

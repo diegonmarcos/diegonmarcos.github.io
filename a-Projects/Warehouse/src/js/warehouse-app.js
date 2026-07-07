@@ -891,14 +891,12 @@ export class SlabWarehouseTwin {
     refocusGlobal() {
         this.activate3DTab();
         this.clearSlabHighlight3DOnly();
-        this.showNotification("Panning camera to global layout coordinates...");
         this.smoothMoveCamera(new BABYLON.Vector3(0, 1.0, 0), -Math.PI / 2.2, Math.PI / 2.8, 22.0);
     }
 
     refocusIso() {
         this.activate3DTab();
         this.clearSlabHighlight3DOnly();
-        this.showNotification("Sweeping camera to Classic Isometric perspective...");
         this.smoothMoveCamera(new BABYLON.Vector3(0, 1.2, 0), -Math.PI / 4, Math.PI / 3.1, 18.0);
     }
 
@@ -906,7 +904,6 @@ export class SlabWarehouseTwin {
         this.activate3DTab();
         this.clearSlabHighlight3DOnly();
         const aisleX = (lineNum - 3) * 4.5;
-        this.showNotification(`Framing corridor view down Warehouse Line ${lineNum}...`);
         this.smoothMoveCamera(new BABYLON.Vector3(aisleX, 1.2, 0), -Math.PI / 2, Math.PI / 2.5, 11.5);
     }
 

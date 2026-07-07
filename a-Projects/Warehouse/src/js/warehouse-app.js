@@ -1226,6 +1226,7 @@ export class SlabWarehouseTwin {
         visualizer: 'Slab Viewer',
         slider: 'Slab Slider',
         flow: 'Inventory Flow',
+        about: 'About',
     };
 
     setActiveNavTab(tabId) {
@@ -1237,7 +1238,7 @@ export class SlabWarehouseTwin {
     }
 
     showViewport(viewportId) {
-        ['viewport-3d', 'viewport-register', 'viewport-visualizer', 'viewport-slider', 'viewport-flow'].forEach(id => {
+        ['viewport-3d', 'viewport-register', 'viewport-visualizer', 'viewport-slider', 'viewport-flow', 'viewport-about'].forEach(id => {
             document.getElementById(id).classList.toggle('hidden', id !== viewportId);
         });
     }
@@ -1282,6 +1283,12 @@ export class SlabWarehouseTwin {
         this.renderFlowPanel();
         this.syncFlowModeThumb();
         this.setFlowSection(this.flowSection);
+    }
+
+    activateAboutTab() {
+        this.activeTab = 'about';
+        this.showViewport('viewport-about');
+        this.setActiveNavTab('about');
     }
 
     // Single reusable card renderer so Inventory Flow / Sales Flow / Inventory
@@ -1535,12 +1542,13 @@ export class SlabWarehouseTwin {
     }
 
     setupUIHandlers() {
-        // Persistent icon-only top nav — same 5 buttons at every breakpoint.
+        // Persistent icon-only top nav — same 6 buttons at every breakpoint.
         document.getElementById('nav-3d-btn').onclick = () => this.activate3DTab();
         document.getElementById('nav-register-btn').onclick = () => this.activateRegisterTab();
         document.getElementById('nav-visualizer-btn').onclick = () => this.activateVisualizerTab();
         document.getElementById('nav-slider-btn').onclick = () => this.activateSliderTab();
         document.getElementById('nav-flow-btn').onclick = () => this.activateFlowTab();
+        document.getElementById('nav-about-btn').onclick = () => this.activateAboutTab();
 
         // Side drawer: opened by the hamburger, same 5 destinations, labeled.
         const hamburger = document.getElementById('hamburger-toggle');
@@ -1565,6 +1573,7 @@ export class SlabWarehouseTwin {
             visualizer: () => this.activateVisualizerTab(),
             slider: () => this.activateSliderTab(),
             flow: () => this.activateFlowTab(),
+            about: () => this.activateAboutTab(),
         };
         document.querySelectorAll('.drawer-item[data-tab]').forEach(item => {
             item.onclick = () => {

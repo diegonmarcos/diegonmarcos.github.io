@@ -93,33 +93,22 @@ html, body {
 .hamburger-btn:active { transform: scale(0.94); }
 .hamburger-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-/* Brand: compact icon + page title, never competes for space with the tabs */
+/* Brand: just the page title now, centered in row 1 between the hamburger
+   on the left and the live stats on the right. */
 .topbar-brand {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-shrink: 1;
+    justify-content: center;
+    flex: 1 1 auto;
     min-width: 0;
 }
-
-.topbar-brand-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 8px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #fbbf24, #e11d48);
-    color: #fff;
-}
-.topbar-brand-icon svg { width: 16px; height: 16px; }
 
 .topbar-brand-text {
     font-weight: 900;
     font-size: 14px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
     color: #fff;
+    text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -135,6 +124,13 @@ html, body {
     justify-content: center;
     gap: 4px;
     height: 100%;
+}
+
+/* 6 icons on very narrow phones: shrink the buttons slightly rather
+   than let them wrap or overflow the row. */
+@media (max-width: 360px) {
+    .nav-icon-btn { width: 34px; height: 34px; }
+    .nav-icon-btn svg { width: 17px; height: 17px; }
 }
 
 .nav-icon-btn {

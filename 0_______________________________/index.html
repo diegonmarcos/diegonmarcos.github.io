@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Master Index — diegonmarcos.com</title>
+  <script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+  <link rel="stylesheet" href="index.style.css">
+  <!-- data first (no fetch — file:// safe), then renderer -->
+  <script defer src="index.json.js"></script>
+  <script defer src="index.script.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Master Index</h1>
+    <p id="subtitle">All projects in the repo.</p>
+    <input id="filter" type="search" placeholder="Filter projects…" aria-label="Filter projects">
+  </header>
+  <main id="index"></main>
+  <footer><small>Generated from <code>front-topology.json</code> · <code>./index.sh</code></small></footer>
+</body>
+</html>

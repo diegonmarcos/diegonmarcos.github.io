@@ -7,7 +7,7 @@
 set -euo pipefail
 
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-topology="$here/../I_front-data/front-topology.json"
+topology="$here/../front-topology.json"   # tracked symlink → 2_configs/dist/front-topology.json
 [ -f "$topology" ] || { echo "missing $topology — run 'build.sh config' first" >&2; exit 1; }
 
 jq '{

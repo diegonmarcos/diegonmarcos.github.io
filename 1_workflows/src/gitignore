@@ -86,4 +86,5 @@ a-Portals/*/src/style.css.map
 ## Obsidian
 .obsidian/workspace-mobile.json
 node_modules/
-## Generated data files → symlinks to front-data/ submodule (tracked)
+## Generated config data lives in 2_configs/dist/ (committed, in-repo).
+## Root front-topology.json / front-deps.json are tracked symlinks → 2_configs/dist/.

@@ -124,6 +124,7 @@ step_consolidate() {
       --slurpfile build_json "$bj" \
       --argjson  pkg_present "$([ -L "$pj" ] && echo true || echo false)" \
       --argjson  manifest_present "$([ -L "$mj" ] && echo true || echo false)" \
+      --argjson  dist_present "$([ -d "$ROOT/$proj_path/dist" ] && echo true || echo false)" \
       '{
         category: $cat,
         project:  $proj,
@@ -131,7 +132,8 @@ step_consolidate() {
         path:     $path,
         build:    ($build_json[0]),
         has_package_json: $pkg_present,
-        has_manifest:     $manifest_present
+        has_manifest:     $manifest_present,
+        has_dist:         $dist_present
       }' \
       | (
           if [ -L "$pj" ]; then jq --slurpfile pkg "$pj" '. + {package: $pkg[0]}'
@@ -166,7 +168,7 @@ step_consolidate() {
 
   # Now assemble
   jq -n \
-    --arg ts "$(date -Iseconds)" \
+    --arg ts "" \
     --slurpfile root_config "$SRC/inputs/config.json" \
     --argjson  deploys "$deploys_arr" \
     --argjson  links "$links_obj" \
@@ -252,6 +254,47 @@ step_derive() {
     ]' "$C" > "$DIST/front-data-pwa.json"
   log "  front-data-pwa.json:        $(jq 'length' "$DIST/front-data-pwa.json") projects with PWA manifest"
 
+  # ── Canonical in-repo files (replace the retired I_front-data submodule) ────
+  # front-topology.json — consumed by 0_/ master index + legacy tooling.
+  jq '{
+    _meta: { generated_by: "2_configs/build.sh derive", schema: "front-topology/v1", project_count: (.projects | length) },
+    projects: [ .projects[] | {
+      name:        (.build.name // .project),
+      slug:        .project,
+      path:        .path,
+      category:    .category,
+      framework:   (.build.framework // "vanilla"),
+      port:        (.build.port // null),
+      build_steps: ([.build.build[]?.mod]),
+      dep_count:   (((.package.dependencies // {}) | length) + ((.package.devDependencies // {}) | length)),
+      has_dist:    .has_dist,
+      deploy_name: (.build.deploy.deploy_name // .project)
+    } ] | sort_by(.path)
+  }' "$C" > "$DIST/front-topology.json"
+  log "  front-topology.json:        $(jq '.projects|length' "$DIST/front-topology.json") projects"
+
+  # front-deps.json — consumed by front-gen-root-pkg.sh → root package.json.
+  jq '
+    [ .projects[] | select(.has_package_json) | {
+        service: (.build.name // .project),
+        folder: .path,
+        category: .category,
+        dependencies: (.package.dependencies // {}),
+        devDependencies: (.package.devDependencies // {})
+    } ] as $svc
+    | {
+        _meta: { generated_by: "2_configs/build.sh derive", schema: "front-deps/v1", total_services: ($svc | length) },
+        node: {
+          merged: {
+            dependencies:    (reduce $svc[] as $s ({}; . + $s.dependencies)    | to_entries | sort_by(.key) | from_entries),
+            devDependencies: (reduce $svc[] as $s ({}; . + $s.devDependencies) | to_entries | sort_by(.key) | from_entries)
+          },
+          per_service: ($svc | sort_by(.folder))
+        }
+      }
+  ' "$C" > "$DIST/front-deps.json"
+  log "  front-deps.json:            $(jq '[.node.merged.dependencies,.node.merged.devDependencies]|map(length)|add' "$DIST/front-deps.json") packages"
+
   sect "Phase 2 · derive (per-project resolved configs)"
   # Wipe old per-project derives so deletions propagate
   find "$DIST" -maxdepth 1 -name 'build-*.json' -type f -delete 2>/dev/null || true
@@ -303,7 +346,7 @@ step_derive() {
 
   # Manifest meta
   jq -n \
-    --arg ts "$(date -Iseconds)" \
+    --arg ts "" \
     --argjson n_proj "$(jq '.projects | length' "$C")" \
     --argjson n_per_concern "$(ls "$DIST"/front-data-*.json 2>/dev/null | wc -l)" \
     --argjson n_per_project "$(find "$DIST" -maxdepth 1 -name 'build-*.json' -type f | wc -l)" \

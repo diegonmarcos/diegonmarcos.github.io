@@ -1,19 +1,19 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 46
+    "project_count": 45
   },
   "categories": [
     {
-      "category": "2_configs",
+      "category": "-",
       "projects": [
         {
-          "name": "2_configs",
-          "slug": "2_configs",
-          "path": "2_configs",
-          "category": "2_configs",
-          "framework": "vanilla",
-          "port": null,
+          "name": "c_root",
+          "slug": "e-Root",
+          "path": "e-Root",
+          "category": "-",
+          "framework": "vue",
+          "port": 5173,
           "has_dist": true
         }
       ]
@@ -475,20 +475,6 @@
           "category": "e-Others",
           "framework": "vanilla",
           "port": 8008,
-          "has_dist": true
-        }
-      ]
-    },
-    {
-      "category": "e-Root",
-      "projects": [
-        {
-          "name": "c_root",
-          "slug": "e-Root",
-          "path": "e-Root",
-          "category": "e-Root",
-          "framework": "vue",
-          "port": 5173,
           "has_dist": true
         }
       ]

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated_by": "2_configs/build.sh consolidate",
-    "timestamp": "2026-07-08T12:52:31+00:00",
+    "timestamp": "",
     "schema": "front-data/v1"
   },
   "root_config": {
@@ -145,6 +145,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "leaf-studios",
         "version": "1.0.0",
@@ -267,6 +268,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "nexus",
         "version": "2.0.0",
@@ -371,7 +373,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "a-Individual",
@@ -442,7 +445,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "a-Individual",
@@ -540,6 +544,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "cv_web",
         "version": "1.0.0",
@@ -660,7 +665,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "a-Portals",
@@ -790,6 +796,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "cloud-dashboard",
         "version": "1.0.0",
@@ -953,6 +960,7 @@
       },
       "has_package_json": true,
       "has_manifest": true,
+      "has_dist": true,
       "package": {
         "name": "linktree",
         "version": "1.0.0",
@@ -1131,6 +1139,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "linktree-mindmap",
         "version": "1.0.0",
@@ -1251,6 +1260,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "linktree-pixel-world",
         "version": "1.0.0",
@@ -1315,6 +1325,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "slabtwin-3d-warehouse",
         "version": "1.0.0",
@@ -1428,6 +1439,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "myAstro-life",
         "version": "2.0.0",
@@ -1474,6 +1486,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "myfeed",
         "version": "1.0.0",
@@ -1633,7 +1646,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-MyData",
@@ -1726,7 +1740,102 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "b-MyData",
+      "project": "myhealth",
+      "key": "b-MyData__myhealth",
+      "path": "b-MyData/myhealth",
+      "build": {
+        "name": "MyHealth",
+        "framework": "vanilla",
+        "port": 8026,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+            "mod": "data_wrap",
+            "dir": "src/data"
+          },
+          {
+            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+            "mod": "copy",
+            "files": "data-*.json.js",
+            "from": "src/data"
+          },
+          {
+            "mod": "sass",
+            "input": "src/scss/main.scss",
+            "output": "style.css"
+          },
+          {
+            "mod": "esbuild",
+            "input": "src/typescript/main.ts",
+            "output": "script.js",
+            "format": "iife",
+            "target": "es2020"
+          },
+          {
+            "mod": "copy",
+            "files": "index.html",
+            "from": "src"
+          },
+          {
+            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+            "mod": "sw_register",
+            "files": "index.html"
+          },
+          {
+            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+            "mod": "console_log",
+            "files": "index.html"
+          },
+          {
+            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+            "mod": "esbuild_sw",
+            "input": "src/typescript/script-service-worker.ts",
+            "output": "script-service-worker.js",
+            "format": "iife",
+            "target": "es2020",
+            "hash_of": [
+              "index.html",
+              "script.js",
+              "style.css"
+            ],
+            "precache": [
+              "./",
+              "./index.html",
+              "./script.js",
+              "./style.css"
+            ]
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src",
+          "watch": [
+            {
+              "mod": "sass",
+              "input": "scss/main.scss",
+              "output": "style.css"
+            },
+            {
+              "mod": "esbuild",
+              "input": "typescript/main.ts",
+              "output": "script.js",
+              "format": "iife",
+              "target": "es2020"
+            }
+          ]
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-MyData",
@@ -1793,7 +1902,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-MyData",
@@ -1890,100 +2000,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
-    },
-    {
-      "category": "b-MyData",
-      "project": "myhealth",
-      "key": "b-MyData__myhealth",
-      "path": "b-MyData/myhealth",
-      "build": {
-        "name": "MyHealth",
-        "framework": "vanilla",
-        "port": 8026,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-            "mod": "data_wrap",
-            "dir": "src/data"
-          },
-          {
-            "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-            "mod": "copy",
-            "files": "data-*.json.js",
-            "from": "src/data"
-          },
-          {
-            "mod": "sass",
-            "input": "src/scss/main.scss",
-            "output": "style.css"
-          },
-          {
-            "mod": "esbuild",
-            "input": "src/typescript/main.ts",
-            "output": "script.js",
-            "format": "iife",
-            "target": "es2020"
-          },
-          {
-            "mod": "copy",
-            "files": "index.html",
-            "from": "src"
-          },
-          {
-            "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-            "mod": "sw_register",
-            "files": "index.html"
-          },
-          {
-            "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-            "mod": "console_log",
-            "files": "index.html"
-          },
-          {
-            "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-            "mod": "esbuild_sw",
-            "input": "src/typescript/script-service-worker.ts",
-            "output": "script-service-worker.js",
-            "format": "iife",
-            "target": "es2020",
-            "hash_of": [
-              "index.html",
-              "script.js",
-              "style.css"
-            ],
-            "precache": [
-              "./",
-              "./index.html",
-              "./script.js",
-              "./style.css"
-            ]
-          }
-        ],
-        "serve": {
-          "mode": "auto",
-          "dir": "src",
-          "watch": [
-            {
-              "mod": "sass",
-              "input": "scss/main.scss",
-              "output": "style.css"
-            },
-            {
-              "mod": "esbuild",
-              "input": "typescript/main.ts",
-              "output": "script.js",
-              "format": "iife",
-              "target": "es2020"
-            }
-          ]
-        },
-        "deploy": {}
-      },
-      "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-MyData",
@@ -2081,7 +2099,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-MyData",
@@ -2106,6 +2125,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "mytrips",
         "version": "1.0.0",
@@ -2213,7 +2233,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "b-Profiles",
@@ -2238,6 +2259,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "myprofile",
         "version": "1.0.0",
@@ -2351,7 +2373,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Circus",
@@ -2376,6 +2399,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "svelte",
         "private": true,
@@ -2436,6 +2460,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "movies",
         "version": "1.0.0",
@@ -2486,6 +2511,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "music",
         "version": "1.0.0",
@@ -2582,7 +2608,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Cloud",
@@ -2713,7 +2740,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Cloud",
@@ -2819,6 +2847,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "skills-mcp-docs",
         "version": "1.0.0",
@@ -2876,6 +2905,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "central-bank-modeling",
         "version": "1.0.0",
@@ -3005,6 +3035,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "fin-terminal",
         "version": "0.1.0",
@@ -3124,6 +3155,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "market-watch-terminal",
         "version": "1.0.0",
@@ -3257,6 +3289,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "gdelt-news-terminal",
         "version": "1.0.0",
@@ -3374,6 +3407,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "sailyng",
         "version": "1.0.0",
@@ -3412,7 +3446,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Suite",
@@ -3437,6 +3472,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "json-vision",
         "version": "1.0.0",
@@ -3606,6 +3642,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "myhealth-feedyourself",
         "version": "1.0.0",
@@ -3697,123 +3734,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
-    },
-    {
-      "category": "c-Suite",
-      "project": "mymaps-maps",
-      "key": "c-Suite__mymaps-maps",
-      "path": "c-Suite/mymaps-maps",
-      "build": {
-        "name": "MyMaps Maps",
-        "framework": "sveltekit",
-        "port": 8014,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "sveltekit"
-          }
-        ],
-        "serve": {
-          "mode": "sveltekit"
-        },
-        "deploy": {}
-      },
-      "has_package_json": true,
       "has_manifest": false,
-      "package": {
-        "name": "maps",
-        "private": true,
-        "version": "2.0.0",
-        "type": "module",
-        "description": "Geographic Data Visualization with d3-geo",
-        "scripts": {
-          "dev": "vite dev --port 8014",
-          "build": "vite build",
-          "preview": "vite preview",
-          "prepare": "svelte-kit sync || echo ''",
-          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
-        },
-        "devDependencies": {
-          "@sveltejs/adapter-static": "^3.0.10",
-          "@sveltejs/kit": "^2.47.1",
-          "@sveltejs/vite-plugin-svelte": "^6.2.1",
-          "@types/d3": "^7.4.3",
-          "@types/d3-geo": "^3.1.0",
-          "@types/topojson-client": "^3.1.5",
-          "sass": "^1.94.0",
-          "svelte": "^5.41.0",
-          "svelte-check": "^4.3.3",
-          "typescript": "^5.9.3",
-          "vite": "^7.1.10"
-        },
-        "dependencies": {
-          "d3-geo": "^3.1.1",
-          "d3-interpolate": "^3.0.1",
-          "d3-timer": "^3.0.1",
-          "topojson-client": "^3.1.0"
-        }
-      }
-    },
-    {
-      "category": "c-Suite",
-      "project": "mymaps-navigation",
-      "key": "c-Suite__mymaps-navigation",
-      "path": "c-Suite/mymaps-navigation",
-      "build": {
-        "name": "MyMaps Navigation",
-        "framework": "sveltekit",
-        "port": 8018,
-        "src": "src",
-        "dist": "dist",
-        "build": [
-          {
-            "mod": "sveltekit"
-          }
-        ],
-        "serve": {
-          "mode": "sveltekit"
-        },
-        "deploy": {}
-      },
-      "has_package_json": true,
-      "has_manifest": false,
-      "package": {
-        "name": "mymaps",
-        "private": true,
-        "version": "1.0.0",
-        "type": "module",
-        "scripts": {
-          "dev": "vite dev",
-          "build": "vite build",
-          "preview": "vite preview",
-          "prepare": "svelte-kit sync || echo ''",
-          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-          "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-          "lint": "prettier --check . && eslint .",
-          "format": "prettier --write ."
-        },
-        "devDependencies": {
-          "@sveltejs/adapter-static": "^3.0.10",
-          "@sveltejs/kit": "^2.47.1",
-          "@sveltejs/vite-plugin-svelte": "^6.2.1",
-          "eslint": "^9.39.1",
-          "eslint-plugin-svelte": "^3.13.0",
-          "prettier": "^3.6.2",
-          "prettier-plugin-svelte": "^3.4.0",
-          "sass": "^1.94.0",
-          "svelte": "^5.41.0",
-          "svelte-check": "^4.3.3",
-          "typescript": "^5.9.3",
-          "vite": "^7.1.10"
-        },
-        "dependencies": {
-          "@mapbox/togeojson": "^0.16.2",
-          "jszip": "^3.10.1",
-          "maplibre-gl": "^5.17.0"
-        }
-      }
+      "has_dist": true
     },
     {
       "category": "c-Suite",
@@ -3906,7 +3828,126 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps-maps",
+      "key": "c-Suite__mymaps-maps",
+      "path": "c-Suite/mymaps-maps",
+      "build": {
+        "name": "MyMaps Maps",
+        "framework": "sveltekit",
+        "port": 8014,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "maps",
+        "private": true,
+        "version": "2.0.0",
+        "type": "module",
+        "description": "Geographic Data Visualization with d3-geo",
+        "scripts": {
+          "dev": "vite dev --port 8014",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "@types/d3": "^7.4.3",
+          "@types/d3-geo": "^3.1.0",
+          "@types/topojson-client": "^3.1.5",
+          "sass": "^1.94.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        },
+        "dependencies": {
+          "d3-geo": "^3.1.1",
+          "d3-interpolate": "^3.0.1",
+          "d3-timer": "^3.0.1",
+          "topojson-client": "^3.1.0"
+        }
+      }
+    },
+    {
+      "category": "c-Suite",
+      "project": "mymaps-navigation",
+      "key": "c-Suite__mymaps-navigation",
+      "path": "c-Suite/mymaps-navigation",
+      "build": {
+        "name": "MyMaps Navigation",
+        "framework": "sveltekit",
+        "port": 8018,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "mymaps",
+        "private": true,
+        "version": "1.0.0",
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+          "lint": "prettier --check . && eslint .",
+          "format": "prettier --write ."
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "eslint": "^9.39.1",
+          "eslint-plugin-svelte": "^3.13.0",
+          "prettier": "^3.6.2",
+          "prettier-plugin-svelte": "^3.4.0",
+          "sass": "^1.94.0",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        },
+        "dependencies": {
+          "@mapbox/togeojson": "^0.16.2",
+          "jszip": "^3.10.1",
+          "maplibre-gl": "^5.17.0"
+        }
+      }
     },
     {
       "category": "c-Suite",
@@ -3999,7 +4040,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "c-Suite",
@@ -4024,6 +4066,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "tldraw",
         "version": "1.0.0",
@@ -4125,7 +4168,8 @@
         "deploy": {}
       },
       "has_package_json": false,
-      "has_manifest": false
+      "has_manifest": false,
+      "has_dist": true
     },
     {
       "category": "-",
@@ -4165,6 +4209,7 @@
       },
       "has_package_json": true,
       "has_manifest": false,
+      "has_dist": true,
       "package": {
         "name": "c_root",
         "version": "1.0.0",

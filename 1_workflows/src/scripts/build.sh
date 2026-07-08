@@ -102,12 +102,12 @@ cmd_deps() {
         log "System: all binaries on PATH"
     fi
 
-    # Node deps — front-deps.json is the SINGLE SOURCE; the root package.json
-    # is a derived, gitignored install manifest (npm needs one to populate the
-    # shared node_modules). Order: per-project package.json → front-deps.json →
-    # root package.json → npm install.
-    log "Generating front-deps.json (single source of deps)..."
-    _generate_front_deps_json
+    # Node deps — 2_configs is the single source of truth. It consolidates every
+    # project's package.json into the in-repo front-deps.json; front-gen-root-pkg.sh
+    # projects that into a gitignored root package.json for npm's shared node_modules.
+    # Order: per-project package.json → 2_configs → front-deps.json → root package.json → npm.
+    log "Regenerating config data (2_configs → front-deps.json, single source)..."
+    sh "$SCRIPT_DIR/2_configs/build.sh" rebuild
     log "Deriving root package.json from front-deps.json..."
     local gen="$SCRIPT_DIR/1_workflows/dist/scripts/front-gen-root-pkg.sh"
     [ -x "$gen" ] || gen="$SCRIPT_DIR/1_workflows/src/scripts/front-gen-root-pkg.sh"
@@ -123,168 +123,16 @@ cmd_deps() {
 }
 
 # =============================================================================
-# Generate front-deps.json (same grouped format as cloud-deps.json)
-# =============================================================================
-
-_generate_front_deps_json() {
-    node -e "
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
-
-const repo = '$SCRIPT_DIR';
-const glob = execSync('find . -maxdepth 3 -name build.json -not -path ./build.json -not -path \"./z_Archive/*\"', {cwd: repo})
-    .toString().trim().split('\n').filter(Boolean);
-
-const perService = [];
-const mergedDeps = {};
-const mergedDevDeps = {};
-
-for (const bjson of glob) {
-    const dir = path.join(repo, path.dirname(bjson));
-    const pkgPath = path.join(dir, 'package.json');
-    if (!fs.existsSync(pkgPath)) continue;
-
-    const bj = JSON.parse(fs.readFileSync(path.join(repo, bjson), 'utf8'));
-    const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-    const deps = pkg.dependencies || {};
-    const devDeps = pkg.devDependencies || {};
-
-    Object.entries(deps).forEach(([k, v]) => {
-        if (!mergedDeps[k] || v > mergedDeps[k]) mergedDeps[k] = v;
-    });
-    Object.entries(devDeps).forEach(([k, v]) => {
-        if (!mergedDevDeps[k] || v > mergedDevDeps[k]) mergedDevDeps[k] = v;
-    });
-
-    perService.push({
-        service: bj.name || path.basename(dir),
-        folder: path.dirname(bjson).replace(/^\.\/?/, ''),
-        category: bj.category || 'unknown',
-        dependencies: deps,
-        devDependencies: devDeps
-    });
-}
-
-const sort = obj => Object.fromEntries(Object.entries(obj).sort(([a],[b]) => a.localeCompare(b)));
-const total = Object.keys(mergedDeps).length + Object.keys(mergedDevDeps).length;
-
-const output = {
-    _meta: {
-        generated_by: 'front/build.sh deps',
-        generated_at: new Date().toISOString(),
-        total_services: perService.length,
-        total_packages: total
-    },
-    node: {
-        merged: {
-            dependencies: sort(mergedDeps),
-            devDependencies: sort(mergedDevDeps)
-        },
-        per_service: perService.sort((a, b) => a.folder.localeCompare(b.folder))
-    }
-};
-
-// front-deps.json is a symlink into the I_front-data submodule, which is NOT
-// checked out in CI (dangling symlink). Resolve the real target and ensure its
-// parent exists so writeFileSync never dies on ENOENT — same pattern as cmd_config.
-const outPath = path.join(repo, 'front-deps.json');
-let realPath = outPath;
-try { realPath = fs.realpathSync(outPath); }
-catch (e) {
-    try { realPath = path.resolve(path.dirname(outPath), fs.readlinkSync(outPath)); }
-    catch (e2) { realPath = outPath; }
-}
-fs.mkdirSync(path.dirname(realPath), { recursive: true });
-fs.writeFileSync(realPath, JSON.stringify(output, null, 2) + '\n');
-console.log('front-deps.json: ' + total + ' packages from ' + perService.length + ' projects');
-" 2>/dev/null || log "SKIP front-deps.json (node not available)"
-}
-
-# =============================================================================
-# Config — generate front-topology.json from all build.json files
+# Config — regenerate all config data via 2_configs (single source of truth)
 # =============================================================================
 
 cmd_config() {
-    log "Generating front-topology.json..."
-    node -e "
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+    # 2_configs is the single source: consolidate every project's build.json +
+    # package.json → dist/{front-topology.json, front-deps.json, front-data-*.json}
+    # (committed in-repo; root symlinks point here). No I_front-data submodule.
+    log "Regenerating config data via 2_configs (single source)..."
+    sh "$SCRIPT_DIR/2_configs/build.sh" rebuild
 
-const repo = '$SCRIPT_DIR';
-const glob = execSync('find . -maxdepth 3 -name build.json -not -path ./build.json -not -path \"./z_Archive/*\"', {cwd: repo})
-    .toString().trim().split('\n').filter(Boolean).sort();
-
-const projects = [];
-
-for (const bjson of glob) {
-    const dir = path.dirname(bjson);
-    const config = JSON.parse(fs.readFileSync(path.join(repo, bjson), 'utf8'));
-    const clean = dir.replace(/^\.\/?/, '');
-    const parts = clean.split('/').filter(Boolean);
-    const category = parts[0] || '';
-    const slug = parts.slice(1).join('/') || parts[0];
-
-    // Check for package.json deps
-    const pkgPath = path.join(repo, dir, 'package.json');
-    let depCount = 0;
-    if (fs.existsSync(pkgPath)) {
-        const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-        depCount = Object.keys(pkg.dependencies || {}).length + Object.keys(pkg.devDependencies || {}).length;
-    }
-
-    // Check dist
-    const distPath = path.join(repo, dir, config.dist || 'dist');
-    const hasDist = fs.existsSync(distPath);
-
-    // Build steps
-    const buildSteps = Array.isArray(config.build) ? config.build.map(s => s.mod) : [];
-
-    projects.push({
-        name: config.name,
-        slug: slug,
-        path: dir.replace(/^\.\/?/, ''),
-        category: category,
-        framework: config.framework || 'vanilla',
-        port: config.port || null,
-        build_steps: buildSteps,
-        dep_count: depCount,
-        has_dist: hasDist,
-        deploy_name: slug.split('/').pop()
-    });
-}
-
-const topology = {
-    _meta: {
-        generated_by: 'build.sh config',
-        timestamp: new Date().toISOString(),
-        project_count: projects.length
-    },
-    projects: projects
-};
-
-// front-topology.json may be a symlink into a submodule (e.g. I_front-data) that
-// is NOT checked out (submodules are read-only here and never force-registered).
-// Resolve the real target and ensure its parent exists so generation never dies
-// on a dangling symlink — that ENOENT was the gen-configs CI failure.
-const outPath = path.join(repo, 'front-topology.json');
-let realPath = outPath;
-try {
-    realPath = fs.realpathSync(outPath);
-} catch (e) {
-    try { realPath = path.resolve(path.dirname(outPath), fs.readlinkSync(outPath)); }
-    catch (e2) { realPath = outPath; }
-}
-fs.mkdirSync(path.dirname(realPath), { recursive: true });
-fs.writeFileSync(realPath, JSON.stringify(topology, null, 2) + '\n');
-console.log('front-topology.json: ' + projects.length + ' projects');
-
-// Summary by category
-const cats = {};
-projects.forEach(p => { cats[p.category] = (cats[p.category] || 0) + 1; });
-Object.entries(cats).sort().forEach(([k, v]) => console.log('  ' + k + ': ' + v));
-"
     # Regenerate the master index (0_ folder) from the fresh topology
     local index_gen="$SCRIPT_DIR/0_______________________________/index.sh"
     if [ -x "$index_gen" ]; then

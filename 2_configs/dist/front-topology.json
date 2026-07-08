@@ -1,0 +1,890 @@
+{
+  "_meta": {
+    "generated_by": "2_configs/build.sh derive",
+    "schema": "front-topology/v1",
+    "project_count": 45
+  },
+  "projects": [
+    {
+      "name": "Leafy",
+      "slug": "leafy",
+      "path": "a-Companies/leafy",
+      "category": "a-Companies",
+      "framework": "vanilla",
+      "port": 8021,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "tsc",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 2,
+      "has_dist": true,
+      "deploy_name": "leafy"
+    },
+    {
+      "name": "Nexus",
+      "slug": "nexus",
+      "path": "a-Companies/nexus",
+      "category": "a-Companies",
+      "framework": "vanilla",
+      "port": 8005,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "inline",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 2,
+      "has_dist": true,
+      "deploy_name": "nexus"
+    },
+    {
+      "name": "Stark",
+      "slug": "stark",
+      "path": "a-Companies/stark",
+      "category": "a-Companies",
+      "framework": "vanilla",
+      "port": 8022,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "tsc",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "stark"
+    },
+    {
+      "name": "CV PDF",
+      "slug": "cv_pdf",
+      "path": "a-Individual/cv_pdf",
+      "category": "a-Individual",
+      "framework": "vanilla",
+      "port": 8012,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "symlink",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "cv_pdf"
+    },
+    {
+      "name": "CV Web",
+      "slug": "cv_web",
+      "path": "a-Individual/cv_web",
+      "category": "a-Individual",
+      "framework": "vanilla",
+      "port": 8002,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "cv_web"
+    },
+    {
+      "name": "Landpage",
+      "slug": "landpage",
+      "path": "a-Individual/landpage",
+      "category": "a-Individual",
+      "framework": "vanilla",
+      "port": 8000,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "tsc",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "landpage"
+    },
+    {
+      "name": "Cloud",
+      "slug": "cloud",
+      "path": "a-Portals/cloud",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8006,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "cloud"
+    },
+    {
+      "name": "Linktree",
+      "slug": "linktree",
+      "path": "a-Portals/linktree",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8001,
+      "build_steps": [
+        "data_wrap",
+        "pwa_icons",
+        "qrcode_gen",
+        "esbuild",
+        "sass",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 12,
+      "has_dist": true,
+      "deploy_name": "linktree"
+    },
+    {
+      "name": "Linktree Mindmap",
+      "slug": "linktree_mindmap",
+      "path": "a-Portals/linktree_mindmap",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8018,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "linktree_mindmap"
+    },
+    {
+      "name": "Linktree Pixel World",
+      "slug": "linktree_pixel-world",
+      "path": "a-Portals/linktree_pixel-world",
+      "category": "a-Portals",
+      "framework": "vanilla",
+      "port": 8019,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 4,
+      "has_dist": true,
+      "deploy_name": "linktree_pixel-world"
+    },
+    {
+      "name": "SlabTwin 3D Warehouse",
+      "slug": "Warehouse",
+      "path": "a-Projects/Warehouse",
+      "category": "a-Projects",
+      "framework": "vanilla",
+      "port": 8020,
+      "build_steps": [
+        "copy",
+        "symlink",
+        "symlink"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Warehouse"
+    },
+    {
+      "name": "myAstro",
+      "slug": "myAstro",
+      "path": "b-Data/myAstro",
+      "category": "b-Data",
+      "framework": "vanilla",
+      "port": 8019,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 5,
+      "has_dist": true,
+      "deploy_name": "myAstro"
+    },
+    {
+      "name": "MyFeed",
+      "slug": "myfeed",
+      "path": "b-Data/myfeed",
+      "category": "b-Data",
+      "framework": "vue",
+      "port": 8003,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 47,
+      "has_dist": true,
+      "deploy_name": "myfeed"
+    },
+    {
+      "name": "myMoments",
+      "slug": "myMoments",
+      "path": "b-Media/myMoments",
+      "category": "b-Media",
+      "framework": "vanilla",
+      "port": 8028,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myMoments"
+    },
+    {
+      "name": "My Financials",
+      "slug": "my-fin",
+      "path": "b-MyData/my-fin",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8030,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "my-fin"
+    },
+    {
+      "name": "MyHealth",
+      "slug": "myhealth",
+      "path": "b-MyData/myhealth",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8026,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myhealth"
+    },
+    {
+      "name": "MyHealth Profile",
+      "slug": "myhealth-profile",
+      "path": "b-MyData/myhealth-profile",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8009,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myhealth-profile"
+    },
+    {
+      "name": "MyHealth Tracker",
+      "slug": "myhealth-tracker",
+      "path": "b-MyData/myhealth-tracker",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8025,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myhealth-tracker"
+    },
+    {
+      "name": "myID",
+      "slug": "myid",
+      "path": "b-MyData/myid",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8031,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myid"
+    },
+    {
+      "name": "MyMaps MyTrips",
+      "slug": "mymaps-mytrips",
+      "path": "b-MyData/mymaps-mytrips",
+      "category": "b-MyData",
+      "framework": "vue",
+      "port": 8022,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 20,
+      "has_dist": true,
+      "deploy_name": "mymaps-mytrips"
+    },
+    {
+      "name": "MyPhotos",
+      "slug": "myphotos",
+      "path": "b-MyData/myphotos",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8019,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "myphotos"
+    },
+    {
+      "name": "MyProfile",
+      "slug": "myprofile",
+      "path": "b-Profiles/myprofile",
+      "category": "b-Profiles",
+      "framework": "sveltekit",
+      "port": 8013,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "myprofile"
+    },
+    {
+      "name": "Carto",
+      "slug": "carto",
+      "path": "c-Circus/carto",
+      "category": "c-Circus",
+      "framework": "vanilla",
+      "port": 8020,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "tsc",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "carto"
+    },
+    {
+      "name": "Games",
+      "slug": "games",
+      "path": "c-Circus/games",
+      "category": "c-Circus",
+      "framework": "sveltekit",
+      "port": 8004,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 13,
+      "has_dist": true,
+      "deploy_name": "games"
+    },
+    {
+      "name": "Movies",
+      "slug": "movies",
+      "path": "c-Circus/movies",
+      "category": "c-Circus",
+      "framework": "vue",
+      "port": 8015,
+      "build_steps": [
+        "vite",
+        "copy"
+      ],
+      "dep_count": 10,
+      "has_dist": true,
+      "deploy_name": "movies"
+    },
+    {
+      "name": "Music",
+      "slug": "music",
+      "path": "c-Circus/music",
+      "category": "c-Circus",
+      "framework": "vue",
+      "port": 8016,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 10,
+      "has_dist": true,
+      "deploy_name": "music"
+    },
+    {
+      "name": "API",
+      "slug": "api",
+      "path": "c-Cloud/api",
+      "category": "c-Cloud",
+      "framework": "vanilla",
+      "port": 8023,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "api"
+    },
+    {
+      "name": "mcp-api-swagger",
+      "slug": "mcp-api-swagger",
+      "path": "c-Cloud/mcp-api-swagger",
+      "category": "c-Cloud",
+      "framework": "vanilla",
+      "port": 8024,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "mcp-api-swagger"
+    },
+    {
+      "name": "Skills MCP",
+      "slug": "skills_mcp",
+      "path": "c-Cloud/skills_mcp",
+      "category": "c-Cloud",
+      "framework": "vanilla",
+      "port": 8018,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "npm",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "npm",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 5,
+      "has_dist": true,
+      "deploy_name": "skills_mcp"
+    },
+    {
+      "name": "CentralBank",
+      "slug": "central_bank",
+      "path": "c-LabTools/central_bank",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8011,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "vite"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "central_bank"
+    },
+    {
+      "name": "FinTerminal",
+      "slug": "fin-terminal",
+      "path": "c-LabTools/fin-terminal",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8024,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 7,
+      "has_dist": true,
+      "deploy_name": "fin-terminal"
+    },
+    {
+      "name": "MarketWatch",
+      "slug": "market_watch",
+      "path": "c-LabTools/market_watch",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8010,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "market_watch"
+    },
+    {
+      "name": "GDELTNews",
+      "slug": "news",
+      "path": "c-LabTools/news",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8029,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 3,
+      "has_dist": true,
+      "deploy_name": "news"
+    },
+    {
+      "name": "Sailyng",
+      "slug": "sailytics",
+      "path": "c-LabTools/sailytics",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8023,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 2,
+      "has_dist": true,
+      "deploy_name": "sailytics"
+    },
+    {
+      "name": "Sheets (Grist)",
+      "slug": "grist",
+      "path": "c-Suite/grist",
+      "category": "c-Suite",
+      "framework": "vanilla",
+      "port": 8033,
+      "build_steps": [
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "grist"
+    },
+    {
+      "name": "JSON Vision",
+      "slug": "json-vision",
+      "path": "c-Suite/json-vision",
+      "category": "c-Suite",
+      "framework": "vue",
+      "port": 8017,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 9,
+      "has_dist": true,
+      "deploy_name": "json-vision"
+    },
+    {
+      "name": "MyHealth FeedYourself",
+      "slug": "myhealth-feedyourself",
+      "path": "c-Suite/myhealth-feedyourself",
+      "category": "c-Suite",
+      "framework": "vanilla",
+      "port": 8007,
+      "build_steps": [
+        "npm",
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "sass",
+        "esbuild",
+        "sass",
+        "esbuild",
+        "copy",
+        "copy",
+        "copy",
+        "copy",
+        "symlink",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 6,
+      "has_dist": true,
+      "deploy_name": "myhealth-feedyourself"
+    },
+    {
+      "name": "MyMail",
+      "slug": "mymail",
+      "path": "c-Suite/mymail",
+      "category": "c-Suite",
+      "framework": "vanilla",
+      "port": 8018,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "mymail"
+    },
+    {
+      "name": "MyMaps",
+      "slug": "mymaps",
+      "path": "c-Suite/mymaps",
+      "category": "c-Suite",
+      "framework": "vanilla",
+      "port": 8027,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "mymaps"
+    },
+    {
+      "name": "MyMaps Maps",
+      "slug": "mymaps-maps",
+      "path": "c-Suite/mymaps-maps",
+      "category": "c-Suite",
+      "framework": "sveltekit",
+      "port": 8014,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 15,
+      "has_dist": true,
+      "deploy_name": "mymaps-maps"
+    },
+    {
+      "name": "MyMaps Navigation",
+      "slug": "mymaps-navigation",
+      "path": "c-Suite/mymaps-navigation",
+      "category": "c-Suite",
+      "framework": "sveltekit",
+      "port": 8018,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 15,
+      "has_dist": true,
+      "deploy_name": "mymaps-navigation"
+    },
+    {
+      "name": "Suite",
+      "slug": "suite",
+      "path": "c-Suite/suite",
+      "category": "c-Suite",
+      "framework": "vanilla",
+      "port": 8021,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "esbuild",
+        "sass",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "suite"
+    },
+    {
+      "name": "tldraw",
+      "slug": "tldraw",
+      "path": "c-Suite/tldraw",
+      "category": "c-Suite",
+      "framework": "react",
+      "port": 8032,
+      "build_steps": [
+        "vite"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "tldraw"
+    },
+    {
+      "name": "Others",
+      "slug": "others",
+      "path": "e-Others/others",
+      "category": "e-Others",
+      "framework": "vanilla",
+      "port": 8008,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "copy",
+        "sw_register",
+        "console_log",
+        "esbuild_sw"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "others"
+    },
+    {
+      "name": "c_root",
+      "slug": "e-Root",
+      "path": "e-Root",
+      "category": "-",
+      "framework": "vue",
+      "port": 5173,
+      "build_steps": [
+        "vite",
+        "strip-module",
+        "copy",
+        "copy"
+      ],
+      "dep_count": 7,
+      "has_dist": true,
+      "deploy_name": "e-Root"
+    }
+  ]
+}

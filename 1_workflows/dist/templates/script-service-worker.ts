@@ -159,14 +159,28 @@ self.addEventListener('fetch', (event) => {
     const cache = await caches.open(RUNTIME_CACHE);
     const hit = await cache.match(req);
 
-    // Cache hit: re-verify against BUILD_ASSET_HASHES if we have an
-    // expected hash for this asset. Poisoned entries (corrupt body,
-    // wrong content-type cached by an older buggy SW version) get
-    // evicted and the request falls through to network. Assets without
-    // a known hash trust the cache — same behaviour as before.
+    // Cache hit:
+    //   • Assets WITH a known BUILD_ASSET_HASH: hash-verify; on mismatch
+    //     evict and fall through to network (poisoned entry recovery).
+    //   • Assets WITHOUT a known hash (qrcode.html, qrcodes.json, *.png,
+    //     anything not in the build manifest): serve cached for snappy UX
+    //     but refresh the cache in the background. Next load sees fresh
+    //     content without the user needing to hard-refresh or wait for a
+    //     new SW activation. Without this, edits to non-precached files
+    //     never reach the browser once cached.
     if (hit) {
       const expected = BUILD_ASSET_HASHES[scopeRelative(req.url)];
-      if (!expected) return hit;
+      if (!expected) {
+        event.waitUntil((async () => {
+          try {
+            const fresh = await fetch(req);
+            if (fresh.ok && await isCacheable(req, fresh)) {
+              await cache.put(req, fresh.clone());
+            }
+          } catch { /* offline — keep stale */ }
+        })());
+        return hit;
+      }
       try {
         const got = await sha256_12(await hit.clone().arrayBuffer());
         if (got === expected) return hit;

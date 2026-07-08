@@ -76,6 +76,9 @@ a-Portals/*/src/style.css.map
 1.ops/build_main.log
 1.ops/.build-status
 1.ops/.dev-servers.pid
+## Dev-server runtime logs (server.sh, now under 0_ folder)
+**/server.log
+**/browser-console.log
 ## Obsidian
 .obsidian/workspace-mobile.json
 node_modules/

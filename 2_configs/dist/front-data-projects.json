@@ -408,6 +408,18 @@
     "has_pkg": true
   },
   {
+    "path": "c-Suite/grist",
+    "category": "c-Suite",
+    "project": "grist",
+    "key": "c-Suite__grist",
+    "name": "Sheets (Grist)",
+    "framework": "vanilla",
+    "port": 8033,
+    "deploy_name": "grist",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "c-Suite/json-vision",
     "category": "c-Suite",
     "project": "json-vision",

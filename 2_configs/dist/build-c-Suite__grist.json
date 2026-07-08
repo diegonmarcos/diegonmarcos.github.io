@@ -1,0 +1,49 @@
+{
+  "name": "Sheets (Grist)",
+  "framework": "vanilla",
+  "port": 8033,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "_doc": "Launcher page for the self-hosted Grist (sheets.diegonmarcos.com). Grist is a server app, not an embeddable lib — this ships a redirect landing page.",
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src"
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-Suite/grist",
+    "category": "c-Suite",
+    "project": "grist",
+    "key": "c-Suite__grist",
+    "port": 8033,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": false,
+      "deploy_name": "grist",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

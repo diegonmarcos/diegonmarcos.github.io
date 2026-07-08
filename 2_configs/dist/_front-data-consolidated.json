@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated_by": "2_configs/build.sh consolidate",
-    "timestamp": "2026-07-07T09:24:32+00:00",
+    "timestamp": "2026-07-08T12:41:01+00:00",
     "schema": "front-data/v1"
   },
   "root_config": {
@@ -3385,6 +3385,34 @@
           "@types/three": "^0.170.0"
         }
       }
+    },
+    {
+      "category": "c-Suite",
+      "project": "grist",
+      "key": "c-Suite__grist",
+      "path": "c-Suite/grist",
+      "build": {
+        "name": "Sheets (Grist)",
+        "framework": "vanilla",
+        "port": 8033,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "_doc": "Launcher page for the self-hosted Grist (sheets.diegonmarcos.com). Grist is a server app, not an embeddable lib — this ships a redirect landing page.",
+            "mod": "copy",
+            "files": "*.html",
+            "from": "src"
+          }
+        ],
+        "serve": {
+          "mode": "auto",
+          "dir": "src"
+        },
+        "deploy": {}
+      },
+      "has_package_json": false,
+      "has_manifest": false
     },
     {
       "category": "c-Suite",

@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 45
+    "project_count": 46
   },
   "categories": [
     {
@@ -437,6 +437,15 @@
           "has_dist": true
         },
         {
+          "name": "Sheets (Grist)",
+          "slug": "grist",
+          "path": "c-Suite/grist",
+          "category": "c-Suite",
+          "framework": "vanilla",
+          "port": 8033,
+          "has_dist": true
+        },
+        {
           "name": "Suite",
           "slug": "suite",
           "path": "c-Suite/suite",
@@ -452,7 +461,7 @@
           "category": "c-Suite",
           "framework": "react",
           "port": 8032,
-          "has_dist": false
+          "has_dist": true
         }
       ]
     },

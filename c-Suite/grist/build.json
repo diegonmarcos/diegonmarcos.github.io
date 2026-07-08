@@ -1,0 +1,23 @@
+{
+  "name": "Sheets (Grist)",
+  "framework": "vanilla",
+  "port": 8033,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    {
+      "_doc": "Launcher page for the self-hosted Grist (sheets.diegonmarcos.com). Grist is a server app, not an embeddable lib — this ships a redirect landing page.",
+      "mod": "copy",
+      "files": "*.html",
+      "from": "src"
+    }
+  ],
+
+  "serve": {
+    "mode": "auto",
+    "dir": "src"
+  },
+
+  "deploy": {}
+}

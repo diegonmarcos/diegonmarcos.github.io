@@ -107,7 +107,7 @@ cmd_deps() {
     # projects that into a gitignored root package.json for npm's shared node_modules.
     # Order: per-project package.json → 2_configs → front-deps.json → root package.json → npm.
     log "Regenerating config data (2_configs → front-deps.json, single source)..."
-    sh "$SCRIPT_DIR/2_configs/build.sh" rebuild
+    bash "$SCRIPT_DIR/2_configs/build.sh" rebuild
     log "Deriving root package.json from front-deps.json..."
     local gen="$SCRIPT_DIR/1_workflows/dist/scripts/front-gen-root-pkg.sh"
     [ -x "$gen" ] || gen="$SCRIPT_DIR/1_workflows/src/scripts/front-gen-root-pkg.sh"
@@ -131,7 +131,7 @@ cmd_config() {
     # package.json → dist/{front-topology.json, front-deps.json, front-data-*.json}
     # (committed in-repo; root symlinks point here). No I_front-data submodule.
     log "Regenerating config data via 2_configs (single source)..."
-    sh "$SCRIPT_DIR/2_configs/build.sh" rebuild
+    bash "$SCRIPT_DIR/2_configs/build.sh" rebuild
 
     # Regenerate the master index (0_ folder) from the fresh topology
     local index_gen="$SCRIPT_DIR/0_______________________________/index.sh"

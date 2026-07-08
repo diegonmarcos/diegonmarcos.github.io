@@ -139,7 +139,7 @@ var b = c.build || [];
 p("CFG_BN", b.length);
 b.forEach(function(s, i) {
     var x = "CFG_B" + i + "_";
-    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"].forEach(function(k) {
+    ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"].forEach(function(k) {
         var v = s[k];
         if (Array.isArray(v)) v = v.join(",");
         p(x + k.toUpperCase(), v);
@@ -187,7 +187,7 @@ b = c.get("build",[])
 p("CFG_BN", len(b))
 for i,s in enumerate(b):
     x = f"CFG_B{i}_"
-    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg"]:
+    for k in ["mod","input","output","files","format","target","html","css","js","from","exclude","script","dir","hash_of","precache","verify","source","out","bg","manifest"]:
         v = s.get(k,"")
         if isinstance(v, list): v = ",".join(str(x) for x in v)
         p(x + k.upper(), v)
@@ -244,60 +244,68 @@ for k,v in deps.items():
 " 2>/dev/null || true
 }
 
+# Regenerate the repo-root install manifest (package.json) from front-deps.json —
+# the single source of truth. front-deps.json is a symlink into the I_front-data
+# submodule; the emitted root package.json is a gitignored build artifact.
+_sync_root_manifest() {
+    local repo_root="$1"
+    [ -f "$repo_root/front-deps.json" ] || return 1
+    local gen="$repo_root/1_workflows/dist/scripts/front-gen-root-pkg.sh"
+    [ -x "$gen" ] || gen="$repo_root/1_workflows/src/scripts/front-gen-root-pkg.sh"
+    [ -x "$gen" ] || { log_error "front-gen-root-pkg.sh not found"; return 1; }
+    "$gen" "$repo_root" >/dev/null 2>&1 || return 1
+    return 0
+}
+
 resolve_deps() {
     [ "$OPT_NO_DEPS" = true ] && return 0
     local pkg_dir="${1:-$PROJECT_DIR}"
 
-    # Find repo root (install target for shared deps)
+    # Find repo root (install target for the shared node_modules)
     local repo_root
     repo_root="$(cd "$pkg_dir" && git rev-parse --show-toplevel 2>/dev/null)" || repo_root=""
     local nm_dir="${repo_root:+$repo_root/node_modules}"
     [ -n "$nm_dir" ] || nm_dir="$pkg_dir/node_modules"
 
-    # Check if project deps are satisfied
-    if [ -f "$pkg_dir/package.json" ]; then
+    # Fast path: shared node_modules already satisfies this project's declared deps
+    if [ -d "$nm_dir" ] && [ -f "$pkg_dir/package.json" ]; then
         local missing
         missing="$(_check_missing_deps "$pkg_dir/package.json" "$nm_dir")"
-        if [ -n "$missing" ]; then
-            local install_dir="${repo_root:-$pkg_dir}"
-            log_info "Installing missing deps at $install_dir..."
-            log_verbose "missing: $missing"
-            if command -v npm >/dev/null 2>&1; then
-                (cd "$install_dir" && npm install --save-dev $RC_NPM_FLAGS $missing 2>&1 | tail -5) || true
-            else
-                log_error "npm not found -- cannot install: $missing"
-                return $EXIT_DEPS
-            fi
-        fi
-    fi
-
-    # Export paths to repo root node_modules
-    if [ -n "$repo_root" ] && [ -d "$repo_root/node_modules" ]; then
-        export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
-        export PATH="${repo_root}/node_modules/.bin:$PATH"
-        log_success "deps: repo root ($repo_root/node_modules)"
-        return 0
-    fi
-
-    # Fallback: local node_modules
-    if [ -d "$pkg_dir/node_modules" ]; then
-        log_verbose "deps: local $pkg_dir/node_modules"
-        return 0
-    fi
-
-    # Last resort: full install at repo root
-    if command -v npm >/dev/null 2>&1 && [ -f "$pkg_dir/package.json" ]; then
-        local install_dir="${repo_root:-$pkg_dir}"
-        log_info "Installing all dependencies in $install_dir..."
-        (cd "$install_dir" && npm install $RC_NPM_FLAGS 2>&1 | tail -3)
-        if [ -d "$install_dir/node_modules" ]; then
+        if [ -z "$missing" ]; then
             [ -n "$repo_root" ] && {
                 export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
                 export PATH="${repo_root}/node_modules/.bin:$PATH"
             }
-            log_success "deps: installed in $install_dir"
+            log_verbose "deps: satisfied by $nm_dir"
             return 0
         fi
+        log_verbose "deps: missing $missing"
+    fi
+
+    # Install path: derive the root manifest from front-deps.json, then npm install.
+    # NEVER depend on a committed root package.json — front-deps.json is the source.
+    local install_dir="${repo_root:-$pkg_dir}"
+    if ! command -v npm >/dev/null 2>&1; then
+        log_error "npm not found -- cannot resolve deps for $pkg_dir"
+        return $EXIT_DEPS
+    fi
+    if [ -n "$repo_root" ] && _sync_root_manifest "$repo_root"; then
+        log_info "Installing deps at $install_dir (manifest from front-deps.json)..."
+    elif [ -f "$install_dir/package.json" ]; then
+        log_info "Installing deps at $install_dir (no front-deps.json; using existing package.json)..."
+    else
+        log_error "No front-deps.json and no package.json at $install_dir — run 'build.sh deps'"
+        return $EXIT_DEPS
+    fi
+    (cd "$install_dir" && npm install $RC_NPM_FLAGS 2>&1 | tail -3)
+
+    if [ -d "$install_dir/node_modules" ]; then
+        [ -n "$repo_root" ] && {
+            export NODE_PATH="${repo_root}/node_modules${NODE_PATH:+:$NODE_PATH}"
+            export PATH="${repo_root}/node_modules/.bin:$PATH"
+        }
+        log_success "deps: installed in $install_dir"
+        return 0
     fi
 
     log_error "Dependencies not resolved for $pkg_dir"
@@ -695,6 +703,23 @@ mod_data_wrap() {
     log_step "data_wrap: $n JSON file(s) wrapped in $dir/"
 }
 
+# ─── mod_qrcode_gen — generate vCard files + styled QR PNGs + qrcode.html ───
+# from a JSON manifest. Delegates to front-qrcode-gen.sh, which calls the
+# project's LOCAL tsx (never npx). Requires the project's package.json to
+# declare tsx + qr-code-styling + qrcode + sharp + jsdom in devDependencies.
+mod_qrcode_gen() {
+    local manifest="${1:-src/typescript/qrcode/qrcodes.json}"
+    local engine="$REPO_ROOT/1_workflows/dist/scripts/front-qrcode-gen.sh"
+    [ -x "$engine" ] || engine="$REPO_ROOT/1_workflows/src/scripts/front-qrcode-gen.sh"
+    [ -x "$engine" ] || { log_error "qrcode_gen: front-qrcode-gen.sh not found / not executable"; return $EXIT_BUILD; }
+    local out
+    out="$("$engine" "$PROJECT_DIR" "$manifest" 2>&1)" || { log_error "qrcode_gen failed:"; echo "$out" >&2; return $EXIT_BUILD; }
+    local n_qr n_vcf
+    n_qr="$(echo "$out"  | grep -c '\->')"
+    n_vcf="$(echo "$out" | grep -c '^\[vcf:')"
+    log_step "qrcode_gen: $n_qr QR PNG(s) + $n_vcf vcf file(s) + qrcode.html from $manifest"
+}
+
 # ─── BUILD RUNNER ───────────────────────────────────────────
 run_build() {
     local i=0
@@ -724,6 +749,7 @@ run_build() {
         eval "local _source=\$CFG_B${i}_SOURCE"
         eval "local _out=\$CFG_B${i}_OUT"
         eval "local _bg=\$CFG_B${i}_BG"
+        eval "local _manifest=\$CFG_B${i}_MANIFEST"
 
         log_info "Step $_n/$step_n: $_mod"
 
@@ -754,6 +780,7 @@ run_build() {
             strip-module) mod_strip_module "$_files" ;;
             symlink)      mod_symlink "$_files" "$_output" ;;
             data_wrap)    mod_data_wrap "$_dir" ;;
+            qrcode_gen)   mod_qrcode_gen "$_manifest" ;;
             *)            log_warn "Unknown module: $_mod" ;;
         esac
 
@@ -1523,8 +1550,13 @@ _mtm.push({'"'"'mtm.startTime'"'"': (new Date().getTime()), '"'"'event'"'"': '"'
 </script>\
 <!-- End Matomo Tag Manager -->'
 
+    # IMPORTANT: async (not defer). When the user is on WireGuard, analytics.diegonmarcos.com
+    # resolves to a private IP from the browser's POV → Chrome PNA preflight stalls ~10s
+    # waiting for `Access-Control-Allow-Private-Network: true` before failing. With `defer`,
+    # this stall blocks the defer queue and prevents script.js from running → blank page.
+    # `async` decouples the analytics fetch from the page's critical path.
     local umami_tag="<!-- Umami Analytics -->
-<script defer src=\"https://analytics.diegonmarcos.com/umami/script.js\" data-website-id=\"${umami_site_id}\"></script>
+<script async src=\"https://analytics.diegonmarcos.com/umami/script.js\" data-website-id=\"${umami_site_id}\"></script>
 <!-- End Umami Analytics -->"
 
     case "$sub" in

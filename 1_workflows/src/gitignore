@@ -79,6 +79,10 @@ a-Portals/*/src/style.css.map
 ## Dev-server runtime logs (server.sh, now under 0_ folder)
 **/server.log
 **/browser-console.log
+## Generated root install manifest — derived from front-deps.json (the source).
+## Anchored to repo root: per-project package.json / package-lock.json stay tracked.
+/package.json
+/package-lock.json
 ## Obsidian
 .obsidian/workspace-mobile.json
 node_modules/

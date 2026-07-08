@@ -198,7 +198,18 @@ const output = {
     }
 };
 
-fs.writeFileSync(path.join(repo, 'front-deps.json'), JSON.stringify(output, null, 2) + '\n');
+// front-deps.json is a symlink into the I_front-data submodule, which is NOT
+// checked out in CI (dangling symlink). Resolve the real target and ensure its
+// parent exists so writeFileSync never dies on ENOENT — same pattern as cmd_config.
+const outPath = path.join(repo, 'front-deps.json');
+let realPath = outPath;
+try { realPath = fs.realpathSync(outPath); }
+catch (e) {
+    try { realPath = path.resolve(path.dirname(outPath), fs.readlinkSync(outPath)); }
+    catch (e2) { realPath = outPath; }
+}
+fs.mkdirSync(path.dirname(realPath), { recursive: true });
+fs.writeFileSync(realPath, JSON.stringify(output, null, 2) + '\n');
 console.log('front-deps.json: ' + total + ' packages from ' + perService.length + ' projects');
 " 2>/dev/null || log "SKIP front-deps.json (node not available)"
 }

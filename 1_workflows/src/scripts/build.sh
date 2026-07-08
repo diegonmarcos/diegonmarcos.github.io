@@ -349,6 +349,12 @@ const cats = {};
 projects.forEach(p => { cats[p.category] = (cats[p.category] || 0) + 1; });
 Object.entries(cats).sort().forEach(([k, v]) => console.log('  ' + k + ': ' + v));
 "
+    # Regenerate the master index (0_ folder) from the fresh topology
+    local index_gen="$SCRIPT_DIR/0_______________________________/index.sh"
+    if [ -x "$index_gen" ]; then
+        log "Regenerating master index..."
+        "$index_gen"
+    fi
     log "Done."
 }
 

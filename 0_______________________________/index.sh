@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Master-index generator. Reads the already-generated project registry
 # (front-topology.json, emitted by `build.sh config`) and projects it into:
-#   index.json       — canonical master index (grouped by category)
-#   index.json.js    — PORTAL_DATA wrapper (repo forbids fetch(); file://-safe)
+#   data.json        — canonical master index (grouped by category), fetched by script.js
 # ponytail: topology is the single source of truth — no folder re-scan, no
 # deploy-name re-derivation. Regenerate the registry with `build.sh config`.
 set -euo pipefail
@@ -15,19 +14,11 @@ jq '{
   meta: { generated_from: "front-topology.json", project_count: (.projects | length) },
   categories: (
     .projects
-    | map({ name, slug, path, category, framework, port })
+    | map({ name, slug, path, category, framework, port, has_dist })
     | group_by(.category)
     | map({ category: .[0].category, projects: (. | sort_by(.name)) })
     | sort_by(.category)
   )
-}' "$topology" > "$here/index.json"
+}' "$topology" > "$here/data.json"
 
-# PORTAL_DATA wrapper — index.script.js reads globalThis.PORTAL_DATA.index
-{
-  printf 'globalThis.PORTAL_DATA = globalThis.PORTAL_DATA || {};\n'
-  printf 'globalThis.PORTAL_DATA.index = '
-  cat "$here/index.json"
-  printf ';\n'
-} > "$here/index.json.js"
-
-echo "wrote index.json + index.json.js ($(jq '.meta.project_count' "$here/index.json") projects)"
+echo "wrote data.json ($(jq '.meta.project_count' "$here/data.json") projects)"

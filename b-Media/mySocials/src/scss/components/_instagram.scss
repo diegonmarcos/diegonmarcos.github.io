@@ -8,7 +8,6 @@ $ig-border: #dbdbdb;
 $ig-text: #262626;
 $ig-muted: #8e8e8e;
 $ig-blue: #0095f6;
-$ig-red: #ed4956;
 $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888);
 
 .ig {
@@ -36,167 +35,142 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     @include flex-row;
     justify-content: space-between;
   }
-  &__logo {
-    font-family: 'Segoe Script', 'Brush Script MT', cursive;
-    font-size: 24px;
-    font-weight: 600;
-  }
+  &__logo { font-family: 'Segoe Script', 'Brush Script MT', cursive; font-size: 24px; font-weight: 600; }
   &__search {
     display: none;
     @include mq(md) {
       display: block;
-      input {
-        width: 240px;
-        padding: 8px 16px;
-        background: #efefef;
-        border: none;
-        border-radius: 8px;
-        color: $ig-text;
-      }
+      input { width: 240px; padding: 8px 16px; background: #efefef; border: none; border-radius: 8px; color: $ig-text; }
     }
   }
   &__icons { @include flex-row($spacing-lg); }
   &__icons svg { stroke: $ig-text; fill: none; stroke-width: 1.8; cursor: pointer; }
 }
 
-// ── Page grid ────────────────────────────────────────────
-.ig-main {
-  max-width: 935px;
-  margin: 0 auto;
-  padding: 24px 20px 80px;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  @include mq(md) { grid-template-columns: minmax(0, 630px) 1fr; }
-}
-.ig-feed { max-width: 470px; width: 100%; margin: 0 auto; }
+.ig-page { max-width: 935px; margin: 0 auto; padding: 30px 20px 80px; }
 
-// ── Stories ──────────────────────────────────────────────
-.ig-stories {
-  @include flex-row($spacing-lg);
-  padding: 16px;
-  margin-bottom: 24px;
-  background: $ig-surface;
-  border: 1px solid $ig-border;
-  border-radius: 8px;
-  overflow-x: auto;
+// ── Profile header ───────────────────────────────────────
+.ig-head {
+  @include flex-row;
+  align-items: flex-start;
+  gap: 30px;
+  padding-bottom: 24px;
+  @include mq(sm) { gap: 60px; padding-left: 20px; }
+
+  &__avatar {
+    width: 86px; height: 86px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: 0 0 auto;
+    background: $ig-gradient;
+    @include mq(sm) { width: 150px; height: 150px; }
+  }
+  &__body { flex: 1; min-width: 0; }
+  &__top { @include flex-row($spacing-lg); flex-wrap: wrap; margin-bottom: 20px; }
+  &__user { font-size: 20px; font-weight: 400; }
+  &__btn {
+    padding: 7px 16px; border-radius: 8px; background: #efefef;
+    font-weight: 600; font-size: 13px;
+  }
+  &__stats {
+    @include flex-row($spacing-2xl);
+    margin-bottom: 16px;
+    strong { font-weight: 600; }
+    span { color: $ig-muted; }
+  }
+  &__name { font-weight: 600; }
+  &__bio { white-space: pre-wrap; line-height: 1.5; word-break: break-word; }
 }
-.ig-story {
+
+// ── Story highlights ─────────────────────────────────────
+.ig-highlights {
+  @include flex-row($spacing-xl);
+  padding: 16px 4px 24px;
+  overflow-x: auto;
+  border-bottom: 1px solid $ig-border;
+}
+.ig-hl {
   @include flex-col($spacing-xs);
   align-items: center;
   flex: 0 0 auto;
-  width: 66px;
+  width: 76px;
 
   &__ring {
-    width: 62px; height: 62px;
-    border-radius: 50%;
-    padding: 2px;
-    background: $ig-gradient;
-    @include flex-center;
+    width: 64px; height: 64px; border-radius: 50%; padding: 2px;
+    background: $ig-gradient; @include flex-center;
   }
   &__avatar {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    border: 2px solid $ig-surface;
-    @include flex-center;
-    color: #fff;
-    font-weight: 600;
-    font-size: 20px;
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 2px solid $ig-surface; @include flex-center;
+    color: #fff; font-weight: 600; font-size: 20px;
   }
   &__name {
-    font-size: 12px;
-    color: $ig-text;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 12px; max-width: 100%;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
 }
 
-// ── Post ─────────────────────────────────────────────────
-.ig-post {
-  background: $ig-surface;
-  border: 1px solid $ig-border;
-  border-radius: 8px;
-  margin-bottom: 24px;
-
-  &__head {
-    @include flex-row($spacing-md);
-    padding: 12px 16px;
-  }
-  &__avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    @include flex-center;
-    color: #fff; font-weight: 600; font-size: 13px;
-    flex: 0 0 auto;
-  }
-  &__user { font-weight: 600; }
-  &__time { color: $ig-muted; &::before { content: '• '; } }
-  &__more { margin-left: auto; font-weight: 700; letter-spacing: 1px; }
-
-  &__image {
-    aspect-ratio: 1;
-    @include flex-center;
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 40px;
-  }
-
-  &__actions {
-    @include flex-row($spacing-lg);
-    padding: 10px 16px 4px;
-    svg { stroke: $ig-text; fill: none; stroke-width: 1.8; cursor: pointer; }
-    svg:hover { stroke: $ig-muted; }
-    .ig-post__save { margin-left: auto; }
-  }
-  &__likes { padding: 4px 16px; font-weight: 600; }
-  &__caption { padding: 2px 16px; .ig-post__user { margin-right: 6px; } }
-  &__comments { padding: 4px 16px; color: $ig-muted; }
-  &__addcomment {
-    @include flex-row;
-    border-top: 1px solid $ig-border;
-    margin-top: 12px;
-    padding: 8px 16px;
-    input { flex: 1; border: none; background: transparent; color: $ig-text; }
-    button { color: $ig-blue; font-weight: 600; }
-  }
+// ── Tabs ─────────────────────────────────────────────────
+.ig-tabs {
+  @include flex-center;
+  gap: 40px;
+  border-top: 1px solid $ig-border;
+  margin-top: -1px;
 }
-
-// ── Suggestions sidebar ──────────────────────────────────
-.ig-aside {
-  display: none;
-  @include mq(md) { display: block; }
-}
-.ig-me {
-  @include flex-row($spacing-md);
-  margin-bottom: 20px;
-
-  &__avatar {
-    width: 44px; height: 44px; border-radius: 50%;
-    @include flex-center; color: #fff; font-weight: 600;
-  }
-  &__name { font-weight: 600; }
-  &__sub { color: $ig-muted; }
-  &__switch { margin-left: auto; color: $ig-blue; font-weight: 600; font-size: 12px; }
-}
-.ig-suggest__head {
-  @include flex-row;
-  justify-content: space-between;
-  margin-bottom: 12px;
+.ig-tab {
+  @include flex-row($spacing-sm);
+  padding: 16px 0;
+  margin-top: -1px;
   color: $ig-muted;
+  font-size: 12px;
   font-weight: 600;
-  span:first-child { color: $ig-muted; }
-  span:last-child { color: $ig-text; font-size: 12px; }
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+  &.is-active { color: $ig-text; border-top-color: $ig-text; }
+  svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 }
-.ig-sugg {
-  @include flex-row($spacing-md);
-  padding: 6px 0;
 
-  &__avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    @include flex-center; color: #fff; font-weight: 600; font-size: 12px;
+// ── Grids / panes ────────────────────────────────────────
+.ig-pane { display: none; &.is-active { display: block; } }
+
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding-top: 16px;
+  @include mq(sm) { gap: 28px; }
+}
+.ig-tile {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  @include flex-center;
+  cursor: pointer;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+  &__cap {
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 12px;
+    line-height: 1.4;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
   }
-  &__name { font-weight: 600; font-size: 13px; }
-  &__meta { color: $ig-muted; font-size: 12px; }
-  &__follow { margin-left: auto; color: $ig-blue; font-weight: 600; font-size: 12px; }
+  &__badge { position: absolute; top: 6px; right: 8px; font-size: 14px; }
+}
+
+.ig-empty { text-align: center; color: $ig-muted; padding: 60px 20px; }
+
+// Comments list
+.ig-comments { padding-top: 16px; }
+.ig-comment {
+  padding: 14px 4px;
+  border-bottom: 1px solid $ig-border;
+  &__text { line-height: 1.4; }
+  &__meta { color: $ig-muted; font-size: 12px; margin-top: 4px; }
 }

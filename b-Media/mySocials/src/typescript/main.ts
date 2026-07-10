@@ -183,6 +183,7 @@ const IG_ICON = {
   share: '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
   save: '<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
   home: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
+  grid: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>',
 };
 
 function gradientFor(i: number): string {
@@ -191,46 +192,70 @@ function gradientFor(i: number): string {
   return `linear-gradient(135deg, ${a}, ${b})`;
 }
 
+// Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
+interface IGData {
+  profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number };
+  posts: { media: string; caption: string; time: string }[];
+  following: string[];
+  followers: string[];
+  liked: { url: string; caption: string }[];
+  saved: { url: string; caption: string }[];
+  comments: { text: string; time?: string; owner?: string }[];
+  liked_stories: { handle: string; name: string }[];
+}
+
+function esc(s: string): string {
+  return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c] as string));
+}
+// Deterministic avatar colour from a handle.
+function hashColor(s: string): string {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+
 function renderInstagram(): void {
   const view = document.getElementById('ig-view');
   if (!view) return;
+  const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.instagram;
+  if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 
-  const stories = FRIENDS.map(f => `
-    <div class="ig-story">
-      <div class="ig-story__ring"><div class="ig-story__avatar" style="background:${f.color}">${f.initial}</div></div>
-      <span class="ig-story__name">${f.name.split(' ')[0].toLowerCase()}</span>
+  const p = d.profile;
+  const num = (n: number) => n.toLocaleString();
+
+  // Story highlights = the accounts you follow (first 24).
+  const highlights = d.following.slice(0, 24).map(h => `
+    <div class="ig-hl">
+      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${hashColor(h)}">${esc(h.charAt(0).toUpperCase())}</div></div>
+      <span class="ig-hl__name">${esc(h)}</span>
     </div>`).join('');
 
-  const posts = SCRAPS.map((s, i) => {
-    const likes = 40 + ((i * 137) % 900);
-    return `
-    <article class="ig-post">
-      <div class="ig-post__head">
-        <div class="ig-post__avatar" style="background:${s.color}">${s.initial}</div>
-        <span class="ig-post__user">${s.author.split(' ')[0].toLowerCase()}_${s.initial.toLowerCase()}</span>
-        <span class="ig-post__time">${s.time}</span>
-        <span class="ig-post__more">···</span>
-      </div>
-      <div class="ig-post__image" style="background:${gradientFor(i)}">\u{1F4F7}</div>
-      <div class="ig-post__actions">
-        ${IG_ICON.heart}${IG_ICON.comment}${IG_ICON.share}<span class="ig-post__save">${IG_ICON.save}</span>
-      </div>
-      <div class="ig-post__likes">${likes.toLocaleString()} likes</div>
-      <p class="ig-post__caption"><span class="ig-post__user">${s.author.split(' ')[0].toLowerCase()}_${s.initial.toLowerCase()}</span>${s.text}</p>
-      <div class="ig-post__comments">View all ${2 + (i % 30)} comments</div>
-      <div class="ig-post__addcomment"><input placeholder="Add a comment..."><button>Post</button></div>
-    </article>`;
-  }).join('');
+  // Posts pane = your real photo(s).
+  const postsPane = d.posts.length
+    ? d.posts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`).join('')
+    : '<p class="ig-empty">No posts yet.</p>';
 
-  const suggestions = FRIENDS.slice(0, 5).map(f => `
-    <div class="ig-sugg">
-      <div class="ig-sugg__avatar" style="background:${f.color}">${f.initial}</div>
-      <div>
-        <div class="ig-sugg__name">${f.name.split(' ')[0].toLowerCase()}_${f.initial.toLowerCase()}</div>
-        <div class="ig-sugg__meta">Followed by others</div>
-      </div>
-      <span class="ig-sugg__follow">Follow</span>
-    </div>`).join('');
+  // Caption tiles for saved / liked (export has links + captions, not the images).
+  const tile = (item: { url: string; caption: string }, badge: string) => `
+    <a class="ig-tile" href="${esc(item.url)}" target="_blank" rel="noopener" style="background:${gradientFor(item.url.length)}">
+      <span class="ig-tile__cap">${esc(item.caption || item.url.replace('https://www.instagram.com/', ''))}</span>
+      <span class="ig-tile__badge">${badge}</span>
+    </a>`;
+  const savedPane = d.saved.length ? d.saved.map(s => tile(s, '\u{1F516}')).join('') : '<p class="ig-empty">Nothing saved.</p>';
+  const likedPane = d.liked.length ? d.liked.map(s => tile(s, '❤️')).join('') : '<p class="ig-empty">No likes.</p>';
+
+  const commentsPane = d.comments.length
+    ? d.comments.map(c => `
+      <div class="ig-comment">
+        <div class="ig-comment__text">${esc(c.text)}</div>
+        <div class="ig-comment__meta">${c.owner ? '@' + esc(c.owner) + ' · ' : ''}${esc(c.time || '')}</div>
+      </div>`).join('')
+    : '<p class="ig-empty">No comments.</p>';
+
+  const grid = (html: string) => `<div class="ig-grid">${html}</div>`;
+  const avatar = d.posts[0]?.media
+    ? `<img class="ig-head__avatar" src="${d.posts[0].media}" alt="${esc(p.username)}">`
+    : `<div class="ig-head__avatar"></div>`;
 
   view.innerHTML = `
     <nav class="ig-nav">
@@ -240,24 +265,48 @@ function renderInstagram(): void {
         <div class="ig-nav__icons">${IG_ICON.home}${IG_ICON.heart}${IG_ICON.comment}${IG_ICON.share}</div>
       </div>
     </nav>
-    <div class="ig-main">
-      <div class="ig-feed">
-        <div class="ig-stories">${stories}</div>
-        ${posts}
-      </div>
-      <aside class="ig-aside">
-        <div class="ig-me">
-          <div class="ig-me__avatar" style="background:${AVATAR_COLORS[3]}">D</div>
-          <div>
-            <div class="ig-me__name">diego_marcos</div>
-            <div class="ig-me__sub">Diego N. Marcos</div>
+    <div class="ig-page">
+      <header class="ig-head">
+        ${avatar}
+        <div class="ig-head__body">
+          <div class="ig-head__top">
+            <span class="ig-head__user">${esc(p.username)}</span>
+            <span class="ig-head__btn">Follow</span>
+            <span class="ig-head__btn">Message</span>
           </div>
-          <span class="ig-me__switch">Switch</span>
+          <div class="ig-head__stats">
+            <span><strong>${num(p.posts)}</strong> posts</span>
+            <span><strong>${num(p.followers)}</strong> followers</span>
+            <span><strong>${num(p.following)}</strong> following</span>
+          </div>
+          <div class="ig-head__name">${esc(p.name)}</div>
+          <div class="ig-head__bio">${esc(p.bio)}</div>
         </div>
-        <div class="ig-suggest__head"><span>Suggestions for you</span><span>See All</span></div>
-        ${suggestions}
-      </aside>
+      </header>
+
+      <div class="ig-highlights">${highlights}</div>
+
+      <div class="ig-tabs">
+        <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
+        <div class="ig-tab" data-pane="saved">${IG_ICON.save} Saved ${p.posts ? '' : ''}(${num(d.saved.length)})</div>
+        <div class="ig-tab" data-pane="liked">${IG_ICON.heart} Liked (${num(d.liked.length)})</div>
+        <div class="ig-tab" data-pane="comments">${IG_ICON.comment} Comments (${num(d.comments.length)})</div>
+      </div>
+
+      <div class="ig-pane is-active" data-pane="posts">${grid(postsPane)}</div>
+      <div class="ig-pane" data-pane="saved">${grid(savedPane)}</div>
+      <div class="ig-pane" data-pane="liked">${grid(likedPane)}</div>
+      <div class="ig-pane" data-pane="comments"><div class="ig-comments">${commentsPane}</div></div>
     </div>`;
+
+  // Tab switching.
+  view.querySelectorAll<HTMLElement>('.ig-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const pane = tab.dataset.pane;
+      view.querySelectorAll('.ig-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+      view.querySelectorAll<HTMLElement>('.ig-pane').forEach(pn => pn.classList.toggle('is-active', pn.dataset.pane === pane));
+    });
+  });
 }
 
 // ─── LINKEDIN VIEW ───────────────────────────────────────────────────────────
@@ -356,9 +405,58 @@ function renderLinkedin(): void {
     </div>`;
 }
 
+// ─── PINTEREST VIEW ──────────────────────────────────────────────────────────
+
+const PIN_ICON = {
+  bell: '<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',
+  chat: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',
+};
+
+// Varied pin heights → real masonry feel (deterministic, no Math.random).
+const PIN_HEIGHTS = [220, 300, 180, 340, 260, 200, 320, 240, 280];
+
+function renderPinterest(): void {
+  const view = document.getElementById('pin-view');
+  if (!view) return;
+
+  // Pins built from communities (emoji + name) + scraps (as captioned pins).
+  const pinData = [
+    ...COMMUNITIES.map((c, i) => ({ title: c.name, emoji: c.emoji, color: c.color, author: c.name, grad: i })),
+    ...SCRAPS.map((s, i) => ({ title: s.text.slice(0, 60), emoji: '\u{1F4CC}', color: s.color, author: s.author, grad: i + 3 })),
+  ];
+
+  const pins = pinData.map((p, i) => {
+    const h = PIN_HEIGHTS[i % PIN_HEIGHTS.length];
+    return `
+    <div class="pin-card">
+      <div class="pin-card__media" style="height:${h}px;background:${gradientFor(p.grad)}">
+        ${p.emoji}
+        <div class="pin-card__overlay"><span class="pin-card__save">Save</span></div>
+      </div>
+      <div class="pin-card__title">${p.title}</div>
+      <div class="pin-card__meta">
+        <span class="pin-card__avatar" style="background:${p.color}">${p.author.charAt(0)}</span>
+        <span>${p.author.split(' ')[0]}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  view.innerHTML = `
+    <nav class="pin-nav">
+      <div class="pin-nav__inner">
+        <span class="pin-nav__logo">P</span>
+        <a href="#" class="pin-nav__tab pin-nav__tab--active">Home</a>
+        <a href="#" class="pin-nav__tab">Explore</a>
+        <div class="pin-nav__search"><input placeholder="Search for ideas"></div>
+        <div class="pin-nav__icons">${PIN_ICON.bell}${PIN_ICON.chat}<span class="pin-nav__avatar" style="background:${AVATAR_COLORS[3]}">D</span></div>
+      </div>
+    </nav>
+    <div class="pin-board">${pins}</div>`;
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'orkut' | 'instagram' | 'linkedin';
+type Theme = 'orkut' | 'instagram' | 'linkedin' | 'pinterest';
 const THEME_KEY = 'mySocials.theme';
 
 function setTheme(theme: Theme): void {
@@ -372,7 +470,7 @@ function setTheme(theme: Theme): void {
 
 function initThemeSwitcher(): void {
   const saved = (localStorage.getItem(THEME_KEY) as Theme) || 'orkut';
-  setTheme(['orkut', 'instagram', 'linkedin'].includes(saved) ? saved : 'orkut');
+  setTheme(['orkut', 'instagram', 'linkedin', 'pinterest'].includes(saved) ? saved : 'orkut');
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.addEventListener('click', () => setTheme((btn as HTMLElement).dataset.themeBtn as Theme));
   });
@@ -388,6 +486,7 @@ function init(): void {
   renderPhotos();
   renderInstagram();
   renderLinkedin();
+  renderPinterest();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

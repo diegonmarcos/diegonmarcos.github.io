@@ -25,6 +25,7 @@
 
     <!-- Data-driven framework: PORTAL_DATA["mySocials"] hydrated by front-data-json-js-wrapper.sh -->
     <script src="data-mySocials.json.js"></script>
+    <script src="data-instagram.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
   </head>
 <body>
@@ -34,6 +35,7 @@
     <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
     <button class="theme-switch__btn" data-theme-btn="instagram">Instagram</button>
     <button class="theme-switch__btn" data-theme-btn="linkedin">LinkedIn</button>
+    <button class="theme-switch__btn" data-theme-btn="pinterest">Pinterest</button>
   </div>
 
   <!-- ═══════════════ ORKUT VIEW ═══════════════ -->
@@ -150,6 +152,9 @@
 
   <!-- ═══════════════ LINKEDIN VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--linkedin li" id="li-view"></div>
+
+  <!-- ═══════════════ PINTEREST VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--pinterest pin" id="pin-view"></div>
 
   <script src="script.js"></script>
 </body>

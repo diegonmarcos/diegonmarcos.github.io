@@ -6,20 +6,25 @@
 .box {
   @include box;
   @include flex-col($spacing-lg);
+  padding: 0 $spacing-xl $spacing-xl;   // header bar spans full width; body keeps side padding
+  overflow: hidden;
 }
 
+// Classic Orkut section header: blue gradient bar, white bold title
 .box__title {
+  margin: 0 (-$spacing-xl) $spacing-xs;
+  padding: $spacing-sm $spacing-lg;
+  background: linear-gradient(180deg, $orkut-blue-dim, $orkut-blue);
+  color: #fff;
   font-size: $font-size-sm;
-  font-weight: 600;
-  color: $orkut-pink;
+  font-weight: 700;
   text-transform: lowercase;
   letter-spacing: 0.02em;
-  padding-bottom: $spacing-sm;
-  border-bottom: 1px solid $border;
+  border-bottom: 1px solid $orkut-blue;
 }
 
 .box__count {
-  color: $text-dim;
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 400;
 }
 

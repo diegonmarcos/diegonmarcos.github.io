@@ -9,6 +9,6 @@ body {
   min-height: 100vh;
 }
 
-a { color: $orkut-pink; text-decoration: none; &:hover { color: $orkut-pink-bright; text-decoration: underline; } }
+a { color: $orkut-blue; text-decoration: none; &:hover { color: $orkut-pink; text-decoration: underline; } }
 button { font-family: inherit; cursor: pointer; border: none; }
 input, textarea { font-family: inherit; font-size: inherit; }

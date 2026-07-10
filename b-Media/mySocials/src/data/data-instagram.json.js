@@ -4,14 +4,16 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["instagram"] = {
-  "_description": "Instagram export (diegonmarcos), parsed by extract_ig.py. All activity except DMs. Email/phone excluded.",
+  "_description": "Instagram export (diegonmarcos), parsed by extract_ig.py. All activity except DMs. Email/phone excluded. following/followers are the date-ranged export subset; *_total are the real live counts.",
   "profile": {
     "username": "diegonmarcos",
     "name": "Diego Nepomuceno Marcos",
-    "bio": "𓅮𓅯𓅰𓅧 \"I’m sorry Please forgive me Thank u I Love u\" · \"be Humble stay Hungry always Hustle\" · \"Quod obstat viae, fit via\" · शून्यता 道 🪶 🪬🪶 .",
-    "following": 982,
-    "followers": 127,
-    "posts": 1
+    "bio": "𓅮𓅯𓅰𓅧\nI’m sorry\nPlease forgive me\nThank u\nI Love u\nbe Humble\nstay Hungry\nalways Hustle\nQuod obstat viae, fit via\nशून्यता 道\n🪶 🪬🪶\n.",
+    "following": 998,
+    "followers": 1005,
+    "posts": 1,
+    "following_shown": 982,
+    "followers_shown": 127
   },
   "posts": [
     {

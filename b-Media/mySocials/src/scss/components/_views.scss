@@ -9,6 +9,6 @@ html[data-theme='linkedin']  .view--linkedin,
 html[data-theme='pinterest'] .view--pinterest { display: block; }
 
 // Per-theme page background (base.scss sets the Orkut dark default).
-html[data-theme='instagram'] body { background: #fafafa; color: #262626; }
+html[data-theme='instagram'] body { background: #000; color: #f5f5f5; }
 html[data-theme='linkedin']  body { background: #f4f2ee; color: rgba(0, 0, 0, 0.9); }
 html[data-theme='pinterest'] body { background: #fff; color: #111; }

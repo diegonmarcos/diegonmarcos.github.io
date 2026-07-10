@@ -194,7 +194,7 @@ function gradientFor(i: number): string {
 
 // Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
 interface IGData {
-  profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number };
+  profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number };
   posts: { media: string; caption: string; time: string }[];
   following: string[];
   followers: string[];
@@ -223,12 +223,14 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = the accounts you follow (first 24).
-  const highlights = d.following.slice(0, 24).map(h => `
+  // Story highlights = your real stories (from liked_stories).
+  const highlights = d.liked_stories.length
+    ? d.liked_stories.map(s => `
     <div class="ig-hl">
-      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${hashColor(h)}">${esc(h.charAt(0).toUpperCase())}</div></div>
-      <span class="ig-hl__name">${esc(h)}</span>
-    </div>`).join('');
+      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${hashColor(s.handle)}">${esc(s.handle.charAt(0).toUpperCase())}</div></div>
+      <span class="ig-hl__name">${esc(s.name || s.handle)}</span>
+    </div>`).join('')
+    : '';
 
   // Posts pane = your real photo(s).
   const postsPane = d.posts.length
@@ -271,20 +273,20 @@ function renderInstagram(): void {
         <div class="ig-head__body">
           <div class="ig-head__top">
             <span class="ig-head__user">${esc(p.username)}</span>
-            <span class="ig-head__btn">Follow</span>
+            <span class="ig-head__btn ig-head__btn--primary">Follow</span>
             <span class="ig-head__btn">Message</span>
           </div>
           <div class="ig-head__stats">
-            <span><strong>${num(p.posts)}</strong> posts</span>
-            <span><strong>${num(p.followers)}</strong> followers</span>
-            <span><strong>${num(p.following)}</strong> following</span>
+            <span class="ig-head__stat"><strong>${num(p.posts)}</strong> posts</span>
+            <span class="ig-head__stat" data-modal="followers"><strong>${num(p.followers)}</strong> followers</span>
+            <span class="ig-head__stat" data-modal="following"><strong>${num(p.following)}</strong> following</span>
           </div>
           <div class="ig-head__name">${esc(p.name)}</div>
           <div class="ig-head__bio">${esc(p.bio)}</div>
         </div>
       </header>
 
-      <div class="ig-highlights">${highlights}</div>
+      ${highlights ? `<div class="ig-highlights">${highlights}</div>` : ''}
 
       <div class="ig-tabs">
         <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
@@ -297,6 +299,16 @@ function renderInstagram(): void {
       <div class="ig-pane" data-pane="saved">${grid(savedPane)}</div>
       <div class="ig-pane" data-pane="liked">${grid(likedPane)}</div>
       <div class="ig-pane" data-pane="comments"><div class="ig-comments">${commentsPane}</div></div>
+    </div>
+
+    <div class="ig-modal" id="ig-modal">
+      <div class="ig-modal__box">
+        <div class="ig-modal__head">
+          <small id="ig-modal-sub"></small><h3 id="ig-modal-title"></h3>
+          <button id="ig-modal-close" aria-label="Close">&times;</button>
+        </div>
+        <div class="ig-modal__list" id="ig-modal-list"></div>
+      </div>
     </div>`;
 
   // Tab switching.
@@ -307,6 +319,27 @@ function renderInstagram(): void {
       view.querySelectorAll<HTMLElement>('.ig-pane').forEach(pn => pn.classList.toggle('is-active', pn.dataset.pane === pane));
     });
   });
+
+  // Followers / following modal.
+  const modal = view.querySelector<HTMLElement>('#ig-modal')!;
+  const openModal = (kind: 'followers' | 'following') => {
+    const list = kind === 'followers' ? d.followers : d.following;
+    const total = kind === 'followers' ? p.followers : p.following;
+    (view.querySelector('#ig-modal-title') as HTMLElement).textContent = kind === 'followers' ? 'Followers' : 'Following';
+    (view.querySelector('#ig-modal-sub') as HTMLElement).textContent = `showing ${num(list.length)} of ${num(total)}`;
+    (view.querySelector('#ig-modal-list') as HTMLElement).innerHTML = list.map(h => `
+      <div class="ig-row">
+        <div class="ig-row__avatar" style="background:${hashColor(h)}">${esc(h.charAt(0).toUpperCase())}</div>
+        <a class="ig-row__handle" href="https://www.instagram.com/${esc(h)}" target="_blank" rel="noopener">${esc(h)}</a>
+        <span class="ig-row__follow">Follow</span>
+      </div>`).join('');
+    modal.classList.add('is-open');
+  };
+  view.querySelectorAll<HTMLElement>('.ig-head__stat[data-modal]').forEach(s =>
+    s.addEventListener('click', () => openModal(s.dataset.modal as 'followers' | 'following')));
+  const closeModal = () => modal.classList.remove('is-open');
+  view.querySelector('#ig-modal-close')!.addEventListener('click', closeModal);
+  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
 }
 
 // ─── LINKEDIN VIEW ───────────────────────────────────────────────────────────
@@ -323,42 +356,58 @@ const LI_ICON = {
   send: '<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
 };
 
+// Real LinkedIn profile (parsed by extract_li.py -> PORTAL_DATA["linkedin"]).
+interface LIData {
+  profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string };
+  experience: { title: string; company: string; dates: string; location?: string }[];
+  education: { school: string; degree: string; dates: string }[];
+  skills: string[];
+}
+
+function initials(name: string): string {
+  return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
+}
+
 function renderLinkedin(): void {
   const view = document.getElementById('li-view');
   if (!view) return;
+  const d = (globalThis as { PORTAL_DATA?: Record<string, LIData> }).PORTAL_DATA?.linkedin;
+  if (!d) { view.innerHTML = '<p class="li-empty">LinkedIn data not loaded.</p>'; return; }
+  const p = d.profile;
 
   const navItem = (icon: string, label: string) => `<div class="li-nav__item">${icon}<span>${label}</span></div>`;
 
-  // Feed: testimonials read as recommendations, scraps as posts.
-  const feedSource = [...TESTIMONIALS, ...SCRAPS.map(s => ({ author: s.author, date: s.time, text: s.text }))];
-  const posts = feedSource.map((p, i) => {
-    const f = FRIENDS[i % FRIENDS.length];
-    const reactions = 12 + ((i * 91) % 400);
-    return `
-    <article class="li-card li-post">
-      <div class="li-post__head">
-        <div class="li-post__avatar" style="background:${f.color}">${p.author.charAt(0)}</div>
-        <div>
-          <div class="li-post__name">${p.author}</div>
-          <div class="li-post__headline">Software Engineer · ${p.date}</div>
-        </div>
-      </div>
-      <p class="li-post__text">${p.text}</p>
-      <div class="li-post__stats"><span>\u{1F44D}❤️ ${reactions}</span><span>·</span><span>${2 + (i % 40)} comments</span></div>
-      <div class="li-post__actions">
-        <div class="li-act">${LI_ICON.like}<span>Like</span></div>
-        <div class="li-act">${LI_ICON.comment}<span>Comment</span></div>
-        <div class="li-act">${LI_ICON.repost}<span>Repost</span></div>
-        <div class="li-act">${LI_ICON.send}<span>Send</span></div>
-      </div>
-    </article>`;
-  }).join('');
+  const section = (title: string, body: string) =>
+    `<section class="li-card li-section"><h2 class="li-section__title">${title}</h2>${body}</section>`;
+  const needExport = '<p class="li-need">Not in the saved profile page — add from your LinkedIn data export (Settings → Get a copy of your data).</p>';
 
-  const news = COMMUNITIES.slice(0, 5).map(c => `
-    <div class="li-newsitem">
-      <div class="li-newsitem__head">${c.name}</div>
-      <div class="li-newsitem__meta">${(c.members / 1000).toFixed(0)}K followers</div>
-    </div>`).join('');
+  const expBody = d.experience.length
+    ? d.experience.map(e => `
+      <div class="li-item">
+        <div class="li-item__logo">${esc(e.company.charAt(0))}</div>
+        <div>
+          <div class="li-item__title">${esc(e.title)}</div>
+          <div class="li-item__sub">${esc(e.company)}</div>
+          <div class="li-item__meta">${esc(e.dates)}${e.location ? ' · ' + esc(e.location) : ''}</div>
+        </div>
+      </div>`).join('')
+    : needExport;
+
+  const eduBody = d.education.length
+    ? d.education.map(e => `
+      <div class="li-item">
+        <div class="li-item__logo">${esc(e.school.charAt(0))}</div>
+        <div>
+          <div class="li-item__title">${esc(e.school)}</div>
+          <div class="li-item__sub">${esc(e.degree)}</div>
+          <div class="li-item__meta">${esc(e.dates)}</div>
+        </div>
+      </div>`).join('')
+    : needExport;
+
+  const skillsBody = d.skills.length
+    ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
+    : needExport;
 
   view.innerHTML = `
     <nav class="li-nav">
@@ -374,34 +423,36 @@ function renderLinkedin(): void {
         </div>
       </div>
     </nav>
-    <div class="li-main">
-      <div class="li-rail-left">
-        <div class="li-card li-profile">
-          <div class="li-profile__banner"></div>
-          <div class="li-profile__avatar" style="background:${AVATAR_COLORS[3]}">D</div>
-          <div class="li-profile__body">
-            <div class="li-profile__name">Diego N. Marcos</div>
-            <div class="li-profile__tag">Software Engineer & Explorer · Berlin</div>
-            <div class="li-profile__stats">
-              <div class="li-profile__stat"><span>Connections</span><strong>142</strong></div>
-              <div class="li-profile__stat"><span>Profile views</span><strong>95</strong></div>
+    <div class="li-prof">
+      <div class="li-prof__main">
+        <section class="li-card li-phead">
+          <div class="li-phead__banner"></div>
+          <div class="li-phead__avatar" style="background:${AVATAR_COLORS[3]}">${esc(initials(p.name))}</div>
+          <div class="li-phead__body">
+            <h1 class="li-phead__name">${esc(p.name)}</h1>
+            <p class="li-phead__headline">${esc(p.headline)}</p>
+            <p class="li-phead__loc">${esc(p.location)} · <a href="https://${esc(p.url)}" target="_blank" rel="noopener">Contact info</a></p>
+            <p class="li-phead__meta"><strong>${p.connections}</strong> connections · <strong>${p.followers.toLocaleString()}</strong> followers</p>
+            ${p.open_to_work ? `<div class="li-phead__open"><strong>Open to work</strong><br>${esc(p.open_to_work)}</div>` : ''}
+            <div class="li-phead__actions">
+              <button class="li-btn li-btn--primary">Connect</button>
+              <button class="li-btn">Message</button>
+              <button class="li-btn">More</button>
             </div>
           </div>
-        </div>
+        </section>
+        ${section('Experience', expBody)}
+        ${section('Education', eduBody)}
+        ${section('Skills', skillsBody)}
       </div>
-      <div class="li-feed">
-        <div class="li-card li-startpost">
-          <div class="li-startpost__avatar" style="background:${AVATAR_COLORS[3]}">D</div>
-          <button>Start a post</button>
+      <aside class="li-prof__rail">
+        <div class="li-card li-side">
+          <div class="li-side__title">Profile</div>
+          <div class="li-side__row"><span>Current</span><strong>${esc(p.current)}</strong></div>
+          <div class="li-side__row"><span>Location</span><strong>${esc(p.location.split(',')[0])}</strong></div>
+          <div class="li-side__row"><span>Profile</span><a href="https://${esc(p.url)}" target="_blank" rel="noopener">${esc(p.url)}</a></div>
         </div>
-        ${posts}
-      </div>
-      <div class="li-rail-right">
-        <div class="li-card li-news">
-          <div class="li-news__title">My Socials News</div>
-          ${news}
-        </div>
-      </div>
+      </aside>
     </div>`;
 }
 

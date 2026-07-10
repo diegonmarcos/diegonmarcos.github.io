@@ -26,7 +26,19 @@ def field(label, stop):
     return ' '.join(out).strip().strip('"')
 username = field('Nombre de usuario', {'Nombre'})
 name     = field('Nombre', {'Presentación', 'Género', 'Correo electrónico'})
-bio      = re.sub(r'(^|\s)_(\s|$)', ' · ', field('Presentación', {'Género', 'Sitio web', 'Fecha de nacimiento'})).strip(' ·')
+
+def bio_field():
+    """Preserve the bio's original line breaks as paragraphs (lone '_' = separator)."""
+    if 'Presentación' not in lines: return ''
+    i = lines.index('Presentación') + 1; out = []
+    stop = {'Género', 'Sitio web', 'Fecha de nacimiento'}
+    while i < len(lines) and lines[i] not in stop:
+        l = lines[i].strip()
+        out.append('' if l == '_' else l.strip('"'))
+        i += 1
+    text = '\n'.join(out)
+    return re.sub(r'\n{2,}', '\n', text).strip()
+bio = bio_field()
 
 # ---- connections (full handle lists) ----
 def uniq(seq):
@@ -91,10 +103,17 @@ if os.path.exists(img):
     posts.append({'media': 'data:image/jpeg;base64,' + base64.b64encode(open(img, 'rb').read()).decode(),
                   'caption': '', 'time': 'Jul 2026'})
 
+# True live account totals at export time. The export is date-ranged (2023-2026),
+# so the follower/following LISTS below are only that window's subset; these are the
+# real totals (provided by the account owner).
+FOLLOWERS_TOTAL = 1005
+FOLLOWING_TOTAL = 998
+
 data = {
-    '_description': 'Instagram export (diegonmarcos), parsed by extract_ig.py. All activity except DMs. Email/phone excluded.',
+    '_description': 'Instagram export (diegonmarcos), parsed by extract_ig.py. All activity except DMs. Email/phone excluded. following/followers are the date-ranged export subset; *_total are the real live counts.',
     'profile': {'username': username, 'name': name, 'bio': bio,
-                'following': len(following), 'followers': len(followers), 'posts': len(posts)},
+                'following': FOLLOWING_TOTAL, 'followers': FOLLOWERS_TOTAL, 'posts': len(posts),
+                'following_shown': len(following), 'followers_shown': len(followers)},
     'posts': posts,
     'following': following,
     'followers': followers,

@@ -1,34 +1,37 @@
-// Dark Orkut palette — the OG pink but in the dark
-$bg-deep: #0a0c14;
-$bg-surface: #0f1220;
-$bg-card: #141828;
-$bg-card-hover: #1a2035;
-$bg-input: #0e1220;
-$border: #1c2240;
-$border-light: #252e50;
-$border-accent: #3a4570;
+// Classic Orkut palette (2004–2011) — light lilac page, white boxes,
+// blue section headers, magenta "orkut" logo. Only the Orkut theme consumes
+// these vars; Instagram/LinkedIn/Pinterest define their own scoped tokens.
 
-$text-primary: #e8ecf4;
-$text-secondary: #b0b8cc;
-$text-muted: #6878a0;
-$text-dim: #445070;
+$bg-deep: #e0e7f3;        // page background (classic pale blue-lilac)
+$bg-surface: #ffffff;     // navbar / bars
+$bg-card: #ffffff;        // boxes
+$bg-card-hover: #eef3fb;
+$bg-input: #f5f7fb;
+$border: #c9d5ea;
+$border-light: #dbe3f2;
+$border-accent: #9db4da;
 
-// Orkut's signature pink — darkified
-$orkut-pink: #e8508a;
-$orkut-pink-bright: #ff6aa0;
-$orkut-pink-dim: #a03060;
-$orkut-pink-glow: rgba(232, 80, 138, 0.15);
+$text-primary: #1a1a1a;
+$text-secondary: #333333;
+$text-muted: #4a5a78;
+$text-dim: #8894ac;
 
-// Orkut blue (the original navbar)
-$orkut-blue: #4a8aff;
-$orkut-blue-dim: #2a5aaa;
+// Orkut's signature magenta logo
+$orkut-pink: #e9008c;
+$orkut-pink-bright: #ff3caf;
+$orkut-pink-dim: #b3006c;
+$orkut-pink-glow: rgba(233, 0, 140, 0.12);
 
-// Trust meter colors
-$trust-cool: #4ac0ff;
-$trust-trusty: #4aff8a;
-$trust-sexy: #ff4a8a;
+// Orkut blue — section headers, links, buttons
+$orkut-blue: #316aac;
+$orkut-blue-dim: #6790c9;
 
-// Community colors
+// Trust meter colors (classic cool / trusty / sexy)
+$trust-cool: #4aa3e0;
+$trust-trusty: #5bbb5b;
+$trust-sexy: #e0559a;
+
+// Community accent colors
 $community-green: #3abb78;
 $community-purple: #8a6aff;
 $community-orange: #ff8a4a;

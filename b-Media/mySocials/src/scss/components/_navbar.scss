@@ -5,22 +5,11 @@
 
 .navbar {
   background: $bg-surface;
-  border-bottom: 2px solid $orkut-pink-dim;
+  border-bottom: 3px solid $orkut-blue;
+  box-shadow: 0 1px 4px rgba(49, 106, 172, 0.15);
   position: sticky;
   top: 0;
   z-index: 100;
-
-  // Pink glow at bottom
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, $orkut-pink, transparent);
-    opacity: 0.6;
-  }
 }
 
 .navbar__inner {

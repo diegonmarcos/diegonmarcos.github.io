@@ -184,10 +184,9 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: none;
-  @include flex-center;
+  display: none; // flex-center below would emit display:flex and win — keep centering in .is-open only
   background: rgba(0, 0, 0, 0.65);
-  &.is-open { display: flex; }
+  &.is-open { @include flex-center; } // display:flex + centering, applied only when open
 }
 .ig-modal__box {
   width: 400px;

@@ -15,9 +15,10 @@
 .navbar__inner {
   max-width: 1100px;
   margin: 0 auto;
-  padding: $spacing-md $spacing-xl;
-  @include flex-row($spacing-xl);
+  padding: $spacing-md;                 // tight gutters on phones
+  @include flex-row($spacing-md);       // smaller gap on mobile so the row fits
   flex-wrap: wrap;
+  @include mq(md) { padding: $spacing-md $spacing-xl; gap: $spacing-xl; }
 }
 
 .navbar__logo {
@@ -38,7 +39,8 @@
 
 .navbar__search {
   @include flex-row(0);
-  flex: 1;
+  flex: 1 1 120px;
+  min-width: 0;          // let the search input shrink instead of overflowing narrow phones
   max-width: 360px;
   position: relative;
 }

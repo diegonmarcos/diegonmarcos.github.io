@@ -1,0 +1,167 @@
+@use '../tools/mixins' as *;
+@use '../settings/breakpoints' as *;
+
+// Classic ICQ / Windows 98 tokens (scoped)
+$icq-face:   #c0c7c8;   // window face grey
+$icq-hi:     #ffffff;   // 3D bevel light
+$icq-lo:     #868a8e;   // 3D bevel mid
+$icq-dk:     #404040;   // 3D bevel dark
+$icq-bar:    #000080;   // active title-bar navy
+$icq-bar2:   #0a870a;   // ICQ green accent bar
+$icq-field:  #ffffff;
+$icq-text:   #000000;
+
+// 3D raised / sunken bevels — the Win98 signature.
+@mixin bevel-out { border: 2px solid; border-color: $icq-hi $icq-dk $icq-dk $icq-hi; box-shadow: inset -1px -1px 0 $icq-lo, inset 1px 1px 0 $icq-face; }
+@mixin bevel-in  { border: 2px solid; border-color: $icq-dk $icq-hi $icq-hi $icq-dk; box-shadow: inset 1px 1px 0 $icq-lo; }
+
+.icq-view {
+  font-family: 'Tahoma', 'Segoe UI', 'MS Sans Serif', sans-serif;
+  font-size: 13px;
+  color: $icq-text;
+  min-height: 100vh;
+  padding: 24px 14px 110px;
+}
+
+.icq-flower { width: 15px; height: 15px; flex: 0 0 auto; }
+
+.icq-desk {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+// ── Window chrome ────────────────────────────────────────
+.icq-win {
+  background: $icq-face;
+  @include bevel-out;
+  padding: 3px;
+  width: 100%;
+  @include mq(sm) { width: auto; }
+
+  &--list    { @include mq(sm) { width: 260px; } }
+  &--details { @include mq(sm) { width: 400px; } max-width: 100%; }
+
+  &__bar {
+    @include flex-row(6px);
+    background: linear-gradient(90deg, $icq-bar2, #0a870a 60%, #7bc47b);
+    color: #fff;
+    font-weight: 700;
+    padding: 3px 4px;
+    &--alt { background: linear-gradient(90deg, $icq-bar, #1084d0); }
+  }
+  &__title { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  &__btns {
+    @include flex-row(2px);
+    i {
+      @include flex-center;
+      width: 16px; height: 14px;
+      background: $icq-face; color: #000;
+      font-style: normal; font-size: 10px; line-height: 1;
+      @include bevel-out;
+    }
+  }
+}
+
+// ── Contact list ─────────────────────────────────────────
+.icq-list {
+  background: $icq-field;
+  @include bevel-in;
+  margin: 3px 0;
+  padding: 2px;
+  max-height: 340px;
+  overflow-y: auto;
+
+  ul { list-style: none; margin: 0 0 6px; padding: 0; }
+}
+.icq-group {
+  background: $icq-face;
+  font-weight: 700;
+  padding: 2px 6px;
+  margin: 2px 0;
+  @include bevel-out;
+}
+.icq-contact {
+  @include flex-row(7px);
+  padding: 3px 8px;
+  cursor: default;
+  &:hover { background: $icq-bar; color: #fff; }
+}
+.icq-list__foot {
+  @include flex-row(6px);
+  @include bevel-in;
+  background: $icq-face;
+  padding: 3px 6px;
+  font-weight: 700;
+  .icq-uin { margin-left: auto; font-weight: 400; color: #333; }
+}
+
+// ── User details + tabs ──────────────────────────────────
+.icq-detail {
+  background: $icq-face;
+  @include bevel-in;
+  margin: 3px 0 0;
+  padding: 8px;
+
+  &__head { @include flex-row($spacing-md); margin-bottom: 10px; }
+  &__avatar {
+    width: 46px; height: 46px; flex: 0 0 auto;
+    @include flex-center; @include bevel-out;
+    background: #dce3f0; color: $icq-bar; font-weight: 700; font-size: 18px;
+  }
+  &__name { font-weight: 700; font-size: 15px; }
+  &__nick { color: #333; font-size: 12px; }
+}
+
+.icq-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  position: relative;
+  z-index: 1;
+}
+.icq-tab {
+  padding: 4px 12px;
+  background: $icq-face;
+  border: 2px solid;
+  border-color: $icq-hi $icq-dk transparent $icq-hi;
+  border-radius: 3px 3px 0 0;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: -2px;
+
+  &.is-active {
+    background: $icq-field;
+    font-weight: 700;
+    padding-bottom: 6px;
+  }
+}
+.icq-pane {
+  display: none;
+  background: $icq-field;
+  @include bevel-in;
+  padding: 12px;
+  min-height: 160px;
+  &.is-active { display: block; }
+}
+
+.icq-field {
+  @include flex-row($spacing-sm);
+  align-items: flex-start;
+  padding: 4px 0;
+  border-bottom: 1px dotted #bbb;
+  &__k { flex: 0 0 92px; font-weight: 700; }
+  &__v { flex: 1; word-break: break-word; }
+}
+.icq-about { white-space: pre-line; line-height: 1.5; }
+.icq-interests { @include flex-row($spacing-xs); flex-wrap: wrap; }
+.icq-chip {
+  @include bevel-out;
+  background: $icq-face;
+  padding: 3px 9px;
+  font-size: 12px;
+}
+.icq-empty { color: #555; font-style: italic; }

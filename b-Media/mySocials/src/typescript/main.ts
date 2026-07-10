@@ -557,6 +557,126 @@ function renderPinterest(): void {
     <div class="pin-board">${pins}</div>`;
 }
 
+// ─── ICQ VIEW (retro Win98 IM — aggregates the real profile data) ────────────
+
+// Daisy status flower, coloured per ICQ status.
+const icqFlower = (c: string) => `<svg class="icq-flower" viewBox="0 0 16 16" aria-hidden="true"><g fill="${c}"><ellipse cx="8" cy="3.2" rx="2.3" ry="2.6"/><ellipse cx="8" cy="12.8" rx="2.3" ry="2.6"/><ellipse cx="3.2" cy="8" rx="2.6" ry="2.3"/><ellipse cx="12.8" cy="8" rx="2.6" ry="2.3"/></g><circle cx="8" cy="8" r="2.3" fill="#ffd400"/></svg>`;
+
+const ICQ_STATUS = {
+  online: '#33b233', away: '#e0a000', dnd: '#d42a2a', offline: '#9aa0a6',
+};
+
+function renderICQ(): void {
+  const view = document.getElementById('icq-view');
+  if (!view) return;
+  const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
+  const li = g.linkedin as LIData | undefined;
+  const ig = g.instagram as IGData | undefined;
+
+  const name = li?.profile.name || 'Diego Nepomuceno Marcos';
+  const nick = ig?.profile.username || 'diegonmarcos';
+  const first = name.split(' ')[0];
+  const last = name.split(' ').slice(1).join(' ');
+  const loc = (li?.profile.location || 'Berlin, Germany').split(',').map(s => s.trim());
+  const city = loc[0] || '';
+  const country = loc[loc.length - 1] || '';
+  const job = li?.experience?.[0];
+  const about = li?.about || ig?.profile.bio || '';
+  const interests = li?.skills || [];
+  const langs = li?.languages || [];
+  const uin = '184-042-518'; // vintage ICQ UIN (fabricated)
+
+  // Contact list seeded from the real friends, with a deterministic status spread.
+  const statuses: (keyof typeof ICQ_STATUS)[] = ['online', 'online', 'away', 'online', 'dnd', 'away', 'offline', 'offline', 'offline'];
+  const contacts = FRIENDS.map((f, i) => ({ ...f, status: statuses[i % statuses.length] }));
+  const online = contacts.filter(c => c.status !== 'offline');
+  const offline = contacts.filter(c => c.status === 'offline');
+  const contactRow = (c: { name: string; status: keyof typeof ICQ_STATUS }) =>
+    `<li class="icq-contact">${icqFlower(ICQ_STATUS[c.status])}<span>${esc(c.name)}</span></li>`;
+
+  // User-details tabs (data-driven).
+  const row = (k: string, v: string) => v ? `<div class="icq-field"><span class="icq-field__k">${esc(k)}</span><span class="icq-field__v">${esc(v)}</span></div>` : '';
+  const tabs = [
+    {
+      id: 'main', label: 'Main', body: `
+        ${row('Nickname', nick)}
+        ${row('First Name', first)}
+        ${row('Last Name', last)}
+        ${row('ICQ#', uin)}
+        ${row('Email', 'me@diegonmarcos.com')}
+        ${row('Headline', li?.profile.headline || '')}`,
+    },
+    {
+      id: 'home', label: 'Home', body: `
+        ${row('City', city)}
+        ${row('Country', country)}
+        ${row('Homepage', li?.profile.url || 'linktree.diegonmarcos.com')}
+        ${langs.length ? `<div class="icq-field"><span class="icq-field__k">Languages</span><span class="icq-field__v">${langs.map(l => esc(l.name)).join(', ')}</span></div>` : ''}`,
+    },
+    {
+      id: 'work', label: 'Work', body: job ? `
+        ${row('Company', job.company)}
+        ${row('Title', job.title)}
+        ${row('Since', job.dates)}
+        ${row('Location', job.location || '')}` : '<p class="icq-empty">No work info.</p>',
+    },
+    {
+      id: 'about', label: 'About', body: about
+        ? `<p class="icq-about">${esc(about)}</p>`
+        : '<p class="icq-empty">No about info.</p>',
+    },
+    {
+      id: 'interests', label: 'Interests', body: interests.length
+        ? `<div class="icq-interests">${interests.map(s => `<span class="icq-chip">${esc(s)}</span>`).join('')}</div>`
+        : '<p class="icq-empty">No interests listed.</p>',
+    },
+  ];
+
+  const winBtns = '<span class="icq-win__btns"><i>_</i><i>□</i><i>✕</i></span>';
+
+  view.innerHTML = `
+    <div class="icq-desk">
+      <!-- Contact list window -->
+      <div class="icq-win icq-win--list">
+        <div class="icq-win__bar">${icqFlower('#ffffff')}<span class="icq-win__title">ICQ</span>${winBtns}</div>
+        <div class="icq-list">
+          <div class="icq-group">Online (${online.length})</div>
+          <ul>${online.map(contactRow).join('')}</ul>
+          <div class="icq-group">Offline (${offline.length})</div>
+          <ul>${offline.map(contactRow).join('')}</ul>
+        </div>
+        <div class="icq-list__foot">${icqFlower(ICQ_STATUS.online)}<span>Online</span><span class="icq-uin">#${uin}</span></div>
+      </div>
+
+      <!-- User details window -->
+      <div class="icq-win icq-win--details">
+        <div class="icq-win__bar icq-win__bar--alt">${icqFlower('#ffffff')}<span class="icq-win__title">User Details — ${esc(nick)}</span>${winBtns}</div>
+        <div class="icq-detail">
+          <div class="icq-detail__head">
+            <div class="icq-detail__avatar">${esc(initials(name))}</div>
+            <div>
+              <div class="icq-detail__name">${esc(name)}</div>
+              <div class="icq-detail__nick">"${esc(nick)}" · #${uin}</div>
+            </div>
+          </div>
+          <div class="icq-tabs">
+            ${tabs.map((t, i) => `<button class="icq-tab${i === 0 ? ' is-active' : ''}" data-icq-pane="${t.id}">${t.label}</button>`).join('')}
+          </div>
+          ${tabs.map((t, i) => `<div class="icq-pane${i === 0 ? ' is-active' : ''}" data-icq-pane="${t.id}">${t.body}</div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+
+  // Tab switching within the details window.
+  view.querySelectorAll<HTMLElement>('.icq-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const pane = tab.dataset.icqPane;
+      view.querySelectorAll('.icq-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+      view.querySelectorAll<HTMLElement>('.icq-pane').forEach(pn => pn.classList.toggle('is-active', pn.dataset.icqPane === pane));
+    });
+  });
+}
+
 // ─── MY PROFILE (personal hub, aggregates the real social data) ──────────────
 
 function renderMyProfile(): void {
@@ -578,6 +698,7 @@ function renderMyProfile(): void {
     { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743' },
     { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023' },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
+    { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
   ];
 
   view.innerHTML = `
@@ -608,9 +729,9 @@ function renderMyProfile(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest';
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'icq';
 const THEME_KEY = 'mySocials.theme';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest'];
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'icq'];
 
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
@@ -640,6 +761,7 @@ function init(): void {
   renderInstagram();
   renderLinkedin();
   renderPinterest();
+  renderICQ();
   renderMyProfile();
   initThemeSwitcher();
 

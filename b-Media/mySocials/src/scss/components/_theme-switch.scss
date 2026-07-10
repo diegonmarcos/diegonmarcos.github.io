@@ -15,9 +15,17 @@
   border-radius: 999px;
   backdrop-filter: blur(8px);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+
+  // Enough tabs now to overflow narrow phones — scroll horizontally, keep pills on one line.
+  max-width: calc(100vw - 24px);
+  overflow-x: auto;
+  scrollbar-width: none; // Firefox
+  &::-webkit-scrollbar { display: none; } // WebKit
 }
 
 .theme-switch__btn {
+  flex: 0 0 auto;
+  white-space: nowrap;
   padding: 6px 16px;
   border-radius: 999px;
   background: transparent;
@@ -35,6 +43,7 @@
 }
 
 .theme-switch__divider {
+  flex: 0 0 auto;
   align-self: center;
   color: rgba(255, 255, 255, 0.3);
   padding: 0 2px;

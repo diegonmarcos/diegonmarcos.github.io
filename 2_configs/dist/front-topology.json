@@ -283,9 +283,9 @@
       "deploy_name": "myfeed"
     },
     {
-      "name": "myMoments",
-      "slug": "myMoments",
-      "path": "b-Media/myMoments",
+      "name": "mySocials",
+      "slug": "mySocials",
+      "path": "b-Media/mySocials",
       "category": "b-Media",
       "framework": "vanilla",
       "port": 8028,
@@ -301,7 +301,7 @@
       ],
       "dep_count": 0,
       "has_dist": true,
-      "deploy_name": "myMoments"
+      "deploy_name": "mySocials"
     },
     {
       "name": "My Financials",

@@ -112,8 +112,8 @@
       "section": "personal-profiles",
       "slide": "personal-profiles",
       "column": "Photos",
-      "label": "myOrkut",
-      "url": "https://diegonmarcos.github.io/myMoments",
+      "label": "My Socials",
+      "url": "https://diegonmarcos.github.io/mySocials",
       "icon": "heart.svg"
     },
     {
@@ -266,7 +266,7 @@
       "column": "Achieves",
       "label": "myID",
       "url": "https://diegonmarcos.github.io/myid",
-      "icon": "id.svg"
+      "icon": "cards.svg"
     },
     {
       "section": "personal-profiles",

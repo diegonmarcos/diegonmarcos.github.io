@@ -1557,11 +1557,11 @@
     },
     {
       "category": "b-Media",
-      "project": "myMoments",
-      "key": "b-Media__myMoments",
-      "path": "b-Media/myMoments",
+      "project": "mySocials",
+      "key": "b-Media__mySocials",
+      "path": "b-Media/mySocials",
       "build": {
-        "name": "myMoments",
+        "name": "mySocials",
         "framework": "vanilla",
         "port": 8028,
         "src": "src",
@@ -4526,8 +4526,8 @@
         "section": "personal-profiles",
         "slide": "personal-profiles",
         "column": "Photos",
-        "label": "myOrkut",
-        "url": "https://diegonmarcos.github.io/myMoments",
+        "label": "My Socials",
+        "url": "https://diegonmarcos.github.io/mySocials",
         "icon": "heart.svg"
       },
       {
@@ -4680,7 +4680,7 @@
         "column": "Achieves",
         "label": "myID",
         "url": "https://diegonmarcos.github.io/myid",
-        "icon": "id.svg"
+        "icon": "cards.svg"
       },
       {
         "section": "personal-profiles",

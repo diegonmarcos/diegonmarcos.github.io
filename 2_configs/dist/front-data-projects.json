@@ -156,14 +156,14 @@
     "has_pkg": true
   },
   {
-    "path": "b-Media/myMoments",
+    "path": "b-Media/mySocials",
     "category": "b-Media",
-    "project": "myMoments",
-    "key": "b-Media__myMoments",
-    "name": "myMoments",
+    "project": "mySocials",
+    "key": "b-Media__mySocials",
+    "name": "mySocials",
     "framework": "vanilla",
     "port": 8028,
-    "deploy_name": "myMoments",
+    "deploy_name": "mySocials",
     "has_pwa": false,
     "has_pkg": false
   },

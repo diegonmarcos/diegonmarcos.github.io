@@ -1093,7 +1093,7 @@
     "_project": "myfeed"
   },
   {
-    "name": "myMoments",
+    "name": "mySocials",
     "framework": "vanilla",
     "port": 8028,
     "src": "src",
@@ -1176,10 +1176,10 @@
       ]
     },
     "deploy": {},
-    "_path": "b-Media/myMoments",
-    "_key": "b-Media__myMoments",
+    "_path": "b-Media/mySocials",
+    "_key": "b-Media__mySocials",
     "_category": "b-Media",
-    "_project": "myMoments"
+    "_project": "mySocials"
   },
   {
     "name": "My Financials",

@@ -1,5 +1,5 @@
 {
-  "name": "myMoments",
+  "name": "mySocials",
   "framework": "vanilla",
   "port": 8028,
   "src": "src",
@@ -83,10 +83,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Media/myMoments",
+    "path": "b-Media/mySocials",
     "category": "b-Media",
-    "project": "myMoments",
-    "key": "b-Media__myMoments",
+    "project": "mySocials",
+    "key": "b-Media__mySocials",
     "port": 8028,
     "framework": "vanilla",
     "src": "src",
@@ -102,12 +102,13 @@
       }
     },
     "deploy": {
-      "deployed": true,
-      "deploy_name": "myMoments",
-      "url": "https://diegonmarcos.github.io/myMoments"
+      "deployed": false,
+      "deploy_name": "mySocials",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
     },
     "consumers": [
-      "myOrkut"
+      "My Socials"
     ],
     "has_package_json": false,
     "has_manifest": false

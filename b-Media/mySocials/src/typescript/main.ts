@@ -224,20 +224,25 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = YOUR OWN stories only. This export contains none, so the bar
-  // is absent — never other people's stories.
-  const highlights = d.stories.length
-    ? d.stories.map((s, i) => `
+  // Story highlights: real own-stories (if any) first, then fabricated circles so the bar
+  // is always full like the app. Fabricated ones are seeded from real liked_stories handles.
+  const STORY_COUNT = 8;
+  const realStories = d.stories.map((s, i) => `
     <div class="ig-hl">
       <div class="ig-hl__ring"><div class="ig-hl__avatar"><img src="${s.media}" alt="story ${i + 1}"></div></div>
       <span class="ig-hl__name">${esc(s.caption || 'Story')}</span>
-    </div>`).join('')
-    : '';
-
-  // Posts pane = your real photo(s).
-  const postsPane = d.posts.length
-    ? d.posts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`).join('')
-    : '<p class="ig-empty">No posts yet.</p>';
+    </div>`);
+  const storySeed = d.liked_stories.length ? d.liked_stories : [{ handle: '', name: '' }];
+  const fabStories = Array.from({ length: Math.max(0, STORY_COUNT - realStories.length) }, (_, i) => {
+    const s = storySeed[i % storySeed.length];
+    const label = s.name || s.handle || `Story ${i + 1}`;
+    return `
+    <div class="ig-hl">
+      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}">${esc(label.charAt(0).toUpperCase())}</div></div>
+      <span class="ig-hl__name">${esc(label)}</span>
+    </div>`;
+  });
+  const highlights = [...realStories, ...fabStories].join('');
 
   // Caption tiles for saved / liked (export has links + captions, not the images).
   const tile = (item: { url: string; caption: string }, badge: string) => `
@@ -247,6 +252,19 @@ function renderInstagram(): void {
     </a>`;
   const savedPane = d.saved.length ? d.saved.map(s => tile(s, '\u{1F516}')).join('') : '<p class="ig-empty">Nothing saved.</p>';
   const likedPane = d.liked.length ? d.liked.map(s => tile(s, '❤️')).join('') : '<p class="ig-empty">No likes.</p>';
+
+  // Posts pane: real photo(s) first, then a fabricated feed so the grid looks full like the app.
+  // Fabricated tiles = deterministic gradient + a real caption from the saved/liked pool (no badge).
+  const POST_GRID = 30; // ~10 rows of a 3-col grid
+  const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
+  const realPosts = d.posts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`);
+  const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
+    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
+      <span class="ig-tile__cap">${esc(captions[i % (captions.length || 1)] || '')}</span>
+    </a>`);
+  const postsPane = realPosts.length || fabricated.length
+    ? [...realPosts, ...fabricated].join('')
+    : '<p class="ig-empty">No posts yet.</p>';
 
   const commentsPane = d.comments.length
     ? d.comments.map(c => `
@@ -271,20 +289,20 @@ function renderInstagram(): void {
     </nav>
     <div class="ig-page">
       <header class="ig-head">
-        ${avatar}
-        <div class="ig-head__body">
-          <div class="ig-head__top">
-            <span class="ig-head__user">${esc(p.username)}</span>
-            <span class="ig-head__btn ig-head__btn--primary">Follow</span>
-            <span class="ig-head__btn">Message</span>
-          </div>
+        <div class="ig-head__user">${esc(p.username)}</div>
+        <div class="ig-head__row">
+          ${avatar}
           <div class="ig-head__stats">
-            <span class="ig-head__stat"><strong>${num(p.posts)}</strong> posts</span>
-            <span class="ig-head__stat" data-modal="followers"><strong>${num(p.followers)}</strong> followers</span>
-            <span class="ig-head__stat" data-modal="following"><strong>${num(p.following)}</strong> following</span>
+            <div class="ig-head__stat"><strong>${num(p.posts)}</strong><span>posts</span></div>
+            <div class="ig-head__stat" data-modal="followers"><strong>${num(p.followers)}</strong><span>followers</span></div>
+            <div class="ig-head__stat" data-modal="following"><strong>${num(p.following)}</strong><span>following</span></div>
           </div>
-          <div class="ig-head__name">${esc(p.name)}</div>
-          <div class="ig-head__bio">${esc(p.bio)}</div>
+        </div>
+        <div class="ig-head__name">${esc(p.name)}</div>
+        <div class="ig-head__bio">${esc(p.bio)}</div>
+        <div class="ig-head__actions">
+          <span class="ig-head__btn ig-head__btn--primary">Follow</span>
+          <span class="ig-head__btn">Message</span>
         </div>
       </header>
 
@@ -292,9 +310,12 @@ function renderInstagram(): void {
 
       <div class="ig-tabs">
         <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
-        <div class="ig-tab" data-pane="saved">${IG_ICON.save} Saved ${p.posts ? '' : ''}(${num(d.saved.length)})</div>
-        <div class="ig-tab" data-pane="liked">${IG_ICON.heart} Liked (${num(d.liked.length)})</div>
-        <div class="ig-tab" data-pane="comments">${IG_ICON.comment} Comments (${num(d.comments.length)})</div>
+      </div>
+
+      <div class="ig-subtabs">
+        <button class="ig-pill" data-pane="saved">${IG_ICON.save}<span>Saved</span><em>${num(d.saved.length)}</em></button>
+        <button class="ig-pill" data-pane="liked">${IG_ICON.heart}<span>Liked</span><em>${num(d.liked.length)}</em></button>
+        <button class="ig-pill" data-pane="comments">${IG_ICON.comment}<span>Comments</span><em>${num(d.comments.length)}</em></button>
       </div>
 
       <div class="ig-pane is-active" data-pane="posts">${grid(postsPane)}</div>
@@ -313,11 +334,11 @@ function renderInstagram(): void {
       </div>
     </div>`;
 
-  // Tab switching.
-  view.querySelectorAll<HTMLElement>('.ig-tab').forEach(tab => {
+  // Tab switching — the Posts tab and the Saved/Liked/Comments pills share one selector.
+  view.querySelectorAll<HTMLElement>('.ig-tab, .ig-pill').forEach(tab => {
     tab.addEventListener('click', () => {
       const pane = tab.dataset.pane;
-      view.querySelectorAll('.ig-tab').forEach(t => t.classList.toggle('is-active', t === tab));
+      view.querySelectorAll('.ig-tab, .ig-pill').forEach(t => t.classList.toggle('is-active', t === tab));
       view.querySelectorAll<HTMLElement>('.ig-pane').forEach(pn => pn.classList.toggle('is-active', pn.dataset.pane === pane));
     });
   });
@@ -361,9 +382,12 @@ const LI_ICON = {
 // Real LinkedIn profile (parsed by extract_li.py -> PORTAL_DATA["linkedin"]).
 interface LIData {
   profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string };
+  about: string;
   experience: { title: string; company: string; dates: string; location?: string }[];
   education: { school: string; degree: string; dates: string }[];
   skills: string[];
+  languages: { name: string; proficiency: string }[];
+  projects: { title: string; description: string; url: string; dates: string }[];
 }
 
 function initials(name: string): string {
@@ -411,6 +435,29 @@ function renderLinkedin(): void {
     ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
     : needExport;
 
+  const aboutBody = d.about
+    ? `<p class="li-about">${esc(d.about)}</p>`
+    : needExport;
+
+  const langBody = d.languages.length
+    ? d.languages.map(l => `
+      <div class="li-lang">
+        <span class="li-lang__name">${esc(l.name)}</span>
+        <span class="li-lang__level">${esc(l.proficiency)}</span>
+      </div>`).join('')
+    : needExport;
+
+  const projBody = d.projects.length
+    ? d.projects.map(pr => `
+      <div class="li-item li-item--proj">
+        <div>
+          <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
+          ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
+          <p class="li-item__desc">${esc(pr.description)}</p>
+        </div>
+      </div>`).join('')
+    : needExport;
+
   view.innerHTML = `
     <nav class="li-nav">
       <div class="li-nav__inner">
@@ -443,9 +490,12 @@ function renderLinkedin(): void {
             </div>
           </div>
         </section>
+        ${section('About', aboutBody)}
         ${section('Experience', expBody)}
         ${section('Education', eduBody)}
         ${section('Skills', skillsBody)}
+        ${section('Projects', projBody)}
+        ${section('Languages', langBody)}
       </div>
       <aside class="li-prof__rail">
         <div class="li-card li-side">

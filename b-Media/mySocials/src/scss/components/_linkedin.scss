@@ -76,6 +76,34 @@ $li-green: #057642;
   padding: 6px 14px; border-radius: 999px;
   background: #eef3f8; color: $li-text; font-size: 13px; font-weight: 600;
 }
+
+// About / Projects long-form text (preserve the export's line breaks)
+.li-about {
+  white-space: pre-line;
+  line-height: 1.6;
+  font-size: 14px;
+  color: $li-text;
+}
+.li-item--proj { display: block; }
+.li-item__desc {
+  white-space: pre-line;
+  line-height: 1.55;
+  font-size: 14px;
+  color: $li-text;
+  margin-top: 6px;
+}
+
+// Languages
+.li-lang {
+  @include flex-row;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid $li-border;
+  &:first-of-type { border-top: none; }
+  &__name { font-weight: 600; }
+  &__level { color: $li-muted; font-size: 13px; }
+}
 .li-side {
   padding: 16px 20px;
   &__title { font-weight: 600; margin-bottom: 12px; }

@@ -49,40 +49,51 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
 
 .ig-page { max-width: 935px; margin: 0 auto; padding: 30px 20px 90px; }
 
-// ── Profile header ───────────────────────────────────────
+// ── Profile header (mobile-app layout, matches the IG app screenshots) ──
+// ponytail: single stacked layout — works on phone (primary) and centered on desktop.
 .ig-head {
-  @include flex-row;
-  align-items: flex-start;
-  gap: 28px;
-  padding-bottom: 28px;
-  @include mq(sm) { gap: 80px; padding-left: 20px; }
+  padding-bottom: 20px;
+
+  &__user { font-size: 20px; font-weight: 600; margin-bottom: 16px; }
+
+  // avatar + 3 stat columns side by side
+  &__row { @include flex-row; gap: 24px; margin-bottom: 16px; }
 
   &__avatar {
-    width: 90px; height: 90px;
+    width: 86px; height: 86px;
     border-radius: 50%;
     object-fit: cover;
     flex: 0 0 auto;
     padding: 3px;
     background: $ig-gradient;
-    @include mq(sm) { width: 150px; height: 150px; }
+    @include mq(sm) { width: 110px; height: 110px; }
   }
-  &__body { flex: 1; min-width: 0; }
-  &__top { @include flex-row($spacing-lg); flex-wrap: wrap; margin-bottom: 22px; }
-  &__user { font-size: 20px; font-weight: 400; }
+
+  &__stats {
+    flex: 1;
+    @include flex-row;
+    justify-content: space-around;
+  }
+  &__stat {
+    @include flex-col;
+    align-items: center;
+    cursor: pointer;
+    strong { display: block; font-size: 18px; font-weight: 700; }
+    span { color: $ig-muted; font-size: 13px; }
+    &:hover strong { color: $ig-muted; }
+  }
+
+  &__name { font-weight: 600; margin-bottom: 4px; }
+  &__bio { white-space: pre-line; line-height: 1.5; word-break: break-word; color: #e4e4e4; margin-bottom: 16px; }
+
+  // full-width Follow / Message buttons, like the app
+  &__actions { @include flex-row($spacing-sm); }
   &__btn {
-    padding: 7px 16px; border-radius: 8px; background: $ig-surface; color: $ig-text;
-    font-weight: 600; font-size: 13px; cursor: pointer;
+    flex: 1; text-align: center;
+    padding: 8px 16px; border-radius: 8px; background: $ig-surface; color: $ig-text;
+    font-weight: 600; font-size: 14px; cursor: pointer;
     &--primary { background: $ig-blue; color: #fff; }
   }
-  &__stats {
-    @include flex-row($spacing-2xl);
-    margin-bottom: 18px; flex-wrap: wrap;
-    strong { font-weight: 600; }
-    span { color: $ig-muted; }
-  }
-  &__stat { cursor: pointer; &:hover strong { color: $ig-muted; } }
-  &__name { font-weight: 600; margin-bottom: 4px; }
-  &__bio { white-space: pre-line; line-height: 1.5; word-break: break-word; color: #e4e4e4; }
 }
 
 // ── Story highlights (your real stories) ─────────────────
@@ -114,11 +125,12 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   }
 }
 
-// ── Tabs ─────────────────────────────────────────────────
+// ── Tabs: row 1 = Posts (IG underline style) ─────────────
 .ig-tabs {
   @include flex-center;
   gap: 40px;
   flex-wrap: wrap;
+  border-top: 1px solid $ig-border;
 }
 .ig-tab {
   @include flex-row($spacing-sm);
@@ -135,15 +147,52 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
 }
 
+// ── Tabs: row 2 = Saved / Liked / Comments segmented pills ──
+.ig-subtabs {
+  @include flex-center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 14px 0 4px;
+}
+.ig-pill {
+  @include flex-row($spacing-sm);
+  padding: 9px 16px;
+  border: 1px solid $ig-border;
+  border-radius: 999px;
+  background: $ig-surface;
+  color: $ig-muted;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+
+  svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+  span { color: inherit; }
+  em {
+    font-style: normal;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 12px;
+  }
+  &:hover { color: $ig-text; border-color: #3a3a3a; }
+  &.is-active {
+    background: $ig-text;
+    color: $ig-bg;
+    border-color: $ig-text;
+    em { background: rgba(0, 0, 0, 0.15); }
+  }
+}
+
 // ── Grids / panes ────────────────────────────────────────
 .ig-pane { display: none; &.is-active { display: block; } }
 
 .ig-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  padding-top: 20px;
-  @include mq(sm) { gap: 6px; }
+  gap: 2px; // tight, like the IG app grid
+  padding-top: 16px;
+  @include mq(sm) { gap: 4px; }
 }
 .ig-tile {
   position: relative;
@@ -166,6 +215,9 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
     -webkit-box-orient: vertical;
   }
   &__badge { position: absolute; top: 8px; right: 10px; font-size: 15px; filter: drop-shadow(0 1px 2px rgba(0,0,0,.6)); }
+
+  // Fabricated feed posts: clean gradient grid, caption only on hover (like the real grid).
+  &--post .ig-tile__cap { opacity: 0; transition: opacity 0.15s; }
 }
 
 .ig-empty { text-align: center; color: $ig-muted; padding: 70px 20px; }

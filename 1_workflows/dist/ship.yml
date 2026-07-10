@@ -533,7 +533,7 @@ jobs:
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
             "b-MyData/my-fin:my-fin"
-            "b-Media/myMoments:myMoments"
+            "b-Media/mySocials:mySocials"
             "b-MyData/myhealth:myhealth"
             "b-MyData/myhealth-tracker:myhealth-tracker"
             "b-MyData/myid:myid"

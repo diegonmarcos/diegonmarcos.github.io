@@ -4,12 +4,14 @@
 .layout {
   max-width: 1100px;
   margin: 0 auto;
-  padding: $spacing-xl;
+  padding: $spacing-md; // tight gutters on phones so nothing overflows the viewport
   display: grid;
   grid-template-columns: 1fr;
-  gap: $spacing-xl;
+  gap: $spacing-lg;
 
   @include mq(md) {
+    padding: $spacing-xl;
+    gap: $spacing-xl;
     grid-template-columns: 300px 1fr;
   }
 }

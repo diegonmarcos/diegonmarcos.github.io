@@ -470,6 +470,17 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Warehouse build complete"
+      - name: 🔨 Build MySocials
+        id: build-mysocials
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Media/mySocials/src/')
+
+        run: |
+          echo "🔨 Building MySocials..."
+          cd b-Media/mySocials
+          bash build.sh build
+          cd ../..
+          echo "✅ MySocials build complete"
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
       - name: 📂 Deploy All Projects to _site
@@ -522,7 +533,7 @@ jobs:
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
             "b-MyData/my-fin:my-fin"
-            "b-Media/mySocials:mySocials"
+            "b-Media/myMoments:myMoments"
             "b-MyData/myhealth:myhealth"
             "b-MyData/myhealth-tracker:myhealth-tracker"
             "b-MyData/myid:myid"

@@ -254,6 +254,12 @@
               "url": "https://vault.diegonmarcos.com",
               "icon": "lock.svg",
               "item": 3
+            },
+            {
+              "label": "tldraw",
+              "url": "https://diegonmarcos.github.io/tldraw/",
+              "icon": "brush.svg",
+              "item": 4
             }
           ]
         }
@@ -543,6 +549,12 @@
               "url": "https://wg.diegonmarcos.com",
               "icon": "lock.svg",
               "item": 7
+            },
+            {
+              "label": "CrowdSec",
+              "url": "https://crowdsec.diegonmarcos.com",
+              "icon": "bolt.svg",
+              "item": 8
             }
           ],
           "group": 0

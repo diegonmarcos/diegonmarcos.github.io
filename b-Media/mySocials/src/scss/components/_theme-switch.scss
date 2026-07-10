@@ -1,0 +1,32 @@
+@use '../settings/typography' as *;
+
+// Always-on-top floating theme picker, visible in every theme.
+.theme-switch {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  gap: 2px;
+  padding: 4px;
+  background: rgba(20, 22, 34, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.theme-switch__btn {
+  padding: 6px 16px;
+  border-radius: 999px;
+  background: transparent;
+  color: #b0b8cc;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover { color: #fff; }
+  &.is-active { background: #fff; color: #111; }
+}

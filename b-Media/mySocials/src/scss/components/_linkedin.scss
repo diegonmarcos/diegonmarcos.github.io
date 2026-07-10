@@ -1,0 +1,188 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+// LinkedIn brand tokens (scoped)
+$li-bg: #f4f2ee;
+$li-surface: #fff;
+$li-border: #e0dfdc;
+$li-text: rgba(0, 0, 0, 0.9);
+$li-muted: rgba(0, 0, 0, 0.6);
+$li-blue: #0a66c2;
+$li-green: #057642;
+
+.li {
+  color: $li-text;
+  font-size: 14px;
+
+  a { color: $li-blue; font-weight: 600; &:hover { text-decoration: underline; } }
+  svg { width: 24px; height: 24px; }
+}
+
+.li-card {
+  background: $li-surface;
+  border: 1px solid $li-border;
+  border-radius: 8px;
+}
+
+// ── Top nav ──────────────────────────────────────────────
+.li-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 52px;
+  background: $li-surface;
+  border-bottom: 1px solid $li-border;
+
+  &__inner {
+    max-width: 1128px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 16px;
+    @include flex-row($spacing-md);
+  }
+  &__logo {
+    @include flex-center;
+    width: 34px; height: 34px;
+    background: $li-blue;
+    color: #fff;
+    font-weight: 800;
+    font-size: 20px;
+    border-radius: 6px;
+    flex: 0 0 auto;
+  }
+  &__search {
+    input {
+      width: 100%;
+      max-width: 280px;
+      padding: 8px 12px;
+      background: #edf3f8;
+      border: none;
+      border-radius: 4px;
+      color: $li-text;
+    }
+  }
+  &__items {
+    margin-left: auto;
+    @include flex-row($spacing-lg);
+  }
+  &__item {
+    @include flex-col;
+    align-items: center;
+    color: $li-muted;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover { color: $li-text; }
+    svg { stroke: currentColor; fill: none; stroke-width: 1.8; }
+  }
+}
+
+// ── Page grid ────────────────────────────────────────────
+.li-main {
+  max-width: 1128px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  @include mq(md)  { grid-template-columns: 225px minmax(0, 1fr); }
+  @include mq(lg)  { grid-template-columns: 225px minmax(0, 1fr) 300px; }
+}
+
+// ── Left profile rail ────────────────────────────────────
+.li-rail-left { display: none; @include mq(md) { display: block; } }
+.li-profile {
+  overflow: hidden;
+  margin-bottom: 16px;
+
+  &__banner { height: 56px; background: linear-gradient(120deg, #0a66c2, #378fe9); }
+  &__avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    border: 3px solid $li-surface;
+    margin: -32px auto 0;
+    @include flex-center;
+    color: #fff; font-weight: 700; font-size: 24px;
+  }
+  &__body { padding: 12px 16px 16px; text-align: center; }
+  &__name { font-weight: 600; font-size: 16px; }
+  &__tag { color: $li-muted; font-size: 12px; margin-top: 2px; }
+  &__stats {
+    border-top: 1px solid $li-border;
+    margin-top: 12px;
+    padding-top: 12px;
+    text-align: left;
+  }
+  &__stat {
+    @include flex-row;
+    justify-content: space-between;
+    font-size: 12px;
+    color: $li-muted;
+    strong { color: $li-blue; }
+  }
+}
+
+// ── Center feed ──────────────────────────────────────────
+.li-startpost {
+  @include flex-row($spacing-md);
+  padding: 16px;
+  margin-bottom: 8px;
+
+  &__avatar { width: 48px; height: 48px; border-radius: 50%; @include flex-center; color: #fff; font-weight: 700; flex: 0 0 auto; }
+  button {
+    flex: 1;
+    text-align: left;
+    padding: 12px 16px;
+    border: 1px solid #8c8c8c;
+    border-radius: 999px;
+    background: transparent;
+    color: $li-muted;
+    font-weight: 600;
+  }
+}
+
+.li-post {
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+
+  &__head { @include flex-row($spacing-md); padding: 12px 16px 8px; }
+  &__avatar { width: 48px; height: 48px; border-radius: 50%; @include flex-center; color: #fff; font-weight: 700; flex: 0 0 auto; }
+  &__name { font-weight: 600; }
+  &__headline { color: $li-muted; font-size: 12px; }
+  &__time { color: $li-muted; font-size: 12px; }
+  &__text { padding: 0 16px 12px; white-space: pre-wrap; }
+  &__stats {
+    @include flex-row($spacing-xs);
+    padding: 6px 16px;
+    color: $li-muted;
+    font-size: 12px;
+    border-bottom: 1px solid $li-border;
+  }
+  &__actions {
+    @include flex-row;
+    justify-content: space-around;
+    padding: 4px 8px;
+  }
+}
+.li-act {
+  @include flex-row($spacing-xs);
+  padding: 10px 8px;
+  border-radius: 4px;
+  color: $li-muted;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover { background: #f3f2ef; }
+  svg { stroke: currentColor; fill: none; stroke-width: 1.8; width: 20px; height: 20px; }
+}
+
+// ── Right news rail ──────────────────────────────────────
+.li-rail-right { display: none; @include mq(lg) { display: block; } }
+.li-news {
+  padding: 16px;
+  &__title { font-weight: 600; margin-bottom: 12px; }
+}
+.li-newsitem {
+  padding: 6px 0;
+  &__head { font-weight: 600; font-size: 13px; }
+  &__meta { color: $li-muted; font-size: 12px; }
+  &::before { content: '•'; color: $li-muted; margin-right: 8px; }
+}

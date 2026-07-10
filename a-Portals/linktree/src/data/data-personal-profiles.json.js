@@ -121,8 +121,8 @@
             "item": 8
           },
           {
-            "url": "https://diegonmarcos.github.io/myMoments",
-            "title": "myOrkut",
+            "url": "https://diegonmarcos.github.io/mySocials",
+            "title": "My Socials",
             "icon": "heart.svg",
             "preview": "public/thumbnails/diegonmarcos_github_io.jpg",
             "item": 9
@@ -263,8 +263,8 @@
               "item": 0
             },
             {
-              "label": "myOrkut",
-              "url": "https://diegonmarcos.github.io/myMoments",
+              "label": "My Socials",
+              "url": "https://diegonmarcos.github.io/mySocials",
               "icon": "heart.svg",
               "item": 1
             },
@@ -421,7 +421,7 @@
             {
               "label": "myID",
               "url": "https://diegonmarcos.github.io/myid",
-              "icon": "id.svg",
+              "icon": "cards.svg",
               "item": 2
             },
             {

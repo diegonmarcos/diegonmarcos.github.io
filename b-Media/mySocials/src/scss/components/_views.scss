@@ -1,0 +1,12 @@
+@use '../settings/colors' as *;
+
+// Each theme lives in its own .view; only the active one shows.
+.view { display: none; }
+
+html[data-theme='orkut']     .view--orkut,
+html[data-theme='instagram'] .view--instagram,
+html[data-theme='linkedin']  .view--linkedin { display: block; }
+
+// Per-theme page background (base.scss sets the Orkut dark default).
+html[data-theme='instagram'] body { background: #fafafa; color: #262626; }
+html[data-theme='linkedin']  body { background: #f4f2ee; color: rgba(0, 0, 0, 0.9); }

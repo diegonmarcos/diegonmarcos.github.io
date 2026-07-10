@@ -73,7 +73,9 @@
 }
 
 .navbar__links {
-  @include flex-row($spacing-lg);
+  @include flex-row($spacing-md);
+  flex-wrap: wrap;                    // never force overflow on narrow phones
+  @include mq(md) { gap: $spacing-lg; }
 }
 
 .navbar__link {

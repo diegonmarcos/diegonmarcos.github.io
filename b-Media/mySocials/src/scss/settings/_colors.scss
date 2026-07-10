@@ -1,20 +1,20 @@
-// Classic Orkut palette (2004–2011) — light lilac page, white boxes,
+// Classic Orkut palette (2004–2011), DARK MODE — deep blue-lilac page, dark boxes,
 // blue section headers, magenta "orkut" logo. Only the Orkut theme consumes
 // these vars; Instagram/LinkedIn/Pinterest define their own scoped tokens.
 
-$bg-deep: #e0e7f3;        // page background (classic pale blue-lilac)
-$bg-surface: #ffffff;     // navbar / bars
-$bg-card: #ffffff;        // boxes
-$bg-card-hover: #eef3fb;
-$bg-input: #f5f7fb;
-$border: #c9d5ea;
-$border-light: #dbe3f2;
-$border-accent: #9db4da;
+$bg-deep: #12151d;        // page background (dark blue-lilac)
+$bg-surface: #1a1f2b;     // navbar / bars
+$bg-card: #1a1f2b;        // boxes
+$bg-card-hover: #232a3a;
+$bg-input: #232a3a;
+$border: #2d3547;
+$border-light: #29303f;
+$border-accent: #3c4a6a;
 
-$text-primary: #1a1a1a;
-$text-secondary: #333333;
-$text-muted: #4a5a78;
-$text-dim: #8894ac;
+$text-primary: #e8ecf4;
+$text-secondary: #c6cede;
+$text-muted: #9aa6c0;
+$text-dim: #6f7a94;
 
 // Orkut's signature magenta logo
 $orkut-pink: #e9008c;

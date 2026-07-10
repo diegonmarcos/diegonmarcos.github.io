@@ -1,15 +1,15 @@
 @use '../tools/mixins' as *;
 @use '../settings/breakpoints' as *;
 
-// Classic ICQ / Windows 98 tokens (scoped)
-$icq-face:   #c0c7c8;   // window face grey
-$icq-hi:     #ffffff;   // 3D bevel light
-$icq-lo:     #868a8e;   // 3D bevel mid
-$icq-dk:     #404040;   // 3D bevel dark
-$icq-bar:    #000080;   // active title-bar navy
+// Classic ICQ / Windows 98 tokens (scoped) — DARK MODE (dark chrome, bevels kept)
+$icq-face:   #2b2f36;   // window face (dark grey)
+$icq-hi:     #464c56;   // 3D bevel light edge
+$icq-lo:     #15181d;   // 3D bevel mid
+$icq-dk:     #0a0c0f;   // 3D bevel dark edge
+$icq-bar:    #000080;   // active title-bar navy (already dark)
 $icq-bar2:   #0a870a;   // ICQ green accent bar
-$icq-field:  #ffffff;
-$icq-text:   #000000;
+$icq-field:  #1c1f24;   // input / list background
+$icq-text:   #e6e6e6;   // light text
 
 // 3D raised / sunken bevels — the Win98 signature.
 @mixin bevel-out { border: 2px solid; border-color: $icq-hi $icq-dk $icq-dk $icq-hi; box-shadow: inset -1px -1px 0 $icq-lo, inset 1px 1px 0 $icq-face; }
@@ -58,7 +58,7 @@ $icq-text:   #000000;
     i {
       @include flex-center;
       width: 16px; height: 14px;
-      background: $icq-face; color: #000;
+      background: $icq-face; color: $icq-text;
       font-style: normal; font-size: 10px; line-height: 1;
       @include bevel-out;
     }

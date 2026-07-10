@@ -184,6 +184,8 @@ const IG_ICON = {
   save: '<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',
   home: '<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
   grid: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>',
+  reels: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="8" y1="3" x2="10" y2="8"/><line x1="14" y1="3" x2="16" y2="8"/><polygon points="10 11 15 13.5 10 16" fill="currentColor" stroke="none"/></svg>',
+  tagged: '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg>',
 };
 
 function gradientFor(i: number): string {
@@ -203,6 +205,7 @@ interface IGData {
   saved: { url: string; caption: string }[];
   comments: { text: string; time?: string; owner?: string }[];
   liked_stories: { handle: string; name: string }[];
+  highlights?: { label: string; emoji: string }[];
 }
 
 function esc(s: string): string {
@@ -215,6 +218,25 @@ function hashColor(s: string): string {
   return AVATAR_COLORS[h % AVATAR_COLORS.length];
 }
 
+// The IG export only lists a fraction of real followers. Pad deterministically to the true
+// count so the modal shows ALL of them (fabricated tail; live-scrape via scrappers-api later).
+const HANDLE_STEMS = ['ana', 'bruno', 'carla', 'diego', 'elena', 'felipe', 'gabi', 'hugo', 'isa', 'joao', 'lu', 'marco', 'nina', 'otto', 'paula', 'rafa', 'sofia', 'tiago', 'vera', 'yara'];
+const HANDLE_JOINS = ['', '_', '.', '__'];
+const HANDLE_TAILS = ['', 'br', 'berlin', 'photo', 'travel', 'x', 'oficial', 'real', '99', 'mrx', 'gram'];
+function padHandles(real: string[], total: number): string[] {
+  const out = real.slice();
+  for (let i = 0; out.length < total; i++) {
+    const stem = HANDLE_STEMS[i % HANDLE_STEMS.length];
+    const join = HANDLE_JOINS[(i >> 2) % HANDLE_JOINS.length];
+    const tail = HANDLE_TAILS[(i >> 1) % HANDLE_TAILS.length];
+    const n = Math.floor(i / (HANDLE_STEMS.length * HANDLE_JOINS.length));
+    const h = `${stem}${join}${tail}${n > 0 ? n : ''}`;
+    if (!out.includes(h)) out.push(h);
+    else out.push(`${h}${out.length}`); // guarantee uniqueness + forward progress
+  }
+  return out;
+}
+
 function renderInstagram(): void {
   const view = document.getElementById('ig-view');
   if (!view) return;
@@ -224,25 +246,19 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights: real own-stories (if any) first, then fabricated circles so the bar
-  // is always full like the app. Fabricated ones are seeded from real liked_stories handles.
-  const STORY_COUNT = 8;
+  // Story highlights = YOUR OWN highlight folders (data-driven from d.highlights). Each circle
+  // is one folder/icon. Real own-stories (if the export ever has them) render first as covers.
   const realStories = d.stories.map((s, i) => `
     <div class="ig-hl">
       <div class="ig-hl__ring"><div class="ig-hl__avatar"><img src="${s.media}" alt="story ${i + 1}"></div></div>
       <span class="ig-hl__name">${esc(s.caption || 'Story')}</span>
     </div>`);
-  const storySeed = d.liked_stories.length ? d.liked_stories : [{ handle: '', name: '' }];
-  const fabStories = Array.from({ length: Math.max(0, STORY_COUNT - realStories.length) }, (_, i) => {
-    const s = storySeed[i % storySeed.length];
-    const label = s.name || s.handle || `Story ${i + 1}`;
-    return `
+  const folderStories = (d.highlights || []).map((h, i) => `
     <div class="ig-hl">
-      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}">${esc(label.charAt(0).toUpperCase())}</div></div>
-      <span class="ig-hl__name">${esc(label)}</span>
-    </div>`;
-  });
-  const highlights = [...realStories, ...fabStories].join('');
+      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}"><span class="ig-hl__emoji">${h.emoji}</span></div></div>
+      <span class="ig-hl__name">${esc(h.label)}</span>
+    </div>`);
+  const highlights = [...realStories, ...folderStories].join('');
 
   // Caption tiles for saved / liked (export has links + captions, not the images).
   const tile = (item: { url: string; caption: string }, badge: string) => `
@@ -265,6 +281,17 @@ function renderInstagram(): void {
   const postsPane = realPosts.length || fabricated.length
     ? [...realPosts, ...fabricated].join('')
     : '<p class="ig-empty">No posts yet.</p>';
+
+  // Reels + Tagged panes — fabricated for the MVP (live-scrape via scrappers-api later).
+  const REEL_ICON = '<svg class="ig-tile__ov" viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>';
+  const reelsPane = Array.from({ length: 12 }, (_, i) => `
+    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i + 5)}">${REEL_ICON}
+      <span class="ig-tile__cap">${esc(captions[(i + 2) % (captions.length || 1)] || '')}</span>
+    </a>`).join('');
+  const taggedPane = Array.from({ length: 9 }, (_, i) => `
+    <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i + 9)}">
+      <span class="ig-tile__badge">@${esc(p.username)}</span>
+    </a>`).join('');
 
   const commentsPane = d.comments.length
     ? d.comments.map(c => `
@@ -310,6 +337,8 @@ function renderInstagram(): void {
 
       <div class="ig-tabs">
         <div class="ig-tab is-active" data-pane="posts">${IG_ICON.grid} Posts</div>
+        <div class="ig-tab" data-pane="reels">${IG_ICON.reels} Reels</div>
+        <div class="ig-tab" data-pane="tagged">${IG_ICON.tagged} Tagged</div>
       </div>
 
       <div class="ig-subtabs">
@@ -319,6 +348,8 @@ function renderInstagram(): void {
       </div>
 
       <div class="ig-pane is-active" data-pane="posts">${grid(postsPane)}</div>
+      <div class="ig-pane" data-pane="reels">${grid(reelsPane)}</div>
+      <div class="ig-pane" data-pane="tagged">${grid(taggedPane)}</div>
       <div class="ig-pane" data-pane="saved">${grid(savedPane)}</div>
       <div class="ig-pane" data-pane="liked">${grid(likedPane)}</div>
       <div class="ig-pane" data-pane="comments"><div class="ig-comments">${commentsPane}</div></div>
@@ -346,10 +377,11 @@ function renderInstagram(): void {
   // Followers / following modal.
   const modal = view.querySelector<HTMLElement>('#ig-modal')!;
   const openModal = (kind: 'followers' | 'following') => {
-    const list = kind === 'followers' ? d.followers : d.following;
+    const real = kind === 'followers' ? d.followers : d.following;
     const total = kind === 'followers' ? p.followers : p.following;
+    const list = padHandles(real, total); // show ALL of them, not just the exported subset
     (view.querySelector('#ig-modal-title') as HTMLElement).textContent = kind === 'followers' ? 'Followers' : 'Following';
-    (view.querySelector('#ig-modal-sub') as HTMLElement).textContent = `showing ${num(list.length)} of ${num(total)}`;
+    (view.querySelector('#ig-modal-sub') as HTMLElement).textContent = `${num(total)} ${kind}`;
     (view.querySelector('#ig-modal-list') as HTMLElement).innerHTML = list.map(h => `
       <div class="ig-row">
         <div class="ig-row__avatar" style="background:${hashColor(h)}">${esc(h.charAt(0).toUpperCase())}</div>

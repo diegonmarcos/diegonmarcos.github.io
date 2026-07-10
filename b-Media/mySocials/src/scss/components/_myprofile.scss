@@ -1,0 +1,53 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+// Personal hub — dark, aggregates the real social data.
+.me-hub {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 48px 20px 90px;
+  @include flex-col($spacing-2xl);
+}
+
+.me-card {
+  @include flex-col($spacing-md);
+  align-items: center;
+  text-align: center;
+}
+.me-avatar {
+  width: 128px; height: 128px; border-radius: 50%;
+  object-fit: cover;
+  background: linear-gradient(135deg, #e8508a, #4a8aff);
+  border: 3px solid rgba(255, 255, 255, 0.12);
+}
+.me-name { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
+.me-headline { font-size: 15px; color: #b7c0d8; line-height: 1.5; }
+.me-loc { font-size: 13px; color: #7d88a6; }
+.me-bio {
+  white-space: pre-line;
+  font-size: 14px;
+  color: #cfd6e8;
+  line-height: 1.6;
+  margin-top: $spacing-sm;
+}
+
+.me-links { @include flex-col($spacing-md); }
+.me-link {
+  @include flex-row($spacing-lg);
+  width: 100%;
+  padding: 16px 18px;
+  background: #171a24;
+  border: 1px solid #262b3b;
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  color: inherit;
+  text-align: left;
+  transition: background 0.15s, transform 0.15s;
+
+  &:hover { background: #1e2230; transform: translateY(-1px); }
+  &__dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+  &__body { @include flex-col(2px); flex: 1; min-width: 0; }
+  &__name { font-weight: 700; font-size: 16px; }
+  &__meta { font-size: 13px; color: #8a94ac; }
+  &__arrow { color: var(--accent); font-size: 20px; }
+}

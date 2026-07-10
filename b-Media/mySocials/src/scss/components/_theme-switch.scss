@@ -29,4 +29,13 @@
 
   &:hover { color: #fff; }
   &.is-active { background: #fff; color: #111; }
+
+  &--me { color: #ff6aa0; font-weight: 700; }
+  &--me.is-active { background: #ff6aa0; color: #fff; }
+}
+
+.theme-switch__divider {
+  align-self: center;
+  color: rgba(255, 255, 255, 0.3);
+  padding: 0 2px;
 }

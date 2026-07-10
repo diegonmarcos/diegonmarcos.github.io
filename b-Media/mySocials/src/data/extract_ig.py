@@ -96,12 +96,18 @@ def story_likes(path):
     return out
 liked_stories = story_likes(f'{ACT}/story_interactions/story_likes.html')
 
-# ---- the single post photo -> data URI ----
-posts = []
-img = f'{EXPORT}/media/posts/17853618261134821.jpg'
-if os.path.exists(img):
-    posts.append({'media': 'data:image/jpeg;base64,' + base64.b64encode(open(img, 'rb').read()).decode(),
-                  'caption': '', 'time': 'Jul 2026'})
+# ---- own posts / own stories -> data URIs (glob every media file; NOT hardcoded) ----
+import glob
+MEDIA_EXT = ('.jpg', '.jpeg', '.png', '.webp')
+def media_dir(sub):
+    out = []
+    for f in sorted(glob.glob(f'{EXPORT}/media/{sub}/**/*', recursive=True)):
+        if f.lower().endswith(MEDIA_EXT):
+            out.append({'media': 'data:image/jpeg;base64,' + base64.b64encode(open(f, 'rb').read()).decode(),
+                        'caption': '', 'time': ''})
+    return out
+posts = media_dir('posts')       # your own feed posts
+own_stories = media_dir('stories') + media_dir('archived_posts')  # your own stories/highlights (none in a date-ranged export)
 
 # True live account totals at export time. The export is date-ranged (2023-2026),
 # so the follower/following LISTS below are only that window's subset; these are the
@@ -115,6 +121,7 @@ data = {
                 'following': FOLLOWING_TOTAL, 'followers': FOLLOWERS_TOTAL, 'posts': len(posts),
                 'following_shown': len(following), 'followers_shown': len(followers)},
     'posts': posts,
+    'stories': own_stories,   # your OWN story highlights (balloon bar renders only if non-empty)
     'following': following,
     'followers': followers,
     'liked': liked,

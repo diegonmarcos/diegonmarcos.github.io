@@ -196,6 +196,7 @@ function gradientFor(i: number): string {
 interface IGData {
   profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number };
   posts: { media: string; caption: string; time: string }[];
+  stories: { media: string; caption: string; time: string }[];
   following: string[];
   followers: string[];
   liked: { url: string; caption: string }[];
@@ -223,12 +224,13 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = your real stories (from liked_stories).
-  const highlights = d.liked_stories.length
-    ? d.liked_stories.map(s => `
+  // Story highlights = YOUR OWN stories only. This export contains none, so the bar
+  // is absent — never other people's stories.
+  const highlights = d.stories.length
+    ? d.stories.map((s, i) => `
     <div class="ig-hl">
-      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${hashColor(s.handle)}">${esc(s.handle.charAt(0).toUpperCase())}</div></div>
-      <span class="ig-hl__name">${esc(s.name || s.handle)}</span>
+      <div class="ig-hl__ring"><div class="ig-hl__avatar"><img src="${s.media}" alt="story ${i + 1}"></div></div>
+      <span class="ig-hl__name">${esc(s.caption || 'Story')}</span>
     </div>`).join('')
     : '';
 
@@ -505,10 +507,60 @@ function renderPinterest(): void {
     <div class="pin-board">${pins}</div>`;
 }
 
+// ─── MY PROFILE (personal hub, aggregates the real social data) ──────────────
+
+function renderMyProfile(): void {
+  const view = document.getElementById('me-view');
+  if (!view) return;
+  const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
+  const ig = g.instagram as IGData | undefined;
+  const li = g.linkedin as LIData | undefined;
+
+  const name = li?.profile.name || ig?.profile.name || 'Diego Nepomuceno Marcos';
+  const headline = li?.profile.headline || '';
+  const location = li?.profile.location || '';
+  const bio = ig?.profile.bio || '';
+  const avatar = ig?.posts[0]?.media;
+
+  // Each card jumps to that network's view. Metrics are real, from the parsed data.
+  const cards: { theme: Theme; label: string; meta: string; color: string }[] = [
+    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2' },
+    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743' },
+    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023' },
+    { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
+  ];
+
+  view.innerHTML = `
+    <div class="me-hub">
+      <div class="me-card">
+        ${avatar ? `<img class="me-avatar" src="${avatar}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
+        <h1 class="me-name">${esc(name)}</h1>
+        ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
+        ${location ? `<p class="me-loc">${esc(location)}</p>` : ''}
+        ${bio ? `<p class="me-bio">${esc(bio)}</p>` : ''}
+      </div>
+      <div class="me-links">
+        ${cards.map(c => `
+          <button class="me-link" data-goto="${c.theme}" style="--accent:${c.color}">
+            <span class="me-link__dot"></span>
+            <span class="me-link__body">
+              <span class="me-link__name">${c.label}</span>
+              <span class="me-link__meta">${esc(c.meta)}</span>
+            </span>
+            <span class="me-link__arrow">→</span>
+          </button>`).join('')}
+      </div>
+    </div>`;
+
+  view.querySelectorAll<HTMLElement>('.me-link').forEach(btn =>
+    btn.addEventListener('click', () => setTheme(btn.dataset.goto as Theme)));
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'orkut' | 'instagram' | 'linkedin' | 'pinterest';
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest';
 const THEME_KEY = 'mySocials.theme';
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest'];
 
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
@@ -520,8 +572,8 @@ function setTheme(theme: Theme): void {
 }
 
 function initThemeSwitcher(): void {
-  const saved = (localStorage.getItem(THEME_KEY) as Theme) || 'orkut';
-  setTheme(['orkut', 'instagram', 'linkedin', 'pinterest'].includes(saved) ? saved : 'orkut');
+  const saved = localStorage.getItem(THEME_KEY) as Theme;
+  setTheme(THEMES.includes(saved) ? saved : 'myprofile');
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.addEventListener('click', () => setTheme((btn as HTMLElement).dataset.themeBtn as Theme));
   });
@@ -538,6 +590,7 @@ function init(): void {
   renderInstagram();
   renderLinkedin();
   renderPinterest();
+  renderMyProfile();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

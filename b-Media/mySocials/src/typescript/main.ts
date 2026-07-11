@@ -413,7 +413,7 @@ const LI_ICON = {
 
 // Real LinkedIn profile (parsed by extract_li.py -> PORTAL_DATA["linkedin"]).
 interface LIData {
-  profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string };
+  profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string; photo?: string };
   about: string;
   experience: { title: string; company: string; dates: string; location?: string }[];
   education: { school: string; degree: string; dates: string }[];
@@ -456,8 +456,9 @@ function renderLinkedin(): void {
   // Reuse the real profile photo from the Instagram data (same person, real image)
   // until LinkedIn's own media is available via export/scrape.
   const igPhoto = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.instagram?.posts?.[0]?.media;
-  const headAvatar = igPhoto
-    ? `<div class="li-phead__avatar li-phead__avatar--img"><img src="${igPhoto}" alt="${esc(p.name)}"></div>`
+  const avatarPhoto = p.photo || igPhoto;
+  const headAvatar = avatarPhoto
+    ? `<div class="li-phead__avatar li-phead__avatar--img"><img src="${avatarPhoto}" alt="${esc(p.name)}"></div>`
     : `<div class="li-phead__avatar" style="background:${AVATAR_COLORS[3]}">${esc(initials(p.name))}</div>`;
 
   const section = (title: string, body: string) =>

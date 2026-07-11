@@ -152,6 +152,14 @@
     "deploy_name": "fin-terminal"
   },
   {
+    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "deploy_name": "Music_DJ-Mixer_Mixxx"
+  },
+  {
+    "path": "c-LabTools/Music_DAW_LLMS",
+    "deploy_name": "Music_DAW_LLMS"
+  },
+  {
     "path": "b-MyData/my-fin",
     "deploy_name": "my-fin"
   },

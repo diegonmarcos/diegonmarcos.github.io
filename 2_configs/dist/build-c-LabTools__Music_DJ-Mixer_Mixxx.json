@@ -71,10 +71,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "Music_DJ-Mixer_Mixxx",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/Music_DJ-Mixer_Mixxx"
     },
     "consumers": [],
     "has_package_json": false,

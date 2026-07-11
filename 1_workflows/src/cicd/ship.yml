@@ -469,6 +469,28 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ MySocials build complete"
+      - name: 🔨 Build Mixxx (DJ Mixer)
+        id: build-mixxx
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/Music_DJ-Mixer_Mixxx/src/')
+
+        run: |
+          echo "🔨 Building Mixxx..."
+          cd c-LabTools/Music_DJ-Mixer_Mixxx
+          bash build.sh build
+          cd ../..
+          echo "✅ Mixxx build complete"
+      - name: 🔨 Build LMMS (Beat Sequencer)
+        id: build-lmms
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'c-LabTools/Music_DAW_LLMS/src/')
+
+        run: |
+          echo "🔨 Building LMMS..."
+          cd c-LabTools/Music_DAW_LLMS
+          bash build.sh build
+          cd ../..
+          echo "✅ LMMS build complete"
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
       - name: 📂 Deploy All Projects to _site
@@ -520,6 +542,8 @@ jobs:
             "c-LabTools/sailytics:sailytics"
             "c-LabTools/news:news"
             "c-LabTools/fin-terminal:fin-terminal"
+            "c-LabTools/Music_DJ-Mixer_Mixxx:Music_DJ-Mixer_Mixxx"
+            "c-LabTools/Music_DAW_LLMS:Music_DAW_LLMS"
             "b-MyData/my-fin:my-fin"
             "b-Media/mySocials:mySocials"
             "b-MyData/myhealth:myhealth"

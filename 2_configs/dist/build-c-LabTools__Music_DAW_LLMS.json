@@ -71,10 +71,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "Music_DAW_LLMS",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/Music_DAW_LLMS"
     },
     "consumers": [],
     "has_package_json": false,

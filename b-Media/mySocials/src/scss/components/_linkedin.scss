@@ -35,6 +35,9 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
     width: 120px; height: 120px; border-radius: 50%;
     border: 4px solid $li-surface; margin: -70px 0 0 20px;
     @include flex-center; color: #fff; font-weight: 700; font-size: 40px;
+    overflow: hidden;
+    &--img { background: $li-surface; }
+    img { width: 100%; height: 100%; object-fit: cover; }
   }
   &__body { padding: 8px 24px 24px; }
   &__name { font-size: 24px; font-weight: 600; }

@@ -448,6 +448,13 @@ function renderLinkedin(): void {
 
   const navItem = (icon: string, label: string) => `<div class="li-nav__item">${icon}<span>${label}</span></div>`;
 
+  // Reuse the real profile photo from the Instagram data (same person, real image)
+  // until LinkedIn's own media is available via export/scrape.
+  const igPhoto = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.instagram?.posts?.[0]?.media;
+  const headAvatar = igPhoto
+    ? `<div class="li-phead__avatar li-phead__avatar--img"><img src="${igPhoto}" alt="${esc(p.name)}"></div>`
+    : `<div class="li-phead__avatar" style="background:${AVATAR_COLORS[3]}">${esc(initials(p.name))}</div>`;
+
   const section = (title: string, body: string) =>
     `<section class="li-card li-section"><h2 class="li-section__title">${title}</h2>${body}</section>`;
   const needExport = '<p class="li-need">Not in the saved profile page — add from your LinkedIn data export (Settings → Get a copy of your data).</p>';
@@ -521,7 +528,7 @@ function renderLinkedin(): void {
       <div class="li-prof__main">
         <section class="li-card li-phead">
           <div class="li-phead__banner"></div>
-          <div class="li-phead__avatar" style="background:${AVATAR_COLORS[3]}">${esc(initials(p.name))}</div>
+          ${headAvatar}
           <div class="li-phead__body">
             <h1 class="li-phead__name">${esc(p.name)}</h1>
             <p class="li-phead__headline">${esc(p.headline)}</p>

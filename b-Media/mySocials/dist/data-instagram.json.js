@@ -3044,6 +3044,40 @@
       "handle": "lina_bbtl",
       "name": "Lina A"
     }
+  ],
+  "highlights": [
+    {
+      "label": "Travel",
+      "emoji": "✈️"
+    },
+    {
+      "label": "Berlin",
+      "emoji": "🏛️"
+    },
+    {
+      "label": "Cycling",
+      "emoji": "🚴"
+    },
+    {
+      "label": "42 Berlin",
+      "emoji": "💾"
+    },
+    {
+      "label": "Food",
+      "emoji": "🍽️"
+    },
+    {
+      "label": "Endurance",
+      "emoji": "🏔️"
+    },
+    {
+      "label": "Finance",
+      "emoji": "📈"
+    },
+    {
+      "label": "Surf",
+      "emoji": "🌊"
+    }
   ]
 };
 })();

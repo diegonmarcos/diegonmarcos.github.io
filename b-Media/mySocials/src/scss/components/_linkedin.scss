@@ -79,12 +79,21 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
   background: $li-chip; color: $li-text; font-size: 13px; font-weight: 600;
 }
 
-// About / Projects long-form text (preserve the export's line breaks)
-.li-about {
-  white-space: pre-line;
+// About / Projects long-form text (rebuilt into paragraphs from the export's markers)
+.li-about { font-size: 14px; color: $li-text; }
+.li-para {
   line-height: 1.6;
-  font-size: 14px;
-  color: $li-text;
+  margin: 0 0 14px;
+  &:last-child { margin-bottom: 0; }
+  &__head {
+    display: block;
+    margin-bottom: 4px;
+    color: $li-blue;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 12px;
+  }
 }
 .li-item--proj { display: block; }
 .li-item__desc {

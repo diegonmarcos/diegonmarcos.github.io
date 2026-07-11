@@ -426,6 +426,19 @@ function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
 }
 
+// LinkedIn's export flattens the About/Project long-text (no newlines), but the author's
+// own markers survive: `---` separates sections, a leading `@tag … HEADING` names each,
+// and runs of 2+ spaces stand in for line breaks. Rebuild paragraphs from those markers.
+// ponytail: marker-based reflow of already-flattened text; the real breaks are gone upstream.
+function formatLI(text: string): string {
+  return text.split(/\s*---\s*/).map(s => s.trim()).filter(Boolean).map(block => {
+    const m = block.match(/^(@\S[\s\S]*?)\s{2,}([\s\S]*)$/);
+    const head = m ? m[1].trim() : '';
+    const body = (m ? m[2] : block).split(/\s{2,}/).map(l => esc(l.trim())).filter(Boolean).join('<br>');
+    return `<p class="li-para">${head ? `<strong class="li-para__head">${esc(head)}</strong>` : ''}${body}</p>`;
+  }).join('');
+}
+
 function renderLinkedin(): void {
   const view = document.getElementById('li-view');
   if (!view) return;
@@ -468,7 +481,7 @@ function renderLinkedin(): void {
     : needExport;
 
   const aboutBody = d.about
-    ? `<p class="li-about">${esc(d.about)}</p>`
+    ? `<div class="li-about">${formatLI(d.about)}</div>`
     : needExport;
 
   const langBody = d.languages.length
@@ -485,7 +498,7 @@ function renderLinkedin(): void {
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
-          <p class="li-item__desc">${esc(pr.description)}</p>
+          <div class="li-item__desc">${formatLI(pr.description)}</div>
         </div>
       </div>`).join('')
     : needExport;

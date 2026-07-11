@@ -17,11 +17,15 @@ $ok-magenta: #d230aa;
 $ok-link:   #1111cc;
 $ok-text:   #333333;
 $ok-muted:  #777777;
+$ok-shadow: rgba(49, 92, 153, .18);
 
 .view--orkut {
   font-family: Tahoma, Geneva, Verdana, sans-serif;
   font-size: 12px;
   color: $ok-text;
+  background: $ok-page;
+  min-height: 100vh;
+  padding-bottom: 1px; // clip margin collapse
 
   a { color: $ok-link; text-decoration: none; &:hover { text-decoration: underline; } }
   button { font-family: inherit; cursor: pointer; }
@@ -31,6 +35,7 @@ $ok-muted:  #777777;
 .navbar {
   background: #fff;
   border-bottom: 3px solid $ok-magenta;
+  box-shadow: 0 1px 3px $ok-shadow;
   &__inner {
     max-width: 960px;
     margin: 0 auto;
@@ -60,9 +65,12 @@ $ok-muted:  #777777;
   &__search-btn { position: absolute; right: 4px; top: 3px; background: none; border: none; color: $ok-muted; svg { width: 15px; height: 15px; } }
   &__links { display: flex; gap: 4px; flex-wrap: wrap; }
   &__link {
-    padding: 4px 10px; color: #fff; background: $ok-blue-bar; border-radius: 3px 3px 0 0;
-    font-weight: 700; &:hover { background: $ok-blue; text-decoration: none; color: #fff; }
-    &--active { background: $ok-blue; }
+    padding: 5px 12px; color: #fff;
+    background: linear-gradient(180deg, #90b1de, $ok-blue-bar);
+    border: 1px solid $ok-blue; border-bottom: none; border-radius: 4px 4px 0 0;
+    font-weight: 700; text-transform: lowercase;
+    &:hover { background: $ok-blue; text-decoration: none; color: #fff; }
+    &--active { background: $ok-blue; box-shadow: inset 0 1px 3px rgba(0,0,0,.25); }
   }
 }
 
@@ -84,6 +92,7 @@ $ok-muted:  #777777;
   border: 1px solid $ok-border;
   border-radius: 4px;
   overflow: hidden;
+  box-shadow: 0 1px 4px $ok-shadow;
 }
 .box { display: flex; flex-direction: column; }
 .box__title {
@@ -104,8 +113,9 @@ $ok-muted:  #777777;
 // ── Profile card ─────────────────────────────────────────
 .profile-card { padding: 12px; text-align: center; }
 .profile-card__avatar {
-  width: 96px; height: 120px; margin: 0 auto;
-  border: 1px solid $ok-border; overflow: hidden; background: #fff;
+  width: 100px; height: 124px; margin: 0 auto;
+  border: 4px solid #fff; outline: 1px solid $ok-border; overflow: hidden; background: #fff;
+  box-shadow: 0 1px 3px $ok-shadow;
 }
 .profile-card__avatar-placeholder {
   width: 100%; height: 100%; @include flex-center;
@@ -118,11 +128,18 @@ $ok-muted:  #777777;
 .profile-card__stat-value { font-weight: 700; color: $ok-blue; font-size: 14px; }
 .profile-card__stat-label { color: $ok-muted; font-size: 11px; }
 
-// Rating meter (cool / trusty / sexy)
-.trust-meter { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
-.trust-meter__row { display: flex; align-items: center; gap: 8px; }
-.trust-meter__label { width: 42px; text-align: right; color: $ok-muted; }
-.trust-meter__bar { flex: 1; height: 11px; background: #fff; border: 1px solid $ok-border; }
+// Rating meter (cool / trusty / sexy) — classic Orkut "vote" bars w/ icon glyphs
+.trust-meter { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; text-align: left; }
+.trust-meter__row { display: flex; align-items: center; gap: 6px; }
+.trust-meter__label {
+  width: 46px; text-align: right; color: $ok-muted; font-size: 11px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 3px;
+  &::before { font-size: 12px; }
+}
+.trust-meter__row:nth-child(1) .trust-meter__label::before { content: "\1F9CA"; } // ice cube = cool
+.trust-meter__row:nth-child(2) .trust-meter__label::before { content: "\1F60A"; } // smiley = trusty
+.trust-meter__row:nth-child(3) .trust-meter__label::before { content: "\2764";  } // heart = sexy
+.trust-meter__bar { flex: 1; height: 11px; background: #fff; border: 1px solid $ok-border; border-radius: 2px; overflow: hidden; }
 .trust-meter__fill { height: 100%; }
 .trust-meter__fill--cool { width: 85%; background: repeating-linear-gradient(90deg,#4aa3e0 0 6px,#3f93cf 6px 8px); }
 .trust-meter__fill--trusty { width: 92%; background: repeating-linear-gradient(90deg,#e05a9a 0 6px,#d0508c 6px 8px); }
@@ -131,7 +148,7 @@ $ok-muted:  #777777;
 // ── Friends grid ─────────────────────────────────────────
 .friends-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .friend-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
-.friend-cell__avatar { width: 100%; aspect-ratio: 1; border: 1px solid $ok-border; overflow: hidden; }
+.friend-cell__avatar { width: 100%; aspect-ratio: 1; border: 1px solid $ok-border; overflow: hidden; background: $ok-panel; }
 .friend-cell__avatar-inner { width: 100%; height: 100%; @include flex-center; color: #fff; font-weight: 700; font-size: 18px; }
 .friend-cell__name { color: $ok-link; font-size: 11px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
@@ -145,7 +162,7 @@ $ok-muted:  #777777;
 .scrap-input { width: 100%; padding: 6px; border: 1px solid $ok-border; font: inherit; resize: vertical; &:focus { outline: 1px solid $ok-blue-bar; } }
 .scrap-send { align-self: flex-end; padding: 4px 14px; background: $ok-blue-bar; color: #fff; border: 1px solid $ok-blue; border-radius: 3px; font-weight: 700; &:hover { background: $ok-blue; } }
 .scraps-list { display: flex; flex-direction: column; }
-.scrap { display: flex; gap: 8px; padding: 10px 0; border-bottom: 1px dashed $ok-border; &:last-child { border-bottom: none; } }
+.scrap { display: flex; gap: 8px; padding: 10px 8px; border-bottom: 1px dashed $ok-border; &:nth-child(odd) { background: $ok-panel; } &:last-child { border-bottom: none; } }
 .scrap__avatar { width: 40px; height: 40px; flex: 0 0 auto; border: 1px solid $ok-border; overflow: hidden; }
 .scrap__avatar-inner { width: 100%; height: 100%; @include flex-center; color: #fff; font-weight: 700; }
 .scrap__body { flex: 1; min-width: 0; }

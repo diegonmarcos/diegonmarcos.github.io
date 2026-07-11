@@ -1,0 +1,91 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+// STRAVA — white canvas, dark type, orange accent
+$str-bg: #f7f7f7;
+$str-surface: #ffffff;
+$str-elev: #f1f1f1;
+$str-text: #242428;
+$str-muted: #6d6d78;
+$str-orange: #fc5200;
+
+.str {
+  color: $str-text;
+  font-size: 14px;
+  a { color: $str-text; text-decoration: none; }
+}
+
+// ── Top nav ──────────────────────────────────────────────
+.str-nav {
+  position: sticky; top: 0; z-index: 10;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid #e6e6e6;
+
+  &__inner {
+    max-width: 1100px; height: 100%; margin: 0 auto; padding: 0 20px;
+    @include flex-row(24px);
+  }
+  &__logo { font-weight: 800; letter-spacing: 1px; font-size: 18px; color: $str-orange; }
+  &__search {
+    flex: 1;
+    input {
+      width: 100%; max-width: 320px; padding: 9px 14px;
+      background: $str-elev; border: none; border-radius: 6px; color: $str-text;
+    }
+  }
+  &__user { color: $str-muted; font-size: 13px; }
+}
+
+.str-main { max-width: 900px; margin: 0 auto; padding: 28px 20px 90px; }
+
+// ── Profile header ───────────────────────────────────────
+.str-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $str-surface;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  &__name { font-size: 22px; font-weight: 800; }
+  &__stats { @include flex-row(24px); }
+  &__stat { text-align: center; }
+  &__stat-value { display: block; font-size: 18px; font-weight: 700; color: $str-orange; }
+  &__stat-label { color: $str-muted; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+}
+
+// ── Activity feed ────────────────────────────────────────
+.str-feed { display: flex; flex-direction: column; gap: 14px; }
+
+.str-card {
+  display: block;
+  background: $str-surface;
+  border-radius: 10px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  &__header { @include flex-row(14px); margin-bottom: 10px; }
+  &__icon {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba($str-orange, 0.12); color: $str-orange;
+    @include flex-center; font-size: 18px; flex-shrink: 0;
+  }
+  &__title { font-weight: 700; font-size: 15px; }
+  &__date { color: $str-muted; font-size: 12px; margin-top: 2px; }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    @include mq(sm) { grid-template-columns: repeat(4, 1fr); }
+  }
+  &__stat { text-align: left; }
+  &__stat-value { display: block; font-size: 15px; font-weight: 700; }
+  &__stat-label { color: $str-muted; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+}
+
+.str-empty { color: $str-muted; padding: 60px 20px; text-align: center; }

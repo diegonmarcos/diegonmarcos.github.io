@@ -682,6 +682,122 @@ function renderTidal(): void {
     </div>`;
 }
 
+// ─── STRAVA VIEW (real activity feed) ─────────────────────────────────────────
+
+const STR_ICON: Record<string, string> = {
+  run: '\u{1F3C3}',
+  ride: '\u{1F6B4}',
+  swim: '\u{1F3CA}',
+};
+
+function renderStrava(): void {
+  const view = document.getElementById('str-view');
+  if (!view) return;
+  interface StrActivity { type: string; title: string; date: string; distance_km?: number; duration?: string; pace?: string; elevation_m?: number }
+  interface StrData { profile: { name: string; followers: number; following: number; activities: number }; activities: StrActivity[] }
+  const d = (globalThis as { PORTAL_DATA?: Record<string, StrData> }).PORTAL_DATA?.strava;
+  const activities = d?.activities ?? [];
+  const prof = d?.profile;
+
+  const stat = (label: string, value: string) => value
+    ? `<div class="str-card__stat"><span class="str-card__stat-value">${esc(value)}</span><span class="str-card__stat-label">${label}</span></div>`
+    : '';
+
+  const cards = activities.map(a => `
+    <div class="str-card">
+      <div class="str-card__header">
+        <div class="str-card__icon">${STR_ICON[a.type] || '\u{1F3C1}'}</div>
+        <div>
+          <div class="str-card__title">${esc(a.title)}</div>
+          <div class="str-card__date">${esc(a.date)}</div>
+        </div>
+      </div>
+      <div class="str-card__stats">
+        ${stat('Distance', a.distance_km ? `${a.distance_km} km` : '')}
+        ${stat('Time', a.duration || '')}
+        ${stat('Pace', a.pace || '')}
+        ${stat('Elevation', a.elevation_m ? `${a.elevation_m} m` : '')}
+      </div>
+    </div>`).join('');
+
+  view.innerHTML = `
+    <nav class="str-nav">
+      <div class="str-nav__inner">
+        <span class="str-nav__logo">Strava</span>
+        <div class="str-nav__search"><input placeholder="Search"></div>
+        <span class="str-nav__user">${esc(prof?.name || 'diegonmarcos')}</span>
+      </div>
+    </nav>
+    <div class="str-main">
+      <header class="str-head">
+        <div>
+          <div class="str-head__name">${esc(prof?.name || 'Diego Nepomuceno Marcos')}</div>
+        </div>
+        <div class="str-head__stats">
+          <div class="str-head__stat"><span class="str-head__stat-value">${prof?.activities ?? activities.length}</span><span class="str-head__stat-label">Activities</span></div>
+          <div class="str-head__stat"><span class="str-head__stat-value">${prof?.followers ?? 0}</span><span class="str-head__stat-label">Followers</span></div>
+          <div class="str-head__stat"><span class="str-head__stat-value">${prof?.following ?? 0}</span><span class="str-head__stat-label">Following</span></div>
+        </div>
+      </header>
+      <div class="str-feed">${cards || '<p class="str-empty">No activities yet. Strava data loads once the profile is exported.</p>'}</div>
+    </div>`;
+}
+
+// ─── YOUTUBE VIEW (playlists + video grid) ────────────────────────────────────
+
+function renderYoutube(): void {
+  const view = document.getElementById('yt-view');
+  if (!view) return;
+  interface YtVideo { title: string; thumbnail: string; duration?: string; channel?: string; views?: number; date?: string; url?: string }
+  interface YtPlaylist { name: string; videos: YtVideo[] }
+  interface YtData { profile: { channel: string; subscribers: number; videos: number }; playlists: YtPlaylist[]; videos: YtVideo[] }
+  const d = (globalThis as { PORTAL_DATA?: Record<string, YtData> }).PORTAL_DATA?.youtube;
+  const videos = d?.videos ?? [];
+  const playlists = d?.playlists ?? [];
+  const prof = d?.profile;
+
+  const videoCard = (v: YtVideo, i: number) => {
+    const media = v.thumbnail
+      ? `<img class="yt-card__img" src="${esc(v.thumbnail)}" alt="${esc(v.title)}" loading="lazy">`
+      : `<div class="yt-card__ph" style="background:${gradientFor(i)}">\u{25B6}</div>`;
+    return `
+    <a class="yt-card" href="${esc(v.url || '#')}" target="_blank" rel="noopener">
+      <div class="yt-card__thumb">${media}${v.duration ? `<span class="yt-card__duration">${esc(v.duration)}</span>` : ''}</div>
+      <div class="yt-card__title">${esc(v.title)}</div>
+      ${v.channel ? `<div class="yt-card__channel">${esc(v.channel)}</div>` : ''}
+      <div class="yt-card__meta">${v.views !== undefined ? `${v.views.toLocaleString()} views` : ''}${v.views !== undefined && v.date ? ' · ' : ''}${v.date ? esc(v.date) : ''}</div>
+    </a>`;
+  };
+
+  const shelves = playlists.map(pl => `
+    <section class="yt-shelf">
+      <div class="yt-shelf__title">${esc(pl.name)}</div>
+      <div class="yt-shelf__row">${pl.videos.map((v, i) => videoCard(v, i)).join('')}</div>
+    </section>`).join('');
+
+  const videoGrid = videos.length ? `<div class="yt-grid">${videos.map((v, i) => videoCard(v, i)).join('')}</div>` : '';
+
+  const hasContent = playlists.length || videos.length;
+
+  view.innerHTML = `
+    <nav class="yt-nav">
+      <div class="yt-nav__inner">
+        <span class="yt-nav__logo">YouTube</span>
+        <div class="yt-nav__search"><input placeholder="Search"></div>
+        <span class="yt-nav__user">@${esc(prof?.channel || 'diegonmarcos')}</span>
+      </div>
+    </nav>
+    <div class="yt-main">
+      <header class="yt-head">
+        <div>
+          <div class="yt-head__title">${esc(prof?.channel || 'diegonmarcos')}</div>
+          <div class="yt-head__sub">${prof?.subscribers ?? 0} subscribers · ${prof?.videos ?? videos.length} videos</div>
+        </div>
+      </header>
+      ${hasContent ? `${shelves}${videoGrid}` : '<p class="yt-empty">No videos or playlists yet. YouTube data loads once the channel is scraped.</p>'}
+    </div>`;
+}
+
 // ─── ICQ VIEW (retro Win98 IM — aggregates the real profile data) ────────────
 
 // The real ICQ mascot: 7 green petals + 1 red petal around a yellow
@@ -835,10 +951,15 @@ function renderMyProfile(): void {
   const avatar = ig?.posts[0]?.media;
 
   // Each card jumps to that network's view. Metrics are real, from the parsed data.
+  const tidalD = (globalThis as { PORTAL_DATA?: Record<string, { profile: { playlists: number } }> }).PORTAL_DATA?.tidal;
+
   const cards: { theme: Theme; label: string; meta: string; color: string }[] = [
     { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2' },
     { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743' },
     { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023' },
+    { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff' },
+    { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200' },
+    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000' },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
     { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
   ];
@@ -871,9 +992,9 @@ function renderMyProfile(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'icq';
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq';
 const THEME_KEY = 'mySocials.theme';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'icq'];
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq'];
 
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
@@ -904,6 +1025,8 @@ function init(): void {
   renderLinkedin();
   renderPinterest();
   renderTidal();
+  renderStrava();
+  renderYoutube();
   renderICQ();
   renderMyProfile();
   initThemeSwitcher();

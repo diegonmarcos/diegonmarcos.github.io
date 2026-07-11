@@ -9,6 +9,8 @@ html[data-theme='instagram'] .view--instagram,
 html[data-theme='linkedin']  .view--linkedin,
 html[data-theme='pinterest'] .view--pinterest,
 html[data-theme='tidal']     .view--tidal,
+html[data-theme='strava']    .view--strava,
+html[data-theme='youtube']   .view--youtube,
 html[data-theme='icq']       .view--icq { display: block; }
 
 // Per-theme page background.
@@ -18,4 +20,6 @@ html[data-theme='instagram'] body { background: #000; color: #f5f5f5; }
 html[data-theme='linkedin']  body { background: #1b1f23; color: rgba(255, 255, 255, 0.9); }
 html[data-theme='pinterest'] body { background: #111111; color: #f5f5f5; }
 html[data-theme='tidal']     body { background: #000000; color: #ffffff; }
+html[data-theme='strava']    body { background: #f7f7f7; color: #242428; }
+html[data-theme='youtube']   body { background: #f9f9f9; color: #0f0f0f; }
 html[data-theme='icq']       body { background: #0c2624; color: #e6e6e6; } // dark teal desktop

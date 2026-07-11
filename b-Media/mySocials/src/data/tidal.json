@@ -1,0 +1,5 @@
+{
+  "_description": "Real Tidal playlists for diegonmarcos (public, via the Tidal public API). Populated once the profile user ID is known.",
+  "profile": { "username": "diegonmarcos", "playlists": 0, "tracks": 0 },
+  "playlists": []
+}

@@ -636,6 +636,52 @@ function renderPinterest(): void {
     <div class="pin-board">${pins || '<p class="pin-empty">No boards.</p>'}</div>`;
 }
 
+// ─── TIDAL VIEW (real playlists from the Tidal public API) ───────────────────
+
+function renderTidal(): void {
+  const view = document.getElementById('tid-view');
+  if (!view) return;
+  interface TidPlaylist { name: string; tracks: number; duration_s?: number; description?: string; cover: string; url: string }
+  interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[] }
+  const d = (globalThis as { PORTAL_DATA?: Record<string, TidData> }).PORTAL_DATA?.tidal;
+  const lists = d?.playlists ?? [];
+  const prof = d?.profile;
+
+  const fmtDur = (s?: number) => {
+    if (!s) return '';
+    const h = Math.floor(s / 3600), m = Math.round((s % 3600) / 60);
+    return h ? `${h}h ${m}m` : `${m} min`;
+  };
+
+  const cards = lists.map((p, i) => {
+    const media = p.cover
+      ? `<img class="tid-card__img" src="${esc(p.cover)}" alt="${esc(p.name)}" loading="lazy">`
+      : `<div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div>`;
+    return `
+    <a class="tid-card" href="${esc(p.url)}" target="_blank" rel="noopener">
+      <div class="tid-card__cover">${media}<span class="tid-card__play">▶</span></div>
+      <div class="tid-card__name">${esc(p.name)}</div>
+      <div class="tid-card__meta">${p.tracks} tracks${p.duration_s ? ' · ' + fmtDur(p.duration_s) : ''}</div>
+    </a>`;
+  }).join('');
+
+  view.innerHTML = `
+    <nav class="tid-nav">
+      <div class="tid-nav__inner">
+        <span class="tid-nav__logo">TIDAL</span>
+        <div class="tid-nav__search"><input placeholder="Search"></div>
+        <span class="tid-nav__user">@${esc(prof?.username || 'diegonmarcos')}</span>
+      </div>
+    </nav>
+    <div class="tid-main">
+      <header class="tid-head">
+        <div class="tid-head__title">My Playlists</div>
+        <div class="tid-head__sub">${prof?.playlists ?? lists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
+      </header>
+      <div class="tid-grid">${cards || '<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>'}</div>
+    </div>`;
+}
+
 // ─── ICQ VIEW (retro Win98 IM — aggregates the real profile data) ────────────
 
 // The real ICQ mascot: 7 green petals + 1 red petal around a yellow
@@ -825,9 +871,9 @@ function renderMyProfile(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'icq';
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'icq';
 const THEME_KEY = 'mySocials.theme';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'icq'];
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'icq'];
 
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
@@ -857,6 +903,7 @@ function init(): void {
   renderInstagram();
   renderLinkedin();
   renderPinterest();
+  renderTidal();
   renderICQ();
   renderMyProfile();
   initThemeSwitcher();

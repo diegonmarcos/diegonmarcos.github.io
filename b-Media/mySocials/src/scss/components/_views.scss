@@ -8,6 +8,7 @@ html[data-theme='orkut']     .view--orkut,
 html[data-theme='instagram'] .view--instagram,
 html[data-theme='linkedin']  .view--linkedin,
 html[data-theme='pinterest'] .view--pinterest,
+html[data-theme='tidal']     .view--tidal,
 html[data-theme='icq']       .view--icq { display: block; }
 
 // Per-theme page background.
@@ -16,4 +17,5 @@ html[data-theme='myprofile'] body { background: #0e1016; color: #e8ecf4; }
 html[data-theme='instagram'] body { background: #000; color: #f5f5f5; }
 html[data-theme='linkedin']  body { background: #1b1f23; color: rgba(255, 255, 255, 0.9); }
 html[data-theme='pinterest'] body { background: #111111; color: #f5f5f5; }
+html[data-theme='tidal']     body { background: #000000; color: #ffffff; }
 html[data-theme='icq']       body { background: #0c2624; color: #e6e6e6; } // dark teal desktop

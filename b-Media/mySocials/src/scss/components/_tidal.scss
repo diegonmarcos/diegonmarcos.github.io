@@ -75,14 +75,20 @@ $tid-cyan: #00ffff;
   }
   &__img { width: 100%; height: 100%; object-fit: cover; }
   &__ph { width: 100%; height: 100%; @include flex-center; font-size: 40px; color: rgba(255,255,255,.85); }
+  // Authentic TIDAL: white play button on the cover (image-forward, minimal color).
   &__play {
     position: absolute; right: 10px; bottom: 10px;
-    width: 42px; height: 42px; border-radius: 50%;
-    background: $tid-cyan; color: #000;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: #fff; color: #000;
     @include flex-center; font-size: 15px; padding-left: 3px;
     opacity: 0; transform: translateY(8px);
     transition: opacity 0.15s, transform 0.15s;
-    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  }
+  // subtle gradient fade at the base of each cover (TIDAL's signature)
+  &__cover::after {
+    content: ''; position: absolute; inset: auto 0 0 0; height: 45%;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.35)); pointer-events: none;
   }
   &__name { font-weight: 600; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   &__meta { color: $tid-muted; font-size: 12px; margin-top: 3px; }

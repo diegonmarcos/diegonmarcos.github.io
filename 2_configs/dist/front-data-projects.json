@@ -180,18 +180,6 @@
     "has_pkg": false
   },
   {
-    "path": "b-MyData/myhealth",
-    "category": "b-MyData",
-    "project": "myhealth",
-    "key": "b-MyData__myhealth",
-    "name": "MyHealth",
-    "framework": "vanilla",
-    "port": 8026,
-    "deploy_name": "myhealth",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "b-MyData/myhealth-profile",
     "category": "b-MyData",
     "project": "myhealth-profile",
@@ -212,6 +200,18 @@
     "framework": "vanilla",
     "port": 8025,
     "deploy_name": "myhealth-tracker",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "b-MyData/myhealth",
+    "category": "b-MyData",
+    "project": "myhealth",
+    "key": "b-MyData__myhealth",
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "port": 8026,
+    "deploy_name": "myhealth",
     "has_pwa": false,
     "has_pkg": false
   },
@@ -348,6 +348,30 @@
     "has_pkg": true
   },
   {
+    "path": "c-LabTools/Music_DAW_LLMS",
+    "category": "c-LabTools",
+    "project": "Music_DAW_LLMS",
+    "key": "c-LabTools__Music_DAW_LLMS",
+    "name": "LMMS",
+    "framework": "vanilla",
+    "port": 8035,
+    "deploy_name": "Music_DAW_LLMS",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
+    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "category": "c-LabTools",
+    "project": "Music_DJ-Mixer_Mixxx",
+    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "name": "Mixxx",
+    "framework": "vanilla",
+    "port": 8034,
+    "deploy_name": "Music_DJ-Mixer_Mixxx",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "c-LabTools/central_bank",
     "category": "c-LabTools",
     "project": "central_bank",
@@ -382,30 +406,6 @@
     "deploy_name": "market_watch",
     "has_pwa": false,
     "has_pkg": true
-  },
-  {
-    "path": "c-LabTools/Music_DAW_LLMS",
-    "category": "c-LabTools",
-    "project": "Music_DAW_LLMS",
-    "key": "c-LabTools__Music_DAW_LLMS",
-    "name": "LMMS",
-    "framework": "vanilla",
-    "port": 8035,
-    "deploy_name": "Music_DAW_LLMS",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
-    "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "category": "c-LabTools",
-    "project": "Music_DJ-Mixer_Mixxx",
-    "key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-    "name": "Mixxx",
-    "framework": "vanilla",
-    "port": 8034,
-    "deploy_name": "Music_DJ-Mixer_Mixxx",
-    "has_pwa": false,
-    "has_pkg": false
   },
   {
     "path": "c-LabTools/news",
@@ -480,18 +480,6 @@
     "has_pkg": false
   },
   {
-    "path": "c-Suite/mymaps",
-    "category": "c-Suite",
-    "project": "mymaps",
-    "key": "c-Suite__mymaps",
-    "name": "MyMaps",
-    "framework": "vanilla",
-    "port": 8027,
-    "deploy_name": "mymaps",
-    "has_pwa": false,
-    "has_pkg": false
-  },
-  {
     "path": "c-Suite/mymaps-maps",
     "category": "c-Suite",
     "project": "mymaps-maps",
@@ -514,6 +502,18 @@
     "deploy_name": "mymaps-navigation",
     "has_pwa": false,
     "has_pkg": true
+  },
+  {
+    "path": "c-Suite/mymaps",
+    "category": "c-Suite",
+    "project": "mymaps",
+    "key": "c-Suite__mymaps",
+    "name": "MyMaps",
+    "framework": "vanilla",
+    "port": 8027,
+    "deploy_name": "mymaps",
+    "has_pwa": false,
+    "has_pkg": false
   },
   {
     "path": "c-Suite/suite",

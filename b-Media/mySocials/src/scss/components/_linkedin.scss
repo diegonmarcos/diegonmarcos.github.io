@@ -82,6 +82,26 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
   background: $li-chip; color: $li-text; font-size: 13px; font-weight: 600;
 }
 
+// Collapsible long text — clamp to a max height with a "see more" toggle
+.li-longtext {}
+.li-clamp {
+  max-height: 7.6em;
+  overflow: hidden;
+  position: relative;
+  &.is-expanded { max-height: none; }
+}
+.li-more {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: $li-muted;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  &:hover { color: $li-blue; }
+}
+
 // About / Projects long-form text (rebuilt into paragraphs from the export's markers)
 .li-about { font-size: 14px; color: $li-text; }
 .li-para {

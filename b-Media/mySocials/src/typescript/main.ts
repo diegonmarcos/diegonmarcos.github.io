@@ -439,6 +439,11 @@ function formatLI(text: string): string {
   }).join('');
 }
 
+// Collapsible long-text: clamp to a max height with a "…see more" toggle (LinkedIn-style).
+function longText(html: string): string {
+  return `<div class="li-longtext"><div class="li-clamp">${html}</div><button class="li-more" type="button">…see more</button></div>`;
+}
+
 function renderLinkedin(): void {
   const view = document.getElementById('li-view');
   if (!view) return;
@@ -488,7 +493,7 @@ function renderLinkedin(): void {
     : needExport;
 
   const aboutBody = d.about
-    ? `<div class="li-about">${formatLI(d.about)}</div>`
+    ? `<div class="li-about">${longText(formatLI(d.about))}</div>`
     : needExport;
 
   const langBody = d.languages.length
@@ -505,7 +510,7 @@ function renderLinkedin(): void {
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
-          <div class="li-item__desc">${formatLI(pr.description)}</div>
+          <div class="li-item__desc">${longText(formatLI(pr.description))}</div>
         </div>
       </div>`).join('')
     : needExport;
@@ -558,6 +563,17 @@ function renderLinkedin(): void {
         </div>
       </aside>
     </div>`;
+
+  // "…see more" toggles: hide the button when the text already fits.
+  view.querySelectorAll<HTMLElement>('.li-longtext').forEach(wrap => {
+    const clamp = wrap.querySelector<HTMLElement>('.li-clamp')!;
+    const btn = wrap.querySelector<HTMLElement>('.li-more')!;
+    if (clamp.scrollHeight - clamp.clientHeight < 4) { btn.style.display = 'none'; return; }
+    btn.addEventListener('click', () => {
+      const open = clamp.classList.toggle('is-expanded');
+      btn.textContent = open ? 'see less' : '…see more';
+    });
+  });
 }
 
 // ─── PINTEREST VIEW ──────────────────────────────────────────────────────────

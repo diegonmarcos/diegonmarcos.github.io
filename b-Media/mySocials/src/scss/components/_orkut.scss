@@ -1,0 +1,176 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+// ══════════════════════════════════════════════════════════════
+// Authentic classic Orkut (2008). Tokens verified from the original UI:
+//   page #d9e6f7 · panels #E8EEFA · boxes #fff · borders #bccdea
+//   magenta logo #D230AA · blue links · Tahoma 12px.
+// Everything is scoped under .view--orkut and stacks to one column on mobile.
+// ══════════════════════════════════════════════════════════════
+$ok-page:   #d9e6f7;
+$ok-panel:  #e8eefa;
+$ok-box:    #ffffff;
+$ok-border: #bccdea;
+$ok-blue:   #315c99;
+$ok-blue-bar: #6d8fc9;
+$ok-magenta: #d230aa;
+$ok-link:   #1111cc;
+$ok-text:   #333333;
+$ok-muted:  #777777;
+
+.view--orkut {
+  font-family: Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  color: $ok-text;
+
+  a { color: $ok-link; text-decoration: none; &:hover { text-decoration: underline; } }
+  button { font-family: inherit; cursor: pointer; }
+}
+
+// ── Top bar ──────────────────────────────────────────────
+.navbar {
+  background: #fff;
+  border-bottom: 3px solid $ok-magenta;
+  &__inner {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  &__logo { font-size: 26px; font-weight: 800; letter-spacing: -1px; text-decoration: none; }
+  &__logo-text { color: $ok-magenta; }
+  &__logo-accent { color: $ok-blue; }
+  &__search {
+    display: flex;
+    flex: 1 1 160px;
+    min-width: 120px;
+    position: relative;
+  }
+  &__search-input {
+    width: 100%;
+    padding: 4px 28px 4px 8px;
+    border: 1px solid $ok-border;
+    background: #fff;
+    font: inherit;
+    &:focus { outline: 1px solid $ok-blue-bar; }
+  }
+  &__search-btn { position: absolute; right: 4px; top: 3px; background: none; border: none; color: $ok-muted; svg { width: 15px; height: 15px; } }
+  &__links { display: flex; gap: 4px; flex-wrap: wrap; }
+  &__link {
+    padding: 4px 10px; color: #fff; background: $ok-blue-bar; border-radius: 3px 3px 0 0;
+    font-weight: 700; &:hover { background: $ok-blue; text-decoration: none; color: #fff; }
+    &--active { background: $ok-blue; }
+  }
+}
+
+// ── Page grid ────────────────────────────────────────────
+.layout {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  @include mq(md) { grid-template-columns: 220px 1fr; }
+}
+.sidebar, .content { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+// ── Boxes ────────────────────────────────────────────────
+.box, .profile-card {
+  background: $ok-box;
+  border: 1px solid $ok-border;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.box { display: flex; flex-direction: column; }
+.box__title {
+  background: linear-gradient(180deg, #7ea1d4, $ok-blue-bar);
+  color: #fff; font-weight: 700; font-size: 12px;
+  padding: 5px 10px; text-transform: lowercase;
+  border-bottom: 1px solid $ok-blue;
+}
+.box__count { color: rgba(255,255,255,.85); font-weight: 400; }
+.box > *:not(.box__title) { margin: 0 10px; }
+.box > *:not(.box__title):first-of-type { margin-top: 10px; }
+.box > *:last-child { margin-bottom: 10px; }
+.box__row { display: flex; gap: 6px; padding: 2px 0; }
+.box__label { color: $ok-muted; min-width: 84px; }
+.box__value { color: $ok-text; }
+.box__more { display: block; text-align: right; padding: 6px 0 0; font-size: 11px; }
+
+// ── Profile card ─────────────────────────────────────────
+.profile-card { padding: 12px; text-align: center; }
+.profile-card__avatar {
+  width: 96px; height: 120px; margin: 0 auto;
+  border: 1px solid $ok-border; overflow: hidden; background: #fff;
+}
+.profile-card__avatar-placeholder {
+  width: 100%; height: 100%; @include flex-center;
+  background: linear-gradient(135deg, $ok-magenta, $ok-blue); color: #fff; font-size: 40px; font-weight: 700;
+}
+.profile-card__name { font-size: 15px; font-weight: 700; color: $ok-magenta; margin-top: 8px; }
+.profile-card__tagline { color: $ok-muted; margin-top: 2px; }
+.profile-card__stats { display: flex; justify-content: center; gap: 14px; margin-top: 10px; padding-top: 8px; border-top: 1px solid $ok-border; }
+.profile-card__stat { display: flex; flex-direction: column; }
+.profile-card__stat-value { font-weight: 700; color: $ok-blue; font-size: 14px; }
+.profile-card__stat-label { color: $ok-muted; font-size: 11px; }
+
+// Rating meter (cool / trusty / sexy)
+.trust-meter { margin-top: 12px; display: flex; flex-direction: column; gap: 5px; }
+.trust-meter__row { display: flex; align-items: center; gap: 8px; }
+.trust-meter__label { width: 42px; text-align: right; color: $ok-muted; }
+.trust-meter__bar { flex: 1; height: 11px; background: #fff; border: 1px solid $ok-border; }
+.trust-meter__fill { height: 100%; }
+.trust-meter__fill--cool { width: 85%; background: repeating-linear-gradient(90deg,#4aa3e0 0 6px,#3f93cf 6px 8px); }
+.trust-meter__fill--trusty { width: 92%; background: repeating-linear-gradient(90deg,#e05a9a 0 6px,#d0508c 6px 8px); }
+.trust-meter__fill--sexy { width: 78%; background: repeating-linear-gradient(90deg,#f0574a 0 6px,#df4d43 6px 8px); }
+
+// ── Friends grid ─────────────────────────────────────────
+.friends-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.friend-cell { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; }
+.friend-cell__avatar { width: 100%; aspect-ratio: 1; border: 1px solid $ok-border; overflow: hidden; }
+.friend-cell__avatar-inner { width: 100%; height: 100%; @include flex-center; color: #fff; font-weight: 700; font-size: 18px; }
+.friend-cell__name { color: $ok-link; font-size: 11px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+// Photos
+.photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.photo-cell { aspect-ratio: 1; border: 1px solid $ok-border; overflow: hidden; }
+.photo-cell__inner { width: 100%; height: 100%; }
+
+// ── Scraps ───────────────────────────────────────────────
+.scrap-composer { display: flex; flex-direction: column; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid $ok-border; }
+.scrap-input { width: 100%; padding: 6px; border: 1px solid $ok-border; font: inherit; resize: vertical; &:focus { outline: 1px solid $ok-blue-bar; } }
+.scrap-send { align-self: flex-end; padding: 4px 14px; background: $ok-blue-bar; color: #fff; border: 1px solid $ok-blue; border-radius: 3px; font-weight: 700; &:hover { background: $ok-blue; } }
+.scraps-list { display: flex; flex-direction: column; }
+.scrap { display: flex; gap: 8px; padding: 10px 0; border-bottom: 1px dashed $ok-border; &:last-child { border-bottom: none; } }
+.scrap__avatar { width: 40px; height: 40px; flex: 0 0 auto; border: 1px solid $ok-border; overflow: hidden; }
+.scrap__avatar-inner { width: 100%; height: 100%; @include flex-center; color: #fff; font-weight: 700; }
+.scrap__body { flex: 1; min-width: 0; }
+.scrap__header { display: flex; gap: 8px; align-items: baseline; }
+.scrap__author { font-weight: 700; color: $ok-link; }
+.scrap__time { color: $ok-muted; font-size: 11px; }
+.scrap__text { margin-top: 3px; line-height: 1.5; }
+
+// ── Communities ──────────────────────────────────────────
+.communities-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; @include mq(md) { grid-template-columns: repeat(3, 1fr); } }
+.community-card { display: flex; gap: 8px; align-items: center; padding: 6px; border: 1px solid $ok-border; background: $ok-panel; text-decoration: none; &:hover { background: #dde7f6; text-decoration: none; } }
+.community-card__icon { width: 34px; height: 34px; flex: 0 0 auto; @include flex-center; font-size: 18px; border: 1px solid $ok-border; background: #fff; }
+.community-card__body { min-width: 0; }
+.community-card__name { display: block; font-weight: 700; color: $ok-link; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.community-card__members { color: $ok-muted; font-size: 11px; }
+
+// ── Testimonials ─────────────────────────────────────────
+.testimonials-list { display: flex; flex-direction: column; }
+.testimonial { padding: 10px 0; border-bottom: 1px dashed $ok-border; &:last-child { border-bottom: none; } }
+.testimonial__header { display: flex; gap: 8px; align-items: baseline; }
+.testimonial__author { font-weight: 700; color: $ok-link; }
+.testimonial__date { color: $ok-muted; font-size: 11px; }
+.testimonial__text { margin-top: 4px; line-height: 1.5; font-style: italic; color: #444; }
+
+// ── Footer ───────────────────────────────────────────────
+.footer { text-align: center; padding: 16px; color: $ok-muted; }
+.footer__text { font-size: 11px; }
+.footer__sub { font-size: 11px; color: $ok-magenta; margin-top: 4px; }

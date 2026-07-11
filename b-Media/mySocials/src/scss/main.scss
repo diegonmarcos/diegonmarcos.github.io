@@ -4,14 +4,7 @@
 @use 'tools/mixins';
 @use 'generic/reset';
 @use 'elements/base';
-@use 'components/navbar';
-@use 'components/layout';
-@use 'components/profile';
-@use 'components/box';
-@use 'components/friends';
-@use 'components/scraps';
-@use 'components/communities';
-@use 'components/footer';
+@use 'components/orkut';
 @use 'components/views';
 @use 'components/theme-switch';
 @use 'components/myprofile';

@@ -599,39 +599,41 @@ function renderPinterest(): void {
   const view = document.getElementById('pin-view');
   if (!view) return;
 
-  // Pins built from communities (emoji + name) + scraps (as captioned pins).
-  const pinData = [
-    ...COMMUNITIES.map((c, i) => ({ title: c.name, emoji: c.emoji, color: c.color, author: c.name, grad: i })),
-    ...SCRAPS.map((s, i) => ({ title: s.text.slice(0, 60), emoji: '\u{1F4CC}', color: s.color, author: s.author, grad: i + 3 })),
-  ];
+  // Real Pinterest boards (folders), scraped via gallery-dl -> PORTAL_DATA["pinterest"].
+  interface PinBoard { name: string; pins: number; cover: string; desc: string }
+  interface PinData { profile: { username: string; boards: number; pins: number }; boards: PinBoard[] }
+  const d = (globalThis as { PORTAL_DATA?: Record<string, PinData> }).PORTAL_DATA?.pinterest;
+  const boards = d?.boards ?? [];
+  const prof = d?.profile;
 
-  const pins = pinData.map((p, i) => {
+  const pins = boards.map((b, i) => {
     const h = PIN_HEIGHTS[i % PIN_HEIGHTS.length];
+    const media = b.cover
+      ? `<img class="pin-card__img" src="${esc(b.cover)}" alt="${esc(b.name)}" loading="lazy">`
+      : `<div class="pin-card__ph" style="height:${h}px;background:${gradientFor(i)}">\u{1F4CC}</div>`;
     return `
-    <div class="pin-card">
-      <div class="pin-card__media" style="height:${h}px;background:${gradientFor(p.grad)}">
-        ${p.emoji}
-        <div class="pin-card__overlay"><span class="pin-card__save">Save</span></div>
+    <a class="pin-card" href="https://www.pinterest.com/${esc(prof?.username || 'diegonmarcos')}/${esc(b.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}/" target="_blank" rel="noopener">
+      <div class="pin-card__media">
+        ${media}
+        <div class="pin-card__overlay"><span class="pin-card__save">${b.pins} pins</span></div>
       </div>
-      <div class="pin-card__title">${p.title}</div>
-      <div class="pin-card__meta">
-        <span class="pin-card__avatar" style="background:${p.color}">${p.author.charAt(0)}</span>
-        <span>${p.author.split(' ')[0]}</span>
-      </div>
-    </div>`;
+      <div class="pin-card__title">${esc(b.name)}</div>
+      ${b.desc ? `<div class="pin-card__meta">${esc(b.desc)}</div>` : `<div class="pin-card__meta">${b.pins} pins</div>`}
+    </a>`;
   }).join('');
 
   view.innerHTML = `
     <nav class="pin-nav">
       <div class="pin-nav__inner">
         <span class="pin-nav__logo">P</span>
-        <a href="#" class="pin-nav__tab pin-nav__tab--active">Home</a>
-        <a href="#" class="pin-nav__tab">Explore</a>
+        <a href="#" class="pin-nav__tab pin-nav__tab--active">Boards</a>
+        <a href="https://www.pinterest.com/${esc(prof?.username || 'diegonmarcos')}/" target="_blank" rel="noopener" class="pin-nav__tab">Profile</a>
         <div class="pin-nav__search"><input placeholder="Search for ideas"></div>
         <div class="pin-nav__icons">${PIN_ICON.bell}${PIN_ICON.chat}<span class="pin-nav__avatar" style="background:${AVATAR_COLORS[3]}">D</span></div>
       </div>
     </nav>
-    <div class="pin-board">${pins}</div>`;
+    <div class="pin-head">@${esc(prof?.username || 'diegonmarcos')} · <strong>${prof?.boards ?? boards.length}</strong> boards · <strong>${prof?.pins ?? 0}</strong> pins</div>
+    <div class="pin-board">${pins || '<p class="pin-empty">No boards.</p>'}</div>`;
 }
 
 // ─── ICQ VIEW (retro Win98 IM — aggregates the real profile data) ────────────

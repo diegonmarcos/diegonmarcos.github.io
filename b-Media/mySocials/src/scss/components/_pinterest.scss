@@ -64,6 +64,14 @@ $pin-chip: #262626;
   }
 }
 
+.pin-head {
+  padding: 8px 16px 0;
+  color: $pin-muted;
+  font-size: 14px;
+  strong { color: $pin-text; }
+}
+.pin-empty { padding: 40px; text-align: center; color: $pin-muted; }
+
 // ── Masonry board ────────────────────────────────────────
 .pin-board {
   padding: 16px;
@@ -78,6 +86,8 @@ $pin-chip: #262626;
   break-inside: avoid;
   margin-bottom: 16px;
   cursor: zoom-in;
+  display: block;
+  text-decoration: none;
 
   &__media {
     position: relative;
@@ -87,6 +97,8 @@ $pin-chip: #262626;
     color: rgba(255, 255, 255, 0.9);
     font-size: 34px;
   }
+  &__img { width: 100%; display: block; }
+  &__ph { width: 100%; @include flex-center; }
   &:hover .pin-card__overlay { opacity: 1; }
   &__overlay {
     position: absolute;

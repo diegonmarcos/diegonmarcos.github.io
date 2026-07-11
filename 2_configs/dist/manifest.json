@@ -4,10 +4,10 @@
     "timestamp": "",
     "schema": "front-data/v1"
   },
-  "projects": 45,
+  "projects": 47,
   "outputs": {
     "consolidated": 1,
     "per_concern": 8,
-    "per_project": 45
+    "per_project": 47
   }
 }

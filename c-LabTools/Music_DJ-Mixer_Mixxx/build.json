@@ -1,0 +1,23 @@
+{
+  "name": "Mixxx",
+  "framework": "vanilla",
+  "port": 8034,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    { "mod": "data_wrap", "dir": "src/data" },
+    { "mod": "copy", "files": "data-*.json.js", "from": "src/data" },
+    { "mod": "sass", "input": "src/scss/main.scss", "output": "style.css" },
+    { "mod": "esbuild", "input": "src/typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" },
+    { "mod": "copy", "files": "index.html", "from": "src" }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src",
+    "watch": [
+      { "mod": "sass", "input": "scss/main.scss", "output": "style.css" },
+      { "mod": "esbuild", "input": "typescript/main.ts", "output": "script.js", "format": "iife", "target": "es2020" }
+    ]
+  },
+  "deploy": {}
+}

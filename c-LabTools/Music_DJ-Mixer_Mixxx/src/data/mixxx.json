@@ -1,0 +1,13 @@
+{
+  "_description": "Data-driven entry for the Mixxx lab. Consume via globalThis.PORTAL_DATA[\"mixxx\"].<field>.",
+  "title": "Mixxx — Web DJ Mixer",
+  "seedTrack": {
+    "artist": "RÜFÜS DU SOL",
+    "title": "Innerbloom",
+    "bpm": 92
+  },
+  "decks": [
+    { "id": "a", "label": "Deck A", "defaultTrack": "RÜFÜS DU SOL — Innerbloom" },
+    { "id": "b", "label": "Deck B", "defaultTrack": "Load a track…" }
+  ]
+}

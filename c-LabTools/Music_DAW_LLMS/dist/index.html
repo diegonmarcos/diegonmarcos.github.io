@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LMMS — Web Beat Sequencer</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+      s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+    <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+
+    <script src="data-lmms.json.js"></script>
+    <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["lmms"];if(d&&d.title)document.title=d.title;})();</script>
+</head>
+<body>
+<div class="app">
+    <header class="topbar">
+        <h1 class="topbar__title">LMMS <span class="topbar__accent">Web Beat Sequencer</span></h1>
+        <div class="topbar__seed" id="seed-track">Preset: RÜFÜS DU SOL — Innerbloom · 92 BPM</div>
+    </header>
+
+    <section class="transport">
+        <button class="btn btn--play" id="play" type="button">▶ Play</button>
+        <div class="transport__tempo">
+            <label for="bpm">BPM <span id="disp-bpm">92</span></label>
+            <input type="range" id="bpm" min="60" max="160" value="92">
+        </div>
+        <button class="btn" id="clear" type="button">Clear</button>
+        <button class="btn" id="preset" type="button">Load Innerbloom</button>
+    </section>
+
+    <section class="grid" id="grid"><!-- rows injected by script --></section>
+
+    <footer class="hint">Click cells to toggle steps. Web Audio synthesizes every drum &amp; bass hit — no samples.</footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

@@ -102,10 +102,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "mySocials",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/mySocials"
     },
     "consumers": [
       "My Socials"

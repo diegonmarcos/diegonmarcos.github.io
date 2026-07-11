@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 45
+    "project_count": 47
   },
   "projects": [
     {
@@ -584,6 +584,42 @@
       "dep_count": 5,
       "has_dist": true,
       "deploy_name": "skills_mcp"
+    },
+    {
+      "name": "LMMS",
+      "slug": "Music_DAW_LLMS",
+      "path": "c-LabTools/Music_DAW_LLMS",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8035,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Music_DAW_LLMS"
+    },
+    {
+      "name": "Mixxx",
+      "slug": "Music_DJ-Mixer_Mixxx",
+      "path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+      "category": "c-LabTools",
+      "framework": "vanilla",
+      "port": 8034,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": true,
+      "deploy_name": "Music_DJ-Mixer_Mixxx"
     },
     {
       "name": "CentralBank",

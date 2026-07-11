@@ -156,8 +156,8 @@
     "deploy_name": "my-fin"
   },
   {
-    "path": "b-Media/myMoments",
-    "deploy_name": "myMoments"
+    "path": "b-Media/mySocials",
+    "deploy_name": "mySocials"
   },
   {
     "path": "b-MyData/myhealth",

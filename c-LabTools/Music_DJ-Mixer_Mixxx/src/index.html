@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mixxx — Web DJ Mixer</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+      s.parentNode.insertBefore(g,s);
+    })();
+    </script>
+    <script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+
+    <script src="data-mixxx.json.js"></script>
+    <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mixxx"];if(d&&d.title)document.title=d.title;})();</script>
+</head>
+<body>
+<div class="app">
+    <header class="topbar">
+        <h1 class="topbar__title">MIXXX <span class="topbar__accent">Web DJ Mixer</span></h1>
+        <div class="topbar__seed" id="seed-track">RÜFÜS DU SOL — Innerbloom · 92 BPM</div>
+    </header>
+
+    <main class="mixer">
+        <!-- DECK A -->
+        <section class="deck" data-deck="a">
+            <div class="deck__head">
+                <span class="deck__id">DECK A</span>
+                <span class="deck__track" id="track-a">RÜFÜS DU SOL — Innerbloom</span>
+            </div>
+            <label class="deck__load">
+                <span>Load track</span>
+                <input type="file" id="file-a" accept="audio/*">
+            </label>
+            <div class="deck__transport">
+                <button class="btn btn--play" id="play-a" type="button">▶</button>
+                <button class="btn" id="cue-a" type="button">CUE</button>
+            </div>
+            <div class="knob">
+                <label for="tempo-a">Tempo <span id="disp-tempo-a">100%</span></label>
+                <input type="range" id="tempo-a" min="80" max="120" value="100" step="1">
+            </div>
+            <div class="knob">
+                <label for="eq-a">Filter <span id="disp-eq-a">20000 Hz</span></label>
+                <input type="range" id="eq-a" min="200" max="20000" value="20000" step="100">
+            </div>
+            <div class="knob">
+                <label for="vol-a">Volume <span id="disp-vol-a">100%</span></label>
+                <input type="range" id="vol-a" min="0" max="100" value="100">
+            </div>
+        </section>
+
+        <!-- MIXER CENTER -->
+        <section class="center">
+            <div class="knob knob--center">
+                <label for="xfader">Crossfader</label>
+                <input type="range" id="xfader" min="0" max="100" value="50">
+                <div class="center__labels"><span>A</span><span>B</span></div>
+            </div>
+        </section>
+
+        <!-- DECK B -->
+        <section class="deck" data-deck="b">
+            <div class="deck__head">
+                <span class="deck__id">DECK B</span>
+                <span class="deck__track" id="track-b">Load a track…</span>
+            </div>
+            <label class="deck__load">
+                <span>Load track</span>
+                <input type="file" id="file-b" accept="audio/*">
+            </label>
+            <div class="deck__transport">
+                <button class="btn btn--play" id="play-b" type="button">▶</button>
+                <button class="btn" id="cue-b" type="button">CUE</button>
+            </div>
+            <div class="knob">
+                <label for="tempo-b">Tempo <span id="disp-tempo-b">100%</span></label>
+                <input type="range" id="tempo-b" min="80" max="120" value="100" step="1">
+            </div>
+            <div class="knob">
+                <label for="eq-b">Filter <span id="disp-eq-b">20000 Hz</span></label>
+                <input type="range" id="eq-b" min="200" max="20000" value="20000" step="100">
+            </div>
+            <div class="knob">
+                <label for="vol-b">Volume <span id="disp-vol-b">100%</span></label>
+                <input type="range" id="vol-b" min="0" max="100" value="100">
+            </div>
+        </section>
+    </main>
+
+    <footer class="hint">Load an audio file into each deck, hit ▶, and ride the crossfader. Seed track: RÜFÜS DU SOL — Innerbloom.</footer>
+</div>
+<script src="script.js"></script>
+</body>
+</html>

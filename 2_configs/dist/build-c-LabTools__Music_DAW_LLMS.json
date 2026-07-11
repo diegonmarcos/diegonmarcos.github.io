@@ -1,0 +1,83 @@
+{
+  "name": "LMMS",
+  "framework": "vanilla",
+  "port": 8035,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "data_wrap",
+      "dir": "src/data"
+    },
+    {
+      "mod": "copy",
+      "files": "data-*.json.js",
+      "from": "src/data"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/main.scss",
+      "output": "style.css"
+    },
+    {
+      "mod": "esbuild",
+      "input": "src/typescript/main.ts",
+      "output": "script.js",
+      "format": "iife",
+      "target": "es2020"
+    },
+    {
+      "mod": "copy",
+      "files": "index.html",
+      "from": "src"
+    }
+  ],
+  "serve": {
+    "mode": "auto",
+    "dir": "src",
+    "watch": [
+      {
+        "mod": "sass",
+        "input": "scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      }
+    ]
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "c-LabTools/Music_DAW_LLMS",
+    "category": "c-LabTools",
+    "project": "Music_DAW_LLMS",
+    "key": "c-LabTools__Music_DAW_LLMS",
+    "port": 8035,
+    "framework": "vanilla",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": false,
+      "deploy_name": "Music_DAW_LLMS",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
+    },
+    "consumers": [],
+    "has_package_json": false,
+    "has_manifest": false
+  }
+}

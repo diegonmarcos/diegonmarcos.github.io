@@ -564,11 +564,19 @@ function renderLinkedin(): void {
       </aside>
     </div>`;
 
-  // "…see more" toggles: hide the button when the text already fits.
+  // “…see more” toggles: show the button whenever the text is long enough
+  // to be clamped. A layout check (scrollHeight vs clientHeight) is unreliable here
+  // because this view may still be display:none (inactive theme tab) at render time,
+  // which makes both heights read 0 and hides the button permanently. A
+  // character-length heuristic works regardless of visibility/layout timing.
+  const LI_CLAMP_CHAR_THRESHOLD = 220; // ~7.6em clamp at 14px / 1.55-1.6 line-height
   view.querySelectorAll<HTMLElement>('.li-longtext').forEach(wrap => {
     const clamp = wrap.querySelector<HTMLElement>('.li-clamp')!;
     const btn = wrap.querySelector<HTMLElement>('.li-more')!;
-    if (clamp.scrollHeight - clamp.clientHeight < 4) { btn.style.display = 'none'; return; }
+    const textLen = (clamp.textContent || '').trim().length;
+    if (textLen <= LI_CLAMP_CHAR_THRESHOLD) { btn.style.display = 'none'; return; }
+    btn.style.display = '';
+    btn.textContent = '…see more';
     btn.addEventListener('click', () => {
       const open = clamp.classList.toggle('is-expanded');
       btn.textContent = open ? 'see less' : '…see more';
@@ -627,11 +635,28 @@ function renderPinterest(): void {
 
 // ─── ICQ VIEW (retro Win98 IM — aggregates the real profile data) ────────────
 
-// Daisy status flower, coloured per ICQ status.
-const icqFlower = (c: string) => `<svg class="icq-flower" viewBox="0 0 16 16" aria-hidden="true"><g fill="${c}"><ellipse cx="8" cy="3.2" rx="2.3" ry="2.6"/><ellipse cx="8" cy="12.8" rx="2.3" ry="2.6"/><ellipse cx="3.2" cy="8" rx="2.6" ry="2.3"/><ellipse cx="12.8" cy="8" rx="2.6" ry="2.3"/></g><circle cx="8" cy="8" r="2.3" fill="#ffd400"/></svg>`;
+// The real ICQ mascot: 7 green petals + 1 red petal around a yellow
+// center, every shape black-outlined (classic 1998-2014 emblem).
+// `dim` renders a hollow/greyed flower for the offline status.
+const icqFlower = (dim = false): string => {
+  const green = dim ? '#c7cbb9' : '#8fbf3f';
+  const red = dim ? '#c7cbb9' : '#ef4a2b';
+  const yellow = dim ? '#e4e4d8' : '#ffd400';
+  const stroke = dim ? '#9a9d90' : '#1a1a12';
+  const petals = Array.from({ length: 8 }, (_, i) => {
+    const angle = i * 45;
+    const fill = i === 0 ? red : green;
+    return `<ellipse cx="8" cy="2.9" rx="1.9" ry="2.9" fill="${fill}" stroke="${stroke}" stroke-width="0.5" transform="rotate(${angle} 8 8)"/>`;
+  }).join('');
+  return `<svg class="icq-flower" viewBox="0 0 16 16" aria-hidden="true">${petals}<circle cx="8" cy="8" r="2.4" fill="${yellow}" stroke="${stroke}" stroke-width="0.5"/></svg>`;
+};
+
+// Same flower, spinning/pulsing — the classic "connecting..." animation.
+const icqFlowerConnecting = (): string =>
+  icqFlower().replace('class="icq-flower"', 'class="icq-flower icq-flower--connecting"');
 
 const ICQ_STATUS = {
-  online: '#33b233', away: '#e0a000', dnd: '#d42a2a', offline: '#9aa0a6',
+  online: false, away: false, dnd: false, offline: true,
 };
 
 function renderICQ(): void {
@@ -708,9 +733,9 @@ function renderICQ(): void {
       <div class="icq-win icq-win--list">
         <div class="icq-win__bar">${icqFlower('#ffffff')}<span class="icq-win__title">ICQ</span>${winBtns}</div>
         <div class="icq-list">
-          <div class="icq-group">Online (${online.length})</div>
+          <div class="icq-group icq-group--online">Online (${online.length})</div>
           <ul>${online.map(contactRow).join('')}</ul>
-          <div class="icq-group">Offline (${offline.length})</div>
+          <div class="icq-group icq-group--offline">Offline (${offline.length})</div>
           <ul>${offline.map(contactRow).join('')}</ul>
         </div>
         <div class="icq-list__foot">${icqFlower(ICQ_STATUS.online)}<span>Online</span><span class="icq-uin">#${uin}</span></div>

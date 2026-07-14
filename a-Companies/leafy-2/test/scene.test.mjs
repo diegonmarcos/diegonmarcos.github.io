@@ -29,15 +29,25 @@ cfg.cubes.forEach((c, i) => {
 });
 
 // counts positive
-for (const k of ['stars', 'trees', 'rabbits', 'birds']) ok(cfg.world[k].count > 0, `world.${k}.count > 0`);
+for (const k of ['stars', 'trees']) ok(cfg.world[k].count > 0, `world.${k}.count > 0`);
 
-// referenced assets exist on disk
+// fauna: a species list with ground + air, each model present on disk
+ok(cfg.world.fauna.length >= 6, `many fauna species (>=6): ${cfg.world.fauna.length}`);
+ok(cfg.world.fauna.some((f) => f.type === 'ground'), 'has ground fauna');
+ok(cfg.world.fauna.some((f) => f.type === 'air'), 'has air fauna');
+cfg.world.fauna.forEach((f, i) => {
+  ok(f.count > 0 && f.scale > 0, `fauna[${i}] count/scale > 0`);
+  ok(f.type !== 'air' || f.height !== undefined, `fauna[${i}] air has height`);
+});
+
+// referenced assets exist on disk (textures + every fauna model)
 const assets = [
   cfg.assets.ground.map, cfg.assets.ground.normal, cfg.assets.ground.rough, cfg.assets.waterNormals,
-  cfg.assets.models.rabbit, cfg.assets.models.bird
+  ...cfg.world.fauna.map((f) => f.model)
 ];
 assets.forEach((a) => ok(existsSync(resolve(root, 'static', a)), `asset exists: static/${a}`));
 
 if (failed) { console.error(`\n${failed} check(s) failed`); process.exit(1); }
 const faces = cfg.cubes.reduce((n, c) => n + c.faces.length, 0);
-console.log(`✓ scene OK — night, 2 moons, ${cfg.spline.points.length}-pt spline, ${cfg.cubes.length} cubes/${faces} faces, ${assets.length} assets`);
+const critters = cfg.world.fauna.reduce((n, f) => n + f.count, 0);
+console.log(`✓ scene OK — night, 2 moons, ${cfg.spline.points.length}-pt spline, ${cfg.cubes.length} cubes/${faces} faces, ${cfg.world.fauna.length} species/${critters} critters, ${assets.length} assets`);

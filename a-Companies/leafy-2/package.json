@@ -1,5 +1,6 @@
 {
   "name": "leafy-2",
+  "description": "Daylight Surreal Scrollworld — real-time SvelteKit + Threlte",
   "private": true,
   "type": "module",
   "scripts": {

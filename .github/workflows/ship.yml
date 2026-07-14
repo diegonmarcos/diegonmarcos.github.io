@@ -383,7 +383,7 @@ jobs:
       - name: 🔨 Build Leafy2 (SvelteKit + Threlte)
         id: build-leafy-2
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/leafy-2/src/')
+          contains(steps.changed-files.outputs.all_changed_files, 'a-Companies/leafy-2/')
 
         run: |
           echo "🔨 Building Leafy2..."

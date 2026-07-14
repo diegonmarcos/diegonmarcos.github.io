@@ -2,10 +2,7 @@
   import * as THREE from 'three';
   import { onMount } from 'svelte';
   import { T, useThrelte } from '@threlte/core';
-  import { interactivity } from '@threlte/extras';
-  import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
-  import { base } from '$app/paths';
-  import type { SceneConfig } from './types';
+  import type { SceneConfig, Vec3 } from './types';
   import cfgJson from '$lib/data/scene.json';
 
   import CameraRig from './CameraRig.svelte';
@@ -17,36 +14,29 @@
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
 
-  let { scroll = 0 }: { scroll?: number } = $props();
+  // Bindable page-owned tooltip DOM element (drives "DRAG TO SPIN / CLICK TO OPEN").
+  let { scroll = 0, tooltip = undefined }: { scroll?: number; tooltip?: HTMLElement } = $props();
+
   const cfg = cfgJson as SceneConfig;
-
-  // Enable pointer events (onclick / onpointerenter) on meshes in this Canvas.
-  interactivity();
-
+  const v = (p: Vec3) => new THREE.Vector3(p[0], p[1], p[2]);
   const { renderer, scene } = useThrelte();
 
   onMount(() => {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = cfg.render.exposure;
-
-    // Real HDRI drives sky background + image-based lighting.
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    let env: THREE.Texture | undefined;
-    new RGBELoader().load(`${base}/${cfg.assets.sky}`, (hdr) => {
-      env = pmrem.fromEquirectangular(hdr).texture;
-      scene.environment = env;
-      scene.background = env;
-      hdr.dispose();
-      pmrem.dispose();
-    });
-    return () => { env?.dispose(); scene.environment = null; scene.background = null; };
+    scene.background = new THREE.Color(cfg.night.background); // night sky, not an HDRI
   });
 </script>
 
 <CameraRig {scroll} {cfg} />
 
-<T.DirectionalLight intensity={2.4} position={[300, 600, 200]} />
-<T.HemisphereLight args={[0xbfe3ff, 0x4a3b2a, 0.6]} />
+<!-- Moonlight + faint cool hemisphere bounce (no daytime HDRI). -->
+<T.DirectionalLight
+  color={cfg.night.moonlight.color}
+  intensity={cfg.night.moonlight.intensity}
+  position={cfg.night.moonlight.position}
+/>
+<T.HemisphereLight args={[cfg.night.hemisphere.sky, cfg.night.hemisphere.ground, cfg.night.hemisphere.intensity]} />
 
 <Stars {cfg} />
 <Moons {cfg} />
@@ -54,4 +44,4 @@
 <Water {cfg} />
 <Trees {cfg} />
 <Fauna {cfg} />
-<Cubes {cfg} />
+<Cubes {cfg} {tooltip} />

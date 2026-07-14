@@ -1,50 +1,70 @@
 {
-  "camera": { "fov": 60, "near": 0.1, "far": 6000 },
+  "camera": { "fov": 70, "near": 0.1, "far": 900 },
   "render": {
     "maxPixelRatio": 2,
     "exposure": 1.0,
-    "bloom": { "strength": 0.55, "radius": 0.4, "threshold": 0.85 }
+    "bloom": { "strength": 0.9, "radius": 0.5, "threshold": 0.7 }
+  },
+  "night": {
+    "background": "#05060a",
+    "moonlight": { "color": "#9db4ff", "intensity": 1.1, "position": [80, 160, -120] },
+    "hemisphere": { "sky": "#1a2240", "ground": "#0a0d06", "intensity": 0.35 }
   },
   "assets": {
-    "sky": "assets/hdri/sky_1k.hdr",
     "ground": {
       "map": "assets/textures/ground_diff_1k.jpg",
       "normal": "assets/textures/ground_nor_1k.jpg",
       "rough": "assets/textures/ground_rough_1k.jpg",
-      "repeat": 60
+      "repeat": 24
     },
-    "waterNormals": "assets/textures/waternormals.jpg"
+    "waterNormals": "assets/textures/waternormals.jpg",
+    "models": {
+      "rabbit": "assets/models/critter.glb",
+      "bird": "assets/models/bird.glb"
+    }
   },
   "world": {
-    "ground": { "size": 6000 },
-    "water": { "size": 700, "center": [-260, 0.3, -140] },
-    "stars": { "count": 3000, "radius": 2400 },
+    "ground": { "size": 900 },
+    "water": { "size": 120, "center": [-40, 0.05, -60] },
+    "stars": { "count": 3000, "radius": 320 },
     "moons": [
-      { "radius": 70, "position": [520, 620, -900], "color": "#cfd8ff" },
-      { "radius": 45, "position": [-620, 420, -1100], "color": "#ffe6c7" }
+      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff" },
+      { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0" }
     ],
-    "trees": { "count": 200, "area": 1600, "clear": 90 },
-    "rabbits": { "count": 12, "area": 260 },
-    "birds": { "count": 25, "area": 1400, "height": 260 }
+    "trees": { "count": 130, "area": 320, "clear": 16 },
+    "rabbits": { "count": 8, "area": 50, "scale": 0.03, "clip": "Survey" },
+    "birds": { "count": 20, "area": 240, "height": 60, "scale": 0.18, "clip": 0 }
   },
   "spline": {
-    "sections": 4,
     "points": [
-      [0, 42, 320],
-      [130, 30, 90],
-      [-70, 26, -170],
-      [40, 64, -460]
-    ],
-    "look": [
-      [0, 20, 0],
-      [50, 12, -50],
-      [-50, 12, -150],
-      [0, 18, -340]
+      [0, 4, 38], [0, 4.5, 20], [-1.5, 3, 5], [2.5, 3, -15],
+      [-2, 3.5, -35], [0, 5, -55], [0, 3.5, -80], [10, 8, -120]
     ]
   },
   "cubes": [
-    { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/", "position": [34, 20, 70], "color": "#4ade80" },
-    { "label": "Portfolio", "url": "https://diegonmarcos.com", "position": [-46, 18, -46], "color": "#60a5fa" },
-    { "label": "Contact", "url": "mailto:me@diegonmarcos.com", "position": [22, 24, -190], "color": "#f472b6" }
+    { "scroll": 0.0, "size": 1.8, "bg": "#0f172a", "faces": [
+      { "label": "Portfolio", "url": "https://diegonmarcos.com" },
+      { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/" },
+      { "label": "Case Study", "url": "https://diegonmarcos.com" },
+      { "label": "Design", "url": "https://diegonmarcos.com" },
+      { "label": "Figma", "url": "https://figma.com" },
+      { "label": "Dribbble", "url": "https://dribbble.com" }
+    ] },
+    { "scroll": 0.4, "size": 1.8, "bg": "#0f172a", "faces": [
+      { "label": "WebGL", "url": "https://threejs.org" },
+      { "label": "Svelte", "url": "https://svelte.dev" },
+      { "label": "Threlte", "url": "https://threlte.xyz" },
+      { "label": "Three.js", "url": "https://threejs.org" },
+      { "label": "GitHub", "url": "https://github.com/diegonmarcos" },
+      { "label": "Stack", "url": "https://diegonmarcos.com" }
+    ] },
+    { "scroll": 0.75, "size": 1.8, "bg": "#0f172a", "faces": [
+      { "label": "Twitter / X", "url": "https://twitter.com" },
+      { "label": "LinkedIn", "url": "https://linkedin.com" },
+      { "label": "Email", "url": "mailto:me@diegonmarcos.com" },
+      { "label": "Resume", "url": "https://diegonmarcos.com" },
+      { "label": "Blog", "url": "https://diegonmarcos.com" },
+      { "label": "About", "url": "https://diegonmarcos.com" }
+    ] }
   ]
 }

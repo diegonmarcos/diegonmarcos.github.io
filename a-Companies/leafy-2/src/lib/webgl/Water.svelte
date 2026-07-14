@@ -12,14 +12,15 @@
   const normals = new THREE.TextureLoader().load(`${base}/${cfg.assets.waterNormals}`);
   normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
 
+  const ml = cfg.night.moonlight.position;
   const water = new Water(new THREE.PlaneGeometry(size, size), {
     textureWidth: 512,
     textureHeight: 512,
     waterNormals: normals,
-    sunDirection: new THREE.Vector3(300, 600, 200).normalize(),
-    sunColor: 0xffffff,
-    waterColor: 0x224a5a,
-    distortionScale: 3.2,
+    sunDirection: new THREE.Vector3(ml[0], ml[1], ml[2]).normalize(),
+    sunColor: new THREE.Color(cfg.night.moonlight.color).getHex(),
+    waterColor: 0x0a1626,
+    distortionScale: 2.0,
     fog: false
   });
   water.rotation.x = -Math.PI / 2;

@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 47
+    "project_count": 48
   },
   "projects": [
     {
@@ -26,6 +26,20 @@
       "dep_count": 2,
       "has_dist": true,
       "deploy_name": "leafy"
+    },
+    {
+      "name": "Leafy2",
+      "slug": "leafy-2",
+      "path": "a-Companies/leafy-2",
+      "category": "a-Companies",
+      "framework": "sveltekit",
+      "port": 8023,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 11,
+      "has_dist": false,
+      "deploy_name": "leafy-2"
     },
     {
       "name": "Nexus",

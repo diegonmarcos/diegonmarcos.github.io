@@ -36,6 +36,10 @@
     "deploy_name": "leafy"
   },
   {
+    "path": "a-Companies/leafy-2",
+    "deploy_name": "leafy-2"
+  },
+  {
     "path": "b-Profiles/myprofile",
     "deploy_name": "myprofile"
   },

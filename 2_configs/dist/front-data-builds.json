@@ -1,5 +1,25 @@
 [
   {
+    "name": "Leafy2",
+    "framework": "sveltekit",
+    "port": 8023,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "a-Companies/leafy-2",
+    "_key": "a-Companies__leafy-2",
+    "_category": "a-Companies",
+    "_project": "leafy-2"
+  },
+  {
     "name": "Leafy",
     "framework": "vanilla",
     "port": 8021,

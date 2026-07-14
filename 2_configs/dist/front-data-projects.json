@@ -1,5 +1,17 @@
 [
   {
+    "path": "a-Companies/leafy-2",
+    "category": "a-Companies",
+    "project": "leafy-2",
+    "key": "a-Companies__leafy-2",
+    "name": "Leafy2",
+    "framework": "sveltekit",
+    "port": 8023,
+    "deploy_name": "leafy-2",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "a-Companies/leafy",
     "category": "a-Companies",
     "project": "leafy",

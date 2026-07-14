@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 47
+    "project_count": 48
   },
   "categories": [
     {
@@ -29,6 +29,15 @@
           "framework": "vanilla",
           "port": 8021,
           "has_dist": true
+        },
+        {
+          "name": "Leafy2",
+          "slug": "leafy-2",
+          "path": "a-Companies/leafy-2",
+          "category": "a-Companies",
+          "framework": "sveltekit",
+          "port": 8023,
+          "has_dist": false
         },
         {
           "name": "Nexus",

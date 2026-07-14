@@ -58,6 +58,59 @@
   "projects": [
     {
       "category": "a-Companies",
+      "project": "leafy-2",
+      "key": "a-Companies__leafy-2",
+      "path": "a-Companies/leafy-2",
+      "build": {
+        "name": "Leafy2",
+        "framework": "sveltekit",
+        "port": 8023,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": false,
+      "package": {
+        "name": "leafy-2",
+        "version": "1.0.0",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev --port 8023",
+          "build": "vite build",
+          "preview": "vite preview",
+          "check": "svelte-check --tsconfig ./tsconfig.json",
+          "test": "node test/scene.test.mjs"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.0",
+          "@sveltejs/kit": "^2.0.0",
+          "@sveltejs/vite-plugin-svelte": "^5.0.0",
+          "@types/three": "^0.169.0",
+          "svelte": "^5.8.0",
+          "svelte-check": "^4.0.0",
+          "typescript": "^5.0.0",
+          "vite": "^6.0.0"
+        },
+        "dependencies": {
+          "@threlte/core": "^8.0.0",
+          "@threlte/extras": "^9.0.0",
+          "three": "^0.169.0"
+        }
+      }
+    },
+    {
+      "category": "a-Companies",
       "project": "leafy",
       "key": "a-Companies__leafy",
       "path": "a-Companies/leafy",
@@ -4396,6 +4449,10 @@
     {
       "path": "a-Companies/leafy",
       "deploy_name": "leafy"
+    },
+    {
+      "path": "a-Companies/leafy-2",
+      "deploy_name": "leafy-2"
     },
     {
       "path": "b-Profiles/myprofile",

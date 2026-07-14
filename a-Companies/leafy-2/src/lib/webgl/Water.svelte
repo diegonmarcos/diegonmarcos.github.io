@@ -1,0 +1,32 @@
+<script lang="ts">
+  import * as THREE from 'three';
+  import { T, useTask } from '@threlte/core';
+  import { Water } from 'three/addons/objects/Water.js';
+  import { base } from '$app/paths';
+  import type { SceneConfig, Vec3 } from './types';
+
+  let { cfg }: { cfg: SceneConfig } = $props();
+  const { size, center } = cfg.world.water;
+  const c = center as Vec3;
+
+  const normals = new THREE.TextureLoader().load(`${base}/${cfg.assets.waterNormals}`);
+  normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
+
+  const water = new Water(new THREE.PlaneGeometry(size, size), {
+    textureWidth: 512,
+    textureHeight: 512,
+    waterNormals: normals,
+    sunDirection: new THREE.Vector3(300, 600, 200).normalize(),
+    sunColor: 0xffffff,
+    waterColor: 0x224a5a,
+    distortionScale: 3.2,
+    fog: false
+  });
+  water.rotation.x = -Math.PI / 2;
+  water.position.set(c[0], c[1], c[2]);
+
+  const mat = water.material as THREE.ShaderMaterial;
+  useTask((delta) => { mat.uniforms['time'].value += delta; });
+</script>
+
+<T is={water} />

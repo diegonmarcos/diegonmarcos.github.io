@@ -1,0 +1,50 @@
+{
+  "camera": { "fov": 60, "near": 0.1, "far": 6000 },
+  "render": {
+    "maxPixelRatio": 2,
+    "exposure": 1.0,
+    "bloom": { "strength": 0.55, "radius": 0.4, "threshold": 0.85 }
+  },
+  "assets": {
+    "sky": "assets/hdri/sky_1k.hdr",
+    "ground": {
+      "map": "assets/textures/ground_diff_1k.jpg",
+      "normal": "assets/textures/ground_nor_1k.jpg",
+      "rough": "assets/textures/ground_rough_1k.jpg",
+      "repeat": 60
+    },
+    "waterNormals": "assets/textures/waternormals.jpg"
+  },
+  "world": {
+    "ground": { "size": 6000 },
+    "water": { "size": 700, "center": [-260, 0.3, -140] },
+    "stars": { "count": 3000, "radius": 2400 },
+    "moons": [
+      { "radius": 70, "position": [520, 620, -900], "color": "#cfd8ff" },
+      { "radius": 45, "position": [-620, 420, -1100], "color": "#ffe6c7" }
+    ],
+    "trees": { "count": 200, "area": 1600, "clear": 90 },
+    "rabbits": { "count": 12, "area": 260 },
+    "birds": { "count": 25, "area": 1400, "height": 260 }
+  },
+  "spline": {
+    "sections": 4,
+    "points": [
+      [0, 42, 320],
+      [130, 30, 90],
+      [-70, 26, -170],
+      [40, 64, -460]
+    ],
+    "look": [
+      [0, 20, 0],
+      [50, 12, -50],
+      [-50, 12, -150],
+      [0, 18, -340]
+    ]
+  },
+  "cubes": [
+    { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/", "position": [34, 20, 70], "color": "#4ade80" },
+    { "label": "Portfolio", "url": "https://diegonmarcos.com", "position": [-46, 18, -46], "color": "#60a5fa" },
+    { "label": "Contact", "url": "mailto:me@diegonmarcos.com", "position": [22, 24, -190], "color": "#f472b6" }
+  ]
+}

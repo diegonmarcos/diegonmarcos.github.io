@@ -275,6 +275,23 @@ step_derive() {
 
   # front-deps.json — consumed by front-gen-root-pkg.sh → root package.json.
   jq '
+    # semver-aware version compare: parse "^7.1.10" -> [7,1,10]; non-semver -> null
+    def _ver_parse:
+      (capture("^[\\^~>=< ]*(?<v>[0-9]+(\\.[0-9]+)*)") .v // "")
+      | if . == "" then null else [ splits("\\.") | tonumber ] end;
+    # merge object $b into $a keeping the highest semver per key (last-wins if non-semver)
+    def _merge_highest($a; $b):
+      reduce ($b | to_entries[]) as $e ($a;
+        .[$e.key] as $cur
+        | if $cur == null then .[$e.key] = $e.value
+          else
+            ($cur | _ver_parse) as $pc
+            | ($e.value | _ver_parse) as $pn
+            | if ($pc == null or $pn == null) then .[$e.key] = $e.value
+              elif $pn >= $pc then .[$e.key] = $e.value
+              else .
+              end
+          end);
     [ .projects[] | select(.has_package_json) | {
         service: (.build.name // .project),
         folder: .path,
@@ -286,8 +303,8 @@ step_derive() {
         _meta: { generated_by: "2_configs/build.sh derive", schema: "front-deps/v1", total_services: ($svc | length) },
         node: {
           merged: {
-            dependencies:    (reduce $svc[] as $s ({}; . + $s.dependencies)    | to_entries | sort_by(.key) | from_entries),
-            devDependencies: (reduce $svc[] as $s ({}; . + $s.devDependencies) | to_entries | sort_by(.key) | from_entries)
+            dependencies:    (reduce $svc[] as $s ({}; _merge_highest(.; $s.dependencies))    | to_entries | sort_by(.key) | from_entries),
+            devDependencies: (reduce $svc[] as $s ({}; _merge_highest(.; $s.devDependencies)) | to_entries | sort_by(.key) | from_entries)
           },
           per_service: ($svc | sort_by(.folder))
         }

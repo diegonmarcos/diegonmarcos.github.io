@@ -27,6 +27,7 @@
     "stars": { "count": 3000, "radius": 320 },
     "fireflies": { "count": 140, "area": 300, "height": 34, "color": "#ffe6a0", "size": 1.8 },
     "grass": { "count": 6000, "area": 360, "height": 2.6, "color": "#274d2b", "colorVar": "#3f7a3a" },
+    "ghetto": { "center": [0, 0, -186], "length": 80, "side": 15, "shacks": 14, "walls": 7, "lanterns": 9, "bulbs": 70, "warm": "#ff9d4d", "window": "#ffb454" },
     "plants": {
       "area": 340, "clear": 12,
       "types": [
@@ -76,7 +77,8 @@
   "spline": {
     "points": [
       [0, 4, 38], [0, 4.5, 20], [-1.5, 3, 5], [2.5, 3, -15],
-      [-2, 3.5, -35], [0, 5, -55], [0, 3.5, -80], [10, 8, -120]
+      [-2, 3.5, -35], [0, 5, -55], [0, 3.5, -80], [10, 8, -120],
+      [4, 4.5, -152], [-3, 3.6, -186], [3, 4, -218]
     ]
   },
   "stops": [
@@ -92,7 +94,7 @@
       ] }
     },
     {
-      "scroll": 0.33, "title": "The Wilderness", "subtitle": "Living trees, grazing beasts, drifting birds.",
+      "scroll": 0.2, "title": "The Wilderness", "subtitle": "Living trees, grazing beasts, drifting birds.",
       "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
         { "label": "WebGL", "url": "https://threejs.org" },
         { "label": "Svelte", "url": "https://svelte.dev" },
@@ -103,7 +105,7 @@
       ] }
     },
     {
-      "scroll": 0.66, "title": "Mirror Lake", "subtitle": "Still water catching the moonlight.",
+      "scroll": 0.45, "title": "Mirror Lake", "subtitle": "Still water catching the moonlight.",
       "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
         { "label": "Twitter / X", "url": "https://twitter.com" },
         { "label": "LinkedIn", "url": "https://linkedin.com" },
@@ -114,7 +116,7 @@
       ] }
     },
     {
-      "scroll": 1.0, "title": "Beyond", "subtitle": "Spin a cube — each face opens a door.",
+      "scroll": 0.7, "title": "Beyond", "subtitle": "Spin a cube — each face opens a door.",
       "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
         { "label": "Cloud", "url": "https://diegonmarcos.com" },
         { "label": "Mail", "url": "mailto:me@diegonmarcos.com" },
@@ -122,6 +124,17 @@
         { "label": "Home", "url": "https://diegonmarcos.com" },
         { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/" },
         { "label": "Top", "url": "https://diegonmarcos.github.io/leafy-2/" }
+      ] }
+    },
+    {
+      "scroll": 1.0, "title": "Freetown", "subtitle": "Past the forest — a little anarchy: graffiti, shacks, string lights.",
+      "cube": { "size": 1.8, "bg": "#171214", "faces": [
+        { "label": "Music", "url": "https://diegonmarcos.com" },
+        { "label": "Art", "url": "https://diegonmarcos.com" },
+        { "label": "Zine", "url": "https://diegonmarcos.com" },
+        { "label": "Radio", "url": "https://diegonmarcos.com" },
+        { "label": "Market", "url": "https://diegonmarcos.com" },
+        { "label": "Enter", "url": "https://diegonmarcos.com" }
       ] }
     }
   ]

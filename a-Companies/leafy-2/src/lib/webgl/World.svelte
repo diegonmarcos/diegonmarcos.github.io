@@ -19,6 +19,7 @@
   import Trees from './Trees.svelte';
   import Grass from './Grass.svelte';
   import Plants from './Plants.svelte';
+  import Ghetto from './Ghetto.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
   import StatsSampler from './StatsSampler.svelte';
@@ -67,6 +68,7 @@
 <Trees {cfg} />
 <Grass {cfg} />
 <Plants {cfg} />
+<Ghetto {cfg} />
 <Fauna {cfg} />
 <Cubes {cfg} {tooltip} />
 <StatsSampler />

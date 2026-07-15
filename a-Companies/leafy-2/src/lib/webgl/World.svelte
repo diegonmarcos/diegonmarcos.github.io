@@ -17,6 +17,8 @@
   import Ground from './Ground.svelte';
   import Water from './Water.svelte';
   import Trees from './Trees.svelte';
+  import Grass from './Grass.svelte';
+  import Plants from './Plants.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
   import StatsSampler from './StatsSampler.svelte';
@@ -63,6 +65,8 @@
 <Ground {cfg} />
 <Water {cfg} />
 <Trees {cfg} />
+<Grass {cfg} />
+<Plants {cfg} />
 <Fauna {cfg} />
 <Cubes {cfg} {tooltip} />
 <StatsSampler />

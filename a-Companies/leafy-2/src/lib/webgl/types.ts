@@ -11,14 +11,30 @@ export interface FaunaSpecies {
   clip?: number;   // animation clip index; omit for static (rigged, no clips) models
 }
 
+export interface TreeType {
+  name: string;
+  trunk: string;
+  leaf: string;
+  shape: 'cone' | 'sphere';
+  minHeight: number;
+  maxHeight: number;
+  weight: number; // relative frequency
+}
+
 export interface CubeFace { label: string; url: string; }
-export interface CubeConfig { scroll: number; size: number; bg: string; faces: CubeFace[]; }
+export interface Stop {
+  scroll: number;
+  title: string;
+  subtitle: string;
+  cube: { size: number; bg: string; faces: CubeFace[] };
+}
 
 export interface SceneConfig {
   camera: { fov: number; near: number; far: number };
   render: { maxPixelRatio: number; exposure: number; bloom: { strength: number; radius: number; threshold: number } };
   night: {
     background: string;
+    ambient: { color: string; intensity: number };
     hemisphere: { sky: string; ground: string; intensity: number };
   };
   assets: {
@@ -26,15 +42,15 @@ export interface SceneConfig {
     waterNormals: string;
   };
   world: {
-    ground: { size: number };
+    ground: { size: number; roughness: number };
     water: { size: number; center: Vec3 };
     stars: { count: number; radius: number };
     moons: { radius: number; position: Vec3; color: string; emissive: number; light: number }[];
-    trees: { count: number; area: number; clear: number };
+    trees: { count: number; area: number; clear: number; types: TreeType[] };
     fauna: FaunaSpecies[];
   };
   spline: { points: Vec3[] };
-  cubes: CubeConfig[];
+  stops: Stop[];
 }
 
 export interface Updatable { update(elapsed: number, delta: number): void; }

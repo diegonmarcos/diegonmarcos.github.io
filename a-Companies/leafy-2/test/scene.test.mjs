@@ -26,10 +26,10 @@ cfg.world.moons.forEach((m, i) => {
 ok(!!cfg.night && !cfg.night.moonlight, 'night config, no fake moonlight directional');
 ok(!cfg.assets.sky, 'no daytime HDRI sky asset');
 
-// every cube: 6 faces, each label+url (per-face links)
-cfg.cubes.forEach((c, i) => {
-  ok(c.faces.length === 6, `cube[${i}] has 6 faces`);
-  c.faces.forEach((f, j) => ok(!!f.label && !!f.url, `cube[${i}].faces[${j}] has label+url`));
+// every stop carries a cube: 6 faces, each label+url (per-face links)
+cfg.stops.forEach((s, i) => {
+  ok(s.cube.faces.length === 6, `stop[${i}] cube has 6 faces`);
+  s.cube.faces.forEach((f, j) => ok(!!f.label && !!f.url, `stop[${i}].faces[${j}] has label+url`));
 });
 
 // counts positive
@@ -52,6 +52,6 @@ const assets = [
 assets.forEach((a) => ok(existsSync(resolve(root, 'static', a)), `asset exists: static/${a}`));
 
 if (failed) { console.error(`\n${failed} check(s) failed`); process.exit(1); }
-const faces = cfg.cubes.reduce((n, c) => n + c.faces.length, 0);
+const faces = cfg.stops.reduce((n, s) => n + s.cube.faces.length, 0);
 const critters = cfg.world.fauna.reduce((n, f) => n + f.count, 0);
-console.log(`✓ scene OK — night, 2 moons, ${cfg.spline.points.length}-pt spline, ${cfg.cubes.length} cubes/${faces} faces, ${cfg.world.fauna.length} species/${critters} critters, ${assets.length} assets`);
+console.log(`✓ scene OK — night, 2 moons, ${cfg.spline.points.length}-pt spline, ${cfg.stops.length} cubes/${faces} faces, ${cfg.world.fauna.length} species/${critters} critters, ${assets.length} assets`);

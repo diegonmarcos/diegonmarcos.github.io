@@ -376,6 +376,7 @@ jobs:
         run: |
           echo "🔨 Building Leafy2..."
           cd a-Companies/leafy-2
+          node test/scene.test.mjs
           bash build.sh build
           cd ../..
           echo "✅ Leafy2 build complete"

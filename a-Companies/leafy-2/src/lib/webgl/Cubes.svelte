@@ -25,18 +25,21 @@
     return new THREE.MeshStandardMaterial({ map: tex, emissiveMap: tex, emissive: new THREE.Color(0x000000), roughness: 0.2, metalness: 0.8 });
   }
 
-  // Build the 3 cubes on the path, each face a separate material+link (index-parallel).
+  // One cube per scroll stop, sitting on the path under the camera; each face a
+  // separate material+link (index-parallel). (original addProjectCubeAtScrollStop)
   const group = new THREE.Group();
   const cubes: THREE.Mesh[] = [];
-  for (const c of cfg.cubes) {
-    const materials = c.faces.map((f) => faceMaterial(f.label, c.bg));
-    const links = c.faces.map((f) => f.url);
-    const camPos = curve.getPointAt(c.scroll);
-    const look = curve.getPointAt(Math.min(1, c.scroll + 0.01));
+  for (const stop of cfg.stops) {
+    const cc = stop.cube;
+    const materials = cc.faces.map((f) => faceMaterial(f.label, cc.bg));
+    const links = cc.faces.map((f) => f.url);
+    const t = Math.min(stop.scroll, 0.985); // avoid zero-length look dir at the very end
+    const camPos = curve.getPointAt(t);
+    const look = curve.getPointAt(Math.min(1, t + 0.01));
     const dir = new THREE.Vector3().subVectors(look, camPos).normalize();
     const pos = camPos.clone().add(dir.multiplyScalar(6));
-    pos.y -= c.size;
-    const cube = new THREE.Mesh(new THREE.BoxGeometry(c.size, c.size, c.size), materials);
+    pos.y -= cc.size;
+    const cube = new THREE.Mesh(new THREE.BoxGeometry(cc.size, cc.size, cc.size), materials);
     cube.position.copy(pos);
     cube.userData = { links, autoRotate: true };
     group.add(cube);

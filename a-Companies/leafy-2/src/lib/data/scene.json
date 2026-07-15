@@ -2,12 +2,14 @@
   "camera": { "fov": 70, "near": 0.1, "far": 900 },
   "render": {
     "maxPixelRatio": 2,
-    "exposure": 1.0,
-    "bloom": { "strength": 0.9, "radius": 0.5, "threshold": 0.7 }
+    "exposure": 1.15,
+    "bloom": { "strength": 0.85, "radius": 0.5, "threshold": 0.72 }
   },
   "night": {
-    "background": "#05060a",
-    "hemisphere": { "sky": "#141a33", "ground": "#0a0d06", "intensity": 0.22 }
+    "background": "#070a12",
+    "env": { "intensity": 0.35 },
+    "ambient": { "color": "#4a5a86", "intensity": 0.55 },
+    "hemisphere": { "sky": "#2a355e", "ground": "#12160e", "intensity": 0.5 }
   },
   "assets": {
     "ground": {
@@ -19,14 +21,26 @@
     "waterNormals": "assets/textures/waternormals.jpg"
   },
   "world": {
-    "ground": { "size": 900 },
+    "ground": { "size": 900, "roughness": 0.72 },
     "water": { "size": 120, "center": [-40, 0.05, -60] },
     "stars": { "count": 3000, "radius": 320 },
     "moons": [
-      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 1.4 },
-      { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0", "emissive": 1.1, "light": 0.5 }
+      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 2.1 },
+      { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0", "emissive": 1.1, "light": 1.0 }
     ],
-    "trees": { "count": 130, "area": 320, "clear": 16 },
+    "trees": {
+      "count": 150,
+      "area": 340,
+      "clear": 16,
+      "types": [
+        { "name": "pine",   "trunk": "#3b2a17", "leaf": "#1f4d2b", "shape": "cone",   "minHeight": 16, "maxHeight": 30, "weight": 3 },
+        { "name": "spruce", "trunk": "#33241a", "leaf": "#274d38", "shape": "cone",   "minHeight": 20, "maxHeight": 38, "weight": 2 },
+        { "name": "oak",    "trunk": "#4a3520", "leaf": "#2f6b34", "shape": "sphere", "minHeight": 12, "maxHeight": 22, "weight": 3 },
+        { "name": "birch",  "trunk": "#8a8a7a", "leaf": "#3a7d3f", "shape": "cone",   "minHeight": 18, "maxHeight": 28, "weight": 1 },
+        { "name": "autumn", "trunk": "#3b2a17", "leaf": "#7a531f", "shape": "sphere", "minHeight": 12, "maxHeight": 20, "weight": 1 },
+        { "name": "bush",   "trunk": "#2a1c10", "leaf": "#35662f", "shape": "sphere", "minHeight": 5,  "maxHeight": 9,  "weight": 2 }
+      ]
+    },
     "fauna": [
       { "model": "assets/models/rabbit.glb",   "type": "ground", "count": 5, "scale": 2.0,  "area": 60 },
       { "model": "assets/models/critter.glb",  "type": "ground", "count": 2, "scale": 0.03, "area": 70, "clip": 0 },
@@ -51,30 +65,50 @@
       [-2, 3.5, -35], [0, 5, -55], [0, 3.5, -80], [10, 8, -120]
     ]
   },
-  "cubes": [
-    { "scroll": 0.0, "size": 1.8, "bg": "#0f172a", "faces": [
-      { "label": "Portfolio", "url": "https://diegonmarcos.com" },
-      { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/" },
-      { "label": "Case Study", "url": "https://diegonmarcos.com" },
-      { "label": "Design", "url": "https://diegonmarcos.com" },
-      { "label": "Figma", "url": "https://figma.com" },
-      { "label": "Dribbble", "url": "https://dribbble.com" }
-    ] },
-    { "scroll": 0.4, "size": 1.8, "bg": "#0f172a", "faces": [
-      { "label": "WebGL", "url": "https://threejs.org" },
-      { "label": "Svelte", "url": "https://svelte.dev" },
-      { "label": "Threlte", "url": "https://threlte.xyz" },
-      { "label": "Three.js", "url": "https://threejs.org" },
-      { "label": "GitHub", "url": "https://github.com/diegonmarcos" },
-      { "label": "Stack", "url": "https://diegonmarcos.com" }
-    ] },
-    { "scroll": 0.75, "size": 1.8, "bg": "#0f172a", "faces": [
-      { "label": "Twitter / X", "url": "https://twitter.com" },
-      { "label": "LinkedIn", "url": "https://linkedin.com" },
-      { "label": "Email", "url": "mailto:me@diegonmarcos.com" },
-      { "label": "Resume", "url": "https://diegonmarcos.com" },
-      { "label": "Blog", "url": "https://diegonmarcos.com" },
-      { "label": "About", "url": "https://diegonmarcos.com" }
-    ] }
+  "stops": [
+    {
+      "scroll": 0.0, "title": "Nightfall", "subtitle": "A surreal overworld under two moons.",
+      "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
+        { "label": "Portfolio", "url": "https://diegonmarcos.com" },
+        { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/" },
+        { "label": "Case Study", "url": "https://diegonmarcos.com" },
+        { "label": "Design", "url": "https://diegonmarcos.com" },
+        { "label": "Figma", "url": "https://figma.com" },
+        { "label": "Dribbble", "url": "https://dribbble.com" }
+      ] }
+    },
+    {
+      "scroll": 0.33, "title": "The Wilderness", "subtitle": "Living trees, grazing beasts, drifting birds.",
+      "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
+        { "label": "WebGL", "url": "https://threejs.org" },
+        { "label": "Svelte", "url": "https://svelte.dev" },
+        { "label": "Threlte", "url": "https://threlte.xyz" },
+        { "label": "Three.js", "url": "https://threejs.org" },
+        { "label": "GitHub", "url": "https://github.com/diegonmarcos" },
+        { "label": "Stack", "url": "https://diegonmarcos.com" }
+      ] }
+    },
+    {
+      "scroll": 0.66, "title": "Mirror Lake", "subtitle": "Still water catching the moonlight.",
+      "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
+        { "label": "Twitter / X", "url": "https://twitter.com" },
+        { "label": "LinkedIn", "url": "https://linkedin.com" },
+        { "label": "Email", "url": "mailto:me@diegonmarcos.com" },
+        { "label": "Resume", "url": "https://diegonmarcos.com" },
+        { "label": "Blog", "url": "https://diegonmarcos.com" },
+        { "label": "About", "url": "https://diegonmarcos.com" }
+      ] }
+    },
+    {
+      "scroll": 1.0, "title": "Beyond", "subtitle": "Spin a cube — each face opens a door.",
+      "cube": { "size": 1.8, "bg": "#0f172a", "faces": [
+        { "label": "Cloud", "url": "https://diegonmarcos.com" },
+        { "label": "Mail", "url": "mailto:me@diegonmarcos.com" },
+        { "label": "GitHub", "url": "https://github.com/diegonmarcos" },
+        { "label": "Home", "url": "https://diegonmarcos.com" },
+        { "label": "Leafy", "url": "https://diegonmarcos.github.io/front/a-Companies/leafy/" },
+        { "label": "Top", "url": "https://diegonmarcos.github.io/leafy-2/" }
+      ] }
+    }
   ]
 }

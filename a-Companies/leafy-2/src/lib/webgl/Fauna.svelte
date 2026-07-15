@@ -4,7 +4,7 @@
   import { T, useTask, useThrelte } from '@threlte/core';
   import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
   import { gltfLoader } from './assets/loaders';
-  import { base } from '$app/paths';
+  import { meshUrl } from './assets/catalog';
   import type { SceneConfig, FaunaSpecies } from './types';
 
   let { cfg }: { cfg: SceneConfig } = $props();
@@ -15,7 +15,6 @@
   const critters: Critter[] = [];
   const { renderer } = useThrelte();
   const loader = gltfLoader(renderer);
-  const url = (p: string) => `${base}/${p}`;
 
   function spawn(gltf: any, s: FaunaSpecies) {
     const clips: THREE.AnimationClip[] = gltf.animations ?? [];
@@ -35,7 +34,7 @@
 
   onMount(() => {
     for (const s of cfg.world.fauna) {
-      loader.load(url(s.model), (g) => spawn(g, s), undefined, (e) => console.warn('fauna load failed', s.model, e));
+      loader.load(meshUrl(s.asset), (g) => spawn(g, s), undefined, (e) => console.warn('fauna load failed', s.asset, e));
     }
   });
 

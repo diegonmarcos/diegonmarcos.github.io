@@ -42,21 +42,21 @@
       ]
     },
     "fauna": [
-      { "model": "assets/models/rabbit.glb",   "type": "ground", "count": 5, "scale": 2.0,  "area": 60 },
-      { "model": "assets/models/critter.glb",  "type": "ground", "count": 2, "scale": 0.03, "area": 70, "clip": 0 },
-      { "model": "assets/models/horse.glb",    "type": "ground", "count": 2, "scale": 0.02, "area": 130, "clip": 0 },
-      { "model": "assets/models/hound.glb",    "type": "ground", "count": 2, "scale": 2.0,  "area": 80 },
-      { "model": "assets/models/mouse.glb",    "type": "ground", "count": 5, "scale": 1.2,  "area": 40 },
-      { "model": "assets/models/frog.glb",     "type": "ground", "count": 3, "scale": 1.5,  "area": 34 },
-      { "model": "assets/models/turtle.glb",   "type": "ground", "count": 2, "scale": 2.0,  "area": 50 },
-      { "model": "assets/models/bear.glb",     "type": "ground", "count": 1, "scale": 3.0,  "area": 110 },
-      { "model": "assets/models/pug.glb",      "type": "ground", "count": 2, "scale": 1.5,  "area": 45 },
-      { "model": "assets/models/flamingo.glb", "type": "air", "count": 6, "scale": 0.18, "area": 240, "height": 60, "clip": 0 },
-      { "model": "assets/models/parrot.glb",   "type": "air", "count": 5, "scale": 0.25, "area": 200, "height": 72, "clip": 0 },
-      { "model": "assets/models/stork.glb",    "type": "air", "count": 4, "scale": 0.25, "area": 220, "height": 84, "clip": 0 },
-      { "model": "assets/models/tribird.glb",  "type": "air", "count": 4, "scale": 2.0,  "area": 180, "height": 50 },
-      { "model": "assets/models/owl.glb",      "type": "air", "count": 3, "scale": 2.0,  "area": 160, "height": 46 },
-      { "model": "assets/models/owltron.glb",  "type": "air", "count": 2, "scale": 2.0,  "area": 150, "height": 56 }
+      { "asset": "rabbit",   "type": "ground", "count": 5, "scale": 2.0,  "area": 60 },
+      { "asset": "fox",      "type": "ground", "count": 2, "scale": 0.03, "area": 70, "clip": 0 },
+      { "asset": "horse",    "type": "ground", "count": 2, "scale": 0.02, "area": 130, "clip": 0 },
+      { "asset": "hound",    "type": "ground", "count": 2, "scale": 2.0,  "area": 80 },
+      { "asset": "mouse",    "type": "ground", "count": 5, "scale": 1.2,  "area": 40 },
+      { "asset": "frog",     "type": "ground", "count": 3, "scale": 1.5,  "area": 34 },
+      { "asset": "turtle",   "type": "ground", "count": 2, "scale": 2.0,  "area": 50 },
+      { "asset": "bear",     "type": "ground", "count": 1, "scale": 3.0,  "area": 110 },
+      { "asset": "pug",      "type": "ground", "count": 2, "scale": 1.5,  "area": 45 },
+      { "asset": "flamingo", "type": "air", "count": 6, "scale": 0.18, "area": 240, "height": 60, "clip": 0 },
+      { "asset": "parrot",   "type": "air", "count": 5, "scale": 0.25, "area": 200, "height": 72, "clip": 0 },
+      { "asset": "stork",    "type": "air", "count": 4, "scale": 0.25, "area": 220, "height": 84, "clip": 0 },
+      { "asset": "tribird",  "type": "air", "count": 4, "scale": 2.0,  "area": 180, "height": 50 },
+      { "asset": "owl",      "type": "air", "count": 3, "scale": 2.0,  "area": 160, "height": 46 },
+      { "asset": "owltron",  "type": "air", "count": 2, "scale": 2.0,  "area": 150, "height": 56 }
     ]
   },
   "spline": {

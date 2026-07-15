@@ -2,7 +2,7 @@
 export type Vec3 = [number, number, number];
 
 export interface FaunaSpecies {
-  model: string;
+  asset: string; // catalog model id (src/lib/data/assets.json)
   type: 'ground' | 'air';
   count: number;
   scale: number;

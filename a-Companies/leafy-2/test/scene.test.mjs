@@ -22,6 +22,9 @@ for (const t of catalog.textureSets)
   for (const [k, p] of Object.entries(t.textures))
     ok(existsSync(resolve(root, 'static', p)), `catalog texture exists: ${t.id}.${k} (${p})`);
 
+// every fauna species must reference a real catalog model id (no dangling refs)
+for (const f of cfg.world.fauna) ok(ids.has(f.asset), `fauna asset in catalog: ${f.asset}`);
+
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');
 cfg.spline.points.forEach((p, i) => ok(Array.isArray(p) && p.length === 3, `spline.points[${i}] is Vec3`));

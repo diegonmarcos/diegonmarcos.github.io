@@ -1,9 +1,9 @@
 <script lang="ts">
   import * as THREE from 'three';
   import { onMount } from 'svelte';
-  import { T, useTask } from '@threlte/core';
-  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { T, useTask, useThrelte } from '@threlte/core';
   import { clone as skeletonClone } from 'three/addons/utils/SkeletonUtils.js';
+  import { gltfLoader } from './assets/loaders';
   import { base } from '$app/paths';
   import type { SceneConfig, FaunaSpecies } from './types';
 
@@ -13,7 +13,8 @@
   const mixers: THREE.AnimationMixer[] = [];
   interface Critter { obj: THREE.Object3D; type: 'ground' | 'air'; phase: number; base: THREE.Vector3; speed: number; }
   const critters: Critter[] = [];
-  const loader = new GLTFLoader();
+  const { renderer } = useThrelte();
+  const loader = gltfLoader(renderer);
   const url = (p: string) => `${base}/${p}`;
 
   function spawn(gltf: any, s: FaunaSpecies) {

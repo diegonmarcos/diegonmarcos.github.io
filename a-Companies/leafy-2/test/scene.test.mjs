@@ -7,8 +7,20 @@ import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const cfg = JSON.parse(readFileSync(resolve(root, 'src/lib/data/scene.json'), 'utf8'));
+const catalog = JSON.parse(readFileSync(resolve(root, 'src/lib/data/assets.json'), 'utf8'));
 let failed = 0;
 const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
+
+// asset catalog integrity (marketplace source of truth): unique ids, files exist, licensed
+const ids = new Set();
+for (const m of catalog.models) {
+  ok(!ids.has(m.id), `catalog model id unique: ${m.id}`); ids.add(m.id);
+  ok(existsSync(resolve(root, 'static', m.mesh)), `catalog mesh exists: ${m.mesh}`);
+  ok(!!m.license && !!m.author && !!m.source, `catalog ${m.id} has license/author/source`);
+}
+for (const t of catalog.textureSets)
+  for (const [k, p] of Object.entries(t.textures))
+    ok(existsSync(resolve(root, 'static', p)), `catalog texture exists: ${t.id}.${k} (${p})`);
 
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');

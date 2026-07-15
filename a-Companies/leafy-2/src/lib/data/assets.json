@@ -1,0 +1,31 @@
+{
+  "_meta": {
+    "schema": "leafy-assets/v1",
+    "note": "Marketplace-style catalog. One entry per reusable 3D asset. 'mesh' is the blank geometry; 'textures' is the swappable material set — kept separate so a mesh can be re-skinned and each part caches/downloads independently. Optimize with scripts/optimize-assets.mjs (Draco geometry + KTX2 textures + separated resources).",
+    "licenseValues": "CC0 | CC-BY | MIT | unknown (verify before commercial reuse)"
+  },
+  "models": [
+    { "id": "rabbit",   "name": "Rabbit",    "category": "fauna", "animated": false, "mesh": "assets/models/rabbit.glb",   "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "lowpoly"] },
+    { "id": "fox",      "name": "Fox",       "category": "fauna", "animated": true,  "mesh": "assets/models/critter.glb",  "license": "CC0",    "author": "PixelMannen",    "source": "Khronos glTF-Sample-Assets", "tags": ["animal", "ground", "quadruped"] },
+    { "id": "horse",    "name": "Horse",     "category": "fauna", "animated": true,  "mesh": "assets/models/horse.glb",    "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "ground", "quadruped"] },
+    { "id": "hound",    "name": "Hound",     "category": "fauna", "animated": false, "mesh": "assets/models/hound.glb",    "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "dog"] },
+    { "id": "mouse",    "name": "Mouse",     "category": "fauna", "animated": false, "mesh": "assets/models/mouse.glb",    "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "small"] },
+    { "id": "frog",     "name": "Frog",      "category": "fauna", "animated": false, "mesh": "assets/models/frog.glb",     "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "amphibian"] },
+    { "id": "turtle",   "name": "Turtle",    "category": "fauna", "animated": false, "mesh": "assets/models/turtle.glb",   "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "reptile"] },
+    { "id": "bear",     "name": "Bear",      "category": "fauna", "animated": false, "mesh": "assets/models/bear.glb",     "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "large"] },
+    { "id": "pug",      "name": "Pug",       "category": "fauna", "animated": false, "mesh": "assets/models/pug.glb",      "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "ground", "dog"] },
+    { "id": "flamingo", "name": "Flamingo",  "category": "fauna", "animated": true,  "mesh": "assets/models/flamingo.glb", "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "parrot",   "name": "Parrot",    "category": "fauna", "animated": true,  "mesh": "assets/models/parrot.glb",   "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "stork",    "name": "Stork",     "category": "fauna", "animated": true,  "mesh": "assets/models/stork.glb",    "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
+    { "id": "tribird",  "name": "Tri Bird",  "category": "fauna", "animated": false, "mesh": "assets/models/tribird.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "owl",      "name": "Owl",       "category": "fauna", "animated": false, "mesh": "assets/models/owl.glb",      "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "owltron",  "name": "Owltron",   "category": "fauna", "animated": false, "mesh": "assets/models/owltron.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] }
+  ],
+  "textureSets": [
+    { "id": "ground-grass-rock", "name": "Aerial Grass Rock", "category": "terrain", "license": "CC0", "author": "Poly Haven", "source": "polyhaven.com", "tags": ["ground", "pbr"],
+      "textures": { "albedo": "assets/textures/ground_diff_1k.jpg", "normal": "assets/textures/ground_nor_1k.jpg", "roughness": "assets/textures/ground_rough_1k.jpg" },
+      "missing": ["ao", "height"] },
+    { "id": "water-normals", "name": "Water Normals", "category": "material", "license": "MIT", "author": "three.js", "source": "three.js examples", "tags": ["water"],
+      "textures": { "normal": "assets/textures/waternormals.jpg" } }
+  ]
+}

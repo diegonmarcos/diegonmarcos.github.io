@@ -4,13 +4,13 @@
   // Built imperatively, mounted via <T is={group}>, animated in useTask.
   import * as THREE from 'three';
   import { T, useTask } from '@threlte/core';
-  import { base } from '$app/paths';
+  import { cdnUrl } from '../assets/catalog';
   import space from '$lib/data/space.json';
 
   const S = space as any;
   const texLoader = new THREE.TextureLoader();
   const tex = (p: string) => {
-    const t = texLoader.load(`${base}/${p}`);
+    const t = texLoader.load(cdnUrl(p));
     t.colorSpace = THREE.SRGBColorSpace;
     return t;
   };

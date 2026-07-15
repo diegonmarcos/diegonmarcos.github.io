@@ -6,7 +6,7 @@
   import type { SceneConfig, Vec3 } from './types';
   import cfgJson from '$lib/data/scene.json';
   import spaceCfg from '$lib/data/space.json';
-  import { base } from '$app/paths';
+  import { cdnUrl } from './assets/catalog';
 
   import CameraRig from './CameraRig.svelte';
   import FreeRig from './free/FreeRig.svelte';
@@ -37,7 +37,7 @@
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = cfg.render.exposure;
     // Full milky-way sky (equirect); fog still hazes the near forest.
-    const sky = new THREE.TextureLoader().load(`${base}/${spaceCfg.background}`);
+    const sky = new THREE.TextureLoader().load(cdnUrl(spaceCfg.background));
     sky.mapping = THREE.EquirectangularReflectionMapping;
     sky.colorSpace = THREE.SRGBColorSpace;
     scene.background = sky;

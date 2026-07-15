@@ -1,7 +1,8 @@
 // Typed access to the data-driven asset catalog (src/lib/data/assets.json).
 // Single source of truth for both the 3D scene and the marketplace listing.
 import catalog from '$lib/data/assets.json';
-import { base } from '$app/paths';
+
+const cdnBase = catalog.cdnBase as string;
 
 export interface ModelAsset {
   id: string; name: string; category: string; animated: boolean;
@@ -15,8 +16,13 @@ export interface TextureSetAsset {
 const models = catalog.models as ModelAsset[];
 const textureSets = catalog.textureSets as TextureSetAsset[];
 
-/** Resolve a catalog path through SvelteKit's base (GitHub Pages subpath safe). */
-export const assetUrl = (p: string) => `${base}/${p.replace(/^\/+/, '')}`;
+/** Resolve any asset path to its jsDelivr CDN URL. */
+export function cdnUrl(path: string): string {
+  return cdnBase + path.replace(/^\//, '');
+}
+
+/** Resolve a catalog path to its CDN URL. */
+export const assetUrl = (p: string) => cdnUrl(p);
 
 export const allModels = () => models;
 export const allTextureSets = () => textureSets;

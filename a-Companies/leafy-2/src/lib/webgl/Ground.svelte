@@ -1,14 +1,14 @@
 <script lang="ts">
   import * as THREE from 'three';
   import { T } from '@threlte/core';
-  import { base } from '$app/paths';
+  import { cdnUrl } from './assets/catalog';
   import type { SceneConfig } from './types';
 
   let { cfg }: { cfg: SceneConfig } = $props();
   const g = cfg.assets.ground;
 
   const loader = new THREE.TextureLoader();
-  const url = (p: string) => `${base}/${p}`;
+  const url = (p: string) => cdnUrl(p);
 
   const tune = (t: THREE.Texture, srgb = false) => {
     t.wrapS = t.wrapT = THREE.RepeatWrapping;

@@ -6,21 +6,29 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+// Assets now live in the front-assets-cdn submodule (served via jsDelivr), not local static/.
+const cdnRoot = resolve(root, '../../front-assets-cdn/a-Companies/leafy-2/static');
+const haveCdn = existsSync(cdnRoot);
 const cfg = JSON.parse(readFileSync(resolve(root, 'src/lib/data/scene.json'), 'utf8'));
 const catalog = JSON.parse(readFileSync(resolve(root, 'src/lib/data/assets.json'), 'utf8'));
 let failed = 0;
 const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
+// File-existence check: only asserted when the CDN submodule is checked out.
+const okFile = (p, m) => { if (haveCdn) ok(existsSync(resolve(cdnRoot, p)), m); };
+
+// catalog exposes the jsDelivr CDN base
+ok(typeof catalog.cdnBase === 'string' && catalog.cdnBase.startsWith('https://'), 'catalog has cdnBase');
 
 // asset catalog integrity (marketplace source of truth): unique ids, files exist, licensed
 const ids = new Set();
 for (const m of catalog.models) {
   ok(!ids.has(m.id), `catalog model id unique: ${m.id}`); ids.add(m.id);
-  ok(existsSync(resolve(root, 'static', m.mesh)), `catalog mesh exists: ${m.mesh}`);
+  okFile(m.mesh, `catalog mesh exists: ${m.mesh}`);
   ok(!!m.license && !!m.author && !!m.source, `catalog ${m.id} has license/author/source`);
 }
 for (const t of catalog.textureSets)
   for (const [k, p] of Object.entries(t.textures))
-    ok(existsSync(resolve(root, 'static', p)), `catalog texture exists: ${t.id}.${k} (${p})`);
+    okFile(p, `catalog texture exists: ${t.id}.${k} (${p})`);
 
 // every fauna species must reference a real catalog model id (no dangling refs)
 for (const f of cfg.world.fauna) ok(ids.has(f.asset), `fauna asset in catalog: ${f.asset}`);
@@ -33,7 +41,7 @@ for (const p of space.planets) {
   if (p.ring?.texture) spaceTex.push(p.ring.texture);
   for (const m of p.moons ?? []) if (m.texture) spaceTex.push(m.texture);
 }
-for (const p of spaceTex) ok(existsSync(resolve(root, 'static', p)), `space texture exists: ${p}`);
+for (const p of spaceTex) okFile(p, `space texture exists: ${p}`);
 ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between Mars and Jupiter');
 
 // free-ride mode config present (scenic <-> free switcher)
@@ -81,7 +89,7 @@ cfg.world.fauna.forEach((f, i) => {
 const assets = [
   cfg.assets.ground.map, cfg.assets.ground.normal, cfg.assets.ground.rough, cfg.assets.waterNormals
 ];
-assets.forEach((a) => ok(existsSync(resolve(root, 'static', a)), `asset exists: static/${a}`));
+assets.forEach((a) => okFile(a, `asset exists (CDN): ${a}`));
 
 if (failed) { console.error(`\n${failed} check(s) failed`); process.exit(1); }
 const faces = cfg.stops.reduce((n, s) => n + s.cube.faces.length, 0);

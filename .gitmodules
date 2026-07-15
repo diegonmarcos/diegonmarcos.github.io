@@ -13,3 +13,6 @@
 [submodule "tools"]
 	path = II_tools
 	url = git@github.com:diegonmarcos/ops-Tooling.git
+[submodule "front-assets-cdn"]
+	path = front-assets-cdn
+	url = git@github.com:diegonmarcos/front-assets-cdn

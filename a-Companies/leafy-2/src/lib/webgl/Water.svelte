@@ -2,14 +2,14 @@
   import * as THREE from 'three';
   import { T, useTask } from '@threlte/core';
   import { Water } from 'three/addons/objects/Water.js';
-  import { base } from '$app/paths';
+  import { cdnUrl } from './assets/catalog';
   import type { SceneConfig, Vec3 } from './types';
 
   let { cfg }: { cfg: SceneConfig } = $props();
   const { size, center } = cfg.world.water;
   const c = center as Vec3;
 
-  const normals = new THREE.TextureLoader().load(`${base}/${cfg.assets.waterNormals}`);
+  const normals = new THREE.TextureLoader().load(cdnUrl(cfg.assets.waterNormals));
   normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
 
   const moon = cfg.world.moons[0]; // reflect the primary moon on the water

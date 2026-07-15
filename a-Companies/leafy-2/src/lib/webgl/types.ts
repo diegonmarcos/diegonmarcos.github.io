@@ -19,7 +19,6 @@ export interface SceneConfig {
   render: { maxPixelRatio: number; exposure: number; bloom: { strength: number; radius: number; threshold: number } };
   night: {
     background: string;
-    moonlight: { color: string; intensity: number; position: Vec3 };
     hemisphere: { sky: string; ground: string; intensity: number };
   };
   assets: {
@@ -30,7 +29,7 @@ export interface SceneConfig {
     ground: { size: number };
     water: { size: number; center: Vec3 };
     stars: { count: number; radius: number };
-    moons: { radius: number; position: Vec3; color: string }[];
+    moons: { radius: number; position: Vec3; color: string; emissive: number; light: number }[];
     trees: { count: number; area: number; clear: number };
     fauna: FaunaSpecies[];
   };

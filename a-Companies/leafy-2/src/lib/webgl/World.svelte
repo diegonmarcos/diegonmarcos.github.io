@@ -30,12 +30,7 @@
 
 <CameraRig {scroll} {cfg} />
 
-<!-- Moonlight + faint cool hemisphere bounce (no daytime HDRI). -->
-<T.DirectionalLight
-  color={cfg.night.moonlight.color}
-  intensity={cfg.night.moonlight.intensity}
-  position={cfg.night.moonlight.position}
-/>
+<!-- Faint cool hemisphere fill only; the two moons (in <Moons/>) are the real lights. -->
 <T.HemisphereLight args={[cfg.night.hemisphere.sky, cfg.night.hemisphere.ground, cfg.night.hemisphere.intensity]} />
 
 <Stars {cfg} />

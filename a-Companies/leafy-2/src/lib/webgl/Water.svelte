@@ -12,13 +12,13 @@
   const normals = new THREE.TextureLoader().load(`${base}/${cfg.assets.waterNormals}`);
   normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
 
-  const ml = cfg.night.moonlight.position;
+  const moon = cfg.world.moons[0]; // reflect the primary moon on the water
   const water = new Water(new THREE.PlaneGeometry(size, size), {
     textureWidth: 512,
     textureHeight: 512,
     waterNormals: normals,
-    sunDirection: new THREE.Vector3(ml[0], ml[1], ml[2]).normalize(),
-    sunColor: new THREE.Color(cfg.night.moonlight.color).getHex(),
+    sunDirection: new THREE.Vector3(moon.position[0], moon.position[1], moon.position[2]).normalize(),
+    sunColor: new THREE.Color(moon.color).getHex(),
     waterColor: 0x0a1626,
     distortionScale: 2.0,
     fog: false

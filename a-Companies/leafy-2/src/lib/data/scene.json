@@ -7,8 +7,7 @@
   },
   "night": {
     "background": "#05060a",
-    "moonlight": { "color": "#9db4ff", "intensity": 1.1, "position": [80, 160, -120] },
-    "hemisphere": { "sky": "#1a2240", "ground": "#0a0d06", "intensity": 0.35 }
+    "hemisphere": { "sky": "#141a33", "ground": "#0a0d06", "intensity": 0.22 }
   },
   "assets": {
     "ground": {
@@ -24,8 +23,8 @@
     "water": { "size": 120, "center": [-40, 0.05, -60] },
     "stars": { "count": 3000, "radius": 320 },
     "moons": [
-      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff" },
-      { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0" }
+      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 1.4 },
+      { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0", "emissive": 1.1, "light": 0.5 }
     ],
     "trees": { "count": 130, "area": 320, "clear": 16 },
     "fauna": [

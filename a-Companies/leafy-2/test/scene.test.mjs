@@ -14,12 +14,16 @@ const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');
 cfg.spline.points.forEach((p, i) => ok(Array.isArray(p) && p.length === 3, `spline.points[${i}] is Vec3`));
 
-// two huge moons
+// two huge moons, each its own light source (emissive + directional intensity)
 ok(cfg.world.moons.length === 2, 'exactly 2 moons');
-cfg.world.moons.forEach((m, i) => ok(m.radius >= 50, `moon[${i}] is huge (r>=50): ${m.radius}`));
+cfg.world.moons.forEach((m, i) => {
+  ok(m.radius >= 50, `moon[${i}] is huge (r>=50): ${m.radius}`);
+  ok(m.light > 0, `moon[${i}] casts light (light>0)`);
+  ok(m.emissive > 0, `moon[${i}] glows (emissive>0)`);
+});
 
-// night config present (no daytime HDRI)
-ok(!!cfg.night && !!cfg.night.moonlight, 'night config present');
+// night config present, moons are the lights (no fake moonlight, no daytime HDRI)
+ok(!!cfg.night && !cfg.night.moonlight, 'night config, no fake moonlight directional');
 ok(!cfg.assets.sky, 'no daytime HDRI sky asset');
 
 // every cube: 6 faces, each label+url (per-face links)

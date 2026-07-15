@@ -42,7 +42,12 @@
       freeInput.throttle = (keys['w'] || keys['ArrowUp'] ? 1 : 0) - (keys['s'] || keys['ArrowDown'] ? 1 : 0);
       freeInput.steer = (keys['d'] || keys['ArrowRight'] ? 1 : 0) - (keys['a'] || keys['ArrowLeft'] ? 1 : 0);
     };
-    const kd = (e: KeyboardEvent) => { if (mode !== 'free') return; keys[e.key] = 1; axes(); };
+    const kd = (e: KeyboardEvent) => {
+      if (mode !== 'free') return;
+      if (e.key === 'q' || e.key === 'Q') freeInput.yaw -= 0.06;
+      if (e.key === 'e' || e.key === 'E') freeInput.yaw += 0.06;
+      keys[e.key] = 1; axes();
+    };
     const ku = (e: KeyboardEvent) => { keys[e.key] = 0; axes(); };
 
     // wheel = zoom (distance); shift+wheel = tilt (pitch)
@@ -54,17 +59,19 @@
     };
 
     // two-finger: pinch-distance = zoom, vertical-drag = tilt (Google-Maps style)
-    let pd = 0, pcy = 0;
+    let pd = 0, pcy = 0, pcx = 0;
     const dist2 = (t: TouchList) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
     const cenY = (t: TouchList) => (t[0].clientY + t[1].clientY) / 2;
-    const td = (e: TouchEvent) => { if (mode === 'free' && e.touches.length === 2) { pd = dist2(e.touches); pcy = cenY(e.touches); } };
+    const cenX = (t: TouchList) => (t[0].clientX + t[1].clientX) / 2;
+    const td = (e: TouchEvent) => { if (mode === 'free' && e.touches.length === 2) { pd = dist2(e.touches); pcy = cenY(e.touches); pcx = cenX(e.touches); } };
     const tm = (e: TouchEvent) => {
       if (mode !== 'free' || e.touches.length !== 2) return;
       e.preventDefault();
-      const d = dist2(e.touches), cy = cenY(e.touches);
+      const d = dist2(e.touches), cy = cenY(e.touches), cx = cenX(e.touches);
       freeInput.dist = clamp(freeInput.dist - (d - pd) * cam.pinchSens);   // spread → closer
-      freeInput.pitch = clamp(freeInput.pitch - (cy - pcy) * cam.tiltSens); // drag up → top-down
-      pd = d; pcy = cy;
+      freeInput.pitch = clamp(freeInput.pitch - (cy - pcy) * cam.tiltSens); // vertical → tilt
+      freeInput.yaw += (cx - pcx) * cam.yawSens;                            // horizontal → orbit
+      pd = d; pcy = cy; pcx = cx;
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });

@@ -65,6 +65,10 @@
   const galTarget = new THREE.Vector3(GAL.anchor[0], GAL.anchor[1], GAL.anchor[2])
     .add(new THREE.Vector3(GAL.camera.target[0], GAL.camera.target[1], GAL.camera.target[2]).multiplyScalar(GAL.scale));
   const galCam = galTarget.clone().add(new THREE.Vector3(0, GAL.camera.height, GAL.camera.distance).multiplyScalar(GAL.scale));
+  const galOffset = galCam.clone().sub(galTarget);
+  const UP = new THREE.Vector3(0, 1, 0);
+  const galOff = new THREE.Vector3();
+  const galCamNow = new THREE.Vector3();
 
   useTask((delta) => {
     if (!camera) return;
@@ -97,13 +101,21 @@
     const elev = rad(lerp(CAM.pitchDeg[0], CAM.pitchDeg[1], pitch));
     const horiz = Math.cos(elev) * boom;
     const vert = Math.sin(elev) * boom;
-    camGoal.copy(pos).addScaledVector(forward, -horiz).setY(pos.y + vert + CAM.baseHeight);
-    lookGoal.copy(pos).addScaledVector(forward, lerp(14, 0, pitch)).setY(pos.y + lerp(2.4, 0.8, pitch));
+    // camera behind the rider's back, orbitable sideways by yaw (full 3D control)
+    const camAngle = heading + Math.PI + inp.yaw;
+    camGoal.set(pos.x + Math.sin(camAngle) * horiz, pos.y + vert + CAM.baseHeight, pos.z + Math.cos(camAngle) * horiz);
+    const lead = lerp(14, 0, pitch) * Math.cos(inp.yaw);
+    lookGoal.set(pos.x + forward.x * lead, pos.y + lerp(2.4, 0.8, pitch), pos.z + forward.z * lead);
 
-    // zoom all the way out → fly up into the Milky Way constellation view
+    // zoom all the way out → fly up into the Milky Way (yaw orbits the galaxy too)
     const galT = THREE.MathUtils.smoothstep(dist, GAL.reveal[0], GAL.reveal[1]);
     freeInput.galaxy = galT;
-    if (galT > 0) { camGoal.lerp(galCam, galT); lookGoal.lerp(galTarget, galT); }
+    if (galT > 0) {
+      galOff.copy(galOffset).applyAxisAngle(UP, inp.yaw);
+      galCamNow.copy(galTarget).add(galOff);
+      camGoal.lerp(galCamNow, galT);
+      lookGoal.lerp(galTarget, galT);
+    }
 
     const k = 1 - Math.exp(-6 * delta);
     camera.position.lerp(camGoal, k);

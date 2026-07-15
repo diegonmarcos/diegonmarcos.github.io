@@ -13,7 +13,7 @@
         "sky":   { "dist": 0.9,  "pitch": 0.72 },
         "galaxy":{ "dist": 1.0,  "pitch": 0.8 }
       },
-      "wheelSens": 0.0012, "pinchSens": 0.004, "tiltSens": 0.007
+      "wheelSens": 0.0012, "pinchSens": 0.004, "tiltSens": 0.007, "yawSens": 0.009
     }
   },
   "render": {

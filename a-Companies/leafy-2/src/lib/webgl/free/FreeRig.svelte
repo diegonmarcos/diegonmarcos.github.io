@@ -4,9 +4,12 @@
   //   dist  = boom length  (pinch / wheel)        first-person(close) .. far
   //   pitch = elevation    (2-finger drag / shift-wheel)  parallel .. isometric .. top-down
   import * as THREE from 'three';
-  import { T, useTask } from '@threlte/core';
+  import { onMount } from 'svelte';
+  import { T, useTask, useThrelte } from '@threlte/core';
   import type { SceneConfig } from '../types';
   import { freeInput } from './freeInput';
+  import { gltfLoader } from '../assets/loaders';
+  import { meshUrl } from '../assets/catalog';
   import galaxyCfg from '$lib/data/galaxy.json';
 
   let { cfg }: { cfg: SceneConfig } = $props();
@@ -17,8 +20,6 @@
   const bike = new THREE.Group();
   const frameMat = new THREE.MeshStandardMaterial({ color: '#3ad07f', roughness: 0.4, metalness: 0.5 });
   const darkMat = new THREE.MeshStandardMaterial({ color: '#15181c', roughness: 0.8 });
-  const skinMat = new THREE.MeshStandardMaterial({ color: '#d9a679', roughness: 0.7 });
-  const clothMat = new THREE.MeshStandardMaterial({ color: '#2b3a55', roughness: 0.9 });
 
   const wheelGeo = new THREE.TorusGeometry(1.1, 0.16, 8, 24);
   wheelGeo.rotateY(Math.PI / 2);
@@ -36,14 +37,31 @@
   bike.add(bar(tube(1.1, 0.06), darkMat, [0, 2.7, 1.35], [0, 0, Math.PI / 2]));
   const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.18, 0.9), darkMat); seat.position.set(0, 2.7, -0.95); bike.add(seat);
 
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.5, 1.1, 4, 8), clothMat);
-  torso.position.set(0, 3.5, -0.4); torso.rotation.x = 0.5; bike.add(torso);
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.45, 12, 10), skinMat);
-  head.position.set(0, 4.4, 0.15); bike.add(head);
-  bike.add(bar(tube(1.4, 0.1), clothMat, [0, 3.6, 0.55], [-0.9, 0, 0]));
-  const legL = new THREE.Mesh(tube(1.6, 0.13), clothMat); legL.position.set(0.28, 2.6, -0.2); bike.add(legL);
-  const legR = new THREE.Mesh(tube(1.6, 0.13), clothMat); legR.position.set(-0.28, 2.6, -0.2); bike.add(legR);
   bike.scale.setScalar(F.bikeScale);
+
+  // real GLB rider (man) seated on the bike, animated; scale/offset/clip are data-driven
+  const R = F.rider;
+  const { renderer } = useThrelte();
+  let mixer: THREE.AnimationMixer | undefined;
+  onMount(() => {
+    gltfLoader(renderer).load(
+      meshUrl(R.asset),
+      (g) => {
+        const m = g.scene;
+        m.scale.setScalar(R.scale);
+        m.position.set(R.offset[0], R.offset[1], R.offset[2]);
+        m.rotation.y = R.faceY ?? 0;
+        bike.add(m);
+        if (g.animations?.length) {
+          mixer = new THREE.AnimationMixer(m);
+          const clip = g.animations.find((a) => a.name === R.clip) ?? g.animations[0];
+          mixer.clipAction(clip).play();
+        }
+      },
+      undefined,
+      (e) => console.warn('rider load failed', R.asset, e)
+    );
+  });
 
   // ---------------- state ----------------
   let heading = 0;
@@ -53,7 +71,6 @@
   const lookGoal = new THREE.Vector3();
   const lookAt = new THREE.Vector3();
   let camera = $state<THREE.PerspectiveCamera>();
-  let pedal = 0;
   let dist = CAM.start.dist;   // eased actuals
   let pitch = CAM.start.pitch;
 
@@ -87,9 +104,7 @@
     // wheels + pedalling
     const spin = vel * delta * 0.9;
     wheelF.rotation.x += spin; wheelB.rotation.x += spin;
-    pedal += spin;
-    legL.rotation.x = 0.4 + Math.sin(pedal) * 0.5;
-    legR.rotation.x = 0.4 + Math.sin(pedal + Math.PI) * 0.5;
+    mixer?.update(delta);
 
     // ease dist/pitch toward input targets (so presets glide)
     const e = 1 - Math.exp(-7 * delta);

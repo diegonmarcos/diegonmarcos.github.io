@@ -19,7 +19,8 @@
     { "id": "stork",    "name": "Stork",     "category": "fauna", "animated": true,  "mesh": "assets/models/stork.glb",    "license": "MIT",    "author": "mirada / three.js", "source": "three.js examples", "tags": ["animal", "air", "bird"] },
     { "id": "tribird",  "name": "Tri Bird",  "category": "fauna", "animated": false, "mesh": "assets/models/tribird.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
     { "id": "owl",      "name": "Owl",       "category": "fauna", "animated": false, "mesh": "assets/models/owl.glb",      "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
-    { "id": "owltron",  "name": "Owltron",   "category": "fauna", "animated": false, "mesh": "assets/models/owltron.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] }
+    { "id": "owltron",  "name": "Owltron",   "category": "fauna", "animated": false, "mesh": "assets/models/owltron.glb",  "license": "CC0",    "author": "Quaternius",     "source": "poly.pizza", "tags": ["animal", "air", "bird"] },
+    { "id": "man",      "name": "Rider",     "category": "character", "animated": true, "mesh": "assets/models/man.glb", "license": "CC-BY 4.0", "author": "three.js / mixamo", "source": "three.js examples", "tags": ["human", "rider"] }
   ],
   "textureSets": [
     { "id": "ground-grass-rock", "name": "Aerial Grass Rock", "category": "terrain", "license": "CC0", "author": "Poly Haven", "source": "polyhaven.com", "tags": ["ground", "pbr"],

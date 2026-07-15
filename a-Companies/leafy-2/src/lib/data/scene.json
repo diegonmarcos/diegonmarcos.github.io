@@ -1,5 +1,9 @@
 {
   "camera": { "fov": 70, "near": 0.1, "far": 4000 },
+  "free": {
+    "speed": 46, "turn": 1.9, "bikeScale": 1.0, "start": [0, -20], "bounds": 420,
+    "zoom": { "fpDist": 3.4, "fpHeight": 2.6, "heliDist": 12, "heliHeight": 120, "sensitivity": 0.0016 }
+  },
   "render": {
     "maxPixelRatio": 2,
     "exposure": 1.15,

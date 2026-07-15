@@ -9,6 +9,7 @@
   import { base } from '$app/paths';
 
   import CameraRig from './CameraRig.svelte';
+  import FreeRig from './free/FreeRig.svelte';
   import Stars from './Stars.svelte';
   import Fireflies from './Fireflies.svelte';
   import SolarSystem from './space/SolarSystem.svelte';
@@ -25,7 +26,7 @@
   import StatsSampler from './StatsSampler.svelte';
 
   // Bindable page-owned tooltip DOM element (drives "DRAG TO SPIN / CLICK TO OPEN").
-  let { scroll = 0, tooltip = undefined }: { scroll?: number; tooltip?: HTMLElement } = $props();
+  let { scroll = 0, tooltip = undefined, mode = 'scenic' }: { scroll?: number; tooltip?: HTMLElement; mode?: 'scenic' | 'free' } = $props();
 
   const cfg = cfgJson as SceneConfig;
   const v = (p: Vec3) => new THREE.Vector3(p[0], p[1], p[2]);
@@ -52,7 +53,11 @@
   });
 </script>
 
-<CameraRig {scroll} {cfg} />
+{#if mode === 'free'}
+  <FreeRig {cfg} />
+{:else}
+  <CameraRig {scroll} {cfg} />
+{/if}
 
 <!-- Fill so nothing is pure black; the two moons (in <Moons/>) are the key/shading lights. -->
 <T.AmbientLight color={cfg.night.ambient.color} intensity={cfg.night.ambient.intensity} />

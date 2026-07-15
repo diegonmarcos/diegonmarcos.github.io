@@ -36,6 +36,9 @@ for (const p of space.planets) {
 for (const p of spaceTex) ok(existsSync(resolve(root, 'static', p)), `space texture exists: ${p}`);
 ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between Mars and Jupiter');
 
+// free-ride mode config present (scenic <-> free switcher)
+ok(!!cfg.free && !!cfg.free.zoom && cfg.free.speed > 0, 'free-ride config present');
+
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');
 cfg.spline.points.forEach((p, i) => ok(Array.isArray(p) && p.length === 3, `spline.points[${i}] is Vec3`));

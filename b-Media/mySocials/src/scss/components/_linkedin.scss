@@ -58,71 +58,63 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
   &--primary { background: $li-blue; color: #1b1f23; }
 }
 
+// Fonts are dialled down vs a real LinkedIn page — the export packs in a lot
+// of rows, so tighter type + a per-section cap keeps every box compact.
 .li-section {
-  padding: 20px 24px;
-  &__title { font-size: 16px; font-weight: 600; margin-bottom: 14px; }
+  padding: 16px 22px;
+  &__title { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
 }
 .li-item {
-  @include flex-row($spacing-md);
+  @include flex-row($spacing-sm);
   align-items: flex-start;
-  padding: 12px 0;
+  padding: 9px 0;
   border-top: 1px solid $li-border;
   &:first-of-type { border-top: none; }
   &__logo {
-    width: 44px; height: 44px; border-radius: 6px; flex: 0 0 auto;
-    @include flex-center; background: $li-chip; color: $li-blue; font-weight: 700; font-size: 14px;
+    width: 38px; height: 38px; border-radius: 6px; flex: 0 0 auto;
+    @include flex-center; background: $li-chip; color: $li-blue; font-weight: 700; font-size: 15px;
   }
-  &__title { font-weight: 600; }
-  &__sub { font-size: 11px; }
-  &__meta { color: $li-muted; font-size: 10px; margin-top: 2px; }
+  &__title { font-weight: 600; font-size: 14px; line-height: 1.35; }
+  &__sub { font-size: 13px; }
+  &__meta { color: $li-muted; font-size: 12px; margin-top: 2px; }
 }
 .li-skills { @include flex-row($spacing-sm); flex-wrap: wrap; }
 .li-skill {
-  padding: 6px 14px; border-radius: 999px;
-  background: $li-chip; color: $li-text; font-size: 10px; font-weight: 600;
+  padding: 4px 11px; border-radius: 999px;
+  background: $li-chip; color: $li-text; font-size: 12px; font-weight: 600;
 }
 
-// Collapsible long text — clamp to a max height with a "see more" toggle
-.li-longtext {}
-.li-clamp {
-  max-height: 7.6em;
-  overflow: hidden;
-  position: relative;
-  &.is-expanded { max-height: none; }
-}
+// Capped-remainder wrapper: display:contents so hidden rows/chips rejoin the
+// section's own flow (block list OR flex chip-wrap) when revealed.
+.li-more-wrap { display: none; &--open { display: contents; } }
 .li-more {
-  margin-top: 6px;
-  background: none;
-  border: none;
-  padding: 0;
-  color: $li-muted;
-  font: inherit;
-  font-weight: 700;
+  margin-top: 8px;
+  padding: 5px 12px;
+  border: 1px solid $li-border;
+  border-radius: 999px;
+  background: transparent;
+  color: $li-blue;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  &:hover { color: $li-blue; }
+  transition: background 0.15s ease;
+  &:hover { background: $li-chip; }
 }
+// Inside the skills chip-wrap the toggle sits inline with the chips.
+.li-skills .li-more { margin-top: 0; align-self: center; }
 
-// About / Projects long-form text (rebuilt into paragraphs from the export's markers)
-.li-about { font-size: 11px; color: $li-text; }
-.li-para {
-  line-height: 1.6;
-  margin: 0 0 14px;
-  &:last-child { margin-bottom: 0; }
-  &__head {
-    display: block;
-    margin-bottom: 4px;
-    color: $li-blue;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    font-size: 10px;
-  }
+// About / Projects long-form text (preserve the export's line breaks)
+.li-about {
+  white-space: pre-line;
+  line-height: 1.55;
+  font-size: 13px;
+  color: $li-text;
 }
 .li-item--proj { display: block; }
 .li-item__desc {
   white-space: pre-line;
-  line-height: 1.55;
-  font-size: 11px;
+  line-height: 1.5;
+  font-size: 13px;
   color: $li-text;
   margin-top: 6px;
 }

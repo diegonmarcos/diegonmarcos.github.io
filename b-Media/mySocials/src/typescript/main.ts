@@ -415,7 +415,7 @@ const LI_ICON = {
 interface LIData {
   profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string; photo?: string };
   about: string;
-  experience: { title: string; company: string; dates: string; location?: string }[];
+  experience: { title: string; company: string; dates: string; location?: string; description?: string }[];
   education: { school: string; degree: string; dates: string }[];
   skills: string[];
   languages: { name: string; proficiency: string }[];
@@ -426,22 +426,20 @@ function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
 }
 
-// LinkedIn's export flattens the About/Project long-text (no newlines), but the author's
-// own markers survive: `---` separates sections, a leading `@tag … HEADING` names each,
-// and runs of 2+ spaces stand in for line breaks. Rebuild paragraphs from those markers.
-// ponytail: marker-based reflow of already-flattened text; the real breaks are gone upstream.
-function formatLI(text: string): string {
-  return text.split(/\s*---\s*/).map(s => s.trim()).filter(Boolean).map(block => {
-    const m = block.match(/^(@\S[\s\S]*?)\s{2,}([\s\S]*)$/);
-    const head = m ? m[1].trim() : '';
-    const body = (m ? m[2] : block).split(/\s{2,}/).map(l => esc(l.trim())).filter(Boolean).join('<br>');
-    return `<p class="li-para">${head ? `<strong class="li-para__head">${esc(head)}</strong>` : ''}${body}</p>`;
-  }).join('');
-}
+// Per-section visible-item caps. LinkedIn dumps a lot of rows; show a handful
+// and tuck the rest behind a "Show N more" toggle so no box runs away.
+const LI_CAP: Record<string, number> = { experience: 3, education: 3, skills: 12, projects: 2 };
 
-// Collapsible long-text: clamp to a max height with a "…see more" toggle (LinkedIn-style).
-function longText(html: string): string {
-  return `<div class="li-longtext"><div class="li-clamp">${html}</div><button class="li-more" type="button">…see more</button></div>`;
+// Render `items` with only `limit` visible; the remainder go into a
+// display:contents wrapper revealed by the trailing "Show N more" button
+// (toggle handler wired in renderLinkedin via event delegation).
+function liCap<T>(items: T[], limit: number, render: (x: T) => string, noun = 'more'): string {
+  if (items.length <= limit) return items.map(render).join('');
+  const shown = items.slice(0, limit).map(render).join('');
+  const rest = items.slice(limit).map(render).join('');
+  const label = `Show ${items.length - limit} ${noun}`;
+  return `${shown}<div class="li-more-wrap">${rest}</div>` +
+    `<button type="button" class="li-more" aria-expanded="false" data-label="${label}">${label}</button>`;
 }
 
 function renderLinkedin(): void {
@@ -466,19 +464,20 @@ function renderLinkedin(): void {
   const needExport = '<p class="li-need">Not in the saved profile page — add from your LinkedIn data export (Settings → Get a copy of your data).</p>';
 
   const expBody = d.experience.length
-    ? d.experience.map(e => `
+    ? liCap(d.experience, LI_CAP.experience, e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.company.charAt(0))}</div>
         <div>
           <div class="li-item__title">${esc(e.title)}</div>
           <div class="li-item__sub">${esc(e.company)}</div>
           <div class="li-item__meta">${esc(e.dates)}${e.location ? ' · ' + esc(e.location) : ''}</div>
+          ${e.description ? `<div class="li-item__desc">${longText(formatLI(e.description))}</div>` : ''}
         </div>
-      </div>`).join('')
+      </div>`, 'roles')
     : needExport;
 
   const eduBody = d.education.length
-    ? d.education.map(e => `
+    ? liCap(d.education, LI_CAP.education, e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.school.charAt(0))}</div>
         <div>
@@ -486,11 +485,11 @@ function renderLinkedin(): void {
           <div class="li-item__sub">${esc(e.degree)}</div>
           <div class="li-item__meta">${esc(e.dates)}</div>
         </div>
-      </div>`).join('')
+      </div>`, 'schools')
     : needExport;
 
   const skillsBody = d.skills.length
-    ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
+    ? `<div class="li-skills">${liCap(d.skills, LI_CAP.skills, s => `<span class="li-skill">${esc(s)}</span>`, 'skills')}</div>`
     : needExport;
 
   const aboutBody = d.about
@@ -506,14 +505,14 @@ function renderLinkedin(): void {
     : needExport;
 
   const projBody = d.projects.length
-    ? d.projects.map(pr => `
+    ? liCap(d.projects, LI_CAP.projects, pr => `
       <div class="li-item li-item--proj">
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
           <div class="li-item__desc">${longText(formatLI(pr.description))}</div>
         </div>
-      </div>`).join('')
+      </div>`, 'projects')
     : needExport;
 
   view.innerHTML = `
@@ -565,22 +564,14 @@ function renderLinkedin(): void {
       </aside>
     </div>`;
 
-  // “…see more” toggles: show the button whenever the text is long enough
-  // to be clamped. A layout check (scrollHeight vs clientHeight) is unreliable here
-  // because this view may still be display:none (inactive theme tab) at render time,
-  // which makes both heights read 0 and hides the button permanently. A
-  // character-length heuristic works regardless of visibility/layout timing.
-  const LI_CLAMP_CHAR_THRESHOLD = 220; // ~7.6em clamp at 14px / 1.55-1.6 line-height
-  view.querySelectorAll<HTMLElement>('.li-longtext').forEach(wrap => {
-    const clamp = wrap.querySelector<HTMLElement>('.li-clamp')!;
-    const btn = wrap.querySelector<HTMLElement>('.li-more')!;
-    const textLen = (clamp.textContent || '').trim().length;
-    if (textLen <= LI_CLAMP_CHAR_THRESHOLD) { btn.style.display = 'none'; return; }
-    btn.style.display = '';
-    btn.textContent = '…see more';
+  // "Show N more" toggles: reveal/hide the capped remainder in place.
+  view.querySelectorAll<HTMLButtonElement>('.li-more').forEach(btn => {
     btn.addEventListener('click', () => {
-      const open = clamp.classList.toggle('is-expanded');
-      btn.textContent = open ? 'see less' : '…see more';
+      const wrap = btn.previousElementSibling;
+      if (!(wrap instanceof HTMLElement) || !wrap.classList.contains('li-more-wrap')) return;
+      const open = wrap.classList.toggle('li-more-wrap--open');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show less' : (btn.dataset.label ?? 'Show more');
     });
   });
 }

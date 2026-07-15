@@ -2,7 +2,7 @@
   "camera": { "fov": 70, "near": 0.1, "far": 4000 },
   "free": {
     "speed": 46, "turn": 1.9, "steerSign": -1, "bikeScale": 1.0, "start": [0, -20], "bounds": 420,
-    "rider": { "asset": "man", "scale": 1.6, "offset": [0, 2.0, -0.35], "faceY": 3.14159, "clip": "Run" },
+    "rider": { "asset": "man", "scale": 1.45, "offset": [0, 0.85, -0.3], "faceY": 0, "clip": "Run" },
     "cam": {
       "distRange": [3.6, 95],
       "pitchDeg": [7, 88],

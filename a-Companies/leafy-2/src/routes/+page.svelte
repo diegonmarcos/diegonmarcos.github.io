@@ -7,6 +7,7 @@
   import ScrollNav from '$lib/ScrollNav.svelte';
   import ModeSwitch from '$lib/ModeSwitch.svelte';
   import Joystick from '$lib/Joystick.svelte';
+  import ViewPresets from '$lib/ViewPresets.svelte';
   import { freeInput } from '$lib/webgl/free/freeInput';
   import cfg from '$lib/data/scene.json';
 
@@ -14,7 +15,8 @@
   let tooltipEl = $state<HTMLElement>();
   let mode = $state<'scenic' | 'free'>('scenic');
   const stops = cfg.stops;
-  const sens = cfg.free.zoom.sensitivity;
+  const cam = cfg.free.cam;
+  const clamp = (n: number) => Math.min(1, Math.max(0, n));
 
   function toggle() {
     mode = mode === 'scenic' ? 'free' : 'scenic';
@@ -22,7 +24,6 @@
     freeInput.steer = freeInput.throttle = 0;
   }
 
-  // lock page scroll while free-riding
   $effect(() => {
     if (typeof document !== 'undefined') document.body.style.overflow = mode === 'free' ? 'hidden' : '';
   });
@@ -33,23 +34,36 @@
       const max = document.body.scrollHeight - window.innerHeight;
       scroll.target = max > 0 ? window.scrollY / max : 0;
     };
-    // free-ride input (only acts in free mode)
+
+    // free-ride movement (desktop keys)
     const keys: Record<string, number> = {};
-    const setAxes = () => {
+    const axes = () => {
       freeInput.throttle = (keys['w'] || keys['ArrowUp'] ? 1 : 0) - (keys['s'] || keys['ArrowDown'] ? 1 : 0);
       freeInput.steer = (keys['d'] || keys['ArrowRight'] ? 1 : 0) - (keys['a'] || keys['ArrowLeft'] ? 1 : 0);
     };
-    const kd = (e: KeyboardEvent) => { if (mode !== 'free') return; keys[e.key] = 1; setAxes(); };
-    const ku = (e: KeyboardEvent) => { keys[e.key] = 0; setAxes(); };
-    const wheel = (e: WheelEvent) => { if (mode !== 'free') return; e.preventDefault(); freeInput.zoom = Math.min(1, Math.max(0, freeInput.zoom + e.deltaY * sens)); };
-    let pinch = 0;
-    const td = (e: TouchEvent) => { if (mode === 'free' && e.touches.length === 2) pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); };
+    const kd = (e: KeyboardEvent) => { if (mode !== 'free') return; keys[e.key] = 1; axes(); };
+    const ku = (e: KeyboardEvent) => { keys[e.key] = 0; axes(); };
+
+    // wheel = zoom (distance); shift+wheel = tilt (pitch)
+    const wheel = (e: WheelEvent) => {
+      if (mode !== 'free') return;
+      e.preventDefault();
+      if (e.shiftKey) freeInput.pitch = clamp(freeInput.pitch + e.deltaY * cam.wheelSens);
+      else freeInput.dist = clamp(freeInput.dist + e.deltaY * cam.wheelSens);
+    };
+
+    // two-finger: pinch-distance = zoom, vertical-drag = tilt (Google-Maps style)
+    let pd = 0, pcy = 0;
+    const dist2 = (t: TouchList) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+    const cenY = (t: TouchList) => (t[0].clientY + t[1].clientY) / 2;
+    const td = (e: TouchEvent) => { if (mode === 'free' && e.touches.length === 2) { pd = dist2(e.touches); pcy = cenY(e.touches); } };
     const tm = (e: TouchEvent) => {
       if (mode !== 'free' || e.touches.length !== 2) return;
       e.preventDefault();
-      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
-      freeInput.zoom = Math.min(1, Math.max(0, freeInput.zoom - (d - pinch) * 0.004));
-      pinch = d;
+      const d = dist2(e.touches), cy = cenY(e.touches);
+      freeInput.dist = clamp(freeInput.dist - (d - pd) * cam.pinchSens);   // spread → closer
+      freeInput.pitch = clamp(freeInput.pitch - (cy - pcy) * cam.tiltSens); // drag up → top-down
+      pd = d; pcy = cy;
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -87,7 +101,8 @@
   <ScrollNav {stops} />
 {:else}
   <Joystick />
-  <div class="hint">drag to ride · pinch / scroll to lift the view</div>
+  <ViewPresets />
+  <div class="hint">joystick to ride · pinch = zoom · two-finger drag = tilt</div>
 {/if}
 
 <NerdStats />
@@ -118,7 +133,7 @@
   .hint {
     position: fixed; bottom: 34px; left: 50%; transform: translateX(-50%); z-index: 35;
     color: #9fb2d8; font: 500 12px/1 system-ui, sans-serif; letter-spacing: 0.05em;
-    background: rgba(8, 11, 20, 0.6); padding: 8px 14px; border-radius: 20px; pointer-events: none;
+    background: rgba(8, 11, 20, 0.6); padding: 8px 14px; border-radius: 20px; pointer-events: none; white-space: nowrap;
   }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 </style>

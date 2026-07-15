@@ -37,7 +37,7 @@ for (const p of spaceTex) ok(existsSync(resolve(root, 'static', p)), `space text
 ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between Mars and Jupiter');
 
 // free-ride mode config present (scenic <-> free switcher)
-ok(!!cfg.free && !!cfg.free.zoom && cfg.free.speed > 0, 'free-ride config present');
+ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
 
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');

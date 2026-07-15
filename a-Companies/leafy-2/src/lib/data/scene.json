@@ -1,8 +1,19 @@
 {
   "camera": { "fov": 70, "near": 0.1, "far": 4000 },
   "free": {
-    "speed": 46, "turn": 1.9, "bikeScale": 1.0, "start": [0, -20], "bounds": 420,
-    "zoom": { "fpDist": 3.4, "fpHeight": 2.6, "heliDist": 12, "heliHeight": 120, "sensitivity": 0.0016 }
+    "speed": 46, "turn": 1.9, "steerSign": -1, "bikeScale": 1.0, "start": [0, -20], "bounds": 420,
+    "cam": {
+      "distRange": [3.6, 95],
+      "pitchDeg": [7, 88],
+      "baseHeight": 2.6,
+      "start": { "dist": 0.14, "pitch": 0.5 },
+      "presets": {
+        "first": { "dist": 0.06, "pitch": 0.32 },
+        "top":   { "dist": 0.45, "pitch": 0.97 },
+        "sky":   { "dist": 0.9,  "pitch": 0.72 }
+      },
+      "wheelSens": 0.0012, "pinchSens": 0.004, "tiltSens": 0.007
+    }
   },
   "render": {
     "maxPixelRatio": 2,

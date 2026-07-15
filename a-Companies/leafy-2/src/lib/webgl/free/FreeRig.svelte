@@ -7,6 +7,7 @@
   import { T, useTask } from '@threlte/core';
   import type { SceneConfig } from '../types';
   import { freeInput } from './freeInput';
+  import galaxyCfg from '$lib/data/galaxy.json';
 
   let { cfg }: { cfg: SceneConfig } = $props();
   const F = (cfg as any).free;
@@ -59,6 +60,12 @@
   const lerp = THREE.MathUtils.lerp;
   const rad = THREE.MathUtils.degToRad;
 
+  // galaxy overview: where the camera flies when zoomed all the way out
+  const GAL = galaxyCfg as any;
+  const galTarget = new THREE.Vector3(GAL.anchor[0], GAL.anchor[1], GAL.anchor[2])
+    .add(new THREE.Vector3(GAL.camera.target[0], GAL.camera.target[1], GAL.camera.target[2]).multiplyScalar(GAL.scale));
+  const galCam = galTarget.clone().add(new THREE.Vector3(0, GAL.camera.height, GAL.camera.distance).multiplyScalar(GAL.scale));
+
   useTask((delta) => {
     if (!camera) return;
     const inp = freeInput;
@@ -92,6 +99,11 @@
     const vert = Math.sin(elev) * boom;
     camGoal.copy(pos).addScaledVector(forward, -horiz).setY(pos.y + vert + CAM.baseHeight);
     lookGoal.copy(pos).addScaledVector(forward, lerp(14, 0, pitch)).setY(pos.y + lerp(2.4, 0.8, pitch));
+
+    // zoom all the way out → fly up into the Milky Way constellation view
+    const galT = THREE.MathUtils.smoothstep(dist, GAL.reveal[0], GAL.reveal[1]);
+    freeInput.galaxy = galT;
+    if (galT > 0) { camGoal.lerp(galCam, galT); lookGoal.lerp(galTarget, galT); }
 
     const k = 1 - Math.exp(-6 * delta);
     camera.position.lerp(camGoal, k);

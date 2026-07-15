@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "note": "Simplified Milky Way constellation view (after e-Root/milky_way_map.html): 4-arm dust disk, Sagittarius A* black hole, our Solar System (incl. Leafy), and two neighbour star systems Sirius + Orion. Revealed by zooming all the way out in free-ride. Placed high above the world; hidden until the galaxy reveal engages.",
+    "source": "diegonmarcos.github.io/milky_way_map.html"
+  },
+  "anchor": [0, 1000, -220],
+  "scale": 1.5,
+  "reveal": [0.72, 1.0],
+  "disk": { "count": 16000, "arms": 4, "inner": 60, "outer": 800, "thickness": 8000, "size": 2.6 },
+  "blackHole": { "core": 15, "ringR": 30, "ringT": 8, "glow": 180, "color": "#ff8833", "label": "Sagittarius A*" },
+  "solar": { "pos": [200, 0, 0], "glow": 42, "color": "#ffe6a0", "label": "Solar System · incl. Leafy" },
+  "stars": [
+    { "id": "sirius", "pos": [280, 20, -50], "radius": 3.5, "glow": 45, "color": "#eaf2ff",
+      "companion": { "pos": [292, 20, -50], "radius": 0.9, "glow": 12, "color": "#9fc4ff" }, "label": "Sirius" },
+    { "id": "orion", "pos": [250, -40, 100], "radius": 3.0, "glow": 60, "color": "#ffd0a0", "label": "Orion" }
+  ],
+  "camera": { "target": [180, 0, 0], "distance": 560, "height": 300 }
+}

@@ -4,7 +4,7 @@
   import cfg from '$lib/data/scene.json';
   const P = cfg.free.cam.presets;
   const items: [string, { dist: number; pitch: number }][] = [
-    ['1st', P.first], ['Top', P.top], ['Sky', P.sky]
+    ['1st', P.first], ['Top', P.top], ['Sky', P.sky], ['Way', P.galaxy]
   ];
   const set = (p: { dist: number; pitch: number }) => { freeInput.dist = p.dist; freeInput.pitch = p.pitch; };
 </script>

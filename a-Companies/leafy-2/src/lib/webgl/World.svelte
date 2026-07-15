@@ -14,6 +14,7 @@
   import Fireflies from './Fireflies.svelte';
   import SolarSystem from './space/SolarSystem.svelte';
   import Comets from './space/Comets.svelte';
+  import MilkyWay from './space/MilkyWay.svelte';
   import Moons from './Moons.svelte';
   import Ground from './Ground.svelte';
   import Water from './Water.svelte';
@@ -68,6 +69,7 @@
 <Moons {cfg} />
 <SolarSystem />
 <Comets />
+<MilkyWay />
 <Ground {cfg} />
 <Water {cfg} />
 <Trees {cfg} />

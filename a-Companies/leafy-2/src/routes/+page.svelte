@@ -22,6 +22,7 @@
     mode = mode === 'scenic' ? 'free' : 'scenic';
     freeInput.active = mode === 'free';
     freeInput.steer = freeInput.throttle = 0;
+    freeInput.galaxy = 0; // hide the galaxy view when leaving free ride
   }
 
   $effect(() => {

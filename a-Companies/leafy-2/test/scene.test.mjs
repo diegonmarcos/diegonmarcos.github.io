@@ -39,6 +39,10 @@ ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between 
 // free-ride mode config present (scenic <-> free switcher)
 ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
 
+// milky way constellation view: black hole + solar (incl. Leafy) + two neighbour stars
+const galaxy = JSON.parse(readFileSync(resolve(root, 'src/lib/data/galaxy.json'), 'utf8'));
+ok(!!galaxy.blackHole && !!galaxy.solar && Array.isArray(galaxy.stars) && galaxy.stars.length === 2, 'galaxy: black hole + solar + two stars');
+
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');
 cfg.spline.points.forEach((p, i) => ok(Array.isArray(p) && p.length === 3, `spline.points[${i}] is Vec3`));

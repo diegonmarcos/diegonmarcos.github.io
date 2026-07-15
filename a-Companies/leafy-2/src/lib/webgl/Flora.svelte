@@ -29,15 +29,25 @@
 
     return raw.map((o) => {
       const unit = o.clone(true);
+      // Keep the variant's authored transform (Quaternius bakes each variant's real
+      // scale into its node; discarding it collapses trees to sub-unit geometry).
+      // Reset only world placement (row layout offset + spin), not intrinsic scale.
       unit.position.set(0, 0, 0);
       unit.rotation.set(0, 0, 0);
-      unit.scale.set(1, 1, 1);
       unit.updateMatrixWorld(true);
+      // Measure the variant's REAL rendered bbox (this child only, post-transform).
       const box = new THREE.Box3().setFromObject(unit);
       const ctr = new THREE.Vector3();
       box.getCenter(ctr);
-      // shift so centred on X/Z and resting on the ground plane
-      unit.position.set(-ctr.x, -box.min.y, -ctr.z);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      // Normalise to exactly 1 world-unit tall so scene.json min/maxScale read as
+      // literal world-unit heights, independent of each GLB's baked scale.
+      const norm = size.y > 1e-6 ? 1 / size.y : 1;
+      // Centre on X/Z about the (normalised) origin and drop the bottom to y=0.
+      unit.position.set(-ctr.x * norm, -box.min.y * norm, -ctr.z * norm);
+      unit.scale.multiplyScalar(norm);
+      // wrap so a later group-level scale (= target height) keeps bottom pinned at y=0.
       const wrap = new THREE.Group();
       wrap.add(unit);
       return wrap;

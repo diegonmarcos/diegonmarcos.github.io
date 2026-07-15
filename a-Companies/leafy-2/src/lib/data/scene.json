@@ -1,5 +1,5 @@
 {
-  "camera": { "fov": 70, "near": 0.1, "far": 900 },
+  "camera": { "fov": 70, "near": 0.1, "far": 4000 },
   "render": {
     "maxPixelRatio": 2,
     "exposure": 1.15,

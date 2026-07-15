@@ -39,7 +39,7 @@
   });
   const points = new THREE.Points(geo, mat);
 
-  useTask((_e, delta) => {
+  useTask((delta) => {
     const t = (mat.userData.t = (mat.userData.t ?? 0) + delta);
     for (let i = 0; i < f.count; i++) {
       const p = phase[i], s = speed[i];

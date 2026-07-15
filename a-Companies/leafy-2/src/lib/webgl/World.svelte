@@ -5,10 +5,14 @@
   import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
   import type { SceneConfig, Vec3 } from './types';
   import cfgJson from '$lib/data/scene.json';
+  import spaceCfg from '$lib/data/space.json';
+  import { base } from '$app/paths';
 
   import CameraRig from './CameraRig.svelte';
   import Stars from './Stars.svelte';
   import Fireflies from './Fireflies.svelte';
+  import SolarSystem from './space/SolarSystem.svelte';
+  import Comets from './space/Comets.svelte';
   import Moons from './Moons.svelte';
   import Ground from './Ground.svelte';
   import Water from './Water.svelte';
@@ -27,7 +31,11 @@
   onMount(() => {
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = cfg.render.exposure;
-    scene.background = new THREE.Color(cfg.night.background); // night sky, not an HDRI
+    // Full milky-way sky (equirect); fog still hazes the near forest.
+    const sky = new THREE.TextureLoader().load(`${base}/${spaceCfg.background}`);
+    sky.mapping = THREE.EquirectangularReflectionMapping;
+    sky.colorSpace = THREE.SRGBColorSpace;
+    scene.background = sky;
     scene.fog = new THREE.Fog(new THREE.Color(cfg.night.fog.color), cfg.night.fog.near, cfg.night.fog.far);
 
     // Neutral procedural IBL so PBR/metallic materials (GLB animals) aren't pure black.
@@ -50,6 +58,8 @@
 <Stars {cfg} />
 <Fireflies {cfg} />
 <Moons {cfg} />
+<SolarSystem />
+<Comets />
 <Ground {cfg} />
 <Water {cfg} />
 <Trees {cfg} />

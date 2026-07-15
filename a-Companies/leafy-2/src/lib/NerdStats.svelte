@@ -106,7 +106,9 @@
 </script>
 
 <button class="fab" class:on={open} onclick={toggle} aria-label="Toggle nerd data" title="Nerd data">
-  <span class="glyph">🤓</span>
+  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M2 12h3l2.5-6 3.5 12 2.5-8 2 4h6.5" />
+  </svg>
 </button>
 
 {#if open}

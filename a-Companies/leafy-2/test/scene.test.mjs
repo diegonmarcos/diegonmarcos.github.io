@@ -25,6 +25,17 @@ for (const t of catalog.textureSets)
 // every fauna species must reference a real catalog model id (no dangling refs)
 for (const f of cfg.world.fauna) ok(ids.has(f.asset), `fauna asset in catalog: ${f.asset}`);
 
+// solar system: every referenced planet/moon/ring/sky texture exists; Leafy present
+const space = JSON.parse(readFileSync(resolve(root, 'src/lib/data/space.json'), 'utf8'));
+const spaceTex = [space.background, space.sun.texture];
+for (const p of space.planets) {
+  if (p.texture) spaceTex.push(p.texture);
+  if (p.ring?.texture) spaceTex.push(p.ring.texture);
+  for (const m of p.moons ?? []) if (m.texture) spaceTex.push(m.texture);
+}
+for (const p of spaceTex) ok(existsSync(resolve(root, 'static', p)), `space texture exists: ${p}`);
+ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between Mars and Jupiter');
+
 // camera spline must be curvy (original 8 control points)
 ok(cfg.spline.points.length >= 8, 'spline has >=8 control points (not linear)');
 cfg.spline.points.forEach((p, i) => ok(Array.isArray(p) && p.length === 3, `spline.points[${i}] is Vec3`));

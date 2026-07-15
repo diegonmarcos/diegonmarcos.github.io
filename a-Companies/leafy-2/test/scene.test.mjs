@@ -59,10 +59,9 @@ cfg.world.fauna.forEach((f, i) => {
   ok(f.type !== 'air' || f.height !== undefined, `fauna[${i}] air has height`);
 });
 
-// referenced assets exist on disk (textures + every fauna model)
+// referenced textures exist on disk (fauna meshes are covered by the catalog checks above)
 const assets = [
-  cfg.assets.ground.map, cfg.assets.ground.normal, cfg.assets.ground.rough, cfg.assets.waterNormals,
-  ...cfg.world.fauna.map((f) => f.model)
+  cfg.assets.ground.map, cfg.assets.ground.normal, cfg.assets.ground.rough, cfg.assets.waterNormals
 ];
 assets.forEach((a) => ok(existsSync(resolve(root, 'static', a)), `asset exists: static/${a}`));
 

@@ -8,6 +8,7 @@
   "night": {
     "background": "#070a12",
     "env": { "intensity": 0.35 },
+    "fog": { "color": "#0a0e1a", "near": 40, "far": 320 },
     "ambient": { "color": "#4a5a86", "intensity": 0.55 },
     "hemisphere": { "sky": "#2a355e", "ground": "#12160e", "intensity": 0.5 }
   },
@@ -24,6 +25,7 @@
     "ground": { "size": 900, "roughness": 0.72 },
     "water": { "size": 120, "center": [-40, 0.05, -60] },
     "stars": { "count": 3000, "radius": 320 },
+    "fireflies": { "count": 140, "area": 300, "height": 34, "color": "#ffe6a0", "size": 1.8 },
     "moons": [
       { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 2.1 },
       { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0", "emissive": 1.1, "light": 1.0 }

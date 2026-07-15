@@ -8,6 +8,7 @@
 
   import CameraRig from './CameraRig.svelte';
   import Stars from './Stars.svelte';
+  import Fireflies from './Fireflies.svelte';
   import Moons from './Moons.svelte';
   import Ground from './Ground.svelte';
   import Water from './Water.svelte';
@@ -27,6 +28,7 @@
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = cfg.render.exposure;
     scene.background = new THREE.Color(cfg.night.background); // night sky, not an HDRI
+    scene.fog = new THREE.Fog(new THREE.Color(cfg.night.fog.color), cfg.night.fog.near, cfg.night.fog.far);
 
     // Neutral procedural IBL so PBR/metallic materials (GLB animals) aren't pure black.
     // Dim intensity keeps the night mood; background stays the dark colour above.
@@ -46,6 +48,7 @@
 <T.HemisphereLight args={[cfg.night.hemisphere.sky, cfg.night.hemisphere.ground, cfg.night.hemisphere.intensity]} />
 
 <Stars {cfg} />
+<Fireflies {cfg} />
 <Moons {cfg} />
 <Ground {cfg} />
 <Water {cfg} />

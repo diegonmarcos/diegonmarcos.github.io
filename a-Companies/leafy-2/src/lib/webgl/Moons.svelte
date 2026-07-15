@@ -16,6 +16,7 @@
       emissiveIntensity={m.emissive}
       roughness={0.9}
       metalness={0}
+      fog={false}
     />
   </T.Mesh>
 

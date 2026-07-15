@@ -33,6 +33,19 @@ for (const t of catalog.textureSets)
 // every fauna species must reference a real catalog model id (no dangling refs)
 for (const f of cfg.world.fauna) ok(ids.has(f.asset), `fauna asset in catalog: ${f.asset}`);
 
+// flora: GLB-based trees/bushes/grass/rocks replacing the old procedural forest.
+// non-empty; every asset resolves to a catalog id + on-disk mesh; counts/scale > 0.
+ok(Array.isArray(cfg.world.flora) && cfg.world.flora.length > 0, 'world.flora is a non-empty array');
+ok(!cfg.world.trees && !cfg.world.grass && !cfg.world.plants, 'procedural trees/grass/plants retired');
+cfg.world.flora.forEach((f, i) => {
+  ok(ids.has(f.asset), `flora[${i}] asset in catalog: ${f.asset}`);
+  const m = catalog.models.find((x) => x.id === f.asset);
+  if (m) okFile(m.mesh, `flora[${i}] mesh exists: ${m.mesh}`);
+  ok(f.count > 0, `flora[${i}] count > 0`);
+  ok(f.minScale > 0 && f.maxScale >= f.minScale, `flora[${i}] scale range valid`);
+  ok(f.area > 0 && f.clear >= 0, `flora[${i}] area/clear valid`);
+});
+
 // solar system: every referenced planet/moon/ring/sky texture exists; Leafy present
 const space = JSON.parse(readFileSync(resolve(root, 'src/lib/data/space.json'), 'utf8'));
 const spaceTex = [space.background, space.sun.texture];
@@ -74,7 +87,7 @@ cfg.stops.forEach((s, i) => {
 });
 
 // counts positive
-for (const k of ['stars', 'trees']) ok(cfg.world[k].count > 0, `world.${k}.count > 0`);
+ok(cfg.world.stars.count > 0, 'world.stars.count > 0');
 
 // fauna: a species list with ground + air, each model present on disk
 ok(cfg.world.fauna.length >= 6, `many fauna species (>=6): ${cfg.world.fauna.length}`);

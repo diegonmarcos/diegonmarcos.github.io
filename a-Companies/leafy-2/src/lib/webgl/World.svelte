@@ -18,9 +18,7 @@
   import Moons from './Moons.svelte';
   import Ground from './Ground.svelte';
   import Water from './Water.svelte';
-  import Trees from './Trees.svelte';
-  import Grass from './Grass.svelte';
-  import Plants from './Plants.svelte';
+  import Flora from './Flora.svelte';
   import Ghetto from './Ghetto.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
@@ -72,9 +70,7 @@
 <MilkyWay />
 <Ground {cfg} />
 <Water {cfg} />
-<Trees {cfg} />
-<Grass {cfg} />
-<Plants {cfg} />
+<Flora {cfg} />
 <Ghetto {cfg} />
 <Fauna {cfg} />
 <Cubes {cfg} {tooltip} />

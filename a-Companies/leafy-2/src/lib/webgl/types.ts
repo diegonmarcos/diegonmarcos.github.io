@@ -11,14 +11,16 @@ export interface FaunaSpecies {
   clip?: number;   // animation clip index; omit for static (rigged, no clips) models
 }
 
-export interface TreeType {
-  name: string;
-  trunk: string;
-  leaf: string;
-  shape: 'cone' | 'sphere';
-  minHeight: number;
-  maxHeight: number;
-  weight: number; // relative frequency
+export interface FloraSpec {
+  asset: string;      // catalog model id (src/lib/data/assets.json)
+  count: number;      // instances scattered
+  area: number;       // scatter square side (world units)
+  clear: number;      // keep-clear radius around path origin
+  minScale: number;
+  maxScale: number;
+  yaw?: boolean;      // random Y-rotation
+  childIndex?: number; // pick one variant child of a multi-variant GLB; omit = round-robin all children
+  single?: boolean;   // GLB is ONE centered object (e.g. big-tree) — clone whole scene, don't split children
 }
 
 export interface CubeFace { label: string; url: string; }
@@ -46,7 +48,7 @@ export interface SceneConfig {
     water: { size: number; center: Vec3 };
     stars: { count: number; radius: number };
     moons: { radius: number; position: Vec3; color: string; emissive: number; light: number }[];
-    trees: { count: number; area: number; clear: number; types: TreeType[] };
+    flora: FloraSpec[];
     fauna: FaunaSpecies[];
   };
   spline: { points: Vec3[] };

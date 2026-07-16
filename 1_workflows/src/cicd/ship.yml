@@ -27,6 +27,22 @@ jobs:
       - name: 📦 Install Dependencies
         run: bash build.sh deps
       # ============================================
+      # PER-PROJECT CI AWARENESS
+      # Symlink ship.yml into each project folder (beside build.sh/build.json),
+      # data-driven from the project registry. Runs in CI only.
+      # ============================================
+      - name: 🔗 Link ship.yml into each project folder
+        run: |
+          echo "🔗 Linking ship.yml into project folders..."
+          n=0
+          while IFS= read -r p; do
+            [ -d "$p" ] || continue
+            rel=$(realpath --relative-to="$p" .github/workflows/ship.yml)
+            ln -sfn "$rel" "$p/ship.yml"
+            n=$((n + 1))
+          done < <(jq -r '.[].path' 2_configs/dist/front-data-projects.json)
+          echo "✅ Linked ship.yml into $n project folder(s)"
+      # ============================================
       # ENGINE PREFLIGHT — block deploy if engine tests fail
       # ============================================
       - name: 🧪 Engine tests — SW + cache subset

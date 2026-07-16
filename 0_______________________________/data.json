@@ -31,15 +31,6 @@
           "has_dist": true
         },
         {
-          "name": "Leafy2",
-          "slug": "leafy-2",
-          "path": "a-Companies/leafy-2",
-          "category": "a-Companies",
-          "framework": "sveltekit",
-          "port": 8023,
-          "has_dist": false
-        },
-        {
           "name": "Nexus",
           "slug": "nexus",
           "path": "a-Companies/nexus",
@@ -262,6 +253,20 @@
           "framework": "sveltekit",
           "port": 8013,
           "has_dist": true
+        }
+      ]
+    },
+    {
+      "category": "b-Projects",
+      "projects": [
+        {
+          "name": "Leafy2",
+          "slug": "galaxy",
+          "path": "b-Projects/galaxy",
+          "category": "b-Projects",
+          "framework": "sveltekit",
+          "port": 8023,
+          "has_dist": false
         }
       ]
     },

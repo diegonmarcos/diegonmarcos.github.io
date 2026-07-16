@@ -5,7 +5,7 @@
   },
   {
     "category": "a-Companies",
-    "count": 4
+    "count": 3
   },
   {
     "category": "a-Individual",
@@ -33,6 +33,10 @@
   },
   {
     "category": "b-Profiles",
+    "count": 1
+  },
+  {
+    "category": "b-Projects",
     "count": 1
   },
   {

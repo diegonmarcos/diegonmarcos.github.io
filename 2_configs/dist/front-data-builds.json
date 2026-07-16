@@ -1,25 +1,5 @@
 [
   {
-    "name": "Leafy2",
-    "framework": "sveltekit",
-    "port": 8023,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "mod": "sveltekit"
-      }
-    ],
-    "serve": {
-      "mode": "sveltekit"
-    },
-    "deploy": {},
-    "_path": "a-Companies/leafy-2",
-    "_key": "a-Companies__leafy-2",
-    "_category": "a-Companies",
-    "_project": "leafy-2"
-  },
-  {
     "name": "Leafy",
     "framework": "vanilla",
     "port": 8021,
@@ -1291,95 +1271,6 @@
     "_project": "my-fin"
   },
   {
-    "name": "MyHealth",
-    "framework": "vanilla",
-    "port": 8026,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
-        "mod": "data_wrap",
-        "dir": "src/data"
-      },
-      {
-        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
-        "mod": "copy",
-        "files": "data-*.json.js",
-        "from": "src/data"
-      },
-      {
-        "mod": "sass",
-        "input": "src/scss/main.scss",
-        "output": "style.css"
-      },
-      {
-        "mod": "esbuild",
-        "input": "src/typescript/main.ts",
-        "output": "script.js",
-        "format": "iife",
-        "target": "es2020"
-      },
-      {
-        "mod": "copy",
-        "files": "index.html",
-        "from": "src"
-      },
-      {
-        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
-        "mod": "sw_register",
-        "files": "index.html"
-      },
-      {
-        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
-        "mod": "console_log",
-        "files": "index.html"
-      },
-      {
-        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
-        "mod": "esbuild_sw",
-        "input": "src/typescript/script-service-worker.ts",
-        "output": "script-service-worker.js",
-        "format": "iife",
-        "target": "es2020",
-        "hash_of": [
-          "index.html",
-          "script.js",
-          "style.css"
-        ],
-        "precache": [
-          "./",
-          "./index.html",
-          "./script.js",
-          "./style.css"
-        ]
-      }
-    ],
-    "serve": {
-      "mode": "auto",
-      "dir": "src",
-      "watch": [
-        {
-          "mod": "sass",
-          "input": "scss/main.scss",
-          "output": "style.css"
-        },
-        {
-          "mod": "esbuild",
-          "input": "typescript/main.ts",
-          "output": "script.js",
-          "format": "iife",
-          "target": "es2020"
-        }
-      ]
-    },
-    "deploy": {},
-    "_path": "b-MyData/myhealth",
-    "_key": "b-MyData__myhealth",
-    "_category": "b-MyData",
-    "_project": "myhealth"
-  },
-  {
     "name": "MyHealth Profile",
     "framework": "vanilla",
     "port": 8009,
@@ -1534,6 +1425,95 @@
     "_key": "b-MyData__myhealth-tracker",
     "_category": "b-MyData",
     "_project": "myhealth-tracker"
+  },
+  {
+    "name": "MyHealth",
+    "framework": "vanilla",
+    "port": 8026,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "_doc": "Wrap every *.json in src/data/ as a globalThis.PORTAL_DATA[<key>] companion (data-*.json.js). Engine: front-data-json-js-wrapper.sh.",
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "_doc": "Ship the wrapped data-*.json.js companions to dist/ root, so HTML can load them with <script src=\"data-<KEY>.json.js\"></script> — no fetch, no CORS.",
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      },
+      {
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "mod": "sw_register",
+        "files": "index.html"
+      },
+      {
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "mod": "console_log",
+        "files": "index.html"
+      },
+      {
+        "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
+        "mod": "esbuild_sw",
+        "input": "src/typescript/script-service-worker.ts",
+        "output": "script-service-worker.js",
+        "format": "iife",
+        "target": "es2020",
+        "hash_of": [
+          "index.html",
+          "script.js",
+          "style.css"
+        ],
+        "precache": [
+          "./",
+          "./index.html",
+          "./script.js",
+          "./style.css"
+        ]
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "b-MyData/myhealth",
+    "_key": "b-MyData__myhealth",
+    "_category": "b-MyData",
+    "_project": "myhealth"
   },
   {
     "name": "myID",
@@ -1729,6 +1709,26 @@
     "_key": "b-Profiles__myprofile",
     "_category": "b-Profiles",
     "_project": "myprofile"
+  },
+  {
+    "name": "Leafy2",
+    "framework": "sveltekit",
+    "port": 8023,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "b-Projects/galaxy",
+    "_key": "b-Projects__galaxy",
+    "_category": "b-Projects",
+    "_project": "galaxy"
   },
   {
     "name": "Carto",
@@ -2179,6 +2179,122 @@
     "_project": "skills_mcp"
   },
   {
+    "name": "LMMS",
+    "framework": "vanilla",
+    "port": 8035,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/Music_DAW_LLMS",
+    "_key": "c-LabTools__Music_DAW_LLMS",
+    "_category": "c-LabTools",
+    "_project": "Music_DAW_LLMS"
+  },
+  {
+    "name": "Mixxx",
+    "framework": "vanilla",
+    "port": 8034,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "data_wrap",
+        "dir": "src/data"
+      },
+      {
+        "mod": "copy",
+        "files": "data-*.json.js",
+        "from": "src/data"
+      },
+      {
+        "mod": "sass",
+        "input": "src/scss/main.scss",
+        "output": "style.css"
+      },
+      {
+        "mod": "esbuild",
+        "input": "src/typescript/main.ts",
+        "output": "script.js",
+        "format": "iife",
+        "target": "es2020"
+      },
+      {
+        "mod": "copy",
+        "files": "index.html",
+        "from": "src"
+      }
+    ],
+    "serve": {
+      "mode": "auto",
+      "dir": "src",
+      "watch": [
+        {
+          "mod": "sass",
+          "input": "scss/main.scss",
+          "output": "style.css"
+        },
+        {
+          "mod": "esbuild",
+          "input": "typescript/main.ts",
+          "output": "script.js",
+          "format": "iife",
+          "target": "es2020"
+        }
+      ]
+    },
+    "deploy": {},
+    "_path": "c-LabTools/Music_DJ-Mixer_Mixxx",
+    "_key": "c-LabTools__Music_DJ-Mixer_Mixxx",
+    "_category": "c-LabTools",
+    "_project": "Music_DJ-Mixer_Mixxx"
+  },
+  {
     "name": "CentralBank",
     "framework": "vanilla",
     "port": 8011,
@@ -2404,122 +2520,6 @@
     "_key": "c-LabTools__market_watch",
     "_category": "c-LabTools",
     "_project": "market_watch"
-  },
-  {
-    "name": "LMMS",
-    "framework": "vanilla",
-    "port": 8035,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "mod": "data_wrap",
-        "dir": "src/data"
-      },
-      {
-        "mod": "copy",
-        "files": "data-*.json.js",
-        "from": "src/data"
-      },
-      {
-        "mod": "sass",
-        "input": "src/scss/main.scss",
-        "output": "style.css"
-      },
-      {
-        "mod": "esbuild",
-        "input": "src/typescript/main.ts",
-        "output": "script.js",
-        "format": "iife",
-        "target": "es2020"
-      },
-      {
-        "mod": "copy",
-        "files": "index.html",
-        "from": "src"
-      }
-    ],
-    "serve": {
-      "mode": "auto",
-      "dir": "src",
-      "watch": [
-        {
-          "mod": "sass",
-          "input": "scss/main.scss",
-          "output": "style.css"
-        },
-        {
-          "mod": "esbuild",
-          "input": "typescript/main.ts",
-          "output": "script.js",
-          "format": "iife",
-          "target": "es2020"
-        }
-      ]
-    },
-    "deploy": {},
-    "_path": "c-LabTools/Music_DAW_LLMS",
-    "_key": "c-LabTools__Music_DAW_LLMS",
-    "_category": "c-LabTools",
-    "_project": "Music_DAW_LLMS"
-  },
-  {
-    "name": "Mixxx",
-    "framework": "vanilla",
-    "port": 8034,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "mod": "data_wrap",
-        "dir": "src/data"
-      },
-      {
-        "mod": "copy",
-        "files": "data-*.json.js",
-        "from": "src/data"
-      },
-      {
-        "mod": "sass",
-        "input": "src/scss/main.scss",
-        "output": "style.css"
-      },
-      {
-        "mod": "esbuild",
-        "input": "src/typescript/main.ts",
-        "output": "script.js",
-        "format": "iife",
-        "target": "es2020"
-      },
-      {
-        "mod": "copy",
-        "files": "index.html",
-        "from": "src"
-      }
-    ],
-    "serve": {
-      "mode": "auto",
-      "dir": "src",
-      "watch": [
-        {
-          "mod": "sass",
-          "input": "scss/main.scss",
-          "output": "style.css"
-        },
-        {
-          "mod": "esbuild",
-          "input": "typescript/main.ts",
-          "output": "script.js",
-          "format": "iife",
-          "target": "es2020"
-        }
-      ]
-    },
-    "deploy": {},
-    "_path": "c-LabTools/Music_DJ-Mixer_Mixxx",
-    "_key": "c-LabTools__Music_DJ-Mixer_Mixxx",
-    "_category": "c-LabTools",
-    "_project": "Music_DJ-Mixer_Mixxx"
   },
   {
     "name": "GDELTNews",
@@ -2956,6 +2956,46 @@
     "_project": "mymail"
   },
   {
+    "name": "MyMaps Maps",
+    "framework": "sveltekit",
+    "port": 8014,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymaps-maps",
+    "_key": "c-Suite__mymaps-maps",
+    "_category": "c-Suite",
+    "_project": "mymaps-maps"
+  },
+  {
+    "name": "MyMaps Navigation",
+    "framework": "sveltekit",
+    "port": 8018,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "c-Suite/mymaps-navigation",
+    "_key": "c-Suite__mymaps-navigation",
+    "_category": "c-Suite",
+    "_project": "mymaps-navigation"
+  },
+  {
     "name": "MyMaps",
     "framework": "vanilla",
     "port": 8027,
@@ -3043,46 +3083,6 @@
     "_key": "c-Suite__mymaps",
     "_category": "c-Suite",
     "_project": "mymaps"
-  },
-  {
-    "name": "MyMaps Maps",
-    "framework": "sveltekit",
-    "port": 8014,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "mod": "sveltekit"
-      }
-    ],
-    "serve": {
-      "mode": "sveltekit"
-    },
-    "deploy": {},
-    "_path": "c-Suite/mymaps-maps",
-    "_key": "c-Suite__mymaps-maps",
-    "_category": "c-Suite",
-    "_project": "mymaps-maps"
-  },
-  {
-    "name": "MyMaps Navigation",
-    "framework": "sveltekit",
-    "port": 8018,
-    "src": "src",
-    "dist": "dist",
-    "build": [
-      {
-        "mod": "sveltekit"
-      }
-    ],
-    "serve": {
-      "mode": "sveltekit"
-    },
-    "deploy": {},
-    "_path": "c-Suite/mymaps-navigation",
-    "_key": "c-Suite__mymaps-navigation",
-    "_category": "c-Suite",
-    "_project": "mymaps-navigation"
   },
   {
     "name": "Suite",

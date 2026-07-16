@@ -28,20 +28,6 @@
       "deploy_name": "leafy"
     },
     {
-      "name": "Leafy2",
-      "slug": "leafy-2",
-      "path": "a-Companies/leafy-2",
-      "category": "a-Companies",
-      "framework": "sveltekit",
-      "port": 8023,
-      "build_steps": [
-        "sveltekit"
-      ],
-      "dep_count": 11,
-      "has_dist": false,
-      "deploy_name": "leafy-2"
-    },
-    {
       "name": "Nexus",
       "slug": "nexus",
       "path": "a-Companies/nexus",
@@ -469,6 +455,20 @@
       "dep_count": 8,
       "has_dist": true,
       "deploy_name": "myprofile"
+    },
+    {
+      "name": "Leafy2",
+      "slug": "galaxy",
+      "path": "b-Projects/galaxy",
+      "category": "b-Projects",
+      "framework": "sveltekit",
+      "port": 8023,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 11,
+      "has_dist": false,
+      "deploy_name": "galaxy"
     },
     {
       "name": "Carto",

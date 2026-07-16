@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "a-Companies/leafy-2",
-    "category": "a-Companies",
-    "project": "leafy-2",
-    "key": "a-Companies__leafy-2",
+    "path": "b-Projects/galaxy",
+    "category": "b-Projects",
+    "project": "galaxy",
+    "key": "b-Projects__galaxy",
     "port": 8023,
     "framework": "sveltekit",
     "src": "src",
@@ -33,9 +33,10 @@
       }
     },
     "deploy": {
-      "deployed": true,
-      "deploy_name": "leafy-2",
-      "url": "https://diegonmarcos.github.io/leafy-2"
+      "deployed": false,
+      "deploy_name": "galaxy",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
     },
     "consumers": [],
     "has_package_json": true,

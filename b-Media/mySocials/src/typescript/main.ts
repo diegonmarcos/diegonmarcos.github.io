@@ -1030,8 +1030,64 @@ function init(): void {
   }, 300);
 }
 
+// ─── SELF-DIAGNOSTIC ──────────────────────────────────────────────────────────
+// Gated debug report — zero cost unless the URL has `?debug` / `#debug`, or the
+// caller runs `window.__debugReport()`. Dumps ONE JSON blob covering the things
+// that actually strand this page: which service-worker/bundle is controlling the
+// tab, what caches exist (names carry the build hash), whether the theme nav is
+// really wired (live click-test), and what element sits under the nav pixel.
+// Copy-paste the blob back to reproduce any "works here, not there" report.
+async function debugReport(): Promise<Record<string, unknown>> {
+  const nav = document.getElementById('theme-switch');
+  const btns = [...document.querySelectorAll<HTMLElement>('[data-theme-btn]')];
+
+  // Live wiring test: click a non-active pill, see if the theme changes, restore.
+  const before = document.documentElement.dataset.theme ?? '';
+  const probe = btns.find(b => b.dataset.themeBtn !== before);
+  probe?.click();
+  const navWired = document.documentElement.dataset.theme !== before;
+  if (navWired && before) setTheme(before as Theme); // restore
+
+  // Which SW/bundle controls this tab, and what caches exist.
+  let controller = 'none', regs: string[] = [], cacheInfo: Record<string, number> = {};
+  try {
+    controller = navigator.serviceWorker?.controller?.scriptURL ?? 'none';
+    const rs = await navigator.serviceWorker?.getRegistrations?.() ?? [];
+    regs = rs.map(r => [r.installing && 'installing', r.waiting && 'waiting', r.active && `active:${r.active.scriptURL}`].filter(Boolean).join(','));
+    for (const k of await caches.keys()) cacheInfo[k] = (await (await caches.open(k)).keys()).length;
+  } catch { /* SW/caches unavailable (file://, private mode) — leave defaults */ }
+
+  // What is actually under the nav pixel.
+  let hit = 'n/a';
+  if (nav) {
+    const r = nav.getBoundingClientRect();
+    const el = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+    hit = `<${el?.tagName}.${(el?.className || '').toString().trim()}> inNav:${nav.contains(el)}`;
+  }
+
+  const report = {
+    url: location.href,
+    theme: document.documentElement.dataset.theme,
+    navButtons: btns.length,
+    navWired,             // false ⇒ the running bundle never wired the nav (stale cache)
+    swController: controller,
+    swRegistrations: regs,
+    caches: cacheInfo,    // cache names embed the build hash — stale name ⇒ old bundle
+    navHitTest: hit,
+    ua: navigator.userAgent,
+  };
+  console.info('[mySocials debug]', JSON.stringify(report));
+  return report;
+}
+(window as unknown as { __debugReport: typeof debugReport }).__debugReport = debugReport;
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
+}
+
+if (/\bdebug\b/.test(location.search) || /\bdebug\b/.test(location.hash)) {
+  // Run after init so the wiring test reflects the real post-init state.
+  setTimeout(() => { void debugReport(); }, 500);
 }

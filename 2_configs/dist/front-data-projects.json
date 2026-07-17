@@ -268,7 +268,7 @@
     "category": "b-Projects",
     "project": "galaxy",
     "key": "b-Projects__galaxy",
-    "name": "Leafy2",
+    "name": "Galaxy",
     "framework": "sveltekit",
     "port": 8023,
     "deploy_name": "galaxy",

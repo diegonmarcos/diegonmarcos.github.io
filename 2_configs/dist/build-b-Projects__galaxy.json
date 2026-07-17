@@ -1,5 +1,5 @@
 {
-  "name": "Leafy2",
+  "name": "Galaxy",
   "framework": "sveltekit",
   "port": 8023,
   "src": "src",
@@ -33,10 +33,9 @@
       }
     },
     "deploy": {
-      "deployed": false,
+      "deployed": true,
       "deploy_name": "galaxy",
-      "url": null,
-      "reason": "no entry in ship.yml PROJECTS=()"
+      "url": "https://diegonmarcos.github.io/galaxy"
     },
     "consumers": [],
     "has_package_json": true,

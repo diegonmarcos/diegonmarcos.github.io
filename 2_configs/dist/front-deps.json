@@ -336,7 +336,7 @@
         }
       },
       {
-        "service": "Leafy2",
+        "service": "Galaxy",
         "folder": "b-Projects/galaxy",
         "category": "b-Projects",
         "dependencies": {

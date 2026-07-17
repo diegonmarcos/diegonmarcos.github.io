@@ -457,7 +457,7 @@
       "deploy_name": "myprofile"
     },
     {
-      "name": "Leafy2",
+      "name": "Galaxy",
       "slug": "galaxy",
       "path": "b-Projects/galaxy",
       "category": "b-Projects",
@@ -467,7 +467,7 @@
         "sveltekit"
       ],
       "dep_count": 11,
-      "has_dist": false,
+      "has_dist": true,
       "deploy_name": "galaxy"
     },
     {

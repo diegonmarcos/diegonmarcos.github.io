@@ -1711,7 +1711,7 @@
     "_project": "myprofile"
   },
   {
-    "name": "Leafy2",
+    "name": "Galaxy",
     "framework": "sveltekit",
     "port": 8023,
     "src": "src",

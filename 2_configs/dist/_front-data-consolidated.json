@@ -2289,7 +2289,7 @@
       "key": "b-Projects__galaxy",
       "path": "b-Projects/galaxy",
       "build": {
-        "name": "Leafy2",
+        "name": "Galaxy",
         "framework": "sveltekit",
         "port": 8023,
         "src": "src",
@@ -2306,9 +2306,9 @@
       },
       "has_package_json": true,
       "has_manifest": false,
-      "has_dist": false,
+      "has_dist": true,
       "package": {
-        "name": "leafy-2",
+        "name": "galaxy",
         "description": "Daylight Surreal Scrollworld — real-time SvelteKit + Threlte",
         "private": true,
         "type": "module",
@@ -4452,8 +4452,8 @@
       "deploy_name": "leafy"
     },
     {
-      "path": "a-Companies/leafy-2",
-      "deploy_name": "leafy-2"
+      "path": "b-Projects/galaxy",
+      "deploy_name": "galaxy"
     },
     {
       "path": "b-Profiles/myprofile",

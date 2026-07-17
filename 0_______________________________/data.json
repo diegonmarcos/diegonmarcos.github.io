@@ -260,13 +260,13 @@
       "category": "b-Projects",
       "projects": [
         {
-          "name": "Leafy2",
+          "name": "Galaxy",
           "slug": "galaxy",
           "path": "b-Projects/galaxy",
           "category": "b-Projects",
           "framework": "sveltekit",
           "port": 8023,
-          "has_dist": false
+          "has_dist": true
         }
       ]
     },

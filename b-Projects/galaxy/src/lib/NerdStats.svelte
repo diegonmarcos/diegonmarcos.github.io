@@ -3,6 +3,7 @@
   // network telemetry, and a copy-all report button.
   import { onMount } from 'svelte';
   import { gpuStats } from '$lib/webgl/gpuStats';
+  import { layers, perf, LAYER_LABELS } from '$lib/webgl/layers.svelte';
   import pkg from '../../package.json';
 
   const KEY = 'galaxy:nerd';
@@ -160,6 +161,23 @@
     </section>
 
     <section>
+      <h4>Layers / Perf <em>· A/B test</em></h4>
+      <label class="perf"><span>Pixel-ratio cap</span>
+        <select bind:value={perf.dprCap}>
+          <option value={1}>1× fastest</option>
+          <option value={1.5}>1.5×</option>
+          <option value={2}>2×</option>
+          <option value={3}>3× sharp</option>
+        </select>
+      </label>
+      <div class="toggles">
+        {#each LAYER_LABELS as [key, label]}
+          <label><input type="checkbox" bind:checked={layers[key]} /> {label}</label>
+        {/each}
+      </div>
+    </section>
+
+    <section>
       <h4>3D stack</h4>
       <div class="grid">
         {#each stack as [name, ver]}
@@ -269,6 +287,12 @@
   .files li b { margin-left: auto; font-weight: 600; color: #cfe0ff; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: #7dffb0; flex: none; }
   .dot.remote { background: #ffb35c; }
+
+  .toggles { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; margin-top: 4px; }
+  .toggles label { display: flex; align-items: center; gap: 5px; color: #cfe0ff; font-size: 10.5px; cursor: pointer; }
+  .toggles input { accent-color: #7dffb0; }
+  .perf { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 2px 0 6px; color: #cfe0ff; font-size: 11px; }
+  .perf select { background: rgba(10, 14, 26, 0.8); color: #cfe0ff; border: 1px solid rgba(157, 180, 255, 0.4); border-radius: 6px; padding: 3px 6px; font-size: 11px; }
 
   .grid b.warn { color: #ff8a5c; }
   .u { color: #5f7099; font-style: normal; font-size: 9px; }

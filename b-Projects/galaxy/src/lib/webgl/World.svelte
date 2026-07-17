@@ -21,6 +21,8 @@
   import Flora from './Flora.svelte';
   import Ghetto from './Ghetto.svelte';
   import City from './City.svelte';
+  import PerfTune from './PerfTune.svelte';
+  import { layers } from './layers.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
   import StatsSampler from './StatsSampler.svelte';
@@ -63,17 +65,18 @@
 <T.AmbientLight color={cfg.night.ambient.color} intensity={cfg.night.ambient.intensity} />
 <T.HemisphereLight args={[cfg.night.hemisphere.sky, cfg.night.hemisphere.ground, cfg.night.hemisphere.intensity]} />
 
-<Stars {cfg} />
-<Fireflies {cfg} />
-<Moons {cfg} />
-<SolarSystem />
-<Comets />
-<MilkyWay />
+<PerfTune />
+{#if layers.stars}<Stars {cfg} />{/if}
+{#if layers.fireflies}<Fireflies {cfg} />{/if}
+{#if layers.moons}<Moons {cfg} />{/if}
+{#if layers.solar}<SolarSystem />{/if}
+{#if layers.comets}<Comets />{/if}
+{#if layers.milkyway}<MilkyWay />{/if}
 <Ground {cfg} />
-<Water {cfg} />
-<Flora {cfg} />
-<Ghetto {cfg} />
-<City {cfg} />
-<Fauna {cfg} />
+{#if layers.water}<Water {cfg} />{/if}
+{#if layers.flora}<Flora {cfg} />{/if}
+{#if layers.ghetto}<Ghetto {cfg} />{/if}
+{#if layers.city}<City {cfg} />{/if}
+{#if layers.fauna}<Fauna {cfg} />{/if}
 <Cubes {cfg} {tooltip} />
 <StatsSampler />

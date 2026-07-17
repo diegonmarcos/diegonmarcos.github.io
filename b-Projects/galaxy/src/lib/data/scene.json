@@ -47,6 +47,7 @@
     "ghetto": { "center": [0, 0, -186], "length": 80, "side": 15, "shacks": 14, "walls": 7, "lanterns": 9, "bulbs": 70, "warm": "#ff9d4d", "window": "#ffb454" },
     "city": {
       "dir": "assets/models/city/",
+      "zShift": -90,
       "source": "poly.pizza", "license": "CC0 / CC-BY (poly.pizza)",
       "lamps": [ [-26, 30, -300], [26, 30, -344], [0, 34, -380] ],
       "lampColor": "#ffd9a0", "lampIntensity": 1.6, "lampRange": 240,
@@ -66,8 +67,8 @@
     },
     "zones": [
       { "name": "Wild Forest", "center": [0, 0.03, 10],   "r": 195, "color": "#2f5a34", "rough": 1,    "metal": 0 },
-      { "name": "Ghetto",      "center": [0, 0.05, -186], "r": 96,  "color": "#4a453d", "rough": 1,    "metal": 0 },
-      { "name": "City Center", "center": [0, 0.06, -320], "r": 128, "color": "#26282e", "rough": 0.85, "metal": 0.1 }
+      { "name": "Ghetto",      "center": [0, 0.05, -186], "r": 85,  "color": "#4a453d", "rough": 1,    "metal": 0 },
+      { "name": "City Center", "center": [0, 0.06, -410], "r": 125, "color": "#26282e", "rough": 0.85, "metal": 0.1 }
     ],
     "flora": [
       { "asset": "nat-pine",       "count": 75, "area": 340, "clear": 13, "minScale": 18, "maxScale": 30, "yaw": true },

@@ -11,6 +11,7 @@
 
   let { cfg }: { cfg: SceneConfig } = $props();
   const C = (cfg as any).world.city;
+  const zShift = C?.zShift ?? 0; // push the whole district into its own zone, clear of the ghetto
   const group = new THREE.Group();
   const { renderer } = useThrelte();
 
@@ -19,7 +20,7 @@
     const col = new THREE.Color(C.lampColor ?? '#ffd9a0');
     for (const p of C.lamps) {
       const l = new THREE.PointLight(col, C.lampIntensity ?? 1.5, C.lampRange ?? 240, 1.4);
-      l.position.set(p[0], p[1], p[2]);
+      l.position.set(p[0], p[1], p[2] + zShift);
       group.add(l);
     }
   }
@@ -37,7 +38,7 @@
           const maxXZ = Math.max(size.x, size.z) || 1;
           o.scale.setScalar(it.s / maxXZ);               // fit footprint to target size
           const minY = new THREE.Box3().setFromObject(o).min.y;
-          o.position.set(it.p[0], (it.p[1] ?? 0) - minY, it.p[2]); // base on ground
+          o.position.set(it.p[0], (it.p[1] ?? 0) - minY, it.p[2] + zShift); // base on ground
           o.rotation.y = it.ry ?? 0;
           group.add(o);
         },

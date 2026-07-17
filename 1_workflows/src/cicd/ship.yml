@@ -3,7 +3,7 @@ on:
   push:
     branches: ["main"]
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 jobs:
@@ -504,6 +504,28 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ LMMS build complete"
+      # ============================================
+      # PERSIST BUILT DIST — commit freshly-built dist/ back to main so every
+      # project's output is versioned. Without this, a project only appears in
+      # _site on the push that rebuilds it and 404s on the next unrelated push.
+      # Pushes made with GITHUB_TOKEN do NOT trigger workflows, so no loop;
+      # [skip ci] is a belt-and-suspenders guard.
+      # ============================================
+      - name: 💾 Commit built dist back to main
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          while IFS= read -r p; do
+            [ -d "$p/dist" ] && git add "$p/dist"
+          done < <(jq -r '.[].path' 2_configs/dist/front-data-projects.json)
+          if git diff --cached --quiet; then
+            echo "✅ no dist changes to persist"
+          else
+            git commit -m "ci: persist built dist [skip ci]"
+            git pull --rebase --autostash origin main || true
+            git push origin HEAD:main
+            echo "✅ persisted built dist to main"
+          fi
       - name: 🌐 Setup Pages Environment
         uses: actions/configure-pages@v5
       - name: 📂 Deploy All Projects to _site

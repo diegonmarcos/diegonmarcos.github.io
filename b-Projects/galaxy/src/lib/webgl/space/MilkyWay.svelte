@@ -1,6 +1,6 @@
 <script lang="ts">
   // Simplified Milky Way constellation view (after e-Root/milky_way_map.html):
-  // spiral dust disk, Sagittarius A* black hole, our Solar System (incl. Leafy),
+  // spiral dust disk, Sagittarius A* black hole, our Solar System (incl. Galaxy),
   // Sirius + Orion. Hidden until the free-ride galaxy reveal engages.
   import * as THREE from 'three';
   import { T, useTask } from '@threlte/core';
@@ -73,7 +73,7 @@
   bh.add(label(G.blackHole.label, G.blackHole.glow * 0.4));
   group.add(bh);
 
-  // --- Solar System marker (our system, incl. Leafy) + Sirius + Orion ---
+  // --- Solar System marker (our system, incl. Galaxy) + Sirius + Orion ---
   group.add(marker(G.solar.pos, G.solar.color, G.solar.glow, G.solar.label));
   for (const st of G.stars) {
     const m = marker(st.pos, st.color, st.glow, st.label);

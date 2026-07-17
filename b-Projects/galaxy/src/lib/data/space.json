@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "schema": "leafy-space/v1",
-    "note": "Data-driven solar system. Planets orbit the sun (orbit radius + angular speed); moons orbit their planet. Leafy is our procedural green world between Mars and Jupiter. Kept in the sky as a tilted disk so it arcs overhead as you scroll.",
+    "schema": "galaxy-space/v1",
+    "note": "Data-driven solar system. Planets orbit the sun (orbit radius + angular speed); moons orbit their planet. Galaxy is our procedural green world between Mars and Jupiter. Kept in the sky as a tilted disk so it arcs overhead as you scroll.",
     "textures": { "license": "CC-BY 4.0", "author": "Solar System Scope", "source": "solarsystemscope.com/textures" }
   },
   "system": { "center": [0, 210, -520], "tilt": -1.05, "spin": 0.02 },
@@ -14,7 +14,7 @@
       "moons": [ { "texture": "assets/space/moon.jpg", "radius": 2.7, "orbit": 20, "speed": 1.3, "phase": 0 } ] },
     { "id": "mars",    "name": "Mars",    "texture": "assets/space/mars.jpg",    "radius": 7,  "orbit": 224, "speed": 0.105, "axis": 0.44, "phase": 5.5,
       "moons": [ { "color": "#a08a72", "radius": 1.2, "orbit": 12, "speed": 1.7, "phase": 0 }, { "color": "#8f7a63", "radius": 0.9, "orbit": 16, "speed": 1.2, "phase": 2 } ] },
-    { "id": "leafy",   "name": "Leafy",   "procedural": "leafy", "radius": 11, "orbit": 276, "speed": 0.085, "axis": 0.2, "phase": 1.2,
+    { "id": "galaxy",  "name": "Galaxy",  "procedural": "galaxy", "radius": 11, "orbit": 276, "speed": 0.085, "axis": 0.2, "phase": 1.2,
       "ring": { "color": "#7dffb0", "inner": 15, "outer": 23 },
       "moons": [ { "color": "#cfe0ff", "radius": 2.6, "orbit": 22, "speed": 1.05, "phase": 0 } ] },
     { "id": "jupiter", "name": "Jupiter", "texture": "assets/space/jupiter.jpg", "radius": 26, "orbit": 348, "speed": 0.06, "axis": 0.05, "phase": 3.0,

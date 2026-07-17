@@ -1,6 +1,6 @@
 <script lang="ts">
   // Data-driven solar system in the sky: sun + orbiting planets (real CC-BY
-  // textures), moons orbiting their planet, rings, and our procedural Leafy world.
+  // textures), moons orbiting their planet, rings, and our procedural Galaxy world.
   // Built imperatively, mounted via <T is={group}>, animated in useTask.
   import * as THREE from 'three';
   import { T, useTask } from '@threlte/core';
@@ -32,7 +32,7 @@
   const orbiters: Orbiter[] = [];
 
   function planetMaterial(p: any): THREE.Material {
-    if (p.procedural === 'leafy')
+    if (p.procedural === 'galaxy')
       return new THREE.MeshStandardMaterial({ color: '#2f9e63', emissive: '#0c3a22', emissiveIntensity: 0.4, roughness: 0.7, metalness: 0.05, fog: false });
     return new THREE.MeshStandardMaterial({ map: tex(p.texture), roughness: 1, metalness: 0, fog: false });
   }

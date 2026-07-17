@@ -5,7 +5,7 @@
   import { gpuStats } from '$lib/webgl/gpuStats';
   import pkg from '../../package.json';
 
-  const KEY = 'leafy2:nerd';
+  const KEY = 'galaxy:nerd';
   let open = $state(false);
   let copied = $state(false);
 
@@ -80,7 +80,7 @@
   function toggle() { open = !open; localStorage.setItem(KEY, open ? '1' : '0'); }
 
   function report(): string {
-    const L: string[] = ['# leafy-2 — nerd data', ''];
+    const L: string[] = ['# galaxy — nerd data', ''];
     L.push('## Render');
     L.push(`FPS: ${g.fps}   frame: ${g.ms} ms`);
     L.push(`draw calls: ${g.calls}   triangles: ${g.triangles}`);

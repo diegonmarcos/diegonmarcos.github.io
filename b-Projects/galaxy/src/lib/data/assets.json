@@ -1,7 +1,7 @@
 {
-  "cdnBase": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/a-Companies/leafy-2/static/",
+  "cdnBase": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Projects/galaxy/static/",
   "_meta": {
-    "schema": "leafy-assets/v1",
+    "schema": "galaxy-assets/v1",
     "note": "Marketplace-style catalog. One entry per reusable 3D asset. 'mesh' is the blank geometry; 'textures' is the swappable material set — kept separate so a mesh can be re-skinned and each part caches/downloads independently. Optimize with scripts/optimize-assets.mjs (Draco geometry + KTX2 textures + separated resources).",
     "licenseValues": "CC0 | CC-BY | MIT | unknown (verify before commercial reuse)"
   },

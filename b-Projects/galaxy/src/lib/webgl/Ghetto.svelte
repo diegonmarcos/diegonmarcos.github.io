@@ -43,16 +43,21 @@
   const shackMats = ['#4a3b2a', '#3d3226', '#5a4632', '#2f2a22'].map((c) => new THREE.MeshStandardMaterial({ color: c, roughness: 0.95 }));
   const roofMat = new THREE.MeshStandardMaterial({ color: '#211b15', roughness: 1 });
   const winMat = new THREE.MeshBasicMaterial({ color: windowCol, fog: false });
-  const box = new THREE.BoxGeometry(1, 1, 1);
+  // no squares: hexagonal prism bodies + hexagonal pyramid roofs (flat-shaded polygons)
+  const prism = new THREE.CylinderGeometry(0.62, 0.7, 1, 6);
+  const roofGeo = new THREE.ConeGeometry(0.82, 1, 6);
+  prism.computeVertexNormals(); roofGeo.computeVertexNormals();
   const winGeo = new THREE.PlaneGeometry(1, 1);
 
   function shack(x: number, z: number, ry: number) {
     const g = new THREE.Group();
     const w = 8 + Math.random() * 6, h = 7 + Math.random() * 5, d = 8 + Math.random() * 5;
-    const body = new THREE.Mesh(box, shackMats[(Math.random() * shackMats.length) | 0]);
+    const body = new THREE.Mesh(prism, shackMats[(Math.random() * shackMats.length) | 0]);
     body.scale.set(w, h, d); body.position.y = h / 2;
-    const roof = new THREE.Mesh(box, roofMat);
-    roof.scale.set(w * 1.15, 0.6, d * 1.15); roof.position.y = h + 0.2; roof.rotation.z = (Math.random() - 0.5) * 0.15;
+    body.rotation.y = Math.random() * Math.PI; // vary facet orientation
+    const roof = new THREE.Mesh(roofGeo, roofMat);
+    roof.scale.set(w * 0.62, h * 0.4, d * 0.62); roof.position.y = h + h * 0.2;
+    roof.rotation.y = Math.random() * Math.PI; roof.rotation.z = (Math.random() - 0.5) * 0.1;
     g.add(body, roof);
     // 1-2 glowing windows on the path-facing side
     for (let k = 0; k < 1 + (Math.random() < 0.5 ? 1 : 0); k++) {

@@ -1,13 +1,14 @@
 <script lang="ts">
   // Right-side camera joystick for free-ride: hold to orbit (yaw) + tilt (pitch).
   // Writes normalized rates into freeInput; FreeRig integrates them per frame.
+  // Deflection radius R derives from the rendered size, so the desktop 2x scale
+  // (CSS media query) automatically doubles the usable travel too.
   import { freeInput } from '$lib/webgl/free/freeInput';
 
   let base = $state<HTMLElement>();
   let knob = $state<HTMLElement>();
   let active = false;
-  let cx = 0, cy = 0;
-  const R = 56;
+  let cx = 0, cy = 0, R = 56;
   let kx = $state(0), ky = $state(0);
 
   $effect(() => { if (knob) knob.style.transform = `translate(${kx}px, ${ky}px)`; });
@@ -16,7 +17,7 @@
   function down(e: PointerEvent) {
     if (!base) return;
     const r = base.getBoundingClientRect();
-    cx = r.left + r.width / 2; cy = r.top + r.height / 2;
+    cx = r.left + r.width / 2; cy = r.top + r.height / 2; R = r.width * 0.42;
     active = true; base.setPointerCapture(e.pointerId); move(e);
   }
   function move(e: PointerEvent) {
@@ -39,11 +40,10 @@
 
 <style>
   .joy {
-    position: fixed; right: 26px; bottom: 26px; z-index: 35;
     width: 132px; height: 132px; border-radius: 50%;
     background: rgba(10, 14, 26, 0.35); border: 1px solid rgba(157, 180, 255, 0.35);
     backdrop-filter: blur(4px); touch-action: none; cursor: grab;
-    display: grid; place-items: center;
+    display: grid; place-items: center; position: relative;
   }
   .joy:active { cursor: grabbing; }
   .knob {
@@ -54,5 +54,11 @@
   .ic {
     position: absolute; top: 8px; color: rgba(207, 224, 255, 0.6);
     font: 14px/1 system-ui, sans-serif; pointer-events: none;
+  }
+  /* desktop: 2x the whole control (radius auto-scales from rendered size) */
+  @media (min-width: 820px) and (pointer: fine) {
+    .joy { width: 264px; height: 264px; }
+    .knob { width: 104px; height: 104px; }
+    .ic { top: 14px; font-size: 20px; }
   }
 </style>

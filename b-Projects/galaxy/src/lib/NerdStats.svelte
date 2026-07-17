@@ -6,8 +6,10 @@
   import pkg from '../../package.json';
 
   const KEY = 'galaxy:nerd';
+  const FKEY = 'galaxy:fps';
   let open = $state(false);
   let copied = $state(false);
+  let fpsPin = $state(false); // always-show FPS badge, independent of the panel
 
   // 3D stack, data-driven from package.json (declared versions).
   const dep = { ...(pkg.dependencies ?? {}), ...(pkg.devDependencies ?? {}) } as Record<string, string>;
@@ -34,11 +36,16 @@
   let top = $state<{ name: string; kb: number; remote: boolean }[]>([]);
   let glbs = $state<{ name: string; kb: number }[]>([]);
 
+  // footprint — JS heap (mem) polled DOM-side; CPU/VRAM come from gpuStats.
+  let heapMB = $state<number | null>(null);
+  let heapLimitMB = $state<number | null>(null);
+
   const fmt = (n: number) => (n >= 1000 ? (n / 1000).toFixed(1) + 'k' : String(n));
   const base = (u: string) => { try { return new URL(u).pathname.split('/').pop() || u; } catch { return u; } };
 
   onMount(() => {
     open = localStorage.getItem(KEY) === '1';
+    fpsPin = localStorage.getItem(FKEY) === '1';
 
     let raf = 0;
     const tick = () => { g = { ...gpuStats }; raf = requestAnimationFrame(tick); };
@@ -71,6 +78,10 @@
       const c = (navigator as any).connection;
       linkMbps = c?.downlink ?? null;
       rttMs = c?.rtt ?? null;
+
+      const mem = (performance as any).memory; // Chrome/Chromium only
+      heapMB = mem ? Math.round(mem.usedJSHeapSize / 1048576) : null;
+      heapLimitMB = mem ? Math.round(mem.jsHeapSizeLimit / 1048576) : null;
     };
     poll();
     const iv = setInterval(poll, 1000);
@@ -78,6 +89,7 @@
   });
 
   function toggle() { open = !open; localStorage.setItem(KEY, open ? '1' : '0'); }
+  function toggleFps() { fpsPin = !fpsPin; localStorage.setItem(FKEY, fpsPin ? '1' : '0'); }
 
   function report(): string {
     const L: string[] = ['# galaxy — nerd data', ''];
@@ -87,6 +99,10 @@
     L.push(`geometries: ${g.geometries}   textures: ${g.textures}   programs: ${g.programs}`);
     L.push(`pipeline: local (client GPU)`);
     L.push(`GPU: ${g.gpu}   vendor: ${g.vendor}`);
+    L.push('', '## Footprint');
+    L.push(`CPU: ${g.cpuPct}% est. main-thread   cores: ${g.cores || '—'}`);
+    L.push(`memory (JS heap): ${heapMB ?? '—'} MB${heapLimitMB ? ` / ${heapLimitMB} MB` : ''}`);
+    L.push(`VRAM (est.): ${g.vramMB} MB (textures + geometry)`);
     L.push('', '## 3D stack');
     for (const [n, v] of stack) L.push(`${n}: ${v}`);
     L.push('', '## Network');
@@ -116,6 +132,7 @@
     <header>
       <span class="live"></span> NERD DATA
       <span class="fps" class:warn={g.fps > 0 && g.fps < 30}>{g.fps} FPS</span>
+      <button class="pin" class:on={fpsPin} onclick={toggleFps} title="Always show FPS badge">📌 FPS</button>
       <button class="copy" class:done={copied} onclick={copyAll} title="Copy all data">{copied ? '✓ Copied' : 'Copy all'}</button>
     </header>
 
@@ -130,6 +147,16 @@
         <span>Pipeline</span><b class="ok">Local · client GPU</b>
       </div>
       <p class="gpu">{g.gpu}</p>
+    </section>
+
+    <section>
+      <h4>Footprint <em>· estimated</em></h4>
+      <div class="grid">
+        <span>CPU (main-thread)</span><b class:warn={g.cpuPct >= 90}>{g.cpuPct}% <em class="u">est.</em></b>
+        <span>Cores</span><b>{g.cores || '—'}</b>
+        <span>Memory (JS heap)</span><b>{heapMB ?? '—'}{heapLimitMB ? ` / ${heapLimitMB}` : ''} MB</b>
+        <span>VRAM</span><b>{g.vramMB} MB <em class="u">est.</em></b>
+      </div>
     </section>
 
     <section>
@@ -174,6 +201,10 @@
       </ul>
     </section>
   </aside>
+{/if}
+
+{#if fpsPin}
+  <div class="fpsbadge" class:warn={g.fps > 0 && g.fps < 30} title="Live FPS (pinned)">{g.fps} <small>FPS</small></div>
 {/if}
 
 <style>
@@ -238,4 +269,26 @@
   .files li b { margin-left: auto; font-weight: 600; color: #cfe0ff; }
   .dot { width: 6px; height: 6px; border-radius: 50%; background: #7dffb0; flex: none; }
   .dot.remote { background: #ffb35c; }
+
+  .grid b.warn { color: #ff8a5c; }
+  .u { color: #5f7099; font-style: normal; font-size: 9px; }
+  .pin {
+    border: 1px solid rgba(157, 180, 255, 0.4); border-radius: 6px;
+    background: rgba(157, 180, 255, 0.1); color: #8fa6d8;
+    font: 600 10px/1 ui-monospace, monospace; letter-spacing: 0.06em;
+    padding: 5px 7px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .pin:hover { background: rgba(157, 180, 255, 0.25); }
+  .pin.on { color: #7dffb0; border-color: #7dffb0; background: rgba(125, 255, 176, 0.12); }
+
+  .fpsbadge {
+    position: fixed; top: 14px; left: 14px; z-index: 40;
+    padding: 5px 10px; border-radius: 8px;
+    background: rgba(8, 11, 20, 0.72); backdrop-filter: blur(6px);
+    border: 1px solid rgba(125, 255, 176, 0.4);
+    color: #7dffb0; font: 700 15px/1 ui-monospace, "SF Mono", Menlo, monospace;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); pointer-events: none;
+  }
+  .fpsbadge small { font-size: 9px; opacity: 0.7; }
+  .fpsbadge.warn { color: #ff8a5c; border-color: rgba(255, 138, 92, 0.5); }
 </style>

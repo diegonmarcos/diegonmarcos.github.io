@@ -111,8 +111,10 @@
   <ScrollNav {stops} />
 {:else}
   <Joystick />
-  <CameraStick />
-  <ZoomBar />
+  <div class="freerig">
+    <ZoomBar />
+    <CameraStick />
+  </div>
   <ViewPresets />
   <div class="hint">left stick = ride · right stick = look/orbit · bar = zoom/altitude</div>
 {/if}
@@ -142,6 +144,10 @@
   }
   .panel h2 { margin: 0; font: 700 clamp(2rem, 8vw, 5rem)/1 system-ui, sans-serif; }
   .panel p { margin: 0.5rem 0 0; max-width: 28ch; font: 400 clamp(1rem, 2.5vw, 1.4rem)/1.5 system-ui, sans-serif; opacity: 0.85; }
+  .freerig {
+    position: fixed; right: 26px; bottom: 26px; z-index: 35;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+  }
   .hint {
     position: fixed; bottom: 34px; left: 50%; transform: translateX(-50%); z-index: 35;
     color: #9fb2d8; font: 500 12px/1 system-ui, sans-serif; letter-spacing: 0.05em;

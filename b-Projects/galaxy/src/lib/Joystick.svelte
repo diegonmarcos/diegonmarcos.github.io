@@ -5,8 +5,7 @@
   let base = $state<HTMLElement>();
   let knob = $state<HTMLElement>();
   let active = false;
-  let cx = 0, cy = 0;
-  const R = 56;
+  let cx = 0, cy = 0, R = 56;
   let kx = $state(0), ky = $state(0);
 
   $effect(() => { if (knob) knob.style.transform = `translate(${kx}px, ${ky}px)`; });
@@ -15,7 +14,7 @@
   function down(e: PointerEvent) {
     if (!base) return;
     const r = base.getBoundingClientRect();
-    cx = r.left + r.width / 2; cy = r.top + r.height / 2;
+    cx = r.left + r.width / 2; cy = r.top + r.height / 2; R = r.width * 0.42;
     active = true; base.setPointerCapture(e.pointerId); move(e);
   }
   function move(e: PointerEvent) {
@@ -48,5 +47,10 @@
     width: 52px; height: 52px; border-radius: 50%;
     background: rgba(157, 180, 255, 0.5); border: 1px solid rgba(207, 224, 255, 0.7);
     box-shadow: 0 0 14px rgba(157, 180, 255, 0.5); pointer-events: none;
+  }
+  /* desktop: 2x the whole control (radius auto-scales from rendered size) */
+  @media (min-width: 820px) and (pointer: fine) {
+    .joy { width: 264px; height: 264px; }
+    .knob { width: 104px; height: 104px; }
   }
 </style>

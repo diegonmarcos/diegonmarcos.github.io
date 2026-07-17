@@ -9,5 +9,10 @@ export const gpuStats = {
   textures: 0,
   programs: 0,
   gpu: '—',
-  vendor: '—'
+  vendor: '—',
+  // footprint — CPU (main-thread load estimate) + VRAM (scene-walk byte estimate).
+  // Memory (JS heap) is polled DOM-side in NerdStats via performance.memory.
+  cores: 0,     // navigator.hardwareConcurrency
+  cpuPct: 0,    // est. main-thread load % (frame time vs display refresh budget)
+  vramMB: 0     // est. GPU memory: texture + geometry bytes walked from the scene
 };

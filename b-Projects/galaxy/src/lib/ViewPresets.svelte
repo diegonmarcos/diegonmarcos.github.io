@@ -1,18 +1,29 @@
 <script lang="ts">
-  // Free-ride camera shortcuts: jump to preset (dist, pitch) — FreeRig eases there.
+  // Free-ride camera shortcuts: jump to a preset (dist, pitch) — FreeRig eases there —
+  // plus +/- buttons for precise zoom/altitude nudging.
   import { freeInput } from '$lib/webgl/free/freeInput';
   import cfg from '$lib/data/scene.json';
-  const P = cfg.free.cam.presets;
-  const items: [string, { dist: number; pitch: number }][] = [
-    ['1st', P.first], ['Top', P.top], ['Sky', P.sky], ['Way', P.galaxy]
+  const P = (cfg as any).free.cam.presets;
+  const items: [string, string, { dist: number; pitch: number }][] = [
+    ['1st', 'First-person (eyes) — flip up for the full sky', P.first],
+    ['Top', 'GoPro-stick — just above the head', P.top],
+    ['Sky', 'Drone view', P.sky],
+    ['Orb', 'Planet centred with its satellites + moons', P.planet],
+    ['Way', 'Galactic — all planets & stars', P.galaxy]
   ];
+  const clamp = (n: number) => Math.min(1, Math.max(0, n));
   const set = (p: { dist: number; pitch: number }) => { freeInput.dist = p.dist; freeInput.pitch = p.pitch; };
+  const nudge = (d: number) => { freeInput.dist = clamp(freeInput.dist + d); };
 </script>
 
 <div class="presets">
-  {#each items as [label, p]}
-    <button onclick={() => set(p)} title={`Isometric · ${label}`}>{label}</button>
+  {#each items as [label, title, p]}
+    <button onclick={() => set(p)} {title}>{label}</button>
   {/each}
+  <div class="zoombtns">
+    <button onclick={() => nudge(0.05)} title="Zoom out / higher altitude">＋</button>
+    <button onclick={() => nudge(-0.05)} title="Zoom in / lower altitude">－</button>
+  </div>
 </div>
 
 <style>
@@ -30,4 +41,10 @@
   }
   .presets button:hover { border-color: #9db4ff; background: rgba(20, 26, 44, 0.9); transform: translateX(-2px); }
   .presets button:active { transform: scale(0.95); }
+  .zoombtns { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+  .zoombtns button {
+    height: 30px; font-size: 18px; font-weight: 700; color: #7dffb0;
+    border-color: rgba(125, 255, 176, 0.4);
+  }
+  .zoombtns button:hover { border-color: #7dffb0; }
 </style>

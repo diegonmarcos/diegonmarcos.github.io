@@ -5,14 +5,15 @@
     "rider": { "asset": "man", "scale": 1.45, "offset": [0, 0.85, -0.3], "faceY": 0, "clip": "Run" },
     "cam": {
       "distRange": [3.6, 95],
-      "pitchDeg": [7, 88],
+      "pitchDeg": [2, 90],
       "baseHeight": 2.6,
       "start": { "dist": 0.14, "pitch": 0.5 },
       "presets": {
-        "first": { "dist": 0.06, "pitch": 0.32 },
-        "top":   { "dist": 0.45, "pitch": 0.97 },
-        "sky":   { "dist": 0.9,  "pitch": 0.72 },
-        "galaxy":{ "dist": 1.0,  "pitch": 0.8 }
+        "first":  { "dist": 0.02, "pitch": 0.30 },
+        "top":    { "dist": 0.16, "pitch": 0.90 },
+        "sky":    { "dist": 0.55, "pitch": 0.82 },
+        "planet": { "dist": 0.86, "pitch": 0.70 },
+        "galaxy": { "dist": 1.0,  "pitch": 0.80 }
       },
       "wheelSens": 0.0012, "pinchSens": 0.004, "tiltSens": 0.007, "yawSens": 0.009, "stickYaw": 1.4, "stickPitch": 0.9
     }

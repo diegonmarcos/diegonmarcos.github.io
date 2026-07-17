@@ -7,6 +7,8 @@
   import ScrollNav from '$lib/ScrollNav.svelte';
   import ModeSwitch from '$lib/ModeSwitch.svelte';
   import Joystick from '$lib/Joystick.svelte';
+  import CameraStick from '$lib/CameraStick.svelte';
+  import ZoomBar from '$lib/ZoomBar.svelte';
   import ViewPresets from '$lib/ViewPresets.svelte';
   import { freeInput } from '$lib/webgl/free/freeInput';
   import cfg from '$lib/data/scene.json';
@@ -109,8 +111,10 @@
   <ScrollNav {stops} />
 {:else}
   <Joystick />
+  <CameraStick />
+  <ZoomBar />
   <ViewPresets />
-  <div class="hint">joystick to ride · pinch = zoom · two-finger drag = tilt</div>
+  <div class="hint">left stick = ride · right stick = look/orbit · bar = zoom/altitude</div>
 {/if}
 
 <NerdStats />

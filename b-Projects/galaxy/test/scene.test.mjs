@@ -59,6 +59,7 @@ ok(space.planets.some((p) => p.id === 'galaxy'), 'space has Galaxy planet betwee
 
 // free-ride mode config present (scenic <-> free switcher)
 ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
+ok(cfg.free.cam.stickYaw > 0 && cfg.free.cam.stickPitch > 0, 'camera-stick orbit/tilt sensitivities present');
 
 // milky way constellation view: black hole + solar (incl. Galaxy) + two neighbour stars
 const galaxy = JSON.parse(readFileSync(resolve(root, 'src/lib/data/galaxy.json'), 'utf8'));

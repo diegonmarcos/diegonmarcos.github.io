@@ -106,6 +106,10 @@
     wheelF.rotation.x += spin; wheelB.rotation.x += spin;
     mixer?.update(delta);
 
+    // right camera joystick: held orbit (yaw) + tilt (pitch) as velocities
+    inp.yaw += inp.yawRate * (CAM.stickYaw ?? 1.4) * delta;
+    inp.pitch = THREE.MathUtils.clamp(inp.pitch + inp.pitchRate * (CAM.stickPitch ?? 0.9) * delta, 0, 1);
+
     // ease dist/pitch toward input targets (so presets glide)
     const e = 1 - Math.exp(-7 * delta);
     dist += (THREE.MathUtils.clamp(inp.dist, 0, 1) - dist) * e;

@@ -17,7 +17,7 @@
 
 <style>
   .presets {
-    position: fixed; right: 22px; bottom: 30px; z-index: 35;
+    position: fixed; right: 22px; top: 88px; z-index: 35;
     display: flex; flex-direction: column; gap: 8px;
   }
   .presets button {

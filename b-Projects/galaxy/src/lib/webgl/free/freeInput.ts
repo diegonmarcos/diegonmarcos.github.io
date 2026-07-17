@@ -7,6 +7,8 @@ export const freeInput = {
   dist: 0.14,    // 0 = close (first-person) .. 1 = far  (pinch / wheel)
   pitch: 0.5,    // 0 = parallel to floor .. 1 = top-down (two-finger vertical drag)
   yaw: 0,        // orbit around (radians) — two-finger horizontal drag → full 3D control
+  yawRate: 0,    // -1..1 held-orbit velocity (right camera joystick, X) — integrated by FreeRig
+  pitchRate: 0,  // -1..1 held-tilt velocity  (right camera joystick, Y) — integrated by FreeRig
   galaxy: 0,     // 0 = ground .. 1 = zoomed all the way out to the Milky Way view (set by FreeRig)
   active: false
 };

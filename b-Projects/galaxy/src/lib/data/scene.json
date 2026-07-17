@@ -44,6 +44,25 @@
     "stars": { "count": 3000, "radius": 320 },
     "fireflies": { "count": 140, "area": 300, "height": 34, "color": "#ffe6a0", "size": 1.8 },
     "ghetto": { "center": [0, 0, -186], "length": 80, "side": 15, "shacks": 14, "walls": 7, "lanterns": 9, "bulbs": 70, "warm": "#ff9d4d", "window": "#ffb454" },
+    "city": {
+      "dir": "assets/models/city/",
+      "source": "poly.pizza", "license": "CC0 / CC-BY (poly.pizza)",
+      "lamps": [ [-26, 30, -300], [26, 30, -344], [0, 34, -380] ],
+      "lampColor": "#ffd9a0", "lampIntensity": 1.6, "lampRange": 240,
+      "place": [
+        { "m": "road-bits.glb",     "p": [0, 0, -300], "ry": 0, "s": 64 },
+        { "m": "road-bits.glb",     "p": [0, 0, -364], "ry": 0, "s": 64 },
+        { "m": "big-building.glb",   "p": [-44, 0, -300], "ry": 1.5708, "s": 48 },
+        { "m": "brown-building.glb", "p": [-44, 0, -348], "ry": 1.5708, "s": 42 },
+        { "m": "building-green.glb", "p": [44, 0, -300], "ry": -1.5708, "s": 46 },
+        { "m": "building-red.glb",   "p": [44, 0, -348], "ry": -1.5708, "s": 42 },
+        { "m": "pizza-corner.glb",   "p": [44, 0, -256], "ry": -1.5708, "s": 40 },
+        { "m": "bus.glb",            "p": [-7, 0, -288], "ry": 0, "s": 18 },
+        { "m": "car.glb",            "p": [7, 0, -330], "ry": 3.1416, "s": 11 },
+        { "m": "traffic-light.glb",  "p": [15, 0, -278], "ry": -1.5708, "s": 13 },
+        { "m": "man.glb",            "p": [17, 0, -286], "ry": -1.5708, "s": 9 }
+      ]
+    },
     "flora": [
       { "asset": "nat-pine",       "count": 75, "area": 340, "clear": 13, "minScale": 18, "maxScale": 30, "yaw": true },
       { "asset": "nat-maple",      "count": 62, "area": 340, "clear": 13, "minScale": 18, "maxScale": 28, "yaw": true },

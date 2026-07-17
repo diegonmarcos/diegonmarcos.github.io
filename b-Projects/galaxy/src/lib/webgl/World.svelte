@@ -20,6 +20,7 @@
   import Water from './Water.svelte';
   import Flora from './Flora.svelte';
   import Ghetto from './Ghetto.svelte';
+  import City from './City.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
   import StatsSampler from './StatsSampler.svelte';
@@ -72,6 +73,7 @@
 <Water {cfg} />
 <Flora {cfg} />
 <Ghetto {cfg} />
+<City {cfg} />
 <Fauna {cfg} />
 <Cubes {cfg} {tooltip} />
 <StatsSampler />

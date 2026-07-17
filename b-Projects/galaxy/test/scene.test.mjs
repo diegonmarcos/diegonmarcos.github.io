@@ -57,6 +57,13 @@ for (const p of space.planets) {
 for (const p of spaceTex) okFile(p, `space texture exists: ${p}`);
 ok(space.planets.some((p) => p.id === 'galaxy'), 'space has Galaxy planet between Mars and Jupiter');
 
+// city district: GLB placements beyond the ghetto; every model on the CDN
+ok(!!cfg.world.city && Array.isArray(cfg.world.city.place) && cfg.world.city.place.length > 0, 'city placements present');
+cfg.world.city.place.forEach((it, i) => {
+  ok(typeof it.m === 'string' && Array.isArray(it.p) && it.p.length === 3 && it.s > 0, `city[${i}] valid placement`);
+  okFile(cfg.world.city.dir + it.m, `city[${i}] GLB exists: ${it.m}`);
+});
+
 // free-ride mode config present (scenic <-> free switcher)
 ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
 ok(cfg.free.cam.stickYaw > 0 && cfg.free.cam.stickPitch > 0, 'camera-stick orbit/tilt sensitivities present');

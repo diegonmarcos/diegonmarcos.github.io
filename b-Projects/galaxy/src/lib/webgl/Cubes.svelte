@@ -72,6 +72,7 @@
   const faceIdx = (i: number) => Math.floor(i / 2); // BoxGeometry: 2 triangles per face → 0..5 material index
 
   function onDown(e: PointerEvent | TouchEvent) {
+    if ((e.target as HTMLElement)?.tagName !== 'CANVAS') return; // ignore taps on UI overlays (NerdStats etc.)
     const p = coords(e);
     mouse.x = (p.x / window.innerWidth) * 2 - 1;
     mouse.y = -(p.y / window.innerHeight) * 2 + 1;
@@ -88,6 +89,7 @@
   }
 
   function onMove(e: PointerEvent | TouchEvent) {
+    if ((e.target as HTMLElement)?.tagName !== 'CANVAS') return; // ignore hover over UI overlays
     const p = coords(e);
     if (isDragging && activeCube) {
       if ((e as Event).cancelable) e.preventDefault();
@@ -122,6 +124,7 @@
   }
 
   function onUp(e: PointerEvent | TouchEvent) {
+    if ((e.target as HTMLElement)?.tagName !== 'CANVAS') return; // don't open cube links when tapping UI
     if (!isDragging) return;
     const p = coords(e);
     if (Math.hypot(p.x - down.x, p.y - down.y) < 5 && hoveredFace?.url) {

@@ -62,6 +62,19 @@
     });
   }
 
+  // ── Why InstancedMesh? (draw-call / CPU vs GPU — good to remember) ──────────────
+  // A "draw call" is a command the CPU sends the GPU: "draw this mesh, this material,
+  // here." Each has fixed CPU/driver overhead. Cloning ~409 plants as separate objects
+  // meant ~600+ draw calls/frame: the CPU drowned issuing them while the GPU sat idle
+  // waiting for the next one → CPU/draw-call-bound (14fps on a Galaxy S21+). The GPU
+  // was never the problem — 463k triangles is trivial for it.
+  //   The tell: lowering devicePixelRatio (fewer pixels = less GPU work) did NOTHING,
+  //   which rules out a GPU/fill bottleneck. Draw-call COUNT is CPU work; triangles &
+  //   pixels are GPU work. Mobile GPUs are strong but the CPU→driver path is the narrow
+  //   pipe, so "few big draws" always beats "many small draws".
+  //   Fix: InstancedMesh sends ONE command per plant-type-mesh ("draw this pine 62×,
+  //   here are the 62 matrices") — the GPU batches them. Draw calls ~741 → ~180.
+  // ─────────────────────────────────────────────────────────────────────────────────
   function scatter(gltf: any, spec: FloraSpec) {
     const units = unitsFor(gltf, spec);
     if (!units.length) return;

@@ -19,6 +19,9 @@
   // Return the list of pickable "unit" objects for a loaded GLB, each re-centred on
   // X/Z and grounded (bbox bottom at y=0) so scale+position place it cleanly.
   function unitsFor(gltf: any, spec: FloraSpec): THREE.Object3D[] {
+    // Ensure parent transforms (RootNode up-axis rotation etc.) are resolved so
+    // getWorldQuaternion below returns the true authored orientation.
+    gltf.scene.updateMatrixWorld(true);
     const root: THREE.Object3D = gltf.scene.children[0] ?? gltf.scene;
     const raw: THREE.Object3D[] =
       spec.single || root.children.length < 2
@@ -28,12 +31,17 @@
           : root.children.slice();
 
     return raw.map((o) => {
+      // Capture the variant's WORLD orientation before re-parenting. Quaternius
+      // packs bake an up-axis rotation on the RootNode; re-parenting the child to
+      // a fresh group at identity would drop it and tip the tree on its side.
+      const worldQuat = new THREE.Quaternion();
+      o.getWorldQuaternion(worldQuat);
       const unit = o.clone(true);
       // Keep the variant's authored transform (Quaternius bakes each variant's real
       // scale into its node; discarding it collapses trees to sub-unit geometry).
-      // Reset only world placement (row layout offset + spin), not intrinsic scale.
+      // Reset row-layout position, but PRESERVE world orientation (upright).
       unit.position.set(0, 0, 0);
-      unit.rotation.set(0, 0, 0);
+      unit.quaternion.copy(worldQuat);
       unit.updateMatrixWorld(true);
       // Measure the variant's REAL rendered bbox (this child only, post-transform).
       const box = new THREE.Box3().setFromObject(unit);

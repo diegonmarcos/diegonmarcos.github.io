@@ -65,19 +65,50 @@
   function scatter(gltf: any, spec: FloraSpec) {
     const units = unitsFor(gltf, spec);
     if (!units.length) return;
+
+    // Collect each unit's leaf meshes + their matrix relative to the wrap origin, so
+    // we GPU-instance them: ONE InstancedMesh per unit-mesh instead of one cloned
+    // subtree per plant. Collapses hundreds of draw calls to a handful.
+    const unitLeaves = units.map((wrap) => {
+      wrap.updateMatrixWorld(true);
+      const leaves: { geo: THREE.BufferGeometry; mat: THREE.Material | THREE.Material[]; local: THREE.Matrix4 }[] = [];
+      wrap.traverse((o) => {
+        const mesh = o as THREE.Mesh;
+        if (mesh.isMesh) leaves.push({ geo: mesh.geometry, mat: mesh.material, local: mesh.matrixWorld.clone() });
+      });
+      return leaves;
+    });
+
+    // Pre-roll placements (which unit + full TRS matrix) with the same scatter rules.
+    const placements: { unit: number; m: THREE.Matrix4 }[] = [];
+    const p = new THREE.Vector3(), q = new THREE.Quaternion(), sv = new THREE.Vector3(), e = new THREE.Euler();
     for (let i = 0; i < spec.count; i++) {
       let x = 0, z = 0;
       do {
         x = (Math.random() - 0.5) * spec.area;
         z = (Math.random() - 0.5) * spec.area;
       } while (Math.hypot(x, z) < spec.clear); // keep the path start clear
-      const src = units[i % units.length];
-      const obj = src.clone(true);
-      obj.position.set(x, 0, z);
-      if (spec.yaw) obj.rotation.y = Math.random() * Math.PI * 2;
-      obj.scale.setScalar(spec.minScale + Math.random() * (spec.maxScale - spec.minScale));
-      group.add(obj);
+      const sc = spec.minScale + Math.random() * (spec.maxScale - spec.minScale);
+      e.set(0, spec.yaw ? Math.random() * Math.PI * 2 : 0, 0);
+      placements.push({ unit: i % units.length, m: new THREE.Matrix4().compose(p.set(x, 0, z), q.setFromEuler(e), sv.set(sc, sc, sc)) });
     }
+
+    // One InstancedMesh per (unit, leaf-mesh); fill only the placements for that unit.
+    const tmp = new THREE.Matrix4();
+    units.forEach((_, u) => {
+      const rows = placements.filter((pl) => pl.unit === u);
+      if (!rows.length) return;
+      for (const leaf of unitLeaves[u]) {
+        const inst = new THREE.InstancedMesh(leaf.geo, leaf.mat as any, rows.length);
+        inst.frustumCulled = false; // scattered field → one draw call, keep it visible
+        rows.forEach((pl, k) => {
+          tmp.multiplyMatrices(pl.m, leaf.local);
+          inst.setMatrixAt(k, tmp);
+        });
+        inst.instanceMatrix.needsUpdate = true;
+        group.add(inst);
+      }
+    });
   }
 
   onMount(() => {

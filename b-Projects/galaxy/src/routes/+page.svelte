@@ -16,6 +16,8 @@
   const scroll = new Spring(0, { stiffness: 0.045, damping: 0.9 });
   let tooltipEl = $state<HTMLElement>();
   let mode = $state<'scenic' | 'free'>('scenic');
+  let idle = $state(false); // freeze render loop (renderMode='manual') to idle GPU/CPU
+  function toggleIdle() { idle = !idle; }
   const stops = cfg.stops;
   const cam = cfg.free.cam;
   const clamp = (n: number) => Math.min(1, Math.max(0, n));
@@ -93,7 +95,7 @@
 </script>
 
 <div class="stage">
-  <Canvas>
+  <Canvas renderMode={idle ? 'manual' : 'always'}>
     <World scroll={scroll.current} tooltip={tooltipEl} {mode} />
   </Canvas>
 </div>
@@ -101,6 +103,16 @@
 <div bind:this={tooltipEl} class="tooltip"></div>
 
 <ModeSwitch {mode} {toggle} />
+
+<button class="idlebtn" class:on={idle} onclick={toggleIdle} title="Idle / freeze — pause rendering to save GPU/CPU">
+  {idle ? '▶ resume' : '❚❚ idle'}
+</button>
+
+{#if idle}
+  <button class="idleveil" onclick={toggleIdle} aria-label="Resume from idle">
+    <span>❚❚ idle — rendering paused<small>tap to resume</small></span>
+  </button>
+{/if}
 
 {#if mode === 'scenic'}
   <div class="ui" aria-hidden="true">
@@ -148,6 +160,27 @@
     position: fixed; right: 26px; bottom: 26px; z-index: 35;
     display: flex; flex-direction: column; align-items: center; gap: 14px;
   }
+  .idlebtn {
+    position: fixed; top: 14px; right: 22px; z-index: 36;
+    padding: 7px 12px; border-radius: 8px;
+    border: 1px solid rgba(157, 180, 255, 0.4); background: rgba(8, 11, 20, 0.62);
+    backdrop-filter: blur(8px); color: #cfe0ff; cursor: pointer;
+    font: 600 12px/1 system-ui, sans-serif; letter-spacing: 0.04em;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .idlebtn:hover { border-color: #9db4ff; background: rgba(20, 26, 44, 0.9); }
+  .idlebtn.on { color: #7dffb0; border-color: #7dffb0; background: rgba(125, 255, 176, 0.12); }
+  .idleveil {
+    position: fixed; inset: 0; z-index: 30; border: 0; cursor: pointer;
+    display: grid; place-items: center;
+    background: rgba(5, 6, 10, 0.32); backdrop-filter: blur(1.5px);
+  }
+  .idleveil span {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: #cfe0ff; font: 700 20px/1 system-ui, sans-serif; letter-spacing: 0.08em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+  }
+  .idleveil small { font: 500 12px/1 system-ui, sans-serif; opacity: 0.7; letter-spacing: 0.1em; }
   .hint {
     position: fixed; bottom: 34px; left: 50%; transform: translateX(-50%); z-index: 35;
     color: #9fb2d8; font: 500 12px/1 system-ui, sans-serif; letter-spacing: 0.05em;

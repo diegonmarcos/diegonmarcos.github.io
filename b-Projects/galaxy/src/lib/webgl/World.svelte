@@ -22,6 +22,7 @@
   import Ghetto from './Ghetto.svelte';
   import City from './City.svelte';
   import PerfTune from './PerfTune.svelte';
+  import Zones from './Zones.svelte';
   import { layers } from './layers.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
@@ -73,6 +74,7 @@
 {#if layers.comets}<Comets />{/if}
 {#if layers.milkyway}<MilkyWay />{/if}
 <Ground {cfg} />
+<Zones {cfg} />
 {#if layers.water}<Water {cfg} />{/if}
 {#if layers.flora}<Flora {cfg} />{/if}
 {#if layers.ghetto}<Ghetto {cfg} />{/if}

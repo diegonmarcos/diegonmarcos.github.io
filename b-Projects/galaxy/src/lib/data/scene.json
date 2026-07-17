@@ -63,6 +63,11 @@
         { "m": "man.glb",            "p": [17, 0, -286], "ry": -1.5708, "s": 9 }
       ]
     },
+    "zones": [
+      { "name": "Wild Forest", "center": [0, 0.03, 10],   "r": 195, "color": "#2f5a34", "rough": 1,    "metal": 0 },
+      { "name": "Ghetto",      "center": [0, 0.05, -186], "r": 96,  "color": "#4a453d", "rough": 1,    "metal": 0 },
+      { "name": "City Center", "center": [0, 0.06, -320], "r": 128, "color": "#26282e", "rough": 0.85, "metal": 0.1 }
+    ],
     "flora": [
       { "asset": "nat-pine",       "count": 75, "area": 340, "clear": 13, "minScale": 18, "maxScale": 30, "yaw": true },
       { "asset": "nat-maple",      "count": 62, "area": 340, "clear": 13, "minScale": 18, "maxScale": 28, "yaw": true },

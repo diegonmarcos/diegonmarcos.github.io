@@ -64,6 +64,10 @@ cfg.world.city.place.forEach((it, i) => {
   okFile(cfg.world.city.dir + it.m, `city[${i}] GLB exists: ${it.m}`);
 });
 
+// per-zone floors: forest / ghetto / city each get a round floor patch
+ok(Array.isArray(cfg.world.zones) && cfg.world.zones.length === 3, 'three zone floors present');
+cfg.world.zones.forEach((z, i) => ok(z.name && Array.isArray(z.center) && z.center.length === 3 && z.r > 0 && /^#/.test(z.color), `zone[${i}] valid: ${z.name}`));
+
 // free-ride mode config present (scenic <-> free switcher)
 ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
 ok(cfg.free.cam.stickYaw > 0 && cfg.free.cam.stickPitch > 0, 'camera-stick orbit/tilt sensitivities present');

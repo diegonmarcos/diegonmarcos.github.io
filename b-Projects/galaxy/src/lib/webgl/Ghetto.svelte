@@ -2,6 +2,7 @@
   // Freetown / Christiania-style night quarter at the end of the walk: shacks with
   // glowing windows, procedural graffiti walls, strings of warm bulbs, lanterns.
   import * as THREE from 'three';
+  import { roundPointTexture } from './assets/pointSprite';
   import { T, useTask } from '@threlte/core';
   import type { SceneConfig } from './types';
 
@@ -47,7 +48,7 @@
   const prism = new THREE.CylinderGeometry(0.62, 0.7, 1, 6);
   const roofGeo = new THREE.ConeGeometry(0.82, 1, 6);
   prism.computeVertexNormals(); roofGeo.computeVertexNormals();
-  const winGeo = new THREE.PlaneGeometry(1, 1);
+  const winGeo = new THREE.CircleGeometry(0.5, 12); // round windows, no squares
 
   function shack(x: number, z: number, ry: number) {
     const g = new THREE.Group();
@@ -102,7 +103,7 @@
   }
   const bulbGeo = new THREE.BufferGeometry();
   bulbGeo.setAttribute('position', new THREE.BufferAttribute(bulbPos, 3));
-  const bulbMat = new THREE.PointsMaterial({ color: warm, size: 2.4, sizeAttenuation: true, transparent: true, opacity: 0.95, fog: false, depthWrite: false, blending: THREE.AdditiveBlending });
+  const bulbMat = new THREE.PointsMaterial({ color: warm, map: roundPointTexture(), size: 2.4, sizeAttenuation: true, transparent: true, opacity: 0.95, fog: false, depthWrite: false, blending: THREE.AdditiveBlending });
   const bulbs = new THREE.Points(bulbGeo, bulbMat);
   group.add(bulbs);
 

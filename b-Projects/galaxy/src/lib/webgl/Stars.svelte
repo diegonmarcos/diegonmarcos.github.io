@@ -2,6 +2,7 @@
   import * as THREE from 'three';
   import { T } from '@threlte/core';
   import type { SceneConfig } from './types';
+  import { roundPointTexture } from './assets/pointSprite';
 
   let { cfg }: { cfg: SceneConfig } = $props();
   const c = cfg.world.stars;
@@ -19,7 +20,7 @@
   geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   const stars = new THREE.Points(
     geo,
-    new THREE.PointsMaterial({ color: 0xffffff, size: 2.4, sizeAttenuation: false, transparent: true, opacity: 0.9, fog: false })
+    new THREE.PointsMaterial({ color: 0xffffff, size: 2.4, sizeAttenuation: false, transparent: true, opacity: 0.9, fog: false, map: roundPointTexture(), alphaTest: 0.2, depthWrite: false })
   );
 </script>
 

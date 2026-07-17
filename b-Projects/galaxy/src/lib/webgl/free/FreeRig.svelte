@@ -35,7 +35,8 @@
   bike.add(bar(tube(1.6), frameMat, [0, 1.9, -0.9], [0.5, 0, 0]));
   bike.add(bar(tube(1.7), frameMat, [0, 1.9, 1.1], [-0.5, 0, 0]));
   bike.add(bar(tube(1.1, 0.06), darkMat, [0, 2.7, 1.35], [0, 0, Math.PI / 2]));
-  const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.18, 0.9), darkMat); seat.position.set(0, 2.7, -0.95); bike.add(seat);
+  const seatGeo = new THREE.CylinderGeometry(0.26, 0.26, 0.9, 8); // octagonal seat, no box
+  const seat = new THREE.Mesh(seatGeo, darkMat); seat.position.set(0, 2.7, -0.95); seat.rotation.x = Math.PI / 2; seat.scale.set(1, 1, 0.4); bike.add(seat);
 
   bike.scale.setScalar(F.bikeScale);
 

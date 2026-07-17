@@ -3,6 +3,7 @@
   // spiral dust disk, Sagittarius A* black hole, our Solar System (incl. Galaxy),
   // Sirius + Orion. Hidden until the free-ride galaxy reveal engages.
   import * as THREE from 'three';
+  import { roundPointTexture } from '../assets/pointSprite';
   import { T, useTask } from '@threlte/core';
   import galaxyCfg from '$lib/data/galaxy.json';
   import { freeInput } from '../free/freeInput';
@@ -61,7 +62,7 @@
   const diskGeo = new THREE.BufferGeometry();
   diskGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   diskGeo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-  const disk = new THREE.Points(diskGeo, new THREE.PointsMaterial({ size: D.size, vertexColors: true, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }));
+  const disk = new THREE.Points(diskGeo, new THREE.PointsMaterial({ size: D.size, map: roundPointTexture(), vertexColors: true, transparent: true, opacity: 0.85, depthWrite: false, blending: THREE.AdditiveBlending, fog: false }));
   group.add(disk);
 
   // --- Sagittarius A* (black hole) at centre ---

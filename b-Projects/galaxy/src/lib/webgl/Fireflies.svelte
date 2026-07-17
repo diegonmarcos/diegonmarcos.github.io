@@ -2,6 +2,7 @@
   // Night-mood fireflies: additive glowing points that drift + bob; UnrealBloom
   // (or plain additive) makes them scatter light. Cheap — one Points cloud.
   import * as THREE from 'three';
+  import { roundPointTexture } from './assets/pointSprite';
   import { T, useTask } from '@threlte/core';
   import type { SceneConfig } from './types';
 
@@ -28,6 +29,7 @@
   geo.setAttribute('position', attr);
 
   const mat = new THREE.PointsMaterial({
+    map: roundPointTexture(),
     color: new THREE.Color(f.color),
     size: f.size,
     sizeAttenuation: true,

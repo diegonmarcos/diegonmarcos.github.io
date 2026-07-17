@@ -282,7 +282,7 @@
   .pin.on { color: #7dffb0; border-color: #7dffb0; background: rgba(125, 255, 176, 0.12); }
 
   .fpsbadge {
-    position: fixed; top: 14px; left: 14px; z-index: 40;
+    position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 40;
     padding: 5px 10px; border-radius: 8px;
     background: rgba(8, 11, 20, 0.72); backdrop-filter: blur(6px);
     border: 1px solid rgba(125, 255, 176, 0.4);

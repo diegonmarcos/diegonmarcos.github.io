@@ -28,19 +28,19 @@
 
 <style>
   .zoom {
-    height: 190px; width: 44px; border-radius: 22px;
+    height: 48vh; max-height: 520px; width: 62px; border-radius: 24px;
     background: rgba(10, 14, 26, 0.35); border: 1px solid rgba(157, 180, 255, 0.35);
     backdrop-filter: blur(4px); touch-action: none;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
   }
-  .cap { color: rgba(207, 224, 255, 0.6); font: 14px/1 system-ui, sans-serif; pointer-events: none; }
+  .cap { color: rgba(207, 224, 255, 0.6); font: 16px/1 system-ui, sans-serif; pointer-events: none; }
   input[type='range'] {
     writing-mode: vertical-lr; direction: rtl;   /* top = max (zoomed out) */
-    width: 22px; height: 150px; accent-color: #9db4ff; cursor: pointer; touch-action: none;
+    width: 30px; height: calc(48vh - 56px); max-height: 460px; accent-color: #9db4ff; cursor: pointer; touch-action: none;
   }
-  /* desktop: taller bar → finer altitude precision */
+  /* desktop: taller precision bar */
   @media (min-width: 820px) and (pointer: fine) {
-    .zoom { height: 340px; width: 54px; }
-    input[type='range'] { width: 26px; height: 296px; }
+    .zoom { height: 52vh; max-height: 560px; width: 56px; }
+    input[type='range'] { width: 26px; height: calc(52vh - 56px); max-height: 500px; }
   }
 </style>

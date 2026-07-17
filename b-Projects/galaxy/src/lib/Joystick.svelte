@@ -37,20 +37,20 @@
 <style>
   .joy {
     position: fixed; left: 26px; bottom: 26px; z-index: 35;
-    width: 132px; height: 132px; border-radius: 50%;
+    width: 264px; height: 264px; border-radius: 50%;
     background: rgba(10, 14, 26, 0.35); border: 1px solid rgba(157, 180, 255, 0.35);
     backdrop-filter: blur(4px); touch-action: none; cursor: grab;
     display: grid; place-items: center;
   }
   .joy:active { cursor: grabbing; }
   .knob {
-    width: 52px; height: 52px; border-radius: 50%;
+    width: 104px; height: 104px; border-radius: 50%;
     background: rgba(157, 180, 255, 0.5); border: 1px solid rgba(207, 224, 255, 0.7);
     box-shadow: 0 0 14px rgba(157, 180, 255, 0.5); pointer-events: none;
   }
   /* desktop: 2x the whole control (radius auto-scales from rendered size) */
   @media (min-width: 820px) and (pointer: fine) {
-    .joy { width: 264px; height: 264px; }
-    .knob { width: 104px; height: 104px; }
+    .joy { width: 320px; height: 320px; }
+    .knob { width: 128px; height: 128px; }
   }
 </style>

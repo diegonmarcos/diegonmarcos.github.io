@@ -15,8 +15,12 @@ export const layers = $state({
   fauna: true
 });
 
+// coarse pointer = touch/mobile → default to a lower DPR ceiling (big FPS win);
+// desktop keeps 2. User can still override via the NerdStats selector.
+const coarse = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+
 export const perf = $state({
-  dprCap: 2 // device-pixel-ratio ceiling — the single biggest mobile win
+  dprCap: coarse ? 1.5 : 2 // device-pixel-ratio ceiling — the single biggest mobile win
 });
 
 export const LAYER_LABELS: [keyof typeof layers, string][] = [

@@ -41,7 +41,7 @@
   },
   "world": {
     "ground": { "size": 900, "roughness": 0.72 },
-    "water": { "size": 150, "center": [120, 0.2, -70] },
+    "water": { "size": 150, "center": [120, 0.2, -70], "reflectRes": 512, "reflectResMobile": 256 },
     "stars": { "count": 3000, "radius": 320 },
     "fireflies": { "count": 140, "area": 300, "height": 34, "color": "#ffe6a0", "size": 1.8 },
     "ghetto": { "center": [0, 0, -186], "length": 80, "side": 15, "shacks": 14, "walls": 7, "lanterns": 9, "bulbs": 70, "warm": "#ff9d4d", "window": "#ffb454" },

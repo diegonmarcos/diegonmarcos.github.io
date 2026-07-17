@@ -13,9 +13,13 @@
   normals.wrapS = normals.wrapT = THREE.RepeatWrapping;
 
   const moon = cfg.world.moons[0]; // reflect the primary moon on the water
+  // reflection = a full second scene render; use a smaller target on mobile.
+  const w = cfg.world.water as any;
+  const coarse = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+  const reflectRes = (coarse ? w.reflectResMobile : w.reflectRes) ?? 512;
   const water = new Water(new THREE.PlaneGeometry(size, size), {
-    textureWidth: 512,
-    textureHeight: 512,
+    textureWidth: reflectRes,
+    textureHeight: reflectRes,
     waterNormals: normals,
     sunDirection: new THREE.Vector3(moon.position[0], moon.position[1], moon.position[2]).normalize(),
     sunColor: new THREE.Color(moon.color).getHex(),

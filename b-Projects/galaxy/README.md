@@ -1,4 +1,4 @@
-# leafy-2 — Daylight Surreal Scrollworld
+# galaxy — Daylight Surreal Scrollworld
 
 Real-time **SvelteKit + Threlte** scroll experience. Declarative Three.js
 components (`<T>`) with a `svelte/motion` spring driving the scroll camera —

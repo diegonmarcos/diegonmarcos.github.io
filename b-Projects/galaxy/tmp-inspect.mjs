@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
-const dir = resolve(here, '../../front-assets-cdn/a-Companies/leafy-2/static/assets/models/nature');
+const dir = resolve(here, '../../front-assets-cdn/b-Projects/galaxy/static/assets/models/nature');
 const files = ['birch-trees','pine-trees','maple-trees','palm-trees','dead-trees','trees','bushes','flower-bushes','flowers','grass','rocks','big-tree'];
 
 const loader = new GLTFLoader();

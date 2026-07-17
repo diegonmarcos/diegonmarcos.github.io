@@ -7,7 +7,7 @@ import { dirname, resolve } from 'node:path';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 // Assets now live in the front-assets-cdn submodule (served via jsDelivr), not local static/.
-const cdnRoot = resolve(root, '../../front-assets-cdn/a-Companies/leafy-2/static');
+const cdnRoot = resolve(root, '../../front-assets-cdn/b-Projects/galaxy/static');
 const haveCdn = existsSync(cdnRoot);
 const cfg = JSON.parse(readFileSync(resolve(root, 'src/lib/data/scene.json'), 'utf8'));
 const catalog = JSON.parse(readFileSync(resolve(root, 'src/lib/data/assets.json'), 'utf8'));
@@ -46,7 +46,7 @@ cfg.world.flora.forEach((f, i) => {
   ok(f.area > 0 && f.clear >= 0, `flora[${i}] area/clear valid`);
 });
 
-// solar system: every referenced planet/moon/ring/sky texture exists; Leafy present
+// solar system: every referenced planet/moon/ring/sky texture exists; Galaxy present
 const space = JSON.parse(readFileSync(resolve(root, 'src/lib/data/space.json'), 'utf8'));
 const spaceTex = [space.background, space.sun.texture];
 for (const p of space.planets) {
@@ -55,12 +55,12 @@ for (const p of space.planets) {
   for (const m of p.moons ?? []) if (m.texture) spaceTex.push(m.texture);
 }
 for (const p of spaceTex) okFile(p, `space texture exists: ${p}`);
-ok(space.planets.some((p) => p.id === 'leafy'), 'space has Leafy planet between Mars and Jupiter');
+ok(space.planets.some((p) => p.id === 'galaxy'), 'space has Galaxy planet between Mars and Jupiter');
 
 // free-ride mode config present (scenic <-> free switcher)
 ok(!!cfg.free && !!cfg.free.cam && cfg.free.cam.presets && cfg.free.speed > 0, 'free-ride config present');
 
-// milky way constellation view: black hole + solar (incl. Leafy) + two neighbour stars
+// milky way constellation view: black hole + solar (incl. Galaxy) + two neighbour stars
 const galaxy = JSON.parse(readFileSync(resolve(root, 'src/lib/data/galaxy.json'), 'utf8'));
 ok(!!galaxy.blackHole && !!galaxy.solar && Array.isArray(galaxy.stars) && galaxy.stars.length === 2, 'galaxy: black hole + solar + two stars');
 

@@ -75,6 +75,7 @@ cfg.world.moons.forEach((m, i) => {
   ok(m.radius >= 50, `moon[${i}] is huge (r>=50): ${m.radius}`);
   ok(m.light > 0, `moon[${i}] casts light (light>0)`);
   ok(m.emissive > 0, `moon[${i}] glows (emissive>0)`);
+  if (m.mesh) okFile(m.mesh, `moon[${i}] GLB exists: ${m.mesh}`);
 });
 
 // night config present, moons are the lights (no fake moonlight, no daytime HDRI)

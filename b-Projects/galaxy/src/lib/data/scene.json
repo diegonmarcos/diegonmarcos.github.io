@@ -59,7 +59,7 @@
       { "asset": "nat-flowers",    "count": 140, "area": 350, "clear": 10, "minScale": 1.0, "maxScale": 2.0, "yaw": true }
     ],
     "moons": [
-      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 2.1 },
+      { "radius": 120, "position": [140, 210, -260], "color": "#dfe6ff", "emissive": 1.5, "light": 2.1, "mesh": "assets/models/space-moon.glb" },
       { "radius": 80, "position": [-190, 150, -230], "color": "#ffe0c0", "emissive": 1.1, "light": 1.0 }
     ],
     "fauna": [

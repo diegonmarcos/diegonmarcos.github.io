@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Gaia — Tropical Jungle</title>
+
+  <script>
+    var _mtm = window._mtm = window._mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    (function() {
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src='https://analytics.diegonmarcos.com/matomo/js/container_odwLIyPV.js';
+      s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+
+  <script>
+    // Self-debugging hook, moved here from +layout.svelte's onMount: a
+    // Svelte component's onMount runs LATE (after hydration/routing has
+    // already had a chance to fail) -- confirmed missing a real
+    // SvelteKit router error ("Not found: /scene.html") that fired before
+    // +layout.svelte ever mounted. This <script> runs at HTML PARSE time,
+    // before any framework JS, so it catches everything from the earliest
+    // possible point, including framework-internal errors.
+    (function () {
+      var LOG_URL = location.protocol + '//' + location.hostname + ':8787/log';
+      function send(line) {
+        var body = '[' + new Date().toISOString() + '] ' + line + '\n';
+        if (!(navigator.sendBeacon && navigator.sendBeacon(LOG_URL, body))) {
+          fetch(LOG_URL, { method: 'POST', body: body, keepalive: true }).catch(function () {});
+        }
+      }
+      ['log', 'warn', 'error'].forEach(function (level) {
+        var orig = console[level].bind(console);
+        console[level] = function () {
+          var args = Array.prototype.slice.call(arguments);
+          send(level.toUpperCase() + ' ' + args.map(String).join(' '));
+          orig.apply(console, args);
+        };
+      });
+      window.addEventListener('error', function (e) {
+        send('WINDOW-ERROR ' + e.message + ' @ ' + e.filename + ':' + e.lineno);
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        send('UNHANDLED-REJECTION ' + e.reason);
+      });
+      window.addEventListener('webglcontextlost', function () {
+        send('WEBGL-CONTEXT-LOST (GPU/VRAM exhaustion — this precedes a tab crash)');
+      }, true);
+    })();
+  </script>
+
+  <link href="/_app/immutable/entry/start.CGC52c_p.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/B514Zdiz.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/CK6WMaBF.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/B1j4oSJC.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/TKPY8a9G.js" rel="modulepreload">
+		<link href="/_app/immutable/entry/app.D7IjNDoa.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DM-rlapm.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/Cv8m9my5.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DAwwW3BG.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/D1w6NRdB.js" rel="modulepreload">
+		<link href="/_app/immutable/nodes/0.kpIdz-zc.js" rel="modulepreload">
+		<link href="/_app/immutable/chunks/DBtyXAzp.js" rel="modulepreload">
+		
+</head>
+<body>
+  <div style="display: contents">
+			<script>
+				{
+					__sveltekit_1x5yroz = {
+						base: ""
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("/_app/immutable/entry/start.CGC52c_p.js"),
+						import("/_app/immutable/entry/app.D7IjNDoa.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element);
+					});
+				}
+			</script>
+		</div>
+</body>
+</html>

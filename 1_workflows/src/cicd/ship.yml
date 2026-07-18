@@ -549,6 +549,7 @@ jobs:
             "a-Individual/landpage:landpage"
             "a-Companies/leafy:leafy"
             "b-Projects/galaxy:galaxy"
+            "b-Projects/galaxy-gaia:galaxy-gaia"
             "b-Profiles/myprofile:myprofile"
             "a-Companies/nexus:nexus"
             "a-Companies/stark:stark"

@@ -12,6 +12,7 @@ export const layers = $state({
   flora: true,
   ghetto: true,
   city: true,
+  house: true,
   fauna: true
 });
 
@@ -27,5 +28,5 @@ export const LAYER_LABELS: [keyof typeof layers, string][] = [
   ['stars', 'Stars'], ['fireflies', 'Fireflies'], ['moons', 'Moons'],
   ['solar', 'Solar system'], ['comets', 'Comets'], ['milkyway', 'Milky Way'],
   ['water', 'Water (reflections)'], ['flora', 'Flora'], ['ghetto', 'Ghetto'],
-  ['city', 'City'], ['fauna', 'Fauna']
+  ['city', 'City'], ['house', 'House'], ['fauna', 'Fauna']
 ];

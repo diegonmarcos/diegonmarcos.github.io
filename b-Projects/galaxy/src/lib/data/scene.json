@@ -68,8 +68,21 @@
     "zones": [
       { "name": "Wild Forest", "center": [0, 0.03, 10],   "r": 195, "color": "#2f5a34", "rough": 1,    "metal": 0 },
       { "name": "Ghetto",      "center": [0, 0.05, -186], "r": 85,  "color": "#4a453d", "rough": 1,    "metal": 0 },
-      { "name": "City Center", "center": [0, 0.06, -410], "r": 125, "color": "#26282e", "rough": 0.85, "metal": 0.1 }
+      { "name": "City Center", "center": [0, 0.06, -410], "r": 125, "color": "#26282e", "rough": 0.85, "metal": 0.1 },
+      { "name": "House",       "center": [200, 0.04, 10], "r": 40,  "color": "#6b5a4a", "rough": 0.9,  "metal": 0 }
     ],
+    "house": {
+      "dir": "assets/models/house/",
+      "center": [200, 0, 10],
+      "_note": "5 rooms in a row. 2 furnished from downloaded interior packs (loft + japanese loft, each a complete pre-built scene.gltf loaded/autofit/autogrounded the same way City.svelte handles its GLBs). 3 empty (no asset available for these -- procedural box room shells, see House.svelte) -- not a real floor plan, a simple row layout.",
+      "rooms": [
+        { "type": "furnished", "m": "loft/scene.gltf",     "p": [-24, 0, 0], "ry": 0, "s": 14 },
+        { "type": "furnished", "m": "japanese/scene.gltf", "p": [-12, 0, 0], "ry": 0, "s": 14 },
+        { "type": "empty", "p": [0, 0, 0],  "size": [12, 6, 12] },
+        { "type": "empty", "p": [12, 0, 0], "size": [12, 6, 12] },
+        { "type": "empty", "p": [24, 0, 0], "size": [12, 6, 12] }
+      ]
+    },
     "flora": [
       { "asset": "nat-pine",       "count": 75, "area": 340, "clear": 13, "minScale": 18, "maxScale": 30, "yaw": true },
       { "asset": "nat-maple",      "count": 62, "area": 340, "clear": 13, "minScale": 18, "maxScale": 28, "yaw": true },

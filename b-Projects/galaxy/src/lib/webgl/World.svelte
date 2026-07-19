@@ -21,6 +21,7 @@
   import Flora from './Flora.svelte';
   import Ghetto from './Ghetto.svelte';
   import City from './City.svelte';
+  import House from './House.svelte';
   import PerfTune from './PerfTune.svelte';
   import Zones from './Zones.svelte';
   import { layers } from './layers.svelte';
@@ -79,6 +80,7 @@
 {#if layers.flora}<Flora {cfg} />{/if}
 {#if layers.ghetto}<Ghetto {cfg} />{/if}
 {#if layers.city}<City {cfg} />{/if}
+{#if layers.house}<House {cfg} />{/if}
 {#if layers.fauna}<Fauna {cfg} />{/if}
 <Cubes {cfg} {tooltip} />
 <StatsSampler />

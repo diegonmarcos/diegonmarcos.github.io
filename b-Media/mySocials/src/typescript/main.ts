@@ -746,12 +746,79 @@ function renderStrava(): void {
   const activities = d?.activities ?? [];
   const prof = d?.profile;
 
+  const durationMin = (s?: string) => s ? parseInt(s) || 0 : 0;
+  const city = (title: string) => title.split(' — ')[1] || '';
+
+  // Dashboard totals, split by activity type — real aggregates of the mock/real feed.
+  const TYPES = ['run', 'ride', 'swim'] as const;
+  const totals = TYPES.reduce((acc, t) => {
+    const rows = activities.filter(a => a.type === t);
+    acc[t] = {
+      count: rows.length,
+      distance: rows.reduce((s, a) => s + (a.distance_km || 0), 0),
+      minutes: rows.reduce((s, a) => s + durationMin(a.duration), 0),
+      elevation: rows.reduce((s, a) => s + (a.elevation_m || 0), 0),
+    };
+    return acc;
+  }, {} as Record<typeof TYPES[number], { count: number; distance: number; minutes: number; elevation: number }>);
+  const totalMinutes = TYPES.reduce((s, t) => s + totals[t].minutes, 0);
+  const fmtHours = (m: number) => `${Math.round(m / 60)}h`;
+
+  const statTile = (icon: string, value: string, label: string) =>
+    `<div class="str-stat"><span class="str-stat__icon">${icon}</span><span class="str-stat__value">${esc(value)}</span><span class="str-stat__label">${label}</span></div>`;
+
+  const dashboard = `
+    <div class="str-dash">
+      ${statTile('\u{1F3C3}', `${totals.run.distance.toFixed(0)} km`, `${totals.run.count} runs`)}
+      ${statTile('\u{1F6B4}', `${totals.ride.distance.toFixed(0)} km`, `${totals.ride.count} rides`)}
+      ${statTile('\u{1F3CA}', `${totals.swim.distance.toFixed(1)} km`, `${totals.swim.count} swims`)}
+      ${statTile('⏱️', fmtHours(totalMinutes), 'total time')}
+      ${statTile('⛰️', `${(totals.run.elevation + totals.ride.elevation).toLocaleString()} m`, 'elevation gain')}
+    </div>`;
+
+  // Calendar heatmap — GitHub-style grid, one column per week, colored by that day's
+  // activity count. Built from real activity dates, not a real map (no geo/lat-lng data
+  // in this export — see the "By city" list below instead of a fake interactive map).
+  const dayCounts = new Map<string, number>();
+  activities.forEach(a => {
+    const t = Date.parse(a.date);
+    if (!Number.isNaN(t)) {
+      const key = new Date(t).toISOString().slice(0, 10);
+      dayCounts.set(key, (dayCounts.get(key) || 0) + 1);
+    }
+  });
+  const today = activities.length
+    ? new Date(Math.max(...activities.map(a => Date.parse(a.date)).filter(n => !Number.isNaN(n))))
+    : new Date(0);
+  const WEEKS = 53;
+  const gridStart = new Date(today);
+  gridStart.setDate(gridStart.getDate() - WEEKS * 7);
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay()); // snap to Sunday
+  const cells: string[] = [];
+  for (let i = 0; i < WEEKS * 7; i++) {
+    const day = new Date(gridStart);
+    day.setDate(day.getDate() + i);
+    const key = day.toISOString().slice(0, 10);
+    const n = dayCounts.get(key) || 0;
+    const level = n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : 3;
+    cells.push(`<span class="str-cal__cell str-cal__cell--${level}" title="${key}: ${n} activit${n === 1 ? 'y' : 'ies'}"></span>`);
+  }
+  const calendar = `<div class="str-cal">${cells.join('')}</div>`;
+
+  // "By city" — real place names parsed from each activity's title, standing in for a
+  // map (no mapping library / geo-coordinates wired into this data yet).
+  const cityCounts = new Map<string, number>();
+  activities.forEach(a => { const c = city(a.title); if (c) cityCounts.set(c, (cityCounts.get(c) || 0) + 1); });
+  const cityChips = [...cityCounts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([c, n]) => `<span class="str-city">${esc(c)}<em>${n}</em></span>`).join('');
+
   const stat = (label: string, value: string) => value
     ? `<div class="str-card__stat"><span class="str-card__stat-value">${esc(value)}</span><span class="str-card__stat-label">${label}</span></div>`
     : '';
 
-  const cards = activities.map(a => `
-    <div class="str-card">
+  const cardHtml = (a: StrActivity) => `
+    <div class="str-card" data-type="${a.type}">
       <div class="str-card__header">
         <div class="str-card__icon">${STR_ICON[a.type] || '\u{1F3C1}'}</div>
         <div>
@@ -765,7 +832,12 @@ function renderStrava(): void {
         ${stat('Pace', a.pace || '')}
         ${stat('Elevation', a.elevation_m ? `${a.elevation_m} m` : '')}
       </div>
-    </div>`).join('');
+    </div>`;
+  const cards = activities.map(cardHtml).join('');
+
+  // No real profile photo in this export — initials placeholder, same rule as the
+  // other themes, rather than borrowing an unrelated photo.
+  const avatar = `<div class="str-head__avatar">${esc(initials(prof?.name || 'Diego Nepomuceno Marcos'))}</div>`;
 
   view.innerHTML = `
     <nav class="str-nav">
@@ -777,6 +849,7 @@ function renderStrava(): void {
     </nav>
     <div class="str-main">
       <header class="str-head">
+        ${avatar}
         <div>
           <div class="str-head__name">${esc(prof?.name || 'Diego Nepomuceno Marcos')}</div>
         </div>
@@ -786,8 +859,38 @@ function renderStrava(): void {
           <div class="str-head__stat"><span class="str-head__stat-value">${prof?.following ?? 0}</span><span class="str-head__stat-label">Following</span></div>
         </div>
       </header>
+
+      ${dashboard}
+
+      <section class="str-section">
+        <h3 class="str-section__title">Activity calendar</h3>
+        ${calendar}
+      </section>
+
+      ${cityChips ? `<section class="str-section">
+        <h3 class="str-section__title">By city</h3>
+        <div class="str-cities">${cityChips}</div>
+      </section>` : ''}
+
+      <div class="str-filters">
+        <button class="str-filter is-active" data-type="all">All</button>
+        <button class="str-filter" data-type="run">${STR_ICON.run} Run</button>
+        <button class="str-filter" data-type="ride">${STR_ICON.ride} Ride</button>
+        <button class="str-filter" data-type="swim">${STR_ICON.swim} Swim</button>
+      </div>
+
       <div class="str-feed">${cards || '<p class="str-empty">No activities yet. Strava data loads once the profile is exported.</p>'}</div>
     </div>`;
+
+  view.querySelectorAll<HTMLElement>('.str-filter').forEach(btn => {
+    btn.addEventListener('click', () => {
+      view.querySelectorAll('.str-filter').forEach(b => b.classList.toggle('is-active', b === btn));
+      const type = btn.dataset.type;
+      view.querySelectorAll<HTMLElement>('.str-card').forEach(card => {
+        card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
+      });
+    });
+  });
 }
 
 // ─── YOUTUBE VIEW (playlists + video grid) ────────────────────────────────────

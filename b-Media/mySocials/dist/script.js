@@ -1,9 +1,9 @@
-(()=>{var h=["#e8508a","#4a8aff","#3abb78","#8a6aff","#ff8a4a","#4ac0ff","#ff4a8a","#50c878","#ffa040","#8080ff","#ff6060","#40c0c0","#c060ff","#ff9060","#60b0ff"],X=[{name:"Ana Silva",initial:"A",color:h[0]},{name:"Bruno Costa",initial:"B",color:h[1]},{name:"Carla Souza",initial:"C",color:h[2]},{name:"Daniel Lima",initial:"D",color:h[3]},{name:"Elena Torres",initial:"E",color:h[4]},{name:"Felipe Gomes",initial:"F",color:h[5]},{name:"Gabi Santos",initial:"G",color:h[6]},{name:"Hugo Pereira",initial:"H",color:h[7]},{name:"Isa Oliveira",initial:"I",color:h[8]}],te=[{author:"Ana Silva",initial:"A",color:h[0],text:"Hey Diego! Miss our coding sessions at the uni. We should catch up soon! Saudades demais!",time:"2 hours ago"},{author:"Bruno Costa",initial:"B",color:h[1],text:"Cara, vi que voce ta morando em Berlin agora! Que top! Vamos marcar uma call?",time:"5 hours ago"},{author:"Carla Souza",initial:"C",color:h[2],text:"Happy birthday atrasado!! Hope you had an amazing day. Your projects are looking incredible btw",time:"yesterday"},{author:"Felipe Gomes",initial:"F",color:h[5],text:"Mano, teu MyMaps ta INSANO. Lembra quando a gente fazia mapa no paint? kkkk Evoluimos!",time:"2 days ago"},{author:"Gabi Santos",initial:"G",color:h[6],text:'Diego!! Join our community "Linux Users Brazil" please! We need more devs like you there',time:"3 days ago"},{author:"Hugo Pereira",initial:"H",color:h[7],text:"Saw your Strava activities... beast mode! When did you start cycling?",time:"4 days ago"},{author:"Isa Oliveira",initial:"I",color:h[8],text:"Testimonial request sent! You were the best partner for the compiler project, forever grateful",time:"1 week ago"}],ne=[{name:"Eu odeio acordar cedo",members:1247893,emoji:"\u{1F634}",color:"#8a6aff"},{name:"NixOS Brasil",members:3420,emoji:"\u2744\uFE0F",color:"#4a8aff"},{name:"Linux Users",members:89340,emoji:"\u{1F427}",color:"#3abb78"},{name:"Cycling Addicts",members:45200,emoji:"\u{1F6B4}",color:"#ff8a4a"},{name:"Self-hosted Everything",members:12800,emoji:"\u{1F5A5}\uFE0F",color:"#4ac0ff"},{name:"Saudades do Orkut",members:892340,emoji:"\u{1F62D}",color:"#e8508a"},{name:"Maps & Geography",members:23100,emoji:"\u{1F30D}",color:"#50c878"},{name:"Berlin Brasileiros",members:8900,emoji:"\u{1F1E7}\u{1F1F7}",color:"#ffa040"},{name:"Coffee > Sleep",members:456e3,emoji:"\u2615",color:"#c08040"}],oe=[{author:"Ana Silva",date:"Dec 2023",text:"Diego is one of those rare people who can debug your code AND your life. An incredible friend, always there when you need help. 10/10 would add as friend again."},{author:"Bruno Costa",date:"Nov 2023",text:"Known Diego since university. The guy literally automated everything in his life with NixOS. Respect the dedication. Best engineer I know, no cap."},{author:"Carla Souza",date:"Oct 2023",text:"The most creative developer I have ever worked with. His projects are not just functional, they are beautiful. An artist disguised as an engineer."},{author:"Elena Torres",date:"Sep 2023",text:"Diego helped me set up my entire self-hosted infrastructure. Refused to let me use any cloud subscription. A true freedom fighter of the internet!"}],N=["#1a2840","#2a1840","#182838","#281828","#1a3028","#302818","#201838","#283018","#381828"];function le(){let a=document.getElementById("friends-grid");a&&X.forEach(e=>{let s=document.createElement("div");s.className="friend-cell",s.innerHTML=`
+(()=>{var $=["#e8508a","#4a8aff","#3abb78","#8a6aff","#ff8a4a","#4ac0ff","#ff4a8a","#50c878","#ffa040","#8080ff","#ff6060","#40c0c0","#c060ff","#ff9060","#60b0ff"],ee=[{name:"Ana Silva",initial:"A",color:$[0]},{name:"Bruno Costa",initial:"B",color:$[1]},{name:"Carla Souza",initial:"C",color:$[2]},{name:"Daniel Lima",initial:"D",color:$[3]},{name:"Elena Torres",initial:"E",color:$[4]},{name:"Felipe Gomes",initial:"F",color:$[5]},{name:"Gabi Santos",initial:"G",color:$[6]},{name:"Hugo Pereira",initial:"H",color:$[7]},{name:"Isa Oliveira",initial:"I",color:$[8]}],ne=[{author:"Ana Silva",initial:"A",color:$[0],text:"Hey Diego! Miss our coding sessions at the uni. We should catch up soon! Saudades demais!",time:"2 hours ago"},{author:"Bruno Costa",initial:"B",color:$[1],text:"Cara, vi que voce ta morando em Berlin agora! Que top! Vamos marcar uma call?",time:"5 hours ago"},{author:"Carla Souza",initial:"C",color:$[2],text:"Happy birthday atrasado!! Hope you had an amazing day. Your projects are looking incredible btw",time:"yesterday"},{author:"Felipe Gomes",initial:"F",color:$[5],text:"Mano, teu MyMaps ta INSANO. Lembra quando a gente fazia mapa no paint? kkkk Evoluimos!",time:"2 days ago"},{author:"Gabi Santos",initial:"G",color:$[6],text:'Diego!! Join our community "Linux Users Brazil" please! We need more devs like you there',time:"3 days ago"},{author:"Hugo Pereira",initial:"H",color:$[7],text:"Saw your Strava activities... beast mode! When did you start cycling?",time:"4 days ago"},{author:"Isa Oliveira",initial:"I",color:$[8],text:"Testimonial request sent! You were the best partner for the compiler project, forever grateful",time:"1 week ago"}],oe=[{name:"Eu odeio acordar cedo",members:1247893,emoji:"\u{1F634}",color:"#8a6aff"},{name:"NixOS Brasil",members:3420,emoji:"\u2744\uFE0F",color:"#4a8aff"},{name:"Linux Users",members:89340,emoji:"\u{1F427}",color:"#3abb78"},{name:"Cycling Addicts",members:45200,emoji:"\u{1F6B4}",color:"#ff8a4a"},{name:"Self-hosted Everything",members:12800,emoji:"\u{1F5A5}\uFE0F",color:"#4ac0ff"},{name:"Saudades do Orkut",members:892340,emoji:"\u{1F62D}",color:"#e8508a"},{name:"Maps & Geography",members:23100,emoji:"\u{1F30D}",color:"#50c878"},{name:"Berlin Brasileiros",members:8900,emoji:"\u{1F1E7}\u{1F1F7}",color:"#ffa040"},{name:"Coffee > Sleep",members:456e3,emoji:"\u2615",color:"#c08040"}],le=[{author:"Ana Silva",date:"Dec 2023",text:"Diego is one of those rare people who can debug your code AND your life. An incredible friend, always there when you need help. 10/10 would add as friend again."},{author:"Bruno Costa",date:"Nov 2023",text:"Known Diego since university. The guy literally automated everything in his life with NixOS. Respect the dedication. Best engineer I know, no cap."},{author:"Carla Souza",date:"Oct 2023",text:"The most creative developer I have ever worked with. His projects are not just functional, they are beautiful. An artist disguised as an engineer."},{author:"Elena Torres",date:"Sep 2023",text:"Diego helped me set up my entire self-hosted infrastructure. Refused to let me use any cloud subscription. A true freedom fighter of the internet!"}],O=["#1a2840","#2a1840","#182838","#281828","#1a3028","#302818","#201838","#283018","#381828"];function re(){let s=document.getElementById("friends-grid");s&&ee.forEach(e=>{let t=document.createElement("div");t.className="friend-cell",t.innerHTML=`
       <div class="friend-cell__avatar">
         <div class="friend-cell__avatar-inner" style="background:${e.color}">${e.initial}</div>
       </div>
       <span class="friend-cell__name">${e.name.split(" ")[0]}</span>
-    `,a.appendChild(s)})}function re(){let a=document.getElementById("scraps-list");a&&te.forEach(e=>{let s=document.createElement("div");s.className="scrap",s.innerHTML=`
+    `,s.appendChild(t)})}function ce(){let s=document.getElementById("scraps-list");s&&ne.forEach(e=>{let t=document.createElement("div");t.className="scrap",t.innerHTML=`
       <div class="scrap__avatar">
         <div class="scrap__avatar-inner" style="background:${e.color}">${e.initial}</div>
       </div>
@@ -14,86 +14,86 @@
         </div>
         <p class="scrap__text">${e.text}</p>
       </div>
-    `,a.appendChild(s)})}function ce(){let a=document.getElementById("communities-grid");a&&ne.forEach(e=>{let s=document.createElement("a");s.href="#",s.className="community-card";let t=e.members>=1e6?`${(e.members/1e6).toFixed(1)}M members`:e.members>=1e3?`${(e.members/1e3).toFixed(0)}K members`:`${e.members} members`;s.innerHTML=`
+    `,s.appendChild(t)})}function de(){let s=document.getElementById("communities-grid");s&&oe.forEach(e=>{let t=document.createElement("a");t.href="#",t.className="community-card";let n=e.members>=1e6?`${(e.members/1e6).toFixed(1)}M members`:e.members>=1e3?`${(e.members/1e3).toFixed(0)}K members`:`${e.members} members`;t.innerHTML=`
       <div class="community-card__icon" style="background:${e.color}20;color:${e.color}">${e.emoji}</div>
       <div class="community-card__body">
         <span class="community-card__name">${e.name}</span>
-        <span class="community-card__members">${t}</span>
+        <span class="community-card__members">${n}</span>
       </div>
-    `,a.appendChild(s)})}function de(){let a=document.getElementById("testimonials-list");a&&oe.forEach(e=>{let s=document.createElement("div");s.className="testimonial",s.innerHTML=`
+    `,s.appendChild(t)})}function me(){let s=document.getElementById("testimonials-list");s&&le.forEach(e=>{let t=document.createElement("div");t.className="testimonial",t.innerHTML=`
       <div class="testimonial__header">
         <span class="testimonial__author">${e.author}</span>
         <span class="testimonial__date">${e.date}</span>
       </div>
       <p class="testimonial__text">${e.text}</p>
-    `,a.appendChild(s)})}function me(){let a=document.getElementById("photo-grid");if(a)for(let e=0;e<9;e++){let s=document.createElement("div");s.className="photo-cell",s.innerHTML=`<div class="photo-cell__inner" style="background:${N[e%N.length]}"></div>`,a.appendChild(s)}}var b={heart:'<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',comment:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',share:'<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',save:'<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',home:'<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',grid:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>',reels:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="8" y1="3" x2="10" y2="8"/><line x1="14" y1="3" x2="16" y2="8"/><polygon points="10 11 15 13.5 10 16" fill="currentColor" stroke="none"/></svg>',tagged:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg>'};function L(a){let e=N[a%N.length],s=h[a%h.length];return`linear-gradient(135deg, ${e}, ${s})`}function i(a){return a.replace(/[&<>"]/g,e=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[e])}function pe(a){let e=0;for(let s=0;s<a.length;s++)e=e*31+a.charCodeAt(s)>>>0;return h[e%h.length]}var F=["ana","bruno","carla","diego","elena","felipe","gabi","hugo","isa","joao","lu","marco","nina","otto","paula","rafa","sofia","tiago","vera","yara"],G=["","_",".","__"],V=["","br","berlin","photo","travel","x","oficial","real","99","mrx","gram"];function ge(a,e){let s=a.slice();for(let t=0;s.length<e;t++){let c=F[t%F.length],p=G[(t>>2)%G.length],o=V[(t>>1)%V.length],l=Math.floor(t/(F.length*G.length)),d=`${c}${p}${o}${l>0?l:""}`;s.includes(d)?s.push(`${d}${s.length}`):s.push(d)}return s}function ve(){let a=document.getElementById("ig-view");if(!a)return;let e=globalThis.PORTAL_DATA?.instagram;if(!e){a.innerHTML='<p class="ig-empty">Instagram data not loaded.</p>';return}let s=e.profile,t=n=>n.toLocaleString(),c=(e.highlights||[]).map((n,_)=>`
+    `,s.appendChild(t)})}function pe(){let s=document.getElementById("photo-grid");if(s)for(let e=0;e<9;e++){let t=document.createElement("div");t.className="photo-cell",t.innerHTML=`<div class="photo-cell__inner" style="background:${O[e%O.length]}"></div>`,s.appendChild(t)}}var S={heart:'<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>',comment:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',share:'<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',save:'<svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>',home:'<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',grid:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>',reels:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="8" y1="3" x2="10" y2="8"/><line x1="14" y1="3" x2="16" y2="8"/><polygon points="10 11 15 13.5 10 16" fill="currentColor" stroke="none"/></svg>',tagged:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="12" cy="10" r="3"/><path d="M7 18a5 5 0 0 1 10 0"/></svg>'};function q(s){let e=O[s%O.length],t=$[s%$.length];return`linear-gradient(135deg, ${e}, ${t})`}function a(s){return s.replace(/[&<>"]/g,e=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[e])}function ge(s){let e=0;for(let t=0;t<s.length;t++)e=e*31+s.charCodeAt(t)>>>0;return $[e%$.length]}var Y=["ana","bruno","carla","diego","elena","felipe","gabi","hugo","isa","joao","lu","marco","nina","otto","paula","rafa","sofia","tiago","vera","yara"],U=["","_",".","__"],W=["","br","berlin","photo","travel","x","oficial","real","99","mrx","gram"];function ve(s,e){let t=s.slice();for(let n=0;t.length<e;n++){let v=Y[n%Y.length],u=U[(n>>2)%U.length],c=W[(n>>1)%W.length],l=Math.floor(n/(Y.length*U.length)),m=`${v}${u}${c}${l>0?l:""}`;t.includes(m)?t.push(`${m}${t.length}`):t.push(m)}return t}function ue(){let s=document.getElementById("ig-view");if(!s)return;let e=globalThis.PORTAL_DATA?.instagram;if(!e){s.innerHTML='<p class="ig-empty">Instagram data not loaded.</p>';return}let t=e.profile,n=o=>o.toLocaleString(),v=(e.highlights||[]).map((o,h)=>`
     <div class="ig-hl">
-      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${L(_)}"><span class="ig-hl__emoji">${n.emoji}</span></div></div>
-      <span class="ig-hl__name">${i(n.label)}</span>
-    </div>`).join(""),p=(n,_)=>`
-    <a class="ig-tile" href="${i(n.url)}" target="_blank" rel="noopener" style="background:${L(n.url.length)}">
-      <span class="ig-tile__cap">${i(n.caption||n.url.replace("https://www.instagram.com/",""))}</span>
-      <span class="ig-tile__badge">${_}</span>
-    </a>`,o=e.saved.length?e.saved.map(n=>p(n,"\u{1F516}")).join(""):'<p class="ig-empty">Nothing saved.</p>',l=e.liked.length?e.liked.map(n=>p(n,"\u2764\uFE0F")).join(""):'<p class="ig-empty">No likes.</p>',d=n=>Number(n.match(/(\d+)(?=\.\w+$)/)?.[1]||0),r=e.posts.slice().sort((n,_)=>d(_.media)-d(n.media)),g=30,u=[...e.saved,...e.liked].map(n=>n.caption).filter(Boolean),y=r.map((n,_)=>`<a class="ig-tile" href="#" data-post-idx="${_}"><img src="${n.media}" alt="post"></a>`),m=Array.from({length:Math.max(0,g-y.length)},(n,_)=>`
-    <a class="ig-tile ig-tile--post" href="#" style="background:${L(_)}">
-      <span class="ig-tile__cap">${i(u[_%(u.length||1)]||"")}</span>
-    </a>`),w=y.length||m.length?[...y,...m].join(""):'<p class="ig-empty">No posts yet.</p>',E='<svg class="ig-tile__ov" viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>',I=Array.from({length:12},(n,_)=>`
-    <a class="ig-tile ig-tile--post" href="#" style="background:${L(_+5)}">${E}
-      <span class="ig-tile__cap">${i(u[(_+2)%(u.length||1)]||"")}</span>
-    </a>`).join(""),B=Array.from({length:9},(n,_)=>`
-    <a class="ig-tile ig-tile--post" href="#" style="background:${L(_+9)}">
-      <span class="ig-tile__badge">@${i(s.username)}</span>
-    </a>`).join(""),D=e.comments.length?e.comments.map(n=>`
+      <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${q(h)}"><span class="ig-hl__emoji">${o.emoji}</span></div></div>
+      <span class="ig-hl__name">${a(o.label)}</span>
+    </div>`).join(""),u=(o,h)=>`
+    <a class="ig-tile" href="${a(o.url)}" target="_blank" rel="noopener" style="background:${q(o.url.length)}">
+      <span class="ig-tile__cap">${a(o.caption||o.url.replace("https://www.instagram.com/",""))}</span>
+      <span class="ig-tile__badge">${h}</span>
+    </a>`,c=e.saved.length?e.saved.map(o=>u(o,"\u{1F516}")).join(""):'<p class="ig-empty">Nothing saved.</p>',l=e.liked.length?e.liked.map(o=>u(o,"\u2764\uFE0F")).join(""):'<p class="ig-empty">No likes.</p>',m=o=>Number(o.match(/(\d+)(?=\.\w+$)/)?.[1]||0),r=e.posts.slice().sort((o,h)=>m(h.media)-m(o.media)),p=30,_=[...e.saved,...e.liked].map(o=>o.caption).filter(Boolean),T=r.map((o,h)=>`<a class="ig-tile" href="#" data-post-idx="${h}"><img src="${o.media}" alt="post"></a>`),g=Array.from({length:Math.max(0,p-T.length)},(o,h)=>`
+    <a class="ig-tile ig-tile--post" href="#" style="background:${q(h)}">
+      <span class="ig-tile__cap">${a(_[h%(_.length||1)]||"")}</span>
+    </a>`),L=T.length||g.length?[...T,...g].join(""):'<p class="ig-empty">No posts yet.</p>',k='<svg class="ig-tile__ov" viewBox="0 0 24 24"><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>',D=Array.from({length:12},(o,h)=>`
+    <a class="ig-tile ig-tile--post" href="#" style="background:${q(h+5)}">${k}
+      <span class="ig-tile__cap">${a(_[(h+2)%(_.length||1)]||"")}</span>
+    </a>`).join(""),C=Array.from({length:9},(o,h)=>`
+    <a class="ig-tile ig-tile--post" href="#" style="background:${q(h+9)}">
+      <span class="ig-tile__badge">@${a(t.username)}</span>
+    </a>`).join(""),x=e.comments.length?e.comments.map(o=>`
       <div class="ig-comment">
-        <div class="ig-comment__text">${i(n.text)}</div>
-        <div class="ig-comment__meta">${n.owner?"@"+i(n.owner)+" \xB7 ":""}${i(n.time||"")}</div>
-      </div>`).join(""):'<p class="ig-empty">No comments.</p>',T=n=>`<div class="ig-grid">${n}</div>`,C=`<div class="ig-head__avatar ig-head__avatar--ph">${i(Y(s.name))}</div>`;a.innerHTML=`
+        <div class="ig-comment__text">${a(o.text)}</div>
+        <div class="ig-comment__meta">${o.owner?"@"+a(o.owner)+" \xB7 ":""}${a(o.time||"")}</div>
+      </div>`).join(""):'<p class="ig-empty">No comments.</p>',A=o=>`<div class="ig-grid">${o}</div>`,E=`<div class="ig-head__avatar ig-head__avatar--ph">${a(G(t.name))}</div>`;s.innerHTML=`
     <nav class="ig-nav">
       <div class="ig-nav__inner">
         <a href="#" class="ig-nav__logo">My Socials</a>
         <div class="ig-nav__search"><input placeholder="Search"></div>
-        <div class="ig-nav__icons">${b.home}${b.heart}${b.comment}${b.share}</div>
+        <div class="ig-nav__icons">${S.home}${S.heart}${S.comment}${S.share}</div>
       </div>
     </nav>
     <div class="ig-page">
       <header class="ig-head">
-        <div class="ig-head__user">${i(s.username)}</div>
+        <div class="ig-head__user">${a(t.username)}</div>
         <div class="ig-head__row">
-          ${C}
+          ${E}
           <div class="ig-head__stats">
-            <div class="ig-head__stat"><strong>${t(s.posts)}</strong><span>posts</span></div>
-            <div class="ig-head__stat" data-modal="followers"><strong>${t(s.followers)}</strong><span>followers</span></div>
-            <div class="ig-head__stat" data-modal="following"><strong>${t(s.following)}</strong><span>following</span></div>
+            <div class="ig-head__stat"><strong>${n(t.posts)}</strong><span>posts</span></div>
+            <div class="ig-head__stat" data-modal="followers"><strong>${n(t.followers)}</strong><span>followers</span></div>
+            <div class="ig-head__stat" data-modal="following"><strong>${n(t.following)}</strong><span>following</span></div>
           </div>
         </div>
-        <div class="ig-head__name">${i(s.name)}</div>
-        <div class="ig-head__bio">${i(s.bio)}</div>
+        <div class="ig-head__name">${a(t.name)}</div>
+        <div class="ig-head__bio">${a(t.bio)}</div>
         <div class="ig-head__actions">
           <span class="ig-head__btn ig-head__btn--primary">Follow</span>
           <span class="ig-head__btn">Message</span>
         </div>
       </header>
 
-      ${c?`<div class="ig-highlights">${c}</div>`:""}
+      ${v?`<div class="ig-highlights">${v}</div>`:""}
 
       <div class="ig-tabs">
-        <div class="ig-tab is-active" data-pane="posts">${b.grid} Posts</div>
-        <div class="ig-tab" data-pane="reels">${b.reels} Reels</div>
-        <div class="ig-tab" data-pane="tagged">${b.tagged} Tagged</div>
+        <div class="ig-tab is-active" data-pane="posts">${S.grid} Posts</div>
+        <div class="ig-tab" data-pane="reels">${S.reels} Reels</div>
+        <div class="ig-tab" data-pane="tagged">${S.tagged} Tagged</div>
       </div>
 
       <div class="ig-subtabs">
-        <button class="ig-pill" data-pane="saved">${b.save}<span>Saved</span><em>${t(e.saved.length)}</em></button>
-        <button class="ig-pill" data-pane="liked">${b.heart}<span>Liked</span><em>${t(e.liked.length)}</em></button>
-        <button class="ig-pill" data-pane="comments">${b.comment}<span>Comments</span><em>${t(e.comments.length)}</em></button>
+        <button class="ig-pill" data-pane="saved">${S.save}<span>Saved</span><em>${n(e.saved.length)}</em></button>
+        <button class="ig-pill" data-pane="liked">${S.heart}<span>Liked</span><em>${n(e.liked.length)}</em></button>
+        <button class="ig-pill" data-pane="comments">${S.comment}<span>Comments</span><em>${n(e.comments.length)}</em></button>
       </div>
 
-      <div class="ig-pane is-active" data-pane="posts">${T(w)}</div>
-      <div class="ig-pane" data-pane="reels">${T(I)}</div>
-      <div class="ig-pane" data-pane="tagged">${T(B)}</div>
-      <div class="ig-pane" data-pane="saved">${T(o)}</div>
-      <div class="ig-pane" data-pane="liked">${T(l)}</div>
-      <div class="ig-pane" data-pane="comments"><div class="ig-comments">${D}</div></div>
+      <div class="ig-pane is-active" data-pane="posts">${A(L)}</div>
+      <div class="ig-pane" data-pane="reels">${A(D)}</div>
+      <div class="ig-pane" data-pane="tagged">${A(C)}</div>
+      <div class="ig-pane" data-pane="saved">${A(c)}</div>
+      <div class="ig-pane" data-pane="liked">${A(l)}</div>
+      <div class="ig-pane" data-pane="comments"><div class="ig-comments">${x}</div></div>
     </div>
 
     <div class="ig-modal" id="ig-modal">
@@ -119,50 +119,50 @@
           <div class="ig-post-modal__comments" id="ig-post-comments"></div>
         </div>
       </div>
-    </div>`,a.querySelectorAll(".ig-tab, .ig-pill").forEach(n=>{n.addEventListener("click",()=>{let _=n.dataset.pane;a.querySelectorAll(".ig-tab, .ig-pill").forEach(k=>k.classList.toggle("is-active",k===n)),a.querySelectorAll(".ig-pane").forEach(k=>k.classList.toggle("is-active",k.dataset.pane===_))})});let f=a.querySelector("#ig-modal"),P=n=>{let _=n==="followers"?e.followers:e.following,k=n==="followers"?s.followers:s.following,ie=ge(_,k);a.querySelector("#ig-modal-title").textContent=n==="followers"?"Followers":"Following",a.querySelector("#ig-modal-sub").textContent=`${t(k)} ${n}`,a.querySelector("#ig-modal-list").innerHTML=ie.map(j=>`
+    </div>`,s.querySelectorAll(".ig-tab, .ig-pill").forEach(o=>{o.addEventListener("click",()=>{let h=o.dataset.pane;s.querySelectorAll(".ig-tab, .ig-pill").forEach(M=>M.classList.toggle("is-active",M===o)),s.querySelectorAll(".ig-pane").forEach(M=>M.classList.toggle("is-active",M.dataset.pane===h))})});let b=s.querySelector("#ig-modal"),H=o=>{let h=o==="followers"?e.followers:e.following,M=o==="followers"?t.followers:t.following,ie=ve(h,M);s.querySelector("#ig-modal-title").textContent=o==="followers"?"Followers":"Following",s.querySelector("#ig-modal-sub").textContent=`${n(M)} ${o}`,s.querySelector("#ig-modal-list").innerHTML=ie.map(j=>`
       <div class="ig-row">
-        <div class="ig-row__avatar" style="background:${pe(j)}">${i(j.charAt(0).toUpperCase())}</div>
-        <a class="ig-row__handle" href="https://www.instagram.com/${i(j)}" target="_blank" rel="noopener">${i(j)}</a>
+        <div class="ig-row__avatar" style="background:${ge(j)}">${a(j.charAt(0).toUpperCase())}</div>
+        <a class="ig-row__handle" href="https://www.instagram.com/${a(j)}" target="_blank" rel="noopener">${a(j)}</a>
         <span class="ig-row__follow">Follow</span>
-      </div>`).join(""),f.classList.add("is-open")};a.querySelectorAll(".ig-head__stat[data-modal]").forEach(n=>n.addEventListener("click",()=>P(n.dataset.modal)));let M=()=>f.classList.remove("is-open");a.querySelector("#ig-modal-close").addEventListener("click",M),f.addEventListener("click",n=>{n.target===f&&M()});let v=a.querySelector("#ig-post-modal"),$=a.querySelector("#ig-post-img"),A=a.querySelector("#ig-post-dots"),se=a.querySelector("#ig-post-comments"),x=[],S=0,O=()=>{$.src=x[S],A.innerHTML=x.length>1?x.map((n,_)=>`<span class="ig-post-modal__dot${_===S?" is-active":""}"></span>`).join(""):""},ae=n=>{let _=r[n];_&&(x=_.media_all?.length?_.media_all:[_.media],S=0,O(),se.innerHTML='<p class="ig-empty">No per-post comment data in this export.</p>',v.classList.add("is-open"))};a.querySelectorAll(".ig-tile[data-post-idx]").forEach(n=>n.addEventListener("click",_=>{_.preventDefault(),ae(Number(n.dataset.postIdx))})),a.querySelector("#ig-post-prev").addEventListener("click",()=>{S=(S-1+x.length)%x.length,O()}),a.querySelector("#ig-post-next").addEventListener("click",()=>{S=(S+1)%x.length,O()});let U=()=>v.classList.remove("is-open");a.querySelector("#ig-post-modal-close").addEventListener("click",U),v.addEventListener("click",n=>{n.target===v&&U()})}var q={home:'<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',net:'<svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0-3-6.6M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M17 15a4 4 0 0 1 4 4v2"/></svg>',jobs:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',msg:'<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',bell:'<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',like:'<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-6 0v4H5a2 2 0 0 0-2 2l1 7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2l1-7a2 2 0 0 0-2-2z"/></svg>',comment:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',repost:'<svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>',send:'<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'};function z(a){let e=t=>i(t).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');return a.split(/\s*-{3,}\s*/).map(t=>t.trim()).filter(Boolean).map(t=>{let c=t.match(/^@(\S+)\s+([\s\S]*)$/),p=c?.[1],o=(c?c[2]:t).trim().replace(/^>\s*/,""),l=p?`<div class="li-desc__label">${i(p)}</div>`:"",d=o.split(/\s-\s/).map(r=>r.trim()).filter(Boolean);return l+(d.length>=3?`<ul class="li-desc__list">${d.map(r=>`<li>${e(r)}</li>`).join("")}</ul>`:`<p class="li-desc__p">${e(o)}</p>`)}).join("")}function Y(a){return a.split(/\s+/).filter(Boolean).slice(0,2).map(e=>e.charAt(0).toUpperCase()).join("")}function ue(){let a=document.getElementById("li-view");if(!a)return;let e=globalThis.PORTAL_DATA?.linkedin;if(!e){a.innerHTML='<p class="li-empty">LinkedIn data not loaded.</p>';return}let s=e.profile,t=(m,w)=>`<div class="li-nav__item">${m}<span>${w}</span></div>`,c=s.photo?`<div class="li-phead__avatar li-phead__avatar--img"><img src="${s.photo}" alt="${i(s.name)}"></div>`:`<div class="li-phead__avatar" style="background:${h[3]}">${i(Y(s.name))}</div>`,p=(m,w)=>`<section class="li-card li-section"><h2 class="li-section__title">${m}</h2>${w}</section>`,o='<p class="li-need">Not in the saved profile page \u2014 add from your LinkedIn data export (Settings \u2192 Get a copy of your data).</p>',l=e.experience.length?e.experience.map(m=>`
+      </div>`).join(""),b.classList.add("is-open")};s.querySelectorAll(".ig-head__stat[data-modal]").forEach(o=>o.addEventListener("click",()=>H(o.dataset.modal)));let I=()=>b.classList.remove("is-open");s.querySelector("#ig-modal-close").addEventListener("click",I),b.addEventListener("click",o=>{o.target===b&&I()});let i=s.querySelector("#ig-post-modal"),d=s.querySelector("#ig-post-img"),f=s.querySelector("#ig-post-dots"),y=s.querySelector("#ig-post-comments"),w=[],B=0,z=()=>{d.src=w[B],f.innerHTML=w.length>1?w.map((o,h)=>`<span class="ig-post-modal__dot${h===B?" is-active":""}"></span>`).join(""):""},ae=o=>{let h=r[o];h&&(w=h.media_all?.length?h.media_all:[h.media],B=0,z(),y.innerHTML='<p class="ig-empty">No per-post comment data in this export.</p>',i.classList.add("is-open"))};s.querySelectorAll(".ig-tile[data-post-idx]").forEach(o=>o.addEventListener("click",h=>{h.preventDefault(),ae(Number(o.dataset.postIdx))})),s.querySelector("#ig-post-prev").addEventListener("click",()=>{B=(B-1+w.length)%w.length,z()}),s.querySelector("#ig-post-next").addEventListener("click",()=>{B=(B+1)%w.length,z()});let Q=()=>i.classList.remove("is-open");s.querySelector("#ig-post-modal-close").addEventListener("click",Q),i.addEventListener("click",o=>{o.target===i&&Q()})}var P={home:'<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',net:'<svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0-3-6.6M1 21v-2a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v2M17 15a4 4 0 0 1 4 4v2"/></svg>',jobs:'<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',msg:'<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>',bell:'<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',like:'<svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-6 0v4H5a2 2 0 0 0-2 2l1 7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2l1-7a2 2 0 0 0-2-2z"/></svg>',comment:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>',repost:'<svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14M7 23l-4-4 4-4M21 13v2a4 4 0 0 1-4 4H3"/></svg>',send:'<svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'};function V(s){let e=n=>a(n).replace(/(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');return s.split(/\s*-{3,}\s*/).map(n=>n.trim()).filter(Boolean).map(n=>{let v=n.match(/^@(\S+)\s+([\s\S]*)$/),u=v?.[1],c=(v?v[2]:n).trim().replace(/^>\s*/,""),l=u?`<div class="li-desc__label">${a(u)}</div>`:"",m=c.split(/\s-\s/).map(r=>r.trim()).filter(Boolean);return l+(m.length>=3?`<ul class="li-desc__list">${m.map(r=>`<li>${e(r)}</li>`).join("")}</ul>`:`<p class="li-desc__p">${e(c)}</p>`)}).join("")}function G(s){return s.split(/\s+/).filter(Boolean).slice(0,2).map(e=>e.charAt(0).toUpperCase()).join("")}function _e(){let s=document.getElementById("li-view");if(!s)return;let e=globalThis.PORTAL_DATA?.linkedin;if(!e){s.innerHTML='<p class="li-empty">LinkedIn data not loaded.</p>';return}let t=e.profile,n=(g,L)=>`<div class="li-nav__item">${g}<span>${L}</span></div>`,v=t.photo?`<div class="li-phead__avatar li-phead__avatar--img"><img src="${t.photo}" alt="${a(t.name)}"></div>`:`<div class="li-phead__avatar" style="background:${$[3]}">${a(G(t.name))}</div>`,u=(g,L)=>`<section class="li-card li-section"><h2 class="li-section__title">${g}</h2>${L}</section>`,c='<p class="li-need">Not in the saved profile page \u2014 add from your LinkedIn data export (Settings \u2192 Get a copy of your data).</p>',l=e.experience.length?e.experience.map(g=>`
       <div class="li-item">
-        <div class="li-item__logo">${i(m.company.charAt(0))}</div>
+        <div class="li-item__logo">${a(g.company.charAt(0))}</div>
         <div>
-          <div class="li-item__title">${i(m.title)}</div>
-          <div class="li-item__sub">${i(m.company)}</div>
-          <div class="li-item__meta">${i(m.dates)}${m.location?" \xB7 "+i(m.location):""}</div>
-          ${m.description?`<div class="li-item__desc">${z(m.description)}</div>`:""}
+          <div class="li-item__title">${a(g.title)}</div>
+          <div class="li-item__sub">${a(g.company)}</div>
+          <div class="li-item__meta">${a(g.dates)}${g.location?" \xB7 "+a(g.location):""}</div>
+          ${g.description?`<div class="li-item__desc">${V(g.description)}</div>`:""}
         </div>
-      </div>`).join(""):o,d=e.education.length?e.education.map(m=>`
+      </div>`).join(""):c,m=e.education.length?e.education.map(g=>`
       <div class="li-item">
-        <div class="li-item__logo">${i(m.school.charAt(0))}</div>
+        <div class="li-item__logo">${a(g.school.charAt(0))}</div>
         <div>
-          <div class="li-item__title">${i(m.school)}</div>
-          <div class="li-item__sub">${i(m.degree)}</div>
-          <div class="li-item__meta">${i(m.dates)}</div>
+          <div class="li-item__title">${a(g.school)}</div>
+          <div class="li-item__sub">${a(g.degree)}</div>
+          <div class="li-item__meta">${a(g.dates)}</div>
         </div>
-      </div>`).join(""):o,r=e.skills.length?`<div class="li-skills">${e.skills.map(m=>`<span class="li-skill">${i(m)}</span>`).join("")}</div>`:o,g=e.about?`<div class="li-about">${z(e.about)}</div>`:o,u=e.languages.length?e.languages.map(m=>`
+      </div>`).join(""):c,r=e.skills.length?`<div class="li-skills">${e.skills.map(g=>`<span class="li-skill">${a(g)}</span>`).join("")}</div>`:c,p=e.about?`<div class="li-about">${V(e.about)}</div>`:c,_=e.languages.length?e.languages.map(g=>`
       <div class="li-lang">
-        <span class="li-lang__name">${i(m.name)}</span>
-        <span class="li-lang__level">${i(m.proficiency)}</span>
-      </div>`).join(""):o,y=e.projects.length?e.projects.map(m=>`
+        <span class="li-lang__name">${a(g.name)}</span>
+        <span class="li-lang__level">${a(g.proficiency)}</span>
+      </div>`).join(""):c,T=e.projects.length?e.projects.map(g=>`
       <div class="li-item li-item--proj">
         <div>
-          <div class="li-item__title">${i(m.title)}${m.url?` \xB7 <a href="${i(m.url)}" target="_blank" rel="noopener">link</a>`:""}</div>
-          ${m.dates?`<div class="li-item__meta">${i(m.dates)}</div>`:""}
-          <div class="li-item__desc">${z(m.description)}</div>
+          <div class="li-item__title">${a(g.title)}${g.url?` \xB7 <a href="${a(g.url)}" target="_blank" rel="noopener">link</a>`:""}</div>
+          ${g.dates?`<div class="li-item__meta">${a(g.dates)}</div>`:""}
+          <div class="li-item__desc">${V(g.description)}</div>
         </div>
-      </div>`).join(""):o;a.innerHTML=`
+      </div>`).join(""):c;s.innerHTML=`
     <nav class="li-nav">
       <div class="li-nav__inner">
         <span class="li-nav__logo">in</span>
         <div class="li-nav__search"><input placeholder="Search"></div>
         <div class="li-nav__items">
-          ${t(q.home,"Home")}
-          ${t(q.net,"Network")}
-          ${t(q.jobs,"Jobs")}
-          ${t(q.msg,"Messaging")}
-          ${t(q.bell,"Notifications")}
+          ${n(P.home,"Home")}
+          ${n(P.net,"Network")}
+          ${n(P.jobs,"Jobs")}
+          ${n(P.msg,"Messaging")}
+          ${n(P.bell,"Notifications")}
         </div>
       </div>
     </nav>
@@ -170,13 +170,13 @@
       <div class="li-prof__main">
         <section class="li-card li-phead">
           <div class="li-phead__banner"></div>
-          ${c}
+          ${v}
           <div class="li-phead__body">
-            <h1 class="li-phead__name">${i(s.name)}</h1>
-            <p class="li-phead__headline">${i(s.headline)}</p>
-            <p class="li-phead__loc">${i(s.location)} \xB7 <a href="https://${i(s.url)}" target="_blank" rel="noopener">Contact info</a></p>
-            <p class="li-phead__meta"><strong>${s.connections}</strong> connections \xB7 <strong>${s.followers.toLocaleString()}</strong> followers</p>
-            ${s.open_to_work?`<div class="li-phead__open"><strong>Open to work</strong><br>${i(s.open_to_work)}</div>`:""}
+            <h1 class="li-phead__name">${a(t.name)}</h1>
+            <p class="li-phead__headline">${a(t.headline)}</p>
+            <p class="li-phead__loc">${a(t.location)} \xB7 <a href="https://${a(t.url)}" target="_blank" rel="noopener">Contact info</a></p>
+            <p class="li-phead__meta"><strong>${t.connections}</strong> connections \xB7 <strong>${t.followers.toLocaleString()}</strong> followers</p>
+            ${t.open_to_work?`<div class="li-phead__open"><strong>Open to work</strong><br>${a(t.open_to_work)}</div>`:""}
             <div class="li-phead__actions">
               <button class="li-btn li-btn--primary">Connect</button>
               <button class="li-btn">Message</button>
@@ -184,186 +184,214 @@
             </div>
           </div>
         </section>
-        ${p("About",g)}
-        ${p("Experience",l)}
-        ${p("Education",d)}
-        ${p("Skills",r)}
-        ${p("Projects",y)}
-        ${p("Languages",u)}
+        ${u("About",p)}
+        ${u("Experience",l)}
+        ${u("Education",m)}
+        ${u("Skills",r)}
+        ${u("Projects",T)}
+        ${u("Languages",_)}
       </div>
       <aside class="li-prof__rail">
         <div class="li-card li-side">
           <div class="li-side__title">Profile</div>
-          <div class="li-side__row"><span>Current</span><strong>${i(s.current)}</strong></div>
-          <div class="li-side__row"><span>Location</span><strong>${i(s.location.split(",")[0])}</strong></div>
-          <div class="li-side__row"><span>Profile</span><a href="https://${i(s.url)}" target="_blank" rel="noopener">${i(s.url)}</a></div>
+          <div class="li-side__row"><span>Current</span><strong>${a(t.current)}</strong></div>
+          <div class="li-side__row"><span>Location</span><strong>${a(t.location.split(",")[0])}</strong></div>
+          <div class="li-side__row"><span>Profile</span><a href="https://${a(t.url)}" target="_blank" rel="noopener">${a(t.url)}</a></div>
         </div>
       </aside>
-    </div>`}var Q={bell:'<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',chat:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>'},W=[220,300,180,340,260,200,320,240,280];function _e(){let a=document.getElementById("pin-view");if(!a)return;let e=globalThis.PORTAL_DATA?.pinterest,s=e?.boards??[],t=e?.profile,c=["30% 30%","75% 15%","20% 80%","80% 75%"],p=(l,d)=>`
+    </div>`}var J={bell:'<svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/></svg>',chat:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg>'},K=[220,300,180,340,260,200,320,240,280];function he(){let s=document.getElementById("pin-view");if(!s)return;let e=globalThis.PORTAL_DATA?.pinterest,t=e?.boards??[],n=e?.profile,v=["30% 30%","75% 15%","20% 80%","80% 75%"],u=(l,m)=>`
     <div class="pin-card__grid">
-      ${c.map((r,g)=>`<div class="pin-card__cell pin-card__cell--${g}" style="background-image:url('${i(l)}');background-position:${r}" role="img" aria-label="${i(d)}"></div>`).join("")}
-    </div>`,o=s.map((l,d)=>{let r=W[d%W.length],g=l.cover?p(l.cover,l.name):`<div class="pin-card__ph" style="height:${r}px;background:${L(d)}">\u{1F4CC}</div>`;return`
-    <a class="pin-card" href="https://www.pinterest.com/${i(t?.username||"diegonmarcos")}/${i(l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-"))}/" target="_blank" rel="noopener">
+      ${v.map((r,p)=>`<div class="pin-card__cell pin-card__cell--${p}" style="background-image:url('${a(l)}');background-position:${r}" role="img" aria-label="${a(m)}"></div>`).join("")}
+    </div>`,c=t.map((l,m)=>{let r=K[m%K.length],p=l.cover?u(l.cover,l.name):`<div class="pin-card__ph" style="height:${r}px;background:${q(m)}">\u{1F4CC}</div>`;return`
+    <a class="pin-card" href="https://www.pinterest.com/${a(n?.username||"diegonmarcos")}/${a(l.name.toLowerCase().replace(/[^a-z0-9]+/g,"-"))}/" target="_blank" rel="noopener">
       <div class="pin-card__media">
-        ${g}
+        ${p}
         <div class="pin-card__overlay"><span class="pin-card__save">${l.pins} pins</span></div>
       </div>
-      <div class="pin-card__title">${i(l.name)}</div>
-      ${l.desc?`<div class="pin-card__meta">${i(l.desc)}</div>`:`<div class="pin-card__meta">${l.pins} pins</div>`}
-    </a>`}).join("");a.innerHTML=`
+      <div class="pin-card__title">${a(l.name)}</div>
+      ${l.desc?`<div class="pin-card__meta">${a(l.desc)}</div>`:`<div class="pin-card__meta">${l.pins} pins</div>`}
+    </a>`}).join("");s.innerHTML=`
     <nav class="pin-nav">
       <div class="pin-nav__inner">
         <span class="pin-nav__logo">P</span>
         <a href="#" class="pin-nav__tab pin-nav__tab--active">Boards</a>
-        <a href="https://www.pinterest.com/${i(t?.username||"diegonmarcos")}/" target="_blank" rel="noopener" class="pin-nav__tab">Profile</a>
+        <a href="https://www.pinterest.com/${a(n?.username||"diegonmarcos")}/" target="_blank" rel="noopener" class="pin-nav__tab">Profile</a>
         <div class="pin-nav__search"><input placeholder="Search for ideas"></div>
-        <div class="pin-nav__icons">${Q.bell}${Q.chat}<span class="pin-nav__avatar" style="background:${h[3]}">D</span></div>
+        <div class="pin-nav__icons">${J.bell}${J.chat}<span class="pin-nav__avatar" style="background:${$[3]}">D</span></div>
       </div>
     </nav>
-    <div class="pin-head">@${i(t?.username||"diegonmarcos")} \xB7 <strong>${t?.boards??s.length}</strong> boards \xB7 <strong>${t?.pins??0}</strong> pins</div>
-    <div class="pin-board">${o||'<p class="pin-empty">No boards.</p>'}</div>`}function he(){let a=document.getElementById("tid-view");if(!a)return;let e=globalThis.PORTAL_DATA?.tidal,s=e?.playlists??[],t=e?.profile,c=o=>{if(!o)return"";let l=Math.floor(o/3600),d=Math.round(o%3600/60);return l?`${l}h ${d}m`:`${d} min`},p=s.map((o,l)=>{let d=o.cover?`<img class="tid-card__img" src="${i(o.cover)}" alt="${i(o.name)}" loading="lazy">`:`<div class="tid-card__ph" style="background:${L(l)}">\u266B</div>`;return`
-    <a class="tid-card" href="${i(o.url)}" target="_blank" rel="noopener">
-      <div class="tid-card__cover">${d}<span class="tid-card__play">\u25B6</span></div>
-      <div class="tid-card__name">${i(o.name)}</div>
-      <div class="tid-card__meta">${o.tracks} tracks${o.duration_s?" \xB7 "+c(o.duration_s):""}</div>
-    </a>`}).join("");a.innerHTML=`
+    <div class="pin-head">@${a(n?.username||"diegonmarcos")} \xB7 <strong>${n?.boards??t.length}</strong> boards \xB7 <strong>${n?.pins??0}</strong> pins</div>
+    <div class="pin-board">${c||'<p class="pin-empty">No boards.</p>'}</div>`}function fe(){let s=document.getElementById("tid-view");if(!s)return;let e=globalThis.PORTAL_DATA?.tidal,t=e?.playlists??[],n=e?.profile,v=c=>{if(!c)return"";let l=Math.floor(c/3600),m=Math.round(c%3600/60);return l?`${l}h ${m}m`:`${m} min`},u=t.map((c,l)=>{let m=c.cover?`<img class="tid-card__img" src="${a(c.cover)}" alt="${a(c.name)}" loading="lazy">`:`<div class="tid-card__ph" style="background:${q(l)}">\u266B</div>`;return`
+    <a class="tid-card" href="${a(c.url)}" target="_blank" rel="noopener">
+      <div class="tid-card__cover">${m}<span class="tid-card__play">\u25B6</span></div>
+      <div class="tid-card__name">${a(c.name)}</div>
+      <div class="tid-card__meta">${c.tracks} tracks${c.duration_s?" \xB7 "+v(c.duration_s):""}</div>
+    </a>`}).join("");s.innerHTML=`
     <nav class="tid-nav">
       <div class="tid-nav__inner">
         <span class="tid-nav__logo">TIDAL</span>
         <div class="tid-nav__search"><input placeholder="Search"></div>
-        <span class="tid-nav__user">@${i(t?.username||"diegonmarcos")}</span>
+        <span class="tid-nav__user">@${a(n?.username||"diegonmarcos")}</span>
       </div>
     </nav>
     <div class="tid-main">
       <header class="tid-head">
         <div class="tid-head__title">My Playlists</div>
-        <div class="tid-head__sub">${t?.playlists??s.length} playlists \xB7 ${t?.tracks??0} tracks</div>
+        <div class="tid-head__sub">${n?.playlists??t.length} playlists \xB7 ${n?.tracks??0} tracks</div>
       </header>
-      <div class="tid-grid">${p||'<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>'}</div>
-    </div>`}var fe={run:"\u{1F3C3}",ride:"\u{1F6B4}",swim:"\u{1F3CA}"};function $e(){let a=document.getElementById("str-view");if(!a)return;let e=globalThis.PORTAL_DATA?.strava,s=e?.activities??[],t=e?.profile,c=(o,l)=>l?`<div class="str-card__stat"><span class="str-card__stat-value">${i(l)}</span><span class="str-card__stat-label">${o}</span></div>`:"",p=s.map(o=>`
-    <div class="str-card">
+      <div class="tid-grid">${u||'<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>'}</div>
+    </div>`}var N={run:"\u{1F3C3}",ride:"\u{1F6B4}",swim:"\u{1F3CA}"};function $e(){let s=document.getElementById("str-view");if(!s)return;let e=globalThis.PORTAL_DATA?.strava,t=e?.activities??[],n=e?.profile,v=i=>i&&parseInt(i)||0,u=i=>i.split(" \u2014 ")[1]||"",c=["run","ride","swim"],l=c.reduce((i,d)=>{let f=t.filter(y=>y.type===d);return i[d]={count:f.length,distance:f.reduce((y,w)=>y+(w.distance_km||0),0),minutes:f.reduce((y,w)=>y+v(w.duration),0),elevation:f.reduce((y,w)=>y+(w.elevation_m||0),0)},i},{}),m=c.reduce((i,d)=>i+l[d].minutes,0),r=i=>`${Math.round(i/60)}h`,p=(i,d,f)=>`<div class="str-stat"><span class="str-stat__icon">${i}</span><span class="str-stat__value">${a(d)}</span><span class="str-stat__label">${f}</span></div>`,_=`
+    <div class="str-dash">
+      ${p("\u{1F3C3}",`${l.run.distance.toFixed(0)} km`,`${l.run.count} runs`)}
+      ${p("\u{1F6B4}",`${l.ride.distance.toFixed(0)} km`,`${l.ride.count} rides`)}
+      ${p("\u{1F3CA}",`${l.swim.distance.toFixed(1)} km`,`${l.swim.count} swims`)}
+      ${p("\u23F1\uFE0F",r(m),"total time")}
+      ${p("\u26F0\uFE0F",`${(l.run.elevation+l.ride.elevation).toLocaleString()} m`,"elevation gain")}
+    </div>`,T=new Map;t.forEach(i=>{let d=Date.parse(i.date);if(!Number.isNaN(d)){let f=new Date(d).toISOString().slice(0,10);T.set(f,(T.get(f)||0)+1)}});let g=t.length?new Date(Math.max(...t.map(i=>Date.parse(i.date)).filter(i=>!Number.isNaN(i)))):new Date(0),L=53,k=new Date(g);k.setDate(k.getDate()-L*7),k.setDate(k.getDate()-k.getDay());let D=[];for(let i=0;i<L*7;i++){let d=new Date(k);d.setDate(d.getDate()+i);let f=d.toISOString().slice(0,10),y=T.get(f)||0,w=y===0?0:y===1?1:y===2?2:3;D.push(`<span class="str-cal__cell str-cal__cell--${w}" title="${f}: ${y} activit${y===1?"y":"ies"}"></span>`)}let C=`<div class="str-cal">${D.join("")}</div>`,x=new Map;t.forEach(i=>{let d=u(i.title);d&&x.set(d,(x.get(d)||0)+1)});let A=[...x.entries()].sort((i,d)=>d[1]-i[1]).map(([i,d])=>`<span class="str-city">${a(i)}<em>${d}</em></span>`).join(""),E=(i,d)=>d?`<div class="str-card__stat"><span class="str-card__stat-value">${a(d)}</span><span class="str-card__stat-label">${i}</span></div>`:"",b=i=>`
+    <div class="str-card" data-type="${i.type}">
       <div class="str-card__header">
-        <div class="str-card__icon">${fe[o.type]||"\u{1F3C1}"}</div>
+        <div class="str-card__icon">${N[i.type]||"\u{1F3C1}"}</div>
         <div>
-          <div class="str-card__title">${i(o.title)}</div>
-          <div class="str-card__date">${i(o.date)}</div>
+          <div class="str-card__title">${a(i.title)}</div>
+          <div class="str-card__date">${a(i.date)}</div>
         </div>
       </div>
       <div class="str-card__stats">
-        ${c("Distance",o.distance_km?`${o.distance_km} km`:"")}
-        ${c("Time",o.duration||"")}
-        ${c("Pace",o.pace||"")}
-        ${c("Elevation",o.elevation_m?`${o.elevation_m} m`:"")}
+        ${E("Distance",i.distance_km?`${i.distance_km} km`:"")}
+        ${E("Time",i.duration||"")}
+        ${E("Pace",i.pace||"")}
+        ${E("Elevation",i.elevation_m?`${i.elevation_m} m`:"")}
       </div>
-    </div>`).join("");a.innerHTML=`
+    </div>`,H=t.map(b).join(""),I=`<div class="str-head__avatar">${a(G(n?.name||"Diego Nepomuceno Marcos"))}</div>`;s.innerHTML=`
     <nav class="str-nav">
       <div class="str-nav__inner">
         <span class="str-nav__logo">Strava</span>
         <div class="str-nav__search"><input placeholder="Search"></div>
-        <span class="str-nav__user">${i(t?.name||"diegonmarcos")}</span>
+        <span class="str-nav__user">${a(n?.name||"diegonmarcos")}</span>
       </div>
     </nav>
     <div class="str-main">
       <header class="str-head">
+        ${I}
         <div>
-          <div class="str-head__name">${i(t?.name||"Diego Nepomuceno Marcos")}</div>
+          <div class="str-head__name">${a(n?.name||"Diego Nepomuceno Marcos")}</div>
         </div>
         <div class="str-head__stats">
-          <div class="str-head__stat"><span class="str-head__stat-value">${t?.activities??s.length}</span><span class="str-head__stat-label">Activities</span></div>
-          <div class="str-head__stat"><span class="str-head__stat-value">${t?.followers??0}</span><span class="str-head__stat-label">Followers</span></div>
-          <div class="str-head__stat"><span class="str-head__stat-value">${t?.following??0}</span><span class="str-head__stat-label">Following</span></div>
+          <div class="str-head__stat"><span class="str-head__stat-value">${n?.activities??t.length}</span><span class="str-head__stat-label">Activities</span></div>
+          <div class="str-head__stat"><span class="str-head__stat-value">${n?.followers??0}</span><span class="str-head__stat-label">Followers</span></div>
+          <div class="str-head__stat"><span class="str-head__stat-value">${n?.following??0}</span><span class="str-head__stat-label">Following</span></div>
         </div>
       </header>
-      <div class="str-feed">${p||'<p class="str-empty">No activities yet. Strava data loads once the profile is exported.</p>'}</div>
-    </div>`}function be(){let a=document.getElementById("yt-view");if(!a)return;let e=globalThis.PORTAL_DATA?.youtube,s=e?.videos??[],t=e?.playlists??[],c=e?.profile,p=(r,g)=>{let u=r.thumbnail?`<img class="yt-card__img" src="${i(r.thumbnail)}" alt="${i(r.title)}" loading="lazy">`:`<div class="yt-card__ph" style="background:${L(g)}">\u25B6</div>`;return`
-    <a class="yt-card" href="${i(r.url||"#")}" target="_blank" rel="noopener">
-      <div class="yt-card__thumb">${u}${r.duration?`<span class="yt-card__duration">${i(r.duration)}</span>`:""}</div>
-      <div class="yt-card__title">${i(r.title)}</div>
-      ${r.channel?`<div class="yt-card__channel">${i(r.channel)}</div>`:""}
-      <div class="yt-card__meta">${r.views!==void 0?`${r.views.toLocaleString()} views`:""}${r.views!==void 0&&r.date?" \xB7 ":""}${r.date?i(r.date):""}</div>
-    </a>`},o=t.map(r=>`
+
+      ${_}
+
+      <section class="str-section">
+        <h3 class="str-section__title">Activity calendar</h3>
+        ${C}
+      </section>
+
+      ${A?`<section class="str-section">
+        <h3 class="str-section__title">By city</h3>
+        <div class="str-cities">${A}</div>
+      </section>`:""}
+
+      <div class="str-filters">
+        <button class="str-filter is-active" data-type="all">All</button>
+        <button class="str-filter" data-type="run">${N.run} Run</button>
+        <button class="str-filter" data-type="ride">${N.ride} Ride</button>
+        <button class="str-filter" data-type="swim">${N.swim} Swim</button>
+      </div>
+
+      <div class="str-feed">${H||'<p class="str-empty">No activities yet. Strava data loads once the profile is exported.</p>'}</div>
+    </div>`,s.querySelectorAll(".str-filter").forEach(i=>{i.addEventListener("click",()=>{s.querySelectorAll(".str-filter").forEach(f=>f.classList.toggle("is-active",f===i));let d=i.dataset.type;s.querySelectorAll(".str-card").forEach(f=>{f.style.display=d==="all"||f.dataset.type===d?"":"none"})})})}function be(){let s=document.getElementById("yt-view");if(!s)return;let e=globalThis.PORTAL_DATA?.youtube,t=e?.videos??[],n=e?.playlists??[],v=e?.profile,u=(r,p)=>{let _=r.thumbnail?`<img class="yt-card__img" src="${a(r.thumbnail)}" alt="${a(r.title)}" loading="lazy">`:`<div class="yt-card__ph" style="background:${q(p)}">\u25B6</div>`;return`
+    <a class="yt-card" href="${a(r.url||"#")}" target="_blank" rel="noopener">
+      <div class="yt-card__thumb">${_}${r.duration?`<span class="yt-card__duration">${a(r.duration)}</span>`:""}</div>
+      <div class="yt-card__title">${a(r.title)}</div>
+      ${r.channel?`<div class="yt-card__channel">${a(r.channel)}</div>`:""}
+      <div class="yt-card__meta">${r.views!==void 0?`${r.views.toLocaleString()} views`:""}${r.views!==void 0&&r.date?" \xB7 ":""}${r.date?a(r.date):""}</div>
+    </a>`},c=n.map(r=>`
     <section class="yt-shelf">
-      <div class="yt-shelf__title">${i(r.name)}</div>
-      <div class="yt-shelf__row">${r.videos.map((g,u)=>p(g,u)).join("")}</div>
-    </section>`).join(""),l=s.length?`<div class="yt-grid">${s.map((r,g)=>p(r,g)).join("")}</div>`:"",d=t.length||s.length;a.innerHTML=`
+      <div class="yt-shelf__title">${a(r.name)}</div>
+      <div class="yt-shelf__row">${r.videos.map((p,_)=>u(p,_)).join("")}</div>
+    </section>`).join(""),l=t.length?`<div class="yt-grid">${t.map((r,p)=>u(r,p)).join("")}</div>`:"",m=n.length||t.length;s.innerHTML=`
     <nav class="yt-nav">
       <div class="yt-nav__inner">
         <span class="yt-nav__logo">YouTube</span>
         <div class="yt-nav__search"><input placeholder="Search"></div>
-        <span class="yt-nav__user">@${i(c?.channel||"diegonmarcos")}</span>
+        <span class="yt-nav__user">@${a(v?.channel||"diegonmarcos")}</span>
       </div>
     </nav>
     <div class="yt-main">
       <header class="yt-head">
         <div>
-          <div class="yt-head__title">${i(c?.channel||"diegonmarcos")}</div>
-          <div class="yt-head__sub">${c?.subscribers??0} subscribers \xB7 ${c?.videos??s.length} videos</div>
+          <div class="yt-head__title">${a(v?.channel||"diegonmarcos")}</div>
+          <div class="yt-head__sub">${v?.subscribers??0} subscribers \xB7 ${v?.videos??t.length} videos</div>
         </div>
       </header>
-      ${d?`${o}${l}`:'<p class="yt-empty">No videos or playlists yet. YouTube data loads once the channel is scraped.</p>'}
-    </div>`}var H=(a=!1)=>{let e=a?"#c7cbb9":"#8fbf3f",s=a?"#c7cbb9":"#ef4a2b",t=a?"#e4e4d8":"#ffd400",c=a?"#9a9d90":"#1a1a12";return`<svg class="icq-flower" viewBox="0 0 16 16" aria-hidden="true">${Array.from({length:8},(o,l)=>{let d=l*45;return`<ellipse cx="8" cy="2.9" rx="1.9" ry="2.9" fill="${l===0?s:e}" stroke="${c}" stroke-width="0.5" transform="rotate(${d} 8 8)"/>`}).join("")}<circle cx="8" cy="8" r="2.4" fill="${t}" stroke="${c}" stroke-width="0.5"/></svg>`};var J={online:!1,away:!1,dnd:!1,offline:!0};function ye(){let a=document.getElementById("icq-view");if(!a)return;let e=globalThis.PORTAL_DATA||{},s=e.linkedin,t=e.instagram,c=s?.profile.name||"Diego Nepomuceno Marcos",p=t?.profile.username||"diegonmarcos",o=c.split(" ")[0],l=c.split(" ").slice(1).join(" "),d=(s?.profile.location||"Berlin, Germany").split(",").map(v=>v.trim()),r=d[0]||"",g=d[d.length-1]||"",u=s?.experience?.[0],y=s?.about||t?.profile.bio||"",m=s?.skills||[],w=s?.languages||[],E="184-042-518",I=["online","online","away","online","dnd","away","offline","offline","offline"],B=X.map((v,$)=>({...v,status:I[$%I.length]})),D=B.filter(v=>v.status!=="offline"),T=B.filter(v=>v.status==="offline"),C=v=>`<li class="icq-contact">${H(J[v.status])}<span>${i(v.name)}</span></li>`,f=(v,$)=>$?`<div class="icq-field"><span class="icq-field__k">${i(v)}</span><span class="icq-field__v">${i($)}</span></div>`:"",P=[{id:"main",label:"Main",body:`
-        ${f("Nickname",p)}
-        ${f("First Name",o)}
-        ${f("Last Name",l)}
-        ${f("ICQ#",E)}
-        ${f("Email","me@diegonmarcos.com")}
-        ${f("Headline",s?.profile.headline||"")}`},{id:"home",label:"Home",body:`
-        ${f("City",r)}
-        ${f("Country",g)}
-        ${f("Homepage",s?.profile.url||"linktree.diegonmarcos.com")}
-        ${w.length?`<div class="icq-field"><span class="icq-field__k">Languages</span><span class="icq-field__v">${w.map(v=>i(v.name)).join(", ")}</span></div>`:""}`},{id:"work",label:"Work",body:u?`
-        ${f("Company",u.company)}
-        ${f("Title",u.title)}
-        ${f("Since",u.dates)}
-        ${f("Location",u.location||"")}`:'<p class="icq-empty">No work info.</p>'},{id:"about",label:"About",body:y?`<p class="icq-about">${i(y)}</p>`:'<p class="icq-empty">No about info.</p>'},{id:"interests",label:"Interests",body:m.length?`<div class="icq-interests">${m.map(v=>`<span class="icq-chip">${i(v)}</span>`).join("")}</div>`:'<p class="icq-empty">No interests listed.</p>'}],M='<span class="icq-win__btns"><i>_</i><i>\u25A1</i><i>\u2715</i></span>';a.innerHTML=`
+      ${m?`${c}${l}`:'<p class="yt-empty">No videos or playlists yet. YouTube data loads once the channel is scraped.</p>'}
+    </div>`}var R=(s=!1)=>{let e=s?"#c7cbb9":"#8fbf3f",t=s?"#c7cbb9":"#ef4a2b",n=s?"#e4e4d8":"#ffd400",v=s?"#9a9d90":"#1a1a12";return`<svg class="icq-flower" viewBox="0 0 16 16" aria-hidden="true">${Array.from({length:8},(c,l)=>{let m=l*45;return`<ellipse cx="8" cy="2.9" rx="1.9" ry="2.9" fill="${l===0?t:e}" stroke="${v}" stroke-width="0.5" transform="rotate(${m} 8 8)"/>`}).join("")}<circle cx="8" cy="8" r="2.4" fill="${n}" stroke="${v}" stroke-width="0.5"/></svg>`};var X={online:!1,away:!1,dnd:!1,offline:!0};function ye(){let s=document.getElementById("icq-view");if(!s)return;let e=globalThis.PORTAL_DATA||{},t=e.linkedin,n=e.instagram,v=t?.profile.name||"Diego Nepomuceno Marcos",u=n?.profile.username||"diegonmarcos",c=v.split(" ")[0],l=v.split(" ").slice(1).join(" "),m=(t?.profile.location||"Berlin, Germany").split(",").map(i=>i.trim()),r=m[0]||"",p=m[m.length-1]||"",_=t?.experience?.[0],T=t?.about||n?.profile.bio||"",g=t?.skills||[],L=t?.languages||[],k="184-042-518",D=["online","online","away","online","dnd","away","offline","offline","offline"],C=ee.map((i,d)=>({...i,status:D[d%D.length]})),x=C.filter(i=>i.status!=="offline"),A=C.filter(i=>i.status==="offline"),E=i=>`<li class="icq-contact">${R(X[i.status])}<span>${a(i.name)}</span></li>`,b=(i,d)=>d?`<div class="icq-field"><span class="icq-field__k">${a(i)}</span><span class="icq-field__v">${a(d)}</span></div>`:"",H=[{id:"main",label:"Main",body:`
+        ${b("Nickname",u)}
+        ${b("First Name",c)}
+        ${b("Last Name",l)}
+        ${b("ICQ#",k)}
+        ${b("Email","me@diegonmarcos.com")}
+        ${b("Headline",t?.profile.headline||"")}`},{id:"home",label:"Home",body:`
+        ${b("City",r)}
+        ${b("Country",p)}
+        ${b("Homepage",t?.profile.url||"linktree.diegonmarcos.com")}
+        ${L.length?`<div class="icq-field"><span class="icq-field__k">Languages</span><span class="icq-field__v">${L.map(i=>a(i.name)).join(", ")}</span></div>`:""}`},{id:"work",label:"Work",body:_?`
+        ${b("Company",_.company)}
+        ${b("Title",_.title)}
+        ${b("Since",_.dates)}
+        ${b("Location",_.location||"")}`:'<p class="icq-empty">No work info.</p>'},{id:"about",label:"About",body:T?`<p class="icq-about">${a(T)}</p>`:'<p class="icq-empty">No about info.</p>'},{id:"interests",label:"Interests",body:g.length?`<div class="icq-interests">${g.map(i=>`<span class="icq-chip">${a(i)}</span>`).join("")}</div>`:'<p class="icq-empty">No interests listed.</p>'}],I='<span class="icq-win__btns"><i>_</i><i>\u25A1</i><i>\u2715</i></span>';s.innerHTML=`
     <div class="icq-desk">
       <!-- Contact list window -->
       <div class="icq-win icq-win--list">
-        <div class="icq-win__bar">${H("#ffffff")}<span class="icq-win__title">ICQ</span>${M}</div>
+        <div class="icq-win__bar">${R("#ffffff")}<span class="icq-win__title">ICQ</span>${I}</div>
         <div class="icq-list">
-          <div class="icq-group icq-group--online">Online (${D.length})</div>
-          <ul>${D.map(C).join("")}</ul>
-          <div class="icq-group icq-group--offline">Offline (${T.length})</div>
-          <ul>${T.map(C).join("")}</ul>
+          <div class="icq-group icq-group--online">Online (${x.length})</div>
+          <ul>${x.map(E).join("")}</ul>
+          <div class="icq-group icq-group--offline">Offline (${A.length})</div>
+          <ul>${A.map(E).join("")}</ul>
         </div>
-        <div class="icq-list__foot">${H(J.online)}<span>Online</span><span class="icq-uin">#${E}</span></div>
+        <div class="icq-list__foot">${R(X.online)}<span>Online</span><span class="icq-uin">#${k}</span></div>
       </div>
 
       <!-- User details window -->
       <div class="icq-win icq-win--details">
-        <div class="icq-win__bar icq-win__bar--alt">${H("#ffffff")}<span class="icq-win__title">User Details \u2014 ${i(p)}</span>${M}</div>
+        <div class="icq-win__bar icq-win__bar--alt">${R("#ffffff")}<span class="icq-win__title">User Details \u2014 ${a(u)}</span>${I}</div>
         <div class="icq-detail">
           <div class="icq-detail__head">
-            <div class="icq-detail__avatar">${i(Y(c))}</div>
+            <div class="icq-detail__avatar">${a(G(v))}</div>
             <div>
-              <div class="icq-detail__name">${i(c)}</div>
-              <div class="icq-detail__nick">"${i(p)}" \xB7 #${E}</div>
+              <div class="icq-detail__name">${a(v)}</div>
+              <div class="icq-detail__nick">"${a(u)}" \xB7 #${k}</div>
             </div>
           </div>
           <div class="icq-tabs">
-            ${P.map((v,$)=>`<button class="icq-tab${$===0?" is-active":""}" data-icq-pane="${v.id}">${v.label}</button>`).join("")}
+            ${H.map((i,d)=>`<button class="icq-tab${d===0?" is-active":""}" data-icq-pane="${i.id}">${i.label}</button>`).join("")}
           </div>
-          ${P.map((v,$)=>`<div class="icq-pane${$===0?" is-active":""}" data-icq-pane="${v.id}">${v.body}</div>`).join("")}
+          ${H.map((i,d)=>`<div class="icq-pane${d===0?" is-active":""}" data-icq-pane="${i.id}">${i.body}</div>`).join("")}
         </div>
       </div>
-    </div>`,a.querySelectorAll(".icq-tab").forEach(v=>{v.addEventListener("click",()=>{let $=v.dataset.icqPane;a.querySelectorAll(".icq-tab").forEach(A=>A.classList.toggle("is-active",A===v)),a.querySelectorAll(".icq-pane").forEach(A=>A.classList.toggle("is-active",A.dataset.icqPane===$))})})}function we(){let a=document.getElementById("me-view");if(!a)return;let e=globalThis.PORTAL_DATA||{},s=e.instagram,t=e.linkedin,c=t?.profile.name||s?.profile.name||"Diego Nepomuceno Marcos",p=t?.profile.headline||"",o=t?.profile.location||"",l=s?.profile.bio||"",d=globalThis.PORTAL_DATA?.tidal,r=[{theme:"linkedin",label:"LinkedIn",meta:t?`${t.profile.connections} connections \xB7 ${t.profile.followers.toLocaleString()} followers`:"profile",color:"#0a66c2"},{theme:"instagram",label:"Instagram",meta:s?`${s.profile.followers.toLocaleString()} followers \xB7 ${s.profile.posts} post${s.profile.posts===1?"":"s"}`:"profile",color:"#dc2743"},{theme:"pinterest",label:"Pinterest",meta:"boards & pins",color:"#e60023"},{theme:"tidal",label:"TIDAL",meta:d?`${d.profile.playlists} playlists`:"playlists",color:"#00ffff"},{theme:"strava",label:"Strava",meta:"activities & routes",color:"#fc5200"},{theme:"youtube",label:"YouTube",meta:"playlists & videos",color:"#ff0000"},{theme:"orkut",label:"Orkut",meta:"the classic profile",color:"#e9008c"},{theme:"icq",label:"ICQ",meta:"retro IM \xB7 user details",color:"#0a870a"}];a.innerHTML=`
+    </div>`,s.querySelectorAll(".icq-tab").forEach(i=>{i.addEventListener("click",()=>{let d=i.dataset.icqPane;s.querySelectorAll(".icq-tab").forEach(f=>f.classList.toggle("is-active",f===i)),s.querySelectorAll(".icq-pane").forEach(f=>f.classList.toggle("is-active",f.dataset.icqPane===d))})})}function we(){let s=document.getElementById("me-view");if(!s)return;let e=globalThis.PORTAL_DATA||{},t=e.instagram,n=e.linkedin,v=n?.profile.name||t?.profile.name||"Diego Nepomuceno Marcos",u=n?.profile.headline||"",c=n?.profile.location||"",l=t?.profile.bio||"",m=globalThis.PORTAL_DATA?.tidal,r=[{theme:"linkedin",label:"LinkedIn",meta:n?`${n.profile.connections} connections \xB7 ${n.profile.followers.toLocaleString()} followers`:"profile",color:"#0a66c2"},{theme:"instagram",label:"Instagram",meta:t?`${t.profile.followers.toLocaleString()} followers \xB7 ${t.profile.posts} post${t.profile.posts===1?"":"s"}`:"profile",color:"#dc2743"},{theme:"pinterest",label:"Pinterest",meta:"boards & pins",color:"#e60023"},{theme:"tidal",label:"TIDAL",meta:m?`${m.profile.playlists} playlists`:"playlists",color:"#00ffff"},{theme:"strava",label:"Strava",meta:"activities & routes",color:"#fc5200"},{theme:"youtube",label:"YouTube",meta:"playlists & videos",color:"#ff0000"},{theme:"orkut",label:"Orkut",meta:"the classic profile",color:"#e9008c"},{theme:"icq",label:"ICQ",meta:"retro IM \xB7 user details",color:"#0a870a"}];s.innerHTML=`
     <div class="me-hub">
       <div class="me-card">
         <div class="me-avatar"></div>
-        <h1 class="me-name">${i(c)}</h1>
-        ${p?`<p class="me-headline">${i(p)}</p>`:""}
-        ${o?`<p class="me-loc">${i(o)}</p>`:""}
-        ${l?`<p class="me-bio">${i(l)}</p>`:""}
+        <h1 class="me-name">${a(v)}</h1>
+        ${u?`<p class="me-headline">${a(u)}</p>`:""}
+        ${c?`<p class="me-loc">${a(c)}</p>`:""}
+        ${l?`<p class="me-bio">${a(l)}</p>`:""}
       </div>
       <div class="me-links">
-        ${r.map(g=>`
-          <button class="me-link" data-goto="${g.theme}" style="--accent:${g.color}">
+        ${r.map(p=>`
+          <button class="me-link" data-goto="${p.theme}" style="--accent:${p.color}">
             <span class="me-link__dot"></span>
             <span class="me-link__body">
-              <span class="me-link__name">${g.label}</span>
-              <span class="me-link__meta">${i(g.meta)}</span>
+              <span class="me-link__name">${p.label}</span>
+              <span class="me-link__meta">${a(p.meta)}</span>
             </span>
             <span class="me-link__arrow">\u2192</span>
           </button>`).join("")}
       </div>
-    </div>`,a.querySelectorAll(".me-link").forEach(g=>g.addEventListener("click",()=>Z(g.dataset.goto)))}var Te=["myprofile","orkut","instagram","linkedin","pinterest","tidal","strava","youtube","icq"];function ke(a){return a==="myprofile"?"./":`${a}.html`}function R(a){document.documentElement.setAttribute("data-theme",a),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.classList.toggle("is-active",e.dataset.themeBtn===a)}),window.scrollTo(0,0)}function Z(a,e=!0){R(a),e&&history.pushState({theme:a},"",ke(a))}function Le(){let a=document.documentElement.dataset.theme||"myprofile";R(Te.includes(a)?a:"myprofile"),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.addEventListener("click",()=>Z(e.dataset.themeBtn))}),window.addEventListener("popstate",e=>{let s=e.state?.theme||"myprofile";R(s)})}function K(){le(),re(),ce(),de(),me(),ve(),ue(),_e(),he(),$e(),be(),ye(),we(),Le(),setTimeout(()=>{document.querySelectorAll(".trust-meter__fill").forEach(a=>{a.style.transition="width 1.2s cubic-bezier(0.16, 1, 0.3, 1)"})},300)}async function ee(){let a=document.getElementById("theme-switch"),e=[...document.querySelectorAll("[data-theme-btn]")],s=document.documentElement.dataset.theme??"";e.find(g=>g.dataset.themeBtn!==s)?.click();let c=document.documentElement.dataset.theme!==s;c&&s&&R(s);let p="none",o=[],l={};try{p=navigator.serviceWorker?.controller?.scriptURL??"none",o=(await navigator.serviceWorker?.getRegistrations?.()??[]).map(u=>[u.installing&&"installing",u.waiting&&"waiting",u.active&&`active:${u.active.scriptURL}`].filter(Boolean).join(","));for(let u of await caches.keys())l[u]=(await(await caches.open(u)).keys()).length}catch{}let d="n/a";if(a){let g=a.getBoundingClientRect(),u=document.elementFromPoint(g.left+g.width/2,g.top+g.height/2);d=`<${u?.tagName}.${(u?.className||"").toString().trim()}> inNav:${a.contains(u)}`}let r={url:location.href,theme:document.documentElement.dataset.theme,navButtons:e.length,navWired:c,swController:p,swRegistrations:o,caches:l,navHitTest:d,ua:navigator.userAgent};return console.info("[mySocials debug]",JSON.stringify(r)),r}window.__debugReport=ee;document.readyState==="loading"?document.addEventListener("DOMContentLoaded",K):K();(/\bdebug\b/.test(location.search)||/\bdebug\b/.test(location.hash))&&setTimeout(()=>{ee()},500);})();
+    </div>`,s.querySelectorAll(".me-link").forEach(p=>p.addEventListener("click",()=>te(p.dataset.goto)))}var Te=["myprofile","orkut","instagram","linkedin","pinterest","tidal","strava","youtube","icq"];function ke(s){return s==="myprofile"?"./":`${s}.html`}function F(s){document.documentElement.setAttribute("data-theme",s),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.classList.toggle("is-active",e.dataset.themeBtn===s)}),window.scrollTo(0,0)}function te(s,e=!0){F(s),e&&history.pushState({theme:s},"",ke(s))}function Le(){let s=document.documentElement.dataset.theme||"myprofile";F(Te.includes(s)?s:"myprofile"),document.querySelectorAll("[data-theme-btn]").forEach(e=>{e.addEventListener("click",()=>te(e.dataset.themeBtn))}),window.addEventListener("popstate",e=>{let t=e.state?.theme||"myprofile";F(t)})}function Z(){re(),ce(),de(),me(),pe(),ue(),_e(),he(),fe(),$e(),be(),ye(),we(),Le(),setTimeout(()=>{document.querySelectorAll(".trust-meter__fill").forEach(s=>{s.style.transition="width 1.2s cubic-bezier(0.16, 1, 0.3, 1)"})},300)}async function se(){let s=document.getElementById("theme-switch"),e=[...document.querySelectorAll("[data-theme-btn]")],t=document.documentElement.dataset.theme??"";e.find(p=>p.dataset.themeBtn!==t)?.click();let v=document.documentElement.dataset.theme!==t;v&&t&&F(t);let u="none",c=[],l={};try{u=navigator.serviceWorker?.controller?.scriptURL??"none",c=(await navigator.serviceWorker?.getRegistrations?.()??[]).map(_=>[_.installing&&"installing",_.waiting&&"waiting",_.active&&`active:${_.active.scriptURL}`].filter(Boolean).join(","));for(let _ of await caches.keys())l[_]=(await(await caches.open(_)).keys()).length}catch{}let m="n/a";if(s){let p=s.getBoundingClientRect(),_=document.elementFromPoint(p.left+p.width/2,p.top+p.height/2);m=`<${_?.tagName}.${(_?.className||"").toString().trim()}> inNav:${s.contains(_)}`}let r={url:location.href,theme:document.documentElement.dataset.theme,navButtons:e.length,navWired:v,swController:u,swRegistrations:c,caches:l,navHitTest:m,ua:navigator.userAgent};return console.info("[mySocials debug]",JSON.stringify(r)),r}window.__debugReport=se;document.readyState==="loading"?document.addEventListener("DOMContentLoaded",Z):Z();(/\bdebug\b/.test(location.search)||/\bdebug\b/.test(location.hash))&&setTimeout(()=>{se()},500);})();

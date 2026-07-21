@@ -52,10 +52,87 @@ $str-orange: #fc5200;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
 
   &__name { font-size: 22px; font-weight: 800; }
-  &__stats { @include flex-row(24px); }
+  &__stats { @include flex-row(24px); margin-left: auto; }
   &__stat { text-align: center; }
   &__stat-value { display: block; font-size: 18px; font-weight: 700; color: $str-orange; }
   &__stat-label { color: $str-muted; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  &__avatar {
+    width: 56px; height: 56px; border-radius: 50%; flex: 0 0 auto;
+    @include flex-center; background: $str-orange; color: #fff; font-weight: 700; font-size: 20px;
+  }
+}
+
+// ── Dashboard stat tiles ─────────────────────────────────
+.str-dash {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  @include mq(sm) { grid-template-columns: repeat(5, 1fr); }
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.str-stat {
+  background: $str-surface;
+  border-radius: 10px;
+  padding: 16px 10px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  &__icon { display: block; font-size: 20px; margin-bottom: 4px; }
+  &__value { display: block; font-size: 18px; font-weight: 800; color: $str-orange; }
+  &__label { color: $str-muted; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+}
+
+// ── Sections (calendar / cities) ─────────────────────────
+.str-section {
+  background: $str-surface;
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  overflow-x: auto;
+
+  &__title { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+}
+
+// GitHub-style activity heatmap — 53 weeks x 7 days, colored by that day's activity count.
+.str-cal {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 3px;
+  width: max-content;
+
+  &__cell {
+    width: 11px; height: 11px; border-radius: 2px;
+    background: $str-elev;
+    &--1 { background: rgba(#fc5200, 0.35); }
+    &--2 { background: rgba(#fc5200, 0.65); }
+    &--3 { background: $str-orange; }
+  }
+}
+
+// "By city" chips — stands in for a real map (no geo-coordinates in this export).
+.str-cities { display: flex; flex-wrap: wrap; gap: 8px; }
+.str-city {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: $str-elev;
+  font-size: 12px;
+  font-weight: 600;
+  em { font-style: normal; color: $str-orange; margin-left: 5px; font-weight: 700; }
+}
+
+// ── Type filters ──────────────────────────────────────────
+.str-filters { display: flex; gap: 8px; margin-bottom: 16px; }
+.str-filter {
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid #e0e0e0;
+  background: $str-surface;
+  color: $str-text;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  &.is-active { background: $str-orange; border-color: $str-orange; color: #fff; }
 }
 
 // ── Activity feed ────────────────────────────────────────

@@ -978,29 +978,45 @@ function renderMyProfile(): void {
     </div>`;
 
   view.querySelectorAll<HTMLElement>('.me-link').forEach(btn =>
-    btn.addEventListener('click', () => setTheme(btn.dataset.goto as Theme)));
+    btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
 }
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
 type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq';
-const THEME_KEY = 'mySocials.theme';
 const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq'];
+
+// Each theme is a real static page (orkut.html, instagram.html, ...; myprofile = index.html).
+// Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
+function pageFor(theme: Theme): string {
+  return theme === 'myprofile' ? './' : `${theme}.html`;
+}
 
 function setTheme(theme: Theme): void {
   document.documentElement.setAttribute('data-theme', theme);
-  try { localStorage.setItem(THEME_KEY, theme); } catch { /* private mode */ }
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.classList.toggle('is-active', (btn as HTMLElement).dataset.themeBtn === theme);
   });
   window.scrollTo(0, 0);
 }
 
+// Swap in place AND update the address bar to the theme's real page, so
+// reload/share/back-forward all land on a real, bookmarkable file.
+function navigate(theme: Theme, push = true): void {
+  setTheme(theme);
+  if (push) history.pushState({ theme }, '', pageFor(theme));
+}
+
 function initThemeSwitcher(): void {
-  const saved = localStorage.getItem(THEME_KEY) as Theme;
-  setTheme(THEMES.includes(saved) ? saved : 'myprofile');
+  // The page's own baked-in data-theme is authoritative on load (deep links work).
+  const current = (document.documentElement.dataset.theme as Theme) || 'myprofile';
+  setTheme(THEMES.includes(current) ? current : 'myprofile');
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
-    btn.addEventListener('click', () => setTheme((btn as HTMLElement).dataset.themeBtn as Theme));
+    btn.addEventListener('click', () => navigate((btn as HTMLElement).dataset.themeBtn as Theme));
+  });
+  window.addEventListener('popstate', (e) => {
+    const theme = (e.state?.theme as Theme) || 'myprofile';
+    setTheme(theme);
   });
 }
 

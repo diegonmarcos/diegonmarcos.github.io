@@ -40,6 +40,10 @@
     "deploy_name": "galaxy"
   },
   {
+    "path": "b-Projects/galaxy-gaia",
+    "deploy_name": "galaxy-gaia"
+  },
+  {
     "path": "b-Profiles/myprofile",
     "deploy_name": "myprofile"
   },

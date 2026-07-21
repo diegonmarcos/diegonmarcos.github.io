@@ -1123,19 +1123,40 @@
         "target": "es2020"
       },
       {
+        "_doc": "Each theme is a real static page (index.html=myprofile, orkut.html, instagram.html, ...) so every route is a bookmarkable, crawlable file.",
         "mod": "copy",
-        "files": "index.html",
+        "files": "*.html",
         "from": "src"
       },
       {
-        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH.",
+        "_doc": "Inject navigator.serviceWorker.register(...) before </head>. MUST run BEFORE esbuild_sw so the modified HTML feeds into BUILD_HASH. sw_register takes literal filenames, not globs.",
         "mod": "sw_register",
-        "files": "index.html"
+        "files": [
+          "index.html",
+          "orkut.html",
+          "instagram.html",
+          "linkedin.html",
+          "pinterest.html",
+          "tidal.html",
+          "strava.html",
+          "youtube.html",
+          "icq.html"
+        ]
       },
       {
-        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}.",
+        "_doc": "Inject single-namespace observability SDK (Sentry/OpenObserve-style). Mirrors console.* + errors + SW lifecycle to OPFS console.log. window.consoleLogs.{captureException, captureMessage, addBreadcrumb, read, readJSON, tail, clear, download}. console_log takes literal filenames, not globs.",
         "mod": "console_log",
-        "files": "index.html"
+        "files": [
+          "index.html",
+          "orkut.html",
+          "instagram.html",
+          "linkedin.html",
+          "pinterest.html",
+          "tidal.html",
+          "strava.html",
+          "youtube.html",
+          "icq.html"
+        ]
       },
       {
         "_doc": "MUST run last — hashes the dist artifacts above to derive BUILD_HASH and inject it into the SW bundle.",
@@ -1146,12 +1167,28 @@
         "target": "es2020",
         "hash_of": [
           "index.html",
+          "orkut.html",
+          "instagram.html",
+          "linkedin.html",
+          "pinterest.html",
+          "tidal.html",
+          "strava.html",
+          "youtube.html",
+          "icq.html",
           "script.js",
           "style.css"
         ],
         "precache": [
           "./",
           "./index.html",
+          "./orkut.html",
+          "./instagram.html",
+          "./linkedin.html",
+          "./pinterest.html",
+          "./tidal.html",
+          "./strava.html",
+          "./youtube.html",
+          "./icq.html",
           "./script.js",
           "./style.css"
         ]

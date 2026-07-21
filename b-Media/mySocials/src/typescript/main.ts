@@ -246,19 +246,15 @@ function renderInstagram(): void {
   const p = d.profile;
   const num = (n: number) => n.toLocaleString();
 
-  // Story highlights = YOUR OWN highlight folders (data-driven from d.highlights). Each circle
-  // is one folder/icon. Real own-stories (if the export ever has them) render first as covers.
-  const realStories = d.stories.map((s, i) => `
-    <div class="ig-hl">
-      <div class="ig-hl__ring"><div class="ig-hl__avatar"><img src="${s.media}" alt="story ${i + 1}"></div></div>
-      <span class="ig-hl__name">${esc(s.caption || 'Story')}</span>
-    </div>`);
-  const folderStories = (d.highlights || []).map((h, i) => `
+  // Story highlights = ONLY your own labeled highlight folders (d.highlights). The raw
+  // `d.stories` media dump is NOT used here — its provenance (whose stories, from where)
+  // isn't guaranteed to be exclusively yours, so it's excluded rather than risk showing
+  // someone else's photo under your name.
+  const highlights = (d.highlights || []).map((h, i) => `
     <div class="ig-hl">
       <div class="ig-hl__ring"><div class="ig-hl__avatar" style="background:${gradientFor(i)}"><span class="ig-hl__emoji">${h.emoji}</span></div></div>
       <span class="ig-hl__name">${esc(h.label)}</span>
-    </div>`);
-  const highlights = [...realStories, ...folderStories].join('');
+    </div>`).join('');
 
   // Caption tiles for saved / liked (export has links + captions, not the images).
   const tile = (item: { url: string; caption: string }, badge: string) => `
@@ -269,11 +265,15 @@ function renderInstagram(): void {
   const savedPane = d.saved.length ? d.saved.map(s => tile(s, '\u{1F516}')).join('') : '<p class="ig-empty">Nothing saved.</p>';
   const likedPane = d.liked.length ? d.liked.map(s => tile(s, '❤️')).join('') : '<p class="ig-empty">No likes.</p>';
 
-  // Posts pane: real photo(s) first, then a fabricated feed so the grid looks full like the app.
-  // Fabricated tiles = deterministic gradient + a real caption from the saved/liked pool (no badge).
+  // Posts pane: real photo(s) first (newest first), then a fabricated feed so the grid looks
+  // full like the app. Meta media filenames are Snowflake-style IDs — monotonically increasing
+  // with time — so sorting the trailing numeric ID descending reproduces newest-first order
+  // without needing a real per-post timestamp (the export doesn't capture one).
+  const mediaId = (url: string) => Number(url.match(/(\d+)(?=\.\w+$)/)?.[1] || 0);
+  const sortedPosts = d.posts.slice().sort((a, b) => mediaId(b.media) - mediaId(a.media));
   const POST_GRID = 30; // ~10 rows of a 3-col grid
   const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
-  const realPosts = d.posts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`);
+  const realPosts = sortedPosts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`);
   const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
     <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
       <span class="ig-tile__cap">${esc(captions[i % (captions.length || 1)] || '')}</span>
@@ -302,9 +302,9 @@ function renderInstagram(): void {
     : '<p class="ig-empty">No comments.</p>';
 
   const grid = (html: string) => `<div class="ig-grid">${html}</div>`;
-  const avatar = d.posts[0]?.media
-    ? `<img class="ig-head__avatar" src="${d.posts[0].media}" alt="${esc(p.username)}">`
-    : `<div class="ig-head__avatar"></div>`;
+  // No real profile-picture field in the export — a random post photo isn't the profile
+  // pic, so use an initials placeholder instead of misrepresenting one as the other.
+  const avatar = `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
 
   view.innerHTML = `
     <nav class="ig-nav">
@@ -422,10 +422,23 @@ interface LIData {
   projects: { title: string; description: string; url: string; dates: string }[];
 }
 
-// LinkedIn export text is raw newlines (bullet lists, paragraphs); escape then
-// turn those into <br> so it reads the same as it did on linkedin.com.
+// LinkedIn export text has NO real line breaks — this profile writes its own structure
+// inline: '---' divides sections, '@word' opens a section with a label, and '- ' repeated
+// marks a bullet list. Parse those conventions into real <p>/<ul>/<li> markup instead of
+// dumping one unbroken run-on paragraph.
 function formatLI(text: string): string {
-  return esc(text).replace(/\n+/g, '<br>');
+  const linkify = (s: string) => esc(s).replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  const blocks = text.split(/\s*-{3,}\s*/).map(b => b.trim()).filter(Boolean);
+  return blocks.map(block => {
+    const m = block.match(/^@(\S+)\s+([\s\S]*)$/);
+    const label = m?.[1];
+    const body = (m ? m[2] : block).trim().replace(/^>\s*/, '');
+    const heading = label ? `<div class="li-desc__label">${esc(label)}</div>` : '';
+    const items = body.split(/\s-\s/).map(s => s.trim()).filter(Boolean);
+    return heading + (items.length >= 3
+      ? `<ul class="li-desc__list">${items.map(it => `<li>${linkify(it)}</li>`).join('')}</ul>`
+      : `<p class="li-desc__p">${linkify(body)}</p>`);
+  }).join('');
 }
 // Pass-through: descriptions render in full, no clamp/expand UI (YAGNI until asked for).
 function longText(html: string): string {
@@ -461,12 +474,10 @@ function renderLinkedin(): void {
 
   const navItem = (icon: string, label: string) => `<div class="li-nav__item">${icon}<span>${label}</span></div>`;
 
-  // Reuse the real profile photo from the Instagram data (same person, real image)
-  // until LinkedIn's own media is available via export/scrape.
-  const igPhoto = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.instagram?.posts?.[0]?.media;
-  const avatarPhoto = p.photo || igPhoto;
-  const headAvatar = avatarPhoto
-    ? `<div class="li-phead__avatar li-phead__avatar--img"><img src="${avatarPhoto}" alt="${esc(p.name)}"></div>`
+  // No real LinkedIn photo in the export, and a random Instagram post is NOT this
+  // profile's picture — use an initials placeholder rather than the wrong photo.
+  const headAvatar = p.photo
+    ? `<div class="li-phead__avatar li-phead__avatar--img"><img src="${p.photo}" alt="${esc(p.name)}"></div>`
     : `<div class="li-phead__avatar" style="background:${AVATAR_COLORS[3]}">${esc(initials(p.name))}</div>`;
 
   const section = (title: string, body: string) =>
@@ -949,7 +960,6 @@ function renderMyProfile(): void {
   const headline = li?.profile.headline || '';
   const location = li?.profile.location || '';
   const bio = ig?.profile.bio || '';
-  const avatar = ig?.posts[0]?.media;
 
   // Each card jumps to that network's view. Metrics are real, from the parsed data.
   const tidalD = (globalThis as { PORTAL_DATA?: Record<string, { profile: { playlists: number } }> }).PORTAL_DATA?.tidal;
@@ -968,7 +978,7 @@ function renderMyProfile(): void {
   view.innerHTML = `
     <div class="me-hub">
       <div class="me-card">
-        ${avatar ? `<img class="me-avatar" src="${avatar}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
+        <div class="me-avatar"></div>
         <h1 class="me-name">${esc(name)}</h1>
         ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
         ${location ? `<p class="me-loc">${esc(location)}</p>` : ''}

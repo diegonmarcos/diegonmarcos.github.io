@@ -103,20 +103,24 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
 // Inside the skills chip-wrap the toggle sits inline with the chips.
 .li-skills .li-more { margin-top: 0; align-self: center; }
 
-// About / Projects long-form text (preserve the export's line breaks)
+// About / Projects long-form text — formatLI() parses the profile's own '---' / '@label' /
+// '- ' bullet conventions into real <p>/<ul>/<li>, styled here.
 .li-about {
-  white-space: pre-line;
   line-height: 1.55;
   font-size: 13px;
   color: $li-text;
 }
 .li-item--proj { display: block; }
 .li-item__desc {
-  white-space: pre-line;
   line-height: 1.5;
   font-size: 13px;
   color: $li-text;
   margin-top: 6px;
+}
+.li-desc {
+  &__label { font-weight: 700; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: $li-blue; margin: 10px 0 4px; &:first-child { margin-top: 0; } }
+  &__p { margin: 0 0 8px; &:last-child { margin-bottom: 0; } }
+  &__list { margin: 0 0 8px; padding-left: 18px; li { margin-bottom: 3px; } &:last-child { margin-bottom: 0; } }
 }
 
 // Languages

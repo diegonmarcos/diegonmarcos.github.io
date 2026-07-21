@@ -500,6 +500,22 @@ function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
 }
 
+// Per-section visible-item caps. LinkedIn dumps a lot of rows; show a handful
+// and tuck the rest behind a "Show N more" toggle so no box runs away.
+const LI_CAP: Record<string, number> = { experience: 3, education: 3, skills: 12, projects: 2 };
+
+// Render `items` with only `limit` visible; the remainder go into a
+// display:contents wrapper revealed by the trailing "Show N more" button
+// (toggle handler wired in renderLinkedin via event delegation).
+function liCap<T>(items: T[], limit: number, render: (x: T) => string, noun = 'more'): string {
+  if (items.length <= limit) return items.map(render).join('');
+  const shown = items.slice(0, limit).map(render).join('');
+  const rest = items.slice(limit).map(render).join('');
+  const label = `Show ${items.length - limit} ${noun}`;
+  return `${shown}<div class="li-more-wrap">${rest}</div>` +
+    `<button type="button" class="li-more" aria-expanded="false" data-label="${label}">${label}</button>`;
+}
+
 function renderLinkedin(): void {
   const view = document.getElementById('li-view');
   if (!view) return;
@@ -521,7 +537,7 @@ function renderLinkedin(): void {
 
   // Everything shows, unconditionally — no "Show N more" cap, no hidden rows.
   const expBody = d.experience.length
-    ? d.experience.map(e => `
+    ? liCap(d.experience, LI_CAP.experience, e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.company.charAt(0))}</div>
         <div>
@@ -530,11 +546,11 @@ function renderLinkedin(): void {
           <div class="li-item__meta">${esc(e.dates)}${e.location ? ' · ' + esc(e.location) : ''}</div>
           ${e.description ? `<div class="li-item__desc">${formatLI(e.description)}</div>` : ''}
         </div>
-      </div>`).join('')
+      </div>`, 'roles')
     : needExport;
 
   const eduBody = d.education.length
-    ? d.education.map(e => `
+    ? liCap(d.education, LI_CAP.education, e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.school.charAt(0))}</div>
         <div>
@@ -542,11 +558,11 @@ function renderLinkedin(): void {
           <div class="li-item__sub">${esc(e.degree)}</div>
           <div class="li-item__meta">${esc(e.dates)}</div>
         </div>
-      </div>`).join('')
+      </div>`, 'schools')
     : needExport;
 
   const skillsBody = d.skills.length
-    ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
+    ? `<div class="li-skills">${liCap(d.skills, LI_CAP.skills, s => `<span class="li-skill">${esc(s)}</span>`, 'skills')}</div>`
     : needExport;
 
   const aboutBody = d.about
@@ -562,14 +578,14 @@ function renderLinkedin(): void {
     : needExport;
 
   const projBody = d.projects.length
-    ? d.projects.map(pr => `
+    ? liCap(d.projects, LI_CAP.projects, pr => `
       <div class="li-item li-item--proj">
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
           <div class="li-item__desc">${formatLI(pr.description)}</div>
         </div>
-      </div>`).join('')
+      </div>`, 'projects')
     : needExport;
 
   view.innerHTML = `
@@ -620,6 +636,17 @@ function renderLinkedin(): void {
         </div>
       </aside>
     </div>`;
+
+  // "Show N more" toggles: reveal/hide the capped remainder in place.
+  view.querySelectorAll<HTMLButtonElement>('.li-more').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const wrap = btn.previousElementSibling;
+      if (!(wrap instanceof HTMLElement) || !wrap.classList.contains('li-more-wrap')) return;
+      const open = wrap.classList.toggle('li-more-wrap--open');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show less' : (btn.dataset.label ?? 'Show more');
+    });
+  });
 }
 
 // ─── PINTEREST VIEW ──────────────────────────────────────────────────────────
@@ -803,15 +830,75 @@ function renderStrava(): void {
     const level = n === 0 ? 0 : n === 1 ? 1 : n === 2 ? 2 : 3;
     cells.push(`<span class="str-cal__cell str-cal__cell--${level}" title="${key}: ${n} activit${n === 1 ? 'y' : 'ies'}"></span>`);
   }
-  const calendar = `<div class="str-cal">${cells.join('')}</div>`;
+  const heatmap = `<div class="str-cal">${cells.join('')}</div>`;
 
-  // "By city" — real place names parsed from each activity's title, standing in for a
-  // map (no mapping library / geo-coordinates wired into this data yet).
+  // Real month-grid calendar — day-by-day, dot per activity that day (colored by type).
+  const dayActivities = new Map<string, StrActivity[]>();
+  activities.forEach(a => {
+    const t = Date.parse(a.date);
+    if (Number.isNaN(t)) return;
+    const key = new Date(t).toISOString().slice(0, 10);
+    (dayActivities.get(key) ?? dayActivities.set(key, []).get(key)!).push(a);
+  });
+  const monthLabel = (y: number, m: number) =>
+    new Date(Date.UTC(y, m, 1)).toLocaleDateString('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const renderMonth = (y: number, m: number): string => {
+    const first = new Date(Date.UTC(y, m, 1));
+    const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+    const startDow = first.getUTCDay();
+    const dowLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    const blanks = Array.from({ length: startDow }, () => '<span class="str-month__day str-month__day--blank"></span>');
+    const days = Array.from({ length: daysInMonth }, (_, i) => {
+      const day = i + 1;
+      const key = new Date(Date.UTC(y, m, day)).toISOString().slice(0, 10);
+      const acts = dayActivities.get(key) || [];
+      const dots = acts.map(a => `<span class="str-month__dot" style="background:${a.type === 'run' ? '#fc5200' : a.type === 'ride' ? '#0a66c2' : '#00b8d9'}" title="${esc(a.title)}"></span>`).join('');
+      return `<span class="str-month__day${acts.length ? ' has-activity' : ''}"><span class="str-month__num">${day}</span><span class="str-month__dots">${dots}</span></span>`;
+    });
+    return `
+      <div class="str-month__dow">${dowLabels.map(l => `<span>${l}</span>`).join('')}</div>
+      <div class="str-month__grid">${blanks.join('')}${days.join('')}</div>`;
+  };
+  let calY = today.getUTCFullYear(), calM = today.getUTCMonth();
+  const monthCalendarShell = `
+    <div class="str-month">
+      <div class="str-month__head">
+        <button class="str-month__nav" id="str-month-prev" aria-label="Previous month">&lsaquo;</button>
+        <span class="str-month__label" id="str-month-label">${monthLabel(calY, calM)}</span>
+        <button class="str-month__nav" id="str-month-next" aria-label="Next month">&rsaquo;</button>
+      </div>
+      <div id="str-month-body">${renderMonth(calY, calM)}</div>
+    </div>`;
+
+  // City map — real lat/lng for each city parsed from activity titles, plotted on a
+  // self-contained SVG (equirectangular projection, no map tiles / external dep).
+  const CITY_LATLNG: Record<string, [number, number]> = {
+    Berlin: [52.52, 13.40], Munich: [48.14, 11.58], Amsterdam: [52.37, 4.90],
+    Paris: [48.86, 2.35], Barcelona: [41.39, 2.17], Lisbon: [38.72, -9.14],
+    Vienna: [48.21, 16.37], Prague: [50.08, 14.44], Copenhagen: [55.68, 12.57],
+    Zurich: [47.37, 8.54], Rome: [41.90, 12.50], Porto: [41.15, -8.61],
+    Krakow: [50.06, 19.94], Budapest: [47.50, 19.04], Ljubljana: [46.06, 14.51], Nice: [43.70, 7.27],
+  };
   const cityCounts = new Map<string, number>();
   activities.forEach(a => { const c = city(a.title); if (c) cityCounts.set(c, (cityCounts.get(c) || 0) + 1); });
-  const cityChips = [...cityCounts.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .map(([c, n]) => `<span class="str-city">${esc(c)}<em>${n}</em></span>`).join('');
+  const lats = Object.values(CITY_LATLNG).map(([lat]) => lat);
+  const lngs = Object.values(CITY_LATLNG).map(([, lng]) => lng);
+  const [minLat, maxLat] = [Math.min(...lats), Math.max(...lats)];
+  const [minLng, maxLng] = [Math.min(...lngs), Math.max(...lngs)];
+  const project = (lat: number, lng: number) => {
+    const x = 20 + ((lng - minLng) / (maxLng - minLng || 1)) * 360;
+    const y = 20 + (1 - (lat - minLat) / (maxLat - minLat || 1)) * 260;
+    return [x, y];
+  };
+  const maxCount = Math.max(1, ...cityCounts.values());
+  const mapDots = [...cityCounts.entries()].map(([c, n]) => {
+    const coords = CITY_LATLNG[c];
+    if (!coords) return '';
+    const [x, y] = project(...coords);
+    const r = 5 + (n / maxCount) * 10;
+    return `<g class="str-map__pin"><circle cx="${x}" cy="${y}" r="${r}" /><text x="${x}" y="${y - r - 4}">${esc(c)} (${n})</text></g>`;
+  }).join('');
+  const cityMap = `<svg class="str-map" viewBox="0 0 400 300" role="img" aria-label="Cities visited">${mapDots}</svg>`;
 
   const stat = (label: string, value: string) => value
     ? `<div class="str-card__stat"><span class="str-card__stat-value">${esc(value)}</span><span class="str-card__stat-label">${label}</span></div>`
@@ -863,13 +950,15 @@ function renderStrava(): void {
       ${dashboard}
 
       <section class="str-section">
-        <h3 class="str-section__title">Activity calendar</h3>
-        ${calendar}
+        <h3 class="str-section__title">Calendar</h3>
+        ${monthCalendarShell}
+        <div class="str-cal__heatmap-label">Last 12 months</div>
+        ${heatmap}
       </section>
 
-      ${cityChips ? `<section class="str-section">
-        <h3 class="str-section__title">By city</h3>
-        <div class="str-cities">${cityChips}</div>
+      ${mapDots ? `<section class="str-section">
+        <h3 class="str-section__title">Map — cities visited</h3>
+        ${cityMap}
       </section>` : ''}
 
       <div class="str-filters">
@@ -891,6 +980,18 @@ function renderStrava(): void {
       });
     });
   });
+
+  const monthBody = view.querySelector<HTMLElement>('#str-month-body')!;
+  const monthLabelEl = view.querySelector<HTMLElement>('#str-month-label')!;
+  const shiftMonth = (delta: number) => {
+    calM += delta;
+    if (calM < 0) { calM = 11; calY--; }
+    if (calM > 11) { calM = 0; calY++; }
+    monthLabelEl.textContent = monthLabel(calY, calM);
+    monthBody.innerHTML = renderMonth(calY, calM);
+  };
+  view.querySelector('#str-month-prev')!.addEventListener('click', () => shiftMonth(-1));
+  view.querySelector('#str-month-next')!.addEventListener('click', () => shiftMonth(1));
 }
 
 // ─── YOUTUBE VIEW (playlists + video grid) ────────────────────────────────────

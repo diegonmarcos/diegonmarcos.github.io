@@ -273,7 +273,7 @@ function renderInstagram(): void {
   const sortedPosts = d.posts.slice().sort((a, b) => mediaId(b.media) - mediaId(a.media));
   const POST_GRID = 30; // ~10 rows of a 3-col grid
   const captions = [...d.saved, ...d.liked].map(s => s.caption).filter(Boolean);
-  const realPosts = sortedPosts.map(post => `<a class="ig-tile" href="#"><img src="${post.media}" alt="post"></a>`);
+  const realPosts = sortedPosts.map((post, i) => `<a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post"></a>`);
   const fabricated = Array.from({ length: Math.max(0, POST_GRID - realPosts.length) }, (_, i) => `
     <a class="ig-tile ig-tile--post" href="#" style="background:${gradientFor(i)}">
       <span class="ig-tile__cap">${esc(captions[i % (captions.length || 1)] || '')}</span>
@@ -363,6 +363,21 @@ function renderInstagram(): void {
         </div>
         <div class="ig-modal__list" id="ig-modal-list"></div>
       </div>
+    </div>
+
+    <div class="ig-post-modal" id="ig-post-modal">
+      <div class="ig-post-modal__box">
+        <button class="ig-post-modal__close" id="ig-post-modal-close" aria-label="Close">&times;</button>
+        <div class="ig-post-modal__viewer">
+          <button class="ig-post-modal__nav ig-post-modal__nav--prev" id="ig-post-prev" aria-label="Previous photo">&lsaquo;</button>
+          <img class="ig-post-modal__img" id="ig-post-img" alt="post photo">
+          <button class="ig-post-modal__nav ig-post-modal__nav--next" id="ig-post-next" aria-label="Next photo">&rsaquo;</button>
+          <div class="ig-post-modal__dots" id="ig-post-dots"></div>
+        </div>
+        <div class="ig-post-modal__side">
+          <div class="ig-post-modal__comments" id="ig-post-comments"></div>
+        </div>
+      </div>
     </div>`;
 
   // Tab switching — the Posts tab and the Saved/Liked/Comments pills share one selector.
@@ -395,6 +410,46 @@ function renderInstagram(): void {
   const closeModal = () => modal.classList.remove('is-open');
   view.querySelector('#ig-modal-close')!.addEventListener('click', closeModal);
   modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+
+  // Post viewer: click a real post tile -> lightbox with its photo(s) (media_all — a
+  // carousel when the export ever captures multiple images per post, one photo today)
+  // plus a comments panel. No per-post comment data exists in this export (d.comments
+  // is the flat list of comments made ON OTHER people's posts, not comments received
+  // on these posts), so it honestly says so instead of attributing the wrong comments.
+  const postModal = view.querySelector<HTMLElement>('#ig-post-modal')!;
+  const postImg = view.querySelector<HTMLImageElement>('#ig-post-img')!;
+  const postDots = view.querySelector<HTMLElement>('#ig-post-dots')!;
+  const postComments = view.querySelector<HTMLElement>('#ig-post-comments')!;
+  let activePost: string[] = [];
+  let activeIdx = 0;
+  const renderPostFrame = () => {
+    postImg.src = activePost[activeIdx];
+    postDots.innerHTML = activePost.length > 1
+      ? activePost.map((_, i) => `<span class="ig-post-modal__dot${i === activeIdx ? ' is-active' : ''}"></span>`).join('')
+      : '';
+  };
+  const openPost = (idx: number) => {
+    const post = sortedPosts[idx];
+    if (!post) return;
+    activePost = post.media_all?.length ? post.media_all : [post.media];
+    activeIdx = 0;
+    renderPostFrame();
+    postComments.innerHTML = '<p class="ig-empty">No per-post comment data in this export.</p>';
+    postModal.classList.add('is-open');
+  };
+  view.querySelectorAll<HTMLElement>('.ig-tile[data-post-idx]').forEach(tile =>
+    tile.addEventListener('click', e => { e.preventDefault(); openPost(Number(tile.dataset.postIdx)); }));
+  view.querySelector('#ig-post-prev')!.addEventListener('click', () => {
+    activeIdx = (activeIdx - 1 + activePost.length) % activePost.length;
+    renderPostFrame();
+  });
+  view.querySelector('#ig-post-next')!.addEventListener('click', () => {
+    activeIdx = (activeIdx + 1) % activePost.length;
+    renderPostFrame();
+  });
+  const closePost = () => postModal.classList.remove('is-open');
+  view.querySelector('#ig-post-modal-close')!.addEventListener('click', closePost);
+  postModal.addEventListener('click', e => { if (e.target === postModal) closePost(); });
 }
 
 // ─── LINKEDIN VIEW ───────────────────────────────────────────────────────────
@@ -440,29 +495,9 @@ function formatLI(text: string): string {
       : `<p class="li-desc__p">${linkify(body)}</p>`);
   }).join('');
 }
-// Pass-through: descriptions render in full, no clamp/expand UI (YAGNI until asked for).
-function longText(html: string): string {
-  return html;
-}
 
 function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
-}
-
-// Per-section visible-item caps. LinkedIn dumps a lot of rows; show a handful
-// and tuck the rest behind a "Show N more" toggle so no box runs away.
-const LI_CAP: Record<string, number> = { experience: 3, education: 3, skills: 12, projects: 2 };
-
-// Render `items` with only `limit` visible; the remainder go into a
-// display:contents wrapper revealed by the trailing "Show N more" button
-// (toggle handler wired in renderLinkedin via event delegation).
-function liCap<T>(items: T[], limit: number, render: (x: T) => string, noun = 'more'): string {
-  if (items.length <= limit) return items.map(render).join('');
-  const shown = items.slice(0, limit).map(render).join('');
-  const rest = items.slice(limit).map(render).join('');
-  const label = `Show ${items.length - limit} ${noun}`;
-  return `${shown}<div class="li-more-wrap">${rest}</div>` +
-    `<button type="button" class="li-more" aria-expanded="false" data-label="${label}">${label}</button>`;
 }
 
 function renderLinkedin(): void {
@@ -484,21 +519,22 @@ function renderLinkedin(): void {
     `<section class="li-card li-section"><h2 class="li-section__title">${title}</h2>${body}</section>`;
   const needExport = '<p class="li-need">Not in the saved profile page — add from your LinkedIn data export (Settings → Get a copy of your data).</p>';
 
+  // Everything shows, unconditionally — no "Show N more" cap, no hidden rows.
   const expBody = d.experience.length
-    ? liCap(d.experience, LI_CAP.experience, e => `
+    ? d.experience.map(e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.company.charAt(0))}</div>
         <div>
           <div class="li-item__title">${esc(e.title)}</div>
           <div class="li-item__sub">${esc(e.company)}</div>
           <div class="li-item__meta">${esc(e.dates)}${e.location ? ' · ' + esc(e.location) : ''}</div>
-          ${e.description ? `<div class="li-item__desc">${longText(formatLI(e.description))}</div>` : ''}
+          ${e.description ? `<div class="li-item__desc">${formatLI(e.description)}</div>` : ''}
         </div>
-      </div>`, 'roles')
+      </div>`).join('')
     : needExport;
 
   const eduBody = d.education.length
-    ? liCap(d.education, LI_CAP.education, e => `
+    ? d.education.map(e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.school.charAt(0))}</div>
         <div>
@@ -506,15 +542,15 @@ function renderLinkedin(): void {
           <div class="li-item__sub">${esc(e.degree)}</div>
           <div class="li-item__meta">${esc(e.dates)}</div>
         </div>
-      </div>`, 'schools')
+      </div>`).join('')
     : needExport;
 
   const skillsBody = d.skills.length
-    ? `<div class="li-skills">${liCap(d.skills, LI_CAP.skills, s => `<span class="li-skill">${esc(s)}</span>`, 'skills')}</div>`
+    ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
     : needExport;
 
   const aboutBody = d.about
-    ? `<div class="li-about">${longText(formatLI(d.about))}</div>`
+    ? `<div class="li-about">${formatLI(d.about)}</div>`
     : needExport;
 
   const langBody = d.languages.length
@@ -526,14 +562,14 @@ function renderLinkedin(): void {
     : needExport;
 
   const projBody = d.projects.length
-    ? liCap(d.projects, LI_CAP.projects, pr => `
+    ? d.projects.map(pr => `
       <div class="li-item li-item--proj">
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
-          <div class="li-item__desc">${longText(formatLI(pr.description))}</div>
+          <div class="li-item__desc">${formatLI(pr.description)}</div>
         </div>
-      </div>`, 'projects')
+      </div>`).join('')
     : needExport;
 
   view.innerHTML = `
@@ -584,17 +620,6 @@ function renderLinkedin(): void {
         </div>
       </aside>
     </div>`;
-
-  // "Show N more" toggles: reveal/hide the capped remainder in place.
-  view.querySelectorAll<HTMLButtonElement>('.li-more').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const wrap = btn.previousElementSibling;
-      if (!(wrap instanceof HTMLElement) || !wrap.classList.contains('li-more-wrap')) return;
-      const open = wrap.classList.toggle('li-more-wrap--open');
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Show less' : (btn.dataset.label ?? 'Show more');
-    });
-  });
 }
 
 // ─── PINTEREST VIEW ──────────────────────────────────────────────────────────
@@ -618,10 +643,20 @@ function renderPinterest(): void {
   const boards = d?.boards ?? [];
   const prof = d?.profile;
 
+  // Classic Pinterest board-cover collage: 1 big + 3 small tiles. Only one real cover
+  // image exists per board (no per-pin data to scrape from), so all 4 cells crop
+  // different regions of that same photo via background-position — a real photo,
+  // styled like the real UI, rather than fabricating pins that don't exist.
+  const COLLAGE_POS = ['30% 30%', '75% 15%', '20% 80%', '80% 75%'];
+  const collage = (cover: string, name: string) => `
+    <div class="pin-card__grid">
+      ${COLLAGE_POS.map((pos, i) => `<div class="pin-card__cell pin-card__cell--${i}" style="background-image:url('${esc(cover)}');background-position:${pos}" role="img" aria-label="${esc(name)}"></div>`).join('')}
+    </div>`;
+
   const pins = boards.map((b, i) => {
     const h = PIN_HEIGHTS[i % PIN_HEIGHTS.length];
     const media = b.cover
-      ? `<img class="pin-card__img" src="${esc(b.cover)}" alt="${esc(b.name)}" loading="lazy">`
+      ? collage(b.cover, b.name)
       : `<div class="pin-card__ph" style="height:${h}px;background:${gradientFor(i)}">\u{1F4CC}</div>`;
     return `
     <a class="pin-card" href="https://www.pinterest.com/${esc(prof?.username || 'diegonmarcos')}/${esc(b.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'))}/" target="_blank" rel="noopener">

@@ -281,3 +281,60 @@ $ig-gradient: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 
   &__handle { font-weight: 600; }
   &__follow { margin-left: auto; padding: 6px 14px; border-radius: 8px; background: $ig-blue; color: #fff; font-size: 12px; font-weight: 600; }
 }
+
+// ── Post viewer (photo + comments lightbox) ──────────────────
+.ig-post-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  display: none;
+  background: rgba(0, 0, 0, 0.85);
+  &.is-open { @include flex-center; }
+}
+.ig-post-modal__box {
+  width: min(920px, calc(100vw - 32px));
+  max-height: 85vh;
+  background: $ig-surface;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  position: relative;
+  @include mq(sm) { flex-direction: row; }
+  flex-direction: column;
+}
+.ig-post-modal__close {
+  position: absolute; top: 10px; right: 12px; z-index: 2;
+  background: rgba(0, 0, 0, 0.5); color: #fff; border-radius: 50%;
+  width: 30px; height: 30px; font-size: 18px; line-height: 1; @include flex-center;
+}
+.ig-post-modal__viewer {
+  position: relative;
+  background: #000;
+  flex: 1 1 60%;
+  @include flex-center;
+  min-height: 260px;
+  @include mq(sm) { min-height: 480px; }
+}
+.ig-post-modal__img { max-width: 100%; max-height: 85vh; object-fit: contain; }
+.ig-post-modal__nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9); color: #111; border-radius: 50%;
+  width: 32px; height: 32px; font-size: 20px; line-height: 1; @include flex-center;
+  &--prev { left: 10px; }
+  &--next { right: 10px; }
+}
+.ig-post-modal__dots {
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 5px;
+}
+.ig-post-modal__dot {
+  width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, 0.5);
+  &.is-active { background: #fff; }
+}
+.ig-post-modal__side {
+  flex: 1 1 40%;
+  padding: 16px;
+  overflow-y: auto;
+  max-height: 40vh;
+  @include mq(sm) { max-height: 85vh; }
+}

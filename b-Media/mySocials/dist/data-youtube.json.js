@@ -3,6 +3,195 @@
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["youtube"] = {"_description":"Real YouTube data for diegonmarcos — populate from channel scrape (yt-dlp).","profile":{"channel":"diegonmarcos","subscribers":0,"videos":0},"playlists":[],"videos":[]}
-;
+  g.PORTAL_DATA["youtube"] = {
+  "_description": "Real YouTube playlists for diegonmarcos (names + video counts from youtube.com/feed/playlists). Per-video titles/thumbnails are placeholders until scraped with yt-dlp.",
+  "profile": {
+    "channel": "diegonmarcos",
+    "subscribers": 0,
+    "videos": 40
+  },
+  "playlists": [
+    {
+      "name": "Classicss",
+      "videos": [
+        {
+          "title": "Classicss — video 1"
+        },
+        {
+          "title": "Classicss — video 2"
+        },
+        {
+          "title": "Classicss — video 3"
+        },
+        {
+          "title": "Classicss — video 4"
+        },
+        {
+          "title": "Classicss — video 5"
+        }
+      ]
+    },
+    {
+      "name": "Music",
+      "videos": [
+        {
+          "title": "Music — video 1"
+        }
+      ]
+    },
+    {
+      "name": "Watch Later",
+      "videos": [
+        {
+          "title": "Watch Later — video 1"
+        },
+        {
+          "title": "Watch Later — video 2"
+        },
+        {
+          "title": "Watch Later — video 3"
+        },
+        {
+          "title": "Watch Later — video 4"
+        },
+        {
+          "title": "Watch Later — video 5"
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "videos": [
+        {
+          "title": "Movies — video 1"
+        }
+      ]
+    },
+    {
+      "name": "Liked videos",
+      "videos": [
+        {
+          "title": "Liked videos — video 1"
+        },
+        {
+          "title": "Liked videos — video 2"
+        }
+      ]
+    },
+    {
+      "name": "Eletronic",
+      "videos": [
+        {
+          "title": "Eletronic — video 1"
+        },
+        {
+          "title": "Eletronic — video 2"
+        }
+      ]
+    },
+    {
+      "name": "Nature",
+      "videos": [
+        {
+          "title": "Nature — video 1"
+        }
+      ]
+    },
+    {
+      "name": "Abstract motion",
+      "videos": [
+        {
+          "title": "Abstract motion — video 1"
+        },
+        {
+          "title": "Abstract motion — video 2"
+        },
+        {
+          "title": "Abstract motion — video 3"
+        },
+        {
+          "title": "Abstract motion — video 4"
+        },
+        {
+          "title": "Abstract motion — video 5"
+        },
+        {
+          "title": "Abstract motion — video 6"
+        },
+        {
+          "title": "Abstract motion — video 7"
+        }
+      ]
+    },
+    {
+      "name": "Festivals",
+      "videos": [
+        {
+          "title": "Festivals — video 1"
+        },
+        {
+          "title": "Festivals — video 2"
+        },
+        {
+          "title": "Festivals — video 3"
+        },
+        {
+          "title": "Festivals — video 4"
+        },
+        {
+          "title": "Festivals — video 5"
+        },
+        {
+          "title": "Festivals — video 6"
+        }
+      ]
+    },
+    {
+      "name": "Docs",
+      "videos": [
+        {
+          "title": "Docs — video 1"
+        }
+      ]
+    },
+    {
+      "name": "RespectRock",
+      "videos": [
+        {
+          "title": "RespectRock — video 1"
+        },
+        {
+          "title": "RespectRock — video 2"
+        },
+        {
+          "title": "RespectRock — video 3"
+        },
+        {
+          "title": "RespectRock — video 4"
+        }
+      ]
+    },
+    {
+      "name": "FuckPunk",
+      "videos": [
+        {
+          "title": "FuckPunk — video 1"
+        },
+        {
+          "title": "FuckPunk — video 2"
+        },
+        {
+          "title": "FuckPunk — video 3"
+        },
+        {
+          "title": "FuckPunk — video 4"
+        },
+        {
+          "title": "FuckPunk — video 5"
+        }
+      ]
+    }
+  ],
+  "videos": []
+};
 })();

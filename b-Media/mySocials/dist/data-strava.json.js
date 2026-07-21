@@ -3,6 +3,1163 @@
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["strava"] = {"_description":"Real Strava data for diegonmarcos — populate from public profile scrape / export.","profile":{"name":"Diego Nepomuceno Marcos","followers":0,"following":0,"activities":0},"activities":[]}
-;
+  g.PORTAL_DATA["strava"] = {
+  "_description": "MOCK Strava data — 3 years of cycling/running/swimming across Europe, placeholder until the real Strava export/scrape is wired up.",
+  "profile": {
+    "name": "Diego Nepomuceno Marcos",
+    "followers": 84,
+    "following": 112,
+    "activities": 140
+  },
+  "activities": [
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Porto",
+      "date": "Mar 1, 2026",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Rome",
+      "date": "Feb 22, 2026",
+      "distance_km": 71,
+      "duration": "178m",
+      "pace": "23.9 km/h",
+      "elevation_m": 656
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Zurich",
+      "date": "Feb 15, 2026",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Copenhagen",
+      "date": "Feb 8, 2026",
+      "distance_km": 57,
+      "duration": "122m",
+      "pace": "28.0 km/h",
+      "elevation_m": 582
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Prague",
+      "date": "Feb 1, 2026",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Vienna",
+      "date": "Jan 25, 2026",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Lisbon",
+      "date": "Jan 18, 2026",
+      "distance_km": 36,
+      "duration": "86m",
+      "pace": "25.1 km/h",
+      "elevation_m": 471
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Barcelona",
+      "date": "Jan 11, 2026",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Paris",
+      "date": "Jan 4, 2026",
+      "distance_km": 22,
+      "duration": "46m",
+      "pace": "28.7 km/h",
+      "elevation_m": 397
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Amsterdam",
+      "date": "Dec 28, 2025",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Munich",
+      "date": "Dec 21, 2025",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Berlin",
+      "date": "Dec 14, 2025",
+      "distance_km": 66,
+      "duration": "152m",
+      "pace": "26.1 km/h",
+      "elevation_m": 286
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Nice",
+      "date": "Dec 7, 2025",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Ljubljana",
+      "date": "Nov 30, 2025",
+      "distance_km": 52,
+      "duration": "130m",
+      "pace": "24.0 km/h",
+      "elevation_m": 212
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Budapest",
+      "date": "Nov 23, 2025",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Krakow",
+      "date": "Nov 16, 2025",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Porto",
+      "date": "Nov 9, 2025",
+      "distance_km": 31,
+      "duration": "69m",
+      "pace": "27.0 km/h",
+      "elevation_m": 101
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Rome",
+      "date": "Nov 2, 2025",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Zurich",
+      "date": "Oct 26, 2025",
+      "distance_km": 17,
+      "duration": "41m",
+      "pace": "24.9 km/h",
+      "elevation_m": 927
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Copenhagen",
+      "date": "Oct 19, 2025",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Prague",
+      "date": "Oct 12, 2025",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Vienna",
+      "date": "Oct 5, 2025",
+      "distance_km": 61,
+      "duration": "131m",
+      "pace": "27.9 km/h",
+      "elevation_m": 816
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Lisbon",
+      "date": "Sep 28, 2025",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Barcelona",
+      "date": "Sep 21, 2025",
+      "distance_km": 47,
+      "duration": "108m",
+      "pace": "26.1 km/h",
+      "elevation_m": 742
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Paris",
+      "date": "Sep 14, 2025",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Amsterdam",
+      "date": "Sep 7, 2025",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Munich",
+      "date": "Aug 31, 2025",
+      "distance_km": 26,
+      "duration": "54m",
+      "pace": "28.9 km/h",
+      "elevation_m": 631
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Berlin",
+      "date": "Aug 24, 2025",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Nice",
+      "date": "Aug 17, 2025",
+      "distance_km": 77,
+      "duration": "171m",
+      "pace": "27.0 km/h",
+      "elevation_m": 557
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Ljubljana",
+      "date": "Aug 10, 2025",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Budapest",
+      "date": "Aug 3, 2025",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Krakow",
+      "date": "Jul 27, 2025",
+      "distance_km": 56,
+      "duration": "140m",
+      "pace": "24.0 km/h",
+      "elevation_m": 446
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Porto",
+      "date": "Jul 20, 2025",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Rome",
+      "date": "Jul 13, 2025",
+      "distance_km": 42,
+      "duration": "90m",
+      "pace": "28.0 km/h",
+      "elevation_m": 372
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Zurich",
+      "date": "Jul 6, 2025",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Copenhagen",
+      "date": "Jun 29, 2025",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Prague",
+      "date": "Jun 22, 2025",
+      "distance_km": 21,
+      "duration": "50m",
+      "pace": "25.2 km/h",
+      "elevation_m": 261
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Vienna",
+      "date": "Jun 15, 2025",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Lisbon",
+      "date": "Jun 8, 2025",
+      "distance_km": 72,
+      "duration": "149m",
+      "pace": "29.0 km/h",
+      "elevation_m": 187
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Barcelona",
+      "date": "Jun 1, 2025",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Paris",
+      "date": "May 25, 2025",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Amsterdam",
+      "date": "May 18, 2025",
+      "distance_km": 51,
+      "duration": "118m",
+      "pace": "25.9 km/h",
+      "elevation_m": 76
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Munich",
+      "date": "May 11, 2025",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Berlin",
+      "date": "May 4, 2025",
+      "distance_km": 37,
+      "duration": "93m",
+      "pace": "23.9 km/h",
+      "elevation_m": 902
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Nice",
+      "date": "Apr 27, 2025",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Ljubljana",
+      "date": "Apr 20, 2025",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Budapest",
+      "date": "Apr 13, 2025",
+      "distance_km": 16,
+      "duration": "36m",
+      "pace": "26.7 km/h",
+      "elevation_m": 791
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Krakow",
+      "date": "Apr 6, 2025",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Porto",
+      "date": "Mar 30, 2025",
+      "distance_km": 67,
+      "duration": "161m",
+      "pace": "25.0 km/h",
+      "elevation_m": 717
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Rome",
+      "date": "Mar 23, 2025",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Zurich",
+      "date": "Mar 16, 2025",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Copenhagen",
+      "date": "Mar 9, 2025",
+      "distance_km": 46,
+      "duration": "99m",
+      "pace": "27.9 km/h",
+      "elevation_m": 606
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Prague",
+      "date": "Mar 2, 2025",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Vienna",
+      "date": "Feb 23, 2025",
+      "distance_km": 32,
+      "duration": "74m",
+      "pace": "25.9 km/h",
+      "elevation_m": 532
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Lisbon",
+      "date": "Feb 16, 2025",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Barcelona",
+      "date": "Feb 9, 2025",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Paris",
+      "date": "Feb 2, 2025",
+      "distance_km": 76,
+      "duration": "157m",
+      "pace": "29.0 km/h",
+      "elevation_m": 421
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Amsterdam",
+      "date": "Jan 26, 2025",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Munich",
+      "date": "Jan 19, 2025",
+      "distance_km": 62,
+      "duration": "138m",
+      "pace": "27.0 km/h",
+      "elevation_m": 347
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Berlin",
+      "date": "Jan 12, 2025",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Nice",
+      "date": "Jan 5, 2025",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Ljubljana",
+      "date": "Dec 29, 2024",
+      "distance_km": 41,
+      "duration": "103m",
+      "pace": "23.9 km/h",
+      "elevation_m": 236
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Budapest",
+      "date": "Dec 22, 2024",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Krakow",
+      "date": "Dec 15, 2024",
+      "distance_km": 27,
+      "duration": "58m",
+      "pace": "27.9 km/h",
+      "elevation_m": 162
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Porto",
+      "date": "Dec 8, 2024",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Rome",
+      "date": "Dec 1, 2024",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Zurich",
+      "date": "Nov 24, 2024",
+      "distance_km": 71,
+      "duration": "170m",
+      "pace": "25.1 km/h",
+      "elevation_m": 51
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Copenhagen",
+      "date": "Nov 17, 2024",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Prague",
+      "date": "Nov 10, 2024",
+      "distance_km": 57,
+      "duration": "118m",
+      "pace": "29.0 km/h",
+      "elevation_m": 877
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Vienna",
+      "date": "Nov 3, 2024",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Lisbon",
+      "date": "Oct 27, 2024",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Barcelona",
+      "date": "Oct 20, 2024",
+      "distance_km": 36,
+      "duration": "83m",
+      "pace": "26.0 km/h",
+      "elevation_m": 766
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Paris",
+      "date": "Oct 13, 2024",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Amsterdam",
+      "date": "Oct 6, 2024",
+      "distance_km": 22,
+      "duration": "55m",
+      "pace": "24.0 km/h",
+      "elevation_m": 692
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Munich",
+      "date": "Sep 29, 2024",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Berlin",
+      "date": "Sep 22, 2024",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Nice",
+      "date": "Sep 15, 2024",
+      "distance_km": 66,
+      "duration": "147m",
+      "pace": "26.9 km/h",
+      "elevation_m": 581
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Ljubljana",
+      "date": "Sep 8, 2024",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Budapest",
+      "date": "Sep 1, 2024",
+      "distance_km": 52,
+      "duration": "125m",
+      "pace": "25.0 km/h",
+      "elevation_m": 507
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Krakow",
+      "date": "Aug 25, 2024",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Porto",
+      "date": "Aug 18, 2024",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Rome",
+      "date": "Aug 11, 2024",
+      "distance_km": 31,
+      "duration": "66m",
+      "pace": "28.2 km/h",
+      "elevation_m": 396
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Zurich",
+      "date": "Aug 4, 2024",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Copenhagen",
+      "date": "Jul 28, 2024",
+      "distance_km": 17,
+      "duration": "39m",
+      "pace": "26.2 km/h",
+      "elevation_m": 322
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Prague",
+      "date": "Jul 21, 2024",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Vienna",
+      "date": "Jul 14, 2024",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Lisbon",
+      "date": "Jul 7, 2024",
+      "distance_km": 61,
+      "duration": "126m",
+      "pace": "29.0 km/h",
+      "elevation_m": 211
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Barcelona",
+      "date": "Jun 30, 2024",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Paris",
+      "date": "Jun 23, 2024",
+      "distance_km": 47,
+      "duration": "104m",
+      "pace": "27.1 km/h",
+      "elevation_m": 137
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Amsterdam",
+      "date": "Jun 16, 2024",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Munich",
+      "date": "Jun 9, 2024",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Berlin",
+      "date": "Jun 2, 2024",
+      "distance_km": 26,
+      "duration": "65m",
+      "pace": "24.0 km/h",
+      "elevation_m": 926
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Nice",
+      "date": "May 26, 2024",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Ljubljana",
+      "date": "May 19, 2024",
+      "distance_km": 77,
+      "duration": "165m",
+      "pace": "28.0 km/h",
+      "elevation_m": 852
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Budapest",
+      "date": "May 12, 2024",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Krakow",
+      "date": "May 5, 2024",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Porto",
+      "date": "Apr 28, 2024",
+      "distance_km": 56,
+      "duration": "134m",
+      "pace": "25.1 km/h",
+      "elevation_m": 741
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Rome",
+      "date": "Apr 21, 2024",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Zurich",
+      "date": "Apr 14, 2024",
+      "distance_km": 42,
+      "duration": "87m",
+      "pace": "29.0 km/h",
+      "elevation_m": 667
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Copenhagen",
+      "date": "Apr 7, 2024",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Prague",
+      "date": "Mar 31, 2024",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Vienna",
+      "date": "Mar 24, 2024",
+      "distance_km": 21,
+      "duration": "48m",
+      "pace": "26.3 km/h",
+      "elevation_m": 556
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Lisbon",
+      "date": "Mar 17, 2024",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Barcelona",
+      "date": "Mar 10, 2024",
+      "distance_km": 72,
+      "duration": "180m",
+      "pace": "24.0 km/h",
+      "elevation_m": 482
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Paris",
+      "date": "Mar 3, 2024",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Amsterdam",
+      "date": "Feb 25, 2024",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Munich",
+      "date": "Feb 18, 2024",
+      "distance_km": 51,
+      "duration": "113m",
+      "pace": "27.1 km/h",
+      "elevation_m": 371
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Berlin",
+      "date": "Feb 11, 2024",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Nice",
+      "date": "Feb 4, 2024",
+      "distance_km": 37,
+      "duration": "89m",
+      "pace": "24.9 km/h",
+      "elevation_m": 297
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Ljubljana",
+      "date": "Jan 28, 2024",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Old Town 10K — Budapest",
+      "date": "Jan 21, 2024",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Old Town Circuit — Krakow",
+      "date": "Jan 14, 2024",
+      "distance_km": 16,
+      "duration": "34m",
+      "pace": "28.2 km/h",
+      "elevation_m": 186
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Porto",
+      "date": "Jan 7, 2024",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Rome",
+      "date": "Dec 31, 2023",
+      "distance_km": 67,
+      "duration": "155m",
+      "pace": "25.9 km/h",
+      "elevation_m": 112
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Zurich",
+      "date": "Dec 24, 2023",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Easy Recovery Run — Copenhagen",
+      "date": "Dec 17, 2023",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Commute + Extra Loop — Prague",
+      "date": "Dec 10, 2023",
+      "distance_km": 46,
+      "duration": "95m",
+      "pace": "29.1 km/h",
+      "elevation_m": 901
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Vienna",
+      "date": "Dec 3, 2023",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Lisbon",
+      "date": "Nov 26, 2023",
+      "distance_km": 32,
+      "duration": "71m",
+      "pace": "27.0 km/h",
+      "elevation_m": 827
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Barcelona",
+      "date": "Nov 19, 2023",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Long Sunday Run — Paris",
+      "date": "Nov 12, 2023",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Hill Repeats — Amsterdam",
+      "date": "Nov 5, 2023",
+      "distance_km": 76,
+      "duration": "190m",
+      "pace": "24.0 km/h",
+      "elevation_m": 716
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Munich",
+      "date": "Oct 29, 2023",
+      "distance_km": 18,
+      "duration": "104m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Berlin",
+      "date": "Oct 22, 2023",
+      "distance_km": 62,
+      "duration": "133m",
+      "pace": "28.0 km/h",
+      "elevation_m": 642
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Nice",
+      "date": "Oct 15, 2023",
+      "distance_km": 1,
+      "duration": "27m"
+    },
+    {
+      "type": "run",
+      "title": "Trail Run — Ljubljana",
+      "date": "Oct 8, 2023",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Sunset Spin — Budapest",
+      "date": "Oct 1, 2023",
+      "distance_km": 41,
+      "duration": "98m",
+      "pace": "25.1 km/h",
+      "elevation_m": 531
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Krakow",
+      "date": "Sep 24, 2023",
+      "distance_km": 3,
+      "duration": "15m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Porto",
+      "date": "Sep 17, 2023",
+      "distance_km": 27,
+      "duration": "56m",
+      "pace": "28.9 km/h",
+      "elevation_m": 457
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Rome",
+      "date": "Sep 10, 2023",
+      "distance_km": 1.5,
+      "duration": "38m"
+    },
+    {
+      "type": "run",
+      "title": "Tempo Run — Zurich",
+      "date": "Sep 3, 2023",
+      "distance_km": 12,
+      "duration": "60m",
+      "pace": "5:00/km"
+    },
+    {
+      "type": "ride",
+      "title": "Morning Loop — Copenhagen",
+      "date": "Aug 27, 2023",
+      "distance_km": 71,
+      "duration": "164m",
+      "pace": "26.0 km/h",
+      "elevation_m": 346
+    },
+    {
+      "type": "run",
+      "title": "Morning 5K — Prague",
+      "date": "Aug 20, 2023",
+      "distance_km": 6,
+      "duration": "32m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "Gravel Explorer — Vienna",
+      "date": "Aug 13, 2023",
+      "distance_km": 57,
+      "duration": "143m",
+      "pace": "23.9 km/h",
+      "elevation_m": 272
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Lisbon",
+      "date": "Aug 6, 2023",
+      "distance_km": 2,
+      "duration": "49m"
+    },
+    {
+      "type": "run",
+      "title": "Canal Path Run — Barcelona",
+      "date": "Jul 30, 2023",
+      "distance_km": 15,
+      "duration": "81m",
+      "pace": "5:24/km"
+    },
+    {
+      "type": "ride",
+      "title": "River Path Cruise — Paris",
+      "date": "Jul 23, 2023",
+      "distance_km": 36,
+      "duration": "80m",
+      "pace": "27.0 km/h",
+      "elevation_m": 161
+    },
+    {
+      "type": "run",
+      "title": "Park Intervals — Amsterdam",
+      "date": "Jul 16, 2023",
+      "distance_km": 9,
+      "duration": "52m",
+      "pace": "5:48/km"
+    },
+    {
+      "type": "ride",
+      "title": "Coastal Ride — Munich",
+      "date": "Jul 9, 2023",
+      "distance_km": 22,
+      "duration": "53m",
+      "pace": "24.9 km/h",
+      "elevation_m": 87
+    },
+    {
+      "type": "swim",
+      "title": "Lake Swim — Berlin",
+      "date": "Jul 2, 2023",
+      "distance_km": 1,
+      "duration": "27m"
+    }
+  ]
+};
 })();

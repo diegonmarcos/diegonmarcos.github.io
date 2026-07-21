@@ -422,6 +422,16 @@ interface LIData {
   projects: { title: string; description: string; url: string; dates: string }[];
 }
 
+// LinkedIn export text is raw newlines (bullet lists, paragraphs); escape then
+// turn those into <br> so it reads the same as it did on linkedin.com.
+function formatLI(text: string): string {
+  return esc(text).replace(/\n+/g, '<br>');
+}
+// Pass-through: descriptions render in full, no clamp/expand UI (YAGNI until asked for).
+function longText(html: string): string {
+  return html;
+}
+
 function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
 }

@@ -18,6 +18,9 @@ const config = {
     },
     prerender: {
       entries: ['*']
+    },
+    alias: {
+      '$engine': '../_galaxy-engine/src'
     }
   }
 };

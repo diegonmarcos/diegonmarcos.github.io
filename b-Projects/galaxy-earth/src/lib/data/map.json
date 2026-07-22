@@ -11,5 +11,13 @@
     "maxzoom": 15,
     "exaggeration": 1.4
   },
-  "sky": { "sun": [0.0, 90.0] }
+  "sky": { "sun": [0.0, 90.0] },
+  "rider": {
+    "start": [2.2945, 48.8584],
+    "speed": 14,
+    "turn": 1.6,
+    "steerSign": 1,
+    "character": { "primitive": "capsule", "radius": 3, "height": 10, "color": "#ff5c5c" },
+    "follow": { "pitch": 65, "zoom": 18, "bearingSign": 1 }
+  }
 }

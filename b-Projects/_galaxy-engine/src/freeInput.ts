@@ -10,5 +10,6 @@ export const freeInput = {
   yawRate: 0,    // -1..1 held-orbit velocity (right camera joystick, X) — integrated by FreeRig
   pitchRate: 0,  // -1..1 held-tilt velocity  (right camera joystick, Y) — integrated by FreeRig
   galaxy: 0,     // 0 = ground .. 1 = zoomed all the way out to the Milky Way view (set by FreeRig)
+  climb: 0,      // -1..1 fly vertical (up/down) — written by the earth fly-mode climb control; 0 = no effect
   active: false
 };

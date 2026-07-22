@@ -1111,6 +1111,12 @@
         "from": "src/data"
       },
       {
+        "_doc": "Real profile photo (verified real headshot, not a placeholder), ships to dist/ root.",
+        "mod": "copy",
+        "files": "*.jpg",
+        "from": "src/media"
+      },
+      {
         "mod": "sass",
         "input": "src/scss/main.scss",
         "output": "style.css"

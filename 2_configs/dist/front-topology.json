@@ -292,6 +292,7 @@
       "build_steps": [
         "data_wrap",
         "copy",
+        "copy",
         "sass",
         "esbuild",
         "copy",

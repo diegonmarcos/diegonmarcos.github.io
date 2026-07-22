@@ -22,12 +22,12 @@
   import Ghetto from './Ghetto.svelte';
   import City from './City.svelte';
   import House from './House.svelte';
-  import PerfTune from './PerfTune.svelte';
+  import PerfTune from '$engine/PerfTune.svelte';
   import Zones from './Zones.svelte';
-  import { layers } from './layers.svelte';
+  import { layers } from '$engine/layers.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
-  import StatsSampler from './StatsSampler.svelte';
+  import StatsSampler from '$engine/StatsSampler.svelte';
 
   // Bindable page-owned tooltip DOM element (drives "DRAG TO SPIN / CLICK TO OPEN").
   let { scroll = 0, tooltip = undefined, mode = 'scenic' }: { scroll?: number; tooltip?: HTMLElement; mode?: 'scenic' | 'free' } = $props();

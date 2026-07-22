@@ -2,9 +2,9 @@
   // "Nerd data" FAB → always-on live panel: render analysis, 3D stack, GLB models,
   // network telemetry, and a copy-all report button.
   import { onMount } from 'svelte';
-  import { gpuStats } from '$lib/webgl/gpuStats';
-  import { layers, perf, LAYER_LABELS } from '$lib/webgl/layers.svelte';
-  import pkg from '../../package.json';
+  import { gpuStats } from './gpuStats';
+  import { layers, perf, LAYER_LABELS } from './layers.svelte';
+  import pkg from '../../galaxy-x1/package.json';
 
   const KEY = 'galaxy:nerd';
   const FKEY = 'galaxy:fps';

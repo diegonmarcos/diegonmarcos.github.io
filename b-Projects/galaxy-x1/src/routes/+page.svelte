@@ -3,12 +3,12 @@
   import { Spring } from 'svelte/motion';
   import { Canvas } from '@threlte/core';
   import World from '$lib/webgl/World.svelte';
-  import NerdStats from '$lib/NerdStats.svelte';
+  import NerdStats from '$engine/NerdStats.svelte';
   import ScrollNav from '$lib/ScrollNav.svelte';
   import ModeSwitch from '$lib/ModeSwitch.svelte';
-  import Joystick from '$lib/Joystick.svelte';
-  import CameraStick from '$lib/CameraStick.svelte';
-  import ZoomBar from '$lib/ZoomBar.svelte';
+  import Joystick from '$engine/Joystick.svelte';
+  import CameraStick from '$engine/CameraStick.svelte';
+  import ZoomBar from '$engine/ZoomBar.svelte';
   import ViewPresets from '$lib/ViewPresets.svelte';
   import { freeInput } from '$lib/webgl/free/freeInput';
   import cfg from '$lib/data/scene.json';

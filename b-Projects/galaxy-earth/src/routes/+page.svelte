@@ -8,6 +8,18 @@
 
   let mapContainer: HTMLDivElement;
 
+  // ponytail: sail/drive are param profiles — no water/road gating yet (future increment).
+  const rider = mapConfig.rider;
+  let activeMode = $state(rider.modes.find((m) => m.id === rider.defaultMode) ?? rider.modes[0]);
+
+  // Persistent ride state (heading + carried speed/altitude) — lives across mode switches
+  // and across frames; only `speed` resets on a mode change so momentum doesn't teleport.
+  const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
+  $effect(() => {
+    activeMode;
+    ride.speed = 0;
+  });
+
   onMount(() => {
     // MapLibre is browser-only — must be imported inside onMount (no SSR).
     let map: import('maplibre-gl').Map | undefined;
@@ -55,8 +67,6 @@
         });
 
         // --- GTA-style walking rider: three.js CustomLayerInterface (threebox pattern) ---
-        const rider = mapConfig.rider;
-        const ride = { heading: 0 };
         let lngLat: [number, number] = [rider.start[0], rider.start[1]];
         let scene: THREE.Scene;
         let camera: THREE.Camera;
@@ -97,10 +107,18 @@
             const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
             clockPrev = now;
 
-            const step = stepRide(ride, freeInput, rider, dt);
+            const step = stepRide(ride, freeInput, {
+              speed: activeMode.speed,
+              turn: activeMode.turn,
+              steerSign: rider.steerSign,
+              accel: activeMode.accel,
+              lift: activeMode.lift,
+              maxAlt: activeMode.maxAlt
+            }, dt);
 
             // ponytail: capsule primitive character; swap for a GLB when art is ready.
-            const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, 0);
+            // altitude (metres, fly mode only) lifts the mesh off the terrain.
+            const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, step.altitude);
             const metersPerUnit = merc.meterInMercatorCoordinateUnits();
             merc.x += step.forwardX * step.dForward * metersPerUnit;
             merc.y += step.forwardZ * step.dForward * metersPerUnit;
@@ -133,8 +151,8 @@
             map.jumpTo({
               center: lngLat,
               bearing: (ride.heading * 180) / Math.PI * rider.follow.bearingSign,
-              pitch: rider.follow.pitch,
-              zoom: rider.follow.zoom
+              pitch: activeMode.follow.pitch,
+              zoom: activeMode.follow.zoom
             });
             followGuard = false;
           }
@@ -158,6 +176,44 @@
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
   </div>
+
+  <div class="modes" role="group" aria-label="Locomotion mode">
+    {#each rider.modes as m (m.id)}
+      <button
+        type="button"
+        class="mode-btn"
+        class:active={m.id === activeMode.id}
+        onclick={() => (activeMode = m)}
+      >
+        <span class="icon">{m.icon}</span>
+        <span class="label">{m.label}</span>
+      </button>
+    {/each}
+  </div>
+
+  {#if activeMode.lift}
+    <div class="climb">
+      <button
+        type="button"
+        class="climb-btn"
+        aria-label="Climb up"
+        onpointerdown={() => (freeInput.climb = 1)}
+        onpointerup={() => (freeInput.climb = 0)}
+        onpointerleave={() => (freeInput.climb = 0)}
+        onpointercancel={() => (freeInput.climb = 0)}
+      >▲</button>
+      <button
+        type="button"
+        class="climb-btn"
+        aria-label="Climb down"
+        onpointerdown={() => (freeInput.climb = -1)}
+        onpointerup={() => (freeInput.climb = 0)}
+        onpointerleave={() => (freeInput.climb = 0)}
+        onpointercancel={() => (freeInput.climb = 0)}
+      >▼</button>
+    </div>
+  {/if}
+
   <Joystick />
 </div>
 
@@ -206,5 +262,75 @@
     font-size: 1.4rem;
     letter-spacing: 0.06em;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  }
+
+  .modes {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    display: flex;
+    gap: 0.4rem;
+    padding: 0.35rem;
+    background: rgba(10, 14, 26, 0.45);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    pointer-events: auto;
+  }
+
+  .mode-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    padding: 0.35rem 0.6rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #cfd8ff;
+    font-family: inherit;
+    font-size: 0.65rem;
+    line-height: 1;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .mode-btn .icon {
+    font-size: 1.15rem;
+  }
+
+  .mode-btn.active {
+    background: rgba(157, 180, 255, 0.35);
+    color: #ffffff;
+  }
+
+  .climb {
+    position: fixed;
+    right: 26px;
+    bottom: 26px;
+    z-index: 35;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    pointer-events: auto;
+  }
+
+  .climb-btn {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    background: rgba(10, 14, 26, 0.35);
+    color: #cfd8ff;
+    font-size: 1.4rem;
+    backdrop-filter: blur(4px);
+    touch-action: none;
+    cursor: pointer;
+  }
+
+  .climb-btn:active {
+    background: rgba(157, 180, 255, 0.35);
   }
 </style>

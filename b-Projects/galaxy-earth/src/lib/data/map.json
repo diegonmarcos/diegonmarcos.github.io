@@ -14,10 +14,16 @@
   "sky": { "sun": [0.0, 90.0] },
   "rider": {
     "start": [2.2945, 48.8584],
-    "speed": 14,
-    "turn": 1.6,
     "steerSign": 1,
     "character": { "primitive": "capsule", "radius": 3, "height": 10, "color": "#ff5c5c" },
-    "follow": { "pitch": 65, "zoom": 18, "bearingSign": 1 }
+    "follow": { "bearingSign": 1 },
+    "defaultMode": "walk",
+    "modes": [
+      { "id": "walk",  "label": "Walk",  "icon": "🚶", "speed": 14,  "turn": 1.9, "follow": { "pitch": 66, "zoom": 18.2 } },
+      { "id": "cycle", "label": "Cycle", "icon": "🚴", "speed": 34,  "turn": 1.5, "accel": 6,  "follow": { "pitch": 62, "zoom": 17.3 } },
+      { "id": "drive", "label": "Drive", "icon": "🚗", "speed": 80,  "turn": 1.0, "accel": 16, "follow": { "pitch": 57, "zoom": 16.2 } },
+      { "id": "sail",  "label": "Sail",  "icon": "⛵", "speed": 45,  "turn": 0.7, "accel": 5,  "follow": { "pitch": 54, "zoom": 16.0 } },
+      { "id": "fly",   "label": "Fly",   "icon": "✈️", "speed": 150, "turn": 0.9, "accel": 22, "lift": 45, "maxAlt": 1600, "follow": { "pitch": 42, "zoom": 14.6 } }
+    ]
   }
 }

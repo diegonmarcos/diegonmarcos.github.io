@@ -46,6 +46,17 @@ $tid-cyan: #00ffff;
   &__sub { color: $tid-muted; font-size: 13px; margin-top: 4px; }
 }
 
+// Folder chips — real Tidal folder organization (not individual playlists).
+.tid-folders { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.tid-folder {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 600;
+  em { font-style: normal; opacity: 0.6; margin-left: 5px; }
+}
+
 // ── Playlist grid ────────────────────────────────────────
 .tid-grid {
   display: grid;

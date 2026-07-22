@@ -715,10 +715,12 @@ function renderPinterest(): void {
 function renderTidal(): void {
   const view = document.getElementById('tid-view');
   if (!view) return;
-  interface TidPlaylist { name: string; tracks: number; duration_s?: number; description?: string; cover: string; url: string }
-  interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[] }
+  interface TidPlaylist { name: string; tracks: number; duration_s?: number; description?: string; cover?: string; url?: string }
+  interface TidFolder { name: string; playlists: number }
+  interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[]; folders?: TidFolder[] }
   const d = (globalThis as { PORTAL_DATA?: Record<string, TidData> }).PORTAL_DATA?.tidal;
   const lists = d?.playlists ?? [];
+  const folders = d?.folders ?? [];
   const prof = d?.profile;
 
   const fmtDur = (s?: number) => {
@@ -727,17 +729,20 @@ function renderTidal(): void {
     return h ? `${h}h ${m}m` : `${m} min`;
   };
 
+  const profileUrl = `https://tidal.com/@${esc(prof?.username || 'diegonmarcos')}`;
   const cards = lists.map((p, i) => {
     const media = p.cover
       ? `<img class="tid-card__img" src="${esc(p.cover)}" alt="${esc(p.name)}" loading="lazy">`
       : `<div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div>`;
     return `
-    <a class="tid-card" href="${esc(p.url)}" target="_blank" rel="noopener">
+    <a class="tid-card" href="${p.url ? esc(p.url) : profileUrl}" target="_blank" rel="noopener">
       <div class="tid-card__cover">${media}<span class="tid-card__play">▶</span></div>
       <div class="tid-card__name">${esc(p.name)}</div>
       <div class="tid-card__meta">${p.tracks} tracks${p.duration_s ? ' · ' + fmtDur(p.duration_s) : ''}</div>
     </a>`;
   }).join('');
+
+  const folderChips = folders.map(f => `<span class="tid-folder">${esc(f.name)}<em>${f.playlists}</em></span>`).join('');
 
   view.innerHTML = `
     <nav class="tid-nav">
@@ -752,6 +757,7 @@ function renderTidal(): void {
         <div class="tid-head__title">My Playlists</div>
         <div class="tid-head__sub">${prof?.playlists ?? lists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
       </header>
+      ${folderChips ? `<div class="tid-folders">${folderChips}</div>` : ''}
       <div class="tid-grid">${cards || '<p class="tid-empty">Playlists load once the Tidal profile ID is set.</p>'}</div>
     </div>`;
 }

@@ -196,7 +196,7 @@ function gradientFor(i: number): string {
 
 // Real Instagram export shape (parsed by extract_ig.py -> PORTAL_DATA["instagram"]).
 interface IGData {
-  profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number };
+  profile: { username: string; name: string; bio: string; following: number; followers: number; posts: number; following_shown: number; followers_shown: number; photo?: string };
   posts: { media: string; caption: string; time: string }[];
   stories: { media: string; caption: string; time: string }[];
   following: string[];
@@ -302,9 +302,11 @@ function renderInstagram(): void {
     : '<p class="ig-empty">No comments.</p>';
 
   const grid = (html: string) => `<div class="ig-grid">${html}</div>`;
-  // No real profile-picture field in the export — a random post photo isn't the profile
-  // pic, so use an initials placeholder instead of misrepresenting one as the other.
-  const avatar = `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
+  // Instagram's own export never captured a profile-pic field; p.photo (when set)
+  // is the same real headshot used on LinkedIn — an honest reuse, not a placeholder.
+  const avatar = p.photo
+    ? `<img class="ig-head__avatar" src="${esc(p.photo)}" alt="${esc(p.name)}">`
+    : `<div class="ig-head__avatar ig-head__avatar--ph">${esc(initials(p.name))}</div>`;
 
   view.innerHTML = `
     <nav class="ig-nav">
@@ -1202,6 +1204,7 @@ function renderMyProfile(): void {
   const headline = li?.profile.headline || '';
   const location = li?.profile.location || '';
   const bio = ig?.profile.bio || '';
+  const photo = li?.profile.photo || ig?.profile.photo;
 
   // Each card jumps to that network's view. Metrics are real, from the parsed data.
   const tidalD = (globalThis as { PORTAL_DATA?: Record<string, { profile: { playlists: number } }> }).PORTAL_DATA?.tidal;
@@ -1220,7 +1223,7 @@ function renderMyProfile(): void {
   view.innerHTML = `
     <div class="me-hub">
       <div class="me-card">
-        <div class="me-avatar"></div>
+        ${photo ? `<img class="me-avatar" src="${esc(photo)}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
         <h1 class="me-name">${esc(name)}</h1>
         ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
         ${location ? `<p class="me-loc">${esc(location)}</p>` : ''}

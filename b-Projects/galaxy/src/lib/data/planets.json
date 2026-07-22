@@ -1,5 +1,5 @@
 [
   { "id": "gaia", "name": "Gaia", "tagline": "The first world", "url": "/galaxy-gaia/", "status": "live" },
   { "id": "x1", "name": "X-1", "tagline": "The experimental world", "url": "/galaxy-x1/", "status": "live" },
-  { "id": "earth", "name": "Earth", "tagline": "Real terrain · Google-Earth meets GTA", "url": "/galaxy-earth/", "status": "soon" }
+  { "id": "earth", "name": "Earth", "tagline": "Real terrain · Google-Earth meets GTA", "url": "/galaxy-earth/", "status": "live" }
 ]

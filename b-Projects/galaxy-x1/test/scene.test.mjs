@@ -64,8 +64,9 @@ cfg.world.city.place.forEach((it, i) => {
   okFile(cfg.world.city.dir + it.m, `city[${i}] GLB exists: ${it.m}`);
 });
 
-// per-zone floors: forest / ghetto / city each get a round floor patch
-ok(Array.isArray(cfg.world.zones) && cfg.world.zones.length === 3, 'three zone floors present');
+// per-zone floors: forest / ghetto / city each get a round floor patch (extra zones e.g. House allowed)
+const zoneNames = new Set((cfg.world.zones || []).map(z => z.name));
+ok(Array.isArray(cfg.world.zones) && ['Wild Forest', 'Ghetto', 'City Center'].every(n => zoneNames.has(n)), 'three canonical zone floors present');
 cfg.world.zones.forEach((z, i) => ok(z.name && Array.isArray(z.center) && z.center.length === 3 && z.r > 0 && /^#/.test(z.color), `zone[${i}] valid: ${z.name}`));
 
 // free-ride mode config present (scenic <-> free switcher)

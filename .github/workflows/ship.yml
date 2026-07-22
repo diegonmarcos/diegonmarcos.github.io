@@ -405,6 +405,19 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Galaxy Hub build complete"
+
+      - name: 🔨 Build Galaxy Earth (SvelteKit + MapLibre)
+        id: build-galaxy-earth
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Projects/galaxy-earth/')
+
+        run: |
+          echo "🔨 Building Galaxy Earth..."
+          cd b-Projects/galaxy-earth
+          node test/earth.test.mjs
+          bash build.sh build
+          cd ../..
+          echo "✅ Galaxy Earth build complete"
       - name: 🔨 Build Stark (TypeScript + SCSS + Shaders)
         id: build-stark
         if:
@@ -576,6 +589,7 @@ jobs:
             "b-Projects/galaxy-x1:galaxy-x1"
             "b-Projects/galaxy-gaia:galaxy-gaia"
             "b-Projects/galaxy:galaxy"
+            "b-Projects/galaxy-earth:galaxy-earth"
             "b-Profiles/myprofile:myprofile"
             "a-Companies/nexus:nexus"
             "a-Companies/stark:stark"

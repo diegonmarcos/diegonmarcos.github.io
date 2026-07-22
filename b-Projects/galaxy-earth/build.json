@@ -1,0 +1,17 @@
+{
+  "name": "Galaxy-Earth",
+  "framework": "sveltekit",
+  "port": 8025,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sveltekit" }
+  ],
+
+  "serve": {
+    "mode": "sveltekit"
+  },
+
+  "deploy": {}
+}

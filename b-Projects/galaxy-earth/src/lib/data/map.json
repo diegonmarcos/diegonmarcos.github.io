@@ -1,0 +1,15 @@
+{
+  "center": [2.2945, 48.8584],
+  "zoom": 15,
+  "pitch": 70,
+  "bearing": -20,
+  "basemap": "https://tiles.openfreemap.org/styles/liberty",
+  "terrain": {
+    "tiles": ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+    "encoding": "terrarium",
+    "tileSize": 256,
+    "maxzoom": 15,
+    "exaggeration": 1.4
+  },
+  "sky": { "sun": [0.0, 90.0] }
+}

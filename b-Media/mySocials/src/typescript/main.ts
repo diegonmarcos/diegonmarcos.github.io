@@ -471,43 +471,18 @@ interface LIData {
   profile: { name: string; headline: string; location: string; followers: number; connections: string; open_to_work: string; current: string; url: string; photo?: string };
   about: string;
   experience: { title: string; company: string; dates: string; location?: string; description?: string }[];
-  education: { school: string; degree: string; dates: string }[];
+  education: { school: string; degree: string; dates: string; description?: string }[];
   skills: string[];
   languages: { name: string; proficiency: string }[];
   projects: { title: string; description: string; url: string; dates: string }[];
+  featured?: { title: string; subtitle?: string; url: string }[];
 }
 
-// LinkedIn export text has NO real line breaks — this profile writes its own structure
-// inline: '---' divides sections, '@word' opens a section with a label, and '- ' repeated
-// marks a bullet list. Parse those conventions into real <p>/<ul>/<li> markup instead of
-// dumping one unbroken run-on paragraph.
+// The data has real '\n' line breaks (copied straight from the rendered page) —
+// escape for safety, linkify bare URLs, and let CSS (white-space: pre-line) render
+// the line breaks exactly as they are in the source. No parsing, no guessing.
 function formatLI(text: string): string {
-  const linkify = (s: string) => esc(s).replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-
-  const renderBody = (raw: string): string => {
-    const body = raw.trim().replace(/^>\s*/, '').replace(/^-\s*/, '');
-    if (!body) return '';
-    // '>>' / '>>>' mark sub-topics within one section — split each into its own paragraph
-    // instead of leaving one giant run-on wall of text.
-    const arrowParts = body.split(/\s*>{2,3}\s*/).map(s => s.trim()).filter(Boolean);
-    if (arrowParts.length >= 2) return arrowParts.map(p => renderBody(p)).join('');
-    // '- ' repeated marks a real bullet list.
-    const items = body.split(/\s-\s/).map(s => s.trim()).filter(Boolean);
-    if (items.length >= 3) return `<ul class="li-desc__list">${items.map(it => `<li>${linkify(it)}</li>`).join('')}</ul>`;
-    return `<p class="li-desc__p">${linkify(body)}</p>`;
-  };
-
-  // '---' divides top-level sections; '@label' can open a NEW labeled section
-  // anywhere, not just at the start of a '---' block (this profile mixes both).
-  const blocks = text.split(/\s*-{3,}\s*/).map(b => b.trim()).filter(Boolean);
-  return blocks.map(block =>
-    block.split(/(?=@\w+)/g).map(s => s.trim()).filter(Boolean).map(part => {
-      const m = part.match(/^@(\S+)\s+([\s\S]*)$/);
-      const label = m?.[1];
-      const heading = label ? `<div class="li-desc__label">${esc(label)}</div>` : '';
-      return heading + renderBody(m ? m[2] : part);
-    }).join('')
-  ).join('');
+  return esc(text).replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 
 // Long description text gets clamped with a "Show more" toggle; the number of
@@ -565,9 +540,21 @@ function renderLinkedin(): void {
           <div class="li-item__title">${esc(e.school)}</div>
           <div class="li-item__sub">${esc(e.degree)}</div>
           <div class="li-item__meta">${esc(e.dates)}</div>
+          ${e.description ? `<div class="li-item__desc">${liClamp(formatLI(e.description))}</div>` : ''}
         </div>
       </div>`).join('')
     : needExport;
+
+  const featuredBody = (d.featured?.length ?? 0) > 0
+    ? `<div class="li-featured">${d.featured!.map(f => `
+        <a class="li-feat" href="${esc(f.url)}" target="_blank" rel="noopener">
+          <span class="li-feat__icon">🔗</span>
+          <span class="li-feat__body">
+            <span class="li-feat__title">${esc(f.title)}</span>
+            ${f.subtitle ? `<span class="li-feat__sub">${esc(f.subtitle)}</span>` : ''}
+          </span>
+        </a>`).join('')}</div>`
+    : '';
 
   const skillsBody = d.skills.length
     ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
@@ -629,6 +616,7 @@ function renderLinkedin(): void {
           </div>
         </section>
         ${section('About', aboutBody)}
+        ${featuredBody ? section('Featured', featuredBody) : ''}
         ${section('Experience', expBody)}
         ${section('Education', eduBody)}
         ${section('Skills', skillsBody)}

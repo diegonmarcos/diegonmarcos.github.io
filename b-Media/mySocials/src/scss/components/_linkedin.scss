@@ -115,24 +115,34 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
   }
 }
 
-// About / Projects long-form text — formatLI() parses the profile's own '---' / '@label' /
-// '- ' bullet conventions into real <p>/<ul>/<li>, styled here.
+// About / Experience / Education / Projects long-form text — real '\n' from the
+// source, rendered verbatim via white-space: pre-line. No parsed markup.
 .li-about {
+  white-space: pre-line;
   line-height: 1.55;
   font-size: 13px;
   color: $li-text;
 }
 .li-item--proj { display: block; }
 .li-item__desc {
+  white-space: pre-line;
   line-height: 1.5;
   font-size: 13px;
   color: $li-text;
   margin-top: 6px;
 }
-.li-desc {
-  &__label { font-weight: 700; font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: $li-blue; margin: 10px 0 4px; &:first-child { margin-top: 0; } }
-  &__p { margin: 0 0 8px; &:last-child { margin-bottom: 0; } }
-  &__list { margin: 0 0 8px; padding-left: 18px; li { margin-bottom: 3px; } &:last-child { margin-bottom: 0; } }
+
+// Featured links
+.li-featured { display: flex; flex-direction: column; gap: 2px; }
+.li-feat {
+  @include flex-row($spacing-sm);
+  padding: 10px 0;
+  border-top: 1px solid $li-border;
+  &:first-child { border-top: none; }
+  &__icon { font-size: 16px; flex: 0 0 auto; }
+  &__body { display: flex; flex-direction: column; }
+  &__title { font-weight: 600; font-size: 13px; }
+  &__sub { color: $li-muted; font-size: 12px; }
 }
 
 // Languages

@@ -38,14 +38,30 @@ Two edit sites per project:
 
 ## Phases (each ends BUILD-GREEN before the next; Opus verifies the gate)
 
-- **P1 — Rename** `galaxy` → `galaxy-x1`: `git mv`, update `build.json` name, `package.json` name,
-  ship.yml build step + registry entry. Verify `build.sh build` green.
-- **P2 — Extract `_galaxy-engine/`** from galaxy-x1: move generic files, add `$engine` alias, rewire
-  x1 imports. galaxy-x1 stays green (byte-identical behaviour).
-- **P3 — New `galaxy` hub**: thin SvelteKit landing, data-driven planet list (`planets.json`),
-  cards linking `/galaxy-gaia/ /galaxy-x1/ /galaxy-earth/`. Register in ship.yml.
-- **P4 — `galaxy-earth`**: SvelteKit + MapLibre GL JS + raster-DEM terrain (free tiles), GTA rider
-  as a custom Three.js layer importing `$engine`. Register in ship.yml.
+- **P1 — Rename** `galaxy` → `galaxy-x1`: `git mv`, update `build.json`/`package.json` name,
+  ship.yml build step + registry. — ✅ DONE `9f4f3c6f`
+- **P2 — Extract `_galaxy-engine/`** from galaxy-x1: move perf/stats/controls (`gpuStats`,
+  `StatsSampler`, `PerfTune`, `layers`, `NerdStats`, `Joystick`, `ZoomBar`, `CameraStick`),
+  add `$engine` alias, rewire x1 imports. — ✅ DONE `521a35b3`
+- **P3 — New `galaxy` hub**: thin SvelteKit landing, data-driven `planets.json`, cards
+  linking the planets. Registered in ship.yml. — ✅ DONE `c35c99ba`
+- **P4a — `galaxy-earth` basemap**: SvelteKit + MapLibre GL JS + terrarium raster-DEM 3D
+  terrain (keyless: OpenFreeMap basemap), data-driven `map.json`. Registered in ship.yml. — ✅ DONE
+- **P4b — engine decouple + rider** (NEXT): extract camera/locomotion (`FreeRig`/`CameraRig`/
+  `freeInput` + presets) into `_galaxy-engine` with a scene-agnostic interface (fixes the flagged
+  `NerdStats` `../../galaxy-x1/package.json` hardcode + scene-specific `LAYER_LABELS`); then the GTA
+  rider as a Three.js custom layer on earth's MapLibre terrain, importing `$engine`. Minimal viable
+  first (one character, walk + follow-cam); cycle/drive/sail/fly are later increments.
+
+## CI oper/ deploy discipline (learned P1–P4a)
+
+Two workflows auto-commit to `main` per push — Pages Deployment ("commit built dist back") and
+"Regenerate (2_configs)". **Bursting several pushes within minutes makes their runs overlap and the
+loser's push is rejected non-fast-forward** (commit-back autostash does not stash *untracked*
+regenerated `2_configs/*.json`, so a concurrently-landed sibling project's config collides on
+rebase-checkout). Spaced single pushes go green (history + `30fee59f` confirm). **Rule: one push,
+let its run settle to green, then the next.** Do NOT rewrite the shared commit-back engine to "fix"
+this mid-scope — it serves 30+ projects and works under normal cadence.
 
 ## Rules for coding agents
 

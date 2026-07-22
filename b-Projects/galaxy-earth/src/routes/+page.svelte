@@ -20,6 +20,50 @@
     ride.speed = 0;
   });
 
+  // --- deterministic tree scatter: fractional part of index*golden-ratio + salt,
+  // no Math.random so the scatter is reproducible across reloads. ---
+  const GOLDEN_RATIO = 0.6180339887498949;
+  function hash01(i: number, salt: number) {
+    const x = i * GOLDEN_RATIO + salt;
+    return x - Math.floor(x);
+  }
+
+  // Low-poly tree: short cylinder trunk + cone canopy, merged into one vertex-colored
+  // BufferGeometry so the whole scatter is a single THREE.InstancedMesh (one draw call).
+  function makeTreeGeometry(canopyColor: string, trunkColor: string): THREE.BufferGeometry {
+    const trunkHeight = 3;
+    const canopyHeight = 6;
+    const trunk = new THREE.CylinderGeometry(0.4, 0.5, trunkHeight, 6).toNonIndexed();
+    trunk.translate(0, trunkHeight / 2, 0);
+    const canopy = new THREE.ConeGeometry(2.4, canopyHeight, 7).toNonIndexed();
+    canopy.translate(0, trunkHeight + canopyHeight / 2, 0);
+
+    const trunkPos = trunk.attributes.position as THREE.BufferAttribute;
+    const canopyPos = canopy.attributes.position as THREE.BufferAttribute;
+    const trunkNrm = trunk.attributes.normal as THREE.BufferAttribute;
+    const canopyNrm = canopy.attributes.normal as THREE.BufferAttribute;
+
+    const position = new Float32Array(trunkPos.array.length + canopyPos.array.length);
+    position.set(trunkPos.array as Float32Array, 0);
+    position.set(canopyPos.array as Float32Array, trunkPos.array.length);
+
+    const normal = new Float32Array(trunkNrm.array.length + canopyNrm.array.length);
+    normal.set(trunkNrm.array as Float32Array, 0);
+    normal.set(canopyNrm.array as Float32Array, trunkNrm.array.length);
+
+    const color = new Float32Array(trunkPos.count * 3 + canopyPos.count * 3);
+    const t = new THREE.Color(trunkColor);
+    const c = new THREE.Color(canopyColor);
+    for (let i = 0; i < trunkPos.count; i++) t.toArray(color, i * 3);
+    for (let i = 0; i < canopyPos.count; i++) c.toArray(color, (trunkPos.count + i) * 3);
+
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(position, 3));
+    geo.setAttribute('normal', new THREE.BufferAttribute(normal, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(color, 3));
+    return geo;
+  }
+
   onMount(() => {
     // MapLibre is browser-only — must be imported inside onMount (no SSR).
     let map: import('maplibre-gl').Map | undefined;
@@ -66,12 +110,62 @@
           }
         });
 
+        // --- 3D buildings + green nature (data-driven from map.json), inserted
+        // beneath 'sky' (rider is added further below, ending up on top of both). ---
+        const vectorSourceId = Object.entries(map.getStyle()?.sources ?? {}).find(
+          ([, s]) => (s as { type?: string }).type === 'vector'
+        )?.[0];
+
+        if (vectorSourceId) {
+          const nature = mapConfig.nature;
+          map.addLayer(
+            {
+              id: 'nature-green',
+              type: 'fill',
+              source: vectorSourceId,
+              'source-layer': nature.sourceLayer,
+              filter: ['in', ['get', 'class'], ['literal', nature.landcoverClasses]],
+              paint: {
+                'fill-color': nature.greenColor,
+                'fill-opacity': nature.greenOpacity
+              }
+            } as any,
+            'sky'
+          );
+
+          const b = mapConfig.buildings;
+          map.addLayer(
+            {
+              id: 'buildings-3d',
+              type: 'fill-extrusion',
+              source: vectorSourceId,
+              'source-layer': 'building',
+              minzoom: b.minZoom,
+              paint: {
+                'fill-extrusion-base': ['get', b.baseField],
+                'fill-extrusion-height': ['get', b.heightField],
+                'fill-extrusion-opacity': b.opacity,
+                'fill-extrusion-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', b.heightField],
+                  0, b.lowColor,
+                  b.highRiseMeters, b.highColor
+                ]
+              }
+            } as any,
+            'sky'
+          );
+        }
+
         // --- GTA-style walking rider: three.js CustomLayerInterface (threebox pattern) ---
         let lngLat: [number, number] = [rider.start[0], rider.start[1]];
         let scene: THREE.Scene;
         let camera: THREE.Camera;
         let renderer: THREE.WebGLRenderer;
         let riderMesh: THREE.Mesh;
+        let natureScene: THREE.Scene;
+        let treesMesh: THREE.InstancedMesh;
         let clockPrev = 0;
         let followGuard = false;
 
@@ -99,6 +193,44 @@
             camera = new THREE.Camera();
             renderer = new THREE.WebGLRenderer({ canvas: (map as any).getCanvas(), context: gl });
             renderer.autoClear = false;
+
+            // ponytail: static tree scatter near start; per-tile streaming is a later increment.
+            // Rendered as its own scene/pass (see render()) with the raw map matrix — no rider
+            // modelMatrix — so trees stay planted in the world while the rider walks/drives off.
+            const treeCfg = mapConfig.nature.trees;
+            const treeCount = Math.min(treeCfg.count, 300);
+            const treeGeo = makeTreeGeometry(treeCfg.canopyColor, treeCfg.trunkColor);
+            const treeMat = new THREE.MeshStandardMaterial({ vertexColors: true });
+            treesMesh = new THREE.InstancedMesh(treeGeo, treeMat, treeCount);
+
+            const startLngLat: [number, number] = [rider.start[0], rider.start[1]];
+            const m4 = new THREE.Matrix4();
+            for (let i = 0; i < treeCount; i++) {
+              const angle = hash01(i, 0.1) * Math.PI * 2;
+              const dist = Math.sqrt(hash01(i, 0.7)) * treeCfg.radius;
+              const scale = treeCfg.minScale + hash01(i, 0.4) * (treeCfg.maxScale - treeCfg.minScale);
+              const dx = Math.cos(angle) * dist;
+              const dz = Math.sin(angle) * dist;
+
+              const treeMerc = maplibre.MercatorCoordinate.fromLngLat(startLngLat, 0);
+              const mpuAtStart = treeMerc.meterInMercatorCoordinateUnits();
+              treeMerc.x += dx * mpuAtStart;
+              treeMerc.y += dz * mpuAtStart;
+              const mpu = treeMerc.meterInMercatorCoordinateUnits();
+
+              m4.makeTranslation(treeMerc.x, treeMerc.y, treeMerc.z)
+                .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))
+                .multiply(new THREE.Matrix4().makeScale(mpu * scale, mpu * scale, mpu * scale));
+              treesMesh.setMatrixAt(i, m4);
+            }
+            treesMesh.instanceMatrix.needsUpdate = true;
+
+            natureScene = new THREE.Scene();
+            natureScene.add(new THREE.AmbientLight(0xffffff, 0.7));
+            const treeSun = new THREE.DirectionalLight(0xffffff, 0.7);
+            treeSun.position.set(0, -70, 100).normalize();
+            natureScene.add(treeSun);
+            natureScene.add(treesMesh);
           },
           render(gl: WebGLRenderingContext, matrix: number[]) {
             if (!map) return;
@@ -137,6 +269,12 @@
 
             renderer.resetState();
             renderer.render(scene, camera);
+
+            // Static nature pass: raw mercator→clip matrix, no rider anchor, so the tree
+            // scatter renders at its fixed world position independent of rider movement.
+            camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix);
+            renderer.render(natureScene, camera);
+
             map.triggerRepaint();
           }
         };

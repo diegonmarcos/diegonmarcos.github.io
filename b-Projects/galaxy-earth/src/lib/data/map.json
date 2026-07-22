@@ -12,6 +12,29 @@
     "exaggeration": 1.4
   },
   "sky": { "sun": [0.0, 90.0] },
+  "buildings": {
+    "minZoom": 14,
+    "opacity": 0.88,
+    "heightField": "render_height",
+    "baseField": "render_min_height",
+    "lowColor": "#cfc7b8",
+    "highColor": "#ff5c5c",
+    "highRiseMeters": 40
+  },
+  "nature": {
+    "sourceLayer": "landcover",
+    "landcoverClasses": ["wood", "grass"],
+    "greenColor": "#2f9e44",
+    "greenOpacity": 0.5,
+    "trees": {
+      "count": 220,
+      "radius": 220,
+      "minScale": 0.7,
+      "maxScale": 1.6,
+      "canopyColor": "#2f7d32",
+      "trunkColor": "#6b4423"
+    }
+  },
   "rider": {
     "start": [2.2945, 48.8584],
     "steerSign": 1,

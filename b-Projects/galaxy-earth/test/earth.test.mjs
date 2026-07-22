@@ -87,4 +87,26 @@ if (!flyMode || !(flyMode.lift > 0)) {
   }
 }
 
+// --- 3D buildings (data-driven fill-extrusion paint) ---
+if (typeof map.buildings?.color !== 'string' && typeof map.buildings?.lowColor !== 'string') {
+  throw new Error('map.json buildings must have a color (or lowColor) string');
+}
+if (typeof map.buildings?.opacity !== 'number') {
+  throw new Error('map.json buildings.opacity must be a number');
+}
+if (typeof map.buildings?.heightField !== 'string') {
+  throw new Error('map.json buildings.heightField must be a string');
+}
+
+// --- nature: green landcover + tree scatter ---
+if (typeof map.nature?.greenColor !== 'string') {
+  throw new Error('map.json nature.greenColor must be a string');
+}
+if (!(typeof map.nature?.trees?.count === 'number' && map.nature.trees.count > 0)) {
+  throw new Error('map.json nature.trees.count must be a number > 0');
+}
+if (!(typeof map.nature?.trees?.radius === 'number' && map.nature.trees.radius > 0)) {
+  throw new Error('map.json nature.trees.radius must be a number > 0');
+}
+
 console.log('OK');

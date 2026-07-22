@@ -483,37 +483,44 @@ interface LIData {
 // dumping one unbroken run-on paragraph.
 function formatLI(text: string): string {
   const linkify = (s: string) => esc(s).replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
-  const blocks = text.split(/\s*-{3,}\s*/).map(b => b.trim()).filter(Boolean);
-  return blocks.map(block => {
-    const m = block.match(/^@(\S+)\s+([\s\S]*)$/);
-    const label = m?.[1];
-    const body = (m ? m[2] : block).trim().replace(/^>\s*/, '');
-    const heading = label ? `<div class="li-desc__label">${esc(label)}</div>` : '';
+
+  const renderBody = (raw: string): string => {
+    const body = raw.trim().replace(/^>\s*/, '').replace(/^-\s*/, '');
+    if (!body) return '';
+    // '>>' / '>>>' mark sub-topics within one section — split each into its own paragraph
+    // instead of leaving one giant run-on wall of text.
+    const arrowParts = body.split(/\s*>{2,3}\s*/).map(s => s.trim()).filter(Boolean);
+    if (arrowParts.length >= 2) return arrowParts.map(p => renderBody(p)).join('');
+    // '- ' repeated marks a real bullet list.
     const items = body.split(/\s-\s/).map(s => s.trim()).filter(Boolean);
-    return heading + (items.length >= 3
-      ? `<ul class="li-desc__list">${items.map(it => `<li>${linkify(it)}</li>`).join('')}</ul>`
-      : `<p class="li-desc__p">${linkify(body)}</p>`);
-  }).join('');
+    if (items.length >= 3) return `<ul class="li-desc__list">${items.map(it => `<li>${linkify(it)}</li>`).join('')}</ul>`;
+    return `<p class="li-desc__p">${linkify(body)}</p>`;
+  };
+
+  // '---' divides top-level sections; '@label' can open a NEW labeled section
+  // anywhere, not just at the start of a '---' block (this profile mixes both).
+  const blocks = text.split(/\s*-{3,}\s*/).map(b => b.trim()).filter(Boolean);
+  return blocks.map(block =>
+    block.split(/(?=@\w+)/g).map(s => s.trim()).filter(Boolean).map(part => {
+      const m = part.match(/^@(\S+)\s+([\s\S]*)$/);
+      const label = m?.[1];
+      const heading = label ? `<div class="li-desc__label">${esc(label)}</div>` : '';
+      return heading + renderBody(m ? m[2] : part);
+    }).join('')
+  ).join('');
+}
+
+// Long description text gets clamped with a "Show more" toggle; the number of
+// experience/education/project ENTRIES is never capped — everything renders.
+let liClampSeq = 0;
+function liClamp(html: string): string {
+  const id = `li-clamp-${liClampSeq++}`;
+  return `<div class="li-clamp" id="${id}"><div class="li-clamp__body">${html}</div>` +
+    `<button type="button" class="li-clamp__toggle" data-clamp="${id}">Show more</button></div>`;
 }
 
 function initials(name: string): string {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
-}
-
-// Per-section visible-item caps. LinkedIn dumps a lot of rows; show a handful
-// and tuck the rest behind a "Show N more" toggle so no box runs away.
-const LI_CAP: Record<string, number> = { experience: 3, education: 3, skills: 12, projects: 2 };
-
-// Render `items` with only `limit` visible; the remainder go into a
-// display:contents wrapper revealed by the trailing "Show N more" button
-// (toggle handler wired in renderLinkedin via event delegation).
-function liCap<T>(items: T[], limit: number, render: (x: T) => string, noun = 'more'): string {
-  if (items.length <= limit) return items.map(render).join('');
-  const shown = items.slice(0, limit).map(render).join('');
-  const rest = items.slice(limit).map(render).join('');
-  const label = `Show ${items.length - limit} ${noun}`;
-  return `${shown}<div class="li-more-wrap">${rest}</div>` +
-    `<button type="button" class="li-more" aria-expanded="false" data-label="${label}">${label}</button>`;
 }
 
 function renderLinkedin(): void {
@@ -535,22 +542,23 @@ function renderLinkedin(): void {
     `<section class="li-card li-section"><h2 class="li-section__title">${title}</h2>${body}</section>`;
   const needExport = '<p class="li-need">Not in the saved profile page — add from your LinkedIn data export (Settings → Get a copy of your data).</p>';
 
-  // Everything shows, unconditionally — no "Show N more" cap, no hidden rows.
+  // Every entry always renders — nothing capped by count. Only each
+  // description's TEXT gets clamped (liClamp) with a "Show more" toggle.
   const expBody = d.experience.length
-    ? liCap(d.experience, LI_CAP.experience, e => `
+    ? d.experience.map(e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.company.charAt(0))}</div>
         <div>
           <div class="li-item__title">${esc(e.title)}</div>
           <div class="li-item__sub">${esc(e.company)}</div>
           <div class="li-item__meta">${esc(e.dates)}${e.location ? ' · ' + esc(e.location) : ''}</div>
-          ${e.description ? `<div class="li-item__desc">${formatLI(e.description)}</div>` : ''}
+          ${e.description ? `<div class="li-item__desc">${liClamp(formatLI(e.description))}</div>` : ''}
         </div>
-      </div>`, 'roles')
+      </div>`).join('')
     : needExport;
 
   const eduBody = d.education.length
-    ? liCap(d.education, LI_CAP.education, e => `
+    ? d.education.map(e => `
       <div class="li-item">
         <div class="li-item__logo">${esc(e.school.charAt(0))}</div>
         <div>
@@ -558,15 +566,15 @@ function renderLinkedin(): void {
           <div class="li-item__sub">${esc(e.degree)}</div>
           <div class="li-item__meta">${esc(e.dates)}</div>
         </div>
-      </div>`, 'schools')
+      </div>`).join('')
     : needExport;
 
   const skillsBody = d.skills.length
-    ? `<div class="li-skills">${liCap(d.skills, LI_CAP.skills, s => `<span class="li-skill">${esc(s)}</span>`, 'skills')}</div>`
+    ? `<div class="li-skills">${d.skills.map(s => `<span class="li-skill">${esc(s)}</span>`).join('')}</div>`
     : needExport;
 
   const aboutBody = d.about
-    ? `<div class="li-about">${formatLI(d.about)}</div>`
+    ? `<div class="li-about">${liClamp(formatLI(d.about))}</div>`
     : needExport;
 
   const langBody = d.languages.length
@@ -578,14 +586,14 @@ function renderLinkedin(): void {
     : needExport;
 
   const projBody = d.projects.length
-    ? liCap(d.projects, LI_CAP.projects, pr => `
+    ? d.projects.map(pr => `
       <div class="li-item li-item--proj">
         <div>
           <div class="li-item__title">${esc(pr.title)}${pr.url ? ` · <a href="${esc(pr.url)}" target="_blank" rel="noopener">link</a>` : ''}</div>
           ${pr.dates ? `<div class="li-item__meta">${esc(pr.dates)}</div>` : ''}
-          <div class="li-item__desc">${formatLI(pr.description)}</div>
+          <div class="li-item__desc">${liClamp(formatLI(pr.description))}</div>
         </div>
-      </div>`, 'projects')
+      </div>`).join('')
     : needExport;
 
   view.innerHTML = `
@@ -637,14 +645,15 @@ function renderLinkedin(): void {
       </aside>
     </div>`;
 
-  // "Show N more" toggles: reveal/hide the capped remainder in place.
-  view.querySelectorAll<HTMLButtonElement>('.li-more').forEach(btn => {
+  // Description-text clamp toggles. Only clamp (hide the button) when the text
+  // actually overflows the collapsed height — short descriptions get no button at all.
+  view.querySelectorAll<HTMLElement>('.li-clamp').forEach(wrap => {
+    const body = wrap.querySelector<HTMLElement>('.li-clamp__body')!;
+    const btn = wrap.querySelector<HTMLButtonElement>('.li-clamp__toggle')!;
+    if (body.scrollHeight <= body.clientHeight + 4) { btn.style.display = 'none'; return; }
     btn.addEventListener('click', () => {
-      const wrap = btn.previousElementSibling;
-      if (!(wrap instanceof HTMLElement) || !wrap.classList.contains('li-more-wrap')) return;
-      const open = wrap.classList.toggle('li-more-wrap--open');
-      btn.setAttribute('aria-expanded', String(open));
-      btn.textContent = open ? 'Show less' : (btn.dataset.label ?? 'Show more');
+      const open = wrap.classList.toggle('li-clamp--open');
+      btn.textContent = open ? 'Show less' : 'Show more';
     });
   });
 }

@@ -84,24 +84,36 @@ $li-hover: rgba(255, 255, 255, 0.06);  // row/action hover
   background: $li-chip; color: $li-text; font-size: 12px; font-weight: 600;
 }
 
-// Capped-remainder wrapper: display:contents so hidden rows/chips rejoin the
-// section's own flow (block list OR flex chip-wrap) when revealed.
-.li-more-wrap { display: none; &--open { display: contents; } }
-.li-more {
-  margin-top: 8px;
-  padding: 5px 12px;
-  border: 1px solid $li-border;
-  border-radius: 999px;
-  background: transparent;
-  color: $li-blue;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.15s ease;
-  &:hover { background: $li-chip; }
+// Description-text clamp: every entry always shows, only long description
+// TEXT collapses behind a fade + "Show more" toggle.
+.li-clamp {
+  &__body {
+    max-height: 90px;
+    overflow: hidden;
+    position: relative;
+  }
+  &:not(.li-clamp--open) &__body::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 28px;
+    background: linear-gradient(transparent, $li-surface);
+  }
+  &--open &__body { max-height: none; }
+  &__toggle {
+    margin-top: 6px;
+    padding: 5px 12px;
+    border: 1px solid $li-border;
+    border-radius: 999px;
+    background: transparent;
+    color: $li-blue;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    &:hover { background: $li-chip; }
+  }
 }
-// Inside the skills chip-wrap the toggle sits inline with the chips.
-.li-skills .li-more { margin-top: 0; align-self: center; }
 
 // About / Projects long-form text — formatLI() parses the profile's own '---' / '@label' /
 // '- ' bullet conventions into real <p>/<ul>/<li>, styled here.

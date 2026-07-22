@@ -1,7 +1,7 @@
 <script lang="ts">
   // Free-ride camera shortcuts: jump to a preset (dist, pitch) — FreeRig eases there —
   // plus +/- buttons for precise zoom/altitude nudging.
-  import { freeInput } from '$lib/webgl/free/freeInput';
+  import { freeInput } from '$engine/freeInput';
   import cfg from '$lib/data/scene.json';
   const P = (cfg as any).free.cam.presets;
   const items: [string, string, { dist: number; pitch: number }][] = [

@@ -10,7 +10,9 @@
   import CameraStick from '$engine/CameraStick.svelte';
   import ZoomBar from '$engine/ZoomBar.svelte';
   import ViewPresets from '$lib/ViewPresets.svelte';
-  import { freeInput } from '$lib/webgl/free/freeInput';
+  import { freeInput } from '$engine/freeInput';
+  import { layers, LAYER_LABELS } from '$lib/sceneLayers.svelte';
+  import pkg from '../../package.json';
   import cfg from '$lib/data/scene.json';
 
   const scroll = new Spring(0, { stiffness: 0.045, damping: 0.9 });
@@ -131,7 +133,7 @@
   <div class="hint">left stick = ride · right stick = look/orbit · bar = zoom/altitude</div>
 {/if}
 
-<NerdStats />
+<NerdStats {pkg} {layers} layerLabels={LAYER_LABELS} />
 
 <nav class="sr-only" aria-label="Destinations">
   {#each stops as s}{#each s.cube.faces as f}<a href={f.url}>{f.label}</a>{/each}{/each}

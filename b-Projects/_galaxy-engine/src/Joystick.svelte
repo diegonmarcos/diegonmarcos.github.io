@@ -1,6 +1,6 @@
 <script lang="ts">
   // On-screen joystick for free-ride: writes steer/throttle into freeInput.
-  import { freeInput } from '$lib/webgl/free/freeInput';
+  import { freeInput } from './freeInput';
 
   let base = $state<HTMLElement>();
   let knob = $state<HTMLElement>();

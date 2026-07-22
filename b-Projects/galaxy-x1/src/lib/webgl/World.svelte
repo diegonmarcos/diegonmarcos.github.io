@@ -24,7 +24,7 @@
   import House from './House.svelte';
   import PerfTune from '$engine/PerfTune.svelte';
   import Zones from './Zones.svelte';
-  import { layers } from '$engine/layers.svelte';
+  import { layers } from '$lib/sceneLayers.svelte';
   import Fauna from './Fauna.svelte';
   import Cubes from './Cubes.svelte';
   import StatsSampler from '$engine/StatsSampler.svelte';

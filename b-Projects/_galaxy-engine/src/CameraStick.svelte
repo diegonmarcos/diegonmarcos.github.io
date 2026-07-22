@@ -3,7 +3,7 @@
   // Writes normalized rates into freeInput; FreeRig integrates them per frame.
   // Deflection radius R derives from the rendered size, so the desktop 2x scale
   // (CSS media query) automatically doubles the usable travel too.
-  import { freeInput } from '$lib/webgl/free/freeInput';
+  import { freeInput } from './freeInput';
 
   let base = $state<HTMLElement>();
   let knob = $state<HTMLElement>();

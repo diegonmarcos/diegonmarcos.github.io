@@ -3,8 +3,9 @@
   // network telemetry, and a copy-all report button.
   import { onMount } from 'svelte';
   import { gpuStats } from './gpuStats';
-  import { layers, perf, LAYER_LABELS } from './layers.svelte';
-  import pkg from '../../galaxy-x1/package.json';
+  import { perf } from './layers.svelte';
+
+  let { pkg, layers, layerLabels } = $props();
 
   const KEY = 'galaxy:nerd';
   const FKEY = 'galaxy:fps';
@@ -171,7 +172,7 @@
         </select>
       </label>
       <div class="toggles">
-        {#each LAYER_LABELS as [key, label]}
+        {#each layerLabels as [key, label]}
           <label><input type="checkbox" bind:checked={layers[key]} /> {label}</label>
         {/each}
       </div>

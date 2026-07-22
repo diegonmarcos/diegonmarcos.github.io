@@ -2,7 +2,7 @@
   // Vertical zoom / altitude slider for free-ride: drives freeInput.dist (0..1).
   // Top = zoomed all the way out (altitude high → Milky Way). Reflects wheel/pinch/presets.
   import { onMount } from 'svelte';
-  import { freeInput } from '$lib/webgl/free/freeInput';
+  import { freeInput } from './freeInput';
 
   let val = $state(freeInput.dist);
   let dragging = false;

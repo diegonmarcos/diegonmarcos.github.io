@@ -7,7 +7,8 @@
   import { onMount } from 'svelte';
   import { T, useTask, useThrelte } from '@threlte/core';
   import type { SceneConfig } from '../types';
-  import { freeInput } from './freeInput';
+  import { freeInput } from '$engine/freeInput';
+  import { stepRide } from '$engine/locomotion';
   import { gltfLoader } from '../assets/loaders';
   import { meshUrl } from '../assets/catalog';
   import galaxyCfg from '$lib/data/galaxy.json';
@@ -93,10 +94,12 @@
     const inp = freeInput;
 
     // steer (steerSign fixes the inversion) + drive
-    heading += inp.steer * F.turn * (F.steerSign ?? 1) * delta;
-    forward.set(Math.sin(heading), 0, Math.cos(heading));
+    const ride = { heading };
+    const step = stepRide(ride, inp, F, delta);
+    heading = step.heading;
+    forward.set(step.forwardX, 0, step.forwardZ);
     const vel = inp.throttle * F.speed;
-    pos.addScaledVector(forward, vel * delta);
+    pos.addScaledVector(forward, step.dForward);
     pos.x = THREE.MathUtils.clamp(pos.x, -F.bounds, F.bounds);
     pos.z = THREE.MathUtils.clamp(pos.z, -F.bounds, F.bounds);
     bike.position.copy(pos);

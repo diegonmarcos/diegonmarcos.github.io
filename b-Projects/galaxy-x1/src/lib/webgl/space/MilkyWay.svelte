@@ -6,7 +6,7 @@
   import { roundPointTexture } from '../assets/pointSprite';
   import { T, useTask } from '@threlte/core';
   import galaxyCfg from '$lib/data/galaxy.json';
-  import { freeInput } from '../free/freeInput';
+  import { freeInput } from '$engine/freeInput';
 
   const G = galaxyCfg as any;
   const group = new THREE.Group();

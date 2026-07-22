@@ -264,6 +264,18 @@
     "has_pkg": true
   },
   {
+    "path": "b-Projects/galaxy-earth",
+    "category": "b-Projects",
+    "project": "galaxy-earth",
+    "key": "b-Projects__galaxy-earth",
+    "name": "Galaxy-Earth",
+    "framework": "sveltekit",
+    "port": 8025,
+    "deploy_name": "galaxy-earth",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "b-Projects/galaxy-x1",
     "category": "b-Projects",
     "project": "galaxy-x1",

@@ -2328,6 +2328,57 @@
     },
     {
       "category": "b-Projects",
+      "project": "galaxy-earth",
+      "key": "b-Projects__galaxy-earth",
+      "path": "b-Projects/galaxy-earth",
+      "build": {
+        "name": "Galaxy-Earth",
+        "framework": "sveltekit",
+        "port": 8025,
+        "src": "src",
+        "dist": "dist",
+        "build": [
+          {
+            "mod": "sveltekit"
+          }
+        ],
+        "serve": {
+          "mode": "sveltekit"
+        },
+        "deploy": {}
+      },
+      "has_package_json": true,
+      "has_manifest": false,
+      "has_dist": true,
+      "package": {
+        "name": "galaxy-earth",
+        "description": "Galaxy Earth — 3D terrain basemap (MapLibre GL + terrain-RGB DEM)",
+        "private": true,
+        "type": "module",
+        "scripts": {
+          "dev": "vite dev --port 8025",
+          "build": "vite build",
+          "preview": "vite preview",
+          "prepare": "svelte-kit sync || echo ''",
+          "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+          "test": "node test/earth.test.mjs"
+        },
+        "dependencies": {
+          "maplibre-gl": "^4.7.1"
+        },
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        }
+      }
+    },
+    {
+      "category": "b-Projects",
       "project": "galaxy-x1",
       "key": "b-Projects__galaxy-x1",
       "path": "b-Projects/galaxy-x1",

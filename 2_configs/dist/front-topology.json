@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 49
+    "project_count": 50
   },
   "projects": [
     {
@@ -470,6 +470,20 @@
       "dep_count": 7,
       "has_dist": true,
       "deploy_name": "galaxy"
+    },
+    {
+      "name": "Galaxy-Earth",
+      "slug": "galaxy-earth",
+      "path": "b-Projects/galaxy-earth",
+      "category": "b-Projects",
+      "framework": "sveltekit",
+      "port": 8025,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 8,
+      "has_dist": true,
+      "deploy_name": "galaxy-earth"
     },
     {
       "name": "Galaxy-X1",

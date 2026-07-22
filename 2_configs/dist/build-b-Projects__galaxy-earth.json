@@ -1,0 +1,45 @@
+{
+  "name": "Galaxy-Earth",
+  "framework": "sveltekit",
+  "port": 8025,
+  "src": "src",
+  "dist": "dist",
+  "build": [
+    {
+      "mod": "sveltekit"
+    }
+  ],
+  "serve": {
+    "mode": "sveltekit"
+  },
+  "deploy": {},
+  "_resolved": {
+    "path": "b-Projects/galaxy-earth",
+    "category": "b-Projects",
+    "project": "galaxy-earth",
+    "key": "b-Projects__galaxy-earth",
+    "port": 8025,
+    "framework": "sveltekit",
+    "src": "src",
+    "dist": "dist",
+    "analytics": {
+      "matomo": {
+        "container_id": "container_odwLIyPV",
+        "url": "https://analytics.diegonmarcos.com/js/container_odwLIyPV.js"
+      },
+      "umami": {
+        "site_id": "937cbde7-5ec2-450c-9d6a-8117423ac12f",
+        "url": "https://analytics.diegonmarcos.com/umami/script.js"
+      }
+    },
+    "deploy": {
+      "deployed": false,
+      "deploy_name": "galaxy-earth",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
+    },
+    "consumers": [],
+    "has_package_json": true,
+    "has_manifest": false
+  }
+}

@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 49
+    "project_count": 50
   },
   "categories": [
     {
@@ -266,6 +266,15 @@
           "category": "b-Projects",
           "framework": "sveltekit",
           "port": 8024,
+          "has_dist": true
+        },
+        {
+          "name": "Galaxy-Earth",
+          "slug": "galaxy-earth",
+          "path": "b-Projects/galaxy-earth",
+          "category": "b-Projects",
+          "framework": "sveltekit",
+          "port": 8025,
           "has_dist": true
         },
         {

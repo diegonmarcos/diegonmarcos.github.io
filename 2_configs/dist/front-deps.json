@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-deps/v1",
-    "total_services": 29
+    "total_services": 30
   },
   "node": {
     "merged": {
@@ -340,6 +340,23 @@
         "folder": "b-Projects/galaxy",
         "category": "b-Projects",
         "dependencies": {},
+        "devDependencies": {
+          "@sveltejs/adapter-static": "^3.0.10",
+          "@sveltejs/kit": "^2.47.1",
+          "@sveltejs/vite-plugin-svelte": "^6.2.1",
+          "svelte": "^5.41.0",
+          "svelte-check": "^4.3.3",
+          "typescript": "^5.9.3",
+          "vite": "^7.1.10"
+        }
+      },
+      {
+        "service": "Galaxy-Earth",
+        "folder": "b-Projects/galaxy-earth",
+        "category": "b-Projects",
+        "dependencies": {
+          "maplibre-gl": "^4.7.1"
+        },
         "devDependencies": {
           "@sveltejs/adapter-static": "^3.0.10",
           "@sveltejs/kit": "^2.47.1",

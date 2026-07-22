@@ -336,8 +336,8 @@
         }
       },
       {
-        "service": "Galaxy",
-        "folder": "b-Projects/galaxy",
+        "service": "Galaxy-X1",
+        "folder": "b-Projects/galaxy-x1",
         "category": "b-Projects",
         "dependencies": {
           "@threlte/core": "^8.0.0",

@@ -1,5 +1,5 @@
 {
-  "name": "Galaxy",
+  "name": "Galaxy-X1",
   "framework": "sveltekit",
   "port": 8023,
   "src": "src",
@@ -14,10 +14,10 @@
   },
   "deploy": {},
   "_resolved": {
-    "path": "b-Projects/galaxy",
+    "path": "b-Projects/galaxy-x1",
     "category": "b-Projects",
-    "project": "galaxy",
-    "key": "b-Projects__galaxy",
+    "project": "galaxy-x1",
+    "key": "b-Projects__galaxy-x1",
     "port": 8023,
     "framework": "sveltekit",
     "src": "src",
@@ -33,9 +33,10 @@
       }
     },
     "deploy": {
-      "deployed": true,
-      "deploy_name": "galaxy",
-      "url": "https://diegonmarcos.github.io/galaxy"
+      "deployed": false,
+      "deploy_name": "galaxy-x1",
+      "url": null,
+      "reason": "no entry in ship.yml PROJECTS=()"
     },
     "consumers": [],
     "has_package_json": true,

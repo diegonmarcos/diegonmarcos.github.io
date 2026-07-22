@@ -189,8 +189,8 @@
       }
     },
     {
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
+      "key": "b-Projects__galaxy-x1",
+      "path": "b-Projects/galaxy-x1",
       "deps": {
         "@threlte/core": "^8.0.0",
         "@threlte/extras": "^9.0.0",

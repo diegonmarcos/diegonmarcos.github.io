@@ -458,9 +458,9 @@
       "deploy_name": "myprofile"
     },
     {
-      "name": "Galaxy",
-      "slug": "galaxy",
-      "path": "b-Projects/galaxy",
+      "name": "Galaxy-X1",
+      "slug": "galaxy-x1",
+      "path": "b-Projects/galaxy-x1",
       "category": "b-Projects",
       "framework": "sveltekit",
       "port": 8023,
@@ -469,7 +469,7 @@
       ],
       "dep_count": 11,
       "has_dist": true,
-      "deploy_name": "galaxy"
+      "deploy_name": "galaxy-x1"
     },
     {
       "name": "Carto",

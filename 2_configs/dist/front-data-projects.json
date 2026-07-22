@@ -264,14 +264,14 @@
     "has_pkg": true
   },
   {
-    "path": "b-Projects/galaxy",
+    "path": "b-Projects/galaxy-x1",
     "category": "b-Projects",
-    "project": "galaxy",
-    "key": "b-Projects__galaxy",
-    "name": "Galaxy",
+    "project": "galaxy-x1",
+    "key": "b-Projects__galaxy-x1",
+    "name": "Galaxy-X1",
     "framework": "sveltekit",
     "port": 8023,
-    "deploy_name": "galaxy",
+    "deploy_name": "galaxy-x1",
     "has_pwa": false,
     "has_pkg": true
   },

@@ -2328,11 +2328,11 @@
     },
     {
       "category": "b-Projects",
-      "project": "galaxy",
-      "key": "b-Projects__galaxy",
-      "path": "b-Projects/galaxy",
+      "project": "galaxy-x1",
+      "key": "b-Projects__galaxy-x1",
+      "path": "b-Projects/galaxy-x1",
       "build": {
-        "name": "Galaxy",
+        "name": "Galaxy-X1",
         "framework": "sveltekit",
         "port": 8023,
         "src": "src",
@@ -2351,7 +2351,7 @@
       "has_manifest": false,
       "has_dist": true,
       "package": {
-        "name": "galaxy",
+        "name": "galaxy-x1",
         "description": "Daylight Surreal Scrollworld — real-time SvelteKit + Threlte",
         "private": true,
         "type": "module",

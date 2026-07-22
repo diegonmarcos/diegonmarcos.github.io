@@ -1754,7 +1754,7 @@
     "_project": "myprofile"
   },
   {
-    "name": "Galaxy",
+    "name": "Galaxy-X1",
     "framework": "sveltekit",
     "port": 8023,
     "src": "src",
@@ -1768,10 +1768,10 @@
       "mode": "sveltekit"
     },
     "deploy": {},
-    "_path": "b-Projects/galaxy",
-    "_key": "b-Projects__galaxy",
+    "_path": "b-Projects/galaxy-x1",
+    "_key": "b-Projects__galaxy-x1",
     "_category": "b-Projects",
-    "_project": "galaxy"
+    "_project": "galaxy-x1"
   },
   {
     "name": "Carto",

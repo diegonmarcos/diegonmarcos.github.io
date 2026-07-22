@@ -260,9 +260,9 @@
       "category": "b-Projects",
       "projects": [
         {
-          "name": "Galaxy",
-          "slug": "galaxy",
-          "path": "b-Projects/galaxy",
+          "name": "Galaxy-X1",
+          "slug": "galaxy-x1",
+          "path": "b-Projects/galaxy-x1",
           "category": "b-Projects",
           "framework": "sveltekit",
           "port": 8023,

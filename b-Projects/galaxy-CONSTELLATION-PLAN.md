@@ -47,11 +47,51 @@ Two edit sites per project:
   linking the planets. Registered in ship.yml. — ✅ DONE `c35c99ba`
 - **P4a — `galaxy-earth` basemap**: SvelteKit + MapLibre GL JS + terrarium raster-DEM 3D
   terrain (keyless: OpenFreeMap basemap), data-driven `map.json`. Registered in ship.yml. — ✅ DONE
-- **P4b — engine decouple + rider** (NEXT): extract camera/locomotion (`FreeRig`/`CameraRig`/
-  `freeInput` + presets) into `_galaxy-engine` with a scene-agnostic interface (fixes the flagged
-  `NerdStats` `../../galaxy-x1/package.json` hardcode + scene-specific `LAYER_LABELS`); then the GTA
-  rider as a Three.js custom layer on earth's MapLibre terrain, importing `$engine`. Minimal viable
-  first (one character, walk + follow-cam); cycle/drive/sail/fly are later increments.
+- **P4b — engine decouple + rider** — ✅ DONE (engine `de220321`, earth rider `daeb7855`): shared
+  `$engine/freeInput` + pure `$engine/locomotion.stepRide` extracted; both flagged couplings fixed
+  (NerdStats via `{pkg,layers,layerLabels}` props; scene layers → x1 `sceneLayers.svelte`); earth
+  gets a Three.js CustomLayerInterface rider (capsule char, walk + follow-cam) on the MapLibre
+  terrain, driven by the shared engine + `$engine/Joystick`, tunables in `map.json`. Both build green
+  + tested. Next increments: real character GLB, then cycle/drive/sail/fly locomotion modes.
+
+### P4b interface contract (source of truth — both agents follow this exactly)
+
+**Agent A — engine decouple (touches only `_galaxy-engine/` + `galaxy-x1/`; keep x1 pixel-identical):**
+1. `git mv galaxy-x1/src/lib/webgl/free/freeInput.ts → _galaxy-engine/src/freeInput.ts`. It is the
+   shared input bag; engine controls (`Joystick`/`CameraStick`/`ZoomBar`) import it `./freeInput`;
+   x1 consumers (`FreeRig`, `ViewPresets`, `MilkyWay`, `routes/+page.svelte`) import `$engine/freeInput`.
+   Removes the `$lib/webgl/free/freeInput` coupling that made engine controls depend on x1's `$lib`.
+2. NEW `_galaxy-engine/src/locomotion.ts` — framework-agnostic, NO three/threlte/DOM. Pure:
+   `stepRide(state:{heading:number}, input:{steer:number,throttle:number}, params:{speed:number,turn:number,steerSign?:number}, dt:number)`
+   → mutates `state.heading` and returns `{heading, forwardX, forwardZ, dForward}` (dForward = signed
+   metres this frame). Extract ONLY x1 FreeRig lines ~96-99 (heading integrate + forward + vel*dt);
+   FreeRig then calls `stepRide` and keeps its own camera-boom/galaxy-overview math unchanged.
+3. Fix `_galaxy-engine/src/NerdStats.svelte`: DELETE `import pkg from '../../galaxy-x1/package.json'`
+   and the `LAYER_LABELS` import; instead accept props `{ pkg, layers, layerLabels }`. Move the
+   x1-scene-specific `layers` $state + `LAYER_LABELS` OUT of `_galaxy-engine/src/layers.svelte.ts`
+   (engine keeps only generic `perf`) into `galaxy-x1/src/lib/sceneLayers.svelte.ts`. x1's caller of
+   `<NerdStats>` passes `pkg={x1 package.json}`, `layers`, `layerLabels` in.
+4. NEW `_galaxy-engine/test/locomotion.test.mjs` — asserts `stepRide` is deterministic: zero input →
+   no move; throttle=1 advances `dForward>0`; steer integrates heading. Prints OK, exit 0.
+5. Gate: `galaxy-x1` `build.sh build` green + `node test/scene.test.mjs` green. COMMIT locally
+   (`git -C /home/diego/git/front commit`), do NOT push.
+
+**Agent B — earth GTA rider (touches only `galaxy-earth/`; depends on Agent A's engine interface):**
+- Add a `rider` block to `galaxy-earth/src/lib/data/map.json` (data-driven): `start:[lng,lat]`,
+  `speed` (m/s), `turn` (rad/s), `character:{asset|primitive, scale, color}`, `follow:{pitch,zoom}`.
+- In `+page.svelte`, after `map.on('load')`, register a Three.js **CustomLayerInterface** ('rider')
+  that owns a THREE.Scene+Camera; `render(gl, matrix)` draws with MapLibre's view-projection matrix
+  (threebox-style: place the character mesh at its `MercatorCoordinate`). Each frame read
+  `$engine/freeInput`, call `$engine/locomotion` `stepRide`, advance the character's lng/lat by
+  `dForward` along heading (via `MercatorCoordinate`), rotate mesh to heading, and follow-cam with
+  `map.easeTo({center, bearing:heading, pitch:follow.pitch, zoom:follow.zoom, duration:0})`.
+  Mount the shared `$engine/Joystick.svelte` (writes freeInput.steer/throttle) as the on-screen control.
+- Extend `test/earth.test.mjs`: assert `map.json.rider.start` is a 2-number array, `speed`/`turn`
+  numeric, and re-uses `$engine/locomotion` `stepRide` to prove one step moves the position. OK/exit 0.
+- Gate: `galaxy-earth` `build.sh build` green + `node test/earth.test.mjs` green. COMMIT locally, do NOT push.
+
+Minimal viable = ONE character, walk + follow-cam. Cycle/drive/sail/fly are later increments.
+Coordinator (Opus) does the SINGLE push after both commits land + both builds verified, then watches CI green.
 
 ## CI oper/ deploy discipline (learned P1–P4a)
 

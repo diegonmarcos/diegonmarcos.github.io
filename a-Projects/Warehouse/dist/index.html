@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SlabTwin 3D Pro - A-Frame Warehouse Stock Engine</title>
+    <title>Warehouse Control Center — SlabTwin 3D Pro</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Babylon.js Core Engine -->
@@ -29,100 +29,108 @@
     </script>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="bg-warehouse-950 text-slate-100 min-h-screen max-h-screen overflow-hidden font-sans flex flex-col">
+<body class="bg-warehouse-950 text-slate-100 font-sans">
 
-    <!-- TOP CONTROL HEADER -->
-    <header class="bg-warehouse-900 border-b border-slate-800/80 px-6 py-3.5 flex items-center justify-between z-10 shrink-0">
-        <div class="flex items-center space-x-3">
-            <div class="bg-gradient-to-tr from-amber-500 via-orange-600 to-rose-600 p-2.5 rounded-xl text-white shadow-lg">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                </svg>
+    <!-- ==========================================================================
+         PERSISTENT TOP BAR — two fixed rows.
+         Row 1: hamburger (opens the side drawer) + page title, stats on the
+         right. Row 2: icon-only tab bar, one line, same 5 buttons at every
+         viewport width. The active tab's icon is highlighted with a filled
+         background + amber color.
+         ========================================================================== -->
+    <header id="app-topbar">
+        <div class="topbar-row1">
+            <button id="hamburger-toggle" class="hamburger-btn" aria-label="Open menu" title="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.25" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+
+            <div class="topbar-brand">
+                <span class="topbar-brand-text">Warehouse Control Center</span>
             </div>
-            <div>
-                <h1 class="font-black text-lg leading-none tracking-wider text-white font-sans">SLABTWIN <span class="text-amber-500 font-sans">3D PRO</span></h1>
-                <p class="text-[9px] text-slate-400 font-mono tracking-widest mt-1 font-semibold">HIGH-DENSITY A-FRAME STOCK ENGINE</p>
+
+            <!-- Live Counters (desktop only, hidden below 1024px) -->
+            <div class="topbar-stats">
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Total Stock</span>
+                    <span class="topbar-stat-value" id="stat-total">500 Slabs</span>
+                </div>
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Active Weight</span>
+                    <span class="topbar-stat-value" style="color:#f59e0b" id="stat-weight">1,328.5 t</span>
+                </div>
+                <div class="topbar-stat">
+                    <span class="topbar-stat-label">Estimated Value</span>
+                    <span class="topbar-stat-value" style="color:#34d399" id="stat-value">$2,084,500</span>
+                </div>
             </div>
         </div>
 
-        <!-- Live Counters -->
-        <div class="hidden lg:flex items-center space-x-10 text-xs font-mono">
-            <div class="text-center">
-                <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Total Stock</span>
-                <span class="text-sm font-black text-white" id="stat-total">500 Slabs</span>
-            </div>
-            <div class="text-center border-l border-slate-800/80 pl-8">
-                <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Active Weight</span>
-                <span class="text-sm font-black text-amber-500" id="stat-weight">1,328.5 t</span>
-            </div>
-            <div class="text-center border-l border-slate-800/80 pl-8">
-                <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">Estimated Value</span>
-                <span class="text-sm font-black text-emerald-400" id="stat-value">$2,084,500</span>
-            </div>
-            <div class="text-center border-l border-slate-800/80 pl-8">
-                <span class="block text-slate-500 text-[9px] uppercase tracking-widest font-bold">A-Frame Racks</span>
-                <span class="text-xs bg-slate-800 text-slate-300 font-bold px-2.5 py-0.5 rounded border border-slate-700">35 Units (70 V-Sides)</span>
-            </div>
+        <nav class="topbar-row2 topbar-tabs">
+            <button id="nav-3d-btn" class="nav-icon-btn active" data-tab="3d" title="Warehouse 3D" aria-label="Warehouse 3D">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            </button>
+            <button id="nav-slider-btn" class="nav-icon-btn" data-tab="slider" title="Slab Slider" aria-label="Slab Slider">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            </button>
+            <button id="nav-visualizer-btn" class="nav-icon-btn" data-tab="visualizer" title="Slab Viewer" aria-label="Slab Viewer">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span id="tab-cache-badge" class="hidden nav-icon-badge">0</span>
+            </button>
+            <button id="nav-register-btn" class="nav-icon-btn" data-tab="register" title="Slab Registry" aria-label="Slab Registry">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            </button>
+            <button id="nav-flow-btn" class="nav-icon-btn" data-tab="flow" title="Supply Flow Dashboards" aria-label="Supply Flow Dashboards">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            </button>
+            <button id="nav-about-btn" class="nav-icon-btn" data-tab="about" title="About" aria-label="About">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </button>
+        </nav>
+
+        <!-- Row 3: current page's title, kept in sync with the active icon tab -->
+        <div class="topbar-row3">
+            <span class="topbar-page-title" id="topbar-page-title">Warehouse 3D</span>
         </div>
     </header>
 
-    <!-- HAMBURGER MENU TOGGLE (Mobile) -->
-    <button id="hamburger-toggle" class="hidden fixed top-16 left-6 z-50 lg:hidden flex items-center justify-center w-10 h-10 bg-warehouse-900 border border-slate-800 rounded-lg hover:bg-slate-800 transition-all">
-        <svg class="w-5 h-5 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-    </button>
-
-    <!-- MOBILE SIDEBAR MENU -->
-    <div id="mobile-menu-overlay" class="hidden fixed inset-0 bg-black/50 z-40 lg:hidden" onclick="this.hidden = true; document.getElementById('mobile-menu').classList.add('hidden')"></div>
-    <nav id="mobile-menu" class="hidden fixed left-0 top-0 h-screen w-64 bg-warehouse-900 border-r border-slate-800 overflow-y-auto z-40 lg:hidden flex flex-col pt-20 pb-6">
-        <button id="nav-3d-btn-mobile" class="px-6 py-4 text-left border-l-4 border-amber-500 bg-slate-800/50 text-amber-500 transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            <span>3D WAREHOUSE</span>
+    <!-- SIDE DRAWER MENU (opened by the hamburger) — same destinations,
+         labeled, in the same order as the icon bar. -->
+    <div id="mobile-menu-overlay" class="hidden drawer-overlay"></div>
+    <nav id="mobile-menu" class="hidden drawer-menu">
+        <div class="drawer-header">
+            <span class="drawer-header-title">Menu</span>
+            <button id="mobile-menu-close" class="drawer-close-btn" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <button id="nav-3d-btn-drawer" class="drawer-item active" data-tab="3d">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <span>Warehouse 3D</span>
         </button>
-        <button id="nav-register-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            <span>STOCK REGISTER</span>
+        <button id="nav-slider-btn-drawer" class="drawer-item" data-tab="slider">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <span>Slab Slider</span>
         </button>
-        <button id="nav-visualizer-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800 relative">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>SLAB VIEWER</span>
+        <button id="nav-visualizer-btn-drawer" class="drawer-item" data-tab="visualizer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <span>Slab Viewer</span>
         </button>
-        <button id="nav-slider-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            <span>SLAB SLIDER</span>
+        <button id="nav-register-btn-drawer" class="drawer-item" data-tab="register">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+            <span>Slab Registry</span>
         </button>
-        <button id="nav-flow-btn-mobile" class="px-6 py-4 text-left border-l-4 border-transparent text-slate-400 hover:text-white transition-all flex items-center gap-3 text-sm font-mono font-bold hover:bg-slate-800">
-            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-            <span>INVENTORY FLOW</span>
+        <button id="nav-flow-btn-drawer" class="drawer-item" data-tab="flow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+            <span>Supply Flow Dashboards</span>
         </button>
-    </nav>
-
-    <!-- FULL SCREEN NAVIGATION TAB BAR (Desktop Only) -->
-    <nav class="hidden lg:flex bg-warehouse-900 border-b border-slate-800/80 shrink-0 z-10 text-[11px] font-bold tracking-wider font-mono">
-        <button id="nav-3d-btn" class="flex-1 py-4 text-center border-b-2 border-amber-500 text-amber-500 transition-all flex items-center justify-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-            3D WAREHOUSE
-        </button>
-        <button id="nav-register-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            STOCK REGISTER
-        </button>
-        <button id="nav-visualizer-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5 relative">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            SLAB VIEWER
-            <span id="tab-cache-badge" class="hidden absolute top-1 right-2 bg-amber-500 text-slate-950 font-black text-[9px] px-1.5 py-0.5 rounded-full scale-90 font-mono">0</span>
-        </button>
-        <button id="nav-slider-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
-            SLAB SLIDER
-        </button>
-        <button id="nav-flow-btn" class="flex-1 py-4 text-center border-b-2 border-transparent text-slate-400 hover:text-white transition-all flex items-center justify-center gap-1.5">
-            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
-            INVENTORY FLOW
+        <button id="nav-about-btn-drawer" class="drawer-item" data-tab="about">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <span>About</span>
         </button>
     </nav>
 
-    <!-- MAIN VIEWPORTS CONTAINER -->
-    <main class="flex-1 relative overflow-hidden min-h-0">
+    <!-- MAIN VIEWPORTS CONTAINER (padded below the fixed topbar) -->
+    <main id="app-main" class="relative overflow-hidden">
 
         <!-- VIEWPORT 1: PURE 3D WAREHOUSE -->
         <section id="viewport-3d" class="absolute inset-0 w-full h-full flex flex-col z-0">
@@ -141,7 +149,28 @@
                         <div class="w-8 h-4 bg-slate-850 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-amber-500"></div>
                     </label>
                 </div>
+
+                <!-- 3D / 2D Blueprint view toggle -->
+                <div class="bg-warehouse-900/90 border border-slate-800 px-1 py-1 rounded-xl flex items-center gap-1 pointer-events-auto shadow-2xl backdrop-blur-md">
+                    <button id="view-mode-3d-btn" class="view-mode-btn active" data-mode="3d" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                        <span>3D</span>
+                    </button>
+                    <button id="view-mode-2d-btn" class="view-mode-btn" data-mode="2d" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v18M3 9h18M4 4h16v16H4z"/></svg>
+                        <span>2D Blueprint</span>
+                    </button>
+                </div>
             </div>
+
+            <!-- SLAB PREVIEW BACKDROP: while a slab is previewed (quick-preview-card
+                 visible), this invisible full-viewport layer sits between the
+                 canvas (z-0) and the card/dock (z-10). Any tap/click that lands
+                 here — i.e. anywhere outside the card frame — returns to the
+                 previous 3D view. This is a plain DOM click handler, independent
+                 of Babylon's scene picking, so it can't be defeated by a missed
+                 raycast, a drag threshold, or any other 3D picking edge case. -->
+            <div id="slab-preview-backdrop" class="absolute inset-0 z-[5] hidden"></div>
 
             <!-- FLOATING PREVIEW CARD: Minimalist Overlay Info Sheet -->
             <div id="quick-preview-card" class="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center bg-slate-950/95 border border-slate-800/80 px-5 py-3.5 rounded-2xl gap-2 shadow-2xl backdrop-blur-md transition-all duration-300 transform translate-y-4 opacity-0 pointer-events-none w-80 select-none">
@@ -163,8 +192,10 @@
                 </div>
             </div>
 
-            <!-- GEOMETRIC DOCK: Native Sleek CAD Bottom-Centered Navigation Bar -->
-            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center bg-slate-950/85 border border-slate-800/80 px-4 py-2.5 rounded-2xl gap-3 shadow-2xl backdrop-blur-md pointer-events-auto shrink-0 select-none">
+            <!-- GEOMETRIC DOCK: Native Sleek CAD Bottom-Centered Navigation Bar
+                 (3D camera presets only — hidden while the 2D Blueprint is active,
+                 since there's no camera to move in an orthographic floor plan). -->
+            <div id="geometric-dock" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center bg-slate-950/85 border border-slate-800/80 px-4 py-2.5 rounded-2xl gap-3 shadow-2xl backdrop-blur-md pointer-events-auto shrink-0 select-none">
                 <!-- Global Preset -->
                 <button onclick="window.warehouseApp.refocusGlobal()" class="p-2.5 bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-amber-500 rounded-xl transition-all flex items-center justify-center gap-1.5 font-bold text-[10px]" title="Global Overhead View">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 002 2h1.5a2.5 2.5 0 012.5 2.5v.5m-8.5 4h1.5a3 3 0 003-3V14a3 3 0 013-3h1.5m-3 4H14m-3-11h.01M21 12a9 9 0 11-18 0 9 9 0 1118 0z"/></svg>
@@ -194,6 +225,11 @@
 
             <!-- THE BABYLON 3D CANVAS -->
             <canvas id="render-canvas" class="w-full h-full block bg-warehouse-950"></canvas>
+
+            <!-- 2D BLUEPRINT CANVAS: architectural top-view floor plan, drawn with
+                 plain Canvas 2D (no 3D engine involved) — CAD-style plan of the
+                 same rack/line layout, toggled in place of the 3D canvas above. -->
+            <canvas id="blueprint-canvas" class="hidden w-full h-full block" style="background:#0a1628;"></canvas>
 
             <!-- Loading Mask -->
             <div id="canvas-loader" class="absolute inset-0 bg-warehouse-950 z-20 flex flex-col items-center justify-center space-y-4">
@@ -473,11 +509,11 @@
             </div>
 
             <!-- Right Side: Unique Stock Profile Technical Parameters -->
-            <div class="w-full lg:w-[420px] flex flex-col space-y-4 shrink-0 overflow-y-auto min-h-0 select-none font-sans">
-                <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl">
+            <div class="w-full lg:w-[420px] flex flex-col space-y-4 shrink-0 overflow-y-auto min-h-0 select-none font-sans lg:max-h-full">
+                <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 space-y-4 shadow-xl flex flex-col h-full">
                     <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-2 border-b border-slate-850 font-mono">Unique Slab Configuration</span>
 
-                    <div class="space-y-3.5 font-mono">
+                    <div class="space-y-3.5 font-mono flex-1 overflow-y-auto">
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800/40">
                                 <span class="text-[9px] text-slate-500 uppercase font-black block font-bold">Core Material</span>
@@ -519,65 +555,256 @@
                                 This exact slab size and material variation has been clustered across Cavalete V-stacks inside the warehouse lines. Click below to view the stock list or jump to their locations.
                             </div>
                         </div>
+                    </div>
 
-                        <div class="pt-2 border-t border-slate-850 flex gap-2 font-sans">
-                            <button onclick="window.warehouseApp.redirectSliderToRegister()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition shadow-md">
-                                VIEW REGISTER ENTRIES
-                            </button>
-                            <button onclick="window.warehouseApp.refocusSliderActive()" class="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black transition shadow-md">
-                                LOCATE IN 3D
-                            </button>
-                        </div>
+                    <div class="pt-2 border-t border-slate-850 flex gap-2 font-sans mt-auto shrink-0">
+                        <button onclick="window.warehouseApp.redirectSliderToRegister()" class="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-bold transition shadow-md">
+                            VIEW REGISTER ENTRIES
+                        </button>
+                        <button onclick="window.warehouseApp.refocusSliderActive()" class="py-2.5 px-4 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-lg text-xs font-black transition shadow-md">
+                            LOCATE IN 3D
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- VIEWPORT 5: SUPPLY FLOW DASHBOARD -->
-        <section id="viewport-flow" class="absolute inset-0 w-full h-full bg-warehouse-900 flex flex-col p-6 gap-6 z-10 hidden overflow-y-auto">
+        <!-- VIEWPORT 5: SUPPLY FLOW DASHBOARD — full redesign.
+             Fixed control bar (basis toggle + section switcher) that never
+             scrolls away, one section shown at a time instead of a long
+             stack, so the toggle and the data it controls are always in
+             the same viewport together. -->
+        <section id="viewport-flow" class="absolute inset-0 w-full h-full bg-warehouse-900 flex flex-col z-10 hidden">
 
-            <!-- A) INVENTORY FLOW -->
-            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
-                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
-                    A) Inventory Flow — Requested / Shipped / Delivered (Warehouse Sources of Purchase)
-                </span>
+            <!-- CONTROL BAR: pinned, never scrolls -->
+            <div class="flow-controlbar shrink-0">
+                <!-- Section switcher: A / B / C, one panel visible at a time -->
+                <div class="flow-section-switcher" id="flow-section-switcher">
+                    <button class="flow-section-tab active" data-section="A" type="button">
+                        <span class="flow-section-tab-badge bg-sky-500/15 text-sky-400">A</span>
+                        <span class="flow-section-tab-label">Inventory Flow</span>
+                    </button>
+                    <button class="flow-section-tab" data-section="B" type="button">
+                        <span class="flow-section-tab-badge bg-violet-500/15 text-violet-400">B</span>
+                        <span class="flow-section-tab-label">Sales Flow</span>
+                    </button>
+                    <button class="flow-section-tab" data-section="C" type="button">
+                        <span class="flow-section-tab-badge bg-emerald-500/15 text-emerald-400">C</span>
+                        <span class="flow-section-tab-label">Inventory Balance</span>
+                    </button>
+                </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-5" id="flow-procurement-stages"></div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs text-slate-300 min-w-[640px]">
-                        <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono">
-                            <tr>
-                                <th class="py-2 px-2 font-bold">Source (Quarry / Supplier)</th>
-                                <th class="py-2 px-2 font-bold">Location</th>
-                                <th class="py-2 px-2 font-bold">Material</th>
-                                <th class="py-2 px-2 font-bold text-center">Requested</th>
-                                <th class="py-2 px-2 font-bold text-center">Shipped</th>
-                                <th class="py-2 px-2 font-bold text-center">Delivered</th>
-                                <th class="py-2 px-2 font-bold text-right">Total Value</th>
-                            </tr>
-                        </thead>
-                        <tbody id="flow-sources-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
-                    </table>
+                <!-- Valuation basis toggle: real buttons, real hover/active/pressed states -->
+                <div class="flow-mode-track" id="flow-mode-track" role="group" aria-label="Valuation basis">
+                    <button id="flow-mode-cash" data-mode="cash" class="flow-mode-btn" type="button">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>Cash View</span>
+                    </button>
+                    <button id="flow-mode-accounting" data-mode="accounting" class="flow-mode-btn active" type="button">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"/></svg>
+                        <span>Accounting View</span>
+                    </button>
                 </div>
             </div>
+            <p class="flow-mode-desc" id="flow-mode-description">Accrual value at every stage — money not yet moved still counts as booked value.</p>
 
-            <!-- B) SALES FLOW -->
-            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
-                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
-                    B) Sales Flow — Available / Reserved / Bought / Delivering / Delivered
-                </span>
-                <div class="space-y-3.5" id="flow-lifecycle-bars"></div>
+            <!-- SCROLLABLE PANEL AREA -->
+            <div class="flex-1 overflow-y-auto p-4 lg:p-6">
+
+                <!-- A) INVENTORY FLOW -->
+                <div class="flow-panel" id="flow-panel-A">
+                    <div class="flow-section">
+                        <div class="flow-section-head">
+                            <div class="flow-section-titles">
+                                <div class="flow-section-title">Inventory Flow</div>
+                                <div class="flow-section-sub">Purchase orders from quarry sources — Requested &rarr; Shipped &rarr; Delivered</div>
+                            </div>
+                        </div>
+
+                        <div class="flow-summary-row" id="flow-procurement-summary"></div>
+
+                        <div class="flow-cards-grid cols-3 mb-5" id="flow-procurement-stages"></div>
+
+                        <div class="overflow-x-auto rounded-xl border border-slate-800/60">
+                            <table class="w-full text-left text-xs text-slate-300 min-w-[640px]">
+                                <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono bg-slate-950/60">
+                                    <tr>
+                                        <th class="py-2.5 px-3 font-bold">Source (Quarry / Supplier)</th>
+                                        <th class="py-2.5 px-2 font-bold">Location</th>
+                                        <th class="py-2.5 px-2 font-bold">Material</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Requested</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Shipped</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Delivered</th>
+                                        <th class="py-2.5 px-3 font-bold text-right">Total Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="flow-sources-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- B) SALES FLOW -->
+                <div class="flow-panel hidden" id="flow-panel-B">
+                    <div class="flow-section">
+                        <div class="flow-section-head">
+                            <div class="flow-section-titles">
+                                <div class="flow-section-title">Sales Flow</div>
+                                <div class="flow-section-sub">Warehouse-to-customer lifecycle — Available &rarr; Reserved &rarr; Bought &rarr; Delivering &rarr; Delivered</div>
+                            </div>
+                        </div>
+                        <div class="flow-summary-row" id="flow-lifecycle-summary"></div>
+                        <div class="flow-cards-grid cols-5 mb-5" id="flow-lifecycle-cards"></div>
+
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-2 mb-3 border-b border-slate-800 font-mono">Sales Flow by Stone Type</span>
+                        <div class="overflow-x-auto rounded-xl border border-slate-800/60">
+                            <table class="w-full text-left text-xs text-slate-300 min-w-[720px]">
+                                <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono bg-slate-950/60">
+                                    <tr>
+                                        <th class="py-2.5 px-3 font-bold">Stone Type</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Available</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Reserved</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Bought</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Delivering</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Delivered</th>
+                                        <th class="py-2.5 px-3 font-bold text-right">Value (€)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="flow-lifecycle-material-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- C) INVENTORY BALANCE -->
+                <div class="flow-panel hidden" id="flow-panel-C">
+                    <div class="flow-section">
+                        <div class="flow-section-head">
+                            <div class="flow-section-titles">
+                                <div class="flow-section-title">Inventory Balance</div>
+                                <div class="flow-section-sub">Current stock split by stage — quantity and value in EUR</div>
+                            </div>
+                        </div>
+                        <div class="flow-summary-row" id="flow-balance-summary"></div>
+                        <div class="flow-cards-grid cols-5 mb-5" id="flow-amounts-grid"></div>
+
+                        <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-2 mb-3 border-b border-slate-800 font-mono">Balance by Stone Type — Quantity &amp; Value, Cash vs Accounting</span>
+                        <div class="overflow-x-auto rounded-xl border border-slate-800/60">
+                            <table class="w-full text-left text-xs text-slate-300 min-w-[620px]">
+                                <thead class="text-[9px] uppercase tracking-widest text-slate-500 border-b border-slate-800 font-mono bg-slate-950/60">
+                                    <tr>
+                                        <th class="py-2.5 px-3 font-bold">Stone Type</th>
+                                        <th class="py-2.5 px-2 font-bold text-center">Quantity</th>
+                                        <th class="py-2.5 px-2 font-bold text-right">Cash Realized (€)</th>
+                                        <th class="py-2.5 px-2 font-bold text-right">Accrued / Pending (€)</th>
+                                        <th class="py-2.5 px-3 font-bold text-right">Total (€)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="flow-balance-material-body" class="divide-y divide-slate-800/40 font-mono"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </section>
 
-            <!-- C) INVENTORY BALANCE -->
-            <div class="bg-warehouse-950/80 p-5 rounded-2xl border border-slate-800 shadow-xl shrink-0">
-                <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-850 mb-4 font-mono">
-                    C) Inventory Balance — Quantity & Value (EUR)
-                </span>
-                <div class="grid grid-cols-2 lg:grid-cols-5 gap-3" id="flow-amounts-grid"></div>
+        <!-- VIEWPORT 6: ABOUT -->
+        <section id="viewport-about" class="absolute inset-0 w-full h-full bg-warehouse-900 z-10 hidden overflow-y-auto">
+            <div class="max-w-4xl mx-auto p-4 lg:p-8 flex flex-col gap-6">
+
+                <!-- Company blurb -->
+                <div class="bg-warehouse-950/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-gradient-to-tr from-amber-400 via-orange-600 to-rose-600 p-2.5 rounded-xl text-white shadow-lg shrink-0">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        </div>
+                        <div>
+                            <h2 class="font-black text-lg text-white leading-none">SLABTWIN <span class="text-amber-500">3D PRO</span></h2>
+                            <p class="text-[10px] text-slate-500 font-mono tracking-widest mt-1 font-semibold uppercase">Natural Stone Warehouse &middot; Barcelona</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        SlabTwin is a high-density natural stone warehouse and digital twin engine based in Barcelona, Spain.
+                        We stock and manage marble, granite and quartzite slabs across our A-Frame racking system, giving
+                        buyers and fabricators a live, walk-through 3D view of every piece of inventory before it ever
+                        leaves the yard.
+                    </p>
+                </div>
+
+                <!-- Map + address -->
+                <div class="bg-warehouse-950/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-800 mb-4 font-mono">Our Location</span>
+                    <div class="rounded-xl overflow-hidden border border-slate-800 mb-4" style="aspect-ratio: 16/9;">
+                        <iframe
+                            title="SlabTwin warehouse location in Barcelona"
+                            class="w-full h-full"
+                            style="border:0;"
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            src="https://www.openstreetmap.org/export/embed.html?bbox=2.1050%2C41.3420%2C2.1650%2C41.3760&amp;layer=mapnik&amp;marker=41.3590%2C2.1350">
+                        </iframe>
+                    </div>
+                    <div class="flex items-start gap-2 text-sm text-slate-300">
+                        <svg class="w-4 h-4 mt-0.5 text-amber-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a2 2 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Polígon Industrial Zona Franca, 08040 Barcelona, Spain</span>
+                    </div>
+                </div>
+
+                <!-- Contact + social -->
+                <div class="bg-warehouse-950/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-800 mb-4 font-mono">Get In Touch</span>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+                        <div class="flex items-center gap-3 bg-slate-900/60 border border-slate-800/60 rounded-xl p-3.5">
+                            <svg class="w-4 h-4 text-sky-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <div class="min-w-0">
+                                <span class="block text-[9px] text-slate-500 uppercase font-black tracking-wider">Email</span>
+                                <a href="mailto:info@slabtwin3d.com" class="text-sm text-slate-200 font-bold hover:text-amber-500 transition truncate block">info@slabtwin3d.com</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 bg-slate-900/60 border border-slate-800/60 rounded-xl p-3.5">
+                            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                            <div class="min-w-0">
+                                <span class="block text-[9px] text-slate-500 uppercase font-black tracking-wider">Phone</span>
+                                <a href="tel:+34600123456" class="text-sm text-slate-200 font-bold hover:text-amber-500 transition truncate block">+34 600 123 456</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://wa.me/34600123456" target="_blank" rel="noopener" class="flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/25 text-emerald-400 px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.99.583 3.845 1.588 5.401L2 22l4.735-1.563A9.953 9.953 0 0012.001 22C17.523 22 22 17.523 22 12S17.523 2 12.001 2zm0 18.222a8.19 8.19 0 01-4.417-1.283l-.317-.19-3.11 1.026 1.04-3.03-.207-.31A8.194 8.194 0 013.778 12c0-4.535 3.688-8.222 8.223-8.222S20.224 7.465 20.224 12 16.536 20.222 12.001 20.222z"/></svg>
+                            WhatsApp
+                        </a>
+                        <a href="https://instagram.com/slabtwin3d" target="_blank" rel="noopener" class="flex items-center gap-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/25 text-rose-400 px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                            Instagram
+                        </a>
+                        <a href="mailto:info@slabtwin3d.com" class="flex items-center gap-2 bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/25 text-sky-400 px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            Email Us
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Source code / repository -->
+                <div class="bg-warehouse-950/80 p-6 rounded-2xl border border-slate-800 shadow-xl">
+                    <span class="block text-[10px] font-black text-slate-400 uppercase tracking-widest pb-3 border-b border-slate-800 mb-4 font-mono">Source Code</span>
+                    <div class="flex items-center gap-3 bg-slate-900/60 border border-slate-800/60 rounded-xl p-3.5 mb-3">
+                        <svg class="w-5 h-5 text-white shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.754-1.333-1.754-1.089-.744.084-.729.084-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.236-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.51 11.51 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.624-5.48 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        <div class="min-w-0 flex-1">
+                            <span class="block text-[9px] text-slate-500 uppercase font-black tracking-wider">GitHub Repository</span>
+                            <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a-Projects/Warehouse" target="_blank" rel="noopener" class="text-xs sm:text-sm text-slate-200 font-bold hover:text-amber-500 transition break-all block font-mono">github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a-Projects/Warehouse</a>
+                        </div>
+                    </div>
+                    <a href="https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a-Projects/Warehouse" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 w-full bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-xl text-xs font-bold transition">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.754-1.333-1.754-1.089-.744.084-.729.084-.729 1.205.084 1.84 1.237 1.84 1.237 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.303-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.236-3.22-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.51 11.51 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.807 5.624-5.48 5.921.43.372.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        View Source on GitHub
+                    </a>
+                </div>
+
             </div>
-
         </section>
 
     </main>

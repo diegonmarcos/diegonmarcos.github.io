@@ -14,5 +14,10 @@ export const gpuStats = {
   // Memory (JS heap) is polled DOM-side in NerdStats via performance.memory.
   cores: 0,     // navigator.hardwareConcurrency
   cpuPct: 0,    // est. main-thread load % (frame time vs display refresh budget)
-  vramMB: 0     // est. GPU memory: texture + geometry bytes walked from the scene
+  vramMB: 0,    // est. GPU memory: texture + geometry bytes walked from the scene
+  // active render-stack settings (declared in the 3D stack panel)
+  dpr: 0,       // renderer pixel ratio actually in use
+  bufW: 0,      // drawing-buffer width  (px actually shaded)
+  bufH: 0,      // drawing-buffer height
+  renderMode: '—' // always | on-demand | manual
 };

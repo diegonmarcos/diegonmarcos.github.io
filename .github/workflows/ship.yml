@@ -381,13 +381,13 @@ jobs:
           echo "✅ Leafy build complete"
 
       - name: 🔨 Build Galaxy (SvelteKit + Threlte)
-        id: build-galaxy
+        id: build-galaxy-x1
         if:
-          contains(steps.changed-files.outputs.all_changed_files, 'b-Projects/galaxy/')
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Projects/galaxy-x1/')
 
         run: |
           echo "🔨 Building Galaxy..."
-          cd b-Projects/galaxy
+          cd b-Projects/galaxy-x1
           node test/scene.test.mjs
           bash build.sh build
           cd ../..
@@ -560,7 +560,7 @@ jobs:
             "a-Individual/cv_web:cv_web"
             "a-Individual/landpage:landpage"
             "a-Companies/leafy:leafy"
-            "b-Projects/galaxy:galaxy"
+            "b-Projects/galaxy-x1:galaxy-x1"
             "b-Projects/galaxy-gaia:galaxy-gaia"
             "b-Profiles/myprofile:myprofile"
             "a-Companies/nexus:nexus"

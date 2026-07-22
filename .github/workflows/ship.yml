@@ -392,6 +392,19 @@ jobs:
           bash build.sh build
           cd ../..
           echo "✅ Galaxy build complete"
+
+      - name: 🔨 Build Galaxy Hub (SvelteKit)
+        id: build-galaxy
+        if:
+          contains(steps.changed-files.outputs.all_changed_files, 'b-Projects/galaxy/')
+
+        run: |
+          echo "🔨 Building Galaxy Hub..."
+          cd b-Projects/galaxy
+          node test/hub.test.mjs
+          bash build.sh build
+          cd ../..
+          echo "✅ Galaxy Hub build complete"
       - name: 🔨 Build Stark (TypeScript + SCSS + Shaders)
         id: build-stark
         if:
@@ -562,6 +575,7 @@ jobs:
             "a-Companies/leafy:leafy"
             "b-Projects/galaxy-x1:galaxy-x1"
             "b-Projects/galaxy-gaia:galaxy-gaia"
+            "b-Projects/galaxy:galaxy"
             "b-Profiles/myprofile:myprofile"
             "a-Companies/nexus:nexus"
             "a-Companies/stark:stark"

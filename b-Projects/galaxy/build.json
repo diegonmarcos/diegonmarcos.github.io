@@ -1,0 +1,17 @@
+{
+  "name": "Galaxy",
+  "framework": "sveltekit",
+  "port": 8024,
+  "src": "src",
+  "dist": "dist",
+
+  "build": [
+    { "mod": "sveltekit" }
+  ],
+
+  "serve": {
+    "mode": "sveltekit"
+  },
+
+  "deploy": {}
+}

@@ -93,6 +93,53 @@ Two edit sites per project:
 Minimal viable = ONE character, walk + follow-cam. Cycle/drive/sail/fly are later increments.
 Coordinator (Opus) does the SINGLE push after both commits land + both builds verified, then watches CI green.
 
+- **P5 — locomotion modes** — ✅ DONE (engine `cc1e0470`, earth `98343019`): `stepRide` gained
+  opt-in `accel` (inertia/coast) + `lift`/`maxAlt`/`climb` (fly altitude), walk/x1 path byte-identical;
+  earth `map.json` now holds a data-driven `modes[]` (walk/cycle/drive/sail/fly) + `defaultMode`, with a
+  mode-switch HUD + fly climb ▲▼ control and an adaptive follow-cam per mode. Both build green + tested.
+  ponytail: sail/drive are param profiles — no water/road gating yet (future increment).
+
+### P5 interface contract (source of truth — both agents follow exactly)
+
+**Agent C — engine mechanics (touches only `_galaxy-engine/`; keep galaxy-x1 pixel-identical):**
+Extend `_galaxy-engine/src/locomotion.ts` BACKWARD-COMPATIBLY (x1 passes none of the new fields, so
+its behavior must be byte-identical):
+- `RideParams` += optional `accel?: number` (velocity ease rate, 1/s), `lift?: number` (m/s climb),
+  `maxAlt?: number` (m). `RideState` += optional `speed?: number` (eased ground speed),
+  `altitude?: number` (m). `RideInput` += optional `climb?: number` (-1..1). `RideStep` += `altitude: number`.
+- Logic: heading integrate (unchanged). `target = input.throttle * params.speed`. If `params.accel`
+  is set → `state.speed += (target - (state.speed ?? target)) * (1 - Math.exp(-params.accel*dt))`
+  (inertia/coast); ELSE `state.speed = target` (instant = current walk). `dForward = (state.speed ?? target) * dt`.
+  If `params.lift` set → `state.altitude = clamp((state.altitude ?? 0) + (input.climb ?? 0)*params.lift*dt, 0, params.maxAlt ?? Infinity)`;
+  else `state.altitude` stays `state.altitude ?? 0`. Return `{heading, forwardX, forwardZ, dForward, altitude: state.altitude ?? 0}`.
+- Add `climb: 0` to `_galaxy-engine/src/freeInput.ts` (default 0 → no effect for walk/x1). Comment it.
+- Extend `_galaxy-engine/test/locomotion.test.mjs`: (i) NO accel → instant, `dForward===speed*dt`
+  (x1 path unchanged); (ii) WITH accel, first step eases (`0 < dForward < speed*dt`); (iii) lift+climb=1
+  raises altitude and clamps at `maxAlt`; (iv) climb=0 keeps altitude 0. Print OK, exit 0.
+- GATE: galaxy-x1 `node test/scene.test.mjs` + `build.sh build` GREEN (x1 must be identical), engine
+  test OK. COMMIT locally, do NOT push.
+
+**Agent D — earth modes UI (touches only `galaxy-earth/`; depends on Agent C's interface):**
+- `src/lib/data/map.json`: keep `rider.start`, `rider.character`, `rider.steerSign`, `rider.follow.bearingSign`.
+  ADD `rider.defaultMode` (an id) + `rider.modes`: array of `{ id,label,icon, speed,turn,
+  follow:{pitch,zoom}, accel?, lift?, maxAlt? }` for walk/cycle/drive/sail/fly (walk = no accel/lift;
+  cycle/drive/sail have accel for glide; fly has accel+lift+maxAlt). ALL tunables live here.
+- `src/routes/+page.svelte`: add `activeMode` state (init from `defaultMode`). Build the params passed
+  to `stepRide` per-frame as `{ speed, turn, steerSign: rider.steerSign, accel, lift, maxAlt }` from the
+  active mode. Use `merc = MercatorCoordinate.fromLngLat(lngLat, step.altitude)` so fly lifts the mesh.
+  Follow-cam uses `activeMode.follow.pitch/zoom` (+ `rider.follow.bearingSign`).
+  Add a data-driven mode-switch HUD row (icon+label buttons from `rider.modes`) that sets `activeMode`.
+  Add a climb control (up/down, writes `freeInput.climb` = +1/-1 on press, 0 on release) shown ONLY when
+  `activeMode.lift > 0` (fly). Keep `<Joystick/>`. `ponytail:` sail/drive are param profiles — no
+  water/road gating yet (future increment).
+- Extend `test/earth.test.mjs`: assert `rider.modes` non-empty array; each mode has `id,label,speed,turn,
+  follow.pitch,follow.zoom`; `rider.defaultMode` matches a mode id; the `fly` mode has `lift>0`. Keep
+  existing asserts. Re-use `$engine` `stepRide` step (as before) to prove a move. OK/exit 0.
+- GATE: galaxy-earth `node test/earth.test.mjs` + `build.sh build` GREEN. COMMIT locally, do NOT push.
+
+Minimal viable = 5 selectable modes that feel distinct (speed/turn/inertia) + fly altitude + adaptive
+follow-cam. Coordinator (Opus) pushes ONCE after both commits + both builds verified, then watches CI green.
+
 ## CI oper/ deploy discipline (learned P1–P4a)
 
 Two workflows auto-commit to `main` per push — Pages Deployment ("commit built dist back") and

@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 48
+    "project_count": 49
   },
   "projects": [
     {
@@ -456,6 +456,20 @@
       "dep_count": 8,
       "has_dist": true,
       "deploy_name": "myprofile"
+    },
+    {
+      "name": "Galaxy",
+      "slug": "galaxy",
+      "path": "b-Projects/galaxy",
+      "category": "b-Projects",
+      "framework": "sveltekit",
+      "port": 8024,
+      "build_steps": [
+        "sveltekit"
+      ],
+      "dep_count": 7,
+      "has_dist": true,
+      "deploy_name": "galaxy"
     },
     {
       "name": "Galaxy-X1",

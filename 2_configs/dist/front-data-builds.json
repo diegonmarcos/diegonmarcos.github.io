@@ -1774,6 +1774,26 @@
     "_project": "galaxy-x1"
   },
   {
+    "name": "Galaxy",
+    "framework": "sveltekit",
+    "port": 8024,
+    "src": "src",
+    "dist": "dist",
+    "build": [
+      {
+        "mod": "sveltekit"
+      }
+    ],
+    "serve": {
+      "mode": "sveltekit"
+    },
+    "deploy": {},
+    "_path": "b-Projects/galaxy",
+    "_key": "b-Projects__galaxy",
+    "_category": "b-Projects",
+    "_project": "galaxy"
+  },
+  {
     "name": "Carto",
     "framework": "vanilla",
     "port": 8020,

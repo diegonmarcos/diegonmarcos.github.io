@@ -276,6 +276,18 @@
     "has_pkg": true
   },
   {
+    "path": "b-Projects/galaxy",
+    "category": "b-Projects",
+    "project": "galaxy",
+    "key": "b-Projects__galaxy",
+    "name": "Galaxy",
+    "framework": "sveltekit",
+    "port": 8024,
+    "deploy_name": "galaxy",
+    "has_pwa": false,
+    "has_pkg": true
+  },
+  {
     "path": "c-Circus/carto",
     "category": "c-Circus",
     "project": "carto",

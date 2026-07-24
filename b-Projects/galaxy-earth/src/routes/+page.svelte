@@ -35,6 +35,10 @@
   // Perf overlay: FPS (EMA-smoothed) + frame-ms, mirrored into $state each frame so the
   // DOM refreshes; the rolling sample ring lives in a plain closure array (not $state) and
   // is drawn straight onto a small canvas — no charting library needed for one sparkline.
+  // P3b: sky-dome overlay canvas — separate three.js renderer/scene, entirely
+  // independent of the map's CustomLayer; only shown once lookPitch exceeds
+  // look.mapMaxPitch (looking up past the map's own pitch cap).
+  let skyCanvas = $state<HTMLCanvasElement>();
   let perfCanvas = $state<HTMLCanvasElement>();
   let fps = $state(0);
   let frameMs = $state(0);
@@ -66,6 +70,61 @@
   function hash01(i: number, salt: number) {
     const x = i * GOLDEN_RATIO + salt;
     return x - Math.floor(x);
+  }
+
+  // Capsule primitive: the always-available fallback for any driver without a
+  // usable GLB (null/missing/failed load). Extracted so makeProceduralVehicle
+  // can still delegate to it for ids it doesn't have a distinct shape for.
+  function makeCapsule(): THREE.Mesh {
+    const geo = new THREE.CapsuleGeometry(rider.character.radius, rider.character.height, 4, 8);
+    const mat = new THREE.MeshStandardMaterial({ color: rider.character.color });
+    return new THREE.Mesh(geo, mat);
+  }
+
+  // Distinct low-poly procedural fallback per driver id — used when a driver's
+  // GLB is null/missing/errored. Same metre scale conventions as the capsule so
+  // the existing Mercator/world scaling math (modelMatrix) keeps working unchanged.
+  function makeProceduralVehicle(driverId: string): THREE.Object3D {
+    const color = new THREE.Color(rider.character.color);
+    const bodyMat = new THREE.MeshStandardMaterial({ color });
+    const darkMat = new THREE.MeshStandardMaterial({ color: color.clone().multiplyScalar(0.6) });
+    const lightMat = new THREE.MeshStandardMaterial({ color: color.clone().multiplyScalar(1.3) });
+
+    if (driverId === 'drone') {
+      const group = new THREE.Group();
+      group.add(new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.15, 0.6), bodyMat));
+      const rotorGeo = new THREE.CylinderGeometry(0.18, 0.18, 0.02, 12);
+      const offsets: [number, number][] = [[0.35, 0.35], [0.35, -0.35], [-0.35, 0.35], [-0.35, -0.35]];
+      for (const [x, z] of offsets) {
+        const rotor = new THREE.Mesh(rotorGeo, darkMat);
+        rotor.position.set(x, 0.1, z);
+        group.add(rotor);
+      }
+      return group;
+    }
+    if (driverId === 'helicopter') {
+      const group = new THREE.Group();
+      group.add(new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.6, 1.8), bodyMat));
+      const tail = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 1.6), bodyMat);
+      tail.position.set(0, 0.1, -1.5);
+      group.add(tail);
+      const rotor = new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.06, 0.15), darkMat);
+      rotor.position.set(0, 0.5, 0);
+      group.add(rotor);
+      return group;
+    }
+    if (driverId === 'airplane') {
+      const group = new THREE.Group();
+      const fuselage = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 2.4, 10), bodyMat);
+      fuselage.rotation.x = Math.PI / 2;
+      group.add(fuselage);
+      group.add(new THREE.Mesh(new THREE.BoxGeometry(3.2, 0.06, 0.5), lightMat));
+      const tailFin = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.5, 0.4), darkMat);
+      tailFin.position.set(0, 0.25, -1.1);
+      group.add(tailFin);
+      return group;
+    }
+    return makeCapsule();
   }
 
   // Low-poly tree: short cylinder trunk + cone canopy, merged into one vertex-colored
@@ -192,6 +251,70 @@
       document.addEventListener('pointerlockchange', onPointerLockChange);
     }
 
+    // --- P3b: sky-dome overlay (look up past the horizon into sky/stars) ---
+    // Fully independent renderer/scene/camera from the map's CustomLayer — a plain
+    // full-window overlay canvas that's shown/hidden and faded by opacity, never
+    // touching the map's own render(gl, options) path.
+    let skyRenderer: THREE.WebGLRenderer | undefined;
+    let skyScene: THREE.Scene | undefined;
+    let skyCamera: THREE.PerspectiveCamera | undefined;
+    if (skyCanvas) {
+      skyRenderer = new THREE.WebGLRenderer({ canvas: skyCanvas, alpha: true });
+      skyRenderer.setSize(window.innerWidth, window.innerHeight);
+      skyCamera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      skyScene = new THREE.Scene();
+
+      const domeGeo = new THREE.SphereGeometry(500, 32, 32);
+      const domeMat = new THREE.ShaderMaterial({
+        side: THREE.BackSide,
+        uniforms: {
+          topColor: { value: new THREE.Color(0x02030c) },
+          bottomColor: { value: new THREE.Color(0x1a1030) }
+        },
+        vertexShader: `
+          varying vec3 vWorldPos;
+          void main() {
+            vec4 worldPos = modelMatrix * vec4(position, 1.0);
+            vWorldPos = worldPos.xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+        fragmentShader: `
+          varying vec3 vWorldPos;
+          uniform vec3 topColor;
+          uniform vec3 bottomColor;
+          void main() {
+            float h = clamp(normalize(vWorldPos).y * 0.5 + 0.5, 0.0, 1.0);
+            gl_FragColor = vec4(mix(bottomColor, topColor, h), 1.0);
+          }
+        `
+      });
+      const dome = new THREE.Mesh(domeGeo, domeMat);
+      skyScene.add(dome);
+
+      const starCount = 400;
+      const starPos = new Float32Array(starCount * 3);
+      for (let i = 0; i < starCount; i++) {
+        const theta = hash01(i, 0.13) * Math.PI * 2;
+        const phi = hash01(i, 0.77) * Math.PI * 0.5; // upper hemisphere only (y > 0)
+        const r = 480;
+        starPos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+        starPos[i * 3 + 1] = r * Math.cos(phi);
+        starPos[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
+      }
+      const starGeo = new THREE.BufferGeometry();
+      starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
+      const starMat = new THREE.PointsMaterial({ color: 0xffffff, size: 1.5, sizeAttenuation: false });
+      skyScene.add(new THREE.Points(starGeo, starMat));
+    }
+    function onSkyResize() {
+      if (!skyRenderer || !skyCamera) return;
+      skyRenderer.setSize(window.innerWidth, window.innerHeight);
+      skyCamera.aspect = window.innerWidth / window.innerHeight;
+      skyCamera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', onSkyResize);
+
     // --- Globe/constellation projection swap ---
     let wasGlobe = false;
     $effect(() => {
@@ -307,11 +430,16 @@
         let scene: THREE.Scene;
         let camera: THREE.Camera;
         let renderer: THREE.WebGLRenderer;
-        let riderMesh: THREE.Mesh;
-        // GLB model per driver: capsule stays the always-available fallback; a Group
-        // ("riderGroup") holds whichever mesh is currently visible (capsule or loaded
-        // model) so the modelMatrix math in render() doesn't need to know which it is.
+        // GLB model per driver: a distinct procedural shape (or capsule) stays the
+        // always-available fallback; a Group ("riderGroup") holds whichever mesh is
+        // currently visible (fallback or loaded model) so the modelMatrix math in
+        // render() doesn't need to know which it is.
         let riderGroup: THREE.Group;
+        const fallbackCache: Record<string, THREE.Object3D> = {};
+        function getFallback(driver: (typeof rider.drivers)[number]): THREE.Object3D {
+          if (!fallbackCache[driver.id]) fallbackCache[driver.id] = makeProceduralVehicle(driver.id);
+          return fallbackCache[driver.id];
+        }
         const gltfLoader = new GLTFLoader();
         const modelCache: Record<string, THREE.Object3D | 'loading' | 'error'> = {};
         function ensureModelLoaded(driver: (typeof rider.drivers)[number]) {
@@ -342,7 +470,7 @@
           if (activeDriver.model?.glb && cached && cached !== 'loading' && cached !== 'error') {
             riderGroup.add(cached as THREE.Object3D);
           } else {
-            riderGroup.add(riderMesh);
+            riderGroup.add(getFallback(activeDriver));
           }
         }
         let natureScene: THREE.Scene;
@@ -418,16 +546,7 @@
             sun.position.set(0, -70, 100).normalize();
             scene.add(sun);
 
-            const geo = new THREE.CapsuleGeometry(
-              rider.character.radius,
-              rider.character.height,
-              4,
-              8
-            );
-            const mat = new THREE.MeshStandardMaterial({ color: rider.character.color });
-            riderMesh = new THREE.Mesh(geo, mat);
             riderGroup = new THREE.Group();
-            riderGroup.add(riderMesh);
             scene.add(riderGroup);
 
             // Kick off lazy GLB loads for every driver that declares one; the capsule
@@ -620,6 +739,28 @@
             });
             followGuard = false;
           }
+
+          // P3b: sky-dome overlay — fade in as lookPitch climbs past mapMaxPitch
+          // (the map's own pitch cap), simulating looking up into sky/stars.
+          if (skyCanvas && skyRenderer && skyScene && skyCamera) {
+            const overlayOpacity = Math.min(1, Math.max(0, (lookPitch - look.mapMaxPitch) / 20));
+            if (overlayOpacity <= 0) {
+              skyCanvas.style.display = 'none';
+            } else {
+              skyCanvas.style.display = '';
+              skyCanvas.style.opacity = String(overlayOpacity);
+              const yawRad = camBearing;
+              const upAngle = THREE.MathUtils.degToRad(lookPitch - 90);
+              const dir = new THREE.Vector3(
+                Math.sin(yawRad) * Math.cos(upAngle),
+                Math.sin(upAngle),
+                -Math.cos(yawRad) * Math.cos(upAngle)
+              );
+              skyCamera.position.set(0, 0, 0);
+              skyCamera.lookAt(dir);
+              skyRenderer.render(skyScene, skyCamera);
+            }
+          }
           raf = requestAnimationFrame(tick);
         };
         raf = requestAnimationFrame(tick);
@@ -633,6 +774,8 @@
       window.removeEventListener('keyup', onKeyUp);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('pointerlockchange', onPointerLockChange);
+      window.removeEventListener('resize', onSkyResize);
+      skyRenderer?.dispose();
       map?.remove();
     };
   });
@@ -640,6 +783,7 @@
 
 <div class="map-wrap">
   <div bind:this={mapContainer} class="map"></div>
+  <canvas bind:this={skyCanvas} class="sky-overlay"></canvas>
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
@@ -777,6 +921,16 @@
   .map {
     position: absolute;
     inset: 0;
+  }
+
+  /* P3b: sky-dome overlay — sits above the map, below HUD/joysticks so those
+     stay clickable and visible; opacity/display are driven from the rAF tick. */
+  .sky-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    display: none;
   }
 
   .hud {

@@ -14,7 +14,7 @@
     scale?: number;
     invertX?: boolean;
     invertY?: boolean;
-    channel?: 'move' | 'look';
+    channel?: 'move' | 'look' | 'drive';
   } = $props();
 
   let base = $state<HTMLElement>();
@@ -42,6 +42,9 @@
     if (channel === 'look') {
       freeInput.yawRate = (invertX ? -1 : 1) * dx / R;
       freeInput.pitchRate = (invertY ? -1 : 1) * (-dy / R);
+    } else if (channel === 'drive') {
+      freeInput.moveX = (invertX ? -1 : 1) * dx / R;
+      freeInput.moveY = (invertY ? -1 : 1) * (-dy / R);
     } else {
       freeInput.steer = (invertX ? -1 : 1) * dx / R;
       freeInput.throttle = (invertY ? -1 : 1) * (-dy / R);
@@ -52,6 +55,9 @@
     if (channel === 'look') {
       freeInput.yawRate = 0;
       freeInput.pitchRate = 0;
+    } else if (channel === 'drive') {
+      freeInput.moveX = 0;
+      freeInput.moveY = 0;
     } else {
       freeInput.steer = 0;
       freeInput.throttle = 0;
@@ -64,7 +70,7 @@
   class:right={side === 'right'}
   style={`--joy-scale: ${scale}`}
   role="slider"
-  aria-label={channel === 'look' ? 'Look' : 'Move'}
+  aria-label={channel === 'look' ? 'Look' : channel === 'drive' ? 'Drive' : 'Move'}
   aria-valuenow={0}
   tabindex="0"
   bind:this={base}

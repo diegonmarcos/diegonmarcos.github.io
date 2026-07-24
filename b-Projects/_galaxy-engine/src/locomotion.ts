@@ -30,3 +30,42 @@ export function stepRide(state: RideState, input: RideInput, params: RideParams,
   }
   return { heading: state.heading, forwardX, forwardZ, dForward, altitude: state.altitude ?? 0 };
 }
+
+// Camera-relative twin-stick drive step — same pure/no-DOM contract as stepRide,
+// but heading is driven toward a desired bearing (stick + camera) rather than
+// integrated from a steer rate. Used by vehicles with free-look cameras.
+export interface DriveInput { moveX: number; moveY: number; camBearing: number; climb?: number }
+export interface DriveParams { min: number; avg?: number; max: number; turn?: number; accel?: number; lift?: number; maxAlt?: number; deadzone?: number }
+
+export function stepDrive(state: RideState, input: DriveInput, params: DriveParams, dt: number): RideStep {
+  let mag = Math.hypot(input.moveX, input.moveY);
+  if (mag < (params.deadzone ?? 0)) mag = 0;
+  if (mag > 0) {
+    const desired = input.camBearing + Math.atan2(input.moveX, input.moveY);
+    let delta = (desired - state.heading) % (2 * Math.PI);
+    if (delta > Math.PI) delta -= 2 * Math.PI;
+    if (delta < -Math.PI) delta += 2 * Math.PI;
+    if (params.turn != null) {
+      const maxStep = params.turn * dt;
+      delta = Math.max(-maxStep, Math.min(maxStep, delta));
+    }
+    state.heading += delta;
+  }
+  const forwardX = Math.sin(state.heading), forwardZ = Math.cos(state.heading);
+  const target = mag > 0 ? params.min + Math.min(mag, 1) * (params.max - params.min) : params.min;
+  if (params.accel != null) {
+    const k = 1 - Math.exp(-params.accel * dt);
+    const current = state.speed ?? 0;
+    state.speed = current + (target - current) * k;
+  } else {
+    state.speed = target;
+  }
+  const dForward = (state.speed ?? target) * dt;
+  if (params.lift != null) {
+    const maxAlt = params.maxAlt ?? Infinity;
+    state.altitude = Math.max(0, Math.min((state.altitude ?? 0) + (input.climb ?? 0) * params.lift * dt, maxAlt));
+  } else {
+    state.altitude = state.altitude ?? 0;
+  }
+  return { heading: state.heading, forwardX, forwardZ, dForward, altitude: state.altitude ?? 0 };
+}

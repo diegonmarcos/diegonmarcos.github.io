@@ -13,12 +13,12 @@ interface LoadingProgress {
   percentage: number;
 }
 
-// Asset lists
-const CRITICAL_ASSETS = [
-  'public/videos/background.mp4',
-  'public/videos/background2.mp4',
-  'public/videos/background3.mp4',
-  'public/videos/background4.mp4',
+// Asset lists.
+// Gate the loading screen ONLY on lightweight assets (static bg + icons).
+// The heavy videos stream on their own via videoBackground.ts's <video>
+// element and must never block first paint — waiting on a stalled .mp4 is
+// exactly what used to hang the loader forever.
+const GATE_ASSETS = [
   'public/images/background_static.jpg',
   'public/images/professional.png',
   'public/images/personal.png',
@@ -26,6 +26,18 @@ const CRITICAL_ASSETS = [
   'public/images/venture2.png',
   'public/images/tools.png',
 ];
+// Warmed lazily in the background, never awaited.
+const LAZY_VIDEOS = [
+  'public/videos/background.mp4',
+  'public/videos/background2.mp4',
+  'public/videos/background3.mp4',
+  'public/videos/background4.mp4',
+];
+const CRITICAL_ASSETS = GATE_ASSETS; // cache-key back-compat
+
+// ponytail: a slow asset must degrade to "move on", never hang the gate.
+const ASSET_TIMEOUT_MS = 4000;   // per-asset cap → resolve and continue
+const LOADER_DEADLINE_MS = 6000; // hard cap → page shows no matter what
 
 const MINDMAP_URL = 'https://diegonmarcos.github.io/linktree_mindmap/';
 
@@ -153,22 +165,24 @@ function checkCacheStatus(): boolean {
 /**
  * Preload a single asset
  */
-function preloadAsset(url: string): Promise<void> {
-  return new Promise((resolve, reject) => {
+function preloadAsset(url: string, timeoutMs = ASSET_TIMEOUT_MS): Promise<void> {
+  return new Promise((resolve) => {
+    // Timeout, load, and error all resolve — the caller only needs to know
+    // "stop waiting on this one". A hung download must not stall the gate.
+    const done = () => { clearTimeout(t); resolve(); };
+    const t = setTimeout(done, timeoutMs);
     const ext = url.split('.').pop()?.toLowerCase();
 
     if (ext === 'mp4' || ext === 'webm') {
-      // Preload video
       const video = document.createElement('video');
-      video.preload = 'auto';
-      video.onloadeddata = () => resolve();
-      video.onerror = () => reject(new Error(`Failed to load video: ${url}`));
+      video.preload = 'metadata'; // just the first frame/poster, not the full stream
+      video.onloadeddata = done;
+      video.onerror = done;
       video.src = url;
     } else {
-      // Preload image
       const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => reject(new Error(`Failed to load image: ${url}`));
+      img.onload = done;
+      img.onerror = done;
       img.src = url;
     }
   });
@@ -255,6 +269,11 @@ async function preloadAssets(isCached: boolean): Promise<void> {
 
   await Promise.all([...assetPromises, mindmapPromise]);
 
+  // Warm the heavy videos lazily — after the gate, never awaited, so a slow
+  // CDN pull on the .mp4 can't delay the page. videoBackground.ts streams the
+  // one it picks regardless; this just pre-warms the runtime SW cache.
+  LAZY_VIDEOS.forEach((url) => { void preloadAsset(url, 20000); });
+
   // Mark as cached
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify({
@@ -326,11 +345,16 @@ export async function initLoader(): Promise<void> {
     // Check cache first
     const isCached = checkCacheStatus();
 
-    // Run network diagnostics
-    await runNetworkDiagnostics();
-
-    // Preload assets
-    await preloadAssets(isCached);
+    // Race the whole warm-up against a hard deadline so nothing —
+    // diagnostics, mindmap iframe, a stalled asset — can ever keep the
+    // loading screen up. Whichever wins, the page is shown.
+    await Promise.race([
+      (async () => {
+        await runNetworkDiagnostics();
+        await preloadAssets(isCached);
+      })(),
+      new Promise<void>((resolve) => setTimeout(resolve, LOADER_DEADLINE_MS)),
+    ]);
 
     // Hide loading screen
     hideLoadingScreen();

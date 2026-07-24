@@ -3,22 +3,25 @@
   import * as THREE from 'three';
   import mapConfig from '$lib/data/map.json';
   import { freeInput } from '$engine/freeInput';
-  import { stepRide } from '$engine/locomotion';
+  import { stepDrive } from '$engine/locomotion';
   import Joystick from '$engine/Joystick.svelte';
 
   let mapContainer: HTMLDivElement;
 
-  // ponytail: sail/drive are param profiles — no water/road gating yet (future increment).
   const rider = mapConfig.rider;
   const j = rider.joystick;
-  let activeMode = $state(rider.modes.find((m) => m.id === rider.defaultMode) ?? rider.modes[0]);
+  const look = j.look;
 
-  // Camera view is decoupled from locomotion mode: switching mode re-points the camera
-  // at that mode's default view, but the camera-view FAB can then override it independently.
+  // Driver (vehicle/physics) and camera view are two fully independent selectors —
+  // switching one never touches the other. Camera bearing is user-owned (right stick),
+  // never derived from rider heading, so steering and looking don't fight each other.
+  let activeDriver = $state(
+    rider.drivers.find((d) => d.id === rider.defaultDriver) ?? rider.drivers[0]
+  );
   let activeCamera = $state(
     rider.cameras.find((c) => c.id === rider.defaultCamera) ?? rider.cameras[0]
   );
-  let showModePicker = $state(false);
+  let showDriverPicker = $state(false);
   let showCameraPicker = $state(false);
   let hudSpeed = $state(0);
 
@@ -28,14 +31,27 @@
   let perfCanvas = $state<HTMLCanvasElement>();
   let fps = $state(0);
   let frameMs = $state(0);
+  let perfExpanded = $state(false);
+  let renderCalls = $state(0);
+  let renderTriangles = $state(0);
+  let memGeometries = $state(0);
+  let memTextures = $state(0);
+  let jsHeapMb = $state<number | undefined>(undefined);
+  let fpsGraphCanvas = $state<HTMLCanvasElement>();
+  let frameGraphCanvas = $state<HTMLCanvasElement>();
 
-  // Persistent ride state (heading + carried speed/altitude) — lives across mode switches
-  // and across frames; only `speed` resets on a mode change so momentum doesn't teleport.
+  // Persistent ride state (heading + carried speed/altitude) — lives across frames;
+  // only `speed` resets on a driver switch so momentum doesn't teleport.
   const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
   $effect(() => {
-    activeCamera = rider.cameras.find((c) => c.id === activeMode.camera) ?? activeCamera;
+    activeDriver;
     ride.speed = 0;
   });
+
+  // Camera bearing/pitch-offset are integrated ONLY from the right look-stick — never
+  // from rider heading — so the camera stays put while the rider turns underneath it.
+  let camBearing = 0;
+  let camPitchOffset = 0;
 
   function clamp(v: number, lo: number, hi: number) {
     return Math.min(hi, Math.max(lo, v));
@@ -192,6 +208,11 @@
         const perfSamples = new Array(60).fill(16.7);
         let perfIdx = 0;
         let fpsEma = 60;
+        // Expanded HUD keeps a longer rolling window (~120 samples) for the two line graphs.
+        const GRAPH_N = 120;
+        const frameGraphSamples = new Array(GRAPH_N).fill(16.7);
+        const fpsGraphSamples = new Array(GRAPH_N).fill(60);
+        let graphIdx = 0;
 
         function drawPerfSparkline() {
           const c = perfCanvas;
@@ -212,6 +233,31 @@
           ctx.strokeStyle = frameMs > 33 ? '#ff5c5c' : frameMs > 16 ? '#ffb84d' : '#5ee6a0';
           ctx.lineWidth = 1.5;
           ctx.stroke();
+        }
+
+        function drawLineGraph(c: HTMLCanvasElement | undefined, samples: number[], idx: number, max: number, color: string) {
+          if (!c) return;
+          const ctx = c.getContext('2d');
+          if (!ctx) return;
+          const w = c.width, h = c.height;
+          ctx.clearRect(0, 0, w, h);
+          const n = samples.length;
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const sample = samples[(idx + i) % n];
+            const x = (i / (n - 1)) * w;
+            const y = h - Math.min(sample, max) / max * h;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+
+        function drawExpandedGraphs() {
+          if (!perfExpanded) return;
+          drawLineGraph(fpsGraphCanvas, fpsGraphSamples, graphIdx, 90, '#5ee6a0');
+          drawLineGraph(frameGraphCanvas, frameGraphSamples, graphIdx, 40, frameMs > 33 ? '#ff5c5c' : frameMs > 16 ? '#ffb84d' : '#5ee6a0');
         }
 
         const riderLayer: any = {
@@ -292,16 +338,37 @@
               perfSamples[perfIdx % perfSamples.length] = ms;
               perfIdx++;
               drawPerfSparkline();
+
+              frameGraphSamples[graphIdx % GRAPH_N] = ms;
+              fpsGraphSamples[graphIdx % GRAPH_N] = fpsEma;
+              graphIdx++;
+              drawExpandedGraphs();
+
+              if (renderer) {
+                renderCalls = renderer.info.render.calls;
+                renderTriangles = renderer.info.render.triangles;
+                memGeometries = renderer.info.memory.geometries;
+                memTextures = renderer.info.memory.textures;
+              }
+              const heap = (performance as any).memory?.usedJSHeapSize;
+              jsHeapMb = heap != null ? heap / (1024 * 1024) : undefined;
             }
 
-            const step = stepRide(ride, freeInput, {
-              speed: activeMode.speed,
-              turn: activeMode.turn,
-              steerSign: rider.steerSign,
-              accel: activeMode.accel,
-              lift: activeMode.lift,
-              maxAlt: activeMode.maxAlt
-            }, dt);
+            const step = stepDrive(
+              ride,
+              { moveX: freeInput.moveX, moveY: freeInput.moveY, camBearing, climb: freeInput.climb },
+              {
+                min: activeDriver.speed.min,
+                avg: activeDriver.speed.avg,
+                max: activeDriver.speed.max,
+                turn: (activeDriver.turn * Math.PI) / 180 || activeDriver.turn,
+                accel: activeDriver.accel,
+                lift: activeDriver.lift,
+                maxAlt: activeDriver.maxAlt,
+                deadzone: rider.joystick.deadzone
+              },
+              dt
+            );
 
             hudSpeed = ride.speed ?? 0;
 
@@ -339,21 +406,18 @@
         map.addLayer(riderLayer);
 
         // Follow-cam: driven off the rAF loop, guarded against re-entrant jumpTo calls.
-        // lookYaw/lookPitch are plain closure locals (not $state) — internal rAF-loop
-        // accumulators driven by the right joystick's yawRate/pitchRate, integrated here.
-        let lookYaw = 0;
-        let lookPitch = 0;
+        // camBearing/camPitchOffset are user-owned (integrated ONLY from the right
+        // look-stick, never from rider heading) so steering never fights the camera.
         let tickPrev = 0;
-        const look = rider.joystick.look;
         const tick = () => {
           if (disposed || !map) return;
           const now = performance.now();
           const dt = tickPrev ? Math.min((now - tickPrev) / 1000, 0.1) : 0;
           tickPrev = now;
 
-          lookYaw += freeInput.yawRate * look.yawRate * dt;
-          lookPitch = clamp(
-            lookPitch + freeInput.pitchRate * look.pitchRate * dt,
+          camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
+          camPitchOffset = clamp(
+            camPitchOffset + freeInput.pitchRate * look.pitchRate * dt,
             look.minPitch - activeCamera.pitch,
             look.maxPitch - activeCamera.pitch
           );
@@ -362,8 +426,8 @@
             followGuard = true;
             map.jumpTo({
               center: lngLat,
-              bearing: (ride.heading * 180) / Math.PI * rider.follow.bearingSign + lookYaw,
-              pitch: clamp(activeCamera.pitch + lookPitch, look.minPitch, look.maxPitch),
+              bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
+              pitch: clamp(activeCamera.pitch + camPitchOffset, look.minPitch, look.maxPitch),
               zoom: activeCamera.zoom
             });
             followGuard = false;
@@ -387,18 +451,48 @@
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
-    <div class="perf" class:warn={frameMs > 16} class:bad={frameMs > 33}>
+    <button
+      type="button"
+      class="perf"
+      class:warn={frameMs > 16}
+      class:bad={frameMs > 33}
+      aria-expanded={perfExpanded}
+      aria-label="Toggle performance stats"
+      onclick={() => (perfExpanded = !perfExpanded)}
+    >
       <canvas bind:this={perfCanvas} width="120" height="36"></canvas>
       <div class="perf-text">
         <span>{Math.round(fps)} fps</span>
         <span>{frameMs.toFixed(1)} ms</span>
       </div>
-    </div>
+    </button>
+
+    {#if perfExpanded}
+      <div class="perf-panel">
+        <div class="perf-row">
+          <span class="perf-label">FPS</span>
+          <canvas bind:this={fpsGraphCanvas} width="160" height="40"></canvas>
+          <span class="perf-num">{Math.round(fps)}</span>
+        </div>
+        <div class="perf-row">
+          <span class="perf-label">Frame</span>
+          <canvas bind:this={frameGraphCanvas} width="160" height="40"></canvas>
+          <span class="perf-num" class:warn={frameMs > 16} class:bad={frameMs > 33}>{frameMs.toFixed(1)} ms</span>
+        </div>
+        <div class="perf-stat"><span>Draw calls</span><span>{renderCalls}</span></div>
+        <div class="perf-stat"><span>Triangles</span><span>{renderTriangles.toLocaleString()}</span></div>
+        <div class="perf-stat"><span>Geometries</span><span>{memGeometries}</span></div>
+        <div class="perf-stat"><span>Textures</span><span>{memTextures}</span></div>
+        {#if jsHeapMb != null}
+          <div class="perf-stat"><span>JS heap</span><span>{jsHeapMb.toFixed(1)} MB</span></div>
+        {/if}
+      </div>
+    {/if}
   </div>
 
-  <div class="velocimeter">{Math.round(hudSpeed)} km/h</div>
+  <div class="velocimeter">{Math.round(hudSpeed)} <span class="redline">/ {activeDriver.speed.max}</span> km/h</div>
 
-  {#if activeMode.lift}
+  {#if activeDriver.lift}
     <div class="climb">
       <button
         type="button"
@@ -441,20 +535,20 @@
       type="button"
       class="fab"
       aria-label="Camera view"
-      onclick={() => { showCameraPicker = !showCameraPicker; showModePicker = false; }}
+      onclick={() => { showCameraPicker = !showCameraPicker; showDriverPicker = false; }}
     >{activeCamera.icon}</button>
 
-    {#if showModePicker}
-      <div class="fab-popup" role="menu" aria-label="Locomotion mode">
-        {#each rider.modes as m (m.id)}
+    {#if showDriverPicker}
+      <div class="fab-popup" role="menu" aria-label="Driver">
+        {#each rider.drivers as d (d.id)}
           <button
             type="button"
             class="fab-popup-item"
-            class:active={m.id === activeMode.id}
-            onclick={() => { activeMode = m; showModePicker = false; }}
+            class:active={d.id === activeDriver.id}
+            onclick={() => { activeDriver = d; showDriverPicker = false; }}
           >
-            <span class="icon">{m.icon}</span>
-            <span class="label">{m.label}</span>
+            <span class="icon">{d.icon}</span>
+            <span class="label">{d.label}</span>
           </button>
         {/each}
       </div>
@@ -462,13 +556,13 @@
     <button
       type="button"
       class="fab"
-      aria-label="Locomotion mode"
-      onclick={() => { showModePicker = !showModePicker; showCameraPicker = false; }}
-    >{activeMode.icon}</button>
+      aria-label="Driver"
+      onclick={() => { showDriverPicker = !showDriverPicker; showCameraPicker = false; }}
+    >{activeDriver.icon}</button>
   </div>
 
-  <Joystick side="left" channel="move" scale={j.scale} invertX={j.move.invertX} invertY={j.move.invertY} />
-  <Joystick side="right" channel="look" scale={j.scale} invertX={j.lookInvert.invertX} invertY={j.lookInvert.invertY} />
+  <Joystick side="left" channel="drive" scale={j.scale} />
+  <Joystick side="right" channel="look" scale={j.scale} />
 </div>
 
 <style>
@@ -529,6 +623,59 @@
     border-radius: 0.5rem;
     backdrop-filter: blur(4px);
     width: max-content;
+    pointer-events: auto;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  .perf-panel {
+    margin-top: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.5rem 0.6rem;
+    background: rgba(10, 14, 26, 0.55);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 0.5rem;
+    backdrop-filter: blur(4px);
+    width: max-content;
+    pointer-events: auto;
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .perf-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .perf-row canvas {
+    display: block;
+    width: 160px;
+    height: 40px;
+  }
+
+  .perf-label {
+    width: 3rem;
+    color: #9db4ff;
+  }
+
+  .perf-num {
+    width: 4.5rem;
+    text-align: right;
+    color: #5ee6a0;
+  }
+
+  .perf-num.warn { color: #ffb84d; }
+  .perf-num.bad { color: #ff5c5c; }
+
+  .perf-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: #cfd8ff;
   }
 
   .perf canvas {
@@ -565,6 +712,11 @@
     font-size: 0.85rem;
     font-variant-numeric: tabular-nums;
     pointer-events: none;
+  }
+
+  .velocimeter .redline {
+    opacity: 0.6;
+    font-size: 0.75em;
   }
 
   /* Climb control sits to the left of the right look-stick, clear of the FAB stack. */

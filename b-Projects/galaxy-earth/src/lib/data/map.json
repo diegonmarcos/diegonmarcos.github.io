@@ -63,138 +63,167 @@
     "follow": {
       "bearingSign": 1
     },
-    "defaultMode": "walk",
-    "modes": [
-      {
-        "id": "walk",
-        "label": "Walk",
-        "icon": "🚶",
-        "speed": 14,
-        "turn": 1.9,
-        "camera": "isometric"
-      },
-      {
-        "id": "cycle",
-        "label": "Cycle",
-        "icon": "🚴",
-        "speed": 34,
-        "turn": 1.5,
-        "accel": 6,
-        "camera": "isometric"
-      },
-      {
-        "id": "drive",
-        "label": "Car",
-        "icon": "🚗",
-        "speed": 80,
-        "turn": 1.0,
-        "accel": 16,
-        "camera": "isometric"
-      },
-      {
-        "id": "sail",
-        "label": "Sail",
-        "icon": "⛵",
-        "speed": 45,
-        "turn": 0.7,
-        "accel": 5,
-        "camera": "isometric"
-      },
-      {
-        "id": "drone",
-        "label": "Drone",
-        "icon": "🛸",
-        "speed": 70,
-        "turn": 2.2,
-        "accel": 12,
-        "lift": 60,
-        "maxAlt": 800,
-        "camera": "drone"
-      },
-      {
-        "id": "helicopter",
-        "label": "Helicopter",
-        "icon": "🚁",
-        "speed": 110,
-        "turn": 1.4,
-        "accel": 14,
-        "lift": 50,
-        "maxAlt": 1400,
-        "camera": "helicopter"
-      },
-      {
-        "id": "airplane",
-        "label": "Airplane",
-        "icon": "✈️",
-        "speed": 190,
-        "turn": 0.9,
-        "accel": 22,
-        "lift": 40,
-        "maxAlt": 2400,
-        "camera": "airplane"
-      }
-    ],
     "cameras": [
       {
         "id": "fps",
-        "label": "1st Person",
+        "label": "First-Person · FPS",
         "icon": "👁️",
-        "pitch": 85,
-        "zoom": 19.4
+        "pitch": 90,
+        "zoom": 19.4,
+        "bearingOffset": 0
       },
       {
-        "id": "isometric",
-        "label": "Isometric",
+        "id": "ots",
+        "label": "Third-Person · Over-the-Shoulder",
+        "icon": "🎯",
+        "pitch": 78,
+        "zoom": 18.4,
+        "bearingOffset": 0
+      },
+      {
+        "id": "chase",
+        "label": "Third-Person · Chase-Cam",
         "icon": "🎮",
-        "pitch": 68,
-        "zoom": 17.6
+        "pitch": 66,
+        "zoom": 17.4,
+        "bearingOffset": 0
       },
       {
-        "id": "drone",
-        "label": "Drone",
-        "icon": "🛸",
-        "pitch": 52,
-        "zoom": 16.2
+        "id": "iso",
+        "label": "Top-Down · 2.5D",
+        "icon": "🔺",
+        "pitch": 50,
+        "zoom": 16.4,
+        "bearingOffset": 0
       },
       {
-        "id": "helicopter",
-        "label": "Helicopter",
-        "icon": "🚁",
-        "pitch": 45,
-        "zoom": 15.0
+        "id": "birdseye",
+        "label": "Top-Down · Bird's-Eye",
+        "icon": "🐦",
+        "pitch": 25,
+        "zoom": 15.2,
+        "bearingOffset": 0
       },
       {
-        "id": "airplane",
-        "label": "Airplane",
-        "icon": "🛩️",
-        "pitch": 38,
-        "zoom": 14.0
-      },
-      {
-        "id": "satellite",
-        "label": "Satellite",
+        "id": "god",
+        "label": "Top-Down · God-View",
         "icon": "🛰️",
         "pitch": 0,
-        "zoom": 13.0
+        "zoom": 13.4,
+        "bearingOffset": 0
+      },
+      {
+        "id": "side",
+        "label": "Side-Scrolling",
+        "icon": "🍄",
+        "pitch": 75,
+        "zoom": 16.8,
+        "bearingOffset": 90
       }
     ],
-    "defaultCamera": "isometric",
+    "defaultCamera": "chase",
     "joystick": {
       "scale": 0.5,
       "look": {
         "yawRate": 90,
         "pitchRate": 60,
         "minPitch": 0,
-        "maxPitch": 85
+        "maxPitch": 90
       },
-      "move": {
-        "invertX": true,
-        "invertY": true
+      "deadzone": 0.06
+    },
+    "defaultDriver": "walk",
+    "drivers": [
+      {
+        "id": "walk",
+        "label": "Walk",
+        "icon": "🚶",
+        "speed": {
+          "min": 0,
+          "avg": 8,
+          "max": 14
+        },
+        "turn": 8,
+        "accel": 10
       },
-      "lookInvert": {
-        "invertX": false,
-        "invertY": false
+      {
+        "id": "cycle",
+        "label": "Cycle",
+        "icon": "🚴",
+        "speed": {
+          "min": 0,
+          "avg": 20,
+          "max": 34
+        },
+        "turn": 7,
+        "accel": 6
+      },
+      {
+        "id": "car",
+        "label": "Car",
+        "icon": "🚗",
+        "speed": {
+          "min": 0,
+          "avg": 50,
+          "max": 80
+        },
+        "turn": 6,
+        "accel": 16
+      },
+      {
+        "id": "sail",
+        "label": "Sail",
+        "icon": "⛵",
+        "speed": {
+          "min": 0,
+          "avg": 28,
+          "max": 45
+        },
+        "turn": 4,
+        "accel": 5
+      },
+      {
+        "id": "drone",
+        "label": "Drone",
+        "icon": "🛸",
+        "speed": {
+          "min": 0,
+          "avg": 40,
+          "max": 70
+        },
+        "turn": 9,
+        "accel": 12,
+        "lift": 60,
+        "maxAlt": 800
+      },
+      {
+        "id": "helicopter",
+        "label": "Helicopter",
+        "icon": "🚁",
+        "speed": {
+          "min": 0,
+          "avg": 70,
+          "max": 110
+        },
+        "turn": 6,
+        "accel": 14,
+        "lift": 50,
+        "maxAlt": 1400
+      },
+      {
+        "id": "airplane",
+        "label": "Airplane",
+        "icon": "✈️",
+        "speed": {
+          "min": 60,
+          "avg": 130,
+          "max": 190
+        },
+        "turn": 4,
+        "accel": 22,
+        "lift": 40,
+        "maxAlt": 2400
       }
-    }
+    ]
   }
 }

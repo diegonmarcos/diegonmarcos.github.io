@@ -1,6 +1,6 @@
 // Contract test for the pure locomotion step (no framework, no DOM).
 // Run: node test/locomotion.test.mjs
-import { stepRide } from '../src/locomotion.ts';
+import { stepRide, stepDrive } from '../src/locomotion.ts';
 
 let failed = 0;
 const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
@@ -61,6 +61,51 @@ const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
   const state = { heading: 0, altitude: 0 };
   const step = stepRide(state, { steer: 0, throttle: 0 }, { speed: 10, turn: 1, lift: 40, maxAlt: 100 }, 1);
   ok(step.altitude === 0, 'lift with climb=0: altitude stays 0');
+}
+
+// --- stepDrive: camera-relative twin-stick movement ---
+
+// moveY=1 (stick forward), camBearing=0 → heading≈0, moves forward
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 1, camBearing: 0 }, { min: 0, max: 10 }, 1);
+  ok(Math.abs(step.heading - 0) < 1e-9, 'drive: forward stick, camBearing=0 → heading≈0');
+  ok(step.dForward > 0, 'drive: forward stick → dForward>0');
+}
+
+// moveX=1,moveY=0,camBearing=0, turn absent → snaps right (heading≈π/2)
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10 }, 1);
+  ok(Math.abs(step.heading - Math.PI / 2) < 1e-9, 'drive: stick right, no turn limit → snaps to π/2');
+}
+
+// camBearing=π/2, moveY=1,moveX=0 → movement is camera-relative, heading≈π/2
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 1, camBearing: Math.PI / 2 }, { min: 0, max: 10 }, 1);
+  ok(Math.abs(step.heading - Math.PI / 2) < 1e-9, 'drive: camera-relative forward → heading≈camBearing');
+}
+
+// mag=0 with min=60 (airplane) → never stalls
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0 }, { min: 60, max: 200 }, 1);
+  ok(step.dForward > 0, 'drive: idle stick with min=60 → still moving (airplane never stalls)');
+}
+
+// mag=0 with min=0 (car) → speed eases toward 0
+{
+  const state = { heading: 0, speed: 20 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0 }, { min: 0, max: 40, accel: 5 }, 0.1);
+  ok(step.dForward >= 0 && step.dForward < 20 * 0.1, 'drive: idle stick with min=0 → eases toward 0');
+}
+
+// deadzone: tiny stick treated as idle
+{
+  const state = { heading: 0.3 };
+  const step = stepDrive(state, { moveX: 0.03, moveY: 0, camBearing: 0 }, { min: 0, max: 10, deadzone: 0.06 }, 1);
+  ok(step.heading === 0.3, 'drive: below deadzone → heading unchanged (treated as idle)');
 }
 
 if (failed) { console.error(`${failed} check(s) failed`); process.exit(1); }

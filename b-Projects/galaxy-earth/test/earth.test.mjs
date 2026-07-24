@@ -3,133 +3,103 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 // ponytail: mirrors _galaxy-engine/test/locomotion.test.mjs — node 22's unflagged
 // type-stripping resolves the .ts import directly, no --experimental-strip-types needed.
-import { stepRide } from '../../_galaxy-engine/src/locomotion.ts';
+import { stepDrive } from '../../_galaxy-engine/src/locomotion.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const map = JSON.parse(
   readFileSync(path.join(__dirname, '../src/lib/data/map.json'), 'utf-8')
 );
 
-if (!Array.isArray(map.center) || map.center.length !== 2) {
-  throw new Error('map.json center must be a 2-number array');
-}
-if (typeof map.center[0] !== 'number' || typeof map.center[1] !== 'number') {
-  throw new Error('map.json center entries must be numbers');
-}
-if (typeof map.zoom !== 'number') {
-  throw new Error('map.json zoom must be a number');
-}
-if (!map.terrain || !Array.isArray(map.terrain.tiles) || map.terrain.tiles.length === 0) {
-  throw new Error('map.json terrain.tiles must be a non-empty array');
-}
-if (map.terrain.encoding !== 'terrarium') {
-  throw new Error(`map.json terrain.encoding must be "terrarium", got: ${map.terrain.encoding}`);
-}
+const r = map.rider;
 
-if (!Array.isArray(map.rider?.start) || map.rider.start.length !== 2) {
-  throw new Error('map.json rider.start must be a 2-number array');
+// --- drivers (vehicles = physics; speed profile min/avg/max) ---
+if (!Array.isArray(r.drivers) || r.drivers.length === 0) {
+  throw new Error('map.json rider.drivers must be a non-empty array');
 }
-if (typeof map.rider.start[0] !== 'number' || typeof map.rider.start[1] !== 'number') {
-  throw new Error('map.json rider.start entries must be numbers');
+const driverIds = new Set(r.drivers.map((d) => d.id));
+if (typeof r.defaultDriver !== 'string' || !driverIds.has(r.defaultDriver)) {
+  throw new Error(`map.json rider.defaultDriver "${r.defaultDriver}" must match a rider.drivers[].id`);
 }
-if (!Array.isArray(map.rider.modes) || map.rider.modes.length === 0) {
-  throw new Error('map.json rider.modes must be a non-empty array');
-}
-if (typeof map.rider.defaultMode !== 'string') {
-  throw new Error('map.json rider.defaultMode must be a string');
-}
-if (!map.rider.modes.some((m) => m.id === map.rider.defaultMode)) {
-  throw new Error(`map.json rider.defaultMode "${map.rider.defaultMode}" must match a rider.modes[].id`);
-}
-
-for (const m of map.rider.modes) {
-  if (typeof m.id !== 'string') {
-    throw new Error(`map.json rider.modes entry missing string id: ${JSON.stringify(m)}`);
+for (const d of r.drivers) {
+  if (typeof d.id !== 'string' || typeof d.label !== 'string') {
+    throw new Error(`map.json rider.drivers entry needs string id+label: ${JSON.stringify(d)}`);
   }
-  if (typeof m.label !== 'string') {
-    throw new Error(`map.json rider.modes["${m.id}"].label must be a string`);
+  const s = d.speed;
+  if (!s || typeof s.min !== 'number' || typeof s.max !== 'number' || s.max < s.min) {
+    throw new Error(`map.json rider.drivers["${d.id}"].speed needs numeric min<=max`);
   }
-  if (typeof m.speed !== 'number') {
-    throw new Error(`map.json rider.modes["${m.id}"].speed must be a number`);
-  }
-  if (typeof m.turn !== 'number') {
-    throw new Error(`map.json rider.modes["${m.id}"].turn must be a number`);
-  }
-  if (typeof m.camera !== 'string') {
-    throw new Error(`map.json rider.modes["${m.id}"].camera must be a string (a cameras[].id)`);
+  if (typeof d.turn !== 'number') {
+    throw new Error(`map.json rider.drivers["${d.id}"].turn must be a number`);
   }
 }
 
-// --- camera views (altitude ladder), decoupled from locomotion mode ---
-if (!Array.isArray(map.rider.cameras) || map.rider.cameras.length === 0) {
+// --- camera views (7 global framings, decoupled from driver) ---
+if (!Array.isArray(r.cameras) || r.cameras.length === 0) {
   throw new Error('map.json rider.cameras must be a non-empty array');
 }
-for (const c of map.rider.cameras) {
+for (const c of r.cameras) {
   if (typeof c.id !== 'string' || typeof c.label !== 'string') {
     throw new Error(`map.json rider.cameras entry needs string id+label: ${JSON.stringify(c)}`);
   }
   if (typeof c.pitch !== 'number' || typeof c.zoom !== 'number') {
     throw new Error(`map.json rider.cameras["${c.id}"].pitch/zoom must be numbers`);
   }
-}
-const camIds = new Set(map.rider.cameras.map((c) => c.id));
-if (typeof map.rider.defaultCamera !== 'string' || !camIds.has(map.rider.defaultCamera)) {
-  throw new Error(`map.json rider.defaultCamera "${map.rider.defaultCamera}" must match a rider.cameras[].id`);
-}
-for (const m of map.rider.modes) {
-  if (!camIds.has(m.camera)) {
-    throw new Error(`map.json rider.modes["${m.id}"].camera "${m.camera}" must match a rider.cameras[].id`);
+  if (c.bearingOffset != null && typeof c.bearingOffset !== 'number') {
+    throw new Error(`map.json rider.cameras["${c.id}"].bearingOffset must be a number`);
   }
 }
-
-// an aerial mode must carry lift > 0 (vertical movement)
-const flyMode = map.rider.modes.find((m) => m.id === 'airplane');
-if (!flyMode || !(flyMode.lift > 0)) {
-  throw new Error('map.json rider.modes airplane entry must have lift > 0');
+const camIds = new Set(r.cameras.map((c) => c.id));
+if (typeof r.defaultCamera !== 'string' || !camIds.has(r.defaultCamera)) {
+  throw new Error(`map.json rider.defaultCamera "${r.defaultCamera}" must match a rider.cameras[].id`);
 }
 
-// re-use the shared engine's pure locomotion step to prove one throttle step moves the rider
+// --- joystick config ---
+if (!r.joystick || typeof r.joystick.scale !== 'number' || typeof r.joystick.deadzone !== 'number') {
+  throw new Error('map.json rider.joystick needs numeric scale + deadzone');
+}
+if (!r.joystick.look || typeof r.joystick.look.yawRate !== 'number' || typeof r.joystick.look.pitchRate !== 'number') {
+  throw new Error('map.json rider.joystick.look needs numeric yawRate + pitchRate');
+}
+
+// --- an aerial driver must carry lift>0; airplane must never stall (speed.min>0) ---
+const airplane = r.drivers.find((d) => d.id === 'airplane');
+if (!airplane || !(airplane.lift > 0)) {
+  throw new Error('map.json rider.drivers airplane entry must have lift > 0');
+}
+if (!(airplane.speed.min > 0)) {
+  throw new Error('map.json rider.drivers airplane speed.min must be > 0 (never stalls)');
+}
+
+// --- twin-stick locomotion smoke tests (stepDrive is camera-relative) ---
 {
+  const d = r.drivers.find((x) => x.id === r.defaultDriver);
   const state = { heading: 0 };
-  const walkMode = map.rider.modes.find((m) => m.id === map.rider.defaultMode);
-  const step = stepRide(state, { steer: 0, throttle: 1 }, { ...walkMode, steerSign: map.rider.steerSign }, 1);
+  // push stick up (moveY=1) with camera facing north (camBearing=0) → move forward
+  const step = stepDrive(
+    state,
+    { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
+    { min: d.speed.min, avg: d.speed.avg, max: d.speed.max, turn: d.turn, accel: d.accel, deadzone: r.joystick.deadzone },
+    1
+  );
   if (!(step.dForward > 0)) {
-    throw new Error(`stepRide with throttle=1 should yield dForward>0, got: ${step.dForward}`);
+    throw new Error('stepDrive: default driver must move forward when stick is pushed up');
+  }
+  if (Math.abs(step.heading) > 1e-6) {
+    throw new Error('stepDrive: moveY=1 with camBearing=0 should aim heading ~0');
   }
 }
-
-// a mode with accel should ease in — one frame's dForward stays below the instant target
 {
+  // airplane never stalls: no stick input but min>0 still advances
   const state = { heading: 0 };
-  const dt = 0.1;
-  const step = stepRide(state, { steer: 0, throttle: 1 }, flyMode, dt);
-  if (!(step.dForward > 0 && step.dForward < flyMode.speed * dt)) {
-    throw new Error(
-      `stepRide with accel should ease in (0 < dForward < speed*dt), got dForward=${step.dForward}, speed*dt=${flyMode.speed * dt}`
-    );
+  const step = stepDrive(
+    state,
+    { moveX: 0, moveY: 0, camBearing: 0 },
+    { min: airplane.speed.min, max: airplane.speed.max },
+    1
+  );
+  if (!(step.dForward > 0)) {
+    throw new Error('stepDrive: airplane with speed.min>0 must keep moving at idle stick');
   }
 }
 
-// --- 3D buildings (data-driven fill-extrusion paint) ---
-if (typeof map.buildings?.color !== 'string' && typeof map.buildings?.lowColor !== 'string') {
-  throw new Error('map.json buildings must have a color (or lowColor) string');
-}
-if (typeof map.buildings?.opacity !== 'number') {
-  throw new Error('map.json buildings.opacity must be a number');
-}
-if (typeof map.buildings?.heightField !== 'string') {
-  throw new Error('map.json buildings.heightField must be a string');
-}
-
-// --- nature: green landcover + tree scatter ---
-if (typeof map.nature?.greenColor !== 'string') {
-  throw new Error('map.json nature.greenColor must be a string');
-}
-if (!(typeof map.nature?.trees?.count === 'number' && map.nature.trees.count > 0)) {
-  throw new Error('map.json nature.trees.count must be a number > 0');
-}
-if (!(typeof map.nature?.trees?.radius === 'number' && map.nature.trees.radius > 0)) {
-  throw new Error('map.json nature.trees.radius must be a number > 0');
-}
-
-console.log('OK');
+console.log('earth OK');

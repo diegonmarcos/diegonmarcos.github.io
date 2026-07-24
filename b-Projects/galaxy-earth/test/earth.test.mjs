@@ -55,14 +55,37 @@ for (const m of map.rider.modes) {
   if (typeof m.turn !== 'number') {
     throw new Error(`map.json rider.modes["${m.id}"].turn must be a number`);
   }
-  if (!m.follow || typeof m.follow.pitch !== 'number' || typeof m.follow.zoom !== 'number') {
-    throw new Error(`map.json rider.modes["${m.id}"].follow.pitch/zoom must be numbers`);
+  if (typeof m.camera !== 'string') {
+    throw new Error(`map.json rider.modes["${m.id}"].camera must be a string (a cameras[].id)`);
   }
 }
 
-const flyMode = map.rider.modes.find((m) => m.id === 'fly');
+// --- camera views (altitude ladder), decoupled from locomotion mode ---
+if (!Array.isArray(map.rider.cameras) || map.rider.cameras.length === 0) {
+  throw new Error('map.json rider.cameras must be a non-empty array');
+}
+for (const c of map.rider.cameras) {
+  if (typeof c.id !== 'string' || typeof c.label !== 'string') {
+    throw new Error(`map.json rider.cameras entry needs string id+label: ${JSON.stringify(c)}`);
+  }
+  if (typeof c.pitch !== 'number' || typeof c.zoom !== 'number') {
+    throw new Error(`map.json rider.cameras["${c.id}"].pitch/zoom must be numbers`);
+  }
+}
+const camIds = new Set(map.rider.cameras.map((c) => c.id));
+if (typeof map.rider.defaultCamera !== 'string' || !camIds.has(map.rider.defaultCamera)) {
+  throw new Error(`map.json rider.defaultCamera "${map.rider.defaultCamera}" must match a rider.cameras[].id`);
+}
+for (const m of map.rider.modes) {
+  if (!camIds.has(m.camera)) {
+    throw new Error(`map.json rider.modes["${m.id}"].camera "${m.camera}" must match a rider.cameras[].id`);
+  }
+}
+
+// an aerial mode must carry lift > 0 (vertical movement)
+const flyMode = map.rider.modes.find((m) => m.id === 'airplane');
 if (!flyMode || !(flyMode.lift > 0)) {
-  throw new Error('map.json rider.modes fly entry must have lift > 0');
+  throw new Error('map.json rider.modes airplane entry must have lift > 0');
 }
 
 // re-use the shared engine's pure locomotion step to prove one throttle step moves the rider

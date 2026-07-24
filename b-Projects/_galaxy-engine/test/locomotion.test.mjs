@@ -101,6 +101,32 @@ const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
   ok(step.dForward >= 0 && step.dForward < 20 * 0.1, 'drive: idle stick with min=0 → eases toward 0');
 }
 
+// bearing-convention pin: screen-forward (stick up) === camBearing exactly;
+// screen-right === camBearing+π/2; screen-down (back) === camBearing+π.
+// No turn cap (params.turn omitted) so heading snaps instantly to desired.
+for (const camBearing of [0, Math.PI / 2, -Math.PI / 2]) {
+  {
+    const state = { heading: 0 };
+    const step = stepDrive(state, { moveX: 0, moveY: 1, camBearing }, { min: 0, max: 10 }, 1);
+    ok(step.heading === camBearing, `drive: stick up, camBearing=${camBearing} → heading===camBearing`);
+  }
+  {
+    const state = { heading: 0 };
+    const step = stepDrive(state, { moveX: 0, moveY: -1, camBearing }, { min: 0, max: 10 }, 1);
+    let expected = (camBearing + Math.PI) % (2 * Math.PI);
+    if (expected > Math.PI) expected -= 2 * Math.PI;
+    if (expected < -Math.PI) expected += 2 * Math.PI;
+    ok(Math.abs(step.heading - expected) < 1e-9, `drive: stick down, camBearing=${camBearing} → heading===camBearing+π (backward)`);
+  }
+}
+
+// stick right, camBearing=0, no turn cap → heading===π/2 exactly
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10 }, 1);
+  ok(step.heading === Math.PI / 2, 'drive: stick right, camBearing=0 → heading===π/2 exactly');
+}
+
 // deadzone: tiny stick treated as idle
 {
   const state = { heading: 0.3 };

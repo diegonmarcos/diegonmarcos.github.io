@@ -1,10 +1,17 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import mapConfig from '$lib/data/map.json';
   import { freeInput } from '$engine/freeInput';
   import { stepDrive } from '$engine/locomotion';
   import Joystick from '$engine/Joystick.svelte';
+
+  // Camera altitude compensation: the higher a driver's eye-altitude (drone/heli/plane),
+  // the more the follow-cam needs to zoom OUT to keep the vehicle framed, else it's a
+  // postage stamp against the terrain. Pure fn — easy to unit-test / tune in isolation.
+  const altZoomOffset = (eye: number) =>
+    Math.max(0, Math.min(Math.log2(Math.max(eye, 1)) - 1, 8));
 
   let mapContainer: HTMLDivElement;
 
@@ -39,6 +46,7 @@
   let jsHeapMb = $state<number | undefined>(undefined);
   let fpsGraphCanvas = $state<HTMLCanvasElement>();
   let frameGraphCanvas = $state<HTMLCanvasElement>();
+  let drawCallsGraphCanvas = $state<HTMLCanvasElement>();
 
   // Persistent ride state (heading + carried speed/altitude) — lives across frames;
   // only `speed` resets on a driver switch so momentum doesn't teleport.
@@ -47,11 +55,6 @@
     activeDriver;
     ride.speed = 0;
   });
-
-  // Camera bearing/pitch-offset are integrated ONLY from the right look-stick — never
-  // from rider heading — so the camera stays put while the rider turns underneath it.
-  let camBearing = 0;
-  let camPitchOffset = 0;
 
   function clamp(v: number, lo: number, hi: number) {
     return Math.min(hi, Math.max(lo, v));
@@ -106,6 +109,105 @@
     let map: import('maplibre-gl').Map | undefined;
     let disposed = false;
     let raf = 0;
+    let canvasEl: HTMLCanvasElement | undefined;
+
+    // Camera bearing/pitch are integrated ONLY from the right look-stick (joystick,
+    // keyboard, or pointer-lock mouse) — never from rider heading — so the camera
+    // stays put while the rider turns underneath it. Hoisted to onMount scope (not
+    // component-level $state) so both the pointer-lock mousemove handler (wired up
+    // before the map finishes loading) and the rAF follow-cam tick share them.
+    let camBearing = 0;
+    let lookPitch = 0; // degrees; integrated unbounded, clamped to [minPitch, skyMaxPitch]
+
+    // --- Keyboard bindings (data-driven from rider.keys in map.json) ---
+    const heldKeys = new Set<string>();
+    function recomputeMoveFromKeys() {
+      const keys = rider.keys;
+      let moveX = 0, moveY = 0, climb = 0;
+      if ([...heldKeys].some((k) => keys.forward.includes(k))) moveY += 1;
+      if ([...heldKeys].some((k) => keys.back.includes(k))) moveY -= 1;
+      if ([...heldKeys].some((k) => keys.left.includes(k))) moveX -= 1;
+      if ([...heldKeys].some((k) => keys.right.includes(k))) moveX += 1;
+      if ([...heldKeys].some((k) => keys.up.includes(k))) climb += 1;
+      if ([...heldKeys].some((k) => keys.down.includes(k))) climb -= 1;
+      freeInput.moveX = moveX;
+      freeInput.moveY = moveY;
+      freeInput.climb = climb;
+    }
+    function matchAny(list: string[], key: string) {
+      return list.includes(key);
+    }
+    function cycle<T>(arr: T[], current: T, dir: 1 | -1): T {
+      const i = arr.indexOf(current);
+      const n = arr.length;
+      return arr[(i + dir + n) % n];
+    }
+    function onKeyDown(e: KeyboardEvent) {
+      const keys = rider.keys;
+      const key = e.key;
+      const isHeld =
+        matchAny(keys.forward, key) || matchAny(keys.back, key) ||
+        matchAny(keys.left, key) || matchAny(keys.right, key) ||
+        matchAny(keys.up, key) || matchAny(keys.down, key);
+      const isDiscrete =
+        matchAny(keys.cameraNext, key) || matchAny(keys.cameraPrev, key) ||
+        matchAny(keys.driverNext, key) || matchAny(keys.driverPrev, key);
+      if (!isHeld && !isDiscrete) return;
+      e.preventDefault();
+      if (isHeld) {
+        heldKeys.add(key);
+        recomputeMoveFromKeys();
+      }
+      if (isDiscrete && !e.repeat) {
+        if (matchAny(keys.cameraNext, key)) activeCamera = cycle(rider.cameras, activeCamera, 1);
+        else if (matchAny(keys.cameraPrev, key)) activeCamera = cycle(rider.cameras, activeCamera, -1);
+        else if (matchAny(keys.driverNext, key)) activeDriver = cycle(rider.drivers, activeDriver, 1);
+        else if (matchAny(keys.driverPrev, key)) activeDriver = cycle(rider.drivers, activeDriver, -1);
+      }
+    }
+    function onKeyUp(e: KeyboardEvent) {
+      const keys = rider.keys;
+      const key = e.key;
+      if (heldKeys.has(key)) {
+        e.preventDefault();
+        heldKeys.delete(key);
+        recomputeMoveFromKeys();
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+
+    // --- Pointer-lock mouse-look (only wired up when joystick.mouseLook is true) ---
+    let pointerLocked = false;
+    function onMouseMove(e: MouseEvent) {
+      if (!pointerLocked) return;
+      camBearing += e.movementX * look.mouseSensitivity * (Math.PI / 180);
+      lookPitch = clamp(lookPitch + e.movementY * look.mouseSensitivity, look.minPitch, look.skyMaxPitch);
+    }
+    function onPointerLockChange() {
+      pointerLocked = !!canvasEl && document.pointerLockElement === canvasEl;
+    }
+    if (j.mouseLook) {
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('pointerlockchange', onPointerLockChange);
+    }
+
+    // --- Globe/constellation projection swap ---
+    let wasGlobe = false;
+    $effect(() => {
+      const d = activeDriver;
+      if (!map) return;
+      if (d.globe) {
+        if (!wasGlobe) {
+          map.setProjection({ type: 'globe' } as any);
+          map.setZoom(1); // whole-Earth framing for the constellation driver
+        }
+        wasGlobe = true;
+      } else if (wasGlobe) {
+        map.setProjection({ type: 'mercator' } as any);
+        wasGlobe = false;
+      }
+    });
 
     (async () => {
       const maplibre = (await import('maplibre-gl')).default;
@@ -123,6 +225,11 @@
 
       map.addControl(new maplibre.NavigationControl({ visualizePitch: true }), 'top-right');
       map.addControl(new maplibre.TerrainControl({ source: 'terrain-dem', exaggeration: mapConfig.terrain.exaggeration }), 'top-right');
+
+      canvasEl = map.getCanvas();
+      if (j.mouseLook && canvasEl.requestPointerLock) {
+        canvasEl.addEventListener('click', () => canvasEl?.requestPointerLock());
+      }
 
       map.on('load', () => {
         if (!map) return;
@@ -201,6 +308,43 @@
         let camera: THREE.Camera;
         let renderer: THREE.WebGLRenderer;
         let riderMesh: THREE.Mesh;
+        // GLB model per driver: capsule stays the always-available fallback; a Group
+        // ("riderGroup") holds whichever mesh is currently visible (capsule or loaded
+        // model) so the modelMatrix math in render() doesn't need to know which it is.
+        let riderGroup: THREE.Group;
+        const gltfLoader = new GLTFLoader();
+        const modelCache: Record<string, THREE.Object3D | 'loading' | 'error'> = {};
+        function ensureModelLoaded(driver: (typeof rider.drivers)[number]) {
+          const glb = driver.model?.glb;
+          if (!glb || modelCache[driver.id]) return;
+          modelCache[driver.id] = 'loading';
+          gltfLoader.load(
+            rider.assetsBase + glb,
+            (gltf) => {
+              const obj = gltf.scene;
+              const s = driver.model.scale ?? 1;
+              obj.scale.setScalar(s);
+              obj.rotation.y = driver.model.yaw ?? 0;
+              obj.position.y = driver.model.y ?? 0;
+              modelCache[driver.id] = obj;
+              if (activeDriver.id === driver.id) applyActiveMesh();
+            },
+            undefined,
+            () => {
+              modelCache[driver.id] = 'error';
+            }
+          );
+        }
+        function applyActiveMesh() {
+          if (!riderGroup) return;
+          riderGroup.clear();
+          const cached = modelCache[activeDriver.id];
+          if (activeDriver.model?.glb && cached && cached !== 'loading' && cached !== 'error') {
+            riderGroup.add(cached as THREE.Object3D);
+          } else {
+            riderGroup.add(riderMesh);
+          }
+        }
         let natureScene: THREE.Scene;
         let treesMesh: THREE.InstancedMesh;
         let clockPrev = 0;
@@ -212,6 +356,7 @@
         const GRAPH_N = 120;
         const frameGraphSamples = new Array(GRAPH_N).fill(16.7);
         const fpsGraphSamples = new Array(GRAPH_N).fill(60);
+        const drawCallsGraphSamples = new Array(GRAPH_N).fill(0);
         let graphIdx = 0;
 
         function drawPerfSparkline() {
@@ -258,6 +403,8 @@
           if (!perfExpanded) return;
           drawLineGraph(fpsGraphCanvas, fpsGraphSamples, graphIdx, 90, '#5ee6a0');
           drawLineGraph(frameGraphCanvas, frameGraphSamples, graphIdx, 40, frameMs > 33 ? '#ff5c5c' : frameMs > 16 ? '#ffb84d' : '#5ee6a0');
+          const drawCallsMax = Math.max(20, ...drawCallsGraphSamples);
+          drawLineGraph(drawCallsGraphCanvas, drawCallsGraphSamples, graphIdx, drawCallsMax, '#9db4ff');
         }
 
         const riderLayer: any = {
@@ -279,7 +426,14 @@
             );
             const mat = new THREE.MeshStandardMaterial({ color: rider.character.color });
             riderMesh = new THREE.Mesh(geo, mat);
-            scene.add(riderMesh);
+            riderGroup = new THREE.Group();
+            riderGroup.add(riderMesh);
+            scene.add(riderGroup);
+
+            // Kick off lazy GLB loads for every driver that declares one; the capsule
+            // stays visible until each finishes (or forever, if it errors/is null).
+            for (const d of rider.drivers) ensureModelLoaded(d);
+            applyActiveMesh();
 
             camera = new THREE.Camera();
             renderer = new THREE.WebGLRenderer({ canvas: (map as any).getCanvas(), context: gl });
@@ -323,8 +477,9 @@
             natureScene.add(treeSun);
             natureScene.add(treesMesh);
           },
-          render(gl: WebGLRenderingContext, matrix: number[]) {
+          render(gl: WebGLRenderingContext, options: { modelViewProjectionMatrix: number[] }) {
             if (!map) return;
+            const matrix = options.modelViewProjectionMatrix;
 
             const now = performance.now();
             const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
@@ -349,6 +504,10 @@
                 renderTriangles = renderer.info.render.triangles;
                 memGeometries = renderer.info.memory.geometries;
                 memTextures = renderer.info.memory.textures;
+                // graphIdx has already advanced past frameGraphSamples/fpsGraphSamples
+                // above (renderer.info is only known after the three.js render calls
+                // this frame) — write to the same slot they just used.
+                drawCallsGraphSamples[(graphIdx - 1 + GRAPH_N) % GRAPH_N] = renderCalls;
               }
               const heap = (performance as any).memory?.usedJSHeapSize;
               jsHeapMb = heap != null ? heap / (1024 * 1024) : undefined;
@@ -356,7 +515,15 @@
 
             const step = stepDrive(
               ride,
-              { moveX: freeInput.moveX, moveY: freeInput.moveY, camBearing, climb: freeInput.climb },
+              {
+                moveX: freeInput.moveX,
+                moveY: freeInput.moveY,
+                // Screen-forward must match character-forward regardless of camera
+                // framing (e.g. the 90°-offset side-scroll camera) — fold the active
+                // camera's bearingOffset into the bearing stepDrive steers toward.
+                camBearing: camBearing + (activeCamera.bearingOffset * Math.PI) / 180,
+                climb: freeInput.climb
+              },
               {
                 min: activeDriver.speed.min,
                 avg: activeDriver.speed.avg,
@@ -405,9 +572,19 @@
 
         map.addLayer(riderLayer);
 
+        // Swap the visible rider mesh (capsule vs. loaded GLB) whenever the driver
+        // changes — the model may already be cached from the background preload above,
+        // or may still be 'loading'/'error', in which case applyActiveMesh falls back
+        // to the capsule until (if ever) the load resolves.
+        $effect(() => {
+          activeDriver;
+          applyActiveMesh();
+        });
+
         // Follow-cam: driven off the rAF loop, guarded against re-entrant jumpTo calls.
-        // camBearing/camPitchOffset are user-owned (integrated ONLY from the right
-        // look-stick, never from rider heading) so steering never fights the camera.
+        // camBearing/lookPitch are user-owned (integrated ONLY from the right look-stick,
+        // keyboard, or pointer-lock mouse — never from rider heading) so steering never
+        // fights the camera.
         let tickPrev = 0;
         const tick = () => {
           if (disposed || !map) return;
@@ -415,20 +592,31 @@
           const dt = tickPrev ? Math.min((now - tickPrev) / 1000, 0.1) : 0;
           tickPrev = now;
 
+          // Yaw integrates unbounded (full 360°, no clamp).
           camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
-          camPitchOffset = clamp(
-            camPitchOffset + freeInput.pitchRate * look.pitchRate * dt,
-            look.minPitch - activeCamera.pitch,
-            look.maxPitch - activeCamera.pitch
+          // Pitch integrates in degrees, clamped to [minPitch, skyMaxPitch] — this
+          // intentionally allows values above mapMaxPitch (85°) toward "sky".
+          lookPitch = clamp(
+            lookPitch + freeInput.pitchRate * look.pitchRate * dt,
+            look.minPitch,
+            look.skyMaxPitch
           );
+
+          // Higher-altitude drivers (drone/heli/plane) need the follow-cam pulled
+          // back further so the vehicle stays framed instead of filling the screen.
+          const effectiveZoom = activeCamera.zoom - altZoomOffset(activeDriver.altitudeBand.eye);
 
           if (!followGuard) {
             followGuard = true;
+            // P3b: sky-dome overlay goes here — once activeCamera.pitch + lookPitch
+            // exceeds look.mapMaxPitch, a sky-dome/space overlay should take over
+            // instead of the flat cap below (maplibre pitch tops out at mapMaxPitch).
+            const mapPitch = Math.min(activeCamera.pitch + lookPitch, look.mapMaxPitch);
             map.jumpTo({
               center: lngLat,
               bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
-              pitch: clamp(activeCamera.pitch + camPitchOffset, look.minPitch, look.maxPitch),
-              zoom: activeCamera.zoom
+              pitch: mapPitch,
+              zoom: effectiveZoom
             });
             followGuard = false;
           }
@@ -441,6 +629,10 @@
     return () => {
       disposed = true;
       if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('pointerlockchange', onPointerLockChange);
       map?.remove();
     };
   });
@@ -478,6 +670,11 @@
           <span class="perf-label">Frame</span>
           <canvas bind:this={frameGraphCanvas} width="160" height="40"></canvas>
           <span class="perf-num" class:warn={frameMs > 16} class:bad={frameMs > 33}>{frameMs.toFixed(1)} ms</span>
+        </div>
+        <div class="perf-row">
+          <span class="perf-label">Draws</span>
+          <canvas bind:this={drawCallsGraphCanvas} width="160" height="40"></canvas>
+          <span class="perf-num">{renderCalls}</span>
         </div>
         <div class="perf-stat"><span>Draw calls</span><span>{renderCalls}</span></div>
         <div class="perf-stat"><span>Triangles</span><span>{renderTriangles.toLocaleString()}</span></div>

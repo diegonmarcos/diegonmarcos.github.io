@@ -31,6 +31,30 @@ for (const d of r.drivers) {
   if (typeof d.turn !== 'number') {
     throw new Error(`map.json rider.drivers["${d.id}"].turn must be a number`);
   }
+  if (!d.model || (d.model.glb !== null && typeof d.model.glb !== 'string')) {
+    throw new Error(`map.json rider.drivers["${d.id}"].model.glb must be a string or null`);
+  }
+  const ab = d.altitudeBand;
+  if (!ab || typeof ab.eye !== 'number' || typeof ab.cruise !== 'number' || typeof ab.ceiling !== 'number') {
+    throw new Error(`map.json rider.drivers["${d.id}"].altitudeBand needs numeric eye/cruise/ceiling`);
+  }
+}
+
+// --- assets CDN base + constellation (globe) driver + keybindings + look range ---
+if (typeof r.assetsBase !== 'string' || !r.assetsBase.startsWith('http')) {
+  throw new Error('map.json rider.assetsBase must be an http(s) CDN url');
+}
+const constellation = r.drivers.find((d) => d.id === 'constellation');
+if (!constellation || constellation.globe !== true) {
+  throw new Error('map.json rider.drivers must include a constellation driver with globe:true');
+}
+for (const k of ['forward','back','left','right','up','down','cameraNext','cameraPrev','driverNext','driverPrev']) {
+  if (!Array.isArray(r.keys?.[k]) || r.keys[k].length === 0) {
+    throw new Error(`map.json rider.keys.${k} must be a non-empty array`);
+  }
+}
+if (!(r.joystick.look.mapMaxPitch < r.joystick.look.skyMaxPitch)) {
+  throw new Error('map.json rider.joystick.look.mapMaxPitch must be < skyMaxPitch (sky-dome takes over above the map ceiling)');
 }
 
 // --- camera views (7 global framings, decoupled from driver) ---

@@ -125,12 +125,15 @@
     "joystick": {
       "scale": 0.5,
       "look": {
-        "yawRate": 90,
-        "pitchRate": 60,
+        "yawRate": 120,
+        "pitchRate": 90,
+        "mapMaxPitch": 85,
+        "skyMaxPitch": 175,
         "minPitch": 0,
-        "maxPitch": 90
+        "mouseSensitivity": 0.18
       },
-      "deadzone": 0.06
+      "deadzone": 0.06,
+      "mouseLook": true
     },
     "defaultDriver": "walk",
     "drivers": [
@@ -144,7 +147,18 @@
           "max": 14
         },
         "turn": 8,
-        "accel": 10
+        "accel": 10,
+        "model": {
+          "glb": "man.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 1.7,
+          "cruise": 0,
+          "ceiling": 0
+        }
       },
       {
         "id": "cycle",
@@ -156,7 +170,18 @@
           "max": 34
         },
         "turn": 7,
-        "accel": 6
+        "accel": 6,
+        "model": {
+          "glb": "vehicles/bike.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 1.5,
+          "cruise": 0,
+          "ceiling": 0
+        }
       },
       {
         "id": "car",
@@ -168,7 +193,18 @@
           "max": 80
         },
         "turn": 6,
-        "accel": 16
+        "accel": 16,
+        "model": {
+          "glb": "city/car.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 1.6,
+          "cruise": 0,
+          "ceiling": 0
+        }
       },
       {
         "id": "sail",
@@ -180,7 +216,18 @@
           "max": 45
         },
         "turn": 4,
-        "accel": 5
+        "accel": 5,
+        "model": {
+          "glb": "vehicles/sailboat.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 2.5,
+          "cruise": 0,
+          "ceiling": 0
+        }
       },
       {
         "id": "drone",
@@ -194,7 +241,18 @@
         "turn": 9,
         "accel": 12,
         "lift": 60,
-        "maxAlt": 800
+        "maxAlt": 800,
+        "model": {
+          "glb": "vehicles/drone.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 120,
+          "cruise": 120,
+          "ceiling": 800
+        }
       },
       {
         "id": "helicopter",
@@ -208,7 +266,18 @@
         "turn": 6,
         "accel": 14,
         "lift": 50,
-        "maxAlt": 1400
+        "maxAlt": 1400,
+        "model": {
+          "glb": "vehicles/helicopter.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 300,
+          "cruise": 300,
+          "ceiling": 1400
+        }
       },
       {
         "id": "airplane",
@@ -222,8 +291,86 @@
         "turn": 4,
         "accel": 22,
         "lift": 40,
-        "maxAlt": 2400
+        "maxAlt": 2400,
+        "model": {
+          "glb": "vehicles/airplane.glb",
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 1200,
+          "cruise": 1200,
+          "ceiling": 2400
+        }
+      },
+      {
+        "id": "constellation",
+        "label": "Constellation",
+        "icon": "🌌",
+        "speed": {
+          "min": 0,
+          "avg": 0,
+          "max": 0
+        },
+        "turn": 2,
+        "accel": 2,
+        "model": {
+          "glb": null,
+          "scale": 1.0,
+          "yaw": 0,
+          "y": 0
+        },
+        "altitudeBand": {
+          "eye": 9000000,
+          "cruise": 9000000,
+          "ceiling": 20000000
+        },
+        "globe": true
       }
-    ]
+    ],
+    "assetsBase": "https://cdn.jsdelivr.net/gh/diegonmarcos/front-assets-cdn@main/b-Projects/galaxy/static/assets/models/",
+    "keys": {
+      "forward": [
+        "w",
+        "ArrowUp"
+      ],
+      "back": [
+        "s",
+        "ArrowDown"
+      ],
+      "left": [
+        "a",
+        "ArrowLeft"
+      ],
+      "right": [
+        "d",
+        "ArrowRight"
+      ],
+      "up": [
+        "q",
+        " "
+      ],
+      "down": [
+        "e",
+        "Shift"
+      ],
+      "cameraNext": [
+        "+",
+        "="
+      ],
+      "cameraPrev": [
+        "-",
+        "_"
+      ],
+      "driverNext": [
+        ".",
+        ">"
+      ],
+      "driverPrev": [
+        ",",
+        "<"
+      ]
+    }
   }
 }

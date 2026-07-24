@@ -10,15 +10,36 @@
 
   // ponytail: sail/drive are param profiles — no water/road gating yet (future increment).
   const rider = mapConfig.rider;
+  const j = rider.joystick;
   let activeMode = $state(rider.modes.find((m) => m.id === rider.defaultMode) ?? rider.modes[0]);
+
+  // Camera view is decoupled from locomotion mode: switching mode re-points the camera
+  // at that mode's default view, but the camera-view FAB can then override it independently.
+  let activeCamera = $state(
+    rider.cameras.find((c) => c.id === rider.defaultCamera) ?? rider.cameras[0]
+  );
+  let showModePicker = $state(false);
+  let showCameraPicker = $state(false);
+  let hudSpeed = $state(0);
+
+  // Perf overlay: FPS (EMA-smoothed) + frame-ms, mirrored into $state each frame so the
+  // DOM refreshes; the rolling sample ring lives in a plain closure array (not $state) and
+  // is drawn straight onto a small canvas — no charting library needed for one sparkline.
+  let perfCanvas = $state<HTMLCanvasElement>();
+  let fps = $state(0);
+  let frameMs = $state(0);
 
   // Persistent ride state (heading + carried speed/altitude) — lives across mode switches
   // and across frames; only `speed` resets on a mode change so momentum doesn't teleport.
   const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
   $effect(() => {
-    activeMode;
+    activeCamera = rider.cameras.find((c) => c.id === activeMode.camera) ?? activeCamera;
     ride.speed = 0;
   });
+
+  function clamp(v: number, lo: number, hi: number) {
+    return Math.min(hi, Math.max(lo, v));
+  }
 
   // --- deterministic tree scatter: fractional part of index*golden-ratio + salt,
   // no Math.random so the scatter is reproducible across reloads. ---
@@ -168,6 +189,30 @@
         let treesMesh: THREE.InstancedMesh;
         let clockPrev = 0;
         let followGuard = false;
+        const perfSamples = new Array(60).fill(16.7);
+        let perfIdx = 0;
+        let fpsEma = 60;
+
+        function drawPerfSparkline() {
+          const c = perfCanvas;
+          if (!c) return;
+          const ctx = c.getContext('2d');
+          if (!ctx) return;
+          const w = c.width, h = c.height;
+          ctx.clearRect(0, 0, w, h);
+          const n = perfSamples.length;
+          const maxMs = 40; // clamp sparkline scale so a single slow frame doesn't flatten it
+          ctx.beginPath();
+          for (let i = 0; i < n; i++) {
+            const sample = perfSamples[(perfIdx + i) % n];
+            const x = (i / (n - 1)) * w;
+            const y = h - Math.min(sample, maxMs) / maxMs * h;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          }
+          ctx.strokeStyle = frameMs > 33 ? '#ff5c5c' : frameMs > 16 ? '#ffb84d' : '#5ee6a0';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
 
         const riderLayer: any = {
           id: 'rider',
@@ -239,6 +284,16 @@
             const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
             clockPrev = now;
 
+            if (dt > 0) {
+              const ms = dt * 1000;
+              frameMs = ms;
+              fpsEma = fpsEma + (1000 / ms - fpsEma) * 0.1;
+              fps = fpsEma;
+              perfSamples[perfIdx % perfSamples.length] = ms;
+              perfIdx++;
+              drawPerfSparkline();
+            }
+
             const step = stepRide(ride, freeInput, {
               speed: activeMode.speed,
               turn: activeMode.turn,
@@ -247,6 +302,8 @@
               lift: activeMode.lift,
               maxAlt: activeMode.maxAlt
             }, dt);
+
+            hudSpeed = ride.speed ?? 0;
 
             // ponytail: capsule primitive character; swap for a GLB when art is ready.
             // altitude (metres, fly mode only) lifts the mesh off the terrain.
@@ -282,15 +339,32 @@
         map.addLayer(riderLayer);
 
         // Follow-cam: driven off the rAF loop, guarded against re-entrant jumpTo calls.
+        // lookYaw/lookPitch are plain closure locals (not $state) — internal rAF-loop
+        // accumulators driven by the right joystick's yawRate/pitchRate, integrated here.
+        let lookYaw = 0;
+        let lookPitch = 0;
+        let tickPrev = 0;
+        const look = rider.joystick.look;
         const tick = () => {
           if (disposed || !map) return;
+          const now = performance.now();
+          const dt = tickPrev ? Math.min((now - tickPrev) / 1000, 0.1) : 0;
+          tickPrev = now;
+
+          lookYaw += freeInput.yawRate * look.yawRate * dt;
+          lookPitch = clamp(
+            lookPitch + freeInput.pitchRate * look.pitchRate * dt,
+            look.minPitch - activeCamera.pitch,
+            look.maxPitch - activeCamera.pitch
+          );
+
           if (!followGuard) {
             followGuard = true;
             map.jumpTo({
               center: lngLat,
-              bearing: (ride.heading * 180) / Math.PI * rider.follow.bearingSign,
-              pitch: activeMode.follow.pitch,
-              zoom: activeMode.follow.zoom
+              bearing: (ride.heading * 180) / Math.PI * rider.follow.bearingSign + lookYaw,
+              pitch: clamp(activeCamera.pitch + lookPitch, look.minPitch, look.maxPitch),
+              zoom: activeCamera.zoom
             });
             followGuard = false;
           }
@@ -313,21 +387,16 @@
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
+    <div class="perf" class:warn={frameMs > 16} class:bad={frameMs > 33}>
+      <canvas bind:this={perfCanvas} width="120" height="36"></canvas>
+      <div class="perf-text">
+        <span>{Math.round(fps)} fps</span>
+        <span>{frameMs.toFixed(1)} ms</span>
+      </div>
+    </div>
   </div>
 
-  <div class="modes" role="group" aria-label="Locomotion mode">
-    {#each rider.modes as m (m.id)}
-      <button
-        type="button"
-        class="mode-btn"
-        class:active={m.id === activeMode.id}
-        onclick={() => (activeMode = m)}
-      >
-        <span class="icon">{m.icon}</span>
-        <span class="label">{m.label}</span>
-      </button>
-    {/each}
-  </div>
+  <div class="velocimeter">{Math.round(hudSpeed)} km/h</div>
 
   {#if activeMode.lift}
     <div class="climb">
@@ -352,7 +421,54 @@
     </div>
   {/if}
 
-  <Joystick />
+  <div class="fabs">
+    {#if showCameraPicker}
+      <div class="fab-popup" role="menu" aria-label="Camera view">
+        {#each rider.cameras as c (c.id)}
+          <button
+            type="button"
+            class="fab-popup-item"
+            class:active={c.id === activeCamera.id}
+            onclick={() => { activeCamera = c; showCameraPicker = false; }}
+          >
+            <span class="icon">{c.icon}</span>
+            <span class="label">{c.label}</span>
+          </button>
+        {/each}
+      </div>
+    {/if}
+    <button
+      type="button"
+      class="fab"
+      aria-label="Camera view"
+      onclick={() => { showCameraPicker = !showCameraPicker; showModePicker = false; }}
+    >{activeCamera.icon}</button>
+
+    {#if showModePicker}
+      <div class="fab-popup" role="menu" aria-label="Locomotion mode">
+        {#each rider.modes as m (m.id)}
+          <button
+            type="button"
+            class="fab-popup-item"
+            class:active={m.id === activeMode.id}
+            onclick={() => { activeMode = m; showModePicker = false; }}
+          >
+            <span class="icon">{m.icon}</span>
+            <span class="label">{m.label}</span>
+          </button>
+        {/each}
+      </div>
+    {/if}
+    <button
+      type="button"
+      class="fab"
+      aria-label="Locomotion mode"
+      onclick={() => { showModePicker = !showModePicker; showCameraPicker = false; }}
+    >{activeMode.icon}</button>
+  </div>
+
+  <Joystick side="left" channel="move" scale={j.scale} invertX={j.move.invertX} invertY={j.move.invertY} />
+  <Joystick side="right" channel="look" scale={j.scale} invertX={j.lookInvert.invertX} invertY={j.lookInvert.invertY} />
 </div>
 
 <style>
@@ -402,57 +518,133 @@
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   }
 
-  .modes {
+  .perf {
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    background: rgba(10, 14, 26, 0.45);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 0.5rem;
+    backdrop-filter: blur(4px);
+    width: max-content;
+  }
+
+  .perf canvas {
+    display: block;
+    width: 120px;
+    height: 36px;
+  }
+
+  .perf-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.7rem;
+    font-variant-numeric: tabular-nums;
+    color: #5ee6a0;
+    line-height: 1.2;
+  }
+
+  .perf.warn .perf-text { color: #ffb84d; }
+  .perf.bad .perf-text { color: #ff5c5c; }
+
+  .velocimeter {
     position: fixed;
     top: 1rem;
     left: 50%;
     transform: translateX(-50%);
     z-index: 30;
-    display: flex;
-    gap: 0.4rem;
-    padding: 0.35rem;
+    padding: 0.35rem 0.9rem;
     background: rgba(10, 14, 26, 0.45);
     border: 1px solid rgba(157, 180, 255, 0.35);
     border-radius: 999px;
     backdrop-filter: blur(4px);
-    pointer-events: auto;
+    color: #e6e8f2;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
   }
 
-  .mode-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.1rem;
-    padding: 0.35rem 0.6rem;
-    border: none;
-    border-radius: 999px;
-    background: transparent;
-    color: #cfd8ff;
-    font-family: inherit;
-    font-size: 0.65rem;
-    line-height: 1;
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-
-  .mode-btn .icon {
-    font-size: 1.15rem;
-  }
-
-  .mode-btn.active {
-    background: rgba(157, 180, 255, 0.35);
-    color: #ffffff;
-  }
-
+  /* Climb control sits to the left of the right look-stick, clear of the FAB stack. */
   .climb {
     position: fixed;
-    right: 26px;
+    right: 200px;
     bottom: 26px;
     z-index: 35;
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
     pointer-events: auto;
+  }
+
+  /* Mode + camera-view FABs: stacked bottom-right, above the right look-stick. */
+  .fabs {
+    position: fixed;
+    right: 26px;
+    bottom: 200px;
+    z-index: 36;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    pointer-events: auto;
+  }
+
+  .fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    background: rgba(10, 14, 26, 0.55);
+    color: #cfd8ff;
+    font-size: 1.4rem;
+    line-height: 1;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .fab:active {
+    background: rgba(157, 180, 255, 0.35);
+  }
+
+  .fab-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.35rem;
+    background: rgba(10, 14, 26, 0.55);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 1rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .fab-popup-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #cfd8ff;
+    font-family: inherit;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .fab-popup-item .icon {
+    font-size: 1.1rem;
+  }
+
+  .fab-popup-item.active {
+    background: rgba(157, 180, 255, 0.35);
+    color: #ffffff;
   }
 
   .climb-btn {

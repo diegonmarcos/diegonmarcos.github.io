@@ -1,17 +1,27 @@
 {
-  "center": [2.2945, 48.8584],
+  "center": [
+    2.2945,
+    48.8584
+  ],
   "zoom": 15,
   "pitch": 70,
   "bearing": -20,
   "basemap": "https://tiles.openfreemap.org/styles/liberty",
   "terrain": {
-    "tiles": ["https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"],
+    "tiles": [
+      "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png"
+    ],
     "encoding": "terrarium",
     "tileSize": 256,
     "maxzoom": 15,
     "exaggeration": 1.4
   },
-  "sky": { "sun": [0.0, 90.0] },
+  "sky": {
+    "sun": [
+      0.0,
+      90.0
+    ]
+  },
   "buildings": {
     "minZoom": 14,
     "opacity": 0.88,
@@ -23,7 +33,10 @@
   },
   "nature": {
     "sourceLayer": "landcover",
-    "landcoverClasses": ["wood", "grass"],
+    "landcoverClasses": [
+      "wood",
+      "grass"
+    ],
     "greenColor": "#2f9e44",
     "greenOpacity": 0.5,
     "trees": {
@@ -36,17 +49,152 @@
     }
   },
   "rider": {
-    "start": [2.2945, 48.8584],
+    "start": [
+      2.2945,
+      48.8584
+    ],
     "steerSign": 1,
-    "character": { "primitive": "capsule", "radius": 3, "height": 10, "color": "#ff5c5c" },
-    "follow": { "bearingSign": 1 },
+    "character": {
+      "primitive": "capsule",
+      "radius": 3,
+      "height": 10,
+      "color": "#ff5c5c"
+    },
+    "follow": {
+      "bearingSign": 1
+    },
     "defaultMode": "walk",
     "modes": [
-      { "id": "walk",  "label": "Walk",  "icon": "🚶", "speed": 14,  "turn": 1.9, "follow": { "pitch": 66, "zoom": 18.2 } },
-      { "id": "cycle", "label": "Cycle", "icon": "🚴", "speed": 34,  "turn": 1.5, "accel": 6,  "follow": { "pitch": 62, "zoom": 17.3 } },
-      { "id": "drive", "label": "Drive", "icon": "🚗", "speed": 80,  "turn": 1.0, "accel": 16, "follow": { "pitch": 57, "zoom": 16.2 } },
-      { "id": "sail",  "label": "Sail",  "icon": "⛵", "speed": 45,  "turn": 0.7, "accel": 5,  "follow": { "pitch": 54, "zoom": 16.0 } },
-      { "id": "fly",   "label": "Fly",   "icon": "✈️", "speed": 150, "turn": 0.9, "accel": 22, "lift": 45, "maxAlt": 1600, "follow": { "pitch": 42, "zoom": 14.6 } }
-    ]
+      {
+        "id": "walk",
+        "label": "Walk",
+        "icon": "🚶",
+        "speed": 14,
+        "turn": 1.9,
+        "camera": "isometric"
+      },
+      {
+        "id": "cycle",
+        "label": "Cycle",
+        "icon": "🚴",
+        "speed": 34,
+        "turn": 1.5,
+        "accel": 6,
+        "camera": "isometric"
+      },
+      {
+        "id": "drive",
+        "label": "Car",
+        "icon": "🚗",
+        "speed": 80,
+        "turn": 1.0,
+        "accel": 16,
+        "camera": "isometric"
+      },
+      {
+        "id": "sail",
+        "label": "Sail",
+        "icon": "⛵",
+        "speed": 45,
+        "turn": 0.7,
+        "accel": 5,
+        "camera": "isometric"
+      },
+      {
+        "id": "drone",
+        "label": "Drone",
+        "icon": "🛸",
+        "speed": 70,
+        "turn": 2.2,
+        "accel": 12,
+        "lift": 60,
+        "maxAlt": 800,
+        "camera": "drone"
+      },
+      {
+        "id": "helicopter",
+        "label": "Helicopter",
+        "icon": "🚁",
+        "speed": 110,
+        "turn": 1.4,
+        "accel": 14,
+        "lift": 50,
+        "maxAlt": 1400,
+        "camera": "helicopter"
+      },
+      {
+        "id": "airplane",
+        "label": "Airplane",
+        "icon": "✈️",
+        "speed": 190,
+        "turn": 0.9,
+        "accel": 22,
+        "lift": 40,
+        "maxAlt": 2400,
+        "camera": "airplane"
+      }
+    ],
+    "cameras": [
+      {
+        "id": "fps",
+        "label": "1st Person",
+        "icon": "👁️",
+        "pitch": 85,
+        "zoom": 19.4
+      },
+      {
+        "id": "isometric",
+        "label": "Isometric",
+        "icon": "🎮",
+        "pitch": 68,
+        "zoom": 17.6
+      },
+      {
+        "id": "drone",
+        "label": "Drone",
+        "icon": "🛸",
+        "pitch": 52,
+        "zoom": 16.2
+      },
+      {
+        "id": "helicopter",
+        "label": "Helicopter",
+        "icon": "🚁",
+        "pitch": 45,
+        "zoom": 15.0
+      },
+      {
+        "id": "airplane",
+        "label": "Airplane",
+        "icon": "🛩️",
+        "pitch": 38,
+        "zoom": 14.0
+      },
+      {
+        "id": "satellite",
+        "label": "Satellite",
+        "icon": "🛰️",
+        "pitch": 0,
+        "zoom": 13.0
+      }
+    ],
+    "defaultCamera": "isometric",
+    "joystick": {
+      "scale": 0.5,
+      "look": {
+        "yawRate": 90,
+        "pitchRate": 60,
+        "minPitch": 0,
+        "maxPitch": 85
+      },
+      "move": {
+        "invertX": true,
+        "invertY": true
+      },
+      "lookInvert": {
+        "invertX": false,
+        "invertY": false
+      }
+    }
   }
 }

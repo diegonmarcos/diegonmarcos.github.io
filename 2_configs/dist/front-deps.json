@@ -355,7 +355,7 @@
         "folder": "b-Projects/galaxy-earth",
         "category": "b-Projects",
         "dependencies": {
-          "maplibre-gl": "^4.7.1",
+          "maplibre-gl": "^5",
           "three": "^0.169.0"
         },
         "devDependencies": {

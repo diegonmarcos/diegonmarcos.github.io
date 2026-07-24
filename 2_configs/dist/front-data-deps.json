@@ -192,7 +192,7 @@
       "key": "b-Projects__galaxy-earth",
       "path": "b-Projects/galaxy-earth",
       "deps": {
-        "maplibre-gl": "^4.7.1",
+        "maplibre-gl": "^5",
         "three": "^0.169.0",
         "@sveltejs/adapter-static": "^3.0.10",
         "@sveltejs/kit": "^2.47.1",

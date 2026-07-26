@@ -5529,6 +5529,14 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
+        "column": "Games",
+        "label": "Worms",
+        "url": "https://archive.org/details/worms_team17",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
         "column": "Video",
         "label": "MyVideos",
         "url": "https://diegonmarcos.github.io/myvideos",
@@ -5573,14 +5581,6 @@
         "label": "Galaxy - X1",
         "url": "https://diegonmarcos.github.io/galaxy-x1/",
         "icon": "world.svg"
-      },
-      {
-        "section": "personal-tools",
-        "slide": "personal-tools",
-        "column": "Game Zone",
-        "label": "Worms",
-        "url": "https://archive.org/details/worms_team17",
-        "icon": "device-gamepad.svg"
       },
       {
         "section": "personal-tools",

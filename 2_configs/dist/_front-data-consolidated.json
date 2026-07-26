@@ -4883,7 +4883,7 @@
         "section": "personal-tools",
         "id": "circus",
         "kind": "tools",
-        "title": "KNOWLEDGE CENTER"
+        "title": "CIRCUS"
       },
       {
         "section": "personal-tools",
@@ -5694,6 +5694,22 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
+        "column": "Engineer",
+        "label": "Music - DAW",
+        "url": "https://diegonmarcos.github.io/music_daw_llms",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Engineer",
+        "label": "Music - Mixer",
+        "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
         "column": "Audio",
         "label": "Music",
         "url": "https://diegonmarcos.github.io/music/",
@@ -5710,7 +5726,7 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
-        "column": "Games",
+        "column": "Games 2D",
         "label": "Games",
         "url": "https://diegonmarcos.github.io/games",
         "icon": "device-gamepad.svg"
@@ -5718,7 +5734,7 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
-        "column": "Games",
+        "column": "Games 2D",
         "label": "Carto",
         "url": "https://diegonmarcos.github.io/carto/",
         "icon": "cards.svg"
@@ -5726,7 +5742,7 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
-        "column": "Games",
+        "column": "Games 2D",
         "label": "myAstro",
         "url": "https://diegonmarcos.github.io/myAstro",
         "icon": "world-longitude.svg"
@@ -5734,7 +5750,7 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
-        "column": "Games",
+        "column": "Games 2D",
         "label": "Worms",
         "url": "https://archive.org/details/worms_team17",
         "icon": "device-gamepad.svg"
@@ -5745,7 +5761,7 @@
         "column": "Assets",
         "label": "Assets",
         "url": "https://diegonmarcos.github.io/",
-        "icon": "folder.svg"
+        "icon": "file-stack.svg"
       },
       {
         "section": "personal-tools",
@@ -5766,7 +5782,7 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
-        "column": "Games",
+        "column": "Games 3D",
         "label": "Galaxy - Earth",
         "url": "https://diegonmarcos.github.io/galaxy-earth/",
         "icon": "world.svg"

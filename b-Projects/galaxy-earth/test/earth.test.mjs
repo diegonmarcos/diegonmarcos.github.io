@@ -111,6 +111,26 @@ if (!(airplane.speed.min > 0)) {
   if (Math.abs(step.heading) > 1e-6) {
     throw new Error('stepDrive: moveY=1 with camBearing=0 should aim heading ~0');
   }
+  // Mercator +y points SOUTH: moving compass-north (heading 0) must DECREASE y,
+  // so forwardZ must be negative. This locks the sign that makes "forward = forward".
+  if (!(step.forwardZ < 0)) {
+    throw new Error('stepDrive: heading 0 (north) must give forwardZ < 0 (mercator y is south-positive)');
+  }
+  if (Math.abs(step.forwardX) > 1e-6) {
+    throw new Error('stepDrive: heading 0 must give forwardX ~0 (no east/west drift)');
+  }
+}
+{
+  // Stick right (moveX=1) with camBearing=0 → heading +90° (east): forwardX>0, forwardZ~0.
+  const step = stepDrive(
+    { heading: 0 },
+    { moveX: 1, moveY: 0, camBearing: 0, climb: 0 },
+    { min: 1, avg: 2, max: 3, turn: Math.PI, accel: 10, deadzone: 0.05 },
+    1
+  );
+  if (!(step.forwardX > 0) || Math.abs(step.forwardZ) > 1e-6) {
+    throw new Error('stepDrive: stick-right at camBearing 0 must steer east (forwardX>0, forwardZ~0)');
+  }
 }
 {
   // airplane never stalls: no stick input but min>0 still advances

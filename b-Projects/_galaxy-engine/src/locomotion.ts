@@ -51,7 +51,7 @@ export function stepDrive(state: RideState, input: DriveInput, params: DrivePara
     }
     state.heading += delta;
   }
-  const forwardX = Math.sin(state.heading), forwardZ = Math.cos(state.heading);
+  const forwardX = Math.sin(state.heading), forwardZ = -Math.cos(state.heading);
   const target = mag > 0 ? params.min + Math.min(mag, 1) * (params.max - params.min) : params.min;
   if (params.accel != null) {
     const k = 1 - Math.exp(-params.accel * dt);

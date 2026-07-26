@@ -316,7 +316,7 @@
         "turn": 2,
         "accel": 2,
         "model": {
-          "glb": null,
+          "glb": "vehicles/satellite.glb",
           "scale": 1.0,
           "yaw": 0,
           "y": 0

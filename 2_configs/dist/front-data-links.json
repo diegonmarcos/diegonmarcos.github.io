@@ -799,6 +799,38 @@
     {
       "section": "personal-tools",
       "slide": "personal-tools",
+      "column": "Galaxy",
+      "label": "Galaxy - Gaia",
+      "url": "https://diegonmarcos.github.io/galaxy-gaia/",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Galaxy",
+      "label": "Galaxy - Earth",
+      "url": "https://diegonmarcos.github.io/galaxy-earth/",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Galaxy",
+      "label": "Galaxy - X1",
+      "url": "https://diegonmarcos.github.io/galaxy-x1/",
+      "icon": "world.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Game Zone",
+      "label": "Worms",
+      "url": "https://archive.org/details/worms_team17",
+      "icon": "device-gamepad.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
       "column": "Security",
       "label": "Authelia",
       "url": "https://auth.diegonmarcos.com",

@@ -1,0 +1,88 @@
+@use '../settings/breakpoints' as *;
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+
+@mixin mq($size) {
+  @if $size == sm { @media (min-width: $bp-sm) { @content; } }
+  @else if $size == md { @media (min-width: $bp-md) { @content; } }
+  @else if $size == lg { @media (min-width: $bp-lg) { @content; } }
+  @else if $size == xl { @media (min-width: $bp-xl) { @content; } }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-row($justify: flex-start, $align: center, $gap: 0) {
+  display: flex;
+  flex-direction: row;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+@mixin flex-col($justify: flex-start, $align: stretch, $gap: 0) {
+  display: flex;
+  flex-direction: column;
+  align-items: $align;
+  justify-content: $justify;
+  gap: $gap;
+}
+
+@mixin grid-auto-fit($min: 280px, $gap: $spacing-md) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($min, 1fr));
+  gap: $gap;
+}
+
+@mixin card {
+  background: $bg-card;
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  position: relative;
+  overflow: hidden;
+
+  // Subtle top glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, $border-accent, transparent);
+    opacity: 0.5;
+  }
+}
+
+@mixin glass-card {
+  background: $glass-bg;
+  backdrop-filter: blur($glass-blur);
+  -webkit-backdrop-filter: blur($glass-blur);
+  border: 1px solid $glass-border;
+  border-radius: $radius-lg;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin label-caps {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: $letter-spacing-ultra;
+  text-transform: uppercase;
+  color: $text-dim;
+}
+
+@mixin stat-value {
+  font-family: $font-mono;
+  font-weight: $font-weight-bold;
+  letter-spacing: $letter-spacing-tight;
+  font-variant-numeric: tabular-nums;
+}

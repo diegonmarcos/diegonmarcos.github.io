@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyTrackers — Quantified-Self App Roster</title>
+  <meta name="description" content="Data-driven roster of tracker and activity apps — travel, fitness and activity, all in one place">
+  <meta name="theme-color" content="#08090c">
+  <link rel="stylesheet" href="style.css">
+  <script>
+  var _mtm = window._mtm = window._mtm || [];
+  _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+  (function() {
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='https://analytics.diegonmarcos.com/js/container_odwLIyPV.js';
+    s.parentNode.insertBefore(g,s);
+  })();
+  </script>
+<!-- Umami Analytics -->
+<script async src="https://analytics.diegonmarcos.com/umami/script.js" data-website-id="937cbde7-5ec2-450c-9d6a-8117423ac12f"></script>
+<!-- End Umami Analytics -->
+
+    <!-- Data-driven framework: PORTAL_DATA["myTrackers"] hydrated by front-data-json-js-wrapper.sh -->
+    <script src="data-myTrackers.json.js"></script>
+    <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["myTrackers"];if(d&&d.title)document.title=d.title;})();</script>
+  </head>
+<body>
+  <header class="app-header">
+    <div class="app-header__brand">
+      <svg class="app-header__logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        <circle cx="12" cy="12" r="4"/>
+      </svg>
+      <h1 class="app-header__title">MyTrackers</h1>
+    </div>
+    <p class="app-header__subtitle">Every quantified-self app, one roster.</p>
+  </header>
+
+  <main class="dashboard">
+    <div id="tracker-root" class="tracker-root"></div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

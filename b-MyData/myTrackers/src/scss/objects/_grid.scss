@@ -1,0 +1,35 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.dashboard {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  @include flex-col($gap: $spacing-2xl);
+
+  @include mq(md) {
+    padding: $spacing-2xl;
+  }
+
+  @include mq(lg) {
+    padding: $spacing-2xl $spacing-3xl;
+  }
+}
+
+.dashboard__charts {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-lg;
+
+  @include mq(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.dashboard__summary {
+  @include grid-auto-fit(140px, $spacing-md);
+
+  @include mq(lg) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}

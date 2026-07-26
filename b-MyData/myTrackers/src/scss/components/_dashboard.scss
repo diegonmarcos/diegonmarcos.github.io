@@ -1,0 +1,21 @@
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.dashboard {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: $spacing-xl;
+  @include flex-col($gap: $spacing-2xl);
+
+  @include mq(md) {
+    padding: $spacing-2xl;
+  }
+
+  @include mq(lg) {
+    padding: $spacing-2xl $spacing-3xl;
+  }
+}
+
+.tracker-root {
+  @include flex-col($gap: $spacing-2xl);
+}

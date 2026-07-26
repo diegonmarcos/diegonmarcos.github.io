@@ -1,0 +1,12 @@
+@use '../settings/colors' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.card {
+  @include card;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    border-color: $border-light;
+  }
+}

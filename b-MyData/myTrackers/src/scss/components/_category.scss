@@ -1,0 +1,17 @@
+@use '../settings/colors' as *;
+@use '../settings/typography' as *;
+@use '../settings/breakpoints' as *;
+@use '../tools/mixins' as *;
+
+.category__label {
+  @include label-caps;
+  font-size: $font-size-md;
+  color: $platinum-bright;
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-sm;
+  border-bottom: 1px solid $border;
+}
+
+.category__grid {
+  @include grid-auto-fit(240px, $spacing-lg);
+}

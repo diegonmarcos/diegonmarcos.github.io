@@ -1,0 +1,61 @@
+// Premium dark palette — Garmin Fenix / Edge 1040 inspired
+// Deep blacks with blue-gray undertones, platinum & gold accents
+
+$bg-deep: #08090c;
+$bg-surface: #0e1015;
+$bg-card: #13161d;
+$bg-card-hover: #1a1e28;
+$bg-elevated: #1e2230;
+$border: #1f2433;
+$border-light: #2a3045;
+$border-accent: #3a4560;
+
+$text-primary: #eaf0f6;
+$text-secondary: #b8c4d4;
+$text-muted: #7088a4;
+$text-dim: #4a5d74;
+
+// Premium accent palette
+$gold: #c9a84c;
+$gold-bright: #e8c95a;
+$gold-dim: #9a7a38;
+$platinum: #a8b8cc;
+$platinum-bright: #c8d8ec;
+
+// Activity colors — refined, desaturated elite palette
+$color-swim: #4a9eff;
+$color-cycle: #ff7849;
+$color-run: #42d97c;
+$color-hike: #b88aff;
+$color-walk: #e8c95a;
+
+// HR Zone colors — clinical precision
+$hr-zone-1: #3b8bdb;
+$hr-zone-2: #3bba6e;
+$hr-zone-3: #d4c84a;
+$hr-zone-4: #e87040;
+$hr-zone-5: #e8384a;
+
+// Semantic
+$accent: $gold;
+$accent-bright: $gold-bright;
+$success: #42d97c;
+$warning: #e8a840;
+$danger: #e8384a;
+
+// Heatmap — amber/gold intensity
+$heatmap-0: #13161d;
+$heatmap-1: #2a2318;
+$heatmap-2: #4a3a1a;
+$heatmap-3: #8a6a28;
+$heatmap-4: #c9a84c;
+
+// Glass effect
+$glass-bg: rgba(19, 22, 29, 0.85);
+$glass-border: rgba(42, 48, 69, 0.6);
+$glass-blur: 20px;
+
+// Gradient accents
+$gradient-gold: linear-gradient(135deg, $gold-dim, $gold, $gold-bright);
+$gradient-card: linear-gradient(180deg, rgba(30, 34, 48, 0.4) 0%, rgba(19, 22, 29, 0) 100%);
+$gradient-glow: radial-gradient(ellipse at 50% 0%, rgba($gold, 0.08) 0%, transparent 60%);

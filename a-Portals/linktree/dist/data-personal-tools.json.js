@@ -484,6 +484,42 @@
             }
           ],
           "group": 2
+        },
+        {
+          "header": "Galaxy",
+          "links": [
+            {
+              "label": "Galaxy - Gaia",
+              "url": "https://diegonmarcos.github.io/galaxy-gaia/",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Galaxy - Earth",
+              "url": "https://diegonmarcos.github.io/galaxy-earth/",
+              "icon": "world.svg",
+              "item": 1
+            },
+            {
+              "label": "Galaxy - X1",
+              "url": "https://diegonmarcos.github.io/galaxy-x1/",
+              "icon": "world.svg",
+              "item": 2
+            }
+          ],
+          "group": 3
+        },
+        {
+          "header": "Game Zone",
+          "links": [
+            {
+              "label": "Worms",
+              "url": "https://archive.org/details/worms_team17",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            }
+          ],
+          "group": 4
         }
       ],
       "slide": 2

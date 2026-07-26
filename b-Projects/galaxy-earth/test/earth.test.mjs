@@ -158,4 +158,69 @@ if (!(airplane.speed.min > 0)) {
   if (modelVisBoost(-100, mv) !== mv.maxBoost) throw new Error('extreme zoom-out must clamp to maxBoost');
 }
 
+// speed differential: a faster driver must advance more per frame than a slower
+// one at full stick — locks that distinct speed profiles actually produce
+// distinct movement.
+{
+  const walker = r.drivers.find((x) => x.id === 'walk');
+  const flyer = r.drivers.find((x) => x.id === 'drone');
+  const stepSlow = stepDrive(
+    { heading: 0 },
+    { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
+    { min: walker.speed.min, avg: walker.speed.avg, max: walker.speed.max, turn: walker.turn, accel: walker.accel, deadzone: r.joystick.deadzone },
+    1
+  );
+  const stepFast = stepDrive(
+    { heading: 0 },
+    { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
+    { min: flyer.speed.min, avg: flyer.speed.avg, max: flyer.speed.max, turn: flyer.turn, accel: flyer.accel, deadzone: r.joystick.deadzone },
+    1
+  );
+  if (!(stepFast.dForward > stepSlow.dForward)) {
+    throw new Error('stepDrive: faster driver (drone) must advance more per frame than slower driver (walk) at full stick');
+  }
+}
+
+// climb / altitude: a flying driver (lift>0) must gain altitude on climb=1,
+// lose it (clamped at floor 0) on climb=-1, and clamp at maxAlt under sustained climb.
+{
+  const flyer = r.drivers.find((x) => x.id === 'drone');
+
+  const upState = { heading: 0, altitude: 0 };
+  const upStep = stepDrive(
+    upState,
+    { moveX: 0, moveY: 0, camBearing: 0, climb: 1 },
+    { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.lift, maxAlt: flyer.maxAlt },
+    1
+  );
+  if (upStep.altitude !== flyer.lift || !(upStep.altitude > 0)) {
+    throw new Error('stepDrive: climb=1 must raise altitude by lift*dt from a fresh state');
+  }
+
+  const downState = { heading: 0, altitude: 5 };
+  const downStep = stepDrive(
+    downState,
+    { moveX: 0, moveY: 0, camBearing: 0, climb: -1 },
+    { min: flyer.speed.min, max: flyer.speed.max, lift: 100, maxAlt: flyer.maxAlt },
+    1
+  );
+  if (downStep.altitude !== 0) {
+    throw new Error('stepDrive: climb=-1 must decrease altitude and clamp at floor 0');
+  }
+
+  const clampState = { heading: 0, altitude: 0 };
+  const iterations = Math.ceil(flyer.maxAlt / flyer.lift) + 5;
+  for (let i = 0; i < iterations; i++) {
+    stepDrive(
+      clampState,
+      { moveX: 0, moveY: 0, camBearing: 0, climb: 1 },
+      { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.lift, maxAlt: flyer.maxAlt },
+      1
+    );
+  }
+  if (clampState.altitude !== flyer.maxAlt) {
+    throw new Error('stepDrive: repeated climb=1 must clamp altitude at maxAlt, never exceed it');
+  }
+}
+
 console.log('earth OK');

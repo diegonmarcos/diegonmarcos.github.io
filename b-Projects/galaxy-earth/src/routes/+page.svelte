@@ -1081,10 +1081,11 @@
     font-size: 0.75em;
   }
 
-  /* Climb control sits to the left of the right look-stick, clear of the FAB stack. */
+  /* Climb control centered between the two joysticks, at bottom-center. */
   .climb {
     position: fixed;
-    right: 200px;
+    left: 50%;
+    transform: translateX(-50%);
     bottom: 26px;
     z-index: 35;
     display: flex;

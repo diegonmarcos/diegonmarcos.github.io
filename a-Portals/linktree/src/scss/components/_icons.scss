@@ -347,10 +347,28 @@
     padding-bottom: 0.5rem;
 }
 
+// One card (e.g. "REPOS", "SUITE") within a section's group.
+.iconview-card {
+    margin-bottom: 1.5rem;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
 .iconview-subgroup-title {
     font-size: 1rem;
     margin: 1rem 0 0.5rem;
     color: rgba(255, 255, 255, 0.7);
+}
+
+// A card's own column/group heading (e.g. "Front-end", "MyMedia").
+.iconview-subsubgroup-title {
+    font-size: 0.8rem;
+    margin: 0.75rem 0 0.4rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 // 9 icons per row; collapses on narrower viewports.

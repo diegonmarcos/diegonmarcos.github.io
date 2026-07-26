@@ -261,16 +261,16 @@
         <img src="public/icons/git-branch.svg" alt="Mindmap" data-fab-img>
     </a>
 
-    <!-- List View Toggle Button -->
-    <a href="#" class="listview-btn" id="listview-btn" title="View as List" data-fab="listview" style="position: fixed !important; bottom: 1rem !important; left: 1rem !important; visibility: hidden;">
-        <img src="public/icons/checklist.svg" alt="List View" data-fab-img>
+    <!-- Icon View Toggle Button -->
+    <a href="#" class="iconview-btn" id="iconview-btn" title="View as Icons" data-fab="iconview" style="position: fixed !important; bottom: 1rem !important; left: 1rem !important; visibility: hidden;">
+        <img src="public/icons/cards.svg" alt="Icon View" data-fab-img>
     </a>
 
-    <!-- List View Overlay -->
-    <div class="listview-overlay" id="listview-overlay">
-        <div class="listview-overlay-content">
-            <button class="listview-overlay-close" id="listview-overlay-close">&times;</button>
-            <div class="listview-content" id="listview-content"></div>
+    <!-- Icon View Overlay -->
+    <div class="iconview-overlay" id="iconview-overlay">
+        <div class="iconview-overlay-content">
+            <button class="iconview-overlay-close" id="iconview-overlay-close">&times;</button>
+            <div class="iconview-content" id="iconview-content"></div>
         </div>
     </div>
 
@@ -382,11 +382,7 @@
                         <div data-portal-mount="professional-profile"></div>
                         <!-- End Profile Card -->
 
-                        <!-- Slide 2: Repos Card -->
-                        <div data-portal-mount="repos"></div>
-                        <!-- End Repos Card -->
-
-                        <!-- Slide 3: Nexus Card -->
+                        <!-- Slide 2: Nexus Card -->
                         <div data-portal-mount="nexus"></div>
                         <!-- End Nexus Card -->
 
@@ -470,10 +466,6 @@
                         <div data-portal-mount="data"></div>
                         <!-- End Data Card -->
 
-                        <!-- Slide 4: Projects (Brucheion + Serapeum, two-row split) -->
-                        <div data-portal-mount="projects"></div>
-                        <!-- End Projects Card -->
-
                     </div>
                     <!-- End Personal Swiper Wrapper -->
 
@@ -488,14 +480,18 @@
 
             <hr class="section-separator">
 
-            <!-- Personal Tools Section Box -->
+            <!-- Projects Section Box -->
             <section class="section-box personal-tools-section">
-                <h2 class="box-title">Personal Tools</h2>
+                <h2 class="box-title">Projects</h2>
                 <div class="carousel-row">
                     <div class="swiper personal-tools-swiper">
                     <div class="swiper-wrapper">
 
-                        <!-- Slide 1: Tools Profile Card -->
+                        <!-- Slide 1: Repos Card -->
+                        <div data-portal-mount="repos"></div>
+                        <!-- End Repos Card -->
+
+                        <!-- Slide 2: Tools Profile Card -->
                         <div class="swiper-slide">
                             <div class="link-section">
                                 <h2 class="section-title">TOOLCHAIN</h2>
@@ -577,8 +573,12 @@
                         <div data-portal-mount="cloud"></div>
                         <!-- End Cloud Card -->
 
+                        <!-- Slide 7: Knowledge Center (Brucheion + Serapeum, two-row split) -->
+                        <div data-portal-mount="projects"></div>
+                        <!-- End Knowledge Center Card -->
+
                     </div>
-                    <!-- End Personal Tools Swiper Wrapper -->
+                    <!-- End Projects Swiper Wrapper -->
 
                     <!-- Navigation -->
                     <div class="swiper-button-prev personal-tools-prev"></div>
@@ -659,6 +659,9 @@
             </button>
             <button id="theme-toggle" class="icon-btn" data-fab="icon-btn" title="Toggle Light / Dark Theme">
                 <img src="public/icons/bulb.svg" alt="Theme" data-fab-img>
+            </button>
+            <button id="audio-toggle" class="icon-btn" data-fab="icon-btn" aria-pressed="false" title="Audio: off">
+                <img src="public/icons/headphones.svg" alt="Audio" data-fab-img>
             </button>
         </div>
         <button class="controls-fab" id="controls-fab" data-fab="controls-fab" title="Settings">

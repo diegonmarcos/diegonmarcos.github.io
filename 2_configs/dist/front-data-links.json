@@ -60,7 +60,7 @@
       "section": "personal-tools",
       "id": "circus",
       "kind": "tools",
-      "title": "CIRCUS"
+      "title": "KNOWLEDGE CENTER"
     },
     {
       "section": "personal-tools",
@@ -871,6 +871,22 @@
     {
       "section": "personal-tools",
       "slide": "personal-tools",
+      "column": "Audio",
+      "label": "Music",
+      "url": "https://diegonmarcos.github.io/music/",
+      "icon": "headphones.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
+      "column": "Videos",
+      "label": "Movies",
+      "url": "https://diegonmarcos.github.io/movies/",
+      "icon": "brand-youtube.svg"
+    },
+    {
+      "section": "personal-tools",
+      "slide": "personal-tools",
       "column": "Games",
       "label": "Games",
       "url": "https://diegonmarcos.github.io/games",
@@ -903,31 +919,15 @@
     {
       "section": "personal-tools",
       "slide": "personal-tools",
-      "column": "Video",
-      "label": "MyVideos",
-      "url": "https://diegonmarcos.github.io/myvideos",
-      "icon": "video.svg"
+      "column": "Assets",
+      "label": "Assets",
+      "url": "https://diegonmarcos.github.io/",
+      "icon": "folder.svg"
     },
     {
       "section": "personal-tools",
       "slide": "personal-tools",
-      "column": "Video",
-      "label": "Movies",
-      "url": "https://diegonmarcos.github.io/movies/",
-      "icon": "brand-youtube.svg"
-    },
-    {
-      "section": "personal-tools",
-      "slide": "personal-tools",
-      "column": "Audio",
-      "label": "Music",
-      "url": "https://diegonmarcos.github.io/music/",
-      "icon": "headphones.svg"
-    },
-    {
-      "section": "personal-tools",
-      "slide": "personal-tools",
-      "column": "Galaxy",
+      "column": "Scenes",
       "label": "Galaxy - Gaia",
       "url": "https://diegonmarcos.github.io/galaxy-gaia/",
       "icon": "world.svg"
@@ -935,17 +935,17 @@
     {
       "section": "personal-tools",
       "slide": "personal-tools",
-      "column": "Galaxy",
-      "label": "Galaxy - Earth",
-      "url": "https://diegonmarcos.github.io/galaxy-earth/",
+      "column": "Scenes",
+      "label": "Galaxy - X1",
+      "url": "https://diegonmarcos.github.io/galaxy-x1/",
       "icon": "world.svg"
     },
     {
       "section": "personal-tools",
       "slide": "personal-tools",
-      "column": "Galaxy",
-      "label": "Galaxy - X1",
-      "url": "https://diegonmarcos.github.io/galaxy-x1/",
+      "column": "Games",
+      "label": "Galaxy - Earth",
+      "url": "https://diegonmarcos.github.io/galaxy-earth/",
       "icon": "world.svg"
     },
     {

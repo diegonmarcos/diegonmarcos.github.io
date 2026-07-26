@@ -2,7 +2,7 @@
   "_meta": {
     "generated_by": "2_configs/build.sh derive",
     "schema": "front-topology/v1",
-    "project_count": 50
+    "project_count": 51
   },
   "projects": [
     {
@@ -324,6 +324,24 @@
       "dep_count": 0,
       "has_dist": true,
       "deploy_name": "my-fin"
+    },
+    {
+      "name": "MyTrackers",
+      "slug": "myTrackers",
+      "path": "b-MyData/myTrackers",
+      "category": "b-MyData",
+      "framework": "vanilla",
+      "port": 8026,
+      "build_steps": [
+        "data_wrap",
+        "copy",
+        "sass",
+        "esbuild",
+        "copy"
+      ],
+      "dep_count": 0,
+      "has_dist": false,
+      "deploy_name": "myTrackers"
     },
     {
       "name": "MyHealth",

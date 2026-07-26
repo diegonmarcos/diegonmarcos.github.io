@@ -1,7 +1,7 @@
 {
   "meta": {
     "generated_from": "front-topology.json",
-    "project_count": 50
+    "project_count": 51
   },
   "categories": [
     {
@@ -230,6 +230,15 @@
           "framework": "vanilla",
           "port": 8019,
           "has_dist": true
+        },
+        {
+          "name": "MyTrackers",
+          "slug": "myTrackers",
+          "path": "b-MyData/myTrackers",
+          "category": "b-MyData",
+          "framework": "vanilla",
+          "port": 8026,
+          "has_dist": false
         },
         {
           "name": "myID",

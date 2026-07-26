@@ -180,6 +180,18 @@
     "has_pkg": false
   },
   {
+    "path": "b-MyData/myTrackers",
+    "category": "b-MyData",
+    "project": "myTrackers",
+    "key": "b-MyData__myTrackers",
+    "name": "MyTrackers",
+    "framework": "vanilla",
+    "port": 8026,
+    "deploy_name": "myTrackers",
+    "has_pwa": false,
+    "has_pkg": false
+  },
+  {
     "path": "b-MyData/myhealth-profile",
     "category": "b-MyData",
     "project": "myhealth-profile",

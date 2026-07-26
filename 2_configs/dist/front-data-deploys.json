@@ -68,6 +68,10 @@
     "deploy_name": "myphotos"
   },
   {
+    "path": "b-MyData/myTrackers",
+    "deploy_name": "myTrackers"
+  },
+  {
     "path": "c-Suite/suite",
     "deploy_name": "suite"
   },

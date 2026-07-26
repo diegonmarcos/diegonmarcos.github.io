@@ -161,6 +161,19 @@
         <img src="public/icons/git-branch.svg" alt="Mindmap" data-fab-img>
     </a>
 
+    <!-- List View Toggle Button -->
+    <a href="#" class="listview-btn" id="listview-btn" title="View as List" data-fab="listview" style="position: fixed !important; bottom: 1rem !important; left: 1rem !important; visibility: hidden;">
+        <img src="public/icons/checklist.svg" alt="List View" data-fab-img>
+    </a>
+
+    <!-- List View Overlay -->
+    <div class="listview-overlay" id="listview-overlay">
+        <div class="listview-overlay-content">
+            <button class="listview-overlay-close" id="listview-overlay-close">&times;</button>
+            <div class="listview-content" id="listview-content"></div>
+        </div>
+    </div>
+
     <!-- Mindmap Overlay -->
     <div class="mindmap-overlay" id="mindmap-overlay">
         <div class="mindmap-overlay-content">

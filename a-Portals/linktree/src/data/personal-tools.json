@@ -2,11 +2,189 @@
   "_description": "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
   "section": {
     "id": "personal-tools",
-    "title": "Personal Tools",
+    "title": "Projects",
     "swiper_class": "personal-tools-swiper",
     "box": 2
   },
   "slides": [
+    {
+      "id": "repos",
+      "kind": "repos",
+      "title": "REPOS",
+      "image": {
+        "src": "public/images/banners/repos.gif",
+        "alt": "Coding"
+      },
+      "top_links": [
+        {
+          "label": "Github",
+          "url": "https://github.com/diegonmarcos",
+          "icon": "brand-github.svg",
+          "preview": "public/thumbnails/github_com.jpg",
+          "item": 0
+        }
+      ],
+      "dashboard_modifier": "tools-dashboard--5",
+      "columns": [
+        {
+          "header": "Front-end",
+          "links": [
+            {
+              "label": "Portals",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Profiles",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+              "icon": "file-type-html.svg",
+              "item": 1
+            },
+            {
+              "label": "Work Tools",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+              "icon": "settings.svg",
+              "item": 2
+            },
+            {
+              "label": "Personal Tools",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+              "icon": "device-desktop.svg",
+              "item": 3
+            }
+          ],
+          "group": 0
+        },
+        {
+          "header": "Cloud",
+          "links": [
+            {
+              "label": "Cloud",
+              "url": "https://github.com/diegonmarcos/cloud",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Unix",
+              "url": "https://github.com/diegonmarcos/unix",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Vault",
+              "url": "https://github.com/diegonmarcos/vault",
+              "icon": "bolt.svg",
+              "item": 2
+            },
+            {
+              "label": "Front",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
+              "icon": "world.svg",
+              "item": 3
+            },
+            {
+              "label": "Tooling",
+              "url": "https://github.com/diegonmarcos/ops-Tooling",
+              "icon": "git-branch.svg",
+              "item": 4
+            },
+            {
+              "label": "MCP Servers",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
+              "icon": "brain.svg",
+              "item": 5
+            }
+          ],
+          "group": 1
+        },
+        {
+          "header": "Low Level",
+          "links": [
+            {
+              "label": "My Libs",
+              "url": "https://github.com/diegonmarcos/ops-Mylibs",
+              "icon": "git-branch.svg",
+              "item": 0
+            },
+            {
+              "label": "Algorithms",
+              "url": "https://github.com/diegonmarcos/back-Algo",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "System",
+              "url": "https://github.com/diegonmarcos/back-System",
+              "icon": "settings.svg",
+              "item": 2
+            },
+            {
+              "label": "Graphics",
+              "url": "https://github.com/diegonmarcos/back-Graphic",
+              "icon": "device-desktop.svg",
+              "item": 3
+            },
+            {
+              "label": "Cyber",
+              "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+              "icon": "bolt.svg",
+              "item": 4
+            },
+            {
+              "label": "42 School",
+              "url": "https://github.com/diegonmarcos/lecole42",
+              "icon": "rocket.svg",
+              "item": 5
+            }
+          ],
+          "group": 2
+        },
+        {
+          "header": "ML",
+          "links": [
+            {
+              "label": "Agentic AI",
+              "url": "https://github.com/diegonmarcos/ml-Agentic",
+              "icon": "brain.svg",
+              "item": 0
+            },
+            {
+              "label": "Machine Learning",
+              "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+              "icon": "brain.svg",
+              "item": 1
+            }
+          ],
+          "group": 3
+        },
+        {
+          "header": "Data",
+          "links": [
+            {
+              "label": "Data Science",
+              "url": "https://github.com/diegonmarcos/ml-DataScience",
+              "icon": "database.svg",
+              "item": 0
+            },
+            {
+              "label": "Civil Eng",
+              "url": "https://github.com/diegonmarcos/cveng_AFrame",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Macro/Quant",
+              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+              "icon": "database.svg",
+              "item": 2
+            }
+          ],
+          "group": 4
+        }
+      ],
+      "slide": 0
+    },
     {
       "id": "suite",
       "kind": "tools",
@@ -255,11 +433,17 @@
               "url": "https://diegonmarcos.github.io/tldraw/",
               "icon": "brush.svg",
               "item": 4
+            },
+            {
+              "label": "myID",
+              "url": "https://diegonmarcos.github.io/myid",
+              "icon": "cards.svg",
+              "item": 5
             }
           ]
         }
       ],
-      "slide": 0
+      "slide": 1
     },
     {
       "id": "lab-tools",
@@ -415,7 +599,7 @@
           "group": 2
         }
       ],
-      "slide": 1
+      "slide": 2
     },
     {
       "id": "circus",
@@ -511,7 +695,7 @@
           "group": 3
         }
       ],
-      "slide": 2
+      "slide": 3
     },
     {
       "id": "cloud",
@@ -790,7 +974,105 @@
           }
         ]
       },
-      "slide": 3
+      "slide": 4
+    },
+    {
+      "id": "projects",
+      "kind": "tools",
+      "title": "Knowledge Center",
+      "image": {
+        "src": "public/images/brucheion.jpg",
+        "alt": "Projects"
+      },
+      "row_headers": [
+        {
+          "title": "Brucheion"
+        },
+        {
+          "title": "Serapeum"
+        }
+      ],
+      "columns": [
+        {
+          "row": 0,
+          "header": "Basileia",
+          "links": [
+            {
+              "label": "Basileia",
+              "url": "#",
+              "icon": "sparkles.svg",
+              "item": 0
+            }
+          ],
+          "group": 0
+        },
+        {
+          "row": 0,
+          "header": "Mousseion",
+          "links": [
+            {
+              "label": "Mousseion",
+              "url": "#",
+              "icon": "books.svg",
+              "item": 0
+            }
+          ],
+          "group": 1
+        },
+        {
+          "row": 0,
+          "header": "Paneion",
+          "links": [
+            {
+              "label": "Paneion",
+              "url": "#",
+              "icon": "bulb.svg",
+              "item": 0
+            }
+          ],
+          "group": 2
+        },
+        {
+          "row": 1,
+          "header": "Akropolis",
+          "links": [
+            {
+              "label": "Akropolis",
+              "url": "#",
+              "icon": "rocket.svg",
+              "item": 0
+            }
+          ],
+          "group": 3
+        },
+        {
+          "row": 1,
+          "header": "Bibliotheke",
+          "links": [
+            {
+              "label": "Bibliotheke",
+              "url": "#",
+              "icon": "books.svg",
+              "item": 0
+            }
+          ],
+          "group": 4
+        },
+        {
+          "row": 1,
+          "header": "Adyton",
+          "links": [
+            {
+              "label": "Adyton",
+              "url": "#",
+              "icon": "bolt.svg",
+              "item": 0
+            }
+          ],
+          "group": 5
+        }
+      ],
+      "slide": 5
     }
   ]
 }

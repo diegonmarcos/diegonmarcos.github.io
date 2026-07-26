@@ -9,6 +9,7 @@ import { initMobileScrollSelection } from './modules/mobileScroll';
 import { initGalleryToggle } from './modules/gallery';
 import { initPerformanceMode } from './modules/performanceMode';
 import { initMindmapOverlay } from './modules/mindmap-overlay';
+import { initListViewToggle } from './modules/listViewToggle';
 import { initVmControl } from './modules/vmControl';
 import { initProfilePicSwiper } from './modules/profilePicSwiper';
 import { initCardSwiper } from './modules/cardSwiper';
@@ -46,6 +47,9 @@ function initApp(): void {
   // Initialize mindmap overlay
   initMindmapOverlay();
 
+  // Initialize in-page list view toggle
+  initListViewToggle();
+
   // Initialize random background video (or WebGL canvas if opted in).
   initVideoBackground();
   initCanvasBackground();
@@ -77,6 +81,7 @@ function initApp(): void {
       const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
       const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
       const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
+      const listviewBtn = document.getElementById('listview-btn') as HTMLElement;
 
       if (controlsFab) {
         controlsFab.style.visibility = 'visible';
@@ -86,6 +91,9 @@ function initApp(): void {
       }
       if (pixelworldBtn) {
         pixelworldBtn.style.visibility = 'visible';
+      }
+      if (listviewBtn) {
+        listviewBtn.style.visibility = 'visible';
       }
     });
   });

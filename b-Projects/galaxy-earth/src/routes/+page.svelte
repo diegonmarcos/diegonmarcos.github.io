@@ -597,9 +597,17 @@
             natureScene.add(treeSun);
             natureScene.add(treesMesh);
           },
-          render(gl: WebGLRenderingContext, options: { modelViewProjectionMatrix: number[] }) {
+          render(gl: WebGLRenderingContext, args: { defaultProjectionData: { mainMatrix: number[] } }) {
             if (!map) return;
-            const matrix = options.modelViewProjectionMatrix;
+            // MapLibre v5 CustomLayerInterface.render(gl, args) exposes the projection
+            // matrix at args.defaultProjectionData.mainMatrix (v4's positional
+            // `modelViewProjectionMatrix` arg is gone under v5 — see
+            // https://maplibre.org/maplibre-gl-js/docs/examples/add-a-3d-model-to-globe-using-threejs/).
+            const matrix = args?.defaultProjectionData?.mainMatrix;
+            if (!matrix) {
+              console.warn('[rider] no projection matrix from maplibre v5 render args');
+              return;
+            }
 
             const now = performance.now();
             const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;

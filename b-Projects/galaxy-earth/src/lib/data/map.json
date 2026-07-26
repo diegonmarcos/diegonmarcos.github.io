@@ -371,6 +371,11 @@
         ",",
         "<"
       ]
+    },
+    "modelVis": {
+      "refZoom": 18,
+      "minBoost": 1,
+      "maxBoost": 64
     }
   }
 }

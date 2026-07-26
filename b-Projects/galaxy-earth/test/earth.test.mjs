@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 // ponytail: mirrors _galaxy-engine/test/locomotion.test.mjs — node 22's unflagged
 // type-stripping resolves the .ts import directly, no --experimental-strip-types needed.
-import { stepDrive } from '../../_galaxy-engine/src/locomotion.ts';
+import { stepDrive, modelVisBoost } from '../../_galaxy-engine/src/locomotion.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const map = JSON.parse(
@@ -144,6 +144,18 @@ if (!(airplane.speed.min > 0)) {
   if (!(step.dForward > 0)) {
     throw new Error('stepDrive: airplane with speed.min>0 must keep moving at idle stick');
   }
+}
+
+// model visibility boost: far/top-down cameras must magnify the metric model so it
+// stays visible; close modes keep life-size; space view is clamped, not exploded.
+{
+  const mv = r.modelVis;
+  if (!mv || typeof mv.refZoom !== 'number') throw new Error('map.json rider.modelVis needs refZoom/minBoost/maxBoost');
+  const godZoom = r.cameras.find((c) => c.id === 'god').zoom;
+  const closeZoom = r.cameras.find((c) => c.id === 'fps').zoom;
+  if (!(modelVisBoost(godZoom, mv) > 4)) throw new Error('god-view must magnify model >4x so it is not sub-pixel');
+  if (modelVisBoost(closeZoom, mv) !== mv.minBoost) throw new Error('fps/close cameras must keep model life-size (minBoost)');
+  if (modelVisBoost(-100, mv) !== mv.maxBoost) throw new Error('extreme zoom-out must clamp to maxBoost');
 }
 
 console.log('earth OK');

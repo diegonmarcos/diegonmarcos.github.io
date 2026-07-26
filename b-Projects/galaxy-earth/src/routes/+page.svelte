@@ -4,7 +4,7 @@
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import mapConfig from '$lib/data/map.json';
   import { freeInput } from '$engine/freeInput';
-  import { stepDrive } from '$engine/locomotion';
+  import { stepDrive, modelVisBoost } from '$engine/locomotion';
   import Joystick from '$engine/Joystick.svelte';
 
   // Camera altitude compensation: the higher a driver's eye-altitude (drone/heli/plane),
@@ -477,6 +477,7 @@
         let treesMesh: THREE.InstancedMesh;
         let clockPrev = 0;
         let followGuard = false;
+        let currentVisBoost = 1;
         const perfSamples = new Array(60).fill(16.7);
         let perfIdx = 0;
         let fpsEma = 60;
@@ -669,11 +670,12 @@
 
             // model matrix: translate to the rider's merc x/y/z, rotate mesh to heading,
             // rotate X +90° (three Y-up → mercator Z-up), scale metres → merc units.
+            const vis = metersPerUnit * currentVisBoost;
             const modelMatrix = new THREE.Matrix4()
               .makeTranslation(merc.x, merc.y, merc.z)
               .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))
               .multiply(new THREE.Matrix4().makeRotationZ(-step.heading))
-              .multiply(new THREE.Matrix4().makeScale(metersPerUnit, metersPerUnit, metersPerUnit));
+              .multiply(new THREE.Matrix4().makeScale(vis, vis, vis));
 
             camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix).multiply(modelMatrix);
 
@@ -724,6 +726,7 @@
           // Higher-altitude drivers (drone/heli/plane) need the follow-cam pulled
           // back further so the vehicle stays framed instead of filling the screen.
           const effectiveZoom = activeCamera.zoom - altZoomOffset(activeDriver.altitudeBand.eye);
+          currentVisBoost = modelVisBoost(effectiveZoom, rider.modelVis);
 
           if (!followGuard) {
             followGuard = true;

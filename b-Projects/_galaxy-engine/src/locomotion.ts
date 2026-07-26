@@ -69,3 +69,14 @@ export function stepDrive(state: RideState, input: DriveInput, params: DrivePara
   }
   return { heading: state.heading, forwardX, forwardZ, dForward, altitude: state.altitude ?? 0 };
 }
+
+// Screen-size compensation: keep a metric-scaled model visibly sized as the camera
+// zooms out (birdseye/god top-down modes otherwise render ground vehicles sub-pixel).
+// Doubling per zoom level below refZoom, clamped so the space view doesn't explode.
+export function modelVisBoost(
+  effectiveZoom: number,
+  cfg: { refZoom: number; minBoost: number; maxBoost: number }
+): number {
+  const raw = Math.pow(2, cfg.refZoom - effectiveZoom);
+  return Math.min(cfg.maxBoost, Math.max(cfg.minBoost, raw));
+}

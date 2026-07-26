@@ -5766,6 +5766,22 @@
       {
         "section": "personal-tools",
         "slide": "personal-tools",
+        "column": "Assets",
+        "label": "796floor",
+        "url": "https://diegonmarcos.github.io/796floor",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
+        "column": "Assets",
+        "label": "WisAldo",
+        "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/",
+        "icon": "world.svg"
+      },
+      {
+        "section": "personal-tools",
+        "slide": "personal-tools",
         "column": "Scenes",
         "label": "Galaxy - Gaia",
         "url": "https://diegonmarcos.github.io/galaxy-gaia/",

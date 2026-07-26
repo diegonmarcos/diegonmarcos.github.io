@@ -344,7 +344,14 @@
           "group": 2
         }
       ],
-      "slide": 1
+      "slide": 1,
+      "extras": {
+        "primary_link": {
+          "label": "My Socials",
+          "url": "https://diegonmarcos.github.io/mySocials",
+          "icon": "heart.svg"
+        }
+      }
     },
     {
       "id": "data",
@@ -419,128 +426,35 @@
               "item": 1
             },
             {
-              "label": "myID",
-              "url": "https://diegonmarcos.github.io/myid",
-              "icon": "cards.svg",
-              "item": 2
-            },
-            {
               "label": "Bucket (50 things)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "checklist.svg",
-              "item": 3
+              "item": 2
             },
             {
               "label": "Bucket (Endurance)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "checklist.svg",
-              "item": 4
+              "item": 3
             },
             {
               "label": "Bucket (Inner)",
               "url": "https://bucketlistjourney.net/my-bucket-list",
               "icon": "heart.svg",
-              "item": 5
+              "item": 4
             }
           ],
           "group": 2
         }
       ],
-      "slide": 2
-    },
-    {
-      "id": "projects",
-      "kind": "tools",
-      "title": "PROJECTS",
-      "image": {
-        "src": "public/images/brucheion.jpg",
-        "alt": "Projects"
-      },
-      "row_headers": [
-        { "title": "Brucheion" },
-        { "title": "Serapeum" }
-      ],
-      "columns": [
-        {
-          "row": 0,
-          "header": "Basileia",
-          "links": [
-            {
-              "label": "Basileia",
-              "url": "#",
-              "icon": "sparkles.svg",
-              "item": 0
-            }
-          ],
-          "group": 0
-        },
-        {
-          "row": 0,
-          "header": "Mousseion",
-          "links": [
-            {
-              "label": "Mousseion",
-              "url": "#",
-              "icon": "books.svg",
-              "item": 0
-            }
-          ],
-          "group": 1
-        },
-        {
-          "row": 0,
-          "header": "Paneion",
-          "links": [
-            {
-              "label": "Paneion",
-              "url": "#",
-              "icon": "bulb.svg",
-              "item": 0
-            }
-          ],
-          "group": 2
-        },
-        {
-          "row": 1,
-          "header": "Akropolis",
-          "links": [
-            {
-              "label": "Akropolis",
-              "url": "#",
-              "icon": "rocket.svg",
-              "item": 0
-            }
-          ],
-          "group": 3
-        },
-        {
-          "row": 1,
-          "header": "Bibliotheke",
-          "links": [
-            {
-              "label": "Bibliotheke",
-              "url": "#",
-              "icon": "books.svg",
-              "item": 0
-            }
-          ],
-          "group": 4
-        },
-        {
-          "row": 1,
-          "header": "Adyton",
-          "links": [
-            {
-              "label": "Adyton",
-              "url": "#",
-              "icon": "bolt.svg",
-              "item": 0
-            }
-          ],
-          "group": 5
+      "slide": 2,
+      "extras": {
+        "primary_link": {
+          "label": "myTrackers",
+          "url": "https://diegonmarcos.github.io/myhealth-tracker",
+          "icon": "heart.svg"
         }
-      ],
-      "slide": 3
+      }
     }
   ]
 }

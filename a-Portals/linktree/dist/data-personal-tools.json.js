@@ -599,6 +599,18 @@
               "url": "https://diegonmarcos.github.io/openrevit",
               "icon": "settings.svg",
               "item": 1
+            },
+            {
+              "label": "Music - DAW",
+              "url": "https://diegonmarcos.github.io/music_daw_llms",
+              "icon": "headphones.svg",
+              "item": 2
+            },
+            {
+              "label": "Music - Mixer",
+              "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
+              "icon": "headphones.svg",
+              "item": 3
             }
           ],
           "group": 2
@@ -609,15 +621,14 @@
     {
       "id": "circus",
       "kind": "tools",
-      "title": "KNOWLEDGE CENTER",
+      "title": "CIRCUS",
       "image": {
         "src": "public/images/banners/circus.gif",
-        "alt": "Knowledge Center"
+        "alt": "Circus"
       },
       "row_headers": [
         { "title": "Media" },
-        { "title": "2D" },
-        { "title": "3D" }
+        { "title": "CG & Games" }
       ],
       "columns": [
         {
@@ -638,7 +649,7 @@
         },
         {
           "row": 1,
-          "header": "Games",
+          "header": "Games 2D",
           "links": [
             { "label": "Games", "url": "https://diegonmarcos.github.io/games", "icon": "device-gamepad.svg", "item": 0 },
             { "label": "Carto", "url": "https://diegonmarcos.github.io/carto/", "icon": "cards.svg", "item": 1 },
@@ -648,15 +659,15 @@
           "group": 2
         },
         {
-          "row": 2,
+          "row": 1,
           "header": "Assets",
           "links": [
-            { "label": "Assets", "url": "https://diegonmarcos.github.io/", "icon": "folder.svg", "item": 0 }
+            { "label": "Assets", "url": "https://diegonmarcos.github.io/", "icon": "file-stack.svg", "item": 0 }
           ],
           "group": 3
         },
         {
-          "row": 2,
+          "row": 1,
           "header": "Scenes",
           "links": [
             { "label": "Galaxy - Gaia", "url": "https://diegonmarcos.github.io/galaxy-gaia/", "icon": "world.svg", "item": 0 },
@@ -665,8 +676,8 @@
           "group": 4
         },
         {
-          "row": 2,
-          "header": "Games",
+          "row": 1,
+          "header": "Games 3D",
           "links": [
             { "label": "Galaxy - Earth", "url": "https://diegonmarcos.github.io/galaxy-earth/", "icon": "world.svg", "item": 0 }
           ],

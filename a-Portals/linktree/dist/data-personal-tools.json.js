@@ -451,6 +451,12 @@
               "url": "https://diegonmarcos.github.io/myAstro",
               "icon": "world-longitude.svg",
               "item": 2
+            },
+            {
+              "label": "Worms",
+              "url": "https://archive.org/details/worms_team17",
+              "icon": "device-gamepad.svg",
+              "item": 3
             }
           ],
           "group": 0
@@ -508,18 +514,6 @@
             }
           ],
           "group": 3
-        },
-        {
-          "header": "Game Zone",
-          "links": [
-            {
-              "label": "Worms",
-              "url": "https://archive.org/details/worms_team17",
-              "icon": "device-gamepad.svg",
-              "item": 0
-            }
-          ],
-          "group": 4
         }
       ],
       "slide": 2

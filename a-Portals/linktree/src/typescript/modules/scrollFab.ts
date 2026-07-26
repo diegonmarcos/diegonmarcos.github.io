@@ -8,7 +8,7 @@ export function initScrollFab(): void {
   const controlsFab = document.querySelector('.controls-fab-container') as HTMLElement;
   const mindmapBtn = document.getElementById('mindmap-btn') as HTMLElement;
   const pixelworldBtn = document.getElementById('pixelworld-btn') as HTMLElement;
-  const listviewBtn = document.getElementById('listview-btn') as HTMLElement;
+  const iconviewBtn = document.getElementById('iconview-btn') as HTMLElement;
   const controlsList = document.getElementById('controls-list') as HTMLElement;
 
   if (!controlsFab || !mindmapBtn || !controlsList) {
@@ -50,10 +50,10 @@ export function initScrollFab(): void {
         pixelworldBtn.style.opacity = '0';
         pixelworldBtn.style.pointerEvents = 'none';
       }
-      if (listviewBtn) {
-        listviewBtn.style.transition = 'none';
-        listviewBtn.style.opacity = '0';
-        listviewBtn.style.pointerEvents = 'none';
+      if (iconviewBtn) {
+        iconviewBtn.style.transition = 'none';
+        iconviewBtn.style.opacity = '0';
+        iconviewBtn.style.pointerEvents = 'none';
       }
     }
   }
@@ -76,10 +76,10 @@ export function initScrollFab(): void {
         pixelworldBtn.style.opacity = '1';
         pixelworldBtn.style.pointerEvents = 'auto';
       }
-      if (listviewBtn) {
-        listviewBtn.style.transition = 'none';
-        listviewBtn.style.opacity = '1';
-        listviewBtn.style.pointerEvents = 'auto';
+      if (iconviewBtn) {
+        iconviewBtn.style.transition = 'none';
+        iconviewBtn.style.opacity = '1';
+        iconviewBtn.style.pointerEvents = 'auto';
       }
     }
   }
@@ -110,7 +110,7 @@ export function initScrollFab(): void {
   }
 
   // Prevent hiding when interacting with FABs
-  const fabElements = [controlsFab, mindmapBtn, ...(pixelworldBtn ? [pixelworldBtn] : []), ...(listviewBtn ? [listviewBtn] : [])];
+  const fabElements = [controlsFab, mindmapBtn, ...(pixelworldBtn ? [pixelworldBtn] : []), ...(iconviewBtn ? [iconviewBtn] : [])];
   fabElements.forEach(element => {
     // Touch/click start - mark as interacting
     element.addEventListener('touchstart', () => {

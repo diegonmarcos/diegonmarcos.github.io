@@ -189,8 +189,8 @@
     border-radius: 24px;
 }
 
-// List View Toggle Button (bottom left corner) - matches FAB style
-.listview-btn {
+// Icon View Toggle Button (bottom left corner) - matches FAB style
+.iconview-btn {
     position: fixed;
     bottom: 1rem;
     left: 1rem;
@@ -235,8 +235,8 @@
     }
 }
 
-// List View Overlay Modal
-.listview-overlay {
+// Icon View Overlay Modal
+.iconview-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -251,7 +251,7 @@
     pointer-events: none;
     transition: opacity 0.4s ease;
 
-    &.active {
+    &.is-open {
         opacity: 1;
         pointer-events: auto;
         backdrop-filter: blur(10px);
@@ -259,13 +259,13 @@
     }
 }
 
-// Hide listview button when overlay is open
-.listview-btn.hidden {
+// Hide iconview button when overlay is open
+.iconview-btn.hidden {
     opacity: 0;
     pointer-events: none;
 }
 
-.listview-overlay-content {
+.iconview-overlay-content {
     position: relative;
     width: 95%;
     height: 95%;
@@ -282,12 +282,12 @@
     transform: scale(0.9);
     transition: transform 0.4s ease;
 
-    .listview-overlay.active & {
+    .iconview-overlay.is-open & {
         transform: scale(1);
     }
 }
 
-.listview-overlay-close {
+.iconview-overlay-close {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -325,13 +325,13 @@
     }
 }
 
-.listview-content {
+.iconview-content {
     max-width: 900px;
     margin: 0 auto;
     color: rgba(255, 255, 255, 0.9);
 }
 
-.listview-group {
+.iconview-group {
     margin-bottom: 2rem;
 
     &:last-child {
@@ -339,7 +339,7 @@
     }
 }
 
-.listview-group-title {
+.iconview-group-title {
     font-size: 1.4rem;
     margin-bottom: 0.75rem;
     color: #fff;
@@ -347,33 +347,67 @@
     padding-bottom: 0.5rem;
 }
 
-.listview-subgroup-title {
+.iconview-subgroup-title {
     font-size: 1rem;
     margin: 1rem 0 0.5rem;
     color: rgba(255, 255, 255, 0.7);
 }
 
-.listview-links {
-    list-style: none;
+// 9 icons per row; collapses on narrower viewports.
+.iconview-grid {
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 0.75rem;
     margin: 0 0 0.5rem;
     padding: 0;
+    list-style: none;
+
+    @media (max-width: 1100px) {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+
+    @media (max-width: 700px) {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    @media (max-width: 420px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+.iconview-tile {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
     gap: 0.4rem;
+    padding: 0.65rem 0.35rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.2s ease;
 
-    li a {
-        display: block;
-        padding: 0.5rem 0.75rem;
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.05);
-        color: rgba(255, 255, 255, 0.9);
-        text-decoration: none;
-        transition: background 0.2s ease;
-
-        &:hover {
-            background: rgba(255, 255, 255, 0.12);
-        }
+    &:hover {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-2px);
     }
+}
+
+.iconview-tile-icon {
+    width: 28px;
+    height: 28px;
+    // Existing linktree SVGs are monochrome — force them white like the rest of the UI.
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+
+.iconview-tile-label {
+    font-size: 0.7rem;
+    line-height: 1.2;
+    text-align: center;
+    word-break: break-word;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 // Icon Button

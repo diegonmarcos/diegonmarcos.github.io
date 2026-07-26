@@ -810,7 +810,7 @@
       <canvas bind:this={perfCanvas} width="120" height="36"></canvas>
       <div class="perf-text">
         <span>{Math.round(fps)} fps</span>
-        <span>{frameMs.toFixed(1)} ms</span>
+        <span>{renderCalls} draws</span>
       </div>
     </button>
 

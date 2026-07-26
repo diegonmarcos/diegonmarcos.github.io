@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -39,13 +39,21 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Nature_Base_Mat17",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":1
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -83,9 +91,18 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"PolygonNatureBiomes_Tropical_Emissive_01",
+			"uri":"PolygonNatureBiomes_Tropical_Emissive_01.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"PolygonNatureBiomes_Tropical_Texture_01",
@@ -96,7 +113,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1919,
+			"count":1912,
 			"max":[
 				148.68292236328125,
 				105.03976440429688,
@@ -112,13 +129,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1919,
+			"count":1912,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1919,
+			"count":1912,
 			"type":"VEC2"
 		},
 		{
@@ -130,7 +147,7 @@
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":6247,
+			"count":6245,
 			"max":[
 				158.35696411132812,
 				343.87896728515625,
@@ -146,13 +163,13 @@
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":6247,
+			"count":6245,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":6247,
+			"count":6245,
 			"type":"VEC2"
 		},
 		{
@@ -165,50 +182,50 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":23028,
+			"byteLength":22944,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":23028,
-			"byteOffset":23028,
+			"byteLength":22944,
+			"byteOffset":22944,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":15352,
-			"byteOffset":46056,
+			"byteLength":15296,
+			"byteOffset":45888,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":5532,
-			"byteOffset":61408,
+			"byteOffset":61184,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":74964,
-			"byteOffset":66940,
+			"byteLength":74940,
+			"byteOffset":66716,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":74964,
-			"byteOffset":141904,
+			"byteLength":74940,
+			"byteOffset":141656,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":49976,
-			"byteOffset":216868,
+			"byteLength":49960,
+			"byteOffset":216596,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":18054,
-			"byteOffset":266844,
+			"byteOffset":266556,
 			"target":34963
 		}
 	],
@@ -220,7 +237,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":284900,
+			"byteLength":284612,
 			"uri":"SM_Veh_Outrigger_Canoe_01.bin"
 		}
 	]

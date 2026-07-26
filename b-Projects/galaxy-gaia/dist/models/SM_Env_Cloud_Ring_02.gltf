@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -32,10 +32,14 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				0.09200000017881393,
+				0.09200000017881393,
+				0.09200000017881393
+			],
 			"name":"NatureSHD",
 			"pbrMetallicRoughness":{
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0
 			}
 		}
 	],
@@ -59,7 +63,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":21226,
+			"count":21222,
 			"max":[
 				15097.7900390625,
 				14180.0712890625,
@@ -75,13 +79,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":21226,
+			"count":21222,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":21226,
+			"count":21222,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +98,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":254712,
+			"byteLength":254664,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":254712,
-			"byteOffset":254712,
+			"byteLength":254664,
+			"byteOffset":254664,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":169808,
-			"byteOffset":509424,
+			"byteLength":169776,
+			"byteOffset":509328,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":111336,
-			"byteOffset":679232,
+			"byteOffset":679104,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":790568,
+			"byteLength":790440,
 			"uri":"SM_Env_Cloud_Ring_02.bin"
 		}
 	]

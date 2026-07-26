@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -152,7 +152,7 @@
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":930,
+			"count":931,
 			"max":[
 				797.7596435546875,
 				500.45330810546875,
@@ -168,13 +168,13 @@
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":930,
+			"count":931,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":930,
+			"count":931,
 			"type":"VEC2"
 		},
 		{
@@ -220,7 +220,7 @@
 		{
 			"bufferView":12,
 			"componentType":5126,
-			"count":17250,
+			"count":17247,
 			"max":[
 				575.656005859375,
 				657.4737548828125,
@@ -236,13 +236,13 @@
 		{
 			"bufferView":13,
 			"componentType":5126,
-			"count":17250,
+			"count":17247,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":14,
 			"componentType":5126,
-			"count":17250,
+			"count":17247,
 			"type":"VEC2"
 		},
 		{
@@ -279,80 +279,80 @@
 		},
 		{
 			"buffer":0,
-			"byteLength":11160,
+			"byteLength":11172,
 			"byteOffset":21500,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11160,
-			"byteOffset":32660,
+			"byteLength":11172,
+			"byteOffset":32672,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":7440,
-			"byteOffset":43820,
+			"byteLength":7448,
+			"byteOffset":43844,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":2688,
-			"byteOffset":51260,
+			"byteOffset":51292,
 			"target":34963
 		},
 		{
 			"buffer":0,
 			"byteLength":40176,
-			"byteOffset":53948,
+			"byteOffset":53980,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":40176,
-			"byteOffset":94124,
+			"byteOffset":94156,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":26784,
-			"byteOffset":134300,
+			"byteOffset":134332,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":6720,
-			"byteOffset":161084,
+			"byteOffset":161116,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":207000,
-			"byteOffset":167804,
+			"byteLength":206964,
+			"byteOffset":167836,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":207000,
-			"byteOffset":374804,
+			"byteLength":206964,
+			"byteOffset":374800,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":138000,
-			"byteOffset":581804,
+			"byteLength":137976,
+			"byteOffset":581764,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":39180,
-			"byteOffset":719804,
+			"byteOffset":719740,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":758984,
+			"byteLength":758920,
 			"uri":"SM_Prop_Whale_Skeleton_01.bin"
 		}
 	]

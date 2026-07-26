@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1389,
+			"count":1387,
 			"max":[
 				154.97714233398438,
 				63.30617141723633,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1389,
+			"count":1387,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1389,
+			"count":1387,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":16668,
+			"byteLength":16644,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":16668,
-			"byteOffset":16668,
+			"byteLength":16644,
+			"byteOffset":16644,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11112,
-			"byteOffset":33336,
+			"byteLength":11096,
+			"byteOffset":33288,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":3828,
-			"byteOffset":44448,
+			"byteOffset":44384,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":48276,
+			"byteLength":48212,
 			"uri":"SM_Gen_Env_Stalactite_04.bin"
 		}
 	]

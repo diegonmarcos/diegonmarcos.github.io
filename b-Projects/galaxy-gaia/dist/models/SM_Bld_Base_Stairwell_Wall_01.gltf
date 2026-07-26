@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -38,7 +38,7 @@
 					"index":0
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -75,7 +75,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":25,
+			"count":24,
 			"max":[
 				249.9991455078125,
 				11.25,
@@ -91,13 +91,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":25,
+			"count":24,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":25,
+			"count":24,
 			"type":"VEC2"
 		},
 		{
@@ -110,26 +110,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":300,
+			"byteLength":288,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":300,
-			"byteOffset":300,
+			"byteLength":288,
+			"byteOffset":288,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":200,
-			"byteOffset":600,
+			"byteLength":192,
+			"byteOffset":576,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":84,
-			"byteOffset":800,
+			"byteOffset":768,
 			"target":34963
 		}
 	],
@@ -141,7 +141,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":884,
+			"byteLength":852,
 			"uri":"SM_Bld_Base_Stairwell_Wall_01.bin"
 		}
 	]

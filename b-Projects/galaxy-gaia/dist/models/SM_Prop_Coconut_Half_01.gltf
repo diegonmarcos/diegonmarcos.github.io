@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":334,
+			"count":306,
 			"max":[
 				14.355770111083984,
 				13.565862655639648,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":334,
+			"count":306,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":334,
+			"count":306,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":4008,
+			"byteLength":3672,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4008,
-			"byteOffset":4008,
+			"byteLength":3672,
+			"byteOffset":3672,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2672,
-			"byteOffset":8016,
+			"byteLength":2448,
+			"byteOffset":7344,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":972,
-			"byteOffset":10688,
+			"byteOffset":9792,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":11660,
+			"byteLength":10764,
 			"uri":"SM_Prop_Coconut_Half_01.bin"
 		}
 	]

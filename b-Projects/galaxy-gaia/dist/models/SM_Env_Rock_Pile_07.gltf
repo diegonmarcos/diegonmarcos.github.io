@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":3865,
+			"count":3735,
 			"max":[
 				491.3115234375,
 				289.8984375,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":3865,
+			"count":3735,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":3865,
+			"count":3735,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":46380,
+			"byteLength":44820,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":46380,
-			"byteOffset":46380,
+			"byteLength":44820,
+			"byteOffset":44820,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":30920,
-			"byteOffset":92760,
+			"byteLength":29880,
+			"byteOffset":89640,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":10752,
-			"byteOffset":123680,
+			"byteOffset":119520,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":134432,
+			"byteLength":130272,
 			"uri":"SM_Env_Rock_Pile_07.bin"
 		}
 	]

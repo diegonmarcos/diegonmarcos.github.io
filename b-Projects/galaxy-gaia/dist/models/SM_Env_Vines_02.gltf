@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -37,8 +37,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -48,13 +48,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -76,6 +75,13 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":386,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
 			"count":386,
 			"max":[
@@ -91,32 +97,19 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
+			"bufferView":2,
 			"componentType":5126,
 			"count":386,
 			"type":"VEC3"
 		},
 		{
-			"bufferView":2,
+			"bufferView":3,
 			"componentType":5126,
 			"count":386,
 			"type":"VEC2"
 		},
 		{
-			"bufferView":3,
-			"componentType":5121,
-			"count":386,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":386,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":558,
 			"type":"SCALAR"
@@ -125,38 +118,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":4632,
+			"byteLength":3088,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4632,
-			"byteOffset":4632,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":3088,
-			"byteOffset":9264,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":1544,
-			"byteOffset":12352,
+			"byteOffset":3088,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4632,
-			"byteOffset":13896,
+			"byteOffset":7720,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":3088,
+			"byteOffset":12352,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1116,
-			"byteOffset":18528,
+			"byteOffset":15440,
 			"target":34963
 		}
 	],
@@ -168,7 +155,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":19644,
+			"byteLength":16556,
 			"uri":"SM_Env_Vines_02.bin"
 		}
 	]

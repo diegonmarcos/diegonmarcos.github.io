@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":641,
+			"count":627,
 			"max":[
 				9.088264465332031,
 				7.855926513671875,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":641,
+			"count":627,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":641,
+			"count":627,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":7692,
+			"byteLength":7524,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":7692,
-			"byteOffset":7692,
+			"byteLength":7524,
+			"byteOffset":7524,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5128,
-			"byteOffset":15384,
+			"byteLength":5016,
+			"byteOffset":15048,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1728,
-			"byteOffset":20512,
+			"byteOffset":20064,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":22240,
+			"byteLength":21792,
 			"uri":"SM_Prop_Starfish_01.bin"
 		}
 	]

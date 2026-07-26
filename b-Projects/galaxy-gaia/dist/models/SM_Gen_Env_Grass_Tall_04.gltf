@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -32,13 +32,24 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Polygon_Generic_01A",
+			"normalTexture":{
+				"index":1
+			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":2
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -62,9 +73,27 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
+		},
+		{
+			"sampler":0,
+			"source":2
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Emissive_01_A",
+			"uri":"Generic_Emissive_01_A.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Normals_01",
+			"uri":"Generic_Normals_01.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"Generic_01_A",
@@ -75,7 +104,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1543,
+			"count":1510,
 			"max":[
 				191.58740234375,
 				156.93649291992188,
@@ -91,13 +120,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1543,
+			"count":1510,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1543,
+			"count":1510,
 			"type":"VEC2"
 		},
 		{
@@ -110,26 +139,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":18516,
+			"byteLength":18120,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":18516,
-			"byteOffset":18516,
+			"byteLength":18120,
+			"byteOffset":18120,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":12344,
-			"byteOffset":37032,
+			"byteLength":12080,
+			"byteOffset":36240,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4428,
-			"byteOffset":49376,
+			"byteOffset":48320,
 			"target":34963
 		}
 	],
@@ -141,7 +170,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":53804,
+			"byteLength":52748,
 			"uri":"SM_Gen_Env_Grass_Tall_04.bin"
 		}
 	]

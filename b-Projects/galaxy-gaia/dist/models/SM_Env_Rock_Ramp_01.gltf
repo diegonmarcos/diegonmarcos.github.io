@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":2859,
+			"count":2785,
 			"max":[
 				426.869140625,
 				298.44580078125,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":2859,
+			"count":2785,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":2859,
+			"count":2785,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":34308,
+			"byteLength":33420,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":34308,
-			"byteOffset":34308,
+			"byteLength":33420,
+			"byteOffset":33420,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":22872,
-			"byteOffset":68616,
+			"byteLength":22280,
+			"byteOffset":66840,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":7908,
-			"byteOffset":91488,
+			"byteOffset":89120,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":99396,
+			"byteLength":97028,
 			"uri":"SM_Env_Rock_Ramp_01.bin"
 		}
 	]

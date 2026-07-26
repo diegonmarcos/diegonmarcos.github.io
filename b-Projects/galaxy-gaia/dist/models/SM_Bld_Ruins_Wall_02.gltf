@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":12043,
+			"count":12042,
 			"max":[
 				578.3267822265625,
 				93.10791015625,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":12043,
+			"count":12042,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":12043,
+			"count":12042,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":144516,
+			"byteLength":144504,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":144516,
-			"byteOffset":144516,
+			"byteLength":144504,
+			"byteOffset":144504,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":96344,
-			"byteOffset":289032,
+			"byteLength":96336,
+			"byteOffset":289008,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":25248,
-			"byteOffset":385376,
+			"byteOffset":385344,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":410624,
+			"byteLength":410592,
 			"uri":"SM_Bld_Ruins_Wall_02.bin"
 		}
 	]

@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -48,8 +48,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -59,13 +59,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -75,13 +74,12 @@
 			"primitives":[
 				{
 					"attributes":{
+						"COLOR_0":5,
 						"POSITION":6,
 						"NORMAL":7,
-						"TEXCOORD_0":8,
-						"COLOR_0":9,
-						"COLOR_1":10
+						"TEXCOORD_0":8
 					},
-					"indices":11,
+					"indices":9,
 					"material":0
 				}
 			]
@@ -103,8 +101,15 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":1733,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":1975,
+			"count":1733,
 			"max":[
 				68.52626037597656,
 				60.17687225341797,
@@ -118,40 +123,34 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":1975,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1975,
-			"type":"VEC2"
+			"count":1733,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
-			"componentType":5121,
-			"count":1975,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":1733,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":1975,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":3960,
 			"type":"SCALAR"
 		},
 		{
+			"bufferView":5,
+			"componentType":5123,
+			"count":862,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":966,
+			"count":862,
 			"max":[
 				68.52626037597656,
 				60.17687225341797,
@@ -167,30 +166,17 @@
 		{
 			"bufferView":7,
 			"componentType":5126,
-			"count":966,
+			"count":862,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":8,
 			"componentType":5126,
-			"count":966,
+			"count":862,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":9,
-			"componentType":5121,
-			"count":966,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
-			"bufferView":10,
-			"componentType":5126,
-			"count":966,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":11,
 			"componentType":5123,
 			"count":1800,
 			"type":"SCALAR"
@@ -199,74 +185,62 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":23700,
+			"byteLength":13864,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":23700,
-			"byteOffset":23700,
+			"byteLength":20796,
+			"byteOffset":13864,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":15800,
-			"byteOffset":47400,
+			"byteLength":20796,
+			"byteOffset":34660,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":7900,
-			"byteOffset":63200,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":23700,
-			"byteOffset":71100,
+			"byteLength":13864,
+			"byteOffset":55456,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":7920,
-			"byteOffset":94800,
+			"byteOffset":69320,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":11592,
-			"byteOffset":102720,
+			"byteLength":6896,
+			"byteOffset":77240,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11592,
-			"byteOffset":114312,
+			"byteLength":10344,
+			"byteOffset":84136,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":7728,
-			"byteOffset":125904,
+			"byteLength":10344,
+			"byteOffset":94480,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3864,
-			"byteOffset":133632,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":11592,
-			"byteOffset":137496,
+			"byteLength":6896,
+			"byteOffset":104824,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":3600,
-			"byteOffset":149088,
+			"byteOffset":111720,
 			"target":34963
 		}
 	],
@@ -278,7 +252,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":152688,
+			"byteLength":115320,
 			"uri":"SM_Env_Flowers_04.bin"
 		}
 	]

@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -32,13 +32,24 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Polygon_Generic_01A",
+			"normalTexture":{
+				"index":1
+			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":2
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -63,9 +74,27 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
+		},
+		{
+			"sampler":0,
+			"source":2
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Emissive_01_A",
+			"uri":"Generic_Emissive_01_A.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Normals_01",
+			"uri":"Generic_Normals_01.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"Generic_01_A",
@@ -76,7 +105,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":364,
+			"count":358,
 			"max":[
 				91.8338623046875,
 				25.4598388671875,
@@ -92,19 +121,19 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":364,
+			"count":358,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":364,
+			"count":358,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":364,
+			"count":358,
 			"type":"VEC2"
 		},
 		{
@@ -117,32 +146,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":4368,
+			"byteLength":4296,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4368,
-			"byteOffset":4368,
+			"byteLength":4296,
+			"byteOffset":4296,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2912,
-			"byteOffset":8736,
+			"byteLength":2864,
+			"byteOffset":8592,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2912,
-			"byteOffset":11648,
+			"byteLength":2864,
+			"byteOffset":11456,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1416,
-			"byteOffset":14560,
+			"byteOffset":14320,
 			"target":34963
 		}
 	],
@@ -154,7 +183,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":15976,
+			"byteLength":15736,
 			"uri":"SM_Gen_Prop_Shelf_03.bin"
 		}
 	]

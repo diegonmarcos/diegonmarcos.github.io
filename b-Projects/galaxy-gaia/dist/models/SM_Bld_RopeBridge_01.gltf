@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -37,8 +37,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -48,13 +48,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -76,8 +75,15 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":14252,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":14274,
+			"count":14252,
 			"max":[
 				93.02592468261719,
 				773.3065795898438,
@@ -91,32 +97,19 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":14274,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":14274,
-			"type":"VEC2"
+			"count":14252,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
-			"componentType":5121,
-			"count":14274,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":14252,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":14274,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":21624,
 			"type":"SCALAR"
@@ -125,38 +118,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":171288,
+			"byteLength":114016,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":171288,
-			"byteOffset":171288,
+			"byteLength":171024,
+			"byteOffset":114016,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":114192,
-			"byteOffset":342576,
+			"byteLength":171024,
+			"byteOffset":285040,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":57096,
-			"byteOffset":456768,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":171288,
-			"byteOffset":513864,
+			"byteLength":114016,
+			"byteOffset":456064,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":43248,
-			"byteOffset":685152,
+			"byteOffset":570080,
 			"target":34963
 		}
 	],
@@ -168,7 +155,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":728400,
+			"byteLength":613328,
 			"uri":"SM_Bld_RopeBridge_01.bin"
 		}
 	]

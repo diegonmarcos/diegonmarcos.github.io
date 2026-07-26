@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -32,13 +32,21 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Explorer_MAT2",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":1
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -62,9 +70,18 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"PolygonNatureBiomes_Tropical_Emissive_01",
+			"uri":"PolygonNatureBiomes_Tropical_Emissive_01.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"PolygonNatureBiomes_Tropical_Texture_01",
@@ -75,7 +92,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":5239,
+			"count":5234,
 			"max":[
 				413.5033264160156,
 				552.5144653320312,
@@ -91,13 +108,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":5239,
+			"count":5234,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":5239,
+			"count":5234,
 			"type":"VEC2"
 		},
 		{
@@ -110,26 +127,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":62868,
+			"byteLength":62808,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":62868,
-			"byteOffset":62868,
+			"byteLength":62808,
+			"byteOffset":62808,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":41912,
-			"byteOffset":125736,
+			"byteLength":41872,
+			"byteOffset":125616,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":15438,
-			"byteOffset":167648,
+			"byteOffset":167488,
 			"target":34963
 		}
 	],
@@ -141,7 +158,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":183088,
+			"byteLength":182928,
 			"uri":"SM_Prop_ShipWreck_01.bin"
 		}
 	]

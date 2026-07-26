@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -37,8 +37,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -48,14 +48,13 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"TEXCOORD_1":3,
-						"COLOR_0":4,
-						"COLOR_1":5
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3,
+						"TEXCOORD_1":4
 					},
-					"indices":6,
+					"indices":5,
 					"material":0
 				}
 			]
@@ -77,8 +76,15 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":6533,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":6605,
+			"count":6533,
 			"max":[
 				169.47769165039062,
 				142.2713623046875,
@@ -92,38 +98,25 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":6605,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":6605,
-			"type":"VEC2"
+			"count":6533,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":6605,
+			"count":6533,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5121,
-			"count":6605,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":6533,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":5,
-			"componentType":5126,
-			"count":6605,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":6,
 			"componentType":5123,
 			"count":11103,
 			"type":"SCALAR"
@@ -132,44 +125,38 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":79260,
+			"byteLength":52264,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":79260,
-			"byteOffset":79260,
+			"byteLength":78396,
+			"byteOffset":52264,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":52840,
-			"byteOffset":158520,
+			"byteLength":78396,
+			"byteOffset":130660,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":52840,
-			"byteOffset":211360,
+			"byteLength":52264,
+			"byteOffset":209056,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":26420,
-			"byteOffset":264200,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":79260,
-			"byteOffset":290620,
+			"byteLength":52264,
+			"byteOffset":261320,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":22206,
-			"byteOffset":369880,
+			"byteOffset":313584,
 			"target":34963
 		}
 	],
@@ -181,7 +168,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":392088,
+			"byteLength":335792,
 			"uri":"SM_Prop_PirateFlag_01.bin"
 		}
 	]

@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":6788,
+			"count":6562,
 			"max":[
 				1109.0048828125,
 				452.61962890625,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":6788,
+			"count":6562,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":6788,
+			"count":6562,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":81456,
+			"byteLength":78744,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":81456,
-			"byteOffset":81456,
+			"byteLength":78744,
+			"byteOffset":78744,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":54304,
-			"byteOffset":162912,
+			"byteLength":52496,
+			"byteOffset":157488,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":19176,
-			"byteOffset":217216,
+			"byteOffset":209984,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":236392,
+			"byteLength":229160,
 			"uri":"SM_Env_Rock_Cliff_03.bin"
 		}
 	]

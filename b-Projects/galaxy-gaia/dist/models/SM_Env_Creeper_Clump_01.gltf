@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -60,7 +60,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":549,
+			"count":523,
 			"max":[
 				70.01222229003906,
 				52.58437728881836,
@@ -76,13 +76,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":549,
+			"count":523,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":549,
+			"count":523,
 			"type":"VEC2"
 		},
 		{
@@ -95,32 +95,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":6588,
+			"byteLength":6276,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6588,
-			"byteOffset":6588,
+			"byteLength":6276,
+			"byteOffset":6276,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4392,
-			"byteOffset":13176,
+			"byteLength":4184,
+			"byteOffset":12552,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1392,
-			"byteOffset":17568,
+			"byteOffset":16736,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":18960,
+			"byteLength":18128,
 			"uri":"SM_Env_Creeper_Clump_01.bin"
 		}
 	]

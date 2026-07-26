@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -37,8 +37,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -48,13 +48,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -76,8 +75,15 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":1354,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":1476,
+			"count":1354,
 			"max":[
 				147.3536834716797,
 				42.6766471862793,
@@ -91,32 +97,19 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":1476,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1476,
-			"type":"VEC2"
+			"count":1354,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
-			"componentType":5121,
-			"count":1476,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":1354,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":1476,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":2052,
 			"type":"SCALAR"
@@ -125,38 +118,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":17712,
+			"byteLength":10832,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":17712,
-			"byteOffset":17712,
+			"byteLength":16248,
+			"byteOffset":10832,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11808,
-			"byteOffset":35424,
+			"byteLength":16248,
+			"byteOffset":27080,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":5904,
-			"byteOffset":47232,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":17712,
-			"byteOffset":53136,
+			"byteLength":10832,
+			"byteOffset":43328,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4104,
-			"byteOffset":70848,
+			"byteOffset":54160,
 			"target":34963
 		}
 	],
@@ -168,7 +155,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":74952,
+			"byteLength":58264,
 			"uri":"SM_Env_Tree_Palm_01_Coconuts_01.bin"
 		}
 	]

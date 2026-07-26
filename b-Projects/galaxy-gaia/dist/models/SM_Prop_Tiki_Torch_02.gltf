@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -60,7 +60,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1403,
+			"count":1388,
 			"max":[
 				12.060235023498535,
 				12.691398620605469,
@@ -76,13 +76,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1403,
+			"count":1388,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1403,
+			"count":1388,
 			"type":"VEC2"
 		},
 		{
@@ -95,32 +95,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":16836,
+			"byteLength":16656,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":16836,
-			"byteOffset":16836,
+			"byteLength":16656,
+			"byteOffset":16656,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":11224,
-			"byteOffset":33672,
+			"byteLength":11104,
+			"byteOffset":33312,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":4272,
-			"byteOffset":44896,
+			"byteOffset":44416,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":49168,
+			"byteLength":48688,
 			"uri":"SM_Prop_Tiki_Torch_02.bin"
 		}
 	]

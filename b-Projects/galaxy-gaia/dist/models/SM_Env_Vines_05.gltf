@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -37,8 +37,8 @@
 				"baseColorTexture":{
 					"index":0
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -48,13 +48,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -76,8 +75,15 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":841,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":855,
+			"count":841,
 			"max":[
 				12.849517822265625,
 				490.68023681640625,
@@ -91,32 +97,19 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":855,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":855,
-			"type":"VEC2"
+			"count":841,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
-			"componentType":5121,
-			"count":855,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":841,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":855,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":1422,
 			"type":"SCALAR"
@@ -125,38 +118,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":10260,
+			"byteLength":6728,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":10260,
-			"byteOffset":10260,
+			"byteLength":10092,
+			"byteOffset":6728,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6840,
-			"byteOffset":20520,
+			"byteLength":10092,
+			"byteOffset":16820,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":3420,
-			"byteOffset":27360,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":10260,
-			"byteOffset":30780,
+			"byteLength":6728,
+			"byteOffset":26912,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":2844,
-			"byteOffset":41040,
+			"byteOffset":33640,
 			"target":34963
 		}
 	],
@@ -168,7 +155,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":43884,
+			"byteLength":36484,
 			"uri":"SM_Env_Vines_05.bin"
 		}
 	]

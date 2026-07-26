@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -45,13 +45,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -60,6 +59,13 @@
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":1037,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
 			"count":1037,
 			"max":[
@@ -75,32 +81,19 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
+			"bufferView":2,
 			"componentType":5126,
 			"count":1037,
 			"type":"VEC3"
 		},
 		{
-			"bufferView":2,
+			"bufferView":3,
 			"componentType":5126,
 			"count":1037,
 			"type":"VEC2"
 		},
 		{
-			"bufferView":3,
-			"componentType":5121,
-			"count":1037,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":1037,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":6210,
 			"type":"SCALAR"
@@ -109,44 +102,38 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":12444,
+			"byteLength":8296,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":12444,
-			"byteOffset":12444,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":8296,
-			"byteOffset":24888,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":4148,
-			"byteOffset":33184,
+			"byteOffset":8296,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":12444,
-			"byteOffset":37332,
+			"byteOffset":20740,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":8296,
+			"byteOffset":33184,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":12420,
-			"byteOffset":49776,
+			"byteOffset":41480,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":62196,
+			"byteLength":53900,
 			"uri":"SM_Gen_Env_Waterfall_02.bin"
 		}
 	]

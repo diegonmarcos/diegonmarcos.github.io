@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -43,13 +43,21 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Leaf16",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":1
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"metallicFactor":0.13199999928474426,
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -59,13 +67,12 @@
 			"primitives":[
 				{
 					"attributes":{
-						"POSITION":0,
-						"NORMAL":1,
-						"TEXCOORD_0":2,
-						"COLOR_0":3,
-						"COLOR_1":4
+						"COLOR_0":0,
+						"POSITION":1,
+						"NORMAL":2,
+						"TEXCOORD_0":3
 					},
-					"indices":5,
+					"indices":4,
 					"material":0
 				}
 			]
@@ -75,13 +82,12 @@
 			"primitives":[
 				{
 					"attributes":{
+						"COLOR_0":5,
 						"POSITION":6,
 						"NORMAL":7,
-						"TEXCOORD_0":8,
-						"COLOR_0":9,
-						"COLOR_1":10
+						"TEXCOORD_0":8
 					},
-					"indices":11,
+					"indices":9,
 					"material":0
 				}
 			]
@@ -91,6 +97,10 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
 		}
 	],
 	"images":[
@@ -98,13 +108,25 @@
 			"mimeType":"image/png",
 			"name":"Gradient 2",
 			"uri":"Gradient%202.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"PolygonNatureBiomes_Tropical_Texture_01",
+			"uri":"PolygonNatureBiomes_Tropical_Texture_01.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
+			"componentType":5123,
+			"count":128,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
+			"bufferView":1,
 			"componentType":5126,
-			"count":137,
+			"count":128,
 			"max":[
 				26.1524658203125,
 				30.773178100585938,
@@ -118,40 +140,34 @@
 			"type":"VEC3"
 		},
 		{
-			"bufferView":1,
-			"componentType":5126,
-			"count":137,
-			"type":"VEC3"
-		},
-		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":137,
-			"type":"VEC2"
+			"count":128,
+			"type":"VEC3"
 		},
 		{
 			"bufferView":3,
-			"componentType":5121,
-			"count":137,
-			"normalized":true,
-			"type":"VEC4"
+			"componentType":5126,
+			"count":128,
+			"type":"VEC2"
 		},
 		{
 			"bufferView":4,
-			"componentType":5126,
-			"count":137,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":5,
 			"componentType":5123,
 			"count":270,
 			"type":"SCALAR"
 		},
 		{
+			"bufferView":5,
+			"componentType":5123,
+			"count":83,
+			"normalized":true,
+			"type":"VEC4"
+		},
+		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":86,
+			"count":83,
 			"max":[
 				26.1524658203125,
 				30.773178100585938,
@@ -167,30 +183,17 @@
 		{
 			"bufferView":7,
 			"componentType":5126,
-			"count":86,
+			"count":83,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":8,
 			"componentType":5126,
-			"count":86,
+			"count":83,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":9,
-			"componentType":5121,
-			"count":86,
-			"normalized":true,
-			"type":"VEC4"
-		},
-		{
-			"bufferView":10,
-			"componentType":5126,
-			"count":86,
-			"type":"VEC3"
-		},
-		{
-			"bufferView":11,
 			"componentType":5123,
 			"count":162,
 			"type":"SCALAR"
@@ -199,74 +202,62 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":1644,
+			"byteLength":1024,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1644,
-			"byteOffset":1644,
+			"byteLength":1536,
+			"byteOffset":1024,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1096,
-			"byteOffset":3288,
+			"byteLength":1536,
+			"byteOffset":2560,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":548,
-			"byteOffset":4384,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":1644,
-			"byteOffset":4932,
+			"byteLength":1024,
+			"byteOffset":4096,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":540,
-			"byteOffset":6576,
+			"byteOffset":5120,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":1032,
-			"byteOffset":7116,
+			"byteLength":664,
+			"byteOffset":5660,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1032,
-			"byteOffset":8148,
+			"byteLength":996,
+			"byteOffset":6324,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":688,
-			"byteOffset":9180,
+			"byteLength":996,
+			"byteOffset":7320,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":344,
-			"byteOffset":9868,
-			"target":34962
-		},
-		{
-			"buffer":0,
-			"byteLength":1032,
-			"byteOffset":10212,
+			"byteLength":664,
+			"byteOffset":8316,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":324,
-			"byteOffset":11244,
+			"byteOffset":8980,
 			"target":34963
 		}
 	],
@@ -278,7 +269,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":11568,
+			"byteLength":9304,
 			"uri":"SM_Env_Flower_01.bin"
 		}
 	]

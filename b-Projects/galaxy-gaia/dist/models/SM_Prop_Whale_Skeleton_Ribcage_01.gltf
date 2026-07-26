@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":7233,
+			"count":7226,
 			"max":[
 				262.0224609375,
 				278.624267578125,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":7233,
+			"count":7226,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":7233,
+			"count":7226,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":86796,
+			"byteLength":86712,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":86796,
-			"byteOffset":86796,
+			"byteLength":86712,
+			"byteOffset":86712,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":57864,
-			"byteOffset":173592,
+			"byteLength":57808,
+			"byteOffset":173424,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":15936,
-			"byteOffset":231456,
+			"byteOffset":231232,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":247392,
+			"byteLength":247168,
 			"uri":"SM_Prop_Whale_Skeleton_Ribcage_01.bin"
 		}
 	]

@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -32,13 +32,24 @@
 	"materials":[
 		{
 			"doubleSided":true,
+			"emissiveFactor":[
+				1,
+				1,
+				1
+			],
+			"emissiveTexture":{
+				"index":0
+			},
 			"name":"Polygon_Generic_01A",
+			"normalTexture":{
+				"index":1
+			},
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
-					"index":0
+					"index":2
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5527864098548889
+				"roughnessFactor":0.800000011920929
 			}
 		}
 	],
@@ -62,9 +73,27 @@
 		{
 			"sampler":0,
 			"source":0
+		},
+		{
+			"sampler":0,
+			"source":1
+		},
+		{
+			"sampler":0,
+			"source":2
 		}
 	],
 	"images":[
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Emissive_01_A",
+			"uri":"Generic_Emissive_01_A.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"Generic_Normals_01",
+			"uri":"Generic_Normals_01.png"
+		},
 		{
 			"mimeType":"image/png",
 			"name":"Generic_01_A",
@@ -75,7 +104,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":151,
+			"count":147,
 			"max":[
 				4.2220139503479,
 				43.965721130371094,
@@ -91,13 +120,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":151,
+			"count":147,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":151,
+			"count":147,
 			"type":"VEC2"
 		},
 		{
@@ -110,26 +139,26 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":1812,
+			"byteLength":1764,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1812,
-			"byteOffset":1812,
+			"byteLength":1764,
+			"byteOffset":1764,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1208,
-			"byteOffset":3624,
+			"byteLength":1176,
+			"byteOffset":3528,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":456,
-			"byteOffset":4832,
+			"byteOffset":4704,
 			"target":34963
 		}
 	],
@@ -141,7 +170,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":5288,
+			"byteLength":5160,
 			"uri":"SM_Gen_Env_Twig_02.bin"
 		}
 	]

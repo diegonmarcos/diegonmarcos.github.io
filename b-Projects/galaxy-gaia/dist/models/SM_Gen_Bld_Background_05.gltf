@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -76,7 +76,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":866,
+			"count":859,
 			"max":[
 				438.1865234375,
 				264.4801025390625,
@@ -92,13 +92,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":866,
+			"count":859,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":866,
+			"count":859,
 			"type":"VEC2"
 		},
 		{
@@ -110,7 +110,7 @@
 		{
 			"bufferView":4,
 			"componentType":5126,
-			"count":24,
+			"count":22,
 			"max":[
 				396.541015625,
 				199.0045166015625,
@@ -126,13 +126,13 @@
 		{
 			"bufferView":5,
 			"componentType":5126,
-			"count":24,
+			"count":22,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":6,
 			"componentType":5126,
-			"count":24,
+			"count":22,
 			"type":"VEC2"
 		},
 		{
@@ -145,56 +145,56 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":10392,
+			"byteLength":10308,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":10392,
-			"byteOffset":10392,
+			"byteLength":10308,
+			"byteOffset":10308,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6928,
-			"byteOffset":20784,
+			"byteLength":6872,
+			"byteOffset":20616,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":3246,
-			"byteOffset":27712,
+			"byteOffset":27488,
 			"target":34963
 		},
 		{
 			"buffer":0,
-			"byteLength":288,
-			"byteOffset":30960,
+			"byteLength":264,
+			"byteOffset":30736,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":288,
-			"byteOffset":31248,
+			"byteLength":264,
+			"byteOffset":31000,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":192,
-			"byteOffset":31536,
+			"byteLength":176,
+			"byteOffset":31264,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":72,
-			"byteOffset":31728,
+			"byteOffset":31440,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":31800,
+			"byteLength":31512,
 			"uri":"SM_Gen_Bld_Background_05.bin"
 		}
 	]

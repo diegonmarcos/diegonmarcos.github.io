@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":505,
+			"count":504,
 			"max":[
 				117.262451171875,
 				450.62774658203125,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":505,
+			"count":504,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":505,
+			"count":504,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":6060,
+			"byteLength":6048,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6060,
-			"byteOffset":6060,
+			"byteLength":6048,
+			"byteOffset":6048,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":4040,
-			"byteOffset":12120,
+			"byteLength":4032,
+			"byteOffset":12096,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1044,
-			"byteOffset":16160,
+			"byteOffset":16128,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":17204,
+			"byteLength":17172,
 			"uri":"SM_Prop_Whale_Skeleton_Rib_01.bin"
 		}
 	]

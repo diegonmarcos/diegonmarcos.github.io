@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -60,7 +60,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":212,
+			"count":203,
 			"max":[
 				21.101154327392578,
 				158.99989318847656,
@@ -76,13 +76,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":212,
+			"count":203,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":212,
+			"count":203,
 			"type":"VEC2"
 		},
 		{
@@ -95,32 +95,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":2544,
+			"byteLength":2436,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":2544,
-			"byteOffset":2544,
+			"byteLength":2436,
+			"byteOffset":2436,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1696,
-			"byteOffset":5088,
+			"byteLength":1624,
+			"byteOffset":4872,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":624,
-			"byteOffset":6784,
+			"byteOffset":6496,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":7408,
+			"byteLength":7120,
 			"uri":"SM_Env_Creeper_Vine_02.bin"
 		}
 	]

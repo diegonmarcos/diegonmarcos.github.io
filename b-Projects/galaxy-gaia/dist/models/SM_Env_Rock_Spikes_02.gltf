@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":4332,
+			"count":4254,
 			"max":[
 				803.37939453125,
 				562.61328125,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":4332,
+			"count":4254,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":4332,
+			"count":4254,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":51984,
+			"byteLength":51048,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":51984,
-			"byteOffset":51984,
+			"byteLength":51048,
+			"byteOffset":51048,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":34656,
-			"byteOffset":103968,
+			"byteLength":34032,
+			"byteOffset":102096,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":11520,
-			"byteOffset":138624,
+			"byteOffset":136128,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":150144,
+			"byteLength":147648,
 			"uri":"SM_Env_Rock_Spikes_02.bin"
 		}
 	]

@@ -1,6 +1,6 @@
 {
 	"asset":{
-		"generator":"Khronos glTF Blender I/O v4.2.70",
+		"generator":"Khronos glTF Blender I/O v4.0.44",
 		"version":"2.0"
 	},
 	"scene":0,
@@ -59,7 +59,7 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":2317,
+			"count":2316,
 			"max":[
 				509.88671875,
 				458.94720458984375,
@@ -75,13 +75,13 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":2317,
+			"count":2316,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":2317,
+			"count":2316,
 			"type":"VEC2"
 		},
 		{
@@ -94,32 +94,32 @@
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":27804,
+			"byteLength":27792,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":27804,
-			"byteOffset":27804,
+			"byteLength":27792,
+			"byteOffset":27792,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":18536,
-			"byteOffset":55608,
+			"byteLength":18528,
+			"byteOffset":55584,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":6012,
-			"byteOffset":74144,
+			"byteOffset":74112,
 			"target":34963
 		}
 	],
 	"buffers":[
 		{
-			"byteLength":80156,
+			"byteLength":80124,
 			"uri":"SM_Prop_Whale_Skeleton_Tail_01.bin"
 		}
 	]

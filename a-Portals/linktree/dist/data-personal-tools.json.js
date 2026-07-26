@@ -662,7 +662,9 @@
           "row": 1,
           "header": "Assets",
           "links": [
-            { "label": "Assets", "url": "https://diegonmarcos.github.io/", "icon": "file-stack.svg", "item": 0 }
+            { "label": "Assets", "url": "https://diegonmarcos.github.io/", "icon": "file-stack.svg", "item": 0 },
+            { "label": "796floor", "url": "https://diegonmarcos.github.io/796floor", "icon": "file-stack.svg", "item": 1 },
+            { "label": "WisAldo", "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/", "icon": "world.svg", "item": 2 }
           ],
           "group": 3
         },

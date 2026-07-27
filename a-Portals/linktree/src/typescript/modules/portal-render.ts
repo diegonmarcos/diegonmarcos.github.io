@@ -366,10 +366,34 @@ function renderReposSlide(slide: SlideRepos): HTMLElement {
   if (slide.image) linkSection.appendChild(featuredImg(slide.image.src, slide.image.alt ?? slide.title, false));
   const linksContainer = el('div', { class: 'links-container' });
   for (const lk of slide.top_links ?? []) linksContainer.appendChild(renderLinkAnchor(lk));
-  const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
-  const dashboard = el('div', { class: dashClass });
-  for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
-  linksContainer.appendChild(dashboard);
+  // Multi-row layout: when ANY column carries `row`, group columns by row
+  // and emit one .tools-dashboard per row with an auto-derived `--N`
+  // modifier. When NO column has `row`, fall back to the legacy
+  // single-dashboard mode honoring the slide's explicit `dashboard_modifier`.
+  const hasRows = slide.columns.some(c => typeof c.row === 'number');
+  if (hasRows) {
+    const byRow = new Map<number, Column[]>();
+    for (const c of slide.columns) {
+      const r = c.row ?? 0;
+      if (!byRow.has(r)) byRow.set(r, []);
+      byRow.get(r)!.push(c);
+    }
+    const rows = Array.from(byRow.keys()).sort((a, b) => a - b);
+    rows.forEach((r, idx) => {
+      const cols = byRow.get(r)!;
+      const dash = el('div', { class: `tools-dashboard tools-dashboard--${cols.length}` });
+      for (const col of cols) dash.appendChild(renderColumn(col));
+      linksContainer.appendChild(dash);
+      if (idx < rows.length - 1) {
+        linksContainer.appendChild(el('hr', { class: 'row-divider' }));
+      }
+    });
+  } else {
+    const dashClass = `tools-dashboard${slide.dashboard_modifier ? ' ' + slide.dashboard_modifier : ''}`;
+    const dashboard = el('div', { class: dashClass });
+    for (const col of slide.columns) dashboard.appendChild(renderColumn(col));
+    linksContainer.appendChild(dashboard);
+  }
   linkSection.appendChild(linksContainer);
   return el('div', { class: 'swiper-slide' }, [linkSection]);
 }

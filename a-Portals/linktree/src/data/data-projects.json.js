@@ -29,10 +29,11 @@
           "item": 0
         }
       ],
-      "dashboard_modifier": "tools-dashboard--5",
       "columns": [
         {
           "header": "Front-end",
+          "row": 0,
+          "group": 0,
           "links": [
             {
               "label": "Portals",
@@ -58,21 +59,22 @@
               "icon": "device-desktop.svg",
               "item": 3
             }
-          ],
-          "group": 0
+          ]
         },
         {
           "header": "Cloud",
+          "row": 0,
+          "group": 1,
           "links": [
             {
-              "label": "Cloud",
-              "url": "https://github.com/diegonmarcos/cloud",
+              "label": "Solutions - Infra",
+              "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
               "icon": "world.svg",
               "item": 0
             },
             {
-              "label": "Unix",
-              "url": "https://github.com/diegonmarcos/unix",
+              "label": "Solutions - User",
+              "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
               "icon": "settings.svg",
               "item": 1
             },
@@ -83,28 +85,85 @@
               "item": 2
             },
             {
-              "label": "Front",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
-              "icon": "world.svg",
+              "label": "Infra",
+              "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
+              "icon": "git-branch.svg",
               "item": 3
             },
             {
-              "label": "Tooling",
-              "url": "https://github.com/diegonmarcos/ops-Tooling",
-              "icon": "git-branch.svg",
+              "label": "VPS",
+              "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
+              "icon": "device-desktop.svg",
               "item": 4
+            }
+          ]
+        },
+        {
+          "header": "Unix",
+          "row": 0,
+          "group": 2,
+          "links": [
+            {
+              "label": "Boot Manager",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+              "icon": "bolt.svg",
+              "item": 0
             },
             {
-              "label": "MCP Servers",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
-              "icon": "brain.svg",
-              "item": 5
+              "label": "OS Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+              "icon": "world.svg",
+              "item": 1
+            },
+            {
+              "label": "Home-Manager Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+              "icon": "settings.svg",
+              "item": 2
+            },
+            {
+              "label": "Unix Binaries",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+              "icon": "git-branch.svg",
+              "item": 3
+            },
+            {
+              "label": "Android Apks",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+              "icon": "device-gamepad.svg",
+              "item": 4
             }
-          ],
-          "group": 1
+          ]
+        },
+        {
+          "header": "CG & Games",
+          "row": 0,
+          "group": 3,
+          "links": [
+            {
+              "label": "Games 2D",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus/games",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            },
+            {
+              "label": "Scenes 3D",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-gaia",
+              "icon": "world.svg",
+              "item": 1
+            },
+            {
+              "label": "Games 3D",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
+              "icon": "device-gamepad.svg",
+              "item": 2
+            }
+          ]
         },
         {
           "header": "Low Level",
+          "row": 1,
+          "group": 4,
           "links": [
             {
               "label": "My Libs",
@@ -142,11 +201,12 @@
               "icon": "rocket.svg",
               "item": 5
             }
-          ],
-          "group": 2
+          ]
         },
         {
           "header": "ML",
+          "row": 1,
+          "group": 5,
           "links": [
             {
               "label": "Agentic AI",
@@ -160,11 +220,12 @@
               "icon": "brain.svg",
               "item": 1
             }
-          ],
-          "group": 3
+          ]
         },
         {
           "header": "Data",
+          "row": 1,
+          "group": 6,
           "links": [
             {
               "label": "Data Science",
@@ -184,8 +245,7 @@
               "icon": "database.svg",
               "item": 2
             }
-          ],
-          "group": 4
+          ]
         }
       ],
       "slide": 0

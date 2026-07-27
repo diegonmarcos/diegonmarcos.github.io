@@ -310,10 +310,34 @@
           "group": 0,
           "links": [
             {
-              "label": "Boot Manager",
+              "label": "ReFind",
               "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
               "icon": "bolt.svg",
               "item": 0
+            },
+            {
+              "label": "NixOS",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
+              "icon": "world.svg",
+              "item": 1
+            },
+            {
+              "label": "KDE Plasma",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp/libs/kde-connect",
+              "icon": "settings.svg",
+              "item": 2
+            },
+            {
+              "label": "Kali Linux",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ab_desk-security_x86_kali-linux_kali",
+              "icon": "bolt.svg",
+              "item": 3
+            },
+            {
+              "label": "NixSlim",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
+              "icon": "settings.svg",
+              "item": 4
             }
           ]
         },
@@ -326,6 +350,18 @@
               "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
               "icon": "world.svg",
               "item": 0
+            },
+            {
+              "label": "System Protection",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+              "icon": "lock.svg",
+              "item": 1
+            },
+            {
+              "label": "Watchdog",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
+              "icon": "bolt.svg",
+              "item": 2
             }
           ]
         },
@@ -338,6 +374,18 @@
               "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
               "icon": "settings.svg",
               "item": 0
+            },
+            {
+              "label": "CI/CD",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/1_workflows/src/cicd",
+              "icon": "git-branch.svg",
+              "item": 1
+            },
+            {
+              "label": "VM Pilot",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x",
+              "icon": "device-desktop.svg",
+              "item": 2
             }
           ]
         },
@@ -350,18 +398,108 @@
               "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
               "icon": "git-branch.svg",
               "item": 0
+            },
+            {
+              "label": "myAI",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+              "icon": "brain.svg",
+              "item": 1
+            },
+            {
+              "label": "myBrowser",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-browser-qute",
+              "icon": "world.svg",
+              "item": 2
+            },
+            {
+              "label": "myKonsole",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
+              "icon": "device-desktop.svg",
+              "item": 3
             }
           ]
         },
         {
-          "header": "Android Bin",
+          "header": "Android Apk",
           "group": 4,
           "links": [
             {
-              "label": "Android Bin",
+              "label": "Browser",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-browser",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Chat",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-chat",
+              "icon": "brand-whatsapp.svg",
+              "item": 1
+            },
+            {
+              "label": "Dialer",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-dialer",
+              "icon": "link.svg",
+              "item": 2
+            },
+            {
+              "label": "IDE",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-ide",
+              "icon": "code.svg",
+              "item": 3
+            },
+            {
+              "label": "Keyboard",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard",
+              "icon": "file-type-html.svg",
+              "item": 4
+            },
+            {
+              "label": "Keyboard Libs",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard-libs",
+              "icon": "file-type-html.svg",
+              "item": 5
+            },
+            {
+              "label": "Mail",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-mail",
+              "icon": "mail.svg",
+              "item": 6
+            },
+            {
+              "label": "Matrix",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-matrix",
+              "icon": "brand-whatsapp.svg",
+              "item": 7
+            },
+            {
+              "label": "Media Center",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-media-center",
+              "icon": "headphones.svg",
+              "item": 8
+            },
+            {
+              "label": "Nav",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-nav",
+              "icon": "world-longitude.svg",
+              "item": 9
+            },
+            {
+              "label": "SuperApp",
               "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
               "icon": "device-gamepad.svg",
-              "item": 0
+              "item": 10
+            },
+            {
+              "label": "Vault",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-vault",
+              "icon": "lock.svg",
+              "item": 11
+            },
+            {
+              "label": "Wallet",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-wallet",
+              "icon": "ledger.svg",
+              "item": 12
             }
           ]
         }

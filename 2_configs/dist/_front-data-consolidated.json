@@ -5395,9 +5395,41 @@
         "section": "projects",
         "slide": "projects",
         "column": "Boot Manager",
-        "label": "Boot Manager",
+        "label": "ReFind",
         "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
         "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Boot Manager",
+        "label": "NixOS",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_desk-usr_x86_surface-linux_nixos",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Boot Manager",
+        "label": "KDE Plasma",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp/libs/kde-connect",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Boot Manager",
+        "label": "Kali Linux",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ab_desk-security_x86_kali-linux_kali",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Boot Manager",
+        "label": "NixSlim",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_ventoy_fallback_usb/debian-slim-surface_fallback_usb",
+        "icon": "settings.svg"
       },
       {
         "section": "projects",
@@ -5410,10 +5442,42 @@
       {
         "section": "projects",
         "slide": "projects",
+        "column": "OS Flakes",
+        "label": "System Protection",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "OS Flakes",
+        "label": "Watchdog",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x/B1_vm-pilot-watchdog",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
         "column": "HM Flakes",
         "label": "HM Flakes",
         "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "HM Flakes",
+        "label": "CI/CD",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/1_workflows/src/cicd",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "HM Flakes",
+        "label": "VM Pilot",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/_aba_cloud-servers-x",
+        "icon": "device-desktop.svg"
       },
       {
         "section": "projects",
@@ -5426,10 +5490,130 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Android Bin",
-        "label": "Android Bin",
+        "column": "Unix Bin",
+        "label": "myAI",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-ai",
+        "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix Bin",
+        "label": "myBrowser",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-browser-qute",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix Bin",
+        "label": "myKonsole",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/da_my-konsole",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Browser",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-browser",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Chat",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-chat",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Dialer",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-dialer",
+        "icon": "link.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "IDE",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-ide",
+        "icon": "code.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Keyboard",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Keyboard Libs",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-keyboard-libs",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Mail",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-mail",
+        "icon": "mail.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Matrix",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-matrix",
+        "icon": "brand-whatsapp.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Media Center",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-media-center",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Nav",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-nav",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "SuperApp",
         "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
         "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Vault",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-vault",
+        "icon": "lock.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Android Apk",
+        "label": "Wallet",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-wallet",
+        "icon": "ledger.svg"
       },
       {
         "section": "projects",

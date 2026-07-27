@@ -33,11 +33,6 @@
       "local": "public/images/banners/lab-tools.gif"
     },
     {
-      "slide": "circus",
-      "remote": "https://media1.tenor.com/m/kIF7PM-7BAsAAAAC/penguin-exercise.gif",
-      "local": "public/images/banners/circus.gif"
-    },
-    {
       "slide": "cloud",
       "remote": "https://miro.medium.com/v2/resize:fit:720/format:webp/1*0N8CVKix7OGfBDsgh9DzrQ.gif",
       "local": "public/images/banners/cloud.gif"
@@ -47,7 +42,9 @@
       "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
       "local": "public/images/banners/media.gif",
       "_aliases_note": "The retired MY TOOLS slide originally used this same giphy URL. We preserve a byte-identical copy under mytools.gif so the TOOLCHAIN overview slide can recover that banner without referencing media-slide semantics.",
-      "aliases": ["public/images/banners/mytools.gif"]
+      "aliases": [
+        "public/images/banners/mytools.gif"
+      ]
     },
     {
       "slide": "data",

@@ -415,14 +415,24 @@
                     <div class="swiper projects-swiper">
                     <div class="swiper-wrapper">
 
-                        <!-- Slide 1: Repos Card -->
-                        <div data-portal-mount="repos"></div>
-                        <!-- End Repos Card -->
+                        <!-- Slide 1: Suite Card — declarative -->
+                        <div data-portal-mount="suite"></div>
+                        <!-- End Suite Card -->
 
-                        <!-- Slide 2: Tools Profile Card -->
+                        
+
+                        <!-- Slide 2: Lab Tools Card — declarative -->
+                        <div data-portal-mount="lab-tools"></div>
+                        <!-- End Lab Tools Card -->
+
+                        <!-- Slide 3: Cloud Card — declarative -->
+                        <div data-portal-mount="cloud"></div>
+                        <!-- End Cloud Card -->
+
+<!-- Slide 4: MACRO & QUANT (overview card) -->
                         <div class="swiper-slide">
                             <div class="link-section">
-                                <h2 class="section-title">TOOLCHAIN</h2>
+                                <h2 class="section-title">MACRO &amp; QUANT</h2>
                 <div class="card-swiper">
                     <img src="public/images/personal.png" alt="Tools" class="featured-image card-slide active">
                     <img src="public/images/professional.png" alt="Professional" class="featured-image card-slide">
@@ -483,25 +493,9 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- End Tools Profile Card -->
+                        <!-- End MACRO & QUANT Card -->
 
-                        <!-- Slide 2: 5-column SUITE absorbs old MY TOOLS + MyHealth → declarative -->
-                        <div data-portal-mount="suite"></div>
-                        <!-- End Suite Card -->
-
-                        <!-- Slide 4: Lab Tools Card — declarative, hydrated from src/data/projects.json by modules/portal-render.ts -->
-                        <div data-portal-mount="lab-tools"></div>
-                        <!-- End Lab Tools Card -->
-
-                        <!-- Slide 5: Circus Card — declarative -->
-                        <div data-portal-mount="circus"></div>
-                        <!-- End Circus Card -->
-
-                        <!-- Slide 6: Cloud Card — declarative -->
-                        <div data-portal-mount="cloud"></div>
-                        <!-- End Cloud Card -->
-
-                        <!-- Slide 7: Knowledge Center (Brucheion + Serapeum, two-row split) -->
+                        <!-- Slide 5: Knowledge Center (Brucheion + Serapeum, two-row split) -->
                         <div data-portal-mount="projects"></div>
                         <!-- End Knowledge Center Card -->
 

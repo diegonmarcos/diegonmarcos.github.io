@@ -82,6 +82,6 @@ describe('b-s-g-i hierarchy — every node carries its scoped number', () => {
     const cfg = JSON.parse(readFileSync(resolve(dataDir, 'projects.json'), 'utf8')) as SectionCfg;
     const suite = cfg.slides.find(s => (s as unknown as { id: string }).id === 'suite')!;
     const addr = `b${cfg.section.box}s${suite.slide}`;
-    expect(addr).toBe('b2s1');
+    expect(addr).toBe('b2s0');
   });
 });

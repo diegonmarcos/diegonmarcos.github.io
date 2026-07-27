@@ -1263,138 +1263,6 @@
       "slide": 5
     },
     {
-      "id": "structural",
-      "kind": "tools",
-      "title": "X",
-      "slide": 6,
-      "image": {
-        "src": "public/images/banners/structural.gif",
-        "alt": "X"
-      },
-      "columns": [
-        {
-          "header": "STRUCTURAL",
-          "row": 0,
-          "group": 0,
-          "links": [
-            {
-              "label": "Civil Eng",
-              "url": "https://github.com/diegonmarcos/cveng_AFrame",
-              "icon": "settings.svg",
-              "item": 0
-            },
-            {
-              "label": "OpenRevit",
-              "url": "https://diegonmarcos.github.io/openrevit",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Sailytics",
-              "url": "https://diegonmarcos.github.io/sailytics",
-              "icon": "world.svg",
-              "item": 2
-            }
-          ]
-        },
-        {
-          "header": "MECHATRONICS",
-          "row": 0,
-          "group": 1,
-          "links": [
-            {
-              "label": "System",
-              "url": "https://github.com/diegonmarcos/back-System",
-              "icon": "settings.svg",
-              "item": 0
-            },
-            {
-              "label": "Graphics",
-              "url": "https://github.com/diegonmarcos/back-Graphic",
-              "icon": "device-desktop.svg",
-              "item": 1
-            },
-            {
-              "label": "My Libs",
-              "url": "https://github.com/diegonmarcos/ops-Mylibs",
-              "icon": "git-branch.svg",
-              "item": 2
-            }
-          ]
-        },
-        {
-          "header": "MACRO",
-          "row": 1,
-          "group": 2,
-          "links": [
-            {
-              "label": "Macro/Quant",
-              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-              "icon": "database.svg",
-              "item": 0
-            }
-          ]
-        },
-        {
-          "header": "QUANT",
-          "row": 1,
-          "group": 3,
-          "links": [
-            {
-              "label": "Data Science",
-              "url": "https://github.com/diegonmarcos/ml-DataScience",
-              "icon": "database.svg",
-              "item": 0
-            }
-          ]
-        }
-      ],
-      "extras": {
-        "primary_link": {
-          "label": "Structural & Mechatronics",
-          "url": "#",
-          "icon": "settings.svg"
-        },
-        "profile_icons": [
-          {
-            "url": "https://github.com/diegonmarcos/cveng_AFrame",
-            "title": "Civil Eng",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/back-System",
-            "title": "System",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/back-Graphic",
-            "title": "Graphics",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/ops-Mylibs",
-            "title": "My Libs",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/back-Algo",
-            "title": "Algorithms",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-            "title": "Cyber",
-            "icon": "brand-github.svg"
-          },
-          {
-            "url": "https://github.com/diegonmarcos/lecole42",
-            "title": "42 School",
-            "icon": "brand-github.svg"
-          }
-        ]
-      }
-    },
-    {
       "id": "projects",
       "kind": "tools",
       "title": "PHI",
@@ -1490,7 +1358,145 @@
           "group": 5
         }
       ],
-      "slide": 7
+      "slide": 6
+    },
+    {
+      "id": "structural",
+      "kind": "tools",
+      "title": "X",
+      "slide": 7,
+      "image": {
+        "src": "public/images/banners/structural.gif",
+        "alt": "X"
+      },
+      "columns": [
+        {
+          "header": "MACRO",
+          "row": 0,
+          "group": 2,
+          "links": [
+            {
+              "label": "Central Bank",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
+              "icon": "database.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "QUANT",
+          "row": 0,
+          "group": 3,
+          "links": [
+            {
+              "label": "Terminal Fin",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
+              "icon": "rocket.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "STRUCTURAL",
+          "row": 1,
+          "group": 0,
+          "links": [
+            {
+              "label": "Civil Eng",
+              "url": "https://github.com/diegonmarcos/cveng_AFrame",
+              "icon": "settings.svg",
+              "item": 0
+            },
+            {
+              "label": "OpenRevit",
+              "url": "https://diegonmarcos.github.io/openrevit",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Sailytics",
+              "url": "https://diegonmarcos.github.io/sailytics",
+              "icon": "world.svg",
+              "item": 2
+            },
+            {
+              "label": "Satellite Simulator",
+              "url": "#",
+              "icon": "rocket.svg",
+              "item": 3
+            }
+          ]
+        },
+        {
+          "header": "MECHATRONICS",
+          "row": 1,
+          "group": 1,
+          "links": [
+            {
+              "label": "System",
+              "url": "https://github.com/diegonmarcos/back-System",
+              "icon": "settings.svg",
+              "item": 0
+            },
+            {
+              "label": "Graphics",
+              "url": "https://github.com/diegonmarcos/back-Graphic",
+              "icon": "device-desktop.svg",
+              "item": 1
+            },
+            {
+              "label": "My Libs",
+              "url": "https://github.com/diegonmarcos/ops-Mylibs",
+              "icon": "git-branch.svg",
+              "item": 2
+            }
+          ]
+        }
+      ],
+      "extras": {
+        "primary_link": {
+          "label": "X",
+          "url": "#",
+          "icon": "settings.svg"
+        },
+        "profile_icons": [
+          {
+            "url": "https://github.com/diegonmarcos/cveng_AFrame",
+            "title": "Civil Eng",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/back-System",
+            "title": "System",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/back-Graphic",
+            "title": "Graphics",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/ops-Mylibs",
+            "title": "My Libs",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/back-Algo",
+            "title": "Algorithms",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+            "title": "Cyber",
+            "icon": "brand-github.svg"
+          },
+          {
+            "url": "https://github.com/diegonmarcos/lecole42",
+            "title": "42 School",
+            "icon": "brand-github.svg"
+          }
+        ]
+      }
     }
   ]
 }

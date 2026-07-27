@@ -5116,79 +5116,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Front-end",
-        "label": "Portals",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Front-end",
-        "label": "Profiles",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
-        "icon": "file-type-html.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Front-end",
-        "label": "Work Tools",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Front-end",
-        "label": "Personal Tools",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "Solutions - Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "Solutions - User",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "Vault",
-        "url": "https://github.com/diegonmarcos/vault",
-        "icon": "bolt.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "Infra",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
-        "icon": "git-branch.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "VPS",
-        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
-        "icon": "device-desktop.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Unix",
+        "column": "UNIX",
         "label": "Boot Manager",
         "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
         "icon": "bolt.svg"
@@ -5196,7 +5124,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Unix",
+        "column": "UNIX",
         "label": "OS Flakes",
         "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
         "icon": "world.svg"
@@ -5204,7 +5132,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Unix",
+        "column": "UNIX",
         "label": "Home-Manager Flakes",
         "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
         "icon": "settings.svg"
@@ -5212,7 +5140,7 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Unix",
+        "column": "UNIX",
         "label": "Unix Binaries",
         "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
         "icon": "git-branch.svg"
@@ -5220,10 +5148,82 @@
       {
         "section": "projects",
         "slide": "projects",
-        "column": "Unix",
+        "column": "UNIX",
         "label": "Android Apks",
         "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
         "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Solutions - Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Solutions - User",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Vault",
+        "url": "https://github.com/diegonmarcos/vault",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CLOUD",
+        "label": "VPS",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Portals",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Profiles",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+        "icon": "file-type-html.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Work Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "FRONT",
+        "label": "Personal Tools",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+        "icon": "device-desktop.svg"
       },
       {
         "section": "projects",
@@ -5248,30 +5248,6 @@
         "label": "Games 3D",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
         "icon": "device-gamepad.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Data",
-        "label": "Data Science",
-        "url": "https://github.com/diegonmarcos/ml-DataScience",
-        "icon": "database.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Data",
-        "label": "Civil Eng",
-        "url": "https://github.com/diegonmarcos/cveng_AFrame",
-        "icon": "settings.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Data",
-        "label": "Macro/Quant",
-        "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-        "icon": "database.svg"
       },
       {
         "section": "projects",
@@ -5336,6 +5312,30 @@
         "label": "Machine Learning",
         "url": "https://github.com/diegonmarcos/ml-MachineLearning",
         "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Macro/Quant",
+        "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+        "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Structural",
+        "url": "https://github.com/diegonmarcos/cveng_AFrame",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "DATA",
+        "label": "Mechatronics",
+        "url": "https://github.com/diegonmarcos/back-System",
+        "icon": "device-desktop.svg"
       },
       {
         "section": "projects",

@@ -31,38 +31,44 @@
       ],
       "columns": [
         {
-          "header": "Front-end",
+          "header": "UNIX",
           "row": 0,
           "group": 0,
           "links": [
             {
-              "label": "Portals",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
-              "icon": "world.svg",
+              "label": "Boot Manager",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+              "icon": "bolt.svg",
               "item": 0
             },
             {
-              "label": "Profiles",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
-              "icon": "file-type-html.svg",
+              "label": "OS Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+              "icon": "world.svg",
               "item": 1
             },
             {
-              "label": "Work Tools",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+              "label": "Home-Manager Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
               "icon": "settings.svg",
               "item": 2
             },
             {
-              "label": "Personal Tools",
-              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
-              "icon": "device-desktop.svg",
+              "label": "Unix Binaries",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+              "icon": "git-branch.svg",
               "item": 3
+            },
+            {
+              "label": "Android Apks",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+              "icon": "device-gamepad.svg",
+              "item": 4
             }
           ]
         },
         {
-          "header": "Cloud",
+          "header": "CLOUD",
           "row": 0,
           "group": 1,
           "links": [
@@ -99,39 +105,33 @@
           ]
         },
         {
-          "header": "Unix",
+          "header": "FRONT",
           "row": 0,
           "group": 2,
           "links": [
             {
-              "label": "Boot Manager",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
-              "icon": "bolt.svg",
+              "label": "Portals",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+              "icon": "world.svg",
               "item": 0
             },
             {
-              "label": "OS Flakes",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
-              "icon": "world.svg",
+              "label": "Profiles",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+              "icon": "file-type-html.svg",
               "item": 1
             },
             {
-              "label": "Home-Manager Flakes",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+              "label": "Work Tools",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
               "icon": "settings.svg",
               "item": 2
             },
             {
-              "label": "Unix Binaries",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
-              "icon": "git-branch.svg",
+              "label": "Personal Tools",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+              "icon": "device-desktop.svg",
               "item": 3
-            },
-            {
-              "label": "Android Apks",
-              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
-              "icon": "device-gamepad.svg",
-              "item": 4
             }
           ]
         },
@@ -161,34 +161,9 @@
           ]
         },
         {
-          "header": "Data",
-          "row": 0,
-          "group": 4,
-          "links": [
-            {
-              "label": "Data Science",
-              "url": "https://github.com/diegonmarcos/ml-DataScience",
-              "icon": "database.svg",
-              "item": 0
-            },
-            {
-              "label": "Civil Eng",
-              "url": "https://github.com/diegonmarcos/cveng_AFrame",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Macro/Quant",
-              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-              "icon": "database.svg",
-              "item": 2
-            }
-          ]
-        },
-        {
           "header": "CS",
           "row": 0,
-          "group": 5,
+          "group": 4,
           "links": [
             {
               "label": "My Libs",
@@ -237,6 +212,31 @@
               "url": "https://github.com/diegonmarcos/ml-MachineLearning",
               "icon": "brain.svg",
               "item": 7
+            }
+          ]
+        },
+        {
+          "header": "DATA",
+          "row": 0,
+          "group": 5,
+          "links": [
+            {
+              "label": "Macro/Quant",
+              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+              "icon": "database.svg",
+              "item": 0
+            },
+            {
+              "label": "Structural",
+              "url": "https://github.com/diegonmarcos/cveng_AFrame",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Mechatronics",
+              "url": "https://github.com/diegonmarcos/back-System",
+              "icon": "device-desktop.svg",
+              "item": 2
             }
           ]
         }

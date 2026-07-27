@@ -53,8 +53,8 @@
     },
     {
       "slide": "structural",
-      "_doc": "Banner sourced from local circus.gif (no remote \u2014 legacy asset). Swap for a dedicated Structural & Mechatronics gif when available.",
-      "local": "public/images/banners/structural.gif"
+      "local": "public/images/banners/structural.gif",
+      "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif"
     },
     {
       "slide": "data",

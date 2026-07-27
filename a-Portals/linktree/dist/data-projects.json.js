@@ -1215,7 +1215,7 @@
     {
       "id": "projects",
       "kind": "tools",
-      "title": "Knowledge Center",
+      "title": "PHI",
       "image": {
         "src": "public/images/brucheion.jpg",
         "alt": "Projects"

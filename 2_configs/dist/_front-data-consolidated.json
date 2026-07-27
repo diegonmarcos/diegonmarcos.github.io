@@ -4830,7 +4830,7 @@
         "slide_count": 3
       },
       {
-        "id": "personal-tools",
+        "id": "projects",
         "title": "Projects",
         "box": 2,
         "slide_count": 6
@@ -4862,37 +4862,37 @@
         "title": "DATA"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "repos",
         "kind": "repos",
         "title": "REPOS"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "suite",
         "kind": "tools",
         "title": "SUITE"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "lab-tools",
         "kind": "tools",
         "title": "LAB TOOLS"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "circus",
         "kind": "tools",
         "title": "CIRCUS"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "cloud",
         "kind": "tools",
         "title": "CLOUD"
       },
       {
-        "section": "personal-tools",
+        "section": "projects",
         "id": "projects",
         "kind": "tools",
         "title": "Knowledge Center"
@@ -5108,1008 +5108,1008 @@
         "icon": "heart.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Front-end",
         "label": "Portals",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Front-end",
         "label": "Profiles",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
         "icon": "file-type-html.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Front-end",
         "label": "Work Tools",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Front-end",
         "label": "Personal Tools",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "Cloud",
         "url": "https://github.com/diegonmarcos/cloud",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "Unix",
         "url": "https://github.com/diegonmarcos/unix",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "Vault",
         "url": "https://github.com/diegonmarcos/vault",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "Front",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "Tooling",
         "url": "https://github.com/diegonmarcos/ops-Tooling",
         "icon": "git-branch.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Cloud",
         "label": "MCP Servers",
         "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "My Libs",
         "url": "https://github.com/diegonmarcos/ops-Mylibs",
         "icon": "git-branch.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "Algorithms",
         "url": "https://github.com/diegonmarcos/back-Algo",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "System",
         "url": "https://github.com/diegonmarcos/back-System",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "Graphics",
         "url": "https://github.com/diegonmarcos/back-Graphic",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "Cyber",
         "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Low Level",
         "label": "42 School",
         "url": "https://github.com/diegonmarcos/lecole42",
         "icon": "rocket.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "ML",
         "label": "Agentic AI",
         "url": "https://github.com/diegonmarcos/ml-Agentic",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "ML",
         "label": "Machine Learning",
         "url": "https://github.com/diegonmarcos/ml-MachineLearning",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Data Science",
         "url": "https://github.com/diegonmarcos/ml-DataScience",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Civil Eng",
         "url": "https://github.com/diegonmarcos/cveng_AFrame",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Macro/Quant",
         "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "AI & IDE",
         "label": "Goose",
         "url": "https://github.com/block/goose",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "AI & IDE",
         "label": "Claude CLI",
         "url": "https://claude.ai",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "AI & IDE",
         "label": "WebIDE",
         "url": "https://ide.diegonmarcos.com",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "AI & IDE",
         "label": "Jupyter NB",
         "url": "https://jupyter.diegonmarcos.com",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Notes",
         "url": "https://hedgedoc.diegonmarcos.com",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Sheets",
         "url": "https://sheets.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Docs",
         "url": "https://docs.diegonmarcos.com",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Slides",
         "url": "https://slides.diegonmarcos.com",
         "icon": "slideshow.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Calendar",
         "url": "https://cal.diegonmarcos.com",
         "icon": "checklist.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Contacts",
         "url": "https://contacts.diegonmarcos.com",
         "icon": "user.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Suite",
         "label": "Files",
         "url": "https://files.diegonmarcos.com",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Comms",
         "label": "Mail",
         "url": "https://diegonmarcos.github.io/mymail",
         "icon": "mail.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Comms",
         "label": "Mattermost",
         "url": "https://chat.diegonmarcos.com",
         "icon": "send.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Comms",
         "label": "ntfy",
         "url": "https://ntfy.diegonmarcos.com",
         "icon": "checklist.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Nav",
         "label": "Navigation",
         "url": "https://diegonmarcos.github.io/mymaps-navigation",
         "icon": "map-pin-2.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Nav",
         "label": "Maps",
         "url": "https://diegonmarcos.github.io/mymaps-maps",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Media",
         "label": "Feed",
         "url": "https://diegonmarcos.github.io/myfeed",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Media",
         "label": "Movies",
         "url": "https://diegonmarcos.github.io/movies",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Media",
         "label": "Music",
         "url": "https://diegonmarcos.github.io/music",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Memory",
         "label": "MyPhotos",
         "url": "https://diegonmarcos.github.io/myphotos",
         "icon": "device-desktop.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Memory",
         "label": "MyTrips",
         "url": "https://diegonmarcos.github.io/mymaps-mytrips",
         "icon": "world-longitude.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Memory",
         "label": "PhotoPrism",
         "url": "https://photos.diegonmarcos.com",
         "icon": "slideshow.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Health",
         "label": "Tracker",
         "url": "https://diegonmarcos.github.io/myhealth-tracker",
         "icon": "heart.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Health",
         "label": "FeedYourself",
         "url": "https://diegonmarcos.github.io/myhealth-feedyourself",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Health",
         "label": "Profile",
         "url": "https://diegonmarcos.github.io/myhealth-profile",
         "icon": "heart.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "Gitea",
         "url": "https://git.diegonmarcos.com",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "JSON Vision",
         "url": "https://diegonmarcos.github.io/json-vision",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "NocoDB",
         "url": "https://nocodb.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "Vault",
         "url": "https://vault.diegonmarcos.com",
         "icon": "lock.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "tldraw",
         "url": "https://diegonmarcos.github.io/tldraw/",
         "icon": "brush.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Tools",
         "label": "myID",
         "url": "https://diegonmarcos.github.io/myid",
         "icon": "cards.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Colab",
         "url": "https://colab.research.google.com",
         "icon": "sparkles.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Kaggle",
         "url": "https://kaggle.com",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "HuggingFace",
         "url": "https://huggingface.co",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "PyTorch",
         "url": "https://pytorch.org",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "TensorFlow",
         "url": "https://tensorflow.org",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Scikit-learn",
         "url": "https://scikit-learn.org",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "IBM Quantum",
         "url": "https://quantum.ibm.com",
         "icon": "rocket.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Qiskit",
         "url": "https://qiskit.org",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Google QAI",
         "url": "https://quantumai.google",
         "icon": "sparkles.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Cirq",
         "url": "https://quantumai.google/cirq",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "PennyLane",
         "url": "https://pennylane.ai",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Braket",
         "url": "https://aws.amazon.com/braket",
         "icon": "rocket.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "Azure QC",
         "url": "https://azure.microsoft.com/products/quantum",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data Science & ML",
         "label": "QInspire",
         "url": "https://www.quantum-inspire.com",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Markets",
         "label": "Fin Terminal",
         "url": "https://diegonmarcos.github.io/fin-terminal",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Markets",
         "label": "GDELT News",
         "url": "https://news.diegonmarcos.com",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Markets",
         "label": "MarketWatch",
         "url": "https://diegonmarcos.github.io/market_watch",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Markets",
         "label": "CentralBank",
         "url": "https://diegonmarcos.github.io/central_bank",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Markets",
         "label": "My Financials",
         "url": "https://diegonmarcos.github.io/my-fin",
         "icon": "ledger.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Engineer",
         "label": "Sailytics",
         "url": "https://diegonmarcos.github.io/sailytics",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Engineer",
         "label": "OpenRevit",
         "url": "https://diegonmarcos.github.io/openrevit",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Engineer",
         "label": "Music - DAW",
         "url": "https://diegonmarcos.github.io/music_daw_llms",
         "icon": "headphones.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Engineer",
         "label": "Music - Mixer",
         "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
         "icon": "headphones.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Audio",
         "label": "Music",
         "url": "https://diegonmarcos.github.io/music/",
         "icon": "headphones.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Videos",
         "label": "Movies",
         "url": "https://diegonmarcos.github.io/movies/",
         "icon": "brand-youtube.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Games 2D",
         "label": "Games",
         "url": "https://diegonmarcos.github.io/games",
         "icon": "device-gamepad.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Games 2D",
         "label": "Carto",
         "url": "https://diegonmarcos.github.io/carto/",
         "icon": "cards.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Games 2D",
         "label": "myAstro",
         "url": "https://diegonmarcos.github.io/myAstro",
         "icon": "world-longitude.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Games 2D",
         "label": "Worms",
         "url": "https://archive.org/details/worms_team17",
         "icon": "device-gamepad.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Assets",
         "label": "Assets",
         "url": "https://diegonmarcos.github.io/",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Assets",
         "label": "796floor",
         "url": "https://diegonmarcos.github.io/796floor",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Assets",
         "label": "WisAldo",
         "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Scenes",
         "label": "Galaxy - Gaia",
         "url": "https://diegonmarcos.github.io/galaxy-gaia/",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Scenes",
         "label": "Galaxy - X1",
         "url": "https://diegonmarcos.github.io/galaxy-x1/",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Games 3D",
         "label": "Galaxy - Earth",
         "url": "https://diegonmarcos.github.io/galaxy-earth/",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Authelia",
         "url": "https://auth.diegonmarcos.com",
         "icon": "lock.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Vault",
         "url": "https://vault.diegonmarcos.com",
         "icon": "lock.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Caddy",
         "url": "https://proxy.diegonmarcos.com",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Introspect",
         "url": "https://introspect.diegonmarcos.com",
         "icon": "lock.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Hickory DNS",
         "url": "https://dns.diegonmarcos.com",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "Sauron YARA",
         "url": "https://sauron.diegonmarcos.com",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "SIEM",
         "url": "https://siem.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "WG0",
         "url": "https://wg.diegonmarcos.com",
         "icon": "lock.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Security",
         "label": "CrowdSec",
         "url": "https://crowdsec.diegonmarcos.com",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Ops",
         "label": "Dagu",
         "url": "https://workflows.diegonmarcos.com",
         "icon": "settings.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Ops",
         "label": "Grafana",
         "url": "https://grafana.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Ops",
         "label": "ntfy",
         "url": "https://rss.diegonmarcos.com",
         "icon": "bolt.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Ops",
         "label": "GHA",
         "url": "https://github.com/diegonmarcos/cloud/actions",
         "icon": "git-branch.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Ops",
         "label": "GHCR",
         "url": "https://github.com/orgs/diegonmarcos/packages",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Matomo",
         "url": "https://analytics.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Gitea",
         "url": "https://git.diegonmarcos.com",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Dozzle",
         "url": "https://logs.diegonmarcos.com",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "DBGate",
         "url": "https://dbgate.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Rustic",
         "url": "https://backup.diegonmarcos.com",
         "icon": "file-stack.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "Umami",
         "url": "https://umami.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Data",
         "label": "NocoDB",
         "url": "https://nocodb.diegonmarcos.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "c3-infra-api",
         "url": "https://api.diegonmarcos.com/c3-api",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "c3-infra-mcp",
         "url": "https://diegonmarcos.github.io/skills_mcp",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "c3-services-api",
         "url": "https://api.diegonmarcos.com/c3-services",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "c3-services-mcp",
         "url": "https://diegonmarcos.github.io/skills_mcp",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "cgc-mcp",
         "url": "https://diegonmarcos.github.io/skills_mcp",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "MCP & API",
         "label": "dtk-mcp",
         "url": "https://diegonmarcos.github.io/skills_mcp",
         "icon": "robot.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "Oracle",
         "url": "https://cloud.oracle.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "GCloud",
         "url": "https://console.cloud.google.com",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "Cloudflare",
         "url": "https://dash.cloudflare.com",
         "icon": "world.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "GitHub",
         "url": "https://github.com/diegonmarcos",
         "icon": "code.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "Hetzner",
         "url": "https://console.hetzner.cloud",
         "icon": "database.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "VPS",
         "label": "Nvidia LLM",
         "url": "https://build.nvidia.com",
         "icon": "brain.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Basileia",
         "label": "Basileia",
         "url": "#",
         "icon": "sparkles.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Mousseion",
         "label": "Mousseion",
         "url": "#",
         "icon": "books.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Paneion",
         "label": "Paneion",
         "url": "#",
         "icon": "bulb.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Akropolis",
         "label": "Akropolis",
         "url": "#",
         "icon": "rocket.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Bibliotheke",
         "label": "Bibliotheke",
         "url": "#",
         "icon": "books.svg"
       },
       {
-        "section": "personal-tools",
-        "slide": "personal-tools",
+        "section": "projects",
+        "slide": "projects",
         "column": "Adyton",
         "label": "Adyton",
         "url": "#",

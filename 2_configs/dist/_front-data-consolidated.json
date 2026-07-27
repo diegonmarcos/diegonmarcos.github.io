@@ -4833,7 +4833,7 @@
         "id": "projects",
         "title": "Projects",
         "box": 2,
-        "slide_count": 5
+        "slide_count": 6
       },
       {
         "id": "professional-profiles",
@@ -4884,6 +4884,12 @@
         "id": "repos",
         "kind": "repos",
         "title": "REPOS"
+      },
+      {
+        "section": "projects",
+        "id": "structural",
+        "kind": "tools",
+        "title": "STRUCTURAL & MECHATRONICS"
       },
       {
         "section": "projects",
@@ -5964,6 +5970,78 @@
         "label": "Macro/Quant",
         "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
         "icon": "database.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Structural",
+        "label": "Civil Eng",
+        "url": "https://github.com/diegonmarcos/cveng_AFrame",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Structural",
+        "label": "OpenRevit",
+        "url": "https://diegonmarcos.github.io/openrevit",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Structural",
+        "label": "Sailytics",
+        "url": "https://diegonmarcos.github.io/sailytics",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Mechatronics",
+        "label": "System",
+        "url": "https://github.com/diegonmarcos/back-System",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Mechatronics",
+        "label": "Graphics",
+        "url": "https://github.com/diegonmarcos/back-Graphic",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Mechatronics",
+        "label": "My Libs",
+        "url": "https://github.com/diegonmarcos/ops-Mylibs",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Computing",
+        "label": "Algorithms",
+        "url": "https://github.com/diegonmarcos/back-Algo",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Computing",
+        "label": "Cyber",
+        "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Computing",
+        "label": "42 School",
+        "url": "https://github.com/diegonmarcos/lecole42",
+        "icon": "rocket.svg"
       },
       {
         "section": "projects",

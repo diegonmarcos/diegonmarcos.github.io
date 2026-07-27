@@ -893,6 +893,86 @@
       "slide": 3
     },
     {
+      "id": "structural",
+      "kind": "tools",
+      "title": "STRUCTURAL & MECHATRONICS",
+      "slide": 5,
+      "columns": [
+        {
+          "header": "Structural",
+          "group": 0,
+          "links": [
+            {
+              "label": "Civil Eng",
+              "url": "https://github.com/diegonmarcos/cveng_AFrame",
+              "icon": "settings.svg",
+              "item": 0
+            },
+            {
+              "label": "OpenRevit",
+              "url": "https://diegonmarcos.github.io/openrevit",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Sailytics",
+              "url": "https://diegonmarcos.github.io/sailytics",
+              "icon": "world.svg",
+              "item": 2
+            }
+          ]
+        },
+        {
+          "header": "Mechatronics",
+          "group": 1,
+          "links": [
+            {
+              "label": "System",
+              "url": "https://github.com/diegonmarcos/back-System",
+              "icon": "settings.svg",
+              "item": 0
+            },
+            {
+              "label": "Graphics",
+              "url": "https://github.com/diegonmarcos/back-Graphic",
+              "icon": "device-desktop.svg",
+              "item": 1
+            },
+            {
+              "label": "My Libs",
+              "url": "https://github.com/diegonmarcos/ops-Mylibs",
+              "icon": "git-branch.svg",
+              "item": 2
+            }
+          ]
+        },
+        {
+          "header": "Computing",
+          "group": 2,
+          "links": [
+            {
+              "label": "Algorithms",
+              "url": "https://github.com/diegonmarcos/back-Algo",
+              "icon": "settings.svg",
+              "item": 0
+            },
+            {
+              "label": "Cyber",
+              "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+              "icon": "bolt.svg",
+              "item": 1
+            },
+            {
+              "label": "42 School",
+              "url": "https://github.com/diegonmarcos/lecole42",
+              "icon": "rocket.svg",
+              "item": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "projects",
       "kind": "tools",
       "title": "Knowledge Center",

@@ -15,11 +15,11 @@ describe('projects.json — declarative source of truth', () => {
     expect(cfg.section.title).toBe('Projects');
   });
 
-  it('exposes all 12 migrated slides across 3 boxes (3 projects + 4 personal-profiles + 5 professional-profiles)', () => {
+  it('exposes all 13 migrated slides across 3 boxes (4 projects + 4 personal-profiles + 5 professional-profiles)', () => {
     const ids = listSlideIds();
-    expect(ids.length).toBe(12);
+    expect(ids.length).toBe(13);
     // Projects — TOOLCHAIN stays hand-coded
-    for (const id of ['suite', 'lab-tools', 'cloud']) expect(ids).toContain(id);
+    for (const id of ['suite', 'lab-tools', 'cloud', 'structural']) expect(ids).toContain(id);
     // Personal Profiles — brucheion + serapeum merged into `projects`
     for (const id of ['personal-profile', 'media', 'data', 'projects']) expect(ids).toContain(id);
     expect(ids).not.toContain('brucheion');

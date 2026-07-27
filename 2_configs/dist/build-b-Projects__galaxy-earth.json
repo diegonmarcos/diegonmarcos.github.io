@@ -38,9 +38,7 @@
       "url": null,
       "reason": "no entry in ship.yml PROJECTS=()"
     },
-    "consumers": [
-      "Galaxy - Earth"
-    ],
+    "consumers": [],
     "has_package_json": true,
     "has_manifest": false
   }

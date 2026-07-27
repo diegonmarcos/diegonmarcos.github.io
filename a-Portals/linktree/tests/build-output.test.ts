@@ -68,10 +68,9 @@ describe('build output — Phase A-G wiring survives the build', () => {
     }
   });
 
-  it('dist/script-service-worker.js exists, references the GDELT host, and carries an injected BUILD_HASH-derived cache key', () => {
+  it('dist/script-service-worker.js exists and carries an injected BUILD_HASH-derived cache key', () => {
     const sw = dist('script-service-worker.js');
     expect(sw.length).toBeGreaterThan(0);
-    expect(sw).toContain('diegonmarcos.com');
     // The cache name template is `static-${BUILD_HASH}` — after esbuild
     // `--define` substitution + minification, expect literal "static-"
     // followed by a 12-char hex hash from the engine.

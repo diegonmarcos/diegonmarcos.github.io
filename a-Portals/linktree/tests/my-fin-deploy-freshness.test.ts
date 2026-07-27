@@ -15,8 +15,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const FRONT_ROOT = resolve(__dirname, '..', '..', '..');
-const SRC_DIR    = resolve(FRONT_ROOT, 'c-MyTools', 'my-fin', 'src');
-const DIST_DIR   = resolve(FRONT_ROOT, 'c-MyTools', 'my-fin', 'dist');
+const SRC_DIR    = resolve(FRONT_ROOT, 'b-MyData', 'my-fin', 'src');
+const DIST_DIR   = resolve(FRONT_ROOT, 'b-MyData', 'my-fin', 'dist');
 
 function read(p: string): string { return readFileSync(p, 'utf8'); }
 
@@ -28,7 +28,7 @@ describe('b-MyData/my-fin — deploy artefacts in sync with source', () => {
   });
 
   it('build.json declares the new "My Financials" name (not the old "Ledger")', () => {
-    const cfg = JSON.parse(read(resolve(FRONT_ROOT, 'c-MyTools', 'my-fin', 'build.json'))) as { name: string };
+    const cfg = JSON.parse(read(resolve(FRONT_ROOT, 'b-MyData', 'my-fin', 'build.json'))) as { name: string };
     expect(cfg.name).toBe('My Financials');
   });
 

@@ -4,7 +4,7 @@
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
   g.PORTAL_DATA["banners"] = {
-  "_description": "Source-of-truth manifest mapping remote banner URLs → local paths under linktree/public/. Read by 1_workflows/src/scripts/front-localize-assets.sh, which downloads each remote into the local path (idempotent) and rewrites every reference inside the sibling *.json files (projects.json / personal-profiles.json / professional-profiles.json) to the local path. Adding a new banner is purely declarative: insert a {remote, local} entry; the engine handles fetch + rewrite.",
+  "_description": "Source-of-truth manifest mapping remote banner URLs \u2192 local paths under linktree/public/. Read by 1_workflows/src/scripts/front-localize-assets.sh, which downloads each remote into the local path (idempotent) and rewrites every reference inside the sibling *.json files (projects.json / personal-profiles.json / professional-profiles.json) to the local path. Adding a new banner is purely declarative: insert a {remote, local} entry; the engine handles fetch + rewrite.",
   "assets": [
     {
       "slide": "professional-profile",
@@ -23,7 +23,7 @@
     },
     {
       "slide": "nexus",
-      "_doc": "Squarespace CDN content-negotiates and serves WebP regardless of the .jpg URL suffix — local extension MUST match real content (.webp), or browsers fail to render the file.",
+      "_doc": "Squarespace CDN content-negotiates and serves WebP regardless of the .jpg URL suffix \u2014 local extension MUST match real content (.webp), or browsers fail to render the file.",
       "remote": "https://images.squarespace-cdn.com/content/v1/62b8b53ddecd3441cbee091d/ffee989d-1ab3-4a81-8fbb-764b6a42fd1b/JKP_0180revd.jpg",
       "local": "public/images/banners/nexus.webp"
     },
@@ -43,6 +43,11 @@
       "local": "public/images/banners/cloud.gif"
     },
     {
+      "slide": "circus",
+      "remote": "https://media1.tenor.com/m/kIF7PM-7BAsAAAAC/penguin-exercise.gif",
+      "local": "public/images/banners/circus.gif"
+    },
+    {
       "slide": "media",
       "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
       "local": "public/images/banners/media.gif",
@@ -53,7 +58,7 @@
     },
     {
       "slide": "structural",
-      "_doc": "Banner sourced from local circus.gif (no remote — legacy asset). Swap for a dedicated Structural & Mechatronics gif when available.",
+      "_doc": "Banner sourced from local circus.gif (no remote \u2014 legacy asset). Swap for a dedicated Structural & Mechatronics gif when available.",
       "local": "public/images/banners/structural.gif"
     },
     {

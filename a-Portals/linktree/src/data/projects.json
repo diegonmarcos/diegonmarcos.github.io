@@ -946,10 +946,144 @@
       "slide": 3
     },
     {
+      "id": "circus",
+      "kind": "tools",
+      "title": "CIRCUS",
+      "image": {
+        "src": "public/images/banners/circus.gif",
+        "alt": "Circus"
+      },
+      "row_headers": [
+        {
+          "title": "Media"
+        },
+        {
+          "title": "CG & Games"
+        }
+      ],
+      "columns": [
+        {
+          "row": 0,
+          "header": "Audio",
+          "links": [
+            {
+              "label": "Music",
+              "url": "https://diegonmarcos.github.io/music/",
+              "icon": "headphones.svg",
+              "item": 0
+            }
+          ],
+          "group": 0
+        },
+        {
+          "row": 0,
+          "header": "Videos",
+          "links": [
+            {
+              "label": "Movies",
+              "url": "https://diegonmarcos.github.io/movies/",
+              "icon": "brand-youtube.svg",
+              "item": 0
+            }
+          ],
+          "group": 1
+        },
+        {
+          "row": 1,
+          "header": "Games 2D",
+          "links": [
+            {
+              "label": "Games",
+              "url": "https://diegonmarcos.github.io/games",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            },
+            {
+              "label": "Carto",
+              "url": "https://diegonmarcos.github.io/carto/",
+              "icon": "cards.svg",
+              "item": 1
+            },
+            {
+              "label": "myAstro",
+              "url": "https://diegonmarcos.github.io/myAstro",
+              "icon": "world-longitude.svg",
+              "item": 2
+            },
+            {
+              "label": "Worms",
+              "url": "https://archive.org/details/worms_team17",
+              "icon": "device-gamepad.svg",
+              "item": 3
+            }
+          ],
+          "group": 2
+        },
+        {
+          "row": 1,
+          "header": "Assets",
+          "links": [
+            {
+              "label": "Assets",
+              "url": "https://diegonmarcos.github.io/",
+              "icon": "file-stack.svg",
+              "item": 0
+            },
+            {
+              "label": "796floor",
+              "url": "https://diegonmarcos.github.io/796floor",
+              "icon": "file-stack.svg",
+              "item": 1
+            },
+            {
+              "label": "WisAldo",
+              "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/",
+              "icon": "world.svg",
+              "item": 2
+            }
+          ],
+          "group": 3
+        },
+        {
+          "row": 1,
+          "header": "Scenes",
+          "links": [
+            {
+              "label": "Galaxy - Gaia",
+              "url": "https://diegonmarcos.github.io/galaxy-gaia/",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Galaxy - X1",
+              "url": "https://diegonmarcos.github.io/galaxy-x1/",
+              "icon": "world.svg",
+              "item": 1
+            }
+          ],
+          "group": 4
+        },
+        {
+          "row": 1,
+          "header": "Games 3D",
+          "links": [
+            {
+              "label": "Galaxy - Earth",
+              "url": "https://diegonmarcos.github.io/galaxy-earth/",
+              "icon": "world.svg",
+              "item": 0
+            }
+          ],
+          "group": 5
+        }
+      ],
+      "slide": 4
+    },
+    {
       "id": "structural",
       "kind": "tools",
       "title": "STRUCTURAL & MECHATRONICS",
-      "slide": 4,
+      "slide": 5,
       "image": {
         "src": "public/images/banners/structural.gif",
         "alt": "Structural & Mechatronics"
@@ -1169,7 +1303,7 @@
           "group": 5
         }
       ],
-      "slide": 5
+      "slide": 6
     }
   ]
 }

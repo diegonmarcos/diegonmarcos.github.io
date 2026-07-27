@@ -47,6 +47,12 @@
       ]
     },
     {
+      "slide": "structural",
+      "_doc": "PLACEHOLDER banner — reuses the MY TOOLS giphy until a dedicated Structural & Mechatronics gif is chosen. Swap `remote` to update.",
+      "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
+      "local": "public/images/banners/structural.gif"
+    },
+    {
       "slide": "data",
       "remote": "https://media.giphy.com/media/l0HlNaQ6gWfllcjDO/giphy.gif",
       "local": "public/images/banners/lab-tools.gif"

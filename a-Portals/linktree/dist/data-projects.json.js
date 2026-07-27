@@ -161,9 +161,34 @@
           ]
         },
         {
-          "header": "Low Level",
-          "row": 1,
+          "header": "Data",
+          "row": 0,
           "group": 4,
+          "links": [
+            {
+              "label": "Data Science",
+              "url": "https://github.com/diegonmarcos/ml-DataScience",
+              "icon": "database.svg",
+              "item": 0
+            },
+            {
+              "label": "Civil Eng",
+              "url": "https://github.com/diegonmarcos/cveng_AFrame",
+              "icon": "settings.svg",
+              "item": 1
+            },
+            {
+              "label": "Macro/Quant",
+              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+              "icon": "database.svg",
+              "item": 2
+            }
+          ]
+        },
+        {
+          "header": "CS",
+          "row": 0,
+          "group": 5,
           "links": [
             {
               "label": "My Libs",
@@ -200,50 +225,18 @@
               "url": "https://github.com/diegonmarcos/lecole42",
               "icon": "rocket.svg",
               "item": 5
-            }
-          ]
-        },
-        {
-          "header": "ML",
-          "row": 1,
-          "group": 5,
-          "links": [
+            },
             {
               "label": "Agentic AI",
               "url": "https://github.com/diegonmarcos/ml-Agentic",
               "icon": "brain.svg",
-              "item": 0
+              "item": 6
             },
             {
               "label": "Machine Learning",
               "url": "https://github.com/diegonmarcos/ml-MachineLearning",
               "icon": "brain.svg",
-              "item": 1
-            }
-          ]
-        },
-        {
-          "header": "Data",
-          "row": 1,
-          "group": 6,
-          "links": [
-            {
-              "label": "Data Science",
-              "url": "https://github.com/diegonmarcos/ml-DataScience",
-              "icon": "database.svg",
-              "item": 0
-            },
-            {
-              "label": "Civil Eng",
-              "url": "https://github.com/diegonmarcos/cveng_AFrame",
-              "icon": "settings.svg",
-              "item": 1
-            },
-            {
-              "label": "Macro/Quant",
-              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-              "icon": "database.svg",
-              "item": 2
+              "item": 7
             }
           ]
         }

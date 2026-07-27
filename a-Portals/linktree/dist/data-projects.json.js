@@ -1,14 +1,14 @@
-// GENERATED FROM personal-tools.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// GENERATED FROM projects.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
 // Re-generate with: bash a-Portals/linktree/src/data/build.sh
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["personal-tools"] = {
-  "_description": "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
+  g.PORTAL_DATA["projects"] = {
+  "_description": "Declarative source of truth for the Projects section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
   "section": {
-    "id": "personal-tools",
+    "id": "projects",
     "title": "Projects",
-    "swiper_class": "personal-tools-swiper",
+    "swiper_class": "projects-swiper",
     "box": 2
   },
   "slides": [

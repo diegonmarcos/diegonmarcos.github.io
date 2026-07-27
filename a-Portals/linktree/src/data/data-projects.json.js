@@ -239,6 +239,63 @@
               "item": 2
             }
           ]
+        },
+        {
+          "header": "MACRO&QUANT",
+          "row": 1,
+          "group": 6,
+          "links": [
+            {
+              "label": "Central Bank",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/central_bank",
+              "icon": "database.svg",
+              "item": 0
+            },
+            {
+              "label": "Quant Terminal",
+              "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-LabTools/fin-terminal",
+              "icon": "rocket.svg",
+              "item": 1
+            }
+          ]
+        },
+        {
+          "header": "STRUCTURAL",
+          "row": 1,
+          "group": 7,
+          "links": [
+            {
+              "label": "Waterlytics",
+              "url": "#",
+              "icon": "world-longitude.svg",
+              "item": 0
+            },
+            {
+              "label": "Airlytics",
+              "url": "#",
+              "icon": "world-longitude.svg",
+              "item": 1
+            },
+            {
+              "label": "Spacelytics",
+              "url": "#",
+              "icon": "rocket.svg",
+              "item": 2
+            }
+          ]
+        },
+        {
+          "header": "MECHATRONICS",
+          "row": 1,
+          "group": 8,
+          "links": [
+            {
+              "label": "Autonomous Engines",
+              "url": "#",
+              "icon": "bolt.svg",
+              "item": 0
+            }
+          ]
         }
       ],
       "slide": 0

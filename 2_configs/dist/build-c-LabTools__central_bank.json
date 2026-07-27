@@ -49,6 +49,7 @@
       "url": "https://diegonmarcos.github.io/central_bank"
     },
     "consumers": [
+      "Central Bank",
       "CentralBank"
     ],
     "has_package_json": true,

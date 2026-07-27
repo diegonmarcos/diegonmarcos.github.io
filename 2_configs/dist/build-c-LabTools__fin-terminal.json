@@ -121,7 +121,8 @@
       "url": "https://diegonmarcos.github.io/fin-terminal"
     },
     "consumers": [
-      "Fin Terminal"
+      "Fin Terminal",
+      "Quant Terminal"
     ],
     "has_package_json": true,
     "has_manifest": false

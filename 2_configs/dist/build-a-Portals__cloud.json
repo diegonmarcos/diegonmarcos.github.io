@@ -143,8 +143,11 @@
       "url": "https://diegonmarcos.github.io/cloud"
     },
     "consumers": [
-      "Cloud",
-      "GHA"
+      "GHA",
+      "Infra",
+      "Solutions - Infra",
+      "Solutions - User",
+      "VPS"
     ],
     "has_package_json": true,
     "has_manifest": false

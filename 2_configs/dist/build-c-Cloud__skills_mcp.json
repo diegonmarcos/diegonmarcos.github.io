@@ -119,7 +119,6 @@
       "url": "https://diegonmarcos.github.io/skills_mcp"
     },
     "consumers": [
-      "MCP Servers",
       "c3-infra-mcp",
       "c3-services-mcp",
       "cgc-mcp",

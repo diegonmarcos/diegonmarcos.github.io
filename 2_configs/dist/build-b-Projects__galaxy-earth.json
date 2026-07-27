@@ -39,7 +39,8 @@
       "reason": "no entry in ship.yml PROJECTS=()"
     },
     "consumers": [
-      "Galaxy - Earth"
+      "Galaxy - Earth",
+      "Games 3D"
     ],
     "has_package_json": true,
     "has_manifest": false

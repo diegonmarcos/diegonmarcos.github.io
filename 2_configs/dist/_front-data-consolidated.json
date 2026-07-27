@@ -5149,16 +5149,16 @@
         "section": "projects",
         "slide": "projects",
         "column": "Cloud",
-        "label": "Cloud",
-        "url": "https://github.com/diegonmarcos/cloud",
+        "label": "Solutions - Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/a_solutions",
         "icon": "world.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "Cloud",
-        "label": "Unix",
-        "url": "https://github.com/diegonmarcos/unix",
+        "label": "Solutions - User",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/2_configs",
         "icon": "settings.svg"
       },
       {
@@ -5173,25 +5173,81 @@
         "section": "projects",
         "slide": "projects",
         "column": "Cloud",
-        "label": "Front",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
-        "icon": "world.svg"
-      },
-      {
-        "section": "projects",
-        "slide": "projects",
-        "column": "Cloud",
-        "label": "Tooling",
-        "url": "https://github.com/diegonmarcos/ops-Tooling",
+        "label": "Infra",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/b_infra",
         "icon": "git-branch.svg"
       },
       {
         "section": "projects",
         "slide": "projects",
         "column": "Cloud",
-        "label": "MCP Servers",
-        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
-        "icon": "brain.svg"
+        "label": "VPS",
+        "url": "https://github.com/diegonmarcos/cloud/tree/main/c_vps",
+        "icon": "device-desktop.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix",
+        "label": "Boot Manager",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+        "icon": "bolt.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix",
+        "label": "OS Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix",
+        "label": "Home-Manager Flakes",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+        "icon": "settings.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix",
+        "label": "Unix Binaries",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+        "icon": "git-branch.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Unix",
+        "label": "Android Apks",
+        "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & Games",
+        "label": "Games 2D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c-Circus/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & Games",
+        "label": "Scenes 3D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-gaia",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "CG & Games",
+        "label": "Games 3D",
+        "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b-Projects/galaxy-earth",
+        "icon": "device-gamepad.svg"
       },
       {
         "section": "projects",

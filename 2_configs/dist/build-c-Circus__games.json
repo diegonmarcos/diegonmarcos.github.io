@@ -38,7 +38,8 @@
       "url": "https://diegonmarcos.github.io/games"
     },
     "consumers": [
-      "Games"
+      "Games",
+      "Games 2D"
     ],
     "has_package_json": true,
     "has_manifest": false

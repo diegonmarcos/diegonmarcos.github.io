@@ -122,7 +122,8 @@
     },
     "consumers": [
       "Fin Terminal",
-      "Quant Terminal"
+      "Quant Terminal",
+      "Terminal Fin"
     ],
     "has_package_json": true,
     "has_manifest": false

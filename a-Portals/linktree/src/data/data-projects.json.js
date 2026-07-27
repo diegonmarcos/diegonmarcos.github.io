@@ -305,7 +305,7 @@
       "kind": "tools",
       "title": "DUCKS",
       "image": {
-        "src": "public/images/banners/mytools.gif",
+        "src": "public/images/banners/ducks.gif",
         "alt": "Unix"
       },
       "dashboard_modifier": "tools-dashboard--5",

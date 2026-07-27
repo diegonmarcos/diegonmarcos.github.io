@@ -18,9 +18,9 @@
     },
     {
       "slide": "ducks",
-      "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
-      "local": "public/images/banners/mytools.gif",
-      "_doc": "Unix card banner. Reuses the recovered My Tools gif (byte-identical copy of media.gif) that previously headed the retired MACRO & QUANT overview card."
+      "remote": "local-asset:assembly-coding.gif (from notes/c-Projects/Other-2/System/wImages/)",
+      "local": "public/images/banners/ducks.gif",
+      "_doc": "Unix card banner. Assembly coding gif \u2014 unique banner distinct from the mytools/media/structural gif trio."
     },
     {
       "slide": "nexus",

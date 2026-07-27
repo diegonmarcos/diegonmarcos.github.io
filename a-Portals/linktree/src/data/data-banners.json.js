@@ -53,8 +53,7 @@
     },
     {
       "slide": "structural",
-      "_doc": "PLACEHOLDER banner — reuses the MY TOOLS giphy until a dedicated Structural & Mechatronics gif is chosen. Swap `remote` to update.",
-      "remote": "https://media.giphy.com/media/hthdwKV0DExfqg0TF7/giphy.gif",
+      "_doc": "Banner sourced from local circus.gif (no remote — legacy asset). Swap for a dedicated Structural & Mechatronics gif when available.",
       "local": "public/images/banners/structural.gif"
     },
     {

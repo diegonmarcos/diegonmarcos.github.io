@@ -8,7 +8,7 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const dataDir = resolve(__dirname, '..', 'src', 'data');
-const files = ['personal-tools.json', 'personal-profiles.json', 'professional-profiles.json'];
+const files = ['projects.json', 'personal-profiles.json', 'professional-profiles.json'];
 
 interface Item   { item: number; [k: string]: unknown }
 interface Group  { group: number; links?: Item[]; items?: Item[]; icon_links?: Item[]; grid_groups?: Item[][] }
@@ -79,7 +79,7 @@ describe('b-s-g-i hierarchy — every node carries its scoped number', () => {
   });
 
   it('SUITE address resolves to the expected composite', () => {
-    const cfg = JSON.parse(readFileSync(resolve(dataDir, 'personal-tools.json'), 'utf8')) as SectionCfg;
+    const cfg = JSON.parse(readFileSync(resolve(dataDir, 'projects.json'), 'utf8')) as SectionCfg;
     const suite = cfg.slides.find(s => (s as unknown as { id: string }).id === 'suite')!;
     const addr = `b${cfg.section.box}s${suite.slide}`;
     expect(addr).toBe('b2s0');

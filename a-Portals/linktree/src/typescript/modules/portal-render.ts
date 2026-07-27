@@ -1,4 +1,4 @@
-// Declarative renderer for ALL three section-boxes — Personal Tools,
+// Declarative renderer for ALL three section-boxes — Projects,
 // Personal Profiles, Professional Profiles. Reads three JSON files, each
 // describing one section with multiple slides. Hydrates any element marked
 // `data-portal-mount="<slide-id>"` with the rendered DOM tree.
@@ -6,7 +6,7 @@
 // Output HTML is byte-equivalent to the hand-coded markup so SCSS keeps
 // matching without changes. Adding a tool / link / column = JSON edit only.
 
-import personalTools from '../../data/personal-tools.json';
+import projects from '../../data/projects.json';
 import personalProfiles from '../../data/personal-profiles.json';
 import professionalProfiles from '../../data/professional-profiles.json';
 
@@ -91,9 +91,9 @@ interface SectionCfg {
 // --------------------------------------------------------------------------
 
 const SECTIONS: SectionCfg[] = [
-  personalTools as unknown as SectionCfg,
-  personalProfiles as unknown as SectionCfg,
   professionalProfiles as unknown as SectionCfg,
+  projects as unknown as SectionCfg,
+  personalProfiles as unknown as SectionCfg,
 ];
 const SLIDES_BY_ID: Map<string, Slide> = new Map();
 for (const s of SECTIONS) for (const sl of s.slides) SLIDES_BY_ID.set(`${s.section.id}/${sl.id}`, sl);

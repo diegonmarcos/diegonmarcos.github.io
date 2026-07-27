@@ -8,7 +8,7 @@ describe('mindmap — derived from linktree/src/data/ (via src/data symlink)', (
   it('has the canonical root with 3 section children', () => {
     expect(data.root.id).toBe('dnm');
     expect(data.root.label).toBe('DNM');
-    expect(data.root.children).toEqual(['professional-profiles', 'personal-profiles', 'personal-tools']);
+    expect(data.root.children).toEqual(['professional-profiles', 'personal-profiles', 'projects']);
   });
 
   it('every root child references a defined section node with slide children', () => {
@@ -32,8 +32,8 @@ describe('mindmap — derived from linktree/src/data/ (via src/data symlink)', (
     }
   });
 
-  it('Fin Terminal link appears under personal-tools/lab-tools/Markets column', () => {
-    const colNode = data.nodes['personal-tools/lab-tools/col/Markets'];
+  it('Fin Terminal link appears under projects/lab-tools/Markets column', () => {
+    const colNode = data.nodes['projects/lab-tools/col/Markets'];
     expect(colNode, 'Markets column node').toBeDefined();
     const finTerm = colNode!.links?.find(l => l.label === 'Fin Terminal');
     expect(finTerm, 'Fin Terminal link present').toBeDefined();

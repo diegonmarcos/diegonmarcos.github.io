@@ -3,7 +3,7 @@
 // 1. Banner manifest at data/banners.json is the source of truth for
 //    URL → local-path mappings. Every declared `local` path must exist
 //    on disk under linktree/.
-// 2. Slide JSONs (personal-tools / personal-profiles / professional-profiles)
+// 2. Slide JSONs (projects / personal-profiles / professional-profiles)
 //    must NOT carry any remote image/video URLs — they were rewritten
 //    by `front-localize-assets.sh`.
 // 3. dist/index.html must NOT preload remote URLs and must NOT carry the
@@ -95,7 +95,7 @@ describe('asset locality — data/banners.json manifest', () => {
 });
 
 describe('asset locality — slide JSONs are 100% local', () => {
-  const slideFiles = ['personal-tools.json', 'personal-profiles.json', 'professional-profiles.json'];
+  const slideFiles = ['projects.json', 'personal-profiles.json', 'professional-profiles.json'];
 
   for (const f of slideFiles) {
     it(`${f} contains zero remote image/video URLs`, () => {

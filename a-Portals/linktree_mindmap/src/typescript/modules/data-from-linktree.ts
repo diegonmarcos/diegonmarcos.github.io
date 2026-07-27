@@ -6,7 +6,7 @@
 // Linktree owns the LINK DATA. Mindmap owns the VIEW CONFIG. Adding a new
 // tool in linktree → appears here automatically on the next rebuild.
 
-import personalTools        from '../../data/personal-tools.json';
+import projects        from '../../data/projects.json';
 import personalProfiles     from '../../data/personal-profiles.json';
 import professionalProfiles from '../../data/professional-profiles.json';
 import viewConfig           from '../../view-config.json';
@@ -40,7 +40,7 @@ const cfg = viewConfig as ViewConfig;
 const SECTIONS: RawSection0[] = [
   professionalProfiles as unknown as RawSection0,
   personalProfiles     as unknown as RawSection0,
-  personalTools        as unknown as RawSection0,
+  projects        as unknown as RawSection0,
 ];
 
 // 'world.svg' → 'world' (mindmap uses bare icon names without .svg).

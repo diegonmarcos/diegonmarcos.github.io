@@ -8,9 +8,9 @@
 # no fetch / no CORS — works under file:// too.
 #
 # Output filenames are PREFIXED with `data-` to namespace them clearly:
-#     personal-tools.json   →   data-personal-tools.json.js
+#     projects.json   →   data-projects.json.js
 # The PORTAL_DATA key stays as the bare basename (no prefix), so
-# consumer code reads PORTAL_DATA["personal-tools"].
+# consumer code reads PORTAL_DATA["projects"].
 #
 # Usage:
 #     front-data-json-js-wrapper.sh [DIR]

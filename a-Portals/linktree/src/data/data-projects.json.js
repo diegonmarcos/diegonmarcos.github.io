@@ -1,9 +1,14 @@
-{
-  "_description": "Declarative source of truth for the Personal Tools section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
+// GENERATED FROM projects.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// Re-generate with: bash a-Portals/linktree/src/data/build.sh
+(function () {
+  var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
+  g.PORTAL_DATA = g.PORTAL_DATA || {};
+  g.PORTAL_DATA["projects"] = {
+  "_description": "Declarative source of truth for the Projects section-box. Each `slide` becomes one swiper-slide. `kind=tools` slides render as `.link-section > .featured-image + .tools-dashboard > .tools-column` (matches the hand-coded markup). Slides hand-coded in index.html are not listed here; only the migrated ones are.",
   "section": {
-    "id": "personal-tools",
+    "id": "projects",
     "title": "Projects",
-    "swiper_class": "personal-tools-swiper",
+    "swiper_class": "projects-swiper",
     "box": 2
   },
   "slides": [
@@ -594,18 +599,6 @@
               "url": "https://diegonmarcos.github.io/openrevit",
               "icon": "settings.svg",
               "item": 1
-            },
-            {
-              "label": "Music - DAW",
-              "url": "https://diegonmarcos.github.io/music_daw_llms",
-              "icon": "headphones.svg",
-              "item": 2
-            },
-            {
-              "label": "Music - Mixer",
-              "url": "https://diegonmarcos.github.io/music_dj-mixer_mixxx",
-              "icon": "headphones.svg",
-              "item": 3
             }
           ],
           "group": 2
@@ -621,64 +614,90 @@
         "src": "public/images/banners/circus.gif",
         "alt": "Circus"
       },
-      "row_headers": [
-        { "title": "Media" },
-        { "title": "CG & Games" }
-      ],
       "columns": [
         {
-          "row": 0,
-          "header": "Audio",
+          "header": "Games",
           "links": [
-            { "label": "Music", "url": "https://diegonmarcos.github.io/music/", "icon": "headphones.svg", "item": 0 }
+            {
+              "label": "Games",
+              "url": "https://diegonmarcos.github.io/games",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            },
+            {
+              "label": "Carto",
+              "url": "https://diegonmarcos.github.io/carto/",
+              "icon": "cards.svg",
+              "item": 1
+            },
+            {
+              "label": "myAstro",
+              "url": "https://diegonmarcos.github.io/myAstro",
+              "icon": "world-longitude.svg",
+              "item": 2
+            },
+            {
+              "label": "Worms",
+              "url": "https://archive.org/details/worms_team17",
+              "icon": "device-gamepad.svg",
+              "item": 3
+            }
           ],
           "group": 0
         },
         {
-          "row": 0,
-          "header": "Videos",
+          "header": "Video",
           "links": [
-            { "label": "Movies", "url": "https://diegonmarcos.github.io/movies/", "icon": "brand-youtube.svg", "item": 0 }
+            {
+              "label": "MyVideos",
+              "url": "https://diegonmarcos.github.io/myvideos",
+              "icon": "video.svg",
+              "item": 0
+            },
+            {
+              "label": "Movies",
+              "url": "https://diegonmarcos.github.io/movies/",
+              "icon": "brand-youtube.svg",
+              "item": 1
+            }
           ],
           "group": 1
         },
         {
-          "row": 1,
-          "header": "Games 2D",
+          "header": "Audio",
           "links": [
-            { "label": "Games", "url": "https://diegonmarcos.github.io/games", "icon": "device-gamepad.svg", "item": 0 },
-            { "label": "Carto", "url": "https://diegonmarcos.github.io/carto/", "icon": "cards.svg", "item": 1 },
-            { "label": "myAstro", "url": "https://diegonmarcos.github.io/myAstro", "icon": "world-longitude.svg", "item": 2 },
-            { "label": "Worms", "url": "https://archive.org/details/worms_team17", "icon": "device-gamepad.svg", "item": 3 }
+            {
+              "label": "Music",
+              "url": "https://diegonmarcos.github.io/music/",
+              "icon": "headphones.svg",
+              "item": 0
+            }
           ],
           "group": 2
         },
         {
-          "row": 1,
-          "header": "Assets",
+          "header": "Galaxy",
           "links": [
-            { "label": "Assets", "url": "https://diegonmarcos.github.io/", "icon": "file-stack.svg", "item": 0 },
-            { "label": "796floor", "url": "https://diegonmarcos.github.io/796floor", "icon": "file-stack.svg", "item": 1 },
-            { "label": "WisAldo", "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/", "icon": "world.svg", "item": 2 }
+            {
+              "label": "Galaxy - Gaia",
+              "url": "https://diegonmarcos.github.io/galaxy-gaia/",
+              "icon": "world.svg",
+              "item": 0
+            },
+            {
+              "label": "Galaxy - Earth",
+              "url": "https://diegonmarcos.github.io/galaxy-earth/",
+              "icon": "world.svg",
+              "item": 1
+            },
+            {
+              "label": "Galaxy - X1",
+              "url": "https://diegonmarcos.github.io/galaxy-x1/",
+              "icon": "world.svg",
+              "item": 2
+            }
           ],
           "group": 3
-        },
-        {
-          "row": 1,
-          "header": "Scenes",
-          "links": [
-            { "label": "Galaxy - Gaia", "url": "https://diegonmarcos.github.io/galaxy-gaia/", "icon": "world.svg", "item": 0 },
-            { "label": "Galaxy - X1", "url": "https://diegonmarcos.github.io/galaxy-x1/", "icon": "world.svg", "item": 1 }
-          ],
-          "group": 4
-        },
-        {
-          "row": 1,
-          "header": "Games 3D",
-          "links": [
-            { "label": "Galaxy - Earth", "url": "https://diegonmarcos.github.io/galaxy-earth/", "icon": "world.svg", "item": 0 }
-          ],
-          "group": 5
         }
       ],
       "slide": 3
@@ -1062,3 +1081,5 @@
     }
   ]
 }
+;
+})();

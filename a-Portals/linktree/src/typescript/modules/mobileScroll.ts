@@ -8,7 +8,7 @@ import type { CarouselType } from '../types';
 // Store element references
 let professionalRow: HTMLElement | null = null;
 let personalRow: HTMLElement | null = null;
-let personalToolsRow: HTMLElement | null = null;
+let projectsRow: HTMLElement | null = null;
 
 /**
  * Throttle function to limit event frequency
@@ -38,14 +38,14 @@ function getElementCenterY(element: HTMLElement): number {
  * Select carousel based on which one is closest to viewport center
  */
 function selectCarouselByScroll(): void {
-  if (!professionalRow || !personalRow || !personalToolsRow) return;
+  if (!professionalRow || !personalRow || !projectsRow) return;
 
   const viewportCenter = window.innerHeight / 2;
 
   const distances: [number, CarouselType][] = [
     [Math.abs(viewportCenter - getElementCenterY(professionalRow)), 'professional'],
     [Math.abs(viewportCenter - getElementCenterY(personalRow)), 'personal'],
-    [Math.abs(viewportCenter - getElementCenterY(personalToolsRow)), 'personalTools'],
+    [Math.abs(viewportCenter - getElementCenterY(projectsRow)), 'projects'],
   ];
 
   // Select whichever is closest to viewport center
@@ -64,9 +64,9 @@ function selectCarouselByScroll(): void {
 export function initMobileScrollSelection(): void {
   professionalRow = querySelector<HTMLElement>('.professional-profiles-section .carousel-row');
   personalRow = querySelector<HTMLElement>('.personal-profiles-section .carousel-row');
-  personalToolsRow = querySelector<HTMLElement>('.personal-tools-section .carousel-row');
+  projectsRow = querySelector<HTMLElement>('.projects-section .carousel-row');
 
-  if (!professionalRow || !personalRow || !personalToolsRow) return;
+  if (!professionalRow || !personalRow || !projectsRow) return;
 
   // Throttled scroll handler
   const throttledSelect = throttle(selectCarouselByScroll, 100);

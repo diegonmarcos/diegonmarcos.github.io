@@ -162,7 +162,7 @@ step_consolidate() {
                    | { section: $f.section.id, slide: $f.section.id, column: ($col.header // ""), label: .label, url: (.url // ""), icon: (.icon // "") } ])
     }' \
     "$SRC/data-links/personal-profiles.json" \
-    "$SRC/data-links/personal-tools.json" \
+    "$SRC/data-links/projects.json" \
     "$SRC/data-links/professional-profiles.json" 2>/dev/null \
     || jq -n '{sections:[],slides:[],links:[]}')
 

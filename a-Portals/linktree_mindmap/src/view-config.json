@@ -10,7 +10,7 @@
   "section_colors": {
     "professional-profiles": "#4CAF50",
     "personal-profiles":     "#E91E63",
-    "personal-tools":        "#FF9800"
+    "projects":        "#FF9800"
   },
   "default_icon": "world"
 }

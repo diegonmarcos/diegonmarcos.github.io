@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import data from '../src/data/personal-tools.json';
+import data from '../src/data/projects.json';
 import { initPortalRender, listSlideIds, getSlide, renderSlide } from '../src/typescript/modules/portal-render';
 
 interface Link    { label: string; url: string; icon: string; }
@@ -9,16 +9,16 @@ interface Column  { header: string; links: Link[]; }
 interface Slide   { id: string; kind: string; title: string; columns: Column[]; }
 const cfg = data as unknown as { section: { id: string; title: string }; slides: Slide[] };
 
-describe('personal-tools.json — declarative source of truth', () => {
-  it('declares the Personal Tools section', () => {
-    expect(cfg.section.id).toBe('personal-tools');
-    expect(cfg.section.title).toBe('Personal Tools');
+describe('projects.json — declarative source of truth', () => {
+  it('declares the Projects section', () => {
+    expect(cfg.section.id).toBe('projects');
+    expect(cfg.section.title).toBe('Projects');
   });
 
-  it('exposes all 13 migrated slides across 3 boxes (4 personal-tools + 4 personal-profiles + 5 professional-profiles)', () => {
+  it('exposes all 13 migrated slides across 3 boxes (4 projects + 4 personal-profiles + 5 professional-profiles)', () => {
     const ids = listSlideIds();
     expect(ids.length).toBe(13);
-    // Personal Tools — TOOLCHAIN stays hand-coded
+    // Projects — TOOLCHAIN stays hand-coded
     for (const id of ['suite', 'lab-tools', 'circus', 'cloud']) expect(ids).toContain(id);
     // Personal Profiles — brucheion + serapeum merged into `projects`
     for (const id of ['personal-profile', 'media', 'data', 'projects']) expect(ids).toContain(id);

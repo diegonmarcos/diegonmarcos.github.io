@@ -78,16 +78,16 @@ interface SwiperEvents {
 }
 
 // Carousel types
-export type CarouselType = 'professional' | 'personal' | 'personalTools';
+export type CarouselType = 'professional' | 'personal' | 'projects';
 
 export interface CarouselState {
   selectedCarousel: CarouselType;
   professionalSwiper: Swiper;
   personalSwiper: Swiper;
-  personalToolsSwiper: Swiper;
+  projectsSwiper: Swiper;
   professionalRow: HTMLElement;
   personalRow: HTMLElement;
-  personalToolsRow: HTMLElement;
+  projectsRow: HTMLElement;
 }
 
 export interface CarouselElements {

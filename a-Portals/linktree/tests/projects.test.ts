@@ -15,11 +15,11 @@ describe('projects.json — declarative source of truth', () => {
     expect(cfg.section.title).toBe('Projects');
   });
 
-  it('exposes all 14 migrated slides across 3 boxes (6 projects + 3 personal-profiles + 5 professional-profiles)', () => {
+  it('exposes all 15 migrated slides across 3 boxes (7 projects + 3 personal-profiles + 5 professional-profiles)', () => {
     const ids = listSlideIds();
-    expect(ids.length).toBe(14);
-    // Projects — MACRO & QUANT stays hand-coded
-    for (const id of ['repos', 'suite', 'lab-tools', 'cloud', 'circus', 'structural']) expect(ids).toContain(id);
+    expect(ids.length).toBe(15);
+    // Projects — MACRO & QUANT inline card retired (absorbed into X card)
+    for (const id of ['repos', 'ducks', 'suite', 'lab-tools', 'cloud', 'circus', 'structural']) expect(ids).toContain(id);
     // Personal Profiles — brucheion + serapeum merged into `projects`
     for (const id of ['personal-profile', 'media', 'data', 'projects']) expect(ids).toContain(id);
     expect(ids).not.toContain('brucheion');

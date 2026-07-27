@@ -244,6 +244,79 @@
       "slide": 0
     },
     {
+      "id": "ducks",
+      "kind": "tools",
+      "title": "DUCKS",
+      "image": {
+        "src": "public/images/banners/mytools.gif",
+        "alt": "Unix"
+      },
+      "dashboard_modifier": "tools-dashboard--5",
+      "columns": [
+        {
+          "header": "Boot Manager",
+          "group": 0,
+          "links": [
+            {
+              "label": "Boot Manager",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+              "icon": "bolt.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "OS Flakes",
+          "group": 1,
+          "links": [
+            {
+              "label": "OS Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+              "icon": "world.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "HM Flakes",
+          "group": 2,
+          "links": [
+            {
+              "label": "HM Flakes",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+              "icon": "settings.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "Unix Bin",
+          "group": 3,
+          "links": [
+            {
+              "label": "Unix Bin",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+              "icon": "git-branch.svg",
+              "item": 0
+            }
+          ]
+        },
+        {
+          "header": "Android Bin",
+          "group": 4,
+          "links": [
+            {
+              "label": "Android Bin",
+              "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+              "icon": "device-gamepad.svg",
+              "item": 0
+            }
+          ]
+        }
+      ],
+      "slide": 1
+    },
+    {
       "id": "suite",
       "kind": "tools",
       "title": "SUITE",
@@ -501,7 +574,7 @@
           ]
         }
       ],
-      "slide": 1,
+      "slide": 2,
       "extras": {
         "primary_link": {
           "label": "Suite",
@@ -693,7 +766,7 @@
           "group": 2
         }
       ],
-      "slide": 2,
+      "slide": 3,
       "extras": {
         "primary_link": {
           "label": "Lab Tools",
@@ -1001,7 +1074,7 @@
           }
         ]
       },
-      "slide": 3
+      "slide": 4
     },
     {
       "id": "circus",
@@ -1135,20 +1208,21 @@
           "group": 5
         }
       ],
-      "slide": 4
+      "slide": 5
     },
     {
       "id": "structural",
       "kind": "tools",
-      "title": "STRUCTURAL & MECHATRONICS",
-      "slide": 5,
+      "title": "X",
+      "slide": 6,
       "image": {
         "src": "public/images/banners/structural.gif",
-        "alt": "Structural & Mechatronics"
+        "alt": "X"
       },
       "columns": [
         {
-          "header": "Structural",
+          "header": "STRUCTURAL",
+          "row": 0,
           "group": 0,
           "links": [
             {
@@ -1172,7 +1246,8 @@
           ]
         },
         {
-          "header": "Mechatronics",
+          "header": "MECHATRONICS",
+          "row": 0,
           "group": 1,
           "links": [
             {
@@ -1196,26 +1271,28 @@
           ]
         },
         {
-          "header": "Computing",
+          "header": "MACRO",
+          "row": 1,
           "group": 2,
           "links": [
             {
-              "label": "Algorithms",
-              "url": "https://github.com/diegonmarcos/back-Algo",
-              "icon": "settings.svg",
+              "label": "Macro/Quant",
+              "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+              "icon": "database.svg",
               "item": 0
-            },
+            }
+          ]
+        },
+        {
+          "header": "QUANT",
+          "row": 1,
+          "group": 3,
+          "links": [
             {
-              "label": "Cyber",
-              "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-              "icon": "bolt.svg",
-              "item": 1
-            },
-            {
-              "label": "42 School",
-              "url": "https://github.com/diegonmarcos/lecole42",
-              "icon": "rocket.svg",
-              "item": 2
+              "label": "Data Science",
+              "url": "https://github.com/diegonmarcos/ml-DataScience",
+              "icon": "database.svg",
+              "item": 0
             }
           ]
         }
@@ -1361,7 +1438,7 @@
           "group": 5
         }
       ],
-      "slide": 6
+      "slide": 7
     }
   ]
 }

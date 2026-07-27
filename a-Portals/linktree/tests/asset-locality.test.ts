@@ -107,43 +107,6 @@ describe('asset locality — slide JSONs are 100% local', () => {
   }
 });
 
-describe('MACRO & QUANT slide — declarative overview, no MyTools', () => {
-  const html = readFileSync(resolve(linktreeRoot, 'dist', 'index.html'), 'utf8');
-
-  // Slice the TOOLCHAIN slide so we don't accidentally match the SUITE slide.
-  const sliceFrom = html.indexOf('<h2 class="section-title">MACRO &amp; QUANT</h2>');
-  expect(sliceFrom, 'MACRO & QUANT section-title must be present').toBeGreaterThan(0);
-  const sliceTo = html.indexOf('<!-- End MACRO & QUANT Card -->', sliceFrom);
-  expect(sliceTo).toBeGreaterThan(sliceFrom);
-  const slice = html.slice(sliceFrom, sliceTo);
-
-  it('MACRO & QUANT no longer references the retired "My Tools" column', () => {
-    // The case-sensitive string ">My Tools<" is what the old column header
-    // emitted. Existing slides use "MyTools" or "MyHealth" inside the
-    // SUITE slide, so the slice scoping above keeps this assertion tight.
-    expect(slice).not.toContain('>My Tools<');
-    expect(slice).not.toContain('myfeed');     // old My-Tools primary URL
-    expect(slice).not.toContain('mymaps');     // old My-Tools sub-icon URL
-    expect(slice).not.toContain('myhealth');   // old My-Tools sub-icon URL
-  });
-
-  it('MACRO & QUANT still exposes the 4 overview columns (Suite / Lab Tools / Circus / Cloud)', () => {
-    expect(slice).toContain('tools-dashboard--4');
-    for (const header of ['>Suite<', '>Lab Tools<', '>Circus<', '>Cloud<']) {
-      expect(slice, `expected header ${header} in MACRO & QUANT`).toContain(header);
-    }
-  });
-
-  it('MACRO & QUANT Lab Tools column points at fin-terminal', () => {
-    expect(slice).toMatch(/href="https:\/\/diegonmarcos\.github\.io\/fin-terminal"[^>]*>[^<]*<img[^>]*sparkles\.svg[^>]*>Lab Tools/);
-  });
-
-  it('MACRO & QUANT card-swiper carries the recovered MY TOOLS banner', () => {
-    expect(slice).toContain('public/images/banners/mytools.gif');
-    expect(slice).toMatch(/<img[^>]*mytools\.gif[^>]*alt="My Tools"[^>]*card-slide/);
-  });
-});
-
 describe('asset locality — index.html preload is local', () => {
   it('dist/index.html preloads a local hero, not a pinimg URL', () => {
     const html = readFileSync(resolve(linktreeRoot, 'dist', 'index.html'), 'utf8');

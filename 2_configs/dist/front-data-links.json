@@ -10,7 +10,7 @@
       "id": "projects",
       "title": "Projects",
       "box": 2,
-      "slide_count": 7
+      "slide_count": 8
     },
     {
       "id": "professional-profiles",
@@ -46,6 +46,12 @@
     },
     {
       "section": "projects",
+      "id": "ducks",
+      "kind": "tools",
+      "title": "DUCKS"
+    },
+    {
+      "section": "projects",
       "id": "suite",
       "kind": "tools",
       "title": "SUITE"
@@ -72,7 +78,7 @@
       "section": "projects",
       "id": "structural",
       "kind": "tools",
-      "title": "STRUCTURAL & MECHATRONICS"
+      "title": "X"
     },
     {
       "section": "projects",
@@ -513,6 +519,46 @@
       "label": "Mechatronics",
       "url": "https://github.com/diegonmarcos/back-System",
       "icon": "device-desktop.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Boot Manager",
+      "label": "Boot Manager",
+      "url": "https://github.com/diegonmarcos/unix/tree/main/aa_bootloader",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "OS Flakes",
+      "label": "OS Flakes",
+      "url": "https://github.com/diegonmarcos/unix/tree/main/ba_flakes_desktop",
+      "icon": "world.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "HM Flakes",
+      "label": "HM Flakes",
+      "url": "https://github.com/diegonmarcos/unix/tree/main/bb_flakes_termux",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Unix Bin",
+      "label": "Unix Bin",
+      "url": "https://github.com/diegonmarcos/unix/tree/main/ca_containers_user",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Android Bin",
+      "label": "Android Bin",
+      "url": "https://github.com/diegonmarcos/unix/tree/main/ea_cloud-superapp",
+      "icon": "device-gamepad.svg"
     },
     {
       "section": "projects",
@@ -1309,7 +1355,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Structural",
+      "column": "STRUCTURAL",
       "label": "Civil Eng",
       "url": "https://github.com/diegonmarcos/cveng_AFrame",
       "icon": "settings.svg"
@@ -1317,7 +1363,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Structural",
+      "column": "STRUCTURAL",
       "label": "OpenRevit",
       "url": "https://diegonmarcos.github.io/openrevit",
       "icon": "settings.svg"
@@ -1325,7 +1371,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Structural",
+      "column": "STRUCTURAL",
       "label": "Sailytics",
       "url": "https://diegonmarcos.github.io/sailytics",
       "icon": "world.svg"
@@ -1333,7 +1379,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Mechatronics",
+      "column": "MECHATRONICS",
       "label": "System",
       "url": "https://github.com/diegonmarcos/back-System",
       "icon": "settings.svg"
@@ -1341,7 +1387,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Mechatronics",
+      "column": "MECHATRONICS",
       "label": "Graphics",
       "url": "https://github.com/diegonmarcos/back-Graphic",
       "icon": "device-desktop.svg"
@@ -1349,7 +1395,7 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Mechatronics",
+      "column": "MECHATRONICS",
       "label": "My Libs",
       "url": "https://github.com/diegonmarcos/ops-Mylibs",
       "icon": "git-branch.svg"
@@ -1357,26 +1403,18 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Computing",
-      "label": "Algorithms",
-      "url": "https://github.com/diegonmarcos/back-Algo",
-      "icon": "settings.svg"
+      "column": "MACRO",
+      "label": "Macro/Quant",
+      "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+      "icon": "database.svg"
     },
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Computing",
-      "label": "Cyber",
-      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Computing",
-      "label": "42 School",
-      "url": "https://github.com/diegonmarcos/lecole42",
-      "icon": "rocket.svg"
+      "column": "QUANT",
+      "label": "Data Science",
+      "url": "https://github.com/diegonmarcos/ml-DataScience",
+      "icon": "database.svg"
     },
     {
       "section": "projects",

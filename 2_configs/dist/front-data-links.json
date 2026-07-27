@@ -429,70 +429,6 @@
     {
       "section": "projects",
       "slide": "projects",
-      "column": "Low Level",
-      "label": "My Libs",
-      "url": "https://github.com/diegonmarcos/ops-Mylibs",
-      "icon": "git-branch.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Algorithms",
-      "url": "https://github.com/diegonmarcos/back-Algo",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "System",
-      "url": "https://github.com/diegonmarcos/back-System",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Graphics",
-      "url": "https://github.com/diegonmarcos/back-Graphic",
-      "icon": "device-desktop.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Cyber",
-      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "42 School",
-      "url": "https://github.com/diegonmarcos/lecole42",
-      "icon": "rocket.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "ML",
-      "label": "Agentic AI",
-      "url": "https://github.com/diegonmarcos/ml-Agentic",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "ML",
-      "label": "Machine Learning",
-      "url": "https://github.com/diegonmarcos/ml-MachineLearning",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
       "column": "Data",
       "label": "Data Science",
       "url": "https://github.com/diegonmarcos/ml-DataScience",
@@ -513,6 +449,70 @@
       "label": "Macro/Quant",
       "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
       "icon": "database.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "My Libs",
+      "url": "https://github.com/diegonmarcos/ops-Mylibs",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "Algorithms",
+      "url": "https://github.com/diegonmarcos/back-Algo",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "System",
+      "url": "https://github.com/diegonmarcos/back-System",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "Graphics",
+      "url": "https://github.com/diegonmarcos/back-Graphic",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "Cyber",
+      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "42 School",
+      "url": "https://github.com/diegonmarcos/lecole42",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "Agentic AI",
+      "url": "https://github.com/diegonmarcos/ml-Agentic",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "CS",
+      "label": "Machine Learning",
+      "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+      "icon": "brain.svg"
     },
     {
       "section": "projects",

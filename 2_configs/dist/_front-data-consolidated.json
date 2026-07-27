@@ -4833,7 +4833,7 @@
         "id": "projects",
         "title": "Projects",
         "box": 2,
-        "slide_count": 6
+        "slide_count": 7
       },
       {
         "id": "professional-profiles",
@@ -4884,6 +4884,12 @@
         "id": "cloud",
         "kind": "tools",
         "title": "CLOUD"
+      },
+      {
+        "section": "projects",
+        "id": "circus",
+        "kind": "tools",
+        "title": "CIRCUS"
       },
       {
         "section": "projects",
@@ -5970,6 +5976,102 @@
         "label": "Nvidia LLM",
         "url": "https://build.nvidia.com",
         "icon": "brain.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Audio",
+        "label": "Music",
+        "url": "https://diegonmarcos.github.io/music/",
+        "icon": "headphones.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Videos",
+        "label": "Movies",
+        "url": "https://diegonmarcos.github.io/movies/",
+        "icon": "brand-youtube.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Games",
+        "url": "https://diegonmarcos.github.io/games",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Carto",
+        "url": "https://diegonmarcos.github.io/carto/",
+        "icon": "cards.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "myAstro",
+        "url": "https://diegonmarcos.github.io/myAstro",
+        "icon": "world-longitude.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 2D",
+        "label": "Worms",
+        "url": "https://archive.org/details/worms_team17",
+        "icon": "device-gamepad.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Assets",
+        "label": "Assets",
+        "url": "https://diegonmarcos.github.io/",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Assets",
+        "label": "796floor",
+        "url": "https://diegonmarcos.github.io/796floor",
+        "icon": "file-stack.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Assets",
+        "label": "WisAldo",
+        "url": "https://tnhelearning.edu.vn/wheres-waldo-wallpaper/",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Scenes",
+        "label": "Galaxy - Gaia",
+        "url": "https://diegonmarcos.github.io/galaxy-gaia/",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Scenes",
+        "label": "Galaxy - X1",
+        "url": "https://diegonmarcos.github.io/galaxy-x1/",
+        "icon": "world.svg"
+      },
+      {
+        "section": "projects",
+        "slide": "projects",
+        "column": "Games 3D",
+        "label": "Galaxy - Earth",
+        "url": "https://diegonmarcos.github.io/galaxy-earth/",
+        "icon": "world.svg"
       },
       {
         "section": "projects",

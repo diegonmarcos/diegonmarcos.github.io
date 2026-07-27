@@ -105,7 +105,9 @@
       "deploy_name": "carto",
       "url": "https://diegonmarcos.github.io/carto"
     },
-    "consumers": [],
+    "consumers": [
+      "Carto"
+    ],
     "has_package_json": false,
     "has_manifest": false
   }

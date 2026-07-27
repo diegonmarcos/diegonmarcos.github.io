@@ -40,6 +40,12 @@
     },
     {
       "section": "projects",
+      "id": "repos",
+      "kind": "repos",
+      "title": "REPOS"
+    },
+    {
+      "section": "projects",
       "id": "suite",
       "kind": "tools",
       "title": "SUITE"
@@ -55,12 +61,6 @@
       "id": "cloud",
       "kind": "tools",
       "title": "CLOUD"
-    },
-    {
-      "section": "projects",
-      "id": "repos",
-      "kind": "repos",
-      "title": "REPOS"
     },
     {
       "section": "projects",
@@ -283,6 +283,174 @@
       "label": "Bucket (Inner)",
       "url": "https://bucketlistjourney.net/my-bucket-list",
       "icon": "heart.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Front-end",
+      "label": "Portals",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
+      "icon": "world.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Front-end",
+      "label": "Profiles",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
+      "icon": "file-type-html.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Front-end",
+      "label": "Work Tools",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Front-end",
+      "label": "Personal Tools",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "Cloud",
+      "url": "https://github.com/diegonmarcos/cloud",
+      "icon": "world.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "Unix",
+      "url": "https://github.com/diegonmarcos/unix",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "Vault",
+      "url": "https://github.com/diegonmarcos/vault",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "Front",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
+      "icon": "world.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "Tooling",
+      "url": "https://github.com/diegonmarcos/ops-Tooling",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Cloud",
+      "label": "MCP Servers",
+      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "My Libs",
+      "url": "https://github.com/diegonmarcos/ops-Mylibs",
+      "icon": "git-branch.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "Algorithms",
+      "url": "https://github.com/diegonmarcos/back-Algo",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "System",
+      "url": "https://github.com/diegonmarcos/back-System",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "Graphics",
+      "url": "https://github.com/diegonmarcos/back-Graphic",
+      "icon": "device-desktop.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "Cyber",
+      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
+      "icon": "bolt.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Low Level",
+      "label": "42 School",
+      "url": "https://github.com/diegonmarcos/lecole42",
+      "icon": "rocket.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "ML",
+      "label": "Agentic AI",
+      "url": "https://github.com/diegonmarcos/ml-Agentic",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "ML",
+      "label": "Machine Learning",
+      "url": "https://github.com/diegonmarcos/ml-MachineLearning",
+      "icon": "brain.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Data",
+      "label": "Data Science",
+      "url": "https://github.com/diegonmarcos/ml-DataScience",
+      "icon": "database.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Data",
+      "label": "Civil Eng",
+      "url": "https://github.com/diegonmarcos/cveng_AFrame",
+      "icon": "settings.svg"
+    },
+    {
+      "section": "projects",
+      "slide": "projects",
+      "column": "Data",
+      "label": "Macro/Quant",
+      "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
+      "icon": "database.svg"
     },
     {
       "section": "projects",
@@ -979,174 +1147,6 @@
       "label": "Nvidia LLM",
       "url": "https://build.nvidia.com",
       "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Front-end",
-      "label": "Portals",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/a_Portals",
-      "icon": "world.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Front-end",
-      "label": "Profiles",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Profiles",
-      "icon": "file-type-html.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Front-end",
-      "label": "Work Tools",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Front-end",
-      "label": "Personal Tools",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/c_Personal_Tools",
-      "icon": "device-desktop.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "Cloud",
-      "url": "https://github.com/diegonmarcos/cloud",
-      "icon": "world.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "Unix",
-      "url": "https://github.com/diegonmarcos/unix",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "Vault",
-      "url": "https://github.com/diegonmarcos/vault",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "Front",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io",
-      "icon": "world.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "Tooling",
-      "url": "https://github.com/diegonmarcos/ops-Tooling",
-      "icon": "git-branch.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Cloud",
-      "label": "MCP Servers",
-      "url": "https://github.com/diegonmarcos/diegonmarcos.github.io/tree/main/b_Work_Tools/skills_mcp",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "My Libs",
-      "url": "https://github.com/diegonmarcos/ops-Mylibs",
-      "icon": "git-branch.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Algorithms",
-      "url": "https://github.com/diegonmarcos/back-Algo",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "System",
-      "url": "https://github.com/diegonmarcos/back-System",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Graphics",
-      "url": "https://github.com/diegonmarcos/back-Graphic",
-      "icon": "device-desktop.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "Cyber",
-      "url": "https://github.com/diegonmarcos/cyber-Cyberwarfare",
-      "icon": "bolt.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Low Level",
-      "label": "42 School",
-      "url": "https://github.com/diegonmarcos/lecole42",
-      "icon": "rocket.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "ML",
-      "label": "Agentic AI",
-      "url": "https://github.com/diegonmarcos/ml-Agentic",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "ML",
-      "label": "Machine Learning",
-      "url": "https://github.com/diegonmarcos/ml-MachineLearning",
-      "icon": "brain.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data",
-      "label": "Data Science",
-      "url": "https://github.com/diegonmarcos/ml-DataScience",
-      "icon": "database.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data",
-      "label": "Civil Eng",
-      "url": "https://github.com/diegonmarcos/cveng_AFrame",
-      "icon": "settings.svg"
-    },
-    {
-      "section": "projects",
-      "slide": "projects",
-      "column": "Data",
-      "label": "Macro/Quant",
-      "url": "https://github.com/diegonmarcos/ecoqt-thesis1",
-      "icon": "database.svg"
     },
     {
       "section": "projects",

@@ -1614,7 +1614,8 @@
               "tidal.html",
               "strava.html",
               "youtube.html",
-              "icq.html"
+              "icq.html",
+              "shelter.html"
             ]
           },
           {
@@ -1629,7 +1630,8 @@
               "tidal.html",
               "strava.html",
               "youtube.html",
-              "icq.html"
+              "icq.html",
+              "shelter.html"
             ]
           },
           {
@@ -1649,6 +1651,7 @@
               "strava.html",
               "youtube.html",
               "icq.html",
+              "shelter.html",
               "script.js",
               "style.css"
             ],
@@ -1663,6 +1666,7 @@
               "./strava.html",
               "./youtube.html",
               "./icq.html",
+              "./shelter.html",
               "./script.js",
               "./style.css"
             ]

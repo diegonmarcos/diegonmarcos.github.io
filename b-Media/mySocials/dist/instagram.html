@@ -31,6 +31,7 @@
     <script src="data-tidal.json.js"></script>
     <script src="data-strava.json.js"></script>
     <script src="data-youtube.json.js"></script>
+    <script src="data-shelter.json.js"></script>
     <script>(function(){var d=globalThis.PORTAL_DATA&&PORTAL_DATA["mySocials"];if(d&&d.title)document.title=d.title;})();</script>
 <!-- sw-register: injected by mod_sw_register — DO NOT EDIT BY HAND. Re-runs are idempotent (the marker comment above gates the injection). -->
 <script>
@@ -147,6 +148,7 @@
     <button class="theme-switch__btn" data-theme-btn="youtube">YouTube</button>
     <button class="theme-switch__btn" data-theme-btn="orkut">Orkut</button>
     <button class="theme-switch__btn" data-theme-btn="icq">ICQ</button>
+    <button class="theme-switch__btn" data-theme-btn="shelter">shelter</button>
   </div>
 
   <!-- ═══════════════ MY PROFILE VIEW (rendered by JS) ═══════════════ -->
@@ -281,6 +283,9 @@
 
   <!-- ═══════════════ ICQ VIEW (rendered by JS) ═══════════════ -->
   <div class="view view--icq icq-view" id="icq-view"></div>
+
+  <!-- ═══════════════ SHELTER VIEW (rendered by JS) ═══════════════ -->
+  <div class="view view--shelter" id="shelter-view"></div>
 
   <script src="script.js"></script>
 </body>

@@ -1218,6 +1218,7 @@ function renderMyProfile(): void {
     { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000' },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
     { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
+    { theme: 'shelter', label: 'Shelter', meta: 'books & vinyl · 3D', color: '#8b6914' },
   ];
 
   view.innerHTML = `
@@ -1246,10 +1247,188 @@ function renderMyProfile(): void {
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
 }
 
+// ─── SHELTER ─────────────────────────────────────────────────────────────────
+
+interface ShelterBook { title: string; author: string; isbn: string; spine: string; }
+interface ShelterVinyl { title: string; artist: string; year: number; mbid: string; color: string; }
+interface ShelterData { books: ShelterBook[]; vinyls: ShelterVinyl[]; }
+
+let _shelterDone = false;
+
+function renderShelter(): void {
+  const el = document.getElementById('shelter-view');
+  if (!el || _shelterDone) return;
+  el.innerHTML = '<div class="view--shelter__loading">building shelter…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.shelter as ShelterData | undefined;
+  if (!data?.books?.length) { el.innerHTML = '<div class="view--shelter__error">no data</div>'; return; }
+
+  _shelterDone = true;
+
+  function _boot(THREE: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    const W = el!.clientWidth || 900;
+    const H = el!.clientHeight || 600;
+
+    const Renderer = (THREE as unknown as { WebGLRenderer: new (opts: object) => { setSize(w: number, h: number): void; setPixelRatio(r: number): void; shadowMap: { enabled: boolean }; render(s: object, c: object): void; dispose(): void; domElement: HTMLCanvasElement } }).WebGLRenderer;
+    const renderer = new Renderer({ antialias: true, alpha: false });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    el!.appendChild(renderer.domElement);
+
+    const T = THREE as unknown as {
+      Scene: new () => { add(o: object): void; background: object; fog: object };
+      Color: new (c: number | string) => object;
+      Fog: new (c: number, n: number, f: number) => object;
+      PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void; x: number }; lookAt(x: number, y: number, z: number): void; aspect: number; updateProjectionMatrix(): void };
+      AmbientLight: new (c: number, i: number) => object;
+      PointLight: new (c: number, i: number, d: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean };
+      MeshLambertMaterial: new (opts: object) => object;
+      BoxGeometry: new (w: number, h: number, d: number) => object;
+      Mesh: new (g: object, m: object | object[]) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean; receiveShadow: boolean; material: object | object[] };
+      TextureLoader: new () => { crossOrigin: string; load(url: string, cb: (t: object) => void): void };
+      LinearFilter: number;
+      ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void };
+    };
+
+    const scene = new T.Scene();
+    (scene as { background: object }).background = new T.Color(0x1a0f05);
+    (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
+
+    const camera = new T.PerspectiveCamera(48, W / H, 0.1, 100);
+    camera.position.set(2.5, 1.8, 7.5);
+    camera.lookAt(0, 0.3, 0);
+
+    scene.add(new T.AmbientLight(0xfff8e7, 0.6));
+    const sun = new T.PointLight(0xffddaa, 2.5, 22);
+    sun.position.set(2, 6, 5); sun.castShadow = true; scene.add(sun);
+    const fill = new T.PointLight(0xaabbff, 0.5, 15);
+    fill.position.set(-5, 2, 3); scene.add(fill);
+    const glow = new T.PointLight(0xff9944, 1.0, 6);
+    glow.position.set(0, 0.8, -0.2); scene.add(glow);
+
+    function box(w: number, h: number, d: number, mat: object, x: number, y: number, z: number, shadow = false): void {
+      const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
+      m.position.set(x, y, z);
+      if (shadow) { m.castShadow = true; m.receiveShadow = true; }
+      scene.add(m);
+    }
+
+    const wood    = new T.MeshLambertMaterial({ color: 0x8B6914 });
+    const dwood   = new T.MeshLambertMaterial({ color: 0x5C3317 });
+    const shelf   = new T.MeshLambertMaterial({ color: 0xC49A3C });
+    const floor   = new T.MeshLambertMaterial({ color: 0x6B4226 });
+
+    box(10, 0.15, 6, floor, 0, -1.5, 0, true);
+    box(10, 4.5, 0.2, wood, 0, 0.5, -2.2);
+    box(0.2, 4.5, 4.5, wood, -4.2, 0.5, -0.1);
+    box(0.2, 4.5, 4.5, dwood, 4.2, 0.5, -0.1);
+    box(0.25, 4.5, 0.25, dwood, -3.9, 0.5, 1.8);
+    box(0.25, 4.5, 0.25, dwood, 3.9, 0.5, 1.8);
+    box(10.5, 0.3, 6, dwood, 0, 2.85, -0.2);
+    box(10.5, 0.2, 0.2, dwood, 0, 2.6, 1.9);
+
+    const shelfYs = [-0.85, -0.05, 0.75, 1.55];
+    for (const sy of shelfYs) {
+      box(7, 0.07, 0.38, shelf, 0, sy, -0.6, true);
+    }
+
+    const loader = new T.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+    const COLS = 5;
+    for (let row = 0; row < 4; row++) {
+      const sy = shelfYs[row];
+      for (let col = 0; col < COLS; col++) {
+        const bk = data!.books[(row * COLS + col) % data!.books.length];
+        const bx = -2.8 + col * 1.4;
+        const by = sy + 0.38;
+        const bz = -0.6;
+        const sp = new (T as unknown as { Color: new (c: string) => object }).Color(bk.spine);
+        const mats: object[] = [
+          new T.MeshLambertMaterial({ color: sp }),
+          new T.MeshLambertMaterial({ color: sp }),
+          new T.MeshLambertMaterial({ color: 0xf5f0e8 }),
+          new T.MeshLambertMaterial({ color: 0xf5f0e8 }),
+          new T.MeshLambertMaterial({ color: sp }),
+          new T.MeshLambertMaterial({ color: sp }),
+        ];
+        const mesh = new T.Mesh(new T.BoxGeometry(0.23, 0.68, 0.16), mats);
+        mesh.position.set(bx, by, bz);
+        mesh.castShadow = true;
+        scene.add(mesh);
+        loader.load(`https://covers.openlibrary.org/b/isbn/${bk.isbn}-M.jpg`, (tex) => {
+          (tex as { minFilter: number }).minFilter = T.LinearFilter;
+          mats[4] = new T.MeshLambertMaterial({ map: tex });
+          mesh.material = mats;
+        });
+      }
+    }
+
+    const cx = 3.5;
+    box(0.06, 2.0, 1.9, dwood, cx + 1.0, -0.2, -0.5);
+    box(1.1, 0.07, 1.9, dwood, cx + 0.45, -1.2, -0.5);
+    box(1.1, 0.07, 1.9, dwood, cx + 0.45,  0.8, -0.5);
+    box(1.1, 2.0, 0.07, dwood, cx + 0.45, -0.2,  0.45);
+    box(1.1, 2.0, 0.07, dwood, cx + 0.45, -0.2, -1.45);
+
+    const vcount = Math.min(data!.vinyls.length, 10);
+    for (let i = 0; i < vcount; i++) {
+      const v = data!.vinyls[i];
+      const vx = cx + 0.08 + i * 0.09;
+      const vmats: object[] = [
+        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
+        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
+        new T.MeshLambertMaterial({ color: 0xeeeeee }),
+        new T.MeshLambertMaterial({ color: 0xeeeeee }),
+        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
+        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
+      ];
+      const vmesh = new T.Mesh(new T.BoxGeometry(0.025, 0.76, 0.76), vmats);
+      vmesh.position.set(vx, -0.2, -0.5);
+      scene.add(vmesh);
+      loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
+        (tex as { minFilter: number }).minFilter = T.LinearFilter;
+        vmats[4] = new T.MeshLambertMaterial({ map: tex });
+        vmesh.material = vmats;
+      });
+    }
+
+    let raf = 0;
+    let t = 0;
+    function animate() {
+      raf = requestAnimationFrame(animate);
+      t += 0.004;
+      camera.position.x = Math.sin(t) * 0.8 + 2.5;
+      camera.lookAt(0, 0.3, 0);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  if ((window as Record<string, unknown>).THREE) {
+    _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
+  } else {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.min.js';
+    s.onload = () => _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
+    s.onerror = () => { el!.innerHTML = '<div class="view--shelter__error">three.js failed to load</div>'; };
+    document.head.appendChild(s);
+  }
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq'];
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelter';
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelter'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...; myprofile = index.html).
 // Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
@@ -1301,6 +1480,7 @@ function init(): void {
   renderYoutube();
   renderICQ();
   renderMyProfile();
+  renderShelter();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

@@ -7,7 +7,7 @@
 @use 'components/orkut';
 @use 'components/views';
 @use 'components/theme-switch';
-@use 'components/myprofile';
+@use 'components/mysocials';
 @use 'components/instagram';
 @use 'components/linkedin';
 @use 'components/pinterest';
@@ -15,4 +15,5 @@
 @use 'components/strava';
 @use 'components/youtube';
 @use 'components/icq';
+@use 'components/shelter';
 @use 'utilities/helpers';

@@ -11,18 +11,23 @@
   // stepDrive works in m/s, so this is the single place the conversion happens.
   const KMH = 1 / 3.6;
 
-  // Per-driver camera zoom: flying drivers keep high cruise altitudes (drone
-  // 120m, heli 300m, plane 1200m) so they need a wider preset per camera to
-  // stay framed — data-driven override, never derived from live altitude.
-  function cameraZoomFor(driver: any, cam: any): number {
-    return driver.cameraZoom?.[cam.id] ?? cam.zoom;
-  }
-
   let mapContainer: HTMLDivElement;
 
   const rider = mapConfig.rider;
   const j = rider.joystick;
   const look = j.look;
+
+  // Camera zoom is derived from vehicle size (relative to rider.camera.refSize)
+  // plus a speed-based pullback (rider.camera.speedZoom) — real elevation now
+  // handles altitude, so zoom only needs to keep fast/large vehicles legible.
+  const camCfg = rider.camera;
+  function cameraZoomFor(driver: any, cam: any, speedMs?: number): number {
+    const size = driver.size ?? camCfg.refSize;
+    const vmax = (driver.speed.max ?? 0) * KMH;
+    const vRatio = vmax > 0 ? Math.min(1, (speedMs ?? 0) / vmax) : 0;
+    const z = cam.zoom + Math.log2(camCfg.refSize / size) - camCfg.speedZoom * vRatio;
+    return Math.max(camCfg.minZoom, Math.min(camCfg.maxZoom, z));
+  }
 
   // Driver (vehicle/physics) and camera view are two fully independent selectors —
   // switching one never touches the other. Camera bearing is user-owned (right stick),
@@ -987,6 +992,8 @@
               max: driverSpeed.max * KMH,
               turn: (activeDriver as any).turnRate * (Math.PI / 180),
               accel: activeDriver.accel,
+              turnAtMax: (activeDriver as any).turnAtMax,
+              speedRef: driverSpeed.max * KMH,
               lift: driverAltitude.climbRate, // already m/s — not converted
               maxAlt: driverAltitude.max,
               minAlt: driverAltitude.min,
@@ -1029,7 +1036,7 @@
             zoom = clamp(orbitZoom.refZoom - Math.log2(Math.max(step.altitude, 1) / orbitZoom.refAltitude), 0.5, 6);
             elevation = 0;
           } else {
-            zoom = cameraZoomFor(activeDriver, activeCamera);
+            zoom = cameraZoomFor(activeDriver, activeCamera, ride.speed);
             const lift = (activeCamera as any).targetLift;
             const targetLift = lift === 'eye' ? driverAltitude.eyeHeight : typeof lift === 'number' ? lift : 0;
             elevation = groundElevation + step.altitude + targetLift;
@@ -1038,7 +1045,7 @@
           const camKey = `${activeDriver.id}:${activeCamera.id}`;
           if (loggedCameraOnce !== camKey) {
             loggedCameraOnce = camKey;
-            console.log(`[rider] camera path -> driver '${activeDriver.id}' camera '${activeCamera.id}': zoom ${zoom.toFixed(2)}, model '${driverAltitude.model}'`);
+            console.log(`[rider] camera path -> driver '${activeDriver.id}' camera '${activeCamera.id}': zoom ${zoom.toFixed(2)}, model '${driverAltitude.model}', size ${(activeDriver as any).size ?? camCfg.refSize}`);
           }
 
           const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);

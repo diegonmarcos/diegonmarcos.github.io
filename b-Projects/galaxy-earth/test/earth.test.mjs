@@ -63,6 +63,32 @@ for (const d of r.drivers) {
   if ('altitudeBand' in d || 'lift' in d || 'maxAlt' in d) {
     throw new Error(`map.json rider.drivers["${d.id}"] must not have altitudeBand/lift/maxAlt (replaced by altitude)`);
   }
+  if (typeof d.size !== 'number' || !(d.size > 0)) {
+    throw new Error(`map.json rider.drivers["${d.id}"].size must be a positive number`);
+  }
+  if (typeof d.accel !== 'number' || !(d.accel > 0)) {
+    throw new Error(`map.json rider.drivers["${d.id}"].accel must be a positive number`);
+  }
+  if (typeof d.turnAtMax !== 'number' || !(d.turnAtMax > 0 && d.turnAtMax <= 1)) {
+    throw new Error(`map.json rider.drivers["${d.id}"].turnAtMax must be a number in (0, 1]`);
+  }
+  if ('cameraZoom' in d) {
+    throw new Error(`map.json rider.drivers["${d.id}"] must not have cameraZoom (per-camera zoom is now size/speed-derived in +page.svelte cameraZoomFor)`);
+  }
+}
+
+// --- rider.camera (size/speed-derived zoom config, replaces per-driver cameraZoom) ---
+{
+  const cc = r.camera;
+  if (
+    !cc ||
+    typeof cc.refSize !== 'number' ||
+    typeof cc.minZoom !== 'number' ||
+    typeof cc.maxZoom !== 'number' ||
+    typeof cc.speedZoom !== 'number'
+  ) {
+    throw new Error('map.json rider.camera must have numeric refSize/minZoom/maxZoom/speedZoom');
+  }
 }
 
 // --- assets CDN base + constellation (globe) driver + keybindings + look range ---

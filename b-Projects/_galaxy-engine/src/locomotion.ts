@@ -35,7 +35,7 @@ export function stepRide(state: RideState, input: RideInput, params: RideParams,
 // but heading is driven toward a desired bearing (stick + camera) rather than
 // integrated from a steer rate. Used by vehicles with free-look cameras.
 export interface DriveInput { moveX: number; moveY: number; camBearing: number; climb?: number }
-export interface DriveParams { min: number; cruise?: number; idle?: number; max: number; turn?: number; accel?: number; lift?: number; maxAlt?: number; minAlt?: number; deadzone?: number }
+export interface DriveParams { min: number; cruise?: number; idle?: number; max: number; turn?: number; accel?: number; lift?: number; maxAlt?: number; minAlt?: number; deadzone?: number; turnAtMax?: number; speedRef?: number }
 
 export function stepDrive(state: RideState, input: DriveInput, params: DriveParams, dt: number): RideStep {
   let mag = Math.hypot(input.moveX, input.moveY);
@@ -46,7 +46,11 @@ export function stepDrive(state: RideState, input: DriveInput, params: DrivePara
     if (delta > Math.PI) delta -= 2 * Math.PI;
     if (delta < -Math.PI) delta += 2 * Math.PI;
     if (params.turn != null) {
-      const maxStep = params.turn * dt;
+      const vRatio = params.speedRef && params.speedRef > 0
+        ? Math.min(1, Math.abs(state.speed ?? 0) / params.speedRef)
+        : 0;
+      const turnScale = params.turnAtMax == null ? 1 : params.turnAtMax + (1 - params.turnAtMax) * (1 - vRatio);
+      const maxStep = params.turn * turnScale * dt;
       delta = Math.max(-maxStep, Math.min(maxStep, delta));
     }
     state.heading += delta;

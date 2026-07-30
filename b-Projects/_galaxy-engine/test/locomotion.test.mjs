@@ -174,5 +174,28 @@ for (const camBearing of [0, Math.PI / 2, -Math.PI / 2]) {
   ok(step.altitude === 50, 'drive: minAlt>maxAlt (misconfigured) → result never exceeds maxAlt');
 }
 
+// --- turnAtMax / speedRef: speed-scaled turn rate (stepDrive) ---
+
+// turnAtMax omitted → turnScale===1, byte-identical to today (even with speedRef present)
+{
+  const state = { heading: 0, speed: 10 };
+  const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10, turn: 2, speedRef: 10 }, 0.5);
+  ok(Math.abs(step.heading - 1) < 1e-9, 'turnAtMax omitted: heading===turn*dt (unscaled, same as no speedRef)');
+}
+
+// turnAtMax set, at full speed (speed===speedRef) → turn step reduced to turnAtMax fraction
+{
+  const state = { heading: 0, speed: 10 };
+  const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10, turn: 2, turnAtMax: 0.5, speedRef: 10 }, 1);
+  ok(Math.abs(step.heading - 1) < 1e-9, 'turnAtMax=0.5 at full speed: heading===turn*turnAtMax*dt (reduced)');
+}
+
+// turnAtMax set, but speed===0 → full turn rate (vRatio=0 → turnScale=1)
+{
+  const state = { heading: 0, speed: 0 };
+  const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10, turn: 2, turnAtMax: 0.5, speedRef: 10 }, 0.5);
+  ok(Math.abs(step.heading - 1) < 1e-9, 'turnAtMax set but speed===0: heading===turn*dt (full rate)');
+}
+
 if (failed) { console.error(`${failed} check(s) failed`); process.exit(1); }
 console.log('locomotion OK');

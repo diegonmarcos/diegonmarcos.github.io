@@ -153,7 +153,19 @@
     },
     "cockpit": {
       "defaultVisible": true,
-      "views": ["cockpit", "chase", "orbit"]
+      "views": ["cockpit", "chase", "orbit"],
+      "viewCycle": ["fps", "chase", "god"]
+    },
+    "flightControls": { "mode": 2, "sticky_throttle": ["airplane"], "expo": 0.3 },
+    "game": {
+      "maxLandSink": 3,
+      "maxLandBank": 0.25,
+      "maxLandPitch": 0.3,
+      "maxLandSpeed": 4,
+      "maxLandSpeedFwd": 75,
+      "needsGear": true,
+      "crashRespawnDelay": 2,
+      "minAirborneAGL": 3
     },
     "joystick": {
       "scale": 0.5,

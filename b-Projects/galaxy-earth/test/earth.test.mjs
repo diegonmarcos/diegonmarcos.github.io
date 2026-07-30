@@ -380,4 +380,51 @@ if (!(airplane.speed.min > 0)) {
   }
 }
 
+// --- rider.flightControls (Mode-2 flight stick remap) ---
+{
+  const fc = r.flightControls;
+  if (!fc || fc.mode !== 2) {
+    throw new Error('map.json rider.flightControls.mode must be 2');
+  }
+  if (!Array.isArray(fc.sticky_throttle)) {
+    throw new Error('map.json rider.flightControls.sticky_throttle must be an array');
+  }
+  if (typeof fc.expo !== 'number' || fc.expo < 0 || fc.expo > 1) {
+    throw new Error('map.json rider.flightControls.expo must be a number in [0,1]');
+  }
+}
+
+// --- rider.game (flight game-loop tunables, mirrors GameParams in game.ts) ---
+{
+  const g = r.game;
+  const numFields = [
+    'maxLandSink', 'maxLandBank', 'maxLandPitch', 'maxLandSpeed',
+    'maxLandSpeedFwd', 'crashRespawnDelay', 'minAirborneAGL'
+  ];
+  if (!g || typeof g !== 'object') {
+    throw new Error('map.json rider.game must be an object');
+  }
+  for (const f of numFields) {
+    if (typeof g[f] !== 'number') {
+      throw new Error(`map.json rider.game.${f} must be a number`);
+    }
+  }
+  if (typeof g.needsGear !== 'boolean') {
+    throw new Error('map.json rider.game.needsGear must be a boolean');
+  }
+}
+
+// --- rider.cockpit.viewCycle (flight view-cycle button — ids must exist in rider.cameras) ---
+{
+  const vc = r.cockpit.viewCycle;
+  if (!Array.isArray(vc) || vc.length === 0) {
+    throw new Error('map.json rider.cockpit.viewCycle must be a non-empty array');
+  }
+  for (const id of vc) {
+    if (!camIds.has(id)) {
+      throw new Error(`map.json rider.cockpit.viewCycle["${id}"] must match a rider.cameras[].id`);
+    }
+  }
+}
+
 console.log('earth OK');

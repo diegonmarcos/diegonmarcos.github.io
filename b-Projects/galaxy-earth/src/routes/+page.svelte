@@ -7,9 +7,12 @@
   import { stepDrive, stepVehicle } from '$engine/locomotion';
   import { stepAirplane, stepHelicopter, stepDrone } from '$engine/flight';
   import type { FlightState, FlightTelemetry } from '$engine/flight';
+  import { stepGame } from '$engine/game';
+  import type { GameState, GamePhase } from '$engine/game';
   import Joystick from '$engine/Joystick.svelte';
   import Cockpit from '$lib/Cockpit.svelte';
   import { createStreetProvider } from '$lib/street';
+  import { createFlightAudio } from '$lib/flightAudio';
 
   // Speed unit boundary: map.json speeds are km/h (matches the HUD readout);
   // stepDrive works in m/s, so this is the single place the conversion happens.
@@ -188,8 +191,32 @@
     heading: 0, bank: 0, pitch: 0, speed: 0, vspeed: 0, altASL: 0,
     velX: 0, velZ: 0, battery: 1
   };
-  let flightThrottle = 0;
+  // $state (not a plain let) so the throttle-lever UI can bind to/reflect the
+  // value the frame() loop mutates each tick — Svelte 5 signals are readable/
+  // writable from any closure in the component, including the onMount rAF loop.
+  let flightThrottle = $state(0);
   let flightTelemetry = $state<FlightTelemetry | null>(null);
+  let flightAudioMuted = $state(false);
+  // Reassigned once onMount creates the real map/flightAudio instances — same
+  // pattern as mapZoomIn/mapToggleTerrain below (template needs a stable
+  // reference before onMount runs).
+  let toggleFlightAudioMute = () => {};
+  let cycleFlightView = () => {};
+
+  // Flight game-loop (spawn/flying/landed/crashed) — persistent across frames
+  // like flightState/ride; mirrored into $state fields for the HUD/toast/flash.
+  const gameState: GameState = { phase: 'spawn', airborneTime: 0, landings: 0, crashes: 0, crashTimer: 0 };
+  let gamePhase = $state<GamePhase>('spawn');
+  let gameLandings = $state(0);
+  let showLandedToast = $state(false);
+  let showCrashFlash = $state(false);
+
+  // Frame-error diagnostic badge — always visible (not just debug mode) once
+  // frame() has caught at least one throw; the FIRST error's message+stack is
+  // kept so the still-unidentified production throw is inspectable in place.
+  let frameErrorCount = $state(0);
+  let firstFrameErrorText = $state('');
+  let showFrameErrorOverlay = $state(false);
   // Set by the driver-switch $effect below (component scope, no map/groundElev
   // available there yet) and consumed once inside frame() the next tick, where
   // groundElevation is known — that's the only place ASL can be computed.
@@ -361,6 +388,22 @@
     let camBearing = 0;
     let lookPitch = 0; // degrees; integrated unbounded, clamped to [minPitch, skyMaxPitch]
 
+    // Flight audio — start() must fire from a user gesture, so wire a one-time
+    // pointerdown/keydown listener rather than calling it here.
+    const flightAudio = createFlightAudio();
+    let flightAudioStarted = false;
+    const startFlightAudioOnce = () => {
+      if (flightAudioStarted) return;
+      flightAudioStarted = true;
+      flightAudio.start();
+    };
+    window.addEventListener('pointerdown', startFlightAudioOnce, { once: true });
+    window.addEventListener('keydown', startFlightAudioOnce, { once: true });
+    toggleFlightAudioMute = () => {
+      flightAudioMuted = !flightAudioMuted;
+      flightAudio.setMuted(flightAudioMuted);
+    };
+
     // Street surface provider (road-mask sampling) — created once the map finishes
     // loading (needs a live maplibre instance + the basemap style URL); left null on
     // any failure so physics degrades to normal (friction 1) driving, never breaks.
@@ -388,6 +431,27 @@
       freeInput.moveY = moveY;
       freeInput.climbKeys = climb;
     }
+    // Mode-2 flight keyboard remap — reuses the SAME heldKeys Set as
+    // recomputeMoveFromKeys above (no parallel key-tracking machinery), just a
+    // different combinator read only while in a flight control mode. NOTE: this
+    // reads literal key strings ('a'/'d' vs 'ArrowLeft'/'ArrowRight') rather than
+    // rider.keys.left/right groups, because those groups deliberately fold both
+    // sets together for ground driving (see map.json) — the flight design calls
+    // for a/d and the arrow keys to drive DIFFERENT axes (roll vs yaw), which the
+    // grouped config cannot express. Flagged in the task report as a spec-vs-
+    // config mismatch; this is the pragmatic reading that keeps both intents.
+    function flightKeyAxes() {
+      let pitch = 0, roll = 0, yaw = 0, leftY = 0;
+      if (heldKeys.has('w')) pitch += 1;
+      if (heldKeys.has('s')) pitch -= 1;
+      if (heldKeys.has('a')) roll -= 1;
+      if (heldKeys.has('d')) roll += 1;
+      if (heldKeys.has('ArrowLeft')) yaw -= 1;
+      if (heldKeys.has('ArrowRight')) yaw += 1;
+      if (heldKeys.has('q') || heldKeys.has(' ')) leftY += 1;
+      if (heldKeys.has('e') || heldKeys.has('c')) leftY -= 1;
+      return { pitch, roll, yaw, leftY };
+    }
     function matchAny(list: string[], key: string) {
       return list.includes(key);
     }
@@ -396,6 +460,13 @@
       const n = arr.length;
       return arr[(i + dir + n) % n];
     }
+    cycleFlightView = () => {
+      const ids: string[] = (rider.cockpit as any).viewCycle;
+      const cams = ids.map((id) => rider.cameras.find((c) => c.id === id)).filter(Boolean) as (typeof rider.cameras)[number][];
+      if (cams.length === 0) return;
+      const idx = cams.findIndex((c) => c.id === activeCamera.id);
+      activeCamera = idx === -1 ? cams[0] : cycle(cams, cams[idx], 1);
+    };
     function onKeyDown(e: KeyboardEvent) {
       if (e.key === 'F8') {
         e.preventDefault();
@@ -1028,15 +1099,22 @@
             jsHeapMb = heap != null ? heap / (1024 * 1024) : undefined;
           }
 
-          // Yaw integrates unbounded (full 360°, no clamp).
-          camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
-          // Pitch integrates in degrees, clamped to [minPitch, skyMaxPitch] — this
-          // intentionally allows values above mapMaxPitch (85°) toward "sky".
-          lookPitch = clamp(
-            lookPitch + freeInput.pitchRate * look.pitchRate * dt,
-            look.minPitch,
-            look.skyMaxPitch
-          );
+          // In flight modes the right stick is reassigned to roll/pitch (Mode-2 —
+          // see the flight branch below) and no longer drives free-look, so this
+          // integration is gated to ground modes only. On switching back to
+          // ground the free-look resumes exactly where camBearing/lookPitch was
+          // last left (no reset), so it "just works again".
+          if ((activeDriver as any).control !== 'flight') {
+            // Yaw integrates unbounded (full 360°, no clamp).
+            camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
+            // Pitch integrates in degrees, clamped to [minPitch, skyMaxPitch] — this
+            // intentionally allows values above mapMaxPitch (85°) toward "sky".
+            lookPitch = clamp(
+              lookPitch + freeInput.pitchRate * look.pitchRate * dt,
+              look.minPitch,
+              look.skyMaxPitch
+            );
+          }
 
           const driverSpeed: any = (activeDriver as any).speed;
           const driverAltitude: any = (activeDriver as any).altitude;
@@ -1068,24 +1146,50 @@
 
           let step: { heading: number; forwardX: number; forwardZ: number; dForward: number; altitude: number };
           if ((activeDriver as any).control === 'flight') {
-            // Throttle/collective is a persistent LEVER (unlike moveX/moveY axes) —
-            // it stays where set and is nudged by the climb controls, except for
-            // the drone, whose climbAxis is the direct (non-lever) stick instead.
             const fparams: any = (activeDriver as any).flight;
-            if (fparams.model !== 'drone') {
-              const THROTTLE_RATE = 0.5; // full 0..1 range per second, held
-              flightThrottle = clamp(flightThrottle + climbTotal() * THROTTLE_RATE * dt, 0, 1);
-            }
             if (pendingFlightAltDefault !== null) {
               flightState.altASL = groundElevation + pendingFlightAltDefault;
               pendingFlightAltDefault = null;
             }
+
+            // --- Mode-2 RC flight-stick remap (rider.flightControls) ---
+            // Left stick (channel 'drive' → moveX/moveY) and right stick (channel
+            // 'look' → yawRate/pitchRate) are REUSED, not new components: left =
+            // throttle/climb-lever(Y) + yaw(X); right = pitch(Y, inverted) + roll(X).
+            const fc: any = (rider as any).flightControls;
+            const kb = flightKeyAxes();
+            const applyExpo = (v: number, e: number) => {
+              const c = clamp(v, -1, 1);
+              return (1 - e) * c + e * c * c * c;
+            };
+            const rawLeftY = clamp(freeInput.moveY + kb.leftY, -1, 1);
+            const rawYaw = clamp(freeInput.moveX + kb.yaw, -1, 1);
+            // right Y (pitchRate) inverted: stick-back (negative pitchRate, per
+            // Joystick's invertY-less convention) reads as nose-up.
+            const rawPitch = clamp(-freeInput.pitchRate + kb.pitch, -1, 1);
+            const rawRoll = clamp(freeInput.yawRate + kb.roll, -1, 1);
+
+            const pitchAxis = applyExpo(rawPitch, fc.expo);
+            const rollAxis = applyExpo(rawRoll, fc.expo);
+            const yawAxis = applyExpo(rawYaw, fc.expo);
+            const leftY = applyExpo(rawLeftY, fc.expo);
+
+            let throttleOut = flightThrottle;
+            if (fc.sticky_throttle.includes(fparams.model)) {
+              // Sticky throttle lever: stays where set, nudged by left-Y.
+              flightThrottle = clamp(flightThrottle + leftY * dt * 0.5, 0, 1);
+              throttleOut = flightThrottle;
+            } else if (fparams.model === 'helicopter') {
+              // Collective is a direct (non-lever) stick, mapped 0.5±0.5.
+              throttleOut = clamp(0.5 + leftY * 0.5, 0, 1);
+            }
+
             const flightInput = {
-              pitchAxis: clamp(freeInput.pitchRate, -1, 1),
-              rollAxis: clamp(freeInput.moveX, -1, 1),
-              yawAxis: 0,
-              throttle: flightThrottle,
-              climbAxis: clamp(freeInput.moveY, -1, 1),
+              pitchAxis,
+              rollAxis,
+              yawAxis,
+              throttle: throttleOut,
+              climbAxis: fparams.model === 'drone' ? leftY : 0,
               gearDown: flightGearDown,
               flaps: flightFlaps,
               brake: flightBraking ? 1 : 0
@@ -1097,6 +1201,51 @@
               stepDrone;
             const telemetry = stepFn(flightState, flightInput, fparams, flightEnv);
             flightTelemetry = telemetry;
+
+            // Chase/orbit flight views: free-look is gated off above, so instead
+            // ease camBearing toward the aircraft heading (spring, using the
+            // existing camera.springTau) so the view stays behind the nose.
+            // Cockpit ('fps') is excluded — it hard-sets bearing from attitude
+            // directly further down. Easing (not snapping) camBearing itself
+            // means it's already at the right value if the pilot switches back
+            // to a ground driver, so ground free-look resumes seamlessly.
+            if (activeCamera.id !== 'fps') {
+              const tau = Math.max(1e-3, camCfg.springTau);
+              const alpha = 1 - Math.exp(-dt / tau);
+              const diff = Math.atan2(Math.sin(telemetry.heading - camBearing), Math.cos(telemetry.heading - camBearing));
+              camBearing += diff * alpha;
+            }
+
+            // Flight game loop (spawn/flying/landed/crashed) — stepped every
+            // flight frame regardless of camera view.
+            const gameParams = {
+              ...(rider as any).game,
+              needsGear: fparams.model === 'airplane' && (rider as any).game.needsGear
+            };
+            const prevPhase = gameState.phase;
+            stepGame(gameState, telemetry, gameParams as any, dt);
+            gamePhase = gameState.phase;
+            gameLandings = gameState.landings;
+            if (prevPhase !== 'landed' && gameState.phase === 'landed') {
+              showLandedToast = true;
+              setTimeout(() => { showLandedToast = false; }, 2500);
+            }
+            if (prevPhase !== 'crashed' && gameState.phase === 'crashed') {
+              showCrashFlash = true;
+              setTimeout(() => { showCrashFlash = false; }, 400);
+            }
+            if (prevPhase === 'crashed' && gameState.phase === 'spawn') {
+              // Reset the aircraft in place (no airport DB in this pass): altitude
+              // back to the driver's default, speed to idle, wings level.
+              const a: any = (activeDriver as any).altitude;
+              flightState.altASL = groundElevation + a.default;
+              flightState.speed = ((activeDriver as any).speed.idle ?? 0) * KMH;
+              flightState.vspeed = 0;
+              flightState.bank = 0;
+              flightState.pitch = 0;
+            }
+
+            flightAudio.update(telemetry, fparams.model);
             // flightState.speed is signed (forward/rearward), unlike telemetry.speed
             // which is an unsigned magnitude for the HUD — position advance needs
             // the sign, so read it off the mutated state, not the telemetry.
@@ -1291,6 +1440,10 @@
           map.triggerRepaint();
           } catch (err) {
             frameErrors++;
+            frameErrorCount = frameErrors;
+            if (frameErrors === 1) {
+              firstFrameErrorText = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err);
+            }
             if (frameErrors <= 5) console.error('[rider] frame error', err);
             if (frameErrors === 5) console.error('[rider] further frame errors suppressed');
           } finally {
@@ -1318,12 +1471,13 @@
       skyRenderer?.dispose();
       stopMeshEffect?.();
       streetProvider?.destroy();
+      flightAudio.destroy();
       map?.remove();
     };
   });
 </script>
 
-<div class="map-wrap">
+<div class="map-wrap" class:shake={showCrashFlash}>
   <div bind:this={mapContainer} class="map"></div>
   <canvas bind:this={skyCanvas} class="sky-overlay"></canvas>
 
@@ -1355,6 +1509,54 @@
         · speed {hudSpeed.toFixed(2)} km/h
       </div>
       <div class:err={lastError !== 'none'}>err: {lastError}</div>
+      {#if (activeDriver as any).control === 'flight'}
+        <div>game phase {gamePhase} · landings {gameLandings}</div>
+      {/if}
+    </div>
+  {/if}
+
+  {#if frameErrorCount > 0}
+    <button
+      type="button"
+      class="frame-err-badge"
+      onclick={() => (showFrameErrorOverlay = !showFrameErrorOverlay)}
+    >⚠ frame errors: {frameErrorCount}</button>
+    {#if showFrameErrorOverlay}
+      <div class="frame-err-overlay">
+        <pre>{firstFrameErrorText}</pre>
+      </div>
+    {/if}
+  {/if}
+
+  {#if showCrashFlash}
+    <div class="crash-flash"></div>
+  {/if}
+
+  {#if showLandedToast}
+    <div class="landed-toast">LANDED ✓</div>
+  {/if}
+
+  {#if (activeDriver as any).control === 'flight'}
+    <div class="flight-hud">
+      {#if (activeDriver as any).flight.model === 'airplane'}
+        <div class="throttle-lever">
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            bind:value={flightThrottle}
+            aria-label="Throttle"
+          />
+          <span>THR {(flightThrottle * 100).toFixed(0)}%</span>
+        </div>
+        <button type="button" class="flight-btn" class:active={flightGearDown} onclick={() => (flightGearDown = !flightGearDown)}>GEAR</button>
+        <button type="button" class="flight-btn" class:active={flightFlaps > 0} onclick={() => (flightFlaps = flightFlaps > 0 ? 0 : 1)}>FLAPS</button>
+      {/if}
+      <button type="button" class="flight-btn view-cycle" aria-label="Cycle camera view" onclick={() => cycleFlightView()}>⟳</button>
+      <button type="button" class="flight-btn mute-btn" aria-label="Mute flight audio" onclick={() => toggleFlightAudioMute()}>
+        {flightAudioMuted ? '🔇' : '🔊'}
+      </button>
     </div>
   {/if}
 
@@ -2041,5 +2243,124 @@
 
   .debug-overlay .err {
     color: #ff6b6b;
+  }
+
+  /* --- Flight game loop: crash flash + screen shake, landed toast --- */
+  .map-wrap.shake {
+    animation: rider-shake 0.4s ease-in-out;
+  }
+  @keyframes rider-shake {
+    10%, 90% { transform: translate(-1px, 0); }
+    20%, 80% { transform: translate(2px, -1px); }
+    30%, 50%, 70% { transform: translate(-3px, 2px); }
+    40%, 60% { transform: translate(3px, -2px); }
+  }
+  .crash-flash {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    pointer-events: none;
+    background: #ff2d2d;
+    animation: rider-crash-flash 0.4s ease-out forwards;
+  }
+  @keyframes rider-crash-flash {
+    from { opacity: 0.65; }
+    to { opacity: 0; }
+  }
+  .landed-toast {
+    position: fixed;
+    top: 18%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 120;
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: bold;
+    color: #5ee6a0;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(94, 230, 160, 0.6);
+    pointer-events: none;
+  }
+
+  /* --- Frame-error diagnostic badge (always visible when nonzero, not just debug) --- */
+  .frame-err-badge {
+    position: fixed;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    font-family: monospace;
+    font-size: 12px;
+    color: #fff;
+    background: #b0201f;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .frame-err-overlay {
+    position: fixed;
+    inset: 8% 8%;
+    z-index: 151;
+    overflow: auto;
+    background: rgba(0, 0, 0, 0.9);
+    color: #ff9d9d;
+    font-family: monospace;
+    font-size: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 157, 157, 0.4);
+    white-space: pre-wrap;
+  }
+
+  /* --- Flight UI: throttle lever, gear/flaps, view-cycle, mute --- */
+  .flight-hud {
+    position: fixed;
+    right: 26px;
+    bottom: 200px;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+  }
+  .throttle-lever {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: rgba(10, 14, 26, 0.5);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 8px;
+    padding: 8px 6px;
+  }
+  .throttle-lever input[type='range'] {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 24px;
+    height: 100px;
+    accent-color: #9db4ff;
+  }
+  .throttle-lever span {
+    font-family: monospace;
+    font-size: 10px;
+    color: #d8e0ff;
+  }
+  .flight-btn {
+    font-family: monospace;
+    font-size: 11px;
+    color: #d8e0ff;
+    background: rgba(10, 14, 26, 0.55);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+  .flight-btn.active {
+    background: rgba(94, 230, 160, 0.35);
+    border-color: rgba(94, 230, 160, 0.7);
+    color: #eafff3;
   }
 </style>

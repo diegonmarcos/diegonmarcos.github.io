@@ -1392,9 +1392,9 @@ function renderShelf(): void {
     (scene as { background: object }).background = new T.Color(0x1a0f05);
     (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
 
-    const camera = new T.PerspectiveCamera(46, W / H, 0.1, 100);
-    camera.position.set(1.8, 1.0, 4.8);
-    camera.lookAt(0, 0.35, -0.5);
+    const camera = new T.PerspectiveCamera(55, W / H, 0.1, 100);
+    camera.position.set(0.9, 1.0, 6.8);
+    camera.lookAt(0.9, 0.35, -0.5);
 
     scene.add(new T.AmbientLight(0xfff8e7, 0.6));
     const sun = new T.PointLight(0xffddaa, 2.5, 22);
@@ -1452,8 +1452,8 @@ function renderShelf(): void {
           new T.MeshLambertMaterial({ color: sp }),
           new T.MeshLambertMaterial({ color: sp }),
         ];
-        const mesh = new T.Mesh(new T.BoxGeometry(1.8, 0.76, 0.16), mats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean };
-        mesh.position.set(bx, by, bz);
+        const mesh = new T.Mesh(new T.BoxGeometry(0.65, 1.0, 0.15), mats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean };
+        mesh.position.set(bx, by + 0.15, bz);
         mesh.castShadow = true;
         scene.add(mesh as unknown as object);
         bookMeshes.push({ mesh: mesh as unknown as { position: { x: number; y: number; z: number }; rotation: { y: number } }, x: bx, y: by, z: bz });
@@ -1564,9 +1564,9 @@ function renderVinyl(): void {
     (scene as { background: object }).background = new T.Color(0x1a0f05);
     (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
 
-    const camera = new T.PerspectiveCamera(46, W / H, 0.1, 100);
-    camera.position.set(1.8, 1.0, 4.8);
-    camera.lookAt(0, 0.35, -0.5);
+    const camera = new T.PerspectiveCamera(55, W / H, 0.1, 100);
+    camera.position.set(0.9, 1.0, 6.8);
+    camera.lookAt(0.9, 0.35, -0.5);
 
     // Same warm shelf-store lighting as the book shelf, for visual parity.
     scene.add(new T.AmbientLight(0xfff8e7, 0.6));
@@ -1623,22 +1623,22 @@ function renderVinyl(): void {
         const vy = sy + 0.44;
         const vz = -0.6;
         const vinylColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
+        // A record is a flat disk, not a box: CylinderGeometry with the two
+        // circular caps facing the camera (mats[1]=top cap gets the cover art).
         const vmats: object[] = [
+          new T.MeshLambertMaterial({ color: 0x111113 }),
           new T.MeshLambertMaterial({ color: vinylColor }),
-          new T.MeshLambertMaterial({ color: vinylColor }),
-          new T.MeshLambertMaterial({ color: 0x1a1a1c }),
-          new T.MeshLambertMaterial({ color: 0x1a1a1c }),
-          new T.MeshLambertMaterial({ color: vinylColor }),
-          new T.MeshLambertMaterial({ color: vinylColor }),
+          new T.MeshLambertMaterial({ color: 0x111113 }),
         ];
-        const vmesh = new T.Mesh(new T.BoxGeometry(1.8, 0.8, 0.14), vmats) as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean; material: object[] };
+        const vmesh = new T.Mesh(new T.CylinderGeometry(0.55, 0.55, 0.06, 48), vmats) as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number }; castShadow: boolean; material: object[] };
         vmesh.position.set(vx, vy, vz);
+        vmesh.rotation.x = Math.PI / 2;
         vmesh.castShadow = true;
         scene.add(vmesh as unknown as object);
-        vinylMeshes.push({ mesh: vmesh, x: vx, y: vy, z: vz });
+        vinylMeshes.push({ mesh: vmesh as unknown as { rotation: { y: number } }, x: vx, y: vy, z: vz });
         loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
           (tex as { minFilter: number }).minFilter = T.LinearFilter;
-          vmats[4] = new T.MeshLambertMaterial({ map: tex });
+          vmats[1] = new T.MeshLambertMaterial({ map: tex });
           vmesh.material = vmats;
         });
       }
@@ -1663,7 +1663,7 @@ function renderVinyl(): void {
       requestAnimationFrame(animate);
       t += 0.004;
       if (focused) {
-        focused.mesh.rotation.y += 0.015;
+        (focused.mesh as unknown as { rotation: { z: number } }).rotation.z += 0.015;
         camPos.x += (focused.x - camPos.x) * 0.06;
         camPos.y += (focused.y - camPos.y) * 0.06;
         camPos.z += (focused.z + 1.6 - camPos.z) * 0.06;

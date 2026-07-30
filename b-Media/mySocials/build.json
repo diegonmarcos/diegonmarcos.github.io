@@ -35,7 +35,7 @@
       "target": "es2020"
     },
     {
-      "_doc": "Each theme is a real static page (index.html=myprofile, orkut.html, instagram.html, ...) so every route is a bookmarkable, crawlable file.",
+      "_doc": "Each theme is a real static page (index.html=mySocials media aggregator, orkut.html, instagram.html, ...) so every route is a bookmarkable, crawlable file.",
       "mod": "copy",
       "files": "*.html",
       "from": "src"

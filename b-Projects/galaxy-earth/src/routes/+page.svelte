@@ -83,8 +83,25 @@
   function formatLogArg(a: unknown): string {
     if (typeof a === 'string') return a;
     if (a instanceof Error) return `${a.name}: ${a.message}\n${a.stack ?? ''}`;
+    // A top-level Object.getOwnPropertyNames() replacer ARRAY (the previous approach)
+    // filters every nested level down to those same key names too, silently truncating
+    // any nested object's own fields — this is why exported logs came back "collapsed".
+    // Use a per-value replacer FUNCTION instead (no key-name filtering) with a WeakSet
+    // to break cycles instead of throwing and losing the whole line to "[object Object]".
+    const seen = new WeakSet<object>();
     try {
-      return JSON.stringify(a, Object.getOwnPropertyNames(a as object)) ?? String(a);
+      return JSON.stringify(
+        a,
+        (_key, value) => {
+          if (typeof value === 'bigint') return `${value}n`;
+          if (typeof value === 'object' && value !== null) {
+            if (seen.has(value)) return '[Circular]';
+            seen.add(value);
+          }
+          return value;
+        },
+        2
+      ) ?? String(a);
     } catch {
       return String(a);
     }
@@ -149,6 +166,10 @@
     // capsule stuck "flying" at 120m instead of snapping to the ground.
     ride.speed = 0;
     ride.altitude = activeDriver.altitudeBand?.cruise ?? 0;
+    console.log(`[rider] driver -> '${activeDriver.id}' (cruise altitude ${ride.altitude}m, ceiling ${activeDriver.altitudeBand?.ceiling ?? 0}m)`);
+  });
+  $effect(() => {
+    console.log(`[rider] camera -> '${activeCamera.id}' (pitch ${activeCamera.pitch}, zoom ${activeCamera.zoom})`);
   });
 
   function clamp(v: number, lo: number, hi: number) {
@@ -265,6 +286,8 @@
         orig(...args);
       };
     });
+
+    console.log(`[rider] mount: driver=${activeDriver.id} camera=${activeCamera.id} start=${rider.start}`);
 
     // MapLibre is browser-only — must be imported inside onMount (no SSR).
     let map: import('maplibre-gl').Map | undefined;
@@ -481,6 +504,7 @@
       mapToggleTerrain = () => {
         if (!map) return;
         terrain3d = !terrain3d;
+        console.log(`[rider] terrain3d -> ${terrain3d}`);
         map.setTerrain(
           terrain3d ? { source: 'terrain-dem', exaggeration: mapConfig.terrain.exaggeration } : null
         );
@@ -490,6 +514,19 @@
       if (j.mouseLook && canvasEl.requestPointerLock) {
         canvasEl.addEventListener('click', () => canvasEl?.requestPointerLock());
       }
+
+      // MapLibre swallows most tile/style/source errors into this event instead of
+      // throwing — without this listener, things like a 404'd DEM tile or a broken
+      // source URL never reach the console (or the exported log) at all.
+      map.on('error', (e) => {
+        console.error('[map] error event', e.error?.message ?? e.error ?? e);
+      });
+      map.on('sourcedataloading', (e) => {
+        if (e.sourceId) console.debug(`[map] source loading: ${e.sourceId}`);
+      });
+      map.on('dataabort', (e) => {
+        console.warn(`[map] data load aborted for source '${e.sourceId}'`);
+      });
 
       // The liberty basemap's sprite sheet doesn't cover every POI icon it
       // references (office/ferry_terminal/gate/etc.) — MapLibre warns on every
@@ -591,8 +628,10 @@
           const glb = driver.model?.glb;
           if (!glb || modelCache[driver.id]) return;
           modelCache[driver.id] = 'loading';
+          const url = rider.assetsBase + glb;
+          console.log(`[rider] loading model for '${driver.id}': ${url}`);
           gltfLoader.load(
-            rider.assetsBase + glb,
+            url,
             (gltf) => {
               const obj = gltf.scene;
               const s = driver.model.scale ?? 1;
@@ -600,11 +639,23 @@
               obj.rotation.y = driver.model.yaw ?? 0;
               obj.position.y = driver.model.y ?? 0;
               modelCache[driver.id] = obj;
+              const box = new THREE.Box3().setFromObject(obj);
+              const size = box.getSize(new THREE.Vector3());
+              console.log(
+                `[rider] model loaded for '${driver.id}': bbox ${size.x.toFixed(2)}x${size.y.toFixed(2)}x${size.z.toFixed(2)} (scale ${s})`
+              );
               if (activeDriver.id === driver.id) applyActiveMesh();
             },
-            undefined,
-            () => {
+            (progress) => {
+              if (progress.total) {
+                console.debug(
+                  `[rider] '${driver.id}' loading ${Math.round((progress.loaded / progress.total) * 100)}%`
+                );
+              }
+            },
+            (err) => {
               modelCache[driver.id] = 'error';
+              console.error(`[rider] FAILED to load model for '${driver.id}' from ${url} — falling back to procedural mesh`, err);
             }
           );
         }
@@ -933,7 +984,7 @@
             // P3b: sky-dome overlay goes here — once activeCamera.pitch + lookPitch
             // exceeds look.mapMaxPitch, a sky-dome/space overlay should take over
             // instead of the flat cap below (maplibre pitch tops out at mapMaxPitch).
-            const mapPitch = Math.min(activeCamera.pitch + lookPitch, look.mapMaxPitch);
+            const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);
             map.jumpTo({
               center: lngLat,
               bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
@@ -1225,9 +1276,7 @@
   </div>
 
   <div class="velocimeter">{Math.round(hudSpeed)} <span class="redline">/ {activeDriver.speed.max}</span> km/h</div>
-  {#if activeDriver.lift}
-    <div class="altimeter">{Math.round(hudAltitude)} <span class="redline">/ {activeDriver.maxAlt}</span> m</div>
-  {/if}
+  <div class="altimeter">{Math.round(hudAltitude)} <span class="redline">/ {activeDriver.altitudeBand?.ceiling ?? 0}</span> m</div>
 
   {#if activeDriver.lift}
     <div class="climb">

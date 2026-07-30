@@ -23,7 +23,7 @@
     ]
   },
   "buildings": {
-    "minZoom": 14,
+    "minZoom": 4,
     "opacity": 0.88,
     "heightField": "render_height",
     "baseField": "render_min_height",
@@ -129,7 +129,7 @@
         "pitchRate": 90,
         "mapMaxPitch": 85,
         "skyMaxPitch": 175,
-        "minPitch": 0,
+        "minPitch": -85,
         "mouseSensitivity": 0.18
       },
       "deadzone": 0.06,
@@ -375,7 +375,7 @@
     "modelVis": {
       "refZoom": 18,
       "minBoost": 1,
-      "maxBoost": 64
+      "maxBoost": 8192
     }
   }
 }

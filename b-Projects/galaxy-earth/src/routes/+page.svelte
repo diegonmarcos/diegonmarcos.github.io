@@ -29,6 +29,7 @@
     rider.cameras.find((c) => c.id === rider.defaultCamera) ?? rider.cameras[0]
   );
   let hudSpeed = $state(0);
+  let hudAltitude = $state(0);
 
   // Perf overlay: FPS (EMA-smoothed) + frame-ms, mirrored into $state each frame so the
   // DOM refreshes; the rolling sample ring lives in a plain closure array (not $state) and
@@ -142,8 +143,12 @@
   // only `speed` resets on a driver switch so momentum doesn't teleport.
   const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
   $effect(() => {
-    activeDriver;
+    // Reset speed AND seed altitude to this driver's own default (cruise) on every
+    // switch — altitude otherwise carries over from stepDrive/stepRide's `state`
+    // object, so e.g. landing a drone at 120m and switching to Walk left the
+    // capsule stuck "flying" at 120m instead of snapping to the ground.
     ride.speed = 0;
+    ride.altitude = activeDriver.altitudeBand?.cruise ?? 0;
   });
 
   function clamp(v: number, lo: number, hi: number) {
@@ -802,6 +807,7 @@
             );
 
             hudSpeed = ride.speed ?? 0;
+            hudAltitude = step.altitude;
 
             // ponytail: capsule primitive character; swap for a GLB when art is ready.
             // altitude (metres, fly mode only) lifts the mesh off the terrain.
@@ -1200,6 +1206,9 @@
   </div>
 
   <div class="velocimeter">{Math.round(hudSpeed)} <span class="redline">/ {activeDriver.speed.max}</span> km/h</div>
+  {#if activeDriver.lift}
+    <div class="altimeter">{Math.round(hudAltitude)} <span class="redline">/ {activeDriver.maxAlt}</span> m</div>
+  {/if}
 
   {#if activeDriver.lift}
     <div class="climb">
@@ -1389,6 +1398,31 @@
   }
 
   .velocimeter .redline {
+    opacity: 0.6;
+    font-size: 0.75em;
+  }
+
+  /* Same pill as .velocimeter, offset to its right — shown only for lift-capable
+     drivers (drone/helicopter/airplane/constellation), since ground vehicles have
+     no altitude control. */
+  .altimeter {
+    position: fixed;
+    top: 1rem;
+    left: calc(50% + 6.5rem);
+    z-index: 30;
+    padding: 0.35rem 0.9rem;
+    background: rgba(10, 14, 26, 0.45);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 999px;
+    backdrop-filter: blur(4px);
+    color: #e6e8f2;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  .altimeter .redline {
     opacity: 0.6;
     font-size: 0.75em;
   }

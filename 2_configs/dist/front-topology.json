@@ -499,7 +499,7 @@
       "build_steps": [
         "sveltekit"
       ],
-      "dep_count": 10,
+      "dep_count": 11,
       "has_dist": true,
       "deploy_name": "galaxy-earth"
     },

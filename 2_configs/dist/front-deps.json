@@ -32,6 +32,7 @@
         "d3-timer": "^3.0.1",
         "date-fns": "^3.3.0",
         "dompurify": "^3.0.0",
+        "eruda": "^3",
         "gray-matter": "^4.0.3",
         "jszip": "^3.10.1",
         "lightweight-charts": "^5.0.0",
@@ -355,6 +356,7 @@
         "folder": "b-Projects/galaxy-earth",
         "category": "b-Projects",
         "dependencies": {
+          "eruda": "^3",
           "maplibre-gl": "^5",
           "three": "^0.169.0"
         },

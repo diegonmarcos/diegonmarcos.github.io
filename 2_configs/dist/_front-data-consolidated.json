@@ -2437,6 +2437,7 @@
           "test": "node test/earth.test.mjs"
         },
         "dependencies": {
+          "eruda": "^3",
           "maplibre-gl": "^5",
           "three": "^0.169.0"
         },

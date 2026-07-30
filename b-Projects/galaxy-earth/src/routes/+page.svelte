@@ -254,11 +254,14 @@
 
     // --- Debug overlay (F8 toggles via onKeyDown above; ?debug=1 sets initial state) ---
     debugVisible = new URLSearchParams(window.location.search).get('debug') === '1';
+    if (debugVisible) console.info('[rider] debug mode ON — F8 toggles, throttled frame logs every 30 renders');
     function onWindowError(e: ErrorEvent) {
       lastError = e.message ?? String(e);
+      console.error('[rider] window error', e.error ?? e.message);
     }
     function onUnhandledRejection(e: PromiseRejectionEvent) {
       lastError = e.reason?.message ?? String(e.reason);
+      console.error('[rider] unhandled rejection', e.reason);
     }
     window.addEventListener('error', onWindowError);
     window.addEventListener('unhandledrejection', onUnhandledRejection);
@@ -732,8 +735,20 @@
             renderer.render(natureScene, camera);
 
             map.triggerRepaint();
+              if (debugVisible && renderFireCount % 30 === 0) {
+                console.debug('[rider]', {
+                  fps: Math.round(fps),
+                  renderCalls,
+                  driver: activeDriver.id,
+                  camera: activeCamera.id,
+                  freeInput: { moveX: freeInput.moveX, moveY: freeInput.moveY, yawRate: freeInput.yawRate, pitchRate: freeInput.pitchRate, climb: freeInput.climb },
+                  step: { dForward: step.dForward, forwardX: step.forwardX, forwardZ: step.forwardZ, heading: step.heading, altitude: step.altitude },
+                  lngLat
+                });
+              }
             } catch (err) {
               lastError = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err);
+              console.error('[rider] render() threw', err);
             }
           }
         };

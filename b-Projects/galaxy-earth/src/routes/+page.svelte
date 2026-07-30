@@ -59,6 +59,7 @@
   let showMenu = $state(false);
   let showGraphStats = $state(true);
   let showAbout = $state(false);
+  let showKeybindings = $state(false);
   let terrain3d = $state(true);
   let mapZoomIn = () => {};
   let mapZoomOut = () => {};
@@ -70,6 +71,57 @@
     { id: 'gaia', label: 'Galaxy Gaia', href: '/galaxy-gaia/' },
     { id: 'x1', label: 'Galaxy X1', href: '/galaxy-x1/' }
   ];
+
+  // Log export: every console call (from mount onward, regardless of debug mode)
+  // is mirrored into this buffer so "Log Export" can dump the full session —
+  // not just the throttled [rider] debug lines.
+  const logBuffer: string[] = [];
+  let logExportStatus = $state('');
+  function captureConsole(level: string, args: unknown[]) {
+    const ts = new Date().toISOString();
+    const line = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+    logBuffer.push(`[${ts}] [${level}] ${line}`);
+  }
+  async function exportLogs() {
+    const text = logBuffer.join('\n');
+    const filename = `galaxy-earth-log-${Date.now()}.log`;
+    logExportStatus = 'Exporting…';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (err) {
+      console.error('[rider] clipboard copy failed', err);
+    }
+    try {
+      const picker = (window as unknown as { showSaveFilePicker?: (opts: unknown) => Promise<FileSystemFileHandle> }).showSaveFilePicker;
+      if (picker) {
+        const handle = await picker({ suggestedName: filename });
+        const writable = await handle.createWritable();
+        await writable.write(text);
+        await writable.close();
+      } else {
+        const url = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error('[rider] local log save failed/cancelled', err);
+    }
+    try {
+      const res = await fetch('https://api.diegonmarcos.com/c3-infra-api/public/logs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ source: 'galaxy-earth', log: text })
+      });
+      logExportStatus = res.ok ? 'Copied + saved + uploaded ✓' : `Copied + saved, upload failed (${res.status})`;
+    } catch (err) {
+      console.error('[rider] log upload failed', err);
+      logExportStatus = 'Copied + saved, upload failed (offline?)';
+    }
+    setTimeout(() => (logExportStatus = ''), 4000);
+  }
   let lastError = $state('none');
   let renderFireCount = $state(0);
   let lastRenderTime = $state(0);
@@ -187,8 +239,20 @@
   }
 
   onMount(() => {
+    // Mirror every console call into logBuffer (for "Log Export") from mount
+    // onward — independent of debug mode, so a full session trace is always
+    // available even if the user only opened the menu after something broke.
+    (['log', 'info', 'warn', 'error', 'debug'] as const).forEach((level) => {
+      const orig = console[level].bind(console);
+      console[level] = (...args: unknown[]) => {
+        captureConsole(level, args);
+        orig(...args);
+      };
+    });
+
     // MapLibre is browser-only — must be imported inside onMount (no SSR).
     let map: import('maplibre-gl').Map | undefined;
+    let stopMeshEffect: (() => void) | undefined;
     let disposed = false;
     let raf = 0;
     let canvasEl: HTMLCanvasElement | undefined;
@@ -424,18 +488,15 @@
 
         map.setTerrain({ source: 'terrain-dem', exaggeration: mapConfig.terrain.exaggeration });
 
-        map.addLayer({
-          id: 'sky',
-          type: 'sky',
-          paint: {
-            'sky-type': 'atmosphere',
-            'sky-atmosphere-sun': mapConfig.sky.sun,
-            'sky-atmosphere-sun-intensity': 15
-          }
+        // MapLibre v5: sky is a top-level style property (map.setSky), not a
+        // layer — addLayer({ type: 'sky' }) throws (unknown layer type) in v5.
+        map.setSky({
+          'sky-type': 'atmosphere',
+          'sky-atmosphere-sun': mapConfig.sky.sun,
+          'sky-atmosphere-sun-intensity': 15
         });
 
-        // --- 3D buildings + green nature (data-driven from map.json), inserted
-        // beneath 'sky' (rider is added further below, ending up on top of both). ---
+        // --- 3D buildings + green nature (data-driven from map.json) ---
         const vectorSourceId = Object.entries(map.getStyle()?.sources ?? {}).find(
           ([, s]) => (s as { type?: string }).type === 'vector'
         )?.[0];
@@ -453,8 +514,7 @@
                 'fill-color': nature.greenColor,
                 'fill-opacity': nature.greenOpacity
               }
-            } as any,
-            'sky'
+            } as any
           );
 
           const b = mapConfig.buildings;
@@ -477,8 +537,7 @@
                   b.highRiseMeters, b.highColor
                 ]
               }
-            } as any,
-            'sky'
+            } as any
           );
         }
 
@@ -786,9 +845,14 @@
         // changes — the model may already be cached from the background preload above,
         // or may still be 'loading'/'error', in which case applyActiveMesh falls back
         // to the capsule until (if ever) the load resolves.
-        $effect(() => {
-          activeDriver;
-          applyActiveMesh();
+        // $effect.root because this runs inside map.on('load'), an async callback fired
+        // outside Svelte's component-init effect context — a plain $effect() here throws
+        // "effect_orphan".
+        stopMeshEffect = $effect.root(() => {
+          $effect(() => {
+            activeDriver;
+            applyActiveMesh();
+          });
         });
 
         // Follow-cam: driven off the rAF loop, guarded against re-entrant jumpTo calls.
@@ -879,6 +943,7 @@
       document.removeEventListener('pointerlockchange', onPointerLockChange);
       window.removeEventListener('resize', onSkyResize);
       skyRenderer?.dispose();
+      stopMeshEffect?.();
       map?.remove();
     };
   });
@@ -984,6 +1049,23 @@
             window.location.href = url.toString();
           }}
         >Debug Mode</button>
+        <button type="button" class="menu-item" onclick={exportLogs}>
+          Log Export{logExportStatus ? ` — ${logExportStatus}` : ''}
+        </button>
+        <button
+          type="button"
+          class="menu-item"
+          class:active={showKeybindings}
+          onclick={() => (showKeybindings = !showKeybindings)}
+        >Keybindings</button>
+        {#if showKeybindings}
+          <div class="menu-about">
+            {#each Object.entries(rider.keys) as [action, keys]}
+              <p><strong>{action}</strong>: {(keys as string[]).join(' / ')}</p>
+            {/each}
+            <p><strong>debug</strong>: F8</p>
+          </div>
+        {/if}
         <button
           type="button"
           class="menu-item"

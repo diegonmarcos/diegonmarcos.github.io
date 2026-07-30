@@ -366,6 +366,13 @@
     // any failure so physics degrades to normal (friction 1) driving, never breaks.
     let streetProvider: ReturnType<typeof createStreetProvider> | null = null;
 
+    // Counts throws caught inside frame() (see the try/catch/finally there). A
+    // single unguarded throw used to kill the rAF loop forever — no movement,
+    // no camera, no input response, silently, with no recovery. finally{}
+    // guarantees the reschedule always happens; this counter just keeps the
+    // console from being spammed if something keeps failing every frame.
+    let frameErrors = 0;
+
     // --- Keyboard bindings (data-driven from rider.keys in map.json) ---
     const heldKeys = new Set<string>();
     function recomputeMoveFromKeys() {
@@ -988,6 +995,7 @@
         // riderLayer.render() above is draw-only and never mutates any of this.
         const frame = (now: number) => {
           if (disposed || !map) return;
+          try {
           const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
           clockPrev = now;
           debugNow = now;
@@ -1035,10 +1043,20 @@
 
           // Street surface sampling: position the hidden road-mask map at the rider's
           // CURRENT lngLat (before this frame's physics moves it) and read back the
-          // surface under it — feeds friction into the vehicle physics below. Wrapped
-          // so a missing/failed provider (see onMount below) never blocks physics.
-          streetProvider?.setPosition(lngLat);
-          const surf = streetProvider?.sample() ?? null;
+          // surface under it — feeds friction into the vehicle physics below. It's a
+          // nice-to-have (road friction), never allowed to break driving: a throw here
+          // disables the provider permanently instead of recurring every frame.
+          let surf: ReturnType<NonNullable<typeof streetProvider>['sample']> | null = null;
+          if (streetProvider) {
+            try {
+              streetProvider.setPosition(lngLat);
+              surf = streetProvider.sample();
+            } catch (err) {
+              console.error('[rider] street provider disabled after error', err);
+              try { streetProvider.destroy(); } catch {}
+              streetProvider = null;
+            }
+          }
 
           // Canonical frame is AGL everywhere; ASL (groundElev + agl) appears at
           // exactly two places derived from the same groundElev: model placement
@@ -1271,7 +1289,13 @@
           // regardless of riderLayer.render()'s own state (its try/catch means a
           // thrown draw no longer matters — frame() keeps going either way).
           map.triggerRepaint();
-          raf = requestAnimationFrame(frame);
+          } catch (err) {
+            frameErrors++;
+            if (frameErrors <= 5) console.error('[rider] frame error', err);
+            if (frameErrors === 5) console.error('[rider] further frame errors suppressed');
+          } finally {
+            raf = requestAnimationFrame(frame);
+          }
         };
         raf = requestAnimationFrame(frame);
       });

@@ -233,10 +233,19 @@ function createMaskProvider(
   }
 
   return {
+    // Never throws: no matter whether the hidden map failed to construct, the
+    // style fetch failed, the canvas is zero-sized, the WebGL context was
+    // lost, or destroy() already ran — a provider that can't update position
+    // just keeps returning the last-known (or safe-default) sample. This is a
+    // nice-to-have (road friction); it must degrade, never break driving.
     setPosition(lngLat: [number, number]): void {
       position = lngLat;
-      if (map) {
-        map.jumpTo({ center: lngLat });
+      if (map && !destroyed) {
+        try {
+          map.jumpTo({ center: lngLat });
+        } catch {
+          // keep previous cached value; the surface stays whatever it last was
+        }
       }
     },
     sample(): Surface {

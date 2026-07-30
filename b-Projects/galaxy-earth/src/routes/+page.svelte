@@ -5,7 +5,10 @@
   import mapConfig from '$lib/data/map.json';
   import { freeInput, climbTotal } from '$engine/freeInput';
   import { stepDrive, stepVehicle } from '$engine/locomotion';
+  import { stepAirplane, stepHelicopter, stepDrone } from '$engine/flight';
+  import type { FlightState, FlightTelemetry } from '$engine/flight';
   import Joystick from '$engine/Joystick.svelte';
+  import Cockpit from '$lib/Cockpit.svelte';
   import { createStreetProvider } from '$lib/street';
 
   // Speed unit boundary: map.json speeds are km/h (matches the HUD readout);
@@ -176,6 +179,28 @@
   // otherwise) without triggering reactivity on every frame.
   let camFovCur: number | undefined;
   let camRollCur = 0;
+
+  // Flight physics (drone/helicopter/airplane): a single persistent FlightState
+  // carried across frames like `ride`, plus a persistent throttle/collective
+  // LEVER (stays where set — not a momentary axis like moveX/moveY) and the
+  // last telemetry frame for the Cockpit HUD + attitude camera to read.
+  const flightState: FlightState = {
+    heading: 0, bank: 0, pitch: 0, speed: 0, vspeed: 0, altASL: 0,
+    velX: 0, velZ: 0, battery: 1
+  };
+  let flightThrottle = 0;
+  let flightTelemetry = $state<FlightTelemetry | null>(null);
+  // Set by the driver-switch $effect below (component scope, no map/groundElev
+  // available there yet) and consumed once inside frame() the next tick, where
+  // groundElevation is known — that's the only place ASL can be computed.
+  let pendingFlightAltDefault: number | null = null;
+  // UI toggles for flight-only controls; default to false/0 per spec (no
+  // dedicated control existed before flight mode).
+  let flightGearDown = $state(true);
+  let flightFlaps = $state(0);
+  let flightBraking = $state(false);
+  let cockpitVisible = $state(rider.cockpit.defaultVisible as boolean);
+
   $effect(() => {
     // Reset speed AND seed altitude to this driver's own default on every switch
     // (hard snap, no interpolation) — altitude otherwise carries over from
@@ -184,6 +209,20 @@
     const a: any = (activeDriver as any).altitude;
     ride.altitude = clamp(a.default, a.min, a.max);
     ride.speed = ((activeDriver as any).speed.idle ?? 0) * KMH;
+    if ((activeDriver as any).control === 'flight') {
+      // Hard snap FlightState too — same reasoning as ride.altitude above.
+      flightState.heading = ride.heading;
+      flightState.bank = 0;
+      flightState.pitch = 0;
+      flightState.speed = 0;
+      flightState.vspeed = 0;
+      flightState.velX = 0;
+      flightState.velZ = 0;
+      flightState.battery = 1;
+      flightThrottle = 0;
+      pendingFlightAltDefault = a.default;
+      flightTelemetry = null;
+    }
     console.log(`[rider] driver -> '${activeDriver.id}' (default altitude ${ride.altitude}m, range [${a.min},${a.max}]m)`);
   });
   $effect(() => {
@@ -1001,8 +1040,56 @@
           streetProvider?.setPosition(lngLat);
           const surf = streetProvider?.sample() ?? null;
 
+          // Canonical frame is AGL everywhere; ASL (groundElev + agl) appears at
+          // exactly two places derived from the same groundElev: model placement
+          // (below, via frameState) and the camera `elevation` (below). Queried
+          // ONCE per frame here (moved up from below the control branch) so the
+          // flight branch's env.groundElev and the ASL math further down share
+          // this exact same call — never query terrain twice per frame.
+          const groundElevation = map.queryTerrainElevation(lngLat) ?? 0;
+
           let step: { heading: number; forwardX: number; forwardZ: number; dForward: number; altitude: number };
-          if ((activeDriver as any).control === 'vehicle') {
+          if ((activeDriver as any).control === 'flight') {
+            // Throttle/collective is a persistent LEVER (unlike moveX/moveY axes) —
+            // it stays where set and is nudged by the climb controls, except for
+            // the drone, whose climbAxis is the direct (non-lever) stick instead.
+            const fparams: any = (activeDriver as any).flight;
+            if (fparams.model !== 'drone') {
+              const THROTTLE_RATE = 0.5; // full 0..1 range per second, held
+              flightThrottle = clamp(flightThrottle + climbTotal() * THROTTLE_RATE * dt, 0, 1);
+            }
+            if (pendingFlightAltDefault !== null) {
+              flightState.altASL = groundElevation + pendingFlightAltDefault;
+              pendingFlightAltDefault = null;
+            }
+            const flightInput = {
+              pitchAxis: clamp(freeInput.pitchRate, -1, 1),
+              rollAxis: clamp(freeInput.moveX, -1, 1),
+              yawAxis: 0,
+              throttle: flightThrottle,
+              climbAxis: clamp(freeInput.moveY, -1, 1),
+              gearDown: flightGearDown,
+              flaps: flightFlaps,
+              brake: flightBraking ? 1 : 0
+            };
+            const flightEnv = { groundElev: groundElevation, dt };
+            const stepFn =
+              fparams.model === 'airplane' ? stepAirplane :
+              fparams.model === 'helicopter' ? stepHelicopter :
+              stepDrone;
+            const telemetry = stepFn(flightState, flightInput, fparams, flightEnv);
+            flightTelemetry = telemetry;
+            // flightState.speed is signed (forward/rearward), unlike telemetry.speed
+            // which is an unsigned magnitude for the HUD — position advance needs
+            // the sign, so read it off the mutated state, not the telemetry.
+            step = {
+              heading: telemetry.heading,
+              forwardX: Math.sin(telemetry.heading),
+              forwardZ: -Math.cos(telemetry.heading),
+              dForward: flightState.speed * dt,
+              altitude: telemetry.altAGL
+            };
+          } else if ((activeDriver as any).control === 'vehicle') {
             const vparams: any = (activeDriver as any).vehicle;
             const vstep = stepVehicle(
               ride as any,
@@ -1054,10 +1141,6 @@
           hudSpeed = (ride.speed ?? 0) / KMH; // ride.speed is m/s (params were *KMH); HUD is km/h
           hudAltitude = step.altitude;
 
-          // Canonical frame is AGL everywhere; ASL (groundElev + agl) appears at
-          // exactly two places derived from the same groundElev: model placement
-          // (below, via frameState) and the camera `elevation` (below).
-          const groundElevation = map.queryTerrainElevation(lngLat) ?? 0;
           const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, groundElevation + step.altitude);
           const metersPerUnit = merc.meterInMercatorCoordinateUnits();
           merc.x += step.forwardX * step.dForward * metersPerUnit;
@@ -1099,11 +1182,13 @@
 
           const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);
 
-          // Vehicle camera feel — FOV widens and the view rolls with speed/steer;
-          // only while control==="vehicle" so flyers/walkers are never touched.
-          // Reset to base FOV/no-roll for every other control so switching away
-          // from a vehicle never leaves the view banked or zoomed.
+          // Vehicle/flight camera feel — FOV widens and the view rolls with
+          // speed/steer (vehicle) or bank (flight); only while control is
+          // "vehicle" or "flight" so walkers are never touched. Reset to base
+          // FOV/no-roll for every other control (including switching AWAY from
+          // vehicle/flight) so the view can never be left banked or zoomed.
           const isVehicleControl = (activeDriver as any).control === 'vehicle';
+          const isFlightControl = (activeDriver as any).control === 'flight';
           let fovTarget = camCfg.fovBase;
           let rollTarget = 0;
           if (isVehicleControl) {
@@ -1114,6 +1199,13 @@
             // Positive roll = clockwise about the view axis in MapLibre; a car
             // steering right (steer>0) banks the view right, hence the minus sign.
             rollTarget = -camCfg.rollMax * ((ride.steer ?? 0) / vparams.maxSteer) * vRatio;
+          } else if (isFlightControl && flightTelemetry) {
+            const vmax = driverSpeed.max * KMH;
+            const vRatio = vmax > 0 ? Math.min(1, flightTelemetry.speed / vmax) : 0;
+            fovTarget = camCfg.fovBase + (camCfg.fovMax - camCfg.fovBase) * vRatio;
+            // Chase/orbit views get a half-banked lean (see the cockpit-view
+            // override just below, which replaces this with full bank instead).
+            rollTarget = -(flightTelemetry.bank * 180) / Math.PI * 0.5;
           }
           if (camFovCur === undefined || Math.abs(fovTarget - camFovCur) > 0.1) {
             camFovCur = fovTarget;
@@ -1121,13 +1213,35 @@
           }
           camRollCur = rollTarget;
 
+          // FLIGHT CAMERA EXCEPTION: camera bearing/pitch are normally user-owned
+          // (right look-stick only — see the two "user-owned" comments near the
+          // top of this file and in onMount) and never derived from rider heading.
+          // Flight mode is the one deliberate exception: the aircraft's own
+          // attitude (heading/pitch/bank) drives the camera directly so cockpit
+          // and chase views feel piloted rather than free-look. Ground/character
+          // paths above are completely untouched by this.
+          let jtBearing = (camBearing * 180) / Math.PI + activeCamera.bearingOffset;
+          let jtPitch = mapPitch;
+          let jtElevation = elevation;
+          let jtRoll = camRollCur;
+          if (isFlightControl && flightTelemetry) {
+            const isCockpitView = activeCamera.id === 'fps';
+            if (isCockpitView) {
+              const eyeH = (activeDriver as any).cockpitEyeHeight ?? 0;
+              jtBearing = (flightTelemetry.heading * 180) / Math.PI;
+              jtPitch = clamp(90 - (flightTelemetry.pitch * 180) / Math.PI, 0, look.mapMaxPitch);
+              jtRoll = -(flightTelemetry.bank * 180) / Math.PI;
+              jtElevation = groundElevation + step.altitude + eyeH;
+            }
+          }
+
           map.jumpTo({
             center: lngLat,
-            bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
-            pitch: mapPitch,
+            bearing: jtBearing,
+            pitch: jtPitch,
             zoom,
-            elevation,
-            roll: camRollCur
+            elevation: jtElevation,
+            roll: jtRoll
           });
 
           // P3b: sky-dome overlay — fade in as lookPitch climbs past mapMaxPitch
@@ -1188,6 +1302,14 @@
 <div class="map-wrap">
   <div bind:this={mapContainer} class="map"></div>
   <canvas bind:this={skyCanvas} class="sky-overlay"></canvas>
+
+  {#if (activeDriver as any).control === 'flight' && flightTelemetry}
+    <Cockpit
+      telemetry={flightTelemetry}
+      model={(activeDriver as any).flight.model}
+      visible={cockpitVisible && activeCamera.id === 'fps'}
+    />
+  {/if}
 
   {#if debugVisible}
     <div class="debug-overlay">
@@ -1268,6 +1390,28 @@
 
       <section class="menu-section">
         <h2>Configs</h2>
+        {#if (activeDriver as any).control === 'flight'}
+          <button
+            type="button"
+            class="menu-item"
+            class:active={flightGearDown}
+            onclick={() => (flightGearDown = !flightGearDown)}
+          >Gear {flightGearDown ? 'Down' : 'Up'}</button>
+          <button
+            type="button"
+            class="menu-item"
+            class:active={flightFlaps > 0}
+            onclick={() => (flightFlaps = flightFlaps > 0 ? 0 : 1)}
+          >Flaps {flightFlaps > 0 ? 'Out' : 'Up'}</button>
+          <button
+            type="button"
+            class="menu-item"
+            class:active={flightBraking}
+            onpointerdown={() => (flightBraking = true)}
+            onpointerup={() => (flightBraking = false)}
+            onpointerleave={() => (flightBraking = false)}
+          >Brake</button>
+        {/if}
         <button
           type="button"
           class="menu-item"
@@ -1285,6 +1429,12 @@
             window.location.href = url.toString();
           }}
         >Debug Mode</button>
+        <button
+          type="button"
+          class="menu-item"
+          class:active={cockpitVisible}
+          onclick={() => (cockpitVisible = !cockpitVisible)}
+        >Cockpit HUD</button>
         <button type="button" class="menu-item" onclick={exportLogs}>
           Log Export{logExportStatus ? ` — ${logExportStatus}` : ''}
         </button>

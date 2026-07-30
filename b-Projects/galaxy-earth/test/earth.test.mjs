@@ -10,6 +10,29 @@ const VEHICLE_FIELDS = [
   'power', 'brakeDecel', 'drag', 'rollResist', 'reverseMaxSpeed', 'grip'
 ];
 
+// Guards flight.ts params being renamed in code without map.json following —
+// silently produces NaN telemetry otherwise. Mirrors each stepX's Params interface.
+const FLIGHT_FIELDS_BY_MODEL = {
+  airplane: [
+    'stallSpeed', 'flapStallReduction', 'maxPitch', 'pitchRate',
+    'maxBank', 'rollRate', 'rollReturn', 'maxThrust', 'dragK', 'inducedK',
+    'brakeDecel', 'stallSink', 'rudderYawRate', 'maxG', 'vne',
+    'gearDragK', 'flapDragK', 'gpwsPullup', 'gpwsCaution', 'gpwsSinkRate'
+  ],
+  helicopter: [
+    'translationalGain', 'translationalSpeed', 'groundEffectGain', 'rotorDiameter',
+    'hoverCollective', 'collectivePower', 'vDamp', 'maxVspeed',
+    'maxPitch', 'pitchRate', 'dragK', 'maxRearSpeed', 'maxSpeed',
+    'maxBank', 'rollRate', 'pedalYawRate', 'rotorRpmNominal', 'maxG', 'vne',
+    'gpwsPullup', 'gpwsCaution', 'gpwsSinkRate'
+  ],
+  drone: [
+    'maxTilt', 'tiltRate', 'tiltReturn', 'dragK', 'maxSpeed', 'yawRate',
+    'altHoldDamp', 'maxClimbRate', 'climbAccel', 'batteryDrain', 'batteryLimp',
+    'maxG', 'gpwsPullup', 'gpwsCaution', 'gpwsSinkRate'
+  ]
+};
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const map = JSON.parse(
   readFileSync(path.join(__dirname, '../src/lib/data/map.json'), 'utf-8')
@@ -80,8 +103,8 @@ for (const d of r.drivers) {
   if ('cameraZoom' in d) {
     throw new Error(`map.json rider.drivers["${d.id}"] must not have cameraZoom (per-camera zoom is now size/speed-derived in +page.svelte cameraZoomFor)`);
   }
-  if (d.control !== 'vehicle' && d.control !== 'character') {
-    throw new Error(`map.json rider.drivers["${d.id}"].control must be "vehicle" or "character"`);
+  if (d.control !== 'vehicle' && d.control !== 'character' && d.control !== 'flight') {
+    throw new Error(`map.json rider.drivers["${d.id}"].control must be "vehicle", "character", or "flight"`);
   }
   if (d.control === 'vehicle') {
     const v = d.vehicle;
@@ -96,6 +119,34 @@ for (const d of r.drivers) {
     if ('maxSpeed' in v) {
       throw new Error(`map.json rider.drivers["${d.id}"].vehicle must not have maxSpeed (derived from speed.max in +page.svelte)`);
     }
+  }
+  if (d.control === 'flight') {
+    const f = d.flight;
+    if (!f || typeof f !== 'object') {
+      throw new Error(`map.json rider.drivers["${d.id}"] has control:"flight" but no flight object`);
+    }
+    if (!Object.prototype.hasOwnProperty.call(FLIGHT_FIELDS_BY_MODEL, f.model)) {
+      throw new Error(`map.json rider.drivers["${d.id}"].flight.model must be one of ${Object.keys(FLIGHT_FIELDS_BY_MODEL).join('/')}`);
+    }
+    for (const field of FLIGHT_FIELDS_BY_MODEL[f.model]) {
+      if (typeof f[field] !== 'number') {
+        throw new Error(`map.json rider.drivers["${d.id}"].flight.${field} must be a number (read by flight.ts step${f.model[0].toUpperCase()}${f.model.slice(1)})`);
+      }
+    }
+    if (typeof d.cockpitEyeHeight !== 'number') {
+      throw new Error(`map.json rider.drivers["${d.id}"] has control:"flight" but no numeric cockpitEyeHeight`);
+    }
+  }
+}
+
+// --- rider.cockpit (Cockpit HUD default visibility + view mapping) ---
+{
+  const c = r.cockpit;
+  if (!c || typeof c.defaultVisible !== 'boolean') {
+    throw new Error('map.json rider.cockpit.defaultVisible must be a boolean');
+  }
+  if (!Array.isArray(c.views) || c.views.length === 0) {
+    throw new Error('map.json rider.cockpit.views must be a non-empty array');
   }
 }
 

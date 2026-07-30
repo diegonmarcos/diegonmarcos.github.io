@@ -151,6 +151,10 @@
       "rollMax": 4,
       "springTau": 0.12
     },
+    "cockpit": {
+      "defaultVisible": true,
+      "views": ["cockpit", "chase", "orbit"]
+    },
     "joystick": {
       "scale": 0.5,
       "look": {
@@ -316,7 +320,7 @@
         "id": "drone",
         "label": "Drone",
         "icon": "🛸",
-        "control": "character",
+        "control": "flight",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -340,13 +344,32 @@
           "max": 800,
           "climbRate": 6,
           "eyeHeight": 1.0
+        },
+        "cockpitEyeHeight": 0.2,
+        "flight": {
+          "model": "drone",
+          "maxTilt": 0.6,
+          "tiltRate": 4,
+          "tiltReturn": 6,
+          "dragK": 0.02,
+          "maxSpeed": 25,
+          "yawRate": 2.2,
+          "maxClimbRate": 6,
+          "climbAccel": 8,
+          "altHoldDamp": 4,
+          "batteryDrain": 0.0015,
+          "batteryLimp": 0.15,
+          "maxG": 2.5,
+          "gpwsPullup": 25,
+          "gpwsCaution": 80,
+          "gpwsSinkRate": 4
         }
       },
       {
         "id": "helicopter",
         "label": "Helicopter",
         "icon": "🚁",
-        "control": "character",
+        "control": "flight",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -370,13 +393,39 @@
           "max": 3000,
           "climbRate": 8,
           "eyeHeight": 2.0
+        },
+        "cockpitEyeHeight": 1.8,
+        "flight": {
+          "model": "helicopter",
+          "hoverCollective": 0.5,
+          "collectivePower": 14,
+          "vDamp": 1.2,
+          "maxVspeed": 12,
+          "translationalGain": 0.35,
+          "translationalSpeed": 12,
+          "groundEffectGain": 0.25,
+          "rotorDiameter": 14,
+          "maxPitch": 0.35,
+          "pitchRate": 0.9,
+          "maxBank": 0.6,
+          "rollRate": 1.2,
+          "dragK": 0.0025,
+          "maxSpeed": 50,
+          "maxRearSpeed": 8,
+          "pedalYawRate": 0.9,
+          "rotorRpmNominal": 400,
+          "vne": 90,
+          "maxG": 3,
+          "gpwsPullup": 60,
+          "gpwsCaution": 200,
+          "gpwsSinkRate": 6
         }
       },
       {
         "id": "airplane",
         "label": "Airplane",
         "icon": "✈️",
-        "control": "character",
+        "control": "flight",
         "speed": {
           "idle": 220,
           "min": 180,
@@ -400,6 +449,30 @@
           "max": 12000,
           "climbRate": 15,
           "eyeHeight": 3.0
+        },
+        "cockpitEyeHeight": 2.2,
+        "flight": {
+          "model": "airplane",
+          "maxThrust": 12,
+          "stallSpeed": 45,
+          "vne": 280,
+          "maxBank": 1.05,
+          "rollRate": 1.6,
+          "rollReturn": 0.8,
+          "pitchRate": 0.7,
+          "maxPitch": 0.52,
+          "dragK": 0.00042,
+          "inducedK": 900,
+          "stallSink": 0.35,
+          "rudderYawRate": 0.12,
+          "brakeDecel": 3,
+          "gearDragK": 0.0002,
+          "flapDragK": 0.0004,
+          "flapStallReduction": 0.25,
+          "maxG": 4.5,
+          "gpwsPullup": 150,
+          "gpwsCaution": 450,
+          "gpwsSinkRate": 8
         }
       },
       {

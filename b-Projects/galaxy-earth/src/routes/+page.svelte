@@ -254,7 +254,14 @@
 
     // --- Debug overlay (F8 toggles via onKeyDown above; ?debug=1 sets initial state) ---
     debugVisible = new URLSearchParams(window.location.search).get('debug') === '1';
-    if (debugVisible) console.info('[rider] debug mode ON — F8 toggles, throttled frame logs every 30 renders');
+    if (debugVisible) {
+      console.info('[rider] debug mode ON — F8 toggles, throttled frame logs every 30 renders');
+      import('eruda').then((m) => {
+        const eruda = m.default ?? m;
+        eruda.init();
+        console.info('[rider] eruda mobile console attached');
+      }).catch((err) => console.error('[rider] eruda failed to load', err));
+    }
     function onWindowError(e: ErrorEvent) {
       lastError = e.message ?? String(e);
       console.error('[rider] window error', e.error ?? e.message);

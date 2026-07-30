@@ -13,6 +13,8 @@ html[data-theme='strava']    .view--strava,
 html[data-theme='youtube']   .view--youtube,
 html[data-theme='icq']       .view--icq { display: block; }
 html[data-theme='shelter']   .view--shelter { display: block; }
+html[data-theme='vinyl']     .view--vinyl { display: block; }
+html[data-theme='vinyl']     body { background: #0d0805; color: #c49a3c; }
 
 // Per-theme page background.
 html[data-theme='orkut']     body { background: #d9e6f7; color: #333; }

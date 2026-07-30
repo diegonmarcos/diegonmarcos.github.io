@@ -1218,7 +1218,8 @@ function renderMyProfile(): void {
     { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000' },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
     { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
-    { theme: 'shelter', label: 'Shelter', meta: 'books & vinyl · 3D', color: '#8b6914' },
+    { theme: 'shelter', label: 'Shelter', meta: 'book shelter · 3D', color: '#8b6914' },
+    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24' },
   ];
 
   view.innerHTML = `
@@ -1365,35 +1366,6 @@ function renderShelter(): void {
       }
     }
 
-    const cx = 3.5;
-    box(0.06, 2.0, 1.9, dwood, cx + 1.0, -0.2, -0.5);
-    box(1.1, 0.07, 1.9, dwood, cx + 0.45, -1.2, -0.5);
-    box(1.1, 0.07, 1.9, dwood, cx + 0.45,  0.8, -0.5);
-    box(1.1, 2.0, 0.07, dwood, cx + 0.45, -0.2,  0.45);
-    box(1.1, 2.0, 0.07, dwood, cx + 0.45, -0.2, -1.45);
-
-    const vcount = Math.min(data!.vinyls.length, 10);
-    for (let i = 0; i < vcount; i++) {
-      const v = data!.vinyls[i];
-      const vx = cx + 0.08 + i * 0.09;
-      const vmats: object[] = [
-        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
-        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
-        new T.MeshLambertMaterial({ color: 0xeeeeee }),
-        new T.MeshLambertMaterial({ color: 0xeeeeee }),
-        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
-        new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(v.color) }),
-      ];
-      const vmesh = new T.Mesh(new T.BoxGeometry(0.025, 0.76, 0.76), vmats);
-      vmesh.position.set(vx, -0.2, -0.5);
-      scene.add(vmesh);
-      loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
-        (tex as { minFilter: number }).minFilter = T.LinearFilter;
-        vmats[4] = new T.MeshLambertMaterial({ map: tex });
-        vmesh.material = vmats;
-      });
-    }
-
     let raf = 0;
     let t = 0;
     function animate() {
@@ -1418,17 +1390,178 @@ function renderShelter(): void {
     _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
   } else {
     const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.min.js';
+    s.src = 'https://unpkg.com/three/build/three.min.js';
     s.onload = () => _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
     s.onerror = () => { el!.innerHTML = '<div class="view--shelter__error">three.js failed to load</div>'; };
     document.head.appendChild(s);
   }
 }
 
+// ─── VINYL ───────────────────────────────────────────────────────────────────
+
+interface VinylRecord { title: string; artist: string; year: number; mbid: string; color: string; }
+interface VinylData { vinyls: VinylRecord[]; }
+
+let _vinylDone = false;
+
+function renderVinyl(): void {
+  const el = document.getElementById('vinyl-view');
+  if (!el || _vinylDone) return;
+  el.innerHTML = '<div class="view--vinyl__loading">loading record store…</div>';
+
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.vinyl as VinylData | undefined;
+  if (!data?.vinyls?.length) { el.innerHTML = '<div class="view--vinyl__error">no data</div>'; return; }
+
+  _vinylDone = true;
+
+  function _boot(THREE: Record<string, unknown>): void {
+    el!.innerHTML = '';
+    const W = el!.clientWidth || 900;
+    const H = el!.clientHeight || 600;
+
+    const Renderer = (THREE as unknown as { WebGLRenderer: new (opts: object) => { setSize(w: number, h: number): void; setPixelRatio(r: number): void; shadowMap: { enabled: boolean }; render(s: object, c: object): void; dispose(): void; domElement: HTMLCanvasElement } }).WebGLRenderer;
+    const renderer = new Renderer({ antialias: true, alpha: false });
+    renderer.setSize(W, H);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    el!.appendChild(renderer.domElement);
+
+    const T = THREE as unknown as {
+      Scene: new () => { add(o: object): void; background: object; fog: object };
+      Color: new (c: number | string) => object;
+      Fog: new (c: number, n: number, f: number) => object;
+      PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void; x: number }; lookAt(x: number, y: number, z: number): void; aspect: number; updateProjectionMatrix(): void };
+      AmbientLight: new (c: number, i: number) => object;
+      PointLight: new (c: number, i: number, d: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean };
+      MeshLambertMaterial: new (opts: object) => object;
+      BoxGeometry: new (w: number, h: number, d: number) => object;
+      Mesh: new (g: object, m: object | object[]) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean; receiveShadow: boolean; material: object | object[] };
+      TextureLoader: new () => { crossOrigin: string; load(url: string, cb: (t: object) => void): void };
+      LinearFilter: number;
+    };
+
+    const scene = new T.Scene();
+    (scene as { background: object }).background = new T.Color(0x0d0805);
+    (scene as { fog: object }).fog = new T.Fog(0x0d0805, 12, 28);
+
+    const camera = new T.PerspectiveCamera(52, W / H, 0.1, 100);
+    camera.position.set(0, 1.6, 8.0);
+    camera.lookAt(0, 0.2, 0);
+
+    // Warm amber/orange lighting for a cosy record store interior.
+    scene.add(new T.AmbientLight(0xfff0d0, 0.4));
+    const overhead = new T.PointLight(0xffcc66, 2.0, 20);
+    overhead.position.set(0, 5, 2); overhead.castShadow = true; scene.add(overhead);
+    const leftGlow = new T.PointLight(0xff9933, 1.2, 12);
+    leftGlow.position.set(-4, 2, 1); scene.add(leftGlow);
+    const rightGlow = new T.PointLight(0xff8844, 1.0, 12);
+    rightGlow.position.set(4, 2, 1); scene.add(rightGlow);
+
+    function box(w: number, h: number, d: number, mat: object, x: number, y: number, z: number, shadow = false): void {
+      const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
+      m.position.set(x, y, z);
+      if (shadow) { m.castShadow = true; m.receiveShadow = true; }
+      scene.add(m);
+    }
+
+    const floorMat  = new T.MeshLambertMaterial({ color: 0x3d2410 });
+    const wallMat   = new T.MeshLambertMaterial({ color: 0x1a0e06 });
+    const crateMat  = new T.MeshLambertMaterial({ color: 0x6b4c24 });
+    const crateEdge = new T.MeshLambertMaterial({ color: 0x4a3010 });
+
+    // Floor and back wall.
+    box(16, 0.15, 10, floorMat, 0, -1.6, 0, true);
+    box(16, 6, 0.2, wallMat, 0, 1.4, -3.2);
+    // Side walls.
+    box(0.2, 6, 8, wallMat, -7.2, 1.4, 0);
+    box(0.2, 6, 8, wallMat,  7.2, 1.4, 0);
+
+    // Three crates in a row across the front, each holding 5 vinyls.
+    // Crate centres at x = -3.5, 0, 3.5.
+    const CRATE_POSITIONS = [-3.5, 0, 3.5];
+    const CRATE_W = 2.2;
+    const CRATE_H = 1.1;
+    const CRATE_D = 1.1;
+    const CRATE_Y = -1.05;
+    const CRATE_Z = 0.2;
+
+    for (const cx of CRATE_POSITIONS) {
+      // Crate walls: bottom, left side, right side, back, front lip.
+      box(CRATE_W, 0.07, CRATE_D, crateMat,  cx,               CRATE_Y - CRATE_H / 2 + 0.04, CRATE_Z);
+      box(0.07,    CRATE_H, CRATE_D, crateEdge, cx - CRATE_W / 2, CRATE_Y, CRATE_Z);
+      box(0.07,    CRATE_H, CRATE_D, crateEdge, cx + CRATE_W / 2, CRATE_Y, CRATE_Z);
+      box(CRATE_W, CRATE_H, 0.07, crateMat,  cx,               CRATE_Y, CRATE_Z - CRATE_D / 2);
+      box(CRATE_W, 0.25, 0.07, crateEdge, cx,               CRATE_Y + CRATE_H / 2 - 0.12, CRATE_Z + CRATE_D / 2);
+    }
+
+    const loader = new T.TextureLoader();
+    loader.crossOrigin = 'anonymous';
+
+    // Distribute vinyls across the 3 crates, 5 per crate.
+    const vinyls = data!.vinyls;
+    for (let crate = 0; crate < 3; crate++) {
+      const cx = CRATE_POSITIONS[crate];
+      for (let slot = 0; slot < 5; slot++) {
+        const v = vinyls[(crate * 5 + slot) % vinyls.length];
+        // Vinyls stand upright inside the crate.
+        const vx = cx - CRATE_W / 2 + 0.28 + slot * 0.35;
+        const vy = CRATE_Y - 0.02;
+        const vz = CRATE_Z;
+        const vinylColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
+        const vmats: object[] = [
+          new T.MeshLambertMaterial({ color: vinylColor }),
+          new T.MeshLambertMaterial({ color: vinylColor }),
+          new T.MeshLambertMaterial({ color: 0xf2ede8 }),
+          new T.MeshLambertMaterial({ color: 0xf2ede8 }),
+          new T.MeshLambertMaterial({ color: vinylColor }),
+          new T.MeshLambertMaterial({ color: vinylColor }),
+        ];
+        const vmesh = new T.Mesh(new T.BoxGeometry(0.025, 0.78, 0.78), vmats);
+        vmesh.position.set(vx, vy, vz);
+        vmesh.castShadow = true;
+        scene.add(vmesh);
+        loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
+          (tex as { minFilter: number }).minFilter = T.LinearFilter;
+          vmats[4] = new T.MeshLambertMaterial({ map: tex });
+          vmesh.material = vmats;
+        });
+      }
+    }
+
+    let t = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      t += 0.003;
+      camera.position.x = Math.sin(t) * 1.2;
+      camera.lookAt(0, 0.2, 0);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    const ro = new (window as unknown as { ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void } }).ResizeObserver(() => {
+      const nW = el!.clientWidth, nH = el!.clientHeight;
+      renderer.setSize(nW, nH);
+      camera.aspect = nW / nH;
+      camera.updateProjectionMatrix();
+    });
+    ro.observe(el!);
+  }
+
+  if ((window as Record<string, unknown>).THREE) {
+    _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
+  } else {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/three/build/three.min.js';
+    s.onload = () => _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
+    s.onerror = () => { el!.innerHTML = '<div class="view--vinyl__error">three.js failed to load</div>'; };
+    document.head.appendChild(s);
+  }
+}
+
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelter';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelter'];
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelter' | 'vinyl';
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelter', 'vinyl'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...; myprofile = index.html).
 // Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
@@ -1481,6 +1614,7 @@ function init(): void {
   renderICQ();
   renderMyProfile();
   renderShelter();
+  renderVinyl();
   initThemeSwitcher();
 
   // Animate trust meter bars on load

@@ -1392,9 +1392,9 @@ function renderShelf(): void {
     (scene as { background: object }).background = new T.Color(0x1a0f05);
     (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
 
-    const camera = new T.PerspectiveCamera(48, W / H, 0.1, 100);
-    camera.position.set(2.5, 1.8, 7.5);
-    camera.lookAt(0, 0.3, 0);
+    const camera = new T.PerspectiveCamera(46, W / H, 0.1, 100);
+    camera.position.set(1.8, 1.0, 4.8);
+    camera.lookAt(0, 0.35, -0.5);
 
     scene.add(new T.AmbientLight(0xfff8e7, 0.6));
     const sun = new T.PointLight(0xffddaa, 2.5, 22);
@@ -1466,8 +1466,8 @@ function renderShelf(): void {
     function animate() {
       raf = requestAnimationFrame(animate);
       t += 0.004;
-      camera.position.x = Math.sin(t) * 0.8 + 2.5;
-      camera.lookAt(0, 0.3, 0);
+      camera.position.x = Math.sin(t) * 0.5 + 1.8;
+      camera.lookAt(0, 0.35, -0.5);
       renderer.render(scene, camera);
     }
     animate();
@@ -1534,21 +1534,21 @@ function renderVinyl(): void {
     };
 
     const scene = new T.Scene();
-    (scene as { background: object }).background = new T.Color(0x0d0805);
-    (scene as { fog: object }).fog = new T.Fog(0x0d0805, 12, 28);
+    (scene as { background: object }).background = new T.Color(0x1a0f05);
+    (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
 
-    const camera = new T.PerspectiveCamera(52, W / H, 0.1, 100);
-    camera.position.set(0, 1.6, 8.0);
-    camera.lookAt(0, 0.2, 0);
+    const camera = new T.PerspectiveCamera(46, W / H, 0.1, 100);
+    camera.position.set(1.8, 1.0, 4.8);
+    camera.lookAt(0, 0.35, -0.5);
 
-    // Warm amber/orange lighting for a cosy record store interior.
-    scene.add(new T.AmbientLight(0xfff0d0, 0.4));
-    const overhead = new T.PointLight(0xffcc66, 2.0, 20);
-    overhead.position.set(0, 5, 2); overhead.castShadow = true; scene.add(overhead);
-    const leftGlow = new T.PointLight(0xff9933, 1.2, 12);
-    leftGlow.position.set(-4, 2, 1); scene.add(leftGlow);
-    const rightGlow = new T.PointLight(0xff8844, 1.0, 12);
-    rightGlow.position.set(4, 2, 1); scene.add(rightGlow);
+    // Same warm shelf-store lighting as the book shelf, for visual parity.
+    scene.add(new T.AmbientLight(0xfff8e7, 0.6));
+    const sun = new T.PointLight(0xffddaa, 2.5, 22);
+    sun.position.set(2, 6, 5); sun.castShadow = true; scene.add(sun);
+    const fill = new T.PointLight(0xaabbff, 0.5, 15);
+    fill.position.set(-5, 2, 3); scene.add(fill);
+    const glow = new T.PointLight(0xff9944, 1.0, 6);
+    glow.position.set(0, 0.8, -0.2); scene.add(glow);
 
     function box(w: number, h: number, d: number, mat: object, x: number, y: number, z: number, shadow = false): void {
       const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
@@ -1557,49 +1557,41 @@ function renderVinyl(): void {
       scene.add(m);
     }
 
-    const floorMat  = new T.MeshLambertMaterial({ color: 0x3d2410 });
-    const wallMat   = new T.MeshLambertMaterial({ color: 0x1a0e06 });
-    const crateMat  = new T.MeshLambertMaterial({ color: 0x6b4c24 });
-    const crateEdge = new T.MeshLambertMaterial({ color: 0x4a3010 });
+    // Same wood-frame shelf as the book shelf (4 rows), sized for square record sleeves.
+    const wood    = new T.MeshLambertMaterial({ color: 0x5C3317 });
+    const dwood   = new T.MeshLambertMaterial({ color: 0x3d2410 });
+    const shelf   = new T.MeshLambertMaterial({ color: 0x8B6914 });
+    const floor   = new T.MeshLambertMaterial({ color: 0x3d2410 });
 
-    // Floor and back wall.
-    box(16, 0.15, 10, floorMat, 0, -1.6, 0, true);
-    box(16, 6, 0.2, wallMat, 0, 1.4, -3.2);
-    // Side walls.
-    box(0.2, 6, 8, wallMat, -7.2, 1.4, 0);
-    box(0.2, 6, 8, wallMat,  7.2, 1.4, 0);
+    box(10, 0.15, 6, floor, 0, -1.5, 0, true);
+    box(10, 4.5, 0.2, wood, 0, 0.5, -2.2);
+    box(0.2, 4.5, 4.5, wood, -4.2, 0.5, -0.1);
+    box(0.2, 4.5, 4.5, dwood, 4.2, 0.5, -0.1);
+    box(0.25, 4.5, 0.25, dwood, -3.9, 0.5, 1.8);
+    box(0.25, 4.5, 0.25, dwood, 3.9, 0.5, 1.8);
+    box(10.5, 0.3, 6, dwood, 0, 2.85, -0.2);
+    box(10.5, 0.2, 0.2, dwood, 0, 2.6, 1.9);
 
-    // Three crates in a row across the front, each holding 5 vinyls.
-    // Crate centres at x = -3.5, 0, 3.5.
-    const CRATE_POSITIONS = [-3.5, 0, 3.5];
-    const CRATE_W = 2.2;
-    const CRATE_H = 1.1;
-    const CRATE_D = 1.1;
-    const CRATE_Y = -1.05;
-    const CRATE_Z = 0.2;
-
-    for (const cx of CRATE_POSITIONS) {
-      // Crate walls: bottom, left side, right side, back, front lip.
-      box(CRATE_W, 0.07, CRATE_D, crateMat,  cx,               CRATE_Y - CRATE_H / 2 + 0.04, CRATE_Z);
-      box(0.07,    CRATE_H, CRATE_D, crateEdge, cx - CRATE_W / 2, CRATE_Y, CRATE_Z);
-      box(0.07,    CRATE_H, CRATE_D, crateEdge, cx + CRATE_W / 2, CRATE_Y, CRATE_Z);
-      box(CRATE_W, CRATE_H, 0.07, crateMat,  cx,               CRATE_Y, CRATE_Z - CRATE_D / 2);
-      box(CRATE_W, 0.25, 0.07, crateEdge, cx,               CRATE_Y + CRATE_H / 2 - 0.12, CRATE_Z + CRATE_D / 2);
+    const shelfYs = [-0.85, -0.05, 0.75, 1.55];
+    for (const sy of shelfYs) {
+      box(7, 0.07, 0.6, shelf, 0, sy, -0.6, true);
     }
 
     const loader = new T.TextureLoader();
     loader.crossOrigin = 'anonymous';
 
-    // Distribute vinyls across the 3 crates, 5 per crate.
+    // 4 rows × 4 slots, records stood upright with their full square sleeve
+    // facing the camera (thin along z so the cover face — the pz/nz faces,
+    // sized width×height — is the one actually visible, not a sliver).
+    const COLS = 4;
     const vinyls = data!.vinyls;
-    for (let crate = 0; crate < 3; crate++) {
-      const cx = CRATE_POSITIONS[crate];
-      for (let slot = 0; slot < 5; slot++) {
-        const v = vinyls[(crate * 5 + slot) % vinyls.length];
-        // Vinyls stand upright inside the crate.
-        const vx = cx - CRATE_W / 2 + 0.28 + slot * 0.35;
-        const vy = CRATE_Y - 0.02;
-        const vz = CRATE_Z;
+    for (let row = 0; row < 4; row++) {
+      const sy = shelfYs[row];
+      for (let col = 0; col < COLS; col++) {
+        const v = vinyls[(row * COLS + col) % vinyls.length];
+        const vx = -2.4 + col * 1.6;
+        const vy = sy + 0.38;
+        const vz = -0.6;
         const vinylColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
         const vmats: object[] = [
           new T.MeshLambertMaterial({ color: vinylColor }),
@@ -1609,7 +1601,7 @@ function renderVinyl(): void {
           new T.MeshLambertMaterial({ color: vinylColor }),
           new T.MeshLambertMaterial({ color: vinylColor }),
         ];
-        const vmesh = new T.Mesh(new T.BoxGeometry(0.025, 0.78, 0.78), vmats);
+        const vmesh = new T.Mesh(new T.BoxGeometry(0.68, 0.68, 0.12), vmats);
         vmesh.position.set(vx, vy, vz);
         vmesh.castShadow = true;
         scene.add(vmesh);
@@ -1624,9 +1616,9 @@ function renderVinyl(): void {
     let t = 0;
     function animate() {
       requestAnimationFrame(animate);
-      t += 0.003;
-      camera.position.x = Math.sin(t) * 1.2;
-      camera.lookAt(0, 0.2, 0);
+      t += 0.004;
+      camera.position.x = Math.sin(t) * 0.5 + 1.8;
+      camera.lookAt(0, 0.35, -0.5);
       renderer.render(scene, camera);
     }
     animate();

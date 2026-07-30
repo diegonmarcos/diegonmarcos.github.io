@@ -1,9 +1,9 @@
-// GENERATED FROM shelter.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
+// GENERATED FROM shelf.json by front-data-json-js-wrapper.sh — DO NOT EDIT BY HAND.
 // Re-generate with: bash a-Portals/linktree/src/data/build.sh
 (function () {
   var g = (typeof globalThis !== "undefined") ? globalThis : (typeof window !== "undefined" ? window : this);
   g.PORTAL_DATA = g.PORTAL_DATA || {};
-  g.PORTAL_DATA["shelter"] = {
+  g.PORTAL_DATA["shelf"] = {
   "books": [
     { "title": "Sophie's World", "author": "Jostein Gaarder", "isbn": "9780374530716", "spine": "#2d5a8e" },
     { "title": "A History of Western Philosophy", "author": "Bertrand Russell", "isbn": "9780671201586", "spine": "#8b4513" },

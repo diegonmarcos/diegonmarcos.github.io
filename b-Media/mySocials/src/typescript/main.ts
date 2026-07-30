@@ -1218,7 +1218,7 @@ function renderMyProfile(): void {
     { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000' },
     { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
     { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
-    { theme: 'shelter', label: 'Shelter', meta: 'book shelter · 3D', color: '#8b6914' },
+    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914' },
     { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24' },
   ];
 
@@ -1250,21 +1250,21 @@ function renderMyProfile(): void {
 
 // ─── SHELTER ─────────────────────────────────────────────────────────────────
 
-interface ShelterBook { title: string; author: string; isbn: string; spine: string; }
-interface ShelterVinyl { title: string; artist: string; year: number; mbid: string; color: string; }
-interface ShelterData { books: ShelterBook[]; vinyls: ShelterVinyl[]; }
+interface ShelfBook { title: string; author: string; isbn: string; spine: string; }
+interface ShelfVinyl { title: string; artist: string; year: number; mbid: string; color: string; }
+interface ShelfData { books: ShelfBook[]; vinyls: ShelfVinyl[]; }
 
-let _shelterDone = false;
+let _shelfDone = false;
 
-function renderShelter(): void {
-  const el = document.getElementById('shelter-view');
-  if (!el || _shelterDone) return;
-  el.innerHTML = '<div class="view--shelter__loading">building shelter…</div>';
+function renderShelf(): void {
+  const el = document.getElementById('shelf-view');
+  if (!el || _shelfDone) return;
+  el.innerHTML = '<div class="view--shelf__loading">building shelf…</div>';
 
-  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.shelter as ShelterData | undefined;
-  if (!data?.books?.length) { el.innerHTML = '<div class="view--shelter__error">no data</div>'; return; }
+  const data = (globalThis as Record<string, unknown> & { PORTAL_DATA?: Record<string, unknown> }).PORTAL_DATA?.shelf as ShelfData | undefined;
+  if (!data?.books?.length) { el.innerHTML = '<div class="view--shelf__error">no data</div>'; return; }
 
-  _shelterDone = true;
+  _shelfDone = true;
 
   function _boot(THREE: Record<string, unknown>): void {
     el!.innerHTML = '';
@@ -1390,9 +1390,9 @@ function renderShelter(): void {
     _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
   } else {
     const s = document.createElement('script');
-    s.src = 'https://unpkg.com/three/build/three.min.js';
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r169/three.min.js';
     s.onload = () => _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
-    s.onerror = () => { el!.innerHTML = '<div class="view--shelter__error">three.js failed to load</div>'; };
+    s.onerror = () => { el!.innerHTML = '<div class="view--shelf__error">three.js failed to load</div>'; };
     document.head.appendChild(s);
   }
 }
@@ -1551,7 +1551,7 @@ function renderVinyl(): void {
     _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
   } else {
     const s = document.createElement('script');
-    s.src = 'https://unpkg.com/three/build/three.min.js';
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r169/three.min.js';
     s.onload = () => _boot((window as Record<string, unknown>).THREE as Record<string, unknown>);
     s.onerror = () => { el!.innerHTML = '<div class="view--vinyl__error">three.js failed to load</div>'; };
     document.head.appendChild(s);
@@ -1560,8 +1560,8 @@ function renderVinyl(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelter' | 'vinyl';
-const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelter', 'vinyl'];
+type Theme = 'myprofile' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
+const THEMES: Theme[] = ['myprofile', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...; myprofile = index.html).
 // Every page ships the full bundle, so switching just flips the in-DOM view — no fetch needed.
@@ -1613,7 +1613,7 @@ function init(): void {
   renderYoutube();
   renderICQ();
   renderMyProfile();
-  renderShelter();
+  renderShelf();
   renderVinyl();
   initThemeSwitcher();
 

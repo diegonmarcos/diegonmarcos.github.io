@@ -4,8 +4,9 @@
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import mapConfig from '$lib/data/map.json';
   import { freeInput, climbTotal } from '$engine/freeInput';
-  import { stepDrive } from '$engine/locomotion';
+  import { stepDrive, stepVehicle } from '$engine/locomotion';
   import Joystick from '$engine/Joystick.svelte';
+  import { createStreetProvider } from '$lib/street';
 
   // Speed unit boundary: map.json speeds are km/h (matches the HUD readout);
   // stepDrive works in m/s, so this is the single place the conversion happens.
@@ -168,7 +169,13 @@
 
   // Persistent ride state (heading + carried speed/altitude) — lives across frames;
   // only `speed` resets on a driver switch so momentum doesn't teleport.
-  const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
+  const ride: { heading: number; speed?: number; altitude?: number; steer?: number } = { heading: 0 };
+  // Vehicle camera feel (FOV zoom + roll lean) is applied only while control==="vehicle";
+  // camFovCur/camRollCur are the currently-applied values, tracked outside $state so the
+  // rAF loop can compare-before-set (map.setVerticalFieldOfView churns the transform
+  // otherwise) without triggering reactivity on every frame.
+  let camFovCur: number | undefined;
+  let camRollCur = 0;
   $effect(() => {
     // Reset speed AND seed altitude to this driver's own default on every switch
     // (hard snap, no interpolation) — altitude otherwise carries over from
@@ -314,6 +321,11 @@
     // before the map finishes loading) and the rAF follow-cam tick share them.
     let camBearing = 0;
     let lookPitch = 0; // degrees; integrated unbounded, clamped to [minPitch, skyMaxPitch]
+
+    // Street surface provider (road-mask sampling) — created once the map finishes
+    // loading (needs a live maplibre instance + the basemap style URL); left null on
+    // any failure so physics degrades to normal (friction 1) driving, never breaks.
+    let streetProvider: ReturnType<typeof createStreetProvider> | null = null;
 
     // --- Keyboard bindings (data-driven from rider.keys in map.json) ---
     const heldKeys = new Set<string>();
@@ -582,6 +594,13 @@
 
       map.on('load', () => {
         if (!map) return;
+
+        try {
+          streetProvider = createStreetProvider(maplibre, rider.street as any, mapConfig.basemap);
+        } catch (err) {
+          console.warn('[rider] street provider failed to initialize — falling back to normal driving', err);
+          streetProvider = null;
+        }
 
         map.addSource('terrain-dem', {
           type: 'raster-dem',
@@ -974,33 +993,63 @@
 
           const driverSpeed: any = (activeDriver as any).speed;
           const driverAltitude: any = (activeDriver as any).altitude;
-          const step = stepDrive(
-            ride,
-            {
-              moveX: freeInput.moveX,
-              moveY: freeInput.moveY,
-              // Screen-forward must match character-forward regardless of camera
-              // framing (e.g. the 90°-offset side-scroll camera) — fold the active
-              // camera's bearingOffset into the bearing stepDrive steers toward.
-              camBearing: camBearing + (activeCamera.bearingOffset * Math.PI) / 180,
-              climb: climbTotal()
-            },
-            {
-              min: driverSpeed.min * KMH,
-              cruise: driverSpeed.cruise * KMH,
-              idle: driverSpeed.idle * KMH,
-              max: driverSpeed.max * KMH,
-              turn: (activeDriver as any).turnRate * (Math.PI / 180),
-              accel: activeDriver.accel,
-              turnAtMax: (activeDriver as any).turnAtMax,
-              speedRef: driverSpeed.max * KMH,
-              lift: driverAltitude.climbRate, // already m/s — not converted
-              maxAlt: driverAltitude.max,
-              minAlt: driverAltitude.min,
-              deadzone: rider.joystick.deadzone
-            },
-            dt
-          );
+
+          // Street surface sampling: position the hidden road-mask map at the rider's
+          // CURRENT lngLat (before this frame's physics moves it) and read back the
+          // surface under it — feeds friction into the vehicle physics below. Wrapped
+          // so a missing/failed provider (see onMount below) never blocks physics.
+          streetProvider?.setPosition(lngLat);
+          const surf = streetProvider?.sample() ?? null;
+
+          let step: { heading: number; forwardX: number; forwardZ: number; dForward: number; altitude: number };
+          if ((activeDriver as any).control === 'vehicle') {
+            const vparams: any = (activeDriver as any).vehicle;
+            const vstep = stepVehicle(
+              ride as any,
+              {
+                steerAxis: freeInput.moveX,
+                throttle: Math.max(0, freeInput.moveY),
+                brake: Math.max(0, -freeInput.moveY)
+              },
+              {
+                ...vparams,
+                maxSpeed: driverSpeed.max * KMH,
+                friction: surf?.friction ?? 1
+              },
+              dt
+            );
+            // stepVehicle doesn't own altitude — car/cycle are ground vehicles
+            // (altitude.min===max===0), so altitude just carries over unchanged.
+            step = { ...vstep, altitude: ride.altitude ?? 0 };
+          } else {
+            step = stepDrive(
+              ride,
+              {
+                moveX: freeInput.moveX,
+                moveY: freeInput.moveY,
+                // Screen-forward must match character-forward regardless of camera
+                // framing (e.g. the 90°-offset side-scroll camera) — fold the active
+                // camera's bearingOffset into the bearing stepDrive steers toward.
+                camBearing: camBearing + (activeCamera.bearingOffset * Math.PI) / 180,
+                climb: climbTotal()
+              },
+              {
+                min: driverSpeed.min * KMH,
+                cruise: driverSpeed.cruise * KMH,
+                idle: driverSpeed.idle * KMH,
+                max: driverSpeed.max * KMH,
+                turn: (activeDriver as any).turnRate * (Math.PI / 180),
+                accel: activeDriver.accel,
+                turnAtMax: (activeDriver as any).turnAtMax,
+                speedRef: driverSpeed.max * KMH,
+                lift: driverAltitude.climbRate, // already m/s — not converted
+                maxAlt: driverAltitude.max,
+                minAlt: driverAltitude.min,
+                deadzone: rider.joystick.deadzone
+              },
+              dt
+            );
+          }
 
           hudSpeed = (ride.speed ?? 0) / KMH; // ride.speed is m/s (params were *KMH); HUD is km/h
           hudAltitude = step.altitude;
@@ -1049,12 +1098,36 @@
           }
 
           const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);
+
+          // Vehicle camera feel — FOV widens and the view rolls with speed/steer;
+          // only while control==="vehicle" so flyers/walkers are never touched.
+          // Reset to base FOV/no-roll for every other control so switching away
+          // from a vehicle never leaves the view banked or zoomed.
+          const isVehicleControl = (activeDriver as any).control === 'vehicle';
+          let fovTarget = camCfg.fovBase;
+          let rollTarget = 0;
+          if (isVehicleControl) {
+            const vmax = driverSpeed.max * KMH;
+            const vRatio = vmax > 0 ? Math.min(1, Math.abs(ride.speed ?? 0) / vmax) : 0;
+            fovTarget = camCfg.fovBase + (camCfg.fovMax - camCfg.fovBase) * vRatio;
+            const vparams: any = (activeDriver as any).vehicle;
+            // Positive roll = clockwise about the view axis in MapLibre; a car
+            // steering right (steer>0) banks the view right, hence the minus sign.
+            rollTarget = -camCfg.rollMax * ((ride.steer ?? 0) / vparams.maxSteer) * vRatio;
+          }
+          if (camFovCur === undefined || Math.abs(fovTarget - camFovCur) > 0.1) {
+            camFovCur = fovTarget;
+            (map as any).setVerticalFieldOfView?.(camFovCur);
+          }
+          camRollCur = rollTarget;
+
           map.jumpTo({
             center: lngLat,
             bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
             pitch: mapPitch,
             zoom,
-            elevation
+            elevation,
+            roll: camRollCur
           });
 
           // P3b: sky-dome overlay — fade in as lookPitch climbs past mapMaxPitch
@@ -1106,6 +1179,7 @@
       window.removeEventListener('pointercancel', onClimbPointerUp);
       skyRenderer?.dispose();
       stopMeshEffect?.();
+      streetProvider?.destroy();
       map?.remove();
     };
   });

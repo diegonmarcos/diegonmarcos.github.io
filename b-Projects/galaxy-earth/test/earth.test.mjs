@@ -5,6 +5,11 @@ import path from 'node:path';
 // type-stripping resolves the .ts import directly, no --experimental-strip-types needed.
 import { stepDrive } from '../../_galaxy-engine/src/locomotion.ts';
 
+const VEHICLE_FIELDS = [
+  'wheelbase', 'maxSteer', 'steerRate', 'steerReturn', 'steerSpeedFalloff',
+  'power', 'brakeDecel', 'drag', 'rollResist', 'reverseMaxSpeed', 'grip'
+];
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const map = JSON.parse(
   readFileSync(path.join(__dirname, '../src/lib/data/map.json'), 'utf-8')
@@ -75,6 +80,39 @@ for (const d of r.drivers) {
   if ('cameraZoom' in d) {
     throw new Error(`map.json rider.drivers["${d.id}"] must not have cameraZoom (per-camera zoom is now size/speed-derived in +page.svelte cameraZoomFor)`);
   }
+  if (d.control !== 'vehicle' && d.control !== 'character') {
+    throw new Error(`map.json rider.drivers["${d.id}"].control must be "vehicle" or "character"`);
+  }
+  if (d.control === 'vehicle') {
+    const v = d.vehicle;
+    if (!v || typeof v !== 'object') {
+      throw new Error(`map.json rider.drivers["${d.id}"] has control:"vehicle" but no vehicle object`);
+    }
+    for (const f of VEHICLE_FIELDS) {
+      if (typeof v[f] !== 'number' || !(v[f] > 0)) {
+        throw new Error(`map.json rider.drivers["${d.id}"].vehicle.${f} must be a positive number`);
+      }
+    }
+    if ('maxSpeed' in v) {
+      throw new Error(`map.json rider.drivers["${d.id}"].vehicle must not have maxSpeed (derived from speed.max in +page.svelte)`);
+    }
+  }
+}
+
+// --- rider.street (surface provider config) ---
+{
+  const st = r.street;
+  if (!st || !Array.isArray(st.providers) || !st.providers.includes('mask')) {
+    throw new Error('map.json rider.street.providers must be an array containing "mask"');
+  }
+  const m = st.mask;
+  if (!m || typeof m.sizePx !== 'number' || typeof m.zoom !== 'number' || typeof m.sampleHz !== 'number') {
+    throw new Error('map.json rider.street.mask needs numeric sizePx/zoom/sampleHz');
+  }
+  const f = st.friction;
+  if (!f || typeof f.asphalt !== 'number' || typeof f.off !== 'number') {
+    throw new Error('map.json rider.street.friction needs numeric asphalt/off');
+  }
 }
 
 // --- rider.camera (size/speed-derived zoom config, replaces per-driver cameraZoom) ---
@@ -88,6 +126,15 @@ for (const d of r.drivers) {
     typeof cc.speedZoom !== 'number'
   ) {
     throw new Error('map.json rider.camera must have numeric refSize/minZoom/maxZoom/speedZoom');
+  }
+  if (
+    typeof cc.fovBase !== 'number' ||
+    typeof cc.fovMax !== 'number' ||
+    typeof cc.rollMax !== 'number' ||
+    typeof cc.springTau !== 'number' ||
+    !(cc.fovBase < cc.fovMax)
+  ) {
+    throw new Error('map.json rider.camera must have numeric fovBase<fovMax, rollMax, springTau');
   }
 }
 

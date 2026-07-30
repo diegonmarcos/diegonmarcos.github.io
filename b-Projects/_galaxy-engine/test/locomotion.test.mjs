@@ -1,6 +1,6 @@
 // Contract test for the pure locomotion step (no framework, no DOM).
 // Run: node test/locomotion.test.mjs
-import { stepRide, stepDrive } from '../src/locomotion.ts';
+import { stepRide, stepDrive, stepVehicle } from '../src/locomotion.ts';
 
 let failed = 0;
 const ok = (c, m) => { if (!c) { console.error('✗', m); failed++; } };
@@ -195,6 +195,108 @@ for (const camBearing of [0, Math.PI / 2, -Math.PI / 2]) {
   const state = { heading: 0, speed: 0 };
   const step = stepDrive(state, { moveX: 1, moveY: 0, camBearing: 0 }, { min: 0, max: 10, turn: 2, turnAtMax: 0.5, speedRef: 10 }, 0.5);
   ok(Math.abs(step.heading - 1) < 1e-9, 'turnAtMax set but speed===0: heading===turn*dt (full rate)');
+}
+
+// --- stepVehicle: bicycle-model vehicle step ---
+
+const vparams = {
+  wheelbase: 2.5, maxSteer: 0.6, steerRate: 10, steerReturn: 10, steerSpeedFalloff: 0.3,
+  power: 5, brakeDecel: 8, drag: 0.001, rollResist: 0.3, maxSpeed: 20, reverseMaxSpeed: 5, grip: 8,
+};
+
+// stopped vehicle, full steer input → parked car cannot pivot: yawRate===0, heading unchanged
+{
+  const state = { heading: 0.4, speed: 0 };
+  const step = stepVehicle(state, { steerAxis: 1, throttle: 0, brake: 0 }, vparams, 1);
+  ok(step.yawRate === 0, 'stopped + full steer: yawRate===0');
+  ok(step.heading === 0.4, 'stopped + full steer: heading unchanged');
+}
+
+// moving vehicle with steer → yawRate sign matches steer sign, heading changes
+{
+  const state = { heading: 0, speed: 10 };
+  const step = stepVehicle(state, { steerAxis: 1, throttle: 0, brake: 0 }, vparams, 0.1);
+  ok(step.yawRate > 0, 'moving + positive steer: yawRate>0');
+  ok(step.heading !== 0, 'moving + steer: heading changes');
+}
+
+// yawRate magnitude matches v*tan(steer)/wheelbase within tolerance, well under grip limit
+{
+  const state = { heading: 0, speed: 5, steer: 0.2 };
+  const step = stepVehicle(state, { steerAxis: 0, throttle: 0, brake: 0 }, vparams, 0.001);
+  const expected = step.speed * Math.tan(step.steer) / vparams.wheelbase;
+  ok(Math.abs(step.yawRate - expected) < 1e-6, 'yawRate ~= v*tan(steer)/wheelbase under grip limit');
+}
+
+// steering lock reduced at high speed vs at rest (same input)
+{
+  const stateSlow = { heading: 0, speed: 0 };
+  const stepSlow = stepVehicle(stateSlow, { steerAxis: 1, throttle: 0, brake: 0 }, vparams, 1);
+  const stateFast = { heading: 0, speed: vparams.maxSpeed };
+  const stepFast = stepVehicle(stateFast, { steerAxis: 1, throttle: 0, brake: 0 }, vparams, 1);
+  ok(stepFast.steer < stepSlow.steer, 'steer lock reduced at high speed vs at rest');
+}
+
+// understeer: tiny grip → slip>0 and |yawRate| below the ungripped value
+{
+  const tinyGripParams = { ...vparams, grip: 0.01 };
+  const state = { heading: 0, speed: 10, steer: 0.3 };
+  const step = stepVehicle(state, { steerAxis: 0, throttle: 0, brake: 0 }, tinyGripParams, 0.001);
+  const ungripped = step.speed * Math.tan(step.steer) / vparams.wheelbase;
+  ok(step.slip > 0, 'tiny grip: slip>0');
+  ok(Math.abs(step.yawRate) < Math.abs(ungripped), 'tiny grip: |yawRate| below ungripped value');
+}
+
+// coasting with zero throttle/brake reduces speed monotonically, never negative, converges toward 0
+{
+  const state = { heading: 0, speed: 10 };
+  let prev = state.speed;
+  let monotone = true, neverNegative = true;
+  for (let i = 0; i < 500; i++) {
+    stepVehicle(state, { steerAxis: 0, throttle: 0, brake: 0 }, vparams, 0.1);
+    if (state.speed > prev) monotone = false;
+    if (state.speed < 0) neverNegative = false;
+    prev = state.speed;
+  }
+  ok(monotone, 'coasting: speed decreases monotonically');
+  ok(neverNegative, 'coasting: speed never negative');
+  ok(state.speed < 1, 'coasting: speed converges toward 0');
+}
+
+// braking from standstill, no throttle → reverse builds, clamped at -reverseMaxSpeed
+{
+  const state = { heading: 0, speed: 0 };
+  for (let i = 0; i < 200; i++) {
+    stepVehicle(state, { steerAxis: 0, throttle: 0, brake: 1 }, vparams, 0.1);
+  }
+  ok(state.speed < 0, 'brake from standstill: reverse builds');
+  ok(Math.abs(state.speed - (-vparams.reverseMaxSpeed)) < 1e-9, 'brake from standstill: clamped at -reverseMaxSpeed');
+}
+
+// forward speed clamps at maxSpeed under sustained full throttle
+{
+  const state = { heading: 0, speed: 0 };
+  for (let i = 0; i < 500; i++) {
+    stepVehicle(state, { steerAxis: 0, throttle: 1, brake: 0 }, vparams, 0.1);
+  }
+  ok(state.speed <= vparams.maxSpeed, 'sustained full throttle: speed<=maxSpeed');
+  ok(Math.abs(state.speed - vparams.maxSpeed) < 1e-6, 'sustained full throttle: speed converges to maxSpeed');
+}
+
+// friction: 0.5 reduces both accel and grip limit vs friction: 1
+{
+  const stateFull = { heading: 0, speed: 0 };
+  stepVehicle(stateFull, { steerAxis: 0, throttle: 1, brake: 0 }, { ...vparams, friction: 1 }, 0.1);
+  const stateHalf = { heading: 0, speed: 0 };
+  stepVehicle(stateHalf, { steerAxis: 0, throttle: 1, brake: 0 }, { ...vparams, friction: 0.5 }, 0.1);
+  ok(stateHalf.speed < stateFull.speed, 'friction 0.5: less accel than friction 1');
+
+  const slipParams = { ...vparams, grip: 3, wheelbase: 2.5 };
+  const stateFullGrip = { heading: 0, speed: 10, steer: 0.3 };
+  const stepFullGrip = stepVehicle(stateFullGrip, { steerAxis: 0, throttle: 0, brake: 0 }, { ...slipParams, friction: 1 }, 0.001);
+  const stateHalfGrip = { heading: 0, speed: 10, steer: 0.3 };
+  const stepHalfGrip = stepVehicle(stateHalfGrip, { steerAxis: 0, throttle: 0, brake: 0 }, { ...slipParams, friction: 0.5 }, 0.001);
+  ok(Math.abs(stepHalfGrip.yawRate) < Math.abs(stepFullGrip.yawRate), 'friction 0.5: lower grip limit than friction 1');
 }
 
 if (failed) { console.error(`${failed} check(s) failed`); process.exit(1); }

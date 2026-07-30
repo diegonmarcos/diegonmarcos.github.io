@@ -63,6 +63,11 @@
     "follow": {
       "bearingSign": 1
     },
+    "street": {
+      "providers": ["mask"],
+      "mask": { "sizePx": 64, "zoom": 19, "sampleHz": 20 },
+      "friction": { "asphalt": 1.0, "off": 0.4 }
+    },
     "cameras": [
       {
         "id": "fps",
@@ -140,7 +145,11 @@
       "refSize": 4.5,
       "minZoom": 3,
       "maxZoom": 20,
-      "speedZoom": 0.6
+      "speedZoom": 0.6,
+      "fovBase": 55,
+      "fovMax": 72,
+      "rollMax": 4,
+      "springTau": 0.12
     },
     "joystick": {
       "scale": 0.5,
@@ -161,6 +170,7 @@
         "id": "walk",
         "label": "Walk",
         "icon": "🚶",
+        "control": "character",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -190,6 +200,20 @@
         "id": "cycle",
         "label": "Cycle",
         "icon": "🚴",
+        "control": "vehicle",
+        "vehicle": {
+          "wheelbase": 1.05,
+          "maxSteer": 0.785,
+          "steerRate": 4,
+          "steerReturn": 7,
+          "steerSpeedFalloff": 0.4,
+          "power": 1.2,
+          "brakeDecel": 4,
+          "drag": 0.0135,
+          "rollResist": 0.2,
+          "reverseMaxSpeed": 1.5,
+          "grip": 6
+        },
         "speed": {
           "idle": 0,
           "min": 0,
@@ -219,6 +243,20 @@
         "id": "car",
         "label": "Car",
         "icon": "🚗",
+        "control": "vehicle",
+        "vehicle": {
+          "wheelbase": 2.7,
+          "maxSteer": 0.61,
+          "steerRate": 3.5,
+          "steerReturn": 6,
+          "steerSpeedFalloff": 0.25,
+          "power": 4.0,
+          "brakeDecel": 8,
+          "drag": 0.0036,
+          "rollResist": 0.3,
+          "reverseMaxSpeed": 6,
+          "grip": 8.5
+        },
         "speed": {
           "idle": 0,
           "min": 0,
@@ -248,6 +286,7 @@
         "id": "sail",
         "label": "Sail",
         "icon": "⛵",
+        "control": "character",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -277,6 +316,7 @@
         "id": "drone",
         "label": "Drone",
         "icon": "🛸",
+        "control": "character",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -306,6 +346,7 @@
         "id": "helicopter",
         "label": "Helicopter",
         "icon": "🚁",
+        "control": "character",
         "speed": {
           "idle": 0,
           "min": 0,
@@ -335,6 +376,7 @@
         "id": "airplane",
         "label": "Airplane",
         "icon": "✈️",
+        "control": "character",
         "speed": {
           "idle": 220,
           "min": 180,
@@ -364,6 +406,7 @@
         "id": "constellation",
         "label": "Constellation",
         "icon": "🌌",
+        "control": "character",
         "speed": {
           "idle": 0,
           "min": 0,

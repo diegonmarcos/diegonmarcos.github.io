@@ -28,8 +28,6 @@
   let activeCamera = $state(
     rider.cameras.find((c) => c.id === rider.defaultCamera) ?? rider.cameras[0]
   );
-  let showDriverPicker = $state(false);
-  let showCameraPicker = $state(false);
   let hudSpeed = $state(0);
 
   // Perf overlay: FPS (EMA-smoothed) + frame-ms, mirrored into $state each frame so the
@@ -58,6 +56,20 @@
   // state. `debugNow` is refreshed from the always-on tick() rAF loop so the
   // LIVE/STALLED readout keeps updating even while render() itself is stalled.
   let debugVisible = $state(false);
+  let showMenu = $state(false);
+  let showGraphStats = $state(true);
+  let showAbout = $state(false);
+  let terrain3d = $state(true);
+  let mapZoomIn = () => {};
+  let mapZoomOut = () => {};
+  let mapResetBearing = () => {};
+  let mapToggleTerrain = () => {};
+  const galaxies = [
+    { id: 'hub', label: 'Galaxy Hub', href: '/galaxy/' },
+    { id: 'earth', label: 'Galaxy Earth', href: '/galaxy-earth/' },
+    { id: 'gaia', label: 'Galaxy Gaia', href: '/galaxy-gaia/' },
+    { id: 'x1', label: 'Galaxy X1', href: '/galaxy-x1/' }
+  ];
   let lastError = $state('none');
   let renderFireCount = $state(0);
   let lastRenderTime = $state(0);
@@ -383,8 +395,16 @@
         bearing: mapConfig.bearing
       });
 
-      map.addControl(new maplibre.NavigationControl({ visualizePitch: true }), 'top-right');
-      map.addControl(new maplibre.TerrainControl({ source: 'terrain-dem', exaggeration: mapConfig.terrain.exaggeration }), 'top-right');
+      mapZoomIn = () => map?.zoomIn();
+      mapZoomOut = () => map?.zoomOut();
+      mapResetBearing = () => map?.resetNorth();
+      mapToggleTerrain = () => {
+        if (!map) return;
+        terrain3d = !terrain3d;
+        map.setTerrain(
+          terrain3d ? { source: 'terrain-dem', exaggeration: mapConfig.terrain.exaggeration } : null
+        );
+      };
 
       canvasEl = map.getCanvas();
       if (j.mouseLook && canvasEl.requestPointerLock) {
@@ -891,9 +911,100 @@
     </div>
   {/if}
 
+  <button
+    type="button"
+    class="hamburger"
+    class:active={showMenu}
+    aria-label="Menu"
+    aria-expanded={showMenu}
+    onclick={() => (showMenu = !showMenu)}
+  >☰</button>
+
+  {#if showMenu}
+    <nav class="menu" aria-label="Main menu">
+      <section class="menu-section">
+        <h2>Galaxies</h2>
+        {#each galaxies as g (g.id)}
+          <a class="menu-item" href={g.href} rel="external">{g.label}</a>
+        {/each}
+      </section>
+
+      <section class="menu-section">
+        <h2>Camera View</h2>
+        <div class="menu-row">
+          <button type="button" class="menu-btn" onclick={mapZoomIn}>Zoom +</button>
+          <button type="button" class="menu-btn" onclick={mapZoomOut}>Zoom −</button>
+          <button type="button" class="menu-btn" onclick={mapResetBearing}>Reset View</button>
+          <button type="button" class="menu-btn" class:active={terrain3d} onclick={mapToggleTerrain}>
+            3D {terrain3d ? 'On' : 'Off'}
+          </button>
+        </div>
+        {#each rider.cameras as c (c.id)}
+          <button
+            type="button"
+            class="menu-item"
+            class:active={c.id === activeCamera.id}
+            onclick={() => (activeCamera = c)}
+          >
+            <span class="icon">{c.icon}</span> {c.label}
+          </button>
+        {/each}
+      </section>
+
+      <section class="menu-section">
+        <h2>Drive Mode</h2>
+        {#each rider.drivers as d (d.id)}
+          <button
+            type="button"
+            class="menu-item"
+            class:active={d.id === activeDriver.id}
+            onclick={() => (activeDriver = d)}
+          >
+            <span class="icon">{d.icon}</span> {d.label}
+          </button>
+        {/each}
+      </section>
+
+      <section class="menu-section">
+        <h2>Configs</h2>
+        <button
+          type="button"
+          class="menu-item"
+          class:active={showGraphStats}
+          onclick={() => (showGraphStats = !showGraphStats)}
+        >Graph Stats</button>
+        <button
+          type="button"
+          class="menu-item"
+          class:active={debugVisible}
+          onclick={() => {
+            const url = new URL(window.location.href);
+            if (debugVisible) url.searchParams.delete('debug');
+            else url.searchParams.set('debug', '1');
+            window.location.href = url.toString();
+          }}
+        >Debug Mode</button>
+        <button
+          type="button"
+          class="menu-item"
+          class:active={showAbout}
+          onclick={() => (showAbout = !showAbout)}
+        >About</button>
+        {#if showAbout}
+          <div class="menu-about">
+            <p>Galaxy Earth — a 3D terrain basemap built with SvelteKit, MapLibre GL JS v5, and Three.js. Drive, fly, or walk across real-world terrain in a GTA-style twin-stick rig with a free-look camera.</p>
+            <p><a href="https://github.com/diegonmarcos/diegonmarcos.github.io" rel="external">github.com/diegonmarcos/diegonmarcos.github.io</a></p>
+            <p>Part of the Galaxy constellation of apps (Hub, Earth, Gaia, X1).</p>
+          </div>
+        {/if}
+      </section>
+    </nav>
+  {/if}
+
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
+    {#if showGraphStats}
     <button
       type="button"
       class="perf"
@@ -909,8 +1020,9 @@
         <span>{renderCalls} draws</span>
       </div>
     </button>
+    {/if}
 
-    {#if perfExpanded}
+    {#if showGraphStats && perfExpanded}
       <div class="perf-panel">
         <div class="perf-row">
           <span class="perf-label">FPS</span>
@@ -963,64 +1075,6 @@
     </div>
   {/if}
 
-  <div class="fabs">
-    {#if showCameraPicker}
-      <div class="fab-popup" role="menu" aria-label="Camera view">
-        {#each rider.cameras as c (c.id)}
-          <button
-            type="button"
-            class="fab-popup-item"
-            class:active={c.id === activeCamera.id}
-            onclick={() => { activeCamera = c; showCameraPicker = false; }}
-          >
-            <span class="icon">{c.icon}</span>
-            <span class="label">{c.label}</span>
-          </button>
-        {/each}
-      </div>
-    {/if}
-    <button
-      type="button"
-      class="fab"
-      aria-label="Camera view"
-      onclick={() => { showCameraPicker = !showCameraPicker; showDriverPicker = false; }}
-    >{activeCamera.icon}</button>
-
-    {#if showDriverPicker}
-      <div class="fab-popup" role="menu" aria-label="Driver">
-        {#each rider.drivers as d (d.id)}
-          <button
-            type="button"
-            class="fab-popup-item"
-            class:active={d.id === activeDriver.id}
-            onclick={() => { activeDriver = d; showDriverPicker = false; }}
-          >
-            <span class="icon">{d.icon}</span>
-            <span class="label">{d.label}</span>
-          </button>
-        {/each}
-      </div>
-    {/if}
-    <button
-      type="button"
-      class="fab"
-      aria-label="Driver"
-      onclick={() => { showDriverPicker = !showDriverPicker; showCameraPicker = false; }}
-    >{activeDriver.icon}</button>
-
-    <button
-      type="button"
-      class="fab"
-      class:active={debugVisible}
-      aria-label="Debug mode"
-      onclick={() => {
-        const url = new URL(window.location.href);
-        if (debugVisible) url.searchParams.delete('debug');
-        else url.searchParams.set('debug', '1');
-        window.location.href = url.toString();
-      }}
-    >🐞</button>
-  </div>
 
   <Joystick side="left" channel="drive" scale={j.scale} />
   <Joystick side="right" channel="look" scale={j.scale} />
@@ -1056,7 +1110,7 @@
   .hud {
     position: absolute;
     top: 1rem;
-    left: 1rem;
+    left: 4.5rem;
     z-index: 1;
     color: #e6e8f2;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -1203,27 +1257,19 @@
     pointer-events: auto;
   }
 
-  /* Mode + camera-view FABs: stacked bottom-right, above the right look-stick. */
-  .fabs {
+  /* Top-left hamburger menu: Galaxies / Camera View / Drive Mode / Configs. */
+  .hamburger {
     position: fixed;
-    right: 26px;
-    bottom: 260px;
-    z-index: 36;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 0.6rem;
-    pointer-events: auto;
-  }
-
-  .fab {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    top: 1rem;
+    left: 1rem;
+    z-index: 40;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
     border: 1px solid rgba(157, 180, 255, 0.35);
     background: rgba(10, 14, 26, 0.55);
     color: #cfd8ff;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     line-height: 1;
     backdrop-filter: blur(4px);
     cursor: pointer;
@@ -1231,49 +1277,101 @@
     place-items: center;
   }
 
-  .fab:active {
+  .hamburger.active {
     background: rgba(157, 180, 255, 0.35);
+    border-color: rgba(157, 180, 255, 0.7);
   }
 
-  .fab-popup {
+  .menu {
+    position: fixed;
+    top: 1rem;
+    left: 4.5rem;
+    z-index: 39;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
-    padding: 0.35rem;
-    background: rgba(10, 14, 26, 0.55);
+    gap: 0.7rem;
+    max-width: 280px;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding: 0.8rem;
+    background: rgba(10, 14, 26, 0.7);
     border: 1px solid rgba(157, 180, 255, 0.35);
     border-radius: 1rem;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    color: #cfd8ff;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 0.85rem;
   }
 
-  .fab-popup-item {
+  .menu-section h2 {
+    margin: 0 0 0.4rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(207, 216, 255, 0.6);
+  }
+
+  .menu-row {
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.7rem;
-    border: none;
-    border-radius: 999px;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .menu-btn {
+    flex: 1 1 auto;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 0.5rem;
     background: transparent;
     color: #cfd8ff;
     font-family: inherit;
-    font-size: 0.8rem;
-    white-space: nowrap;
+    font-size: 0.75rem;
     cursor: pointer;
     touch-action: manipulation;
   }
 
-  .fab-popup-item .icon {
-    font-size: 1.1rem;
-  }
-
-  .fab-popup-item.active {
+  .menu-btn.active {
     background: rgba(157, 180, 255, 0.35);
     color: #ffffff;
   }
 
-  .fab.active {
-    background: rgba(255, 120, 90, 0.35);
-    border-color: rgba(255, 160, 130, 0.7);
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: none;
+    border-radius: 0.6rem;
+    background: transparent;
+    color: #cfd8ff;
+    font-family: inherit;
+    font-size: 0.8rem;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .menu-item.active {
+    background: rgba(157, 180, 255, 0.35);
+    color: #ffffff;
+  }
+
+  .menu-item .icon {
+    font-size: 1rem;
+  }
+
+  .menu-about {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: rgba(207, 216, 255, 0.85);
+  }
+
+  .menu-about a {
+    color: #9db4ff;
   }
 
   .climb-btn {

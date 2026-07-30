@@ -58,7 +58,7 @@
   // LIVE/STALLED readout keeps updating even while render() itself is stalled.
   let debugVisible = $state(false);
   let showMenu = $state(false);
-  let showGraphStats = $state(true);
+  let showGraphStats = $state(false);
   let showAbout = $state(false);
   let showKeybindings = $state(false);
   let showCameraPicker = $state(false);
@@ -491,6 +491,15 @@
         canvasEl.addEventListener('click', () => canvasEl?.requestPointerLock());
       }
 
+      // The liberty basemap's sprite sheet doesn't cover every POI icon it
+      // references (office/ferry_terminal/gate/etc.) — MapLibre warns on every
+      // one of those every load. A blank 1x1 fallback (as the warning itself
+      // suggests) satisfies the missing-image lookup and stops the log spam.
+      map.on('styleimagemissing', (e) => {
+        if (!map || map.hasImage(e.id)) return;
+        map.addImage(e.id, { width: 1, height: 1, data: new Uint8Array(4) });
+      });
+
       map.on('load', () => {
         if (!map) return;
 
@@ -506,10 +515,14 @@
 
         // MapLibre v5: sky is a top-level style property (map.setSky), not a
         // layer — addLayer({ type: 'sky' }) throws (unknown layer type) in v5.
+        // v5's sky spec has no "sky-type"/"sky-atmosphere-sun*" keys (those were
+        // Mapbox GL JS names) — the real keys are sky-color/horizon-color/
+        // fog-color/atmosphere-blend etc.
         map.setSky({
-          'sky-type': 'atmosphere',
-          'sky-atmosphere-sun': mapConfig.sky.sun,
-          'sky-atmosphere-sun-intensity': 15
+          'sky-color': '#88C6FC',
+          'horizon-color': '#ffffff',
+          'fog-color': '#ffffff',
+          'atmosphere-blend': 0.8
         });
 
         // --- 3D buildings + green nature (data-driven from map.json) ---
@@ -811,7 +824,12 @@
 
             // ponytail: capsule primitive character; swap for a GLB when art is ready.
             // altitude (metres, fly mode only) lifts the mesh off the terrain.
-            const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, step.altitude);
+            // step.altitude is relative to the GROUND, not sea level — without adding
+            // the actual terrain height here, ground vehicles rendered at raw z=0 sank
+            // beneath the (exaggerated) terrain mesh almost everywhere and were only
+            // visible from cameras sitting right on top of them (e.g. first-person eye).
+            const groundElevation = map.queryTerrainElevation(lngLat) ?? 0;
+            const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, groundElevation + step.altitude);
             const metersPerUnit = merc.meterInMercatorCoordinateUnits();
             merc.x += step.forwardX * step.dForward * metersPerUnit;
             merc.y += step.forwardZ * step.dForward * metersPerUnit;
@@ -904,7 +922,10 @@
 
           // Higher-altitude drivers (drone/heli/plane) need the follow-cam pulled
           // back further so the vehicle stays framed instead of filling the screen.
-          const effectiveZoom = activeCamera.zoom - altZoomOffset(activeDriver.altitudeBand.eye);
+          // Uses the LIVE altitude (hudAltitude), not the driver's static default —
+          // otherwise climbing/descending changed the readout but never zoomed the
+          // camera out/in to match, so the view looked unaffected by the controls.
+          const effectiveZoom = activeCamera.zoom - altZoomOffset(hudAltitude || activeDriver.altitudeBand.eye);
           currentVisBoost = modelVisBoost(effectiveZoom, rider.modelVis);
 
           if (!followGuard) {
@@ -1157,8 +1178,6 @@
   </div>
 
   <div class="hud">
-    <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
-    <h1>Earth</h1>
     {#if showGraphStats}
     <button
       type="button"
@@ -1273,26 +1292,6 @@
     color: #e6e8f2;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     pointer-events: none;
-  }
-
-  .hud .back {
-    display: inline-block;
-    pointer-events: auto;
-    color: #8ecbff;
-    text-decoration: none;
-    font-size: 0.85rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .hud .back:hover {
-    text-decoration: underline;
-  }
-
-  .hud h1 {
-    margin: 0;
-    font-size: 1.4rem;
-    letter-spacing: 0.06em;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   }
 
   .perf {

@@ -20,6 +20,7 @@
   let base = $state<HTMLElement>();
   let knob = $state<HTMLElement>();
   let active = false;
+  let activePointerId = -1;
   let cx = 0, cy = 0, R = 56;
   let kx = $state(0), ky = $state(0);
 
@@ -30,10 +31,20 @@
     if (!base) return;
     const r = base.getBoundingClientRect();
     cx = r.left + r.width / 2; cy = r.top + r.height / 2; R = r.width * 0.42;
-    active = true; base.setPointerCapture(e.pointerId); move(e);
+    active = true;
+    activePointerId = e.pointerId;
+    // If capture fails (InvalidStateError — e.g. a stale/already-released pointerId),
+    // this stick would otherwise keep reading pointermove events meant for a DIFFERENT
+    // element/pointer once the finger leaves its bounds, producing bogus diagonal jumps.
+    try {
+      base.setPointerCapture(e.pointerId);
+    } catch {
+      // ignore — the pointerId filter below still keeps this stick's input correct
+    }
+    move(e);
   }
   function move(e: PointerEvent) {
-    if (!active) return;
+    if (!active || e.pointerId !== activePointerId) return;
     const p = pt(e);
     let dx = p.x - cx, dy = p.y - cy;
     const d = Math.hypot(dx, dy);
@@ -50,8 +61,9 @@
       freeInput.throttle = (invertY ? -1 : 1) * (-dy / R);
     }
   }
-  function up() {
-    active = false; kx = 0; ky = 0;
+  function up(e: PointerEvent) {
+    if (e.pointerId !== activePointerId) return;
+    active = false; activePointerId = -1; kx = 0; ky = 0;
     if (channel === 'look') {
       freeInput.yawRate = 0;
       freeInput.pitchRate = 0;

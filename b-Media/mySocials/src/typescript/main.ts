@@ -1432,13 +1432,16 @@ function renderShelf(): void {
 
     const loader = new T.TextureLoader();
     loader.crossOrigin = 'anonymous';
-    const COLS = 5;
+    // 3 per row, sized to fill the ~7-wide shelf board with a small gap —
+    // was 5 skinny books per row with huge dead space between them.
+    const COLS = 3;
+    const bookMeshes: { mesh: { position: { x: number; y: number; z: number }; rotation: { y: number } }; x: number; y: number; z: number }[] = [];
     for (let row = 0; row < 4; row++) {
       const sy = shelfYs[row];
       for (let col = 0; col < COLS; col++) {
         const bk = data!.books[(row * COLS + col) % data!.books.length];
-        const bx = -2.8 + col * 1.4;
-        const by = sy + 0.38;
+        const bx = -2.1 + col * 2.1;
+        const by = sy + 0.42;
         const bz = -0.6;
         const sp = new (T as unknown as { Color: new (c: string) => object }).Color(bk.spine);
         const mats: object[] = [
@@ -1449,25 +1452,49 @@ function renderShelf(): void {
           new T.MeshLambertMaterial({ color: sp }),
           new T.MeshLambertMaterial({ color: sp }),
         ];
-        const mesh = new T.Mesh(new T.BoxGeometry(0.23, 0.68, 0.16), mats);
+        const mesh = new T.Mesh(new T.BoxGeometry(1.8, 0.76, 0.16), mats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean };
         mesh.position.set(bx, by, bz);
         mesh.castShadow = true;
-        scene.add(mesh);
+        scene.add(mesh as unknown as object);
+        bookMeshes.push({ mesh: mesh as unknown as { position: { x: number; y: number; z: number }; rotation: { y: number } }, x: bx, y: by, z: bz });
         loader.load(`https://covers.openlibrary.org/b/isbn/${bk.isbn}-M.jpg`, (tex) => {
           (tex as { minFilter: number }).minFilter = T.LinearFilter;
           mats[4] = new T.MeshLambertMaterial({ map: tex });
-          mesh.material = mats;
+          (mesh as unknown as { material: object[] }).material = mats;
         });
       }
     }
 
-    let raf = 0;
     let t = 0;
+    let focused: typeof bookMeshes[number] | null = null;
+    const Raycaster = (THREE as unknown as { Raycaster: new () => { setFromCamera(p: object, c: object): void; intersectObjects(o: object[]): { object: object }[] } }).Raycaster;
+    const Vector2 = (THREE as unknown as { Vector2: new (x: number, y: number) => object }).Vector2;
+    const raycaster = new Raycaster();
+    renderer.domElement.addEventListener('click', (ev: MouseEvent) => {
+      const r = renderer.domElement.getBoundingClientRect();
+      const ndc = new Vector2(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+      raycaster.setFromCamera(ndc, camera as unknown as object);
+      const hits = raycaster.intersectObjects(bookMeshes.map(b => b.mesh as unknown as object));
+      const hit = hits[0] && bookMeshes.find(b => b.mesh === hits[0].object);
+      focused = hit && hit !== focused ? hit : null;
+    });
+
+    const camPos = camera.position as unknown as { x: number; y: number; z: number };
     function animate() {
-      raf = requestAnimationFrame(animate);
+      requestAnimationFrame(animate);
       t += 0.004;
-      camera.position.x = Math.sin(t) * 0.5 + 1.8;
-      camera.lookAt(0, 0.35, -0.5);
+      if (focused) {
+        focused.mesh.rotation.y += 0.015;
+        camPos.x += (focused.x - camPos.x) * 0.06;
+        camPos.y += (focused.y - camPos.y) * 0.06;
+        camPos.z += (focused.z + 1.6 - camPos.z) * 0.06;
+        camera.lookAt(focused.x, focused.y, focused.z);
+      } else {
+        camPos.x = Math.sin(t) * 0.5 + 1.8;
+        camPos.y += (1.0 - camPos.y) * 0.06;
+        camPos.z += (4.8 - camPos.z) * 0.06;
+        camera.lookAt(0, 0.35, -0.5);
+      }
       renderer.render(scene, camera);
     }
     animate();
@@ -1557,11 +1584,12 @@ function renderVinyl(): void {
       scene.add(m);
     }
 
-    // Same wood-frame shelf as the book shelf (4 rows), sized for square record sleeves.
-    const wood    = new T.MeshLambertMaterial({ color: 0x5C3317 });
-    const dwood   = new T.MeshLambertMaterial({ color: 0x3d2410 });
-    const shelf   = new T.MeshLambertMaterial({ color: 0x8B6914 });
-    const floor   = new T.MeshLambertMaterial({ color: 0x3d2410 });
+    // Dark metal rack instead of the book shelf's wood, same 4-row layout.
+    const StandardMat = (THREE as unknown as { MeshStandardMaterial: new (opts: object) => object }).MeshStandardMaterial;
+    const wood    = new StandardMat({ color: 0x1c1c1e, metalness: 0.85, roughness: 0.35 });
+    const dwood   = new StandardMat({ color: 0x0e0e10, metalness: 0.85, roughness: 0.3 });
+    const shelf   = new StandardMat({ color: 0x3a3a3d, metalness: 0.9, roughness: 0.25 });
+    const floor   = new StandardMat({ color: 0x0a0a0b, metalness: 0.6, roughness: 0.5 });
 
     box(10, 0.15, 6, floor, 0, -1.5, 0, true);
     box(10, 4.5, 0.2, wood, 0, 0.5, -2.2);
@@ -1580,31 +1608,34 @@ function renderVinyl(): void {
     const loader = new T.TextureLoader();
     loader.crossOrigin = 'anonymous';
 
-    // 4 rows × 4 slots, records stood upright with their full square sleeve
-    // facing the camera (thin along z so the cover face — the pz/nz faces,
-    // sized width×height — is the one actually visible, not a sliver).
-    const COLS = 4;
+    // 3 per row (was 4 skinny sleeves with big gaps), full square sleeve
+    // facing the camera on the thin (z) axis so the cover face is the
+    // one actually visible, not a sliver. Non-cover faces are dark metal
+    // to match the rack, not the old cream card color.
+    const COLS = 3;
     const vinyls = data!.vinyls;
+    const vinylMeshes: { mesh: { rotation: { y: number } }; x: number; y: number; z: number }[] = [];
     for (let row = 0; row < 4; row++) {
       const sy = shelfYs[row];
       for (let col = 0; col < COLS; col++) {
         const v = vinyls[(row * COLS + col) % vinyls.length];
-        const vx = -2.4 + col * 1.6;
-        const vy = sy + 0.38;
+        const vx = -2.1 + col * 2.1;
+        const vy = sy + 0.44;
         const vz = -0.6;
         const vinylColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
         const vmats: object[] = [
           new T.MeshLambertMaterial({ color: vinylColor }),
           new T.MeshLambertMaterial({ color: vinylColor }),
-          new T.MeshLambertMaterial({ color: 0xf2ede8 }),
-          new T.MeshLambertMaterial({ color: 0xf2ede8 }),
+          new T.MeshLambertMaterial({ color: 0x1a1a1c }),
+          new T.MeshLambertMaterial({ color: 0x1a1a1c }),
           new T.MeshLambertMaterial({ color: vinylColor }),
           new T.MeshLambertMaterial({ color: vinylColor }),
         ];
-        const vmesh = new T.Mesh(new T.BoxGeometry(0.68, 0.68, 0.12), vmats);
+        const vmesh = new T.Mesh(new T.BoxGeometry(1.8, 0.8, 0.14), vmats) as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean; material: object[] };
         vmesh.position.set(vx, vy, vz);
         vmesh.castShadow = true;
-        scene.add(vmesh);
+        scene.add(vmesh as unknown as object);
+        vinylMeshes.push({ mesh: vmesh, x: vx, y: vy, z: vz });
         loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
           (tex as { minFilter: number }).minFilter = T.LinearFilter;
           vmats[4] = new T.MeshLambertMaterial({ map: tex });
@@ -1614,11 +1645,35 @@ function renderVinyl(): void {
     }
 
     let t = 0;
+    let focused: typeof vinylMeshes[number] | null = null;
+    const Raycaster = (THREE as unknown as { Raycaster: new () => { setFromCamera(p: object, c: object): void; intersectObjects(o: object[]): { object: object }[] } }).Raycaster;
+    const Vector2 = (THREE as unknown as { Vector2: new (x: number, y: number) => object }).Vector2;
+    const raycaster = new Raycaster();
+    renderer.domElement.addEventListener('click', (ev: MouseEvent) => {
+      const r = renderer.domElement.getBoundingClientRect();
+      const ndc = new Vector2(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
+      raycaster.setFromCamera(ndc, camera as unknown as object);
+      const hits = raycaster.intersectObjects(vinylMeshes.map(v => v.mesh as unknown as object));
+      const hit = hits[0] && vinylMeshes.find(v => v.mesh === hits[0].object);
+      focused = hit && hit !== focused ? hit : null;
+    });
+
+    const camPos = camera.position as unknown as { x: number; y: number; z: number };
     function animate() {
       requestAnimationFrame(animate);
       t += 0.004;
-      camera.position.x = Math.sin(t) * 0.5 + 1.8;
-      camera.lookAt(0, 0.35, -0.5);
+      if (focused) {
+        focused.mesh.rotation.y += 0.015;
+        camPos.x += (focused.x - camPos.x) * 0.06;
+        camPos.y += (focused.y - camPos.y) * 0.06;
+        camPos.z += (focused.z + 1.6 - camPos.z) * 0.06;
+        camera.lookAt(focused.x, focused.y, focused.z);
+      } else {
+        camPos.x = Math.sin(t) * 0.5 + 1.8;
+        camPos.y += (1.0 - camPos.y) * 0.06;
+        camPos.z += (4.8 - camPos.z) * 0.06;
+        camera.lookAt(0, 0.35, -0.5);
+      }
       renderer.render(scene, camera);
     }
     animate();

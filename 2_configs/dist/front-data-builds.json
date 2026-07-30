@@ -1147,7 +1147,7 @@
           "strava.html",
           "youtube.html",
           "icq.html",
-          "shelter.html",
+          "shelf.html",
           "vinyl.html"
         ]
       },
@@ -1164,7 +1164,7 @@
           "strava.html",
           "youtube.html",
           "icq.html",
-          "shelter.html",
+          "shelf.html",
           "vinyl.html"
         ]
       },
@@ -1185,7 +1185,7 @@
           "strava.html",
           "youtube.html",
           "icq.html",
-          "shelter.html",
+          "shelf.html",
           "vinyl.html",
           "script.js",
           "style.css"
@@ -1201,7 +1201,7 @@
           "./strava.html",
           "./youtube.html",
           "./icq.html",
-          "./shelter.html",
+          "./shelf.html",
           "./vinyl.html",
           "./script.js",
           "./style.css"

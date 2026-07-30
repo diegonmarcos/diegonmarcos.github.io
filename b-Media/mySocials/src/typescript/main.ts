@@ -1343,6 +1343,35 @@ function renderMySocials(): void {
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));
 }
 
+// Shared by renderShelf() (vertical spine text) and renderVinyl() (horizontal
+// crate/sleeve labels): draws text onto a canvas and wraps it as a CanvasTexture.
+function makeLabelTexture(THREE: Record<string, unknown>, text: string, opts: { width: number; height: number; bg: string; fg: string; vertical?: boolean; rules?: boolean }): object | null {
+  const canvas = document.createElement('canvas');
+  canvas.width = opts.width; canvas.height = opts.height;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+  ctx.fillStyle = opts.bg; ctx.fillRect(0, 0, opts.width, opts.height);
+  ctx.fillStyle = opts.fg;
+  ctx.font = `bold ${Math.floor(opts.width * 0.16)}px Georgia, serif`;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  if (opts.vertical) {
+    ctx.save();
+    ctx.translate(opts.width / 2, opts.height / 2);
+    ctx.rotate(Math.PI / 2);
+    ctx.fillText(text.slice(0, 28), 0, 0);
+    ctx.restore();
+  } else {
+    ctx.fillText(text.slice(0, 20), opts.width / 2, opts.height / 2);
+  }
+  if (opts.rules) {
+    ctx.strokeStyle = opts.fg; ctx.lineWidth = Math.max(2, opts.width * 0.02);
+    ctx.beginPath(); ctx.moveTo(opts.width * 0.15, opts.height * 0.1); ctx.lineTo(opts.width * 0.85, opts.height * 0.1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(opts.width * 0.15, opts.height * 0.9); ctx.lineTo(opts.width * 0.85, opts.height * 0.9); ctx.stroke();
+  }
+  const CanvasTexture = (THREE as unknown as { CanvasTexture: new (c: HTMLCanvasElement) => object }).CanvasTexture;
+  return new CanvasTexture(canvas);
+}
+
 // ─── SHELTER ─────────────────────────────────────────────────────────────────
 
 interface ShelfBook { title: string; author: string; isbn: string; spine: string; }
@@ -1366,7 +1395,7 @@ function renderShelf(): void {
     const W = el!.clientWidth || 900;
     const H = el!.clientHeight || 600;
 
-    const Renderer = (THREE as unknown as { WebGLRenderer: new (opts: object) => { setSize(w: number, h: number): void; setPixelRatio(r: number): void; shadowMap: { enabled: boolean }; render(s: object, c: object): void; dispose(): void; domElement: HTMLCanvasElement } }).WebGLRenderer;
+    const Renderer = (THREE as unknown as { WebGLRenderer: new (opts: object) => { setSize(w: number, h: number): void; setPixelRatio(r: number): void; shadowMap: { enabled: boolean }; toneMapping?: number; toneMappingExposure?: number; render(s: object, c: object): void; dispose(): void; domElement: HTMLCanvasElement } }).WebGLRenderer;
     const renderer = new Renderer({ antialias: true, alpha: false });
     renderer.setSize(W, H);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -1380,29 +1409,35 @@ function renderShelf(): void {
       PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void; x: number }; lookAt(x: number, y: number, z: number): void; aspect: number; updateProjectionMatrix(): void };
       AmbientLight: new (c: number, i: number) => object;
       PointLight: new (c: number, i: number, d: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean };
+      DirectionalLight: new (c: number, i: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean };
       MeshLambertMaterial: new (opts: object) => object;
       BoxGeometry: new (w: number, h: number, d: number) => object;
       Mesh: new (g: object, m: object | object[]) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean; receiveShadow: boolean; material: object | object[] };
       TextureLoader: new () => { crossOrigin: string; load(url: string, cb: (t: object) => void): void };
       LinearFilter: number;
+      ACESFilmicToneMapping: number;
       ResizeObserver: new (cb: () => void) => { observe(el: Element): void; disconnect(): void };
     };
 
     const scene = new T.Scene();
-    (scene as { background: object }).background = new T.Color(0x1a0f05);
-    (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
+    (scene as { background: object }).background = new T.Color(0x1a1208);
+    (scene as { fog: object }).fog = new T.Fog(0x1a1208, 8, 20);
 
     const camera = new T.PerspectiveCamera(55, W / H, 0.1, 100);
     camera.position.set(0.9, 1.0, 6.8);
     camera.lookAt(0.9, 0.35, -0.5);
 
-    scene.add(new T.AmbientLight(0xfff8e7, 0.6));
-    const sun = new T.PointLight(0xffddaa, 2.5, 22);
-    sun.position.set(2, 6, 5); sun.castShadow = true; scene.add(sun);
-    const fill = new T.PointLight(0xaabbff, 0.5, 15);
-    fill.position.set(-5, 2, 3); scene.add(fill);
-    const glow = new T.PointLight(0xff9944, 1.0, 6);
-    glow.position.set(0, 0.8, -0.2); scene.add(glow);
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+
+    // Warm private-library lighting: dim ambient fill, a directional "window"
+    // key light from upper-front-left, one small warm point light tucked over
+    // each shelf row (the main visual upgrade), and a cool dim rim light.
+    scene.add(new T.AmbientLight(0xffeedd, 0.25));
+    const key = new T.DirectionalLight(0xffcc88, 1.8);
+    key.position.set(-3, 5, 4); key.castShadow = true; scene.add(key);
+    const rim = new T.PointLight(0x3355aa, 0.3, 10);
+    rim.position.set(5, 3, -4); scene.add(rim);
 
     function box(w: number, h: number, d: number, mat: object, x: number, y: number, z: number, shadow = false): void {
       const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
@@ -1412,9 +1447,10 @@ function renderShelf(): void {
     }
 
     const wood    = new T.MeshLambertMaterial({ color: 0x8B6914 });
-    const dwood   = new T.MeshLambertMaterial({ color: 0x5C3317 });
+    const dwood   = new T.MeshLambertMaterial({ color: 0x3a2413 });
     const shelf   = new T.MeshLambertMaterial({ color: 0xC49A3C });
     const floor   = new T.MeshLambertMaterial({ color: 0x6B4226 });
+    const cream   = new T.MeshLambertMaterial({ color: 0xf0e6d2 });
 
     box(10, 0.15, 6, floor, 0, -1.5, 0, true);
     box(10, 4.5, 0.2, wood, 0, 0.5, -2.2);
@@ -1428,38 +1464,64 @@ function renderShelf(): void {
     const shelfYs = [-0.85, -0.05, 0.75, 1.55];
     for (const sy of shelfYs) {
       box(7, 0.07, 0.38, shelf, 0, sy, -0.6, true);
+      // Dark walnut back panel behind the row, and a lighter trim strip
+      // along the shelf's front edge.
+      box(7.1, 1.1, 0.06, dwood, 0, sy + 0.5, -1.05, false);
+      box(7, 0.04, 0.04, shelf, 0, sy - 0.015, -0.41, false);
+      // Small warm point light tucked just above/in front of this row.
+      const rowLight = new T.PointLight(0xffaa55, 0.9, 3.5);
+      rowLight.position.set(0, sy + 0.5, 0.2);
+      scene.add(rowLight);
     }
 
     const loader = new T.TextureLoader();
     loader.crossOrigin = 'anonymous';
+
+    // Deterministic 0..1 hash of a title, used to vary each book's
+    // proportions/tilt without any per-book random state.
+    function hash01(s: string): number {
+      let hv = 0;
+      for (let i = 0; i < s.length; i++) hv = (hv * 31 + s.charCodeAt(i)) >>> 0;
+      return (hv % 1000) / 1000;
+    }
+
     // 3 per row, sized to fill the ~7-wide shelf board with a small gap —
     // was 5 skinny books per row with huge dead space between them.
     const COLS = 3;
-    const bookMeshes: { mesh: { position: { x: number; y: number; z: number }; rotation: { y: number } }; x: number; y: number; z: number }[] = [];
+    const bookMeshes: { mesh: { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number } }; x: number; y: number; z: number }[] = [];
     for (let row = 0; row < 4; row++) {
       const sy = shelfYs[row];
       for (let col = 0; col < COLS; col++) {
-        const bk = data!.books[(row * COLS + col) % data!.books.length];
+        const idx = row * COLS + col;
+        const bk = data!.books[idx % data!.books.length];
         const bx = -2.1 + col * 2.1;
         const by = sy + 0.42;
         const bz = -0.6;
-        const sp = new (T as unknown as { Color: new (c: string) => object }).Color(bk.spine);
+        const h = hash01(bk.title);
+        const bw = 0.14 + h * 0.10;
+        const bh = 0.85 + h * 0.30;
+        const bd = 0.62;
+        const spineTex = makeLabelTexture(THREE, bk.title, { width: 128, height: 512, bg: bk.spine, fg: '#d4af37', vertical: true, rules: true });
+        const spineMat = spineTex ? new T.MeshLambertMaterial({ map: spineTex }) : new T.MeshLambertMaterial({ color: new (T as unknown as { Color: new (c: string) => object }).Color(bk.spine) });
         const mats: object[] = [
-          new T.MeshLambertMaterial({ color: sp }),
-          new T.MeshLambertMaterial({ color: sp }),
-          new T.MeshLambertMaterial({ color: 0xf5f0e8 }),
-          new T.MeshLambertMaterial({ color: 0xf5f0e8 }),
-          new T.MeshLambertMaterial({ color: sp }),
-          new T.MeshLambertMaterial({ color: sp }),
+          cream, // +x — replaced with cover art once it loads
+          cream, // -x
+          cream, // +y top
+          cream, // -y bottom
+          spineMat, // +z — spine, facing the camera
+          cream, // -z back
         ];
-        const mesh = new T.Mesh(new T.BoxGeometry(0.65, 1.0, 0.15), mats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { y: number }; castShadow: boolean };
-        mesh.position.set(bx, by + 0.15, bz);
+        const mesh = new T.Mesh(new T.BoxGeometry(bw, bh, bd), mats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number }; castShadow: boolean };
+        const tilt = Math.floor(h * 5) === 0;
+        const tiltSign = idx % 2 === 0 ? 1 : -1;
+        mesh.position.set(bx, by + 0.15 - (tilt ? 0.03 : 0), bz);
+        if (tilt) mesh.rotation.z = tiltSign * 0.06;
         mesh.castShadow = true;
         scene.add(mesh as unknown as object);
-        bookMeshes.push({ mesh: mesh as unknown as { position: { x: number; y: number; z: number }; rotation: { y: number } }, x: bx, y: by, z: bz });
+        bookMeshes.push({ mesh, x: bx, y: by, z: bz });
         loader.load(`https://covers.openlibrary.org/b/isbn/${bk.isbn}-M.jpg`, (tex) => {
           (tex as { minFilter: number }).minFilter = T.LinearFilter;
-          mats[4] = new T.MeshLambertMaterial({ map: tex });
+          mats[0] = new T.MeshLambertMaterial({ map: tex });
           (mesh as unknown as { material: object[] }).material = mats;
         });
       }
@@ -1483,8 +1545,16 @@ function renderShelf(): void {
     function animate() {
       requestAnimationFrame(animate);
       t += 0.004;
+      for (const b of bookMeshes) {
+        if (b === focused) {
+          b.mesh.position.z += ((b.z + 0.8) - b.mesh.position.z) * 0.08;
+          b.mesh.rotation.y += (Math.PI / 2 - b.mesh.rotation.y) * 0.08;
+        } else if (b.mesh.rotation.y !== 0 || b.mesh.position.z !== b.z) {
+          b.mesh.position.z += (b.z - b.mesh.position.z) * 0.08;
+          b.mesh.rotation.y += (0 - b.mesh.rotation.y) * 0.08;
+        }
+      }
       if (focused) {
-        focused.mesh.rotation.y += 0.015;
         camPos.x += (focused.x - camPos.x) * 0.06;
         camPos.y += (focused.y - camPos.y) * 0.06;
         camPos.z += (focused.z + 1.6 - camPos.z) * 0.06;
@@ -1553,29 +1623,38 @@ function renderVinyl(): void {
       PerspectiveCamera: new (fov: number, asp: number, n: number, f: number) => { position: { set(x: number, y: number, z: number): void; x: number }; lookAt(x: number, y: number, z: number): void; aspect: number; updateProjectionMatrix(): void };
       AmbientLight: new (c: number, i: number) => object;
       PointLight: new (c: number, i: number, d: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean };
+      SpotLight: new (c: number, i: number, d?: number, angle?: number, penumbra?: number) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean; angle: number; penumbra: number; target: { position: { set(x: number, y: number, z: number): void } } };
       MeshLambertMaterial: new (opts: object) => object;
+      MeshBasicMaterial: new (opts: object) => object;
       BoxGeometry: new (w: number, h: number, d: number) => object;
+      PlaneGeometry: new (w: number, h: number) => object;
+      CylinderGeometry: new (rt: number, rb: number, h: number, seg: number) => object;
+      Group: new () => { add(o: object): void; position: { set(x: number, y: number, z: number): void; x: number; y: number; z: number }; rotation: { x: number; y: number; z: number }; children: object[] };
       Mesh: new (g: object, m: object | object[]) => { position: { set(x: number, y: number, z: number): void }; castShadow: boolean; receiveShadow: boolean; material: object | object[] };
       TextureLoader: new () => { crossOrigin: string; load(url: string, cb: (t: object) => void): void };
       LinearFilter: number;
     };
 
     const scene = new T.Scene();
-    (scene as { background: object }).background = new T.Color(0x1a0f05);
-    (scene as { fog: object }).fog = new T.Fog(0x1a0f05, 10, 22);
+    (scene as { background: object }).background = new T.Color(0x08080c);
+    (scene as { fog: object }).fog = new T.Fog(0x08080c, 6, 18);
 
     const camera = new T.PerspectiveCamera(55, W / H, 0.1, 100);
     camera.position.set(0.9, 1.0, 6.8);
     camera.lookAt(0.9, 0.35, -0.5);
 
-    // Same warm shelf-store lighting as the book shelf, for visual parity.
-    scene.add(new T.AmbientLight(0xfff8e7, 0.6));
-    const sun = new T.PointLight(0xffddaa, 2.5, 22);
-    sun.position.set(2, 6, 5); sun.castShadow = true; scene.add(sun);
-    const fill = new T.PointLight(0xaabbff, 0.5, 15);
-    fill.position.set(-5, 2, 3); scene.add(fill);
-    const glow = new T.PointLight(0xff9944, 1.0, 6);
-    glow.position.set(0, 0.8, -0.2); scene.add(glow);
+    // Underground record-store lighting: dim cool ambient, magenta/cyan neon
+    // rim lights on either side, and a harsh bare-bulb spotlight overhead.
+    scene.add(new T.AmbientLight(0x223344, 0.2));
+    const magenta = new T.PointLight(0xff2288, 1.2, 8);
+    magenta.position.set(-3, 1, 2); scene.add(magenta);
+    const cyan = new T.PointLight(0x22ddff, 1.2, 8);
+    cyan.position.set(3, 1, 2); scene.add(cyan);
+    const bulb = new T.SpotLight(0xffffff, 2.0, 0, 0.35, 0.3);
+    bulb.position.set(0, 5, -0.5); bulb.castShadow = true;
+    bulb.target.position.set(0, 0.3, -0.6);
+    scene.add(bulb as unknown as object);
+    scene.add((bulb.target as unknown as object));
 
     function box(w: number, h: number, d: number, mat: object, x: number, y: number, z: number, shadow = false): void {
       const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
@@ -1584,14 +1663,20 @@ function renderVinyl(): void {
       scene.add(m);
     }
 
-    // Dark metal rack instead of the book shelf's wood, same 4-row layout.
+    // Dark scuffed wood crates instead of a metal rack, same 4-row layout,
+    // plus a concrete floor plane.
     const StandardMat = (THREE as unknown as { MeshStandardMaterial: new (opts: object) => object }).MeshStandardMaterial;
-    const wood    = new StandardMat({ color: 0x1c1c1e, metalness: 0.85, roughness: 0.35 });
-    const dwood   = new StandardMat({ color: 0x0e0e10, metalness: 0.85, roughness: 0.3 });
-    const shelf   = new StandardMat({ color: 0x3a3a3d, metalness: 0.9, roughness: 0.25 });
-    const floor   = new StandardMat({ color: 0x0a0a0b, metalness: 0.6, roughness: 0.5 });
+    const wood    = new StandardMat({ color: 0x1c1614, roughness: 0.9 });
+    const dwood   = new StandardMat({ color: 0x0e0c0a, roughness: 0.85 });
+    const shelf   = new StandardMat({ color: 0x2a221c, roughness: 0.8 });
+    const concrete = new StandardMat({ color: 0x2a2a2c, roughness: 0.95 });
 
-    box(10, 0.15, 6, floor, 0, -1.5, 0, true);
+    const floorPlane = new T.Mesh(new T.PlaneGeometry(12, 8), concrete) as unknown as { rotation: { x: number }; position: { set(x: number, y: number, z: number): void }; receiveShadow: boolean };
+    floorPlane.rotation.x = -Math.PI / 2;
+    floorPlane.position.set(0, -1.5, 0);
+    floorPlane.receiveShadow = true;
+    scene.add(floorPlane as unknown as object);
+
     box(10, 4.5, 0.2, wood, 0, 0.5, -2.2);
     box(0.2, 4.5, 4.5, wood, -4.2, 0.5, -0.1);
     box(0.2, 4.5, 4.5, dwood, 4.2, 0.5, -0.1);
@@ -1602,19 +1687,31 @@ function renderVinyl(): void {
 
     const shelfYs = [-0.85, -0.05, 0.75, 1.55];
     for (const sy of shelfYs) {
-      box(7, 0.07, 0.6, shelf, 0, sy, -0.6, true);
+      // Open crate: bottom + two side walls + front lip.
+      box(7, 0.07, 0.6, dwood, 0, sy, -0.6, true);
+      box(0.07, 0.4, 0.6, wood, -3.55, sy + 0.2, -0.6);
+      box(0.07, 0.4, 0.6, wood, 3.55, sy + 0.2, -0.6);
+      box(7, 0.12, 0.07, shelf, 0, sy + 0.06, -0.31);
     }
+
+    // Floating broken-neon-underline sign above the crates — pure
+    // MeshBasicMaterial so it reads as glowing regardless of scene lighting.
+    const neonMag = new T.MeshBasicMaterial({ color: 0xff2288 });
+    const neonCyan = new T.MeshBasicMaterial({ color: 0x22ddff });
+    box(1.6, 0.05, 0.05, neonMag, -1.7, 2.35, -0.5);
+    box(1.1, 0.05, 0.05, neonCyan, 0.3, 2.35, -0.5);
+    box(1.3, 0.05, 0.05, neonMag, 2.3, 2.35, -0.5);
 
     const loader = new T.TextureLoader();
     loader.crossOrigin = 'anonymous';
 
-    // 3 per row (was 4 skinny sleeves with big gaps), full square sleeve
-    // facing the camera on the thin (z) axis so the cover face is the
-    // one actually visible, not a sliver. Non-cover faces are dark metal
-    // to match the rack, not the old cream card color.
+    // Each record is a Group: a boxy sleeve (cover art on the +z face) with
+    // a vinyl disc + colored label peeking out from behind/above it.
     const COLS = 3;
     const vinyls = data!.vinyls;
-    const vinylMeshes: { mesh: { rotation: { y: number } }; x: number; y: number; z: number }[] = [];
+    const sleeveBack = new StandardMat({ color: 0x111113, roughness: 0.8 });
+    const discMat = new StandardMat({ color: 0x0a0a0a, roughness: 0.35 });
+    const vinylMeshes: { group: { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number } }; sleeve: { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void } }; disc: { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number } }; x: number; y: number; z: number }[] = [];
     for (let row = 0; row < 4; row++) {
       const sy = shelfYs[row];
       for (let col = 0; col < COLS; col++) {
@@ -1622,39 +1719,59 @@ function renderVinyl(): void {
         const vx = -2.1 + col * 2.1;
         const vy = sy + 0.44;
         const vz = -0.6;
-        const vinylColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
-        // A record is a flat disk, not a box: CylinderGeometry with the two
-        // circular caps facing the camera (mats[1]=top cap gets the cover art).
-        const vmats: object[] = [
-          new T.MeshLambertMaterial({ color: 0x111113 }),
-          new T.MeshLambertMaterial({ color: vinylColor }),
-          new T.MeshLambertMaterial({ color: 0x111113 }),
-        ];
-        const vmesh = new T.Mesh(new T.CylinderGeometry(0.55, 0.55, 0.06, 48), vmats) as unknown as { position: { set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number }; castShadow: boolean; material: object[] };
-        vmesh.position.set(vx, vy, vz);
-        vmesh.rotation.x = Math.PI / 2;
-        vmesh.castShadow = true;
-        scene.add(vmesh as unknown as object);
-        vinylMeshes.push({ mesh: vmesh as unknown as { rotation: { y: number } }, x: vx, y: vy, z: vz });
+
+        const group = new T.Group() as unknown as { add(o: object): void; position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number } };
+        group.position.set(vx, vy, vz);
+        group.rotation.x = 0.12;
+
+        const sleeveMats: object[] = [sleeveBack, sleeveBack, sleeveBack, sleeveBack, sleeveBack, sleeveBack];
+        const sleeve = new T.Mesh(new T.BoxGeometry(1.0, 1.0, 0.04), sleeveMats) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; castShadow: boolean; material: object[] };
+        sleeve.position.set(0, 0, 0);
+        sleeve.castShadow = true;
+        group.add(sleeve as unknown as object);
+
+        const disc = new T.Mesh(new T.CylinderGeometry(0.55, 0.55, 0.03, 64), discMat) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number; y: number; z: number }; castShadow: boolean };
+        disc.position.set(0, 0.12, -0.05);
+        disc.rotation.x = Math.PI / 2;
+        disc.castShadow = true;
+        group.add(disc as unknown as object);
+
+        const labelColor = new (T as unknown as { Color: new (c: string) => object }).Color(v.color);
+        const label = new T.Mesh(new T.CylinderGeometry(0.18, 0.18, 0.032, 24), new T.MeshLambertMaterial({ color: labelColor })) as unknown as { position: { x: number; y: number; z: number; set(x: number, y: number, z: number): void }; rotation: { x: number } };
+        label.position.set(0, 0.12, -0.03);
+        label.rotation.x = Math.PI / 2;
+        group.add(label as unknown as object);
+
+        // Bottom-edge label strip on the sleeve using the record's own
+        // title (this data has no separate genre/section field).
+        const stripTex = makeLabelTexture(THREE, v.title, { width: 256, height: 48, bg: '#000000', fg: v.color, vertical: false, rules: false });
+        if (stripTex) {
+          const strip = new T.Mesh(new T.BoxGeometry(0.9, 0.09, 0.01), new T.MeshBasicMaterial({ map: stripTex })) as unknown as { position: { set(x: number, y: number, z: number): void } };
+          strip.position.set(0, -0.47, 0.025);
+          group.add(strip as unknown as object);
+        }
+
+        scene.add(group as unknown as object);
+        vinylMeshes.push({ group, sleeve, disc, x: vx, y: vy, z: vz });
         loader.load(`https://coverartarchive.org/release/${v.mbid}/front-250`, (tex) => {
           (tex as { minFilter: number }).minFilter = T.LinearFilter;
-          vmats[1] = new T.MeshLambertMaterial({ map: tex });
-          vmesh.material = vmats;
+          sleeveMats[4] = new T.MeshLambertMaterial({ map: tex });
+          sleeve.material = sleeveMats;
         });
       }
     }
 
     let t = 0;
     let focused: typeof vinylMeshes[number] | null = null;
-    const Raycaster = (THREE as unknown as { Raycaster: new () => { setFromCamera(p: object, c: object): void; intersectObjects(o: object[]): { object: object }[] } }).Raycaster;
+    const Raycaster = (THREE as unknown as { Raycaster: new () => { setFromCamera(p: object, c: object): void; intersectObjects(o: object[], recursive?: boolean): { object: object }[] } }).Raycaster;
     const Vector2 = (THREE as unknown as { Vector2: new (x: number, y: number) => object }).Vector2;
     const raycaster = new Raycaster();
     renderer.domElement.addEventListener('click', (ev: MouseEvent) => {
       const r = renderer.domElement.getBoundingClientRect();
       const ndc = new Vector2(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1);
       raycaster.setFromCamera(ndc, camera as unknown as object);
-      const hits = raycaster.intersectObjects(vinylMeshes.map(v => v.mesh as unknown as object));
-      const hit = hits[0] && vinylMeshes.find(v => v.mesh === hits[0].object);
+      const hits = raycaster.intersectObjects(vinylMeshes.map(v => v.group as unknown as object), true);
+      const hit = hits[0] && vinylMeshes.find(v => (v.group as unknown as { children: object[] }).children.includes(hits[0].object) || v.group === hits[0].object);
       focused = hit && hit !== focused ? hit : null;
     });
 
@@ -1662,8 +1779,17 @@ function renderVinyl(): void {
     function animate() {
       requestAnimationFrame(animate);
       t += 0.004;
+      for (const vm of vinylMeshes) {
+        if (vm === focused) {
+          vm.sleeve.position.z += (0.4 - vm.sleeve.position.z) * 0.08;
+          vm.disc.position.x += (0.5 - vm.disc.position.x) * 0.08;
+          vm.disc.rotation.z += 0.12;
+        } else {
+          vm.sleeve.position.z += (0 - vm.sleeve.position.z) * 0.08;
+          vm.disc.position.x += (0 - vm.disc.position.x) * 0.08;
+        }
+      }
       if (focused) {
-        (focused.mesh as unknown as { rotation: { z: number } }).rotation.z += 0.015;
         camPos.x += (focused.x - camPos.x) * 0.06;
         camPos.y += (focused.y - camPos.y) * 0.06;
         camPos.z += (focused.z + 1.6 - camPos.z) * 0.06;

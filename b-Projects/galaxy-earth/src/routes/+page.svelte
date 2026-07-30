@@ -60,6 +60,8 @@
   let showGraphStats = $state(true);
   let showAbout = $state(false);
   let showKeybindings = $state(false);
+  let showCameraPicker = $state(false);
+  let showDriverPicker = $state(false);
   let terrain3d = $state(true);
   let mapZoomIn = () => {};
   let mapZoomOut = () => {};
@@ -1092,6 +1094,62 @@
     </nav>
   {/if}
 
+  <div class="fabs">
+    <div class="fab-anchor">
+      {#if showCameraPicker}
+        <div class="fab-popup" role="menu" aria-label="Camera view">
+          {#each rider.cameras as c (c.id)}
+            <button
+              type="button"
+              class="fab-popup-item"
+              class:active={c.id === activeCamera.id}
+              onclick={() => {
+                activeCamera = c;
+                showCameraPicker = false;
+              }}
+            ><span class="icon">{c.icon}</span> {c.label}</button>
+          {/each}
+        </div>
+      {/if}
+      <button
+        type="button"
+        class="fab"
+        aria-label="Camera view"
+        onclick={() => {
+          showCameraPicker = !showCameraPicker;
+          showDriverPicker = false;
+        }}
+      >{activeCamera.icon}</button>
+    </div>
+
+    <div class="fab-anchor">
+      {#if showDriverPicker}
+        <div class="fab-popup" role="menu" aria-label="Driver">
+          {#each rider.drivers as d (d.id)}
+            <button
+              type="button"
+              class="fab-popup-item"
+              class:active={d.id === activeDriver.id}
+              onclick={() => {
+                activeDriver = d;
+                showDriverPicker = false;
+              }}
+            ><span class="icon">{d.icon}</span> {d.label}</button>
+          {/each}
+        </div>
+      {/if}
+      <button
+        type="button"
+        class="fab"
+        aria-label="Driver mode"
+        onclick={() => {
+          showDriverPicker = !showDriverPicker;
+          showCameraPicker = false;
+        }}
+      >{activeDriver.icon}</button>
+    </div>
+  </div>
+
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
@@ -1466,6 +1524,81 @@
 
   .menu-about a {
     color: #9db4ff;
+  }
+
+  /* Quick-access FABs: stacked bottom-right, above the right look-stick. */
+  .fabs {
+    position: fixed;
+    right: 26px;
+    bottom: 260px;
+    z-index: 36;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+    pointer-events: auto;
+  }
+
+  .fab-anchor {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+
+  .fab {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    background: rgba(10, 14, 26, 0.55);
+    color: #cfd8ff;
+    font-size: 1.4rem;
+    line-height: 1;
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+
+  .fab:active {
+    background: rgba(157, 180, 255, 0.35);
+  }
+
+  .fab-popup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 0.35rem;
+    background: rgba(10, 14, 26, 0.55);
+    border: 1px solid rgba(157, 180, 255, 0.35);
+    border-radius: 1rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .fab-popup-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.7rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #cfd8ff;
+    font-family: inherit;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .fab-popup-item .icon {
+    font-size: 1.1rem;
+  }
+
+  .fab-popup-item.active {
+    background: rgba(157, 180, 255, 0.35);
+    color: #ffffff;
   }
 
   .climb-btn {

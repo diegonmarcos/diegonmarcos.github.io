@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 // ponytail: mirrors _galaxy-engine/test/locomotion.test.mjs — node 22's unflagged
 // type-stripping resolves the .ts import directly, no --experimental-strip-types needed.
-import { stepDrive, modelVisBoost } from '../../_galaxy-engine/src/locomotion.ts';
+import { stepDrive } from '../../_galaxy-engine/src/locomotion.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const map = JSON.parse(
@@ -12,7 +12,7 @@ const map = JSON.parse(
 
 const r = map.rider;
 
-// --- drivers (vehicles = physics; speed profile min/avg/max) ---
+// --- drivers (vehicles = physics; speed profile idle/min/cruise/max) ---
 if (!Array.isArray(r.drivers) || r.drivers.length === 0) {
   throw new Error('map.json rider.drivers must be a non-empty array');
 }
@@ -25,18 +25,43 @@ for (const d of r.drivers) {
     throw new Error(`map.json rider.drivers entry needs string id+label: ${JSON.stringify(d)}`);
   }
   const s = d.speed;
-  if (!s || typeof s.min !== 'number' || typeof s.max !== 'number' || s.max < s.min) {
-    throw new Error(`map.json rider.drivers["${d.id}"].speed needs numeric min<=max`);
+  if (
+    !s ||
+    typeof s.idle !== 'number' ||
+    typeof s.min !== 'number' ||
+    typeof s.cruise !== 'number' ||
+    typeof s.max !== 'number' ||
+    !(s.min <= s.cruise && s.cruise <= s.max)
+  ) {
+    throw new Error(`map.json rider.drivers["${d.id}"].speed needs numeric idle/min/cruise/max with min<=cruise<=max`);
   }
-  if (typeof d.turn !== 'number') {
-    throw new Error(`map.json rider.drivers["${d.id}"].turn must be a number`);
+  if ('avg' in s) {
+    throw new Error(`map.json rider.drivers["${d.id}"].speed.avg must be absent (replaced by cruise)`);
+  }
+  if (typeof d.turnRate !== 'number') {
+    throw new Error(`map.json rider.drivers["${d.id}"].turnRate must be a number`);
+  }
+  if ('turn' in d) {
+    throw new Error(`map.json rider.drivers["${d.id}"].turn must be absent (renamed to turnRate)`);
   }
   if (!d.model || (d.model.glb !== null && typeof d.model.glb !== 'string')) {
     throw new Error(`map.json rider.drivers["${d.id}"].model.glb must be a string or null`);
   }
-  const ab = d.altitudeBand;
-  if (!ab || typeof ab.eye !== 'number' || typeof ab.cruise !== 'number' || typeof ab.ceiling !== 'number') {
-    throw new Error(`map.json rider.drivers["${d.id}"].altitudeBand needs numeric eye/cruise/ceiling`);
+  const a = d.altitude;
+  if (
+    !a ||
+    (a.model !== 'elevation' && a.model !== 'zoom') ||
+    typeof a.default !== 'number' ||
+    typeof a.min !== 'number' ||
+    typeof a.max !== 'number' ||
+    typeof a.climbRate !== 'number' ||
+    typeof a.eyeHeight !== 'number' ||
+    !(a.min <= a.default && a.default <= a.max)
+  ) {
+    throw new Error(`map.json rider.drivers["${d.id}"].altitude needs model "elevation"|"zoom" + numeric default/min/max/climbRate/eyeHeight with min<=default<=max`);
+  }
+  if ('altitudeBand' in d || 'lift' in d || 'maxAlt' in d) {
+    throw new Error(`map.json rider.drivers["${d.id}"] must not have altitudeBand/lift/maxAlt (replaced by altitude)`);
   }
 }
 
@@ -71,6 +96,12 @@ for (const c of r.cameras) {
   if (c.bearingOffset != null && typeof c.bearingOffset !== 'number') {
     throw new Error(`map.json rider.cameras["${c.id}"].bearingOffset must be a number`);
   }
+  if (typeof c.modelBoost !== 'number') {
+    throw new Error(`map.json rider.cameras["${c.id}"].modelBoost must be a number`);
+  }
+  if (typeof c.targetLift !== 'number' && c.targetLift !== 'eye') {
+    throw new Error(`map.json rider.cameras["${c.id}"].targetLift must be a number or "eye"`);
+  }
 }
 const camIds = new Set(r.cameras.map((c) => c.id));
 if (typeof r.defaultCamera !== 'string' || !camIds.has(r.defaultCamera)) {
@@ -85,10 +116,15 @@ if (!r.joystick.look || typeof r.joystick.look.yawRate !== 'number' || typeof r.
   throw new Error('map.json rider.joystick.look needs numeric yawRate + pitchRate');
 }
 
-// --- an aerial driver must carry lift>0; airplane must never stall (speed.min>0) ---
+// --- rider.modelVis must be absent (replaced by cameras[].modelBoost) ---
+if ('modelVis' in r) {
+  throw new Error('map.json rider.modelVis must be absent (replaced by cameras[].modelBoost)');
+}
+
+// --- an aerial driver must carry climbRate>0; airplane must never stall (speed.min>0) ---
 const airplane = r.drivers.find((d) => d.id === 'airplane');
-if (!airplane || !(airplane.lift > 0)) {
-  throw new Error('map.json rider.drivers airplane entry must have lift > 0');
+if (!airplane || !(airplane.altitude.climbRate > 0)) {
+  throw new Error('map.json rider.drivers airplane entry must have altitude.climbRate > 0');
 }
 if (!(airplane.speed.min > 0)) {
   throw new Error('map.json rider.drivers airplane speed.min must be > 0 (never stalls)');
@@ -102,7 +138,7 @@ if (!(airplane.speed.min > 0)) {
   const step = stepDrive(
     state,
     { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
-    { min: d.speed.min, avg: d.speed.avg, max: d.speed.max, turn: d.turn, accel: d.accel, deadzone: r.joystick.deadzone },
+    { min: d.speed.min, cruise: d.speed.cruise, max: d.speed.max, turn: d.turnRate, accel: d.accel, deadzone: r.joystick.deadzone },
     1
   );
   if (!(step.dForward > 0)) {
@@ -146,16 +182,13 @@ if (!(airplane.speed.min > 0)) {
   }
 }
 
-// model visibility boost: far/top-down cameras must magnify the metric model so it
-// stays visible; close modes keep life-size; space view is clamped, not exploded.
+// model boost: far/top-down cameras must magnify the metric model so it stays
+// visible; close modes keep life-size (modelBoost:1); god-view boosts most.
 {
-  const mv = r.modelVis;
-  if (!mv || typeof mv.refZoom !== 'number') throw new Error('map.json rider.modelVis needs refZoom/minBoost/maxBoost');
-  const godZoom = r.cameras.find((c) => c.id === 'god').zoom;
-  const closeZoom = r.cameras.find((c) => c.id === 'fps').zoom;
-  if (!(modelVisBoost(godZoom, mv) > 4)) throw new Error('god-view must magnify model >4x so it is not sub-pixel');
-  if (modelVisBoost(closeZoom, mv) !== mv.minBoost) throw new Error('fps/close cameras must keep model life-size (minBoost)');
-  if (modelVisBoost(-100, mv) !== mv.maxBoost) throw new Error('extreme zoom-out must clamp to maxBoost');
+  const godBoost = r.cameras.find((c) => c.id === 'god').modelBoost;
+  const fpsBoost = r.cameras.find((c) => c.id === 'fps').modelBoost;
+  if (!(godBoost > fpsBoost)) throw new Error('god-view modelBoost must exceed fps modelBoost so distant model stays visible');
+  if (fpsBoost !== 1) throw new Error('fps close camera must keep model life-size (modelBoost===1)');
 }
 
 // speed differential: a faster driver must advance more per frame than a slower
@@ -167,13 +200,13 @@ if (!(airplane.speed.min > 0)) {
   const stepSlow = stepDrive(
     { heading: 0 },
     { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
-    { min: walker.speed.min, avg: walker.speed.avg, max: walker.speed.max, turn: walker.turn, accel: walker.accel, deadzone: r.joystick.deadzone },
+    { min: walker.speed.min, cruise: walker.speed.cruise, max: walker.speed.max, turn: walker.turnRate, accel: walker.accel, deadzone: r.joystick.deadzone },
     1
   );
   const stepFast = stepDrive(
     { heading: 0 },
     { moveX: 0, moveY: 1, camBearing: 0, climb: 0 },
-    { min: flyer.speed.min, avg: flyer.speed.avg, max: flyer.speed.max, turn: flyer.turn, accel: flyer.accel, deadzone: r.joystick.deadzone },
+    { min: flyer.speed.min, cruise: flyer.speed.cruise, max: flyer.speed.max, turn: flyer.turnRate, accel: flyer.accel, deadzone: r.joystick.deadzone },
     1
   );
   if (!(stepFast.dForward > stepSlow.dForward)) {
@@ -181,8 +214,8 @@ if (!(airplane.speed.min > 0)) {
   }
 }
 
-// climb / altitude: a flying driver (lift>0) must gain altitude on climb=1,
-// lose it (clamped at floor 0) on climb=-1, and clamp at maxAlt under sustained climb.
+// climb / altitude: a flying driver (climbRate>0) must gain altitude on climb=1,
+// lose it (clamped at floor min) on climb=-1, and clamp at max under sustained climb.
 {
   const flyer = r.drivers.find((x) => x.id === 'drone');
 
@@ -190,35 +223,35 @@ if (!(airplane.speed.min > 0)) {
   const upStep = stepDrive(
     upState,
     { moveX: 0, moveY: 0, camBearing: 0, climb: 1 },
-    { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.lift, maxAlt: flyer.maxAlt },
+    { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.altitude.climbRate, minAlt: flyer.altitude.min, maxAlt: flyer.altitude.max },
     1
   );
-  if (upStep.altitude !== flyer.lift || !(upStep.altitude > 0)) {
-    throw new Error('stepDrive: climb=1 must raise altitude by lift*dt from a fresh state');
+  if (upStep.altitude !== flyer.altitude.climbRate || !(upStep.altitude > 0)) {
+    throw new Error('stepDrive: climb=1 must raise altitude by climbRate*dt from a fresh state');
   }
 
   const downState = { heading: 0, altitude: 5 };
   const downStep = stepDrive(
     downState,
     { moveX: 0, moveY: 0, camBearing: 0, climb: -1 },
-    { min: flyer.speed.min, max: flyer.speed.max, lift: 100, maxAlt: flyer.maxAlt },
+    { min: flyer.speed.min, max: flyer.speed.max, lift: 100, minAlt: flyer.altitude.min, maxAlt: flyer.altitude.max },
     1
   );
-  if (downStep.altitude !== 0) {
-    throw new Error('stepDrive: climb=-1 must decrease altitude and clamp at floor 0');
+  if (downStep.altitude !== flyer.altitude.min) {
+    throw new Error('stepDrive: climb=-1 must decrease altitude and clamp at floor min');
   }
 
   const clampState = { heading: 0, altitude: 0 };
-  const iterations = Math.ceil(flyer.maxAlt / flyer.lift) + 5;
+  const iterations = Math.ceil(flyer.altitude.max / flyer.altitude.climbRate) + 5;
   for (let i = 0; i < iterations; i++) {
     stepDrive(
       clampState,
       { moveX: 0, moveY: 0, camBearing: 0, climb: 1 },
-      { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.lift, maxAlt: flyer.maxAlt },
+      { min: flyer.speed.min, max: flyer.speed.max, lift: flyer.altitude.climbRate, minAlt: flyer.altitude.min, maxAlt: flyer.altitude.max },
       1
     );
   }
-  if (clampState.altitude !== flyer.maxAlt) {
+  if (clampState.altitude !== flyer.altitude.max) {
     throw new Error('stepDrive: repeated climb=1 must clamp altitude at maxAlt, never exceed it');
   }
 }

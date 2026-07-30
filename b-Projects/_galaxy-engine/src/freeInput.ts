@@ -12,6 +12,47 @@ export const freeInput = {
   moveX: 0,      // -1..1 camera-relative left-stick vector, right = +X (drive channel)
   moveY: 0,      // -1..1 camera-relative left-stick vector, up = +Y (drive channel)
   galaxy: 0,     // 0 = ground .. 1 = zoomed all the way out to the Milky Way view (set by FreeRig)
-  climb: 0,      // -1..1 fly vertical (up/down) — written by the earth fly-mode climb control; 0 = no effect
+  climb: 0,      // -1..1 fly vertical (up/down); kept for x1 source-compat — see climbTotal()
+  climbKeys: 0,    // -1..1 keyboard-held climb (e.g. Space/C)
+  climbPointer: 0, // -1..1 on-screen climb button(s)
+  climbStick: 0,   // -1..1 stick-driven climb (if a joystick ever maps to it)
   active: false
 };
+
+// Keyboard and the on-screen climb buttons used to share one `climb` field, so
+// releasing either zeroed both, and a pointerleave mid-hold zeroed it while the
+// finger was still down. Each input source now owns its own field; combine here.
+export function climbTotal(): number {
+  const total = freeInput.climbKeys + freeInput.climbPointer + freeInput.climbStick;
+  return Math.max(-1, Math.min(1, total));
+}
+
+// Per-instance channel ownership. Two Joystick instances can be mounted for the
+// same logical channel across an HMR reload / route transition; without this,
+// the stale instance keeps writing over the live one's output. Each Joystick
+// mints a Symbol, claims its channel on mount, releases on destroy, and
+// `writeChannel` no-ops unless it currently owns the channel.
+export const channelOwners: Record<string, symbol | null> = {
+  move: null,
+  look: null,
+  drive: null
+};
+
+export function claimChannel(channel: string): symbol {
+  const owner = Symbol(channel);
+  if (channelOwners[channel]) {
+    // Double-claim: previous owner didn't release (HMR / leaked instance).
+    // Non-fatal — the new claim simply wins; warn so it's visible in dev.
+    console.warn(`freeInput: channel "${channel}" claimed while already owned`);
+  }
+  channelOwners[channel] = owner;
+  return owner;
+}
+
+export function releaseChannel(channel: string, owner: symbol): void {
+  if (channelOwners[channel] === owner) channelOwners[channel] = null;
+}
+
+export function ownsChannel(channel: string, owner: symbol): boolean {
+  return channelOwners[channel] === owner;
+}

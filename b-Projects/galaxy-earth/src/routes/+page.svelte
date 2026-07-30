@@ -3,15 +3,20 @@
   import * as THREE from 'three';
   import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import mapConfig from '$lib/data/map.json';
-  import { freeInput } from '$engine/freeInput';
-  import { stepDrive, modelVisBoost } from '$engine/locomotion';
+  import { freeInput, climbTotal } from '$engine/freeInput';
+  import { stepDrive } from '$engine/locomotion';
   import Joystick from '$engine/Joystick.svelte';
 
-  // Camera altitude compensation: the higher a driver's eye-altitude (drone/heli/plane),
-  // the more the follow-cam needs to zoom OUT to keep the vehicle framed, else it's a
-  // postage stamp against the terrain. Pure fn — easy to unit-test / tune in isolation.
-  const altZoomOffset = (eye: number) =>
-    Math.max(0, Math.min(Math.log2(Math.max(eye, 1)) - 1, 8));
+  // Speed unit boundary: map.json speeds are km/h (matches the HUD readout);
+  // stepDrive works in m/s, so this is the single place the conversion happens.
+  const KMH = 1 / 3.6;
+
+  // Per-driver camera zoom: flying drivers keep high cruise altitudes (drone
+  // 120m, heli 300m, plane 1200m) so they need a wider preset per camera to
+  // stay framed — data-driven override, never derived from live altitude.
+  function cameraZoomFor(driver: any, cam: any): number {
+    return driver.cameraZoom?.[cam.id] ?? cam.zoom;
+  }
 
   let mapContainer: HTMLDivElement;
 
@@ -160,16 +165,17 @@
   // only `speed` resets on a driver switch so momentum doesn't teleport.
   const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
   $effect(() => {
-    // Reset speed AND seed altitude to this driver's own default (cruise) on every
-    // switch — altitude otherwise carries over from stepDrive/stepRide's `state`
-    // object, so e.g. landing a drone at 120m and switching to Walk left the
-    // capsule stuck "flying" at 120m instead of snapping to the ground.
-    ride.speed = 0;
-    ride.altitude = activeDriver.altitudeBand?.cruise ?? 0;
-    console.log(`[rider] driver -> '${activeDriver.id}' (cruise altitude ${ride.altitude}m, ceiling ${activeDriver.altitudeBand?.ceiling ?? 0}m)`);
+    // Reset speed AND seed altitude to this driver's own default on every switch
+    // (hard snap, no interpolation) — altitude otherwise carries over from
+    // stepDrive's `state` object, so e.g. landing a drone at 120m and switching
+    // to Walk left the capsule stuck "flying" at 120m instead of on the ground.
+    const a: any = (activeDriver as any).altitude;
+    ride.altitude = clamp(a.default, a.min, a.max);
+    ride.speed = ((activeDriver as any).speed.idle ?? 0) * KMH;
+    console.log(`[rider] driver -> '${activeDriver.id}' (default altitude ${ride.altitude}m, range [${a.min},${a.max}]m)`);
   });
   $effect(() => {
-    console.log(`[rider] camera -> '${activeCamera.id}' (pitch ${activeCamera.pitch}, zoom ${activeCamera.zoom})`);
+    console.log(`[rider] camera -> '${activeCamera.id}' (pitch ${activeCamera.pitch}, zoom ${cameraZoomFor(activeDriver, activeCamera)})`);
   });
 
   function clamp(v: number, lo: number, hi: number) {
@@ -317,7 +323,7 @@
       if ([...heldKeys].some((k) => keys.down.includes(k))) climb -= 1;
       freeInput.moveX = moveX;
       freeInput.moveY = moveY;
-      freeInput.climb = climb;
+      freeInput.climbKeys = climb;
     }
     function matchAny(list: string[], key: string) {
       return list.includes(key);
@@ -334,38 +340,55 @@
         return;
       }
       const keys = rider.keys;
-      const key = e.key;
+      // Normalize: a single-char key (e.g. 'w') can arrive as 'W' once Shift is
+      // also held, so keydown's 'w' and keyup's 'W' silently desync — held-key
+      // tracking must key off the same normalized string on both ends.
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
       const isHeld =
-        matchAny(keys.forward, key) || matchAny(keys.back, key) ||
-        matchAny(keys.left, key) || matchAny(keys.right, key) ||
-        matchAny(keys.up, key) || matchAny(keys.down, key);
+        matchAny(keys.forward, k) || matchAny(keys.back, k) ||
+        matchAny(keys.left, k) || matchAny(keys.right, k) ||
+        matchAny(keys.up, k) || matchAny(keys.down, k);
       const isDiscrete =
-        matchAny(keys.cameraNext, key) || matchAny(keys.cameraPrev, key) ||
-        matchAny(keys.driverNext, key) || matchAny(keys.driverPrev, key);
+        matchAny(keys.cameraNext, k) || matchAny(keys.cameraPrev, k) ||
+        matchAny(keys.driverNext, k) || matchAny(keys.driverPrev, k);
       if (!isHeld && !isDiscrete) return;
       e.preventDefault();
       if (isHeld) {
-        heldKeys.add(key);
+        heldKeys.add(k);
         recomputeMoveFromKeys();
       }
       if (isDiscrete && !e.repeat) {
-        if (matchAny(keys.cameraNext, key)) activeCamera = cycle(rider.cameras, activeCamera, 1);
-        else if (matchAny(keys.cameraPrev, key)) activeCamera = cycle(rider.cameras, activeCamera, -1);
-        else if (matchAny(keys.driverNext, key)) activeDriver = cycle(rider.drivers, activeDriver, 1);
-        else if (matchAny(keys.driverPrev, key)) activeDriver = cycle(rider.drivers, activeDriver, -1);
+        if (matchAny(keys.cameraNext, k)) activeCamera = cycle(rider.cameras, activeCamera, 1);
+        else if (matchAny(keys.cameraPrev, k)) activeCamera = cycle(rider.cameras, activeCamera, -1);
+        else if (matchAny(keys.driverNext, k)) activeDriver = cycle(rider.drivers, activeDriver, 1);
+        else if (matchAny(keys.driverPrev, k)) activeDriver = cycle(rider.drivers, activeDriver, -1);
       }
     }
     function onKeyUp(e: KeyboardEvent) {
       const keys = rider.keys;
-      const key = e.key;
-      if (heldKeys.has(key)) {
+      const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (heldKeys.has(k)) {
         e.preventDefault();
-        heldKeys.delete(key);
+        heldKeys.delete(k);
+        recomputeMoveFromKeys();
+      }
+    }
+    // A held key with no matching keyup (alt-tab, OS grabbing focus, devtools)
+    // leaves heldKeys stuck forever — clear on blur and on tab-hide.
+    function onWindowBlur() {
+      heldKeys.clear();
+      recomputeMoveFromKeys();
+    }
+    function onVisibilityChange() {
+      if (document.hidden) {
+        heldKeys.clear();
         recomputeMoveFromKeys();
       }
     }
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
+    window.addEventListener('blur', onWindowBlur);
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     // --- Debug overlay (F8 toggles via onKeyDown above; ?debug=1 sets initial state) ---
     debugVisible = new URLSearchParams(window.location.search).get('debug') === '1';
@@ -402,6 +425,15 @@
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('pointerlockchange', onPointerLockChange);
     }
+
+    // On-screen climb buttons: element-only pointerup/leave/cancel handlers are
+    // the stuck-input bug (lost capture, finger dragged off, OS gesture steals
+    // the pointer) — a window-level fallback guarantees climbPointer zeroes.
+    function onClimbPointerUp() {
+      freeInput.climbPointer = 0;
+    }
+    window.addEventListener('pointerup', onClimbPointerUp);
+    window.addEventListener('pointercancel', onClimbPointerUp);
 
     // --- P3b: sky-dome overlay (look up past the horizon into sky/stars) ---
     // Fully independent renderer/scene/camera from the map's CustomLayer — a plain
@@ -497,6 +529,12 @@
         pitch: mapConfig.pitch,
         bearing: mapConfig.bearing
       });
+
+      // Real 3D altitude via the `elevation` camera option instead of zoom-faking:
+      // center elevation is auto-clamped to terrain by default, so without this
+      // call `elevation` in jumpTo is a silent no-op (the single critical gotcha).
+      (map as any).setCenterClampedToGround(false);
+      map.setMaxPitch(look.mapMaxPitch);
 
       mapZoomIn = () => map?.zoomIn();
       mapZoomOut = () => map?.zoomOut();
@@ -671,9 +709,21 @@
         }
         let natureScene: THREE.Scene;
         let treesMesh: THREE.InstancedMesh;
+        // Single authoritative clock for the whole rig — frame() below is the only
+        // dt owner. render(gl, args), by contrast, is a pure DRAW callback: MapLibre
+        // may call it 0..n times per frame, so integrating physics there (the old
+        // design) structurally couldn't be trusted as "once per frame".
         let clockPrev = 0;
-        let followGuard = false;
-        let currentVisBoost = 1;
+        // Plain closure snapshot the draw-only render() reads from — never $state,
+        // never touched by render() itself.
+        const frameState = {
+          lngLat: [rider.start[0], rider.start[1]] as [number, number],
+          heading: 0,
+          agl: 0,
+          groundElev: 0,
+          vis: 1
+        };
+        let loggedCameraOnce = '';
         const perfSamples = new Array(60).fill(16.7);
         let perfIdx = 0;
         let fpsEma = 60;
@@ -796,12 +846,10 @@
           render(gl: WebGLRenderingContext, args: { defaultProjectionData: { mainMatrix: number[] } }) {
             renderFireCount++;
             lastRenderTime = performance.now();
-            // BUGFIX: the whole body is wrapped in try/catch so a single bad frame
-            // can never permanently kill rendering. This render() re-schedules itself
-            // via map.triggerRepaint() at the very end — if it threw before reaching
-            // that line the self-scheduling chain died forever, and joystick/keyboard
-            // input silently stopped being consumed (see tick()'s own unconditional
-            // triggerRepaint() below, which is the belt-and-suspenders fix for that).
+            // BUGFIX: the whole body stays wrapped in try/catch so a single bad
+            // draw can never permanently kill rendering — but this is now harmless
+            // either way, because frame()'s own rAF loop (below) keeps ticking and
+            // repainting even if a draw throws; render() no longer self-schedules.
             try {
             if (!map) return;
             // MapLibre v5 CustomLayerInterface.render(gl, args) exposes the projection
@@ -814,87 +862,19 @@
               return;
             }
 
-            const now = performance.now();
-            const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
-            clockPrev = now;
-
-            if (dt > 0) {
-              const ms = dt * 1000;
-              frameMs = ms;
-              fpsEma = fpsEma + (1000 / ms - fpsEma) * 0.1;
-              fps = fpsEma;
-              perfSamples[perfIdx % perfSamples.length] = ms;
-              perfIdx++;
-              drawPerfSparkline();
-
-              frameGraphSamples[graphIdx % GRAPH_N] = ms;
-              fpsGraphSamples[graphIdx % GRAPH_N] = fpsEma;
-              graphIdx++;
-              drawExpandedGraphs();
-
-              if (renderer) {
-                renderCalls = renderer.info.render.calls;
-                renderTriangles = renderer.info.render.triangles;
-                memGeometries = renderer.info.memory.geometries;
-                memTextures = renderer.info.memory.textures;
-                // graphIdx has already advanced past frameGraphSamples/fpsGraphSamples
-                // above (renderer.info is only known after the three.js render calls
-                // this frame) — write to the same slot they just used.
-                drawCallsGraphSamples[(graphIdx - 1 + GRAPH_N) % GRAPH_N] = renderCalls;
-              }
-              const heap = (performance as any).memory?.usedJSHeapSize;
-              jsHeapMb = heap != null ? heap / (1024 * 1024) : undefined;
-            }
-
-            const step = stepDrive(
-              ride,
-              {
-                moveX: freeInput.moveX,
-                moveY: freeInput.moveY,
-                // Screen-forward must match character-forward regardless of camera
-                // framing (e.g. the 90°-offset side-scroll camera) — fold the active
-                // camera's bearingOffset into the bearing stepDrive steers toward.
-                camBearing: camBearing + (activeCamera.bearingOffset * Math.PI) / 180,
-                climb: freeInput.climb
-              },
-              {
-                min: activeDriver.speed.min,
-                avg: activeDriver.speed.avg,
-                max: activeDriver.speed.max,
-                turn: (activeDriver.turn * Math.PI) / 180 || activeDriver.turn,
-                accel: activeDriver.accel,
-                lift: activeDriver.lift,
-                maxAlt: activeDriver.maxAlt,
-                deadzone: rider.joystick.deadzone
-              },
-              dt
+            // Draw-only: read the last frame() snapshot, no clock/physics/camera here.
+            const merc = maplibre.MercatorCoordinate.fromLngLat(
+              frameState.lngLat,
+              frameState.groundElev + frameState.agl
             );
-
-            hudSpeed = ride.speed ?? 0;
-            hudAltitude = step.altitude;
-
-            // ponytail: capsule primitive character; swap for a GLB when art is ready.
-            // altitude (metres, fly mode only) lifts the mesh off the terrain.
-            // step.altitude is relative to the GROUND, not sea level — without adding
-            // the actual terrain height here, ground vehicles rendered at raw z=0 sank
-            // beneath the (exaggerated) terrain mesh almost everywhere and were only
-            // visible from cameras sitting right on top of them (e.g. first-person eye).
-            const groundElevation = map.queryTerrainElevation(lngLat) ?? 0;
-            const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, groundElevation + step.altitude);
-            const metersPerUnit = merc.meterInMercatorCoordinateUnits();
-            merc.x += step.forwardX * step.dForward * metersPerUnit;
-            merc.y += step.forwardZ * step.dForward * metersPerUnit;
-            const nextLngLat = merc.toLngLat();
-            lngLat = [nextLngLat.lng, nextLngLat.lat];
 
             // model matrix: translate to the rider's merc x/y/z, rotate mesh to heading,
             // rotate X +90° (three Y-up → mercator Z-up), scale metres → merc units.
-            const vis = metersPerUnit * currentVisBoost;
             const modelMatrix = new THREE.Matrix4()
               .makeTranslation(merc.x, merc.y, merc.z)
               .multiply(new THREE.Matrix4().makeRotationX(Math.PI / 2))
-              .multiply(new THREE.Matrix4().makeRotationZ(-step.heading))
-              .multiply(new THREE.Matrix4().makeScale(vis, vis, vis));
+              .multiply(new THREE.Matrix4().makeRotationZ(-frameState.heading))
+              .multiply(new THREE.Matrix4().makeScale(frameState.vis, frameState.vis, frameState.vis));
 
             camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix).multiply(modelMatrix);
 
@@ -906,16 +886,14 @@
             camera.projectionMatrix = new THREE.Matrix4().fromArray(matrix);
             renderer.render(natureScene, camera);
 
-            map.triggerRepaint();
               if (debugVisible && renderFireCount % 30 === 0) {
                 console.debug('[rider]', {
                   fps: Math.round(fps),
                   renderCalls,
                   driver: activeDriver.id,
                   camera: activeCamera.id,
-                  freeInput: { moveX: freeInput.moveX, moveY: freeInput.moveY, yawRate: freeInput.yawRate, pitchRate: freeInput.pitchRate, climb: freeInput.climb },
-                  step: { dForward: step.dForward, forwardX: step.forwardX, forwardZ: step.forwardZ, heading: step.heading, altitude: step.altitude },
-                  lngLat
+                  freeInput: { moveX: freeInput.moveX, moveY: freeInput.moveY, yawRate: freeInput.yawRate, pitchRate: freeInput.pitchRate, climb: climbTotal() },
+                  frameState
                 });
               }
             } catch (err) {
@@ -941,25 +919,43 @@
           });
         });
 
-        // Follow-cam: driven off the rAF loop, guarded against re-entrant jumpTo calls.
-        // camBearing/lookPitch are user-owned (integrated ONLY from the right look-stick,
-        // keyboard, or pointer-lock mouse — never from rider heading) so steering never
-        // fights the camera.
-        let tickPrev = 0;
-        const tick = () => {
+        // frame(): the ONE authoritative rAF loop — owns dt, input integration,
+        // stepDrive, HUD writes, the frameState snapshot, map.jumpTo, perf
+        // sampling, the sky-dome overlay, and the single triggerRepaint() call.
+        // riderLayer.render() above is draw-only and never mutates any of this.
+        const frame = (now: number) => {
           if (disposed || !map) return;
-          const now = performance.now();
-          const dt = tickPrev ? Math.min((now - tickPrev) / 1000, 0.1) : 0;
-          tickPrev = now;
+          const dt = clockPrev ? Math.min((now - clockPrev) / 1000, 0.1) : 0;
+          clockPrev = now;
           debugNow = now;
 
-          // ROOT FIX: riderLayer.render() self-schedules the next frame via its own
-          // map.triggerRepaint() call at the end of its body — if a frame throws
-          // before reaching that line (now guarded by try/catch too, but belt-and-
-          // suspenders), the chain used to die forever and joystick input stopped
-          // being consumed. This always-on rAF loop keeps kicking the map's render
-          // queue unconditionally every frame regardless of render()'s own state.
-          if (map && !disposed) map.triggerRepaint();
+          if (dt > 0) {
+            const ms = dt * 1000;
+            frameMs = ms;
+            fpsEma = fpsEma + (1000 / ms - fpsEma) * 0.1;
+            fps = fpsEma;
+            perfSamples[perfIdx % perfSamples.length] = ms;
+            perfIdx++;
+            drawPerfSparkline();
+
+            frameGraphSamples[graphIdx % GRAPH_N] = ms;
+            fpsGraphSamples[graphIdx % GRAPH_N] = fpsEma;
+            graphIdx++;
+            drawExpandedGraphs();
+
+            if (renderer) {
+              renderCalls = renderer.info.render.calls;
+              renderTriangles = renderer.info.render.triangles;
+              memGeometries = renderer.info.memory.geometries;
+              memTextures = renderer.info.memory.textures;
+              // graphIdx has already advanced past frameGraphSamples/fpsGraphSamples
+              // above (renderer.info is only known after the three.js render calls
+              // this frame) — write to the same slot they just used.
+              drawCallsGraphSamples[(graphIdx - 1 + GRAPH_N) % GRAPH_N] = renderCalls;
+            }
+            const heap = (performance as any).memory?.usedJSHeapSize;
+            jsHeapMb = heap != null ? heap / (1024 * 1024) : undefined;
+          }
 
           // Yaw integrates unbounded (full 360°, no clamp).
           camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
@@ -971,28 +967,88 @@
             look.skyMaxPitch
           );
 
-          // Higher-altitude drivers (drone/heli/plane) need the follow-cam pulled
-          // back further so the vehicle stays framed instead of filling the screen.
-          // Uses the LIVE altitude (hudAltitude), not the driver's static default —
-          // otherwise climbing/descending changed the readout but never zoomed the
-          // camera out/in to match, so the view looked unaffected by the controls.
-          const effectiveZoom = activeCamera.zoom - altZoomOffset(hudAltitude || activeDriver.altitudeBand.eye);
-          currentVisBoost = modelVisBoost(effectiveZoom, rider.modelVis);
+          const driverSpeed: any = (activeDriver as any).speed;
+          const driverAltitude: any = (activeDriver as any).altitude;
+          const step = stepDrive(
+            ride,
+            {
+              moveX: freeInput.moveX,
+              moveY: freeInput.moveY,
+              // Screen-forward must match character-forward regardless of camera
+              // framing (e.g. the 90°-offset side-scroll camera) — fold the active
+              // camera's bearingOffset into the bearing stepDrive steers toward.
+              camBearing: camBearing + (activeCamera.bearingOffset * Math.PI) / 180,
+              climb: climbTotal()
+            },
+            {
+              min: driverSpeed.min * KMH,
+              cruise: driverSpeed.cruise * KMH,
+              idle: driverSpeed.idle * KMH,
+              max: driverSpeed.max * KMH,
+              turn: (activeDriver as any).turnRate * (Math.PI / 180),
+              accel: activeDriver.accel,
+              lift: driverAltitude.climbRate, // already m/s — not converted
+              maxAlt: driverAltitude.max,
+              minAlt: driverAltitude.min,
+              deadzone: rider.joystick.deadzone
+            },
+            dt
+          );
 
-          if (!followGuard) {
-            followGuard = true;
-            // P3b: sky-dome overlay goes here — once activeCamera.pitch + lookPitch
-            // exceeds look.mapMaxPitch, a sky-dome/space overlay should take over
-            // instead of the flat cap below (maplibre pitch tops out at mapMaxPitch).
-            const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);
-            map.jumpTo({
-              center: lngLat,
-              bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
-              pitch: mapPitch,
-              zoom: effectiveZoom
-            });
-            followGuard = false;
+          hudSpeed = (ride.speed ?? 0) / KMH; // ride.speed is m/s (params were *KMH); HUD is km/h
+          hudAltitude = step.altitude;
+
+          // Canonical frame is AGL everywhere; ASL (groundElev + agl) appears at
+          // exactly two places derived from the same groundElev: model placement
+          // (below, via frameState) and the camera `elevation` (below).
+          const groundElevation = map.queryTerrainElevation(lngLat) ?? 0;
+          const merc = maplibre.MercatorCoordinate.fromLngLat(lngLat, groundElevation + step.altitude);
+          const metersPerUnit = merc.meterInMercatorCoordinateUnits();
+          merc.x += step.forwardX * step.dForward * metersPerUnit;
+          merc.y += step.forwardZ * step.dForward * metersPerUnit;
+          const nextLngLat = merc.toLngLat();
+          lngLat = [nextLngLat.lng, nextLngLat.lat];
+
+          // True metric model scale + a small bounded per-camera legibility boost,
+          // instead of a runtime 2^(18-z) hack that changed the model's size while
+          // flying (the old altitude-zoom-fake + visibility-boost pair — deleted).
+          frameState.lngLat = lngLat;
+          frameState.heading = step.heading;
+          frameState.agl = step.altitude;
+          frameState.groundElev = groundElevation;
+          frameState.vis = metersPerUnit * ((activeDriver.model as any)?.scale ?? 1) * ((activeCamera as any).modelBoost ?? 1);
+
+          // Camera: `elevation` replaces zoom-faking — raising elevation raises the
+          // eye by the same metre amount while meters-per-pixel stays untouched.
+          // Constellation is the one honest exception: at 9000km terrain DEM/mercator
+          // z/globe projection all break down, so it opts into a local zoom mapping.
+          let zoom: number;
+          let elevation: number;
+          const orbitZoom: any = (activeDriver as any).orbitZoom;
+          if (driverAltitude.model === 'zoom' && orbitZoom) {
+            zoom = clamp(orbitZoom.refZoom - Math.log2(Math.max(step.altitude, 1) / orbitZoom.refAltitude), 0.5, 6);
+            elevation = 0;
+          } else {
+            zoom = cameraZoomFor(activeDriver, activeCamera);
+            const lift = (activeCamera as any).targetLift;
+            const targetLift = lift === 'eye' ? driverAltitude.eyeHeight : typeof lift === 'number' ? lift : 0;
+            elevation = groundElevation + step.altitude + targetLift;
           }
+
+          const camKey = `${activeDriver.id}:${activeCamera.id}`;
+          if (loggedCameraOnce !== camKey) {
+            loggedCameraOnce = camKey;
+            console.log(`[rider] camera path -> driver '${activeDriver.id}' camera '${activeCamera.id}': zoom ${zoom.toFixed(2)}, model '${driverAltitude.model}'`);
+          }
+
+          const mapPitch = clamp(activeCamera.pitch + lookPitch, 0, look.mapMaxPitch);
+          map.jumpTo({
+            center: lngLat,
+            bearing: (camBearing * 180) / Math.PI + activeCamera.bearingOffset,
+            pitch: mapPitch,
+            zoom,
+            elevation
+          });
 
           // P3b: sky-dome overlay — fade in as lookPitch climbs past mapMaxPitch
           // (the map's own pitch cap), simulating looking up into sky/stars.
@@ -1015,9 +1071,15 @@
               skyRenderer.render(skyScene, skyCamera);
             }
           }
-          raf = requestAnimationFrame(tick);
+
+          // The ONE triggerRepaint() call in the whole rig — this always-on rAF
+          // loop keeps kicking the map's render queue unconditionally every frame
+          // regardless of riderLayer.render()'s own state (its try/catch means a
+          // thrown draw no longer matters — frame() keeps going either way).
+          map.triggerRepaint();
+          raf = requestAnimationFrame(frame);
         };
-        raf = requestAnimationFrame(tick);
+        raf = requestAnimationFrame(frame);
       });
     })();
 
@@ -1026,11 +1088,15 @@
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('blur', onWindowBlur);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('error', onWindowError);
       window.removeEventListener('unhandledrejection', onUnhandledRejection);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('pointerlockchange', onPointerLockChange);
       window.removeEventListener('resize', onSkyResize);
+      window.removeEventListener('pointerup', onClimbPointerUp);
+      window.removeEventListener('pointercancel', onClimbPointerUp);
       skyRenderer?.dispose();
       stopMeshEffect?.();
       map?.remove();
@@ -1054,12 +1120,12 @@
       </div>
       <div>
         yawRate {freeInput.yawRate.toFixed(2)} pitchRate {freeInput.pitchRate.toFixed(2)}
-        climb {freeInput.climb.toFixed(2)}
+        climb {climbTotal().toFixed(2)}
       </div>
       <div>driver {activeDriver.id} · camera {activeCamera.id}</div>
       <div>
         heading {(ride.heading * (180 / Math.PI)).toFixed(1)}° · alt {(ride.altitude ?? 0).toFixed(1)}m
-        · speed {hudSpeed.toFixed(2)}
+        · speed {hudSpeed.toFixed(2)} km/h
       </div>
       <div class:err={lastError !== 'none'}>err: {lastError}</div>
     </div>
@@ -1275,28 +1341,28 @@
     {/if}
   </div>
 
-  <div class="velocimeter">{Math.round(hudSpeed)} <span class="redline">/ {activeDriver.speed.max}</span> km/h</div>
-  <div class="altimeter">{Math.round(hudAltitude)} <span class="redline">/ {activeDriver.altitudeBand?.ceiling ?? 0}</span> m</div>
+  <div class="velocimeter">{Math.round(hudSpeed)} <span class="redline">/ {(activeDriver as any).speed.max}</span> km/h</div>
+  <div class="altimeter">{Math.round(hudAltitude)} <span class="redline">/ {(activeDriver as any).altitude.max}</span> m</div>
 
-  {#if activeDriver.lift}
+  {#if (activeDriver as any).altitude.climbRate > 0}
     <div class="climb">
       <button
         type="button"
         class="climb-btn"
         aria-label="Climb up"
-        onpointerdown={() => (freeInput.climb = 1)}
-        onpointerup={() => (freeInput.climb = 0)}
-        onpointerleave={() => (freeInput.climb = 0)}
-        onpointercancel={() => (freeInput.climb = 0)}
+        onpointerdown={() => (freeInput.climbPointer = 1)}
+        onpointerup={() => (freeInput.climbPointer = 0)}
+        onpointerleave={() => (freeInput.climbPointer = 0)}
+        onpointercancel={() => (freeInput.climbPointer = 0)}
       >▲</button>
       <button
         type="button"
         class="climb-btn"
         aria-label="Climb down"
-        onpointerdown={() => (freeInput.climb = -1)}
-        onpointerup={() => (freeInput.climb = 0)}
-        onpointerleave={() => (freeInput.climb = 0)}
-        onpointercancel={() => (freeInput.climb = 0)}
+        onpointerdown={() => (freeInput.climbPointer = -1)}
+        onpointerup={() => (freeInput.climbPointer = 0)}
+        onpointerleave={() => (freeInput.climbPointer = 0)}
+        onpointercancel={() => (freeInput.climbPointer = 0)}
       >▼</button>
     </div>
   {/if}

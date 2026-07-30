@@ -70,7 +70,9 @@
         "icon": "👁️",
         "pitch": 90,
         "zoom": 19.4,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 1,
+        "targetLift": "eye"
       },
       {
         "id": "ots",
@@ -78,7 +80,9 @@
         "icon": "🎯",
         "pitch": 78,
         "zoom": 18.4,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 1,
+        "targetLift": 0
       },
       {
         "id": "chase",
@@ -86,7 +90,9 @@
         "icon": "🎮",
         "pitch": 66,
         "zoom": 17.4,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 1,
+        "targetLift": 0
       },
       {
         "id": "iso",
@@ -94,7 +100,9 @@
         "icon": "🔺",
         "pitch": 50,
         "zoom": 16.4,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 2,
+        "targetLift": 0
       },
       {
         "id": "birdseye",
@@ -102,7 +110,9 @@
         "icon": "🐦",
         "pitch": 25,
         "zoom": 15.2,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 6,
+        "targetLift": 0
       },
       {
         "id": "god",
@@ -110,7 +120,9 @@
         "icon": "🛰️",
         "pitch": 0,
         "zoom": 13.4,
-        "bearingOffset": 0
+        "bearingOffset": 0,
+        "modelBoost": 24,
+        "targetLift": 0
       },
       {
         "id": "side",
@@ -118,7 +130,9 @@
         "icon": "🍄",
         "pitch": 75,
         "zoom": 16.8,
-        "bearingOffset": 90
+        "bearingOffset": 90,
+        "modelBoost": 1,
+        "targetLift": 0
       }
     ],
     "defaultCamera": "chase",
@@ -142,11 +156,12 @@
         "label": "Walk",
         "icon": "🚶",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 8,
+          "cruise": 8,
           "max": 14
         },
-        "turn": 8,
+        "turnRate": 180,
         "accel": 10,
         "model": {
           "glb": "man.glb",
@@ -154,10 +169,13 @@
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 1.7,
-          "cruise": 0,
-          "ceiling": 0
+        "altitude": {
+          "model": "elevation",
+          "default": 0,
+          "min": 0,
+          "max": 0,
+          "climbRate": 0,
+          "eyeHeight": 1.7
         }
       },
       {
@@ -165,11 +183,12 @@
         "label": "Cycle",
         "icon": "🚴",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 20,
+          "cruise": 20,
           "max": 34
         },
-        "turn": 7,
+        "turnRate": 120,
         "accel": 6,
         "model": {
           "glb": "vehicles/bike.glb",
@@ -177,10 +196,13 @@
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 1.5,
-          "cruise": 0,
-          "ceiling": 0
+        "altitude": {
+          "model": "elevation",
+          "default": 0,
+          "min": 0,
+          "max": 0,
+          "climbRate": 0,
+          "eyeHeight": 1.5
         }
       },
       {
@@ -188,11 +210,12 @@
         "label": "Car",
         "icon": "🚗",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 50,
-          "max": 80
+          "cruise": 50,
+          "max": 120
         },
-        "turn": 6,
+        "turnRate": 90,
         "accel": 16,
         "model": {
           "glb": "city/car.glb",
@@ -200,10 +223,13 @@
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 1.6,
-          "cruise": 0,
-          "ceiling": 0
+        "altitude": {
+          "model": "elevation",
+          "default": 0,
+          "min": 0,
+          "max": 0,
+          "climbRate": 0,
+          "eyeHeight": 1.6
         }
       },
       {
@@ -211,11 +237,12 @@
         "label": "Sail",
         "icon": "⛵",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 28,
+          "cruise": 28,
           "max": 45
         },
-        "turn": 4,
+        "turnRate": 30,
         "accel": 5,
         "model": {
           "glb": "vehicles/sailboat.glb",
@@ -223,10 +250,13 @@
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 2.5,
-          "cruise": 0,
-          "ceiling": 0
+        "altitude": {
+          "model": "elevation",
+          "default": 0,
+          "min": 0,
+          "max": 0,
+          "climbRate": 0,
+          "eyeHeight": 2.5
         }
       },
       {
@@ -234,24 +264,33 @@
         "label": "Drone",
         "icon": "🛸",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 40,
-          "max": 70
+          "cruise": 40,
+          "max": 90
         },
-        "turn": 9,
+        "turnRate": 150,
         "accel": 12,
-        "lift": 60,
-        "maxAlt": 800,
         "model": {
           "glb": "vehicles/drone.glb",
           "scale": 1.0,
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 120,
-          "cruise": 120,
-          "ceiling": 800
+        "altitude": {
+          "model": "elevation",
+          "default": 120,
+          "min": 0,
+          "max": 800,
+          "climbRate": 6,
+          "eyeHeight": 1.0
+        },
+        "cameraZoom": {
+          "ots": 16.6,
+          "chase": 15.6,
+          "iso": 14.8,
+          "birdseye": 13.8,
+          "god": 12.2
         }
       },
       {
@@ -259,24 +298,33 @@
         "label": "Helicopter",
         "icon": "🚁",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 70,
-          "max": 110
+          "cruise": 70,
+          "max": 180
         },
-        "turn": 6,
+        "turnRate": 90,
         "accel": 14,
-        "lift": 50,
-        "maxAlt": 1400,
         "model": {
           "glb": "vehicles/helicopter.glb",
           "scale": 1.0,
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 300,
-          "cruise": 300,
-          "ceiling": 1400
+        "altitude": {
+          "model": "elevation",
+          "default": 300,
+          "min": 0,
+          "max": 3000,
+          "climbRate": 8,
+          "eyeHeight": 2.0
+        },
+        "cameraZoom": {
+          "ots": 15.3,
+          "chase": 14.3,
+          "iso": 13.6,
+          "birdseye": 12.6,
+          "god": 11.2
         }
       },
       {
@@ -284,24 +332,33 @@
         "label": "Airplane",
         "icon": "✈️",
         "speed": {
-          "min": 60,
-          "avg": 130,
-          "max": 190
+          "idle": 220,
+          "min": 180,
+          "cruise": 450,
+          "max": 900
         },
-        "turn": 4,
+        "turnRate": 25,
         "accel": 22,
-        "lift": 40,
-        "maxAlt": 2400,
         "model": {
           "glb": "vehicles/airplane.glb",
           "scale": 1.0,
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 1200,
-          "cruise": 1200,
-          "ceiling": 2400
+        "altitude": {
+          "model": "elevation",
+          "default": 1200,
+          "min": 150,
+          "max": 12000,
+          "climbRate": 15,
+          "eyeHeight": 3.0
+        },
+        "cameraZoom": {
+          "ots": 13.3,
+          "chase": 12.3,
+          "iso": 11.7,
+          "birdseye": 10.8,
+          "god": 9.6
         }
       },
       {
@@ -309,11 +366,12 @@
         "label": "Constellation",
         "icon": "🌌",
         "speed": {
+          "idle": 0,
           "min": 0,
-          "avg": 0,
+          "cruise": 0,
           "max": 0
         },
-        "turn": 2,
+        "turnRate": 10,
         "accel": 2,
         "model": {
           "glb": "vehicles/satellite.glb",
@@ -321,10 +379,17 @@
           "yaw": 0,
           "y": 0
         },
-        "altitudeBand": {
-          "eye": 9000000,
-          "cruise": 9000000,
-          "ceiling": 20000000
+        "altitude": {
+          "model": "zoom",
+          "default": 400000,
+          "min": 200000,
+          "max": 20000000,
+          "climbRate": 50000,
+          "eyeHeight": 0
+        },
+        "orbitZoom": {
+          "refAltitude": 400000,
+          "refZoom": 3.2
         },
         "globe": true
       }
@@ -353,7 +418,7 @@
       ],
       "down": [
         "e",
-        "Shift"
+        "c"
       ],
       "cameraNext": [
         "+",
@@ -372,10 +437,6 @@
         "<"
       ]
     },
-    "modelVis": {
-      "refZoom": 18,
-      "minBoost": 1,
-      "maxBoost": 8192
-    }
+    "altitudeFrame": "agl"
   }
 }

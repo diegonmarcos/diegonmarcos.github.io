@@ -35,7 +35,7 @@ export function stepRide(state: RideState, input: RideInput, params: RideParams,
 // but heading is driven toward a desired bearing (stick + camera) rather than
 // integrated from a steer rate. Used by vehicles with free-look cameras.
 export interface DriveInput { moveX: number; moveY: number; camBearing: number; climb?: number }
-export interface DriveParams { min: number; avg?: number; max: number; turn?: number; accel?: number; lift?: number; maxAlt?: number; deadzone?: number }
+export interface DriveParams { min: number; cruise?: number; idle?: number; max: number; turn?: number; accel?: number; lift?: number; maxAlt?: number; minAlt?: number; deadzone?: number }
 
 export function stepDrive(state: RideState, input: DriveInput, params: DriveParams, dt: number): RideStep {
   let mag = Math.hypot(input.moveX, input.moveY);
@@ -52,7 +52,16 @@ export function stepDrive(state: RideState, input: DriveInput, params: DrivePara
     state.heading += delta;
   }
   const forwardX = Math.sin(state.heading), forwardZ = -Math.cos(state.heading);
-  const target = mag > 0 ? params.min + Math.min(mag, 1) * (params.max - params.min) : params.min;
+  let target;
+  if (mag <= 0) {
+    target = params.idle ?? params.min; // airplane stall-cruise vs car full stop
+  } else {
+    const m = Math.min(mag, 1);
+    target = params.cruise == null
+      ? params.min + m * (params.max - params.min)                        // unchanged linear path
+      : m <= 0.5 ? params.min + (m / 0.5) * (params.cruise - params.min)
+                 : params.cruise + ((m - 0.5) / 0.5) * (params.max - params.cruise);
+  }
   if (params.accel != null) {
     const k = 1 - Math.exp(-params.accel * dt);
     const current = state.speed ?? 0;
@@ -61,22 +70,9 @@ export function stepDrive(state: RideState, input: DriveInput, params: DrivePara
     state.speed = target;
   }
   const dForward = (state.speed ?? target) * dt;
-  if (params.lift != null) {
-    const maxAlt = params.maxAlt ?? Infinity;
-    state.altitude = Math.max(0, Math.min((state.altitude ?? 0) + (input.climb ?? 0) * params.lift * dt, maxAlt));
-  } else {
-    state.altitude = state.altitude ?? 0;
-  }
+  const minAlt = params.minAlt ?? 0;
+  const maxAlt = params.maxAlt ?? Infinity;
+  state.altitude = Math.min(maxAlt, Math.max(minAlt, (state.altitude ?? 0) + (params.lift != null ? (input.climb ?? 0) * params.lift : 0) * dt));
   return { heading: state.heading, forwardX, forwardZ, dForward, altitude: state.altitude ?? 0 };
 }
 
-// Screen-size compensation: keep a metric-scaled model visibly sized as the camera
-// zooms out (birdseye/god top-down modes otherwise render ground vehicles sub-pixel).
-// Doubling per zoom level below refZoom, clamped so the space view doesn't explode.
-export function modelVisBoost(
-  effectiveZoom: number,
-  cfg: { refZoom: number; minBoost: number; maxBoost: number }
-): number {
-  const raw = Math.pow(2, cfg.refZoom - effectiveZoom);
-  return Math.min(cfg.maxBoost, Math.max(cfg.minBoost, raw));
-}

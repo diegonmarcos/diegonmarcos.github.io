@@ -134,5 +134,45 @@ for (const camBearing of [0, Math.PI / 2, -Math.PI / 2]) {
   ok(step.heading === 0.3, 'drive: below deadzone → heading unchanged (treated as idle)');
 }
 
+// idle explicit, distinct from min: mag=0 → target===idle, not min
+{
+  const state = { heading: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0 }, { min: 0, idle: 5, max: 10 }, 1);
+  ok(step.dForward === 5, 'drive: explicit idle used at mag=0 (dForward===idle)');
+}
+
+// cruise piecewise: mid-stick (m<=0.5) ramps min→cruise, upper half ramps cruise→max
+{
+  const state = { heading: 0 };
+  const stepLow = stepDrive(state, { moveX: 0, moveY: 0.25, camBearing: 0 }, { min: 0, cruise: 5, max: 10 }, 1);
+  ok(Math.abs(stepLow.dForward - 2.5) < 1e-9, 'drive: cruise piecewise, m=0.25 → target===2.5 (min→cruise leg)');
+}
+{
+  const state = { heading: 0 };
+  const stepHigh = stepDrive(state, { moveX: 0, moveY: 0.75, camBearing: 0 }, { min: 0, cruise: 5, max: 10 }, 1);
+  ok(Math.abs(stepHigh.dForward - 7.5) < 1e-9, 'drive: cruise piecewise, m=0.75 → target===7.5 (cruise→max leg)');
+}
+
+// minAlt floor: descending climb still clamps at minAlt, not 0
+{
+  const state = { heading: 0, altitude: 60 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0, climb: -1 }, { min: 0, max: 10, lift: 40, minAlt: 50, maxAlt: 100 }, 1);
+  ok(step.altitude === 50, 'drive: minAlt floor clamps descent at minAlt (not 0)');
+}
+
+// minAlt applies even with lift omitted (climbRate: 0 drivers still floor at minAlt)
+{
+  const state = { heading: 0, altitude: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0 }, { min: 0, max: 10, minAlt: 10 }, 1);
+  ok(step.altitude === 10, 'drive: minAlt floor applies even without lift');
+}
+
+// minAlt > maxAlt (misconfigured driver): clamp must still never exceed maxAlt
+{
+  const state = { heading: 0, altitude: 0 };
+  const step = stepDrive(state, { moveX: 0, moveY: 0, camBearing: 0, climb: 1 }, { min: 0, max: 10, lift: 40, minAlt: 100, maxAlt: 50 }, 1);
+  ok(step.altitude === 50, 'drive: minAlt>maxAlt (misconfigured) → result never exceeds maxAlt');
+}
+
 if (failed) { console.error(`${failed} check(s) failed`); process.exit(1); }
 console.log('locomotion OK');

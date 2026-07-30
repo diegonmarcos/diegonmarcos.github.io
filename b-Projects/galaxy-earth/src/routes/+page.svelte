@@ -1372,9 +1372,12 @@
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
-    max-width: 280px;
+    width: min(280px, calc(100vw - 5.5rem));
     max-height: calc(100vh - 2rem);
+    max-height: calc(100dvh - 2rem);
     overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
     padding: 0.8rem;
     background: rgba(10, 14, 26, 0.7);
     border: 1px solid rgba(157, 180, 255, 0.35);

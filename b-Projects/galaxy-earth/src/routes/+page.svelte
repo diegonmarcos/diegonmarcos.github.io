@@ -77,9 +77,18 @@
   // not just the throttled [rider] debug lines.
   const logBuffer: string[] = [];
   let logExportStatus = $state('');
+  function formatLogArg(a: unknown): string {
+    if (typeof a === 'string') return a;
+    if (a instanceof Error) return `${a.name}: ${a.message}\n${a.stack ?? ''}`;
+    try {
+      return JSON.stringify(a, Object.getOwnPropertyNames(a as object)) ?? String(a);
+    } catch {
+      return String(a);
+    }
+  }
   function captureConsole(level: string, args: unknown[]) {
     const ts = new Date().toISOString();
-    const line = args.map((a) => (typeof a === 'string' ? a : JSON.stringify(a))).join(' ');
+    const line = args.map(formatLogArg).join(' ');
     logBuffer.push(`[${ts}] [${level}] ${line}`);
   }
   async function exportLogs() {

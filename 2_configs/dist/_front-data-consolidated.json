@@ -2434,7 +2434,7 @@
           "preview": "vite preview",
           "prepare": "svelte-kit sync || echo ''",
           "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-          "test": "node test/earth.test.mjs"
+          "test": "node test/earth.test.mjs && node test/street.test.mjs"
         },
         "dependencies": {
           "eruda": "^3",

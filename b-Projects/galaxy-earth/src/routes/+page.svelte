@@ -1000,6 +1000,19 @@
       aria-label="Driver"
       onclick={() => { showDriverPicker = !showDriverPicker; showCameraPicker = false; }}
     >{activeDriver.icon}</button>
+
+    <button
+      type="button"
+      class="fab"
+      class:active={debugVisible}
+      aria-label="Debug mode"
+      onclick={() => {
+        const url = new URL(window.location.href);
+        if (debugVisible) url.searchParams.delete('debug');
+        else url.searchParams.set('debug', '1');
+        window.location.href = url.toString();
+      }}
+    >🐞</button>
   </div>
 
   <Joystick side="left" channel="drive" scale={j.scale} />
@@ -1249,6 +1262,11 @@
   .fab-popup-item.active {
     background: rgba(157, 180, 255, 0.35);
     color: #ffffff;
+  }
+
+  .fab.active {
+    background: rgba(255, 120, 90, 0.35);
+    border-color: rgba(255, 160, 130, 0.7);
   }
 
   .climb-btn {

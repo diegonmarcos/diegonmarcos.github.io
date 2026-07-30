@@ -52,6 +52,17 @@
   let frameGraphCanvas = $state<HTMLCanvasElement>();
   let drawCallsGraphCanvas = $state<HTMLCanvasElement>();
 
+  // Debug overlay (F8 or ?debug=1): surfaces whether the CustomLayer render()
+  // chain is still alive (it self-schedules via map.triggerRepaint() and dies
+  // silently if a frame throws before reaching that call) plus live input/driver
+  // state. `debugNow` is refreshed from the always-on tick() rAF loop so the
+  // LIVE/STALLED readout keeps updating even while render() itself is stalled.
+  let debugVisible = $state(false);
+  let lastError = $state('none');
+  let renderFireCount = $state(0);
+  let lastRenderTime = $state(0);
+  let debugNow = $state(0);
+
   // Persistent ride state (heading + carried speed/altitude) — lives across frames;
   // only `speed` resets on a driver switch so momentum doesn't teleport.
   const ride: { heading: number; speed?: number; altitude?: number } = { heading: 0 };
@@ -202,6 +213,11 @@
       return arr[(i + dir + n) % n];
     }
     function onKeyDown(e: KeyboardEvent) {
+      if (e.key === 'F8') {
+        e.preventDefault();
+        debugVisible = !debugVisible;
+        return;
+      }
       const keys = rider.keys;
       const key = e.key;
       const isHeld =
@@ -235,6 +251,17 @@
     }
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
+
+    // --- Debug overlay (F8 toggles via onKeyDown above; ?debug=1 sets initial state) ---
+    debugVisible = new URLSearchParams(window.location.search).get('debug') === '1';
+    function onWindowError(e: ErrorEvent) {
+      lastError = e.message ?? String(e);
+    }
+    function onUnhandledRejection(e: PromiseRejectionEvent) {
+      lastError = e.reason?.message ?? String(e.reason);
+    }
+    window.addEventListener('error', onWindowError);
+    window.addEventListener('unhandledrejection', onUnhandledRejection);
 
     // --- Pointer-lock mouse-look (only wired up when joystick.mouseLook is true) ---
     let pointerLocked = false;
@@ -598,6 +625,15 @@
             natureScene.add(treesMesh);
           },
           render(gl: WebGLRenderingContext, args: { defaultProjectionData: { mainMatrix: number[] } }) {
+            renderFireCount++;
+            lastRenderTime = performance.now();
+            // BUGFIX: the whole body is wrapped in try/catch so a single bad frame
+            // can never permanently kill rendering. This render() re-schedules itself
+            // via map.triggerRepaint() at the very end — if it threw before reaching
+            // that line the self-scheduling chain died forever, and joystick/keyboard
+            // input silently stopped being consumed (see tick()'s own unconditional
+            // triggerRepaint() below, which is the belt-and-suspenders fix for that).
+            try {
             if (!map) return;
             // MapLibre v5 CustomLayerInterface.render(gl, args) exposes the projection
             // matrix at args.defaultProjectionData.mainMatrix (v4's positional
@@ -696,6 +732,9 @@
             renderer.render(natureScene, camera);
 
             map.triggerRepaint();
+            } catch (err) {
+              lastError = err instanceof Error ? `${err.message}\n${err.stack ?? ''}` : String(err);
+            }
           }
         };
 
@@ -720,6 +759,15 @@
           const now = performance.now();
           const dt = tickPrev ? Math.min((now - tickPrev) / 1000, 0.1) : 0;
           tickPrev = now;
+          debugNow = now;
+
+          // ROOT FIX: riderLayer.render() self-schedules the next frame via its own
+          // map.triggerRepaint() call at the end of its body — if a frame throws
+          // before reaching that line (now guarded by try/catch too, but belt-and-
+          // suspenders), the chain used to die forever and joystick input stopped
+          // being consumed. This always-on rAF loop keeps kicking the map's render
+          // queue unconditionally every frame regardless of render()'s own state.
+          if (map && !disposed) map.triggerRepaint();
 
           // Yaw integrates unbounded (full 360°, no clamp).
           camBearing += freeInput.yawRate * (look.yawRate * Math.PI / 180) * dt;
@@ -783,6 +831,8 @@
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('keydown', onKeyDown);
       window.removeEventListener('keyup', onKeyUp);
+      window.removeEventListener('error', onWindowError);
+      window.removeEventListener('unhandledrejection', onUnhandledRejection);
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('pointerlockchange', onPointerLockChange);
       window.removeEventListener('resize', onSkyResize);
@@ -795,6 +845,30 @@
 <div class="map-wrap">
   <div bind:this={mapContainer} class="map"></div>
   <canvas bind:this={skyCanvas} class="sky-overlay"></canvas>
+
+  {#if debugVisible}
+    <div class="debug-overlay">
+      <div>fps {Math.round(fps)} · {renderCalls} draws</div>
+      <div>
+        render: {renderFireCount} calls —
+        {debugNow - lastRenderTime > 500 ? 'STALLED' : 'LIVE'}
+      </div>
+      <div>
+        moveX {freeInput.moveX.toFixed(2)} moveY {freeInput.moveY.toFixed(2)}
+      </div>
+      <div>
+        yawRate {freeInput.yawRate.toFixed(2)} pitchRate {freeInput.pitchRate.toFixed(2)}
+        climb {freeInput.climb.toFixed(2)}
+      </div>
+      <div>driver {activeDriver.id} · camera {activeCamera.id}</div>
+      <div>
+        heading {(ride.heading * (180 / Math.PI)).toFixed(1)}° · alt {(ride.altitude ?? 0).toFixed(1)}m
+        · speed {hudSpeed.toFixed(2)}
+      </div>
+      <div class:err={lastError !== 'none'}>err: {lastError}</div>
+    </div>
+  {/if}
+
   <div class="hud">
     <a class="back" href="/galaxy/" rel="external">← Galaxy</a>
     <h1>Earth</h1>
@@ -1098,7 +1172,7 @@
   .fabs {
     position: fixed;
     right: 26px;
-    bottom: 200px;
+    bottom: 260px;
     z-index: 36;
     display: flex;
     flex-direction: column;
@@ -1177,5 +1251,27 @@
 
   .climb-btn:active {
     background: rgba(157, 180, 255, 0.35);
+  }
+
+  /* Debug overlay: F8 or ?debug=1. Read-only diagnostics for the render()
+     self-scheduling chain (renderFireCount/lastRenderTime) plus live input state. */
+  .debug-overlay {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 100;
+    pointer-events: none;
+    font-family: monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #d8e0ff;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .debug-overlay .err {
+    color: #ff6b6b;
   }
 </style>

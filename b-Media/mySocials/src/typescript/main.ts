@@ -1221,9 +1221,9 @@ function renderMySocials(): void {
   type Card = { theme: Theme; label: string; meta: string; color: string; imgs: string[] };
   const sections: { label: string; cards: Card[] }[] = [
     { label: 'Media', cards: [
-      { theme: 'instagram', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
-      { theme: 'instagram', label: 'Instagram @ diegocmarcos_', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
-      { theme: 'instagram', label: 'Instagram @ diegocnmarcos_', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
+      { theme: 'instagram-diegonmarcos', label: 'Instagram @ diegonmarcos', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
+      { theme: 'instagram-diegocmarcos_', label: 'Instagram @ diegocmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
+      { theme: 'instagram-diegocnmarcos_', label: 'Instagram @ diegocnmarcos_', meta: 'profile', color: '#dc2743', imgs: [] },
       { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
       { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
     ] },
@@ -1855,8 +1855,8 @@ function renderVinyl(): void {
 
 // ─── THEME SWITCHER ──────────────────────────────────────────────────────────
 
-type Theme = 'mysocials' | 'orkut' | 'instagram' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
-const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
+type Theme = 'mysocials' | 'orkut' | 'instagram-diegonmarcos' | 'instagram-diegocmarcos_' | 'instagram-diegocnmarcos_' | 'linkedin' | 'pinterest' | 'tidal' | 'strava' | 'youtube' | 'icq' | 'shelf' | 'vinyl';
+const THEMES: Theme[] = ['mysocials', 'orkut', 'instagram-diegonmarcos', 'instagram-diegocmarcos_', 'instagram-diegocnmarcos_', 'linkedin', 'pinterest', 'tidal', 'strava', 'youtube', 'icq', 'shelf', 'vinyl'];
 
 // Each theme is a real static page (orkut.html, instagram.html, ...) — except
 // 'mysocials', whose page is index.html (the site's front door).

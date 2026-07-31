@@ -1195,113 +1195,12 @@ function renderICQ(): void {
 
 // ─── MY PROFILE (personal hub, aggregates the real social data) ──────────────
 
-// One aggregated media feed across every real source this project models: Instagram photos,
-// Pinterest board covers, TIDAL playlist covers, YouTube thumbnails and Strava activities.
-// Every tile is built straight from the same PORTAL_DATA["<source>"] objects the individual
-// theme renderers already consume — nothing here is hardcoded per-item; add a source and its
-// items show up automatically. Sources are round-robin interleaved (not sorted by a fabricated
-// cross-source date — none of these exports share a common real timestamp) so the grid reads
-// as one feed rather than stacked per-source blocks.
-interface MediaTile {
-  source: 'instagram' | 'pinterest' | 'tidal' | 'youtube' | 'strava';
-  sourceLabel: string;
-  color: string;
-  media?: string;      // image url, when the source has a real photo/cover/thumbnail
-  emoji: string;        // fallback glyph when no media image exists
-  title: string;
-  meta: string;
-  href: string;
-}
-
-function collectMediaTiles(): MediaTile[] {
-  const g = globalThis as { PORTAL_DATA?: Record<string, unknown> };
-  const data = g.PORTAL_DATA ?? {};
-
-  const igD = data.instagram as { profile?: { username?: string }; posts?: { media: string; caption?: string }[] } | undefined;
-  const igTiles: MediaTile[] = (igD?.posts ?? []).map(p => ({
-    source: 'instagram', sourceLabel: 'Instagram', color: '#dc2743', media: p.media, emoji: '\u{1F4F7}',
-    title: p.caption || 'Post', meta: '@' + (igD?.profile?.username || 'diegonmarcos'),
-    href: `https://www.instagram.com/${igD?.profile?.username || 'diegonmarcos'}/`,
-  }));
-
-  const pinD = data.pinterest as { profile?: { username?: string }; boards?: { name: string; pins: number; cover?: string }[] } | undefined;
-  const pinTiles: MediaTile[] = (pinD?.boards ?? []).map(b => ({
-    source: 'pinterest', sourceLabel: 'Pinterest', color: '#e60023', media: b.cover, emoji: '\u{1F4CC}',
-    title: b.name, meta: `${b.pins} pins`,
-    href: `https://www.pinterest.com/${pinD?.profile?.username || 'diegonmarcos'}/${b.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`,
-  }));
-
-  const tidD = data.tidal as { profile?: { username?: string }; playlists?: { name: string; tracks: number; cover?: string; url?: string }[] } | undefined;
-  const tidTiles: MediaTile[] = (tidD?.playlists ?? []).map(p => ({
-    source: 'tidal', sourceLabel: 'TIDAL', color: '#00ffff', media: p.cover, emoji: '\u{266B}',
-    title: p.name, meta: `${p.tracks} tracks`,
-    href: p.url || `https://tidal.com/@${tidD?.profile?.username || 'diegonmarcos'}`,
-  }));
-
-  const ytD = data.youtube as { profile?: { channel?: string }; videos?: { title: string; thumbnail?: string; views?: number; url?: string }[] } | undefined;
-  const ytTiles: MediaTile[] = (ytD?.videos ?? []).map(v => ({
-    source: 'youtube', sourceLabel: 'YouTube', color: '#ff0000', media: v.thumbnail, emoji: '▶',
-    title: v.title, meta: v.views !== undefined ? `${v.views.toLocaleString()} views` : 'video',
-    href: v.url || `https://www.youtube.com/@${ytD?.profile?.channel || 'diegonmarcos'}`,
-  }));
-
-  const strD = data.strava as { activities?: { type: string; title: string; distance_km?: number; date: string }[] } | undefined;
-  const strTiles: MediaTile[] = (strD?.activities ?? []).map(a => ({
-    source: 'strava', sourceLabel: 'Strava', color: '#fc5200',
-    emoji: a.type === 'run' ? '\u{1F3C3}' : a.type === 'ride' ? '\u{1F6B4}' : a.type === 'swim' ? '\u{1F3CA}' : '\u{1F3C1}',
-    title: a.title, meta: a.distance_km ? `${a.distance_km} km` : a.date,
-    href: 'https://www.strava.com/',
-  }));
-
-  // Round-robin interleave across sources so the feed isn't blocked by source.
-  const buckets = [igTiles, pinTiles, tidTiles, ytTiles, strTiles];
-  const out: MediaTile[] = [];
-  let added = true;
-  while (added) {
-    added = false;
-    for (const bucket of buckets) {
-      const next = bucket.shift();
-      if (next) { out.push(next); added = true; }
-    }
-  }
-  return out;
-}
-
-function renderMediaFeed(): void {
-  const grid = document.getElementById('media-feed');
-  if (!grid) return;
-  const tiles = collectMediaTiles();
-  if (!tiles.length) {
-    grid.innerHTML = '<p class="media-empty">No media loaded yet — sources populate this feed once scraped.</p>';
-    return;
-  }
-  grid.innerHTML = tiles.map(t => {
-    const visual = t.media
-      ? `<img class="media-tile__img" src="${esc(t.media)}" alt="${esc(t.title)}" loading="lazy">`
-      : `<div class="media-tile__ph" style="background:${t.color}22;color:${t.color}">${t.emoji}</div>`;
-    return `
-    <a class="media-tile" href="${esc(t.href)}" target="_blank" rel="noopener" data-source="${t.source}">
-      <div class="media-tile__media">${visual}<span class="media-tile__badge" style="background:${t.color}">${t.emoji}</span></div>
-      <div class="media-tile__body">
-        <span class="media-tile__title">${esc(t.title)}</span>
-        <span class="media-tile__meta"><span class="media-tile__source" style="color:${t.color}">${t.sourceLabel}</span> · ${esc(t.meta)}</span>
-      </div>
-    </a>`;
-  }).join('');
-}
-
 function renderMySocials(): void {
   const view = document.getElementById('me-view');
   if (!view) return;
   const g = (globalThis as { PORTAL_DATA?: Record<string, IGData & LIData> }).PORTAL_DATA || {};
   const ig = g.instagram as IGData | undefined;
   const li = g.linkedin as LIData | undefined;
-
-  const name = li?.profile.name || ig?.profile.name || 'Diego Nepomuceno Marcos';
-  const headline = li?.profile.headline || '';
-  const location = li?.profile.location || '';
-  const bio = ig?.profile.bio || '';
-  const photo = li?.profile.photo || ig?.profile.photo;
 
   // Each card jumps to that network's view. Metrics + sample images are real, from the parsed data.
   const tidalD = (globalThis as { PORTAL_DATA?: Record<string, { profile: { playlists: number } }> }).PORTAL_DATA?.tidal;
@@ -1310,42 +1209,35 @@ function renderMySocials(): void {
   const shelfD = g.shelf as unknown as ShelfData | undefined;
   const vinylD = g.vinyl as unknown as VinylData | undefined;
 
-  const cards: { theme: Theme; label: string; meta: string; color: string; img?: string }[] = [
-    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', img: li?.profile.photo },
-    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', img: ig?.posts?.[0]?.media },
-    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', img: pin?.boards?.[0]?.cover },
-    { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff' },
-    { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200' },
-    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', img: yt?.playlists?.[0]?.videos?.[0]?.thumbnail },
-    { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c' },
-    { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a' },
-    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914', img: shelfD?.books?.[0]?.isbn ? `https://covers.openlibrary.org/b/isbn/${shelfD.books[0].isbn}-M.jpg` : undefined },
-    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24', img: vinylD?.vinyls?.[0]?.mbid ? `https://coverartarchive.org/release/${vinylD.vinyls[0].mbid}/front-250` : undefined },
+  const bookCover = (isbn: string) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+  const vinylCover = (mbid: string) => `https://coverartarchive.org/release/${mbid}/front-250`;
+
+  const cards: { theme: Theme; label: string; meta: string; color: string; imgs: string[] }[] = [
+    { theme: 'linkedin', label: 'LinkedIn', meta: li ? `${li.profile.connections} connections · ${li.profile.followers.toLocaleString()} followers` : 'profile', color: '#0a66c2', imgs: li?.profile.photo ? [li.profile.photo] : [] },
+    { theme: 'instagram', label: 'Instagram', meta: ig ? `${ig.profile.followers.toLocaleString()} followers · ${ig.profile.posts} post${ig.profile.posts === 1 ? '' : 's'}` : 'profile', color: '#dc2743', imgs: (ig?.posts || []).slice(0, 3).map(p => p.media).filter(Boolean) },
+    { theme: 'pinterest', label: 'Pinterest', meta: 'boards & pins', color: '#e60023', imgs: (pin?.boards || []).slice(0, 3).map(b => b.cover).filter(Boolean) },
+    { theme: 'tidal', label: 'TIDAL', meta: tidalD ? `${tidalD.profile.playlists} playlists` : 'playlists', color: '#00ffff', imgs: [] },
+    { theme: 'strava', label: 'Strava', meta: 'activities & routes', color: '#fc5200', imgs: [] },
+    { theme: 'youtube', label: 'YouTube', meta: 'playlists & videos', color: '#ff0000', imgs: (yt?.playlists || []).slice(0, 3).map(p => p.videos?.[0]?.thumbnail).filter(Boolean) as string[] },
+    { theme: 'orkut', label: 'Orkut', meta: 'the classic profile', color: '#e9008c', imgs: [] },
+    { theme: 'icq', label: 'ICQ', meta: 'retro IM · user details', color: '#0a870a', imgs: [] },
+    { theme: 'shelf', label: 'Shelf', meta: 'book shelf · 3D', color: '#8b6914', imgs: (shelfD?.books || []).slice(0, 3).map(b => bookCover(b.isbn)) },
+    { theme: 'vinyl', label: 'Vinyl', meta: 'record store · 3D', color: '#c17f24', imgs: (vinylD?.vinyls || []).slice(0, 3).map(v => vinylCover(v.mbid)) },
   ];
 
   view.innerHTML = `
     <div class="me-hub">
-      <div class="me-card">
-        ${photo ? `<img class="me-avatar" src="${esc(photo)}" alt="${esc(name)}">` : `<div class="me-avatar"></div>`}
-        <h1 class="me-name">${esc(name)}</h1>
-        ${headline ? `<p class="me-headline">${esc(headline)}</p>` : ''}
-        ${location ? `<p class="me-loc">${esc(location)}</p>` : ''}
-        ${bio ? `<p class="me-bio">${esc(bio)}</p>` : ''}
-      </div>
-
-      <div class="media-feed" id="media-feed"></div>
-
       <div class="hub-grid">
         ${cards.map(c => `
-          <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}${c.img ? `;--img:url('${c.img}')` : ''}">
-            <span class="hub-card__media"></span>
+          <button class="hub-card" data-goto="${c.theme}" style="--accent:${c.color}">
+            <span class="hub-card__media hub-card__media--${c.imgs.length}">
+              ${c.imgs.map(src => `<span class="hub-card__img" style="background-image:url('${esc(src)}')"></span>`).join('')}
+            </span>
             <span class="hub-card__label">${c.label}</span>
             <span class="hub-card__meta">${esc(c.meta)}</span>
           </button>`).join('')}
       </div>
     </div>`;
-
-  renderMediaFeed();
 
   view.querySelectorAll<HTMLElement>('.hub-card').forEach(btn =>
     btn.addEventListener('click', () => navigate(btn.dataset.goto as Theme)));

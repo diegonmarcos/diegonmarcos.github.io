@@ -245,7 +245,10 @@ function renderInstagram(): void {
   const view = document.getElementById('ig-view');
   if (!view) return;
   const theme = document.documentElement.dataset.theme || 'instagram-diegonmarcos';
-  const igKey = theme === 'instagram-diegonmarcos' ? 'instagram' : theme;
+  // renderInstagram() runs on every page (all views pre-render, hidden by CSS), so
+  // on a non-Instagram page `theme` is e.g. "tidal" — must not look up PORTAL_DATA
+  // under that key (wrong shape, crashes). Only instagram-* themes pick their own data.
+  const igKey = !theme.startsWith('instagram') ? 'instagram' : theme === 'instagram-diegonmarcos' ? 'instagram' : theme;
   const d = (globalThis as { PORTAL_DATA?: Record<string, IGData> }).PORTAL_DATA?.[igKey];
   if (!d) { view.innerHTML = '<p class="ig-empty">Instagram data not loaded.</p>'; return; }
 
@@ -809,13 +812,15 @@ function renderPinterest(): void {
 function renderTidal(): void {
   const view = document.getElementById('tid-view');
   if (!view) return;
-  interface TidTrack { title: string; artist: string; album: string }
+  interface TidTrack { title: string; artist: string; album: string; cover?: string }
   interface TidPlaylist { name: string; tracks: number; trackList?: TidTrack[]; duration_s?: number; description?: string; cover?: string; url?: string }
   interface TidFolder { name: string; playlists: TidPlaylist[] }
-  interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[]; folders?: TidFolder[] }
+  interface TidSection { name: string; folders: TidFolder[] }
+  interface TidData { profile: { username: string; playlists: number; tracks: number }; playlists: TidPlaylist[]; folders?: TidFolder[]; sections?: TidSection[] }
   const d = (globalThis as { PORTAL_DATA?: Record<string, TidData> }).PORTAL_DATA?.tidal;
   const lists = d?.playlists ?? [];
-  const folders = d?.folders ?? [];
+  const sections = d?.sections ?? (d?.folders ? [{ name: '', folders: d.folders }] : []);
+  const folders = sections.flatMap(s => s.folders);
   const prof = d?.profile;
 
   const fmtDur = (s?: number) => {
@@ -825,12 +830,19 @@ function renderTidal(): void {
   };
 
   // All playlists live inside folders now — flatten once so the song-list
-  // modal can look one up by index without caring which folder it's in.
+  // modal and the sidebar can both address a playlist by the same stable index.
   const allPlaylists: TidPlaylist[] = folders.length ? folders.flatMap(f => f.playlists) : lists;
-  const playlistCard = (p: TidPlaylist, i: number) => {
+  const idxOf = new Map<TidPlaylist, number>(allPlaylists.map((p, i) => [p, i]));
+  // Placeholder cover color is keyed to the parent Section, not the playlist —
+  // makes each section's group visually distinct at a glance.
+  const sectionIdxOf = new Map<TidPlaylist, number>();
+  sections.forEach((s, si) => s.folders.forEach(f => f.playlists.forEach(p => sectionIdxOf.set(p, si))));
+
+  const playlistCard = (p: TidPlaylist) => {
+    const i = idxOf.get(p) ?? 0;
     const media = p.cover
       ? `<img class="tid-card__img" src="${esc(p.cover)}" alt="${esc(p.name)}" loading="lazy">`
-      : `<div class="tid-card__ph" style="background:${gradientFor(i)}">\u{266B}</div>`;
+      : `<div class="tid-card__ph" style="background:${gradientFor(sectionIdxOf.get(p) ?? i)}">\u{266B}</div>`;
     return `
     <button class="tid-card" data-playlist-idx="${i}">
       <div class="tid-card__cover">${media}<span class="tid-card__play">▶</span></div>
@@ -838,18 +850,50 @@ function renderTidal(): void {
       <div class="tid-card__meta">${p.tracks} tracks${p.duration_s ? ' · ' + fmtDur(p.duration_s) : ''}</div>
     </button>`;
   };
-  let cursor = 0;
-  const cardsFor = (ps: TidPlaylist[]) => ps.map(p => playlistCard(p, cursor++)).join('');
+  const cardsFor = (ps: TidPlaylist[]) => ps.map(playlistCard).join('');
 
-  const folderSections = folders.map(f => `
+  const slugify = (s: string) => 'sec-' + s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  let fi = 0;
+  const sectionSubSections = sections.map((s, si) => `
+    ${s.name ? `<h1 class="tid-section-head" id="${slugify(s.name)}" style="border-image:${gradientFor(si)} 1">${esc(s.name)}</h1>` : ''}
+    ${s.folders.map(f => `
     <section class="tid-folder-section">
       <h2 class="tid-folder-section__title">${esc(f.name)}<em>${f.playlists.length}</em></h2>
       <div class="tid-grid">${cardsFor(f.playlists) || '<p class="tid-empty">No playlists in this folder yet.</p>'}</div>
-    </section>`).join('');
+    </section>`).join('')}`).join('');
 
   const cards = folders.length ? '' : cardsFor(lists);
 
+  const sidebarPlaylistBtn = (p: TidPlaylist) =>
+    `<button class="tid-sidebar__playlist" data-playlist-idx="${idxOf.get(p) ?? 0}">${esc(p.name)}</button>`;
+  const sidebarFolders = (fs: TidFolder[]) => fs.map(f => {
+    const idx = fi++;
+    return `
+    <div class="tid-sidebar__folder">
+      <button class="tid-sidebar__folder-toggle" data-folder-toggle="${idx}" aria-expanded="false">
+        <span class="tid-sidebar__caret">▸</span><span>${esc(f.name)}</span><span class="tid-sidebar__count">${f.playlists.length}</span>
+      </button>
+      <div class="tid-sidebar__playlists" data-folder-panel="${idx}">
+        ${f.playlists.map(sidebarPlaylistBtn).join('') || '<p class="tid-empty">Empty</p>'}
+      </div>
+    </div>`;
+  }).join('');
+  let si = 0;
+  const sidebarSections = sections.map(s => {
+    const sidx = si++;
+    return s.name ? `
+    <div class="tid-sidebar__section">
+      <button class="tid-sidebar__section-toggle" data-section-toggle="${sidx}" aria-expanded="false">
+        <span class="tid-sidebar__caret">▸</span><span>${esc(s.name)}</span>
+      </button>
+      <div class="tid-sidebar__section-folders" data-section-panel="${sidx}">${sidebarFolders(s.folders)}</div>
+    </div>` : sidebarFolders(s.folders);
+  }).join('');
+
   view.innerHTML = `
+    <button class="tid-hamburger" id="tid-hamburger" aria-label="Toggle folder menu">☰</button>
+    <aside class="tid-sidebar" id="tid-sidebar">${sidebarSections}</aside>
+    <div class="tid-sidebar-backdrop" id="tid-sidebar-backdrop"></div>
     <nav class="tid-nav">
       <div class="tid-nav__inner">
         <span class="tid-nav__logo">TIDAL</span>
@@ -861,8 +905,9 @@ function renderTidal(): void {
       <header class="tid-head">
         <div class="tid-head__title">My Playlists</div>
         <div class="tid-head__sub">${prof?.playlists ?? allPlaylists.length} playlists · ${prof?.tracks ?? 0} tracks</div>
+        <div class="tid-head__sections">${sections.filter(s => s.name).map(s => `<a href="#${slugify(s.name)}">${esc(s.name)}</a>`).join('')}</div>
       </header>
-      ${folderSections}
+      ${sectionSubSections}
       ${cards ? `
       <section class="tid-folder-section">
         <h2 class="tid-folder-section__title">All Playlists<em>${lists.length}</em></h2>
@@ -888,7 +933,16 @@ function renderTidal(): void {
     modalTitle.textContent = p.name;
     modalMeta.textContent = `${p.tracks} tracks`;
     modalTracks.innerHTML = (p.trackList ?? [])
-      .map(t => `<li><span class="tid-modal__track-title">${esc(t.title)}</span><span class="tid-modal__track-artist">${esc(t.artist)}</span></li>`)
+      .map(t => `
+      <li>
+        ${t.cover
+          ? `<img class="tid-modal__track-cover" src="${esc(t.cover)}" alt="" loading="lazy">`
+          : `<div class="tid-modal__track-cover tid-modal__track-cover--ph">\u{266B}</div>`}
+        <div class="tid-modal__track-info">
+          <span class="tid-modal__track-title">${esc(t.title)}</span>
+          <span class="tid-modal__track-sub">${esc(t.artist)}${t.album ? ' · ' + esc(t.album) : ''}</span>
+        </div>
+      </li>`)
       .join('') || '<li class="tid-empty">No track list for this playlist.</li>';
     modal.classList.add('is-open');
   };
@@ -902,6 +956,46 @@ function renderTidal(): void {
   document.getElementById('tid-modal-close')?.addEventListener('click', closePlaylist);
   modal.addEventListener('click', e => { if (e.target === modal) closePlaylist(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('is-open')) closePlaylist(); });
+
+  // Sidebar hamburger + per-folder collapse/uncollapse.
+  const sidebar = document.getElementById('tid-sidebar') as HTMLElement;
+  const backdrop = document.getElementById('tid-sidebar-backdrop') as HTMLElement;
+  const closeSidebar = () => { sidebar.classList.remove('is-open'); backdrop.classList.remove('is-open'); };
+  document.getElementById('tid-hamburger')?.addEventListener('click', () => {
+    sidebar.classList.toggle('is-open');
+    backdrop.classList.toggle('is-open');
+  });
+  backdrop.addEventListener('click', closeSidebar);
+  view.querySelectorAll<HTMLElement>('[data-folder-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = view.querySelector<HTMLElement>(`[data-folder-panel="${btn.dataset.folderToggle}"]`);
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      panel?.classList.toggle('is-open', !open);
+    });
+  });
+  view.querySelectorAll<HTMLElement>('[data-section-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const panel = view.querySelector<HTMLElement>(`[data-section-panel="${btn.dataset.sectionToggle}"]`);
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      panel?.classList.toggle('is-open', !open);
+    });
+  });
+  view.querySelectorAll<HTMLElement>('.tid-sidebar__playlist').forEach(btn =>
+    btn.addEventListener('click', closeSidebar));
+
+  // Section quick-links: explicit smooth-scroll instead of relying on native
+  // hash-anchor navigation, which the service worker was intercepting as a
+  // full-page fetch (and failing) rather than an in-page jump.
+  view.querySelectorAll<HTMLAnchorElement>('.tid-head__sections a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      const id = a.getAttribute('href')?.slice(1);
+      const target = id ? document.getElementById(id) : null;
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
 }
 
 // ─── STRAVA VIEW (real activity feed) ─────────────────────────────────────────

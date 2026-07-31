@@ -1968,7 +1968,24 @@ function themeFromFilename(): Theme | null {
   return (THEMES as string[]).includes(theme) ? (theme as Theme) : null;
 }
 
+// CSS is split per theme (style.css = shared base; style-<key>.css = that theme's
+// own rules) so each page ships only the CSS it needs. In-place theme switches
+// (everything except the 3 Instagram account pages, which do a real page load)
+// need their target theme's stylesheet lazy-loaded on first switch.
+function cssKeyFor(theme: Theme): string {
+  return theme.startsWith('instagram-') ? 'instagram' : theme;
+}
+function ensureThemeCss(theme: Theme): void {
+  const href = `style-${cssKeyFor(theme)}.css`;
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
 function setTheme(theme: Theme): void {
+  ensureThemeCss(theme);
   document.documentElement.setAttribute('data-theme', theme);
   document.querySelectorAll('[data-theme-btn]').forEach(btn => {
     btn.classList.toggle('is-active', (btn as HTMLElement).dataset.themeBtn === theme);

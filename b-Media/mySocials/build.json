@@ -28,6 +28,62 @@
       "output": "style.css"
     },
     {
+      "_doc": "Per-theme CSS, split out of the old single style.css: each page loads style.css (shared reset/tokens/view-toggle/nav) plus its own style-<theme>.css.",
+      "mod": "sass",
+      "input": "src/scss/theme-mysocials.scss",
+      "output": "style-mysocials.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-orkut.scss",
+      "output": "style-orkut.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-instagram.scss",
+      "output": "style-instagram.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-linkedin.scss",
+      "output": "style-linkedin.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-pinterest.scss",
+      "output": "style-pinterest.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-tidal.scss",
+      "output": "style-tidal.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-strava.scss",
+      "output": "style-strava.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-youtube.scss",
+      "output": "style-youtube.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-icq.scss",
+      "output": "style-icq.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-shelf.scss",
+      "output": "style-shelf.css"
+    },
+    {
+      "mod": "sass",
+      "input": "src/scss/theme-vinyl.scss",
+      "output": "style-vinyl.css"
+    },
+    {
       "mod": "esbuild",
       "input": "src/typescript/main.ts",
       "output": "script.js",
@@ -72,7 +128,18 @@
         "shelf.html",
         "vinyl.html",
         "script.js",
-        "style.css"
+        "style.css",
+        "style-mysocials.css",
+        "style-orkut.css",
+        "style-instagram.css",
+        "style-linkedin.css",
+        "style-pinterest.css",
+        "style-tidal.css",
+        "style-strava.css",
+        "style-youtube.css",
+        "style-icq.css",
+        "style-shelf.css",
+        "style-vinyl.css"
       ],
       "precache": [
         "./",
@@ -90,7 +157,18 @@
         "./shelf.html",
         "./vinyl.html",
         "./script.js",
-        "./style.css"
+        "./style.css",
+        "./style-mysocials.css",
+        "./style-orkut.css",
+        "./style-instagram.css",
+        "./style-linkedin.css",
+        "./style-pinterest.css",
+        "./style-tidal.css",
+        "./style-strava.css",
+        "./style-youtube.css",
+        "./style-icq.css",
+        "./style-shelf.css",
+        "./style-vinyl.css"
       ]
     }
   ],

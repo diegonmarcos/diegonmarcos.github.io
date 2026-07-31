@@ -277,7 +277,21 @@ function renderInstagram(): void {
   // doesn't capture one).
   const mediaId = (url: string) => Number(url.match(/(\d+)(?=\.\w+$)/)?.[1] || 0);
   const sortedPosts = d.posts.slice().sort((a, b) => mediaId(b.media) - mediaId(a.media));
-  const realPosts = sortedPosts.map((post, i) => `
+  // Hashtag line: use the caption's own #tags when it has any; otherwise derive a
+  // handful from the caption's words + location, so every post gets a tags line.
+  const STOPWORDS = new Set(['this', 'that', 'with', 'from', 'have', 'your', 'about', 'just', 'they', 'them', 'here', 'were', 'been', 'more']);
+  const deriveTags = (caption: string, location?: string) => {
+    const words = (caption.match(/[A-Za-z]{4,}/g) || [])
+      .map(w => w.toLowerCase())
+      .filter(w => !STOPWORDS.has(w));
+    const fromLocation = (location || '').match(/[A-Za-z]{3,}/g) || [];
+    const uniq = [...new Set([...fromLocation, ...words].map(w => w.toLowerCase()))];
+    return uniq.slice(0, 5).map(w => `#${w}`);
+  };
+  const realPosts = sortedPosts.map((post, i) => {
+    const realTags = post.caption.match(/#\w+/g) || [];
+    const tags = realTags.length ? realTags : deriveTags(post.caption, post.location);
+    return `
     <div class="ig-post-card">
       <a class="ig-tile" href="#" data-post-idx="${i}"><img src="${post.media}" alt="post" loading="lazy" decoding="async"></a>
       ${post.caption ? `
@@ -285,13 +299,14 @@ function renderInstagram(): void {
         <span class="ig-post-card__cap-text">${esc(post.caption)}</span>
         <button class="ig-post-card__more" data-more-idx="${i}">more</button>
       </div>` : ''}
-      ${(post.caption.match(/#\w+/g) || []).length ? `<div class="ig-post-card__tags">${esc((post.caption.match(/#\w+/g) || []).join(' '))}</div>` : ''}
+      ${tags.length ? `<div class="ig-post-card__tags">${esc(tags.join(' '))}</div>` : ''}
       <div class="ig-post-card__actions">
         <button class="ig-post-card__like" data-like-idx="${i}" aria-label="Like">${IG_ICON.heart}</button>
         <button class="ig-post-card__meta-btn" data-meta-idx="${i}" aria-label="Photo metadata">${IG_ICON.info}</button>
         <button class="ig-post-card__comment-btn" data-post-idx="${i}" aria-label="Comments">${IG_ICON.comment}</button>
       </div>
-    </div>`);
+    </div>`;
+  });
   const locGroups = new Map<string, typeof sortedPosts>();
   sortedPosts.forEach(post => {
     const key = post.location?.trim() || 'Unknown location';
